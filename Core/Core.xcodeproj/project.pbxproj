@@ -25,7 +25,7 @@
 
 /* Begin PBXFileReference section */
 		358F3C7A284A0134003F7CFA /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		358F3C82284A0135003F7CFA /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		358F3C82284A0135003F7CFA /* CoreUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		358F3C87284A0135003F7CFA /* CoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTests.swift; sourceTree = "<group>"; };
 		358F3C94284A0291003F7CFA /* Core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Core.h; sourceTree = "<group>"; };
 		5B9DF9692047DDE4293ED0DC /* Pods-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release.xcconfig"; sourceTree = "<group>"; };
@@ -65,7 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				358F3C7C284A0134003F7CFA /* Sources */,
-				358F3C86284A0135003F7CFA /* UnitTests */,
+				358F3C86284A0135003F7CFA /* CoreUnitTests */,
 				358F3C7B284A0134003F7CFA /* Products */,
 				9069F9BF788C974DD7BF303A /* Pods */,
 				2B16AD322611F1BD12AD9ED6 /* Frameworks */,
@@ -76,7 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				358F3C7A284A0134003F7CFA /* Core.framework */,
-				358F3C82284A0135003F7CFA /* UnitTests.xctest */,
+				358F3C82284A0135003F7CFA /* CoreUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,12 +89,12 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		358F3C86284A0135003F7CFA /* UnitTests */ = {
+		358F3C86284A0135003F7CFA /* CoreUnitTests */ = {
 			isa = PBXGroup;
 			children = (
 				358F3C87284A0135003F7CFA /* CoreTests.swift */,
 			);
-			path = UnitTests;
+			path = CoreUnitTests;
 			sourceTree = "<group>";
 		};
 		9069F9BF788C974DD7BF303A /* Pods */ = {
@@ -141,9 +141,9 @@
 			productReference = 358F3C7A284A0134003F7CFA /* Core.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		358F3C81284A0135003F7CFA /* UnitTests */ = {
+		358F3C81284A0135003F7CFA /* CoreUnitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 358F3C8F284A0135003F7CFA /* Build configuration list for PBXNativeTarget "UnitTests" */;
+			buildConfigurationList = 358F3C8F284A0135003F7CFA /* Build configuration list for PBXNativeTarget "CoreUnitTests" */;
 			buildPhases = (
 				358F3C7E284A0135003F7CFA /* Sources */,
 				358F3C7F284A0135003F7CFA /* Frameworks */,
@@ -154,9 +154,9 @@
 			dependencies = (
 				358F3C85284A0135003F7CFA /* PBXTargetDependency */,
 			);
-			name = UnitTests;
+			name = CoreUnitTests;
 			productName = CoreTests;
-			productReference = 358F3C82284A0135003F7CFA /* UnitTests.xctest */;
+			productReference = 358F3C82284A0135003F7CFA /* CoreUnitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -191,7 +191,7 @@
 			projectRoot = "";
 			targets = (
 				358F3C79284A0134003F7CFA /* Core */,
-				358F3C81284A0135003F7CFA /* UnitTests */,
+				358F3C81284A0135003F7CFA /* CoreUnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -515,7 +515,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		358F3C8F284A0135003F7CFA /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
+		358F3C8F284A0135003F7CFA /* Build configuration list for PBXNativeTarget "CoreUnitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				358F3C90284A0135003F7CFA /* Debug */,
