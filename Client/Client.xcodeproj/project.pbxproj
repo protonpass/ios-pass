@@ -27,7 +27,7 @@
 		2DAC49389C8F46539B9115A5 /* Pods-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release.xcconfig"; sourceTree = "<group>"; };
 		358F3CA2284A03E7003F7CFA /* Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		358F3CA5284A03E7003F7CFA /* Client.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Client.h; sourceTree = "<group>"; };
-		358F3CAA284A03E8003F7CFA /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		358F3CAA284A03E8003F7CFA /* ClientUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClientUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		358F3CAF284A03E8003F7CFA /* ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTests.swift; sourceTree = "<group>"; };
 		889F8BB8A869A92D2D1166CA /* Pods-Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.debug.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.debug.xcconfig"; sourceTree = "<group>"; };
 		A7F61F5683D93876678E4590 /* Pods_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,7 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				358F3CA4284A03E7003F7CFA /* Sources */,
-				358F3CAE284A03E8003F7CFA /* UnitTests */,
+				358F3CAE284A03E8003F7CFA /* ClientUnitTests */,
 				358F3CA3284A03E7003F7CFA /* Products */,
 				9E75A8CF05261BF1727840DD /* Pods */,
 				B76CA475A317A490461C4E94 /* Frameworks */,
@@ -68,7 +68,7 @@
 			isa = PBXGroup;
 			children = (
 				358F3CA2284A03E7003F7CFA /* Client.framework */,
-				358F3CAA284A03E8003F7CFA /* UnitTests.xctest */,
+				358F3CAA284A03E8003F7CFA /* ClientUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -81,12 +81,12 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		358F3CAE284A03E8003F7CFA /* UnitTests */ = {
+		358F3CAE284A03E8003F7CFA /* ClientUnitTests */ = {
 			isa = PBXGroup;
 			children = (
 				358F3CAF284A03E8003F7CFA /* ClientTests.swift */,
 			);
-			path = UnitTests;
+			path = ClientUnitTests;
 			sourceTree = "<group>";
 		};
 		9E75A8CF05261BF1727840DD /* Pods */ = {
@@ -141,9 +141,9 @@
 			productReference = 358F3CA2284A03E7003F7CFA /* Client.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		358F3CA9284A03E8003F7CFA /* UnitTests */ = {
+		358F3CA9284A03E8003F7CFA /* ClientUnitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 358F3CB7284A03E8003F7CFA /* Build configuration list for PBXNativeTarget "UnitTests" */;
+			buildConfigurationList = 358F3CB7284A03E8003F7CFA /* Build configuration list for PBXNativeTarget "ClientUnitTests" */;
 			buildPhases = (
 				358F3CA6284A03E8003F7CFA /* Sources */,
 				358F3CA7284A03E8003F7CFA /* Frameworks */,
@@ -154,9 +154,9 @@
 			dependencies = (
 				358F3CAD284A03E8003F7CFA /* PBXTargetDependency */,
 			);
-			name = UnitTests;
+			name = ClientUnitTests;
 			productName = ClientTests;
-			productReference = 358F3CAA284A03E8003F7CFA /* UnitTests.xctest */;
+			productReference = 358F3CAA284A03E8003F7CFA /* ClientUnitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -191,7 +191,7 @@
 			projectRoot = "";
 			targets = (
 				358F3CA1284A03E7003F7CFA /* Client */,
-				358F3CA9284A03E8003F7CFA /* UnitTests */,
+				358F3CA9284A03E8003F7CFA /* ClientUnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -513,7 +513,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		358F3CB7284A03E8003F7CFA /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
+		358F3CB7284A03E8003F7CFA /* Build configuration list for PBXNativeTarget "ClientUnitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				358F3CB8284A03E8003F7CFA /* Debug */,
