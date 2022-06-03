@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D0A2D66DAF1B4D64EA72C6B /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2722F1E89C0587C296BD1AF3 /* Pods_iOS.framework */; };
 		35310A0B2848E93F00BC7417 /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35310A0A2848E93F00BC7417 /* iOSApp.swift */; };
 		35310A0F2848E94000BC7417 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35310A0E2848E94000BC7417 /* Assets.xcassets */; };
 		35310A122848E94000BC7417 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35310A112848E94000BC7417 /* Preview Assets.xcassets */; };
@@ -14,11 +15,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		35310A072848E93F00BC7417 /* iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2722F1E89C0587C296BD1AF3 /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		35310A072848E93F00BC7417 /* Proton Key.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Key.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35310A0A2848E93F00BC7417 /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		35310A0E2848E94000BC7417 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35310A112848E94000BC7417 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		35310A182848EF0F00BC7417 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		94B639C289F897EDD7F790A4 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		C8B9AF9FDD83E3E02DE29628 /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D0A2D66DAF1B4D64EA72C6B /* Pods_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,13 +42,15 @@
 			children = (
 				35310A092848E93F00BC7417 /* Sources */,
 				35310A082848E93F00BC7417 /* Products */,
+				FC8F4DF8E00295269DCB67AA /* Pods */,
+				D5F5ECD78534F456558943A4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		35310A082848E93F00BC7417 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				35310A072848E93F00BC7417 /* iOS.app */,
+				35310A072848E93F00BC7417 /* Proton Key.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,6 +74,24 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		D5F5ECD78534F456558943A4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2722F1E89C0587C296BD1AF3 /* Pods_iOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FC8F4DF8E00295269DCB67AA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				94B639C289F897EDD7F790A4 /* Pods-iOS.debug.xcconfig */,
+				C8B9AF9FDD83E3E02DE29628 /* Pods-iOS.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,6 +99,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 35310A152848E94000BC7417 /* Build configuration list for PBXNativeTarget "iOS" */;
 			buildPhases = (
+				00EFDF2D697FD33BBBCA8939 /* [CP] Check Pods Manifest.lock */,
 				35310A032848E93F00BC7417 /* Sources */,
 				35310A042848E93F00BC7417 /* Frameworks */,
 				35310A052848E93F00BC7417 /* Resources */,
@@ -84,7 +110,7 @@
 			);
 			name = iOS;
 			productName = iOS;
-			productReference = 35310A072848E93F00BC7417 /* iOS.app */;
+			productReference = 35310A072848E93F00BC7417 /* Proton Key.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -131,6 +157,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		00EFDF2D697FD33BBBCA8939 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-iOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		35310A032848E93F00BC7417 /* Sources */ = {
@@ -261,6 +312,7 @@
 		};
 		35310A162848E94000BC7417 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 94B639C289F897EDD7F790A4 /* Pods-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -282,7 +334,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.ios;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Proton Key";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -291,6 +343,7 @@
 		};
 		35310A172848E94000BC7417 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C8B9AF9FDD83E3E02DE29628 /* Pods-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -312,7 +365,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.ios;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Proton Key";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
