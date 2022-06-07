@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-Core/Pods-Core-resources.sh
+${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation-static/Resources-CoreTranslation.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation-V5-static/Resources-CoreTranslation-V5.bundle

@@ -1,0 +1,8 @@
+${PODS_ROOT}/Target Support Files/Pods-UIComponents/Pods-UIComponents-resources.sh
+${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation-static/Resources-CoreTranslation.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation-V5-static/Resources-CoreTranslation-V5.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-HumanVerification-V5/Resources-HumanVerification.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-LoginUI-V5/Resources-LoginUI.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-PaymentsUI-V5/Resources-PaymentsUI.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-Settings-V5/Resources-Settings.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-UIFoundations-V5-static/Resources-UIFoundations.bundle

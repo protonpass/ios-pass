@@ -1,0 +1,6 @@
+framework module ProtonCore_Keymaker {
+  umbrella header "ProtonCore-Keymaker-static-umbrella.h"
+
+  export *
+  module * { export * }
+}

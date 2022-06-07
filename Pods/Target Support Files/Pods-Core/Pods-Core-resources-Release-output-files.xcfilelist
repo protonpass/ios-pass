@@ -1,0 +1,2 @@
+${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Resources-CoreTranslation.bundle
+${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Resources-CoreTranslation-V5.bundle

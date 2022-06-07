@@ -1,0 +1,6 @@
+framework module ProtonCore_DataModel {
+  umbrella header "ProtonCore-DataModel-dynamic-umbrella.h"
+
+  export *
+  module * { export * }
+}
