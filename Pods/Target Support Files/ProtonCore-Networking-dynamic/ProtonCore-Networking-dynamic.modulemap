@@ -1,6 +1,0 @@
-framework module ProtonCore_Networking {
-  umbrella header "ProtonCore-Networking-dynamic-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -1,6 +1,0 @@
-framework module EllipticCurveKeyPair {
-  umbrella header "EllipticCurveKeyPair-dynamic-umbrella.h"
-
-  export *
-  module * { export * }
-}
