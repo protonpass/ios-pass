@@ -1,6 +1,6 @@
 //
-// ContentView.swift
-// Proton Key - Created on 03/06/2022.
+// iOS-Config-Release-Prod.swift
+// Proton Key - Created on 08/06/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Key.
@@ -18,26 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
 
-struct ContentView: View {
-    var body: some View {
-        let host = Bundle.main.infoDictionary?["DEFAULT_API_HOST"] as? String ?? "null"
-        let signUp = Bundle.main.infoDictionary?["DEFAULT_SIGNUP_DOMAIN"] as? String ?? "null"
-        VStack {
-            #if PROD
-            Text("Prod")
-            #elseif BLACK
-            Text("Black")
-            #endif
-            Text("Host domain: " + host)
-            Text("Sign up domain: " + signUp)
-        }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+#include "../Pods/Target Support Files/Pods-iOS/Pods-iOS.release-prod.xcconfig"
+#include "../Shared/Config-Prod.xcconfig"

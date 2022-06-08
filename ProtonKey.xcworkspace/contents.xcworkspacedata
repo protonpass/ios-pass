@@ -19,4 +19,14 @@
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
+   <Group
+      location = "group:Shared"
+      name = "Shared">
+      <FileRef
+         location = "group:Config-Prod.xcconfig">
+      </FileRef>
+      <FileRef
+         location = "group:Config-Black.xcconfig">
+      </FileRef>
+   </Group>
 </Workspace>
