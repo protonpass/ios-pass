@@ -14,24 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "358F3CA1284A03E7003F7CFA"
-               BuildableName = "Client.framework"
-               BlueprintName = "Client"
-               ReferencedContainer = "container:Client.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "358F3CA9284A03E8003F7CFA"
-               BuildableName = "ClientUnitTests.xctest"
-               BlueprintName = "ClientUnitTests"
-               ReferencedContainer = "container:Client.xcodeproj">
+               BlueprintIdentifier = "358F3CC5284A0537003F7CFA"
+               BuildableName = "UIComponents.framework"
+               BlueprintName = "UIComponents"
+               ReferencedContainer = "container:UIComponents.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -43,16 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       codeCoverageEnabled = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "358F3CA9284A03E8003F7CFA"
-               BuildableName = "ClientUnitTests.xctest"
-               BlueprintName = "ClientUnitTests"
-               ReferencedContainer = "container:Client.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -75,10 +51,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "358F3CA1284A03E7003F7CFA"
-            BuildableName = "Client.framework"
-            BlueprintName = "Client"
-            ReferencedContainer = "container:Client.xcodeproj">
+            BlueprintIdentifier = "358F3CC5284A0537003F7CFA"
+            BuildableName = "UIComponents.framework"
+            BlueprintName = "UIComponents"
+            ReferencedContainer = "container:UIComponents.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

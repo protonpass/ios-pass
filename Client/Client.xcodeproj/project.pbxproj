@@ -10,6 +10,7 @@
 		358F3CAB284A03E8003F7CFA /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 358F3CA2284A03E7003F7CFA /* Client.framework */; };
 		358F3CB0284A03E8003F7CFA /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358F3CAF284A03E8003F7CFA /* ClientTests.swift */; };
 		358F3CB1284A03E8003F7CFA /* Client.h in Headers */ = {isa = PBXBuildFile; fileRef = 358F3CA5284A03E7003F7CFA /* Client.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		35DAB20E285276C0004632E6 /* ClientDummyStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DAB20D285276C0004632E6 /* ClientDummyStructs.swift */; };
 		36CF6B8E8983249D40282B80 /* Pods_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F61F5683D93876678E4590 /* Pods_Client.framework */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 		358F3CA5284A03E7003F7CFA /* Client.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Client.h; sourceTree = "<group>"; };
 		358F3CAA284A03E8003F7CFA /* ClientUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClientUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		358F3CAF284A03E8003F7CFA /* ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTests.swift; sourceTree = "<group>"; };
+		35DAB20D285276C0004632E6 /* ClientDummyStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDummyStructs.swift; sourceTree = "<group>"; };
 		889F8BB8A869A92D2D1166CA /* Pods-Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.debug.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.debug.xcconfig"; sourceTree = "<group>"; };
 		A7F61F5683D93876678E4590 /* Pods_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				358F3CA5284A03E7003F7CFA /* Client.h */,
+				35DAB20D285276C0004632E6 /* ClientDummyStructs.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35DAB20E285276C0004632E6 /* ClientDummyStructs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +472,7 @@
 		358F3CB8284A03E8003F7CFA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
@@ -484,6 +489,7 @@
 		358F3CB9284A03E8003F7CFA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;

@@ -1,6 +1,6 @@
 //
-// CoreTests.swift
-// Proton Key - Created on 03/06/2022.
+// CoreDummyStructs.swift
+// Proton Key - Created on 09/06/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Key.
@@ -18,19 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
-@testable import Core
-import XCTest
+import Foundation
 
-class CoreTests: XCTestCase {
-    func testClientDummyStruct1() {
-        let sut = CoreDummyStruct1()
-        sut.dummyFunc1()
-        XCTAssertTrue(true)
-    }
+struct CoreDummyStruct1 {
+    func dummyFunc1() {}
+    func dummyFunc2() {}
+    func dummyFunc3() {}
+}
 
-    func testClientDummyStruct2() {
-        let sut = CoreDummyStruct2()
-        sut.dummyFunc2()
-        XCTAssertTrue(true)
-    }
+struct CoreDummyStruct2 {
+    func dummyFunc1() {}
+    func dummyFunc2() {}
+    func dummyFunc3() {}
 }
