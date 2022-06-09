@@ -14,24 +14,24 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "358F3C79284A0134003F7CFA"
-               BuildableName = "Core.framework"
-               BlueprintName = "Core"
-               ReferencedContainer = "container:Core.xcodeproj">
+               BlueprintIdentifier = "358F3CA1284A03E7003F7CFA"
+               BuildableName = "Client.framework"
+               BlueprintName = "Client"
+               ReferencedContainer = "container:Client.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "358F3CA9284A03E8003F7CFA"
                BuildableName = "ClientUnitTests.xctest"
                BlueprintName = "ClientUnitTests"
-               ReferencedContainer = "container:../Client/Client.xcodeproj">
+               ReferencedContainer = "container:Client.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,10 +46,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "358F3C81284A0135003F7CFA"
-               BuildableName = "CoreUnitTests.xctest"
-               BlueprintName = "CoreUnitTests"
-               ReferencedContainer = "container:Core.xcodeproj">
+               BlueprintIdentifier = "358F3CA9284A03E8003F7CFA"
+               BuildableName = "ClientUnitTests.xctest"
+               BlueprintName = "ClientUnitTests"
+               ReferencedContainer = "container:Client.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -74,10 +74,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "358F3C79284A0134003F7CFA"
-            BuildableName = "Core.framework"
-            BlueprintName = "Core"
-            ReferencedContainer = "container:Core.xcodeproj">
+            BlueprintIdentifier = "358F3CA1284A03E7003F7CFA"
+            BuildableName = "Client.framework"
+            BlueprintName = "Client"
+            ReferencedContainer = "container:Client.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

@@ -130,6 +130,7 @@
 				358F3C9E284A03E7003F7CFA /* Sources */,
 				358F3C9F284A03E7003F7CFA /* Frameworks */,
 				358F3CA0284A03E7003F7CFA /* Resources */,
+				35DAB2082852749C004632E6 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -170,6 +171,7 @@
 				TargetAttributes = {
 					358F3CA1284A03E7003F7CFA = {
 						CreatedOnToolsVersion = 13.3.1;
+						LastSwiftMigration = 1330;
 					};
 					358F3CA9284A03E8003F7CFA = {
 						CreatedOnToolsVersion = 13.3.1;
@@ -213,6 +215,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		35DAB2082852749C004632E6 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "../Scripts/swiftlint.sh\n";
+		};
 		6435BC45AE56CD05BD5AD4F9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -388,6 +408,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 889F8BB8A869A92D2D1166CA /* Pods-Client.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -408,6 +429,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -417,6 +439,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2DAC49389C8F46539B9115A5 /* Pods-Client.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
