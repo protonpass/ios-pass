@@ -22,13 +22,13 @@
 import XCTest
 
 class CoreTests: XCTestCase {
-    func testClientDummyStruct1() {
+    func testCoreDummyStruct1() {
         let sut = CoreDummyStruct1()
         sut.dummyFunc1()
         XCTAssertTrue(true)
     }
 
-    func testClientDummyStruct2() {
+    func testCoreDummyStruct2() {
         let sut = CoreDummyStruct2()
         sut.dummyFunc2()
         XCTAssertTrue(true)
