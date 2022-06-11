@@ -1,0 +1,28 @@
+{
+  "configurations" : [
+    {
+      "id" : "10314714-5A3C-450D-A6A8-7572F3256D5A",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:iOS.xcodeproj",
+      "identifier" : "35310A062848E93F00BC7417",
+      "name" : "iOS"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..\/iOS\/iOS.xcodeproj",
+        "identifier" : "35C435FA284A4D2100E0D7E3",
+        "name" : "iOSUnitTests"
+      }
+    }
+  ],
+  "version" : 1
+}

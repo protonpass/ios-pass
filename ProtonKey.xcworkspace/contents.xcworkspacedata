@@ -28,6 +28,12 @@
       <FileRef
          location = "group:Core-Unit.xctestplan">
       </FileRef>
+      <FileRef
+         location = "group:iOS-Unit.xctestplan">
+      </FileRef>
+      <FileRef
+         location = "group:macOS-Unit.xctestplan">
+      </FileRef>
    </Group>
    <Group
       location = "group:Shared"
