@@ -196,7 +196,6 @@
 				35310A032848E93F00BC7417 /* Sources */,
 				35310A042848E93F00BC7417 /* Frameworks */,
 				35310A052848E93F00BC7417 /* Resources */,
-				50F4124786CDA421E4D7CE23 /* [CP] Embed Pods Frameworks */,
 				35DAB20B2852752F004632E6 /* SwiftLint */,
 			);
 			buildRules = (
@@ -353,23 +352,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "../Scripts/swiftlint.sh\n";
-		};
-		50F4124786CDA421E4D7CE23 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
