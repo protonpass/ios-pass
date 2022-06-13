@@ -22,7 +22,6 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        let aaaaaaaa = bbbbbbb
         let host = Bundle.main.infoDictionary?["DEFAULT_API_HOST"] as? String ?? "null"
         let signUp = Bundle.main.infoDictionary?["DEFAULT_SIGNUP_DOMAIN"] as? String ?? "null"
         VStack {
