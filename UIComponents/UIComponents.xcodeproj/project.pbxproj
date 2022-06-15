@@ -8,15 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		358F3CD5284A0537003F7CFA /* UIComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 358F3CC9284A0537003F7CFA /* UIComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C210414A404714E068F04DE8 /* Pods_UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6556D2E067770F696397BFF /* Pods_UIComponents.framework */; };
+		3598D641285A2F4E00250857 /* HomeCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3598D640285A2F4E00250857 /* HomeCoordinatorView.swift */; };
+		3598D643285A2F7C00250857 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3598D642285A2F7C00250857 /* HomeView.swift */; };
+		3598D646285A305E00250857 /* MyVaultsCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3598D645285A305E00250857 /* MyVaultsCoordinatorView.swift */; };
+		3598D648285A30A200250857 /* MyVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3598D647285A30A200250857 /* MyVaultsView.swift */; };
+		3598D64B285A30F700250857 /* ToolsCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3598D64A285A30F700250857 /* ToolsCoordinatorView.swift */; };
+		3598D64D285A30FF00250857 /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3598D64C285A30FE00250857 /* ToolsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		164EF20FC912A098FACBE46E /* Pods-UIComponents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.debug.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.debug.xcconfig"; sourceTree = "<group>"; };
-		1DE9B7B124F165D86AE2A6FF /* Pods-UIComponents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release.xcconfig"; sourceTree = "<group>"; };
-		358F3CC6284A0537003F7CFA /* UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		358F3CC6284A0537003F7CFA /* UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = UIComponents.framework; path = "/Users/nhonproton/Gitlab/protonkey-ios-macos/UIComponents/build/Debug-iphoneos/UIComponents.framework"; sourceTree = "<absolute>"; };
 		358F3CC9284A0537003F7CFA /* UIComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIComponents.h; sourceTree = "<group>"; };
-		C6556D2E067770F696397BFF /* Pods_UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3598D640285A2F4E00250857 /* HomeCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinatorView.swift; sourceTree = "<group>"; };
+		3598D642285A2F7C00250857 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		3598D645285A305E00250857 /* MyVaultsCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsCoordinatorView.swift; sourceTree = "<group>"; };
+		3598D647285A30A200250857 /* MyVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsView.swift; sourceTree = "<group>"; };
+		3598D64A285A30F700250857 /* ToolsCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsCoordinatorView.swift; sourceTree = "<group>"; };
+		3598D64C285A30FE00250857 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
+		3598D652285A33FF00250857 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -24,7 +33,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C210414A404714E068F04DE8 /* Pods_UIComponents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -34,45 +42,55 @@
 		358F3CBC284A0537003F7CFA = {
 			isa = PBXGroup;
 			children = (
+				3598D652285A33FF00250857 /* Package.swift */,
 				358F3CC8284A0537003F7CFA /* Sources */,
-				358F3CC7284A0537003F7CFA /* Products */,
-				6FD3A9488EC6502895F5CC0B /* Pods */,
-				85294918073837C20E02A261 /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		358F3CC7284A0537003F7CFA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				358F3CC6284A0537003F7CFA /* UIComponents.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		358F3CC8284A0537003F7CFA /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				358F3CC9284A0537003F7CFA /* UIComponents.h */,
+				3598D63E285A2EDD00250857 /* Modules */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		6FD3A9488EC6502895F5CC0B /* Pods */ = {
+		3598D63E285A2EDD00250857 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				164EF20FC912A098FACBE46E /* Pods-UIComponents.debug.xcconfig */,
-				1DE9B7B124F165D86AE2A6FF /* Pods-UIComponents.release.xcconfig */,
+				3598D63F285A2EF400250857 /* Home */,
+				3598D644285A304300250857 /* MyVaults */,
+				3598D649285A30E300250857 /* Tools */,
 			);
-			name = Pods;
-			path = ../Pods;
+			path = Modules;
 			sourceTree = "<group>";
 		};
-		85294918073837C20E02A261 /* Frameworks */ = {
+		3598D63F285A2EF400250857 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				C6556D2E067770F696397BFF /* Pods_UIComponents.framework */,
+				3598D640285A2F4E00250857 /* HomeCoordinatorView.swift */,
+				3598D642285A2F7C00250857 /* HomeView.swift */,
 			);
-			name = Frameworks;
+			path = Home;
+			sourceTree = "<group>";
+		};
+		3598D644285A304300250857 /* MyVaults */ = {
+			isa = PBXGroup;
+			children = (
+				3598D645285A305E00250857 /* MyVaultsCoordinatorView.swift */,
+				3598D647285A30A200250857 /* MyVaultsView.swift */,
+			);
+			path = MyVaults;
+			sourceTree = "<group>";
+		};
+		3598D649285A30E300250857 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				3598D64A285A30F700250857 /* ToolsCoordinatorView.swift */,
+				3598D64C285A30FE00250857 /* ToolsView.swift */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,7 +152,7 @@
 				Base,
 			);
 			mainGroup = 358F3CBC284A0537003F7CFA;
-			productRefGroup = 358F3CC7284A0537003F7CFA /* Products */;
+			productRefGroup = 358F3CBC284A0537003F7CFA;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -201,6 +219,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3598D64D285A30FF00250857 /* ToolsView.swift in Sources */,
+				3598D646285A305E00250857 /* MyVaultsCoordinatorView.swift in Sources */,
+				3598D648285A30A200250857 /* MyVaultsView.swift in Sources */,
+				3598D641285A2F4E00250857 /* HomeCoordinatorView.swift in Sources */,
+				3598D643285A2F7C00250857 /* HomeView.swift in Sources */,
+				3598D64B285A30F700250857 /* ToolsCoordinatorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,7 +353,6 @@
 		};
 		358F3CD9284A0537003F7CFA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 164EF20FC912A098FACBE46E /* Pods-UIComponents.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -361,7 +384,6 @@
 		};
 		358F3CDA284A0537003F7CFA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1DE9B7B124F165D86AE2A6FF /* Pods-UIComponents.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;

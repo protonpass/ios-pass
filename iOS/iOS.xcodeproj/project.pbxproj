@@ -12,6 +12,7 @@
 		35310A0F2848E94000BC7417 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35310A0E2848E94000BC7417 /* Assets.xcassets */; };
 		35310A122848E94000BC7417 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35310A112848E94000BC7417 /* Preview Assets.xcassets */; };
 		35310A192848EF0F00BC7417 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35310A182848EF0F00BC7417 /* ContentView.swift */; };
+		355C4393285A3A52001B7624 /* UIComponents in Frameworks */ = {isa = PBXBuildFile; productRef = 355C4392285A3A52001B7624 /* UIComponents */; };
 		35C435FE284A4D2100E0D7E3 /* iOSUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C435FD284A4D2100E0D7E3 /* iOSUnitTests.swift */; };
 		35C4360B284A4D9400E0D7E3 /* iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C4360A284A4D9400E0D7E3 /* iOSUITests.swift */; };
 /* End PBXBuildFile section */
@@ -40,6 +41,11 @@
 		35310A0E2848E94000BC7417 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35310A112848E94000BC7417 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		35310A182848EF0F00BC7417 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		355C4391285A3908001B7624 /* UIComponents */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = UIComponents; path = ../UIComponents; sourceTree = "<group>"; };
+		3598D64E285A315F00250857 /* UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3598D656285A357E00250857 /* UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3598D65A285A359100250857 /* Pods_UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3598D65D285A35CE00250857 /* UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35A34B7A28512C37004DDF0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35C435FB284A4D2100E0D7E3 /* iOSUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		35C435FD284A4D2100E0D7E3 /* iOSUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSUnitTests.swift; sourceTree = "<group>"; };
@@ -67,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				355C4393285A3A52001B7624 /* UIComponents in Frameworks */,
 				2D0A2D66DAF1B4D64EA72C6B /* Pods_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,6 +98,7 @@
 		353109FE2848E93F00BC7417 = {
 			isa = PBXGroup;
 			children = (
+				355C4390285A3908001B7624 /* Packages */,
 				35A34B7A28512C37004DDF0D /* Info.plist */,
 				35310A092848E93F00BC7417 /* Sources */,
 				35D7D7902850E47100D177D3 /* BuildConfigs */,
@@ -131,6 +139,14 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		355C4390285A3908001B7624 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				355C4391285A3908001B7624 /* UIComponents */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		35C435FC284A4D2100E0D7E3 /* iOSUnitTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +177,10 @@
 		D5F5ECD78534F456558943A4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3598D65D285A35CE00250857 /* UIComponents.framework */,
+				3598D65A285A359100250857 /* Pods_UIComponents.framework */,
+				3598D656285A357E00250857 /* UIComponents.framework */,
+				3598D64E285A315F00250857 /* UIComponents.framework */,
 				35D7D79D2850E9B800D177D3 /* UIComponents.framework */,
 				35D7D78A2850D4DF00D177D3 /* Client.framework */,
 				35D7D7872850CE9800D177D3 /* UIComponents.framework */,
@@ -203,6 +223,9 @@
 			dependencies = (
 			);
 			name = iOS;
+			packageProductDependencies = (
+				355C4392285A3A52001B7624 /* UIComponents */,
+			);
 			productName = iOS;
 			productReference = 35310A072848E93F00BC7417 /* Proton Key.app */;
 			productType = "com.apple.product-type.application";
@@ -949,6 +972,13 @@
 			defaultConfigurationName = "Release-Prod";
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		355C4392285A3A52001B7624 /* UIComponents */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UIComponents;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 353109FF2848E93F00BC7417 /* Project object */;
 }

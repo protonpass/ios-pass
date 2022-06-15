@@ -14,19 +14,15 @@
 		46EB2E000003F0 /* Pods-Core-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 46EB2E000003E0 /* Pods-Core-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		46EB2E00000430 /* Pods-Core-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EB2E00000420 /* Pods-Core-dummy.m */; };
 		46EB2E00000510 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46EB2E000001E0 /* Foundation.framework */; };
-		46EB2E00000580 /* Pods-UIComponents-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 46EB2E00000570 /* Pods-UIComponents-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		46EB2E000005C0 /* Pods-UIComponents-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EB2E000005B0 /* Pods-UIComponents-dummy.m */; };
-		46EB2E000006A0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46EB2E000001E0 /* Foundation.framework */; };
-		46EB2E00000730 /* Pods-iOS-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 46EB2E00000720 /* Pods-iOS-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		46EB2E00000770 /* Pods-iOS-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EB2E00000760 /* Pods-iOS-dummy.m */; };
-		46EB2E00000870 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46EB2E00000860 /* Cocoa.framework */; };
-		46EB2E00000900 /* Pods-macOS-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 46EB2E000008F0 /* Pods-macOS-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		46EB2E00000940 /* Pods-macOS-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EB2E00000930 /* Pods-macOS-dummy.m */; };
+		46EB2E000005A0 /* Pods-iOS-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 46EB2E00000590 /* Pods-iOS-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		46EB2E000005E0 /* Pods-iOS-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EB2E000005D0 /* Pods-iOS-dummy.m */; };
+		46EB2E000006E0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46EB2E000006D0 /* Cocoa.framework */; };
+		46EB2E00000770 /* Pods-macOS-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 46EB2E00000760 /* Pods-macOS-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		46EB2E000007B0 /* Pods-macOS-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EB2E000007A0 /* Pods-macOS-dummy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		175245A74469F10FE113A91569301816 /* Pods-macOS */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-macOS"; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		34BBC3D2C57FE2FDB60A761925690711 /* Pods-UIComponents */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-UIComponents"; path = Pods_UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		46EB2E000000F0 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		46EB2E000001E0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		46EB2E00000210 /* Pods-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Client.release.xcconfig"; sourceTree = "<group>"; };
@@ -45,35 +41,27 @@
 		46EB2E00000400 /* Pods-Core-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Core-acknowledgements.plist"; sourceTree = "<group>"; };
 		46EB2E00000410 /* Pods-Core-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Core-acknowledgements.markdown"; sourceTree = "<group>"; };
 		46EB2E00000420 /* Pods-Core-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Core-dummy.m"; sourceTree = "<group>"; };
-		46EB2E00000530 /* Pods-UIComponents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-UIComponents.release.xcconfig"; sourceTree = "<group>"; };
-		46EB2E00000540 /* Pods-UIComponents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-UIComponents.debug.xcconfig"; sourceTree = "<group>"; };
-		46EB2E00000550 /* Pods-UIComponents-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-UIComponents-Info.plist"; sourceTree = "<group>"; };
-		46EB2E00000560 /* Pods-UIComponents.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-UIComponents.modulemap"; sourceTree = "<group>"; };
-		46EB2E00000570 /* Pods-UIComponents-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-UIComponents-umbrella.h"; sourceTree = "<group>"; };
-		46EB2E00000590 /* Pods-UIComponents-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-UIComponents-acknowledgements.plist"; sourceTree = "<group>"; };
-		46EB2E000005A0 /* Pods-UIComponents-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-UIComponents-acknowledgements.markdown"; sourceTree = "<group>"; };
-		46EB2E000005B0 /* Pods-UIComponents-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-UIComponents-dummy.m"; sourceTree = "<group>"; };
-		46EB2E000006C0 /* Pods-iOS.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iOS.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		46EB2E000006D0 /* Pods-iOS.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iOS.debug-black.xcconfig"; sourceTree = "<group>"; };
-		46EB2E000006E0 /* Pods-iOS.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iOS.release-prod.xcconfig"; sourceTree = "<group>"; };
-		46EB2E000006F0 /* Pods-iOS.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iOS.release-black.xcconfig"; sourceTree = "<group>"; };
-		46EB2E00000700 /* Pods-iOS-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-iOS-Info.plist"; sourceTree = "<group>"; };
-		46EB2E00000710 /* Pods-iOS.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-iOS.modulemap"; sourceTree = "<group>"; };
-		46EB2E00000720 /* Pods-iOS-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-iOS-umbrella.h"; sourceTree = "<group>"; };
-		46EB2E00000740 /* Pods-iOS-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-iOS-acknowledgements.plist"; sourceTree = "<group>"; };
-		46EB2E00000750 /* Pods-iOS-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-iOS-acknowledgements.markdown"; sourceTree = "<group>"; };
-		46EB2E00000760 /* Pods-iOS-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-iOS-dummy.m"; sourceTree = "<group>"; };
-		46EB2E00000860 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		46EB2E00000890 /* Pods-macOS.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-macOS.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		46EB2E000008A0 /* Pods-macOS.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-macOS.debug-black.xcconfig"; sourceTree = "<group>"; };
-		46EB2E000008B0 /* Pods-macOS.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-macOS.release-prod.xcconfig"; sourceTree = "<group>"; };
-		46EB2E000008C0 /* Pods-macOS.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-macOS.release-black.xcconfig"; sourceTree = "<group>"; };
-		46EB2E000008D0 /* Pods-macOS-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-macOS-Info.plist"; sourceTree = "<group>"; };
-		46EB2E000008E0 /* Pods-macOS.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-macOS.modulemap"; sourceTree = "<group>"; };
-		46EB2E000008F0 /* Pods-macOS-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-macOS-umbrella.h"; sourceTree = "<group>"; };
-		46EB2E00000910 /* Pods-macOS-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-macOS-acknowledgements.plist"; sourceTree = "<group>"; };
-		46EB2E00000920 /* Pods-macOS-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-macOS-acknowledgements.markdown"; sourceTree = "<group>"; };
-		46EB2E00000930 /* Pods-macOS-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-macOS-dummy.m"; sourceTree = "<group>"; };
+		46EB2E00000530 /* Pods-iOS.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iOS.debug-prod.xcconfig"; sourceTree = "<group>"; };
+		46EB2E00000540 /* Pods-iOS.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iOS.debug-black.xcconfig"; sourceTree = "<group>"; };
+		46EB2E00000550 /* Pods-iOS.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iOS.release-prod.xcconfig"; sourceTree = "<group>"; };
+		46EB2E00000560 /* Pods-iOS.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iOS.release-black.xcconfig"; sourceTree = "<group>"; };
+		46EB2E00000570 /* Pods-iOS-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-iOS-Info.plist"; sourceTree = "<group>"; };
+		46EB2E00000580 /* Pods-iOS.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-iOS.modulemap"; sourceTree = "<group>"; };
+		46EB2E00000590 /* Pods-iOS-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-iOS-umbrella.h"; sourceTree = "<group>"; };
+		46EB2E000005B0 /* Pods-iOS-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-iOS-acknowledgements.plist"; sourceTree = "<group>"; };
+		46EB2E000005C0 /* Pods-iOS-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-iOS-acknowledgements.markdown"; sourceTree = "<group>"; };
+		46EB2E000005D0 /* Pods-iOS-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-iOS-dummy.m"; sourceTree = "<group>"; };
+		46EB2E000006D0 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		46EB2E00000700 /* Pods-macOS.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-macOS.debug-prod.xcconfig"; sourceTree = "<group>"; };
+		46EB2E00000710 /* Pods-macOS.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-macOS.debug-black.xcconfig"; sourceTree = "<group>"; };
+		46EB2E00000720 /* Pods-macOS.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-macOS.release-prod.xcconfig"; sourceTree = "<group>"; };
+		46EB2E00000730 /* Pods-macOS.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-macOS.release-black.xcconfig"; sourceTree = "<group>"; };
+		46EB2E00000740 /* Pods-macOS-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-macOS-Info.plist"; sourceTree = "<group>"; };
+		46EB2E00000750 /* Pods-macOS.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-macOS.modulemap"; sourceTree = "<group>"; };
+		46EB2E00000760 /* Pods-macOS-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-macOS-umbrella.h"; sourceTree = "<group>"; };
+		46EB2E00000780 /* Pods-macOS-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-macOS-acknowledgements.plist"; sourceTree = "<group>"; };
+		46EB2E00000790 /* Pods-macOS-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-macOS-acknowledgements.markdown"; sourceTree = "<group>"; };
+		46EB2E000007A0 /* Pods-macOS-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-macOS-dummy.m"; sourceTree = "<group>"; };
 		5296A899114AD35114F1DF5C3460F83A /* Pods-Core */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Core"; path = Pods_Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFC8BAE0393CC45E6349962ED03EDA59 /* Pods-Client */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Client"; path = Pods_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D978CECEE100E61B6CB0385387FD7C82 /* Pods-iOS */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-iOS"; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,19 +92,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		46EB2E00000680 /* Frameworks */ = {
+		46EB2E000006A0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46EB2E000006A0 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		46EB2E00000830 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				46EB2E00000870 /* Cocoa.framework in Frameworks */,
+				46EB2E000006E0 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +120,6 @@
 				5296A899114AD35114F1DF5C3460F83A /* Pods-Core */,
 				D978CECEE100E61B6CB0385387FD7C82 /* Pods-iOS */,
 				175245A74469F10FE113A91569301816 /* Pods-macOS */,
-				34BBC3D2C57FE2FDB60A761925690711 /* Pods-UIComponents */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -149,7 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				46EB2E000001D0 /* iOS */,
-				46EB2E00000850 /* OS X */,
+				46EB2E000006C0 /* OS X */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -159,9 +138,8 @@
 			children = (
 				46EB2E00000200 /* Pods-Client */,
 				46EB2E00000390 /* Pods-Core */,
-				46EB2E000006B0 /* Pods-iOS */,
-				46EB2E00000880 /* Pods-macOS */,
-				46EB2E00000520 /* Pods-UIComponents */,
+				46EB2E00000520 /* Pods-iOS */,
+				46EB2E000006F0 /* Pods-macOS */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
@@ -206,61 +184,45 @@
 			path = "Target Support Files/Pods-Core";
 			sourceTree = "<group>";
 		};
-		46EB2E00000520 /* Pods-UIComponents */ = {
+		46EB2E00000520 /* Pods-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				46EB2E00000560 /* Pods-UIComponents.modulemap */,
-				46EB2E000005A0 /* Pods-UIComponents-acknowledgements.markdown */,
-				46EB2E00000590 /* Pods-UIComponents-acknowledgements.plist */,
-				46EB2E000005B0 /* Pods-UIComponents-dummy.m */,
-				46EB2E00000550 /* Pods-UIComponents-Info.plist */,
-				46EB2E00000570 /* Pods-UIComponents-umbrella.h */,
-				46EB2E00000540 /* Pods-UIComponents.debug.xcconfig */,
-				46EB2E00000530 /* Pods-UIComponents.release.xcconfig */,
-			);
-			name = "Pods-UIComponents";
-			path = "Target Support Files/Pods-UIComponents";
-			sourceTree = "<group>";
-		};
-		46EB2E000006B0 /* Pods-iOS */ = {
-			isa = PBXGroup;
-			children = (
-				46EB2E00000710 /* Pods-iOS.modulemap */,
-				46EB2E00000750 /* Pods-iOS-acknowledgements.markdown */,
-				46EB2E00000740 /* Pods-iOS-acknowledgements.plist */,
-				46EB2E00000760 /* Pods-iOS-dummy.m */,
-				46EB2E00000700 /* Pods-iOS-Info.plist */,
-				46EB2E00000720 /* Pods-iOS-umbrella.h */,
-				46EB2E000006D0 /* Pods-iOS.debug-black.xcconfig */,
-				46EB2E000006C0 /* Pods-iOS.debug-prod.xcconfig */,
-				46EB2E000006F0 /* Pods-iOS.release-black.xcconfig */,
-				46EB2E000006E0 /* Pods-iOS.release-prod.xcconfig */,
+				46EB2E00000580 /* Pods-iOS.modulemap */,
+				46EB2E000005C0 /* Pods-iOS-acknowledgements.markdown */,
+				46EB2E000005B0 /* Pods-iOS-acknowledgements.plist */,
+				46EB2E000005D0 /* Pods-iOS-dummy.m */,
+				46EB2E00000570 /* Pods-iOS-Info.plist */,
+				46EB2E00000590 /* Pods-iOS-umbrella.h */,
+				46EB2E00000540 /* Pods-iOS.debug-black.xcconfig */,
+				46EB2E00000530 /* Pods-iOS.debug-prod.xcconfig */,
+				46EB2E00000560 /* Pods-iOS.release-black.xcconfig */,
+				46EB2E00000550 /* Pods-iOS.release-prod.xcconfig */,
 			);
 			name = "Pods-iOS";
 			path = "Target Support Files/Pods-iOS";
 			sourceTree = "<group>";
 		};
-		46EB2E00000850 /* OS X */ = {
+		46EB2E000006C0 /* OS X */ = {
 			isa = PBXGroup;
 			children = (
-				46EB2E00000860 /* Cocoa.framework */,
+				46EB2E000006D0 /* Cocoa.framework */,
 			);
 			name = "OS X";
 			sourceTree = "<group>";
 		};
-		46EB2E00000880 /* Pods-macOS */ = {
+		46EB2E000006F0 /* Pods-macOS */ = {
 			isa = PBXGroup;
 			children = (
-				46EB2E000008E0 /* Pods-macOS.modulemap */,
-				46EB2E00000920 /* Pods-macOS-acknowledgements.markdown */,
-				46EB2E00000910 /* Pods-macOS-acknowledgements.plist */,
-				46EB2E00000930 /* Pods-macOS-dummy.m */,
-				46EB2E000008D0 /* Pods-macOS-Info.plist */,
-				46EB2E000008F0 /* Pods-macOS-umbrella.h */,
-				46EB2E000008A0 /* Pods-macOS.debug-black.xcconfig */,
-				46EB2E00000890 /* Pods-macOS.debug-prod.xcconfig */,
-				46EB2E000008C0 /* Pods-macOS.release-black.xcconfig */,
-				46EB2E000008B0 /* Pods-macOS.release-prod.xcconfig */,
+				46EB2E00000750 /* Pods-macOS.modulemap */,
+				46EB2E00000790 /* Pods-macOS-acknowledgements.markdown */,
+				46EB2E00000780 /* Pods-macOS-acknowledgements.plist */,
+				46EB2E000007A0 /* Pods-macOS-dummy.m */,
+				46EB2E00000740 /* Pods-macOS-Info.plist */,
+				46EB2E00000760 /* Pods-macOS-umbrella.h */,
+				46EB2E00000710 /* Pods-macOS.debug-black.xcconfig */,
+				46EB2E00000700 /* Pods-macOS.debug-prod.xcconfig */,
+				46EB2E00000730 /* Pods-macOS.release-black.xcconfig */,
+				46EB2E00000720 /* Pods-macOS.release-prod.xcconfig */,
 			);
 			name = "Pods-macOS";
 			path = "Target Support Files/Pods-macOS";
@@ -289,23 +251,15 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46EB2E00000580 /* Pods-UIComponents-umbrella.h in Headers */,
+				46EB2E000005A0 /* Pods-iOS-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		46EB2E00000660 /* Headers */ = {
+		46EB2E00000680 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46EB2E00000730 /* Pods-iOS-umbrella.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		46EB2E00000810 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				46EB2E00000900 /* Pods-macOS-umbrella.h in Headers */,
+				46EB2E00000770 /* Pods-macOS-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,12 +268,12 @@
 /* Begin PBXNativeTarget section */
 		8E15A87B47471764B5A1EED8EC0AA819 /* Pods-macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 46EB2E00000790 /* Build configuration list for PBXNativeTarget "Pods-macOS" */;
+			buildConfigurationList = 46EB2E00000600 /* Build configuration list for PBXNativeTarget "Pods-macOS" */;
 			buildPhases = (
-				46EB2E00000810 /* Headers */,
-				46EB2E00000820 /* Sources */,
-				46EB2E00000830 /* Frameworks */,
-				46EB2E00000840 /* Resources */,
+				46EB2E00000680 /* Headers */,
+				46EB2E00000690 /* Sources */,
+				46EB2E000006A0 /* Frameworks */,
+				46EB2E000006B0 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -350,25 +304,7 @@
 		};
 		B46FA33BF30B86468D41063E70BFAA98 /* Pods-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 46EB2E000005E0 /* Build configuration list for PBXNativeTarget "Pods-iOS" */;
-			buildPhases = (
-				46EB2E00000660 /* Headers */,
-				46EB2E00000670 /* Sources */,
-				46EB2E00000680 /* Frameworks */,
-				46EB2E00000690 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-iOS";
-			productName = Pods_iOS;
-			productReference = D978CECEE100E61B6CB0385387FD7C82 /* Pods-iOS */;
-			productType = "com.apple.product-type.framework";
-		};
-		DAB6882A1DEAF54A333268A8D9D07DD3 /* Pods-UIComponents */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 46EB2E00000450 /* Build configuration list for PBXNativeTarget "Pods-UIComponents" */;
+			buildConfigurationList = 46EB2E00000450 /* Build configuration list for PBXNativeTarget "Pods-iOS" */;
 			buildPhases = (
 				46EB2E000004D0 /* Headers */,
 				46EB2E000004E0 /* Sources */,
@@ -379,9 +315,9 @@
 			);
 			dependencies = (
 			);
-			name = "Pods-UIComponents";
-			productName = Pods_UIComponents;
-			productReference = 34BBC3D2C57FE2FDB60A761925690711 /* Pods-UIComponents */;
+			name = "Pods-iOS";
+			productName = Pods_iOS;
+			productReference = D978CECEE100E61B6CB0385387FD7C82 /* Pods-iOS */;
 			productType = "com.apple.product-type.framework";
 		};
 		FF3D227EE5203488FB458EFE39423FB2 /* Pods-Client */ = {
@@ -428,7 +364,6 @@
 				A8D5EF097DB70BA987754AF4963AE0F7 /* Pods-Core */,
 				B46FA33BF30B86468D41063E70BFAA98 /* Pods-iOS */,
 				8E15A87B47471764B5A1EED8EC0AA819 /* Pods-macOS */,
-				DAB6882A1DEAF54A333268A8D9D07DD3 /* Pods-UIComponents */,
 			);
 		};
 /* End PBXProject section */
@@ -455,14 +390,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		46EB2E00000690 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		46EB2E00000840 /* Resources */ = {
+		46EB2E000006B0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -492,23 +420,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46EB2E000005C0 /* Pods-UIComponents-dummy.m in Sources */,
+				46EB2E000005E0 /* Pods-iOS-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		46EB2E00000670 /* Sources */ = {
+		46EB2E00000690 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46EB2E00000770 /* Pods-iOS-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		46EB2E00000820 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				46EB2E00000940 /* Pods-macOS-dummy.m in Sources */,
+				46EB2E000007B0 /* Pods-macOS-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1345,7 +1265,6 @@
 		};
 		46EB2E00000460 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46EB2E00000530 /* Pods-UIComponents.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -1357,7 +1276,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-UIComponents/Pods-UIComponents-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-iOS/Pods-iOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1366,7 +1285,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-UIComponents/Pods-UIComponents.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-iOS/Pods-iOS.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1383,7 +1302,6 @@
 		};
 		46EB2E00000470 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46EB2E00000540 /* Pods-UIComponents.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -1395,7 +1313,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-UIComponents/Pods-UIComponents-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-iOS/Pods-iOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1404,7 +1322,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-UIComponents/Pods-UIComponents.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-iOS/Pods-iOS.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1420,6 +1338,7 @@
 		};
 		46EB2E00000480 /* Debug-Prod */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 46EB2E00000530 /* Pods-iOS.debug-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -1431,7 +1350,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-UIComponents/Pods-UIComponents-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-iOS/Pods-iOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1440,7 +1359,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-UIComponents/Pods-UIComponents.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-iOS/Pods-iOS.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1457,6 +1376,7 @@
 		};
 		46EB2E00000490 /* Debug-Black */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 46EB2E00000540 /* Pods-iOS.debug-black.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -1468,7 +1388,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-UIComponents/Pods-UIComponents-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-iOS/Pods-iOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1477,7 +1397,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-UIComponents/Pods-UIComponents.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-iOS/Pods-iOS.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1494,6 +1414,7 @@
 		};
 		46EB2E000004A0 /* Release-Prod */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 46EB2E00000550 /* Pods-iOS.release-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -1505,7 +1426,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-UIComponents/Pods-UIComponents-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-iOS/Pods-iOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1514,7 +1435,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-UIComponents/Pods-UIComponents.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-iOS/Pods-iOS.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1531,231 +1452,7 @@
 		};
 		46EB2E000004B0 /* Release-Black */ = {
 			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-UIComponents/Pods-UIComponents-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-UIComponents/Pods-UIComponents.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Release-Black";
-		};
-		46EB2E000005F0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-iOS/Pods-iOS-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-iOS/Pods-iOS.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		46EB2E00000600 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-iOS/Pods-iOS-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-iOS/Pods-iOS.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		46EB2E00000610 /* Debug-Prod */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46EB2E000006C0 /* Pods-iOS.debug-prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-iOS/Pods-iOS-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-iOS/Pods-iOS.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Debug-Prod";
-		};
-		46EB2E00000620 /* Debug-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46EB2E000006D0 /* Pods-iOS.debug-black.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-iOS/Pods-iOS-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-iOS/Pods-iOS.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Debug-Black";
-		};
-		46EB2E00000630 /* Release-Prod */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46EB2E000006E0 /* Pods-iOS.release-prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-iOS/Pods-iOS-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-iOS/Pods-iOS.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Release-Prod";
-		};
-		46EB2E00000640 /* Release-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46EB2E000006F0 /* Pods-iOS.release-black.xcconfig */;
+			baseConfigurationReference = 46EB2E00000560 /* Pods-iOS.release-black.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -1791,7 +1488,7 @@
 			};
 			name = "Release-Black";
 		};
-		46EB2E000007A0 /* Release */ = {
+		46EB2E00000610 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
@@ -1827,7 +1524,7 @@
 			};
 			name = Release;
 		};
-		46EB2E000007B0 /* Debug */ = {
+		46EB2E00000620 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
@@ -1863,9 +1560,9 @@
 			};
 			name = Debug;
 		};
-		46EB2E000007C0 /* Debug-Prod */ = {
+		46EB2E00000630 /* Debug-Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46EB2E00000890 /* Pods-macOS.debug-prod.xcconfig */;
+			baseConfigurationReference = 46EB2E00000700 /* Pods-macOS.debug-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -1900,9 +1597,9 @@
 			};
 			name = "Debug-Prod";
 		};
-		46EB2E000007D0 /* Debug-Black */ = {
+		46EB2E00000640 /* Debug-Black */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46EB2E000008A0 /* Pods-macOS.debug-black.xcconfig */;
+			baseConfigurationReference = 46EB2E00000710 /* Pods-macOS.debug-black.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -1937,9 +1634,9 @@
 			};
 			name = "Debug-Black";
 		};
-		46EB2E000007E0 /* Release-Prod */ = {
+		46EB2E00000650 /* Release-Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46EB2E000008B0 /* Pods-macOS.release-prod.xcconfig */;
+			baseConfigurationReference = 46EB2E00000720 /* Pods-macOS.release-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -1974,9 +1671,9 @@
 			};
 			name = "Release-Prod";
 		};
-		46EB2E000007F0 /* Release-Black */ = {
+		46EB2E00000660 /* Release-Black */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46EB2E000008C0 /* Pods-macOS.release-black.xcconfig */;
+			baseConfigurationReference = 46EB2E00000730 /* Pods-macOS.release-black.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -2053,7 +1750,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		46EB2E00000450 /* Build configuration list for PBXNativeTarget "Pods-UIComponents" */ = {
+		46EB2E00000450 /* Build configuration list for PBXNativeTarget "Pods-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				46EB2E00000470 /* Debug */,
@@ -2066,28 +1763,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		46EB2E000005E0 /* Build configuration list for PBXNativeTarget "Pods-iOS" */ = {
+		46EB2E00000600 /* Build configuration list for PBXNativeTarget "Pods-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				46EB2E00000600 /* Debug */,
-				46EB2E00000620 /* Debug-Black */,
-				46EB2E00000610 /* Debug-Prod */,
-				46EB2E000005F0 /* Release */,
-				46EB2E00000640 /* Release-Black */,
-				46EB2E00000630 /* Release-Prod */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		46EB2E00000790 /* Build configuration list for PBXNativeTarget "Pods-macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				46EB2E000007B0 /* Debug */,
-				46EB2E000007D0 /* Debug-Black */,
-				46EB2E000007C0 /* Debug-Prod */,
-				46EB2E000007A0 /* Release */,
-				46EB2E000007F0 /* Release-Black */,
-				46EB2E000007E0 /* Release-Prod */,
+				46EB2E00000620 /* Debug */,
+				46EB2E00000640 /* Debug-Black */,
+				46EB2E00000630 /* Debug-Prod */,
+				46EB2E00000610 /* Release */,
+				46EB2E00000660 /* Release-Black */,
+				46EB2E00000650 /* Release-Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

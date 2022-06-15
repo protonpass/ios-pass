@@ -1,6 +1,7 @@
+// swift-tools-version:5.6
 //
-// ContentView.swift
-// Proton Key - Created on 03/06/2022.
+// Package.swift
+// Proton Key - Created on 15/06/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Key.
@@ -18,17 +19,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
-import UIComponents
+import PackageDescription
 
-struct ContentView: View {
-    var body: some View {
-        HomeCoordinatorView()
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+let package = Package(
+    name: "ProtonKeyUIComponents",
+    platforms: [
+        .macOS(.v11), .iOS(.v14),
+    ],
+    products: [
+        .library(name: "UIComponents", targets: ["UIComponents"]),
+    ],
+    targets: [
+        .target(
+            name: "UIComponents",
+            path: "Sources")
+    ]
+)

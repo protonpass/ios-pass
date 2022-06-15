@@ -1,6 +1,6 @@
 //
-// ContentView.swift
-// Proton Key - Created on 03/06/2022.
+// MyVaultsCoordinatorView.swift
+// Proton Key - Created on 15/06/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Key.
@@ -19,16 +19,20 @@
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import UIComponents
 
-struct ContentView: View {
-    var body: some View {
-        HomeCoordinatorView()
+public struct MyVaultsCoordinatorView: View {
+    public init() {}
+
+    public var body: some View {
+        NavigationView {
+            MyVaultsView()
+                .navigationTitle("My vaults title")
+        }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct MyVaultsCoordinatorView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MyVaultsCoordinatorView()
     }
 }

@@ -1,6 +1,6 @@
 //
-// ContentView.swift
-// Proton Key - Created on 03/06/2022.
+// HomeView.swift
+// Proton Key - Created on 15/06/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Key.
@@ -19,16 +19,21 @@
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import UIComponents
 
-struct ContentView: View {
-    var body: some View {
-        HomeCoordinatorView()
+public struct HomeView: View {
+    public init() {}
+
+    public var body: some View {
+        List {
+            ForEach(0..<100, id: \.self) { index in
+                Text("Home item \(index)")
+            }
+        }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        HomeView()
     }
 }

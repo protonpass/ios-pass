@@ -51,13 +51,6 @@ target 'iOS' do
   project 'iOS/iOS'
 end
 
-target 'UIComponents' do
-  platform :ios, '14.0'
-  use_frameworks! :linkage => :static
-
-  project 'UIComponents/UIComponents'
-end
-
 target 'Client' do
   platform :ios, '14.0'
   use_frameworks! :linkage => :static
