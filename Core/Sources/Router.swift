@@ -101,7 +101,8 @@ public class Router: NSObject {
     }
 
     public func popTo(_ presentable: Presentable, animated: Bool = true) {
-        if let controllers = navigationController.popToViewController(presentable.toPresentable(), animated: animated) {
+        if let controllers = navigationController.popToViewController(presentable.toPresentable(),
+                                                                      animated: animated) {
             controllers.forEach { runCompletion(for: $0) }
         }
     }
@@ -115,9 +116,7 @@ public class Router: NSObject {
 }
 
 extension Router: Presentable {
-    public func toPresentable() -> UIViewController {
-        return navigationController
-    }
+    public func toPresentable() -> UIViewController { navigationController }
 }
 
 extension Router: UINavigationControllerDelegate {

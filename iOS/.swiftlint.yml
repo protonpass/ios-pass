@@ -1,4 +1,4 @@
-# This file is auto-generated and should not be modified.
+# This file is auto-generated and should not be modified manually.
 # Modify instead Scripts/base_swiftlint.yml.
 # Then run Scripts/update_swiftlint_in_all_projects.sh.
 disabled_rules:
@@ -89,7 +89,9 @@ opt_in_rules:
   - yoda_condition
 included: # paths to include during linting. `--path` is ignored if present.
 excluded: # paths to ignore during linting. Takes precedence over `included`.
-  - Pods
+  - ../Pods
+  - ../Core/Package.swift
+  - ../UIComponents/Package.swift
 analyzer_rules: # Rules run by `swiftlint analyze` (experimental)
   # - explicit_self
 

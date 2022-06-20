@@ -20,18 +20,13 @@
 
 import UIKit
 
-///
 /// Presentable represents all objects that can be presented (i.e. shown) to the user.
-///
 /// Therefore, it is useful for view controllers, coordinators and views.
-///
-///
 public protocol Presentable {
+    /// Return a view controller which can be pushed or presented
     func toPresentable() -> UIViewController
 }
 
 extension UIViewController: Presentable {
-    public func toPresentable() -> UIViewController {
-        return self
-    }
+    public func toPresentable() -> UIViewController { self }
 }

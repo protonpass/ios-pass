@@ -38,7 +38,7 @@ open class Coordinator: NSObject {
     private let deeplinkSubject = CurrentValueSubject<String?, Never>(nil)
     private var deeplinkCancellables = Set<AnyCancellable>()
 
-    open var root: Presentable { fatalError("To be overridden")}
+    open var root: Presentable { fatalError("To be overridden") }
 
     // MARK: - Initialization
     public init(router: Router, navigationType: NavigationType) {
