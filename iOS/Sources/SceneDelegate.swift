@@ -1,6 +1,6 @@
 //
-// iOSApp.swift
-// Proton Key - Created on 03/06/2022.
+// SceneDelegate.swift
+// Proton Key - Created on 20/06/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Key.
@@ -19,12 +19,19 @@
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIKit
 
-@main
-struct iOSApp: App { // swiftlint:disable:this type_name
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
+final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+
+    func scene(_ scene: UIScene,
+               willConnectTo session: UISceneSession,
+               options connectionOptions: UIScene.ConnectionOptions) {
+        if let windowScene = scene as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            window.rootViewController = UIHostingController(rootView: ContentView())
+            self.window = window
+            window.makeKeyAndVisible()
         }
     }
 }

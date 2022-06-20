@@ -8,13 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		2D0A2D66DAF1B4D64EA72C6B /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2722F1E89C0587C296BD1AF3 /* Pods_iOS.framework */; };
-		35310A0B2848E93F00BC7417 /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35310A0A2848E93F00BC7417 /* iOSApp.swift */; };
 		35310A0F2848E94000BC7417 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35310A0E2848E94000BC7417 /* Assets.xcassets */; };
 		35310A122848E94000BC7417 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35310A112848E94000BC7417 /* Preview Assets.xcassets */; };
 		35310A192848EF0F00BC7417 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35310A182848EF0F00BC7417 /* ContentView.swift */; };
 		355C4393285A3A52001B7624 /* UIComponents in Frameworks */ = {isa = PBXBuildFile; productRef = 355C4392285A3A52001B7624 /* UIComponents */; };
 		35C435FE284A4D2100E0D7E3 /* iOSUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C435FD284A4D2100E0D7E3 /* iOSUnitTests.swift */; };
 		35C4360B284A4D9400E0D7E3 /* iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C4360A284A4D9400E0D7E3 /* iOSUITests.swift */; };
+		35F584552861058500A1B0B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F584542861058500A1B0B0 /* AppDelegate.swift */; };
+		35F584572861062300A1B0B0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F584562861062300A1B0B0 /* SceneDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +38,6 @@
 /* Begin PBXFileReference section */
 		2722F1E89C0587C296BD1AF3 /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35310A072848E93F00BC7417 /* Proton Key.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Key.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		35310A0A2848E93F00BC7417 /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		35310A0E2848E94000BC7417 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35310A112848E94000BC7417 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		35310A182848EF0F00BC7417 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -60,6 +60,8 @@
 		35D7D7932850E47100D177D3 /* iOS-Config-Debug-Prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Config-Debug-Prod.xcconfig"; sourceTree = "<group>"; };
 		35D7D7942850E47100D177D3 /* iOS-Config-Release-Black.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Config-Release-Black.xcconfig"; sourceTree = "<group>"; };
 		35D7D79D2850E9B800D177D3 /* UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		35F584542861058500A1B0B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		35F584562861062300A1B0B0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		922F99770BACA9C53FCDACFE /* Pods-iOS.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release-prod.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release-prod.xcconfig"; sourceTree = "<group>"; };
 		94B639C289F897EDD7F790A4 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		B7FA83EB8D678CC19F98190B /* Pods-iOS.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release-black.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release-black.xcconfig"; sourceTree = "<group>"; };
@@ -123,7 +125,8 @@
 		35310A092848E93F00BC7417 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				35310A0A2848E93F00BC7417 /* iOSApp.swift */,
+				35F584542861058500A1B0B0 /* AppDelegate.swift */,
+				35F584562861062300A1B0B0 /* SceneDelegate.swift */,
 				35310A182848EF0F00BC7417 /* ContentView.swift */,
 				35310A0E2848E94000BC7417 /* Assets.xcassets */,
 				35310A102848E94000BC7417 /* Preview Content */,
@@ -383,8 +386,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35F584552861058500A1B0B0 /* AppDelegate.swift in Sources */,
 				35310A192848EF0F00BC7417 /* ContentView.swift in Sources */,
-				35310A0B2848E93F00BC7417 /* iOSApp.swift in Sources */,
+				35F584572861062300A1B0B0 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
