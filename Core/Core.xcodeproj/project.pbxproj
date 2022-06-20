@@ -11,6 +11,9 @@
 		358F3C88284A0135003F7CFA /* CoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358F3C87284A0135003F7CFA /* CoreTests.swift */; };
 		358F3C95284A0291003F7CFA /* Core.h in Headers */ = {isa = PBXBuildFile; fileRef = 358F3C94284A0291003F7CFA /* Core.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		35DAB21028527811004632E6 /* CoreDummyStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DAB20F28527811004632E6 /* CoreDummyStructs.swift */; };
+		35F5845C286109F600A1B0B0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F5845B286109F600A1B0B0 /* Router.swift */; };
+		35F5845E28610A1A00A1B0B0 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F5845D28610A1A00A1B0B0 /* Presentable.swift */; };
+		35F5846028610A7100A1B0B0 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F5845F28610A7100A1B0B0 /* Coordinator.swift */; };
 		61A50A38C70A21E42B3A7512 /* Pods_Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDDB69DF65C00A8DDAE02BB8 /* Pods_Core.framework */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +33,9 @@
 		358F3C87284A0135003F7CFA /* CoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTests.swift; sourceTree = "<group>"; };
 		358F3C94284A0291003F7CFA /* Core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Core.h; sourceTree = "<group>"; };
 		35DAB20F28527811004632E6 /* CoreDummyStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDummyStructs.swift; sourceTree = "<group>"; };
+		35F5845B286109F600A1B0B0 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		35F5845D28610A1A00A1B0B0 /* Presentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
+		35F5845F28610A7100A1B0B0 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		5B9DF9692047DDE4293ED0DC /* Pods-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release.xcconfig"; sourceTree = "<group>"; };
 		EDDB69DF65C00A8DDAE02BB8 /* Pods_Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCC2E997AB990B1D07942C8D /* Pods-Core.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.debug.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.debug.xcconfig"; sourceTree = "<group>"; };
@@ -88,6 +94,9 @@
 			children = (
 				358F3C94284A0291003F7CFA /* Core.h */,
 				35DAB20F28527811004632E6 /* CoreDummyStructs.swift */,
+				35F5845F28610A7100A1B0B0 /* Coordinator.swift */,
+				35F5845B286109F600A1B0B0 /* Router.swift */,
+				35F5845D28610A1A00A1B0B0 /* Presentable.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -265,7 +274,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35F5846028610A7100A1B0B0 /* Coordinator.swift in Sources */,
+				35F5845C286109F600A1B0B0 /* Router.swift in Sources */,
 				35DAB21028527811004632E6 /* CoreDummyStructs.swift in Sources */,
+				35F5845E28610A1A00A1B0B0 /* Presentable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
