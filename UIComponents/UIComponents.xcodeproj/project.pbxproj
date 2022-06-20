@@ -8,24 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		358F3CD5284A0537003F7CFA /* UIComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 358F3CC9284A0537003F7CFA /* UIComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3598D641285A2F4E00250857 /* HomeCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3598D640285A2F4E00250857 /* HomeCoordinatorView.swift */; };
-		3598D643285A2F7C00250857 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3598D642285A2F7C00250857 /* HomeView.swift */; };
-		3598D646285A305E00250857 /* MyVaultsCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3598D645285A305E00250857 /* MyVaultsCoordinatorView.swift */; };
-		3598D648285A30A200250857 /* MyVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3598D647285A30A200250857 /* MyVaultsView.swift */; };
-		3598D64B285A30F700250857 /* ToolsCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3598D64A285A30F700250857 /* ToolsCoordinatorView.swift */; };
-		3598D64D285A30FF00250857 /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3598D64C285A30FE00250857 /* ToolsView.swift */; };
+		35F58453286104AC00A1B0B0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F58452286104AC00A1B0B0 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		358F3CC6284A0537003F7CFA /* UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = UIComponents.framework; path = "/Users/nhonproton/Gitlab/protonkey-ios-macos/UIComponents/build/Debug-iphoneos/UIComponents.framework"; sourceTree = "<absolute>"; };
+		355D127D2860FD6D00EE5427 /* UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		358F3CC9284A0537003F7CFA /* UIComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIComponents.h; sourceTree = "<group>"; };
-		3598D640285A2F4E00250857 /* HomeCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinatorView.swift; sourceTree = "<group>"; };
-		3598D642285A2F7C00250857 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		3598D645285A305E00250857 /* MyVaultsCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsCoordinatorView.swift; sourceTree = "<group>"; };
-		3598D647285A30A200250857 /* MyVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsView.swift; sourceTree = "<group>"; };
-		3598D64A285A30F700250857 /* ToolsCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsCoordinatorView.swift; sourceTree = "<group>"; };
-		3598D64C285A30FE00250857 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
 		3598D652285A33FF00250857 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		35F58452286104AC00A1B0B0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +34,7 @@
 			children = (
 				3598D652285A33FF00250857 /* Package.swift */,
 				358F3CC8284A0537003F7CFA /* Sources */,
+				355D127D2860FD6D00EE5427 /* UIComponents.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -51,46 +42,9 @@
 			isa = PBXGroup;
 			children = (
 				358F3CC9284A0537003F7CFA /* UIComponents.h */,
-				3598D63E285A2EDD00250857 /* Modules */,
+				35F58452286104AC00A1B0B0 /* ContentView.swift */,
 			);
 			path = Sources;
-			sourceTree = "<group>";
-		};
-		3598D63E285A2EDD00250857 /* Modules */ = {
-			isa = PBXGroup;
-			children = (
-				3598D63F285A2EF400250857 /* Home */,
-				3598D644285A304300250857 /* MyVaults */,
-				3598D649285A30E300250857 /* Tools */,
-			);
-			path = Modules;
-			sourceTree = "<group>";
-		};
-		3598D63F285A2EF400250857 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				3598D640285A2F4E00250857 /* HomeCoordinatorView.swift */,
-				3598D642285A2F7C00250857 /* HomeView.swift */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		3598D644285A304300250857 /* MyVaults */ = {
-			isa = PBXGroup;
-			children = (
-				3598D645285A305E00250857 /* MyVaultsCoordinatorView.swift */,
-				3598D647285A30A200250857 /* MyVaultsView.swift */,
-			);
-			path = MyVaults;
-			sourceTree = "<group>";
-		};
-		3598D649285A30E300250857 /* Tools */ = {
-			isa = PBXGroup;
-			children = (
-				3598D64A285A30F700250857 /* ToolsCoordinatorView.swift */,
-				3598D64C285A30FE00250857 /* ToolsView.swift */,
-			);
-			path = Tools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,7 +78,7 @@
 			);
 			name = UIComponents;
 			productName = UIComponents;
-			productReference = 358F3CC6284A0537003F7CFA /* UIComponents.framework */;
+			productReference = 355D127D2860FD6D00EE5427 /* UIComponents.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -219,12 +173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3598D64D285A30FF00250857 /* ToolsView.swift in Sources */,
-				3598D646285A305E00250857 /* MyVaultsCoordinatorView.swift in Sources */,
-				3598D648285A30A200250857 /* MyVaultsView.swift in Sources */,
-				3598D641285A2F4E00250857 /* HomeCoordinatorView.swift in Sources */,
-				3598D643285A2F7C00250857 /* HomeView.swift in Sources */,
-				3598D64B285A30F700250857 /* ToolsCoordinatorView.swift in Sources */,
+				35F58453286104AC00A1B0B0 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

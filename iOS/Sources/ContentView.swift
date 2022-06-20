@@ -19,11 +19,10 @@
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import UIComponents
 
 struct ContentView: View {
     var body: some View {
-        HomeCoordinatorView()
+        Text("Hello world")
     }
 }
 
