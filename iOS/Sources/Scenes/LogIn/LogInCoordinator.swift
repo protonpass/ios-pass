@@ -18,41 +18,83 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
+//import Crypto
+//import ProtonCore_Doh
+//import ProtonCore_ForceUpgrade
+//import ProtonCore_LoginUI
+//import ProtonCore_Networking
+//import ProtonCore_Services
 import SwiftUI
 import UIKit
 
 final class LogInCoordinator: Coordinator {
     private let appStateObserver: AppStateObserver
 
-    private lazy var logInController: UIViewController = {
-        let logInView = LogInView(coordinator: self)
-        return UIHostingController(rootView: logInView)
-    }()
+    private lazy var logInController: UIViewController = { .init() }()
+
+//    private var forceUpgradeServiceDelegate: ForceUpgradeDelegate {
+//        // swiftlint:disable:next force_unwrapping
+//        let url = URL(string: "itms-apps://itunes.apple.com/app/id979659905")!
+//        return ForceUpgradeHelper(config: .mobile(url), responseDelegate: self)
+//    }
 
     init(router: Router,
          navigationType: Coordinator.NavigationType,
          appStateObserver: AppStateObserver) {
         self.appStateObserver = appStateObserver
         super.init(router: router, navigationType: navigationType)
+        createLogInPage()
     }
 
     override var root: Presentable { logInController }
+
+    private func createLogInPage() {
+//        let login = LoginAndSignup(appName: "Proton Key",
+//                                   clientApp: .other(named: "Key"),
+//                                   doh: BlackDoH.default,
+//                                   apiServiceDelegate: AnonymousServiceManager(),
+//                                   forceUpgradeDelegate: forceUpgradeServiceDelegate,
+//                                   humanVerificationVersion: .v3,
+//                                   minimumAccountType: .external,
+//                                   isCloseButtonAvailable: true,
+//                                   paymentsAvailability: .notAvailable,
+//                                   signupAvailability: .notAvailable)
+//        login.presentLoginFlow(over: logInController, customization: .empty) { _ in }
+    }
 
     func showHome() {
         appStateObserver.updateState(.loggedIn)
     }
 }
 
-struct LogInView: View {
-    let coordinator: LogInCoordinator
+//class BlackDoH: DoH, ServerConfig {
+//    let signupDomain: String = ""
+//    let captchaHost: String = ""
+//    let humanVerificationV3Host: String = ""
+//    let accountHost: String = ""
+//    let defaultHost: String = ""
+//    let apiHost: String = ""
+//    let defaultPath: String = ""
+//
+//    static let `default` = BlackDoH()
+//}
 
-    var body: some View {
-        VStack {
-            Text("Proton Key")
-            Button("Log in") {
-                coordinator.showHome()
-            }
-        }
-    }
-}
+//extension LogInCoordinator: ForceUpgradeResponseDelegate {
+//    func onQuitButtonPressed() {}
+//    func onUpdateButtonPressed() {}
+//}
+//
+//public class AnonymousServiceManager: APIServiceDelegate {
+//    public init() {}
+//
+//    public var locale: String { Locale.autoupdatingCurrent.identifier }
+//    public var appVersion: String = "Key_v0.1"
+//    public var userAgent: String?
+//    public var additionalHeaders: [String: String]?
+//
+//    public func onUpdate(serverTime: Int64) { CryptoUpdateTime(serverTime) }
+//    public func isReachable() -> Bool { true }
+//    public func onDohTroubleshot() { }
+//}

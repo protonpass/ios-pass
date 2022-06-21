@@ -1,6 +1,7 @@
+// swift-tools-version:5.6
 //
-// Config-Black.swift
-// Proton Key - Created on 08/06/2022.
+// Package.swift
+// Proton Key - Created on 15/06/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Key.
@@ -18,14 +19,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+import PackageDescription
 
-ACCOUNT_HOST = https://account.proton.black
-API_HOST = key.proton.black
-CAPTCHA_HOST = https://api.proton.black
-DEFAULT_PATH = 
-DEFAULT_HOST = https://proton.black
-HUMAN_VERIFICATION_V3_HOST = https://verify.proton.black
-SIGNUP_DOMAIN = proton.black
-SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) BLACK
+let package = Package(
+    name: "ProtonKeyClient",
+    platforms: [
+        .macOS(.v11), .iOS(.v14),
+    ],
+    products: [
+        .library(name: "Client", targets: ["Client"]),
+    ],
+    targets: [
+        .target(
+            name: "Client",
+            path: "Sources")
+    ]
+)

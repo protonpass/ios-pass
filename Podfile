@@ -42,6 +42,7 @@ target 'iOS' do
 #  pod 'ProtonCore-Payments/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
 #  pod 'ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
 #  pod 'ProtonCore-HumanVerification-V5/Alamofire', :git => proton_core_path, :tag => proton_core_version
+#  pod 'ProtonCore-ForceUpgrade-V5/Alamofire', :git => proton_core_path, :tag => proton_core_version
 #  pod 'ProtonCore-APIClient/Alamofire', :git => proton_core_path, :tag => proton_core_version
 #  pod 'ProtonCore-Services/Alamofire', :git => proton_core_path, :tag => proton_core_version
 #  pod 'ProtonCore-Networking/Alamofire', :git => proton_core_path, :tag => proton_core_version
@@ -54,6 +55,9 @@ end
 target 'Client' do
   platform :ios, '14.0'
   use_frameworks! :linkage => :static
+#  pod 'ProtonCore-Utilities', :git => proton_core_path, :tag => proton_core_version
+#  pod 'ProtonCore-Log', :git => proton_core_path, :tag => proton_core_version
+#  pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
   project 'Client/Client'
 end
 

@@ -44,6 +44,15 @@ final class HomeCoordinator: Coordinator {
     }
 }
 
+extension HomeCoordinator {
+    /// For previews purposes
+    static var preview: HomeCoordinator {
+        .init(router: .init(),
+              navigationType: .currentFlow,
+              appStateObserver: .init())
+    }
+}
+
 struct HomeView: View {
     let coordinator: HomeCoordinator
 
@@ -52,5 +61,11 @@ struct HomeView: View {
             Text("Welcome to Proton Key")
             Button("Log out", action: coordinator.logOut)
         }
+    }
+}
+
+struct HomeView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeView(coordinator: .preview)
     }
 }

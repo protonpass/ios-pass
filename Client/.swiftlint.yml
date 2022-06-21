@@ -92,6 +92,7 @@ included: # paths to include during linting. `--path` is ignored if present.
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - ../Pods
   - ../Core/Package.swift
+  - ../Client/Package.swift
   - ../UIComponents/Package.swift
 analyzer_rules: # Rules run by `swiftlint analyze` (experimental)
   # - explicit_self

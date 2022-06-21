@@ -2,9 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>DEFAULT_API_HOST</key>
-	<string>$(DEFAULT_API_HOST)</string>
-	<key>DEFAULT_SIGNUP_DOMAIN</key>
-	<string>$(DEFAULT_SIGNUP_DOMAIN)</string>
+	<key>API_HOST</key>
+	<string>$(API_HOST)</string>
+	<key>ACCOUNT_HOST</key>
+	<string>$(ACCOUNT_HOST)</string>
+	<key>CAPTCHA_HOST</key>
+	<string>$(CAPTCHA_HOST)</string>
+	<key>DEFAULT_PATH</key>
+	<string>$(DEFAULT_PATH)</string>
+	<key>DEFAULT_HOST</key>
+	<string>$(DEFAULT_HOST)</string>
+	<key>HUMAN_VERIFICATION_V3_HOST</key>
+	<string>$(HUMAN_VERIFICATION_V3_HOST)</string>
+	<key>SIGNUP_DOMAIN</key>
+	<string>$(SIGNUP_DOMAIN)</string>
 </dict>
 </plist>
