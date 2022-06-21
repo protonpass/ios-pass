@@ -18,18 +18,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import SwiftUI
 import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
+    private let appNavigationController = UINavigationController()
+    private lazy var appRouter = Router(navigationController: self.appNavigationController)
+    private lazy var appCoordinator = AppCoordinator(appStateObserver: AppStateObserver(), router: appRouter)
+
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: ContentView())
+            window.rootViewController = appCoordinator.toPresentable()
             self.window = window
             window.makeKeyAndVisible()
         }

@@ -31,7 +31,7 @@ extension Optional: OptionalType {
 }
 
 /// Unwrapping an optional type operator
-extension Publishers {
+public extension Publishers {
     struct Unwrapped<Upstream>: Publisher where Upstream: Publisher, Upstream.Output: OptionalType {
         public typealias Output = Upstream.Output.Wrapped
         public typealias Failure = Upstream.Failure
@@ -56,7 +56,7 @@ extension Publishers {
     }
 }
 
-extension Publisher where Output: OptionalType {
+public extension Publisher where Output: OptionalType {
     func unwrap() -> Publishers.Unwrapped<Self> {
         Publishers.Unwrapped(upstream: self)
     }

@@ -31,12 +31,12 @@ open class Coordinator: NSObject {
         case newFlow(hideBar: Bool) // present, set root
     }
 
-    private let router: Router
+    public let router: Router
+    public var cancellables = Set<AnyCancellable>()
+    public let deeplinkSubject = CurrentValueSubject<String?, Never>(nil)
+    public var deeplinkCancellables = Set<AnyCancellable>()
     private var childCoordinators: [Coordinator] = []
     private let navigationType: NavigationType
-    private var cancellables = Set<AnyCancellable>()
-    private let deeplinkSubject = CurrentValueSubject<String?, Never>(nil)
-    private var deeplinkCancellables = Set<AnyCancellable>()
 
     open var root: Presentable { fatalError("To be overridden") }
 

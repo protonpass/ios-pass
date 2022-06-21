@@ -22,7 +22,7 @@ import Combine
 
 /// This class is meant to observe the user state changes.
 public class AppStateObserver {
-    @Published public private(set) var currentState: AppState = .loggedIn
+    @Published public private(set) var currentState: AppState = .loggedOut
 
     public init() {}
 
