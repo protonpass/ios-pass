@@ -22,6 +22,7 @@ import Combine
 
 public protocol OptionalType {
     associatedtype Wrapped
+
     var value: Wrapped? { get }
 }
 
@@ -32,7 +33,6 @@ extension Optional: OptionalType {
 /// Unwrapping an optional type operator
 extension Publishers {
     struct Unwrapped<Upstream>: Publisher where Upstream: Publisher, Upstream.Output: OptionalType {
-
         public typealias Output = Upstream.Output.Wrapped
         public typealias Failure = Upstream.Failure
 
