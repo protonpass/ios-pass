@@ -97,10 +97,20 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation-static/Resources-CoreTranslation.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation/Resources-CoreTranslation.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation-V5/Resources-CoreTranslation-V5.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-HumanVerification-V5/Resources-HumanVerification.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-LoginUI-V5/Resources-LoginUI.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-PaymentsUI-V5/Resources-PaymentsUI.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-UIFoundations-V5/Resources-UIFoundations.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation-static/Resources-CoreTranslation.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation/Resources-CoreTranslation.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation-V5/Resources-CoreTranslation-V5.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-HumanVerification-V5/Resources-HumanVerification.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-LoginUI-V5/Resources-LoginUI.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-PaymentsUI-V5/Resources-PaymentsUI.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-UIFoundations-V5/Resources-UIFoundations.bundle"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

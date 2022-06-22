@@ -11,8 +11,6 @@
 		358F3CAB284A03E8003F7CFA /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 358F3CA2284A03E7003F7CFA /* Client.framework */; };
 		358F3CB0284A03E8003F7CFA /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358F3CAF284A03E8003F7CFA /* ClientTests.swift */; };
 		358F3CB1284A03E8003F7CFA /* Client.h in Headers */ = {isa = PBXBuildFile; fileRef = 358F3CA5284A03E7003F7CFA /* Client.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		35B910EA286279CE004589CD /* ProtonCore_Doh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B910E9286279CE004589CD /* ProtonCore_Doh.framework */; };
-		35B910EB286279CE004589CD /* ProtonCore_Doh.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35B910E9286279CE004589CD /* ProtonCore_Doh.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35DAB20E285276C0004632E6 /* ClientDummyStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DAB20D285276C0004632E6 /* ClientDummyStructs.swift */; };
 		36CF6B8E8983249D40282B80 /* Pods_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F61F5683D93876678E4590 /* Pods_Client.framework */; };
 /* End PBXBuildFile section */
@@ -27,22 +25,10 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		35B910EC286279CE004589CD /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				35B910EB286279CE004589CD /* ProtonCore_Doh.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		2DAC49389C8F46539B9115A5 /* Pods-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release.xcconfig"; sourceTree = "<group>"; };
+		3537FE6B2863099B0041D955 /* ProtonCore_Doh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ProtonCore_Doh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3537FE6D286309AC0041D955 /* ProtonCore_Doh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ProtonCore_Doh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3547E1AE2861FC50009B4D3D /* DohKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DohKey.swift; sourceTree = "<group>"; };
 		358F3CA2284A03E7003F7CFA /* Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		358F3CA5284A03E7003F7CFA /* Client.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Client.h; sourceTree = "<group>"; };
@@ -60,7 +46,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				36CF6B8E8983249D40282B80 /* Pods_Client.framework in Frameworks */,
-				35B910EA286279CE004589CD /* ProtonCore_Doh.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +111,8 @@
 		B76CA475A317A490461C4E94 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3537FE6D286309AC0041D955 /* ProtonCore_Doh.framework */,
+				3537FE6B2863099B0041D955 /* ProtonCore_Doh.framework */,
 				35B910E9286279CE004589CD /* ProtonCore_Doh.framework */,
 				A7F61F5683D93876678E4590 /* Pods_Client.framework */,
 			);
@@ -156,7 +143,6 @@
 				358F3C9F284A03E7003F7CFA /* Frameworks */,
 				358F3CA0284A03E7003F7CFA /* Resources */,
 				35DAB2082852749C004632E6 /* SwiftLint */,
-				35B910EC286279CE004589CD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
