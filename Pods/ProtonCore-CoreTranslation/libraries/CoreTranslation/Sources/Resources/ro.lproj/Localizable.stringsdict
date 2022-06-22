@@ -53,7 +53,7 @@
 			<key>one</key>
 			<string>%d calendar</string>
 			<key>other</key>
-			<string>%d calendars</string>
+			<string>%d de calendare</string>
 		</dict>
 	</dict>
 	<key>%d calendars / user</key>
@@ -85,11 +85,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d connections</string>
+			<string>%d conexiuni</string>
 			<key>one</key>
 			<string>%d connection</string>
 			<key>other</key>
-			<string>%d connections</string>
+			<string>%d de conexiuni</string>
 		</dict>
 	</dict>
 	<key>%d countries</key>
@@ -103,11 +103,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d countries</string>
+			<string>%d țări</string>
 			<key>one</key>
-			<string>%d country</string>
+			<string>%d țară</string>
 			<key>other</key>
-			<string>%d countries</string>
+			<string>%d de țări</string>
 		</dict>
 	</dict>
 	<key>%d custom domains</key>
@@ -125,7 +125,7 @@
 			<key>one</key>
 			<string>%d custom domain</string>
 			<key>other</key>
-			<string>%d custom domains</string>
+			<string>%d de domenii personale</string>
 		</dict>
 	</dict>
 	<key>%d email addresses</key>

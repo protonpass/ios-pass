@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Services",
-  "version": "3.18.0",
+  "version": "3.19.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": null,
-    "tag": "3.18.0"
+    "tag": "3.19.1"
   },
   "platforms": {
     "ios": "11.0",
@@ -30,16 +30,16 @@
 
     ],
     "ProtonCore-Log": [
-      "3.18.0"
+      "3.19.1"
     ],
     "ProtonCore-DataModel": [
-      "3.18.0"
+      "3.19.1"
     ],
     "ProtonCore-Doh": [
-      "3.18.0"
+      "3.19.1"
     ],
     "ProtonCore-Utilities": [
-      "3.18.0"
+      "3.19.1"
     ]
   },
   "default_subspecs": [
@@ -66,7 +66,7 @@
       "name": "Alamofire",
       "dependencies": {
         "ProtonCore-Networking/Alamofire": [
-          "3.18.0"
+          "3.19.1"
         ]
       },
       "source_files": "libraries/Services/Sources/*.swift",
@@ -78,10 +78,10 @@
           "source_files": "libraries/Services/Tests/*.swift",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Networking/Alamofire": [
-              "3.18.0"
+              "3.19.1"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Services/Alamofire": [
-              "3.18.0"
+              "3.19.1"
             ]
           }
         }
@@ -91,7 +91,7 @@
       "name": "AFNetworking",
       "dependencies": {
         "ProtonCore-Networking/AFNetworking": [
-          "3.18.0"
+          "3.19.1"
         ]
       },
       "source_files": "libraries/Services/Sources/*.swift",
@@ -103,10 +103,10 @@
           "source_files": "libraries/Services/Tests/*.swift",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Networking/AFNetworking": [
-              "3.18.0"
+              "3.19.1"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Services/AFNetworking": [
-              "3.18.0"
+              "3.19.1"
             ]
           }
         }

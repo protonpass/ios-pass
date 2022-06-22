@@ -20,7 +20,7 @@
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
 
 /* Delete account success */
-"Account deleted.\nLogging out..." = "Account deleted.\nLogging out...";
+"Account deleted.\nLogging out..." = "Cont șters. Se deconectează...";
 
 /* *
  *  Login errors */
@@ -30,7 +30,7 @@
 "Account verification" = "Verificare cont";
 
 /* Title of account switcher */
-"Accounts" = "Accounts";
+"Accounts" = "Conturi";
 
 /* Plan details adblocker */
 "Adblocker (NetShield)" = "Adblocker (NetShield)";
@@ -77,10 +77,10 @@
 "Change your password" = "Change your password";
 
 /* Button title shown when a error has occured, causes the screen to close */
-"Close" = "Close";
+"Close" = "Închidere";
 
 /* sent baner title */
-"Code sent to %@" = "Code sent to %@";
+"Code sent to %@" = "Cod trimis către %@";
 
 /* Unfinished operation error dialog retry button */
 "Complete payment" = "Complete payment";
@@ -89,7 +89,7 @@
 "Complete payment?" = "Complete payment?";
 
 /* Dialog button for missing keys error */
-"Complete Setup" = "Complete Setup";
+"Complete Setup" = "Finalizați configurarea";
 
 /* Signup summary title */
 "Congratulations" = "Felicitări!";
@@ -101,7 +101,7 @@
 "Contact customer support" = "Contactare asistență clienți";
 
 /* Confirmation for the credits applied popup, will result in showing customer support contact form */
-"Contact Support" = "Contact Support";
+"Contact Support" = "Contactați asistența";
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Contactați support@protonvpn.com pentru a finaliza achiziția.";
@@ -110,7 +110,7 @@
 "Create a Proton account with your current email" = "Create a Proton account with your current email";
 
 /* Proton Mail address button */
-"Create a secure Proton Mail address instead" = "Creați în schimb o adresă sigură Proton Mail";
+"Create a secure Proton Mail address instead" = "Creați în schimb o adresă sigură ProtonMail";
 
 /* Action button title for creating Proton Mail address */
 "Create address" = "Creare adresă";
@@ -120,7 +120,7 @@
 
 /* *
  * Login choose username */
-"Create Proton Mail address" = "Creare adresă Proton Mail";
+"Create Proton Mail address" = "Creare adresă ProtonMail";
 
 /* Create user failed error */
 "Create user failed" = "Creare utilizator eșuată";
@@ -148,7 +148,7 @@
 "Customer support" = "Customer support";
 
 /* *  Account Deletion */
-"Delete account" = "Delete account";
+"Delete account" = "Ștergere cont";
 
 /* Did not receive code button */
 "Did not receive a code?" = "Nu ați primit codul?";
@@ -157,7 +157,7 @@
 "Did not receive the code?" = "Nu ați primit codul?";
 
 /* Cancellation for the credits applied popup */
-"Dismiss" = "Dismiss";
+"Dismiss" = "Renunțare";
 
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Dismiss account switcher";
@@ -166,7 +166,7 @@
 "Do you want to activate the purchase for %@ address?" = "Doriți să activați achiziția pentru adresa %@?";
 
 /* Title of domains bottom action sheet */
-"Domain" = "Domain";
+"Domain" = "Domeniu";
 
 /* Email field title
    Email label
@@ -175,13 +175,13 @@
 "Email" = "E-mail";
 
 /* Email address already used error */
-"Email address already used." = "Email address already used.";
+"Email address already used." = "Adresă de e-mail deja utilizată.";
 
 /* Username field title */
 "Email or username" = "E-mail sau utilizator";
 
 /* Signup summary welcome text */
-"Enjoy the world of privacy." = "Enjoy the world of privacy.";
+"Enjoy the world of privacy." = "Bucurați-vă de lumea vieții private.";
 
 /* 2FA screen recovery field info */
 "Enter an 8-character recovery code." = "Introduceți codul din 8 caractere pentru recuperare.";
@@ -208,7 +208,7 @@
 "Failed to get list of available products from App Store." = "Failed to get list of available products from App Store.";
 
 /* Email verification view description */
-"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Pentru securitatea dumneavoastră, trebuie să verificăm că adresa introdusă vă aparține. Am trimis un cod de verificare la %@. Vă rugăm să introduceți mai jos codul primit:";
 
 /* Forgot password button title
    Forgot password help button */
@@ -246,7 +246,7 @@
 "Human verification" = "Verificare persoană";
 
 /* Title */
-"Human Verification" = "Human Verification";
+"Human Verification" = "Human verification";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day.";
@@ -309,7 +309,7 @@
 "Next" = "Înainte";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another Proton Mail account" = "Nu, pentru alt cont Proton Mail";
+"No, for another Proton Mail account" = "Nu, pentru alt cont ProtonMail";
 
 /* Action
    OK button */
@@ -335,13 +335,13 @@
 "Password is too short. Should have at least %@ characters.\nPlease try again." = "Password is too short. Should have at least %@ characters.\nPlease try again.";
 
 /* Password too short error */
-"Password must contain at least %@ characters." = "Password must contain at least %@ characters.";
+"Password must contain at least %@ characters." = "Parola trebuie să conțină cel puțin %@ caractere.";
 
 /* Password field hint about minimum length */
-"Password must contain at least 8 characters" = "Password must contain at least 8 characters";
+"Password must contain at least 8 characters" = "Parola trebuie să conțină cel puțin 8 caractere";
 
 /* Password not equal error */
-"Passwords do not match.\nPlease try again." = "Passwords do not match.\nPlease try again.";
+"Passwords do not match.\nPlease try again." = "Parolele nu coincid.\nVă rugăm să încercați din nou.";
 
 /* (No Comment) */
 "payment failed" = "plată eșuată";
@@ -372,10 +372,10 @@
 "Please enter your Proton Account password." = "Please enter your Proton Account password.";
 
 /* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Conectați-vă la contul Proton Mail pentru care modificați tipul de abonament pentru a putea finaliza tranzacția.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Conectați-vă la contul ProtonMail pentru care modificați tipul de abonament pentru a putea finaliza tranzacția.";
 
 /* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Conectați-vă la contul Proton Mail pentru care modificați tipul de abonament pentru a putea finaliza activarea abonamentului.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Conectați-vă la contul ProtonMail pentru care modificați tipul de abonament pentru a putea finaliza activarea abonamentului.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Deblocați aplicația pentru a continua activarea abonamentului";
@@ -390,7 +390,7 @@
 "Proton Free" = "Proton Free";
 
 /* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail pentru profesioniști și afaceri";
+"Proton Mail for professionals and businesses" = "ProtonMail pentru profesioniști și afaceri";
 
 /* Error message */
 "Purchase is not possible." = "Purchase is not possible.";
@@ -462,10 +462,10 @@
 "Sign out" = "Deconectare";
 
 /* Section title of account manager */
-"Signed in to Proton Mail" = "Conectat la Proton Mail";
+"Signed in to Proton Mail" = "Conectat la ProtonVPN";
 
 /* Section title of account manager */
-"Signed out of Proton Mail" = "Deconectat de la Proton Mail";
+"Signed out of Proton Mail" = "Deconectat de la ProtonVPN";
 
 /* Skip button */
 "Skip" = "Omitere";

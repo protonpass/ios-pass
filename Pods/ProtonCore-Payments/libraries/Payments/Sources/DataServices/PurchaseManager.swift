@@ -162,6 +162,8 @@ final class PurchaseManager: PurchaseManagerProtocol {
                 finishCallback(.purchaseCancelled)
             } else if case .resolvingIAPToCredits = result {
                 finishCallback(.toppedUpCredits)
+            } else if case .resolvingIAPToCreditsCausedByError = result {
+                finishCallback(.toppedUpCredits)
             } else {
                 finishCallback(.purchasedPlan(accountPlan: plan))
             }

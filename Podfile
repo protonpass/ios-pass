@@ -8,7 +8,7 @@ def proton_core_path
 end
 
 def proton_core_version
-  "3.18.0"
+  "3.19.1"
 end
 
 def pmtest_path
@@ -67,4 +67,13 @@ end
 target 'macOS' do
   platform :osx, '11.0'
   project 'macOS/macOS'
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+    end
+  end
 end
