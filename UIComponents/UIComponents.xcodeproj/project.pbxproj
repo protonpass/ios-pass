@@ -9,11 +9,9 @@
 /* Begin PBXBuildFile section */
 		358F3CD5284A0537003F7CFA /* UIComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 358F3CC9284A0537003F7CFA /* UIComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		35F58453286104AC00A1B0B0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F58452286104AC00A1B0B0 /* ContentView.swift */; };
-		6227CD35CBBB25650F02786A /* Pods_UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 007D5B550EF66FBDE6618932 /* Pods_UIComponents.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		007D5B550EF66FBDE6618932 /* Pods_UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28225ABBC15B81023DB2E58D /* Pods-UIComponents.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.debug-prod.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		2BC76523325514063899AF32 /* Pods-UIComponents.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.debug-black.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.debug-black.xcconfig"; sourceTree = "<group>"; };
 		355D127D2860FD6D00EE5427 /* UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -30,7 +28,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6227CD35CBBB25650F02786A /* Pods_UIComponents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,7 +37,6 @@
 		272E20A851F23DACBBEF5844 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				007D5B550EF66FBDE6618932 /* Pods_UIComponents.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
