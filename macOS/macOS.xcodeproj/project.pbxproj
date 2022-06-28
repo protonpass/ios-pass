@@ -40,6 +40,7 @@
 /* Begin PBXFileReference section */
 		1BEDB44CAB93E142A760CEE7 /* Pods-macOS.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-black.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-black.xcconfig"; sourceTree = "<group>"; };
 		31F8926CDD23B300683A0170 /* Pods-macOS.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-prod.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-prod.xcconfig"; sourceTree = "<group>"; };
+		35393FC8286B3DFA00D6B3C5 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		358F3C162849FDF3003F7CFA /* macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		358F3C192849FDF3003F7CFA /* macOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSApp.swift; sourceTree = "<group>"; };
 		358F3C1B2849FDF3003F7CFA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -176,6 +177,7 @@
 		FA31A8B22DE54D50F076CBEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				35393FC8286B3DFA00D6B3C5 /* Core.framework */,
 				CC0E1513C72E792D7CA06F35 /* Pods_macOS.framework */,
 			);
 			name = Frameworks;

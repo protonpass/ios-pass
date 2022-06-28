@@ -19,7 +19,7 @@
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-//import ProtonCore_Doh
+// import ProtonCore_Doh
 
 public enum BuildConfigKey: String {
     case signUpDomain = "SIGNUP_DOMAIN"

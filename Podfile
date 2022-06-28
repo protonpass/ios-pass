@@ -19,18 +19,23 @@ def pmtest_commit
   "2bc09250d65786c316aa8a2a203404ada745bea2"
 end
 
+def client_and_ios_pods
+  pod 'ProtonCore-Log', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Utilities', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
+end
+
 # Pods
 
 # iOS
 target 'iOS' do
   platform :ios, '14.0'
-  pod 'ProtonCore-Log', :git => proton_core_path, :tag => proton_core_version
+  client_and_ios_pods
   pod 'ProtonCore-OpenPGP', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-CoreTranslation-V5', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Utilities', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Challenge', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-DataModel', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Crypto', :git => proton_core_path, :tag => proton_core_version
@@ -45,21 +50,24 @@ target 'iOS' do
   pod 'ProtonCore-Services/Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Networking/Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-LoginUI-V5/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
   project 'iOS/iOS'
 end
 
 target 'Client' do
   platform :ios, '14.0'
-#  use_frameworks! :linkage => :static
+  client_and_ios_pods
   project 'Client/Client'
 end
 
 target 'Core' do
   platform :ios, '14.0'
-#  use_frameworks! :linkage => :static
   project 'Core/Core'
+end
+
+target 'UIComponents' do
+  platform :ios, '14.0'
+  project 'UIComponents/UIComponents'
 end
 
 # TARGETS - MAC
