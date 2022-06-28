@@ -19,7 +19,7 @@
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-// import ProtonCore_Doh
+import ProtonCore_Doh
 
 public enum BuildConfigKey: String {
     case signUpDomain = "SIGNUP_DOMAIN"
@@ -31,7 +31,7 @@ public enum BuildConfigKey: String {
     case defaultPath = "DEFAULT_PATH"
 }
 
-public final class DohKey {
+public final class DohKey: DoH, ServerConfig {
     public let signupDomain: String
     public let captchaHost: String
     public let humanVerificationV3Host: String

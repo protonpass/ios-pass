@@ -49,6 +49,8 @@ class AppCoordinator: Coordinator, ObservableObject {
             setUpLoginFlow()
         case .loggedIn:
             setUpHomeFlow()
+        @unknown default:
+            fatalError("Should not happen")
         }
     }
 

@@ -70,42 +70,6 @@ final class LogInCoordinator: Coordinator {
     }
 }
 
-public enum BuildConfigKey: String {
-    case signUpDomain = "SIGNUP_DOMAIN"
-    case captchaHost = "CAPTCHA_HOST"
-    case humanVerificationV3Host = "HUMAN_VERIFICATION_V3_HOST"
-    case accountHost = "ACCOUNT_HOST"
-    case defaultHost = "DEFAULT_HOST"
-    case apiHost = "API_HOST"
-    case defaultPath = "DEFAULT_PATH"
-}
-
-public final class DohKey: DoH, ServerConfig {
-    public let signupDomain: String
-    public let captchaHost: String
-    public let humanVerificationV3Host: String
-    public let accountHost: String
-    public let defaultHost: String
-    public let apiHost: String
-    public let defaultPath: String
-
-    public init(bundle: Bundle) {
-        let getValue: (BuildConfigKey) -> String = { key in
-            if let value = bundle.infoDictionary?[key.rawValue] as? String {
-                return value
-            }
-            fatalError("Key not found \(key.rawValue)")
-        }
-        self.signupDomain = getValue(.signUpDomain)
-        self.captchaHost = getValue(.captchaHost)
-        self.humanVerificationV3Host = getValue(.humanVerificationV3Host)
-        self.accountHost = getValue(.accountHost)
-        self.defaultHost = getValue(.defaultHost)
-        self.apiHost = getValue(.apiHost)
-        self.defaultPath = getValue(.defaultPath)
-    }
-}
-
 extension LogInCoordinator: ForceUpgradeResponseDelegate {
     func onQuitButtonPressed() {}
     func onUpdateButtonPressed() {}
