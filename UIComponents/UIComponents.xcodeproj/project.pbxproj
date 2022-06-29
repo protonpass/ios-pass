@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		358F3CD5284A0537003F7CFA /* UIComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 358F3CC9284A0537003F7CFA /* UIComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		35F58453286104AC00A1B0B0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F58452286104AC00A1B0B0 /* ContentView.swift */; };
+		77C5C17A772338725E885A99 /* Pods_UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A6EBD61288FD7BF34B2D9E9 /* Pods_UIComponents.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		35F58452286104AC00A1B0B0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4BE0436230006ACEF2D9C761 /* Pods-UIComponents.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release-prod.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release-prod.xcconfig"; sourceTree = "<group>"; };
 		67FE04B949081EE7484D3569 /* Pods-UIComponents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release.xcconfig"; sourceTree = "<group>"; };
+		7A6EBD61288FD7BF34B2D9E9 /* Pods_UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE1CBDB3D2ED2285C8CA1296 /* Pods-UIComponents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.debug.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.debug.xcconfig"; sourceTree = "<group>"; };
 		F6633BBB6CB6AD7844876736 /* Pods-UIComponents.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release-black.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release-black.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -28,6 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77C5C17A772338725E885A99 /* Pods_UIComponents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,6 +40,7 @@
 		272E20A851F23DACBBEF5844 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7A6EBD61288FD7BF34B2D9E9 /* Pods_UIComponents.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
