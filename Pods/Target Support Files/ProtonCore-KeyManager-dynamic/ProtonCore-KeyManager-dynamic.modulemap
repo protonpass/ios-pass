@@ -1,6 +1,0 @@
-framework module ProtonCore_KeyManager {
-  umbrella header "ProtonCore-KeyManager-dynamic-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -22,8 +22,18 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        let host = Bundle.main.infoDictionary?["DEFAULT_API_HOST"] as? String ?? "null"
+        let signUp = Bundle.main.infoDictionary?["DEFAULT_SIGNUP_DOMAIN"] as? String ?? "null"
+        VStack {
+            #if PROD
+            Text("Prod")
+            #elseif BLACK
+            Text("Black")
+            #endif
+            Text("Host domain: " + host)
+            Text("Sign up domain: " + signUp)
+        }
+        .padding()
     }
 }
 

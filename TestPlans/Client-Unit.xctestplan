@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "FEE401F8-3FD7-4C64-A73E-C329D18F1D3D",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Client.xcodeproj",
+        "identifier" : "358F3CA9284A03E8003F7CFA",
+        "name" : "ClientUnitTests"
+      }
+    }
+  ],
+  "version" : 1
+}

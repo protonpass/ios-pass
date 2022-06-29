@@ -19,4 +19,33 @@
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
+   <Group
+      location = "group:TestPlans"
+      name = "TestPlans">
+      <FileRef
+         location = "group:Client-Unit.xctestplan">
+      </FileRef>
+      <FileRef
+         location = "group:Core-Unit.xctestplan">
+      </FileRef>
+      <FileRef
+         location = "group:iOS-Unit.xctestplan">
+      </FileRef>
+      <FileRef
+         location = "group:iOS-UI.xctestplan">
+      </FileRef>
+      <FileRef
+         location = "group:macOS-Unit.xctestplan">
+      </FileRef>
+   </Group>
+   <Group
+      location = "group:Shared"
+      name = "Shared">
+      <FileRef
+         location = "group:Config-Prod.xcconfig">
+      </FileRef>
+      <FileRef
+         location = "group:Config-Black.xcconfig">
+      </FileRef>
+   </Group>
 </Workspace>
