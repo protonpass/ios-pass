@@ -32,6 +32,11 @@
 		35E506CF286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */; };
 		35E506D0286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */; };
 		35E506D1286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CD286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig */; };
+		35E506D9286FB12000A3F6EA /* macOS-Debug-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D5286FB12000A3F6EA /* macOS-Debug-Black.xcconfig */; };
+		35E506DA286FB12000A3F6EA /* macOS-Release-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D6286FB12000A3F6EA /* macOS-Release-Black.xcconfig */; };
+		35E506DB286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D7286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig */; };
+		35E506DC286FB12000A3F6EA /* macOS-Release-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D8286FB12000A3F6EA /* macOS-Release-Prod.xcconfig */; };
+		35E506DE286FB1D300A3F6EA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 35E506DD286FB1D300A3F6EA /* Info.plist */; };
 		43D8E83DEA8EF33F5E68C83E /* Pods_Core_CoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A8977220EAD2E5C505F8CF /* Pods_Core_CoreTests.framework */; };
 		675A744B254FF56E1C95D91B /* Pods_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 303E837161E0B51054C04021 /* Pods_Client.framework */; };
 		6EA5015186914BB62E54DBE6 /* Pods_Client_ClientTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D35678054D43CDE3733E788 /* Pods_Client_ClientTests.framework */; };
@@ -152,6 +157,11 @@
 		35E506CD286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release-Prod.xcconfig"; sourceTree = "<group>"; };
 		35E506D2286FA25000A3F6EA /* Config-Black.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Black.xcconfig"; sourceTree = "<group>"; };
 		35E506D3286FA25000A3F6EA /* Config-Prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Prod.xcconfig"; sourceTree = "<group>"; };
+		35E506D5286FB12000A3F6EA /* macOS-Debug-Black.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Debug-Black.xcconfig"; sourceTree = "<group>"; };
+		35E506D6286FB12000A3F6EA /* macOS-Release-Black.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release-Black.xcconfig"; sourceTree = "<group>"; };
+		35E506D7286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Debug-Prod.xcconfig"; sourceTree = "<group>"; };
+		35E506D8286FB12000A3F6EA /* macOS-Release-Prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release-Prod.xcconfig"; sourceTree = "<group>"; };
+		35E506DD286FB1D300A3F6EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CDC57C290CF2F32BE9B8B39 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		4AD83E95CA93A6D9E7C5F7AA /* Pods-iOS.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug-prod.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		50E3D0EFD3C4BE45369D6842 /* Pods-Client.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-prod.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-prod.xcconfig"; sourceTree = "<group>"; };
@@ -268,7 +278,6 @@
 				35E50685286F87A600A3F6EA /* Core */,
 				35E50691286F87A700A3F6EA /* CoreTests */,
 				35E506AB286F920300A3F6EA /* UIComponents */,
-				35E506C9286FA06300A3F6EA /* BuildConfigs */,
 				35E5063C286F819F00A3F6EA /* Products */,
 				A960751BC7741704CCF907C2 /* Pods */,
 				2E7AE4F339A9234C7A1F51F3 /* Frameworks */,
@@ -302,8 +311,10 @@
 		35E50642286F819F00A3F6EA /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				35E506DD286FB1D300A3F6EA /* Info.plist */,
 				35E50643286F819F00A3F6EA /* macOS.entitlements */,
 				35E5065A286F865900A3F6EA /* macOSApp.swift */,
+				35E506D4286FB0FE00A3F6EA /* BuildConfigs */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -314,6 +325,7 @@
 				35E50658286F838800A3F6EA /* Info.plist */,
 				35E50653286F82DC00A3F6EA /* AppDelegate.swift */,
 				35E50655286F830A00A3F6EA /* SceneDelegate.swift */,
+				35E506C9286FA06300A3F6EA /* BuildConfigs */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -368,6 +380,17 @@
 				35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */,
 				35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */,
 				35E506CD286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig */,
+			);
+			path = BuildConfigs;
+			sourceTree = "<group>";
+		};
+		35E506D4286FB0FE00A3F6EA /* BuildConfigs */ = {
+			isa = PBXGroup;
+			children = (
+				35E506D5286FB12000A3F6EA /* macOS-Debug-Black.xcconfig */,
+				35E506D7286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig */,
+				35E506D6286FB12000A3F6EA /* macOS-Release-Black.xcconfig */,
+				35E506D8286FB12000A3F6EA /* macOS-Release-Prod.xcconfig */,
 			);
 			path = BuildConfigs;
 			sourceTree = "<group>";
@@ -669,7 +692,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35E506D9286FB12000A3F6EA /* macOS-Debug-Black.xcconfig in Resources */,
 				35E50649286F819F00A3F6EA /* Assets.xcassets in Resources */,
+				35E506DE286FB1D300A3F6EA /* Info.plist in Resources */,
+				35E506DC286FB12000A3F6EA /* macOS-Release-Prod.xcconfig in Resources */,
+				35E506DB286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig in Resources */,
+				35E506DA286FB12000A3F6EA /* macOS-Release-Black.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1246,7 +1274,7 @@
 		};
 		35E50650286F819F00A3F6EA /* Debug-Black */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E4285F27322D0D95BC23B552 /* Pods-macOS.debug-black.xcconfig */;
+			baseConfigurationReference = 35E506D5286FB12000A3F6EA /* macOS-Debug-Black.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1260,6 +1288,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = macOS/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1279,7 +1308,7 @@
 		};
 		35E50651286F819F00A3F6EA /* Release-Black */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 83A3B0925AABD3FD2AA0F210 /* Pods-macOS.release-black.xcconfig */;
+			baseConfigurationReference = 35E506D6286FB12000A3F6EA /* macOS-Release-Black.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1293,6 +1322,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = macOS/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1707,7 +1737,7 @@
 		};
 		35E506BB286F9D1300A3F6EA /* Debug-Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A4E4EA6BF38A98C49659B2BA /* Pods-macOS.debug-prod.xcconfig */;
+			baseConfigurationReference = 35E506D7286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1721,6 +1751,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = macOS/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1976,7 +2007,7 @@
 		};
 		35E506C3286F9D1E00A3F6EA /* Release-Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 78F8E0F7C874568D823F1AD8 /* Pods-macOS.release-prod.xcconfig */;
+			baseConfigurationReference = 35E506D8286FB12000A3F6EA /* macOS-Release-Prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1990,6 +2021,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = macOS/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (

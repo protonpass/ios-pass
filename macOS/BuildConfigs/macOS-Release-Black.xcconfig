@@ -1,5 +1,5 @@
 //
-// iOS-Config-Debug-Black.swift
+// macOS-Config-Release-Black.swift
 // Proton Key - Created on 08/06/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,5 +21,5 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "../Pods/Target Support Files/Pods-iOS/Pods-iOS.debug-black.xcconfig"
-#include "../iOS & macOS/Config-Black.xcconfig"
+#include "../../Pods/Target Support Files/Pods-macOS/Pods-macOS.release-black.xcconfig"
+#include "../../iOS & macOS/Config-Black.xcconfig"
