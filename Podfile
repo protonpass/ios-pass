@@ -14,7 +14,7 @@ def pmtest_commit
   "2bc09250d65786c316aa8a2a203404ada745bea2"
 end
 
-def client_and_ios_pods
+def core_and_ios_pods
   pod 'ProtonCore-Log', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Utilities', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
@@ -23,8 +23,6 @@ end
 target 'Client' do
   platform :ios, '14.0'
   use_frameworks!
-  client_and_ios_pods
-
   target 'ClientTests' do
   end
 
@@ -33,6 +31,8 @@ end
 target 'Core' do
   platform :ios, '14.0'
   use_frameworks!
+
+  core_and_ios_pods
   pod 'ProtonCore-Keymaker/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
 
   target 'CoreTests' do
@@ -43,7 +43,8 @@ end
 target 'iOS' do
   platform :ios, '14.0'
   use_frameworks!
-  client_and_ios_pods
+
+  core_and_ios_pods
   pod 'ProtonCore-OpenPGP', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
@@ -64,6 +65,7 @@ target 'iOS' do
   pod 'ProtonCore-Networking/Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-LoginUI-V5/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
+
 end
 
 target 'macOS' do

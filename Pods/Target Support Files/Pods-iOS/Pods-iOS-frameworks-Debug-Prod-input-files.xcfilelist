@@ -1,8 +1,8 @@
 ${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh
+${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework
-${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework
 ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCore_APIClient.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCore_Authentication_KeyGeneration.framework
