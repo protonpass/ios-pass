@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
 @testable import Core
+import XCTest
 
 class CoreTests: XCTestCase {
     func testCoreDummyStruct() {
