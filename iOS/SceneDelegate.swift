@@ -18,9 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Key. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import Client
+import Core
 import SwiftUI
+import UIComponents
 import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -42,6 +43,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello from iOS target")
+        VStack {
+            Text("Hello from iOS target")
+            DetailView()
+        }
     }
 }
