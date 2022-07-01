@@ -1,0 +1,4 @@
+${PODS_ROOT}/Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests-frameworks.sh
+${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-Keymaker/ProtonCore_Keymaker.framework

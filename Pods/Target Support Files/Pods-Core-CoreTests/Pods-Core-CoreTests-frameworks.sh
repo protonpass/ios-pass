@@ -175,12 +175,22 @@ code_sign_if_enabled() {
   fi
 }
 
-if [[ "$CONFIGURATION" == "Debug" ]]; then
+if [[ "$CONFIGURATION" == "Debug-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Keymaker/ProtonCore_Keymaker.framework"
 fi
-if [[ "$CONFIGURATION" == "Release" ]]; then
+if [[ "$CONFIGURATION" == "Debug-Prod" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Keymaker/ProtonCore_Keymaker.framework"
+fi
+if [[ "$CONFIGURATION" == "Release-Black" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Keymaker/ProtonCore_Keymaker.framework"
+fi
+if [[ "$CONFIGURATION" == "Release-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Keymaker/ProtonCore_Keymaker.framework"

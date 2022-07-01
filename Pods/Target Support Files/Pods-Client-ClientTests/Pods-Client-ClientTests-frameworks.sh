@@ -175,12 +175,22 @@ code_sign_if_enabled() {
   fi
 }
 
-if [[ "$CONFIGURATION" == "Debug" ]]; then
+if [[ "$CONFIGURATION" == "Debug-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
 fi
-if [[ "$CONFIGURATION" == "Release" ]]; then
+if [[ "$CONFIGURATION" == "Debug-Prod" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+fi
+if [[ "$CONFIGURATION" == "Release-Black" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+fi
+if [[ "$CONFIGURATION" == "Release-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
