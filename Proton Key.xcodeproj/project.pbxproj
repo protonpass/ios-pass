@@ -28,6 +28,10 @@
 		35E506B0286F920300A3F6EA /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		35E506B1286F920300A3F6EA /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35E506B6286F922A00A3F6EA /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E506B5286F922A00A3F6EA /* DetailView.swift */; };
+		35E506CE286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */; };
+		35E506CF286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */; };
+		35E506D0286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */; };
+		35E506D1286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CD286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig */; };
 		43D8E83DEA8EF33F5E68C83E /* Pods_Core_CoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A8977220EAD2E5C505F8CF /* Pods_Core_CoreTests.framework */; };
 		675A744B254FF56E1C95D91B /* Pods_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 303E837161E0B51054C04021 /* Pods_Client.framework */; };
 		6EA5015186914BB62E54DBE6 /* Pods_Client_ClientTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D35678054D43CDE3733E788 /* Pods_Client_ClientTests.framework */; };
@@ -142,6 +146,12 @@
 		35E506AA286F920300A3F6EA /* UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35E506AC286F920300A3F6EA /* UIComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIComponents.h; sourceTree = "<group>"; };
 		35E506B5286F922A00A3F6EA /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release-Black.xcconfig"; sourceTree = "<group>"; };
+		35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Debug-Prod.xcconfig"; sourceTree = "<group>"; };
+		35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Debug-Black.xcconfig"; sourceTree = "<group>"; };
+		35E506CD286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release-Prod.xcconfig"; sourceTree = "<group>"; };
+		35E506D2286FA25000A3F6EA /* Config-Black.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Black.xcconfig"; sourceTree = "<group>"; };
+		35E506D3286FA25000A3F6EA /* Config-Prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Prod.xcconfig"; sourceTree = "<group>"; };
 		3CDC57C290CF2F32BE9B8B39 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		4AD83E95CA93A6D9E7C5F7AA /* Pods-iOS.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug-prod.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		50E3D0EFD3C4BE45369D6842 /* Pods-Client.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-prod.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-prod.xcconfig"; sourceTree = "<group>"; };
@@ -258,6 +268,7 @@
 				35E50685286F87A600A3F6EA /* Core */,
 				35E50691286F87A700A3F6EA /* CoreTests */,
 				35E506AB286F920300A3F6EA /* UIComponents */,
+				35E506C9286FA06300A3F6EA /* BuildConfigs */,
 				35E5063C286F819F00A3F6EA /* Products */,
 				A960751BC7741704CCF907C2 /* Pods */,
 				2E7AE4F339A9234C7A1F51F3 /* Frameworks */,
@@ -268,6 +279,8 @@
 			isa = PBXGroup;
 			children = (
 				35E50636286F819F00A3F6EA /* Assets.xcassets */,
+				35E506D2286FA25000A3F6EA /* Config-Black.xcconfig */,
+				35E506D3286FA25000A3F6EA /* Config-Prod.xcconfig */,
 			);
 			path = "iOS & macOS";
 			sourceTree = "<group>";
@@ -346,6 +359,17 @@
 				35E506B5286F922A00A3F6EA /* DetailView.swift */,
 			);
 			path = UIComponents;
+			sourceTree = "<group>";
+		};
+		35E506C9286FA06300A3F6EA /* BuildConfigs */ = {
+			isa = PBXGroup;
+			children = (
+				35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */,
+				35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */,
+				35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */,
+				35E506CD286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig */,
+			);
+			path = BuildConfigs;
 			sourceTree = "<group>";
 		};
 		A960751BC7741704CCF907C2 /* Pods */ = {
@@ -633,6 +657,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35E506D1286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig in Resources */,
+				35E506CF286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig in Resources */,
+				35E506CE286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig in Resources */,
+				35E506D0286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig in Resources */,
 				35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1150,7 +1178,7 @@
 		};
 		35E5064D286F819F00A3F6EA /* Debug-Black */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C55F96A42ED0FF6854E96B79 /* Pods-iOS.debug-black.xcconfig */;
+			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1184,7 +1212,7 @@
 		};
 		35E5064E286F819F00A3F6EA /* Release-Black */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 70B9DCC580A1534DBDA4F437 /* Pods-iOS.release-black.xcconfig */;
+			baseConfigurationReference = 35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1645,7 +1673,7 @@
 		};
 		35E506BA286F9D1300A3F6EA /* Debug-Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4AD83E95CA93A6D9E7C5F7AA /* Pods-iOS.debug-prod.xcconfig */;
+			baseConfigurationReference = 35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1914,7 +1942,7 @@
 		};
 		35E506C2286F9D1E00A3F6EA /* Release-Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EA45B2ACC448C9202AFC6495 /* Pods-iOS.release-prod.xcconfig */;
+			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
