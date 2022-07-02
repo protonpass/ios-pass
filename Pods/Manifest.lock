@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (5.4.4)
+  - EllipticCurveKeyPair (2.0)
   - lottie-ios (3.3.0)
   - ProtonCore-APIClient/Alamofire (3.19.1):
     - ProtonCore-DataModel (= 3.19.1)
@@ -36,6 +37,9 @@ PODS:
     - ProtonCore-Foundations (= 3.19.1)
     - ProtonCore-UIFoundations-V5 (= 3.19.1)
     - ProtonCore-Utilities (= 3.19.1)
+  - ProtonCore-Keymaker/UsingCrypto (3.19.1):
+    - EllipticCurveKeyPair (~> 2.0)
+    - ProtonCore-Crypto (= 3.19.1)
   - ProtonCore-Log (3.19.1)
   - "ProtonCore-Login/UsingCrypto+Alamofire (3.19.1)":
     - "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire (= 3.19.1)"
@@ -118,6 +122,7 @@ DEPENDENCIES:
   - "ProtonCore-Foundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
   - "ProtonCore-Hash (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
   - "ProtonCore-HumanVerification-V5/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
+  - "ProtonCore-Keymaker/UsingCrypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
   - "ProtonCore-Log (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
   - "ProtonCore-Login/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
   - "ProtonCore-LoginUI-V5/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
@@ -130,8 +135,9 @@ DEPENDENCIES:
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - Alamofire
+    - EllipticCurveKeyPair
     - lottie-ios
     - ReachabilitySwift
     - TrustKit
@@ -174,6 +180,9 @@ EXTERNAL SOURCES:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.19.1
   ProtonCore-HumanVerification-V5:
+    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+    :tag: 3.19.1
+  ProtonCore-Keymaker:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.19.1
   ProtonCore-Log:
@@ -247,6 +256,9 @@ CHECKOUT OPTIONS:
   ProtonCore-HumanVerification-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.19.1
+  ProtonCore-Keymaker:
+    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+    :tag: 3.19.1
   ProtonCore-Log:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.19.1
@@ -280,6 +292,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
+  EllipticCurveKeyPair: 8c69e5238a6e47243a10a48fbd41dfb19110b22e
   lottie-ios: 6ac74dcc09904798f59b18cb3075c089d76be9ae
   ProtonCore-APIClient: 7f0a71fbc8f192793a3d78a5c95f0b751ff95da2
   ProtonCore-Authentication: 806da9ee35899349a74f6c8620bcbfe0d3d7e54b
@@ -294,6 +307,7 @@ SPEC CHECKSUMS:
   ProtonCore-Foundations: 76fc49ba557611511af749c408cb92881d92f08b
   ProtonCore-Hash: 5a92c6ff8291da203c7c9d0b4e6007861d109659
   ProtonCore-HumanVerification-V5: b14aa532651eb44de6efcd268c8df0ac9078ed9d
+  ProtonCore-Keymaker: ce9dff2b1dc86ee5d10203744dd0ad8c028a8f25
   ProtonCore-Log: ab5312db852cc7d0224de3cb1c24ed3f126ca157
   ProtonCore-Login: bf0289120bd72b96320fcd03a3cdeb921bda6d34
   ProtonCore-LoginUI-V5: 8f2f5f40d7d35b95da2a196ebad38ba0282ce631
@@ -307,6 +321,6 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   TrustKit: 610b8c71c07914756dd74c380040a3408a747798
 
-PODFILE CHECKSUM: 7dfaf7a19fc480c60a764a523ed6eca53c263c2d
+PODFILE CHECKSUM: 63ee3d4e24440058a45ea6f1bb72c38ff1652721
 
 COCOAPODS: 1.11.3

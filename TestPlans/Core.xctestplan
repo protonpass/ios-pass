@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "C08511CE-E735-48F5-8F86-34A464CC3D4D",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Proton Key.xcodeproj",
+        "identifier" : "35E5068A286F87A700A3F6EA",
+        "name" : "CoreTests"
+      }
+    }
+  ],
+  "version" : 1
+}
