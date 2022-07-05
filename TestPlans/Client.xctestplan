@@ -14,7 +14,7 @@
   "testTargets" : [
     {
       "target" : {
-        "containerPath" : "container:Proton Key.xcodeproj",
+        "containerPath" : "container:ProtonPass.xcodeproj",
         "identifier" : "35E50667286F870500A3F6EA",
         "name" : "ClientTests"
       }
