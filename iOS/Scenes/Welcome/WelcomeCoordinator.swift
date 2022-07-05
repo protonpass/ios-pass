@@ -29,10 +29,14 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import UIKit
 
+protocol WelcomeCoordinatorDelegate: AnyObject {
+    func welcomeCoordinator(didFinishWith loginData: LoginData)
+}
+
 final class WelcomeCoordinator: Coordinator {
-    private let appStateObserver: AppStateObserver
     private let apiServiceDelegate: APIServiceDelegate
     private let doh: DoH & ServerConfig
+    weak var delegate: WelcomeCoordinatorDelegate?
 
     private lazy var welcomeViewController: UIViewController = {
         let welcomeScreenTexts = WelcomeScreenTexts(body: "Your next favorite password manager")
@@ -59,25 +63,19 @@ final class WelcomeCoordinator: Coordinator {
                      apiServiceDelegate: apiServiceDelegate,
                      forceUpgradeDelegate: forceUpgradeServiceDelegate,
                      humanVerificationVersion: .v3,
-                     minimumAccountType: .external,
+                     minimumAccountType: .internal,
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))
     }()
 
-    init(router: Router,
-         navigationType: Coordinator.NavigationType,
-         appStateObserver: AppStateObserver) {
-        self.appStateObserver = appStateObserver
+    override init(router: Router,
+                  navigationType: Coordinator.NavigationType) {
         self.apiServiceDelegate = AnonymousServiceManager()
         self.doh = DohKey(bundle: .main)
         super.init(router: router, navigationType: navigationType)
     }
 
     override var root: Presentable { welcomeViewController }
-
-    func showHome() {
-        appStateObserver.updateState(.loggedIn)
-    }
 }
 
 // MARK: - ForceUpgradeResponseDelegate
@@ -89,8 +87,7 @@ extension WelcomeCoordinator: ForceUpgradeResponseDelegate {
 // MARK: - WelcomeViewControllerDelegate
 extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     func userWantsToLogIn(username: String?) {
-        logInAndSignUp.presentLoginFlow(over: welcomeViewController,
-                                        customization: .empty) { [weak self] result in
+        logInAndSignUp.presentLoginFlow(over: welcomeViewController) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .dismissed:
@@ -104,8 +101,7 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     }
 
     func userWantsToSignUp() {
-        logInAndSignUp.presentSignupFlow(over: welcomeViewController,
-                                         customization: .empty) { [weak self] result in
+        logInAndSignUp.presentSignupFlow(over: welcomeViewController) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .dismissed:
@@ -119,7 +115,7 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     }
 
     private func handle(logInData: LoginData) {
-        print(logInData)
+        delegate?.welcomeCoordinator(didFinishWith: logInData)
     }
 }
 

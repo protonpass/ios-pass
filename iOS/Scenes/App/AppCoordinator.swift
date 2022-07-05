@@ -20,36 +20,44 @@
 
 import Combine
 import Core
+import ProtonCore_Keymaker
+import ProtonCore_Login
 import UIKit
 
-class AppCoordinator: Coordinator, ObservableObject {
+final class AppCoordinator: Coordinator {
     private let appStateObserver: AppStateObserver
+    private let sessionStorage: SessionStorage
 
     override var root: Presentable { router.toPresentable() }
 
-    init(appStateObserver: AppStateObserver, router: Router) {
+    init(appStateObserver: AppStateObserver,
+         router: Router) {
         self.appStateObserver = appStateObserver
+        let keychain = PKKeychain.shared
+        let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
+        self.sessionStorage = .init(mainKeyProvider: keymaker, keychain: keychain)
         super.init(router: router, navigationType: .newFlow(hideBar: true))
 
         bindAppState()
         bindDeeplink()
+
+        if sessionStorage.isSignedIn() {
+            appStateObserver.updateState(.loggedIn)
+        }
     }
 
     private func bindAppState() {
         appStateObserver.$currentState
             .receive(on: DispatchQueue.main)
             .sink { [weak self] appState in
-                self?.refreshRoot(appState: appState)
+                guard let self = self else { return }
+                switch appState {
+                case .loggedOut:
+                    self.setUpWelcomeFlow()
+                case .loggedIn:
+                    self.setUpHomeFlow()
+                }
             }.store(in: &cancellables)
-    }
-
-    private func refreshRoot(appState: AppState) {
-        switch appState {
-        case .loggedOut:
-            setUpWelcomeFlow()
-        case .loggedIn:
-            setUpHomeFlow()
-        }
     }
 
     private func bindDeeplink() {
@@ -72,15 +80,37 @@ class AppCoordinator: Coordinator, ObservableObject {
 
     private func setUpWelcomeFlow() {
         let welcomeCoordinator = WelcomeCoordinator(router: router,
-                                                    navigationType: .newFlow(hideBar: true),
-                                                    appStateObserver: appStateObserver)
+                                                    navigationType: .newFlow(hideBar: true))
+        welcomeCoordinator.delegate = self
         setRootChild(coordinator: welcomeCoordinator, hideBar: true)
     }
 
     private func setUpHomeFlow() {
         let homeCoordinator = HomeCoordinator(router: router,
                                               navigationType: .newFlow(hideBar: true),
-                                              appStateObserver: appStateObserver)
+                                              sessionStorageProvider: sessionStorage)
+        homeCoordinator.delegate = self
         setRootChild(coordinator: homeCoordinator, hideBar: true)
+    }
+}
+
+// MARK: - WelcomeCoordinatorDelegate
+extension AppCoordinator: WelcomeCoordinatorDelegate {
+    func welcomeCoordinator(didFinishWith loginData: LoginData) {
+        switch loginData {
+        case .credential:
+            fatalError("Impossible case. Make sure minimumAccountType is set as internal in LoginAndSignUp")
+        case .userData(let userData):
+            sessionStorage.bind(userData: userData)
+            appStateObserver.updateState(.loggedIn)
+        }
+    }
+}
+
+// MARK: - HomeCoordinatorDelegate
+extension AppCoordinator: HomeCoordinatorDelegate {
+    func homeCoordinatorDidSignOut() {
+        sessionStorage.signOut()
+        appStateObserver.updateState(.loggedOut)
     }
 }

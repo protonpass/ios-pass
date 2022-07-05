@@ -1,0 +1,50 @@
+{
+  "name": "ProtonCore-Settings-V5",
+  "module_name": "ProtonCore_Settings",
+  "version": "3.19.1",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": null,
+    "tag": "3.19.1"
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "swift_versions": [
+    "5.4"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "default_subspecs": [
+
+  ],
+  "dependencies": {
+    "ProtonCore-UIFoundations-V5": [
+
+    ]
+  },
+  "source_files": "libraries/Settings/Sources/**/*.swift",
+  "resource_bundles": {
+    "Resources-Settings": [
+      "libraries/Settings/Resources/*.lproj/*.strings"
+    ]
+  },
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "libraries/Settings/Tests/**/*.swift"
+    }
+  ],
+  "swift_version": "5.4"
+}

@@ -97,6 +97,8 @@ PODS:
     - ProtonCore-Networking/Alamofire (= 3.19.1)
     - ProtonCore-Utilities (= 3.19.1)
     - TrustKit
+  - ProtonCore-Settings-V5 (3.19.1):
+    - ProtonCore-UIFoundations-V5
   - ProtonCore-UIFoundations-V5 (3.19.1):
     - ProtonCore-CoreTranslation (= 3.19.1)
     - ProtonCore-CoreTranslation-V5 (= 3.19.1)
@@ -131,6 +133,7 @@ DEPENDENCIES:
   - "ProtonCore-Payments/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
   - "ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
   - "ProtonCore-Services/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
+  - "ProtonCore-Settings-V5 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
   - "ProtonCore-UIFoundations-V5 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.19.1`)"
 
@@ -209,6 +212,9 @@ EXTERNAL SOURCES:
   ProtonCore-Services:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.19.1
+  ProtonCore-Settings-V5:
+    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+    :tag: 3.19.1
   ProtonCore-UIFoundations-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.19.1
@@ -283,6 +289,9 @@ CHECKOUT OPTIONS:
   ProtonCore-Services:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.19.1
+  ProtonCore-Settings-V5:
+    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+    :tag: 3.19.1
   ProtonCore-UIFoundations-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.19.1
@@ -316,11 +325,12 @@ SPEC CHECKSUMS:
   ProtonCore-Payments: 006c2fa7284d61781f531583c434c910569a2a0c
   ProtonCore-PaymentsUI-V5: b63cdee1b94a572309330aa4cc45ae0695c2ae1d
   ProtonCore-Services: 41866a7e6971aab6c95828c381052b3cb9fa93f7
+  ProtonCore-Settings-V5: fa9fe52c148e44a60d96fda8c1c3c469ee58a12b
   ProtonCore-UIFoundations-V5: 2072e2d8964e6b0f20c5b03f305e30587156ea27
   ProtonCore-Utilities: f5353ad7228c494bb19ce4b1342b84f8dad81671
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   TrustKit: 610b8c71c07914756dd74c380040a3408a747798
 
-PODFILE CHECKSUM: 63ee3d4e24440058a45ea6f1bb72c38ff1652721
+PODFILE CHECKSUM: 1e59346d7e15baf67ec70ef60eb37edeb89880ba
 
 COCOAPODS: 1.11.3
