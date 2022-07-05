@@ -241,12 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "有什麼我們能幫忙的地方？";
 
-/* *
- *  Human verification */
-"Human verification" = "真人驗證";
-
 /* Title */
-"Human Verification" = "Human verification";
+"Human Verification" = "真人驗證";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "若您在建立帳號時遇上問題，請提出邀請要求，我們會在1個工作天內回覆。";

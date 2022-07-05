@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-LoginUI-V5",
   "module_name": "ProtonCore_LoginUI",
-  "version": "3.19.1",
+  "version": "3.20.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -14,7 +14,7 @@
   },
   "source": {
     "git": null,
-    "tag": "3.19.1"
+    "tag": "3.20.0"
   },
   "platforms": {
     "ios": "11.0"
@@ -28,25 +28,25 @@
   "frameworks": "UIKit",
   "dependencies": {
     "ProtonCore-Log": [
-      "3.19.1"
+      "3.20.0"
     ],
     "ProtonCore-OpenPGP": [
-      "3.19.1"
+      "3.20.0"
     ],
     "ProtonCore-Foundations": [
-      "3.19.1"
+      "3.20.0"
     ],
     "ProtonCore-UIFoundations-V5": [
-      "3.19.1"
+      "3.20.0"
     ],
     "ProtonCore-CoreTranslation": [
-      "3.19.1"
+      "3.20.0"
     ],
     "ProtonCore-Challenge": [
-      "3.19.1"
+      "3.20.0"
     ],
     "ProtonCore-DataModel": [
-      "3.19.1"
+      "3.20.0"
     ],
     "lottie-ios": [
 
@@ -64,34 +64,34 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication/UsingCrypto+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Login/UsingCrypto+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Payments/UsingCrypto+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-HumanVerification-V5/Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-TestingToolkit/TestData/Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI-V5/UsingCrypto+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -108,34 +108,34 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication/UsingCrypto+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/UsingCrypto+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Login/UsingCrypto+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Payments/UsingCrypto+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-PaymentsUI-V5/UsingCrypto+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-HumanVerification-V5/AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-TestingToolkit/TestData/AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI-V5/UsingCrypto+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -152,34 +152,34 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto-VPN": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication/UsingCryptoVPN+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/UsingCryptoVPN+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Login/UsingCryptoVPN+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Payments/UsingCryptoVPN+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-PaymentsUI-V5/UsingCryptoVPN+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-HumanVerification-V5/Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-TestingToolkit/TestData/Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI-V5/UsingCryptoVPN+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -196,34 +196,34 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto-VPN": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication/UsingCryptoVPN+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/UsingCryptoVPN+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Login/UsingCryptoVPN+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Payments/UsingCryptoVPN+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-PaymentsUI-V5/UsingCryptoVPN+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-HumanVerification-V5/AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-TestingToolkit/TestData/AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI-V5/UsingCryptoVPN+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -245,25 +245,25 @@
       "name": "UsingCrypto+Alamofire",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication/UsingCrypto+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Login/UsingCrypto+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Payments/UsingCrypto+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-HumanVerification-V5/Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ]
       },
       "source_files": "libraries/LoginUI/Sources/**/*.swift",
@@ -283,25 +283,25 @@
       "name": "UsingCrypto+AFNetworking",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication/UsingCrypto+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/UsingCrypto+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Login/UsingCrypto+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Payments/UsingCrypto+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-PaymentsUI-V5/UsingCrypto+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-HumanVerification-V5/AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ]
       },
       "source_files": "libraries/LoginUI/Sources/**/*.swift",
@@ -321,25 +321,25 @@
       "name": "UsingCryptoVPN+Alamofire",
       "dependencies": {
         "ProtonCore-Crypto-VPN": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication/UsingCryptoVPN+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/UsingCryptoVPN+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Login/UsingCryptoVPN+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Payments/UsingCryptoVPN+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-PaymentsUI-V5/UsingCryptoVPN+Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-HumanVerification-V5/Alamofire": [
-          "3.19.1"
+          "3.20.0"
         ]
       },
       "source_files": "libraries/LoginUI/Sources/**/*.swift",
@@ -359,25 +359,25 @@
       "name": "UsingCryptoVPN+AFNetworking",
       "dependencies": {
         "ProtonCore-Crypto-VPN": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication/UsingCryptoVPN+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/UsingCryptoVPN+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Login/UsingCryptoVPN+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-Payments/UsingCryptoVPN+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-PaymentsUI-V5/UsingCryptoVPN+AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ],
         "ProtonCore-HumanVerification-V5/AFNetworking": [
-          "3.19.1"
+          "3.20.0"
         ]
       },
       "source_files": "libraries/LoginUI/Sources/**/*.swift",

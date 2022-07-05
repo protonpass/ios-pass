@@ -241,12 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Jak możemy pomóc?";
 
-/* *
- *  Human verification */
-"Human verification" = "Weryfikacja antyspamowa";
-
 /* Title */
-"Human Verification" = "Human verification";
+"Human Verification" = "Weryfikacja antyspamowa";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Jeśli masz problem z utworzeniem konta, poproś o zaproszenie, a my odpowiemy w ciągu jednego dnia roboczego.";

@@ -14,7 +14,7 @@
 "A networking error has occured" = "Ett nätverksfel har uppstått";
 
 /* Unfinished operation error dialog description */
-"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Ett köp för ett Proton-paket har redan påbörjats. Tryck fortsätt för att slutföra betalningshanteringen och skapa ditt konto";
 
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "En återställningsmetod hjälper dig att komma åt ditt konto om du glömmer ditt lösenord eller blir utelåst från ditt konto.";
@@ -241,12 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Hur kan vi hjälpa dig?";
 
-/* *
- *  Human verification */
-"Human verification" = "Mänsklig verifiering";
-
 /* Title */
-"Human Verification" = "Human verification";
+"Human Verification" = "Mänsklig verifiering";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Om du har problem med att skapa ditt konto, begär en inbjudan så svarar vi inom en arbetsdag.";

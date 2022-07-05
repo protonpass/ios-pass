@@ -225,10 +225,10 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
         completionHandler?(.close)
     }
     
-    func userDidSelectPlan(plan: PlanPresentation, completionHandler: @escaping () -> Void) {
+    func userDidSelectPlan(plan: PlanPresentation, addCredits: Bool, completionHandler: @escaping () -> Void) {
         // unregister from being notified on the transactions — you will get notified via `buyPlan` completion block
         storeKitManager.stopBeingNotifiedWhenTransactionsWaitingForTheSignupAppear()
-        purchaseManager.buyPlan(plan: plan.accountPlan) { [weak self] callback in
+        purchaseManager.buyPlan(plan: plan.accountPlan, addCredits: addCredits) { [weak self] callback in
             completionHandler()
             guard let self = self else { return }
             switch callback {

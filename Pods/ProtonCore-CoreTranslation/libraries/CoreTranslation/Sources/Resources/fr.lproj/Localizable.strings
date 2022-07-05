@@ -195,7 +195,7 @@
 "Enter the verification code that was sent to %@" = "Saisissez le code de vérification que nous avons envoyé à %@";
 
 /* Enter email code label */
-"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Saisissez le code de vérification qui a été envoyé à %@. Si vous ne trouvez pas le message dans votre boîte de réception, vérifiez dans votre dossier Indésirables/spam.";
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Saisissez le code de vérification qui a été envoyé à %@. Si vous ne trouvez pas le message dans votre boîte de réception, vérifiez dans votre dossier indésirables/spam.";
 
 /* Login screen subtitle */
 "Enter your Proton Account details." = "Saisissez les informations de votre compte Proton.";
@@ -241,12 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Comment pouvons-nous vous aider ?";
 
-/* *
- *  Human verification */
-"Human verification" = "Vérification humaine";
-
 /* Title */
-"Human Verification" = "Human verification";
+"Human Verification" = "Vérification humaine";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Si vous rencontrez des difficultés à créer votre compte, veuillez demander une invitation et nous vous répondrons dans un délai d'un jour ouvrable.";

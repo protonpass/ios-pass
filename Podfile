@@ -3,7 +3,7 @@ def proton_core_path
 end
 
 def proton_core_version
-  "3.19.1"
+  "3.20.0"
 end
 
 def pmtest_path

@@ -176,7 +176,7 @@
 			<string>%d か国</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@SERVERS@ in %#@COUNTRIES@</string>
+		<string>%#@COUNTRIES@ か国にある %#@SERVERS@ 台のサーバー</string>
 		<key>SERVERS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
