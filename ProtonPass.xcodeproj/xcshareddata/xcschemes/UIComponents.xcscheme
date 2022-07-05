@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "1330"
-   version = "1.7">
+   version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "35E50660286F870500A3F6EA"
-               BuildableName = "Client.framework"
-               BlueprintName = "Client"
-               ReferencedContainer = "container:Proton Key.xcodeproj">
+               BlueprintIdentifier = "35E506A9286F920300A3F6EA"
+               BuildableName = "UIComponents.framework"
+               BlueprintName = "UIComponents"
+               ReferencedContainer = "container:ProtonPass.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -27,12 +27,8 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <TestPlans>
-         <TestPlanReference
-            reference = "container:TestPlans/Client.xctestplan"
-            default = "YES">
-         </TestPlanReference>
-      </TestPlans>
+      <Testables>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug-Black"
@@ -54,10 +50,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "35E50660286F870500A3F6EA"
-            BuildableName = "Client.framework"
-            BlueprintName = "Client"
-            ReferencedContainer = "container:Proton Key.xcodeproj">
+            BlueprintIdentifier = "35E506A9286F920300A3F6EA"
+            BuildableName = "UIComponents.framework"
+            BlueprintName = "UIComponents"
+            ReferencedContainer = "container:ProtonPass.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

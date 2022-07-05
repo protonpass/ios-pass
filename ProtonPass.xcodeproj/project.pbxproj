@@ -156,8 +156,8 @@
 		356C2AB328731A630020F577 /* SessionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStorage.swift; sourceTree = "<group>"; };
 		356C2AB7287329400020F577 /* PKCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCredential.swift; sourceTree = "<group>"; };
 		35E50636286F819F00A3F6EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		35E5063B286F819F00A3F6EA /* Proton Key.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Key.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		35E50641286F819F00A3F6EA /* Proton Key.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Key.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		35E5063B286F819F00A3F6EA /* Proton Pass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Pass.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		35E50641286F819F00A3F6EA /* Proton Pass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Pass.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35E50643286F819F00A3F6EA /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		35E50653286F82DC00A3F6EA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35E50655286F830A00A3F6EA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -344,8 +344,8 @@
 		35E5063C286F819F00A3F6EA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				35E5063B286F819F00A3F6EA /* Proton Key.app */,
-				35E50641286F819F00A3F6EA /* Proton Key.app */,
+				35E5063B286F819F00A3F6EA /* Proton Pass.app */,
+				35E50641286F819F00A3F6EA /* Proton Pass.app */,
 				35E50661286F870500A3F6EA /* Client.framework */,
 				35E50668286F870500A3F6EA /* ClientTests.xctest */,
 				35E50684286F87A600A3F6EA /* Core.framework */,
@@ -609,7 +609,7 @@
 			);
 			name = iOS;
 			productName = "Proton Key (iOS)";
-			productReference = 35E5063B286F819F00A3F6EA /* Proton Key.app */;
+			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
 			productType = "com.apple.product-type.application";
 		};
 		35E50640286F819F00A3F6EA /* macOS */ = {
@@ -628,7 +628,7 @@
 			);
 			name = macOS;
 			productName = "Proton Key (macOS)";
-			productReference = 35E50641286F819F00A3F6EA /* Proton Key.app */;
+			productReference = 35E50641286F819F00A3F6EA /* Proton Pass.app */;
 			productType = "com.apple.product-type.application";
 		};
 		35E50660286F870500A3F6EA /* Client */ = {
@@ -770,7 +770,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 35E50632286F819F00A3F6EA /* Build configuration list for PBXProject "Proton Key" */;
+			buildConfigurationList = 35E50632286F819F00A3F6EA /* Build configuration list for PBXProject "ProtonPass" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1349,8 +1349,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.ios;
-				PRODUCT_NAME = "Proton Key";
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
+				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1384,8 +1384,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.ios;
-				PRODUCT_NAME = "Proton Key";
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
+				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1419,8 +1419,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.macos;
-				PRODUCT_NAME = "Proton Key";
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
+				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1453,8 +1453,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.macos;
-				PRODUCT_NAME = "Proton Key";
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
+				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1484,7 +1484,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.client;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.client;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1520,7 +1520,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.client;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.client;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1601,7 +1601,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.core;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.core;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1637,7 +1637,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.core;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.core;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1717,7 +1717,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.uicomponents;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.uicomponents;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1752,7 +1752,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.uicomponents;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.uicomponents;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1848,8 +1848,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.ios;
-				PRODUCT_NAME = "Proton Key";
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
+				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1883,8 +1883,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.macos;
-				PRODUCT_NAME = "Proton Key";
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
+				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1915,7 +1915,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.client;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.client;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1973,7 +1973,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.core;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.core;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -2030,7 +2030,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.uicomponents;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.uicomponents;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -2119,8 +2119,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.ios;
-				PRODUCT_NAME = "Proton Key";
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
+				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -2154,8 +2154,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.macos;
-				PRODUCT_NAME = "Proton Key";
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
+				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -2185,7 +2185,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.client;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.client;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -2244,7 +2244,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.core;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.core;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -2302,7 +2302,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.uicomponents;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.uicomponents;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -2318,7 +2318,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		35E50632286F819F00A3F6EA /* Build configuration list for PBXProject "Proton Key" */ = {
+		35E50632286F819F00A3F6EA /* Build configuration list for PBXProject "ProtonPass" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				35E5064A286F819F00A3F6EA /* Debug-Black */,

@@ -21,7 +21,7 @@
 import ProtonCore_Keymaker
 
 public final class PKKeychain: Keychain {
-    public static let shared = PKKeychain(service: "me.proton.key", accessGroup: Constants.keychainGroup)
+    public static let shared = PKKeychain(service: "me.proton.pass", accessGroup: Constants.keychainGroup)
 }
 
 extension PKKeychain: SettingsProvider {

@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "35E5063A286F819F00A3F6EA"
-               BuildableName = "Proton Key.app"
-               BlueprintName = "iOS"
-               ReferencedContainer = "container:Proton Key.xcodeproj">
+               BlueprintIdentifier = "35E50640286F819F00A3F6EA"
+               BuildableName = "Proton Pass.app"
+               BlueprintName = "macOS"
+               ReferencedContainer = "container:ProtonPass.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,26 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "35E5068A286F87A700A3F6EA"
-               BuildableName = "CoreTests.xctest"
-               BlueprintName = "CoreTests"
-               ReferencedContainer = "container:Proton Key.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "35E50667286F870500A3F6EA"
-               BuildableName = "ClientTests.xctest"
-               BlueprintName = "ClientTests"
-               ReferencedContainer = "container:Proton Key.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -64,10 +44,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "35E5063A286F819F00A3F6EA"
-            BuildableName = "Proton Key.app"
-            BlueprintName = "iOS"
-            ReferencedContainer = "container:Proton Key.xcodeproj">
+            BlueprintIdentifier = "35E50640286F819F00A3F6EA"
+            BuildableName = "Proton Pass.app"
+            BlueprintName = "macOS"
+            ReferencedContainer = "container:ProtonPass.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -81,10 +61,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "35E5063A286F819F00A3F6EA"
-            BuildableName = "Proton Key.app"
-            BlueprintName = "iOS"
-            ReferencedContainer = "container:Proton Key.xcodeproj">
+            BlueprintIdentifier = "35E50640286F819F00A3F6EA"
+            BuildableName = "Proton Pass.app"
+            BlueprintName = "macOS"
+            ReferencedContainer = "container:ProtonPass.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
