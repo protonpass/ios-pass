@@ -23,13 +23,13 @@ import ProtonCore_Keymaker
 import ProtonCore_Login
 
 public protocol SessionStorageProvider: AnyObject {
-    var credential: PKCredential? { get }
+    var credential: PPCredential? { get }
     var salts: [KeySalt]? { get }
     var passphrases: [String: String]? { get }
     var addresses: [Address]? { get }
     var user: User? { get }
 
-    func setCredential(_ credential: PKCredential)
+    func setCredential(_ credential: PPCredential)
     func setSalts(_ salts: [KeySalt])
     func setPassphrases(_ passphrases: [String: String])
     func setAddresses(_ addresses: [Address])
@@ -40,13 +40,13 @@ public protocol SessionStorageProvider: AnyObject {
 
 /// Dummy SessionStorageProvider serves for preview purposes
 public final class PreviewSessionStorage: SessionStorageProvider {
-    public var credential: PKCredential?
+    public var credential: PPCredential?
     public var salts: [KeySalt]?
     public var passphrases: [String: String]?
     public var addresses: [Address]?
     public var user: User?
 
-    public func setCredential(_ credential: PKCredential) {}
+    public func setCredential(_ credential: PPCredential) {}
     public func setSalts(_ salts: [KeySalt]) {}
     public func setPassphrases(_ passphrases: [String: String]) {}
     public func setAddresses(_ addresses: [Address]) {}
@@ -79,7 +79,7 @@ public final class SessionStorage: SessionStorageProvider {
     // swiftlint:disable let_var_whitespace
     // MARK: - SessionStorageProvider
     @KeychainStorage(key: "credential")
-    public private(set) var credential: PKCredential?
+    public private(set) var credential: PPCredential?
 
     @KeychainStorage(key: "salts")
     public private(set) var salts: [KeySalt]?
@@ -94,7 +94,7 @@ public final class SessionStorage: SessionStorageProvider {
     public private(set) var user: User?
     // swiftlint:enable let_var_whitespace
 
-    public func setCredential(_ credential: PKCredential) {
+    public func setCredential(_ credential: PPCredential) {
         self.credential = credential
     }
 

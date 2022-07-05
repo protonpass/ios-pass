@@ -1,5 +1,5 @@
 //
-// PKCredential.swift
+// PPCredential.swift
 // Proton Pass - Created on 04/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,7 +21,7 @@
 import ProtonCore_Login
 import ProtonCore_Networking
 
-public struct PKCredential: Codable {
+public struct PPCredential: Codable {
     public let uid: String
     public let accessToken: String
     public let refreshToken: String

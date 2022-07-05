@@ -71,7 +71,7 @@ final class WelcomeCoordinator: Coordinator {
     override init(router: Router,
                   navigationType: Coordinator.NavigationType) {
         self.apiServiceDelegate = AnonymousServiceManager()
-        self.doh = DohKey(bundle: .main)
+        self.doh = PPDoH(bundle: .main)
         super.init(router: router, navigationType: navigationType)
     }
 

@@ -1,5 +1,5 @@
 //
-// PKKeychain.swift
+// PPKeychain.swift
 // Proton Pass - Created on 03/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,11 +20,13 @@
 
 import ProtonCore_Keymaker
 
-public final class PKKeychain: Keychain {
-    public static let shared = PKKeychain(service: "me.proton.pass", accessGroup: Constants.keychainGroup)
+public final class PPKeychain: Keychain {
+    public init() {
+        super.init(service: "me.proton.pass", accessGroup: Constants.keychainGroup)
+    }
 }
 
-extension PKKeychain: SettingsProvider {
+extension PPKeychain: SettingsProvider {
     private static let LockTimeKey = "PKKeychain.LockTimeKey"
 
     public var lockTime: AutolockTimeout {

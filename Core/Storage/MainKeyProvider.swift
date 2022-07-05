@@ -32,7 +32,7 @@ extension Keymaker: MainKeyProvider {}
 // MARK: - Unlocking
 extension Keymaker: PinUnlocker {
     public func pinUnlock(pin: String, completion: @escaping UnlockResult) {
-        obtainMainKey(with: PinProtection(pin: pin, keychain: PKKeychain.shared)) { key in
+        obtainMainKey(with: PinProtection(pin: pin, keychain: PPKeychain())) { key in
             guard let key = key, !key.isEmpty else {
                 print("Tried to unlock with PIN ❌.")
                 return completion(false)
@@ -48,7 +48,7 @@ extension Keymaker: PinLocker { }
 
 extension Keymaker: PinLockActivator {
     public func activatePin(pin: String, completion: @escaping (Bool) -> Void) {
-        let protector = PinProtection(pin: pin, keychain: PKKeychain.shared)
+        let protector = PinProtection(pin: pin, keychain: PPKeychain())
         activate(protector) { success in
             let result = success ? "succeed ✅" : "failed ❌"
             completion(success)
@@ -59,7 +59,7 @@ extension Keymaker: PinLockActivator {
 
 extension Keymaker: PinLockDeactivator {
     public func deactivatePin(completion: @escaping (Bool) -> Void) {
-        let protector = PinProtection(pin: "12345", keychain: PKKeychain.shared)
+        let protector = PinProtection(pin: "12345", keychain: PPKeychain())
         let success = deactivate(protector)
         let result = success ? "succeed ✅" : "failed ❌"
         completion(success)
@@ -71,7 +71,7 @@ extension Keymaker: BioLocker { }
 
 extension Keymaker: BioLockActivator {
     public func activateBio(completion: @escaping (Bool) -> Void) {
-        let protector = BioProtection(keychain: PKKeychain.shared)
+        let protector = BioProtection(keychain: PPKeychain())
         activate(protector) { success in
             let result = success ? "succeed ✅" : "failed ❌"
             completion(success)
@@ -82,7 +82,7 @@ extension Keymaker: BioLockActivator {
 
 extension Keymaker: BioLockDeactivator {
     public func deactivateBio(completion: @escaping (Bool) -> Void) {
-        let protector = BioProtection(keychain: PKKeychain.shared)
+        let protector = BioProtection(keychain: PPKeychain())
         let success = deactivate(protector)
         let result = success ? "succeed ✅" : "failed ❌"
         completion(success)
@@ -92,7 +92,7 @@ extension Keymaker: BioLockDeactivator {
 
 extension Keymaker: BioUnlocker {
     public func bioUnlock(completion: @escaping UnlockResult) {
-        obtainMainKey(with: BioProtection(keychain: PKKeychain.shared)) { key in
+        obtainMainKey(with: BioProtection(keychain: PPKeychain())) { key in
             guard let key = key, !key.isEmpty else {
                 print("Tried to unlock with BIO ❌.")
                 return completion(false)
@@ -105,10 +105,10 @@ extension Keymaker: BioUnlocker {
 
 extension Keymaker: AutoLocker {
     public var autolockerTimeout: LockTime {
-        LockTime(rawValue: PKKeychain.shared.lockTime.rawValue)
+        LockTime(rawValue: PPKeychain().lockTime.rawValue)
     }
 
     public func setAutolockerTimeout(_ timeout: LockTime) {
-        PKKeychain.shared.lockTime = .init(rawValue: timeout.rawValue)
+        PPKeychain().lockTime = .init(rawValue: timeout.rawValue)
     }
 }

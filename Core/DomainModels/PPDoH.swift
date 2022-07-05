@@ -1,5 +1,5 @@
 //
-// PKDoh.swift
+// PPDoH.swift
 // Proton Pass - Created on 02/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -31,7 +31,7 @@ public enum BuildConfigKey: String {
     case defaultPath = "DEFAULT_PATH"
 }
 
-public final class DohKey: DoH, ServerConfig {
+public final class PPDoH: DoH, ServerConfig {
     public let signupDomain: String
     public let captchaHost: String
     public let humanVerificationV3Host: String

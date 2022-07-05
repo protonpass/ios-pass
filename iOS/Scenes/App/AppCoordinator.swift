@@ -33,7 +33,7 @@ final class AppCoordinator: Coordinator {
     init(appStateObserver: AppStateObserver,
          router: Router) {
         self.appStateObserver = appStateObserver
-        let keychain = PKKeychain.shared
+        let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         self.sessionStorage = .init(mainKeyProvider: keymaker, keychain: keychain)
         super.init(router: router, navigationType: .newFlow(hideBar: true))
