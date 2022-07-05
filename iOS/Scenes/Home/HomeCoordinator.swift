@@ -22,8 +22,13 @@ import Core
 import SwiftUI
 import UIKit
 
+protocol HomeCoordinatorDelegate: AnyObject {
+    func homeCoordinatorDidSignOut()
+}
+
 final class HomeCoordinator: Coordinator {
-    private let appStateObserver: AppStateObserver
+    let sessionStorageProvider: SessionStorageProvider
+    weak var delegate: HomeCoordinatorDelegate?
 
     private lazy var homeViewController: UIViewController = {
         let homeView = HomeView(coordinator: self)
@@ -32,24 +37,24 @@ final class HomeCoordinator: Coordinator {
 
     init(router: Router,
          navigationType: Coordinator.NavigationType,
-         appStateObserver: AppStateObserver) {
-        self.appStateObserver = appStateObserver
+         sessionStorageProvider: SessionStorageProvider) {
+        self.sessionStorageProvider = sessionStorageProvider
         super.init(router: router, navigationType: navigationType)
     }
 
     override var root: Presentable { homeViewController }
 
-    func logOut() {
-        appStateObserver.updateState(.loggedOut)
+    func signOut() {
+        delegate?.homeCoordinatorDidSignOut()
     }
 }
 
 extension HomeCoordinator {
-    /// For previews purposes
+    /// For preview purposes
     static var preview: HomeCoordinator {
         .init(router: .init(),
               navigationType: .currentFlow,
-              appStateObserver: .init())
+              sessionStorageProvider: .preview)
     }
 }
 
@@ -59,7 +64,8 @@ struct HomeView: View {
     var body: some View {
         VStack {
             Text("Welcome to Proton Key")
-            Button("Log out", action: coordinator.logOut)
+            Text(coordinator.sessionStorageProvider.user?.email ?? "")
+            Button("Sign out", action: coordinator.signOut)
         }
     }
 }

@@ -23,6 +23,12 @@ import UIKit
 
 /// Coordinator is the protocol every coordinator conforms to.
 open class Coordinator: NSObject {
+    deinit {
+        #if DEBUG
+        print("\(Self.self) is deallocated")
+        #endif
+    }
+
     public enum NavigationType {
         /// Push is considered on current flow
         case currentFlow

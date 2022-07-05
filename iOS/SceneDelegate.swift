@@ -20,14 +20,14 @@
 
 import Core
 import SwiftUI
-import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private let appNavigationController = UINavigationController()
     private lazy var appRouter = Router(navigationController: self.appNavigationController)
-    private lazy var appCoordinator = AppCoordinator(appStateObserver: AppStateObserver(), router: appRouter)
+    private lazy var appCoordinator = AppCoordinator(appStateObserver: AppStateObserver(),
+                                                     router: appRouter)
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
