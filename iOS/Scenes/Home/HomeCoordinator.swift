@@ -47,6 +47,23 @@ final class HomeCoordinator: Coordinator {
     func signOut() {
         delegate?.homeCoordinatorDidSignOut()
     }
+
+    func handleSidebarItem(_ sidebarItem: SidebarItem) {
+        switch sidebarItem {
+        case .settings:
+            break
+        case .trash:
+            break
+        case .help:
+            break
+        case .signOut:
+            signOut()
+        }
+    }
+
+    func showUserSwitcher() {
+        print(#function)
+    }
 }
 
 extension HomeCoordinator {

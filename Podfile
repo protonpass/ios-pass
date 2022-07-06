@@ -24,6 +24,10 @@ def core_and_ios_pods
   pod 'ProtonCore-Login/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
 end
 
+def ios_and_uicomponents
+  pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
+end
+
 target 'Client' do
   platform :ios, '14.0'
   use_frameworks!
@@ -45,11 +49,18 @@ target 'Core' do
 
 end
 
+target 'UIComponents' do
+  platform :ios, '14.0'
+  use_frameworks!
+  ios_and_uicomponents
+end
+
 target 'iOS' do
   platform :ios, '14.0'
   use_frameworks!
 
   core_and_ios_pods
+  ios_and_uicomponents
   pod 'ProtonCore-OpenPGP', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
@@ -67,6 +78,7 @@ target 'iOS' do
   pod 'ProtonCore-Networking/Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-LoginUI-V5/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
+
 
 end
 
