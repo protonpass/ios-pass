@@ -40,6 +40,9 @@ PODS:
   - ProtonCore-Keymaker/UsingCrypto (3.20.0):
     - EllipticCurveKeyPair (~> 2.0)
     - ProtonCore-Crypto (= 3.20.0)
+  - ProtonCore-KeyManager/UsingCrypto (3.20.0):
+    - ProtonCore-Crypto (= 3.20.0)
+    - ProtonCore-DataModel (= 3.20.0)
   - ProtonCore-Log (3.20.0)
   - "ProtonCore-Login/UsingCrypto+Alamofire (3.20.0)":
     - "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire (= 3.20.0)"
@@ -125,6 +128,7 @@ DEPENDENCIES:
   - "ProtonCore-Hash (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
   - "ProtonCore-HumanVerification-V5/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
   - "ProtonCore-Keymaker/UsingCrypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
+  - "ProtonCore-KeyManager/UsingCrypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
   - "ProtonCore-Log (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
   - "ProtonCore-Login/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
   - "ProtonCore-LoginUI-V5/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
@@ -186,6 +190,9 @@ EXTERNAL SOURCES:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.20.0
   ProtonCore-Keymaker:
+    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+    :tag: 3.20.0
+  ProtonCore-KeyManager:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.20.0
   ProtonCore-Log:
@@ -265,6 +272,9 @@ CHECKOUT OPTIONS:
   ProtonCore-Keymaker:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.20.0
+  ProtonCore-KeyManager:
+    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+    :tag: 3.20.0
   ProtonCore-Log:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.20.0
@@ -317,6 +327,7 @@ SPEC CHECKSUMS:
   ProtonCore-Hash: 7d56e60e2d538fe36bc3c8618eca681b04f387e4
   ProtonCore-HumanVerification-V5: de77ee2b5c77b023c6c605ae161aee90075ef33a
   ProtonCore-Keymaker: 4572c442c141d798f97db2b9e966de1c403cb1dc
+  ProtonCore-KeyManager: b70c9ea00cc89b83aae0ff4fafa290905caf5ff4
   ProtonCore-Log: 107cd1e6d72d5ebde128a7e50f5e676c940af7f2
   ProtonCore-Login: aca7a9e9e17e2e3b77b68d157dfd5e40265a62c5
   ProtonCore-LoginUI-V5: 22094ee9ccc1874e9ea10ac12786607ca73c8e0f
@@ -331,6 +342,6 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   TrustKit: 610b8c71c07914756dd74c380040a3408a747798
 
-PODFILE CHECKSUM: 9628fbeabccd54e309118c1eefe1a900090beed2
+PODFILE CHECKSUM: 0ae96f8b98383a6b4bb083f40409f8940540ee81
 
 COCOAPODS: 1.11.3

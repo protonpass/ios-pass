@@ -19,6 +19,7 @@ def core_and_ios_pods
   pod 'ProtonCore-Utilities', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-DataModel', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Crypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Keymaker/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Login/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
 end
@@ -36,6 +37,7 @@ target 'Core' do
   use_frameworks!
 
   core_and_ios_pods
+  pod 'ProtonCore-KeyManager/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Settings-V5', :git => proton_core_path, :tag => proton_core_version
 
   target 'CoreTests' do
@@ -54,7 +56,6 @@ target 'iOS' do
   pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-CoreTranslation-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Challenge', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Crypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Authentication/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Payments/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
