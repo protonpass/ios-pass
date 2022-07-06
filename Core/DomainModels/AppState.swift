@@ -23,3 +23,14 @@ import Foundation
 public enum AppState {
     case loggedOut, loggedIn
 }
+
+/// This class is meant to observe the user state changes.
+public class AppStateObserver: ObservableObject {
+    @Published public private(set) var appState: AppState = .loggedOut
+
+    public init() {}
+
+    public func updateAppState(_ appState: AppState) {
+        self.appState = appState
+    }
+}

@@ -27,6 +27,7 @@ import UIKit
 final class AppCoordinator: Coordinator {
     private let appStateObserver: AppStateObserver
     private let sessionStorage: SessionStorage
+    private let keymaker: Keymaker
 
     override var root: Presentable { router.toPresentable() }
 
@@ -36,18 +37,19 @@ final class AppCoordinator: Coordinator {
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         self.sessionStorage = .init(mainKeyProvider: keymaker, keychain: keychain)
+        self.keymaker = keymaker
         super.init(router: router, navigationType: .newFlow(hideBar: true))
 
         bindAppState()
         bindDeeplink()
 
         if sessionStorage.isSignedIn() {
-            appStateObserver.updateState(.loggedIn)
+            appStateObserver.updateAppState(.loggedIn)
         }
     }
 
     private func bindAppState() {
-        appStateObserver.$currentState
+        appStateObserver.$appState
             .receive(on: DispatchQueue.main)
             .sink { [weak self] appState in
                 guard let self = self else { return }
@@ -57,7 +59,8 @@ final class AppCoordinator: Coordinator {
                 case .loggedIn:
                     self.setUpHomeFlow()
                 }
-            }.store(in: &cancellables)
+            }
+            .store(in: &cancellables)
     }
 
     private func bindDeeplink() {
@@ -92,6 +95,11 @@ final class AppCoordinator: Coordinator {
         homeCoordinator.delegate = self
         setRootChild(coordinator: homeCoordinator, hideBar: true)
     }
+
+    private func signOut() {
+        sessionStorage.signOut()
+        appStateObserver.updateAppState(.loggedOut)
+    }
 }
 
 // MARK: - WelcomeCoordinatorDelegate
@@ -102,7 +110,7 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
             fatalError("Impossible case. Make sure minimumAccountType is set as internal in LoginAndSignUp")
         case .userData(let userData):
             sessionStorage.bind(userData: userData)
-            appStateObserver.updateState(.loggedIn)
+            appStateObserver.updateAppState(.loggedIn)
         }
     }
 }
@@ -110,7 +118,6 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
 // MARK: - HomeCoordinatorDelegate
 extension AppCoordinator: HomeCoordinatorDelegate {
     func homeCoordinatorDidSignOut() {
-        sessionStorage.signOut()
-        appStateObserver.updateState(.loggedOut)
+        signOut()
     }
 }

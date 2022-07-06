@@ -112,3 +112,13 @@ extension Keymaker: AutoLocker {
         PPKeychain().lockTime = .init(rawValue: timeout.rawValue)
     }
 }
+
+extension Keymaker: LockReader {
+    public var isBioProtected: Bool {
+        isProtectorActive(BioProtection.self)
+    }
+
+    public var isPinProtected: Bool {
+        isProtectorActive(PinProtection.self)
+    }
+}

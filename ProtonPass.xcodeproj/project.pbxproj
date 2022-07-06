@@ -47,7 +47,6 @@
 		35E506FD286FB37300A3F6EA /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E506FA286FB37300A3F6EA /* Router.swift */; };
 		35E506FE286FB37300A3F6EA /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E506FB286FB37300A3F6EA /* Presentable.swift */; };
 		35E50702286FB39600A3F6EA /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50700286FB39600A3F6EA /* AppState.swift */; };
-		35E50703286FB39600A3F6EA /* AppStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50701286FB39600A3F6EA /* AppStateObserver.swift */; };
 		35E50707286FB3A600A3F6EA /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50705286FB3A600A3F6EA /* Logger.swift */; };
 		35E50708286FB3A600A3F6EA /* Publisher+Unwrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */; };
 		35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50709286FB44800A3F6EA /* PPDoH.swift */; };
@@ -191,7 +190,6 @@
 		35E506FA286FB37300A3F6EA /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		35E506FB286FB37300A3F6EA /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		35E50700286FB39600A3F6EA /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		35E50701286FB39600A3F6EA /* AppStateObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppStateObserver.swift; sourceTree = "<group>"; };
 		35E50705286FB3A600A3F6EA /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publisher+Unwrap.swift"; sourceTree = "<group>"; };
 		35E50709286FB44800A3F6EA /* PPDoH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPDoH.swift; sourceTree = "<group>"; };
@@ -462,7 +460,6 @@
 			isa = PBXGroup;
 			children = (
 				35E50700286FB39600A3F6EA /* AppState.swift */,
-				35E50701286FB39600A3F6EA /* AppStateObserver.swift */,
 				356C2AB7287329400020F577 /* PPCredential.swift */,
 				35E50709286FB44800A3F6EA /* PPDoH.swift */,
 				356C2AB328731A630020F577 /* SessionStorage.swift */,
@@ -1144,7 +1141,6 @@
 				35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */,
 				35E50702286FB39600A3F6EA /* AppState.swift in Sources */,
 				35E506FE286FB37300A3F6EA /* Presentable.swift in Sources */,
-				35E50703286FB39600A3F6EA /* AppStateObserver.swift in Sources */,
 				356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */,
 				356C2AB428731A630020F577 /* SessionStorage.swift in Sources */,
 				356B21D72870F8F1001220CB /* Constants.swift in Sources */,
