@@ -18,19 +18,45 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct TrashView: View {
-    let coordinator: HomeCoordinator
+    let coordinator: TrashCoordinator
 
     var body: some View {
-        Text("Trash")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    ToggleSidebarButton(action: coordinator.showSidebar)
-                }
+        List {
+            ForEach(0..<30, id: \.self) { index in
+                Text("Item #\(index)")
             }
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                ToggleSidebarButton(action: coordinator.showSidebar)
+            }
+
+            ToolbarItem(placement: .principal) {
+                Text("Trash")
+            }
+
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu(content: {
+                    Button(action: {
+                        print("Empty trash")
+                    }, label: {
+                        Label(title: {
+                            Text("Empty trash")
+                        }, icon: {
+                            Image(uiImage: IconProvider.trash)
+                        })
+                    })
+                }, label: {
+                    Image(uiImage: IconProvider.threeDotsHorizontal)
+                        .foregroundColor(Color(.label))
+                })
+            }
+        }
     }
 }
 

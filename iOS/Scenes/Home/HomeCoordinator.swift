@@ -51,6 +51,7 @@ final class HomeCoordinator {
         return UIHostingController(rootView: sidebarView)
     }()
 
+    // My vaults
     private lazy var myVaultsCoordinator: MyVaultsCoordinator = {
         let myVaultsCoordinator = MyVaultsCoordinator()
         myVaultsCoordinator.delegate = self
@@ -59,11 +60,14 @@ final class HomeCoordinator {
 
     private var myVaultsRootViewController: UIViewController { myVaultsCoordinator.router.toPresentable() }
 
-    private lazy var trashViewNavigationController: UIViewController = {
-        let trashView = TrashView(coordinator: self)
-        let trashViewController = UIHostingController(rootView: trashView)
-        return UINavigationController(rootViewController: trashViewController)
+    // Trash
+    private lazy var trashCoordinator: TrashCoordinator = {
+        let trashCoordinator = TrashCoordinator()
+        trashCoordinator.delegate = self
+        return trashCoordinator
     }()
+
+    private var trashRootViewController: UIViewController { trashCoordinator.router.toPresentable() }
 
     init(sessionStorageProvider: SessionStorageProvider) {
         self.sessionStorageProvider = sessionStorageProvider
@@ -99,7 +103,7 @@ extension HomeCoordinator {
         case .settings:
             break
         case .trash:
-            sideMenuController.setContentViewController(to: trashViewNavigationController,
+            sideMenuController.setContentViewController(to: trashRootViewController,
                                                         animated: true) { [unowned self] in
                 self.sideMenuController.hideMenu()
             }
@@ -137,6 +141,13 @@ extension HomeCoordinator {
 // MARK: - MyVaultsCoordinatorDelegate
 extension HomeCoordinator: MyVaultsCoordinatorDelegate {
     func myVautsCoordinatorWantsToShowSidebar() {
+        showSidebar()
+    }
+}
+
+// MARK: - TrashCoordinatorDelegate
+extension HomeCoordinator: TrashCoordinatorDelegate {
+    func trashCoordinatorWantsToShowSidebar() {
         showSidebar()
     }
 }
