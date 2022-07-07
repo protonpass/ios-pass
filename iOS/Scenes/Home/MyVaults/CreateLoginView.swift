@@ -1,5 +1,5 @@
 //
-// CreateVaultView.swift
+// CreateLoginView.swift
 // Proton Pass - Created on 07/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,12 +21,12 @@
 import ProtonCore_UIFoundations
 import SwiftUI
 
-struct CreateVaultView: View {
+struct CreateLoginView: View {
     let coordinator: MyVaultsCoordinator
 
     var body: some View {
         NavigationView {
-            Text("Create new vault")
+            Text("Create new login")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button(action: coordinator.dismissTopMostModal) {
@@ -36,7 +36,7 @@ struct CreateVaultView: View {
                     }
 
                     ToolbarItem(placement: .principal) {
-                        Text("Create new vault")
+                        Text("Create new login")
                             .fontWeight(.bold)
                     }
 
@@ -54,8 +54,8 @@ struct CreateVaultView: View {
     }
 }
 
-struct CreateVaultView_Previews: PreviewProvider {
+struct CreateLoginView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateVaultView(coordinator: .preview)
+        CreateLoginView(coordinator: .preview)
     }
 }

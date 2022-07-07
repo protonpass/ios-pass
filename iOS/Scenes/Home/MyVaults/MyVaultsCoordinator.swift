@@ -50,7 +50,7 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateVaultView() {
-        let createVaultView = CreateVaultView()
+        let createVaultView = CreateVaultView(coordinator: self)
         router.present(UIHostingController(rootView: createVaultView), animated: true)
     }
 
@@ -58,10 +58,35 @@ final class MyVaultsCoordinator: Coordinator {
         router.toPresentable().presentedViewController?.dismiss(animated: true)
     }
 
+    private func dismissTopMostModalAndPresent(viewController: UIViewController) {
+        let present: () -> Void = { [unowned self] in
+            self.router.toPresentable().present(viewController, animated: true, completion: nil)
+        }
+
+        if let presentedViewController = router.toPresentable().presentedViewController {
+            presentedViewController.dismiss(animated: true, completion: present)
+        } else {
+            present()
+        }
+    }
+
     func handleCreateNewItemOption(_ option: CreateNewItemOption) {
-        let alert = UIAlertController(title: option.title, message: option.detail, preferredStyle: .alert)
-        alert.addAction(.cancel)
-        router.toPresentable().presentedViewController?.present(alert, animated: true)
+        switch option {
+        case .newLogin:
+            let createLoginView = CreateLoginView(coordinator: self)
+            let createLoginViewController = UIHostingController(rootView: createLoginView)
+            dismissTopMostModalAndPresent(viewController: createLoginViewController)
+        case .newAlias:
+            let createAliasView = CreateAliasView(coordinator: self)
+            let createAliasViewController = UIHostingController(rootView: createAliasView)
+            dismissTopMostModalAndPresent(viewController: createAliasViewController)
+        case .newNote:
+            let createNoteView = CreateNoteView(coordinator: self)
+            let createNewNoteController = UIHostingController(rootView: createNoteView)
+            dismissTopMostModalAndPresent(viewController: createNewNoteController)
+        case .generatePassword:
+            break
+        }
     }
 }
 
