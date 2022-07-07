@@ -27,6 +27,10 @@ protocol HomeCoordinatorDelegate: AnyObject {
     func homeCoordinatorDidSignOut()
 }
 
+// swiftlint:disable:next todo
+// TODO: Make width dynamic based on screen orientation
+private let kMenuWidth = UIScreen.main.bounds.width * 4 / 5
+
 final class HomeCoordinator {
     deinit {
         print("\(Self.self) is deallocated")
@@ -42,7 +46,7 @@ final class HomeCoordinator {
     }()
 
     private lazy var sidebarView: UIViewController = {
-        let sidebarView = SidebarView(coordinator: self)
+        let sidebarView = SidebarView(coordinator: self, width: kMenuWidth)
         return UIHostingController(rootView: sidebarView)
     }()
 
@@ -64,7 +68,7 @@ final class HomeCoordinator {
     }
 
     private func setUpSideMenuPreferences() {
-        SideMenuController.preferences.basic.menuWidth = UIScreen.main.bounds.width * 4 / 5
+        SideMenuController.preferences.basic.menuWidth = kMenuWidth
         SideMenuController.preferences.basic.position = .sideBySide
         SideMenuController.preferences.basic.enablePanGesture = true
         SideMenuController.preferences.basic.enableRubberEffectWhenPanning = false

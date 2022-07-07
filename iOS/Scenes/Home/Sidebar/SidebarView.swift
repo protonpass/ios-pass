@@ -25,6 +25,7 @@ import UIComponents
 
 struct SidebarView: View {
     let coordinator: HomeCoordinator
+    let width: CGFloat
 
     var body: some View {
         ZStack {
@@ -51,12 +52,14 @@ struct SidebarView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
+            .padding(.leading, UIScreen.main.bounds.width - width)
 
             VStack {
                 Spacer()
                 Text("Proton Pass \(Bundle.main.versionNumber) (\(Bundle.main.buildNumber))")
                     .foregroundColor(.gray)
             }
+            .padding(.leading, UIScreen.main.bounds.width - width)
         }
     }
 }
@@ -86,6 +89,6 @@ private struct SidebarItemView: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView(coordinator: .preview)
+        SidebarView(coordinator: .preview, width: 300)
     }
 }
