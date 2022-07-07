@@ -21,6 +21,7 @@
 import Core
 import SideMenuSwift
 import SwiftUI
+import UIComponents
 import UIKit
 
 protocol HomeCoordinatorDelegate: AnyObject {
@@ -78,10 +79,6 @@ final class HomeCoordinator {
         SideMenuController.preferences.animation.revealDuration = 0.25
         SideMenuController.preferences.animation.hideDuration = 0.25
     }
-
-    func signOut() {
-        delegate?.homeCoordinatorDidSignOut()
-    }
 }
 
 // MARK: - Sidebar
@@ -107,12 +104,31 @@ extension HomeCoordinator {
         case .help:
             break
         case .signOut:
-            signOut()
+            requestSignOutConfirmation()
         }
     }
 
     func showUserSwitcher() {
         print(#function)
+    }
+}
+
+// MARK: - Sign out
+extension HomeCoordinator {
+    private func requestSignOutConfirmation() {
+        let alert = UIAlertController(title: "You will be signed out",
+                                      message: "All associated data will be deleted. Please confirm.",
+                                      preferredStyle: .alert)
+        let signOutAction = UIAlertAction(title: "Yes, sign me out", style: .destructive) { [unowned self] _ in
+            self.signOut()
+        }
+        alert.addAction(signOutAction)
+        alert.addAction(.cancel)
+        sideMenuController.present(alert, animated: true)
+    }
+
+    private func signOut() {
+        delegate?.homeCoordinatorDidSignOut()
     }
 }
 
