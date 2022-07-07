@@ -24,28 +24,24 @@ import ProtonCore_Keymaker
 import ProtonCore_Login
 import UIKit
 
-final class AppCoordinator: Coordinator {
-    private let appStateObserver: AppStateObserver
+final class AppCoordinator {
+    private let rootViewController: UIViewController
+    private let appStateObserver = AppStateObserver()
     private let sessionStorage: SessionStorage
     private let keymaker: Keymaker
 
-    override var root: Presentable { router.toPresentable() }
+    // Keep a preference to coordinator to make VC presentations work
+    private var welcomeCoordinator: WelcomeCoordinator?
 
-    init(appStateObserver: AppStateObserver,
-         router: Router) {
-        self.appStateObserver = appStateObserver
+    private var cancellables = Set<AnyCancellable>()
+
+    init(rootViewController: UIViewController) {
+        self.rootViewController = rootViewController
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         self.sessionStorage = .init(mainKeyProvider: keymaker, keychain: keychain)
         self.keymaker = keymaker
-        super.init(router: router, navigationType: .newFlow(hideBar: true))
-
         bindAppState()
-        bindDeeplink()
-
-        if sessionStorage.isSignedIn() {
-            appStateObserver.updateAppState(.loggedIn)
-        }
     }
 
     private func bindAppState() {
@@ -55,45 +51,58 @@ final class AppCoordinator: Coordinator {
                 guard let self = self else { return }
                 switch appState {
                 case .loggedOut:
-                    self.setUpWelcomeFlow()
+                    self.showWelcomeScene()
                 case .loggedIn:
-                    self.setUpHomeFlow()
+                    self.showHomeScene()
+                case .undefined:
+                    break
                 }
             }
             .store(in: &cancellables)
     }
 
-    private func bindDeeplink() {
-        deeplinkSubject
-            .unwrap()
-            .map(AppFlow.init(deeplink:))
-            .unwrap()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] deeplink in
-                guard let self = self else { return }
-                switch deeplink {
-                case .welcome:
-                    self.setUpWelcomeFlow()
-                case .home:
-                    self.setUpHomeFlow()
-                }
-                self.resetDeeplink()
-            }.store(in: &cancellables)
+    func start() {
+        if sessionStorage.isSignedIn() {
+            appStateObserver.updateAppState(.loggedIn)
+        } else {
+            appStateObserver.updateAppState(.loggedOut)
+        }
     }
 
-    private func setUpWelcomeFlow() {
-        let welcomeCoordinator = WelcomeCoordinator(router: router,
-                                                    navigationType: .newFlow(hideBar: true))
-        welcomeCoordinator.delegate = self
-        setRootChild(coordinator: welcomeCoordinator, hideBar: true)
+    private func showWelcomeScene() {
+        let presentWelcomeViewController: () -> Void = { [unowned self] in
+            let welcomeCoordinator = WelcomeCoordinator()
+            welcomeCoordinator.delegate = self
+            welcomeCoordinator.welcomeViewController.modalPresentationStyle = .fullScreen
+            self.welcomeCoordinator = welcomeCoordinator
+            self.rootViewController.present(welcomeCoordinator.welcomeViewController, animated: false)
+        }
+
+        if let presentedViewController = rootViewController.presentedViewController {
+            presentedViewController.dismiss(animated: true) {
+                presentWelcomeViewController()
+            }
+        } else {
+            presentWelcomeViewController()
+        }
     }
 
-    private func setUpHomeFlow() {
-        let homeCoordinator = HomeCoordinator(router: router,
-                                              navigationType: .newFlow(hideBar: true),
-                                              sessionStorageProvider: sessionStorage)
-        homeCoordinator.delegate = self
-        setRootChild(coordinator: homeCoordinator, hideBar: true)
+    private func showHomeScene() {
+        let presentSideMenuController: (Bool) -> Void = { [unowned self] animated in
+            let homeCoordinator = HomeCoordinator(sessionStorageProvider: self.sessionStorage)
+            homeCoordinator.delegate = self
+            homeCoordinator.sideMenuController.modalPresentationStyle = .fullScreen
+            self.welcomeCoordinator = nil
+            self.rootViewController.present(homeCoordinator.sideMenuController, animated: animated)
+        }
+
+        if let presentedViewController = rootViewController.presentedViewController {
+            presentedViewController.dismiss(animated: true) {
+                presentSideMenuController(true)
+            }
+        } else {
+            presentSideMenuController(false)
+        }
     }
 
     private func signOut() {

@@ -33,12 +33,16 @@ protocol WelcomeCoordinatorDelegate: AnyObject {
     func welcomeCoordinator(didFinishWith loginData: LoginData)
 }
 
-final class WelcomeCoordinator: Coordinator {
-    private let apiServiceDelegate: APIServiceDelegate
-    private let doh: DoH & ServerConfig
+final class WelcomeCoordinator {
+    deinit {
+        print("\(Self.self) is deallocated")
+    }
+
+    private let apiServiceDelegate = AnonymousServiceManager()
+    private let doh = PPDoH(bundle: .main)
     weak var delegate: WelcomeCoordinatorDelegate?
 
-    private lazy var welcomeViewController: UIViewController = {
+    private(set) lazy var welcomeViewController: UIViewController = {
         let welcomeScreenTexts = WelcomeScreenTexts(body: "Your next favorite password manager")
         let welcomeScreenVariant = WelcomeScreenVariant.drive(welcomeScreenTexts)
         return WelcomeViewController(variant: welcomeScreenVariant,
@@ -67,15 +71,6 @@ final class WelcomeCoordinator: Coordinator {
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))
     }()
-
-    override init(router: Router,
-                  navigationType: Coordinator.NavigationType) {
-        self.apiServiceDelegate = AnonymousServiceManager()
-        self.doh = PPDoH(bundle: .main)
-        super.init(router: router, navigationType: navigationType)
-    }
-
-    override var root: Presentable { welcomeViewController }
 }
 
 // MARK: - ForceUpgradeResponseDelegate

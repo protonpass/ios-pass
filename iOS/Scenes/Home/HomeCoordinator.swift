@@ -27,11 +27,15 @@ protocol HomeCoordinatorDelegate: AnyObject {
     func homeCoordinatorDidSignOut()
 }
 
-final class HomeCoordinator: Coordinator {
+final class HomeCoordinator {
+    deinit {
+        print("\(Self.self) is deallocated")
+    }
+
     let sessionStorageProvider: SessionStorageProvider
     weak var delegate: HomeCoordinatorDelegate?
 
-    private lazy var sideMenuController: SideMenuController = {
+    private(set) lazy var sideMenuController: SideMenuController = {
         let sideMenuController = SideMenuController(contentViewController: myVaultsNavigationController,
                                                     menuViewController: sidebarView)
         return sideMenuController
@@ -54,15 +58,10 @@ final class HomeCoordinator: Coordinator {
         return UINavigationController(rootViewController: trashViewController)
     }()
 
-    init(router: Router,
-         navigationType: Coordinator.NavigationType,
-         sessionStorageProvider: SessionStorageProvider) {
+    init(sessionStorageProvider: SessionStorageProvider) {
         self.sessionStorageProvider = sessionStorageProvider
-        super.init(router: router, navigationType: navigationType)
         self.setUpSideMenuPreferences()
     }
-
-    override var root: Presentable { sideMenuController }
 
     private func setUpSideMenuPreferences() {
         SideMenuController.preferences.basic.menuWidth = UIScreen.main.bounds.width * 4 / 5
@@ -111,8 +110,6 @@ extension HomeCoordinator {
 extension HomeCoordinator {
     /// For preview purposes
     static var preview: HomeCoordinator {
-        .init(router: .init(),
-              navigationType: .currentFlow,
-              sessionStorageProvider: .preview)
+        .init(sessionStorageProvider: .preview)
     }
 }

@@ -21,12 +21,12 @@
 import Foundation
 
 public enum AppState {
-    case loggedOut, loggedIn
+    case loggedOut, loggedIn, undefined
 }
 
 /// This class is meant to observe the user state changes.
 public class AppStateObserver: ObservableObject {
-    @Published public private(set) var appState: AppState = .loggedOut
+    @Published public private(set) var appState: AppState = .undefined
 
     public init() {}
 
