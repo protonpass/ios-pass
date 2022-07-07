@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import SideMenuSwift
 import SwiftUI
 import UIKit
 
@@ -30,9 +31,27 @@ final class HomeCoordinator: Coordinator {
     let sessionStorageProvider: SessionStorageProvider
     weak var delegate: HomeCoordinatorDelegate?
 
-    private lazy var homeViewController: UIViewController = {
-        let homeView = HomeView(coordinator: self)
-        return UIHostingController(rootView: homeView)
+    private lazy var sideMenuController: SideMenuController = {
+        let sideMenuController = SideMenuController(contentViewController: myVaultsNavigationController,
+                                                    menuViewController: sidebarView)
+        return sideMenuController
+    }()
+
+    private lazy var sidebarView: UIViewController = {
+        let sidebarView = SidebarView(coordinator: self)
+        return UIHostingController(rootView: sidebarView)
+    }()
+
+    private lazy var myVaultsNavigationController: UINavigationController = {
+        let myVaultsView = MyVaultsView(coordinator: self)
+        let myVaultsViewController = UIHostingController(rootView: myVaultsView)
+        return UINavigationController(rootViewController: myVaultsViewController)
+    }()
+
+    private lazy var trashViewNavigationController: UIViewController = {
+        let trashView = TrashView(coordinator: self)
+        let trashViewController = UIHostingController(rootView: trashView)
+        return UINavigationController(rootViewController: trashViewController)
     }()
 
     init(router: Router,
@@ -40,12 +59,32 @@ final class HomeCoordinator: Coordinator {
          sessionStorageProvider: SessionStorageProvider) {
         self.sessionStorageProvider = sessionStorageProvider
         super.init(router: router, navigationType: navigationType)
+        self.setUpSideMenuPreferences()
     }
 
-    override var root: Presentable { homeViewController }
+    override var root: Presentable { sideMenuController }
+
+    private func setUpSideMenuPreferences() {
+        SideMenuController.preferences.basic.menuWidth = UIScreen.main.bounds.width * 4 / 5
+        SideMenuController.preferences.basic.position = .sideBySide
+        SideMenuController.preferences.basic.enablePanGesture = true
+        SideMenuController.preferences.basic.enableRubberEffectWhenPanning = false
+        SideMenuController.preferences.animation.shouldAddShadowWhenRevealing = true
+        SideMenuController.preferences.animation.shadowColor = .black
+        SideMenuController.preferences.animation.shadowAlpha = 0.52
+        SideMenuController.preferences.animation.revealDuration = 0.25
+        SideMenuController.preferences.animation.hideDuration = 0.25
+    }
 
     func signOut() {
         delegate?.homeCoordinatorDidSignOut()
+    }
+}
+
+// MARK: - Sidebar
+extension HomeCoordinator {
+    func showSidebar() {
+        sideMenuController.revealMenu()
     }
 
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
@@ -53,7 +92,10 @@ final class HomeCoordinator: Coordinator {
         case .settings:
             break
         case .trash:
-            break
+            sideMenuController.setContentViewController(to: trashViewNavigationController,
+                                                        animated: true) { [unowned self] in
+                self.sideMenuController.hideMenu()
+            }
         case .help:
             break
         case .signOut:
@@ -72,23 +114,5 @@ extension HomeCoordinator {
         .init(router: .init(),
               navigationType: .currentFlow,
               sessionStorageProvider: .preview)
-    }
-}
-
-struct HomeView: View {
-    let coordinator: HomeCoordinator
-
-    var body: some View {
-        VStack {
-            Text("Welcome to Proton Pass")
-            Text(coordinator.sessionStorageProvider.user?.email ?? "")
-            Button("Sign out", action: coordinator.signOut)
-        }
-    }
-}
-
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView(coordinator: .preview)
     }
 }
