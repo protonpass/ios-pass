@@ -38,6 +38,9 @@ struct SidebarView: View {
                 .padding(.horizontal, 8)
                 ScrollView {
                     VStack {
+                        SidebarItemView(item: .myVaults,
+                                        action: coordinator.handleSidebarItem)
+                        Divider()
                         SidebarItemView(item: .settings,
                                         action: coordinator.handleSidebarItem)
                         SidebarItemView(item: .trash,

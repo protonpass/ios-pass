@@ -22,10 +22,12 @@ import ProtonCore_UIFoundations
 import UIKit
 
 enum SidebarItem {
-    case settings, trash, help, signOut
+    case myVaults, settings, trash, help, signOut
 
     var title: String {
         switch self {
+        case .myVaults:
+            return "My vaults"
         case .settings:
             return "Settings"
         case .trash:
@@ -39,6 +41,8 @@ enum SidebarItem {
 
     var icon: UIImage {
         switch self {
+        case .myVaults:
+            return IconProvider.filingCabinet
         case .settings:
             return IconProvider.cogWheel
         case .trash:

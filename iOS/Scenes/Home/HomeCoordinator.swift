@@ -92,6 +92,11 @@ extension HomeCoordinator {
 
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
+        case .myVaults:
+            sideMenuController.setContentViewController(to: myVaultsNavigationController,
+                                                        animated: true) { [unowned self] in
+                self.sideMenuController.hideMenu()
+            }
         case .settings:
             break
         case .trash:
