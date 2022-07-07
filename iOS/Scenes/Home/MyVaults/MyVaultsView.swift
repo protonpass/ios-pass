@@ -34,10 +34,15 @@ struct MyVaultsView: View {
                                           .init(id: 2, vaultName: "Work")]
 
     var body: some View {
-        List {
-            ForEach(0..<50, id: \.self) { index in
-                Text("\(vault(for: selectedVaultId)?.vaultName ?? "All vault") #\(index)")
+        VStack {
+            List {
+                ForEach(0..<50, id: \.self) { index in
+                    Text("\(vault(for: selectedVaultId)?.vaultName ?? "All vault") #\(index)")
+                }
             }
+
+            VaultSummaryView()
+                .frame(height: 250)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -98,7 +103,7 @@ struct MyVaultsView: View {
                     .frame(width: UIScreen.main.bounds.width / 2)
                     .padding(.vertical, 8)
                     .background(Color(ColorProvider.BrandNorm))
-                    .clipShape(RoundedRectangle(cornerRadius: 4))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
                 })
             }
 
