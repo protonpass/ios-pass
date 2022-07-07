@@ -20,6 +20,7 @@
 		3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABDF287750F100EE85E1 /* CreateItemView.swift */; };
 		3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABE12877583B00EE85E1 /* TrashCoordinator.swift */; };
 		3547ABE82877666200EE85E1 /* CreateVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABE72877666200EE85E1 /* CreateVaultView.swift */; };
+		3547ABEA2877684D00EE85E1 /* GenericItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABE92877684D00EE85E1 /* GenericItemView.swift */; };
 		356B21D72870F8F1001220CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D62870F8F1001220CB /* Constants.swift */; };
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
@@ -46,7 +47,6 @@
 		35E506AD286F920300A3F6EA /* UIComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 35E506AC286F920300A3F6EA /* UIComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		35E506B0286F920300A3F6EA /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		35E506B1286F920300A3F6EA /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		35E506B6286F922A00A3F6EA /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E506B5286F922A00A3F6EA /* DetailView.swift */; };
 		35E506CE286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */; };
 		35E506CF286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */; };
 		35E506D0286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */; };
@@ -177,6 +177,7 @@
 		3547ABDF287750F100EE85E1 /* CreateItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemView.swift; sourceTree = "<group>"; };
 		3547ABE12877583B00EE85E1 /* TrashCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashCoordinator.swift; sourceTree = "<group>"; };
 		3547ABE72877666200EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
+		3547ABE92877684D00EE85E1 /* GenericItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericItemView.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B21D62870F8F1001220CB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
@@ -204,7 +205,6 @@
 		35E5069F286F87D500A3F6EA /* CoreDummyStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDummyStruct.swift; sourceTree = "<group>"; };
 		35E506AA286F920300A3F6EA /* UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35E506AC286F920300A3F6EA /* UIComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIComponents.h; sourceTree = "<group>"; };
-		35E506B5286F922A00A3F6EA /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release-Black.xcconfig"; sourceTree = "<group>"; };
 		35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Debug-Prod.xcconfig"; sourceTree = "<group>"; };
 		35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Debug-Black.xcconfig"; sourceTree = "<group>"; };
@@ -483,7 +483,7 @@
 			isa = PBXGroup;
 			children = (
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
-				35E506B5286F922A00A3F6EA /* DetailView.swift */,
+				3547ABE92877684D00EE85E1 /* GenericItemView.swift */,
 				353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */,
 				3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */,
 				3547ABDB28771B2900EE85E1 /* UIAlertAction+Cancel.swift */,
@@ -1274,10 +1274,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35E506B6286F922A00A3F6EA /* DetailView.swift in Sources */,
 				353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */,
 				3547ABDC28771B2900EE85E1 /* UIAlertAction+Cancel.swift in Sources */,
 				3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */,
+				3547ABEA2877684D00EE85E1 /* GenericItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

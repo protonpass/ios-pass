@@ -45,13 +45,23 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateItemView() {
-        let createItemView = CreateItemView()
+        let createItemView = CreateItemView(coordinator: self)
         router.present(UIHostingController(rootView: createItemView), animated: true)
     }
 
     func showCreateVaultView() {
         let createVaultView = CreateVaultView()
         router.present(UIHostingController(rootView: createVaultView), animated: true)
+    }
+
+    func dismissTopMostModal() {
+        router.toPresentable().presentedViewController?.dismiss(animated: true)
+    }
+
+    func handleCreateNewItemOption(_ option: CreateNewItemOption) {
+        let alert = UIAlertController(title: option.title, message: option.detail, preferredStyle: .alert)
+        alert.addAction(.cancel)
+        router.toPresentable().presentedViewController?.present(alert, animated: true)
     }
 }
 
