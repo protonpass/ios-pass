@@ -19,6 +19,7 @@
 		3547ABDE28774D1100EE85E1 /* MyVaultsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */; };
 		3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABDF287750F100EE85E1 /* CreateItemView.swift */; };
 		3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABE12877583B00EE85E1 /* TrashCoordinator.swift */; };
+		3547ABE82877666200EE85E1 /* CreateVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABE72877666200EE85E1 /* CreateVaultView.swift */; };
 		356B21D72870F8F1001220CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D62870F8F1001220CB /* Constants.swift */; };
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
@@ -175,6 +176,7 @@
 		3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsCoordinator.swift; sourceTree = "<group>"; };
 		3547ABDF287750F100EE85E1 /* CreateItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemView.swift; sourceTree = "<group>"; };
 		3547ABE12877583B00EE85E1 /* TrashCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashCoordinator.swift; sourceTree = "<group>"; };
+		3547ABE72877666200EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B21D62870F8F1001220CB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
@@ -350,6 +352,7 @@
 				3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */,
 				3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */,
 				3547ABDF287750F100EE85E1 /* CreateItemView.swift */,
+				3547ABE72877666200EE85E1 /* CreateVaultView.swift */,
 			);
 			path = MyVaults;
 			sourceTree = "<group>";
@@ -1201,6 +1204,7 @@
 				353E8B76287625D100A2C5E3 /* SidebarCurrentUserView.swift in Sources */,
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				35E50710286FB5BA00A3F6EA /* Flows.swift in Sources */,
+				3547ABE82877666200EE85E1 /* CreateVaultView.swift in Sources */,
 				35E50714286FB60500A3F6EA /* HomeCoordinator.swift in Sources */,
 				3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */,
 				35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */,

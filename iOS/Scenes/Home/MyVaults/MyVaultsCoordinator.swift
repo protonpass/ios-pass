@@ -48,6 +48,11 @@ final class MyVaultsCoordinator: Coordinator {
         let createItemView = CreateItemView()
         router.present(UIHostingController(rootView: createItemView), animated: true)
     }
+
+    func showCreateVaultView() {
+        let createVaultView = CreateVaultView()
+        router.present(UIHostingController(rootView: createVaultView), animated: true)
+    }
 }
 
 extension MyVaultsCoordinator {
