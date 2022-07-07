@@ -1,5 +1,5 @@
 //
-// MyVaultsView.swift
+// CreateItemView.swift
 // Proton Pass - Created on 07/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,37 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
 import SwiftUI
-import UIComponents
 
-struct MyVaultsView: View {
-    let coordinator: MyVaultsCoordinator
-
+struct CreateItemView: View {
     var body: some View {
-        VStack {
-            Text("Default vault")
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                ToggleSidebarButton(action: coordinator.showSidebar)
-            }
-
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: coordinator.showCreateItemView) {
-                    Image(uiImage: IconProvider.plus)
-                }
-                .foregroundColor(Color(.label))
-            }
-        }
+        Text("Create new item")
     }
 }
 
-struct MyVaultsView_Previews: PreviewProvider {
+struct CreateItemView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            MyVaultsView(coordinator: .preview)
-        }
+        CreateItemView()
     }
 }

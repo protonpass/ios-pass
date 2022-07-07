@@ -41,7 +41,7 @@ final class HomeCoordinator {
     weak var delegate: HomeCoordinatorDelegate?
 
     private(set) lazy var sideMenuController: SideMenuController = {
-        let sideMenuController = SideMenuController(contentViewController: myVaultsNavigationController,
+        let sideMenuController = SideMenuController(contentViewController: myVaultsRootViewController,
                                                     menuViewController: sidebarView)
         return sideMenuController
     }()
@@ -51,11 +51,13 @@ final class HomeCoordinator {
         return UIHostingController(rootView: sidebarView)
     }()
 
-    private lazy var myVaultsNavigationController: UINavigationController = {
-        let myVaultsView = MyVaultsView(coordinator: self)
-        let myVaultsViewController = UIHostingController(rootView: myVaultsView)
-        return UINavigationController(rootViewController: myVaultsViewController)
+    private lazy var myVaultsCoordinator: MyVaultsCoordinator = {
+        let myVaultsCoordinator = MyVaultsCoordinator()
+        myVaultsCoordinator.delegate = self
+        return myVaultsCoordinator
     }()
+
+    private var myVaultsRootViewController: UIViewController { myVaultsCoordinator.router.toPresentable() }
 
     private lazy var trashViewNavigationController: UIViewController = {
         let trashView = TrashView(coordinator: self)
@@ -90,7 +92,7 @@ extension HomeCoordinator {
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
         case .myVaults:
-            sideMenuController.setContentViewController(to: myVaultsNavigationController,
+            sideMenuController.setContentViewController(to: myVaultsRootViewController,
                                                         animated: true) { [unowned self] in
                 self.sideMenuController.hideMenu()
             }
@@ -129,6 +131,13 @@ extension HomeCoordinator {
 
     private func signOut() {
         delegate?.homeCoordinatorDidSignOut()
+    }
+}
+
+// MARK: - MyVaultsCoordinatorDelegate
+extension HomeCoordinator: MyVaultsCoordinatorDelegate {
+    func myVautsCoordinatorWantsToShowSidebar() {
+        showSidebar()
     }
 }
 

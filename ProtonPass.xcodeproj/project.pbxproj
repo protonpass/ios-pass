@@ -16,6 +16,8 @@
 		3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */; };
 		3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD92876DF1300EE85E1 /* TrashView.swift */; };
 		3547ABDC28771B2900EE85E1 /* UIAlertAction+Cancel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABDB28771B2900EE85E1 /* UIAlertAction+Cancel.swift */; };
+		3547ABDE28774D1100EE85E1 /* MyVaultsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */; };
+		3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABDF287750F100EE85E1 /* CreateItemView.swift */; };
 		356B21D72870F8F1001220CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D62870F8F1001220CB /* Constants.swift */; };
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
@@ -169,6 +171,8 @@
 		3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleSidebarButton.swift; sourceTree = "<group>"; };
 		3547ABD92876DF1300EE85E1 /* TrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashView.swift; sourceTree = "<group>"; };
 		3547ABDB28771B2900EE85E1 /* UIAlertAction+Cancel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+Cancel.swift"; sourceTree = "<group>"; };
+		3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsCoordinator.swift; sourceTree = "<group>"; };
+		3547ABDF287750F100EE85E1 /* CreateItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemView.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B21D62870F8F1001220CB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
@@ -341,7 +345,9 @@
 		3547ABCC2876CFA700EE85E1 /* MyVaults */ = {
 			isa = PBXGroup;
 			children = (
+				3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */,
 				3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */,
+				3547ABDF287750F100EE85E1 /* CreateItemView.swift */,
 			);
 			path = MyVaults;
 			sourceTree = "<group>";
@@ -1186,7 +1192,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */,
 				353E8B6E2876163F00A2C5E3 /* SidebarView.swift in Sources */,
+				3547ABDE28774D1100EE85E1 /* MyVaultsCoordinator.swift in Sources */,
 				353E8B76287625D100A2C5E3 /* SidebarCurrentUserView.swift in Sources */,
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				35E50710286FB5BA00A3F6EA /* Flows.swift in Sources */,
