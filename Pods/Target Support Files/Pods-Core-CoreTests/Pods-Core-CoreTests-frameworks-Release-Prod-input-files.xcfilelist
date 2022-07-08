@@ -10,6 +10,7 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Keymaker/ProtonCore_Keymaker.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework

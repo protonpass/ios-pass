@@ -204,7 +204,7 @@
 			<string>%d pays</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@SERVERS@ dans le pays suivant : %#@COUNTRIES@</string>
+		<string>%#@SERVERS@ dans %#@COUNTRIES@</string>
 		<key>SERVERS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>

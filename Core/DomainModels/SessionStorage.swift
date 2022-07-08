@@ -1,35 +1,35 @@
 //
 // SessionStorage.swift
-// Proton Key - Created on 04/07/2022.
+// Proton Pass - Created on 04/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
-// This file is part of Proton Key.
+// This file is part of Proton Pass.
 //
-// Proton Key is free software: you can redistribute it and/or modify
+// Proton Pass is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Key is distributed in the hope that it will be useful,
+// Proton Pass is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Key. If not, see https://www.gnu.org/licenses/.
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_DataModel
 import ProtonCore_Keymaker
 import ProtonCore_Login
 
 public protocol SessionStorageProvider: AnyObject {
-    var credential: PKCredential? { get }
+    var credential: PPCredential? { get }
     var salts: [KeySalt]? { get }
     var passphrases: [String: String]? { get }
     var addresses: [Address]? { get }
     var user: User? { get }
 
-    func setCredential(_ credential: PKCredential)
+    func setCredential(_ credential: PPCredential)
     func setSalts(_ salts: [KeySalt])
     func setPassphrases(_ passphrases: [String: String])
     func setAddresses(_ addresses: [Address])
@@ -40,13 +40,13 @@ public protocol SessionStorageProvider: AnyObject {
 
 /// Dummy SessionStorageProvider serves for preview purposes
 public final class PreviewSessionStorage: SessionStorageProvider {
-    public var credential: PKCredential?
+    public var credential: PPCredential?
     public var salts: [KeySalt]?
     public var passphrases: [String: String]?
     public var addresses: [Address]?
     public var user: User?
 
-    public func setCredential(_ credential: PKCredential) {}
+    public func setCredential(_ credential: PPCredential) {}
     public func setSalts(_ salts: [KeySalt]) {}
     public func setPassphrases(_ passphrases: [String: String]) {}
     public func setAddresses(_ addresses: [Address]) {}
@@ -79,7 +79,7 @@ public final class SessionStorage: SessionStorageProvider {
     // swiftlint:disable let_var_whitespace
     // MARK: - SessionStorageProvider
     @KeychainStorage(key: "credential")
-    public private(set) var credential: PKCredential?
+    public private(set) var credential: PPCredential?
 
     @KeychainStorage(key: "salts")
     public private(set) var salts: [KeySalt]?
@@ -94,7 +94,7 @@ public final class SessionStorage: SessionStorageProvider {
     public private(set) var user: User?
     // swiftlint:enable let_var_whitespace
 
-    public func setCredential(_ credential: PKCredential) {
+    public func setCredential(_ credential: PPCredential) {
         self.credential = credential
     }
 

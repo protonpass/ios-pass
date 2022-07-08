@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-Settings-V5",
   "module_name": "ProtonCore_Settings",
-  "version": "3.19.1",
+  "version": "3.20.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -14,7 +14,7 @@
   },
   "source": {
     "git": null,
-    "tag": "3.19.1"
+    "tag": "3.20.0"
   },
   "platforms": {
     "ios": "11.0"

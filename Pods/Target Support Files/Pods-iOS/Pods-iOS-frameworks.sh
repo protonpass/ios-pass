@@ -203,7 +203,9 @@ if [[ "$CONFIGURATION" == "Debug-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SideMenuSwift/SideMenuSwift.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings-V5/ProtonCore_Settings.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
@@ -235,7 +237,9 @@ if [[ "$CONFIGURATION" == "Debug-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SideMenuSwift/SideMenuSwift.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings-V5/ProtonCore_Settings.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
@@ -267,7 +271,9 @@ if [[ "$CONFIGURATION" == "Release-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SideMenuSwift/SideMenuSwift.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings-V5/ProtonCore_Settings.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
@@ -299,7 +305,9 @@ if [[ "$CONFIGURATION" == "Release-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SideMenuSwift/SideMenuSwift.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings-V5/ProtonCore_Settings.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi

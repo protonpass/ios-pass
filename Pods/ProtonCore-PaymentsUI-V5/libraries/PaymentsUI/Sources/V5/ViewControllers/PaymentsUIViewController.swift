@@ -28,7 +28,7 @@ import ProtonCore_UIFoundations
 protocol PaymentsUIViewControllerDelegate: AnyObject {
     func userDidCloseViewController()
     func userDidDismissViewController()
-    func userDidSelectPlan(plan: PlanPresentation, completionHandler: @escaping () -> Void)
+    func userDidSelectPlan(plan: PlanPresentation, addCredits: Bool, completionHandler: @escaping () -> Void)
     func planPurchaseError()
 }
 
@@ -195,7 +195,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             return
         }
         lockUI()
-        delegate?.userDidSelectPlan(plan: plan) { [weak self] in
+        delegate?.userDidSelectPlan(plan: plan, addCredits: true) { [weak self] in
             self?.unlockUI()
             self?.extendSubscriptionButton.isSelected = false
         }
@@ -433,7 +433,7 @@ extension PaymentsUIViewController: PlanCellDelegate {
     
     func userPressedSelectPlanButton(plan: PlanPresentation, completionHandler: @escaping () -> Void) {
         lockUI()
-        delegate?.userDidSelectPlan(plan: plan) { [weak self] in
+        delegate?.userDidSelectPlan(plan: plan, addCredits: false) { [weak self] in
             self?.unlockUI()
             completionHandler()
         }

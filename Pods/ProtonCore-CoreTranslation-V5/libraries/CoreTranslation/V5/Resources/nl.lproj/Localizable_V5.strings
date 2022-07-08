@@ -41,7 +41,7 @@
 "New_Plans Plan successfully upgraded" = "Upgraden van abonnement voltooid";
 
 /* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core servers";
+"New_Plans Secure Core servers" = "Secure Core-servers";
 
 /* New_Plans Plan details no logs policy */
 "New_Plans Strict no-logs policy" = "Strikt geen-logboekbeleid";

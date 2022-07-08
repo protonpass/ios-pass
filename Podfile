@@ -3,7 +3,7 @@ def proton_core_path
 end
 
 def proton_core_version
-  "3.19.1"
+  "3.20.0"
 end
 
 def pmtest_path
@@ -19,8 +19,13 @@ def core_and_ios_pods
   pod 'ProtonCore-Utilities', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-DataModel', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Crypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Keymaker/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Login/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
+end
+
+def ios_and_uicomponents
+  pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
 end
 
 target 'Client' do
@@ -36,6 +41,7 @@ target 'Core' do
   use_frameworks!
 
   core_and_ios_pods
+  pod 'ProtonCore-KeyManager/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Settings-V5', :git => proton_core_path, :tag => proton_core_version
 
   target 'CoreTests' do
@@ -43,18 +49,24 @@ target 'Core' do
 
 end
 
+target 'UIComponents' do
+  platform :ios, '14.0'
+  use_frameworks!
+  ios_and_uicomponents
+end
+
 target 'iOS' do
   platform :ios, '14.0'
   use_frameworks!
 
   core_and_ios_pods
+  ios_and_uicomponents
   pod 'ProtonCore-OpenPGP', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-CoreTranslation-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Challenge', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Crypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Authentication/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Payments/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
@@ -66,6 +78,7 @@ target 'iOS' do
   pod 'ProtonCore-Networking/Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-LoginUI-V5/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
+  pod 'SideMenuSwift', '2.0.9'
 
 end
 

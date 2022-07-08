@@ -241,12 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Nasıl yardımcı olabiliriz?";
 
-/* *
- *  Human verification */
-"Human verification" = "İnsan doğrulaması";
-
 /* Title */
-"Human Verification" = "Human verification";
+"Human Verification" = "İnsan doğrulaması";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Hesap açmakta sorun yaşıyorsanız, lütfen bir davet isteyin. Bir iş günü içinde size yanıt vereceğiz.";
