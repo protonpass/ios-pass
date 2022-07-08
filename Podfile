@@ -45,6 +45,7 @@ target 'Core' do
   pod 'ProtonCore-Settings-V5', :git => proton_core_path, :tag => proton_core_version
 
   target 'CoreTests' do
+    pod 'ProtonCore-Crypto', :git => proton_core_path, :tag => proton_core_version
   end
 
 end

@@ -1,4 +1,6 @@
 ${PODS_ROOT}/Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests-frameworks.sh
-${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework
