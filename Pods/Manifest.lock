@@ -112,6 +112,7 @@ PODS:
     - ProtonCore-Log (= 3.20.0)
   - ReachabilitySwift (5.0.0)
   - SideMenuSwift (2.0.9)
+  - SwiftProtobuf (1.19.0)
   - TrustKit (2.0.0)
 
 DEPENDENCIES:
@@ -142,6 +143,7 @@ DEPENDENCIES:
   - "ProtonCore-UIFoundations-V5 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
   - SideMenuSwift (= 2.0.9)
+  - SwiftProtobuf
 
 SPEC REPOS:
   trunk:
@@ -150,6 +152,7 @@ SPEC REPOS:
     - lottie-ios
     - ReachabilitySwift
     - SideMenuSwift
+    - SwiftProtobuf
     - TrustKit
 
 EXTERNAL SOURCES:
@@ -344,8 +347,9 @@ SPEC CHECKSUMS:
   ProtonCore-Utilities: 7d29ad3d73ccd12dc62effecab41783c2b061f3d
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SideMenuSwift: 39f1922e225da4aaa8b16591037a929defe960c9
+  SwiftProtobuf: 6ef3f0e422ef90d6605ca20b21a94f6c1324d6b3
   TrustKit: 610b8c71c07914756dd74c380040a3408a747798
 
-PODFILE CHECKSUM: 4fb84a872791fc9d9f9d2cff8d7a0c90397bb646
+PODFILE CHECKSUM: 43270668a9f7e3826f726bd4ebf7f2c713a8e315
 
 COCOAPODS: 1.11.3
