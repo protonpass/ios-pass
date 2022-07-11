@@ -1,6 +1,6 @@
 //
-// DummyTests.swift
-// Proton Pass - Created on 08/07/2022.
+// URLTests.swift
+// Proton Pass - Created on 11/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,10 +18,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@testable import Client
 import XCTest
 
-final class DummyClientTests: XCTestCase {
-    func testDummy() {
-        XCTAssertTrue(true)
+final class URLTests: XCTestCase {
+    func testAppendingPathQueryItemsCorrectly() throws {
+        let baseURL = try XCTUnwrap(URL(string: "https://example.com"))
+
+        let url1 = baseURL.appending(path: "/path/to/something")
+        XCTAssertEqual(url1.absoluteString, "https://example.com/path/to/something")
+
+        let url2 = baseURL.appending(path: "/path",
+                                     queryItems: [.init(name: "firstName", value: "John"),
+                                                  .init(name: "lastName", value: "Doe")])
+        XCTAssertEqual(url2.absoluteString, "https://example.com/path?firstName=John&lastName=Doe")
     }
 }

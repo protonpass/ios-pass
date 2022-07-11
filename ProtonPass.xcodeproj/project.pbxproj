@@ -32,6 +32,15 @@
 		3547ABF628777D6100EE85E1 /* VaultSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */; };
 		355443F1287C2B070017FCAD /* VaultProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443F0287C2B070017FCAD /* VaultProvider.swift */; };
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
+		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
+		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
+		3554440C287CB6D30017FCAD /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554440B287CB6D30017FCAD /* EndpointTests.swift */; };
+		35544410287CBBE10017FCAD /* ClientCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554440F287CBBE10017FCAD /* ClientCredential.swift */; };
+		35544412287CBCE60017FCAD /* URLRequest+ClientCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544411287CBCE60017FCAD /* URLRequest+ClientCredential.swift */; };
+		35544414287CBE070017FCAD /* URL+AppendingPathQueryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544413287CBE070017FCAD /* URL+AppendingPathQueryItems.swift */; };
+		35544416287CBE5C0017FCAD /* URLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544415287CBE5C0017FCAD /* URLTests.swift */; };
+		3554441A287CC0340017FCAD /* CreateVaultEndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544419287CC0340017FCAD /* CreateVaultEndpointTests.swift */; };
+		3554441D287CC0A50017FCAD /* MockClientCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554441C287CC0A50017FCAD /* MockClientCredential.swift */; };
 		355FBDF6287B1D4B003D8FFF /* label_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FBDF3287B1D4B003D8FFF /* label_v1.pb.swift */; };
 		355FBDF8287B1D4B003D8FFF /* vault_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FBDF5287B1D4B003D8FFF /* vault_v1.pb.swift */; };
 		355FBDFA287B1DD6003D8FFF /* item_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FBDF9287B1DD6003D8FFF /* item_v1.pb.swift */; };
@@ -41,8 +50,6 @@
 		356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AB1287310D60020F577 /* KeychainStorage.swift */; };
 		356C2AB428731A630020F577 /* SessionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AB328731A630020F577 /* SessionStorage.swift */; };
 		356C2AB8287329400020F577 /* PPCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AB7287329400020F577 /* PPCredential.swift */; };
-		3585E76C2878B6BB00E622B9 /* DummyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3585E76B2878B6BB00E622B9 /* DummyTests.swift */; };
-		3585E76E2878B7E500E622B9 /* DummyStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3585E76D2878B7E500E622B9 /* DummyStruct.swift */; };
 		35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
 		35E50649286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
 		35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50653286F82DC00A3F6EA /* AppDelegate.swift */; };
@@ -201,6 +208,15 @@
 		3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSummaryView.swift; sourceTree = "<group>"; };
 		355443F0287C2B070017FCAD /* VaultProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultProvider.swift; sourceTree = "<group>"; };
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
+		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
+		3554440B287CB6D30017FCAD /* EndpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointTests.swift; sourceTree = "<group>"; };
+		3554440F287CBBE10017FCAD /* ClientCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCredential.swift; sourceTree = "<group>"; };
+		35544411287CBCE60017FCAD /* URLRequest+ClientCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+ClientCredential.swift"; sourceTree = "<group>"; };
+		35544413287CBE070017FCAD /* URL+AppendingPathQueryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+AppendingPathQueryItems.swift"; sourceTree = "<group>"; };
+		35544415287CBE5C0017FCAD /* URLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLTests.swift; sourceTree = "<group>"; };
+		35544419287CC0340017FCAD /* CreateVaultEndpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpointTests.swift; sourceTree = "<group>"; };
+		3554441C287CC0A50017FCAD /* MockClientCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockClientCredential.swift; sourceTree = "<group>"; };
 		355FBDF3287B1D4B003D8FFF /* label_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = label_v1.pb.swift; sourceTree = "<group>"; };
 		355FBDF5287B1D4B003D8FFF /* vault_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vault_v1.pb.swift; sourceTree = "<group>"; };
 		355FBDF9287B1DD6003D8FFF /* item_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = item_v1.pb.swift; sourceTree = "<group>"; };
@@ -211,8 +227,6 @@
 		356C2AB1287310D60020F577 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
 		356C2AB328731A630020F577 /* SessionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStorage.swift; sourceTree = "<group>"; };
 		356C2AB7287329400020F577 /* PPCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPCredential.swift; sourceTree = "<group>"; };
-		3585E76B2878B6BB00E622B9 /* DummyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyTests.swift; sourceTree = "<group>"; };
-		3585E76D2878B7E500E622B9 /* DummyStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyStruct.swift; sourceTree = "<group>"; };
 		35E50636286F819F00A3F6EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35E5063B286F819F00A3F6EA /* Proton Pass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Pass.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35E50641286F819F00A3F6EA /* Proton Pass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Pass.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -431,6 +445,10 @@
 		355443FE287CAABB0017FCAD /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				3554440F287CBBE10017FCAD /* ClientCredential.swift */,
+				35544406287CB3810017FCAD /* Endpoint.swift */,
+				35544413287CBE070017FCAD /* URL+AppendingPathQueryItems.swift */,
+				35544411287CBCE60017FCAD /* URLRequest+ClientCredential.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -438,8 +456,42 @@
 		35544403287CAF600017FCAD /* Vault */ = {
 			isa = PBXGroup;
 			children = (
+				35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */,
 			);
 			path = Vault;
+			sourceTree = "<group>";
+		};
+		3554440A287CB6C20017FCAD /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				3554440B287CB6D30017FCAD /* EndpointTests.swift */,
+				35544415287CBE5C0017FCAD /* URLTests.swift */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		35544417287CC0200017FCAD /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				35544418287CC0270017FCAD /* Vault */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		35544418287CC0270017FCAD /* Vault */ = {
+			isa = PBXGroup;
+			children = (
+				35544419287CC0340017FCAD /* CreateVaultEndpointTests.swift */,
+			);
+			path = Vault;
+			sourceTree = "<group>";
+		};
+		3554441B287CC06D0017FCAD /* MockTypes */ = {
+			isa = PBXGroup;
+			children = (
+				3554441C287CC0A50017FCAD /* MockClientCredential.swift */,
+			);
+			path = MockTypes;
 			sourceTree = "<group>";
 		};
 		355FBDF2287B1D4B003D8FFF /* Protobuf Objects */ = {
@@ -531,7 +583,6 @@
 			isa = PBXGroup;
 			children = (
 				35E50663286F870500A3F6EA /* Client.h */,
-				3585E76D2878B7E500E622B9 /* DummyStruct.swift */,
 				355443FE287CAABB0017FCAD /* Infrastructure */,
 				355443FB287CA73E0017FCAD /* Models */,
 				355443FA287CA7150017FCAD /* Modules */,
@@ -542,7 +593,9 @@
 		35E5066E286F870500A3F6EA /* ClientTests */ = {
 			isa = PBXGroup;
 			children = (
-				3585E76B2878B6BB00E622B9 /* DummyTests.swift */,
+				3554440A287CB6C20017FCAD /* Infrastructure */,
+				35544417287CC0200017FCAD /* Modules */,
+				3554441B287CC06D0017FCAD /* MockTypes */,
 			);
 			path = ClientTests;
 			sourceTree = "<group>";
@@ -1343,8 +1396,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3585E76E2878B7E500E622B9 /* DummyStruct.swift in Sources */,
+				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
+				35544412287CBCE60017FCAD /* URLRequest+ClientCredential.swift in Sources */,
+				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
+				35544410287CBBE10017FCAD /* ClientCredential.swift in Sources */,
+				35544414287CBE070017FCAD /* URL+AppendingPathQueryItems.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1352,7 +1409,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3585E76C2878B6BB00E622B9 /* DummyTests.swift in Sources */,
+				3554440C287CB6D30017FCAD /* EndpointTests.swift in Sources */,
+				3554441D287CC0A50017FCAD /* MockClientCredential.swift in Sources */,
+				35544416287CBE5C0017FCAD /* URLTests.swift in Sources */,
+				3554441A287CC0340017FCAD /* CreateVaultEndpointTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
