@@ -1,6 +1,6 @@
 //
-// CoreTests.swift
-// Proton Pass - Created on 01/07/2022.
+// VaultProvider.swift
+// Proton Pass - Created on 11/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,12 +18,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Core
-import XCTest
+import Foundation
 
-class CoreTests: XCTestCase {
-    func testCoreDummyStruct() {
-        _ = CoreDummyStruct()
-        XCTAssertTrue(true)
+public protocol VaultProvider {
+    var name: String { get }
+    var description: String { get }
+
+    /// Serialize into binary
+    func data() throws -> Data
+
+    /// Initialize from binary data
+    init(data: Data) throws
+}
+
+typealias VaultProtobuf = ProtonPassVaultV1_Vault
+
+extension VaultProtobuf: VaultProvider {
+    public var description: String { description_p }
+
+    public func data() throws -> Data {
+        try self.serializedData()
+    }
+
+    public init(data: Data) throws {
+        self = try VaultProtobuf(serializedData: data)
     }
 }

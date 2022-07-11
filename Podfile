@@ -41,10 +41,12 @@ target 'Core' do
   use_frameworks!
 
   core_and_ios_pods
+  pod 'SwiftProtobuf'
   pod 'ProtonCore-KeyManager/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Settings-V5', :git => proton_core_path, :tag => proton_core_version
 
   target 'CoreTests' do
+    pod 'ProtonCore-Crypto', :git => proton_core_path, :tag => proton_core_version
   end
 
 end

@@ -196,6 +196,7 @@ if [[ "$CONFIGURATION" == "Debug-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings-V5/ProtonCore_Settings.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
@@ -220,6 +221,7 @@ if [[ "$CONFIGURATION" == "Debug-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings-V5/ProtonCore_Settings.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
@@ -244,6 +246,7 @@ if [[ "$CONFIGURATION" == "Release-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings-V5/ProtonCore_Settings.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
@@ -268,6 +271,7 @@ if [[ "$CONFIGURATION" == "Release-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings-V5/ProtonCore_Settings.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
