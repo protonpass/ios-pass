@@ -176,32 +176,32 @@ code_sign_if_enabled() {
 }
 
 if [[ "$CONFIGURATION" == "Debug-Black" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
 fi
 if [[ "$CONFIGURATION" == "Debug-Prod" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
 fi
 if [[ "$CONFIGURATION" == "Release-Black" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
 fi
 if [[ "$CONFIGURATION" == "Release-Prod" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

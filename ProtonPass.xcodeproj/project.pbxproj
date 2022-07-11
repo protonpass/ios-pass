@@ -412,11 +412,12 @@
 			path = Trash;
 			sourceTree = "<group>";
 		};
-		355443FA287CA7150017FCAD /* Vault */ = {
+		355443FA287CA7150017FCAD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				35544403287CAF600017FCAD /* Vault */,
 			);
-			path = Vault;
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		355443FB287CA73E0017FCAD /* Models */ = {
@@ -425,6 +426,20 @@
 				355443FC287CA77C0017FCAD /* Share.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		355443FE287CAABB0017FCAD /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		35544403287CAF600017FCAD /* Vault */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Vault;
 			sourceTree = "<group>";
 		};
 		355FBDF2287B1D4B003D8FFF /* Protobuf Objects */ = {
@@ -517,8 +532,9 @@
 			children = (
 				35E50663286F870500A3F6EA /* Client.h */,
 				3585E76D2878B7E500E622B9 /* DummyStruct.swift */,
+				355443FE287CAABB0017FCAD /* Infrastructure */,
 				355443FB287CA73E0017FCAD /* Models */,
-				355443FA287CA7150017FCAD /* Vault */,
+				355443FA287CA7150017FCAD /* Modules */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -807,6 +823,7 @@
 				35E50664286F870500A3F6EA /* Sources */,
 				35E50665286F870500A3F6EA /* Frameworks */,
 				35E50666286F870500A3F6EA /* Resources */,
+				2FA80BB3C1CDFAAC5B07C00B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1023,6 +1040,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2FA80BB3C1CDFAAC5B07C00B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2FFF6FEE4163A57CBDFB9722 /* [CP] Embed Pods Frameworks */ = {

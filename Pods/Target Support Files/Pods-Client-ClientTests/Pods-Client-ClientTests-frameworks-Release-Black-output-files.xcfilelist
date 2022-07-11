@@ -1,5 +1,5 @@
-${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Crypto.framework
-${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_DataModel.framework
-${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_KeyManager.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_CoreTranslation.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Log.framework
-${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Utilities.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Networking.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework

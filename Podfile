@@ -31,6 +31,9 @@ end
 target 'Client' do
   platform :ios, '14.0'
   use_frameworks!
+
+  pod 'ProtonCore-Networking/Alamofire', :git => proton_core_path, :tag => proton_core_version
+
   target 'ClientTests' do
   end
 
