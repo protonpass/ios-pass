@@ -28,12 +28,4 @@ public extension String {
     }
 
     func base64Decode() throws -> Data? { Data(base64Encoded: self) }
-
-    func capitalizingFirstLetter() -> String {
-        return prefix(1).capitalized + dropFirst()
-    }
-
-    mutating func capitalizeFirstLetter() {
-        self = self.capitalizingFirstLetter()
-    }
 }
