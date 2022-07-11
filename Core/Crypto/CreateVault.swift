@@ -25,63 +25,83 @@ import ProtonCore_KeyManager
 
 typealias Encryptor = ProtonCore_KeyManager.Encryptor
 
-// swiftlint:disable identifier_name
 public struct CreateVaultRequest: Encodable {
-    public let AddressID: String
-    public let Content: String
-    public let ContentFormatVersion: Int
-    public let ContentEncryptedAddressSignature: String
-    public let ContentEncryptedVaultSignature: String
-    public let VaultKey: String
-    public let VaultKeyPassphrase: String
-    public let VaultKeySignature: String
-    public let KeyPacket: String
-    public let KeyPacketSignature: String
-    public let SigningKey: String
-    public let SigningKeyPassphrase: String
-    public let SigningKeyPassphraseKeyPacket: String
-    public let AcceptanceSignature: String
-    public let ItemKey: String
-    public let ItemKeyPassphrase: String
-    public let ItemKeyPassphraseKeyPacket: String
-    public let ItemKeySignature: String
+    public let addressID: String
+    public let content: String
+    public let contentFormatVersion: Int
+    public let contentEncryptedAddressSignature: String
+    public let contentEncryptedVaultSignature: String
+    public let vaultKey: String
+    public let vaultKeyPassphrase: String
+    public let vaultKeySignature: String
+    public let keyPacket: String
+    public let keyPacketSignature: String
+    public let signingKey: String
+    public let signingKeyPassphrase: String
+    public let signingKeyPassphraseKeyPacket: String
+    public let acceptanceSignature: String
+    public let itemKey: String
+    public let itemKeyPassphrase: String
+    public let itemKeyPassphraseKeyPacket: String
+    public let itemKeySignature: String
 
-    public init(AddressID: String,
-                Content: String,
-                ContentFormatVersion: Int,
-                ContentEncryptedAddressSignature: String,
-                ContentEncryptedVaultSignature: String,
-                VaultKey: String,
-                VaultKeyPassphrase: String,
-                VaultKeySignature: String,
-                KeyPacket: String,
-                KeyPacketSignature: String,
-                SigningKey: String,
-                SigningKeyPassphrase: String,
-                SigningKeyPassphraseKeyPacket: String,
-                AcceptanceSignature: String,
-                ItemKey: String,
-                ItemKeyPassphrase: String,
-                ItemKeyPassphraseKeyPacket: String,
-                ItemKeySignature: String) {
-        self.AddressID = AddressID
-        self.Content = Content
-        self.ContentFormatVersion = ContentFormatVersion
-        self.ContentEncryptedAddressSignature = ContentEncryptedAddressSignature
-        self.ContentEncryptedVaultSignature = ContentEncryptedVaultSignature
-        self.VaultKey = VaultKey
-        self.VaultKeyPassphrase = VaultKeyPassphrase
-        self.VaultKeySignature = VaultKeySignature
-        self.KeyPacket = KeyPacket
-        self.KeyPacketSignature = KeyPacketSignature
-        self.SigningKey = SigningKey
-        self.SigningKeyPassphrase = SigningKeyPassphrase
-        self.SigningKeyPassphraseKeyPacket = SigningKeyPassphraseKeyPacket
-        self.AcceptanceSignature = AcceptanceSignature
-        self.ItemKey = ItemKey
-        self.ItemKeyPassphrase = ItemKeyPassphrase
-        self.ItemKeyPassphraseKeyPacket = ItemKeyPassphraseKeyPacket
-        self.ItemKeySignature = ItemKeySignature
+    private enum CodingKeys: String, CodingKey {
+        case addressID = "AddressID"
+        case content = "Content"
+        case contentFormatVersion = "ContentFormatVersion"
+        case contentEncryptedAddressSignature = "ContentEncryptedAddressSignature"
+        case contentEncryptedVaultSignature = "ContentEncryptedVaultSignature"
+        case vaultKey = "VaultKey"
+        case vaultKeyPassphrase = "VaultKeyPassphrase"
+        case vaultKeySignature = "VaultKeySignature"
+        case keyPacket = "KeyPacket"
+        case keyPacketSignature = "KeyPacketSignature"
+        case signingKey = "SigningKey"
+        case signingKeyPassphrase = "SigningKeyPassphrase"
+        case signingKeyPassphraseKeyPacket = "SigningKeyPassphraseKeyPacket"
+        case acceptanceSignature = "AcceptanceSignature"
+        case itemKey = "ItemKey"
+        case itemKeyPassphrase = "ItemKeyPassphrase"
+        case itemKeyPassphraseKeyPacket = "ItemKeyPassphraseKeyPacket"
+        case itemKeySignature = "ItemKeySignature"
+    }
+
+    public init(addressID: String,
+                content: String,
+                contentFormatVersion: Int,
+                contentEncryptedAddressSignature: String,
+                contentEncryptedVaultSignature: String,
+                vaultKey: String,
+                vaultKeyPassphrase: String,
+                vaultKeySignature: String,
+                keyPacket: String,
+                keyPacketSignature: String,
+                signingKey: String,
+                signingKeyPassphrase: String,
+                signingKeyPassphraseKeyPacket: String,
+                acceptanceSignature: String,
+                itemKey: String,
+                itemKeyPassphrase: String,
+                itemKeyPassphraseKeyPacket: String,
+                itemKeySignature: String) {
+        self.addressID = addressID
+        self.content = content
+        self.contentFormatVersion = contentFormatVersion
+        self.contentEncryptedAddressSignature = contentEncryptedAddressSignature
+        self.contentEncryptedVaultSignature = contentEncryptedVaultSignature
+        self.vaultKey = vaultKey
+        self.vaultKeyPassphrase = vaultKeyPassphrase
+        self.vaultKeySignature = vaultKeySignature
+        self.keyPacket = keyPacket
+        self.keyPacketSignature = keyPacketSignature
+        self.signingKey = signingKey
+        self.signingKeyPassphrase = signingKeyPassphrase
+        self.signingKeyPassphraseKeyPacket = signingKeyPassphraseKeyPacket
+        self.acceptanceSignature = acceptanceSignature
+        self.itemKey = itemKey
+        self.itemKeyPassphrase = itemKeyPassphrase
+        self.itemKeyPassphraseKeyPacket = itemKeyPassphraseKeyPacket
+        self.itemKeySignature = itemKeySignature
     }
 }
 
@@ -143,33 +163,33 @@ public enum CreateVault {
         let encryptedNameAddressSignature = try Encryptor.encrypt(nameAddressSignature, key: vaultKey)
         let encryptedNameVaultKeySignature = try Encryptor.encrypt(nameVaultKeySignature, key: vaultKey)
 
-        return .init(AddressID: addressId,
-                     Content: try CryptoUtils.unarmorAndBase64(data: encryptedVaultBase64,
+        return .init(addressID: addressId,
+                     content: try CryptoUtils.unarmorAndBase64(data: encryptedVaultBase64,
                                                                name: "encryptedVaultBase64"),
-                     ContentFormatVersion: 1,
-                     ContentEncryptedAddressSignature:
+                     contentFormatVersion: 1,
+                     contentEncryptedAddressSignature:
                         try CryptoUtils.unarmorAndBase64(data: encryptedNameAddressSignature,
                                                          name: "encryptedNameAddressSignature"),
-                     ContentEncryptedVaultSignature:
+                     contentEncryptedVaultSignature:
                         try CryptoUtils.unarmorAndBase64(data: encryptedNameVaultKeySignature,
                                                          name: "encryptedNameVaultKeySignature"),
-                     VaultKey: vaultKey,
-                     VaultKeyPassphrase: vaultKeyPassphraseDataPacket.base64EncodedString(),
-                     VaultKeySignature: try CryptoUtils.unarmorAndBase64(data: vaultKeySignature,
+                     vaultKey: vaultKey,
+                     vaultKeyPassphrase: vaultKeyPassphraseDataPacket.base64EncodedString(),
+                     vaultKeySignature: try CryptoUtils.unarmorAndBase64(data: vaultKeySignature,
                                                                          name: "vaultKeySignature"),
-                     KeyPacket: vaultKeyPassphraseKeyPacket.base64EncodedString(),
-                     KeyPacketSignature:
+                     keyPacket: vaultKeyPassphraseKeyPacket.base64EncodedString(),
+                     keyPacketSignature:
                         try CryptoUtils.unarmorAndBase64(data: signedVaultKeyPassphraseKeyPacket,
                                                          name: "signedVaultKeyPassphraseKeyPacket"),
-                     SigningKey: signingKey,
-                     SigningKeyPassphrase: signingKeyPassphraseDataPacket.base64EncodedString(),
-                     SigningKeyPassphraseKeyPacket: signingKeyPassphraseKeyPacket.base64EncodedString(),
-                     AcceptanceSignature: try CryptoUtils.unarmorAndBase64(data: signingKeySignature,
+                     signingKey: signingKey,
+                     signingKeyPassphrase: signingKeyPassphraseDataPacket.base64EncodedString(),
+                     signingKeyPassphraseKeyPacket: signingKeyPassphraseKeyPacket.base64EncodedString(),
+                     acceptanceSignature: try CryptoUtils.unarmorAndBase64(data: signingKeySignature,
                                                                            name: "signingKeySignature"),
-                     ItemKey: itemKey,
-                     ItemKeyPassphrase: itemKeyPassphraseDataPacket.base64EncodedString(),
-                     ItemKeyPassphraseKeyPacket: itemKeyPassphraseKeyPacket.base64EncodedString(),
-                     ItemKeySignature: try CryptoUtils.unarmorAndBase64(data: itemKeySignature,
+                     itemKey: itemKey,
+                     itemKeyPassphrase: itemKeyPassphraseDataPacket.base64EncodedString(),
+                     itemKeyPassphraseKeyPacket: itemKeyPassphraseKeyPacket.base64EncodedString(),
+                     itemKeySignature: try CryptoUtils.unarmorAndBase64(data: itemKeySignature,
                                                                         name: "itemKeySignature"))
     }
 }
