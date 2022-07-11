@@ -1,6 +1,6 @@
 //
-// StringExtensions.swift
-// Proton Pass - Created on 08/07/2022.
+// Person.swift
+// Proton Pass - Created on 11/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,20 +20,8 @@
 
 import Foundation
 
-// swiftlint:disable force_unwrapping
-public extension String {
-    static func random(length: Int = 10) -> String {
-        let allowedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        return String((0..<length).map { _ in allowedCharacters.randomElement()! })
-    }
-
-    func base64Decode() throws -> Data? { Data(base64Encoded: self) }
-
-    func capitalizingFirstLetter() -> String {
-        return prefix(1).capitalized + dropFirst()
-    }
-
-    mutating func capitalizeFirstLetter() {
-        self = self.capitalizingFirstLetter()
-    }
+struct Person: Encodable {
+    let firstName: String
+    let lastName: String
+    let favoriteProgrammingLanguages: [String]
 }
