@@ -90,7 +90,7 @@ public enum CreateVault {
     public static func create(addressId: String,
                               addressKey: Key,
                               passphrase: String,
-                              vaultName: String) throws -> CreateVaultRequest {
+                              vault: VaultProvider) throws -> CreateVaultRequest {
         // Generate signing key
         let (signingKey, signingKeyPassphrase) = try CryptoUtils.generateKey(name: "VaultSigningKey",
                                                                              email: "vault_signing@proton")
@@ -126,8 +126,9 @@ public enum CreateVault {
                                                   addressKey: signingKey,
                                                   addressPassphrase: signingKeyPassphrase)
 
-        let encryptedVaultName = try Encryptor.encrypt(vaultName, key: vaultKey)
-        let nameVaultKeySignature = try Encryptor.sign(list: Data(vaultName.utf8),
+        let vaultBase64 = try vault.data().base64EncodedString()
+        let encryptedVaultBase64 = try Encryptor.encrypt(vaultBase64, key: vaultKey)
+        let nameVaultKeySignature = try Encryptor.sign(list: Data(encryptedVaultBase64.utf8),
                                                        addressKey: vaultKey,
                                                        addressPassphrase: vaultKeyPassphrase)
 
@@ -135,7 +136,7 @@ public enum CreateVault {
                                                                    addressKey: vaultKey,
                                                                    addressPassphrase: vaultKeyPassphrase)
 
-        let nameAddressSignature = try Encryptor.sign(list: Data(vaultName.utf8),
+        let nameAddressSignature = try Encryptor.sign(list: Data(vaultBase64.utf8),
                                                       addressKey: addressKey.privateKey,
                                                       addressPassphrase: passphrase)
 
@@ -143,8 +144,8 @@ public enum CreateVault {
         let encryptedNameVaultKeySignature = try Encryptor.encrypt(nameVaultKeySignature, key: vaultKey)
 
         return .init(AddressID: addressId,
-                     Content: try CryptoUtils.unarmorAndBase64(data: encryptedVaultName,
-                                                               name: "encryptedVaultName"),
+                     Content: try CryptoUtils.unarmorAndBase64(data: encryptedVaultBase64,
+                                                               name: "encryptedVaultBase64"),
                      ContentFormatVersion: 1,
                      ContentEncryptedAddressSignature:
                         try CryptoUtils.unarmorAndBase64(data: encryptedNameAddressSignature,

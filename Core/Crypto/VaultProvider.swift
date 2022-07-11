@@ -1,6 +1,6 @@
 //
-// StringExtensions.swift
-// Proton Pass - Created on 08/07/2022.
+// VaultProvider.swift
+// Proton Pass - Created on 11/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,12 +20,27 @@
 
 import Foundation
 
-// swiftlint:disable force_unwrapping
-public extension String {
-    static func random(length: Int = 10) -> String {
-        let allowedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        return String((0..<length).map { _ in allowedCharacters.randomElement()! })
+public protocol VaultProvider {
+    var name: String { get }
+    var description: String { get }
+
+    /// Serialize into binary
+    func data() throws -> Data
+
+    /// Initialize from binary data
+    init(data: Data) throws
+}
+
+typealias VaultProtobuf = ProtonPassVaultV1_Vault
+
+extension VaultProtobuf: VaultProvider {
+    public var description: String { description_p }
+
+    public func data() throws -> Data {
+        try self.serializedData()
     }
 
-    func base64Decode() throws -> Data? { Data(base64Encoded: self) }
+    public init(data: Data) throws {
+        self = try VaultProtobuf(serializedData: data)
+    }
 }

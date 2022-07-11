@@ -24,51 +24,58 @@ import ProtonCore_Crypto
 import ProtonCore_DataModel
 import XCTest
 
+// swiftlint:disable function_parameter_count
 final class CreateVaultTests: XCTestCase {
     func testCreateVaultSuccess() throws {
         let (addressKey, addressKeyPassphrase) = try CryptoUtils.generateKey(name: "test", email: "test")
-        let addressId = String.random(length: 10)
-        let vaultName = String.random(length: 10)
-        let key = Key(keyID: String.random(length: 10), privateKey: addressKey)
-        let vault = try CreateVault.create(addressId: addressId,
-                                           addressKey: key,
-                                           passphrase: addressKeyPassphrase,
-                                           vaultName: vaultName)
-        XCTAssertEqual(vault.AddressID, addressId)
+        let addressId = String.random()
+        let vaultName = String.random()
+        let vaultDescription = String.random()
+        var vault = VaultProtobuf()
+        vault.name = vaultName
+        vault.description_p = vaultDescription
+        let key = Key(keyID: String.random(), privateKey: addressKey)
+        let createVaultRequest = try CreateVault.create(addressId: addressId,
+                                                        addressKey: key,
+                                                        passphrase: addressKeyPassphrase,
+                                                        vault: vault)
+        XCTAssertEqual(createVaultRequest.AddressID, addressId)
         let (armoredSigningKey, signingKeyPassphrase) =
         try validateSigningKey(addressKey: key,
                                addressKeyPassphrase: addressKeyPassphrase,
-                               vault: vault)
+                               createVaultRequest: createVaultRequest)
 
-        let signingKey = Key(keyID: String.random(length: 10), privateKey: armoredSigningKey)
+        let signingKey = Key(keyID: String.random(), privateKey: armoredSigningKey)
 
         let (armoredVaultKey, vaultKeyPassphrase) =
         try validateVaultKey(addressKey: key,
                              addressKeyPassphrase: addressKeyPassphrase,
-                             vault: vault,
+                             createVaultRequest: createVaultRequest,
                              signingKey: signingKey,
                              signingKeyPassphrase: signingKeyPassphrase)
-        let vaultKey = Key(keyID: String.random(length: 10), privateKey: armoredVaultKey)
-        try validateItemKey(vault: vault,
+        let vaultKey = Key(keyID: String.random(), privateKey: armoredVaultKey)
+        try validateItemKey(createVaultRequest: createVaultRequest,
                             signingKey: signingKey,
                             signingKeyPassphrase: signingKeyPassphrase,
                             vaultKey: vaultKey,
                             vaultKeyPassphrase: vaultKeyPassphrase)
         try validateVaultData(vaultName: vaultName,
-                              vault: vault,
+                              vaultDescription: vaultDescription,
+                              vaultType: type(of: vault),
+                              createVaultRequest: createVaultRequest,
                               vaultKey: vaultKey,
                               vaultKeyPassphrase: vaultKeyPassphrase)
     }
 
     func validateSigningKey(addressKey: Key,
                             addressKeyPassphrase: String,
-                            vault: CreateVaultRequest) throws -> (signingKey: String,
+                            createVaultRequest: CreateVaultRequest) throws -> (signingKey: String,
                                                                   signingKeyPassphrase: String) {
-        XCTAssertFalse(vault.SigningKeyPassphrase.isEmpty)
-        XCTAssertFalse(vault.SigningKeyPassphraseKeyPacket.isEmpty)
-        XCTAssertFalse(vault.SigningKey.isEmpty)
-        let passphraseKeyPacket = try vault.SigningKeyPassphraseKeyPacket.base64Decode()
-        let decodedPassphrase = try vault.SigningKeyPassphrase.base64Decode()
+        XCTAssertFalse(createVaultRequest.SigningKeyPassphrase.isEmpty)
+        XCTAssertFalse(createVaultRequest.SigningKeyPassphraseKeyPacket.isEmpty)
+        XCTAssertFalse(createVaultRequest.SigningKey.isEmpty)
+        let passphraseKeyPacket = try createVaultRequest.SigningKeyPassphraseKeyPacket.base64Decode()
+        let decodedPassphrase = try createVaultRequest.SigningKeyPassphrase.base64Decode()
         var decryptSessionKeyError: NSError?
         let decryptedSessionKey = HelperDecryptSessionKey(addressKey.privateKey,
                                                           addressKeyPassphrase.data(using: .utf8),
@@ -77,8 +84,8 @@ final class CreateVaultTests: XCTestCase {
         let decryptedPassphrase = try decryptedSessionKey?.decrypt(decodedPassphrase)
         XCTAssertNil(decryptSessionKeyError)
 
-        let signingKeyFingerprint = try CryptoUtils.getFingerprint(key: vault.SigningKey)
-        let decodedAcceptanceSignature = try vault.AcceptanceSignature.base64Decode()
+        let signingKeyFingerprint = try CryptoUtils.getFingerprint(key: createVaultRequest.SigningKey)
+        let decodedAcceptanceSignature = try createVaultRequest.AcceptanceSignature.base64Decode()
 
         var armorArmorWithTypeError: NSError?
         let armoredDecodedAcceptanceSignature = ArmorArmorWithType(decodedAcceptanceSignature,
@@ -90,20 +97,20 @@ final class CreateVaultTests: XCTestCase {
                                                   publicKey: addressKey.publicKey,
                                                   verifyTime: Int64(Date().timeIntervalSince1970)))
 
-        return (vault.SigningKey, try XCTUnwrap(decryptedPassphrase).getString())
+        return (createVaultRequest.SigningKey, try XCTUnwrap(decryptedPassphrase).getString())
     }
 
     func validateVaultKey(addressKey: Key,
                           addressKeyPassphrase: String,
-                          vault: CreateVaultRequest,
+                          createVaultRequest: CreateVaultRequest,
                           signingKey: Key,
                           signingKeyPassphrase: String) throws -> (vaultKey: String,
                                                                    vaultKeyPassphrase: String) {
-        XCTAssertFalse(vault.VaultKeyPassphrase.isEmpty)
-        XCTAssertFalse(vault.VaultKeySignature.isEmpty)
-        XCTAssertFalse(vault.VaultKey.isEmpty)
-        let passphraseKeyPacket = try vault.KeyPacket.base64Decode()
-        let decodedPassphrase = try vault.VaultKeyPassphrase.base64Decode()
+        XCTAssertFalse(createVaultRequest.VaultKeyPassphrase.isEmpty)
+        XCTAssertFalse(createVaultRequest.VaultKeySignature.isEmpty)
+        XCTAssertFalse(createVaultRequest.VaultKey.isEmpty)
+        let passphraseKeyPacket = try createVaultRequest.KeyPacket.base64Decode()
+        let decodedPassphrase = try createVaultRequest.VaultKeyPassphrase.base64Decode()
         var decryptSessionKeyError: NSError?
         let decryptedSessionKey = HelperDecryptSessionKey(addressKey.privateKey,
                                                           addressKeyPassphrase.data(using: .utf8),
@@ -111,8 +118,8 @@ final class CreateVaultTests: XCTestCase {
                                                           &decryptSessionKeyError)
         let decryptedPassphrase = try decryptedSessionKey?.decrypt(decodedPassphrase)
 
-        let vaultKeyFingerprint = try CryptoUtils.getFingerprint(key: vault.VaultKey)
-        let decodedVaultKeySignature = try vault.VaultKeySignature.base64Decode()
+        let vaultKeyFingerprint = try CryptoUtils.getFingerprint(key: createVaultRequest.VaultKey)
+        let decodedVaultKeySignature = try createVaultRequest.VaultKeySignature.base64Decode()
 
         var armorArmorWithTypeError: NSError?
         let armoredDecodedVaultKeySignature = ArmorArmorWithType(decodedVaultKeySignature,
@@ -124,19 +131,19 @@ final class CreateVaultTests: XCTestCase {
                                                   publicKey: signingKey.publicKey,
                                                   verifyTime: Int64(Date().timeIntervalSince1970)))
 
-        return (vault.VaultKey, try XCTUnwrap(decryptedPassphrase).getString())
+        return (createVaultRequest.VaultKey, try XCTUnwrap(decryptedPassphrase).getString())
     }
 
-    func validateItemKey(vault: CreateVaultRequest,
+    func validateItemKey(createVaultRequest: CreateVaultRequest,
                          signingKey: Key,
                          signingKeyPassphrase: String,
                          vaultKey: Key,
                          vaultKeyPassphrase: String) throws {
-        XCTAssertFalse(vault.ItemKeyPassphrase.isEmpty)
-        XCTAssertFalse(vault.ItemKeySignature.isEmpty)
-        XCTAssertFalse(vault.ItemKey.isEmpty)
-        let passphraseKeyPacket = try vault.ItemKeyPassphraseKeyPacket.base64Decode()
-        let decodedPassphrase = try vault.ItemKeyPassphrase.base64Decode()
+        XCTAssertFalse(createVaultRequest.ItemKeyPassphrase.isEmpty)
+        XCTAssertFalse(createVaultRequest.ItemKeySignature.isEmpty)
+        XCTAssertFalse(createVaultRequest.ItemKey.isEmpty)
+        let passphraseKeyPacket = try createVaultRequest.ItemKeyPassphraseKeyPacket.base64Decode()
+        let decodedPassphrase = try createVaultRequest.ItemKeyPassphrase.base64Decode()
         var decryptSessionKeyError: NSError?
         let decryptedSessionKey = HelperDecryptSessionKey(vaultKey.privateKey,
                                                           vaultKeyPassphrase.data(using: .utf8),
@@ -146,8 +153,8 @@ final class CreateVaultTests: XCTestCase {
         // TODO: Try to unlock item key
         let decryptedPassphrase = try decryptedSessionKey?.decrypt(decodedPassphrase)
 
-        let itemKeyFingerprint = try CryptoUtils.getFingerprint(key: vault.ItemKey)
-        let decodedItemKeySignature = try vault.ItemKeySignature.base64Decode()
+        let itemKeyFingerprint = try CryptoUtils.getFingerprint(key: createVaultRequest.ItemKey)
+        let decodedItemKeySignature = try createVaultRequest.ItemKeySignature.base64Decode()
 
         var armorArmorWithTypeError: NSError?
         let armoredDecodedItemKeySignature = ArmorArmorWithType(decodedItemKeySignature,
@@ -161,18 +168,23 @@ final class CreateVaultTests: XCTestCase {
     }
 
     func validateVaultData(vaultName: String,
-                           vault: CreateVaultRequest,
+                           vaultDescription: String,
+                           vaultType: VaultProvider.Type,
+                           createVaultRequest: CreateVaultRequest,
                            vaultKey: Key,
                            vaultKeyPassphrase: String) throws {
-        XCTAssertFalse(vault.Content.isEmpty)
-        let decodedContent = try vault.Content.base64Decode()
+        XCTAssertFalse(createVaultRequest.Content.isEmpty)
+        let decodedContent = try createVaultRequest.Content.base64Decode()
         var error: NSError?
         let armoredContent = ArmorArmorWithType(decodedContent,
                                                 "PGP MESSAGE",
                                                 &error)
-        let decryptedName = try Crypto().decrypt(encrypted: armoredContent,
-                                                 privateKey: vaultKey.privateKey,
-                                                 passphrase: vaultKeyPassphrase)
-        XCTAssertEqual(vaultName, decryptedName)
+        let decryptedVaultBase64 = try Crypto().decrypt(encrypted: armoredContent,
+                                                        privateKey: vaultKey.privateKey,
+                                                        passphrase: vaultKeyPassphrase)
+        let vaultData = try XCTUnwrap(decryptedVaultBase64.base64Decode())
+        let vault = try vaultType.init(data: vaultData)
+        XCTAssertEqual(vault.name, vaultName)
+        XCTAssertEqual(vault.description, vaultDescription)
     }
 }

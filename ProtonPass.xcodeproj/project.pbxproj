@@ -30,6 +30,7 @@
 		3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF12877791000EE85E1 /* CreateVaultView.swift */; };
 		3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */; };
 		3547ABF628777D6100EE85E1 /* VaultSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */; };
+		355443F1287C2B070017FCAD /* VaultProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443F0287C2B070017FCAD /* VaultProvider.swift */; };
 		355FBDF6287B1D4B003D8FFF /* label_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FBDF3287B1D4B003D8FFF /* label_v1.pb.swift */; };
 		355FBDF8287B1D4B003D8FFF /* vault_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FBDF5287B1D4B003D8FFF /* vault_v1.pb.swift */; };
 		355FBDFA287B1DD6003D8FFF /* item_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FBDF9287B1DD6003D8FFF /* item_v1.pb.swift */; };
@@ -197,6 +198,7 @@
 		3547ABF12877791000EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
 		3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySummaryView.swift; sourceTree = "<group>"; };
 		3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSummaryView.swift; sourceTree = "<group>"; };
+		355443F0287C2B070017FCAD /* VaultProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultProvider.swift; sourceTree = "<group>"; };
 		355FBDF3287B1D4B003D8FFF /* label_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = label_v1.pb.swift; sourceTree = "<group>"; };
 		355FBDF5287B1D4B003D8FFF /* vault_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vault_v1.pb.swift; sourceTree = "<group>"; };
 		355FBDF9287B1DD6003D8FFF /* item_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = item_v1.pb.swift; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 			children = (
 				3510A2F4287840260003BE79 /* CreateVault.swift */,
 				3510A2F9287841380003BE79 /* CryptoUtils.swift */,
+				355443F0287C2B070017FCAD /* VaultProvider.swift */,
 			);
 			path = Crypto;
 			sourceTree = "<group>";
@@ -1318,6 +1321,7 @@
 				3510A2FC287841AD0003BE79 /* StringExtensions.swift in Sources */,
 				355FBDF8287B1D4B003D8FFF /* vault_v1.pb.swift in Sources */,
 				3510A2FA287841380003BE79 /* CryptoUtils.swift in Sources */,
+				355443F1287C2B070017FCAD /* VaultProvider.swift in Sources */,
 				356C2AB8287329400020F577 /* PPCredential.swift in Sources */,
 				355FBDFA287B1DD6003D8FFF /* item_v1.pb.swift in Sources */,
 				356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */,
