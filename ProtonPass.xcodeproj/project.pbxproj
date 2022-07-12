@@ -453,8 +453,6 @@
 			children = (
 				3554440F287CBBE10017FCAD /* ClientCredential.swift */,
 				35544406287CB3810017FCAD /* Endpoint.swift */,
-				35544413287CBE070017FCAD /* URL+AppendingPathQueryItems.swift */,
-				35544411287CBCE60017FCAD /* URLRequest+ClientCredential.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -514,6 +512,8 @@
 			isa = PBXGroup;
 			children = (
 				358BD35D287D4E8000802A91 /* CryptoUtils.swift */,
+				35544413287CBE070017FCAD /* URL+AppendingPathQueryItems.swift */,
+				35544411287CBCE60017FCAD /* URLRequest+ClientCredential.swift */,
 				358BD35F287D4EA200802A91 /* VaultProvider.swift */,
 			);
 			path = Utilities;
