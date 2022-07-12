@@ -1,6 +1,6 @@
 //
-// CreateVaultEndpoint.swift
-// Proton Pass - Created on 11/07/2022.
+// VaultProvider.swift
+// Proton Pass - Created on 12/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,27 +20,27 @@
 
 import Foundation
 
-struct CreateVaultEndpoint: Endpoint {
-    struct Response: Decodable {
-        let code: Int
-        let share: Share
+public protocol VaultProvider {
+    var name: String { get }
+    var description: String { get }
 
-        private enum CodingKeys: String, CodingKey {
-            case code = "Code"
-            case share = "Share"
-        }
+    /// Serialize into binary
+    func data() throws -> Data
+
+    /// Initialize from binary data
+    init(data: Data) throws
+}
+
+typealias VaultProtobuf = ProtonPassVaultV1_Vault
+
+extension VaultProtobuf: VaultProvider {
+    public var description: String { description_p }
+
+    public func data() throws -> Data {
+        try self.serializedData()
     }
 
-    var request: URLRequest
-
-    init(baseURL: URL,
-         credential: ClientCredential,
-         createVaultRequestBody: CreateVaultRequestBody) {
-        let url = baseURL.appending(path: "/pass/v1/vault")
-        var request = URLRequest(url: url)
-        request.method = .post
-        request.addCredentialHeaders(credential)
-        request.httpBody = try? JSONEncoder().encode(createVaultRequestBody)
-        self.request = request
+    public init(data: Data) throws {
+        self = try VaultProtobuf(serializedData: data)
     }
 }

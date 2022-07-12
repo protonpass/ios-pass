@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3510A2F5287840260003BE79 /* CreateVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510A2F4287840260003BE79 /* CreateVault.swift */; };
-		3510A2F8287840BF0003BE79 /* CreateVaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510A2F7287840BF0003BE79 /* CreateVaultTests.swift */; };
-		3510A2FA287841380003BE79 /* CryptoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510A2F9287841380003BE79 /* CryptoUtils.swift */; };
 		3510A2FC287841AD0003BE79 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510A2FB287841AD0003BE79 /* StringExtensions.swift */; };
 		353E8B6E2876163F00A2C5E3 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B6D2876163F00A2C5E3 /* SidebarView.swift */; };
 		353E8B7028761A1700A2C5E3 /* SidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B6F28761A1700A2C5E3 /* SidebarItem.swift */; };
@@ -30,7 +27,6 @@
 		3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF12877791000EE85E1 /* CreateVaultView.swift */; };
 		3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */; };
 		3547ABF628777D6100EE85E1 /* VaultSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */; };
-		355443F1287C2B070017FCAD /* VaultProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443F0287C2B070017FCAD /* VaultProvider.swift */; };
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
@@ -41,15 +37,22 @@
 		35544416287CBE5C0017FCAD /* URLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544415287CBE5C0017FCAD /* URLTests.swift */; };
 		3554441A287CC0340017FCAD /* CreateVaultEndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544419287CC0340017FCAD /* CreateVaultEndpointTests.swift */; };
 		3554441D287CC0A50017FCAD /* MockClientCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554441C287CC0A50017FCAD /* MockClientCredential.swift */; };
-		355FBDF6287B1D4B003D8FFF /* label_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FBDF3287B1D4B003D8FFF /* label_v1.pb.swift */; };
-		355FBDF8287B1D4B003D8FFF /* vault_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FBDF5287B1D4B003D8FFF /* vault_v1.pb.swift */; };
-		355FBDFA287B1DD6003D8FFF /* item_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FBDF9287B1DD6003D8FFF /* item_v1.pb.swift */; };
 		356B21D72870F8F1001220CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D62870F8F1001220CB /* Constants.swift */; };
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
 		356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AB1287310D60020F577 /* KeychainStorage.swift */; };
 		356C2AB428731A630020F577 /* SessionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AB328731A630020F577 /* SessionStorage.swift */; };
 		356C2AB8287329400020F577 /* PPCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AB7287329400020F577 /* PPCredential.swift */; };
+		358BD35B287D4D0A00802A91 /* CreateVaultRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD35A287D4D0A00802A91 /* CreateVaultRequestBody.swift */; };
+		358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD35D287D4E8000802A91 /* CryptoUtils.swift */; };
+		358BD360287D4EA200802A91 /* VaultProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD35F287D4EA200802A91 /* VaultProvider.swift */; };
+		358BD366287D4F9200802A91 /* CreateVaultRequestBodyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD365287D4F9200802A91 /* CreateVaultRequestBodyTests.swift */; };
+		358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD368287D52AC00802A91 /* label_v1.pb.swift */; };
+		358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD369287D52AC00802A91 /* item_v1.pb.swift */; };
+		358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD36A287D52AC00802A91 /* vault_v1.pb.swift */; };
+		358BD36E287D539F00802A91 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; };
+		358BD36F287D539F00802A91 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		358BD374287D565900802A91 /* DummyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD373287D565900802A91 /* DummyTests.swift */; };
 		35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
 		35E50649286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
 		35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50653286F82DC00A3F6EA /* AppDelegate.swift */; };
@@ -96,6 +99,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		358BD370287D539F00802A91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35E5062F286F819F00A3F6EA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 35E50683286F87A600A3F6EA;
+			remoteInfo = Core;
+		};
 		35E5066A286F870500A3F6EA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 35E5062F286F819F00A3F6EA /* Project object */;
@@ -148,6 +158,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		358BD372287D539F00802A91 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				358BD36F287D539F00802A91 /* Core.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		35E50679286F870500A3F6EA /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -183,9 +204,6 @@
 		302E54D07ED836B91BE0C248 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		303E837161E0B51054C04021 /* Pods_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32C1E0DDBABAC43C35D4832D /* Pods-Client.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.debug-prod.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		3510A2F4287840260003BE79 /* CreateVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVault.swift; sourceTree = "<group>"; };
-		3510A2F7287840BF0003BE79 /* CreateVaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultTests.swift; sourceTree = "<group>"; };
-		3510A2F9287841380003BE79 /* CryptoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoUtils.swift; sourceTree = "<group>"; };
 		3510A2FB287841AD0003BE79 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		353E8B6D2876163F00A2C5E3 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		353E8B6F28761A1700A2C5E3 /* SidebarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarItem.swift; sourceTree = "<group>"; };
@@ -206,7 +224,6 @@
 		3547ABF12877791000EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
 		3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySummaryView.swift; sourceTree = "<group>"; };
 		3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSummaryView.swift; sourceTree = "<group>"; };
-		355443F0287C2B070017FCAD /* VaultProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultProvider.swift; sourceTree = "<group>"; };
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
@@ -217,9 +234,6 @@
 		35544415287CBE5C0017FCAD /* URLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLTests.swift; sourceTree = "<group>"; };
 		35544419287CC0340017FCAD /* CreateVaultEndpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpointTests.swift; sourceTree = "<group>"; };
 		3554441C287CC0A50017FCAD /* MockClientCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockClientCredential.swift; sourceTree = "<group>"; };
-		355FBDF3287B1D4B003D8FFF /* label_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = label_v1.pb.swift; sourceTree = "<group>"; };
-		355FBDF5287B1D4B003D8FFF /* vault_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vault_v1.pb.swift; sourceTree = "<group>"; };
-		355FBDF9287B1DD6003D8FFF /* item_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = item_v1.pb.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B21D62870F8F1001220CB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
@@ -227,6 +241,14 @@
 		356C2AB1287310D60020F577 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
 		356C2AB328731A630020F577 /* SessionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStorage.swift; sourceTree = "<group>"; };
 		356C2AB7287329400020F577 /* PPCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPCredential.swift; sourceTree = "<group>"; };
+		358BD35A287D4D0A00802A91 /* CreateVaultRequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultRequestBody.swift; sourceTree = "<group>"; };
+		358BD35D287D4E8000802A91 /* CryptoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoUtils.swift; sourceTree = "<group>"; };
+		358BD35F287D4EA200802A91 /* VaultProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultProvider.swift; sourceTree = "<group>"; };
+		358BD365287D4F9200802A91 /* CreateVaultRequestBodyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultRequestBodyTests.swift; sourceTree = "<group>"; };
+		358BD368287D52AC00802A91 /* label_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = label_v1.pb.swift; sourceTree = "<group>"; };
+		358BD369287D52AC00802A91 /* item_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = item_v1.pb.swift; sourceTree = "<group>"; };
+		358BD36A287D52AC00802A91 /* vault_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vault_v1.pb.swift; sourceTree = "<group>"; };
+		358BD373287D565900802A91 /* DummyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyTests.swift; sourceTree = "<group>"; };
 		35E50636286F819F00A3F6EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35E5063B286F819F00A3F6EA /* Proton Pass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Pass.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35E50641286F819F00A3F6EA /* Proton Pass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Pass.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -320,6 +342,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				675A744B254FF56E1C95D91B /* Pods_Client.framework in Frameworks */,
+				358BD36E287D539F00802A91 /* Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,24 +397,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3510A2F328783FF50003BE79 /* Crypto */ = {
-			isa = PBXGroup;
-			children = (
-				3510A2F4287840260003BE79 /* CreateVault.swift */,
-				3510A2F9287841380003BE79 /* CryptoUtils.swift */,
-				355443F0287C2B070017FCAD /* VaultProvider.swift */,
-			);
-			path = Crypto;
-			sourceTree = "<group>";
-		};
-		3510A2F62878407F0003BE79 /* Crypto */ = {
-			isa = PBXGroup;
-			children = (
-				3510A2F7287840BF0003BE79 /* CreateVaultTests.swift */,
-			);
-			path = Crypto;
-			sourceTree = "<group>";
-		};
 		353E8B6C2876162B00A2C5E3 /* Sidebar */ = {
 			isa = PBXGroup;
 			children = (
@@ -437,6 +442,7 @@
 		355443FB287CA73E0017FCAD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				358BD35A287D4D0A00802A91 /* CreateVaultRequestBody.swift */,
 				355443FC287CA77C0017FCAD /* Share.swift */,
 			);
 			path = Models;
@@ -494,16 +500,6 @@
 			path = MockTypes;
 			sourceTree = "<group>";
 		};
-		355FBDF2287B1D4B003D8FFF /* Protobuf Objects */ = {
-			isa = PBXGroup;
-			children = (
-				355FBDF9287B1DD6003D8FFF /* item_v1.pb.swift */,
-				355FBDF3287B1D4B003D8FFF /* label_v1.pb.swift */,
-				355FBDF5287B1D4B003D8FFF /* vault_v1.pb.swift */,
-			);
-			path = "Protobuf Objects";
-			sourceTree = SOURCE_ROOT;
-		};
 		356B21D82870F95B001220CB /* Storage */ = {
 			isa = PBXGroup;
 			children = (
@@ -513,6 +509,33 @@
 			);
 			path = Storage;
 			sourceTree = "<group>";
+		};
+		358BD35C287D4E5100802A91 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				358BD35D287D4E8000802A91 /* CryptoUtils.swift */,
+				358BD35F287D4EA200802A91 /* VaultProvider.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		358BD364287D4F7C00802A91 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				358BD365287D4F9200802A91 /* CreateVaultRequestBodyTests.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		358BD367287D52AC00802A91 /* Protobuf Objects */ = {
+			isa = PBXGroup;
+			children = (
+				358BD368287D52AC00802A91 /* label_v1.pb.swift */,
+				358BD369287D52AC00802A91 /* item_v1.pb.swift */,
+				358BD36A287D52AC00802A91 /* vault_v1.pb.swift */,
+			);
+			path = "Protobuf Objects";
+			sourceTree = SOURCE_ROOT;
 		};
 		35E5062E286F819F00A3F6EA = {
 			isa = PBXGroup;
@@ -586,6 +609,8 @@
 				355443FE287CAABB0017FCAD /* Infrastructure */,
 				355443FB287CA73E0017FCAD /* Models */,
 				355443FA287CA7150017FCAD /* Modules */,
+				358BD367287D52AC00802A91 /* Protobuf Objects */,
+				358BD35C287D4E5100802A91 /* Utilities */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -594,6 +619,7 @@
 			isa = PBXGroup;
 			children = (
 				3554440A287CB6C20017FCAD /* Infrastructure */,
+				358BD364287D4F7C00802A91 /* Models */,
 				35544417287CC0200017FCAD /* Modules */,
 				3554441B287CC06D0017FCAD /* MockTypes */,
 			);
@@ -605,9 +631,7 @@
 			children = (
 				35E50686286F87A600A3F6EA /* Core.h */,
 				35E506F8286FB36000A3F6EA /* Coordinator */,
-				3510A2F328783FF50003BE79 /* Crypto */,
 				35E506FF286FB38400A3F6EA /* DomainModels */,
-				355FBDF2287B1D4B003D8FFF /* Protobuf Objects */,
 				356B21D82870F95B001220CB /* Storage */,
 				35E50704286FB39800A3F6EA /* Utilities */,
 			);
@@ -617,7 +641,7 @@
 		35E50691286F87A700A3F6EA /* CoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				3510A2F62878407F0003BE79 /* Crypto */,
+				358BD373287D565900802A91 /* DummyTests.swift */,
 			);
 			path = CoreTests;
 			sourceTree = "<group>";
@@ -858,10 +882,12 @@
 				35E5065E286F870500A3F6EA /* Frameworks */,
 				35E5065F286F870500A3F6EA /* Resources */,
 				35E506A2286F8E3B00A3F6EA /* SwiftLint */,
+				358BD372287D539F00802A91 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				358BD371287D539F00802A91 /* PBXTargetDependency */,
 			);
 			name = Client;
 			productName = Client;
@@ -982,6 +1008,7 @@
 					};
 					35E5068A286F87A700A3F6EA = {
 						CreatedOnToolsVersion = 13.3.1;
+						LastSwiftMigration = 1330;
 						TestTargetID = 35E5063A286F819F00A3F6EA;
 					};
 					35E506A9286F920300A3F6EA = {
@@ -1396,10 +1423,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				358BD360287D4EA200802A91 /* VaultProvider.swift in Sources */,
+				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
+				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
+				358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */,
+				358BD35B287D4D0A00802A91 /* CreateVaultRequestBody.swift in Sources */,
 				35544412287CBCE60017FCAD /* URLRequest+ClientCredential.swift in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
+				358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */,
 				35544410287CBBE10017FCAD /* ClientCredential.swift in Sources */,
 				35544414287CBE070017FCAD /* URL+AppendingPathQueryItems.swift in Sources */,
 			);
@@ -1409,6 +1442,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				358BD366287D4F9200802A91 /* CreateVaultRequestBodyTests.swift in Sources */,
 				3554440C287CB6D30017FCAD /* EndpointTests.swift in Sources */,
 				3554441D287CC0A50017FCAD /* MockClientCredential.swift in Sources */,
 				35544416287CBE5C0017FCAD /* URLTests.swift in Sources */,
@@ -1428,19 +1462,13 @@
 				356C2AB428731A630020F577 /* SessionStorage.swift in Sources */,
 				356B21D72870F8F1001220CB /* Constants.swift in Sources */,
 				356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */,
-				355FBDF6287B1D4B003D8FFF /* label_v1.pb.swift in Sources */,
 				35E50707286FB3A600A3F6EA /* Logger.swift in Sources */,
 				35E506FD286FB37300A3F6EA /* Router.swift in Sources */,
 				35E50708286FB3A600A3F6EA /* Publisher+Unwrap.swift in Sources */,
 				3510A2FC287841AD0003BE79 /* StringExtensions.swift in Sources */,
-				355FBDF8287B1D4B003D8FFF /* vault_v1.pb.swift in Sources */,
-				3510A2FA287841380003BE79 /* CryptoUtils.swift in Sources */,
-				355443F1287C2B070017FCAD /* VaultProvider.swift in Sources */,
 				356C2AB8287329400020F577 /* PPCredential.swift in Sources */,
-				355FBDFA287B1DD6003D8FFF /* item_v1.pb.swift in Sources */,
 				356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */,
 				353E8B74287622F300A2C5E3 /* BundleExtensions.swift in Sources */,
-				3510A2F5287840260003BE79 /* CreateVault.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1448,7 +1476,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3510A2F8287840BF0003BE79 /* CreateVaultTests.swift in Sources */,
+				358BD374287D565900802A91 /* DummyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1467,6 +1495,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		358BD371287D539F00802A91 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 35E50683286F87A600A3F6EA /* Core */;
+			targetProxy = 358BD370287D539F00802A91 /* PBXContainerItemProxy */;
+		};
 		35E5066B286F870500A3F6EA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 35E50660286F870500A3F6EA /* Client */;
@@ -1959,16 +1992,23 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
@@ -1981,11 +2021,17 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2304,16 +2350,23 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
@@ -2582,11 +2635,17 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.key.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -26,28 +26,28 @@ final class CreateVaultEndpointTests: XCTestCase {
     func testCreateVaultEndpoint() throws {
         let baseURL = try XCTUnwrap(URL(string: "https://example.com"))
         let credential = MockClientCredential.random
-        let createVaultRequest = CreateVaultRequest(addressID: .random(),
-                                                    content: .random(),
-                                                    contentFormatVersion: .random(in: 0...100),
-                                                    contentEncryptedAddressSignature: .random(),
-                                                    contentEncryptedVaultSignature: .random(),
-                                                    vaultKey: .random(),
-                                                    vaultKeyPassphrase: .random(),
-                                                    vaultKeySignature: .random(),
-                                                    keyPacket: .random(),
-                                                    keyPacketSignature: .random(),
-                                                    signingKey: .random(),
-                                                    signingKeyPassphrase: .random(),
-                                                    signingKeyPassphraseKeyPacket: .random(),
-                                                    acceptanceSignature: .random(),
-                                                    itemKey: .random(),
-                                                    itemKeyPassphrase: .random(),
-                                                    itemKeyPassphraseKeyPacket: .random(),
-                                                    itemKeySignature: .random())
-        let bodyData = try JSONEncoder().encode(createVaultRequest)
+        let requestBody = CreateVaultRequestBody(addressID: .random(),
+                                                 content: .random(),
+                                                 contentFormatVersion: .random(in: 0...100),
+                                                 contentEncryptedAddressSignature: .random(),
+                                                 contentEncryptedVaultSignature: .random(),
+                                                 vaultKey: .random(),
+                                                 vaultKeyPassphrase: .random(),
+                                                 vaultKeySignature: .random(),
+                                                 keyPacket: .random(),
+                                                 keyPacketSignature: .random(),
+                                                 signingKey: .random(),
+                                                 signingKeyPassphrase: .random(),
+                                                 signingKeyPassphraseKeyPacket: .random(),
+                                                 acceptanceSignature: .random(),
+                                                 itemKey: .random(),
+                                                 itemKeyPassphrase: .random(),
+                                                 itemKeyPassphraseKeyPacket: .random(),
+                                                 itemKeySignature: .random())
+        let bodyData = try JSONEncoder().encode(requestBody)
         let sut = CreateVaultEndpoint(baseURL: baseURL,
                                       credential: credential,
-                                      createVaultRequest: createVaultRequest)
+                                      createVaultRequestBody: requestBody)
 
         XCTAssertEqual(sut.request.httpMethod, "POST")
         XCTAssertEqual(sut.request.url?.absoluteString, "https://example.com/pass/v1/vault")

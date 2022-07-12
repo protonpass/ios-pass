@@ -1,6 +1,6 @@
 //
-// CreateVault.swift
-// Proton Pass - Created on 08/07/2022.
+// CreateVaultRequestBody.swift
+// Proton Pass - Created on 12/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,14 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Crypto
-import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_KeyManager
 
 typealias Encryptor = ProtonCore_KeyManager.Encryptor
 
-public struct CreateVaultRequest: Encodable {
+public struct CreateVaultRequestBody: Encodable {
     public let addressID: String
     public let content: String
     public let contentFormatVersion: Int
@@ -103,14 +101,12 @@ public struct CreateVaultRequest: Encodable {
         self.itemKeyPassphraseKeyPacket = itemKeyPassphraseKeyPacket
         self.itemKeySignature = itemKeySignature
     }
-}
 
-public enum CreateVault {
     // swiftlint:disable:next function_body_length
-    public static func create(addressId: String,
-                              addressKey: Key,
-                              passphrase: String,
-                              vault: VaultProvider) throws -> CreateVaultRequest {
+    init(addressId: String,
+         addressKey: Key,
+         passphrase: String,
+         vault: VaultProvider) throws {
         // Generate signing key
         let (signingKey, signingKeyPassphrase) = try CryptoUtils.generateKey(name: "VaultSigningKey",
                                                                              email: "vault_signing@proton")
@@ -163,7 +159,7 @@ public enum CreateVault {
         let encryptedNameAddressSignature = try Encryptor.encrypt(nameAddressSignature, key: vaultKey)
         let encryptedNameVaultKeySignature = try Encryptor.encrypt(nameVaultKeySignature, key: vaultKey)
 
-        return .init(addressID: addressId,
+        self = .init(addressID: addressId,
                      content: try CryptoUtils.unarmorAndBase64(data: encryptedVaultBase64,
                                                                name: "encryptedVaultBase64"),
                      contentFormatVersion: 1,
