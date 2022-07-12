@@ -431,12 +431,12 @@
 			path = Trash;
 			sourceTree = "<group>";
 		};
-		355443FA287CA7150017FCAD /* Modules */ = {
+		355443FA287CA7150017FCAD /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
 				35544403287CAF600017FCAD /* Vault */,
 			);
-			path = Modules;
+			path = Endpoints;
 			sourceTree = "<group>";
 		};
 		355443FB287CA73E0017FCAD /* Models */ = {
@@ -608,7 +608,7 @@
 				35E50663286F870500A3F6EA /* Client.h */,
 				355443FE287CAABB0017FCAD /* Infrastructure */,
 				355443FB287CA73E0017FCAD /* Models */,
-				355443FA287CA7150017FCAD /* Modules */,
+				355443FA287CA7150017FCAD /* Endpoints */,
 				358BD367287D52AC00802A91 /* Protobuf Objects */,
 				358BD35C287D4E5100802A91 /* Utilities */,
 			);
