@@ -24,7 +24,7 @@ import XCTest
 final class EndpointTests: XCTestCase {
     func testGeneratePathCorrectly() throws {
         struct DummyEndpoint: Endpoint {
-            struct Response: Decodable {}
+            struct Response: Codable {}
 
             let request: URLRequest
 

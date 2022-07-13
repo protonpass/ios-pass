@@ -103,10 +103,10 @@ public struct CreateVaultRequestBody: Encodable {
     }
 
     // swiftlint:disable:next function_body_length
-    init(addressId: String,
-         addressKey: Key,
-         passphrase: String,
-         vault: VaultProvider) throws {
+    public init(addressId: String,
+                addressKey: Key,
+                passphrase: String,
+                vault: VaultProvider) throws {
         // Generate signing key
         let (signingKey, signingKeyPassphrase) = try CryptoUtils.generateKey(name: "VaultSigningKey",
                                                                              email: "vault_signing@proton")

@@ -21,8 +21,9 @@
 import Foundation
 import ProtonCore_Networking
 
-protocol Endpoint: Request {
-    associatedtype Response: Decodable
+public protocol Endpoint: Request {
+    /// `Decodable` should be enough but Core's functions need`Codable`
+    associatedtype Response: Codable
 
     /// We don't necessarily need to construct `URLRequest` object here.
     /// Simply give information to Core by overridding `Request`'s properties like `header`, `parameters`...
@@ -31,7 +32,7 @@ protocol Endpoint: Request {
     var request: URLRequest { get }
 }
 
-extension Endpoint {
+public extension Endpoint {
     var path: String {
         guard let url = self.request.url else {
             assertionFailure("URL should not be nil")

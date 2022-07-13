@@ -1,5 +1,5 @@
 //
-// VaultProvider.swift
+// APIService+ExecEndpoint.swift
 // Proton Pass - Created on 12/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,29 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Combine
+import ProtonCore_Networking
+import ProtonCore_Services
 
-public protocol VaultProvider {
-    var name: String { get }
-    var description: String { get }
-
-    /// Serialize into binary
-    func data() throws -> Data
-
-    /// Initialize from binary data
-    init(data: Data) throws
-}
-
-public typealias VaultProtobuf = ProtonPassVaultV1_Vault
-
-extension VaultProtobuf: VaultProvider {
-    public var description: String { description_p }
-
-    public func data() throws -> Data {
-        try self.serializedData()
-    }
-
-    public init(data: Data) throws {
-        self = try VaultProtobuf(serializedData: data)
+public extension APIService {
+    func exec<T: Endpoint>(endpoint: T) async throws -> T.Response {
+        try await withCheckedThrowingContinuation { continuation in
+            exec(route: endpoint) { (_, result: Result<T.Response, ResponseError>) in
+                switch result {
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                case .success(let data):
+                    continuation.resume(returning: data)
+                }
+            }
+        }
     }
 }

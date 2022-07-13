@@ -19,9 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_Services
 
-struct CreateVaultEndpoint: Endpoint {
-    struct Response: Decodable {
+public struct CreateVaultEndpoint: Endpoint {
+    public struct Response: Codable {
         let code: Int
         let share: Share
 
@@ -31,11 +32,11 @@ struct CreateVaultEndpoint: Endpoint {
         }
     }
 
-    var request: URLRequest
+    public var request: URLRequest
 
-    init(baseURL: URL,
-         credential: ClientCredential,
-         createVaultRequestBody: CreateVaultRequestBody) {
+    public init(baseURL: URL,
+                credential: ClientCredential,
+                createVaultRequestBody: CreateVaultRequestBody) {
         let url = baseURL.appending(path: "/pass/v1/vault")
         var request = URLRequest(url: url)
         request.method = .post

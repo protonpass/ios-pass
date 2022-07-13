@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct Share: Decodable {
+public struct Share: Codable {
     public let shareID: String
     public let vaultID: String
     public let targetType: Int

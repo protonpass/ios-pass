@@ -18,9 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Core
 
-protocol ClientCredential {
+public protocol ClientCredential {
     var accessToken: String { get }
     var uid: String { get }
 }
+
+extension PPCredential: ClientCredential {}

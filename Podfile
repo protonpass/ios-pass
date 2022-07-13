@@ -21,6 +21,7 @@ def client_and_ios_pods
   pod 'ProtonCore-DataModel', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Crypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Keymaker/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Networking/Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Login/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
 end
 
@@ -34,7 +35,6 @@ target 'Client' do
 
   client_and_ios_pods
   pod 'SwiftProtobuf'
-  pod 'ProtonCore-Networking/Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-KeyManager/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
 
   target 'ClientTests' do
