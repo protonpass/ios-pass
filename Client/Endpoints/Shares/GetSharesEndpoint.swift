@@ -1,6 +1,6 @@
 //
-// CreateVaultEndpoint.swift
-// Proton Pass - Created on 11/07/2022.
+// GetSharesEndpoint.swift
+// Proton Pass - Created on 14/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,22 +20,20 @@
 
 import ProtonCore_Services
 
-public struct CreateVaultEndpoint: Endpoint {
+public struct GetSharesEndpoint: Endpoint {
     public struct Response: Codable {
         let code: Int
-        let share: Share
+        let shares: [PartialShare]
     }
 
     public var request: URLRequest
 
     public init(baseURL: URL,
-                credential: ClientCredential,
-                createVaultRequestBody: CreateVaultRequestBody) {
-        let url = baseURL.appending(path: "/pass/v1/vault")
+                credential: ClientCredential) {
+        let url = baseURL.appending(path: "/pass/v1/share")
         var request = URLRequest(url: url)
-        request.method = .post
+        request.method = .get
         request.addCredentialHeaders(credential)
-        request.httpBody = try? JSONEncoder().encode(createVaultRequestBody)
         self.request = request
     }
 }

@@ -40,27 +40,6 @@ public struct Share: Codable {
     public let expireTime: Double?
     public let createTime: Double
 
-    private enum CodingKeys: String, CodingKey {
-        case shareID = "ShareID"
-        case vaultID = "VaultID"
-        case targetType = "TargetType"
-        case targetID = "TargetID"
-        case permission = "Permission"
-        case acceptanceSignature = "AcceptanceSignature"
-        case inviterEmail = "InviterEmail"
-        case inviterAcceptanceSignature = "InviterAcceptanceSignature"
-        case signingKey = "SigningKey"
-        case signingKeyPassphrase = "SigningKeyPassphrase"
-        case content = "Content"
-        case contentRotationID = "ContentRotationID"
-        case contentEncryptedAddressSignature = "ContentEncryptedAddressSignature"
-        case contentEncryptedVaultSignature = "ContentEncryptedVaultSignature"
-        case contentSignerEmail = "ContentSignerEmail"
-        case contentFormatVersion = "ContentFormatVersion"
-        case expireTime = "ExpireTime"
-        case createTime = "CreateTime"
-    }
-
     public init(shareID: String,
                 vaultID: String,
                 targetType: Int,
@@ -95,6 +74,41 @@ public struct Share: Codable {
         self.contentEncryptedVaultSignature = contentEncryptedVaultSignature
         self.contentSignerEmail = contentSignerEmail
         self.contentFormatVersion = contentFormatVersion
+        self.expireTime = expireTime
+        self.createTime = createTime
+    }
+}
+
+public struct PartialShare: Codable {
+    public let shareID: String
+    public let vaultID: String
+    public let targetType: Int
+    public let targetID: String
+    public let permission: Int
+    public let acceptanceSignature: String
+    public let inviterEmail: String
+    public let inviterAcceptanceSignature: String
+    public let expireTime: Double?
+    public let createTime: Double
+
+    public init(shareID: String,
+                vaultID: String,
+                targetType: Int,
+                targetID: String,
+                permission: Int,
+                acceptanceSignature: String,
+                inviterEmail: String,
+                inviterAcceptanceSignature: String,
+                expireTime: Double?,
+                createTime: Double) {
+        self.shareID = shareID
+        self.vaultID = vaultID
+        self.targetType = targetType
+        self.targetID = targetID
+        self.permission = permission
+        self.acceptanceSignature = acceptanceSignature
+        self.inviterEmail = inviterEmail
+        self.inviterAcceptanceSignature = inviterAcceptanceSignature
         self.expireTime = expireTime
         self.createTime = createTime
     }
