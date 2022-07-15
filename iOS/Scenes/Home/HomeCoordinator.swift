@@ -19,7 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import ProtonCore_Doh
 import ProtonCore_Login
+import ProtonCore_Networking
+import ProtonCore_Services
 import SideMenuSwift
 import SwiftUI
 import UIComponents
@@ -39,6 +42,7 @@ final class HomeCoordinator {
     }
 
     let userData: UserData
+    let apiService: APIService
     weak var delegate: HomeCoordinatorDelegate?
 
     private(set) lazy var sideMenuController: SideMenuController = {
@@ -70,8 +74,9 @@ final class HomeCoordinator {
 
     private var trashRootViewController: UIViewController { trashCoordinator.router.toPresentable() }
 
-    init(userData: UserData) {
+    init(userData: UserData, apiService: APIService) {
         self.userData = userData
+        self.apiService = apiService
         self.setUpSideMenuPreferences()
     }
 
@@ -156,6 +161,73 @@ extension HomeCoordinator: TrashCoordinatorDelegate {
 extension HomeCoordinator {
     /// For preview purposes
     static var preview: HomeCoordinator {
-        .init(userData: .preview)
+        .init(userData: .preview, apiService: DummyApiService.preview)
     }
+}
+
+/// For preview purposes
+struct DummyApiService: APIService {
+    var sessionUID = ""
+    var serviceDelegate: APIServiceDelegate?
+    var authDelegate: AuthDelegate?
+    var humanDelegate: HumanVerifyDelegate?
+    var doh: DoH & ServerConfig = PPDoH(bundle: .main)
+    var signUpDomain = ""
+
+    func setSessionUID(uid: String) { }
+
+    // swiftlint:disable function_parameter_count
+    func request(method: HTTPMethod,
+                 path: String,
+                 parameters: Any?,
+                 headers: [String: Any]?,
+                 authenticated: Bool,
+                 autoRetry: Bool,
+                 customAuthCredential: AuthCredential?,
+                 nonDefaultTimeout: TimeInterval?,
+                 completion: CompletionBlock?) {}
+
+    func download(byUrl url: String,
+                  destinationDirectoryURL: URL,
+                  headers: [String: Any]?,
+                  authenticated: Bool,
+                  customAuthCredential: AuthCredential?,
+                  nonDefaultTimeout: TimeInterval?,
+                  downloadTask: ((URLSessionDownloadTask) -> Void)?,
+                  completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {}
+
+    func upload(byPath path: String,
+                parameters: [String: String],
+                keyPackets: Data,
+                dataPacket: Data,
+                signature: Data?,
+                headers: [String: Any]?,
+                authenticated: Bool,
+                customAuthCredential: AuthCredential?,
+                nonDefaultTimeout: TimeInterval?,
+                completion: @escaping CompletionBlock) {}
+
+    func uploadFromFile(byPath path: String,
+                        parameters: [String: String],
+                        keyPackets: Data,
+                        dataPacketSourceFileURL: URL,
+                        signature: Data?,
+                        headers: [String: Any]?,
+                        authenticated: Bool,
+                        customAuthCredential: AuthCredential?,
+                        nonDefaultTimeout: TimeInterval?,
+                        completion: @escaping CompletionBlock) {}
+
+    func upload(byPath path: String,
+                parameters: Any?,
+                files: [String: URL],
+                headers: [String: Any]?,
+                authenticated: Bool,
+                customAuthCredential: AuthCredential?,
+                nonDefaultTimeout: TimeInterval?,
+                uploadProgress: ProgressCompletion?,
+                completion: @escaping CompletionBlock) {}
+    // swiftlint:enable function_parameter_count
+
+    static var preview: DummyApiService { .init() }
 }

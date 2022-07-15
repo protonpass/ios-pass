@@ -25,46 +25,25 @@ public protocol Endpoint: Request {
     /// `Decodable` should be enough but Core's functions need`Codable`
     associatedtype Response: Codable
 
-    /// We don't necessarily need to construct `URLRequest` object here.
-    /// Simply give information to Core by overridding `Request`'s properties like `header`, `parameters`...
-    /// But this way seems too verbose and not natural. So we are constructing anyway `URLRequest` for future use.
-    /// We'll then derive `Request`'s properties from this `URLRequest` in a default extension of `Endpoint` below.
-    var request: URLRequest { get }
+    static var baseHeaders: [String: String] { get }
 }
 
 public extension Endpoint {
-    var path: String {
-        guard let url = self.request.url else {
-            assertionFailure("URL should not be nil")
-            return ""
-        }
-
-        if let query = url.query {
-            return url.path + "?" + query
-        }
-
-        return url.path
+    static var baseHeaders: [String: String] {
+        [
+            "x-pm-appversion": Bundle.main.appVersion,
+            "Accept": "application/vnd.protonmail.v1+json",
+            "Content-Type": "application/json;charset=utf-8"
+        ]
     }
+}
 
-    /// For Proton Pass specific use case, we only have authenticated endpoints
+public extension Endpoint {
     var isAuth: Bool { true }
-
     var autoRetry: Bool { true }
-
-    var header: [String: Any] {
-        var headers: [String: Any] = [:]
-        request.headers.forEach { eachHeader in
-            headers[eachHeader.name] = eachHeader.value
-        }
-        return headers
-    }
-
-    /// This properties is used by Core to add `Authorization` & `x-pm-uid` headers
-    /// Returning nil here because these info are found in `URLRequest`'s headers
+    var header: [String: Any] { Self.baseHeaders }
     var authCredential: AuthCredential? { nil }
-
-    /// Is included in `path`, returning nil here.
+    var method: HTTPMethod { .get }
     var parameters: [String: Any]? { nil }
-
     var nonDefaultTimeout: TimeInterval? { nil }
 }

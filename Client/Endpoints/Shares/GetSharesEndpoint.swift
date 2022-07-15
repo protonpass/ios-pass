@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_Networking
 import ProtonCore_Services
 
 public struct GetSharesEndpoint: Endpoint {
@@ -26,14 +27,11 @@ public struct GetSharesEndpoint: Endpoint {
         let shares: [PartialShare]
     }
 
-    public var request: URLRequest
+    public var path: String { "/pass/v1/share" }
+    public var method: HTTPMethod { .get }
+    public var authCredential: AuthCredential?
 
-    public init(baseURL: URL,
-                credential: ClientCredential) {
-        let url = baseURL.appending(path: "/pass/v1/share")
-        var request = URLRequest(url: url)
-        request.method = .get
-        request.addCredentialHeaders(credential)
-        self.request = request
+    public init(credential: AuthCredential) {
+        self.authCredential = credential
     }
 }

@@ -22,12 +22,15 @@ import Combine
 import Core
 import ProtonCore_Keymaker
 import ProtonCore_Login
+import ProtonCore_Networking
+import ProtonCore_Services
 import UIKit
 
 final class AppCoordinator {
     private let rootViewController: UIViewController
     private let appStateObserver = AppStateObserver()
     private let keymaker: Keymaker
+    private let apiService: PMAPIService
 
     @KeychainStorage(key: "userData")
     public private(set) var userData: UserData? // swiftlint:disable:this let_var_whitespace
@@ -44,6 +47,8 @@ final class AppCoordinator {
         self._userData.setKeychain(keychain)
         self._userData.setMainKeyProvider(keymaker)
         self.keymaker = keymaker
+        self.apiService = PMAPIService(doh: PPDoH(bundle: .main))
+        self.apiService.authDelegate = self
         bindAppState()
     }
 
@@ -92,7 +97,7 @@ final class AppCoordinator {
 
     private func showHomeScene(userData: UserData) {
         let presentSideMenuController: (Bool) -> Void = { [unowned self] animated in
-            let homeCoordinator = HomeCoordinator(userData: userData)
+            let homeCoordinator = HomeCoordinator(userData: userData, apiService: apiService)
             homeCoordinator.delegate = self
             homeCoordinator.sideMenuController.modalPresentationStyle = .fullScreen
             self.welcomeCoordinator = nil
@@ -133,4 +138,14 @@ extension AppCoordinator: HomeCoordinatorDelegate {
     func homeCoordinatorDidSignOut() {
         signOut()
     }
+}
+
+extension AppCoordinator: AuthDelegate {
+    func getToken(bySessionUID uid: String) -> AuthCredential? { userData?.credential }
+
+    func onLogout(sessionUID uid: String) { signOut() }
+
+    func onUpdate(auth: Credential) {}
+
+    func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {}
 }
