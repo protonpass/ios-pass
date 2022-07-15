@@ -19,10 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import ProtonCore_Networking
 
 public protocol ClientCredential {
     var accessToken: String { get }
     var uid: String { get }
 }
 
-extension PPCredential: ClientCredential {}
+extension AuthCredential: ClientCredential {
+    public var uid: String { sessionID }
+}
