@@ -33,7 +33,7 @@ struct SidebarView: View {
                 .ignoresSafeArea(.all)
 
             VStack(spacing: 0) {
-                SidebarCurrentUserView(userInfoProvider: .preview,
+                SidebarCurrentUserView(userInfoProvider: coordinator.userData.user,
                                        action: coordinator.showUserSwitcher)
                 .padding(.horizontal, 8)
                 ScrollView {

@@ -18,13 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
-
-protocol UserInfoProvider {
-    var displayName: String { get }
-    var email: String { get }
-}
 
 struct SidebarCurrentUserView: View {
     let userInfoProvider: UserInfoProvider
@@ -33,17 +29,18 @@ struct SidebarCurrentUserView: View {
     var body: some View {
         Button(action: action) {
             HStack {
-                Text("AA")
+                Text(userInfoProvider.userInfoInitials)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
                     .padding(8)
+                    .frame(minWidth: 36)
                     .background(Color(ColorProvider.BrandNorm))
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 VStack(alignment: .leading) {
-                    Text(userInfoProvider.displayName)
+                    Text(userInfoProvider.userInfoDisplayName)
                         .fontWeight(.medium)
                         .foregroundColor(.white)
-                    Text(userInfoProvider.email)
+                    Text(userInfoProvider.userInfoEmail)
                         .font(.callout)
                         .foregroundColor(.gray)
                 }
@@ -60,8 +57,9 @@ struct SidebarCurrentUserView: View {
 }
 
 struct PreviewUserInfo: UserInfoProvider {
-    let displayName = "John Doe"
-    let email = "john.doe@example.com"
+    let userInfoInitials = "JD"
+    let userInfoDisplayName = "John Doe"
+    let userInfoEmail = "john.doe@example.com"
 }
 
 extension UserInfoProvider where Self == PreviewUserInfo {
