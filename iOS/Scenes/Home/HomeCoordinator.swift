@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import ProtonCore_Login
 import SideMenuSwift
 import SwiftUI
 import UIComponents
@@ -37,7 +38,7 @@ final class HomeCoordinator {
         print("\(Self.self) is deallocated")
     }
 
-    let sessionStorageProvider: SessionStorageProvider
+    let userData: UserData
     weak var delegate: HomeCoordinatorDelegate?
 
     private(set) lazy var sideMenuController: SideMenuController = {
@@ -69,8 +70,8 @@ final class HomeCoordinator {
 
     private var trashRootViewController: UIViewController { trashCoordinator.router.toPresentable() }
 
-    init(sessionStorageProvider: SessionStorageProvider) {
-        self.sessionStorageProvider = sessionStorageProvider
+    init(userData: UserData) {
+        self.userData = userData
         self.setUpSideMenuPreferences()
     }
 
@@ -155,6 +156,6 @@ extension HomeCoordinator: TrashCoordinatorDelegate {
 extension HomeCoordinator {
     /// For preview purposes
     static var preview: HomeCoordinator {
-        .init(sessionStorageProvider: .preview)
+        .init(userData: .preview)
     }
 }
