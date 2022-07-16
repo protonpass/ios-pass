@@ -50,7 +50,7 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateVaultView() {
-        let createVaultView = CreateVaultView(coordinator: self)
+        let createVaultView = CreateVaultView(viewModel: .init(coordinator: self))
         router.present(UIHostingController(rootView: createVaultView), animated: true)
     }
 

@@ -22,14 +22,18 @@ import ProtonCore_UIFoundations
 import SwiftUI
 
 struct CreateVaultView: View {
-    let coordinator: MyVaultsCoordinator
+    @StateObject private var viewModel: CreateVaultViewModel
+
+    init(viewModel: CreateVaultViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         NavigationView {
             Text("Create new vault")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: coordinator.dismissTopMostModal) {
+                        Button(action: viewModel.cancelAction) {
                             Text("Cancel")
                         }
                         .foregroundColor(Color(.label))
@@ -56,6 +60,6 @@ struct CreateVaultView: View {
 
 struct CreateVaultView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateVaultView(coordinator: .preview)
+        CreateVaultView(viewModel: .preview)
     }
 }
