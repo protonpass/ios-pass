@@ -20,9 +20,12 @@
 
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct CreateVaultView: View {
     @StateObject private var viewModel: CreateVaultViewModel
+    @State private var name = ""
+    @State private var note = ""
 
     init(viewModel: CreateVaultViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -30,30 +33,41 @@ struct CreateVaultView: View {
 
     var body: some View {
         NavigationView {
-            Text("Create new vault")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: viewModel.cancelAction) {
-                            Text("Cancel")
-                        }
-                        .foregroundColor(Color(.label))
-                    }
+            VStack(spacing: 20) {
+                TitledTextField(title: "Name",
+                                text: $name,
+                                placeholder: "Vault name")
 
-                    ToolbarItem(placement: .principal) {
-                        Text("Create new vault")
-                            .fontWeight(.bold)
+                TitledTextField(title: "Note",
+                                text: $note,
+                                placeholder: "Add description")
+            }
+            .padding()
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: viewModel.cancelAction) {
+                        Text("Cancel")
                     }
-
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            print("Save")
-                        }, label: {
-                            Text("Save")
-                                .fontWeight(.bold)
-                                .foregroundColor(Color(ColorProvider.BrandNorm))
-                        })
-                    }
+                    .foregroundColor(Color(.label))
                 }
+
+                ToolbarItem(placement: .principal) {
+                    Text("Create new vault")
+                        .fontWeight(.bold)
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        print("Save")
+                    }, label: {
+                        Text("Save")
+                            .fontWeight(.bold)
+                            .foregroundColor(Color(ColorProvider.BrandNorm))
+                            .opacity(name.isEmpty ? 0.5 : 1)
+                    })
+                    .disabled(name.isEmpty)
+                }
+            }
         }
     }
 }

@@ -26,6 +26,8 @@ def client_and_ios_pods
 end
 
 def ios_and_uicomponents
+  pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-CoreTranslation-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
 end
 
@@ -75,9 +77,6 @@ target 'iOS' do
   ios_and_uicomponents
   pod 'ProtonCore-OpenPGP', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-CoreTranslation-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Challenge', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Authentication/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
