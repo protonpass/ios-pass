@@ -60,9 +60,9 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateVaultView() {
-        let createVaultViewModel = CreateVaultViewModel(coordinator: self,
-                                                        apiService: apiService,
+        let createVaultViewModel = CreateVaultViewModel(apiService: apiService,
                                                         userData: userData)
+        createVaultViewModel.delegate = self
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         let createVaultViewController = UIHostingController(rootView: createVaultView)
         if #available(iOS 15.0, *) {
@@ -116,6 +116,29 @@ final class MyVaultsCoordinator: Coordinator {
         case .generatePassword:
             break
         }
+    }
+}
+
+// MARK: - CreateVaultViewModelDelegate
+extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
+    func createVaultViewModelBeginsLoading() {
+        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    }
+
+    func createVaultViewModelStopsLoading() {
+        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
+    func createVaultViewModelWantsToBeDismissed() {
+        dismissTopMostModal()
+    }
+
+    func createVaultViewModelDidCreateShare(share: PartialShare) {
+        dismissTopMostModal()
+    }
+
+    func createVaultViewModelFailedToCreateShare(error: Error) {
+        delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 }
 

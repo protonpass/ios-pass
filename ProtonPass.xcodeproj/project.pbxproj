@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		350A97CC28859D1800A7168B /* AddressKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97CB28859D1800A7168B /* AddressKey.swift */; };
+		350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97CD2885BA4D00A7168B /* GetShareDataEndpoint.swift */; };
+		350A97D02885BB1800A7168B /* ShareProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97CF2885BB1800A7168B /* ShareProvider.swift */; };
+		350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D12885BF7E00A7168B /* Protobufable.swift */; };
+		350A97D42885BFFD00A7168B /* Vault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D32885BFFD00A7168B /* Vault.swift */; };
+		350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D62885C0D500A7168B /* Share+ShareProviderTests.swift */; };
+		350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D92885C95D00A7168B /* UserData+Test.swift */; };
+		350A97DC2885FD7900A7168B /* MyVaultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97DB2885FD7900A7168B /* MyVaultsViewModel.swift */; };
+		350A97DE2886032000A7168B /* DeinitPrintable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97DD2886032000A7168B /* DeinitPrintable.swift */; };
 		3510A2FC287841AD0003BE79 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510A2FB287841AD0003BE79 /* StringExtensions.swift */; };
 		353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C02880C45C0021C716 /* GetSharesEndpoint.swift */; };
 		353547C32880CF470021C716 /* UserData+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C22880CF470021C716 /* UserData+Codable.swift */; };
@@ -206,6 +214,14 @@
 		303E837161E0B51054C04021 /* Pods_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32C1E0DDBABAC43C35D4832D /* Pods-Client.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.debug-prod.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		350A97CB28859D1800A7168B /* AddressKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressKey.swift; sourceTree = "<group>"; };
+		350A97CD2885BA4D00A7168B /* GetShareDataEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareDataEndpoint.swift; sourceTree = "<group>"; };
+		350A97CF2885BB1800A7168B /* ShareProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareProvider.swift; sourceTree = "<group>"; };
+		350A97D12885BF7E00A7168B /* Protobufable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protobufable.swift; sourceTree = "<group>"; };
+		350A97D32885BFFD00A7168B /* Vault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault.swift; sourceTree = "<group>"; };
+		350A97D62885C0D500A7168B /* Share+ShareProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share+ShareProviderTests.swift"; sourceTree = "<group>"; };
+		350A97D92885C95D00A7168B /* UserData+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Test.swift"; sourceTree = "<group>"; };
+		350A97DB2885FD7900A7168B /* MyVaultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsViewModel.swift; sourceTree = "<group>"; };
+		350A97DD2886032000A7168B /* DeinitPrintable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitPrintable.swift; sourceTree = "<group>"; };
 		3510A2FB287841AD0003BE79 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		353547C02880C45C0021C716 /* GetSharesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharesEndpoint.swift; sourceTree = "<group>"; };
 		353547C22880CF470021C716 /* UserData+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Codable.swift"; sourceTree = "<group>"; };
@@ -399,10 +415,27 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		350A97D52885C0B400A7168B /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				350A97D62885C0D500A7168B /* Share+ShareProviderTests.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		350A97D82885C94900A7168B /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				350A97D92885C95D00A7168B /* UserData+Test.swift */,
+			);
+			path = TestData;
+			sourceTree = "<group>";
+		};
 		353547BF2880C4470021C716 /* Shares */ = {
 			isa = PBXGroup;
 			children = (
 				353547C02880C45C0021C716 /* GetSharesEndpoint.swift */,
+				350A97CD2885BA4D00A7168B /* GetShareDataEndpoint.swift */,
 			);
 			path = Shares;
 			sourceTree = "<group>";
@@ -422,6 +455,7 @@
 			children = (
 				3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */,
 				3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */,
+				350A97DB2885FD7900A7168B /* MyVaultsViewModel.swift */,
 				3547ABDF287750F100EE85E1 /* CreateItemView.swift */,
 				3547ABEB2877753800EE85E1 /* CreateLoginView.swift */,
 				3547ABED287777B700EE85E1 /* CreateAliasView.swift */,
@@ -495,6 +529,8 @@
 				358BD35D287D4E8000802A91 /* CryptoUtils.swift */,
 				3542B8882883614D009C9A68 /* DummyApiService.swift */,
 				3551DFF12885436E008AE633 /* DummyEncodable.swift */,
+				350A97D12885BF7E00A7168B /* Protobufable.swift */,
+				350A97CF2885BB1800A7168B /* ShareProvider.swift */,
 				358BD35F287D4EA200802A91 /* VaultProvider.swift */,
 			);
 			path = Utilities;
@@ -600,6 +636,8 @@
 			isa = PBXGroup;
 			children = (
 				358BD364287D4F7C00802A91 /* Models */,
+				350A97D82885C94900A7168B /* TestData */,
+				350A97D52885C0B400A7168B /* Utilities */,
 			);
 			path = ClientTests;
 			sourceTree = "<group>";
@@ -676,6 +714,7 @@
 				35E50700286FB39600A3F6EA /* AppState.swift */,
 				35E50709286FB44800A3F6EA /* PPDoH.swift */,
 				353E10912881827C00E59474 /* UserInfoProvider.swift */,
+				350A97D32885BFFD00A7168B /* Vault.swift */,
 			);
 			path = DomainModels;
 			sourceTree = "<group>";
@@ -685,6 +724,7 @@
 			children = (
 				353E8B73287622F300A2C5E3 /* BundleExtensions.swift */,
 				356B21D62870F8F1001220CB /* Constants.swift */,
+				350A97DD2886032000A7168B /* DeinitPrintable.swift */,
 				35E50705286FB3A600A3F6EA /* Logger.swift */,
 				35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */,
 				3510A2FB287841AD0003BE79 /* StringExtensions.swift */,
@@ -1379,6 +1419,7 @@
 				3547ABEC2877753800EE85E1 /* CreateLoginView.swift in Sources */,
 				35E50710286FB5BA00A3F6EA /* Flows.swift in Sources */,
 				35E50714286FB60500A3F6EA /* HomeCoordinator.swift in Sources */,
+				350A97DC2885FD7900A7168B /* MyVaultsViewModel.swift in Sources */,
 				3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */,
 				35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */,
 				3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */,
@@ -1406,6 +1447,7 @@
 				350A97CC28859D1800A7168B /* AddressKey.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProvider.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
+				350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
 				3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */,
@@ -1415,8 +1457,10 @@
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
 				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
+				350A97D02885BB1800A7168B /* ShareProvider.swift in Sources */,
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
 				358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */,
+				350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */,
 				353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1425,6 +1469,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */,
+				350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */,
 				358BD366287D4F9200802A91 /* CreateVaultRequestBodyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1435,10 +1481,12 @@
 			files = (
 				35E506FC286FB37300A3F6EA /* Coordinator.swift in Sources */,
 				35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */,
+				350A97D42885BFFD00A7168B /* Vault.swift in Sources */,
 				35E50702286FB39600A3F6EA /* AppState.swift in Sources */,
 				35E506FE286FB37300A3F6EA /* Presentable.swift in Sources */,
 				356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */,
 				356B21D72870F8F1001220CB /* Constants.swift in Sources */,
+				350A97DE2886032000A7168B /* DeinitPrintable.swift in Sources */,
 				356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */,
 				353E10922881827C00E59474 /* UserInfoProvider.swift in Sources */,
 				35E50707286FB3A600A3F6EA /* Logger.swift in Sources */,

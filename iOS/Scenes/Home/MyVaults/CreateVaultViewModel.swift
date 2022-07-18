@@ -19,40 +19,87 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
+import Core
 import ProtonCore_Login
 import ProtonCore_Services
 import SwiftUI
 
-final class CreateVaultViewModel: ObservableObject {
-    private let coordinator: MyVaultsCoordinator
+protocol CreateVaultViewModelDelegate: AnyObject {
+    func createVaultViewModelBeginsLoading()
+    func createVaultViewModelStopsLoading()
+    func createVaultViewModelWantsToBeDismissed()
+    func createVaultViewModelDidCreateShare(share: PartialShare)
+    func createVaultViewModelFailedToCreateShare(error: Error)
+}
+
+final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
+    deinit {
+        print(deinitMessage)
+    }
+
     private let apiService: APIService
     private let userData: UserData
 
-    init(coordinator: MyVaultsCoordinator,
-         apiService: APIService,
-         userData: UserData) {
-        self.coordinator = coordinator
+    let isLoadingSubject = PassthroughSubject<Bool, Never>()
+    let createdShareSubject = PassthroughSubject<PartialShare, Error>()
+    private var cancellables = Set<AnyCancellable>()
+
+    weak var delegate: CreateVaultViewModelDelegate?
+
+    init(apiService: APIService, userData: UserData) {
         self.apiService = apiService
         self.userData = userData
+        self.subscribeToPublishers()
+    }
+
+    private func subscribeToPublishers() {
+        isLoadingSubject
+            .sink { [weak self] isLoading in
+                guard let self = self else { return }
+                if isLoading {
+                    self.delegate?.createVaultViewModelBeginsLoading()
+                } else {
+                    self.delegate?.createVaultViewModelStopsLoading()
+                }
+            }
+            .store(in: &cancellables)
+
+        createdShareSubject
+            .sink { [weak self] completion in
+                guard let self = self else { return }
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    self.delegate?.createVaultViewModelFailedToCreateShare(error: error)
+                }
+            } receiveValue: { [weak self] share in
+                guard let self = self else { return }
+                self.delegate?.createVaultViewModelDidCreateShare(share: share)
+            }
+            .store(in: &cancellables)
     }
 
     func cancelAction() {
-        coordinator.dismissTopMostModal()
+        delegate?.createVaultViewModelWantsToBeDismissed()
     }
 
     func createVault(name: String, note: String) {
         Task { @MainActor in
             do {
-                coordinator.showLoadingHud()
+                isLoadingSubject.send(true)
                 let createVaultEndpoint = try CreateVaultEndpoint(credential: userData.credential,
                                                                   addressKey: userData.getAddressKey(),
                                                                   name: name,
                                                                   note: note)
-                _ = try await apiService.exec(endpoint: createVaultEndpoint)
-                coordinator.hideLoadingHud()
+                let response = try await apiService.exec(endpoint: createVaultEndpoint)
+                isLoadingSubject.send(false)
+                createdShareSubject.send(response.share)
+                createdShareSubject.send(completion: .finished)
             } catch {
-                coordinator.hideLoadingHud()
-                coordinator.alert(error: error)
+                isLoadingSubject.send(false)
+                createdShareSubject.send(completion: .failure(error))
             }
         }
     }
@@ -60,8 +107,7 @@ final class CreateVaultViewModel: ObservableObject {
 
 extension CreateVaultViewModel {
     static var preview: CreateVaultViewModel {
-        .init(coordinator: .preview,
-              apiService: DummyApiService.preview,
+        .init(apiService: DummyApiService.preview,
               userData: .preview)
     }
 }

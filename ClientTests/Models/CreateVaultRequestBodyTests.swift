@@ -169,7 +169,7 @@ final class CreateVaultRequestBodyTests: XCTestCase {
 
     func validateVaultData(vaultName: String,
                            vaultDescription: String,
-                           vaultType: VaultProvider.Type,
+                           vaultType: ProtobufableVaultProvider.Type,
                            requestBody: CreateVaultRequestBody,
                            vaultKey: Key,
                            vaultKeyPassphrase: String) throws {

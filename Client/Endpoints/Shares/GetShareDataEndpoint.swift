@@ -1,6 +1,6 @@
 //
-// VaultProvider.swift
-// Proton Pass - Created on 12/07/2022.
+// GetShareDataEndpoint.swift
+// Proton Pass - Created on 18/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,32 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
+import ProtonCore_Networking
+import ProtonCore_Services
 
-public protocol VaultProvider {
-    var name: String { get }
-    var description: String { get }
-}
-
-public typealias VaultProtobuf = ProtonPassVaultV1_Vault
-public typealias ProtobufableVaultProvider = VaultProvider & Protobufable
-
-extension VaultProtobuf: ProtobufableVaultProvider {
-    public var description: String { description_p }
-
-    public func data() throws -> Data {
-        try self.serializedData()
+public struct GetShareDataEndpoint: Endpoint {
+    public typealias Body = DummyEncodable
+    public struct Response: Codable {
+        public let code: Int
+        public let share: Share
     }
 
-    public init(data: Data) throws {
-        self = try VaultProtobuf(serializedData: data)
-    }
+    public var path: String
+    public var method: HTTPMethod { .get }
+    public var authCredential: AuthCredential?
 
-    public init(name: String, note: String) {
-        self.init()
-        self.name = name
-        self.description_p = note
+    public init(credential: AuthCredential, shareId: String) {
+        self.path = "/pass/v1/share/\(shareId)"
+        self.authCredential = credential
     }
 }
-
-extension Vault: VaultProvider {}
