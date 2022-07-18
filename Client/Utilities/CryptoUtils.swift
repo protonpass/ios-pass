@@ -26,6 +26,8 @@ public enum CryptoError: Error {
     case failedToSplitPGPMessage
     case failedToUnarmor(String)
     case failedToGetFingerprint
+    case failedToGenerateKeyRing
+    case failedToEncrypt
 }
 
 public enum CryptoUtils {

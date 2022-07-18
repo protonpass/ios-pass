@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Crypto
 import ProtonCore_DataModel
 import ProtonCore_KeyManager
 
@@ -103,25 +104,24 @@ public struct CreateVaultRequestBody: Encodable {
     }
 
     // swiftlint:disable:next function_body_length
-    public init(addressId: String,
-                addressKey: Key,
-                passphrase: String,
-                vault: VaultProvider) throws {
+    public init(addressKey: AddressKey, vault: VaultProvider) throws {
         // Generate signing key
         let (signingKey, signingKeyPassphrase) = try CryptoUtils.generateKey(name: "VaultSigningKey",
                                                                              email: "vault_signing@proton")
-        let encryptedSigningKeyPassphrase = try Encryptor.encrypt(signingKeyPassphrase, key: addressKey.publicKey)
+        let encryptedSigningKeyPassphrase = try Encryptor.encrypt(signingKeyPassphrase,
+                                                                  key: addressKey.key.publicKey)
         let (signingKeyPassphraseKeyPacket, signingKeyPassphraseDataPacket) =
         try CryptoUtils.splitPGPMessage(encryptedSigningKeyPassphrase)
 
         let signingKeyFingerprint = try CryptoUtils.getFingerprint(key: signingKey)
         let signingKeySignature = try Encryptor.sign(list: Data(signingKeyFingerprint.utf8),
-                                                     addressKey: addressKey.privateKey,
-                                                     addressPassphrase: passphrase)
+                                                     addressKey: addressKey.key.privateKey,
+                                                     addressPassphrase: addressKey.keyPassphrase)
         // Generate vault key
         let (vaultKey, vaultKeyPassphrase) = try CryptoUtils.generateKey(name: "VaultKey",
                                                                          email: "vault@proton")
-        let encryptedVaultKeyPassphrase = try Encryptor.encrypt(vaultKeyPassphrase, key: addressKey.publicKey)
+        let encryptedVaultKeyPassphrase = try Encryptor.encrypt(vaultKeyPassphrase,
+                                                                key: addressKey.key.publicKey)
         let (vaultKeyPassphraseKeyPacket, vaultKeyPassphraseDataPacket) =
         try CryptoUtils.splitPGPMessage(encryptedVaultKeyPassphrase)
 
@@ -142,9 +142,15 @@ public struct CreateVaultRequestBody: Encodable {
                                                   addressKey: signingKey,
                                                   addressPassphrase: signingKeyPassphrase)
 
-        let vaultBase64 = try vault.data().base64EncodedString()
-        let encryptedVaultBase64 = try Encryptor.encrypt(vaultBase64, key: vaultKey)
-        let nameVaultKeySignature = try Encryptor.sign(list: Data(encryptedVaultBase64.utf8),
+        guard let keyRing = CryptoKeyRing(.init(fromArmored: vaultKey.publicKey)) else {
+            throw CryptoError.failedToGenerateKeyRing
+        }
+
+        let vaultData = try vault.data()
+        guard let encryptedVaultData = try keyRing.encrypt(.init(vaultData), privateKey: nil).data else {
+            throw CryptoError.failedToEncrypt
+        }
+        let nameVaultKeySignature = try Encryptor.sign(list: vaultData,
                                                        addressKey: vaultKey,
                                                        addressPassphrase: vaultKeyPassphrase)
 
@@ -152,16 +158,15 @@ public struct CreateVaultRequestBody: Encodable {
                                                                    addressKey: vaultKey,
                                                                    addressPassphrase: vaultKeyPassphrase)
 
-        let nameAddressSignature = try Encryptor.sign(list: Data(vaultBase64.utf8),
-                                                      addressKey: addressKey.privateKey,
-                                                      addressPassphrase: passphrase)
+        let nameAddressSignature = try Encryptor.sign(list: vaultData,
+                                                      addressKey: addressKey.key.privateKey,
+                                                      addressPassphrase: addressKey.keyPassphrase)
 
         let encryptedNameAddressSignature = try Encryptor.encrypt(nameAddressSignature, key: vaultKey)
         let encryptedNameVaultKeySignature = try Encryptor.encrypt(nameVaultKeySignature, key: vaultKey)
 
-        self = .init(addressID: addressId,
-                     content: try CryptoUtils.unarmorAndBase64(data: encryptedVaultBase64,
-                                                               name: "encryptedVaultBase64"),
+        self = .init(addressID: addressKey.addressId,
+                     content: encryptedVaultData.base64EncodedString(),
                      contentFormatVersion: 1,
                      contentEncryptedAddressSignature:
                         try CryptoUtils.unarmorAndBase64(data: encryptedNameAddressSignature,

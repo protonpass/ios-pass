@@ -18,7 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
+import ProtonCore_Login
+import ProtonCore_Services
 import SwiftUI
 import UIKit
 
@@ -35,9 +38,13 @@ final class MyVaultsCoordinator: Coordinator {
     }()
 
     override var root: Presentable { myVaultsViewController }
+    private let apiService: APIService
+    private let userData: UserData
 
-    convenience init() {
-        self.init(router: .init(), navigationType: .newFlow(hideBar: false))
+    init(apiService: APIService, userData: UserData) {
+        self.apiService = apiService
+        self.userData = userData
+        super.init(router: .init(), navigationType: .newFlow(hideBar: false))
     }
 
     func showSidebar() {
@@ -50,8 +57,15 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateVaultView() {
-        let createVaultView = CreateVaultView(viewModel: .init(coordinator: self))
-        router.present(UIHostingController(rootView: createVaultView), animated: true)
+        let createVaultViewModel = CreateVaultViewModel(coordinator: self,
+                                                        apiService: apiService,
+                                                        userData: userData)
+        let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
+        let createVaultViewController = UIHostingController(rootView: createVaultView)
+        if #available(iOS 15.0, *) {
+            createVaultViewController.sheetPresentationController?.detents = [.medium()]
+        }
+        router.present(createVaultViewController, animated: true)
     }
 
     func dismissTopMostModal() {
@@ -92,5 +106,7 @@ final class MyVaultsCoordinator: Coordinator {
 
 extension MyVaultsCoordinator {
     /// For preview purposes
-    static var preview: MyVaultsCoordinator { .init() }
+    static var preview: MyVaultsCoordinator {
+        .init(apiService: DummyApiService.preview, userData: .preview)
+    }
 }

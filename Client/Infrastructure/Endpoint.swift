@@ -22,10 +22,12 @@ import Foundation
 import ProtonCore_Networking
 
 public protocol Endpoint: Request {
-    /// `Decodable` should be enough but Core's functions need`Codable`
+    // `Decodable` should be enough but Core's functions need `Codable`
     associatedtype Response: Codable
+    associatedtype Body: Encodable
 
     static var baseHeaders: [String: String] { get }
+    var body: Body? { get }
 }
 
 public extension Endpoint {
@@ -44,6 +46,12 @@ public extension Endpoint {
     var header: [String: Any] { Self.baseHeaders }
     var authCredential: AuthCredential? { nil }
     var method: HTTPMethod { .get }
-    var parameters: [String: Any]? { nil }
+    var body: Body? { nil }
     var nonDefaultTimeout: TimeInterval? { nil }
+    var parameters: [String: Any]? {
+        guard let body = body,
+              let data = try? JSONEncoder().encode(body) else { return nil }
+        return (try? JSONSerialization.jsonObject(with: data,
+                                                  options: .allowFragments)).flatMap { $0 as? [String: Any] }
+    }
 }

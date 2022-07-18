@@ -43,4 +43,10 @@ extension VaultProtobuf: VaultProvider {
     public init(data: Data) throws {
         self = try VaultProtobuf(serializedData: data)
     }
+
+    public init(name: String, note: String) {
+        self.init()
+        self.name = name
+        self.description_p = note
+    }
 }

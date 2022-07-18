@@ -1,6 +1,6 @@
 //
-// GetSharesEndpoint.swift
-// Proton Pass - Created on 14/07/2022.
+// AuthCredential+Preview.swift
+// Proton Pass - Created on 16/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,20 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_Networking
-import ProtonCore_Services
 
-public struct GetSharesEndpoint: Endpoint {
-    public typealias Body = DummyEncodable
-    public struct Response: Codable {
-        public let code: Int
-        public let shares: [PartialShare]
-    }
-
-    public var path: String { "/pass/v1/share" }
-    public var method: HTTPMethod { .get }
-    public var authCredential: AuthCredential?
-
-    public init(credential: AuthCredential) {
-        self.authCredential = credential
+public extension AuthCredential {
+    static var preview: AuthCredential {
+        .init(sessionID: "",
+              accessToken: "",
+              refreshToken: "",
+              expiration: .init(),
+              userName: "",
+              userID: "",
+              privateKey: nil,
+              passwordKeySalt: nil)
     }
 }

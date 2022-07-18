@@ -27,29 +27,29 @@ import XCTest
 // swiftlint:disable function_parameter_count
 final class CreateVaultRequestBodyTests: XCTestCase {
     func testCreateVaultSuccess() throws {
-        let (addressKey, addressKeyPassphrase) = try CryptoUtils.generateKey(name: "test", email: "test")
+        let (key, keyPassphrase) = try CryptoUtils.generateKey(name: "test", email: "test")
         let addressId = String.random()
         let vaultName = String.random()
         let vaultDescription = String.random()
         var vault = VaultProtobuf()
         vault.name = vaultName
         vault.description_p = vaultDescription
-        let key = Key(keyID: String.random(), privateKey: addressKey)
-        let requestBody = try CreateVaultRequestBody(addressId: addressId,
-                                                     addressKey: key,
-                                                     passphrase: addressKeyPassphrase,
+        let addressKey = AddressKey(addressId: addressId,
+                                    key: Key(keyID: String.random(), privateKey: key),
+                                    keyPassphrase: keyPassphrase)
+        let requestBody = try CreateVaultRequestBody(addressKey: addressKey,
                                                      vault: vault)
         XCTAssertEqual(requestBody.addressID, addressId)
         let (armoredSigningKey, signingKeyPassphrase) =
-        try validateSigningKey(addressKey: key,
-                               addressKeyPassphrase: addressKeyPassphrase,
+        try validateSigningKey(addressKey: addressKey.key,
+                               addressKeyPassphrase: keyPassphrase,
                                requestBody: requestBody)
 
         let signingKey = Key(keyID: String.random(), privateKey: armoredSigningKey)
 
         let (armoredVaultKey, vaultKeyPassphrase) =
-        try validateVaultKey(addressKey: key,
-                             addressKeyPassphrase: addressKeyPassphrase,
+        try validateVaultKey(addressKey: addressKey.key,
+                             addressKeyPassphrase: keyPassphrase,
                              requestBody: requestBody,
                              signingKey: signingKey,
                              signingKeyPassphrase: signingKeyPassphrase)
@@ -174,16 +174,15 @@ final class CreateVaultRequestBodyTests: XCTestCase {
                            vaultKey: Key,
                            vaultKeyPassphrase: String) throws {
         XCTAssertFalse(requestBody.content.isEmpty)
-        let decodedContent = try requestBody.content.base64Decode()
+        let encryptedVaultData = try XCTUnwrap(requestBody.content.base64Decode())
         var error: NSError?
-        let armoredContent = ArmorArmorWithType(decodedContent,
+        let armoredContent = ArmorArmorWithType(encryptedVaultData,
                                                 "PGP MESSAGE",
                                                 &error)
-        let decryptedVaultBase64 = try Crypto().decrypt(encrypted: armoredContent,
-                                                        privateKey: vaultKey.privateKey,
-                                                        passphrase: vaultKeyPassphrase)
-        let vaultData = try XCTUnwrap(decryptedVaultBase64.base64Decode())
-        let vault = try vaultType.init(data: vaultData)
+        let deryptedVaultData = try XCTUnwrap(Crypto().decrypt(encrypted: armoredContent,
+                                                               privateKey: vaultKey.privateKey,
+                                                               passphrase: vaultKeyPassphrase).data(using: .utf8))
+        let vault = try vaultType.init(data: deryptedVaultData)
         XCTAssertEqual(vault.name, vaultName)
         XCTAssertEqual(vault.description, vaultDescription)
     }

@@ -18,20 +18,48 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import ProtonCore_Login
+import ProtonCore_Services
 import SwiftUI
 
 final class CreateVaultViewModel: ObservableObject {
     private let coordinator: MyVaultsCoordinator
+    private let apiService: APIService
+    private let userData: UserData
 
-    init(coordinator: MyVaultsCoordinator) {
+    init(coordinator: MyVaultsCoordinator,
+         apiService: APIService,
+         userData: UserData) {
         self.coordinator = coordinator
+        self.apiService = apiService
+        self.userData = userData
     }
 
     func cancelAction() {
         coordinator.dismissTopMostModal()
     }
+
+    func createVault(name: String, note: String) {
+        Task {
+            do {
+                let createVaultEndpoint = try CreateVaultEndpoint(credential: userData.credential,
+                                                                  addressKey: userData.getAddressKey(),
+                                                                  name: name,
+                                                                  note: note)
+                let result = try await apiService.exec(endpoint: createVaultEndpoint)
+                print(result)
+            } catch {
+                print(error)
+            }
+        }
+    }
 }
 
 extension CreateVaultViewModel {
-    static var preview: CreateVaultViewModel { .init(coordinator: .preview) }
+    static var preview: CreateVaultViewModel {
+        .init(coordinator: .preview,
+              apiService: DummyApiService.preview,
+              userData: .preview)
+    }
 }

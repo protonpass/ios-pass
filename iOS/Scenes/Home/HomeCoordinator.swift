@@ -18,10 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
-import ProtonCore_Doh
 import ProtonCore_Login
-import ProtonCore_Networking
 import ProtonCore_Services
 import SideMenuSwift
 import SwiftUI
@@ -58,7 +57,8 @@ final class HomeCoordinator {
 
     // My vaults
     private lazy var myVaultsCoordinator: MyVaultsCoordinator = {
-        let myVaultsCoordinator = MyVaultsCoordinator()
+        let myVaultsCoordinator = MyVaultsCoordinator(apiService: apiService,
+                                                      userData: userData)
         myVaultsCoordinator.delegate = self
         return myVaultsCoordinator
     }()
@@ -163,71 +163,4 @@ extension HomeCoordinator {
     static var preview: HomeCoordinator {
         .init(userData: .preview, apiService: DummyApiService.preview)
     }
-}
-
-/// For preview purposes
-struct DummyApiService: APIService {
-    var sessionUID = ""
-    var serviceDelegate: APIServiceDelegate?
-    var authDelegate: AuthDelegate?
-    var humanDelegate: HumanVerifyDelegate?
-    var doh: DoH & ServerConfig = PPDoH(bundle: .main)
-    var signUpDomain = ""
-
-    func setSessionUID(uid: String) { }
-
-    // swiftlint:disable function_parameter_count
-    func request(method: HTTPMethod,
-                 path: String,
-                 parameters: Any?,
-                 headers: [String: Any]?,
-                 authenticated: Bool,
-                 autoRetry: Bool,
-                 customAuthCredential: AuthCredential?,
-                 nonDefaultTimeout: TimeInterval?,
-                 completion: CompletionBlock?) {}
-
-    func download(byUrl url: String,
-                  destinationDirectoryURL: URL,
-                  headers: [String: Any]?,
-                  authenticated: Bool,
-                  customAuthCredential: AuthCredential?,
-                  nonDefaultTimeout: TimeInterval?,
-                  downloadTask: ((URLSessionDownloadTask) -> Void)?,
-                  completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {}
-
-    func upload(byPath path: String,
-                parameters: [String: String],
-                keyPackets: Data,
-                dataPacket: Data,
-                signature: Data?,
-                headers: [String: Any]?,
-                authenticated: Bool,
-                customAuthCredential: AuthCredential?,
-                nonDefaultTimeout: TimeInterval?,
-                completion: @escaping CompletionBlock) {}
-
-    func uploadFromFile(byPath path: String,
-                        parameters: [String: String],
-                        keyPackets: Data,
-                        dataPacketSourceFileURL: URL,
-                        signature: Data?,
-                        headers: [String: Any]?,
-                        authenticated: Bool,
-                        customAuthCredential: AuthCredential?,
-                        nonDefaultTimeout: TimeInterval?,
-                        completion: @escaping CompletionBlock) {}
-
-    func upload(byPath path: String,
-                parameters: Any?,
-                files: [String: URL],
-                headers: [String: Any]?,
-                authenticated: Bool,
-                customAuthCredential: AuthCredential?,
-                nonDefaultTimeout: TimeInterval?,
-                uploadProgress: ProgressCompletion?,
-                completion: @escaping CompletionBlock) {}
-    // swiftlint:enable function_parameter_count
-
-    static var preview: DummyApiService { .init() }
 }

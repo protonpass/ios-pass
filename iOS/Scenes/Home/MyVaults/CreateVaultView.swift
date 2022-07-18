@@ -41,8 +41,10 @@ struct CreateVaultView: View {
                 TitledTextField(title: "Note",
                                 text: $note,
                                 placeholder: "Add description")
+                Spacer()
             }
             .padding()
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: viewModel.cancelAction) {
@@ -58,7 +60,8 @@ struct CreateVaultView: View {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        print("Save")
+                        viewModel.createVault(name: name,
+                                              note: note)
                     }, label: {
                         Text("Save")
                             .fontWeight(.bold)
