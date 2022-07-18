@@ -41,16 +41,18 @@ final class CreateVaultViewModel: ObservableObject {
     }
 
     func createVault(name: String, note: String) {
-        Task {
+        Task { @MainActor in
             do {
+                coordinator.showLoadingHud()
                 let createVaultEndpoint = try CreateVaultEndpoint(credential: userData.credential,
                                                                   addressKey: userData.getAddressKey(),
                                                                   name: name,
                                                                   note: note)
-                let result = try await apiService.exec(endpoint: createVaultEndpoint)
-                print(result)
+                _ = try await apiService.exec(endpoint: createVaultEndpoint)
+                coordinator.hideLoadingHud()
             } catch {
-                print(error)
+                coordinator.hideLoadingHud()
+                coordinator.alert(error: error)
             }
         }
     }

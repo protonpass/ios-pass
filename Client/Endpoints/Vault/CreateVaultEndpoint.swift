@@ -27,7 +27,7 @@ public struct CreateVaultEndpoint: Endpoint {
 
     public struct Response: Codable {
         public let code: Int
-        public let share: Share
+        public let share: PartialShare
     }
 
     public var path: String { "/pass/v1/vault" }

@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import MBProgressHUD
 import ProtonCore_Login
 import ProtonCore_Services
 import SideMenuSwift
@@ -46,11 +47,15 @@ final class HomeCoordinator {
 
     private(set) lazy var sideMenuController: SideMenuController = {
         let sideMenuController = SideMenuController(contentViewController: myVaultsRootViewController,
-                                                    menuViewController: sidebarView)
+                                                    menuViewController: sidebarViewController)
         return sideMenuController
     }()
 
-    private lazy var sidebarView: UIViewController = {
+    private var topMostViewController: UIViewController {
+        sideMenuController.presentedViewController ?? sideMenuController
+    }
+
+    private lazy var sidebarViewController: UIViewController = {
         let sidebarView = SidebarView(coordinator: self, width: kMenuWidth)
         return UIHostingController(rootView: sidebarView)
     }()
@@ -123,6 +128,14 @@ extension HomeCoordinator {
     func showUserSwitcher() {
         print(#function)
     }
+
+    func alert(error: Error) {
+        let alert = UIAlertController(title: "Error occured",
+                                      message: error.messageForTheUser,
+                                      preferredStyle: .alert)
+        alert.addAction(.cancel)
+        topMostViewController.present(alert, animated: true)
+    }
 }
 
 // MARK: - Sign out
@@ -148,6 +161,18 @@ extension HomeCoordinator {
 extension HomeCoordinator: MyVaultsCoordinatorDelegate {
     func myVautsCoordinatorWantsToShowSidebar() {
         showSidebar()
+    }
+
+    func myVautsCoordinatorWantsToShowLoadingHud() {
+        MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
+    }
+
+    func myVautsCoordinatorWantsToHideLoadingHud() {
+        MBProgressHUD.hide(for: topMostViewController.view, animated: true)
+    }
+
+    func myVautsCoordinatorWantsToAlertError(_ error: Error) {
+        alert(error: error)
     }
 }
 

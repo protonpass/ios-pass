@@ -24,16 +24,14 @@ import ProtonCore_Services
 
 public extension APIService {
     /// Async variant that can take an `Endpoint`
-    func exec<E: Endpoint>(endpoint: E, notificationQueue: DispatchQueue = .main) async throws -> E.Response {
+    func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
         try await withCheckedThrowingContinuation { continuation in
             exec(route: endpoint) { (_, result: Result<E.Response, ResponseError>) in
-                notificationQueue.async {
-                    switch result {
-                    case .failure(let error):
-                        continuation.resume(throwing: error)
-                    case .success(let data):
-                        continuation.resume(returning: data)
-                    }
+                switch result {
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                case .success(let data):
+                    continuation.resume(returning: data)
                 }
             }
         }

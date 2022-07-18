@@ -27,6 +27,9 @@ import UIKit
 
 protocol MyVaultsCoordinatorDelegate: AnyObject {
     func myVautsCoordinatorWantsToShowSidebar()
+    func myVautsCoordinatorWantsToShowLoadingHud()
+    func myVautsCoordinatorWantsToHideLoadingHud()
+    func myVautsCoordinatorWantsToAlertError(_ error: Error)
 }
 
 final class MyVaultsCoordinator: Coordinator {
@@ -66,6 +69,18 @@ final class MyVaultsCoordinator: Coordinator {
             createVaultViewController.sheetPresentationController?.detents = [.medium()]
         }
         router.present(createVaultViewController, animated: true)
+    }
+
+    func showLoadingHud() {
+        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    }
+
+    func hideLoadingHud() {
+        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
+    func alert(error: Error) {
+        delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 
     func dismissTopMostModal() {
