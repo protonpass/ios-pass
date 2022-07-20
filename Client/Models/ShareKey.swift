@@ -1,6 +1,6 @@
 //
-// APIService+ExecEndpoint.swift
-// Proton Pass - Created on 12/07/2022.
+// ShareKey.swift
+// Proton Pass - Created on 19/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,17 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
-import ProtonCore_Networking
-import ProtonCore_Services
+import Foundation
 
-public extension APIService {
-    /// Async variant that can take an `Endpoint`
-    func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
-        try await withCheckedThrowingContinuation { continuation in
-            exec(route: endpoint) { (_, result: Result<E.Response, ResponseError>) in
-                continuation.resume(with: result)
-            }
-        }
+public struct ShareKey: Codable {
+    public let vaultKeys: [VaultKey]
+    public let itemKeys: [ItemKey]
+    public let total: Int
+
+    public init(vaultKeys: [VaultKey], itemKeys: [ItemKey], total: Int) {
+        self.vaultKeys = vaultKeys
+        self.itemKeys = itemKeys
+        self.total = total
     }
 }

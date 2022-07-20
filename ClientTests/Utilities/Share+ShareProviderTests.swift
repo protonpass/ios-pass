@@ -24,32 +24,31 @@ import ProtonCore_Login
 import XCTest
 
 final class SharePlusShareProviderTests: XCTestCase {
-    func testGetVaultSuccess() throws {
-        return // swiftlint:disable:this implicit_return
-        let vaultProtobuf = VaultProtobuf(name: .random(), note: .random())
-        let addressKey = UserData.test.getAddressKey()
-        let createVaultRequestBody = try CreateVaultRequestBody(addressKey: addressKey,
-                                                                vault: vaultProtobuf)
-        let createdShare = Share(shareID: .random(),
-                                 vaultID: .random(),
-                                 targetType: 0,
-                                 targetID: .random(),
-                                 permission: 0,
-                                 acceptanceSignature: .random(),
-                                 inviterEmail: .random(),
-                                 inviterAcceptanceSignature: .random(),
-                                 signingKey: addressKey.key.publicKey,
-                                 signingKeyPassphrase: addressKey.keyPassphrase,
-                                 content: createVaultRequestBody.content,
-                                 contentRotationID: .random(),
-                                 contentEncryptedAddressSignature: .random(),
-                                 contentEncryptedVaultSignature: .random(),
-                                 contentSignerEmail: .random(),
-                                 contentFormatVersion: 0,
-                                 expireTime: nil,
-                                 createTime: 0)
-        let vault = createdShare.getVault(userData: .test)
-        XCTAssertEqual(vaultProtobuf.name, vault.name)
-        XCTAssertEqual(vaultProtobuf.description_p, vault.description)
-    }
+//    func testGetVaultSuccess() throws {
+//        let vaultProtobuf = VaultProtobuf(name: .random(), note: .random())
+//        let addressKey = UserData.test.getAddressKey()
+//        let createVaultRequestBody = try CreateVaultRequestBody(addressKey: addressKey,
+//                                                                vault: vaultProtobuf)
+//        let createdShare = Share(shareID: .random(),
+//                                 vaultID: .random(),
+//                                 targetType: 0,
+//                                 targetID: .random(),
+//                                 permission: 0,
+//                                 acceptanceSignature: .random(),
+//                                 inviterEmail: .random(),
+//                                 inviterAcceptanceSignature: .random(),
+//                                 signingKey: addressKey.key.publicKey,
+//                                 signingKeyPassphrase: addressKey.keyPassphrase,
+//                                 content: createVaultRequestBody.content,
+//                                 contentRotationID: .random(),
+//                                 contentEncryptedAddressSignature: .random(),
+//                                 contentEncryptedVaultSignature: .random(),
+//                                 contentSignatureEmail: .random(),
+//                                 contentFormatVersion: 0,
+//                                 expireTime: nil,
+//                                 createTime: 0)
+//        let vault = try createdShare.getVault(userData: .test)
+//        XCTAssertEqual(vaultProtobuf.name, vault.name)
+//        XCTAssertEqual(vaultProtobuf.description_p, vault.description)
+//    }
 }

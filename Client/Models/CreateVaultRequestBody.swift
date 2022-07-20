@@ -25,23 +25,60 @@ import ProtonCore_KeyManager
 typealias Encryptor = ProtonCore_KeyManager.Encryptor
 
 public struct CreateVaultRequestBody: Encodable {
+    /// Encrypted ID of the address that created the vault
     public let addressID: String
+
+    /// Content of the vault information encrypted with the Vault public key encoded in Base64
     public let content: String
+
+    /// Version of the format of the vault content
     public let contentFormatVersion: Int
+
+    /// Base64 encoded content signature with the user's address key
     public let contentEncryptedAddressSignature: String
+
+    /// Base64 encoded content signature with the vault key
     public let contentEncryptedVaultSignature: String
+
+    /// Armored vault key locked with the passphrase contained in the VaultKeyPassphrase
     public let vaultKey: String
+
+    /// Encrypted passphrase to decrypt the vault key
     public let vaultKeyPassphrase: String
+
+    /// Base64 encoded signature of the vault key sha256 primary fingerprint.
+    /// Signed with the vault signing key
     public let vaultKeySignature: String
+
+    /// SessionKey for the passphrase encrypted with the key of the addressID. Encoded in Base64
     public let keyPacket: String
+
+    /// Base64 encoded signature of the unencoded key packet signed by the vault key
     public let keyPacketSignature: String
+
+    /// Armored signing key locked with the passphrase contained in the SigningKeyPassphrase
     public let signingKey: String
+
+    /// Base64 encoded encrypted passphrase for the signing key
     public let signingKeyPassphrase: String
+
+    /// Base64 encoded SessionKey for the encrypted signing key passphrase encrypted with the key of the addressID
     public let signingKeyPassphraseKeyPacket: String
+
+    /// Base64 encoded signature of the signing key sha256 primary fingerprint.
+    /// Signed with the private key of the addressID
     public let acceptanceSignature: String
+
+    /// Armored item key locked with the passphrase contained in the ItemKeyPassphrase
     public let itemKey: String
+
+    /// Base64 encoded encrypted passphrase for the item key
     public let itemKeyPassphrase: String
+
+    /// Base64 encoded SessionKey for the encrypted item key passphrase encrypted with the vault key
     public let itemKeyPassphraseKeyPacket: String
+
+    /// Base64 encoded signature of the item key sha256 primary fingerprint, signed with the vault signing key
     public let itemKeySignature: String
 
     private enum CodingKeys: String, CodingKey {

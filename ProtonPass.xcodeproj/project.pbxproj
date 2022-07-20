@@ -50,6 +50,10 @@
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
 		356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AB1287310D60020F577 /* KeychainStorage.swift */; };
+		358AB4992886FA7B00818B44 /* VaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4982886FA7B00818B44 /* VaultKey.swift */; };
+		358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB49A2886FDA400818B44 /* ItemKey.swift */; };
+		358AB49D2887029400818B44 /* ShareKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB49C2887029400818B44 /* ShareKey.swift */; };
+		358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */; };
 		358BD35B287D4D0A00802A91 /* CreateVaultRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD35A287D4D0A00802A91 /* CreateVaultRequestBody.swift */; };
 		358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD35D287D4E8000802A91 /* CryptoUtils.swift */; };
 		358BD360287D4EA200802A91 /* VaultProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD35F287D4EA200802A91 /* VaultProvider.swift */; };
@@ -257,6 +261,10 @@
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
 		356C2AAF28730EF00020F577 /* MainKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProvider.swift; sourceTree = "<group>"; };
 		356C2AB1287310D60020F577 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
+		358AB4982886FA7B00818B44 /* VaultKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKey.swift; sourceTree = "<group>"; };
+		358AB49A2886FDA400818B44 /* ItemKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemKey.swift; sourceTree = "<group>"; };
+		358AB49C2887029400818B44 /* ShareKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareKey.swift; sourceTree = "<group>"; };
+		358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareKeysEndpoint.swift; sourceTree = "<group>"; };
 		358BD35A287D4D0A00802A91 /* CreateVaultRequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultRequestBody.swift; sourceTree = "<group>"; };
 		358BD35D287D4E8000802A91 /* CryptoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoUtils.swift; sourceTree = "<group>"; };
 		358BD35F287D4EA200802A91 /* VaultProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultProvider.swift; sourceTree = "<group>"; };
@@ -479,6 +487,7 @@
 		355443FA287CA7150017FCAD /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
+				358AB49F2887044500818B44 /* Keys */,
 				353547BF2880C4470021C716 /* Shares */,
 				35544403287CAF600017FCAD /* Vault */,
 			);
@@ -490,7 +499,10 @@
 			children = (
 				350A97CB28859D1800A7168B /* AddressKey.swift */,
 				358BD35A287D4D0A00802A91 /* CreateVaultRequestBody.swift */,
+				358AB49A2886FDA400818B44 /* ItemKey.swift */,
 				355443FC287CA77C0017FCAD /* Share.swift */,
+				358AB49C2887029400818B44 /* ShareKey.swift */,
+				358AB4982886FA7B00818B44 /* VaultKey.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -519,6 +531,14 @@
 				356C2AB1287310D60020F577 /* KeychainStorage.swift */,
 			);
 			path = Storage;
+			sourceTree = "<group>";
+		};
+		358AB49F2887044500818B44 /* Keys */ = {
+			isa = PBXGroup;
+			children = (
+				358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */,
+			);
+			path = Keys;
 			sourceTree = "<group>";
 		};
 		358BD35C287D4E5100802A91 /* Utilities */ = {
@@ -1446,21 +1466,25 @@
 			files = (
 				350A97CC28859D1800A7168B /* AddressKey.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProvider.swift in Sources */,
+				358AB49D2887029400818B44 /* ShareKey.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
 				350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
+				358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */,
 				3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */,
 				358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */,
 				3551DFF22885436E008AE633 /* DummyEncodable.swift in Sources */,
 				358BD35B287D4D0A00802A91 /* CreateVaultRequestBody.swift in Sources */,
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
 				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,
+				358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
 				350A97D02885BB1800A7168B /* ShareProvider.swift in Sources */,
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
 				358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */,
 				350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */,
+				358AB4992886FA7B00818B44 /* VaultKey.swift in Sources */,
 				353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -21,23 +21,61 @@
 import Foundation
 
 public struct Share: Codable {
+    /// ID of the share
     public let shareID: String
+
+    /// ID of the vault this share belongs to
     public let vaultID: String
+
+    /// Type of share. 1 for vault, 2 for label and 3 for item
     public let targetType: Int
+
+    /// ID of the top shared object
     public let targetID: String
+
+    /// Permissions for this share
     public let permission: Int
+
+    /// Base64 encoded signature of the vault signing key fingerprint
     public let acceptanceSignature: String
+
+    /// Email that invited you to the share
     public let inviterEmail: String
+
+    /// Base64 encoded signature of the vault signing key fingerprint by your inviter
     public let inviterAcceptanceSignature: String
+
+    /// Armored signing key for the share.
+    /// It will be a private key if the user is a share admin
     public let signingKey: String
+
+    /// Base64 encoded encrypted passphrase to open the signing key. Only for admins.
     public let signingKeyPassphrase: String?
+
+    /// Base64 encoded encrypted content of the share. Can be null for item shares
     public let content: String?
+
+    /// ID for the key needed to decrypt the share.
+    /// For vault shares the vault key will be used, for label shares the label keys will
     public let contentRotationID: String
+
+    /// Base64 encoded encrypted signature of the share content done by
+    /// the signer email address key, and encrypted with the vault key
     public let contentEncryptedAddressSignature: String
+
+    /// Base64 encoded encrypted signature of the share content signed and encrypted by the vault key
     public let contentEncryptedVaultSignature: String
-    public let contentSignerEmail: String
+
+    /// Email address of the content's signer
+    public let contentSignatureEmail: String
+
+    /// Version of the content's format
     public let contentFormatVersion: Int
+
+    /// Expiration time for this share
     public let expireTime: Double?
+
+    /// Time of creation of this share
     public let createTime: Double
 
     public init(shareID: String,
@@ -54,7 +92,7 @@ public struct Share: Codable {
                 contentRotationID: String,
                 contentEncryptedAddressSignature: String,
                 contentEncryptedVaultSignature: String,
-                contentSignerEmail: String,
+                contentSignatureEmail: String,
                 contentFormatVersion: Int,
                 expireTime: Double?,
                 createTime: Double) {
@@ -72,7 +110,7 @@ public struct Share: Codable {
         self.contentRotationID = contentRotationID
         self.contentEncryptedAddressSignature = contentEncryptedAddressSignature
         self.contentEncryptedVaultSignature = contentEncryptedVaultSignature
-        self.contentSignerEmail = contentSignerEmail
+        self.contentSignatureEmail = contentSignatureEmail
         self.contentFormatVersion = contentFormatVersion
         self.expireTime = expireTime
         self.createTime = createTime
@@ -80,15 +118,34 @@ public struct Share: Codable {
 }
 
 public struct PartialShare: Codable {
+    /// ID of the share
     public let shareID: String
+
+    /// ID of the vault this share belongs to
     public let vaultID: String
+
+    /// Type of share. 1 for vault, 2 for label and 3 for item
     public let targetType: Int
+
+    /// ID of the top shared object
     public let targetID: String
+
+    /// Permissions for this share
     public let permission: Int
+
+    /// Base64 encoded signature of the vault signing key fingerprint
     public let acceptanceSignature: String
+
+    /// Email that invited you to the share
     public let inviterEmail: String
+
+    /// Base64 encoded signature of the vault signing key fingerprint by your inviter
     public let inviterAcceptanceSignature: String
+
+    /// Expiration time for this share
     public let expireTime: Double?
+
+    /// Time of creation of this share
     public let createTime: Double
 
     public init(shareID: String,

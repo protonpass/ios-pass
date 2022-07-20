@@ -1,6 +1,6 @@
 //
-// APIService+ExecEndpoint.swift
-// Proton Pass - Created on 12/07/2022.
+// GetShareKeysEndpoint.swift
+// Proton Pass - Created on 19/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,17 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public extension APIService {
-    /// Async variant that can take an `Endpoint`
-    func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
-        try await withCheckedThrowingContinuation { continuation in
-            exec(route: endpoint) { (_, result: Result<E.Response, ResponseError>) in
-                continuation.resume(with: result)
-            }
-        }
+public struct GetShareKeysEndpoint: Endpoint {
+    public typealias Body = DummyEncodable
+    public struct Response: Codable {
+        public let code: Int
+        public let keys: ShareKey
+    }
+
+    public var path: String
+    public var method: HTTPMethod { .get }
+    public var authCredential: AuthCredential?
+
+    // swiftlint:disable:next todo
+    // TODO: Support pagination
+    public init(credential: AuthCredential, shareId: String) {
+        self.path = "/pass/v1/share/\(shareId)/key/vault"
+        self.authCredential = credential
     }
 }
