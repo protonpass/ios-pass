@@ -68,7 +68,7 @@ struct VaultContentView: View {
                                 Label(title: {
                                     Text(vault.name)
                                 }, icon: {
-                                    Image(uiImage: IconProvider.briefcase)
+                                    Image(uiImage: IconProvider.vault)
                                 })
                             })
                         }

@@ -37,7 +37,7 @@ struct MyVaultsSidebarItemView: View {
                         Text("My vaults")
                             .foregroundColor(.white)
                     }, icon: {
-                        Image(uiImage: IconProvider.filingCabinet)
+                        Image(uiImage: IconProvider.vault)
                             .foregroundColor(.gray)
                     })
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -70,7 +70,7 @@ struct MyVaultsSidebarItemView: View {
                             Text(vault.name)
                                 .foregroundColor(.white)
                         }, icon: {
-                            Image(uiImage: IconProvider.filingCabinet)
+                            Image(uiImage: IconProvider.vault)
                                 .foregroundColor(.gray)
                         })
                         .frame(maxWidth: .infinity, alignment: .leading)

@@ -30,12 +30,23 @@ struct LoadVaultsView: View {
 
     var body: some View {
         ZStack {
-            ProgressView()
+            if let error = viewModel.error {
+                VStack {
+                    Text(error.messageForTheUser)
+                    Button(action: viewModel.fetchVaults) {
+                        Text("Retry")
+                    }
+                }
+                .padding()
+            } else {
+                ProgressView()
+            }
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 ToggleSidebarButton(action: viewModel.toggleSidebarAction)
             }
         }
+        .onAppear(perform: viewModel.fetchVaults)
     }
 }

@@ -18,10 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 
 final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
+    @Published private(set) var error: Error?
+
     deinit {
         print(deinitMessage)
     }
@@ -30,13 +33,40 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
 
     init(coordinator: MyVaultsCoordinator) {
         self.coordinator = coordinator
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.coordinator.vaultSelection.update(vaults: [Vault].preview)
-        }
     }
 
     func toggleSidebarAction() {
         coordinator.showSidebar()
+    }
+
+    func fetchVaults() {
+        error = nil
+        Task { @MainActor in
+            do {
+                let getSharesEndpoint = GetSharesEndpoint(credential: coordinator.userData.credential)
+                let getSharesResponse = try await coordinator.apiService.exec(endpoint: getSharesEndpoint)
+
+                try await withThrowingTaskGroup(of: Share.self) { group in
+                    for partialShare in getSharesResponse.shares {
+                        let getShareDataEndpoint =
+                        GetShareDataEndpoint(credential: coordinator.userData.credential,
+                                             shareId: partialShare.shareID)
+                        group.addTask {
+                            let getShareDataResponse =
+                            try await self.coordinator.apiService.exec(endpoint: getShareDataEndpoint)
+                            return getShareDataResponse.share
+                        }
+                    }
+
+                    var vaults: [VaultProvider] = []
+                    for try await share in group {
+                        vaults.append(try share.getVault(userData: self.coordinator.userData))
+                    }
+                    self.coordinator.vaultSelection.update(vaults: vaults)
+                }
+            } catch {
+                self.error = error
+            }
+        }
     }
 }

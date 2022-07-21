@@ -35,7 +35,7 @@ extension Share: ShareProvider {
 
     public func getVault(userData: UserData) throws -> VaultProvider {
         let signingKeyValid = try validateSigningKey(userData: userData)
-        return Vault(id: UUID().uuidString, name: .random(), description: .random())
+        return Vault(id: vaultID, name: .random(), description: .random())
     }
 
     private func validateSigningKey(userData: UserData) throws -> Bool {
