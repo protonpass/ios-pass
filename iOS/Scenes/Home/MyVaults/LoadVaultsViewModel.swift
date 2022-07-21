@@ -46,12 +46,12 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
                 let getSharesEndpoint = GetSharesEndpoint(credential: coordinator.userData.credential)
                 let getSharesResponse = try await coordinator.apiService.exec(endpoint: getSharesEndpoint)
 
-                try await withThrowingTaskGroup(of: Share.self) { group in
+                try await withThrowingTaskGroup(of: Share.self) { [unowned self] group in
                     for partialShare in getSharesResponse.shares {
                         let getShareDataEndpoint =
                         GetShareDataEndpoint(credential: coordinator.userData.credential,
                                              shareId: partialShare.shareID)
-                        group.addTask {
+                        group.addTask { [unowned self] in
                             let getShareDataResponse =
                             try await self.coordinator.apiService.exec(endpoint: getShareDataEndpoint)
                             return getShareDataResponse.share
@@ -62,8 +62,28 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
                     for try await share in group {
                         vaults.append(try share.getVault(userData: self.coordinator.userData))
                     }
-                    self.coordinator.vaultSelection.update(vaults: vaults)
+
+                    if vaults.isEmpty {
+                        self.createDefaultVault()
+                    } else {
+                        self.coordinator.vaultSelection.update(vaults: vaults)
+                    }
                 }
+            } catch {
+                self.error = error
+            }
+        }
+    }
+
+    private func createDefaultVault() {
+        Task { @MainActor in
+            do {
+                let createVaultEndpoint = try CreateVaultEndpoint(credential: coordinator.userData.credential,
+                                                                  addressKey: coordinator.userData.getAddressKey(),
+                                                                  name: "Personal",
+                                                                  note: "Personal vault")
+                _ = try await coordinator.apiService.exec(endpoint: createVaultEndpoint)
+                self.fetchVaults()
             } catch {
                 self.error = error
             }
