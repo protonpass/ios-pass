@@ -25,7 +25,6 @@ import SwiftUI
 import UIComponents
 
 struct SidebarView: View {
-    let vaultSelection: VaultSelection
     let coordinator: HomeCoordinator
     let width: CGFloat
 
@@ -40,7 +39,7 @@ struct SidebarView: View {
                 .padding(.horizontal, 8)
                 ScrollView {
                     VStack {
-                        MyVaultsSidebarItemView(vaultSelection: vaultSelection)
+                        MyVaultsSidebarItemView(vaultSelection: coordinator.vaultSelection)
                         SidebarItemView(item: .settings,
                                         action: coordinator.handleSidebarItem)
                         SidebarItemView(item: .trash,
@@ -92,8 +91,7 @@ private struct SidebarItemView: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView(vaultSelection: .preview,
-                    coordinator: .preview,
+        SidebarView(coordinator: .preview,
                     width: 300)
     }
 }

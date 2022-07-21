@@ -44,17 +44,19 @@ struct MyVaultsSidebarItemView: View {
                     .padding()
                     .contentShape(Rectangle())
 
-                    Button(action: {
-                        withAnimation {
-                            expanded.toggle()
-                        }
-                    }, label: {
-                        Image(uiImage: IconProvider.chevronDown)
-                            .rotationEffect(.degrees(expanded ? 180 : 0))
-                    })
-                    .foregroundColor(.white)
-                    .padding()
-                    .contentShape(Rectangle())
+                    if !vaultSelection.vaults.isEmpty {
+                        Button(action: {
+                            withAnimation {
+                                expanded.toggle()
+                            }
+                        }, label: {
+                            Image(uiImage: IconProvider.chevronDown)
+                                .rotationEffect(.degrees(expanded ? 180 : 0))
+                        })
+                        .foregroundColor(.white)
+                        .padding()
+                        .contentShape(Rectangle())
+                    }
                 }
             })
             .buttonStyle(.sidebarItem)

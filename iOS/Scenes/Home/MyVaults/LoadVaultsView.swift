@@ -1,6 +1,6 @@
 //
-// MyVaultsView.swift
-// Proton Pass - Created on 07/07/2022.
+// LoadVaultsView.swift
+// Proton Pass - Created on 21/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,28 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIComponents
 
-struct MyVaultsView: View {
-    @StateObject private var viewModel: MyVaultsViewModel
+struct LoadVaultsView: View {
+    @StateObject private var viewModel: LoadVaultsViewModel
 
-    init(viewModel: MyVaultsViewModel) {
+    init(viewModel: LoadVaultsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
-        let coordinator = viewModel.coordinator
-        if viewModel.vaults.isEmpty {
-            LoadVaultsView(viewModel: .init(coordinator: coordinator))
-        } else {
-            VaultContentView(viewModel: .init(coordinator: coordinator))
+        ZStack {
+            ProgressView()
         }
-    }
-}
-
-struct MyVaultsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            MyVaultsView(viewModel: .preview)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                ToggleSidebarButton(action: viewModel.toggleSidebarAction)
+            }
         }
     }
 }

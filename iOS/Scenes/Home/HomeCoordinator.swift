@@ -57,14 +57,12 @@ final class HomeCoordinator {
     }
 
     private lazy var sidebarViewController: UIViewController = {
-        let sidebarView = SidebarView(vaultSelection: vaultSelection,
-                                      coordinator: self,
-                                      width: kMenuWidth)
+        let sidebarView = SidebarView(coordinator: self, width: kMenuWidth)
         return UIHostingController(rootView: sidebarView)
     }()
 
     // My vaults
-    private let vaultSelection: VaultSelection
+    let vaultSelection: VaultSelection
 
     private lazy var myVaultsCoordinator: MyVaultsCoordinator = {
         let myVaultsCoordinator = MyVaultsCoordinator(apiService: apiService,
@@ -90,7 +88,7 @@ final class HomeCoordinator {
     init(userData: UserData, apiService: APIService) {
         self.userData = userData
         self.apiService = apiService
-        self.vaultSelection = .init(vaults: [Vault].preview)
+        self.vaultSelection = .init(vaults: [])
         self.setUpSideMenuPreferences()
         self.observeVaultSelection()
     }

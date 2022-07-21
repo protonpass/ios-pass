@@ -36,15 +36,14 @@ final class MyVaultsCoordinator: Coordinator {
     weak var delegate: MyVaultsCoordinatorDelegate?
 
     private lazy var myVaultsViewController: UIViewController = {
-        let myVaultsView = MyVaultsView(coordinator: self,
-                                        vaultSelection: vaultSelection)
+        let myVaultsView = MyVaultsView(viewModel: .init(coordinator: self))
         return UIHostingController(rootView: myVaultsView)
     }()
 
     override var root: Presentable { myVaultsViewController }
-    private let apiService: APIService
-    private let userData: UserData
-    private let vaultSelection: VaultSelection
+    let apiService: APIService
+    let userData: UserData
+    let vaultSelection: VaultSelection
 
     init(apiService: APIService,
          userData: UserData,
