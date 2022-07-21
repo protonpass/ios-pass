@@ -36,17 +36,22 @@ final class MyVaultsCoordinator: Coordinator {
     weak var delegate: MyVaultsCoordinatorDelegate?
 
     private lazy var myVaultsViewController: UIViewController = {
-        let myVaultsView = MyVaultsView(coordinator: self)
+        let myVaultsView = MyVaultsView(coordinator: self,
+                                        vaultSelection: vaultSelection)
         return UIHostingController(rootView: myVaultsView)
     }()
 
     override var root: Presentable { myVaultsViewController }
     private let apiService: APIService
     private let userData: UserData
+    private let vaultSelection: VaultSelection
 
-    init(apiService: APIService, userData: UserData) {
+    init(apiService: APIService,
+         userData: UserData,
+         vaultSelection: VaultSelection) {
         self.apiService = apiService
         self.userData = userData
+        self.vaultSelection = vaultSelection
         super.init(router: .init(), navigationType: .newFlow(hideBar: false))
     }
 
@@ -145,6 +150,8 @@ extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
 extension MyVaultsCoordinator {
     /// For preview purposes
     static var preview: MyVaultsCoordinator {
-        .init(apiService: DummyApiService.preview, userData: .preview)
+        .init(apiService: DummyApiService.preview,
+              userData: .preview,
+              vaultSelection: .preview)
     }
 }

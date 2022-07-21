@@ -18,26 +18,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import Combine
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-protocol VaultProvider {
-    var id: Int { get }
-    var vaultName: String { get }
-}
-
 struct MyVaultsView: View {
     let coordinator: MyVaultsCoordinator
-    @State private var selectedVaultId: Int = 0
-    private let vaults: [PreviewVault] = [.init(id: 1, vaultName: "Private"),
-                                          .init(id: 2, vaultName: "Work")]
+    @ObservedObject var vaultSelection: VaultSelection
+
+    private var selectedVaultName: String {
+        vaultSelection.selectedVault?.name ?? "All vaults"
+    }
 
     var body: some View {
         VStack {
             List {
                 ForEach(0..<50, id: \.self) { index in
-                    Text("\(vault(for: selectedVaultId)?.vaultName ?? "All vault") #\(index)")
+                    Text("\(selectedVaultName) #\(index)")
                 }
             }
 
@@ -54,24 +54,24 @@ struct MyVaultsView: View {
                 Menu(content: {
                     Section {
                         Button(action: {
-                            selectedVaultId = 0
+                            vaultSelection.update(selectedVault: nil)
                         }, label: {
-                            Text("All vault")
+                            Text("All vaults")
                         })
                     }
 
                     Section {
-                        Picker("", selection: $selectedVaultId) {
-                            ForEach(vaults, id: \.id) { vault in
+                        ForEach(vaultSelection.vaults, id: \.id) { vault in
+                            Button(action: {
+                                vaultSelection.update(selectedVault: vault)
+                            }, label: {
                                 Label(title: {
-                                    Text(vault.vaultName)
+                                    Text(vault.name)
                                 }, icon: {
                                     Image(uiImage: IconProvider.briefcase)
                                 })
-                                    .tag(vault.id)
-                            }
+                            })
                         }
-                        .labelsHidden()
                     }
 
                     Section {
@@ -87,7 +87,7 @@ struct MyVaultsView: View {
                     }
                 }, label: {
                     ZStack {
-                        Text(vault(for: selectedVaultId)?.vaultName ?? "All vault")
+                        Text(selectedVaultName)
                             .fontWeight(.medium)
                             .transaction { transaction in
                                 transaction.animation = nil
@@ -115,21 +115,13 @@ struct MyVaultsView: View {
             }
         }
     }
-
-    private func vault(for id: Int) -> PreviewVault? {
-        vaults.first { $0.id == id }
-    }
 }
 
 struct MyVaultsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            MyVaultsView(coordinator: .preview)
+            MyVaultsView(coordinator: .preview,
+                         vaultSelection: .preview)
         }
     }
-}
-
-struct PreviewVault: VaultProvider {
-    let id: Int
-    let vaultName: String
 }

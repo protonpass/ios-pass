@@ -42,10 +42,12 @@
 		3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF12877791000EE85E1 /* CreateVaultView.swift */; };
 		3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */; };
 		3547ABF628777D6100EE85E1 /* VaultSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */; };
+		355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */; };
 		3551DFF22885436E008AE633 /* DummyEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551DFF12885436E008AE633 /* DummyEncodable.swift */; };
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
+		355635B7288947DD00F32353 /* VaultSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635B6288947DD00F32353 /* VaultSelection.swift */; };
 		356B21D72870F8F1001220CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D62870F8F1001220CB /* Constants.swift */; };
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
@@ -252,10 +254,12 @@
 		3547ABF12877791000EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
 		3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySummaryView.swift; sourceTree = "<group>"; };
 		3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSummaryView.swift; sourceTree = "<group>"; };
+		355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsSidebarItemView.swift; sourceTree = "<group>"; };
 		3551DFF12885436E008AE633 /* DummyEncodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyEncodable.swift; sourceTree = "<group>"; };
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
+		355635B6288947DD00F32353 /* VaultSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSelection.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B21D62870F8F1001220CB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
@@ -451,6 +455,7 @@
 		353E8B6C2876162B00A2C5E3 /* Sidebar */ = {
 			isa = PBXGroup;
 			children = (
+				355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */,
 				353E8B6F28761A1700A2C5E3 /* SidebarItem.swift */,
 				353E8B6D2876163F00A2C5E3 /* SidebarView.swift */,
 				353E8B75287625D100A2C5E3 /* SidebarCurrentUserView.swift */,
@@ -776,6 +781,7 @@
 			isa = PBXGroup;
 			children = (
 				35E50713286FB60500A3F6EA /* HomeCoordinator.swift */,
+				355635B6288947DD00F32353 /* VaultSelection.swift */,
 				3547ABCC2876CFA700EE85E1 /* MyVaults */,
 				353E8B6C2876162B00A2C5E3 /* Sidebar */,
 				3547ABD82876DEF300EE85E1 /* Trash */,
@@ -1434,6 +1440,7 @@
 				3547ABF0287777FB00EE85E1 /* CreateNoteView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateAliasView.swift in Sources */,
 				353E8B76287625D100A2C5E3 /* SidebarCurrentUserView.swift in Sources */,
+				355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */,
 				3547ABF628777D6100EE85E1 /* VaultSummaryView.swift in Sources */,
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateLoginView.swift in Sources */,
@@ -1446,6 +1453,7 @@
 				353E8B7028761A1700A2C5E3 /* SidebarItem.swift in Sources */,
 				3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
+				355635B7288947DD00F32353 /* VaultSelection.swift in Sources */,
 				3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,

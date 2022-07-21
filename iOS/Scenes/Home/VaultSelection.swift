@@ -1,6 +1,6 @@
 //
-// SidebarItem.swift
-// Proton Pass - Created on 06/07/2022.
+// VaultSelection.swift
+// Proton Pass - Created on 21/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,35 +18,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
-import UIKit
+import Client
+import Combine
+import Core
 
-enum SidebarItem {
-    case settings, trash, help, signOut
+/// Holds current list of vaults and selected
+final class VaultSelection: ObservableObject {
+    @Published private(set) var selectedVault: VaultProvider?
+    @Published private(set) var vaults: [VaultProvider]
 
-    var title: String {
-        switch self {
-        case .settings:
-            return "Settings"
-        case .trash:
-            return "Trash"
-        case .help:
-            return "Help"
-        case .signOut:
-            return "Sign out"
-        }
+    init(vaults: [VaultProvider]) {
+        self._selectedVault = .init(initialValue: nil)
+        self._vaults = .init(initialValue: vaults)
     }
 
-    var icon: UIImage {
-        switch self {
-        case .settings:
-            return IconProvider.cogWheel
-        case .trash:
-            return IconProvider.trash
-        case .help:
-            return IconProvider.questionCircle
-        case .signOut:
-            return IconProvider.arrowOutFromRectangle
-        }
+    func update(vaults: [VaultProvider]) {
+        self.vaults = vaults
+    }
+
+    func update(selectedVault: VaultProvider?) {
+        self.selectedVault = selectedVault
+    }
+}
+
+extension VaultSelection {
+    static var preview: VaultSelection {
+        .init(vaults: [Vault].preview)
     }
 }

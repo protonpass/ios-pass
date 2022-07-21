@@ -20,11 +20,13 @@
 
 import Foundation
 
-public struct Vault {
+public struct Vault: Identifiable {
+    public let id: String
     public let name: String
     public let description: String
 
-    public init(name: String, description: String) {
+    public init(id: String, name: String, description: String) {
+        self.id = id
         self.name = name
         self.description = description
     }

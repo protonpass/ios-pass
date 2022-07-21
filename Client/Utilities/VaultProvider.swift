@@ -21,6 +21,7 @@
 import Core
 
 public protocol VaultProvider {
+    var id: String { get }
     var name: String { get }
     var description: String { get }
 }
@@ -29,6 +30,8 @@ public typealias VaultProtobuf = ProtonPassVaultV1_Vault
 public typealias ProtobufableVaultProvider = VaultProvider & Protobufable
 
 extension VaultProtobuf: ProtobufableVaultProvider {
+    public var id: String { UUID().uuidString }
+
     public var description: String { description_p }
 
     public func data() throws -> Data {

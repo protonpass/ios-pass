@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import MBProgressHUD
 import ProtonCore_Login
@@ -56,14 +57,19 @@ final class HomeCoordinator {
     }
 
     private lazy var sidebarViewController: UIViewController = {
-        let sidebarView = SidebarView(coordinator: self, width: kMenuWidth)
+        let sidebarView = SidebarView(vaultSelection: vaultSelection,
+                                      coordinator: self,
+                                      width: kMenuWidth)
         return UIHostingController(rootView: sidebarView)
     }()
 
     // My vaults
+    private let vaultSelection: VaultSelection
+
     private lazy var myVaultsCoordinator: MyVaultsCoordinator = {
         let myVaultsCoordinator = MyVaultsCoordinator(apiService: apiService,
-                                                      userData: userData)
+                                                      userData: userData,
+                                                      vaultSelection: vaultSelection)
         myVaultsCoordinator.delegate = self
         return myVaultsCoordinator
     }()
@@ -79,10 +85,14 @@ final class HomeCoordinator {
 
     private var trashRootViewController: UIViewController { trashCoordinator.router.toPresentable() }
 
+    private var cancellables = Set<AnyCancellable>()
+
     init(userData: UserData, apiService: APIService) {
         self.userData = userData
         self.apiService = apiService
+        self.vaultSelection = .init(vaults: [Vault].preview)
         self.setUpSideMenuPreferences()
+        self.observeVaultSelection()
     }
 
     private func setUpSideMenuPreferences() {
@@ -96,6 +106,14 @@ final class HomeCoordinator {
         SideMenuController.preferences.animation.revealDuration = 0.25
         SideMenuController.preferences.animation.hideDuration = 0.25
     }
+
+    private func observeVaultSelection() {
+        vaultSelection.$selectedVault
+            .sink { [unowned self] _ in
+                self.showMyVaultsRootViewController()
+            }
+            .store(in: &cancellables)
+    }
 }
 
 // MARK: - Sidebar
@@ -104,13 +122,15 @@ extension HomeCoordinator {
         sideMenuController.revealMenu()
     }
 
+    private func showMyVaultsRootViewController() {
+        sideMenuController.setContentViewController(to: myVaultsRootViewController,
+                                                    animated: true) { [unowned self] in
+            self.sideMenuController.hideMenu()
+        }
+    }
+
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
-        case .myVaults:
-            sideMenuController.setContentViewController(to: myVaultsRootViewController,
-                                                        animated: true) { [unowned self] in
-                self.sideMenuController.hideMenu()
-            }
         case .settings:
             break
         case .trash:
