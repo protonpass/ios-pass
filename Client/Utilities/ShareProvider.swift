@@ -19,7 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Crypto
 import ProtonCore_Crypto
+import ProtonCore_KeyManager
 import ProtonCore_Login
 
 public protocol ShareProvider: Identifiable {
@@ -32,6 +34,65 @@ extension Share: ShareProvider {
     public var id: String { self.shareID }
 
     public func getVault(userData: UserData) throws -> VaultProvider {
-        Vault(name: .random(), description: .random())
+        let signingKeyValid = try validateSigningKey(userData: userData)
+        return Vault(id: UUID().uuidString, name: .random(), description: .random())
     }
+
+    private func validateSigningKey(userData: UserData) throws -> Bool {
+        guard let firstAddress = userData.addresses.first else {
+            assertionFailure("Address can not be nil")
+            throw CryptoError.failedToEncrypt
+        }
+        let addressKeys = try firstAddress.keys.compactMap { key -> DecryptionKey? in
+            guard let binKey = userData.user.keys.first?.privateKey.unArmor else { return nil }
+            let passphrase = try key.passphrase(userBinKeys: [binKey],
+                                                mailboxPassphrase: userData.passphrases.first?.value ?? "")
+            return DecryptionKey(privateKey: key.privateKey, passphrase: passphrase)
+        }
+        let privateKeyRing = try Decryptor.buildPrivateKeyRing(with: addressKeys)
+
+        // Here we have decrypted signing key but it's not used yet
+        let decryptedSigningKeyPassphrase =
+        try privateKeyRing.decrypt(.init(try signingKeyPassphrase?.base64Decode()),
+                                   verifyKey: nil,
+                                   verifyTime: 0)
+        let signingKeyFingerprint = try CryptoUtils.getFingerprint(key: signingKey)
+        let decodedAcceptanceSignature = try acceptanceSignature.base64Decode()
+
+        var armorArmorWithTypeError: NSError?
+        let armoredDecodedAcceptanceSignature = ArmorArmorWithType(decodedAcceptanceSignature,
+                                                                   "SIGNATURE",
+                                                                   &armorArmorWithTypeError)
+
+        if let armorArmorWithTypeError = armorArmorWithTypeError {
+            throw armorArmorWithTypeError
+        }
+
+        // swiftlint:disable:next todo
+        // TODO: Should pass server time
+        try privateKeyRing.verifyDetached(.init(Data(signingKeyFingerprint.utf8)),
+                                          signature: .init(fromArmored: armoredDecodedAcceptanceSignature),
+                                          verifyTime: Int64(Date().timeIntervalSince1970))
+        return true
+    }
+
+//    private func validateVaultKey(userData: UserData) throws -> Bool {
+//        let signingKeyFingerprint = try CryptoUtils.getFingerprint(key: vault)
+//        let decodedAcceptanceSignature = try acceptanceSignature.base64Decode()
+//
+//        var armorArmorWithTypeError: NSError?
+//        let armoredDecodedAcceptanceSignature = ArmorArmorWithType(decodedAcceptanceSignature,
+//                                                                   "SIGNATURE",
+//                                                                   &armorArmorWithTypeError)
+//
+//        if let armorArmorWithTypeError = armorArmorWithTypeError {
+//            throw armorArmorWithTypeError
+//        }
+//
+//        // swiftlint:disable:next todo
+//        // TODO: Should pass server time
+//        try privateKeyRing.verifyDetached(.init(Data(signingKeyFingerprint.utf8)),
+//                                          signature: .init(fromArmored: armoredDecodedAcceptanceSignature),
+//                                          verifyTime: Int64(Date().timeIntervalSince1970))
+//    }
 }
