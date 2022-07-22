@@ -27,7 +27,7 @@ import ProtonCore_Networking
 extension UserData {
     static var test: UserData {
         // swiftlint:disable force_try
-        let (userKey, userKeyPassphrase) = try! CryptoUtils.generateKey(name: "test", email: "test")
+        let (userKey, _) = try! CryptoUtils.generateKey(name: "test", email: "test")
         let userKeyId = String.random()
         let user = User(ID: .random(),
                         name: nil,
@@ -46,7 +46,7 @@ extension UserData {
                         displayName: nil,
                         keys: [.init(keyID: userKeyId, privateKey: userKey)])
 
-        let (addressKey, _) = try! CryptoUtils.generateKey(name: "test", email: "test")
+        let (addressKey, addressKeyPassphrase) = try! CryptoUtils.generateKey(name: "test", email: "test")
         let address = Address(addressID: .random(),
                               domainID: nil,
                               email: .random(),
@@ -62,7 +62,7 @@ extension UserData {
         return .init(credential: .preview,
                      user: user,
                      salts: [],
-                     passphrases: [userKeyId: userKeyPassphrase],
+                     passphrases: [userKeyId: addressKeyPassphrase],
                      addresses: [address],
                      scopes: [])
     }

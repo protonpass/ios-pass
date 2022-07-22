@@ -43,24 +43,31 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
         error = nil
         Task { @MainActor in
             do {
-                let getSharesEndpoint = GetSharesEndpoint(credential: coordinator.userData.credential)
-                let getSharesResponse = try await coordinator.apiService.exec(endpoint: getSharesEndpoint)
+                let userData = coordinator.userData
+                let apiService = coordinator.apiService
+
+                let getSharesEndpoint = GetSharesEndpoint(credential: userData.credential)
+                let getSharesResponse = try await apiService.exec(endpoint: getSharesEndpoint)
 
                 try await withThrowingTaskGroup(of: Share.self) { [unowned self] group in
                     for partialShare in getSharesResponse.shares {
                         let getShareDataEndpoint =
                         GetShareDataEndpoint(credential: coordinator.userData.credential,
                                              shareId: partialShare.shareID)
-                        group.addTask { [unowned self] in
+                        group.addTask {
                             let getShareDataResponse =
-                            try await self.coordinator.apiService.exec(endpoint: getShareDataEndpoint)
+                            try await apiService.exec(endpoint: getShareDataEndpoint)
                             return getShareDataResponse.share
                         }
                     }
 
                     var vaults: [VaultProvider] = []
                     for try await share in group {
-                        vaults.append(try share.getVault(userData: self.coordinator.userData))
+                        let getShareKeysEndpoint = GetShareKeysEndpoint(credential: userData.credential,
+                                                                        shareId: share.shareID)
+                        let getShareKeysResponse = try await apiService.exec(endpoint: getShareKeysEndpoint)
+                        vaults.append(try share.getVault(userData: userData,
+                                                         vaultKeys: getShareKeysResponse.keys.vaultKeys))
                     }
 
                     if vaults.isEmpty {

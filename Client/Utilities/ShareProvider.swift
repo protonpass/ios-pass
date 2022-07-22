@@ -21,28 +21,26 @@
 import Core
 import Crypto
 import ProtonCore_Crypto
+import ProtonCore_DataModel
 import ProtonCore_KeyManager
 import ProtonCore_Login
 
 public protocol ShareProvider: Identifiable {
     var id: String { get }
 
-    func getVault(userData: UserData) throws -> VaultProvider
+    func getVault(userData: UserData, vaultKeys: [VaultKey]) throws -> VaultProvider
 }
 
+// swiftlint:disable function_body_length
 extension Share: ShareProvider {
     public var id: String { self.shareID }
 
-    public func getVault(userData: UserData) throws -> VaultProvider {
-        let signingKeyValid = try validateSigningKey(userData: userData)
-        return Vault(id: vaultID, name: .random(), description: .random())
-    }
-
-    private func validateSigningKey(userData: UserData) throws -> Bool {
+    public func getVault(userData: UserData, vaultKeys: [VaultKey]) throws -> VaultProvider {
         guard let firstAddress = userData.addresses.first else {
             assertionFailure("Address can not be nil")
             throw CryptoError.failedToEncrypt
         }
+
         let addressKeys = try firstAddress.keys.compactMap { key -> DecryptionKey? in
             guard let binKey = userData.user.keys.first?.privateKey.unArmor else { return nil }
             let passphrase = try key.passphrase(userBinKeys: [binKey],
@@ -51,6 +49,28 @@ extension Share: ShareProvider {
         }
         let privateKeyRing = try Decryptor.buildPrivateKeyRing(with: addressKeys)
 
+        let publicAddressKeys = firstAddress.keys.map { $0.publicKey }
+        guard let publicKeyRing = try Decryptor.buildPublicKeyRing(armoredKeys: publicAddressKeys) else {
+            throw CryptoError.failedToVerifyVault
+        }
+
+        let signingKeyValid = try validateSigningKey(userData: userData,
+                                                     privateKeyRing: privateKeyRing)
+
+        guard signingKeyValid else { throw CryptoError.failedToVerifyVault }
+
+        let vaultPassphrase = try validateVaultKey(userData: userData,
+                                                   vaultKeys: vaultKeys,
+                                                   privateKeyRing: privateKeyRing)
+
+        let plainContent = try decryptVaultContent(vaultKeys: vaultKeys,
+                                                   vaultPassphrase: vaultPassphrase,
+                                                   publicKeyRing: publicKeyRing)
+        let vaultContent = try VaultProtobuf(data: Data(plainContent.utf8))
+        return Vault(id: vaultID, name: vaultContent.name, description: vaultContent.description_p)
+    }
+
+    private func validateSigningKey(userData: UserData, privateKeyRing: CryptoKeyRing) throws -> Bool {
         // Here we have decrypted signing key but it's not used yet
         let decryptedSigningKeyPassphrase =
         try privateKeyRing.decrypt(.init(try signingKeyPassphrase?.base64Decode()),
@@ -76,23 +96,102 @@ extension Share: ShareProvider {
         return true
     }
 
-//    private func validateVaultKey(userData: UserData) throws -> Bool {
-//        let signingKeyFingerprint = try CryptoUtils.getFingerprint(key: vault)
-//        let decodedAcceptanceSignature = try acceptanceSignature.base64Decode()
-//
-//        var armorArmorWithTypeError: NSError?
-//        let armoredDecodedAcceptanceSignature = ArmorArmorWithType(decodedAcceptanceSignature,
-//                                                                   "SIGNATURE",
-//                                                                   &armorArmorWithTypeError)
-//
-//        if let armorArmorWithTypeError = armorArmorWithTypeError {
-//            throw armorArmorWithTypeError
-//        }
-//
-//        // swiftlint:disable:next todo
-//        // TODO: Should pass server time
-//        try privateKeyRing.verifyDetached(.init(Data(signingKeyFingerprint.utf8)),
-//                                          signature: .init(fromArmored: armoredDecodedAcceptanceSignature),
-//                                          verifyTime: Int64(Date().timeIntervalSince1970))
-//    }
+    private func validateVaultKey(userData: UserData,
+                                  vaultKeys: [VaultKey],
+                                  privateKeyRing: CryptoKeyRing) throws -> String {
+        guard let vaultKey = vaultKeys.first else {
+            fatalError("Post MVP")
+        }
+        let vaultKeyFingerprint = try CryptoUtils.getFingerprint(key: vaultKey.key)
+        let decodedVaultKeySignature = try vaultKey.keySignature.base64Decode()
+
+        var armorArmorWithTypeError: NSError?
+        let armoredDecodedVaultKeySignature = ArmorArmorWithType(decodedVaultKeySignature,
+                                                                 "SIGNATURE",
+                                                                 &armorArmorWithTypeError)
+
+        if let armorArmorWithTypeError = armorArmorWithTypeError {
+            throw armorArmorWithTypeError
+        }
+
+        let vaultKeyValid = try Crypto().verifyDetached(signature: armoredDecodedVaultKeySignature,
+                                                        plainData: .init(Data(vaultKeyFingerprint.utf8)),
+                                                        publicKey: signingKey.publicKey,
+                                                        verifyTime: Int64(Date().timeIntervalSince1970))
+
+        guard vaultKeyValid else { throw CryptoError.failedToVerifyVault }
+
+        // Here we have decrypted signing key but it's not used yet
+        let decryptedVaultKeyPassphrase =
+        try privateKeyRing.decrypt(.init(try vaultKey.keyPassphrase?.base64Decode()),
+                                   verifyKey: nil,
+                                   verifyTime: 0)
+        return decryptedVaultKeyPassphrase.getString()
+    }
+
+    private func decryptVaultContent(vaultKeys: [VaultKey],
+                                     vaultPassphrase: String,
+                                     publicKeyRing: CryptoKeyRing) throws -> String {
+        guard let vaultKey = vaultKeys.first else {
+            fatalError("Post MVP")
+        }
+
+        guard let content = content,
+        let contentData = try content.base64Decode() else {
+            throw CryptoError.failedToDecryptContent
+        }
+
+        var armorArmorWithTypeError: NSError?
+        let armoredContent = ArmorArmorWithType(contentData,
+                                                "MESSAGE",
+                                                &armorArmorWithTypeError)
+
+        if let armorArmorWithTypeError = armorArmorWithTypeError { throw armorArmorWithTypeError }
+
+        guard let contentEncryptedAddressSignatureData = try contentEncryptedAddressSignature.base64Decode() else {
+            throw CryptoError.failedToDecryptContent
+        }
+
+        let plainContent = try Crypto().decrypt(encrypted: armoredContent,
+                                                privateKey: vaultKey.key,
+                                                passphrase: vaultPassphrase)
+
+        let armoredEncryptedAddressSignature = ArmorArmorWithType(contentEncryptedAddressSignatureData,
+                                                                  "MESSAGE",
+                                                                  &armorArmorWithTypeError)
+
+        if let armorArmorWithTypeError = armorArmorWithTypeError { throw armorArmorWithTypeError }
+
+        let plainAddressSignature = try Crypto().decrypt(encrypted: armoredEncryptedAddressSignature,
+                                                         privateKey: vaultKey.key,
+                                                         passphrase: vaultPassphrase)
+
+        let addressSignature = CryptoNewPGPSignatureFromArmored(plainAddressSignature, &armorArmorWithTypeError)
+
+        try publicKeyRing.verifyDetached(CryptoNewPlainMessage(plainContent.data(using: .utf8)),
+                                         signature: addressSignature,
+                                         verifyTime: Int64(Date().timeIntervalSince1970))
+
+        guard let contentEncryptedVaultSignatureData = try contentEncryptedVaultSignature.base64Decode() else {
+            throw CryptoError.failedToDecryptContent
+        }
+
+        let armoredEncryptedVaultSignature = ArmorArmorWithType(contentEncryptedVaultSignatureData,
+                                                                "MESSAGE",
+                                                                &armorArmorWithTypeError)
+
+        if let armorArmorWithTypeError = armorArmorWithTypeError { throw armorArmorWithTypeError }
+
+        let plainVaultSignature = try Crypto().decrypt(encrypted: armoredEncryptedVaultSignature,
+                                                       privateKey: vaultKey.key,
+                                                       passphrase: vaultPassphrase)
+
+        let vaultSignatureValid = try Crypto().verifyDetached(signature: plainVaultSignature,
+                                                              plainData: Data(plainContent.utf8),
+                                                              publicKey: vaultKey.key.publicKey,
+                                                              verifyTime: Int64(Date().timeIntervalSince1970))
+
+        guard vaultSignatureValid else { throw CryptoError.failedToVerifyVault }
+        return plainContent
+    }
 }

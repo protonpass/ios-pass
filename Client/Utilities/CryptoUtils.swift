@@ -28,6 +28,8 @@ public enum CryptoError: Error {
     case failedToGetFingerprint
     case failedToGenerateKeyRing
     case failedToEncrypt
+    case failedToVerifyVault
+    case failedToDecryptContent
 }
 
 public enum CryptoUtils {
@@ -74,12 +76,4 @@ public enum CryptoUtils {
         }
         return unarmoredData.base64EncodedString()
     }
-}
-
-func unwrap<T>(caller: StaticString = #function, action: () -> T?) throws -> T {
-    let optional = action()
-    guard optional != nil else {
-        throw NSError(domain: "Expected honest \(T.self), but found nil instead. \nCaller: \(caller)", code: 1)
-    }
-    return optional! // swiftlint:disable:this force_unwrapping
 }
