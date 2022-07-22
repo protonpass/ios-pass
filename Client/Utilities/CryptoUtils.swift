@@ -35,22 +35,21 @@ public enum CryptoError: Error {
 public enum CryptoUtils {
     public static func generateKey(name: String, email: String) throws -> (String, String) {
         let keyPassphrase = String.random(length: 32)
-        var error: NSError?
-        let key = HelperGenerateKey(name,
-                                    email,
-                                    Data(keyPassphrase.utf8),
-                                    "x25519",
-                                    0,
-                                    &error)
-
-        if let error = error { throw error }
+        let key = try throwing { error in
+            HelperGenerateKey(name,
+                              email,
+                              Data(keyPassphrase.utf8),
+                              "x25519",
+                              0,
+                              &error)
+        }
         return (key, keyPassphrase)
     }
 
     public static func getFingerprint(key: String) throws -> String {
-        var error: NSError?
-        let data = HelperGetJsonSHA256Fingerprints(key, &error)
-        if let error = error { throw error }
+        let data = try throwing { error in
+            HelperGetJsonSHA256Fingerprints(key, &error)
+        }
         guard let data = data else {
             throw CryptoError.failedToGetFingerprint
         }

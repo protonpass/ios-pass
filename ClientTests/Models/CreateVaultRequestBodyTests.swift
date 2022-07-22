@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
+import Core
 import Crypto
 import ProtonCore_Crypto
 import ProtonCore_DataModel
@@ -76,22 +77,25 @@ final class CreateVaultRequestBodyTests: XCTestCase {
         XCTAssertFalse(requestBody.signingKey.isEmpty)
         let passphraseKeyPacket = try requestBody.signingKeyPassphraseKeyPacket.base64Decode()
         let decodedPassphrase = try requestBody.signingKeyPassphrase.base64Decode()
-        var decryptSessionKeyError: NSError?
-        let decryptedSessionKey = HelperDecryptSessionKey(addressKey.privateKey,
-                                                          addressKeyPassphrase.data(using: .utf8),
-                                                          passphraseKeyPacket,
-                                                          &decryptSessionKeyError)
+
+        let decryptedSessionKey = try throwing { error in
+            HelperDecryptSessionKey(addressKey.privateKey,
+                                    addressKeyPassphrase.data(using: .utf8),
+                                    passphraseKeyPacket,
+                                    &error)
+        }
+
         let decryptedPassphrase = try decryptedSessionKey?.decrypt(decodedPassphrase)
-        XCTAssertNil(decryptSessionKeyError)
 
         let signingKeyFingerprint = try CryptoUtils.getFingerprint(key: requestBody.signingKey)
         let decodedAcceptanceSignature = try requestBody.acceptanceSignature.base64Decode()
 
-        var armorArmorWithTypeError: NSError?
-        let armoredDecodedAcceptanceSignature = ArmorArmorWithType(decodedAcceptanceSignature,
-                                                                   "SIGNATURE",
-                                                                   &armorArmorWithTypeError)
-        XCTAssertNil(armorArmorWithTypeError)
+        let armoredDecodedAcceptanceSignature = try throwing { error in
+            ArmorArmorWithType(decodedAcceptanceSignature,
+                               "SIGNATURE",
+                               &error)
+        }
+
         XCTAssertTrue(try Crypto().verifyDetached(signature: armoredDecodedAcceptanceSignature,
                                                   plainData: Data(signingKeyFingerprint.utf8),
                                                   publicKey: addressKey.publicKey,
@@ -111,21 +115,25 @@ final class CreateVaultRequestBodyTests: XCTestCase {
         XCTAssertFalse(requestBody.vaultKey.isEmpty)
         let passphraseKeyPacket = try requestBody.keyPacket.base64Decode()
         let decodedPassphrase = try requestBody.vaultKeyPassphrase.base64Decode()
-        var decryptSessionKeyError: NSError?
-        let decryptedSessionKey = HelperDecryptSessionKey(addressKey.privateKey,
-                                                          addressKeyPassphrase.data(using: .utf8),
-                                                          passphraseKeyPacket,
-                                                          &decryptSessionKeyError)
+
+        let decryptedSessionKey = try throwing { error in
+            HelperDecryptSessionKey(addressKey.privateKey,
+                                    addressKeyPassphrase.data(using: .utf8),
+                                    passphraseKeyPacket,
+                                    &error)
+        }
+
         let decryptedPassphrase = try decryptedSessionKey?.decrypt(decodedPassphrase)
 
         let vaultKeyFingerprint = try CryptoUtils.getFingerprint(key: requestBody.vaultKey)
         let decodedVaultKeySignature = try requestBody.vaultKeySignature.base64Decode()
 
-        var armorArmorWithTypeError: NSError?
-        let armoredDecodedVaultKeySignature = ArmorArmorWithType(decodedVaultKeySignature,
-                                                                 "SIGNATURE",
-                                                                 &armorArmorWithTypeError)
-        XCTAssertNil(armorArmorWithTypeError)
+        let armoredDecodedVaultKeySignature = try throwing { error in
+            ArmorArmorWithType(decodedVaultKeySignature,
+                               "SIGNATURE",
+                               &error)
+        }
+
         XCTAssertTrue(try Crypto().verifyDetached(signature: armoredDecodedVaultKeySignature,
                                                   plainData: Data(vaultKeyFingerprint.utf8),
                                                   publicKey: signingKey.publicKey,
@@ -144,11 +152,14 @@ final class CreateVaultRequestBodyTests: XCTestCase {
         XCTAssertFalse(requestBody.itemKey.isEmpty)
         let passphraseKeyPacket = try requestBody.itemKeyPassphraseKeyPacket.base64Decode()
         let decodedPassphrase = try requestBody.itemKeyPassphrase.base64Decode()
-        var decryptSessionKeyError: NSError?
-        let decryptedSessionKey = HelperDecryptSessionKey(vaultKey.privateKey,
-                                                          vaultKeyPassphrase.data(using: .utf8),
-                                                          passphraseKeyPacket,
-                                                          &decryptSessionKeyError)
+
+        let decryptedSessionKey = try throwing { error in
+            HelperDecryptSessionKey(vaultKey.privateKey,
+                                    vaultKeyPassphrase.data(using: .utf8),
+                                    passphraseKeyPacket,
+                                    &error)
+        }
+
         // swiftlint:disable:next todo
         // TODO: Try to unlock item key
         let decryptedPassphrase = try decryptedSessionKey?.decrypt(decodedPassphrase)
@@ -156,11 +167,12 @@ final class CreateVaultRequestBodyTests: XCTestCase {
         let itemKeyFingerprint = try CryptoUtils.getFingerprint(key: requestBody.itemKey)
         let decodedItemKeySignature = try requestBody.itemKeySignature.base64Decode()
 
-        var armorArmorWithTypeError: NSError?
-        let armoredDecodedItemKeySignature = ArmorArmorWithType(decodedItemKeySignature,
-                                                                "SIGNATURE",
-                                                                &armorArmorWithTypeError)
-        XCTAssertNil(armorArmorWithTypeError)
+        let armoredDecodedItemKeySignature = try throwing { error in
+            ArmorArmorWithType(decodedItemKeySignature,
+                               "SIGNATURE",
+                               &error)
+        }
+
         XCTAssertTrue(try Crypto().verifyDetached(signature: armoredDecodedItemKeySignature,
                                                   plainData: Data(itemKeyFingerprint.utf8),
                                                   publicKey: signingKey.publicKey,
@@ -175,10 +187,13 @@ final class CreateVaultRequestBodyTests: XCTestCase {
                            vaultKeyPassphrase: String) throws {
         XCTAssertFalse(requestBody.content.isEmpty)
         let encryptedVaultData = try XCTUnwrap(requestBody.content.base64Decode())
-        var error: NSError?
-        let armoredContent = ArmorArmorWithType(encryptedVaultData,
-                                                "PGP MESSAGE",
-                                                &error)
+
+        let armoredContent = try throwing { error in
+            ArmorArmorWithType(encryptedVaultData,
+                               "PGP MESSAGE",
+                               &error)
+        }
+
         let deryptedVaultData = try XCTUnwrap(Crypto().decrypt(encrypted: armoredContent,
                                                                privateKey: vaultKey.privateKey,
                                                                passphrase: vaultKeyPassphrase).data(using: .utf8))

@@ -79,13 +79,10 @@ extension Share: ShareProvider {
         let signingKeyFingerprint = try CryptoUtils.getFingerprint(key: signingKey)
         let decodedAcceptanceSignature = try acceptanceSignature.base64Decode()
 
-        var armorArmorWithTypeError: NSError?
-        let armoredDecodedAcceptanceSignature = ArmorArmorWithType(decodedAcceptanceSignature,
-                                                                   "SIGNATURE",
-                                                                   &armorArmorWithTypeError)
-
-        if let armorArmorWithTypeError = armorArmorWithTypeError {
-            throw armorArmorWithTypeError
+        let armoredDecodedAcceptanceSignature = try throwing { error in
+            ArmorArmorWithType(decodedAcceptanceSignature,
+                               "SIGNATURE",
+                               &error)
         }
 
         // swiftlint:disable:next todo
@@ -105,13 +102,10 @@ extension Share: ShareProvider {
         let vaultKeyFingerprint = try CryptoUtils.getFingerprint(key: vaultKey.key)
         let decodedVaultKeySignature = try vaultKey.keySignature.base64Decode()
 
-        var armorArmorWithTypeError: NSError?
-        let armoredDecodedVaultKeySignature = ArmorArmorWithType(decodedVaultKeySignature,
-                                                                 "SIGNATURE",
-                                                                 &armorArmorWithTypeError)
-
-        if let armorArmorWithTypeError = armorArmorWithTypeError {
-            throw armorArmorWithTypeError
+        let armoredDecodedVaultKeySignature = try throwing { error in
+            ArmorArmorWithType(decodedVaultKeySignature,
+                               "SIGNATURE",
+                               &error)
         }
 
         let vaultKeyValid = try Crypto().verifyDetached(signature: armoredDecodedVaultKeySignature,
@@ -141,12 +135,11 @@ extension Share: ShareProvider {
             throw CryptoError.failedToDecryptContent
         }
 
-        var armorArmorWithTypeError: NSError?
-        let armoredContent = ArmorArmorWithType(contentData,
-                                                "MESSAGE",
-                                                &armorArmorWithTypeError)
-
-        if let armorArmorWithTypeError = armorArmorWithTypeError { throw armorArmorWithTypeError }
+        let armoredContent = try throwing { error in
+            ArmorArmorWithType(contentData,
+                               "MESSAGE",
+                               &error)
+        }
 
         guard let contentEncryptedAddressSignatureData = try contentEncryptedAddressSignature.base64Decode() else {
             throw CryptoError.failedToDecryptContent
@@ -156,17 +149,19 @@ extension Share: ShareProvider {
                                                 privateKey: vaultKey.key,
                                                 passphrase: vaultPassphrase)
 
-        let armoredEncryptedAddressSignature = ArmorArmorWithType(contentEncryptedAddressSignatureData,
-                                                                  "MESSAGE",
-                                                                  &armorArmorWithTypeError)
-
-        if let armorArmorWithTypeError = armorArmorWithTypeError { throw armorArmorWithTypeError }
+        let armoredEncryptedAddressSignature = try throwing { error in
+            ArmorArmorWithType(contentEncryptedAddressSignatureData,
+                               "MESSAGE",
+                               &error)
+        }
 
         let plainAddressSignature = try Crypto().decrypt(encrypted: armoredEncryptedAddressSignature,
                                                          privateKey: vaultKey.key,
                                                          passphrase: vaultPassphrase)
 
-        let addressSignature = CryptoNewPGPSignatureFromArmored(plainAddressSignature, &armorArmorWithTypeError)
+        let addressSignature = try throwing { error in
+            CryptoNewPGPSignatureFromArmored(plainAddressSignature, &error)
+        }
 
         try publicKeyRing.verifyDetached(CryptoNewPlainMessage(plainContent.data(using: .utf8)),
                                          signature: addressSignature,
@@ -176,11 +171,11 @@ extension Share: ShareProvider {
             throw CryptoError.failedToDecryptContent
         }
 
-        let armoredEncryptedVaultSignature = ArmorArmorWithType(contentEncryptedVaultSignatureData,
-                                                                "MESSAGE",
-                                                                &armorArmorWithTypeError)
-
-        if let armorArmorWithTypeError = armorArmorWithTypeError { throw armorArmorWithTypeError }
+        let armoredEncryptedVaultSignature = try throwing { error in
+            ArmorArmorWithType(contentEncryptedVaultSignatureData,
+                               "MESSAGE",
+                               &error)
+        }
 
         let plainVaultSignature = try Crypto().decrypt(encrypted: armoredEncryptedVaultSignature,
                                                        privateKey: vaultKey.key,
