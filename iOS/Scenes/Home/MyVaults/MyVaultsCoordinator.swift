@@ -64,8 +64,7 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateVaultView() {
-        let createVaultViewModel = CreateVaultViewModel(apiService: apiService,
-                                                        userData: userData)
+        let createVaultViewModel = CreateVaultViewModel(coordinator: self)
         createVaultViewModel.delegate = self
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         let createVaultViewController = UIHostingController(rootView: createVaultView)
@@ -138,6 +137,8 @@ extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
     }
 
     func createVaultViewModelDidCreateShare(share: PartialShare) {
+        // Set vaults to empty to trigger refresh
+        vaultSelection.update(vaults: [])
         dismissTopMostModal()
     }
 

@@ -38,18 +38,16 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
         print(deinitMessage)
     }
 
-    private let apiService: APIService
-    private let userData: UserData
+    private let coordinator: MyVaultsCoordinator
 
-    let isLoadingSubject = PassthroughSubject<Bool, Never>()
-    let createdShareSubject = PassthroughSubject<PartialShare, Error>()
+    private let isLoadingSubject = PassthroughSubject<Bool, Never>()
+    private let createdShareSubject = PassthroughSubject<PartialShare, Error>()
     private var cancellables = Set<AnyCancellable>()
 
     weak var delegate: CreateVaultViewModelDelegate?
 
-    init(apiService: APIService, userData: UserData) {
-        self.apiService = apiService
-        self.userData = userData
+    init(coordinator: MyVaultsCoordinator) {
+        self.coordinator = coordinator
         self.subscribeToPublishers()
     }
 
@@ -89,11 +87,12 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
         Task { @MainActor in
             do {
                 isLoadingSubject.send(true)
+                let userData = coordinator.userData
                 let createVaultEndpoint = try CreateVaultEndpoint(credential: userData.credential,
                                                                   addressKey: userData.getAddressKey(),
                                                                   name: name,
                                                                   note: note)
-                let response = try await apiService.exec(endpoint: createVaultEndpoint)
+                let response = try await coordinator.apiService.exec(endpoint: createVaultEndpoint)
                 isLoadingSubject.send(false)
                 createdShareSubject.send(response.share)
                 createdShareSubject.send(completion: .finished)
@@ -107,7 +106,6 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
 
 extension CreateVaultViewModel {
     static var preview: CreateVaultViewModel {
-        .init(apiService: DummyApiService.preview,
-              userData: .preview)
+        .init(coordinator: .preview)
     }
 }
