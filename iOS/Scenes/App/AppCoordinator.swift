@@ -22,13 +22,18 @@ import Combine
 import Core
 import ProtonCore_Keymaker
 import ProtonCore_Login
+import ProtonCore_Networking
+import ProtonCore_Services
 import UIKit
 
 final class AppCoordinator {
     private let rootViewController: UIViewController
     private let appStateObserver = AppStateObserver()
-    private let sessionStorage: SessionStorage
     private let keymaker: Keymaker
+    private let apiService: PMAPIService
+
+    @KeychainStorage(key: "userData")
+    public private(set) var userData: UserData? // swiftlint:disable:this let_var_whitespace
 
     // Keep a preference to coordinator to make VC presentations work
     private var welcomeCoordinator: WelcomeCoordinator?
@@ -39,8 +44,11 @@ final class AppCoordinator {
         self.rootViewController = rootViewController
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
-        self.sessionStorage = .init(mainKeyProvider: keymaker, keychain: keychain)
+        self._userData.setKeychain(keychain)
+        self._userData.setMainKeyProvider(keymaker)
         self.keymaker = keymaker
+        self.apiService = PMAPIService(doh: PPDoH(bundle: .main))
+        self.apiService.authDelegate = self
         bindAppState()
     }
 
@@ -52,8 +60,8 @@ final class AppCoordinator {
                 switch appState {
                 case .loggedOut:
                     self.showWelcomeScene()
-                case .loggedIn:
-                    self.showHomeScene()
+                case .loggedIn(let userData):
+                    self.showHomeScene(userData: userData)
                 case .undefined:
                     break
                 }
@@ -62,8 +70,8 @@ final class AppCoordinator {
     }
 
     func start() {
-        if sessionStorage.isSignedIn() {
-            appStateObserver.updateAppState(.loggedIn)
+        if let userData = userData {
+            appStateObserver.updateAppState(.loggedIn(userData))
         } else {
             appStateObserver.updateAppState(.loggedOut)
         }
@@ -87,9 +95,9 @@ final class AppCoordinator {
         }
     }
 
-    private func showHomeScene() {
+    private func showHomeScene(userData: UserData) {
         let presentSideMenuController: (Bool) -> Void = { [unowned self] animated in
-            let homeCoordinator = HomeCoordinator(sessionStorageProvider: self.sessionStorage)
+            let homeCoordinator = HomeCoordinator(userData: userData, apiService: apiService)
             homeCoordinator.delegate = self
             homeCoordinator.sideMenuController.modalPresentationStyle = .fullScreen
             self.welcomeCoordinator = nil
@@ -106,7 +114,8 @@ final class AppCoordinator {
     }
 
     private func signOut() {
-        sessionStorage.signOut()
+        keymaker.wipeMainKey()
+        userData = nil
         appStateObserver.updateAppState(.loggedOut)
     }
 }
@@ -118,8 +127,8 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
         case .credential:
             fatalError("Impossible case. Make sure minimumAccountType is set as internal in LoginAndSignUp")
         case .userData(let userData):
-            sessionStorage.bind(userData: userData)
-            appStateObserver.updateAppState(.loggedIn)
+            self.userData = userData
+            appStateObserver.updateAppState(.loggedIn(userData))
         }
     }
 }
@@ -129,4 +138,14 @@ extension AppCoordinator: HomeCoordinatorDelegate {
     func homeCoordinatorDidSignOut() {
         signOut()
     }
+}
+
+extension AppCoordinator: AuthDelegate {
+    func getToken(bySessionUID uid: String) -> AuthCredential? { userData?.credential }
+
+    func onLogout(sessionUID uid: String) { signOut() }
+
+    func onUpdate(auth: Credential) {}
+
+    func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {}
 }

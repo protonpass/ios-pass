@@ -18,7 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import Combine
 import Core
+import MBProgressHUD
+import ProtonCore_Login
+import ProtonCore_Services
 import SideMenuSwift
 import SwiftUI
 import UIComponents
@@ -37,23 +42,32 @@ final class HomeCoordinator {
         print("\(Self.self) is deallocated")
     }
 
-    let sessionStorageProvider: SessionStorageProvider
+    let userData: UserData
+    let apiService: APIService
     weak var delegate: HomeCoordinatorDelegate?
 
     private(set) lazy var sideMenuController: SideMenuController = {
         let sideMenuController = SideMenuController(contentViewController: myVaultsRootViewController,
-                                                    menuViewController: sidebarView)
+                                                    menuViewController: sidebarViewController)
         return sideMenuController
     }()
 
-    private lazy var sidebarView: UIViewController = {
+    private var topMostViewController: UIViewController {
+        sideMenuController.presentedViewController ?? sideMenuController
+    }
+
+    private lazy var sidebarViewController: UIViewController = {
         let sidebarView = SidebarView(coordinator: self, width: kMenuWidth)
         return UIHostingController(rootView: sidebarView)
     }()
 
     // My vaults
+    let vaultSelection: VaultSelection
+
     private lazy var myVaultsCoordinator: MyVaultsCoordinator = {
-        let myVaultsCoordinator = MyVaultsCoordinator()
+        let myVaultsCoordinator = MyVaultsCoordinator(apiService: apiService,
+                                                      userData: userData,
+                                                      vaultSelection: vaultSelection)
         myVaultsCoordinator.delegate = self
         return myVaultsCoordinator
     }()
@@ -69,9 +83,14 @@ final class HomeCoordinator {
 
     private var trashRootViewController: UIViewController { trashCoordinator.router.toPresentable() }
 
-    init(sessionStorageProvider: SessionStorageProvider) {
-        self.sessionStorageProvider = sessionStorageProvider
+    private var cancellables = Set<AnyCancellable>()
+
+    init(userData: UserData, apiService: APIService) {
+        self.userData = userData
+        self.apiService = apiService
+        self.vaultSelection = .init(vaults: [])
         self.setUpSideMenuPreferences()
+        self.observeVaultSelection()
     }
 
     private func setUpSideMenuPreferences() {
@@ -85,6 +104,14 @@ final class HomeCoordinator {
         SideMenuController.preferences.animation.revealDuration = 0.25
         SideMenuController.preferences.animation.hideDuration = 0.25
     }
+
+    private func observeVaultSelection() {
+        vaultSelection.$selectedVault
+            .sink { [unowned self] _ in
+                self.showMyVaultsRootViewController()
+            }
+            .store(in: &cancellables)
+    }
 }
 
 // MARK: - Sidebar
@@ -93,13 +120,15 @@ extension HomeCoordinator {
         sideMenuController.revealMenu()
     }
 
+    private func showMyVaultsRootViewController() {
+        sideMenuController.setContentViewController(to: myVaultsRootViewController,
+                                                    animated: true) { [unowned self] in
+            self.sideMenuController.hideMenu()
+        }
+    }
+
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
-        case .myVaults:
-            sideMenuController.setContentViewController(to: myVaultsRootViewController,
-                                                        animated: true) { [unowned self] in
-                self.sideMenuController.hideMenu()
-            }
         case .settings:
             break
         case .trash:
@@ -116,6 +145,14 @@ extension HomeCoordinator {
 
     func showUserSwitcher() {
         print(#function)
+    }
+
+    func alert(error: Error) {
+        let alert = UIAlertController(title: "Error occured",
+                                      message: error.messageForTheUser,
+                                      preferredStyle: .alert)
+        alert.addAction(.cancel)
+        topMostViewController.present(alert, animated: true)
     }
 }
 
@@ -143,6 +180,18 @@ extension HomeCoordinator: MyVaultsCoordinatorDelegate {
     func myVautsCoordinatorWantsToShowSidebar() {
         showSidebar()
     }
+
+    func myVautsCoordinatorWantsToShowLoadingHud() {
+        MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
+    }
+
+    func myVautsCoordinatorWantsToHideLoadingHud() {
+        MBProgressHUD.hide(for: topMostViewController.view, animated: true)
+    }
+
+    func myVautsCoordinatorWantsToAlertError(_ error: Error) {
+        alert(error: error)
+    }
 }
 
 // MARK: - TrashCoordinatorDelegate
@@ -155,6 +204,6 @@ extension HomeCoordinator: TrashCoordinatorDelegate {
 extension HomeCoordinator {
     /// For preview purposes
     static var preview: HomeCoordinator {
-        .init(sessionStorageProvider: .preview)
+        .init(userData: .preview, apiService: DummyApiService.preview)
     }
 }

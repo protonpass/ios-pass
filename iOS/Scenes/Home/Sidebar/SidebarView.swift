@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import ProtonCore_UIFoundations
 import SwiftUI
@@ -33,14 +34,12 @@ struct SidebarView: View {
                 .ignoresSafeArea(.all)
 
             VStack(spacing: 0) {
-                SidebarCurrentUserView(userInfoProvider: .preview,
+                SidebarCurrentUserView(userInfoProvider: coordinator.userData.user,
                                        action: coordinator.showUserSwitcher)
                 .padding(.horizontal, 8)
                 ScrollView {
                     VStack {
-                        SidebarItemView(item: .myVaults,
-                                        action: coordinator.handleSidebarItem)
-                        Divider()
+                        MyVaultsSidebarItemView(vaultSelection: coordinator.vaultSelection)
                         SidebarItemView(item: .settings,
                                         action: coordinator.handleSidebarItem)
                         SidebarItemView(item: .trash,
@@ -92,6 +91,18 @@ private struct SidebarItemView: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView(coordinator: .preview, width: 300)
+        SidebarView(coordinator: .preview,
+                    width: 300)
     }
+}
+
+extension Array where Element == Vault {
+    static var preview: [Vault] = [
+        Vault(id: UUID().uuidString,
+              name: "Private",
+              description: "Private vault"),
+        Vault(id: UUID().uuidString,
+              name: "Business",
+              description: "Business vault")
+    ]
 }

@@ -1,6 +1,6 @@
 //
-// DummyTests.swift
-// Proton Pass - Created on 08/07/2022.
+// StaticFuncs.swift
+// Proton Pass - Created on 22/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,10 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
+import Foundation
 
-final class DummyClientTests: XCTestCase {
-    func testDummy() {
-        XCTAssertTrue(true)
-    }
+public func unwrap<T>(caller: StaticString = #function, action: () -> T?) throws -> T {
+    let optional = action()
+    if let optional = optional { return optional }
+    throw NSError(domain: "Expected honest \(T.self), but found nil instead. \nCaller: \(caller)", code: 1)
+}
+
+public func throwing<T>(operation: (inout NSError?) -> T) throws -> T {
+    var error: NSError?
+    let result = operation(&error)
+    if let error = error { throw error }
+    return result
 }

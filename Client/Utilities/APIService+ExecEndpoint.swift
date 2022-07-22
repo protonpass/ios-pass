@@ -1,6 +1,6 @@
 //
-// PPCredential.swift
-// Proton Pass - Created on 04/07/2022.
+// APIService+ExecEndpoint.swift
+// Proton Pass - Created on 12/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,25 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Login
+import Combine
 import ProtonCore_Networking
+import ProtonCore_Services
 
-public struct PPCredential: Codable {
-    public let uid: String
-    public let accessToken: String
-    public let refreshToken: String
-    public let expiration: Date
-    public let userId: String
-    public let userName: String
-    public let scopes: [String]
-
-    public init(authCredential: AuthCredential, scopes: [String]) {
-        self.uid = authCredential.sessionID
-        self.accessToken = authCredential.accessToken
-        self.refreshToken = authCredential.refreshToken
-        self.expiration = authCredential.expiration
-        self.userId = authCredential.userID
-        self.userName = authCredential.userName
-        self.scopes = scopes
+public extension APIService {
+    /// Async variant that can take an `Endpoint`
+    func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
+        try await withCheckedThrowingContinuation { continuation in
+            exec(route: endpoint) { (_, result: Result<E.Response, ResponseError>) in
+                continuation.resume(with: result)
+            }
+        }
     }
 }

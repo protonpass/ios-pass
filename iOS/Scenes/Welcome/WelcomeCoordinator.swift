@@ -118,7 +118,7 @@ public class AnonymousServiceManager: APIServiceDelegate {
     public init() {}
 
     public var locale: String { Locale.autoupdatingCurrent.identifier }
-    public var appVersion: String = "iOSPass_1.0.0"
+    public var appVersion = Bundle.main.appVersion
     public var userAgent: String?
     public var additionalHeaders: [String: String]?
 

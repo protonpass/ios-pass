@@ -18,10 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Login
 
 public enum AppState {
-    case loggedOut, loggedIn, undefined
+    case loggedOut, loggedIn(UserData), undefined
 }
 
 /// This class is meant to observe the user state changes.

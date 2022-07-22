@@ -18,26 +18,40 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
+import ProtonCore_Login
+import ProtonCore_Services
 import SwiftUI
 import UIKit
 
 protocol MyVaultsCoordinatorDelegate: AnyObject {
     func myVautsCoordinatorWantsToShowSidebar()
+    func myVautsCoordinatorWantsToShowLoadingHud()
+    func myVautsCoordinatorWantsToHideLoadingHud()
+    func myVautsCoordinatorWantsToAlertError(_ error: Error)
 }
 
 final class MyVaultsCoordinator: Coordinator {
     weak var delegate: MyVaultsCoordinatorDelegate?
 
     private lazy var myVaultsViewController: UIViewController = {
-        let myVaultsView = MyVaultsView(coordinator: self)
+        let myVaultsView = MyVaultsView(viewModel: .init(coordinator: self))
         return UIHostingController(rootView: myVaultsView)
     }()
 
     override var root: Presentable { myVaultsViewController }
+    let apiService: APIService
+    let userData: UserData
+    let vaultSelection: VaultSelection
 
-    convenience init() {
-        self.init(router: .init(), navigationType: .newFlow(hideBar: false))
+    init(apiService: APIService,
+         userData: UserData,
+         vaultSelection: VaultSelection) {
+        self.apiService = apiService
+        self.userData = userData
+        self.vaultSelection = vaultSelection
+        super.init(router: .init(), navigationType: .newFlow(hideBar: false))
     }
 
     func showSidebar() {
@@ -50,8 +64,26 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateVaultView() {
-        let createVaultView = CreateVaultView(coordinator: self)
-        router.present(UIHostingController(rootView: createVaultView), animated: true)
+        let createVaultViewModel = CreateVaultViewModel(coordinator: self)
+        createVaultViewModel.delegate = self
+        let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
+        let createVaultViewController = UIHostingController(rootView: createVaultView)
+        if #available(iOS 15.0, *) {
+            createVaultViewController.sheetPresentationController?.detents = [.medium()]
+        }
+        router.present(createVaultViewController, animated: true)
+    }
+
+    func showLoadingHud() {
+        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    }
+
+    func hideLoadingHud() {
+        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
+    func alert(error: Error) {
+        delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 
     func dismissTopMostModal() {
@@ -90,7 +122,36 @@ final class MyVaultsCoordinator: Coordinator {
     }
 }
 
+// MARK: - CreateVaultViewModelDelegate
+extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
+    func createVaultViewModelBeginsLoading() {
+        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    }
+
+    func createVaultViewModelStopsLoading() {
+        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
+    func createVaultViewModelWantsToBeDismissed() {
+        dismissTopMostModal()
+    }
+
+    func createVaultViewModelDidCreateShare(share: PartialShare) {
+        // Set vaults to empty to trigger refresh
+        vaultSelection.update(vaults: [])
+        dismissTopMostModal()
+    }
+
+    func createVaultViewModelFailedToCreateShare(error: Error) {
+        delegate?.myVautsCoordinatorWantsToAlertError(error)
+    }
+}
+
 extension MyVaultsCoordinator {
     /// For preview purposes
-    static var preview: MyVaultsCoordinator { .init() }
+    static var preview: MyVaultsCoordinator {
+        .init(apiService: DummyApiService.preview,
+              userData: .preview,
+              vaultSelection: .preview)
+    }
 }
