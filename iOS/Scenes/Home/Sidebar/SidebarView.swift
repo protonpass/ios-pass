@@ -33,9 +33,12 @@ struct SidebarView: View {
             Color(ColorProvider.SidebarBackground)
                 .ignoresSafeArea(.all)
 
+            let user = coordinator.sessionData.userData.user
             VStack(spacing: 0) {
-                SidebarCurrentUserView(userInfoProvider: coordinator.userData.user,
-                                       action: coordinator.showUserSwitcher)
+                SidebarCurrentUserView(
+                    userInfoProvider: user,
+                    action: coordinator.showUserSwitcher
+                )
                 .padding(.horizontal, 8)
                 ScrollView {
                     VStack {

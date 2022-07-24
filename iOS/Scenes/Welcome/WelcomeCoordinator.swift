@@ -33,16 +33,18 @@ protocol WelcomeCoordinatorDelegate: AnyObject {
     func welcomeCoordinator(didFinishWith loginData: LoginData)
 }
 
-final class WelcomeCoordinator {
+final class WelcomeCoordinator: DeinitPrintable {
     deinit {
-        print("\(Self.self) is deallocated")
+        print(deinitMessage)
     }
 
     private let apiServiceDelegate = AnonymousServiceManager()
     private let doh = PPDoH(bundle: .main)
     weak var delegate: WelcomeCoordinatorDelegate?
 
-    private(set) lazy var welcomeViewController: UIViewController = {
+    var rootViewController: UIViewController { welcomeViewController }
+
+    private lazy var welcomeViewController: UIViewController = {
         let welcomeScreenTexts = WelcomeScreenTexts(body: "Your next favorite password manager")
         let welcomeScreenVariant = WelcomeScreenVariant.drive(welcomeScreenTexts)
         return WelcomeViewController(variant: welcomeScreenVariant,

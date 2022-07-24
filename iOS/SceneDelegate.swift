@@ -23,15 +23,13 @@ import SwiftUI
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-    private let rootViewController = UIViewController()
-    private lazy var appCoordinator = AppCoordinator(rootViewController: rootViewController)
+    private lazy var appCoordinator = AppCoordinator(window: window ?? .init())
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = rootViewController
             self.window = window
             window.makeKeyAndVisible()
         }

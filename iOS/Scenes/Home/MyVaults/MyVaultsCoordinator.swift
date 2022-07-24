@@ -42,14 +42,14 @@ final class MyVaultsCoordinator: Coordinator {
 
     override var root: Presentable { myVaultsViewController }
     let apiService: APIService
-    let userData: UserData
+    let sessionData: SessionData
     let vaultSelection: VaultSelection
 
     init(apiService: APIService,
-         userData: UserData,
+         sessionData: SessionData,
          vaultSelection: VaultSelection) {
         self.apiService = apiService
-        self.userData = userData
+        self.sessionData = sessionData
         self.vaultSelection = vaultSelection
         super.init(router: .init(), navigationType: .newFlow(hideBar: false))
     }
@@ -151,7 +151,7 @@ extension MyVaultsCoordinator {
     /// For preview purposes
     static var preview: MyVaultsCoordinator {
         .init(apiService: DummyApiService.preview,
-              userData: .preview,
+              sessionData: .preview,
               vaultSelection: .preview)
     }
 }

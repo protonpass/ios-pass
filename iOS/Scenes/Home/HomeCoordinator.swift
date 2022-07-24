@@ -37,16 +37,18 @@ protocol HomeCoordinatorDelegate: AnyObject {
 // TODO: Make width dynamic based on screen orientation
 private let kMenuWidth = UIScreen.main.bounds.width * 4 / 5
 
-final class HomeCoordinator {
+final class HomeCoordinator: DeinitPrintable {
     deinit {
-        print("\(Self.self) is deallocated")
+        print(deinitMessage)
     }
 
-    let userData: UserData
+    let sessionData: SessionData
     let apiService: APIService
     weak var delegate: HomeCoordinatorDelegate?
 
-    private(set) lazy var sideMenuController: SideMenuController = {
+    var rootViewController: UIViewController { sideMenuController }
+
+    private lazy var sideMenuController: SideMenuController = {
         let sideMenuController = SideMenuController(contentViewController: myVaultsRootViewController,
                                                     menuViewController: sidebarViewController)
         return sideMenuController
@@ -66,7 +68,7 @@ final class HomeCoordinator {
 
     private lazy var myVaultsCoordinator: MyVaultsCoordinator = {
         let myVaultsCoordinator = MyVaultsCoordinator(apiService: apiService,
-                                                      userData: userData,
+                                                      sessionData: sessionData,
                                                       vaultSelection: vaultSelection)
         myVaultsCoordinator.delegate = self
         return myVaultsCoordinator
@@ -85,8 +87,8 @@ final class HomeCoordinator {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(userData: UserData, apiService: APIService) {
-        self.userData = userData
+    init(sessionData: SessionData, apiService: APIService) {
+        self.sessionData = sessionData
         self.apiService = apiService
         self.vaultSelection = .init(vaults: [])
         self.setUpSideMenuPreferences()
@@ -159,7 +161,7 @@ extension HomeCoordinator {
 // MARK: - Sign out
 extension HomeCoordinator {
     private func requestSignOutConfirmation() {
-        let alert = UIAlertController(title: "You will be signed out",
+        let alert = PPAlertController(title: "You will be signed out",
                                       message: "All associated data will be deleted. Please confirm.",
                                       preferredStyle: .alert)
         let signOutAction = UIAlertAction(title: "Yes, sign me out", style: .destructive) { [unowned self] _ in
@@ -204,6 +206,6 @@ extension HomeCoordinator: TrashCoordinatorDelegate {
 extension HomeCoordinator {
     /// For preview purposes
     static var preview: HomeCoordinator {
-        .init(userData: .preview, apiService: DummyApiService.preview)
+        .init(sessionData: .preview, apiService: DummyApiService.preview)
     }
 }

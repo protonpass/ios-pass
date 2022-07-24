@@ -20,32 +20,39 @@
 
 import Combine
 import Core
+import ProtonCore_Authentication
 import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
+import UIComponents
 import UIKit
 
+enum AppCoordinatorError: Error {
+    case noSessionData
+}
+
 final class AppCoordinator {
-    private let rootViewController: UIViewController
+    private let window: UIWindow
     private let appStateObserver = AppStateObserver()
     private let keymaker: Keymaker
     private let apiService: PMAPIService
 
-    @KeychainStorage(key: "userData")
-    public private(set) var userData: UserData? // swiftlint:disable:this let_var_whitespace
+    @KeychainStorage(key: "sessionData")
+    public private(set) var sessionData: SessionData? // swiftlint:disable:this let_var_whitespace
 
-    // Keep a preference to coordinator to make VC presentations work
     private var welcomeCoordinator: WelcomeCoordinator?
+
+    private var rootViewController: UIViewController? { window.rootViewController }
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(rootViewController: UIViewController) {
-        self.rootViewController = rootViewController
+    init(window: UIWindow) {
+        self.window = window
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
-        self._userData.setKeychain(keychain)
-        self._userData.setMainKeyProvider(keymaker)
+        self._sessionData.setKeychain(keychain)
+        self._sessionData.setMainKeyProvider(keymaker)
         self.keymaker = keymaker
         self.apiService = PMAPIService(doh: PPDoH(bundle: .main))
         self.apiService.authDelegate = self
@@ -55,68 +62,84 @@ final class AppCoordinator {
     private func bindAppState() {
         appStateObserver.$appState
             .receive(on: DispatchQueue.main)
+            .dropFirst() // Don't react to default undefined state
             .sink { [weak self] appState in
                 guard let self = self else { return }
                 switch appState {
-                case .loggedOut:
-                    self.showWelcomeScene()
-                case .loggedIn(let userData):
-                    self.showHomeScene(userData: userData)
+                case .loggedOut(let refreshTokenExpired):
+                    self.wipeAllData()
+                    self.showWelcomeScene(refreshTokenExpired: refreshTokenExpired)
+
+                case .loggedIn(let sessionData):
+                    self.sessionData = sessionData
+                    self.showHomeScene(sessionData: sessionData)
+
                 case .undefined:
-                    break
+                    PKLogger.shared?.log("Undefined app state. Don't know what to do...")
                 }
             }
             .store(in: &cancellables)
     }
 
     func start() {
-        if let userData = userData {
-            appStateObserver.updateAppState(.loggedIn(userData))
+        if let sessionData = sessionData {
+            appStateObserver.updateAppState(.loggedIn(sessionData))
         } else {
-            appStateObserver.updateAppState(.loggedOut)
+            appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
         }
     }
 
-    private func showWelcomeScene() {
-        let presentWelcomeViewController: () -> Void = { [unowned self] in
-            let welcomeCoordinator = WelcomeCoordinator()
-            welcomeCoordinator.delegate = self
-            welcomeCoordinator.welcomeViewController.modalPresentationStyle = .fullScreen
-            self.welcomeCoordinator = welcomeCoordinator
-            self.rootViewController.present(welcomeCoordinator.welcomeViewController, animated: false)
-        }
-
-        if let presentedViewController = rootViewController.presentedViewController {
-            presentedViewController.dismiss(animated: true) {
-                presentWelcomeViewController()
+    private func showWelcomeScene(refreshTokenExpired: Bool) {
+        let welcomeCoordinator = WelcomeCoordinator()
+        welcomeCoordinator.delegate = self
+        self.welcomeCoordinator = welcomeCoordinator
+        animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [unowned self] in
+            if refreshTokenExpired {
+                self.alertRefreshTokenExpired()
             }
-        } else {
-            presentWelcomeViewController()
         }
     }
 
-    private func showHomeScene(userData: UserData) {
-        let presentSideMenuController: (Bool) -> Void = { [unowned self] animated in
-            let homeCoordinator = HomeCoordinator(userData: userData, apiService: apiService)
-            homeCoordinator.delegate = self
-            homeCoordinator.sideMenuController.modalPresentationStyle = .fullScreen
-            self.welcomeCoordinator = nil
-            self.rootViewController.present(homeCoordinator.sideMenuController, animated: animated)
-        }
-
-        if let presentedViewController = rootViewController.presentedViewController {
-            presentedViewController.dismiss(animated: true) {
-                presentSideMenuController(true)
-            }
-        } else {
-            presentSideMenuController(false)
-        }
+    private func showHomeScene(sessionData: SessionData) {
+        let homeCoordinator = HomeCoordinator(sessionData: sessionData, apiService: apiService)
+        homeCoordinator.delegate = self
+        self.welcomeCoordinator = nil
+        animateUpdateRootViewController(homeCoordinator.rootViewController)
     }
 
-    private func signOut() {
+    private func animateUpdateRootViewController(_ newRootViewController: UIViewController,
+                                                 completion: (() -> Void)? = nil) {
+        window.rootViewController = newRootViewController
+        UIView.transition(with: window,
+                          duration: 0.35,
+                          options: .transitionCrossDissolve,
+                          animations: nil) { _ in completion?() }
+    }
+
+    private func wipeAllData() {
         keymaker.wipeMainKey()
-        userData = nil
-        appStateObserver.updateAppState(.loggedOut)
+        sessionData = nil
+    }
+
+    private func alertRefreshTokenExpired() {
+        let alert = PPAlertController(title: "Your session is expired",
+                                      message: "Please log in again",
+                                      preferredStyle: .alert)
+        alert.addAction(.ok)
+        rootViewController?.present(alert, animated: true)
+    }
+
+    // Create a new instance of SessionData with everything copied except credential
+    private func updateSessionData(_ sessionData: SessionData,
+                                   credential: Credential) {
+        let currentUserData = sessionData.userData
+        let updatedUserData = UserData(credential: .init(credential),
+                                       user: currentUserData.user,
+                                       salts: currentUserData.salts,
+                                       passphrases: currentUserData.passphrases,
+                                       addresses: currentUserData.addresses,
+                                       scopes: currentUserData.scopes)
+        self.sessionData = .init(userData: updatedUserData)
     }
 }
 
@@ -127,8 +150,8 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
         case .credential:
             fatalError("Impossible case. Make sure minimumAccountType is set as internal in LoginAndSignUp")
         case .userData(let userData):
-            self.userData = userData
-            appStateObserver.updateAppState(.loggedIn(userData))
+            let sessionData = SessionData(userData: userData)
+            appStateObserver.updateAppState(.loggedIn(sessionData))
         }
     }
 }
@@ -136,16 +159,53 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
 // MARK: - HomeCoordinatorDelegate
 extension AppCoordinator: HomeCoordinatorDelegate {
     func homeCoordinatorDidSignOut() {
-        signOut()
+        appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
     }
 }
 
+// MARK: - AuthDelegate
 extension AppCoordinator: AuthDelegate {
-    func getToken(bySessionUID uid: String) -> AuthCredential? { userData?.credential }
+    func getToken(bySessionUID uid: String) -> AuthCredential? { sessionData?.userData.credential }
 
-    func onLogout(sessionUID uid: String) { signOut() }
+    func onLogout(sessionUID uid: String) {
+        appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: true))
+    }
 
-    func onUpdate(auth: Credential) {}
+    func onUpdate(auth: Credential) {
+        if let sessionData = sessionData {
+            updateSessionData(sessionData, credential: auth)
+        } else {
+            appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
+        }
+    }
 
-    func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {}
+    func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {
+        guard let sessionData = sessionData else {
+            PKLogger.shared?.log("Access token expired but found no sessionData in keychain. Logging out...")
+            appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
+            return
+        }
+        PKLogger.shared?.log("Refreshing expired access token")
+        let authenticator = Authenticator(api: apiService)
+        let userData = sessionData.userData
+        authenticator.refreshCredential(.init(userData.credential)) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(.updatedCredential(let credential)), .success(.newCredential(let credential, _)):
+                PKLogger.shared?.log("Refreshed expired access token")
+                self.updateSessionData(sessionData, credential: credential)
+                complete(.init(credential), nil)
+
+            case .failure(let error):
+                // When falling into this case, it's very likely that refresh token is expired
+                // Can't do much here => logging out & displaying an alert
+                PKLogger.shared?.log("Error refreshing expired access token: \(error.messageForTheUser)")
+                complete(nil, error) // Will trigger onLogout(auth:)
+
+            default:
+                PKLogger.shared?.log("Error refreshing expired access token: unexpected response")
+                complete(nil, .notImplementedYet("Unexpected response"))  // Will trigger onLogout(auth:)
+            }
+        }
+    }
 }
