@@ -92,7 +92,7 @@ enum CreateNewItemOption: GenericItemProvider {
         case .note:
             return "Note"
         case .password:
-            return "Generate Password"
+            return "Generate password"
         }
     }
 

@@ -40,7 +40,8 @@ struct SidebarView: View {
                     action: coordinator.showUserSwitcher
                 )
                 .padding(.horizontal, 8)
-                ScrollView {
+
+                ScrollView(showsIndicators: false) {
                     VStack {
                         MyVaultsSidebarItemView(vaultSelection: coordinator.vaultSelection)
                         SidebarItemView(item: .settings,
@@ -56,10 +57,7 @@ struct SidebarView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-            }
-            .padding(.leading, UIScreen.main.bounds.width - width)
 
-            VStack {
                 Spacer()
                 Text("Proton Pass \(Bundle.main.versionNumber) (\(Bundle.main.buildNumber))")
                     .foregroundColor(.gray)
