@@ -31,7 +31,7 @@ public enum AllowedCharacter: String {
 public extension String {
     static func random(allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit],
                        length: Int = 10) -> String {
-        let allCharacters = allowedCharacters.map { $0.rawValue }.reduce("", +)
+        let allCharacters = allowedCharacters.map { $0.rawValue }.reduce(into: "") { $0 += $1 }
         // swiftlint:disable:next todo
         // TODO: Make sure that returned string contains at least 1 character from each AllowedCharacter set
         return String((0..<length).map { _ in allCharacters.randomElement()! })
