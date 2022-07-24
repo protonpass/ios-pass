@@ -34,9 +34,7 @@ protocol CreateVaultViewModelDelegate: AnyObject {
 }
 
 final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
-    deinit {
-        print(deinitMessage)
-    }
+    deinit { print(deinitMessage) }
 
     private let coordinator: MyVaultsCoordinator
 
@@ -87,7 +85,7 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
         Task { @MainActor in
             do {
                 isLoadingSubject.send(true)
-                let userData = coordinator.userData
+                let userData = coordinator.sessionData.userData
                 let createVaultEndpoint = try CreateVaultEndpoint(credential: userData.credential,
                                                                   addressKey: userData.getAddressKey(),
                                                                   name: name,

@@ -26,8 +26,8 @@ public protocol Logger {
     func log(_ message: String, bundle: Bundle, file: StaticString, function: StaticString, line: UInt)
 }
 
-public final class PKLogger {
-    public static let shared = PKLogger()
+public final class PPLogger {
+    public static let shared = PPLogger()
 
     private init?() {
         // Only log when in DEBUG mode
@@ -44,7 +44,7 @@ public final class PKLogger {
     }
 }
 
-extension PKLogger: Logger {
+extension PPLogger: Logger {
     public func log(_ error: Error,
                     bundle: Bundle = .main,
                     file: StaticString = #file,

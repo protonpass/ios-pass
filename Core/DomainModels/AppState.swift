@@ -21,7 +21,10 @@
 import ProtonCore_Login
 
 public enum AppState {
-    case loggedOut, loggedIn(UserData), undefined
+    /// Log out state can hold a boolean which indicates if it is caused by an expired refresh token
+    case loggedOut(refreshTokenExpired: Bool)
+    case loggedIn(SessionData)
+    case undefined
 }
 
 /// This class is meant to observe the user state changes.

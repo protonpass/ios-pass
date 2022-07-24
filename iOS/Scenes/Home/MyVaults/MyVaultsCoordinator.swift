@@ -42,14 +42,14 @@ final class MyVaultsCoordinator: Coordinator {
 
     override var root: Presentable { myVaultsViewController }
     let apiService: APIService
-    let userData: UserData
+    let sessionData: SessionData
     let vaultSelection: VaultSelection
 
     init(apiService: APIService,
-         userData: UserData,
+         sessionData: SessionData,
          vaultSelection: VaultSelection) {
         self.apiService = apiService
-        self.userData = userData
+        self.sessionData = sessionData
         self.vaultSelection = vaultSelection
         super.init(router: .init(), navigationType: .newFlow(hideBar: false))
     }
@@ -60,7 +60,11 @@ final class MyVaultsCoordinator: Coordinator {
 
     func showCreateItemView() {
         let createItemView = CreateItemView(coordinator: self)
-        router.present(UIHostingController(rootView: createItemView), animated: true)
+        let createItemViewController = UIHostingController(rootView: createItemView)
+        if #available(iOS 15.0, *) {
+            createItemViewController.sheetPresentationController?.detents = [.medium()]
+        }
+        router.present(createItemViewController, animated: true)
     }
 
     func showCreateVaultView() {
@@ -104,20 +108,26 @@ final class MyVaultsCoordinator: Coordinator {
 
     func handleCreateNewItemOption(_ option: CreateNewItemOption) {
         switch option {
-        case .newLogin:
+        case .login:
             let createLoginView = CreateLoginView(coordinator: self)
             let createLoginViewController = UIHostingController(rootView: createLoginView)
             dismissTopMostModalAndPresent(viewController: createLoginViewController)
-        case .newAlias:
+        case .alias:
             let createAliasView = CreateAliasView(coordinator: self)
             let createAliasViewController = UIHostingController(rootView: createAliasView)
             dismissTopMostModalAndPresent(viewController: createAliasViewController)
-        case .newNote:
+        case .note:
             let createNoteView = CreateNoteView(coordinator: self)
             let createNewNoteController = UIHostingController(rootView: createNoteView)
             dismissTopMostModalAndPresent(viewController: createNewNoteController)
-        case .generatePassword:
-            break
+        case .password:
+            let viewModel = GeneratePasswordViewModel(coordinator: self)
+            let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
+            let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
+            if #available(iOS 15, *) {
+                generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
+            }
+            dismissTopMostModalAndPresent(viewController: generatePasswordViewController)
         }
     }
 }
@@ -151,7 +161,7 @@ extension MyVaultsCoordinator {
     /// For preview purposes
     static var preview: MyVaultsCoordinator {
         .init(apiService: DummyApiService.preview,
-              userData: .preview,
+              sessionData: .preview,
               vaultSelection: .preview)
     }
 }

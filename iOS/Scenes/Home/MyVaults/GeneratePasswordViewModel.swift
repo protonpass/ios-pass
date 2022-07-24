@@ -1,6 +1,6 @@
 //
-// VaultContentViewModel.swift
-// Proton Pass - Created on 21/07/2022.
+// GeneratePasswordViewModel.swift
+// Proton Pass - Created on 24/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,46 +18,55 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Combine
 import Core
+import SwiftUI
 
-final class VaultContentViewModel: DeinitPrintable, ObservableObject {
+final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     private let coordinator: MyVaultsCoordinator
-    private var vaultSelection: VaultSelection { coordinator.vaultSelection }
+    private var allowedCharacters: [AllowedCharacter] {
+        var allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit]
+        if hasSpecialCharacters {
+            allowedCharacters.append(.special)
+        }
+        return allowedCharacters
+    }
 
-    var selectedVault: VaultProvider? { vaultSelection.selectedVault }
-    var vaults: [VaultProvider] { vaultSelection.vaults }
+    @Published private(set) var password = ""
+    @Published var length: Double = 32
+    @Published var hasSpecialCharacters = true {
+        didSet {
+            self.regenerate()
+        }
+    }
 
     private var cancellables = Set<AnyCancellable>()
 
+    let lengthRange: ClosedRange<Double> = 10...128
+
     init(coordinator: MyVaultsCoordinator) {
         self.coordinator = coordinator
-        coordinator.vaultSelection.objectWillChange
+        self.regenerate()
+
+        $length
+            .removeDuplicates()
             .sink { [unowned self] _ in
-                self.objectWillChange.send()
+                self.regenerate()
             }
             .store(in: &cancellables)
     }
 
-    func update(selectedVault: VaultProvider?) {
-        vaultSelection.update(selectedVault: selectedVault)
+    func cancelAction() {
+        coordinator.dismissTopMostModal()
+    }
+
+    func regenerate() {
+        password = .random(allowedCharacters: allowedCharacters, length: Int(length))
     }
 }
 
-// MARK: - Actions
-extension VaultContentViewModel {
-    func toggleSidebarAction() {
-        coordinator.showSidebar()
-    }
-
-    func createItemAction() {
-        coordinator.showCreateItemView()
-    }
-
-    func createVaultAction() {
-        coordinator.showCreateVaultView()
-    }
+extension GeneratePasswordViewModel {
+    static var preview: GeneratePasswordViewModel { .init(coordinator: .preview) }
 }

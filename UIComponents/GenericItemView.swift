@@ -24,54 +24,60 @@ import SwiftUI
 public protocol GenericItemProvider {
     var icon: UIImage { get }
     var title: String { get }
-    var detail: String? { get }
+    var detail: String { get }
 }
 
 public struct GenericItemView: View {
     private let item: GenericItemProvider
     private let action: () -> Void
+    private let showDivider: Bool
 
     public init(item: GenericItemProvider,
+                showDivider: Bool = true,
                 action: @escaping () -> Void) {
         self.item = item
+        self.showDivider = showDivider
         self.action = action
     }
 
     public var body: some View {
-        VStack {
-            HStack {
-                VStack {
-                    Image(uiImage: item.icon)
-                        .foregroundColor(Color(.label))
-                        .padding(.top, item.detail != nil ? -20 : 0)
-                    if item.detail != nil {
+        Button(action: action) {
+            VStack(spacing: 0) {
+                HStack {
+                    VStack {
+                        Image(uiImage: item.icon)
+                            .foregroundColor(Color(.label))
+                            .padding(.top, -20)
                         EmptyView()
                     }
-                }
 
-                VStack(alignment: .leading) {
-                    Text(item.title)
-                    if let detail = item.detail {
-                        Text(detail)
-                            .font(.callout)
-                            .foregroundColor(Color(.secondaryLabel))
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(item.title)
+                        if let detail = item.detail {
+                            Text(detail)
+                                .font(.callout)
+                                .foregroundColor(Color(.secondaryLabel))
+                        }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+
+                if showDivider {
+                    Divider()
+                }
             }
-            .padding()
-            Divider()
+            .contentShape(Rectangle())
         }
-        .contentShape(Rectangle())
-        .onTapGesture(perform: action)
+        .buttonStyle(.sidebarItem)
     }
 }
 
 struct GenericItemView_Previews: PreviewProvider {
     static var previews: some View {
         let item = PreviewGenericItem(icon: IconProvider.note,
-                                      title: "New Note",
-                                      detail: "Jot down any thought")
+                                      title: "Note",
+                                      detail: "Keep important information secure")
         GenericItemView(item: item) {}
     }
 }
@@ -79,5 +85,5 @@ struct GenericItemView_Previews: PreviewProvider {
 struct PreviewGenericItem: GenericItemProvider {
     let icon: UIImage
     let title: String
-    var detail: String?
+    var detail: String
 }

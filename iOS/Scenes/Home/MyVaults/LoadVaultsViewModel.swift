@@ -25,9 +25,7 @@ import Core
 final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var error: Error?
 
-    deinit {
-        print(deinitMessage)
-    }
+    deinit { print(deinitMessage) }
 
     let coordinator: MyVaultsCoordinator
 
@@ -43,7 +41,7 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
         error = nil
         Task { @MainActor in
             do {
-                let userData = coordinator.userData
+                let userData = coordinator.sessionData.userData
                 let apiService = coordinator.apiService
 
                 let getSharesEndpoint = GetSharesEndpoint(credential: userData.credential)
@@ -52,7 +50,7 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
                 try await withThrowingTaskGroup(of: Share.self) { [unowned self] group in
                     for partialShare in getSharesResponse.shares {
                         let getShareDataEndpoint =
-                        GetShareDataEndpoint(credential: coordinator.userData.credential,
+                        GetShareDataEndpoint(credential: userData.credential,
                                              shareId: partialShare.shareID)
                         group.addTask {
                             let getShareDataResponse =
@@ -85,8 +83,9 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     private func createDefaultVault() {
         Task { @MainActor in
             do {
-                let createVaultEndpoint = try CreateVaultEndpoint(credential: coordinator.userData.credential,
-                                                                  addressKey: coordinator.userData.getAddressKey(),
+                let userData = coordinator.sessionData.userData
+                let createVaultEndpoint = try CreateVaultEndpoint(credential: userData.credential,
+                                                                  addressKey: userData.getAddressKey(),
                                                                   name: "Personal",
                                                                   note: "Personal vault")
                 _ = try await coordinator.apiService.exec(endpoint: createVaultEndpoint)

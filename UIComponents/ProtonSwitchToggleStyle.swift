@@ -1,6 +1,6 @@
 //
-// PPKeychain.swift
-// Proton Pass - Created on 03/07/2022.
+// ProtonSwitchToggleStyle.swift
+// Proton Pass - Created on 24/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,26 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Keymaker
+import ProtonCore_UIFoundations
+import SwiftUI
 
-public final class PPKeychain: Keychain {
-    public init() {
-        super.init(service: "me.proton.pass", accessGroup: Constants.keychainGroup)
-    }
-}
-
-extension PPKeychain: SettingsProvider {
-    private static let LockTimeKey = "PPKeychain.LockTimeKey"
-
-    public var lockTime: AutolockTimeout {
-        get {
-            guard let string = self.string(forKey: Self.LockTimeKey), let intValue = Int(string) else {
-                return .never
-            }
-            return AutolockTimeout(rawValue: intValue)
-        }
-        set {
-            self.set(String(newValue.rawValue), forKey: Self.LockTimeKey)
-        }
+public extension SwitchToggleStyle {
+    static var proton: SwitchToggleStyle {
+        .init(tint: Color(ColorProvider.BrandNorm))
     }
 }
