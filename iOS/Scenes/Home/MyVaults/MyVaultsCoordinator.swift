@@ -60,7 +60,11 @@ final class MyVaultsCoordinator: Coordinator {
 
     func showCreateItemView() {
         let createItemView = CreateItemView(coordinator: self)
-        router.present(UIHostingController(rootView: createItemView), animated: true)
+        let createItemViewController = UIHostingController(rootView: createItemView)
+        if #available(iOS 15.0, *) {
+            createItemViewController.sheetPresentationController?.detents = [.medium()]
+        }
+        router.present(createItemViewController, animated: true)
     }
 
     func showCreateVaultView() {
@@ -104,19 +108,19 @@ final class MyVaultsCoordinator: Coordinator {
 
     func handleCreateNewItemOption(_ option: CreateNewItemOption) {
         switch option {
-        case .newLogin:
+        case .login:
             let createLoginView = CreateLoginView(coordinator: self)
             let createLoginViewController = UIHostingController(rootView: createLoginView)
             dismissTopMostModalAndPresent(viewController: createLoginViewController)
-        case .newAlias:
+        case .alias:
             let createAliasView = CreateAliasView(coordinator: self)
             let createAliasViewController = UIHostingController(rootView: createAliasView)
             dismissTopMostModalAndPresent(viewController: createAliasViewController)
-        case .newNote:
+        case .note:
             let createNoteView = CreateNoteView(coordinator: self)
             let createNewNoteController = UIHostingController(rootView: createNoteView)
             dismissTopMostModalAndPresent(viewController: createNewNoteController)
-        case .generatePassword:
+        case .password:
             break
         }
     }

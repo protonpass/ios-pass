@@ -27,31 +27,28 @@ struct CreateItemView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                GenericItemView(item: CreateNewItemOption.newLogin) {
-                    coordinator.handleCreateNewItemOption(.newLogin)
+            VStack(spacing: 0) {
+                GenericItemView(item: CreateNewItemOption.login) {
+                    coordinator.handleCreateNewItemOption(.login)
                 }
 
-                GenericItemView(item: CreateNewItemOption.newAlias) {
-                    coordinator.handleCreateNewItemOption(.newAlias)
+                GenericItemView(item: CreateNewItemOption.alias) {
+                    coordinator.handleCreateNewItemOption(.alias)
                 }
 
-                GenericItemView(item: CreateNewItemOption.newNote) {
-                    coordinator.handleCreateNewItemOption(.newNote)
+                GenericItemView(item: CreateNewItemOption.note) {
+                    coordinator.handleCreateNewItemOption(.note)
                 }
 
-                Text("Other")
-                    .foregroundColor(Color(.secondaryLabel))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding([.vertical, .leading])
-
-                GenericItemView(item: CreateNewItemOption.generatePassword) {
-                    coordinator.handleCreateNewItemOption(.generatePassword)
+                GenericItemView(item: CreateNewItemOption.password,
+                                showDivider: false) {
+                    coordinator.handleCreateNewItemOption(.password)
                 }
 
                 Spacer()
             }
-            .navigationTitle("Create new item")
+            .navigationTitle("Create new...")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: coordinator.dismissTopMostModal) {
@@ -71,44 +68,44 @@ struct CreateItemView_Previews: PreviewProvider {
 }
 
 enum CreateNewItemOption: GenericItemProvider {
-    case newLogin, newAlias, newNote, generatePassword
+    case login, alias, note, password
 
     var icon: UIImage {
         switch self {
-        case .newLogin:
+        case .login:
             return IconProvider.keySkeleton
-        case .newAlias:
+        case .alias:
             return IconProvider.alias
-        case .newNote:
+        case .note:
             return IconProvider.note
-        case .generatePassword:
+        case .password:
             return IconProvider.arrowsRotate
         }
     }
 
     var title: String {
         switch self {
-        case .newLogin:
-            return "New Login"
-        case .newAlias:
-            return "New Alias"
-        case .newNote:
-            return "New Note"
-        case .generatePassword:
+        case .login:
+            return "Login"
+        case .alias:
+            return "Alias"
+        case .note:
+            return "Note"
+        case .password:
             return "Generate Password"
         }
     }
 
-    var detail: String? {
+    var detail: String {
         switch self {
-        case .newLogin:
-            return "username/password"
-        case .newAlias:
-            return "Hide your real email address"
-        case .newNote:
-            return "Jot down any thought"
-        case .generatePassword:
-            return nil
+        case .login:
+            return "Keep your username and password secure"
+        case .alias:
+            return "Hide your identity with a separate email address"
+        case .note:
+            return "Keep important information secure"
+        case .password:
+            return "Generate a secure password"
         }
     }
 }
