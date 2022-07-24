@@ -75,7 +75,7 @@ final class AppCoordinator {
                     self.showHomeScene(sessionData: sessionData)
 
                 case .undefined:
-                    PKLogger.shared?.log("Undefined app state. Don't know what to do...")
+                    PPLogger.shared?.log("Undefined app state. Don't know what to do...")
                 }
             }
             .store(in: &cancellables)
@@ -181,29 +181,29 @@ extension AppCoordinator: AuthDelegate {
 
     func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {
         guard let sessionData = sessionData else {
-            PKLogger.shared?.log("Access token expired but found no sessionData in keychain. Logging out...")
+            PPLogger.shared?.log("Access token expired but found no sessionData in keychain. Logging out...")
             appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
             return
         }
-        PKLogger.shared?.log("Refreshing expired access token")
+        PPLogger.shared?.log("Refreshing expired access token")
         let authenticator = Authenticator(api: apiService)
         let userData = sessionData.userData
         authenticator.refreshCredential(.init(userData.credential)) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(.updatedCredential(let credential)), .success(.newCredential(let credential, _)):
-                PKLogger.shared?.log("Refreshed expired access token")
+                PPLogger.shared?.log("Refreshed expired access token")
                 self.updateSessionData(sessionData, credential: credential)
                 complete(.init(credential), nil)
 
             case .failure(let error):
                 // When falling into this case, it's very likely that refresh token is expired
                 // Can't do much here => logging out & displaying an alert
-                PKLogger.shared?.log("Error refreshing expired access token: \(error.messageForTheUser)")
+                PPLogger.shared?.log("Error refreshing expired access token: \(error.messageForTheUser)")
                 complete(nil, error) // Will trigger onLogout(auth:)
 
             default:
-                PKLogger.shared?.log("Error refreshing expired access token: unexpected response")
+                PPLogger.shared?.log("Error refreshing expired access token: unexpected response")
                 complete(nil, .notImplementedYet("Unexpected response"))  // Will trigger onLogout(auth:)
             }
         }

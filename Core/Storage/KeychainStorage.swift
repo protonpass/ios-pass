@@ -51,22 +51,22 @@ public final class KeychainStorage<T: Codable> {
     public var wrappedValue: T? {
         get {
             guard let keychain = keychain else {
-                PKLogger.shared?.log("Keychain is not set for key \(key). Fall back to defaultValue.")
+                PPLogger.shared?.log("Keychain is not set for key \(key). Fall back to defaultValue.")
                 return defaultValue
             }
 
             guard let mainKeyProvider = mainKeyProvider else {
-                PKLogger.shared?.log("MainKeyProvider is not set for key \(key). Fall back to defaultValue.")
+                PPLogger.shared?.log("MainKeyProvider is not set for key \(key). Fall back to defaultValue.")
                 return defaultValue
             }
 
             guard let cypherdata = keychain.data(forKey: key) else {
-                PKLogger.shared?.log("cypherdata does not exist for key \(key). Fall back to defaultValue.")
+                PPLogger.shared?.log("cypherdata does not exist for key \(key). Fall back to defaultValue.")
                 return defaultValue
             }
 
             guard let mainKey = mainKeyProvider.mainKey else {
-                PKLogger.shared?.log("mainKey is null for key \(key). Fall back to defaultValue.")
+                PPLogger.shared?.log("mainKey is null for key \(key). Fall back to defaultValue.")
                 return defaultValue
             }
 
@@ -76,7 +76,7 @@ public final class KeychainStorage<T: Codable> {
                 return try JSONDecoder().decode(T.self, from: unlockedData)
             } catch {
                 // Consider that the cypherdata is lost => remove it
-                PKLogger.shared?.log(error)
+                PPLogger.shared?.log(error)
                 wipeValue()
                 return defaultValue
             }
@@ -84,17 +84,17 @@ public final class KeychainStorage<T: Codable> {
 
         set {
             guard let keychain = keychain else {
-                PKLogger.shared?.log("Keychain is not set for key \(key). Early exit.")
+                PPLogger.shared?.log("Keychain is not set for key \(key). Early exit.")
                 return
             }
 
             guard let mainKeyProvider = mainKeyProvider else {
-                PKLogger.shared?.log("MainKeyProvider is not set for key \(key). Early exit")
+                PPLogger.shared?.log("MainKeyProvider is not set for key \(key). Early exit")
                 return
             }
 
             guard let mainKey = mainKeyProvider.mainKey else {
-                PKLogger.shared?.log("mainKey is null for key \(key). Early exit")
+                PPLogger.shared?.log("mainKey is null for key \(key). Early exit")
                 return
             }
 
@@ -105,7 +105,7 @@ public final class KeychainStorage<T: Codable> {
                     let cypherdata = lockedData.encryptedValue
                     keychain.set(cypherdata, forKey: key)
                 } catch {
-                    PKLogger.shared?.log(error)
+                    PPLogger.shared?.log(error)
                 }
             } else {
                 keychain.remove(forKey: key)
