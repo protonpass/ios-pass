@@ -34,9 +34,7 @@ protocol WelcomeCoordinatorDelegate: AnyObject {
 }
 
 final class WelcomeCoordinator: DeinitPrintable {
-    deinit {
-        print(deinitMessage)
-    }
+    deinit { print(deinitMessage) }
 
     private let apiServiceDelegate = AnonymousServiceManager()
     private let doh = PPDoH(bundle: .main)

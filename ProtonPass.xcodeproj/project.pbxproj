@@ -29,6 +29,9 @@
 		35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35429B26288AB730000BA22F /* StaticFuncs.swift */; };
 		3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B8882883614D009C9A68 /* DummyApiService.swift */; };
 		3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */; };
+		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
+		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
+		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
 		3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */; };
 		3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */; };
 		3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD92876DF1300EE85E1 /* TrashView.swift */; };
@@ -247,6 +250,9 @@
 		35429B26288AB730000BA22F /* StaticFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticFuncs.swift; sourceTree = "<group>"; };
 		3542B8882883614D009C9A68 /* DummyApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyApiService.swift; sourceTree = "<group>"; };
 		3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthCredential+Preview.swift"; sourceTree = "<group>"; };
+		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
+		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
+		3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonSwitchToggleStyle.swift; sourceTree = "<group>"; };
 		3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsView.swift; sourceTree = "<group>"; };
 		3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleSidebarButton.swift; sourceTree = "<group>"; };
 		3547ABD92876DF1300EE85E1 /* TrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashView.swift; sourceTree = "<group>"; };
@@ -487,6 +493,8 @@
 				3547ABEF287777FB00EE85E1 /* CreateNoteView.swift */,
 				3547ABF12877791000EE85E1 /* CreateVaultView.swift */,
 				3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */,
+				3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */,
+				3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */,
 				355635BC2889653B00F32353 /* LoadVaultsView.swift */,
 				355635BE2889664200F32353 /* LoadVaultsViewModel.swift */,
 				355635B828895B8E00F32353 /* VaultContentView.swift */,
@@ -713,6 +721,7 @@
 				35ECA4742882ACDD00980A1D /* TitledTextField.swift */,
 				3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */,
 				3547ABDB28771B2900EE85E1 /* PPAlertController.swift */,
+				3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */,
 			);
 			path = UIComponents;
 			sourceTree = "<group>";
@@ -1474,11 +1483,13 @@
 				3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */,
 				353E8B7028761A1700A2C5E3 /* SidebarItem.swift in Sources */,
 				3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */,
+				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
 				355635B7288947DD00F32353 /* VaultSelection.swift in Sources */,
 				3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
+				3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1573,6 +1584,7 @@
 				35ECA4752882ACDD00980A1D /* TitledTextField.swift in Sources */,
 				3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */,
 				3547ABEA2877684D00EE85E1 /* GenericItemView.swift in Sources */,
+				3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

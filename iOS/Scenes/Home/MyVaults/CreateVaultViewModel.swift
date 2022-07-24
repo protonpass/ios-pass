@@ -34,9 +34,7 @@ protocol CreateVaultViewModelDelegate: AnyObject {
 }
 
 final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
-    deinit {
-        print(deinitMessage)
-    }
+    deinit { print(deinitMessage) }
 
     private let coordinator: MyVaultsCoordinator
 

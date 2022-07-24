@@ -38,9 +38,7 @@ protocol HomeCoordinatorDelegate: AnyObject {
 private let kMenuWidth = UIScreen.main.bounds.width * 4 / 5
 
 final class HomeCoordinator: DeinitPrintable {
-    deinit {
-        print(deinitMessage)
-    }
+    deinit { print(deinitMessage) }
 
     let sessionData: SessionData
     let apiService: APIService

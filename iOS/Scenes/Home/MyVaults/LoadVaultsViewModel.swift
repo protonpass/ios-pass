@@ -25,9 +25,7 @@ import Core
 final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var error: Error?
 
-    deinit {
-        print(deinitMessage)
-    }
+    deinit { print(deinitMessage) }
 
     let coordinator: MyVaultsCoordinator
 
