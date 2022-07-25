@@ -47,19 +47,6 @@ struct GeneratePasswordView: View {
                 }
                 .padding()
 
-                Label(title: {
-                    Text("Strong")
-                }, icon: {
-                    Image(uiImage: IconProvider.shield)
-                })
-                .font(.caption)
-                .foregroundColor(.green)
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                Divider()
-                    .padding(.vertical)
-
                 HStack {
                     Text("\(Int(viewModel.length)) characters")
                     Slider(value: $viewModel.length,
@@ -70,7 +57,7 @@ struct GeneratePasswordView: View {
                 .padding(.horizontal)
 
                 Toggle(isOn: $viewModel.hasSpecialCharacters) {
-                    Text("Special characters (!&*)")
+                    Text("Special characters")
                 }
                 .toggleStyle(SwitchToggleStyle.proton)
                 .padding(.horizontal)

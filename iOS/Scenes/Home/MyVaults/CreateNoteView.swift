@@ -20,42 +20,57 @@
 
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct CreateNoteView: View {
-    let coordinator: MyVaultsCoordinator
+    @StateObject private var viewModel: CreateNoteViewModel
+
+    init(viewModel: CreateNoteViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
         NavigationView {
-            Text("Create new note")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: coordinator.dismissTopMostModal) {
-                            Text("Cancel")
-                        }
-                        .foregroundColor(Color(.label))
+            VStack(spacing: 30) {
+                TitledTextField(title: "Note name",
+                                text: $viewModel.name,
+                                placeholder: "Title",
+                                isRequired: false)
+                TitledTextField(title: "Note",
+                                text: $viewModel.name,
+                                placeholder: "Add note",
+                                isRequired: false)
+                Spacer()
+            }
+            .padding()
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: viewModel.cancelAction) {
+                        Text("Cancel")
                     }
+                    .foregroundColor(Color(.label))
+                }
 
-                    ToolbarItem(placement: .principal) {
-                        Text("Create new note")
+                ToolbarItem(placement: .principal) {
+                    Text("Create new note")
+                        .fontWeight(.bold)
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: viewModel.saveAction) {
+                        Text("Save")
                             .fontWeight(.bold)
-                    }
-
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            print("Save")
-                        }, label: {
-                            Text("Save")
-                                .fontWeight(.bold)
-                                .foregroundColor(Color(ColorProvider.BrandNorm))
-                        })
+                            .foregroundColor(Color(ColorProvider.BrandNorm))
                     }
                 }
+            }
         }
     }
 }
 
 struct CreateNoteView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateNoteView(coordinator: .preview)
+        CreateNoteView(viewModel: .preview)
     }
 }

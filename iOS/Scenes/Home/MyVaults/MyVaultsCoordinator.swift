@@ -117,8 +117,12 @@ final class MyVaultsCoordinator: Coordinator {
             let createAliasViewController = UIHostingController(rootView: createAliasView)
             dismissTopMostModalAndPresent(viewController: createAliasViewController)
         case .note:
-            let createNoteView = CreateNoteView(coordinator: self)
+            let createNoteViewModel = CreateNoteViewModel(coordinator: self)
+            let createNoteView = CreateNoteView(viewModel: createNoteViewModel)
             let createNewNoteController = UIHostingController(rootView: createNoteView)
+            if #available(iOS 15, *) {
+                createNewNoteController.sheetPresentationController?.detents = [.medium()]
+            }
             dismissTopMostModalAndPresent(viewController: createNewNoteController)
         case .password:
             let viewModel = GeneratePasswordViewModel(coordinator: self)

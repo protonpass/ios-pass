@@ -24,7 +24,7 @@ public enum AllowedCharacter: String {
     case lowercase = "abcdefghijklmnopqrstuvwxyz"
     case uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     case digit = "0123456789"
-    case special = "!&*"
+    case special = "!&*_-+%@$#"
 }
 
 // swiftlint:disable force_unwrapping
