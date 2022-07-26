@@ -36,7 +36,7 @@ protocol WelcomeCoordinatorDelegate: AnyObject {
 final class WelcomeCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let apiServiceDelegate = AnonymousServiceManager()
+    private let apiServiceDelegate: APIServiceDelegate
     private let doh = PPDoH(bundle: .main)
     weak var delegate: WelcomeCoordinatorDelegate?
 
@@ -71,6 +71,10 @@ final class WelcomeCoordinator: DeinitPrintable {
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))
     }()
+
+    init(apiServiceDelegate: APIServiceDelegate) {
+        self.apiServiceDelegate = apiServiceDelegate
+    }
 }
 
 // MARK: - ForceUpgradeResponseDelegate
@@ -112,17 +116,4 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     private func handle(logInData: LoginData) {
         delegate?.welcomeCoordinator(didFinishWith: logInData)
     }
-}
-
-public class AnonymousServiceManager: APIServiceDelegate {
-    public init() {}
-
-    public var locale: String { Locale.autoupdatingCurrent.identifier }
-    public var appVersion = Bundle.main.appVersion
-    public var userAgent: String?
-    public var additionalHeaders: [String: String]?
-
-    public func onUpdate(serverTime: Int64) { CryptoUpdateTime(serverTime) }
-    public func isReachable() -> Bool { true }
-    public func onDohTroubleshot() { }
 }

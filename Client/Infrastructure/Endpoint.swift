@@ -26,24 +26,12 @@ public protocol Endpoint: Request {
     associatedtype Response: Codable
     associatedtype Body: Encodable
 
-    static var baseHeaders: [String: String] { get }
     var body: Body? { get }
-}
-
-public extension Endpoint {
-    static var baseHeaders: [String: String] {
-        [
-            "x-pm-appversion": Bundle.main.appVersion,
-            "Accept": "application/vnd.protonmail.v1+json",
-            "Content-Type": "application/json;charset=utf-8"
-        ]
-    }
 }
 
 public extension Endpoint {
     var isAuth: Bool { true }
     var autoRetry: Bool { true }
-    var header: [String: Any] { Self.baseHeaders }
     var authCredential: AuthCredential? { nil }
     var method: HTTPMethod { .get }
     var body: Body? { nil }
