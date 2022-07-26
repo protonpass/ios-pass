@@ -81,3 +81,71 @@ extension CDShare {
 }
 
 extension CDShare: Identifiable {}
+
+extension CDShare {
+    // swiftlint:disable:next cyclomatic_complexity
+    func toShare() throws -> Share {
+        guard let shareID = shareID else {
+            throw CoreDataError.corruptedObject(self, "shareID")
+        }
+
+        guard let vaultID = vaultID else {
+            throw CoreDataError.corruptedObject(self, "vaultID")
+        }
+
+        guard let targetID = targetID else {
+            throw CoreDataError.corruptedObject(self, "targetID")
+        }
+
+        guard let acceptanceSignature = acceptanceSignature else {
+            throw CoreDataError.corruptedObject(self, "acceptanceSignature")
+        }
+
+        guard let inviterEmail = inviterEmail else {
+            throw CoreDataError.corruptedObject(self, "inviterEmail")
+        }
+
+        guard let inviterAcceptanceSignature = inviterAcceptanceSignature else {
+            throw CoreDataError.corruptedObject(self, "inviterAcceptanceSignature")
+        }
+
+        guard let signingKey = signingKey else {
+            throw CoreDataError.corruptedObject(self, "signingKey")
+        }
+
+        guard let contentRotationID = contentRotationID else {
+            throw CoreDataError.corruptedObject(self, "contentRotationID")
+        }
+
+        guard let contentEncryptedAddressSignature = contentEncryptedAddressSignature else {
+            throw CoreDataError.corruptedObject(self, "contentEncryptedAddressSignature")
+        }
+
+        guard let contentEncryptedVaultSignature = contentEncryptedVaultSignature else {
+            throw CoreDataError.corruptedObject(self, "contentEncryptedVaultSignature")
+        }
+
+        guard let contentSignatureEmail = contentSignatureEmail else {
+            throw CoreDataError.corruptedObject(self, "contentSignatureEmail")
+        }
+
+        return .init(shareID: shareID,
+                     vaultID: vaultID,
+                     targetType: Int(targetType),
+                     targetID: targetID,
+                     permission: Int(permission),
+                     acceptanceSignature: acceptanceSignature,
+                     inviterEmail: inviterEmail,
+                     inviterAcceptanceSignature: inviterAcceptanceSignature,
+                     signingKey: signingKey,
+                     signingKeyPassphrase: signingKeyPassphrase,
+                     content: content,
+                     contentRotationID: contentRotationID,
+                     contentEncryptedAddressSignature: contentEncryptedAddressSignature,
+                     contentEncryptedVaultSignature: contentEncryptedVaultSignature,
+                     contentSignatureEmail: contentSignatureEmail,
+                     contentFormatVersion: Int(contentFormatVersion),
+                     expireTime: expireTime,
+                     createTime: createTime)
+    }
+}

@@ -1,6 +1,6 @@
 //
-// CDShare+CoreDataClass.swift
-// Proton Pass - Created on 18/07/2022.
+// CoreDataError.swift
+// Proton Pass - Created on 26/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,7 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import Foundation
 
-@objc(CDShare)
-final class CDShare: NSManagedObject {}
+public enum CoreDataError: Error, CustomDebugStringConvertible {
+    case corruptedObject(NSManagedObject, String)
+
+    public var debugDescription: String {
+        switch self {
+        case let .corruptedObject(object, property):
+            return "Corrupted \(type(of: object)): missing value for \(property)"
+        }
+    }
+}

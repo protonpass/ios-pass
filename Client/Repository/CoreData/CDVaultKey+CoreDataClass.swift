@@ -22,4 +22,4 @@ import CoreData
 import Foundation
 
 @objc(CDVaultKey)
-class CDVaultKey: NSManagedObject {}
+final class CDVaultKey: NSManagedObject {}

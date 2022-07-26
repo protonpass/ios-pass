@@ -38,3 +38,38 @@ extension CDVaultKey {
 }
 
 extension CDVaultKey: Identifiable {}
+
+extension CDVaultKey {
+    class func allVaultKeysFetchRequest(shareId: String) -> NSFetchRequest<CDVaultKey> {
+        let fetchRequest = fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %s", shareId)
+        return fetchRequest
+    }
+}
+
+extension CDVaultKey {
+    func toVaultKey() throws -> VaultKey {
+        guard let rotationID = rotationID else {
+            throw CoreDataError.corruptedObject(self, "rotationID")
+        }
+
+        guard let key = key else {
+            throw CoreDataError.corruptedObject(self, "key")
+        }
+
+        guard let keyPassphrase = keyPassphrase else {
+            throw CoreDataError.corruptedObject(self, "keyPassphrase")
+        }
+
+        guard let keySignature = keySignature else {
+            throw CoreDataError.corruptedObject(self, "keySignature")
+        }
+
+        return .init(rotationID: rotationID,
+                     rotation: Int(rotation),
+                     key: key,
+                     keyPassphrase: keyPassphrase,
+                     keySignature: keySignature,
+                     createTime: Int(createTime))
+    }
+}

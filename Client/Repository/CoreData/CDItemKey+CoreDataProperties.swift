@@ -37,3 +37,33 @@ extension CDItemKey {
 }
 
 extension CDItemKey: Identifiable {}
+
+extension CDItemKey {
+    class func allItemKeysFetchRequest(shareId: String) -> NSFetchRequest<CDItemKey> {
+        let fetchRequest = fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %s", shareId)
+        return fetchRequest
+    }
+}
+
+extension CDItemKey {
+    func toItemKey() throws -> ItemKey {
+        guard let rotationID = rotationID else {
+            throw CoreDataError.corruptedObject(self, "rotationID")
+        }
+
+        guard let key = key else {
+            throw CoreDataError.corruptedObject(self, "key")
+        }
+
+        guard let keySignature = keySignature else {
+            throw CoreDataError.corruptedObject(self, "keySignature")
+        }
+
+        return .init(rotationID: rotationID,
+                     key: key,
+                     keyPassphrase: keyPassphrase,
+                     keySignature: keySignature,
+                     createTime: Int(createTime))
+    }
+}
