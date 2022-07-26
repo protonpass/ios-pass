@@ -1,5 +1,5 @@
 //
-// UserInfoProvider.swift
+// UserProtocol.swift
 // Proton Pass - Created on 15/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,14 +21,13 @@
 import ProtonCore_DataModel
 
 /// Properties with `userInfo` prefix to avoid name collapsing
-public protocol UserInfoProvider {
-    var userInfoInitials: String { get }
-    var userInfoDisplayName: String { get }
-    var userInfoEmail: String { get }
+public protocol UserProtocol {
+    var email: String? { get }
+    var finalDisplayName: String { get }
+    var initials: String { get }
 }
 
-extension User: UserInfoProvider {
-    public var userInfoInitials: String { userInfoDisplayName.initials() }
-    public var userInfoDisplayName: String { displayName ?? name ?? "" }
-    public var userInfoEmail: String { email ?? "" }
+extension User: UserProtocol {
+    public var finalDisplayName: String { displayName ?? name ?? "" }
+    public var initials: String { finalDisplayName.initials() }
 }

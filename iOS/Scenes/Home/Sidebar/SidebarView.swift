@@ -36,7 +36,7 @@ struct SidebarView: View {
             let user = coordinator.sessionData.userData.user
             VStack(spacing: 0) {
                 SidebarCurrentUserView(
-                    userInfoProvider: user,
+                    user: user,
                     action: coordinator.showUserSwitcher
                 )
                 .padding(.horizontal, 8)

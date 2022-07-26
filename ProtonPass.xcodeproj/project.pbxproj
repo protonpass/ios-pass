@@ -20,7 +20,7 @@
 		353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C02880C45C0021C716 /* GetSharesEndpoint.swift */; };
 		353547C32880CF470021C716 /* UserData+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C22880CF470021C716 /* UserData+Codable.swift */; };
 		3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */; };
-		353E10922881827C00E59474 /* UserInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E10912881827C00E59474 /* UserInfoProvider.swift */; };
+		353E10922881827C00E59474 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E10912881827C00E59474 /* UserProtocol.swift */; };
 		353E8B6E2876163F00A2C5E3 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B6D2876163F00A2C5E3 /* SidebarView.swift */; };
 		353E8B7028761A1700A2C5E3 /* SidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B6F28761A1700A2C5E3 /* SidebarItem.swift */; };
 		353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */; };
@@ -242,7 +242,7 @@
 		353547C02880C45C0021C716 /* GetSharesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharesEndpoint.swift; sourceTree = "<group>"; };
 		353547C22880CF470021C716 /* UserData+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Codable.swift"; sourceTree = "<group>"; };
 		3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultViewModel.swift; sourceTree = "<group>"; };
-		353E10912881827C00E59474 /* UserInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoProvider.swift; sourceTree = "<group>"; };
+		353E10912881827C00E59474 /* UserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		353E8B6D2876163F00A2C5E3 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		353E8B6F28761A1700A2C5E3 /* SidebarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarItem.swift; sourceTree = "<group>"; };
 		353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarButtonStyles.swift; sourceTree = "<group>"; };
@@ -766,7 +766,7 @@
 			children = (
 				35E50700286FB39600A3F6EA /* AppState.swift */,
 				35E50709286FB44800A3F6EA /* PPDoH.swift */,
-				353E10912881827C00E59474 /* UserInfoProvider.swift */,
+				353E10912881827C00E59474 /* UserProtocol.swift */,
 				35E00615288BE5FE00FAAD65 /* SessionData.swift */,
 				350A97D32885BFFD00A7168B /* Vault.swift */,
 			);
@@ -1558,7 +1558,7 @@
 				356B21D72870F8F1001220CB /* Constants.swift in Sources */,
 				350A97DE2886032000A7168B /* DeinitPrintable.swift in Sources */,
 				356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */,
-				353E10922881827C00E59474 /* UserInfoProvider.swift in Sources */,
+				353E10922881827C00E59474 /* UserProtocol.swift in Sources */,
 				35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */,
 				35E50707286FB3A600A3F6EA /* Logger.swift in Sources */,
 				35E506FD286FB37300A3F6EA /* Router.swift in Sources */,
