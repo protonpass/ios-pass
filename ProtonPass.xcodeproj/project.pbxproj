@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		35004A40289004330073C4A7 /* Pass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 35004A3E289004330073C4A7 /* Pass.xcdatamodeld */; };
 		350A97CC28859D1800A7168B /* AddressKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97CB28859D1800A7168B /* AddressKey.swift */; };
 		350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97CD2885BA4D00A7168B /* GetShareDataEndpoint.swift */; };
 		350A97D02885BB1800A7168B /* ShareProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97CF2885BB1800A7168B /* ShareProtocol.swift */; };
@@ -75,6 +76,12 @@
 		358BD36F287D539F00802A91 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		358BD374287D565900802A91 /* DummyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD373287D565900802A91 /* DummyTests.swift */; };
 		358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */; };
+		35A909E3289006F700AC54D4 /* CDShare+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909DD289006F600AC54D4 /* CDShare+CoreDataProperties.swift */; };
+		35A909E4289006F700AC54D4 /* CDShare+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909DE289006F600AC54D4 /* CDShare+CoreDataClass.swift */; };
+		35A909E5289006F700AC54D4 /* CDItemKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909DF289006F600AC54D4 /* CDItemKey+CoreDataProperties.swift */; };
+		35A909E6289006F700AC54D4 /* CDVaultKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E0289006F600AC54D4 /* CDVaultKey+CoreDataProperties.swift */; };
+		35A909E7289006F700AC54D4 /* CDItemKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E1289006F700AC54D4 /* CDItemKey+CoreDataClass.swift */; };
+		35A909E8289006F700AC54D4 /* CDVaultKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E2289006F700AC54D4 /* CDVaultKey+CoreDataClass.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateNoteViewModel.swift */; };
 		35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E00615288BE5FE00FAAD65 /* SessionData.swift */; };
 		35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
@@ -229,6 +236,7 @@
 		302E54D07ED836B91BE0C248 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		303E837161E0B51054C04021 /* Pods_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32C1E0DDBABAC43C35D4832D /* Pods-Client.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.debug-prod.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.debug-prod.xcconfig"; sourceTree = "<group>"; };
+		35004A3F289004330073C4A7 /* Pass.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Pass.xcdatamodel; sourceTree = "<group>"; };
 		350A97CB28859D1800A7168B /* AddressKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressKey.swift; sourceTree = "<group>"; };
 		350A97CD2885BA4D00A7168B /* GetShareDataEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareDataEndpoint.swift; sourceTree = "<group>"; };
 		350A97CF2885BB1800A7168B /* ShareProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareProtocol.swift; sourceTree = "<group>"; };
@@ -296,6 +304,12 @@
 		358BD36A287D52AC00802A91 /* vault_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vault_v1.pb.swift; sourceTree = "<group>"; };
 		358BD373287D565900802A91 /* DummyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyTests.swift; sourceTree = "<group>"; };
 		358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+ExecEndpoint.swift"; sourceTree = "<group>"; };
+		35A909DD289006F600AC54D4 /* CDShare+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDShare+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		35A909DE289006F600AC54D4 /* CDShare+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDShare+CoreDataClass.swift"; sourceTree = "<group>"; };
+		35A909DF289006F600AC54D4 /* CDItemKey+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDItemKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		35A909E0289006F600AC54D4 /* CDVaultKey+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDVaultKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		35A909E1289006F700AC54D4 /* CDItemKey+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDItemKey+CoreDataClass.swift"; sourceTree = "<group>"; };
+		35A909E2289006F700AC54D4 /* CDVaultKey+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDVaultKey+CoreDataClass.swift"; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNoteViewModel.swift; sourceTree = "<group>"; };
 		35E00615288BE5FE00FAAD65 /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		35E50636286F819F00A3F6EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -454,6 +468,28 @@
 				358BD35F287D4EA200802A91 /* VaultProtocol.swift */,
 			);
 			path = ModelProtocols;
+			sourceTree = "<group>";
+		};
+		35004A3C289003E60073C4A7 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				35004A3D289004200073C4A7 /* CoreData */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		35004A3D289004200073C4A7 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				35004A3E289004330073C4A7 /* Pass.xcdatamodeld */,
+				35A909E1289006F700AC54D4 /* CDItemKey+CoreDataClass.swift */,
+				35A909DF289006F600AC54D4 /* CDItemKey+CoreDataProperties.swift */,
+				35A909DE289006F600AC54D4 /* CDShare+CoreDataClass.swift */,
+				35A909DD289006F600AC54D4 /* CDShare+CoreDataProperties.swift */,
+				35A909E2289006F700AC54D4 /* CDVaultKey+CoreDataClass.swift */,
+				35A909E0289006F600AC54D4 /* CDVaultKey+CoreDataProperties.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		350A97D52885C0B400A7168B /* Utilities */ = {
@@ -687,6 +723,7 @@
 				35004A3B288FEF1C0073C4A7 /* ModelProtocols */,
 				355443FA287CA7150017FCAD /* Endpoints */,
 				358BD367287D52AC00802A91 /* Protobuf Objects */,
+				35004A3C289003E60073C4A7 /* Repository */,
 				358BD35C287D4E5100802A91 /* Utilities */,
 			);
 			path = Client;
@@ -1522,18 +1559,25 @@
 				358AB49D2887029400818B44 /* ShareKey.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
 				350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */,
+				35004A40289004330073C4A7 /* Pass.xcdatamodeld in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
+				35A909E5289006F700AC54D4 /* CDItemKey+CoreDataProperties.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
+				35A909E3289006F700AC54D4 /* CDShare+CoreDataProperties.swift in Sources */,
 				358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */,
+				35A909E7289006F700AC54D4 /* CDItemKey+CoreDataClass.swift in Sources */,
 				3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */,
 				358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */,
 				3551DFF22885436E008AE633 /* DummyEncodable.swift in Sources */,
 				358BD35B287D4D0A00802A91 /* CreateVaultRequestBody.swift in Sources */,
+				35A909E4289006F700AC54D4 /* CDShare+CoreDataClass.swift in Sources */,
+				35A909E8289006F700AC54D4 /* CDVaultKey+CoreDataClass.swift in Sources */,
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
 				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,
 				358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
 				350A97D02885BB1800A7168B /* ShareProtocol.swift in Sources */,
+				35A909E6289006F700AC54D4 /* CDVaultKey+CoreDataProperties.swift in Sources */,
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
 				358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */,
 				350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */,
@@ -2894,6 +2938,19 @@
 			defaultConfigurationName = "Release-Prod";
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		35004A3E289004330073C4A7 /* Pass.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				35004A3F289004330073C4A7 /* Pass.xcdatamodel */,
+			);
+			currentVersion = 35004A3F289004330073C4A7 /* Pass.xcdatamodel */;
+			path = Pass.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 35E5062F286F819F00A3F6EA /* Project object */;
 }
