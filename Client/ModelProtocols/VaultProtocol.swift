@@ -1,5 +1,5 @@
 //
-// VaultProvider.swift
+// VaultProtocol.swift
 // Proton Pass - Created on 12/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,16 +20,16 @@
 
 import Core
 
-public protocol VaultProvider {
+public protocol VaultProtocol {
     var id: String { get }
     var name: String { get }
     var description: String { get }
 }
 
 public typealias VaultProtobuf = ProtonPassVaultV1_Vault
-public typealias ProtobufableVaultProvider = VaultProvider & Protobufable
+public typealias ProtobufableVaultProtocol = VaultProtocol & Protobufable
 
-extension VaultProtobuf: ProtobufableVaultProvider {
+extension VaultProtobuf: ProtobufableVaultProtocol {
     public var id: String { UUID().uuidString }
 
     public var description: String { description_p }
@@ -49,4 +49,4 @@ extension VaultProtobuf: ProtobufableVaultProvider {
     }
 }
 
-extension Vault: VaultProvider {}
+extension Vault: VaultProtocol {}

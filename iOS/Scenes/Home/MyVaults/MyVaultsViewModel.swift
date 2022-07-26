@@ -27,7 +27,7 @@ final class MyVaultsViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     let coordinator: MyVaultsCoordinator
-    var vaults: [VaultProvider] { coordinator.vaultSelection.vaults }
+    var vaults: [VaultProtocol] { coordinator.vaultSelection.vaults }
 
     private var cancellables = Set<AnyCancellable>()
 

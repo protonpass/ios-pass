@@ -1,5 +1,5 @@
 //
-// ShareProvider.swift
+// ShareProtocol.swift
 // Proton Pass - Created on 18/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -25,17 +25,17 @@ import ProtonCore_DataModel
 import ProtonCore_KeyManager
 import ProtonCore_Login
 
-public protocol ShareProvider: Identifiable {
+public protocol ShareProtocol: Identifiable {
     var id: String { get }
 
-    func getVault(userData: UserData, vaultKeys: [VaultKey]) throws -> VaultProvider
+    func getVault(userData: UserData, vaultKeys: [VaultKey]) throws -> VaultProtocol
 }
 
 // swiftlint:disable function_body_length
-extension Share: ShareProvider {
+extension Share: ShareProtocol {
     public var id: String { self.shareID }
 
-    public func getVault(userData: UserData, vaultKeys: [VaultKey]) throws -> VaultProvider {
+    public func getVault(userData: UserData, vaultKeys: [VaultKey]) throws -> VaultProtocol {
         guard let firstAddress = userData.addresses.first else {
             assertionFailure("Address can not be nil")
             throw CryptoError.failedToEncrypt

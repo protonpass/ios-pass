@@ -24,19 +24,19 @@ import Core
 
 /// Holds current list of vaults and selected
 final class VaultSelection: ObservableObject {
-    @Published private(set) var selectedVault: VaultProvider?
-    @Published private(set) var vaults: [VaultProvider]
+    @Published private(set) var selectedVault: VaultProtocol?
+    @Published private(set) var vaults: [VaultProtocol]
 
-    init(vaults: [VaultProvider]) {
+    init(vaults: [VaultProtocol]) {
         self._selectedVault = .init(initialValue: nil)
         self._vaults = .init(initialValue: vaults)
     }
 
-    func update(vaults: [VaultProvider]) {
+    func update(vaults: [VaultProtocol]) {
         self.vaults = vaults
     }
 
-    func update(selectedVault: VaultProvider?) {
+    func update(selectedVault: VaultProtocol?) {
         self.selectedVault = selectedVault
     }
 }

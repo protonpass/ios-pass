@@ -59,7 +59,7 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
                         }
                     }
 
-                    var vaults: [VaultProvider] = []
+                    var vaults: [VaultProtocol] = []
                     for try await share in group {
                         let getShareKeysEndpoint = GetShareKeysEndpoint(credential: userData.credential,
                                                                         shareId: share.shareID)

@@ -20,7 +20,6 @@
 
 import ProtonCore_DataModel
 
-/// Properties with `userInfo` prefix to avoid name collapsing
 public protocol UserProtocol {
     var email: String? { get }
     var finalDisplayName: String { get }

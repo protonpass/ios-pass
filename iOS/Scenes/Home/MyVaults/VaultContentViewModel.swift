@@ -28,8 +28,8 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     private let coordinator: MyVaultsCoordinator
     private var vaultSelection: VaultSelection { coordinator.vaultSelection }
 
-    var selectedVault: VaultProvider? { vaultSelection.selectedVault }
-    var vaults: [VaultProvider] { vaultSelection.vaults }
+    var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
+    var vaults: [VaultProtocol] { vaultSelection.vaults }
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -42,7 +42,7 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
             .store(in: &cancellables)
     }
 
-    func update(selectedVault: VaultProvider?) {
+    func update(selectedVault: VaultProtocol?) {
         vaultSelection.update(selectedVault: selectedVault)
     }
 }

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		350A97CC28859D1800A7168B /* AddressKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97CB28859D1800A7168B /* AddressKey.swift */; };
 		350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97CD2885BA4D00A7168B /* GetShareDataEndpoint.swift */; };
-		350A97D02885BB1800A7168B /* ShareProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97CF2885BB1800A7168B /* ShareProvider.swift */; };
+		350A97D02885BB1800A7168B /* ShareProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97CF2885BB1800A7168B /* ShareProtocol.swift */; };
 		350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D12885BF7E00A7168B /* Protobufable.swift */; };
 		350A97D42885BFFD00A7168B /* Vault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D32885BFFD00A7168B /* Vault.swift */; };
 		350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D62885C0D500A7168B /* Share+ShareProviderTests.swift */; };
@@ -66,7 +66,7 @@
 		358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */; };
 		358BD35B287D4D0A00802A91 /* CreateVaultRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD35A287D4D0A00802A91 /* CreateVaultRequestBody.swift */; };
 		358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD35D287D4E8000802A91 /* CryptoUtils.swift */; };
-		358BD360287D4EA200802A91 /* VaultProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD35F287D4EA200802A91 /* VaultProvider.swift */; };
+		358BD360287D4EA200802A91 /* VaultProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD35F287D4EA200802A91 /* VaultProtocol.swift */; };
 		358BD366287D4F9200802A91 /* CreateVaultRequestBodyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD365287D4F9200802A91 /* CreateVaultRequestBodyTests.swift */; };
 		358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD368287D52AC00802A91 /* label_v1.pb.swift */; };
 		358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD369287D52AC00802A91 /* item_v1.pb.swift */; };
@@ -231,7 +231,7 @@
 		32C1E0DDBABAC43C35D4832D /* Pods-Client.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.debug-prod.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		350A97CB28859D1800A7168B /* AddressKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressKey.swift; sourceTree = "<group>"; };
 		350A97CD2885BA4D00A7168B /* GetShareDataEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareDataEndpoint.swift; sourceTree = "<group>"; };
-		350A97CF2885BB1800A7168B /* ShareProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareProvider.swift; sourceTree = "<group>"; };
+		350A97CF2885BB1800A7168B /* ShareProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareProtocol.swift; sourceTree = "<group>"; };
 		350A97D12885BF7E00A7168B /* Protobufable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protobufable.swift; sourceTree = "<group>"; };
 		350A97D32885BFFD00A7168B /* Vault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault.swift; sourceTree = "<group>"; };
 		350A97D62885C0D500A7168B /* Share+ShareProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share+ShareProviderTests.swift"; sourceTree = "<group>"; };
@@ -289,7 +289,7 @@
 		358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareKeysEndpoint.swift; sourceTree = "<group>"; };
 		358BD35A287D4D0A00802A91 /* CreateVaultRequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultRequestBody.swift; sourceTree = "<group>"; };
 		358BD35D287D4E8000802A91 /* CryptoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoUtils.swift; sourceTree = "<group>"; };
-		358BD35F287D4EA200802A91 /* VaultProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultProvider.swift; sourceTree = "<group>"; };
+		358BD35F287D4EA200802A91 /* VaultProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultProtocol.swift; sourceTree = "<group>"; };
 		358BD365287D4F9200802A91 /* CreateVaultRequestBodyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultRequestBodyTests.swift; sourceTree = "<group>"; };
 		358BD368287D52AC00802A91 /* label_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = label_v1.pb.swift; sourceTree = "<group>"; };
 		358BD369287D52AC00802A91 /* item_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = item_v1.pb.swift; sourceTree = "<group>"; };
@@ -447,6 +447,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		35004A3B288FEF1C0073C4A7 /* ModelProtocols */ = {
+			isa = PBXGroup;
+			children = (
+				350A97CF2885BB1800A7168B /* ShareProtocol.swift */,
+				358BD35F287D4EA200802A91 /* VaultProtocol.swift */,
+			);
+			path = ModelProtocols;
+			sourceTree = "<group>";
+		};
 		350A97D52885C0B400A7168B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -582,8 +591,6 @@
 				3542B8882883614D009C9A68 /* DummyApiService.swift */,
 				3551DFF12885436E008AE633 /* DummyEncodable.swift */,
 				350A97D12885BF7E00A7168B /* Protobufable.swift */,
-				350A97CF2885BB1800A7168B /* ShareProvider.swift */,
-				358BD35F287D4EA200802A91 /* VaultProvider.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -677,6 +684,7 @@
 				35E50663286F870500A3F6EA /* Client.h */,
 				355443FE287CAABB0017FCAD /* Infrastructure */,
 				355443FB287CA73E0017FCAD /* Models */,
+				35004A3B288FEF1C0073C4A7 /* ModelProtocols */,
 				355443FA287CA7150017FCAD /* Endpoints */,
 				358BD367287D52AC00802A91 /* Protobuf Objects */,
 				358BD35C287D4E5100802A91 /* Utilities */,
@@ -1510,7 +1518,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				350A97CC28859D1800A7168B /* AddressKey.swift in Sources */,
-				358BD360287D4EA200802A91 /* VaultProvider.swift in Sources */,
+				358BD360287D4EA200802A91 /* VaultProtocol.swift in Sources */,
 				358AB49D2887029400818B44 /* ShareKey.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
 				350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */,
@@ -1525,7 +1533,7 @@
 				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,
 				358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
-				350A97D02885BB1800A7168B /* ShareProvider.swift in Sources */,
+				350A97D02885BB1800A7168B /* ShareProtocol.swift in Sources */,
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
 				358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */,
 				350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */,
@@ -1771,7 +1779,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = iphoneos;
@@ -1806,7 +1814,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = iphoneos;
@@ -2298,7 +2306,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = iphoneos;
@@ -2584,7 +2592,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = iphoneos;
