@@ -40,7 +40,7 @@ final class AppCoordinator {
     private let apiService: PMAPIService
 
     @KeychainStorage(key: "sessionData")
-    public private(set) var sessionData: SessionData? // swiftlint:disable:this let_var_whitespace
+    public private(set) var sessionData: SessionData?
 
     private var welcomeCoordinator: WelcomeCoordinator?
 
