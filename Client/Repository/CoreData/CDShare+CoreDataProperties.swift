@@ -31,19 +31,19 @@ extension CDShare {
     @NSManaged var content: String?
     @NSManaged var contentEncryptedAddressSignature: String?
     @NSManaged var contentEncryptedVaultSignature: String?
-    @NSManaged var contentFormatVersion: Int64
+    @NSManaged var contentFormatVersion: Int16
     @NSManaged var contentRotationID: String?
     @NSManaged var contentSignatureEmail: String?
-    @NSManaged var createTime: Double
-    @NSManaged var expireTime: Double
+    @NSManaged var createTime: Int64
+    @NSManaged var expireTime: Int64
     @NSManaged var inviterAcceptanceSignature: String?
     @NSManaged var inviterEmail: String?
-    @NSManaged var permission: Int64
+    @NSManaged var permission: Int16
     @NSManaged var shareID: String?
     @NSManaged var signingKey: String?
     @NSManaged var signingKeyPassphrase: String?
     @NSManaged var targetID: String?
-    @NSManaged var targetType: Int64
+    @NSManaged var targetType: Int16
     @NSManaged var userID: String?
     @NSManaged var vaultID: String?
     @NSManaged var itemKeys: NSSet?
@@ -131,9 +131,9 @@ extension CDShare {
 
         return .init(shareID: shareID,
                      vaultID: vaultID,
-                     targetType: Int(targetType),
+                     targetType: targetType,
                      targetID: targetID,
-                     permission: Int(permission),
+                     permission: permission,
                      acceptanceSignature: acceptanceSignature,
                      inviterEmail: inviterEmail,
                      inviterAcceptanceSignature: inviterAcceptanceSignature,
@@ -144,7 +144,7 @@ extension CDShare {
                      contentEncryptedAddressSignature: contentEncryptedAddressSignature,
                      contentEncryptedVaultSignature: contentEncryptedVaultSignature,
                      contentSignatureEmail: contentSignatureEmail,
-                     contentFormatVersion: Int(contentFormatVersion),
+                     contentFormatVersion: contentFormatVersion,
                      expireTime: expireTime,
                      createTime: createTime)
     }

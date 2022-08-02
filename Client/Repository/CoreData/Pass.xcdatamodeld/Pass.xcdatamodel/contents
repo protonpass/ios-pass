@@ -14,19 +14,19 @@
         <attribute name="content" optional="YES" attributeType="String"/>
         <attribute name="contentEncryptedAddressSignature" attributeType="String"/>
         <attribute name="contentEncryptedVaultSignature" attributeType="String"/>
-        <attribute name="contentFormatVersion" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="contentFormatVersion" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="contentRotationID" attributeType="String"/>
         <attribute name="contentSignatureEmail" attributeType="String"/>
-        <attribute name="createTime" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="expireTime" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="createTime" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="expireTime" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="inviterAcceptanceSignature" attributeType="String"/>
         <attribute name="inviterEmail" attributeType="String"/>
-        <attribute name="permission" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="permission" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="shareID" attributeType="String"/>
         <attribute name="signingKey" attributeType="String"/>
         <attribute name="signingKeyPassphrase" optional="YES" attributeType="String"/>
         <attribute name="targetID" attributeType="String"/>
-        <attribute name="targetType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="targetType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
         <attribute name="vaultID" attributeType="String"/>
         <relationship name="itemKeys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDItemKey" inverseName="share" inverseEntity="CDItemKey"/>
