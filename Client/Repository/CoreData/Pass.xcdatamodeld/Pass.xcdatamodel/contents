@@ -8,6 +8,12 @@
         <attribute name="rotationID" attributeType="String"/>
         <attribute name="shareID" attributeType="String"/>
         <relationship name="share" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDShare" inverseName="itemKeys" inverseEntity="CDShare"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="shareID"/>
+                <constraint value="rotationID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="CDShare" representedClassName="CDShare" syncable="YES">
         <attribute name="acceptanceSignature" attributeType="String"/>
@@ -31,6 +37,11 @@
         <attribute name="vaultID" attributeType="String"/>
         <relationship name="itemKeys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDItemKey" inverseName="share" inverseEntity="CDItemKey"/>
         <relationship name="vaultKeys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDVaultKey" inverseName="share" inverseEntity="CDVaultKey"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="shareID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="CDVaultKey" representedClassName="CDVaultKey" syncable="YES">
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -41,6 +52,12 @@
         <attribute name="rotationID" attributeType="String"/>
         <attribute name="shareID" optional="YES" attributeType="String"/>
         <relationship name="share" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDShare" inverseName="vaultKeys" inverseEntity="CDShare"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="shareID"/>
+                <constraint value="rotationID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <elements>
         <element name="CDItemKey" positionX="-36" positionY="135" width="128" height="134"/>
