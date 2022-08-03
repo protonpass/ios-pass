@@ -21,6 +21,7 @@
 @testable import Client
 import XCTest
 
+// swiftlint:disable function_body_length
 final class LocalDatasourceTests: XCTestCase {
     let expectationTimeOut: TimeInterval = 10
     var sut: LocalDatasource!
@@ -57,6 +58,71 @@ final class LocalDatasourceTests: XCTestCase {
             if shareIds == givenShareIds {
                 expectation.fulfill()
             }
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
+
+    // Simulate the case where the app receives new data from the BE
+    // and needs to overide all existed shares in the local database
+    func testUpdateShares() throws {
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let givenShare = Share.random()
+            let givenUserId = String.random()
+            // Only copy the shareId from givenShare
+            let updatedShare = Share(shareID: givenShare.shareID,
+                                     vaultID: .random(),
+                                     targetType: .random(in: 1...100),
+                                     targetID: .random(),
+                                     permission: .random(in: 1...100),
+                                     acceptanceSignature: .random(),
+                                     inviterEmail: .random(),
+                                     inviterAcceptanceSignature: .random(),
+                                     signingKey: .random(),
+                                     signingKeyPassphrase: .random(),
+                                     content: .random(),
+                                     contentRotationID: .random(),
+                                     contentEncryptedAddressSignature: .random(),
+                                     contentEncryptedVaultSignature: .random(),
+                                     contentSignatureEmail: .random(),
+                                     contentFormatVersion: .random(in: 1...100),
+                                     expireTime: .random(in: 1...100),
+                                     createTime: .random(in: 1...100))
+
+            // When
+            try await sut.insertShares([givenShare], withUserId: givenUserId)
+            try await sut.insertShares([updatedShare], withUserId: givenUserId)
+
+            // Then
+            continueAfterFailure = false
+            let shares = try await sut.fetchShares(forUserId: givenUserId)
+            XCTAssertEqual(shares.count, 1)
+            let share = try XCTUnwrap(shares.first)
+            XCTAssertEqual(share.shareID, updatedShare.shareID)
+            XCTAssertEqual(share.vaultID, updatedShare.vaultID)
+            XCTAssertEqual(share.targetType, updatedShare.targetType)
+            XCTAssertEqual(share.targetID, updatedShare.targetID)
+            XCTAssertEqual(share.permission, updatedShare.permission)
+            XCTAssertEqual(share.acceptanceSignature, updatedShare.acceptanceSignature)
+            XCTAssertEqual(share.inviterEmail, updatedShare.inviterEmail)
+            XCTAssertEqual(share.inviterAcceptanceSignature,
+                           updatedShare.inviterAcceptanceSignature)
+            XCTAssertEqual(share.signingKey, updatedShare.signingKey)
+            XCTAssertEqual(share.signingKeyPassphrase, updatedShare.signingKeyPassphrase)
+            XCTAssertEqual(share.content, updatedShare.content)
+            XCTAssertEqual(share.contentRotationID, updatedShare.contentRotationID)
+            XCTAssertEqual(share.contentEncryptedAddressSignature,
+                           updatedShare.contentEncryptedAddressSignature)
+            XCTAssertEqual(share.contentEncryptedVaultSignature,
+                           updatedShare.contentEncryptedVaultSignature)
+            XCTAssertEqual(share.contentEncryptedAddressSignature,
+                           updatedShare.contentEncryptedAddressSignature)
+            XCTAssertEqual(share.contentFormatVersion,
+                           updatedShare.contentFormatVersion)
+            XCTAssertEqual(share.expireTime, updatedShare.expireTime)
+            XCTAssertEqual(share.createTime, updatedShare.createTime)
+            expectation.fulfill()
         }
         waitForExpectations(timeout: expectationTimeOut)
     }
