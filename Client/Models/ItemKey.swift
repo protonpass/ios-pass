@@ -34,13 +34,13 @@ public struct ItemKey: Codable {
     public let keySignature: String
 
     /// Creation time of the key
-    public let createTime: Int
+    public let createTime: Int64
 
     public init(rotationID: String,
                 key: String,
                 keyPassphrase: String?,
                 keySignature: String,
-                createTime: Int) {
+                createTime: Int64) {
         self.rotationID = rotationID
         self.key = key
         self.keyPassphrase = keyPassphrase

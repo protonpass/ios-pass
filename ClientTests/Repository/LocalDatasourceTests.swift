@@ -21,9 +21,16 @@
 @testable import Client
 import XCTest
 
-// swiftlint:disable function_body_length
+/*
+These tests aim to ensure the local database reads and writes data correctly.
+Each entity has in general 2 test cases:
+ - Fetch test: ensure read & write operations
+ - Update test: ensure data is not duplicated but updated
+ base on the uniqueness constrainted in the xcdatamodeld
+ */
+
 final class LocalDatasourceTests: XCTestCase {
-    let expectationTimeOut: TimeInterval = 10
+    let expectationTimeOut: TimeInterval = 3
     var sut: LocalDatasource!
 
     override func setUp() {
@@ -36,94 +43,10 @@ final class LocalDatasourceTests: XCTestCase {
         super.tearDown()
     }
 
-    func testFetchShares() throws {
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let givenShares = (1...Int.random(in: 1...100)).map { _ in Share.random() }
-            let givenUserId = String.random()
-
-            // When
-            try await sut.insertShares(givenShares, withUserId: givenUserId)
-            // Populate the database with arbitrary shares
-            // this is to test if fetching shares by userId correctly work
-            for _ in 0...10 {
-                try await sut.insertShares([.random()], withUserId: .random())
-            }
-
-            // Then
-            let shares = try await sut.fetchShares(forUserId: givenUserId)
-            let shareIds = Set(shares.map { $0.shareID })
-            let givenShareIds = Set(givenShares.map { $0.shareID })
-            if shareIds == givenShareIds {
-                expectation.fulfill()
-            }
-        }
-        waitForExpectations(timeout: expectationTimeOut)
-    }
-
-    // Simulate the case where the app receives new data from the BE
-    // and needs to overide all existed shares in the local database
-    func testUpdateShares() throws {
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let givenShare = Share.random()
-            let givenUserId = String.random()
-            // Only copy the shareId from givenShare
-            let updatedShare = Share(shareID: givenShare.shareID,
-                                     vaultID: .random(),
-                                     targetType: .random(in: 1...100),
-                                     targetID: .random(),
-                                     permission: .random(in: 1...100),
-                                     acceptanceSignature: .random(),
-                                     inviterEmail: .random(),
-                                     inviterAcceptanceSignature: .random(),
-                                     signingKey: .random(),
-                                     signingKeyPassphrase: .random(),
-                                     content: .random(),
-                                     contentRotationID: .random(),
-                                     contentEncryptedAddressSignature: .random(),
-                                     contentEncryptedVaultSignature: .random(),
-                                     contentSignatureEmail: .random(),
-                                     contentFormatVersion: .random(in: 1...100),
-                                     expireTime: .random(in: 1...100),
-                                     createTime: .random(in: 1...100))
-
-            // When
-            try await sut.insertShares([givenShare], withUserId: givenUserId)
-            try await sut.insertShares([updatedShare], withUserId: givenUserId)
-
-            // Then
-            continueAfterFailure = false
-            let shares = try await sut.fetchShares(forUserId: givenUserId)
-            XCTAssertEqual(shares.count, 1)
-            let share = try XCTUnwrap(shares.first)
-            XCTAssertEqual(share.shareID, updatedShare.shareID)
-            XCTAssertEqual(share.vaultID, updatedShare.vaultID)
-            XCTAssertEqual(share.targetType, updatedShare.targetType)
-            XCTAssertEqual(share.targetID, updatedShare.targetID)
-            XCTAssertEqual(share.permission, updatedShare.permission)
-            XCTAssertEqual(share.acceptanceSignature, updatedShare.acceptanceSignature)
-            XCTAssertEqual(share.inviterEmail, updatedShare.inviterEmail)
-            XCTAssertEqual(share.inviterAcceptanceSignature,
-                           updatedShare.inviterAcceptanceSignature)
-            XCTAssertEqual(share.signingKey, updatedShare.signingKey)
-            XCTAssertEqual(share.signingKeyPassphrase, updatedShare.signingKeyPassphrase)
-            XCTAssertEqual(share.content, updatedShare.content)
-            XCTAssertEqual(share.contentRotationID, updatedShare.contentRotationID)
-            XCTAssertEqual(share.contentEncryptedAddressSignature,
-                           updatedShare.contentEncryptedAddressSignature)
-            XCTAssertEqual(share.contentEncryptedVaultSignature,
-                           updatedShare.contentEncryptedVaultSignature)
-            XCTAssertEqual(share.contentEncryptedAddressSignature,
-                           updatedShare.contentEncryptedAddressSignature)
-            XCTAssertEqual(share.contentFormatVersion,
-                           updatedShare.contentFormatVersion)
-            XCTAssertEqual(share.expireTime, updatedShare.expireTime)
-            XCTAssertEqual(share.createTime, updatedShare.createTime)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
+    /// Create and insert a random share
+    func givenInsertedShare(withUserId userId: String? = nil) async throws -> Share {
+        let share = Share.random()
+        try await sut.insertShares([share], withUserId: userId ?? .random())
+        return share
     }
 }

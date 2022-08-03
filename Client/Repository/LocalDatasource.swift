@@ -24,6 +24,10 @@ import CoreData
 public protocol LocalDatasourceProtocol {
     func insertShares(_ shares: [Share], withUserId userId: String) async throws
     func fetchShares(forUserId userId: String) async throws -> [Share]
+    func insertShareKey(_ shareKey: ShareKey, withShareId shareId: String) async throws
+    func fetchShareKeys(forShareId shareId: String,
+                        page: Int,
+                        pageSize: Int) async throws -> [ShareKey]
 }
 
 public enum LocalDatasourceError: Error {
@@ -48,14 +52,17 @@ public final class LocalDatasource {
         self.container = container
     }
 
-    enum TaskContextName {
-        static var `import` = "importContext"
-        static var fetch = "fetchContext"
+    enum TaskContextType: String {
+        case insert = "insertContext"
+        case fetch = "fetchContext"
     }
 
     /// Creates and configures a private queue context.
-    private func newTaskContext() -> NSManagedObjectContext {
+    private func newTaskContext(type: TaskContextType,
+                                transactionAuthor: String) -> NSManagedObjectContext {
         let taskContext = container.newBackgroundContext()
+        taskContext.name = type.rawValue
+        taskContext.transactionAuthor = transactionAuthor
         taskContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         // Set unused undoManager to nil for macOS (it is nil by default on iOS)
         // to reduce resource requirements.
@@ -106,9 +113,8 @@ extension LocalDatasource: LocalDatasourceProtocol {
                              withUserId userId: String) async throws {
         guard !shares.isEmpty else { return }
 
-        let taskContext = newTaskContext()
-        taskContext.name = TaskContextName.import
-        taskContext.transactionAuthor = "importShares"
+        let taskContext = newTaskContext(type: .insert,
+                                         transactionAuthor: "insertShares")
 
         var index = 0
         let batchInsertRequest = NSBatchInsertRequest(entity: CDShare.entity(),
@@ -126,13 +132,76 @@ extension LocalDatasource: LocalDatasourceProtocol {
     public func fetchShares(forUserId userId: String) async throws -> [Share] {
         guard !userId.isEmpty else { return [] }
 
-        let taskContext = newTaskContext()
-        taskContext.name = TaskContextName.fetch
-        taskContext.transactionAuthor = "fetchShares"
+        let taskContext = newTaskContext(type: .fetch,
+                                         transactionAuthor: "fetchShares")
+
         let fetchRequest = CDShare.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         let cdShares = try await fetch(request: fetchRequest,
                                        withContext: taskContext)
         return try cdShares.map { try $0.toShare() }
+    }
+
+    public func insertShareKey(_ shareKey: ShareKey,
+                               withShareId shareId: String) async throws {
+        try await insertVaultKeys(shareKey.vaultKeys, withShareId: shareId)
+        try await insertItemKeys(shareKey.itemKeys, withShareId: shareId)
+    }
+
+    func insertVaultKeys(_ vaultKeys: [VaultKey],
+                         withShareId shareId: String) async throws {
+        let taskContext = newTaskContext(type: .insert,
+                                         transactionAuthor: "insertVaultKeys")
+
+        var index = 0
+        let batchInsertRequest = NSBatchInsertRequest(entity: CDVaultKey.entity(),
+                                                      managedObjectHandler: { object in
+            guard index < vaultKeys.count else { return true }
+            let vaultKey = vaultKeys[index]
+            (object as? CDVaultKey)?.copy(from: vaultKey, shareId: shareId)
+            index += 1
+            return false
+        })
+        try await execute(batchInsertRequest: batchInsertRequest, withContext: taskContext)
+    }
+
+    func insertItemKeys(_ itemKeys: [ItemKey],
+                        withShareId shareId: String) async throws {
+        let taskContext = newTaskContext(type: .insert,
+                                         transactionAuthor: "insertItemKeys")
+
+        var index = 0
+        let batchInsertRequest = NSBatchInsertRequest(entity: CDItemKey.entity(),
+                                                      managedObjectHandler: { object in
+            guard index < itemKeys.count else { return true }
+            let itemKey = itemKeys[index]
+            (object as? CDItemKey)?.copy(from: itemKey, shareId: shareId)
+            index += 1
+            return false
+        })
+        try await execute(batchInsertRequest: batchInsertRequest, withContext: taskContext)
+    }
+
+    public func fetchShareKeys(forShareId shareId: String,
+                               page: Int,
+                               pageSize: Int) async throws -> [ShareKey] {
+        []
+    }
+
+    func fetchVaultKeys(forShareId shareId: String,
+                        page: Int,
+                        pageSize: Int) async throws -> [VaultKey] {
+        guard !shareId.isEmpty else { return [] }
+
+        let taskContext = newTaskContext(type: .fetch,
+                                         transactionAuthor: "fetchVaultKeys")
+
+        let fetchRequest = CDVaultKey.fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        fetchRequest.fetchLimit = pageSize
+        fetchRequest.fetchOffset = page * pageSize
+        let cdVaultKeys = try await fetch(request: fetchRequest,
+                                          withContext: taskContext)
+        return try cdVaultKeys.map { try $0.toVaultKey() }
     }
 }

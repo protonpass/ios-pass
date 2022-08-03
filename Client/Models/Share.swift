@@ -125,13 +125,13 @@ public struct PartialShare: Codable {
     public let vaultID: String
 
     /// Type of share. 1 for vault, 2 for label and 3 for item
-    public let targetType: Int
+    public let targetType: Int16
 
     /// ID of the top shared object
     public let targetID: String
 
     /// Permissions for this share
-    public let permission: Int
+    public let permission: Int16
 
     /// Base64 encoded signature of the vault signing key fingerprint
     public let acceptanceSignature: String
@@ -143,21 +143,21 @@ public struct PartialShare: Codable {
     public let inviterAcceptanceSignature: String
 
     /// Expiration time for this share
-    public let expireTime: Double?
+    public let expireTime: Int64?
 
     /// Time of creation of this share
-    public let createTime: Double
+    public let createTime: Int64
 
     public init(shareID: String,
                 vaultID: String,
-                targetType: Int,
+                targetType: Int16,
                 targetID: String,
-                permission: Int,
+                permission: Int16,
                 acceptanceSignature: String,
                 inviterEmail: String,
                 inviterAcceptanceSignature: String,
-                expireTime: Double?,
-                createTime: Double) {
+                expireTime: Int64?,
+                createTime: Int64) {
         self.shareID = shareID
         self.vaultID = vaultID
         self.targetType = targetType

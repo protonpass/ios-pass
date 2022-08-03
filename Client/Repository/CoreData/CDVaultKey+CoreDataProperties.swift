@@ -66,10 +66,22 @@ extension CDVaultKey {
         }
 
         return .init(rotationID: rotationID,
-                     rotation: Int(rotation),
+                     rotation: rotation,
                      key: key,
                      keyPassphrase: keyPassphrase,
                      keySignature: keySignature,
-                     createTime: Int(createTime))
+                     createTime: createTime)
+    }
+}
+
+extension CDVaultKey {
+    func copy(from vaultKey: VaultKey, shareId: String) {
+        createTime = vaultKey.createTime
+        key = vaultKey.key
+        keyPassphrase = vaultKey.keyPassphrase
+        keySignature = vaultKey.keySignature
+        rotation = vaultKey.rotation
+        rotationID = vaultKey.rotationID
+        shareID = shareId
     }
 }

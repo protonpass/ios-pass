@@ -64,6 +64,17 @@ extension CDItemKey {
                      key: key,
                      keyPassphrase: keyPassphrase,
                      keySignature: keySignature,
-                     createTime: Int(createTime))
+                     createTime: createTime)
+    }
+}
+
+extension CDItemKey {
+    func copy(from itemKey: ItemKey, shareId: String) {
+        createTime = itemKey.createTime
+        key = itemKey.key
+        keyPassphrase = itemKey.keyPassphrase
+        keySignature = itemKey.keySignature
+        rotationID = itemKey.rotationID
+        shareID = shareId
     }
 }
