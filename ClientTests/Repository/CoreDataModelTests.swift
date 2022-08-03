@@ -23,18 +23,15 @@ import CoreData
 import XCTest
 
 final class CoreDataModelTests: XCTestCase {
-    var persistentContainer: NSPersistentContainer!
+    var localDatasource: LocalDatasource!
 
     override func setUp() {
         super.setUp()
-        persistentContainer = .init(name: "Pass")
-        persistentContainer.loadPersistentStores { _, error in
-            XCTAssertNil(error)
-        }
+        localDatasource = LocalDatasource(inMemory: true)
     }
 
     override func tearDown() {
-        persistentContainer = nil
+        localDatasource = nil
         super.tearDown()
     }
 
@@ -53,7 +50,7 @@ final class CoreDataModelTests: XCTestCase {
     }
 
     func entity(byName name: String) -> NSEntityDescription {
-        guard let entity = persistentContainer.managedObjectModel.entitiesByName[name] else {
+        guard let entity = localDatasource.container.managedObjectModel.entitiesByName[name] else {
             continueAfterFailure = false
             XCTFail("Entity \(name) not found")
 

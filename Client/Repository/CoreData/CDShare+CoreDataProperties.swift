@@ -149,3 +149,27 @@ extension CDShare {
                      createTime: createTime)
     }
 }
+
+extension CDShare {
+    func copy(from share: Share, userId: String) {
+        acceptanceSignature = share.acceptanceSignature
+        content = share.content
+        contentEncryptedAddressSignature = share.contentEncryptedAddressSignature
+        contentEncryptedVaultSignature = share.contentEncryptedVaultSignature
+        contentFormatVersion = share.contentFormatVersion
+        contentRotationID = share.contentRotationID
+        contentSignatureEmail = share.contentSignatureEmail
+        createTime = share.createTime
+        expireTime = share.expireTime ?? -1
+        inviterAcceptanceSignature = share.inviterAcceptanceSignature
+        inviterEmail = share.inviterEmail
+        permission = share.permission
+        shareID = share.shareID
+        signingKey = share.signingKey
+        signingKeyPassphrase = share.signingKeyPassphrase
+        targetID = share.targetID
+        targetType = share.targetType
+        vaultID = share.vaultID
+        userID = userId
+    }
+}

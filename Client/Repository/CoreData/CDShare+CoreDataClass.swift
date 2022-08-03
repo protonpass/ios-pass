@@ -22,4 +22,4 @@ import CoreData
 import Foundation
 
 @objc(CDShare)
-final class CDShare: NSManagedObject {}
+public final class CDShare: NSManagedObject {}

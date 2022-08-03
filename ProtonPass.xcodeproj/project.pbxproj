@@ -21,6 +21,8 @@
 		353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C02880C45C0021C716 /* GetSharesEndpoint.swift */; };
 		353547C32880CF470021C716 /* UserData+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C22880CF470021C716 /* UserData+Codable.swift */; };
 		3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */; };
+		353C95DF289A9E1900E3CDCA /* LocalDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C95DE289A9E1900E3CDCA /* LocalDatasourceTests.swift */; };
+		353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C95E0289A9E8500E3CDCA /* Share+Test.swift */; };
 		353E10922881827C00E59474 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E10912881827C00E59474 /* UserProtocol.swift */; };
 		353E8B6E2876163F00A2C5E3 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B6D2876163F00A2C5E3 /* SidebarView.swift */; };
 		353E8B7028761A1700A2C5E3 /* SidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B6F28761A1700A2C5E3 /* SidebarItem.swift */; };
@@ -31,6 +33,7 @@
 		3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B8882883614D009C9A68 /* DummyApiService.swift */; };
 		3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */; };
 		3542F0262899431D004007C7 /* CoreDataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F0252899431D004007C7 /* CoreDataModelTests.swift */; };
+		3542F02828996C70004007C7 /* LocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F02728996C70004007C7 /* LocalDatasource.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
@@ -85,6 +88,7 @@
 		35A909E8289006F700AC54D4 /* CDVaultKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E2289006F700AC54D4 /* CDVaultKey+CoreDataClass.swift */; };
 		35A909EA2890110F00AC54D4 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E92890110F00AC54D4 /* CoreDataError.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateNoteViewModel.swift */; };
+		35B10BE5289ACCFF003BFF6C /* Pass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 35004A3E289004330073C4A7 /* Pass.xcdatamodeld */; };
 		35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E00615288BE5FE00FAAD65 /* SessionData.swift */; };
 		35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
 		35E50649286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
@@ -123,7 +127,6 @@
 		35E50714286FB60500A3F6EA /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50713286FB60500A3F6EA /* HomeCoordinator.swift */; };
 		35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50715286FB61E00A3F6EA /* WelcomeCoordinator.swift */; };
 		35ECA4752882ACDD00980A1D /* TitledTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35ECA4742882ACDD00980A1D /* TitledTextField.swift */; };
-		35F61C9428980DA500AE7867 /* Pass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 35004A3E289004330073C4A7 /* Pass.xcdatamodeld */; };
 		43D8E83DEA8EF33F5E68C83E /* Pods_Core_CoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A8977220EAD2E5C505F8CF /* Pods_Core_CoreTests.framework */; };
 		675A744B254FF56E1C95D91B /* Pods_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 303E837161E0B51054C04021 /* Pods_Client.framework */; };
 		6EA5015186914BB62E54DBE6 /* Pods_Client_ClientTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D35678054D43CDE3733E788 /* Pods_Client_ClientTests.framework */; };
@@ -253,6 +256,8 @@
 		353547C02880C45C0021C716 /* GetSharesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharesEndpoint.swift; sourceTree = "<group>"; };
 		353547C22880CF470021C716 /* UserData+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Codable.swift"; sourceTree = "<group>"; };
 		3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultViewModel.swift; sourceTree = "<group>"; };
+		353C95DE289A9E1900E3CDCA /* LocalDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatasourceTests.swift; sourceTree = "<group>"; };
+		353C95E0289A9E8500E3CDCA /* Share+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share+Test.swift"; sourceTree = "<group>"; };
 		353E10912881827C00E59474 /* UserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		353E8B6D2876163F00A2C5E3 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		353E8B6F28761A1700A2C5E3 /* SidebarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarItem.swift; sourceTree = "<group>"; };
@@ -263,6 +268,7 @@
 		3542B8882883614D009C9A68 /* DummyApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyApiService.swift; sourceTree = "<group>"; };
 		3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthCredential+Preview.swift"; sourceTree = "<group>"; };
 		3542F0252899431D004007C7 /* CoreDataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModelTests.swift; sourceTree = "<group>"; };
+		3542F02728996C70004007C7 /* LocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatasource.swift; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
 		3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonSwitchToggleStyle.swift; sourceTree = "<group>"; };
@@ -479,6 +485,7 @@
 			isa = PBXGroup;
 			children = (
 				35004A3D289004200073C4A7 /* CoreData */,
+				3542F02728996C70004007C7 /* LocalDatasource.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -510,6 +517,7 @@
 			isa = PBXGroup;
 			children = (
 				350A97D92885C95D00A7168B /* UserData+Test.swift */,
+				353C95E0289A9E8500E3CDCA /* Share+Test.swift */,
 			);
 			path = TestData;
 			sourceTree = "<group>";
@@ -538,6 +546,7 @@
 			isa = PBXGroup;
 			children = (
 				3542F0252899431D004007C7 /* CoreDataModelTests.swift */,
+				353C95DE289A9E1900E3CDCA /* LocalDatasourceTests.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -1552,7 +1561,7 @@
 				355635B7288947DD00F32353 /* VaultSelection.swift in Sources */,
 				3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
-				35F61C9428980DA500AE7867 /* Pass.xcdatamodeld in Sources */,
+				35B10BE5289ACCFF003BFF6C /* Pass.xcdatamodeld in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
 				3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */,
 			);
@@ -1573,6 +1582,7 @@
 				350A97CC28859D1800A7168B /* AddressKey.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProtocol.swift in Sources */,
 				358AB49D2887029400818B44 /* ShareKey.swift in Sources */,
+				3542F02828996C70004007C7 /* LocalDatasource.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
 				350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */,
 				35004A40289004330073C4A7 /* Pass.xcdatamodeld in Sources */,
@@ -1607,6 +1617,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				353C95DF289A9E1900E3CDCA /* LocalDatasourceTests.swift in Sources */,
+				353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */,
 				350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */,
 				350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */,
 				3542F0262899431D004007C7 /* CoreDataModelTests.swift in Sources */,

@@ -22,4 +22,4 @@ import CoreData
 import Foundation
 
 @objc(CDItemKey)
-final class CDItemKey: NSManagedObject {}
+public final class CDItemKey: NSManagedObject {}
