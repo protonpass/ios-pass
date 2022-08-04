@@ -23,7 +23,7 @@ import XCTest
 
 /*
 These tests aim to ensure the local database reads and writes data correctly.
-Each entity has in general 3 test cases:
+Each entity has in general these test cases:
  - Insert test: ensure write operations
  - Fetch test: ensure read & write operations
  - Update test: ensure data is not duplicated but updated

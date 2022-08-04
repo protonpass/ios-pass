@@ -133,4 +133,23 @@ extension LocalDatasourceTests {
         try await sut.insertVaultKeys([vaultKey], withShareId: shareId)
         return vaultKey
     }
+
+    func testCountVaultKeys() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let givenVaultKeys = [VaultKey].random(randomElement: .random())
+            let givenShareId = String.random()
+
+            // When
+            try await sut.insertVaultKeys(givenVaultKeys, withShareId: givenShareId)
+
+            // Then
+            let count = try await sut.getVaultKeysCount(forShareId: givenShareId)
+            XCTAssertEqual(count, givenVaultKeys.count)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
 }

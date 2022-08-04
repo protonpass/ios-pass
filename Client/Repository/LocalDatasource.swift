@@ -105,14 +105,26 @@ extension LocalDatasource {
             }
         }
     }
+
+    private func count<T>(for request: NSFetchRequest<T>,
+                          withContext context: NSManagedObjectContext) async throws -> Int {
+        try await withCheckedThrowingContinuation { continuation in
+            context.performAndWait {
+                do {
+                    let result = try context.count(for: request)
+                    continuation.resume(with: .success(result))
+                } catch {
+                    continuation.resume(with: .failure(error))
+                }
+            }
+        }
+    }
 }
 
 // MARK: - LocalDatasourceProtocol
 extension LocalDatasource: LocalDatasourceProtocol {
     public func insertShares(_ shares: [Share],
                              withUserId userId: String) async throws {
-        guard !shares.isEmpty else { return }
-
         let taskContext = newTaskContext(type: .insert,
                                          transactionAuthor: "insertShares")
 
@@ -126,12 +138,11 @@ extension LocalDatasource: LocalDatasourceProtocol {
             return false
         })
 
-        try await execute(batchInsertRequest: batchInsertRequest, withContext: taskContext)
+        try await execute(batchInsertRequest: batchInsertRequest,
+                          withContext: taskContext)
     }
 
     public func fetchShares(forUserId userId: String) async throws -> [Share] {
-        guard !userId.isEmpty else { return [] }
-
         let taskContext = newTaskContext(type: .fetch,
                                          transactionAuthor: "fetchShares")
 
@@ -191,8 +202,6 @@ extension LocalDatasource: LocalDatasourceProtocol {
     func fetchVaultKeys(forShareId shareId: String,
                         page: Int,
                         pageSize: Int) async throws -> [VaultKey] {
-        guard !shareId.isEmpty else { return [] }
-
         let taskContext = newTaskContext(type: .fetch,
                                          transactionAuthor: "fetchVaultKeys")
 
@@ -205,11 +214,27 @@ extension LocalDatasource: LocalDatasourceProtocol {
         return try cdVaultKeys.map { try $0.toVaultKey() }
     }
 
+    func getVaultKeysCount(forShareId shareId: String) async throws -> Int {
+        let taskContext = newTaskContext(type: .fetch,
+                                         transactionAuthor: "getVaultKeysCount")
+
+        let fetchRequest = CDVaultKey.fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        return try await count(for: fetchRequest, withContext: taskContext)
+    }
+
+    func getItemKeysCount(forShareId shareId: String) async throws -> Int {
+        let taskContext = newTaskContext(type: .fetch,
+                                         transactionAuthor: "getItemKeysCount")
+
+        let fetchRequest = CDItemKey.fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        return try await count(for: fetchRequest, withContext: taskContext)
+    }
+
     func fetchItemKeys(forShareId shareId: String,
                        page: Int,
                        pageSize: Int) async throws -> [ItemKey] {
-        guard !shareId.isEmpty else { return [] }
-
         let taskContext = newTaskContext(type: .fetch,
                                          transactionAuthor: "fetchItemKeys")
 
