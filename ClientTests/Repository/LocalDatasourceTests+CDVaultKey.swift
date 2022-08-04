@@ -66,4 +66,43 @@ extension LocalDatasourceTests {
         }
         waitForExpectations(timeout: expectationTimeOut)
     }
+
+    func testUpdateVaultKeys() throws {
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let givenShareId = String.random()
+            let insertedVaultKey = try await givenInsertedVaultKey(withShareId: givenShareId)
+            let updatedVaultKey = VaultKey(rotationID: insertedVaultKey.rotationID,
+                                           rotation: .random(in: 1...100),
+                                           key: .random(),
+                                           keyPassphrase: .random(),
+                                           keySignature: .random(),
+                                           createTime: .random(in: 1...1_000_000))
+
+            // When
+            try await sut.insertVaultKeys([updatedVaultKey], withShareId: givenShareId)
+
+            // Then
+            continueAfterFailure = false
+            let vaultKeys = try await sut.fetchVaultKeys(forShareId: givenShareId,
+                                                         page: 0,
+                                                         pageSize: 100)
+            XCTAssertEqual(vaultKeys.count, 1)
+            let vaultKey = try XCTUnwrap(vaultKeys.first)
+            XCTAssertEqual(vaultKey.rotationID, updatedVaultKey.rotationID)
+            XCTAssertEqual(vaultKey.rotation, updatedVaultKey.rotation)
+            XCTAssertEqual(vaultKey.key, updatedVaultKey.key)
+            XCTAssertEqual(vaultKey.keyPassphrase, updatedVaultKey.keyPassphrase)
+            XCTAssertEqual(vaultKey.createTime, updatedVaultKey.createTime)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
+
+    func givenInsertedVaultKey(withShareId shareId: String) async throws -> VaultKey {
+        let vaultKey = VaultKey.random()
+        try await sut.insertVaultKeys([vaultKey], withShareId: shareId)
+        return vaultKey
+    }
 }
