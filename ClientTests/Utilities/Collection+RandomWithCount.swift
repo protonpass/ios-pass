@@ -21,7 +21,7 @@
 import Foundation
 
 extension Collection {
-    static func random(count: Int = 100,
+    static func random(count: Int = Int.random(in: 1...100),
                        randomElement: @autoclosure () -> Element) -> [Element] {
         (1...count).map { _ in randomElement() }
     }

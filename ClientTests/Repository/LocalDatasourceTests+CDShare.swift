@@ -22,6 +22,35 @@
 import XCTest
 
 extension LocalDatasourceTests {
+    func testInsertShares() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let firstShares = [Share].random(randomElement: .random())
+            let secondShares = [Share].random(randomElement: .random())
+            let thirdShares = [Share].random(randomElement: .random())
+            let givenShares = firstShares + secondShares + thirdShares
+            let givenUserId = String.random()
+
+            // When
+            try await sut.insertShares(firstShares, withUserId: givenUserId)
+            try await sut.insertShares(secondShares, withUserId: givenUserId)
+            try await sut.insertShares(thirdShares, withUserId: givenUserId)
+
+            // Then
+            let shares = try await sut.fetchShares(forUserId: givenUserId)
+            XCTAssertEqual(shares.count, givenShares.count)
+
+            let shareIds = Set(shares.map { $0.shareID })
+            let givenShareIds = Set(givenShares.map { $0.shareID })
+            XCTAssertEqual(shareIds, givenShareIds)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
+
     func testFetchShares() throws {
         let expectation = expectation(description: #function)
         Task {
@@ -49,6 +78,7 @@ extension LocalDatasourceTests {
     }
 
     func testUpdateShares() throws {
+        continueAfterFailure = false
         let expectation = expectation(description: #function)
         Task {
             // Given
@@ -61,7 +91,6 @@ extension LocalDatasourceTests {
             try await sut.insertShares([updatedShare], withUserId: givenUserId)
 
             // Then
-            continueAfterFailure = false
             let shares = try await sut.fetchShares(forUserId: givenUserId)
             XCTAssertEqual(shares.count, 1)
             let share = try XCTUnwrap(shares.first)

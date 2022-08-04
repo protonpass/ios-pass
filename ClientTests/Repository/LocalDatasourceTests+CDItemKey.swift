@@ -23,6 +23,7 @@ import XCTest
 
 extension LocalDatasourceTests {
     func testFetchItemKeys() throws {
+        continueAfterFailure = false
         let expectation = expectation(description: #function)
         Task {
             // Given
@@ -39,8 +40,6 @@ extension LocalDatasourceTests {
             // Then
             // Should have 3 pages with following counts: 70, 70 & 60
             // 200 in total
-            continueAfterFailure = false
-
             let firstPage = try await sut.fetchItemKeys(forShareId: shareId,
                                                         page: 0,
                                                         pageSize: pageSize)
@@ -68,6 +67,7 @@ extension LocalDatasourceTests {
     }
 
     func testUpdateItemKeys() throws {
+        continueAfterFailure = false
         let expectation = expectation(description: #function)
         Task {
             // Given
@@ -79,17 +79,18 @@ extension LocalDatasourceTests {
             try await sut.insertItemKeys([updatedItemKey], withShareId: givenShareId)
 
             // Then
-            continueAfterFailure = false
             let itemKeys = try await sut.fetchItemKeys(forShareId: givenShareId,
                                                        page: 0,
                                                        pageSize: 100)
             XCTAssertEqual(itemKeys.count, 1)
+
             let itemKey = try XCTUnwrap(itemKeys.first)
             XCTAssertEqual(itemKey.rotationID, updatedItemKey.rotationID)
             XCTAssertEqual(itemKey.key, updatedItemKey.key)
             XCTAssertEqual(itemKey.keyPassphrase, updatedItemKey.keyPassphrase)
             XCTAssertEqual(itemKey.keySignature, updatedItemKey.keySignature)
             XCTAssertEqual(itemKey.createTime, updatedItemKey.createTime)
+
             expectation.fulfill()
         }
         waitForExpectations(timeout: expectationTimeOut)
