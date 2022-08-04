@@ -22,6 +22,37 @@
 import XCTest
 
 extension LocalDatasourceTests {
+    func testInsertVaultKeys() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let firstVaultKeys = [VaultKey].random(randomElement: .random())
+            let secondVaultKeys = [VaultKey].random(randomElement: .random())
+            let thirdVaultKeys = [VaultKey].random(randomElement: .random())
+            let givenVaultKeys = firstVaultKeys + secondVaultKeys + thirdVaultKeys
+            let givenShareId = String.random()
+
+            // When
+            try await sut.insertVaultKeys(firstVaultKeys, withShareId: givenShareId)
+            try await sut.insertVaultKeys(secondVaultKeys, withShareId: givenShareId)
+            try await sut.insertVaultKeys(thirdVaultKeys, withShareId: givenShareId)
+
+            // Then
+            let vaultKeys = try await sut.fetchVaultKeys(forShareId: givenShareId,
+                                                         page: 0,
+                                                         pageSize: Int.max)
+            XCTAssertEqual(vaultKeys.count, givenVaultKeys.count)
+
+            let rotationIds = Set(vaultKeys.map { $0.rotationID })
+            let givenRotationIds = Set(givenVaultKeys.map { $0.rotationID })
+            XCTAssertEqual(rotationIds, givenRotationIds)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
+
     func testFetchVaultKeys() throws {
         continueAfterFailure = false
         let expectation = expectation(description: #function)

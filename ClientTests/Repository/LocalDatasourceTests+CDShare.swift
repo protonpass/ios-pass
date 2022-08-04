@@ -93,6 +93,7 @@ extension LocalDatasourceTests {
             // Then
             let shares = try await sut.fetchShares(forUserId: givenUserId)
             XCTAssertEqual(shares.count, 1)
+
             let share = try XCTUnwrap(shares.first)
             XCTAssertEqual(share.shareID, updatedShare.shareID)
             XCTAssertEqual(share.vaultID, updatedShare.vaultID)
@@ -117,6 +118,7 @@ extension LocalDatasourceTests {
                            updatedShare.contentFormatVersion)
             XCTAssertEqual(share.expireTime, updatedShare.expireTime)
             XCTAssertEqual(share.createTime, updatedShare.createTime)
+
             expectation.fulfill()
         }
         waitForExpectations(timeout: expectationTimeOut)

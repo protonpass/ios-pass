@@ -22,6 +22,37 @@
 import XCTest
 
 extension LocalDatasourceTests {
+    func testInsertItemKeys() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let firstItemKeys = [ItemKey].random(randomElement: .random())
+            let secondItemKeys = [ItemKey].random(randomElement: .random())
+            let thirdItemKeys = [ItemKey].random(randomElement: .random())
+            let givenItemKeys = firstItemKeys + secondItemKeys + thirdItemKeys
+            let givenShareId = String.random()
+
+            // When
+            try await sut.insertItemKeys(firstItemKeys, withShareId: givenShareId)
+            try await sut.insertItemKeys(secondItemKeys, withShareId: givenShareId)
+            try await sut.insertItemKeys(thirdItemKeys, withShareId: givenShareId)
+
+            // Then
+            let itemKeys = try await sut.fetchItemKeys(forShareId: givenShareId,
+                                                       page: 0,
+                                                       pageSize: Int.max)
+            XCTAssertEqual(itemKeys.count, givenItemKeys.count)
+
+            let rotationIds = Set(itemKeys.map { $0.rotationID })
+            let givenRotationIds = Set(givenItemKeys.map { $0.rotationID })
+            XCTAssertEqual(rotationIds, givenRotationIds)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
+
     func testFetchItemKeys() throws {
         continueAfterFailure = false
         let expectation = expectation(description: #function)
