@@ -73,12 +73,7 @@ extension LocalDatasourceTests {
             // Given
             let givenShareId = String.random()
             let insertedVaultKey = try await givenInsertedVaultKey(withShareId: givenShareId)
-            let updatedVaultKey = VaultKey(rotationID: insertedVaultKey.rotationID,
-                                           rotation: .random(in: 1...100),
-                                           key: .random(),
-                                           keyPassphrase: .random(),
-                                           keySignature: .random(),
-                                           createTime: .random(in: 1...1_000_000))
+            let updatedVaultKey = VaultKey.random(rotationId: insertedVaultKey.rotationID)
 
             // When
             try await sut.insertVaultKeys([updatedVaultKey], withShareId: givenShareId)
@@ -94,6 +89,7 @@ extension LocalDatasourceTests {
             XCTAssertEqual(vaultKey.rotation, updatedVaultKey.rotation)
             XCTAssertEqual(vaultKey.key, updatedVaultKey.key)
             XCTAssertEqual(vaultKey.keyPassphrase, updatedVaultKey.keyPassphrase)
+            XCTAssertEqual(vaultKey.keySignature, updatedVaultKey.keySignature)
             XCTAssertEqual(vaultKey.createTime, updatedVaultKey.createTime)
             expectation.fulfill()
         }

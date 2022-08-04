@@ -1,6 +1,6 @@
 //
-// VaultKey+Test.swift
-// Proton Pass - Created on 03/08/2022.
+// ItemKey+Test.swift
+// Proton Pass - Created on 04/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,10 +20,9 @@
 
 import Client
 
-extension VaultKey {
-    static func random(rotationId: String? = nil) -> VaultKey {
+extension ItemKey {
+    static func random(rotationId: String? = nil) -> ItemKey {
         .init(rotationID: rotationId ?? .random(),
-              rotation: .random(in: 1...100),
               key: .random(),
               keyPassphrase: .random(),
               keySignature: .random(),

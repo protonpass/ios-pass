@@ -18,6 +18,8 @@
 		350A97DC2885FD7900A7168B /* MyVaultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97DB2885FD7900A7168B /* MyVaultsViewModel.swift */; };
 		350A97DE2886032000A7168B /* DeinitPrintable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97DD2886032000A7168B /* DeinitPrintable.swift */; };
 		3510A2FC287841AD0003BE79 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510A2FB287841AD0003BE79 /* StringExtensions.swift */; };
+		351E9E37289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E36289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift */; };
+		351E9E39289C508B00BB47EB /* ItemKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E38289C508B00BB47EB /* ItemKey+Test.swift */; };
 		353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C02880C45C0021C716 /* GetSharesEndpoint.swift */; };
 		353547C32880CF470021C716 /* UserData+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C22880CF470021C716 /* UserData+Codable.swift */; };
 		3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */; };
@@ -256,6 +258,8 @@
 		350A97DB2885FD7900A7168B /* MyVaultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsViewModel.swift; sourceTree = "<group>"; };
 		350A97DD2886032000A7168B /* DeinitPrintable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitPrintable.swift; sourceTree = "<group>"; };
 		3510A2FB287841AD0003BE79 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		351E9E36289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalDatasourceTests+CDItemKey.swift"; sourceTree = "<group>"; };
+		351E9E38289C508B00BB47EB /* ItemKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemKey+Test.swift"; sourceTree = "<group>"; };
 		353547C02880C45C0021C716 /* GetSharesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharesEndpoint.swift; sourceTree = "<group>"; };
 		353547C22880CF470021C716 /* UserData+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Codable.swift"; sourceTree = "<group>"; };
 		3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultViewModel.swift; sourceTree = "<group>"; };
@@ -525,6 +529,7 @@
 				350A97D92885C95D00A7168B /* UserData+Test.swift */,
 				353C95E0289A9E8500E3CDCA /* Share+Test.swift */,
 				35464B61289B0380008E65C4 /* VaultKey+Test.swift */,
+				351E9E38289C508B00BB47EB /* ItemKey+Test.swift */,
 			);
 			path = TestData;
 			sourceTree = "<group>";
@@ -556,6 +561,7 @@
 				353C95DE289A9E1900E3CDCA /* LocalDatasourceTests.swift */,
 				35464B5D289B0109008E65C4 /* LocalDatasourceTests+CDShare.swift */,
 				35464B5F289B02EC008E65C4 /* LocalDatasourceTests+CDVaultKey.swift */,
+				351E9E36289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -1626,9 +1632,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				351E9E37289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift in Sources */,
 				35464B60289B02EC008E65C4 /* LocalDatasourceTests+CDVaultKey.swift in Sources */,
 				353C95DF289A9E1900E3CDCA /* LocalDatasourceTests.swift in Sources */,
 				353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */,
+				351E9E39289C508B00BB47EB /* ItemKey+Test.swift in Sources */,
 				350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */,
 				35464B62289B0380008E65C4 /* VaultKey+Test.swift in Sources */,
 				350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */,

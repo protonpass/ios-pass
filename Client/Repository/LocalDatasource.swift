@@ -204,4 +204,21 @@ extension LocalDatasource: LocalDatasourceProtocol {
                                           withContext: taskContext)
         return try cdVaultKeys.map { try $0.toVaultKey() }
     }
+
+    func fetchItemKeys(forShareId shareId: String,
+                       page: Int,
+                       pageSize: Int) async throws -> [ItemKey] {
+        guard !shareId.isEmpty else { return [] }
+
+        let taskContext = newTaskContext(type: .fetch,
+                                         transactionAuthor: "fetchItemKeys")
+
+        let fetchRequest = CDItemKey.fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        fetchRequest.fetchLimit = pageSize
+        fetchRequest.fetchOffset = page * pageSize
+        let cdItemKeys = try await fetch(request: fetchRequest,
+                                         withContext: taskContext)
+        return try cdItemKeys.map { try $0.toItemKey() }
+    }
 }
