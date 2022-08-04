@@ -21,13 +21,12 @@
 @testable import Client
 import XCTest
 
-// swiftlint:disable function_body_length
 extension LocalDatasourceTests {
     func testFetchShares() throws {
         let expectation = expectation(description: #function)
         Task {
             // Given
-            let givenShares = (1...Int.random(in: 1...100)).map { _ in Share.random() }
+            let givenShares = [Share].random(randomElement: .random())
             let givenUserId = String.random()
 
             // When
@@ -56,24 +55,7 @@ extension LocalDatasourceTests {
             let givenUserId = String.random()
             let insertedShare = try await givenInsertedShare(withUserId: givenUserId)
             // Only copy the shareId from givenShare
-            let updatedShare = Share(shareID: insertedShare.shareID,
-                                     vaultID: .random(),
-                                     targetType: .random(in: 1...100),
-                                     targetID: .random(),
-                                     permission: .random(in: 1...100),
-                                     acceptanceSignature: .random(),
-                                     inviterEmail: .random(),
-                                     inviterAcceptanceSignature: .random(),
-                                     signingKey: .random(),
-                                     signingKeyPassphrase: .random(),
-                                     content: .random(),
-                                     contentRotationID: .random(),
-                                     contentEncryptedAddressSignature: .random(),
-                                     contentEncryptedVaultSignature: .random(),
-                                     contentSignatureEmail: .random(),
-                                     contentFormatVersion: .random(in: 1...100),
-                                     expireTime: .random(in: 1...100),
-                                     createTime: .random(in: 1...100))
+            let updatedShare = Share.random(shareId: insertedShare.shareID)
 
             // When
             try await sut.insertShares([updatedShare], withUserId: givenUserId)

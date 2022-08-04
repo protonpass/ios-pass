@@ -30,7 +30,7 @@ extension LocalDatasourceTests {
             // pageSize is 50
             let givenShare = try await givenInsertedShare()
             let shareId = givenShare.shareID
-            let givenVaultKeys = (1...120).map { _ in VaultKey.random() }
+            let givenVaultKeys = [VaultKey].random(count: 120, randomElement: .random())
             let pageSize = 50
 
             // When

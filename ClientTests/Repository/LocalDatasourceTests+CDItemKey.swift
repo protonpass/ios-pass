@@ -30,7 +30,7 @@ extension LocalDatasourceTests {
             // pageSize is 70
             let givenShare = try await givenInsertedShare()
             let shareId = givenShare.shareID
-            let givenItemKeys = (1...200).map { _ in ItemKey.random() }
+            let givenItemKeys = [ItemKey].random(count: 200, randomElement: .random())
             let pageSize = 70
 
             // When
