@@ -24,12 +24,12 @@ import UIComponents
 
 struct CreateVaultView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @StateObject private var viewModel: CreateVaultViewModel
+    private let viewModel: CreateVaultViewModel
     @State private var name = ""
     @State private var note = ""
 
     init(viewModel: CreateVaultViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        self.viewModel = viewModel
     }
 
     var body: some View {

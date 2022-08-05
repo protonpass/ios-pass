@@ -29,7 +29,7 @@ protocol CreateVaultViewModelDelegate: AnyObject {
     func createVaultViewModelBeginsLoading()
     func createVaultViewModelStopsLoading()
     func createVaultViewModelDidCreateShare(share: PartialShare)
-    func createVaultViewModelFailedToCreateShare(error: Error)
+    func createVaultViewModelDidFailWithError(error: Error)
 }
 
 final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
@@ -38,7 +38,8 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
     private let coordinator: MyVaultsCoordinator
 
     private let isLoadingSubject = PassthroughSubject<Bool, Never>()
-    private let createdShareSubject = PassthroughSubject<PartialShare, Error>()
+    private let errorSubject = PassthroughSubject<Error, Never>()
+    private let createdShareSubject = PassthroughSubject<PartialShare, Never>()
     private var cancellables = Set<AnyCancellable>()
 
     weak var delegate: CreateVaultViewModelDelegate?
@@ -60,16 +61,15 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
             }
             .store(in: &cancellables)
 
-        createdShareSubject
-            .sink { [weak self] completion in
+        errorSubject
+            .sink { [weak self] error in
                 guard let self = self else { return }
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    self.delegate?.createVaultViewModelFailedToCreateShare(error: error)
-                }
-            } receiveValue: { [weak self] share in
+                self.delegate?.createVaultViewModelDidFailWithError(error: error)
+            }
+            .store(in: &cancellables)
+
+        createdShareSubject
+            .sink { [weak self] share in
                 guard let self = self else { return }
                 self.delegate?.createVaultViewModelDidCreateShare(share: share)
             }
@@ -88,10 +88,9 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
                 let response = try await coordinator.apiService.exec(endpoint: createVaultEndpoint)
                 isLoadingSubject.send(false)
                 createdShareSubject.send(response.share)
-                createdShareSubject.send(completion: .finished)
             } catch {
                 isLoadingSubject.send(false)
-                createdShareSubject.send(completion: .failure(error))
+                errorSubject.send(error)
             }
         }
     }

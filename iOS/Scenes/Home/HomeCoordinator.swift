@@ -148,7 +148,7 @@ extension HomeCoordinator {
     }
 
     func alert(error: Error) {
-        let alert = UIAlertController(title: "Error occured",
+        let alert = PPAlertController(title: "Error occured",
                                       message: error.messageForTheUser,
                                       preferredStyle: .alert)
         alert.addAction(.cancel)

@@ -145,7 +145,7 @@ extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
         dismissTopMostViewController()
     }
 
-    func createVaultViewModelFailedToCreateShare(error: Error) {
+    func createVaultViewModelDidFailWithError(error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 }
