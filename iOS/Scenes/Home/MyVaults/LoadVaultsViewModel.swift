@@ -61,8 +61,11 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
 
                     var vaults: [VaultProtocol] = []
                     for try await share in group {
-                        let getShareKeysEndpoint = GetShareKeysEndpoint(credential: userData.credential,
-                                                                        shareId: share.shareID)
+                        let getShareKeysEndpoint =
+                        GetShareKeysEndpoint(credential: userData.credential,
+                                             shareId: share.shareID,
+                                             page: 0,
+                                             pageSize: Int.max)
                         let getShareKeysResponse = try await apiService.exec(endpoint: getShareKeysEndpoint)
                         vaults.append(try share.getVault(userData: userData,
                                                          vaultKeys: getShareKeysResponse.keys.vaultKeys))

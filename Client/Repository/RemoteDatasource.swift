@@ -23,7 +23,7 @@ import ProtonCore_Services
 
 public protocol RemoteDatasourceProtocol {
     func getShares() async throws -> [Share]
-    func getShareKey(forShareId shareId: String) async throws -> ShareKey
+    func getShareKey(shareId: String, page: Int, pageSize: Int) async throws -> ShareKey
 }
 
 public final class RemoteDatasource {
@@ -64,9 +64,11 @@ extension RemoteDatasource: RemoteDatasourceProtocol {
         return shares
     }
 
-    public func getShareKey(forShareId shareId: String) async throws -> ShareKey {
+    public func getShareKey(shareId: String, page: Int, pageSize: Int) async throws -> ShareKey {
         let getShareKeysEndpoint = GetShareKeysEndpoint(credential: authCredential,
-                                                        shareId: shareId)
+                                                        shareId: shareId,
+                                                        page: page,
+                                                        pageSize: pageSize)
         let getShareKeysResponse = try await apiService.exec(endpoint: getShareKeysEndpoint)
         return getShareKeysResponse.keys
     }

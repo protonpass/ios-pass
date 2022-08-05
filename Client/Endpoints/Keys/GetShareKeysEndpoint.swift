@@ -34,7 +34,10 @@ public struct GetShareKeysEndpoint: Endpoint {
 
     // swiftlint:disable:next todo
     // TODO: Support pagination
-    public init(credential: AuthCredential, shareId: String) {
+    public init(credential: AuthCredential,
+                shareId: String,
+                page: Int,
+                pageSize: Int) {
         self.path = "/pass/v1/share/\(shareId)/key/vault"
         self.authCredential = credential
     }

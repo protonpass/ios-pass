@@ -30,4 +30,8 @@ public struct ShareKey: Codable {
         self.itemKeys = itemKeys
         self.total = total
     }
+
+    var isEmpty: Bool {
+        total == 0 || vaultKeys.isEmpty || itemKeys.isEmpty
+    }
 }
