@@ -20,6 +20,7 @@
 
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct CreateLoginView: View {
     @Environment(\.presentationMode) private var presentationMode
@@ -31,34 +32,61 @@ struct CreateLoginView: View {
 
     var body: some View {
         NavigationView {
-            Text("Create new login")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: {
-                            presentationMode.wrappedValue.dismiss()
-                        }, label: {
-                            Text("Cancel")
-                        })
-                        .foregroundColor(Color(.label))
-                    }
+            ScrollView {
+                VStack(spacing: 20) {
+                    TitledTextField(title: "Title",
+                                    text: $viewModel.title,
+                                    placeholder: "Login name")
 
-                    ToolbarItem(placement: .principal) {
-                        Text("Create new login")
-                            .fontWeight(.bold)
-                    }
+                    TitledTextField(title: "Username",
+                                    text: $viewModel.username,
+                                    placeholder: "Add username")
 
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            viewModel.saveAction()
-                        }, label: {
-                            Text("Save")
-                                .fontWeight(.bold)
-                                .foregroundColor(Color(ColorProvider.BrandNorm))
-                        })
-                    }
+                    TitledTextField(title: "Password",
+                                    text: $viewModel.password,
+                                    placeholder: "Add password")
+
+                    TitledTextField(title: "Website address",
+                                    text: $viewModel.url,
+                                    placeholder: "https://")
+
+                    TitledTextField(title: "Note",
+                                    text: $viewModel.note,
+                                    placeholder: "Add note")
                 }
+                .padding()
+            }
+            .toolbar(content: toolbarContent)
+            .navigationBarTitleDisplayMode(.inline)
         }
         .disabled(viewModel.isLoading)
+    }
+
+    @ToolbarContentBuilder
+    private func toolbarContent() -> some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Text("Cancel")
+            })
+            .foregroundColor(Color(.label))
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text("Create new login")
+                .fontWeight(.bold)
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: {
+                viewModel.saveAction()
+            }, label: {
+                Text("Save")
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(ColorProvider.BrandNorm))
+            })
+        }
     }
 }
 

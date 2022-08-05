@@ -34,6 +34,12 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var isLoading = false
     @Published private(set) var error: Error?
 
+    @Published var title = ""
+    @Published var username = ""
+    @Published var password = ""
+    @Published var url = ""
+    @Published var note = ""
+
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: CreateLoginViewModelDelegate?
 
