@@ -139,10 +139,6 @@ extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
         delegate?.myVautsCoordinatorWantsToHideLoadingHud()
     }
 
-    func createVaultViewModelWantsToBeDismissed() {
-        dismissTopMostViewController()
-    }
-
     func createVaultViewModelDidCreateShare(share: PartialShare) {
         // Set vaults to empty to trigger refresh
         vaultSelection.update(vaults: [])

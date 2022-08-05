@@ -23,6 +23,7 @@ import SwiftUI
 import UIComponents
 
 struct CreateVaultView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: CreateVaultViewModel
     @State private var name = ""
     @State private var note = ""
@@ -47,9 +48,11 @@ struct CreateVaultView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: viewModel.cancelAction) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
                         Text("Cancel")
-                    }
+                    })
                     .foregroundColor(Color(.label))
                 }
 

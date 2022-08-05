@@ -28,7 +28,6 @@ import SwiftUI
 protocol CreateVaultViewModelDelegate: AnyObject {
     func createVaultViewModelBeginsLoading()
     func createVaultViewModelStopsLoading()
-    func createVaultViewModelWantsToBeDismissed()
     func createVaultViewModelDidCreateShare(share: PartialShare)
     func createVaultViewModelFailedToCreateShare(error: Error)
 }
@@ -75,10 +74,6 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
                 self.delegate?.createVaultViewModelDidCreateShare(share: share)
             }
             .store(in: &cancellables)
-    }
-
-    func cancelAction() {
-        delegate?.createVaultViewModelWantsToBeDismissed()
     }
 
     func createVault(name: String, note: String) {
