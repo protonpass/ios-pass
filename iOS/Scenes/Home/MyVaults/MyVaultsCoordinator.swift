@@ -109,6 +109,16 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewController(createNewNoteController)
     }
 
+    func showGeneratePasswordView() {
+        let viewModel = GeneratePasswordViewModel()
+        let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
+        let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
+        if #available(iOS 15, *) {
+            generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
+        }
+        presentViewController(generatePasswordViewController)
+    }
+
     func handleCreateNewItemOption(_ option: CreateNewItemOption) {
         dismissTopMostViewController(animated: true) { [unowned self] in
             switch option {
@@ -118,15 +128,8 @@ final class MyVaultsCoordinator: Coordinator {
                 showCreateAliasView()
             case .note:
                 showCreateNoteView()
-
             case .password:
-                let viewModel = GeneratePasswordViewModel(coordinator: self)
-                let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
-                let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
-                if #available(iOS 15, *) {
-                    generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
-                }
-                presentViewController(generatePasswordViewController)
+                showGeneratePasswordView()
             }
         }
     }

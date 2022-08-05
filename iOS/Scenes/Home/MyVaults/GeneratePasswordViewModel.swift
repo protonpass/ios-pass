@@ -25,7 +25,6 @@ import SwiftUI
 final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    private let coordinator: MyVaultsCoordinator
     private var allowedCharacters: [AllowedCharacter] {
         var allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit]
         if hasSpecialCharacters {
@@ -36,22 +35,22 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     @Published private(set) var password = ""
     @Published var length: Double = 32
-    @Published var hasSpecialCharacters = true {
-        didSet {
-            self.regenerate()
-        }
-    }
+    @Published var hasSpecialCharacters = true
 
     private var cancellables = Set<AnyCancellable>()
-
     let lengthRange: ClosedRange<Double> = 10...128
 
-    init(coordinator: MyVaultsCoordinator) {
-        self.coordinator = coordinator
+    init() {
         self.regenerate()
 
         $length
             .removeDuplicates()
+            .sink { [unowned self] _ in
+                self.regenerate()
+            }
+            .store(in: &cancellables)
+
+        $hasSpecialCharacters
             .sink { [unowned self] _ in
                 self.regenerate()
             }
@@ -61,8 +60,4 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     func regenerate() {
         password = .random(allowedCharacters: allowedCharacters, length: Int(length))
     }
-}
-
-extension GeneratePasswordViewModel {
-    static var preview: GeneratePasswordViewModel { .init(coordinator: .preview) }
 }

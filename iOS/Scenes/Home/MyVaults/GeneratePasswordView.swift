@@ -84,6 +84,6 @@ struct GeneratePasswordView: View {
 
 struct GeneratePasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneratePasswordView(viewModel: .preview)
+        GeneratePasswordView(viewModel: .init())
     }
 }
