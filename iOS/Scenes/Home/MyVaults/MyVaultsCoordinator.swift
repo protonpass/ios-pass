@@ -65,7 +65,9 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateItemView() {
-        let createItemView = CreateItemView(coordinator: self)
+        let createItemViewModel = CreateItemViewModel()
+        createItemViewModel.delegate = self
+        let createItemView = CreateItemView(viewModel: createItemViewModel)
         let createItemViewController = UIHostingController(rootView: createItemView)
         if #available(iOS 15.0, *) {
             createItemViewController.sheetPresentationController?.detents = [.medium()]
@@ -118,8 +120,11 @@ final class MyVaultsCoordinator: Coordinator {
         }
         presentViewController(generatePasswordViewController)
     }
+}
 
-    func handleCreateNewItemOption(_ option: CreateNewItemOption) {
+// MARK: - CreateItemViewModelDelegate
+extension MyVaultsCoordinator: CreateItemViewModelDelegate {
+    func createItemViewDidSelect(option: CreateNewItemOption) {
         dismissTopMostViewController(animated: true) { [unowned self] in
             switch option {
             case .login:

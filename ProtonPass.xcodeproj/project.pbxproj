@@ -48,6 +48,7 @@
 		3547696E289D349C00581E2E /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696D289D349C00581E2E /* Repository.swift */; };
 		35476970289D6BCB00581E2E /* CreateLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696F289D6BCB00581E2E /* CreateLoginViewModel.swift */; };
 		35476972289D7E6000581E2E /* CreateAliasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476971289D7E6000581E2E /* CreateAliasViewModel.swift */; };
+		35476974289D82FE00581E2E /* CreateItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476973289D82FE00581E2E /* CreateItemViewModel.swift */; };
 		3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */; };
 		3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */; };
 		3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD92876DF1300EE85E1 /* TrashView.swift */; };
@@ -292,6 +293,7 @@
 		3547696D289D349C00581E2E /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		3547696F289D6BCB00581E2E /* CreateLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLoginViewModel.swift; sourceTree = "<group>"; };
 		35476971289D7E6000581E2E /* CreateAliasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasViewModel.swift; sourceTree = "<group>"; };
+		35476973289D82FE00581E2E /* CreateItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemViewModel.swift; sourceTree = "<group>"; };
 		3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsView.swift; sourceTree = "<group>"; };
 		3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleSidebarButton.swift; sourceTree = "<group>"; };
 		3547ABD92876DF1300EE85E1 /* TrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashView.swift; sourceTree = "<group>"; };
@@ -585,6 +587,7 @@
 				3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */,
 				350A97DB2885FD7900A7168B /* MyVaultsViewModel.swift */,
 				3547ABDF287750F100EE85E1 /* CreateItemView.swift */,
+				35476973289D82FE00581E2E /* CreateItemViewModel.swift */,
 				3547ABEB2877753800EE85E1 /* CreateLoginView.swift */,
 				3547696F289D6BCB00581E2E /* CreateLoginViewModel.swift */,
 				3547ABED287777B700EE85E1 /* CreateAliasView.swift */,
@@ -1563,6 +1566,7 @@
 				35B089DC288E8A34000D2ECB /* CreateNoteViewModel.swift in Sources */,
 				3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */,
 				355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */,
+				35476974289D82FE00581E2E /* CreateItemViewModel.swift in Sources */,
 				353E8B6E2876163F00A2C5E3 /* SidebarView.swift in Sources */,
 				3547ABDE28774D1100EE85E1 /* MyVaultsCoordinator.swift in Sources */,
 				355635B928895B8E00F32353 /* VaultContentView.swift in Sources */,
