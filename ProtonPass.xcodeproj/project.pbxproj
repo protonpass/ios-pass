@@ -46,6 +46,7 @@
 		3547696A289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476969289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift */; };
 		3547696C289D253600581E2E /* RemoteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696B289D253600581E2E /* RemoteDatasource.swift */; };
 		3547696E289D349C00581E2E /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696D289D349C00581E2E /* Repository.swift */; };
+		35476970289D6BCB00581E2E /* CreateLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696F289D6BCB00581E2E /* CreateLoginViewModel.swift */; };
 		3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */; };
 		3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */; };
 		3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD92876DF1300EE85E1 /* TrashView.swift */; };
@@ -288,6 +289,7 @@
 		35476969289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalDatasourceTests+fetchShareKey.swift"; sourceTree = "<group>"; };
 		3547696B289D253600581E2E /* RemoteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDatasource.swift; sourceTree = "<group>"; };
 		3547696D289D349C00581E2E /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		3547696F289D6BCB00581E2E /* CreateLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLoginViewModel.swift; sourceTree = "<group>"; };
 		3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsView.swift; sourceTree = "<group>"; };
 		3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleSidebarButton.swift; sourceTree = "<group>"; };
 		3547ABD92876DF1300EE85E1 /* TrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashView.swift; sourceTree = "<group>"; };
@@ -582,6 +584,7 @@
 				350A97DB2885FD7900A7168B /* MyVaultsViewModel.swift */,
 				3547ABDF287750F100EE85E1 /* CreateItemView.swift */,
 				3547ABEB2877753800EE85E1 /* CreateLoginView.swift */,
+				3547696F289D6BCB00581E2E /* CreateLoginViewModel.swift */,
 				3547ABED287777B700EE85E1 /* CreateAliasView.swift */,
 				3547ABEF287777FB00EE85E1 /* CreateNoteView.swift */,
 				35B089DB288E8A34000D2ECB /* CreateNoteViewModel.swift */,
@@ -1568,6 +1571,7 @@
 				3547ABF628777D6100EE85E1 /* VaultSummaryView.swift in Sources */,
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateLoginView.swift in Sources */,
+				35476970289D6BCB00581E2E /* CreateLoginViewModel.swift in Sources */,
 				35E50710286FB5BA00A3F6EA /* Flows.swift in Sources */,
 				35E50714286FB60500A3F6EA /* HomeCoordinator.swift in Sources */,
 				350A97DC2885FD7900A7168B /* MyVaultsViewModel.swift in Sources */,

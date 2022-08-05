@@ -23,7 +23,11 @@ import SwiftUI
 
 struct CreateLoginView: View {
     @Environment(\.presentationMode) private var presentationMode
-    let coordinator: MyVaultsCoordinator
+    @StateObject private var viewModel: CreateLoginViewModel
+
+    init(viewModel: CreateLoginViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
         NavigationView {
@@ -45,7 +49,7 @@ struct CreateLoginView: View {
 
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action: {
-                            print("Save")
+                            viewModel.saveAction()
                         }, label: {
                             Text("Save")
                                 .fontWeight(.bold)
@@ -54,11 +58,12 @@ struct CreateLoginView: View {
                     }
                 }
         }
+        .disabled(viewModel.isLoading)
     }
 }
 
 struct CreateLoginView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateLoginView(coordinator: .preview)
+        CreateLoginView(viewModel: .preview)
     }
 }

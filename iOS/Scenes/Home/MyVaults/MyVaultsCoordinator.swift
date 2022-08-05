@@ -84,24 +84,18 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewController(createVaultViewController)
     }
 
-    func showLoadingHud() {
-        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
-    }
-
-    func hideLoadingHud() {
-        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
-    }
-
-    func alert(error: Error) {
-        delegate?.myVautsCoordinatorWantsToAlertError(error)
+    func showCreateLoginView() {
+        let createLoginViewModel = CreateLoginViewModel(coordinator: self)
+        createLoginViewModel.delegate = self
+        let createLoginView = CreateLoginView(viewModel: createLoginViewModel)
+        presentView(createLoginView)
     }
 
     func handleCreateNewItemOption(_ option: CreateNewItemOption) {
         dismissTopMostViewController(animated: true) { [unowned self] in
             switch option {
             case .login:
-                let createLoginView = CreateLoginView(coordinator: self)
-                presentView(createLoginView)
+                showCreateLoginView()
 
             case .alias:
                 let createAliasView = CreateAliasView(coordinator: self)
@@ -146,6 +140,21 @@ extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
     }
 
     func createVaultViewModelDidFailWithError(error: Error) {
+        delegate?.myVautsCoordinatorWantsToAlertError(error)
+    }
+}
+
+// MARK: - CreateLoginViewModelDelegate
+extension MyVaultsCoordinator: CreateLoginViewModelDelegate {
+    func createLoginViewModelBeginsLoading() {
+        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    }
+
+    func createLoginViewModelStopsLoading() {
+        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
+    func createLoginViewModelDidFailWithError(error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 }
