@@ -35,22 +35,18 @@ protocol CreateVaultViewModelDelegate: AnyObject {
 final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
+    @Published private(set) var isLoading = false
+    @Published private(set) var error: Error?
+    @Published private var createdShare: PartialShare?
+
     private let coordinator: MyVaultsCoordinator
-
-    private let isLoadingSubject = PassthroughSubject<Bool, Never>()
-    private let errorSubject = PassthroughSubject<Error, Never>()
-    private let createdShareSubject = PassthroughSubject<PartialShare, Never>()
     private var cancellables = Set<AnyCancellable>()
-
     weak var delegate: CreateVaultViewModelDelegate?
 
     init(coordinator: MyVaultsCoordinator) {
         self.coordinator = coordinator
-        self.subscribeToPublishers()
-    }
 
-    private func subscribeToPublishers() {
-        isLoadingSubject
+        $isLoading
             .sink { [weak self] isLoading in
                 guard let self = self else { return }
                 if isLoading {
@@ -61,17 +57,21 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
             }
             .store(in: &cancellables)
 
-        errorSubject
+        $error
             .sink { [weak self] error in
                 guard let self = self else { return }
-                self.delegate?.createVaultViewModelDidFailWithError(error: error)
+                if let error = error {
+                    self.delegate?.createVaultViewModelDidFailWithError(error: error)
+                }
             }
             .store(in: &cancellables)
 
-        createdShareSubject
-            .sink { [weak self] share in
+        $createdShare
+            .sink { [weak self] createdShare in
                 guard let self = self else { return }
-                self.delegate?.createVaultViewModelDidCreateShare(share: share)
+                if let createdShare = createdShare {
+                    self.delegate?.createVaultViewModelDidCreateShare(share: createdShare)
+                }
             }
             .store(in: &cancellables)
     }
@@ -79,18 +79,18 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
     func createVault(name: String, note: String) {
         Task { @MainActor in
             do {
-                isLoadingSubject.send(true)
+                isLoading = true
                 let userData = coordinator.sessionData.userData
                 let createVaultEndpoint = try CreateVaultEndpoint(credential: userData.credential,
                                                                   addressKey: userData.getAddressKey(),
                                                                   name: name,
                                                                   note: note)
                 let response = try await coordinator.apiService.exec(endpoint: createVaultEndpoint)
-                isLoadingSubject.send(false)
-                createdShareSubject.send(response.share)
+                isLoading = false
+                createdShare = response.share
             } catch {
-                isLoadingSubject.send(false)
-                errorSubject.send(error)
+                self.error = error
+                isLoading = false
             }
         }
     }
