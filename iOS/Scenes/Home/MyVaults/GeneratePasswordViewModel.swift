@@ -58,10 +58,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
             .store(in: &cancellables)
     }
 
-    func cancelAction() {
-        coordinator.dismissTopMostModal()
-    }
-
     func regenerate() {
         password = .random(allowedCharacters: allowedCharacters, length: Int(length))
     }

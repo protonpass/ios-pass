@@ -72,7 +72,7 @@ final class HomeCoordinator: DeinitPrintable {
         return myVaultsCoordinator
     }()
 
-    private var myVaultsRootViewController: UIViewController { myVaultsCoordinator.router.toPresentable() }
+    private var myVaultsRootViewController: UIViewController { myVaultsCoordinator.rootViewController }
 
     // Trash
     private lazy var trashCoordinator: TrashCoordinator = {
@@ -81,7 +81,7 @@ final class HomeCoordinator: DeinitPrintable {
         return trashCoordinator
     }()
 
-    private var trashRootViewController: UIViewController { trashCoordinator.router.toPresentable() }
+    private var trashRootViewController: UIViewController { trashCoordinator.rootViewController }
 
     private var cancellables = Set<AnyCancellable>()
 

@@ -125,8 +125,6 @@
 		35E506DC286FB12000A3F6EA /* macOS-Release-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D8286FB12000A3F6EA /* macOS-Release-Prod.xcconfig */; };
 		35E506DE286FB1D300A3F6EA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 35E506DD286FB1D300A3F6EA /* Info.plist */; };
 		35E506FC286FB37300A3F6EA /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E506F9286FB37300A3F6EA /* Coordinator.swift */; };
-		35E506FD286FB37300A3F6EA /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E506FA286FB37300A3F6EA /* Router.swift */; };
-		35E506FE286FB37300A3F6EA /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E506FB286FB37300A3F6EA /* Presentable.swift */; };
 		35E50702286FB39600A3F6EA /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50700286FB39600A3F6EA /* AppState.swift */; };
 		35E50707286FB3A600A3F6EA /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50705286FB3A600A3F6EA /* Logger.swift */; };
 		35E50708286FB3A600A3F6EA /* Publisher+Unwrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */; };
@@ -369,8 +367,6 @@
 		35E506D8286FB12000A3F6EA /* macOS-Release-Prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release-Prod.xcconfig"; sourceTree = "<group>"; };
 		35E506DD286FB1D300A3F6EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35E506F9286FB37300A3F6EA /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
-		35E506FA286FB37300A3F6EA /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
-		35E506FB286FB37300A3F6EA /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		35E50700286FB39600A3F6EA /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		35E50705286FB3A600A3F6EA /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publisher+Unwrap.swift"; sourceTree = "<group>"; };
@@ -851,8 +847,6 @@
 			isa = PBXGroup;
 			children = (
 				35E506F9286FB37300A3F6EA /* Coordinator.swift */,
-				35E506FB286FB37300A3F6EA /* Presentable.swift */,
-				35E506FA286FB37300A3F6EA /* Router.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -1671,7 +1665,6 @@
 				350A97D42885BFFD00A7168B /* Vault.swift in Sources */,
 				35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */,
 				35E50702286FB39600A3F6EA /* AppState.swift in Sources */,
-				35E506FE286FB37300A3F6EA /* Presentable.swift in Sources */,
 				356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */,
 				356B21D72870F8F1001220CB /* Constants.swift in Sources */,
 				350A97DE2886032000A7168B /* DeinitPrintable.swift in Sources */,
@@ -1679,7 +1672,6 @@
 				353E10922881827C00E59474 /* UserProtocol.swift in Sources */,
 				35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */,
 				35E50707286FB3A600A3F6EA /* Logger.swift in Sources */,
-				35E506FD286FB37300A3F6EA /* Router.swift in Sources */,
 				35E50708286FB3A600A3F6EA /* Publisher+Unwrap.swift in Sources */,
 				3510A2FC287841AD0003BE79 /* StringExtensions.swift in Sources */,
 				356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */,

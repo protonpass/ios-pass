@@ -23,6 +23,7 @@ import SwiftUI
 import UIComponents
 
 struct CreateItemView: View {
+    @Environment(\.presentationMode) private var presentationMode
     let coordinator: MyVaultsCoordinator
 
     var body: some View {
@@ -51,9 +52,11 @@ struct CreateItemView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: coordinator.dismissTopMostModal) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
                         Image(uiImage: IconProvider.cross)
-                    }
+                    })
                     .foregroundColor(Color(.label))
                 }
             }

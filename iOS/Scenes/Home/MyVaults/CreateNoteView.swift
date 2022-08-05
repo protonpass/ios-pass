@@ -23,6 +23,7 @@ import SwiftUI
 import UIComponents
 
 struct CreateNoteView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: CreateNoteViewModel
 
     init(viewModel: CreateNoteViewModel) {
@@ -46,9 +47,11 @@ struct CreateNoteView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: viewModel.cancelAction) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
                         Text("Cancel")
-                    }
+                    })
                     .foregroundColor(Color(.label))
                 }
 

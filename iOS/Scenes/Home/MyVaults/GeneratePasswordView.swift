@@ -23,6 +23,7 @@ import SwiftUI
 import UIComponents
 
 struct GeneratePasswordView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: GeneratePasswordViewModel
 
     init(viewModel: GeneratePasswordViewModel) {
@@ -69,10 +70,12 @@ struct GeneratePasswordView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: viewModel.cancelAction) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
                         Text("Cancel")
                             .foregroundColor(.primary)
-                    }
+                    })
                 }
             }
         }

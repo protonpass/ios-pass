@@ -22,6 +22,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 
 struct CreateLoginView: View {
+    @Environment(\.presentationMode) private var presentationMode
     let coordinator: MyVaultsCoordinator
 
     var body: some View {
@@ -29,9 +30,11 @@ struct CreateLoginView: View {
             Text("Create new login")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: coordinator.dismissTopMostModal) {
+                        Button(action: {
+                            presentationMode.wrappedValue.dismiss()
+                        }, label: {
                             Text("Cancel")
-                        }
+                        })
                         .foregroundColor(Color(.label))
                     }
 

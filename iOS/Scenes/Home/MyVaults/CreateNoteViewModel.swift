@@ -33,10 +33,6 @@ final class CreateNoteViewModel: DeinitPrintable, ObservableObject {
         self.coordinator = coordinator
     }
 
-    func cancelAction() {
-        coordinator.dismissTopMostModal()
-    }
-
     func saveAction() {
         print(#function)
     }

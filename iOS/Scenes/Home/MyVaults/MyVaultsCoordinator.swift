@@ -35,12 +35,6 @@ protocol MyVaultsCoordinatorDelegate: AnyObject {
 final class MyVaultsCoordinator: Coordinator {
     weak var delegate: MyVaultsCoordinatorDelegate?
 
-    private lazy var myVaultsViewController: UIViewController = {
-        let myVaultsView = MyVaultsView(viewModel: .init(coordinator: self))
-        return UIHostingController(rootView: myVaultsView)
-    }()
-
-    override var root: Presentable { myVaultsViewController }
     let apiService: APIService
     let sessionData: SessionData
     let vaultSelection: VaultSelection
@@ -61,7 +55,9 @@ final class MyVaultsCoordinator: Coordinator {
         self.repository = Repository(userId: userId,
                                      localDatasource: localDatasource,
                                      remoteDatasource: remoteDatasource)
-        super.init(router: .init(), navigationType: .newFlow(hideBar: false))
+        super.init()
+
+        self.start(with: MyVaultsView(viewModel: .init(coordinator: self)))
     }
 
     func showSidebar() {
@@ -74,7 +70,7 @@ final class MyVaultsCoordinator: Coordinator {
         if #available(iOS 15.0, *) {
             createItemViewController.sheetPresentationController?.detents = [.medium()]
         }
-        router.present(createItemViewController, animated: true)
+        presentViewController(createItemViewController)
     }
 
     func showCreateVaultView() {
@@ -85,7 +81,7 @@ final class MyVaultsCoordinator: Coordinator {
         if #available(iOS 15.0, *) {
             createVaultViewController.sheetPresentationController?.detents = [.medium()]
         }
-        router.present(createVaultViewController, animated: true)
+        presentViewController(createVaultViewController)
     }
 
     func showLoadingHud() {
@@ -100,48 +96,35 @@ final class MyVaultsCoordinator: Coordinator {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 
-    func dismissTopMostModal() {
-        router.toPresentable().presentedViewController?.dismiss(animated: true)
-    }
-
-    private func dismissTopMostModalAndPresent(viewController: UIViewController) {
-        let present: () -> Void = { [unowned self] in
-            self.router.toPresentable().present(viewController, animated: true, completion: nil)
-        }
-
-        if let presentedViewController = router.toPresentable().presentedViewController {
-            presentedViewController.dismiss(animated: true, completion: present)
-        } else {
-            present()
-        }
-    }
-
     func handleCreateNewItemOption(_ option: CreateNewItemOption) {
-        switch option {
-        case .login:
-            let createLoginView = CreateLoginView(coordinator: self)
-            let createLoginViewController = UIHostingController(rootView: createLoginView)
-            dismissTopMostModalAndPresent(viewController: createLoginViewController)
-        case .alias:
-            let createAliasView = CreateAliasView(coordinator: self)
-            let createAliasViewController = UIHostingController(rootView: createAliasView)
-            dismissTopMostModalAndPresent(viewController: createAliasViewController)
-        case .note:
-            let createNoteViewModel = CreateNoteViewModel(coordinator: self)
-            let createNoteView = CreateNoteView(viewModel: createNoteViewModel)
-            let createNewNoteController = UIHostingController(rootView: createNoteView)
-            if #available(iOS 15, *) {
-                createNewNoteController.sheetPresentationController?.detents = [.medium()]
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            switch option {
+            case .login:
+                let createLoginView = CreateLoginView(coordinator: self)
+                presentView(createLoginView)
+
+            case .alias:
+                let createAliasView = CreateAliasView(coordinator: self)
+                presentView(createAliasView)
+
+            case .note:
+                let createNoteViewModel = CreateNoteViewModel(coordinator: self)
+                let createNoteView = CreateNoteView(viewModel: createNoteViewModel)
+                let createNewNoteController = UIHostingController(rootView: createNoteView)
+                if #available(iOS 15, *) {
+                    createNewNoteController.sheetPresentationController?.detents = [.medium()]
+                }
+                presentViewController(createNewNoteController)
+
+            case .password:
+                let viewModel = GeneratePasswordViewModel(coordinator: self)
+                let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
+                let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
+                if #available(iOS 15, *) {
+                    generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
+                }
+                presentViewController(generatePasswordViewController)
             }
-            dismissTopMostModalAndPresent(viewController: createNewNoteController)
-        case .password:
-            let viewModel = GeneratePasswordViewModel(coordinator: self)
-            let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
-            let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
-            if #available(iOS 15, *) {
-                generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
-            }
-            dismissTopMostModalAndPresent(viewController: generatePasswordViewController)
         }
     }
 }
@@ -157,13 +140,13 @@ extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
     }
 
     func createVaultViewModelWantsToBeDismissed() {
-        dismissTopMostModal()
+        dismissTopMostViewController()
     }
 
     func createVaultViewModelDidCreateShare(share: PartialShare) {
         // Set vaults to empty to trigger refresh
         vaultSelection.update(vaults: [])
-        dismissTopMostModal()
+        dismissTopMostViewController()
     }
 
     func createVaultViewModelFailedToCreateShare(error: Error) {
