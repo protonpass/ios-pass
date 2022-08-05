@@ -44,6 +44,7 @@
 		35464B60289B02EC008E65C4 /* LocalDatasourceTests+CDVaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35464B5F289B02EC008E65C4 /* LocalDatasourceTests+CDVaultKey.swift */; };
 		35464B62289B0380008E65C4 /* VaultKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35464B61289B0380008E65C4 /* VaultKey+Test.swift */; };
 		3547696A289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476969289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift */; };
+		3547696C289D253600581E2E /* RemoteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696B289D253600581E2E /* RemoteDatasource.swift */; };
 		3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */; };
 		3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */; };
 		3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD92876DF1300EE85E1 /* TrashView.swift */; };
@@ -286,6 +287,7 @@
 		35464B5F289B02EC008E65C4 /* LocalDatasourceTests+CDVaultKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalDatasourceTests+CDVaultKey.swift"; sourceTree = "<group>"; };
 		35464B61289B0380008E65C4 /* VaultKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VaultKey+Test.swift"; sourceTree = "<group>"; };
 		35476969289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalDatasourceTests+fetchShareKey.swift"; sourceTree = "<group>"; };
+		3547696B289D253600581E2E /* RemoteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDatasource.swift; sourceTree = "<group>"; };
 		3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsView.swift; sourceTree = "<group>"; };
 		3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleSidebarButton.swift; sourceTree = "<group>"; };
 		3547ABD92876DF1300EE85E1 /* TrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashView.swift; sourceTree = "<group>"; };
@@ -500,6 +502,7 @@
 			children = (
 				35004A3D289004200073C4A7 /* CoreData */,
 				3542F02728996C70004007C7 /* LocalDatasource.swift */,
+				3547696B289D253600581E2E /* RemoteDatasource.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -1608,6 +1611,7 @@
 				350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */,
 				35004A40289004330073C4A7 /* Pass.xcdatamodeld in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
+				3547696C289D253600581E2E /* RemoteDatasource.swift in Sources */,
 				35A909E5289006F700AC54D4 /* CDItemKey+CoreDataProperties.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
 				35A909E3289006F700AC54D4 /* CDShare+CoreDataProperties.swift in Sources */,
