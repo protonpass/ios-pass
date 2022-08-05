@@ -25,8 +25,6 @@ public struct ProtonPassItemV1_ItemNote {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var content: String = String()
-
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
@@ -41,19 +39,43 @@ public struct ProtonPassItemV1_ItemLogin {
 
   public var password: String = String()
 
+  public var urls: [String] = []
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
 }
 
-public struct ProtonPassItemV1_Item {
+public struct ProtonPassItemV1_ItemAlias {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
+public struct ProtonPassItemV1_Metadata {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   public var name: String = String()
 
-  public var content: ProtonPassItemV1_Item.OneOf_Content? = nil
+  public var note: String = String()
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
+public struct ProtonPassItemV1_Content {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var content: ProtonPassItemV1_Content.OneOf_Content? = nil
 
   public var note: ProtonPassItemV1_ItemNote {
     get {
@@ -71,14 +93,23 @@ public struct ProtonPassItemV1_Item {
     set {content = .login(newValue)}
   }
 
+  public var alias: ProtonPassItemV1_ItemAlias {
+    get {
+      if case .alias(let v)? = content {return v}
+      return ProtonPassItemV1_ItemAlias()
+    }
+    set {content = .alias(newValue)}
+  }
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public enum OneOf_Content: Equatable {
     case note(ProtonPassItemV1_ItemNote)
     case login(ProtonPassItemV1_ItemLogin)
+    case alias(ProtonPassItemV1_ItemAlias)
 
   #if !swift(>=4.1)
-    public static func ==(lhs: ProtonPassItemV1_Item.OneOf_Content, rhs: ProtonPassItemV1_Item.OneOf_Content) -> Bool {
+    public static func ==(lhs: ProtonPassItemV1_Content.OneOf_Content, rhs: ProtonPassItemV1_Content.OneOf_Content) -> Bool {
       // The use of inline closures is to circumvent an issue where the compiler
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
@@ -91,6 +122,10 @@ public struct ProtonPassItemV1_Item {
         guard case .login(let l) = lhs, case .login(let r) = rhs else { preconditionFailure() }
         return l == r
       }()
+      case (.alias, .alias): return {
+        guard case .alias(let l) = lhs, case .alias(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
       default: return false
       }
     }
@@ -100,11 +135,45 @@ public struct ProtonPassItemV1_Item {
   public init() {}
 }
 
+public struct ProtonPassItemV1_Item {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var metadata: ProtonPassItemV1_Metadata {
+    get {return _metadata ?? ProtonPassItemV1_Metadata()}
+    set {_metadata = newValue}
+  }
+  /// Returns true if `metadata` has been explicitly set.
+  public var hasMetadata: Bool {return self._metadata != nil}
+  /// Clears the value of `metadata`. Subsequent reads from it will return its default value.
+  public mutating func clearMetadata() {self._metadata = nil}
+
+  public var content: ProtonPassItemV1_Content {
+    get {return _content ?? ProtonPassItemV1_Content()}
+    set {_content = newValue}
+  }
+  /// Returns true if `content` has been explicitly set.
+  public var hasContent: Bool {return self._content != nil}
+  /// Clears the value of `content`. Subsequent reads from it will return its default value.
+  public mutating func clearContent() {self._content = nil}
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+
+  fileprivate var _metadata: ProtonPassItemV1_Metadata? = nil
+  fileprivate var _content: ProtonPassItemV1_Content? = nil
+}
+
 #if swift(>=5.5) && canImport(_Concurrency)
 extension ProtonPassItemV1_ItemNote: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemLogin: @unchecked Sendable {}
+extension ProtonPassItemV1_ItemAlias: @unchecked Sendable {}
+extension ProtonPassItemV1_Metadata: @unchecked Sendable {}
+extension ProtonPassItemV1_Content: @unchecked Sendable {}
+extension ProtonPassItemV1_Content.OneOf_Content: @unchecked Sendable {}
 extension ProtonPassItemV1_Item: @unchecked Sendable {}
-extension ProtonPassItemV1_Item.OneOf_Content: @unchecked Sendable {}
 #endif  // swift(>=5.5) && canImport(_Concurrency)
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
@@ -113,31 +182,18 @@ fileprivate let _protobuf_package = "proton_pass_item_v1"
 
 extension ProtonPassItemV1_ItemNote: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemNote"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "content"),
-  ]
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap()
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.content) }()
-      default: break
-      }
+    while let _ = try decoder.nextFieldNumber() {
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.content.isEmpty {
-      try visitor.visitSingularStringField(value: self.content, fieldNumber: 1)
-    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: ProtonPassItemV1_ItemNote, rhs: ProtonPassItemV1_ItemNote) -> Bool {
-    if lhs.content != rhs.content {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -148,6 +204,7 @@ extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._Mess
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "username"),
     2: .same(proto: "password"),
+    3: .same(proto: "urls"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -158,6 +215,7 @@ extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._Mess
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.username) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.password) }()
+      case 3: try { try decoder.decodeRepeatedStringField(value: &self.urls) }()
       default: break
       }
     }
@@ -170,23 +228,45 @@ extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._Mess
     if !self.password.isEmpty {
       try visitor.visitSingularStringField(value: self.password, fieldNumber: 2)
     }
+    if !self.urls.isEmpty {
+      try visitor.visitRepeatedStringField(value: self.urls, fieldNumber: 3)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: ProtonPassItemV1_ItemLogin, rhs: ProtonPassItemV1_ItemLogin) -> Bool {
     if lhs.username != rhs.username {return false}
     if lhs.password != rhs.password {return false}
+    if lhs.urls != rhs.urls {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension ProtonPassItemV1_Item: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".Item"
+extension ProtonPassItemV1_ItemAlias: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".ItemAlias"
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: ProtonPassItemV1_ItemAlias, rhs: ProtonPassItemV1_ItemAlias) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension ProtonPassItemV1_Metadata: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".Metadata"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "name"),
     2: .same(proto: "note"),
-    3: .same(proto: "login"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -196,6 +276,44 @@ extension ProtonPassItemV1_Item: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.name) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.note) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.name.isEmpty {
+      try visitor.visitSingularStringField(value: self.name, fieldNumber: 1)
+    }
+    if !self.note.isEmpty {
+      try visitor.visitSingularStringField(value: self.note, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: ProtonPassItemV1_Metadata, rhs: ProtonPassItemV1_Metadata) -> Bool {
+    if lhs.name != rhs.name {return false}
+    if lhs.note != rhs.note {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension ProtonPassItemV1_Content: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".Content"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    2: .same(proto: "note"),
+    3: .same(proto: "login"),
+    4: .same(proto: "alias"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
       case 2: try {
         var v: ProtonPassItemV1_ItemNote?
         var hadOneofValue = false
@@ -222,6 +340,19 @@ extension ProtonPassItemV1_Item: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
           self.content = .login(v)
         }
       }()
+      case 4: try {
+        var v: ProtonPassItemV1_ItemAlias?
+        var hadOneofValue = false
+        if let current = self.content {
+          hadOneofValue = true
+          if case .alias(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.content = .alias(v)
+        }
+      }()
       default: break
       }
     }
@@ -232,9 +363,6 @@ extension ProtonPassItemV1_Item: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     // allocates stack space for every if/case branch local when no optimizations
     // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
     // https://github.com/apple/swift-protobuf/issues/1182
-    if !self.name.isEmpty {
-      try visitor.visitSingularStringField(value: self.name, fieldNumber: 1)
-    }
     switch self.content {
     case .note?: try {
       guard case .note(let v)? = self.content else { preconditionFailure() }
@@ -244,14 +372,59 @@ extension ProtonPassItemV1_Item: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       guard case .login(let v)? = self.content else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
     }()
+    case .alias?: try {
+      guard case .alias(let v)? = self.content else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
+    }()
     case nil: break
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: ProtonPassItemV1_Item, rhs: ProtonPassItemV1_Item) -> Bool {
-    if lhs.name != rhs.name {return false}
+  public static func ==(lhs: ProtonPassItemV1_Content, rhs: ProtonPassItemV1_Content) -> Bool {
     if lhs.content != rhs.content {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension ProtonPassItemV1_Item: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".Item"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "metadata"),
+    2: .same(proto: "content"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._metadata) }()
+      case 2: try { try decoder.decodeSingularMessageField(value: &self._content) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._metadata {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    } }()
+    try { if let v = self._content {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: ProtonPassItemV1_Item, rhs: ProtonPassItemV1_Item) -> Bool {
+    if lhs._metadata != rhs._metadata {return false}
+    if lhs._content != rhs._content {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
