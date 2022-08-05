@@ -18,26 +18,56 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import SwiftUI
+
+protocol CreateNoteViewModelDelegate: AnyObject {
+    func createNoteViewModelBeginsLoading()
+    func createNoteViewModelStopsLoading()
+    func createNoteViewModelDidFailWithError(error: Error)
+}
 
 final class CreateNoteViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    private let coordinator: MyVaultsCoordinator
-
+    @Published private(set) var isLoading = false
+    @Published private(set) var error: Error?
     @Published var name = ""
     @Published var note = ""
 
-    init(coordinator: MyVaultsCoordinator) {
-        self.coordinator = coordinator
+    private var cancellables = Set<AnyCancellable>()
+    weak var delegate: CreateNoteViewModelDelegate?
+
+    init() {
+        $isLoading
+            .sink { [weak self] isLoading in
+                guard let self = self else { return }
+                if isLoading {
+                    self.delegate?.createNoteViewModelBeginsLoading()
+                } else {
+                    self.delegate?.createNoteViewModelStopsLoading()
+                }
+            }
+            .store(in: &cancellables)
+
+        $error
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                if let error = error {
+                    self.delegate?.createNoteViewModelDidFailWithError(error: error)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func saveAction() {
-        print(#function)
+        isLoading = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.isLoading = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.error = AppCoordinatorError.noSessionData
+            }
+        }
     }
-}
-
-extension CreateNoteViewModel {
-    static var preview: CreateNoteViewModel { .init(coordinator: .preview) }
 }

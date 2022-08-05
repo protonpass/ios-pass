@@ -69,11 +69,12 @@ struct CreateNoteView: View {
                 }
             }
         }
+        .disabled(viewModel.isLoading)
     }
 }
 
 struct CreateNoteView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateNoteView(viewModel: .preview)
+        CreateNoteView(viewModel: .init())
     }
 }

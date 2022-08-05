@@ -98,6 +98,17 @@ final class MyVaultsCoordinator: Coordinator {
         presentView(createAliasView)
     }
 
+    func showCreateNoteView() {
+        let createNoteViewModel = CreateNoteViewModel()
+        createNoteViewModel.delegate = self
+        let createNoteView = CreateNoteView(viewModel: createNoteViewModel)
+        let createNewNoteController = UIHostingController(rootView: createNoteView)
+        if #available(iOS 15, *) {
+            createNewNoteController.sheetPresentationController?.detents = [.medium()]
+        }
+        presentViewController(createNewNoteController)
+    }
+
     func handleCreateNewItemOption(_ option: CreateNewItemOption) {
         dismissTopMostViewController(animated: true) { [unowned self] in
             switch option {
@@ -105,15 +116,8 @@ final class MyVaultsCoordinator: Coordinator {
                 showCreateLoginView()
             case .alias:
                 showCreateAliasView()
-
             case .note:
-                let createNoteViewModel = CreateNoteViewModel(coordinator: self)
-                let createNoteView = CreateNoteView(viewModel: createNoteViewModel)
-                let createNewNoteController = UIHostingController(rootView: createNoteView)
-                if #available(iOS 15, *) {
-                    createNewNoteController.sheetPresentationController?.detents = [.medium()]
-                }
-                presentViewController(createNewNoteController)
+                showCreateNoteView()
 
             case .password:
                 let viewModel = GeneratePasswordViewModel(coordinator: self)
@@ -175,6 +179,21 @@ extension MyVaultsCoordinator: CreateAliasViewModelDelegate {
     }
 
     func createAliasViewModelDidFailWithError(error: Error) {
+        delegate?.myVautsCoordinatorWantsToAlertError(error)
+    }
+}
+
+// MARK: - CreateNoteViewModelDelegate
+extension MyVaultsCoordinator: CreateNoteViewModelDelegate {
+    func createNoteViewModelBeginsLoading() {
+        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    }
+
+    func createNoteViewModelStopsLoading() {
+        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
+    func createNoteViewModelDidFailWithError(error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 }
