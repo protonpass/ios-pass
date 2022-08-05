@@ -43,6 +43,7 @@
 		35464B5E289B0109008E65C4 /* LocalDatasourceTests+CDShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35464B5D289B0109008E65C4 /* LocalDatasourceTests+CDShare.swift */; };
 		35464B60289B02EC008E65C4 /* LocalDatasourceTests+CDVaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35464B5F289B02EC008E65C4 /* LocalDatasourceTests+CDVaultKey.swift */; };
 		35464B62289B0380008E65C4 /* VaultKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35464B61289B0380008E65C4 /* VaultKey+Test.swift */; };
+		3547696A289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476969289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift */; };
 		3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */; };
 		3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */; };
 		3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD92876DF1300EE85E1 /* TrashView.swift */; };
@@ -284,6 +285,7 @@
 		35464B5D289B0109008E65C4 /* LocalDatasourceTests+CDShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalDatasourceTests+CDShare.swift"; sourceTree = "<group>"; };
 		35464B5F289B02EC008E65C4 /* LocalDatasourceTests+CDVaultKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalDatasourceTests+CDVaultKey.swift"; sourceTree = "<group>"; };
 		35464B61289B0380008E65C4 /* VaultKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VaultKey+Test.swift"; sourceTree = "<group>"; };
+		35476969289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalDatasourceTests+fetchShareKey.swift"; sourceTree = "<group>"; };
 		3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsView.swift; sourceTree = "<group>"; };
 		3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleSidebarButton.swift; sourceTree = "<group>"; };
 		3547ABD92876DF1300EE85E1 /* TrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashView.swift; sourceTree = "<group>"; };
@@ -565,6 +567,7 @@
 				35464B5D289B0109008E65C4 /* LocalDatasourceTests+CDShare.swift */,
 				35464B5F289B02EC008E65C4 /* LocalDatasourceTests+CDVaultKey.swift */,
 				351E9E36289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift */,
+				35476969289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -1638,6 +1641,7 @@
 				351E9E37289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift in Sources */,
 				35464B60289B02EC008E65C4 /* LocalDatasourceTests+CDVaultKey.swift in Sources */,
 				353C95DF289A9E1900E3CDCA /* LocalDatasourceTests.swift in Sources */,
+				3547696A289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift in Sources */,
 				353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */,
 				351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */,
 				351E9E39289C508B00BB47EB /* ItemKey+Test.swift in Sources */,

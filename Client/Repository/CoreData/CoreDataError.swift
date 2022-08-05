@@ -22,11 +22,14 @@ import CoreData
 
 public enum CoreDataError: Error, CustomDebugStringConvertible {
     case corruptedObject(NSManagedObject, String)
+    case corruptedShareKey(String)
 
     public var debugDescription: String {
         switch self {
         case let .corruptedObject(object, property):
             return "Corrupted \(type(of: object)): missing value for \(property)"
+        case .corruptedShareKey(let shareId):
+            return "ItemKeys & VaultKeys are not synced for share with ID \(shareId)"
         }
     }
 }

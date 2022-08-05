@@ -25,9 +25,9 @@ public protocol LocalDatasourceProtocol {
     func insertShares(_ shares: [Share], withUserId userId: String) async throws
     func fetchShares(forUserId userId: String) async throws -> [Share]
     func insertShareKey(_ shareKey: ShareKey, withShareId shareId: String) async throws
-    func fetchShareKeys(forShareId shareId: String,
-                        page: Int,
-                        pageSize: Int) async throws -> [ShareKey]
+    func fetchShareKey(forShareId shareId: String,
+                       page: Int,
+                       pageSize: Int) async throws -> ShareKey
 }
 
 public enum LocalDatasourceError: Error {
@@ -193,10 +193,25 @@ extension LocalDatasource: LocalDatasourceProtocol {
         try await execute(batchInsertRequest: batchInsertRequest, withContext: taskContext)
     }
 
-    public func fetchShareKeys(forShareId shareId: String,
-                               page: Int,
-                               pageSize: Int) async throws -> [ShareKey] {
-        []
+    public func fetchShareKey(forShareId shareId: String,
+                              page: Int,
+                              pageSize: Int) async throws -> ShareKey {
+        let vaultKeyCount = try await getVaultKeysCount(forShareId: shareId)
+        let itemKeyCount = try await getItemKeysCount(forShareId: shareId)
+
+        guard vaultKeyCount == itemKeyCount else {
+            throw CoreDataError.corruptedShareKey(shareId)
+        }
+
+        let vaultKeys = try await fetchVaultKeys(forShareId: shareId,
+                                                 page: page,
+                                                 pageSize: pageSize)
+        let itemKeys = try await fetchItemKeys(forShareId: shareId,
+                                               page: page,
+                                               pageSize: pageSize)
+        return .init(vaultKeys: vaultKeys,
+                     itemKeys: itemKeys,
+                     total: vaultKeyCount)
     }
 
     func fetchVaultKeys(forShareId shareId: String,
