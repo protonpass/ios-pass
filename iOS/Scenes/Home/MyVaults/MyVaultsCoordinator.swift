@@ -85,10 +85,17 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateLoginView() {
-        let createLoginViewModel = CreateLoginViewModel(coordinator: self)
+        let createLoginViewModel = CreateLoginViewModel()
         createLoginViewModel.delegate = self
         let createLoginView = CreateLoginView(viewModel: createLoginViewModel)
         presentView(createLoginView)
+    }
+
+    func showCreateAliasView() {
+        let createAliasViewModel = CreateAliasViewModel()
+        createAliasViewModel.delegate = self
+        let createAliasView = CreateAliasView(viewModel: createAliasViewModel)
+        presentView(createAliasView)
     }
 
     func handleCreateNewItemOption(_ option: CreateNewItemOption) {
@@ -96,10 +103,8 @@ final class MyVaultsCoordinator: Coordinator {
             switch option {
             case .login:
                 showCreateLoginView()
-
             case .alias:
-                let createAliasView = CreateAliasView(coordinator: self)
-                presentView(createAliasView)
+                showCreateAliasView()
 
             case .note:
                 let createNoteViewModel = CreateNoteViewModel(coordinator: self)
@@ -155,6 +160,21 @@ extension MyVaultsCoordinator: CreateLoginViewModelDelegate {
     }
 
     func createLoginViewModelDidFailWithError(error: Error) {
+        delegate?.myVautsCoordinatorWantsToAlertError(error)
+    }
+}
+
+// MARK: - CreateAliasViewModelDelegate
+extension MyVaultsCoordinator: CreateAliasViewModelDelegate {
+    func createAliasViewModelBeginsLoading() {
+        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    }
+
+    func createAliasViewModelStopsLoading() {
+        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
+    func createAliasViewModelDidFailWithError(error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 }

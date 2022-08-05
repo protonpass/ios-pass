@@ -1,5 +1,5 @@
 //
-// CreateLoginViewModel.swift
+// CreateAliasViewModel.swift
 // Proton Pass - Created on 05/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -22,29 +22,29 @@ import Combine
 import Core
 import SwiftUI
 
-protocol CreateLoginViewModelDelegate: AnyObject {
-    func createLoginViewModelBeginsLoading()
-    func createLoginViewModelStopsLoading()
-    func createLoginViewModelDidFailWithError(error: Error)
+protocol CreateAliasViewModelDelegate: AnyObject {
+    func createAliasViewModelBeginsLoading()
+    func createAliasViewModelStopsLoading()
+    func createAliasViewModelDidFailWithError(error: Error)
 }
 
-final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
+final class CreateAliasViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     @Published private(set) var isLoading = false
     @Published private(set) var error: Error?
 
     private var cancellables = Set<AnyCancellable>()
-    weak var delegate: CreateLoginViewModelDelegate?
+    weak var delegate: CreateAliasViewModelDelegate?
 
     init() {
         $isLoading
             .sink { [weak self] isLoading in
                 guard let self = self else { return }
                 if isLoading {
-                    self.delegate?.createLoginViewModelBeginsLoading()
+                    self.delegate?.createAliasViewModelBeginsLoading()
                 } else {
-                    self.delegate?.createLoginViewModelStopsLoading()
+                    self.delegate?.createAliasViewModelStopsLoading()
                 }
             }
             .store(in: &cancellables)
@@ -53,7 +53,7 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
             .sink { [weak self] error in
                 guard let self = self else { return }
                 if let error = error {
-                    self.delegate?.createLoginViewModelDidFailWithError(error: error)
+                    self.delegate?.createAliasViewModelDidFailWithError(error: error)
                 }
             }
             .store(in: &cancellables)

@@ -64,6 +64,6 @@ struct CreateLoginView: View {
 
 struct CreateLoginView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateLoginView(viewModel: .preview)
+        CreateLoginView(viewModel: .init())
     }
 }
