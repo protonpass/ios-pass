@@ -21,28 +21,43 @@
 import Client
 import Combine
 import Core
+import ProtonCore_Login
+import ProtonCore_Services
+
+protocol LoadVaultsViewModelDelegate: AnyObject {
+    func loadVaultsViewModelWantsToToggleSideBar()
+}
 
 final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var error: Error?
 
     deinit { print(deinitMessage) }
 
-    let coordinator: MyVaultsCoordinator
+    private let userData: UserData
+    private let apiService: APIService
+    private let vaultSelection: VaultSelection
+    private let repository: RepositoryProtocol
 
-    init(coordinator: MyVaultsCoordinator) {
-        self.coordinator = coordinator
+    weak var delegate: LoadVaultsViewModelDelegate?
+
+    init(userData: UserData,
+         apiService: APIService,
+         vaultSelection: VaultSelection,
+         repository: RepositoryProtocol) {
+        self.userData = userData
+        self.apiService = apiService
+        self.vaultSelection = vaultSelection
+        self.repository = repository
     }
 
     func toggleSidebarAction() {
-        coordinator.showSidebar()
+        delegate?.loadVaultsViewModelWantsToToggleSideBar()
     }
 
     func fetchVaults(forceUpdate: Bool = false) {
         error = nil
         Task { @MainActor in
             do {
-                let repository = coordinator.repository
-                let userData = coordinator.sessionData.userData
                 let shares = try await repository.getShares(forceUpdate: forceUpdate)
 
                 var vaults: [VaultProtocol] = []
@@ -58,7 +73,7 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
                 if vaults.isEmpty {
                     createDefaultVault()
                 } else {
-                    coordinator.vaultSelection.update(vaults: vaults)
+                    vaultSelection.update(vaults: vaults)
                 }
             } catch {
                 self.error = error
@@ -69,12 +84,11 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     private func createDefaultVault() {
         Task { @MainActor in
             do {
-                let userData = coordinator.sessionData.userData
                 let createVaultEndpoint = try CreateVaultEndpoint(credential: userData.credential,
                                                                   addressKey: userData.getAddressKey(),
                                                                   name: "Personal",
                                                                   note: "Personal vault")
-                _ = try await coordinator.apiService.exec(endpoint: createVaultEndpoint)
+                _ = try await apiService.exec(endpoint: createVaultEndpoint)
                 self.fetchVaults()
             } catch {
                 self.error = error

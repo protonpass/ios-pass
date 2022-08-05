@@ -22,25 +22,22 @@ import SwiftUI
 
 struct MyVaultsView: View {
     @StateObject private var viewModel: MyVaultsViewModel
+    private let loadVaultsViewModel: LoadVaultsViewModel
+    private let vaultContentViewModel: VaultContentViewModel
 
-    init(viewModel: MyVaultsViewModel) {
-        _viewModel = .init(wrappedValue: viewModel)
+    init(myVaultsViewModel: MyVaultsViewModel,
+         loadVaultsViewModel: LoadVaultsViewModel,
+         vaultContentViewModel: VaultContentViewModel) {
+        _viewModel = .init(wrappedValue: myVaultsViewModel)
+        self.loadVaultsViewModel = loadVaultsViewModel
+        self.vaultContentViewModel = vaultContentViewModel
     }
 
     var body: some View {
-        let coordinator = viewModel.coordinator
         if viewModel.vaults.isEmpty {
-            LoadVaultsView(viewModel: .init(coordinator: coordinator))
+            LoadVaultsView(viewModel: loadVaultsViewModel)
         } else {
-            VaultContentView(viewModel: .init(coordinator: coordinator))
-        }
-    }
-}
-
-struct MyVaultsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            MyVaultsView(viewModel: .preview)
+            VaultContentView(viewModel: vaultContentViewModel)
         }
     }
 }

@@ -22,20 +22,26 @@ import Client
 import Combine
 import Core
 
+protocol VaultContentViewModelDelegate: AnyObject {
+    func vaultContentViewModelWantsToToggleSidebar()
+    func vaultContentViewModelWantsToCreateNewItem()
+    func vaultContentViewModelWantsToCreateNewVault()
+}
+
 final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    private let coordinator: MyVaultsCoordinator
-    private var vaultSelection: VaultSelection { coordinator.vaultSelection }
+    private let vaultSelection: VaultSelection
 
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
 
     private var cancellables = Set<AnyCancellable>()
+    weak var delegate: VaultContentViewModelDelegate?
 
-    init(coordinator: MyVaultsCoordinator) {
-        self.coordinator = coordinator
-        coordinator.vaultSelection.objectWillChange
+    init(vaultSelection: VaultSelection) {
+        self.vaultSelection = vaultSelection
+        vaultSelection.objectWillChange
             .sink { [unowned self] _ in
                 self.objectWillChange.send()
             }
@@ -50,14 +56,14 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
 // MARK: - Actions
 extension VaultContentViewModel {
     func toggleSidebarAction() {
-        coordinator.showSidebar()
+        delegate?.vaultContentViewModelWantsToToggleSidebar()
     }
 
     func createItemAction() {
-        coordinator.showCreateItemView()
+        delegate?.vaultContentViewModelWantsToCreateNewItem()
     }
 
     func createVaultAction() {
-        coordinator.showCreateVaultView()
+        delegate?.vaultContentViewModelWantsToCreateNewVault()
     }
 }

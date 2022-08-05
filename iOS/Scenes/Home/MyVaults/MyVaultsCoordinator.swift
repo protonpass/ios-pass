@@ -57,7 +57,16 @@ final class MyVaultsCoordinator: Coordinator {
                                      remoteDatasource: remoteDatasource)
         super.init()
 
-        self.start(with: MyVaultsView(viewModel: .init(coordinator: self)))
+        let myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
+        let loadVaultsViewModel = LoadVaultsViewModel(userData: sessionData.userData,
+                                                      apiService: apiService,
+                                                      vaultSelection: vaultSelection,
+                                                      repository: repository)
+        let vaultContentViewModel = VaultContentViewModel(vaultSelection: vaultSelection)
+        vaultContentViewModel.delegate = self
+        self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
+                                      loadVaultsViewModel: loadVaultsViewModel,
+                                      vaultContentViewModel: vaultContentViewModel))
     }
 
     func showSidebar() {
@@ -76,7 +85,8 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateVaultView() {
-        let createVaultViewModel = CreateVaultViewModel(coordinator: self)
+        let createVaultViewModel = CreateVaultViewModel(userData: sessionData.userData,
+                                                        apiService: apiService)
         createVaultViewModel.delegate = self
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         let createVaultViewController = UIHostingController(rootView: createVaultView)
@@ -119,6 +129,21 @@ final class MyVaultsCoordinator: Coordinator {
             generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
         }
         presentViewController(generatePasswordViewController)
+    }
+}
+
+// MARK: - VaultContentViewModelDelegate
+extension MyVaultsCoordinator: VaultContentViewModelDelegate {
+    func vaultContentViewModelWantsToToggleSidebar() {
+        showSidebar()
+    }
+
+    func vaultContentViewModelWantsToCreateNewItem() {
+        showCreateItemView()
+    }
+
+    func vaultContentViewModelWantsToCreateNewVault() {
+        showCreateVaultView()
     }
 }
 
@@ -203,14 +228,5 @@ extension MyVaultsCoordinator: CreateNoteViewModelDelegate {
 
     func createNoteViewModelDidFailWithError(error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
-    }
-}
-
-extension MyVaultsCoordinator {
-    /// For preview purposes
-    static var preview: MyVaultsCoordinator {
-        .init(apiService: DummyApiService.preview,
-              sessionData: .preview,
-              vaultSelection: .preview)
     }
 }

@@ -39,12 +39,14 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var error: Error?
     @Published private var createdShare: PartialShare?
 
-    private let coordinator: MyVaultsCoordinator
+    private let userData: UserData
+    private let apiService: APIService
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: CreateVaultViewModelDelegate?
 
-    init(coordinator: MyVaultsCoordinator) {
-        self.coordinator = coordinator
+    init(userData: UserData, apiService: APIService) {
+        self.userData = userData
+        self.apiService = apiService
 
         $isLoading
             .sink { [weak self] isLoading in
@@ -80,12 +82,11 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
         Task { @MainActor in
             do {
                 isLoading = true
-                let userData = coordinator.sessionData.userData
                 let createVaultEndpoint = try CreateVaultEndpoint(credential: userData.credential,
                                                                   addressKey: userData.getAddressKey(),
                                                                   name: name,
                                                                   note: note)
-                let response = try await coordinator.apiService.exec(endpoint: createVaultEndpoint)
+                let response = try await apiService.exec(endpoint: createVaultEndpoint)
                 isLoading = false
                 createdShare = response.share
             } catch {
@@ -98,6 +99,6 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
 
 extension CreateVaultViewModel {
     static var preview: CreateVaultViewModel {
-        .init(coordinator: .preview)
+        .init(userData: .preview, apiService: DummyApiService.preview)
     }
 }

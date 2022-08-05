@@ -26,14 +26,14 @@ import SwiftUI
 final class MyVaultsViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    let coordinator: MyVaultsCoordinator
-    var vaults: [VaultProtocol] { coordinator.vaultSelection.vaults }
-
+    private let vaultSelection: VaultSelection
     private var cancellables = Set<AnyCancellable>()
 
-    init(coordinator: MyVaultsCoordinator) {
-        self.coordinator = coordinator
-        coordinator.vaultSelection.objectWillChange
+    var vaults: [VaultProtocol] { vaultSelection.vaults }
+
+    init(vaultSelection: VaultSelection) {
+        self.vaultSelection = vaultSelection
+        vaultSelection.objectWillChange
             .sink { [unowned self] _ in
                 self.objectWillChange.send()
             }
@@ -42,5 +42,5 @@ final class MyVaultsViewModel: DeinitPrintable, ObservableObject {
 }
 
 extension MyVaultsViewModel {
-    static var preview: MyVaultsViewModel { .init(coordinator: .preview) }
+    static var preview: MyVaultsViewModel { .init(vaultSelection: .preview) }
 }
