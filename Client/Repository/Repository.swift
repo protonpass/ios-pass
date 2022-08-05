@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Core
 
 public protocol RepositoryProtocol {
     func getShares(forceUpdate: Bool) async throws -> [Share]
@@ -33,9 +33,9 @@ public final class Repository {
     private let localDatasource: LocalDatasourceProtocol
     private let remoteDatasource: RemoteDatasourceProtocol
 
-    init(userId: String,
-         localDatasource: LocalDatasourceProtocol,
-         remoteDatasource: RemoteDatasourceProtocol) {
+    public init(userId: String,
+                localDatasource: LocalDatasourceProtocol,
+                remoteDatasource: RemoteDatasourceProtocol) {
         self.userId = userId
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
@@ -44,21 +44,26 @@ public final class Repository {
 
 extension Repository: RepositoryProtocol {
     public func getShares(forceUpdate: Bool) async throws -> [Share] {
+        PPLogger.shared?.log("Getting shares")
         if forceUpdate {
+            PPLogger.shared?.log("Force update getting shares")
             return try await getSharesFromRemoteAndSaveToLocal()
         }
 
         let localShares = try await localDatasource.fetchShares(forUserId: userId)
         if localShares.isEmpty {
+            PPLogger.shared?.log("No shares in local db => Fetching from remote...")
             return try await getSharesFromRemoteAndSaveToLocal()
         }
 
+        PPLogger.shared?.log("Found shares in local db")
         return localShares
     }
 
     private func getSharesFromRemoteAndSaveToLocal() async throws -> [Share] {
         let remoteShares = try await remoteDatasource.getShares()
         try await localDatasource.insertShares(remoteShares, withUserId: userId)
+        PPLogger.shared?.log("Fetched shares from remote and saved to local")
         return remoteShares
     }
 

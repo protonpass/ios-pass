@@ -37,45 +37,28 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
         coordinator.showSidebar()
     }
 
-    func fetchVaults() {
+    func fetchVaults(forceUpdate: Bool = false) {
         error = nil
         Task { @MainActor in
             do {
+                let repository = coordinator.repository
                 let userData = coordinator.sessionData.userData
-                let apiService = coordinator.apiService
+                let shares = try await repository.getShares(forceUpdate: forceUpdate)
 
-                let getSharesEndpoint = GetSharesEndpoint(credential: userData.credential)
-                let getSharesResponse = try await apiService.exec(endpoint: getSharesEndpoint)
+                var vaults: [VaultProtocol] = []
+                for share in shares {
+                    let shareKey = try await repository.getShareKey(forceUpdate: forceUpdate,
+                                                                    shareId: share.shareID,
+                                                                    page: 0,
+                                                                    pageSize: Int.max)
+                    vaults.append(try share.getVault(userData: userData,
+                                                     vaultKeys: shareKey.vaultKeys))
+                }
 
-                try await withThrowingTaskGroup(of: Share.self) { [unowned self] group in
-                    for partialShare in getSharesResponse.shares {
-                        let getShareDataEndpoint =
-                        GetShareDataEndpoint(credential: userData.credential,
-                                             shareId: partialShare.shareID)
-                        group.addTask {
-                            let getShareDataResponse =
-                            try await apiService.exec(endpoint: getShareDataEndpoint)
-                            return getShareDataResponse.share
-                        }
-                    }
-
-                    var vaults: [VaultProtocol] = []
-                    for try await share in group {
-                        let getShareKeysEndpoint =
-                        GetShareKeysEndpoint(credential: userData.credential,
-                                             shareId: share.shareID,
-                                             page: 0,
-                                             pageSize: Int.max)
-                        let getShareKeysResponse = try await apiService.exec(endpoint: getShareKeysEndpoint)
-                        vaults.append(try share.getVault(userData: userData,
-                                                         vaultKeys: getShareKeysResponse.keys.vaultKeys))
-                    }
-
-                    if vaults.isEmpty {
-                        self.createDefaultVault()
-                    } else {
-                        self.coordinator.vaultSelection.update(vaults: vaults)
-                    }
+                if vaults.isEmpty {
+                    createDefaultVault()
+                } else {
+                    coordinator.vaultSelection.update(vaults: vaults)
                 }
             } catch {
                 self.error = error

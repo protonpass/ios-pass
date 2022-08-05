@@ -30,8 +30,8 @@ public final class RemoteDatasource {
     private let authCredential: AuthCredential
     private let apiService: APIService
 
-    init(authCredential: AuthCredential,
-         apiService: APIService) {
+    public init(authCredential: AuthCredential,
+                apiService: APIService) {
         self.authCredential = authCredential
         self.apiService = apiService
     }

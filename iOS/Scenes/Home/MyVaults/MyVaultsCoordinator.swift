@@ -44,6 +44,7 @@ final class MyVaultsCoordinator: Coordinator {
     let apiService: APIService
     let sessionData: SessionData
     let vaultSelection: VaultSelection
+    let repository: RepositoryProtocol
 
     init(apiService: APIService,
          sessionData: SessionData,
@@ -51,6 +52,15 @@ final class MyVaultsCoordinator: Coordinator {
         self.apiService = apiService
         self.sessionData = sessionData
         self.vaultSelection = vaultSelection
+
+        let localDatasource = LocalDatasource(inMemory: false)
+        let credential = sessionData.userData.credential
+        let userId = sessionData.userData.user.ID
+        let remoteDatasource = RemoteDatasource(authCredential: credential,
+                                                apiService: apiService)
+        self.repository = Repository(userId: userId,
+                                     localDatasource: localDatasource,
+                                     remoteDatasource: remoteDatasource)
         super.init(router: .init(), navigationType: .newFlow(hideBar: false))
     }
 
