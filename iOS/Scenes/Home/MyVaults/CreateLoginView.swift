@@ -42,9 +42,7 @@ struct CreateLoginView: View {
                                     text: $viewModel.username,
                                     placeholder: "Add username")
 
-                    TitledTextField(title: "Password",
-                                    text: $viewModel.password,
-                                    placeholder: "Add password")
+                    passwordTextField
 
                     TitledTextField(title: "Website address",
                                     text: $viewModel.url,
@@ -87,6 +85,22 @@ struct CreateLoginView: View {
                     .foregroundColor(Color(ColorProvider.BrandNorm))
             })
         }
+    }
+
+    private var passwordTextField: some View {
+        let toolbar = UIToolbar()
+        let btn = UIBarButtonItem(title: "Generate password",
+                                  style: .plain,
+                                  target: viewModel,
+                                  action: #selector(viewModel.generatePasswordAction))
+        btn.tintColor = ColorProvider.BrandNorm
+        toolbar.items = [.flexibleSpace(), btn, .flexibleSpace()]
+        toolbar.barStyle = UIBarStyle.default
+        toolbar.sizeToFit()
+        return TitledTextFieldWithToolbar(title: "Password",
+                                          text: $viewModel.password,
+                                          toolbar: toolbar,
+                                          placeholder: "Add password")
     }
 }
 

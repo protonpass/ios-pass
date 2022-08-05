@@ -74,4 +74,9 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
             }
         }
     }
+
+    @objc
+    func generatePasswordAction() {
+        print(#function)
+    }
 }
