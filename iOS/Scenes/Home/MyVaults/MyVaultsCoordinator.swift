@@ -121,8 +121,9 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewController(createNewNoteController)
     }
 
-    func showGeneratePasswordView() {
+    func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?) {
         let viewModel = GeneratePasswordViewModel()
+        viewModel.delegate = delegate
         let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
         let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
         if #available(iOS 15, *) {
@@ -159,7 +160,7 @@ extension MyVaultsCoordinator: CreateItemViewModelDelegate {
             case .note:
                 showCreateNoteView()
             case .password:
-                showGeneratePasswordView()
+                showGeneratePasswordView(delegate: nil)
             }
         }
     }
@@ -194,6 +195,10 @@ extension MyVaultsCoordinator: CreateLoginViewModelDelegate {
 
     func createLoginViewModelStopsLoading() {
         delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
+    func createLoginViewModelWantsToGeneratePassword(delegate: GeneratePasswordViewModelDelegate) {
+        showGeneratePasswordView(delegate: delegate)
     }
 
     func createLoginViewModelDidFailWithError(error: Error) {

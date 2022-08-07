@@ -64,6 +64,20 @@ struct GeneratePasswordView: View {
                 .padding(.horizontal)
 
                 Spacer()
+
+                Button(action: {
+                    viewModel.confirm()
+                    presentationMode.wrappedValue.dismiss()
+                }, label: {
+                    Text("Confirm")
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .contentShape(Rectangle())
+                })
+                .padding()
+                .background(Color(ColorProvider.BrandNorm))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .padding()
             }
             .animation(.default, value: viewModel.password)
             .navigationBarTitle("Generate password")

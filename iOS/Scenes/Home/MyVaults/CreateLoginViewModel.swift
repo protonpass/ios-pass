@@ -25,6 +25,7 @@ import SwiftUI
 protocol CreateLoginViewModelDelegate: AnyObject {
     func createLoginViewModelBeginsLoading()
     func createLoginViewModelStopsLoading()
+    func createLoginViewModelWantsToGeneratePassword(delegate: GeneratePasswordViewModelDelegate)
     func createLoginViewModelDidFailWithError(error: Error)
 }
 
@@ -78,7 +79,7 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
 
     @objc
     func generatePasswordAction() {
-        print(#function)
+        delegate?.createLoginViewModelWantsToGeneratePassword(delegate: self)
     }
 
     func generateAliasAction() {
@@ -86,5 +87,12 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
         let host = String.random(allowedCharacters: [.lowercase], length: 5)
         let domain = String.random(allowedCharacters: [.lowercase], length: 5)
         username = "\(name)@\(host).\(domain)"
+    }
+}
+
+// MARK: - GeneratePasswordViewModelDelegate
+extension CreateLoginViewModel: GeneratePasswordViewModelDelegate {
+    func generatePasswordViewModelDidConfirm(password: String) {
+        self.password = password
     }
 }

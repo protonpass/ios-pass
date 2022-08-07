@@ -22,6 +22,10 @@ import Combine
 import Core
 import SwiftUI
 
+protocol GeneratePasswordViewModelDelegate: AnyObject {
+    func generatePasswordViewModelDidConfirm(password: String)
+}
+
 final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
@@ -39,6 +43,8 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
     let lengthRange: ClosedRange<Double> = 10...128
+
+    weak var delegate: GeneratePasswordViewModelDelegate?
 
     init() {
         self.regenerate()
@@ -59,5 +65,9 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     func regenerate() {
         password = .random(allowedCharacters: allowedCharacters, length: Int(length))
+    }
+
+    func confirm() {
+        delegate?.generatePasswordViewModelDidConfirm(password: password)
     }
 }
