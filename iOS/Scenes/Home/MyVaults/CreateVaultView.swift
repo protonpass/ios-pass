@@ -25,8 +25,6 @@ import UIComponents
 struct CreateVaultView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: CreateVaultViewModel
-    @State private var name = ""
-    @State private var note = ""
 
     init(viewModel: CreateVaultViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -36,12 +34,18 @@ struct CreateVaultView: View {
         NavigationView {
             VStack(spacing: 20) {
                 TitledTextField(title: "Name",
-                                text: $name,
-                                placeholder: "Vault name")
+                                placeholder: "Vault name",
+                                text: $viewModel.name,
+                                contentType: .clearText,
+                                isRequired: false,
+                                trailingView: { EmptyView() })
 
                 TitledTextField(title: "Note",
-                                text: $note,
-                                placeholder: "Add description")
+                                placeholder: "Add description",
+                                text: $viewModel.note,
+                                contentType: .clearText,
+                                isRequired: false,
+                                trailingView: { EmptyView() })
                 Spacer()
             }
             .padding()
@@ -62,16 +66,13 @@ struct CreateVaultView: View {
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        viewModel.createVault(name: name,
-                                              note: note)
-                    }, label: {
+                    Button(action: viewModel.createVault) {
                         Text("Save")
                             .fontWeight(.bold)
                             .foregroundColor(Color(ColorProvider.BrandNorm))
-                            .opacity(name.isEmpty ? 0.5 : 1)
-                    })
-                    .disabled(name.isEmpty)
+                            .opacity(viewModel.name.isEmpty ? 0.5 : 1)
+                    }
+                    .disabled(viewModel.name.isEmpty)
                 }
             }
         }

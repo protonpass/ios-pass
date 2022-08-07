@@ -37,6 +37,7 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
+    @Published var isPasswordSecure = true // Password in clear text or not
     @Published var url = ""
     @Published var note = ""
 

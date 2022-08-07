@@ -38,6 +38,8 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var isLoading = false
     @Published private(set) var error: Error?
     @Published private var createdShare: PartialShare?
+    @Published var name = ""
+    @Published var note = ""
 
     private let userData: UserData
     private let apiService: APIService
@@ -78,7 +80,7 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
             .store(in: &cancellables)
     }
 
-    func createVault(name: String, note: String) {
+    func createVault() {
         Task { @MainActor in
             do {
                 isLoading = true

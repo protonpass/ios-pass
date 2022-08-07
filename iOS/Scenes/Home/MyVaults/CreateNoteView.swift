@@ -34,13 +34,19 @@ struct CreateNoteView: View {
         NavigationView {
             VStack(spacing: 30) {
                 TitledTextField(title: "Note name",
-                                text: $viewModel.name,
                                 placeholder: "Title",
-                                isRequired: false)
-                TitledTextField(title: "Note",
                                 text: $viewModel.name,
+                                contentType: .clearText,
+                                isRequired: false,
+                                trailingView: { EmptyView() })
+
+                TitledTextField(title: "Note",
                                 placeholder: "Add note",
-                                isRequired: false)
+                                text: $viewModel.note,
+                                contentType: .clearText,
+                                isRequired: false,
+                                trailingView: { EmptyView() })
+
                 Spacer()
             }
             .padding()

@@ -35,22 +35,34 @@ struct CreateLoginView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     TitledTextField(title: "Title",
+                                    placeholder: "Login name",
                                     text: $viewModel.title,
-                                    placeholder: "Login name")
+                                    contentType: .clearText,
+                                    isRequired: false,
+                                    trailingView: { EmptyView() })
 
                     TitledTextField(title: "Username",
+                                    placeholder: "Add username",
                                     text: $viewModel.username,
-                                    placeholder: "Add username")
+                                    contentType: .clearText,
+                                    isRequired: false,
+                                    trailingView: { EmptyView() })
 
                     passwordTextField
 
                     TitledTextField(title: "Website address",
-                                    text: $viewModel.url,
-                                    placeholder: "https://")
+                                    placeholder: "https://",
+                                    text: $viewModel.username,
+                                    contentType: .clearText,
+                                    isRequired: false,
+                                    trailingView: { EmptyView() })
 
                     TitledTextField(title: "Note",
-                                    text: $viewModel.note,
-                                    placeholder: "Add note")
+                                    placeholder: "Add note",
+                                    text: $viewModel.username,
+                                    contentType: .clearText,
+                                    isRequired: false,
+                                    trailingView: { EmptyView() })
                 }
                 .padding()
             }
@@ -97,10 +109,20 @@ struct CreateLoginView: View {
         toolbar.items = [.flexibleSpace(), btn, .flexibleSpace()]
         toolbar.barStyle = UIBarStyle.default
         toolbar.sizeToFit()
-        return TitledTextFieldWithToolbar(title: "Password",
-                                          text: $viewModel.password,
-                                          toolbar: toolbar,
-                                          placeholder: "Add password")
+        return TitledTextField(
+            title: "Password",
+            placeholder: "Add password",
+            text: $viewModel.password,
+            contentType: .secureEntry($viewModel.isPasswordSecure, toolbar),
+            isRequired: false,
+            trailingView: {
+                Image(uiImage: viewModel.isPasswordSecure ?
+                      IconProvider.eye : IconProvider.eyeSlash)
+                .onTapGesture {
+                    viewModel.isPasswordSecure.toggle()
+                }
+            }
+        )
     }
 }
 

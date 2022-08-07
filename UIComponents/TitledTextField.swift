@@ -21,21 +21,32 @@
 import ProtonCore_UIFoundations
 import SwiftUI
 
-public struct TitledTextField: View {
-    @Binding private var text: String
+public enum TitledTextFieldContentType {
+    case clearText
+    case secureEntry(Binding<Bool>, UIToolbar)
+}
+
+public struct TitledTextField<TrailingView: View>: View {
     @State private var isFocused = false
-    private let title: String
-    private let placeholder: String
-    private let isRequired: Bool
+    @Binding var text: String
+    let title: String
+    let placeholder: String
+    let isRequired: Bool
+    let contentType: TitledTextFieldContentType
+    let trailingView: TrailingView
 
     public init(title: String,
+                placeholder: String,
                 text: Binding<String>,
-                placeholder: String = "",
-                isRequired: Bool = false) {
+                contentType: TitledTextFieldContentType,
+                isRequired: Bool,
+                @ViewBuilder trailingView: (() -> TrailingView)) {
         self.title = title
         self.placeholder = placeholder
         self.isRequired = isRequired
+        self.contentType = contentType
         self._text = text
+        self.trailingView = trailingView()
     }
 
     public var body: some View {
@@ -44,8 +55,9 @@ public struct TitledTextField: View {
                 .font(.caption)
                 .fontWeight(.medium)
 
-            TextField(placeholder, text: $text) { editingChanged in
-                self.isFocused = editingChanged
+            HStack {
+                content
+                trailingView
             }
             .padding(10)
             .background(Color(ColorProvider.BackgroundSecondary))
@@ -63,11 +75,21 @@ public struct TitledTextField: View {
             }
         }
     }
-}
 
-struct TitledTextField_Previews: PreviewProvider {
-    static var previews: some View {
-        TitledTextField(title: "Test title",
-                        text: .constant(""))
+    @ViewBuilder
+    private var content: some View {
+        switch contentType {
+        case .clearText:
+            TextField(placeholder, text: $text) { editingChanged in
+                self.isFocused = editingChanged
+            }
+        case let .secureEntry(isSecureTextEntry, toolbar):
+            TextFieldWithToolbar(text: $text,
+                                 isSecureTextEntry: isSecureTextEntry,
+                                 placeholder: placeholder,
+                                 toolbar: toolbar) { editingChanged in
+                self.isFocused = editingChanged
+            }
+        }
     }
 }
