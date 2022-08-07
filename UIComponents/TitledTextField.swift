@@ -18,16 +18,41 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
+import Introspect
 import ProtonCore_UIFoundations
 import SwiftUI
 
 public enum TitledTextFieldContentType {
     case clearText
-    case secureEntry(Binding<Bool>, UIToolbar)
+    case secureEntry(Bool, UIToolbar)
+}
+
+private final class TitledTextFieldViewModel: ObservableObject {
+    @Published var isFocused = false
+    private var cancellables = Set<AnyCancellable>()
+
+    func observe(textField: UITextField) {
+        NotificationCenter.default
+            .publisher(for: UITextField.textDidBeginEditingNotification,
+                       object: textField)
+            .sink { [unowned self] _ in
+                self.isFocused = true
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: UITextField.textDidEndEditingNotification,
+                       object: textField)
+            .sink {[unowned self] _ in
+                self.isFocused = false
+            }
+            .store(in: &cancellables)
+    }
 }
 
 public struct TitledTextField<TrailingView: View>: View {
-    @State private var isFocused = false
+    @StateObject private var viewModel = TitledTextFieldViewModel()
     @Binding var text: String
     let title: String
     let placeholder: String
@@ -56,7 +81,30 @@ public struct TitledTextField<TrailingView: View>: View {
                 .fontWeight(.medium)
 
             HStack {
-                content
+                switch contentType {
+                case .clearText:
+                    TextField(placeholder, text: $text)
+                        .introspectTextField { textField in
+                            viewModel.observe(textField: textField)
+                        }
+
+                case let .secureEntry(isSecureTextEntry, toolbar):
+                    if isSecureTextEntry {
+                        SecureField("", text: $text)
+                            .introspectTextField { textField in
+                                textField.inputAccessoryView = toolbar
+                                textField.placeholder = placeholder
+                                viewModel.observe(textField: textField)
+                            }
+                    } else {
+                        TextField(placeholder, text: $text)
+                            .introspectTextField { textField in
+                                textField.inputAccessoryView = toolbar
+                                viewModel.observe(textField: textField)
+                            }
+                    }
+                }
+
                 trailingView
             }
             .padding(10)
@@ -64,7 +112,7 @@ public struct TitledTextField<TrailingView: View>: View {
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(isFocused ? Color(ColorProvider.BrandNorm) : Color.clear, lineWidth: 1)
+                    .stroke(viewModel.isFocused ? Color(ColorProvider.BrandNorm) : Color.clear, lineWidth: 1)
             )
             .accentColor(Color(ColorProvider.BrandNorm))
 
@@ -72,23 +120,6 @@ public struct TitledTextField<TrailingView: View>: View {
                 Text("Required")
                     .font(.caption2)
                     .foregroundColor(.secondary)
-            }
-        }
-    }
-
-    @ViewBuilder
-    private var content: some View {
-        switch contentType {
-        case .clearText:
-            TextField(placeholder, text: $text) { editingChanged in
-                self.isFocused = editingChanged
-            }
-        case let .secureEntry(isSecureTextEntry, toolbar):
-            TextFieldWithToolbar(text: $text,
-                                 isSecureTextEntry: isSecureTextEntry,
-                                 placeholder: placeholder,
-                                 toolbar: toolbar) { editingChanged in
-                self.isFocused = editingChanged
             }
         }
     }

@@ -124,7 +124,7 @@ struct CreateLoginView: View {
             title: "Password",
             placeholder: "Add password",
             text: $viewModel.password,
-            contentType: .secureEntry($viewModel.isPasswordSecure, toolbar),
+            contentType: .secureEntry(viewModel.isPasswordSecure, toolbar),
             isRequired: false,
             trailingView: {
                 Button(action: {
