@@ -80,4 +80,11 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
     func generatePasswordAction() {
         print(#function)
     }
+
+    func generateAliasAction() {
+        let name = String.random(allowedCharacters: [.lowercase], length: 8)
+        let host = String.random(allowedCharacters: [.lowercase], length: 5)
+        let domain = String.random(allowedCharacters: [.lowercase], length: 5)
+        username = "\(name)@\(host).\(domain)"
+    }
 }

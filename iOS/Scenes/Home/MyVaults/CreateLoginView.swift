@@ -41,25 +41,20 @@ struct CreateLoginView: View {
                                     isRequired: false,
                                     trailingView: { EmptyView() })
 
-                    TitledTextField(title: "Username",
-                                    placeholder: "Add username",
-                                    text: $viewModel.username,
-                                    contentType: .clearText,
-                                    isRequired: false,
-                                    trailingView: { EmptyView() })
+                    usernameTextField
 
                     passwordTextField
 
                     TitledTextField(title: "Website address",
                                     placeholder: "https://",
-                                    text: $viewModel.username,
+                                    text: $viewModel.url,
                                     contentType: .clearText,
                                     isRequired: false,
                                     trailingView: { EmptyView() })
 
                     TitledTextField(title: "Note",
                                     placeholder: "Add note",
-                                    text: $viewModel.username,
+                                    text: $viewModel.note,
                                     contentType: .clearText,
                                     isRequired: false,
                                     trailingView: { EmptyView() })
@@ -99,6 +94,22 @@ struct CreateLoginView: View {
         }
     }
 
+    private var usernameTextField: some View {
+        TitledTextField(
+            title: "Username",
+            placeholder: "Add username",
+            text: $viewModel.username,
+            contentType: .clearText,
+            isRequired: false,
+            trailingView: {
+                Button(action: viewModel.generateAliasAction) {
+                    Image(uiImage: IconProvider.arrowsRotate)
+                }
+                .foregroundColor(.primary)
+            }
+        )
+    }
+
     private var passwordTextField: some View {
         let toolbar = UIToolbar()
         let btn = UIBarButtonItem(title: "Generate password",
@@ -116,11 +127,13 @@ struct CreateLoginView: View {
             contentType: .secureEntry($viewModel.isPasswordSecure, toolbar),
             isRequired: false,
             trailingView: {
-                Image(uiImage: viewModel.isPasswordSecure ?
-                      IconProvider.eye : IconProvider.eyeSlash)
-                .onTapGesture {
+                Button(action: {
                     viewModel.isPasswordSecure.toggle()
-                }
+                }, label: {
+                    Image(uiImage: viewModel.isPasswordSecure ?
+                          IconProvider.eye : IconProvider.eyeSlash)
+                })
+                .foregroundColor(.primary)
             }
         )
     }
