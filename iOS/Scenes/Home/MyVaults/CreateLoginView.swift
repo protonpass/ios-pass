@@ -25,6 +25,10 @@ import UIComponents
 struct CreateLoginView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: CreateLoginViewModel
+    @State private var isFocusedOnTitle = false
+    @State private var isFocusedOnUsername = false
+    @State private var isFocusedOnPassword = false
+    @State private var isFocusedOnNote = false
 
     init(viewModel: CreateLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -34,30 +38,10 @@ struct CreateLoginView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
-                    TitledTextField(title: "Title",
-                                    placeholder: "Login name",
-                                    text: $viewModel.title,
-                                    contentType: .singleLine,
-                                    isRequired: false,
-                                    trailingView: { EmptyView() })
-
-                    usernameTextField
-
-                    passwordTextField
-
-                    TitledTextField(title: "Website address",
-                                    placeholder: "https://",
-                                    text: $viewModel.url,
-                                    contentType: .singleLine,
-                                    isRequired: false,
-                                    trailingView: { EmptyView() })
-
-                    TitledTextField(title: "Note",
-                                    placeholder: "Add note",
-                                    text: $viewModel.note,
-                                    contentType: .multiline,
-                                    isRequired: false,
-                                    trailingView: { EmptyView() })
+                    loginInputView
+                    usernameInputView
+                    passwordInputView
+                    noteInputView
                 }
                 .padding()
             }
@@ -94,23 +78,29 @@ struct CreateLoginView: View {
         }
     }
 
-    private var usernameTextField: some View {
-        TitledTextField(
-            title: "Username",
-            placeholder: "Add username",
-            text: $viewModel.username,
-            contentType: .singleLine,
-            isRequired: false,
-            trailingView: {
-                Button(action: viewModel.generateAliasAction) {
-                    Image(uiImage: IconProvider.arrowsRotate)
-                }
-                .foregroundColor(.primary)
-            }
-        )
+    private var loginInputView: some View {
+        UserInputContainerView(title: "Title",
+                               isFocused: isFocusedOnTitle) {
+            UserInputContentSingleLineView(
+                text: $viewModel.title,
+                isFocused: $isFocusedOnTitle,
+                placeholder: "Login name")
+        }
     }
 
-    private var passwordTextField: some View {
+    private var usernameInputView: some View {
+        UserInputContainerView(title: "Username",
+                               isFocused: isFocusedOnUsername) {
+            UserInputContentSingleLineWithTrailingView(
+                text: $viewModel.username,
+                isFocused: $isFocusedOnUsername,
+                placeholder: "Add username",
+                trailingIcon: IconProvider.arrowsRotate,
+                trailingAction: viewModel.generateAliasAction)
+        }
+    }
+
+    private var passwordInputView: some View {
         let toolbar = UIToolbar()
         let btn = UIBarButtonItem(title: "Generate password",
                                   style: .plain,
@@ -120,22 +110,23 @@ struct CreateLoginView: View {
         toolbar.items = [.flexibleSpace(), btn, .flexibleSpace()]
         toolbar.barStyle = UIBarStyle.default
         toolbar.sizeToFit()
-        return TitledTextField(
-            title: "Password",
-            placeholder: "Add password",
-            text: $viewModel.password,
-            contentType: .secureEntry(viewModel.isPasswordSecure, toolbar),
-            isRequired: false,
-            trailingView: {
-                Button(action: {
-                    viewModel.isPasswordSecure.toggle()
-                }, label: {
-                    Image(uiImage: viewModel.isPasswordSecure ?
-                          IconProvider.eye : IconProvider.eyeSlash)
-                })
-                .foregroundColor(.primary)
-            }
-        )
+        return UserInputContainerView(title: "Password",
+                                      isFocused: isFocusedOnPassword) {
+            UserInputContentPasswordView(
+                text: $viewModel.password,
+                isFocused: $isFocusedOnPassword,
+                isSecure: $viewModel.isPasswordSecure,
+                toolbar: toolbar)
+        }
+    }
+
+    private var noteInputView: some View {
+        UserInputContainerView(title: "Note",
+                               isFocused: isFocusedOnNote) {
+            UserInputContentMultilineView(
+                text: $viewModel.note,
+                isFocused: $isFocusedOnNote)
+        }
     }
 }
 
