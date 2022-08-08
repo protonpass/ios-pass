@@ -28,6 +28,7 @@ struct CreateLoginView: View {
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnUsername = false
     @State private var isFocusedOnPassword = false
+    @State private var isFocusedOnURLs = false
     @State private var isFocusedOnNote = false
 
     init(viewModel: CreateLoginViewModel) {
@@ -41,6 +42,7 @@ struct CreateLoginView: View {
                     loginInputView
                     usernameInputView
                     passwordInputView
+                    urlsInputView
                     noteInputView
                 }
                 .padding()
@@ -117,6 +119,14 @@ struct CreateLoginView: View {
                 isFocused: $isFocusedOnPassword,
                 isSecure: $viewModel.isPasswordSecure,
                 toolbar: toolbar)
+        }
+    }
+
+    private var urlsInputView: some View {
+        UserInputContainerView(title: "Website address",
+                               isFocused: isFocusedOnURLs) {
+            UserInputContentURLsView(urls: $viewModel.urls,
+                                     isFocused: $isFocusedOnURLs)
         }
     }
 

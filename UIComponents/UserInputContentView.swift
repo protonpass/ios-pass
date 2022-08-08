@@ -96,8 +96,12 @@ public struct UserInputContentMultilineView: View {
 }
 
 private final class UserInputContentPasswordViewModel {
-    @Published var isFocused = false
+    @Binding var isFocused: Bool
     private var cancellables = Set<AnyCancellable>()
+
+    init(isFocused: Binding<Bool>) {
+        self._isFocused = isFocused
+    }
 
     func observe(textField: UITextField) {
         NotificationCenter.default
@@ -119,9 +123,8 @@ private final class UserInputContentPasswordViewModel {
 }
 
 public struct UserInputContentPasswordView: View {
-    private let viewModel = UserInputContentPasswordViewModel()
+    private let viewModel: UserInputContentPasswordViewModel
     @Binding var text: String
-    @Binding var isFocused: Bool
     @Binding var isSecure: Bool
     let toolbar: UIToolbar
 
@@ -130,9 +133,9 @@ public struct UserInputContentPasswordView: View {
                 isSecure: Binding<Bool>,
                 toolbar: UIToolbar) {
         self._text = text
-        self._isFocused = isFocused
         self._isSecure = isSecure
         self.toolbar = toolbar
+        self.viewModel = .init(isFocused: isFocused)
     }
 
     public var body: some View {
@@ -159,8 +162,84 @@ public struct UserInputContentPasswordView: View {
             })
             .foregroundColor(.primary)
         }
-        .onReceive(Just(viewModel.isFocused)) { isFocused in
-            self.isFocused = isFocused
+    }
+}
+
+public struct UserInputContentURLsView: View {
+    @Binding var urls: [String]
+    @Binding var isFocused: Bool
+
+    public init(urls: Binding<[String]>,
+                isFocused: Binding<Bool>) {
+        self._urls = urls
+        self._isFocused = isFocused
+    }
+
+    public var body: some View {
+        VStack {
+            ForEach(urls.indices, id: \.self) { index in
+                let urlBinding = Binding<String>(get: {
+                    urls[index]
+                }, set: { newValue in
+                    withAnimation {
+                        urls[index] = newValue.lowercased()
+                    }
+                })
+                HStack {
+                    TextField("https://", text: urlBinding) { editingChanged in
+                        isFocused = editingChanged
+                        if !isFocused, index != 0, urls[index].isEmpty {
+                            withAnimation {
+                                urls.remove(at: index)
+                            }
+                        }
+                    }
+                        .keyboardType(.URL)
+                        .disableAutocorrection(true)
+
+                    if !urls[index].isEmpty || index != 0 {
+                        Button(action: {
+                            withAnimation {
+                                if urls.count == 1 {
+                                    urls[index] = ""
+                                } else {
+                                    urls.remove(at: index)
+                                }
+                            }
+                        }, label: {
+                            Image(uiImage: IconProvider.cross)
+                        })
+                        .foregroundColor(.primary)
+                    }
+                }
+
+                if urls.count > 1 || urls.first?.isEmpty == false {
+                    Divider()
+                }
+            }
+
+            addUrlButton
+        }
+    }
+
+    @ViewBuilder
+    private var addUrlButton: some View {
+        if urls.first?.isEmpty == false {
+            Button(action: {
+                if urls.last?.isEmpty == false {
+                    // Only add new URL when last URL has value to avoid adding blank URLs
+                    withAnimation {
+                        urls.append("")
+                    }
+                }
+            }, label: {
+                Label(title: {
+                    Text("Add another website")
+                }, icon: {
+                    Image(uiImage: IconProvider.plus)
+                })
+                .frame(maxWidth: .infinity, alignment: .leading)
+            })
         }
     }
 }

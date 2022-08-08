@@ -39,7 +39,7 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
     @Published var username = ""
     @Published var password = ""
     @Published var isPasswordSecure = true // Password in clear text or not
-    @Published var url = ""
+    @Published var urls: [String] = [""]
     @Published var note = ""
 
     private var cancellables = Set<AnyCancellable>()
