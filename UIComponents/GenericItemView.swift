@@ -69,7 +69,7 @@ public struct GenericItemView: View {
             }
             .contentShape(Rectangle())
         }
-        .buttonStyle(.sidebarItem)
+        .buttonStyle(.plain)
     }
 }
 

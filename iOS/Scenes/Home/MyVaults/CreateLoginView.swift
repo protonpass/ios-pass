@@ -37,7 +37,7 @@ struct CreateLoginView: View {
                     TitledTextField(title: "Title",
                                     placeholder: "Login name",
                                     text: $viewModel.title,
-                                    contentType: .clearText,
+                                    contentType: .singleLine,
                                     isRequired: false,
                                     trailingView: { EmptyView() })
 
@@ -48,14 +48,14 @@ struct CreateLoginView: View {
                     TitledTextField(title: "Website address",
                                     placeholder: "https://",
                                     text: $viewModel.url,
-                                    contentType: .clearText,
+                                    contentType: .singleLine,
                                     isRequired: false,
                                     trailingView: { EmptyView() })
 
                     TitledTextField(title: "Note",
                                     placeholder: "Add note",
                                     text: $viewModel.note,
-                                    contentType: .clearText,
+                                    contentType: .multiline,
                                     isRequired: false,
                                     trailingView: { EmptyView() })
                 }
@@ -73,7 +73,7 @@ struct CreateLoginView: View {
             Button(action: {
                 presentationMode.wrappedValue.dismiss()
             }, label: {
-                Text("Cancel")
+                Image(uiImage: IconProvider.cross)
             })
             .foregroundColor(Color(.label))
         }
@@ -99,7 +99,7 @@ struct CreateLoginView: View {
             title: "Username",
             placeholder: "Add username",
             text: $viewModel.username,
-            contentType: .clearText,
+            contentType: .singleLine,
             isRequired: false,
             trailingView: {
                 Button(action: viewModel.generateAliasAction) {

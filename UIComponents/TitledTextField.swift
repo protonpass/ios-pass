@@ -24,7 +24,8 @@ import ProtonCore_UIFoundations
 import SwiftUI
 
 public enum TitledTextFieldContentType {
-    case clearText
+    case multiline
+    case singleLine
     case secureEntry(Bool, UIToolbar)
 }
 
@@ -81,30 +82,7 @@ public struct TitledTextField<TrailingView: View>: View {
                 .fontWeight(.medium)
 
             HStack {
-                switch contentType {
-                case .clearText:
-                    TextField(placeholder, text: $text)
-                        .introspectTextField { textField in
-                            viewModel.observe(textField: textField)
-                        }
-
-                case let .secureEntry(isSecureTextEntry, toolbar):
-                    if isSecureTextEntry {
-                        SecureField("", text: $text)
-                            .introspectTextField { textField in
-                                textField.inputAccessoryView = toolbar
-                                textField.placeholder = placeholder
-                                viewModel.observe(textField: textField)
-                            }
-                    } else {
-                        TextField(placeholder, text: $text)
-                            .introspectTextField { textField in
-                                textField.inputAccessoryView = toolbar
-                                viewModel.observe(textField: textField)
-                            }
-                    }
-                }
-
+                content
                 trailingView
             }
             .padding(10)
@@ -120,6 +98,39 @@ public struct TitledTextField<TrailingView: View>: View {
                 Text("Required")
                     .font(.caption2)
                     .foregroundColor(.secondary)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        switch contentType {
+        case .multiline:
+            SwiftUITextView(text: $text) { editingChange in
+                viewModel.isFocused = editingChange
+            }
+            .frame(height: 100)
+
+        case .singleLine:
+            TextField(placeholder, text: $text)
+                .introspectTextField { textField in
+                    viewModel.observe(textField: textField)
+                }
+
+        case let .secureEntry(isSecureTextEntry, toolbar):
+            if isSecureTextEntry {
+                SecureField("", text: $text)
+                    .introspectTextField { textField in
+                        textField.inputAccessoryView = toolbar
+                        textField.placeholder = placeholder
+                        viewModel.observe(textField: textField)
+                    }
+            } else {
+                TextField(placeholder, text: $text)
+                    .introspectTextField { textField in
+                        textField.inputAccessoryView = toolbar
+                        viewModel.observe(textField: textField)
+                    }
             }
         }
     }

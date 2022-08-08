@@ -36,14 +36,14 @@ struct CreateNoteView: View {
                 TitledTextField(title: "Note name",
                                 placeholder: "Title",
                                 text: $viewModel.name,
-                                contentType: .clearText,
+                                contentType: .singleLine,
                                 isRequired: false,
                                 trailingView: { EmptyView() })
 
                 TitledTextField(title: "Note",
                                 placeholder: "Add note",
                                 text: $viewModel.note,
-                                contentType: .clearText,
+                                contentType: .multiline,
                                 isRequired: false,
                                 trailingView: { EmptyView() })
 

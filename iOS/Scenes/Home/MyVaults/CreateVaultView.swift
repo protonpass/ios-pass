@@ -36,14 +36,14 @@ struct CreateVaultView: View {
                 TitledTextField(title: "Name",
                                 placeholder: "Vault name",
                                 text: $viewModel.name,
-                                contentType: .clearText,
+                                contentType: .singleLine,
                                 isRequired: false,
                                 trailingView: { EmptyView() })
 
                 TitledTextField(title: "Note",
                                 placeholder: "Add description",
                                 text: $viewModel.note,
-                                contentType: .clearText,
+                                contentType: .multiline,
                                 isRequired: false,
                                 trailingView: { EmptyView() })
                 Spacer()

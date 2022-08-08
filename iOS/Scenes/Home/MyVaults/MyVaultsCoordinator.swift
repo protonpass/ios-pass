@@ -100,7 +100,9 @@ final class MyVaultsCoordinator: Coordinator {
         let createLoginViewModel = CreateLoginViewModel()
         createLoginViewModel.delegate = self
         let createLoginView = CreateLoginView(viewModel: createLoginViewModel)
-        presentView(createLoginView)
+        let createLoginViewController = UIHostingController(rootView: createLoginView)
+        createLoginViewController.modalPresentationStyle = .fullScreen
+        presentViewController(createLoginViewController)
     }
 
     func showCreateAliasView() {
