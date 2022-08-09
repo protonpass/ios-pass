@@ -37,6 +37,8 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
 
+    @Published private(set) var items = [ItemProtocol]()
+
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: VaultContentViewModelDelegate?
 

@@ -20,6 +20,12 @@
 
 import Foundation
 
+public enum ItemContentType {
+    case alias
+    case login
+    case note
+}
+
 public enum ItemContent {
     case alias
     case login(ItemLoginProtocol)
@@ -51,3 +57,18 @@ typealias ItemMetadataProtobuf = ProtonPassItemV1_Metadata
 typealias ItemNoteProtobuf = ProtonPassItemV1_ItemNote
 typealias ItemLoginProtobuf = ProtonPassItemV1_ItemLogin
 typealias ItemAliasProtobuf = ProtonPassItemV1_ItemAlias
+
+public extension Array where Element == ItemProtocol {
+    func filter(by contentType: ItemContentType) -> [Element] {
+        filter { element in
+            switch element.content {
+            case .alias:
+                return contentType == .alias
+            case .login:
+                return contentType == .login
+            case .note:
+                return contentType == .note
+            }
+        }
+    }
+}

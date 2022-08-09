@@ -36,14 +36,15 @@ struct VaultContentView: View {
 
     var body: some View {
         VStack {
-            VaultSummaryView()
-                .frame(height: 250)
+            summaryView
             List {
                 ForEach(0..<50) { index in
                     Text("\(selectedVaultName) #\(index)")
                 }
             }
+            .listStyle(.plain)
         }
+        .padding()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbar }
     }
@@ -121,5 +122,19 @@ struct VaultContentView: View {
             }
             .foregroundColor(Color(.label))
         }
+    }
+
+    private var summaryView: some View {
+        HStack {
+            let aliasItems = viewModel.items.filter(by: .alias)
+            CategorySummaryView(summary: .init(aliasCount: aliasItems.count))
+
+            let loginItems = viewModel.items.filter(by: .login)
+            CategorySummaryView(summary: .init(loginCount: loginItems.count))
+
+            let noteItems = viewModel.items.filter(by: .note)
+            CategorySummaryView(summary: .init(noteCount: noteItems.count))
+        }
+        .frame(height: 150)
     }
 }

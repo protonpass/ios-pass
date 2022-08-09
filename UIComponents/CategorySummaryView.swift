@@ -18,18 +18,45 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import SwiftUI
 
-public protocol CategorySummaryProvider {
-    var icon: UIImage { get }
-    var backgroundColor: UIColor { get }
-    var text: String { get }
+public struct CategorySummary {
+    let icon: UIImage
+    let backgroundColor: UIColor
+    let text: String
+
+    public init(icon: UIImage,
+                backgroundColor: UIColor,
+                text: String) {
+        self.icon = icon
+        self.backgroundColor = backgroundColor
+        self.text = text
+    }
+
+    public init(aliasCount: Int) {
+        self.icon = IconProvider.alias
+        self.backgroundColor = ColorProvider.BrandDarken40
+        self.text = "\(aliasCount) aliases"
+    }
+
+    public init(loginCount: Int) {
+        self.icon = IconProvider.keySkeleton
+        self.backgroundColor = ColorProvider.BrandNorm
+        self.text = "\(loginCount) logins"
+    }
+
+    public init(noteCount: Int) {
+        self.icon = IconProvider.note
+        self.backgroundColor = ColorProvider.BrandLighten20
+        self.text = "\(noteCount) notes"
+    }
 }
 
 public struct CategorySummaryView: View {
-    private let summary: CategorySummaryProvider
+    private let summary: CategorySummary
 
-    public init(summary: CategorySummaryProvider) {
+    public init(summary: CategorySummary) {
         self.summary = summary
     }
 

@@ -62,7 +62,6 @@
 		3547ABF0287777FB00EE85E1 /* CreateNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEF287777FB00EE85E1 /* CreateNoteView.swift */; };
 		3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF12877791000EE85E1 /* CreateVaultView.swift */; };
 		3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */; };
-		3547ABF628777D6100EE85E1 /* VaultSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */; };
 		354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB13C28A240E000F50040 /* TextExtensions.swift */; };
 		354BB13F28A24F3800F50040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 354BB13E28A24F3800F50040 /* Assets.xcassets */; };
 		354BB14128A2503C00F50040 /* PassColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14028A2503C00F50040 /* PassColor.swift */; };
@@ -317,7 +316,6 @@
 		3547ABEF287777FB00EE85E1 /* CreateNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNoteView.swift; sourceTree = "<group>"; };
 		3547ABF12877791000EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
 		3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySummaryView.swift; sourceTree = "<group>"; };
-		3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSummaryView.swift; sourceTree = "<group>"; };
 		354BB13C28A240E000F50040 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
 		354BB13E28A24F3800F50040 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		354BB14028A2503C00F50040 /* PassColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassColor.swift; sourceTree = "<group>"; };
@@ -622,7 +620,6 @@
 				355635BE2889664200F32353 /* LoadVaultsViewModel.swift */,
 				355635B828895B8E00F32353 /* VaultContentView.swift */,
 				355635C0288968B000F32353 /* VaultContentViewModel.swift */,
-				3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */,
 			);
 			path = MyVaults;
 			sourceTree = "<group>";
@@ -1614,7 +1611,6 @@
 				3547ABEE287777B700EE85E1 /* CreateAliasView.swift in Sources */,
 				353E8B76287625D100A2C5E3 /* SidebarCurrentUserView.swift in Sources */,
 				355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */,
-				3547ABF628777D6100EE85E1 /* VaultSummaryView.swift in Sources */,
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateLoginView.swift in Sources */,
 				35476970289D6BCB00581E2E /* CreateLoginViewModel.swift in Sources */,
