@@ -23,7 +23,6 @@ import Core
 import ProtonCore_Login
 import ProtonCore_Services
 import SwiftUI
-import UIKit
 import UIComponents
 
 protocol MyVaultsCoordinatorDelegate: AnyObject {
@@ -101,9 +100,7 @@ final class MyVaultsCoordinator: Coordinator {
         let createLoginViewModel = CreateLoginViewModel()
         createLoginViewModel.delegate = self
         let createLoginView = CreateLoginView(viewModel: createLoginViewModel)
-        let createLoginViewController = UIHostingController(rootView: createLoginView)
-        createLoginViewController.modalPresentationStyle = .fullScreen
-        presentViewController(createLoginViewController)
+        presentViewFullScreen(createLoginView)
     }
 
     func showCreateAliasView() {
@@ -136,9 +133,7 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showSearchView() {
-        let searchViewController = UIHostingController(rootView: SearchView())
-        searchViewController.modalPresentationStyle = .fullScreen
-        presentViewController(searchViewController)
+        presentViewFullScreen(SearchView())
     }
 }
 

@@ -50,8 +50,24 @@ open class Coordinator {
         presentViewController(UIHostingController(rootView: view), animated: animated)
     }
 
+    public func presentViewFullScreen<V: View>(_ view: V, animated: Bool = true) {
+        let viewController = UIHostingController(rootView: view)
+        viewController.modalPresentationStyle = .fullScreen
+        presentViewController(viewController, animated: animated)
+    }
+
     public func presentViewController(_ viewController: UIViewController,
                                       animated: Bool = true) {
+        if let presentedViewController = navigationController.presentedViewController {
+            presentedViewController.present(viewController, animated: animated)
+        } else {
+            navigationController.present(viewController, animated: animated)
+        }
+    }
+
+    public func presentViewControllerFullScreen(_ viewController: UIViewController,
+                                                animated: Bool = true) {
+        viewController.modalPresentationStyle = .fullScreen
         if let presentedViewController = navigationController.presentedViewController {
             presentedViewController.present(viewController, animated: animated)
         } else {
