@@ -651,6 +651,7 @@
 		355443FA287CA7150017FCAD /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
+				35544406287CB3810017FCAD /* Endpoint.swift */,
 				358AB49F2887044500818B44 /* Keys */,
 				353547BF2880C4470021C716 /* Shares */,
 				35544403287CAF600017FCAD /* Vault */,
@@ -672,14 +673,6 @@
 				358AB4982886FA7B00818B44 /* VaultKey.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		355443FE287CAABB0017FCAD /* Infrastructure */ = {
-			isa = PBXGroup;
-			children = (
-				35544406287CB3810017FCAD /* Endpoint.swift */,
-			);
-			path = Infrastructure;
 			sourceTree = "<group>";
 		};
 		35544403287CAF600017FCAD /* Vault */ = {
@@ -808,7 +801,6 @@
 			isa = PBXGroup;
 			children = (
 				35E50663286F870500A3F6EA /* Client.h */,
-				355443FE287CAABB0017FCAD /* Infrastructure */,
 				355443FB287CA73E0017FCAD /* Models */,
 				35004A3B288FEF1C0073C4A7 /* ModelProtocols */,
 				355443FA287CA7150017FCAD /* Endpoints */,
