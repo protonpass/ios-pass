@@ -32,11 +32,10 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     @Published private(set) var password = ""
     @Published private(set) var texts: [Text] = []
-    @Published var length: Double = 32
+    @Published var length: Double = 16
     @Published var hasSpecialCharacters = true
 
     private var cancellables = Set<AnyCancellable>()
-    let lengthRange: ClosedRange<Double> = 10...128
 
     weak var delegate: GeneratePasswordViewModelDelegate?
 
@@ -48,11 +47,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
                 texts.removeAll()
                 newPassword.forEach { char in
                     var color = Color.primary
-                    if AllowedCharacter.uppercase.rawValue.contains(char) {
-                        color = PassColor.letters
-                    } else if AllowedCharacter.lowercase.rawValue.contains(char) {
-                        color = PassColor.letters
-                    } else if AllowedCharacter.digit.rawValue.contains(char) {
+                    if AllowedCharacter.digit.rawValue.contains(char) {
                         color = PassColor.digits
                     } else if AllowedCharacter.special.rawValue.contains(char) {
                         color = PassColor.specialCharacters

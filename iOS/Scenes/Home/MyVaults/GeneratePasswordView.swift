@@ -51,7 +51,7 @@ struct GeneratePasswordView: View {
                 HStack {
                     Text("\(Int(viewModel.length)) characters")
                     Slider(value: $viewModel.length,
-                           in: viewModel.lengthRange,
+                           in: 4...64,
                            step: 1)
                     .accentColor(Color(ColorProvider.BrandNorm))
                 }

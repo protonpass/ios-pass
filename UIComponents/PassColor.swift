@@ -21,7 +21,6 @@
 import SwiftUI
 
 public enum PassColor {
-    public static var letters = Color("LettersColor")
     public static var specialCharacters = Color("SpecialCharactersColor")
     public static var digits = Color("DigitsColor")
 }
