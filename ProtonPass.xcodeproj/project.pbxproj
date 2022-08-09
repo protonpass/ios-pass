@@ -67,6 +67,7 @@
 		354BB13F28A24F3800F50040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 354BB13E28A24F3800F50040 /* Assets.xcassets */; };
 		354BB14128A2503C00F50040 /* PassColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14028A2503C00F50040 /* PassColor.swift */; };
 		354BB14228A2511C00F50040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 354BB13E28A24F3800F50040 /* Assets.xcassets */; };
+		354BB14428A2683E00F50040 /* ItemProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14328A2683E00F50040 /* ItemProtocol.swift */; };
 		355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */; };
 		3551DFF22885436E008AE633 /* DummyEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551DFF12885436E008AE633 /* DummyEncodable.swift */; };
 		3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618628A1372500A68477 /* SwiftUITextView.swift */; };
@@ -317,6 +318,7 @@
 		354BB13C28A240E000F50040 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
 		354BB13E28A24F3800F50040 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		354BB14028A2503C00F50040 /* PassColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassColor.swift; sourceTree = "<group>"; };
+		354BB14328A2683E00F50040 /* ItemProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemProtocol.swift; sourceTree = "<group>"; };
 		355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsSidebarItemView.swift; sourceTree = "<group>"; };
 		3551DFF12885436E008AE633 /* DummyEncodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyEncodable.swift; sourceTree = "<group>"; };
 		3552618628A1372500A68477 /* SwiftUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUITextView.swift; sourceTree = "<group>"; };
@@ -506,6 +508,7 @@
 		35004A3B288FEF1C0073C4A7 /* ModelProtocols */ = {
 			isa = PBXGroup;
 			children = (
+				354BB14328A2683E00F50040 /* ItemProtocol.swift */,
 				350A97CF2885BB1800A7168B /* ShareProtocol.swift */,
 				358BD35F287D4EA200802A91 /* VaultProtocol.swift */,
 			);
@@ -1638,6 +1641,7 @@
 				3547696E289D349C00581E2E /* Repository.swift in Sources */,
 				350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */,
 				35004A40289004330073C4A7 /* Pass.xcdatamodeld in Sources */,
+				354BB14428A2683E00F50040 /* ItemProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
 				3547696C289D253600581E2E /* RemoteDatasource.swift in Sources */,
 				35A909E5289006F700AC54D4 /* CDItemKey+CoreDataProperties.swift in Sources */,
