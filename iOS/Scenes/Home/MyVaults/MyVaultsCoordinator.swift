@@ -24,6 +24,7 @@ import ProtonCore_Login
 import ProtonCore_Services
 import SwiftUI
 import UIKit
+import UIComponents
 
 protocol MyVaultsCoordinatorDelegate: AnyObject {
     func myVautsCoordinatorWantsToShowSidebar()
@@ -133,12 +134,22 @@ final class MyVaultsCoordinator: Coordinator {
         }
         presentViewController(generatePasswordViewController)
     }
+
+    func showSearchView() {
+        let searchViewController = UIHostingController(rootView: SearchView())
+        searchViewController.modalPresentationStyle = .fullScreen
+        presentViewController(searchViewController)
+    }
 }
 
 // MARK: - VaultContentViewModelDelegate
 extension MyVaultsCoordinator: VaultContentViewModelDelegate {
     func vaultContentViewModelWantsToToggleSidebar() {
         showSidebar()
+    }
+
+    func vaultContentViewModelWantsToSearch() {
+        showSearchView()
     }
 
     func vaultContentViewModelWantsToCreateNewItem() {

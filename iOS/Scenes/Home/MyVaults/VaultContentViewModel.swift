@@ -24,6 +24,7 @@ import Core
 
 protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToToggleSidebar()
+    func vaultContentViewModelWantsToSearch()
     func vaultContentViewModelWantsToCreateNewItem()
     func vaultContentViewModelWantsToCreateNewVault()
 }
@@ -57,6 +58,10 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
 extension VaultContentViewModel {
     func toggleSidebarAction() {
         delegate?.vaultContentViewModelWantsToToggleSidebar()
+    }
+
+    func searchAction() {
+        delegate?.vaultContentViewModelWantsToSearch()
     }
 
     func createItemAction() {
