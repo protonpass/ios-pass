@@ -43,7 +43,10 @@ struct SidebarView: View {
 
                 ScrollView(showsIndicators: false) {
                     VStack {
-                        MyVaultsSidebarItemView(vaultSelection: coordinator.vaultSelection)
+//                        MyVaultsSidebarItemView(vaultSelection: coordinator.vaultSelection)
+                        SidebarItemView(item: .home,
+                                        action: coordinator.handleSidebarItem)
+                        Divider()
                         SidebarItemView(item: .settings,
                                         action: coordinator.handleSidebarItem)
                         SidebarItemView(item: .trash,

@@ -129,6 +129,8 @@ extension HomeCoordinator {
 
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
+        case .home:
+            showMyVaultsRootViewController()
         case .settings:
             break
         case .trash:
