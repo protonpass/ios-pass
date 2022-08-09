@@ -34,6 +34,7 @@ final class VaultSelection: ObservableObject {
 
     func update(vaults: [VaultProtocol]) {
         self.vaults = vaults
+        self.selectedVault = vaults.first
     }
 
     func update(selectedVault: VaultProtocol?) {

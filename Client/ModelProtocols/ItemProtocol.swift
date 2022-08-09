@@ -33,8 +33,8 @@ public enum ItemContent {
 }
 
 public protocol ItemProtocol {
-    var metadata: ItemMetadataProtocol { get }
-    var content: ItemContent { get }
+    var itemMetadata: ItemMetadataProtocol { get }
+    var itemContent: ItemContent { get }
 }
 
 public protocol ItemMetadataProtocol {
@@ -54,14 +54,37 @@ public protocol ItemAliasProtocol {}
 
 typealias ItemProtobuf = ProtonPassItemV1_Item
 typealias ItemMetadataProtobuf = ProtonPassItemV1_Metadata
+typealias ItemContentProtobuf = ProtonPassItemV1_Content
 typealias ItemNoteProtobuf = ProtonPassItemV1_ItemNote
 typealias ItemLoginProtobuf = ProtonPassItemV1_ItemLogin
 typealias ItemAliasProtobuf = ProtonPassItemV1_ItemAlias
 
+extension ItemMetadataProtobuf: ItemMetadataProtocol {}
+extension ItemNoteProtobuf: ItemNoteProtocol {}
+extension ItemAliasProtobuf: ItemAliasProtocol {}
+extension ItemLoginProtobuf: ItemLoginProtocol {}
+
+extension ItemProtobuf: ItemProtocol {
+    public var itemMetadata: ItemMetadataProtocol { metadata }
+
+    public var itemContent: ItemContent {
+        switch content.content {
+        case .alias:
+            return .alias
+        case .note:
+            return .note
+        case .login(let login):
+            return .login(login)
+        case .none:
+            return .note
+        }
+    }
+}
+
 public extension Array where Element == ItemProtocol {
     func filter(by contentType: ItemContentType) -> [Element] {
         filter { element in
-            switch element.content {
+            switch element.itemContent {
             case .alias:
                 return contentType == .alias
             case .login:
