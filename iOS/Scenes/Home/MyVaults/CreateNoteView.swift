@@ -25,6 +25,8 @@ import UIComponents
 struct CreateNoteView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: CreateNoteViewModel
+    @State private var isFocusedOnName = false
+    @State private var isFocusedOnNote = false
 
     init(viewModel: CreateNoteViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -33,49 +35,59 @@ struct CreateNoteView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 30) {
-                TitledTextField(title: "Note name",
-                                placeholder: "Title",
-                                text: $viewModel.name,
-                                contentType: .singleLine,
-                                isRequired: false,
-                                trailingView: { EmptyView() })
-
-                TitledTextField(title: "Note",
-                                placeholder: "Add note",
-                                text: $viewModel.note,
-                                contentType: .multiline,
-                                isRequired: false,
-                                trailingView: { EmptyView() })
-
+                nameInputView
+                noteInputView
                 Spacer()
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }, label: {
-                        Text("Cancel")
-                    })
-                    .foregroundColor(Color(.label))
-                }
-
-                ToolbarItem(placement: .principal) {
-                    Text("Create new note")
-                        .fontWeight(.bold)
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: viewModel.saveAction) {
-                        Text("Save")
-                            .fontWeight(.bold)
-                            .foregroundColor(Color(ColorProvider.BrandNorm))
-                    }
-                }
-            }
+            .toolbar { toolbar }
         }
         .disabled(viewModel.isLoading)
+    }
+
+    private var nameInputView: some View {
+        UserInputContainerView(title: "Note name",
+                               isFocused: isFocusedOnName) {
+            UserInputContentSingleLineView(
+                text: $viewModel.name,
+                isFocused: $isFocusedOnName,
+                placeholder: "Title")
+        }
+    }
+
+    private var noteInputView: some View {
+        UserInputContainerView(title: "Note",
+                               isFocused: isFocusedOnNote) {
+            UserInputContentMultilineView(
+                text: $viewModel.note,
+                isFocused: $isFocusedOnNote)
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Text("Cancel")
+            })
+            .foregroundColor(Color(.label))
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text("Create new note")
+                .fontWeight(.bold)
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: viewModel.saveAction) {
+                Text("Save")
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(ColorProvider.BrandNorm))
+            }
+        }
     }
 }
 

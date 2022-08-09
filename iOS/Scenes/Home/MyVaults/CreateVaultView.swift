@@ -25,6 +25,8 @@ import UIComponents
 struct CreateVaultView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: CreateVaultViewModel
+    @State private var isFocusedOnName = false
+    @State private var isFocusedOnNote = false
 
     init(viewModel: CreateVaultViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -33,50 +35,61 @@ struct CreateVaultView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                TitledTextField(title: "Name",
-                                placeholder: "Vault name",
-                                text: $viewModel.name,
-                                contentType: .singleLine,
-                                isRequired: false,
-                                trailingView: { EmptyView() })
-
-                TitledTextField(title: "Note",
-                                placeholder: "Add description",
-                                text: $viewModel.note,
-                                contentType: .multiline,
-                                isRequired: false,
-                                trailingView: { EmptyView() })
+                nameInputView
+                noteInputView
                 Spacer()
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }, label: {
-                        Text("Cancel")
-                    })
-                    .foregroundColor(Color(.label))
-                }
-
-                ToolbarItem(placement: .principal) {
-                    Text("Create new vault")
-                        .fontWeight(.bold)
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: viewModel.createVault) {
-                        Text("Save")
-                            .fontWeight(.bold)
-                            .foregroundColor(Color(ColorProvider.BrandNorm))
-                            .opacity(viewModel.name.isEmpty ? 0.5 : 1)
-                    }
-                    .disabled(viewModel.name.isEmpty)
-                }
-            }
+            .toolbar { toolbar }
         }
         .disabled(viewModel.isLoading)
+    }
+
+    private var nameInputView: some View {
+        UserInputContainerView(title: "Name",
+                               isFocused: isFocusedOnName) {
+            UserInputContentSingleLineView(
+                text: $viewModel.name,
+                isFocused: $isFocusedOnName,
+                placeholder: "Vault name")
+        }
+    }
+
+    private var noteInputView: some View {
+        UserInputContainerView(title: "Note",
+                               isFocused: isFocusedOnNote) {
+            UserInputContentMultilineView(
+                text: $viewModel.note,
+                isFocused: $isFocusedOnNote)
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Text("Cancel")
+            })
+            .foregroundColor(Color(.label))
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text("Create new vault")
+                .fontWeight(.bold)
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: viewModel.createVault) {
+                Text("Save")
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(ColorProvider.BrandNorm))
+                    .opacity(viewModel.name.isEmpty ? 0.5 : 1)
+            }
+            .disabled(viewModel.name.isEmpty)
+        }
     }
 }
 
