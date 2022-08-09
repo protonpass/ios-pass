@@ -34,7 +34,7 @@ struct GeneratePasswordView: View {
         NavigationView {
             VStack {
                 HStack {
-                    Text(viewModel.password)
+                    Text(viewModel.texts)
                         .font(.title3)
                         .fontWeight(.bold)
                         .transaction { transaction in
@@ -43,7 +43,7 @@ struct GeneratePasswordView: View {
                     Spacer()
                     Button(action: viewModel.regenerate) {
                         Image(uiImage: IconProvider.arrowsRotate)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.primary)
                     }
                 }
                 .padding()

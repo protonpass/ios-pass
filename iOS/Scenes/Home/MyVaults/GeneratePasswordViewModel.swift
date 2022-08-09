@@ -21,6 +21,7 @@
 import Combine
 import Core
 import SwiftUI
+import UIComponents
 
 protocol GeneratePasswordViewModelDelegate: AnyObject {
     func generatePasswordViewModelDidConfirm(password: String)
@@ -29,15 +30,8 @@ protocol GeneratePasswordViewModelDelegate: AnyObject {
 final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    private var allowedCharacters: [AllowedCharacter] {
-        var allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit]
-        if hasSpecialCharacters {
-            allowedCharacters.append(.special)
-        }
-        return allowedCharacters
-    }
-
     @Published private(set) var password = ""
+    @Published private(set) var texts: [Text] = []
     @Published var length: Double = 32
     @Published var hasSpecialCharacters = true
 
@@ -49,6 +43,25 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     init() {
         self.regenerate()
 
+        $password
+            .sink { [unowned self] newPassword in
+                texts.removeAll()
+                newPassword.forEach { char in
+                    var color = Color.primary
+                    if AllowedCharacter.uppercase.rawValue.contains(char) {
+                        color = PassColor.letters
+                    } else if AllowedCharacter.lowercase.rawValue.contains(char) {
+                        color = PassColor.letters
+                    } else if AllowedCharacter.digit.rawValue.contains(char) {
+                        color = PassColor.digits
+                    } else if AllowedCharacter.special.rawValue.contains(char) {
+                        color = PassColor.specialCharacters
+                    }
+                    texts.append(Text(String(char)).foregroundColor(color))
+                }
+            }
+            .store(in: &cancellables)
+
         $length
             .removeDuplicates()
             .sink { [unowned self] _ in
@@ -56,7 +69,10 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
             }
             .store(in: &cancellables)
 
+        // Throttle to wait for Toggle's animation
+        // if not the value of the boolean will be incorrect
         $hasSpecialCharacters
+            .throttle(for: .milliseconds(200), scheduler: DispatchQueue.main, latest: true)
             .sink { [unowned self] _ in
                 self.regenerate()
             }
@@ -64,6 +80,10 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     }
 
     func regenerate() {
+        var allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit]
+        if hasSpecialCharacters {
+            allowedCharacters.append(.special)
+        }
         password = .random(allowedCharacters: allowedCharacters, length: Int(length))
     }
 

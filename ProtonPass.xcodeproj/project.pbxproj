@@ -63,6 +63,10 @@
 		3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF12877791000EE85E1 /* CreateVaultView.swift */; };
 		3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */; };
 		3547ABF628777D6100EE85E1 /* VaultSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */; };
+		354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB13C28A240E000F50040 /* TextExtensions.swift */; };
+		354BB13F28A24F3800F50040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 354BB13E28A24F3800F50040 /* Assets.xcassets */; };
+		354BB14128A2503C00F50040 /* PassColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14028A2503C00F50040 /* PassColor.swift */; };
+		354BB14228A2511C00F50040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 354BB13E28A24F3800F50040 /* Assets.xcassets */; };
 		355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */; };
 		3551DFF22885436E008AE633 /* DummyEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551DFF12885436E008AE633 /* DummyEncodable.swift */; };
 		3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618628A1372500A68477 /* SwiftUITextView.swift */; };
@@ -311,6 +315,9 @@
 		3547ABF12877791000EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
 		3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySummaryView.swift; sourceTree = "<group>"; };
 		3547ABF528777D6100EE85E1 /* VaultSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSummaryView.swift; sourceTree = "<group>"; };
+		354BB13C28A240E000F50040 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
+		354BB13E28A24F3800F50040 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		354BB14028A2503C00F50040 /* PassColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassColor.swift; sourceTree = "<group>"; };
 		355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsSidebarItemView.swift; sourceTree = "<group>"; };
 		3551DFF12885436E008AE633 /* DummyEncodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyEncodable.swift; sourceTree = "<group>"; };
 		3552618628A1372500A68477 /* SwiftUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUITextView.swift; sourceTree = "<group>"; };
@@ -830,11 +837,14 @@
 				353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */,
 				35ECA4742882ACDD00980A1D /* TitledTextField.swift */,
 				3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */,
+				354BB14028A2503C00F50040 /* PassColor.swift */,
 				3547ABDB28771B2900EE85E1 /* PPAlertController.swift */,
 				3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */,
 				3552618628A1372500A68477 /* SwiftUITextView.swift */,
+				354BB13C28A240E000F50040 /* TextExtensions.swift */,
 				3552618C28A1511000A68477 /* UserInputContentView.swift */,
 				3552618A28A14EB600A68477 /* UserInputContainerView.swift */,
+				354BB13E28A24F3800F50040 /* Assets.xcassets */,
 			);
 			path = UIComponents;
 			sourceTree = "<group>";
@@ -1233,6 +1243,7 @@
 				35E506CF286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig in Resources */,
 				35E506CE286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig in Resources */,
 				35E506D0286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig in Resources */,
+				354BB14228A2511C00F50040 /* Assets.xcassets in Resources */,
 				35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1282,6 +1293,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				354BB13F28A24F3800F50040 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1713,9 +1725,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				354BB14128A2503C00F50040 /* PassColor.swift in Sources */,
 				3552618D28A1511000A68477 /* UserInputContentView.swift in Sources */,
 				3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */,
 				353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */,
+				354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */,
 				3547ABDC28771B2900EE85E1 /* PPAlertController.swift in Sources */,
 				3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */,
 				35ECA4752882ACDD00980A1D /* TitledTextField.swift in Sources */,
