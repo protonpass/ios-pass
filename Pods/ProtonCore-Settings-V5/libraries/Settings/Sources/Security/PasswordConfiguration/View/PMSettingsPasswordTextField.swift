@@ -143,12 +143,12 @@ public final class PMSettingsPasswordTextField: UIView, UITextFieldDelegate {
     private func didFindError() {
         titleLabel.textColor = ColorProvider.NotificationError
         captionLabel.textColor = ColorProvider.NotificationError
-        inputContainerView.layer.borderColor = ColorProvider.NotificationError.cgColor
+        inputContainerView.layer.borderColor = ColorProvider.NotificationError
     }
 
     private func didLeaveError() {
         titleLabel.style = LabelStyles.captionSemiBold
-        inputContainerView.layer.borderColor = ColorProvider.BrandLighten40.cgColor
+        inputContainerView.layer.borderColor = ColorProvider.BrandLighten40
         captionLabel.style = LabelStyles.caption
     }
 
@@ -161,7 +161,7 @@ public final class PMSettingsPasswordTextField: UIView, UITextFieldDelegate {
         let view = UIView()
         view.backgroundColor = ColorProvider.BackgroundSecondary
         view.layer.borderWidth = 1
-        view.layer.borderColor = ColorProvider.BrandLighten40.cgColor
+        view.layer.borderColor = ColorProvider.BrandLighten40
         view.layer.cornerRadius = 2
         view.layer.masksToBounds = true
         view.setSizeContraint(height: 48, width: nil)
