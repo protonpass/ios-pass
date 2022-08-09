@@ -23,7 +23,7 @@ import ProtonCore_Services
 
 public struct GetShareKeysEndpoint: Endpoint {
     public typealias Body = DummyEncodable
-    public struct Response: Codable {
+    public struct Response: Decodable {
         public let code: Int
         public let keys: ShareKey
     }

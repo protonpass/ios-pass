@@ -23,7 +23,7 @@ import ProtonCore_Services
 
 public struct GetShareDataEndpoint: Endpoint {
     public typealias Body = DummyEncodable
-    public struct Response: Codable {
+    public struct Response: Decodable {
         public let code: Int
         public let share: Share
     }

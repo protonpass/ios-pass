@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct ItemKey: Codable {
+public struct ItemKey: Decodable {
     public let rotationID: String
 
     /// Armored item key

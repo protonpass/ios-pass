@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct ShareKey: Codable {
+public struct ShareKey: Decodable {
     public let vaultKeys: [VaultKey]
     public let itemKeys: [ItemKey]
     public let total: Int

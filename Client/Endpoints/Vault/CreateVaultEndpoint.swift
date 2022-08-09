@@ -25,7 +25,7 @@ import ProtonCore_Services
 public struct CreateVaultEndpoint: Endpoint {
     public typealias Body = CreateVaultRequestBody
 
-    public struct Response: Codable {
+    public struct Response: Decodable {
         public let code: Int
         public let share: PartialShare
     }

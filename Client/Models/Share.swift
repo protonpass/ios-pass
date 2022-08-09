@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct Share: Codable {
+public struct Share: Decodable {
     /// ID of the share
     public let shareID: String
 
@@ -117,7 +117,7 @@ public struct Share: Codable {
     }
 }
 
-public struct PartialShare: Codable {
+public struct PartialShare: Decodable {
     /// ID of the share
     public let shareID: String
 

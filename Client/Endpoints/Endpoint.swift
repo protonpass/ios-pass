@@ -22,8 +22,7 @@ import Foundation
 import ProtonCore_Networking
 
 public protocol Endpoint: Request {
-    // `Decodable` should be enough but Core's functions need `Codable`
-    associatedtype Response: Codable
+    associatedtype Response: Decodable
     associatedtype Body: Encodable
 
     var body: Body? { get }
