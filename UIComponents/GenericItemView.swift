@@ -21,18 +21,24 @@
 import ProtonCore_UIFoundations
 import SwiftUI
 
-public protocol GenericItemProvider {
-    var icon: UIImage { get }
-    var title: String { get }
-    var detail: String { get }
+public struct GenericItem {
+    let icon: UIImage
+    let title: String
+    var detail: String?
+
+    public init(icon: UIImage, title: String, detail: String? = nil) {
+        self.icon = icon
+        self.title = title
+        self.detail = detail
+    }
 }
 
 public struct GenericItemView: View {
-    private let item: GenericItemProvider
+    private let item: GenericItem
     private let action: () -> Void
     private let showDivider: Bool
 
-    public init(item: GenericItemProvider,
+    public init(item: GenericItem,
                 showDivider: Bool = true,
                 action: @escaping () -> Void) {
         self.item = item
@@ -75,15 +81,9 @@ public struct GenericItemView: View {
 
 struct GenericItemView_Previews: PreviewProvider {
     static var previews: some View {
-        let item = PreviewGenericItem(icon: IconProvider.note,
-                                      title: "Note",
-                                      detail: "Keep important information secure")
+        let item = GenericItem(icon: IconProvider.note,
+                               title: "Note",
+                               detail: "Keep important information secure")
         GenericItemView(item: item) {}
     }
-}
-
-struct PreviewGenericItem: GenericItemProvider {
-    let icon: UIImage
-    let title: String
-    var detail: String
 }

@@ -33,20 +33,24 @@ struct CreateItemView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                GenericItemView(item: CreateNewItemOption.login) {
+                GenericItemView(
+                    item: CreateNewItemOption.login.toGenericItem()) {
                     viewModel.select(option: .login)
                 }
 
-                GenericItemView(item: CreateNewItemOption.alias) {
+                GenericItemView(
+                    item: CreateNewItemOption.alias.toGenericItem()) {
                     viewModel.select(option: .alias)
                 }
 
-                GenericItemView(item: CreateNewItemOption.note) {
+                GenericItemView(
+                    item: CreateNewItemOption.note.toGenericItem()) {
                     viewModel.select(option: .note)
                 }
 
-                GenericItemView(item: CreateNewItemOption.password,
-                                showDivider: false) {
+                GenericItemView(
+                    item: CreateNewItemOption.password.toGenericItem(),
+                    showDivider: false) {
                     viewModel.select(option: .password)
                 }
 

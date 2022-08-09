@@ -40,7 +40,7 @@ final class CreateItemViewModel: DeinitPrintable {
     }
 }
 
-enum CreateNewItemOption: GenericItemProvider {
+enum CreateNewItemOption {
     case login, alias, note, password
 
     var icon: UIImage {
@@ -69,7 +69,7 @@ enum CreateNewItemOption: GenericItemProvider {
         }
     }
 
-    var detail: String {
+    var detail: String? {
         switch self {
         case .login:
             return "Keep your username and password secure"
@@ -80,5 +80,9 @@ enum CreateNewItemOption: GenericItemProvider {
         case .password:
             return "Generate a secure password"
         }
+    }
+
+    func toGenericItem() -> GenericItem {
+        .init(icon: icon, title: title, detail: detail)
     }
 }

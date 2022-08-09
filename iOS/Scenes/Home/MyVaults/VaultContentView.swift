@@ -35,16 +35,25 @@ struct VaultContentView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             summaryView
-            List {
-                ForEach(0..<50) { index in
-                    Text("\(selectedVaultName) #\(index)")
+                .frame(height: 150)
+                .padding()
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(viewModel.items.indices, id: \.self) { index in
+                        let item = viewModel.items[index]
+                        GenericItemView(
+                            item: item.toGenericItem(),
+                            showDivider: index != viewModel.items.count - 1,
+                            action: {
+                                print("Tapped on \(item.itemMetadata.name)")
+                            })
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
             }
-            .listStyle(.plain)
         }
-        .padding()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbar }
     }
@@ -135,6 +144,5 @@ struct VaultContentView: View {
             let noteItems = viewModel.items.filter(by: .note)
             CategorySummaryView(summary: .init(noteCount: noteItems.count))
         }
-        .frame(height: 150)
     }
 }

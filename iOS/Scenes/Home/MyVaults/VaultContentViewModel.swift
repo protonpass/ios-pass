@@ -21,6 +21,9 @@
 import Client
 import Combine
 import Core
+import ProtonCore_UIFoundations
+import UIComponents
+import UIKit
 
 protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToToggleSidebar()
@@ -37,7 +40,7 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
 
-    @Published private(set) var items: [ItemProtocol] = .preview
+    @Published private(set) var items: [ItemProtocol] = [DummyItem].preview
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: VaultContentViewModelDelegate?
@@ -148,7 +151,7 @@ extension DummyItem {
     }
 }
 
-extension Array where Element == ItemProtocol {
+extension Array where Element == DummyItem {
     static var preview: [Element] {
         [DummyItem.login1,
          DummyItem.alias1,
@@ -157,5 +160,31 @@ extension Array where Element == ItemProtocol {
          DummyItem.alias2,
          DummyItem.note2,
          DummyItem.alias3]
+    }
+}
+
+extension ItemProtocol {
+    func toGenericItem() -> GenericItem {
+        let icon: UIImage
+        switch itemContent {
+        case .alias:
+            icon = IconProvider.alias
+        case .note:
+            icon = IconProvider.note
+        case .login:
+            icon = IconProvider.keySkeleton
+        }
+
+        let detail: String?
+        switch itemContent {
+        case .alias:
+            detail = itemMetadata.note
+        case .note:
+            detail = nil
+        case .login(let login):
+            detail = login.username
+        }
+
+        return .init(icon: icon, title: itemMetadata.name, detail: detail)
     }
 }
