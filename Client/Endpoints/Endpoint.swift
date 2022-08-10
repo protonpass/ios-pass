@@ -26,6 +26,7 @@ public protocol Endpoint: Request {
     associatedtype Body: Encodable
 
     var body: Body? { get }
+    var queries: [String: Any]? { get }
 }
 
 public extension Endpoint {
@@ -35,10 +36,22 @@ public extension Endpoint {
     var method: HTTPMethod { .get }
     var body: Body? { nil }
     var nonDefaultTimeout: TimeInterval? { nil }
+    var queries: [String: Any]? { nil }
     var parameters: [String: Any]? {
-        guard let body = body,
-              let data = try? JSONEncoder().encode(body) else { return nil }
-        return (try? JSONSerialization.jsonObject(with: data,
-                                                  options: .allowFragments)).flatMap { $0 as? [String: Any] }
+        var finalParams: [String: Any] = [:]
+
+        if let queries = queries {
+            finalParams.merge(queries) { _, new in new }
+        }
+
+        if let body = body,
+           let data = try? JSONEncoder().encode(body),
+           let bodyParams = (try? JSONSerialization.jsonObject(
+            with: data,
+            options: .allowFragments)).flatMap({ $0 as? [String: Any] }) {
+            finalParams.merge(bodyParams) { _, new in new }
+        }
+
+        return finalParams.isEmpty ? nil : finalParams
     }
 }

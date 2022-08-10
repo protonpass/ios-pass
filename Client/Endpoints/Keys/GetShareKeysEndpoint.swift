@@ -31,14 +31,14 @@ public struct GetShareKeysEndpoint: Endpoint {
     public var path: String
     public var method: HTTPMethod { .get }
     public var authCredential: AuthCredential?
+    public var queries: [String: Any]?
 
-    // swiftlint:disable:next todo
-    // TODO: Support pagination
     public init(credential: AuthCredential,
                 shareId: String,
                 page: Int,
                 pageSize: Int) {
         self.path = "/pass/v1/share/\(shareId)/key/vault"
+        self.queries = ["Page": page, "PageSize": pageSize]
         self.authCredential = credential
     }
 }
