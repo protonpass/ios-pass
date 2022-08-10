@@ -103,7 +103,7 @@ extension LocalDatasourceTests {
         Task {
             // Given
             let givenShareId = String.random()
-            let insertedVaultKey = try await givenInsertedVaultKey(withShareId: givenShareId)
+            let insertedVaultKey = try await givenInsertedVaultKey(shareId: givenShareId)
             let updatedVaultKey = VaultKey.random(rotationId: insertedVaultKey.rotationID)
 
             // When
@@ -112,7 +112,7 @@ extension LocalDatasourceTests {
             // Then
             let vaultKeys = try await sut.fetchVaultKeys(shareId: givenShareId,
                                                          page: 0,
-                                                         pageSize: 100)
+                                                         pageSize: .max)
             XCTAssertEqual(vaultKeys.count, 1)
 
             let vaultKey = try XCTUnwrap(vaultKeys.first)
@@ -128,7 +128,7 @@ extension LocalDatasourceTests {
         waitForExpectations(timeout: expectationTimeOut)
     }
 
-    func givenInsertedVaultKey(withShareId shareId: String) async throws -> VaultKey {
+    func givenInsertedVaultKey(shareId: String) async throws -> VaultKey {
         let vaultKey = VaultKey.random()
         try await sut.insertVaultKeys([vaultKey], shareId: shareId)
         return vaultKey

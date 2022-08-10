@@ -103,7 +103,7 @@ extension LocalDatasourceTests {
         Task {
             // Given
             let givenShareId = String.random()
-            let insertedItemKey = try await givenInsertedItemKey(withShareId: givenShareId)
+            let insertedItemKey = try await givenInsertedItemKey(shareId: givenShareId)
             let updatedItemKey = ItemKey.random(rotationId: insertedItemKey.rotationID)
 
             // When
@@ -112,7 +112,7 @@ extension LocalDatasourceTests {
             // Then
             let itemKeys = try await sut.fetchItemKeys(shareId: givenShareId,
                                                        page: 0,
-                                                       pageSize: 100)
+                                                       pageSize: .max)
             XCTAssertEqual(itemKeys.count, 1)
 
             let itemKey = try XCTUnwrap(itemKeys.first)
@@ -127,7 +127,7 @@ extension LocalDatasourceTests {
         waitForExpectations(timeout: expectationTimeOut)
     }
 
-    func givenInsertedItemKey(withShareId shareId: String) async throws -> ItemKey {
+    func givenInsertedItemKey(shareId: String) async throws -> ItemKey {
         let itemKey = ItemKey.random()
         try await sut.insertItemKeys([itemKey], shareId: shareId)
         return itemKey
