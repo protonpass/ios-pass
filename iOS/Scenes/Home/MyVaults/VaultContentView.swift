@@ -47,7 +47,7 @@ struct VaultContentView: View {
                             item: item.toGenericItem(),
                             showDivider: index != viewModel.items.count - 1,
                             action: {
-                                print("Tapped on \(item.itemMetadata.name)")
+                                print("Tapped on \(item.itemContentMetadata.name)")
                             })
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }

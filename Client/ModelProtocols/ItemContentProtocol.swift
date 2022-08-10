@@ -1,5 +1,5 @@
 //
-// ItemProtocol.swift
+// ItemContentProtocol.swift
 // Proton Pass - Created on 09/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -26,50 +26,50 @@ public enum ItemContentType {
     case note
 }
 
-public enum ItemContent {
+public enum ItemContentData {
     case alias
-    case login(ItemLoginProtocol)
+    case login(ItemContentLoginProtocol)
     case note
 }
 
-public protocol ItemProtocol {
-    var itemMetadata: ItemMetadataProtocol { get }
-    var itemContent: ItemContent { get }
+public protocol ItemContentProtocol {
+    var itemContentMetadata: ItemContentMetadataProtocol { get }
+    var itemContentData: ItemContentData { get }
 }
 
-public protocol ItemMetadataProtocol {
+public protocol ItemContentMetadataProtocol {
     var name: String { get }
     var note: String { get }
 }
 
-public protocol ItemNoteProtocol {}
+public protocol ItemContentNoteProtocol {}
 
-public protocol ItemLoginProtocol {
+public protocol ItemContentLoginProtocol {
     var username: String { get }
     var password: String { get }
     var urls: [String] { get }
 }
 
-public protocol ItemAliasProtocol {}
+public protocol ItemContentAliasProtocol {}
 
-typealias ItemProtobuf = ProtonPassItemV1_Item
-typealias ItemMetadataProtobuf = ProtonPassItemV1_Metadata
-typealias ItemContentProtobuf = ProtonPassItemV1_Content
-typealias ItemNoteProtobuf = ProtonPassItemV1_ItemNote
-typealias ItemLoginProtobuf = ProtonPassItemV1_ItemLogin
-typealias ItemAliasProtobuf = ProtonPassItemV1_ItemAlias
+typealias ItemContentProtobuf = ProtonPassItemV1_Item
+typealias ItemContentMetadataProtobuf = ProtonPassItemV1_Metadata
+typealias ItemContentContentProtobuf = ProtonPassItemV1_Content
+typealias ItemContentNoteProtobuf = ProtonPassItemV1_ItemNote
+typealias ItemContentLoginProtobuf = ProtonPassItemV1_ItemLogin
+typealias ItemContentAliasProtobuf = ProtonPassItemV1_ItemAlias
 
-extension ItemNoteProtobuf: ItemNoteProtocol {}
-extension ItemAliasProtobuf: ItemAliasProtocol {}
+extension ItemContentNoteProtobuf: ItemContentNoteProtocol {}
+extension ItemContentAliasProtobuf: ItemContentAliasProtocol {}
 
-extension ItemMetadataProtobuf: ItemMetadataProtocol {
+extension ItemContentMetadataProtobuf: ItemContentMetadataProtocol {
     public init(name: String, note: String) {
         self.name = name
         self.note = note
     }
 }
 
-extension ItemLoginProtobuf: ItemLoginProtocol {
+extension ItemContentLoginProtobuf: ItemContentLoginProtocol {
     public init(username: String, password: String, urls: [String]) {
         self.username = username
         self.password = password
@@ -77,12 +77,12 @@ extension ItemLoginProtobuf: ItemLoginProtocol {
     }
 }
 
-public typealias ProtobufableItemProtocol = ItemProtocol & Protobufable
+public typealias ProtobufableItemContentProtocol = ItemContentProtocol & Protobufable
 
-extension ItemProtobuf: ProtobufableItemProtocol {
-    public var itemMetadata: ItemMetadataProtocol { metadata }
+extension ItemContentProtobuf: ProtobufableItemContentProtocol {
+    public var itemContentMetadata: ItemContentMetadataProtocol { metadata }
 
-    public var itemContent: ItemContent {
+    public var itemContentData: ItemContentData {
         switch content.content {
         case .alias:
             return .alias
@@ -100,12 +100,12 @@ extension ItemProtobuf: ProtobufableItemProtocol {
     }
 
     public init(data: Data) throws {
-        self = try ItemProtobuf(serializedData: data)
+        self = try ItemContentProtobuf(serializedData: data)
     }
 
-    public init(name: String, note: String, content: ItemContent) {
+    public init(name: String, note: String, data: ItemContentData) {
         self.metadata = .init(name: name, note: note)
-        switch content {
+        switch data {
         case .alias:
             self.content.alias = .init()
         case .login(let login):
@@ -118,10 +118,10 @@ extension ItemProtobuf: ProtobufableItemProtocol {
     }
 }
 
-public extension Array where Element == ItemProtocol {
+public extension Array where Element == ItemContentProtocol {
     func filter(by contentType: ItemContentType) -> [Element] {
         filter { element in
-            switch element.itemContent {
+            switch element.itemContentData {
             case .alias:
                 return contentType == .alias
             case .login:

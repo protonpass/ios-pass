@@ -40,7 +40,8 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
 
-    @Published private(set) var items: [ItemProtocol] = [DummyItem].preview
+    @Published private(set) var items: [ItemContentProtocol] =
+    [DummyItemContent].preview
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: VaultContentViewModelDelegate?
@@ -79,94 +80,92 @@ extension VaultContentViewModel {
 }
 
 // MARK: - Previews
-struct DummyItemMetadata: ItemMetadataProtocol {
+struct DummyItemContentMetadata: ItemContentMetadataProtocol {
     let name: String
     let note: String
 }
 
-struct DummyItemAlias: ItemAliasProtocol {}
+struct DummyItemContentAlias: ItemContentAliasProtocol {}
 
-struct DummyItemNote: ItemNoteProtocol {}
+struct DummyItemContentNote: ItemContentNoteProtocol {}
 
-struct DummyItemLogin: ItemLoginProtocol {
+struct DummyItemContentLogin: ItemContentLoginProtocol {
     public let username: String
     public let password: String
     public let urls: [String]
 }
 
-struct DummyItem: ItemProtocol {
-    public let itemContent: ItemContent
-    public let itemMetadata: ItemMetadataProtocol
+struct DummyItemContent: ItemContentProtocol {
+    public let itemContentMetadata: ItemContentMetadataProtocol
+    public let itemContentData: ItemContentData
 }
 
-extension DummyItem {
-    static var login1: DummyItem {
-        let metadata = DummyItemMetadata(name: "Amazon",
-                                         note: "Used for UK & French Amazon")
-        let login = DummyItemLogin(username: "adam.smith@proton.me",
-                                   password: "12345678",
-                                   urls: ["https://amazon.co.uk", "https://amazon.fr"])
-        return .init(itemContent: .login(login),
-                     itemMetadata: metadata)
+extension DummyItemContent {
+    static var login1: DummyItemContent {
+        let metadata = DummyItemContentMetadata(name: "Amazon",
+                                                note: "Used for UK & French Amazon")
+        let login = DummyItemContentLogin(username: "adam.smith@proton.me",
+                                          password: "12345678",
+                                          urls: ["https://amazon.co.uk", "https://amazon.fr"])
+        return .init(itemContentMetadata: metadata, itemContentData: .login(login))
     }
 
-    static var login2: DummyItem {
-        let metadata = DummyItemMetadata(name: "LinkedIn",
-                                         note: "Used for LinkedIn")
-        let login = DummyItemLogin(username: "john.doe@proton.me",
-                                   password: "aaaaaaaa",
-                                   urls: ["https://linkedin.com"])
-        return .init(itemContent: .login(login),
-                     itemMetadata: metadata)
+    static var login2: DummyItemContent {
+        let metadata = DummyItemContentMetadata(name: "LinkedIn",
+                                                note: "Used for LinkedIn")
+        let login = DummyItemContentLogin(username: "john.doe@proton.me",
+                                          password: "aaaaaaaa",
+                                          urls: ["https://linkedin.com"])
+        return .init(itemContentMetadata: metadata, itemContentData: .login(login))
     }
 
-    static var alias1: DummyItem {
-        let metadata = DummyItemMetadata(name: "Alias for newsletter",
-                                         note: "Used for newsletter")
-        return .init(itemContent: .alias, itemMetadata: metadata)
+    static var alias1: DummyItemContent {
+        let metadata = DummyItemContentMetadata(name: "Alias for newsletter",
+                                                note: "Used for newsletter")
+        return .init(itemContentMetadata: metadata, itemContentData: .alias)
     }
 
-    static var alias2: DummyItem {
-        let metadata = DummyItemMetadata(name: "Alias for online gaming",
-                                         note: "Used for online gaming")
-        return .init(itemContent: .alias, itemMetadata: metadata)
+    static var alias2: DummyItemContent {
+        let metadata = DummyItemContentMetadata(name: "Alias for online gaming",
+                                                note: "Used for online gaming")
+        return .init(itemContentMetadata: metadata, itemContentData: .alias)
     }
 
-    static var alias3: DummyItem {
-        let metadata = DummyItemMetadata(name: "Alias for online shopping",
-                                         note: "Used for online shopping")
-        return .init(itemContent: .alias, itemMetadata: metadata)
+    static var alias3: DummyItemContent {
+        let metadata = DummyItemContentMetadata(name: "Alias for online shopping",
+                                                note: "Used for online shopping")
+        return .init(itemContentMetadata: metadata, itemContentData: .alias)
     }
 
-    static var note1: DummyItem {
-        let metadata = DummyItemMetadata(name: "Cooking recipes",
-                                         note: "Best Vietnamese recipes")
-        return .init(itemContent: .note, itemMetadata: metadata)
+    static var note1: DummyItemContent {
+        let metadata = DummyItemContentMetadata(name: "Cooking recipes",
+                                                note: "Best Vietnamese recipes")
+        return .init(itemContentMetadata: metadata, itemContentData: .note)
     }
 
-    static var note2: DummyItem {
-        let metadata = DummyItemMetadata(name: "Places to visit in France",
-                                         note: "Best places to visit in France")
-        return .init(itemContent: .note, itemMetadata: metadata)
+    static var note2: DummyItemContent {
+        let metadata = DummyItemContentMetadata(name: "Places to visit in France",
+                                                note: "Best places to visit in France")
+        return .init(itemContentMetadata: metadata, itemContentData: .note)
     }
 }
 
-extension Array where Element == DummyItem {
+extension Array where Element == DummyItemContent {
     static var preview: [Element] {
-        [DummyItem.login1,
-         DummyItem.alias1,
-         DummyItem.note1,
-         DummyItem.login2,
-         DummyItem.alias2,
-         DummyItem.note2,
-         DummyItem.alias3]
+        [DummyItemContent.login1,
+         DummyItemContent.alias1,
+         DummyItemContent.note1,
+         DummyItemContent.login2,
+         DummyItemContent.alias2,
+         DummyItemContent.note2,
+         DummyItemContent.alias3]
     }
 }
 
-extension ItemProtocol {
+extension ItemContentProtocol {
     func toGenericItem() -> GenericItem {
         let icon: UIImage
-        switch itemContent {
+        switch itemContentData {
         case .alias:
             icon = IconProvider.alias
         case .note:
@@ -176,15 +175,15 @@ extension ItemProtocol {
         }
 
         let detail: String?
-        switch itemContent {
+        switch itemContentData {
         case .alias:
-            detail = itemMetadata.note
+            detail = itemContentMetadata.note
         case .note:
             detail = nil
         case .login(let login):
             detail = login.username
         }
 
-        return .init(icon: icon, title: itemMetadata.name, detail: detail)
+        return .init(icon: icon, title: itemContentMetadata.name, detail: detail)
     }
 }

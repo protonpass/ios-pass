@@ -67,7 +67,7 @@
 		354BB13F28A24F3800F50040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 354BB13E28A24F3800F50040 /* Assets.xcassets */; };
 		354BB14128A2503C00F50040 /* PassColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14028A2503C00F50040 /* PassColor.swift */; };
 		354BB14228A2511C00F50040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 354BB13E28A24F3800F50040 /* Assets.xcassets */; };
-		354BB14428A2683E00F50040 /* ItemProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14328A2683E00F50040 /* ItemProtocol.swift */; };
+		354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14328A2683E00F50040 /* ItemContentProtocol.swift */; };
 		354BB14F28A27FF500F50040 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14E28A27FF500F50040 /* SearchViewModel.swift */; };
 		354BB15328A2886500F50040 /* SwiftUISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB15228A2886500F50040 /* SwiftUISearchBar.swift */; };
 		354BB15528A2895F00F50040 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB15428A2895F00F50040 /* SearchView.swift */; };
@@ -322,7 +322,7 @@
 		354BB13C28A240E000F50040 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
 		354BB13E28A24F3800F50040 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		354BB14028A2503C00F50040 /* PassColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassColor.swift; sourceTree = "<group>"; };
-		354BB14328A2683E00F50040 /* ItemProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemProtocol.swift; sourceTree = "<group>"; };
+		354BB14328A2683E00F50040 /* ItemContentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContentProtocol.swift; sourceTree = "<group>"; };
 		354BB14E28A27FF500F50040 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		354BB15228A2886500F50040 /* SwiftUISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISearchBar.swift; sourceTree = "<group>"; };
 		354BB15428A2895F00F50040 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -516,7 +516,7 @@
 		35004A3B288FEF1C0073C4A7 /* ModelProtocols */ = {
 			isa = PBXGroup;
 			children = (
-				354BB14328A2683E00F50040 /* ItemProtocol.swift */,
+				354BB14328A2683E00F50040 /* ItemContentProtocol.swift */,
 				350A97CF2885BB1800A7168B /* ShareProtocol.swift */,
 				358BD35F287D4EA200802A91 /* VaultProtocol.swift */,
 			);
@@ -1662,7 +1662,7 @@
 				3547696E289D349C00581E2E /* Repository.swift in Sources */,
 				350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */,
 				35004A40289004330073C4A7 /* Pass.xcdatamodeld in Sources */,
-				354BB14428A2683E00F50040 /* ItemProtocol.swift in Sources */,
+				354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
 				355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */,
 				3547696C289D253600581E2E /* RemoteDatasource.swift in Sources */,

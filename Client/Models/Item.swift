@@ -1,5 +1,5 @@
 //
-// ItemData.swift
+// Item.swift
 // Proton Pass - Created on 09/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
