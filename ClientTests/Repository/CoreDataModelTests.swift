@@ -106,7 +106,7 @@ final class CoreDataModelTests: XCTestCase {
     }
 
     func testCDItemDataEntity() {
-        let sut = entity(byName: "CDItemData")
+        let sut = entity(byName: "CDItem")
         verifyAttribute(named: "aliasEmail", on: sut, hasType: .string)
         verifyAttribute(named: "content", on: sut, hasType: .string)
         verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer16)

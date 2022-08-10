@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CDItemData" representedClassName="CDItemData" syncable="YES">
+    <entity name="CDItem" representedClassName="CDItem" syncable="YES">
         <attribute name="aliasEmail" optional="YES" attributeType="String"/>
         <attribute name="content" attributeType="String"/>
         <attribute name="contentFormatVersion" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -81,7 +81,7 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="CDItemData" positionX="-209.34375" positionY="138.671875" width="128" height="238"/>
+        <element name="CDItem" positionX="-209.34375" positionY="138.671875" width="128" height="238"/>
         <element name="CDItemKey" positionX="-463.3046875" positionY="224.38671875" width="128" height="134"/>
         <element name="CDShare" positionX="-386.7265625" positionY="-246.07421875" width="128" height="358"/>
         <element name="CDVaultKey" positionX="-214.6171875" positionY="-299.74609375" width="128" height="149"/>

@@ -26,7 +26,7 @@ public struct CreateItemEndpoint: Endpoint {
 
     public struct Response: Decodable {
         public let code: Int
-        public let item: ItemData
+        public let item: Item
     }
 
     public var path: String

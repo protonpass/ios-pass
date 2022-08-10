@@ -24,7 +24,7 @@ import ProtonCore_Services
 public protocol RemoteDatasourceProtocol {
     func getShares() async throws -> [Share]
     func getShareKey(shareId: String, page: Int, pageSize: Int) async throws -> ShareKey
-    func createItem(shareId: String, requestBody: CreateItemRequestBody) async throws -> ItemData
+    func createItem(shareId: String, requestBody: CreateItemRequestBody) async throws -> Item
 }
 
 public final class RemoteDatasource {
@@ -74,7 +74,7 @@ extension RemoteDatasource: RemoteDatasourceProtocol {
         return getShareKeysResponse.keys
     }
 
-    public func createItem(shareId: String, requestBody: CreateItemRequestBody) async throws -> ItemData {
+    public func createItem(shareId: String, requestBody: CreateItemRequestBody) async throws -> Item {
         let createItemEndpoint = CreateItemEndpoint(credential: authCredential,
                                                     shareId: shareId,
                                                     requestBody: requestBody)

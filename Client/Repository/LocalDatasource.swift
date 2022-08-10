@@ -26,6 +26,8 @@ public protocol LocalDatasourceProtocol {
     func fetchShares(userId: String) async throws -> [Share]
     func insertShareKey(_ shareKey: ShareKey, shareId: String) async throws
     func fetchShareKey(shareId: String, page: Int, pageSize: Int) async throws -> ShareKey
+    func insertItems(_ items: [Item], shareId: String) async throws
+    func fetchItems(shareId: String, page: Int, pageSize: Int) async throws -> [Item]
 }
 
 public enum LocalDatasourceError: Error {
@@ -167,6 +169,7 @@ extension LocalDatasource: LocalDatasourceProtocol {
             index += 1
             return false
         })
+
         try await execute(batchInsertRequest: request, withContext: taskContext)
     }
 
@@ -183,6 +186,7 @@ extension LocalDatasource: LocalDatasourceProtocol {
             index += 1
             return false
         })
+
         try await execute(batchInsertRequest: request, withContext: taskContext)
     }
 
@@ -240,6 +244,34 @@ extension LocalDatasource: LocalDatasourceProtocol {
         fetchRequest.fetchOffset = page * pageSize
         let cdItemKeys = try await fetch(request: fetchRequest, withContext: taskContext)
         return try cdItemKeys.map { try $0.toItemKey() }
+    }
+
+    public func insertItems(_ items: [Item], shareId: String) async throws {
+        let taskContext = newTaskContext(type: .insert, transactionAuthor: "insertItemData")
+
+        var index = 0
+        let request = NSBatchInsertRequest(entity: CDItem.entity(context: taskContext),
+                                           managedObjectHandler: { object in
+            guard index < items.count else { return true }
+            let item = items[index]
+            (object as? CDItem)?.copy(item: item, shareId: shareId)
+            index += 1
+            return false
+        })
+
+        try await execute(batchInsertRequest: request, withContext: taskContext)
+    }
+
+    public func fetchItems(shareId: String, page: Int, pageSize: Int) async throws -> [Item] {
+        let taskContext = newTaskContext(type: .fetch, transactionAuthor: "fetchItems")
+
+        let fetchRequest = CDItem.fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        fetchRequest.fetchLimit = pageSize
+        fetchRequest.fetchOffset = page * pageSize
+
+        let cdItemDatas = try await fetch(request: fetchRequest, withContext: taskContext)
+        return try cdItemDatas.map { try $0.toItem() }
     }
 }
 

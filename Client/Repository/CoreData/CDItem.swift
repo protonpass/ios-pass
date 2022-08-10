@@ -1,5 +1,5 @@
 //
-// CDItemData.swift
+// CDItem.swift
 // Proton Pass - Created on 10/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,15 +21,15 @@
 import CoreData
 import Foundation
 
-@objc(CDItemData)
-public class CDItemData: NSManagedObject {}
+@objc(CDItem)
+public class CDItem: NSManagedObject {}
 
-extension CDItemData: Identifiable {}
+extension CDItem: Identifiable {}
 
-extension CDItemData {
+extension CDItem {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<CDItemData> {
-        NSFetchRequest<CDItemData>(entityName: "CDItemData")
+    public class func fetchRequest() -> NSFetchRequest<CDItem> {
+        NSFetchRequest<CDItem>(entityName: "CDItem")
     }
 
     @NSManaged var aliasEmail: String?
@@ -47,8 +47,8 @@ extension CDItemData {
     @NSManaged var userSignature: String?
 }
 
-extension CDItemData {
-    func toItemData() throws -> ItemData {
+extension CDItem {
+    func toItem() throws -> Item {
         guard let itemID = itemID else {
             throw CoreDataError.corruptedObject(self, "itemID")
         }
@@ -91,19 +91,19 @@ extension CDItemData {
                      modifyTime: modifyTime)
     }
 
-    func copy(itemData: ItemData, shareId: String) {
-        self.itemID = itemData.itemID
-        self.revision = itemData.revision
-        self.contentFormatVersion = itemData.contentFormatVersion
-        self.rotationID = itemData.rotationID
-        self.content = itemData.content
-        self.userSignature = itemData.userSignature
-        self.itemKeySignature = itemData.itemKeySignature
-        self.state = itemData.state
-        self.signatureEmail = itemData.signatureEmail
-        self.aliasEmail = itemData.aliasEmail
-        self.createTime = itemData.createTime
-        self.modifyTime = itemData.modifyTime
+    func copy(item: Item, shareId: String) {
+        self.itemID = item.itemID
+        self.revision = item.revision
+        self.contentFormatVersion = item.contentFormatVersion
+        self.rotationID = item.rotationID
+        self.content = item.content
+        self.userSignature = item.userSignature
+        self.itemKeySignature = item.itemKeySignature
+        self.state = item.state
+        self.signatureEmail = item.signatureEmail
+        self.aliasEmail = item.aliasEmail
+        self.createTime = item.createTime
+        self.modifyTime = item.modifyTime
         self.shareID = shareId
     }
 }

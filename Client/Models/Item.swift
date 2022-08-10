@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct ItemData: Decodable {
+public struct Item: Decodable {
     public let itemID: String
     public let revision: Int16
     public let contentFormatVersion: Int16
