@@ -1,5 +1,5 @@
 //
-// CDShare+CDShare+CoreDataProperties.swift
+// CDShare.swift
 // Proton Pass - Created on 18/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,6 +20,11 @@
 
 import CoreData
 import Foundation
+
+@objc(CDShare)
+public final class CDShare: NSManagedObject {}
+
+extension CDShare: Identifiable {}
 
 extension CDShare {
     @nonobjc
@@ -79,8 +84,6 @@ extension CDShare {
     @objc(removeVaultKeys:)
     @NSManaged func removeFromVaultKeys(_ values: NSSet)
 }
-
-extension CDShare: Identifiable {}
 
 extension CDShare {
     // swiftlint:disable:next cyclomatic_complexity
@@ -148,10 +151,8 @@ extension CDShare {
                      expireTime: expireTime,
                      createTime: createTime)
     }
-}
 
-extension CDShare {
-    func copy(from share: Share, userId: String) {
+    func copy(share: Share, userId: String) {
         acceptanceSignature = share.acceptanceSignature
         content = share.content
         contentEncryptedAddressSignature = share.contentEncryptedAddressSignature

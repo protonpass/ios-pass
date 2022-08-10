@@ -1,5 +1,5 @@
 //
-// CDItemData+CoreDataProperties.swift
+// CDItemData.swift
 // Proton Pass - Created on 10/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,6 +21,11 @@
 import CoreData
 import Foundation
 
+@objc(CDItemData)
+public class CDItemData: NSManagedObject {}
+
+extension CDItemData: Identifiable {}
+
 extension CDItemData {
     @nonobjc
     public class func fetchRequest() -> NSFetchRequest<CDItemData> {
@@ -41,8 +46,6 @@ extension CDItemData {
     @NSManaged var state: Int16
     @NSManaged var userSignature: String?
 }
-
-extension CDItemData: Identifiable {}
 
 extension CDItemData {
     func toItemData() throws -> ItemData {
@@ -87,10 +90,8 @@ extension CDItemData {
                      createTime: createTime,
                      modifyTime: modifyTime)
     }
-}
 
-extension CDItemData {
-    func copy(from itemData: ItemData, shareId: String) {
+    func copy(itemData: ItemData, shareId: String) {
         self.itemID = itemData.itemID
         self.revision = itemData.revision
         self.contentFormatVersion = itemData.contentFormatVersion

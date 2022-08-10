@@ -1,5 +1,5 @@
 //
-// CDItemKey+CoreDataProperties.swift
+// CDItemKey.swift
 // Proton Pass - Created on 18/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,6 +21,11 @@
 import CoreData
 import Foundation
 
+@objc(CDItemKey)
+public final class CDItemKey: NSManagedObject {}
+
+extension CDItemKey: Identifiable {}
+
 extension CDItemKey {
     @nonobjc
     class func fetchRequest() -> NSFetchRequest<CDItemKey> {
@@ -34,16 +39,6 @@ extension CDItemKey {
     @NSManaged var rotationID: String?
     @NSManaged var shareID: String?
     @NSManaged var share: CDShare?
-}
-
-extension CDItemKey: Identifiable {}
-
-extension CDItemKey {
-    class func allItemKeysFetchRequest(shareId: String) -> NSFetchRequest<CDItemKey> {
-        let fetchRequest = fetchRequest()
-        fetchRequest.predicate = .init(format: "shareID = %s", shareId)
-        return fetchRequest
-    }
 }
 
 extension CDItemKey {
@@ -66,9 +61,7 @@ extension CDItemKey {
                      keySignature: keySignature,
                      createTime: createTime)
     }
-}
 
-extension CDItemKey {
     func copy(from itemKey: ItemKey, shareId: String) {
         createTime = itemKey.createTime
         key = itemKey.key
@@ -76,5 +69,13 @@ extension CDItemKey {
         keySignature = itemKey.keySignature
         rotationID = itemKey.rotationID
         shareID = shareId
+    }
+}
+
+extension CDItemKey {
+    class func allItemKeysFetchRequest(shareId: String) -> NSFetchRequest<CDItemKey> {
+        let fetchRequest = fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %s", shareId)
+        return fetchRequest
     }
 }

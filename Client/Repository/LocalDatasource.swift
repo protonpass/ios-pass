@@ -130,7 +130,7 @@ extension LocalDatasource: LocalDatasourceProtocol {
                                            managedObjectHandler: { object in
             guard index < shares.count else { return true }
             let share = shares[index]
-            (object as? CDShare)?.copy(from: share, userId: userId)
+            (object as? CDShare)?.copy(share: share, userId: userId)
             index += 1
             return false
         })
@@ -163,7 +163,7 @@ extension LocalDatasource: LocalDatasourceProtocol {
                                            managedObjectHandler: { object in
             guard index < vaultKeys.count else { return true }
             let vaultKey = vaultKeys[index]
-            (object as? CDVaultKey)?.copy(from: vaultKey, shareId: shareId)
+            (object as? CDVaultKey)?.copy(vaultKey: vaultKey, shareId: shareId)
             index += 1
             return false
         })

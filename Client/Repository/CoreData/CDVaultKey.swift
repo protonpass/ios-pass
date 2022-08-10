@@ -1,5 +1,5 @@
 //
-// CDVaultKey+CoreDataProperties.swift
+// CDVaultKey.swift
 // Proton Pass - Created on 18/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,6 +21,11 @@
 import CoreData
 import Foundation
 
+@objc(CDVaultKey)
+public final class CDVaultKey: NSManagedObject {}
+
+extension CDVaultKey: Identifiable {}
+
 extension CDVaultKey {
     @nonobjc
     class func fetchRequest() -> NSFetchRequest<CDVaultKey> {
@@ -35,16 +40,6 @@ extension CDVaultKey {
     @NSManaged var rotationID: String?
     @NSManaged var shareID: String?
     @NSManaged var share: CDShare?
-}
-
-extension CDVaultKey: Identifiable {}
-
-extension CDVaultKey {
-    class func allVaultKeysFetchRequest(shareId: String) -> NSFetchRequest<CDVaultKey> {
-        let fetchRequest = fetchRequest()
-        fetchRequest.predicate = .init(format: "shareID = %s", shareId)
-        return fetchRequest
-    }
 }
 
 extension CDVaultKey {
@@ -72,10 +67,8 @@ extension CDVaultKey {
                      keySignature: keySignature,
                      createTime: createTime)
     }
-}
 
-extension CDVaultKey {
-    func copy(from vaultKey: VaultKey, shareId: String) {
+    func copy(vaultKey: VaultKey, shareId: String) {
         createTime = vaultKey.createTime
         key = vaultKey.key
         keyPassphrase = vaultKey.keyPassphrase
@@ -83,5 +76,13 @@ extension CDVaultKey {
         rotation = vaultKey.rotation
         rotationID = vaultKey.rotationID
         shareID = shareId
+    }
+}
+
+extension CDVaultKey {
+    class func allVaultKeysFetchRequest(shareId: String) -> NSFetchRequest<CDVaultKey> {
+        let fetchRequest = fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %s", shareId)
+        return fetchRequest
     }
 }

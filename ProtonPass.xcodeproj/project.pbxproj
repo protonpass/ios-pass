@@ -37,8 +37,7 @@
 		3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */; };
 		3542F0262899431D004007C7 /* CoreDataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F0252899431D004007C7 /* CoreDataModelTests.swift */; };
 		3542F02828996C70004007C7 /* LocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F02728996C70004007C7 /* LocalDatasource.swift */; };
-		3545BCF628A3BA3200DFE5CF /* CDItemData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545BCF428A3BA3200DFE5CF /* CDItemData+CoreDataProperties.swift */; };
-		3545BCF728A3BA3200DFE5CF /* CDItemData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545BCF528A3BA3200DFE5CF /* CDItemData+CoreDataClass.swift */; };
+		3545BCF728A3BA3200DFE5CF /* CDItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545BCF528A3BA3200DFE5CF /* CDItemData.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
@@ -108,12 +107,9 @@
 		358BD36F287D539F00802A91 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		358BD374287D565900802A91 /* DummyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD373287D565900802A91 /* DummyTests.swift */; };
 		358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */; };
-		35A909E3289006F700AC54D4 /* CDShare+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909DD289006F600AC54D4 /* CDShare+CoreDataProperties.swift */; };
-		35A909E4289006F700AC54D4 /* CDShare+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909DE289006F600AC54D4 /* CDShare+CoreDataClass.swift */; };
-		35A909E5289006F700AC54D4 /* CDItemKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909DF289006F600AC54D4 /* CDItemKey+CoreDataProperties.swift */; };
-		35A909E6289006F700AC54D4 /* CDVaultKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E0289006F600AC54D4 /* CDVaultKey+CoreDataProperties.swift */; };
-		35A909E7289006F700AC54D4 /* CDItemKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E1289006F700AC54D4 /* CDItemKey+CoreDataClass.swift */; };
-		35A909E8289006F700AC54D4 /* CDVaultKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E2289006F700AC54D4 /* CDVaultKey+CoreDataClass.swift */; };
+		35A909E4289006F700AC54D4 /* CDShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909DE289006F600AC54D4 /* CDShare.swift */; };
+		35A909E7289006F700AC54D4 /* CDItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E1289006F700AC54D4 /* CDItemKey.swift */; };
+		35A909E8289006F700AC54D4 /* CDVaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E2289006F700AC54D4 /* CDVaultKey.swift */; };
 		35A909EA2890110F00AC54D4 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E92890110F00AC54D4 /* CoreDataError.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateNoteViewModel.swift */; };
 		35B10BE5289ACCFF003BFF6C /* Pass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 35004A3E289004330073C4A7 /* Pass.xcdatamodeld */; };
@@ -297,8 +293,7 @@
 		3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthCredential+Preview.swift"; sourceTree = "<group>"; };
 		3542F0252899431D004007C7 /* CoreDataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModelTests.swift; sourceTree = "<group>"; };
 		3542F02728996C70004007C7 /* LocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatasource.swift; sourceTree = "<group>"; };
-		3545BCF428A3BA3200DFE5CF /* CDItemData+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDItemData+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		3545BCF528A3BA3200DFE5CF /* CDItemData+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDItemData+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3545BCF528A3BA3200DFE5CF /* CDItemData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDItemData.swift; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
 		3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonSwitchToggleStyle.swift; sourceTree = "<group>"; };
@@ -366,12 +361,9 @@
 		358BD36A287D52AC00802A91 /* vault_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vault_v1.pb.swift; sourceTree = "<group>"; };
 		358BD373287D565900802A91 /* DummyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyTests.swift; sourceTree = "<group>"; };
 		358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+ExecEndpoint.swift"; sourceTree = "<group>"; };
-		35A909DD289006F600AC54D4 /* CDShare+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDShare+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		35A909DE289006F600AC54D4 /* CDShare+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDShare+CoreDataClass.swift"; sourceTree = "<group>"; };
-		35A909DF289006F600AC54D4 /* CDItemKey+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDItemKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		35A909E0289006F600AC54D4 /* CDVaultKey+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDVaultKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		35A909E1289006F700AC54D4 /* CDItemKey+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDItemKey+CoreDataClass.swift"; sourceTree = "<group>"; };
-		35A909E2289006F700AC54D4 /* CDVaultKey+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDVaultKey+CoreDataClass.swift"; sourceTree = "<group>"; };
+		35A909DE289006F600AC54D4 /* CDShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDShare.swift; sourceTree = "<group>"; };
+		35A909E1289006F700AC54D4 /* CDItemKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDItemKey.swift; sourceTree = "<group>"; };
+		35A909E2289006F700AC54D4 /* CDVaultKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDVaultKey.swift; sourceTree = "<group>"; };
 		35A909E92890110F00AC54D4 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNoteViewModel.swift; sourceTree = "<group>"; };
 		35E00615288BE5FE00FAAD65 /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
@@ -547,14 +539,10 @@
 			children = (
 				35004A3E289004330073C4A7 /* Pass.xcdatamodeld */,
 				35A909E92890110F00AC54D4 /* CoreDataError.swift */,
-				3545BCF528A3BA3200DFE5CF /* CDItemData+CoreDataClass.swift */,
-				3545BCF428A3BA3200DFE5CF /* CDItemData+CoreDataProperties.swift */,
-				35A909E1289006F700AC54D4 /* CDItemKey+CoreDataClass.swift */,
-				35A909DF289006F600AC54D4 /* CDItemKey+CoreDataProperties.swift */,
-				35A909DE289006F600AC54D4 /* CDShare+CoreDataClass.swift */,
-				35A909DD289006F600AC54D4 /* CDShare+CoreDataProperties.swift */,
-				35A909E2289006F700AC54D4 /* CDVaultKey+CoreDataClass.swift */,
-				35A909E0289006F600AC54D4 /* CDVaultKey+CoreDataProperties.swift */,
+				3545BCF528A3BA3200DFE5CF /* CDItemData.swift */,
+				35A909E1289006F700AC54D4 /* CDItemKey.swift */,
+				35A909DE289006F600AC54D4 /* CDShare.swift */,
+				35A909E2289006F700AC54D4 /* CDVaultKey.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1674,33 +1662,29 @@
 				3547696E289D349C00581E2E /* Repository.swift in Sources */,
 				350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */,
 				35004A40289004330073C4A7 /* Pass.xcdatamodeld in Sources */,
-				3545BCF628A3BA3200DFE5CF /* CDItemData+CoreDataProperties.swift in Sources */,
 				354BB14428A2683E00F50040 /* ItemProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
 				355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */,
 				3547696C289D253600581E2E /* RemoteDatasource.swift in Sources */,
-				35A909E5289006F700AC54D4 /* CDItemKey+CoreDataProperties.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
-				35A909E3289006F700AC54D4 /* CDShare+CoreDataProperties.swift in Sources */,
 				355E803428A2FA0500BE7C9B /* ItemData.swift in Sources */,
 				358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */,
-				35A909E7289006F700AC54D4 /* CDItemKey+CoreDataClass.swift in Sources */,
+				35A909E7289006F700AC54D4 /* CDItemKey.swift in Sources */,
 				3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */,
 				358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */,
-				3545BCF728A3BA3200DFE5CF /* CDItemData+CoreDataClass.swift in Sources */,
+				3545BCF728A3BA3200DFE5CF /* CDItemData.swift in Sources */,
 				3551DFF22885436E008AE633 /* DummyEncodable.swift in Sources */,
 				355E803628A2FBEB00BE7C9B /* CreateItemRequestBody.swift in Sources */,
 				358BD35B287D4D0A00802A91 /* CreateVaultRequestBody.swift in Sources */,
-				35A909E4289006F700AC54D4 /* CDShare+CoreDataClass.swift in Sources */,
+				35A909E4289006F700AC54D4 /* CDShare.swift in Sources */,
 				35A909EA2890110F00AC54D4 /* CoreDataError.swift in Sources */,
-				35A909E8289006F700AC54D4 /* CDVaultKey+CoreDataClass.swift in Sources */,
+				35A909E8289006F700AC54D4 /* CDVaultKey.swift in Sources */,
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
 				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,
 				358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */,
 				355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
 				350A97D02885BB1800A7168B /* ShareProtocol.swift in Sources */,
-				35A909E6289006F700AC54D4 /* CDVaultKey+CoreDataProperties.swift in Sources */,
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
 				358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */,
 				350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */,

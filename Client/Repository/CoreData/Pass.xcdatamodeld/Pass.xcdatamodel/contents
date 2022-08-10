@@ -14,6 +14,12 @@
         <attribute name="signatureEmail" attributeType="String"/>
         <attribute name="state" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userSignature" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="itemID"/>
+                <constraint value="shareID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="CDItemKey" representedClassName="CDItemKey" syncable="YES">
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -75,7 +81,7 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="CDItemData" positionX="-209.34375" positionY="138.671875" width="128" height="224"/>
+        <element name="CDItemData" positionX="-209.34375" positionY="138.671875" width="128" height="238"/>
         <element name="CDItemKey" positionX="-463.3046875" positionY="224.38671875" width="128" height="134"/>
         <element name="CDShare" positionX="-386.7265625" positionY="-246.07421875" width="128" height="358"/>
         <element name="CDVaultKey" positionX="-214.6171875" positionY="-299.74609375" width="128" height="149"/>
