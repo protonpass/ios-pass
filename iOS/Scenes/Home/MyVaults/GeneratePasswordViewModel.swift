@@ -59,22 +59,23 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
         $length
             .removeDuplicates()
-            .sink { [unowned self] _ in
-                self.regenerate()
+            .sink { [unowned self] newValue in
+                regenerate(length: newValue, hasSpecialCharacters: hasSpecialCharacters)
             }
             .store(in: &cancellables)
 
-        // Throttle to wait for Toggle's animation
-        // if not the value of the boolean will be incorrect
         $hasSpecialCharacters
-            .throttle(for: .milliseconds(200), scheduler: DispatchQueue.main, latest: true)
-            .sink { [unowned self] _ in
-                self.regenerate()
+            .sink { [unowned self] newValue in
+                regenerate(length: length, hasSpecialCharacters: newValue)
             }
             .store(in: &cancellables)
     }
 
     func regenerate() {
+        regenerate(length: length, hasSpecialCharacters: hasSpecialCharacters)
+    }
+
+    private func regenerate(length: Double, hasSpecialCharacters: Bool) {
         var allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit]
         if hasSpecialCharacters {
             allowedCharacters.append(.special)
