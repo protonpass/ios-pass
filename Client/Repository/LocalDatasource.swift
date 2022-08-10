@@ -22,12 +22,10 @@ import Core
 import CoreData
 
 public protocol LocalDatasourceProtocol {
-    func insertShares(_ shares: [Share], withUserId userId: String) async throws
-    func fetchShares(forUserId userId: String) async throws -> [Share]
-    func insertShareKey(_ shareKey: ShareKey, withShareId shareId: String) async throws
-    func fetchShareKey(forShareId shareId: String,
-                       page: Int,
-                       pageSize: Int) async throws -> ShareKey
+    func insertShares(_ shares: [Share], userId: String) async throws
+    func fetchShares(userId: String) async throws -> [Share]
+    func insertShareKey(_ shareKey: ShareKey, shareId: String) async throws
+    func fetchShareKey(shareId: String, page: Int, pageSize: Int) async throws -> ShareKey
 }
 
 public enum LocalDatasourceError: Error {
@@ -123,8 +121,7 @@ extension LocalDatasource {
 
 // MARK: - LocalDatasourceProtocol
 extension LocalDatasource: LocalDatasourceProtocol {
-    public func insertShares(_ shares: [Share],
-                             withUserId userId: String) async throws {
+    public func insertShares(_ shares: [Share], userId: String) async throws {
         let taskContext = newTaskContext(type: .insert,
                                          transactionAuthor: "insertShares")
 
@@ -142,7 +139,7 @@ extension LocalDatasource: LocalDatasourceProtocol {
                           withContext: taskContext)
     }
 
-    public func fetchShares(forUserId userId: String) async throws -> [Share] {
+    public func fetchShares(userId: String) async throws -> [Share] {
         let taskContext = newTaskContext(type: .fetch,
                                          transactionAuthor: "fetchShares")
 
@@ -153,14 +150,12 @@ extension LocalDatasource: LocalDatasourceProtocol {
         return try cdShares.map { try $0.toShare() }
     }
 
-    public func insertShareKey(_ shareKey: ShareKey,
-                               withShareId shareId: String) async throws {
-        try await insertVaultKeys(shareKey.vaultKeys, withShareId: shareId)
-        try await insertItemKeys(shareKey.itemKeys, withShareId: shareId)
+    public func insertShareKey(_ shareKey: ShareKey, shareId: String) async throws {
+        try await insertVaultKeys(shareKey.vaultKeys, shareId: shareId)
+        try await insertItemKeys(shareKey.itemKeys, shareId: shareId)
     }
 
-    func insertVaultKeys(_ vaultKeys: [VaultKey],
-                         withShareId shareId: String) async throws {
+    func insertVaultKeys(_ vaultKeys: [VaultKey], shareId: String) async throws {
         let taskContext = newTaskContext(type: .insert,
                                          transactionAuthor: "insertVaultKeys")
 
@@ -176,8 +171,7 @@ extension LocalDatasource: LocalDatasourceProtocol {
         try await execute(batchInsertRequest: batchInsertRequest, withContext: taskContext)
     }
 
-    func insertItemKeys(_ itemKeys: [ItemKey],
-                        withShareId shareId: String) async throws {
+    func insertItemKeys(_ itemKeys: [ItemKey], shareId: String) async throws {
         let taskContext = newTaskContext(type: .insert,
                                          transactionAuthor: "insertItemKeys")
 
@@ -193,30 +187,21 @@ extension LocalDatasource: LocalDatasourceProtocol {
         try await execute(batchInsertRequest: batchInsertRequest, withContext: taskContext)
     }
 
-    public func fetchShareKey(forShareId shareId: String,
-                              page: Int,
-                              pageSize: Int) async throws -> ShareKey {
-        let vaultKeyCount = try await getVaultKeysCount(forShareId: shareId)
-        let itemKeyCount = try await getItemKeysCount(forShareId: shareId)
+    public func fetchShareKey(shareId: String, page: Int, pageSize: Int) async throws -> ShareKey {
+        let vaultKeyCount = try await getVaultKeysCount(shareId: shareId)
+        let itemKeyCount = try await getItemKeysCount(shareId: shareId)
 
         guard vaultKeyCount == itemKeyCount else {
             throw CoreDataError.corruptedShareKey(shareId)
         }
 
-        let vaultKeys = try await fetchVaultKeys(forShareId: shareId,
-                                                 page: page,
-                                                 pageSize: pageSize)
-        let itemKeys = try await fetchItemKeys(forShareId: shareId,
-                                               page: page,
-                                               pageSize: pageSize)
-        return .init(vaultKeys: vaultKeys,
-                     itemKeys: itemKeys,
-                     total: vaultKeyCount)
+        let vaultKeys = try await fetchVaultKeys(shareId: shareId, page: page, pageSize: pageSize)
+        let itemKeys = try await fetchItemKeys(shareId: shareId, page: page, pageSize: pageSize)
+
+        return .init(vaultKeys: vaultKeys, itemKeys: itemKeys, total: vaultKeyCount)
     }
 
-    func fetchVaultKeys(forShareId shareId: String,
-                        page: Int,
-                        pageSize: Int) async throws -> [VaultKey] {
+    func fetchVaultKeys(shareId: String, page: Int, pageSize: Int) async throws -> [VaultKey] {
         let taskContext = newTaskContext(type: .fetch,
                                          transactionAuthor: "fetchVaultKeys")
 
@@ -224,12 +209,11 @@ extension LocalDatasource: LocalDatasourceProtocol {
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         fetchRequest.fetchLimit = pageSize
         fetchRequest.fetchOffset = page * pageSize
-        let cdVaultKeys = try await fetch(request: fetchRequest,
-                                          withContext: taskContext)
+        let cdVaultKeys = try await fetch(request: fetchRequest, withContext: taskContext)
         return try cdVaultKeys.map { try $0.toVaultKey() }
     }
 
-    func getVaultKeysCount(forShareId shareId: String) async throws -> Int {
+    func getVaultKeysCount(shareId: String) async throws -> Int {
         let taskContext = newTaskContext(type: .fetch,
                                          transactionAuthor: "getVaultKeysCount")
 
@@ -238,7 +222,7 @@ extension LocalDatasource: LocalDatasourceProtocol {
         return try await count(for: fetchRequest, withContext: taskContext)
     }
 
-    func getItemKeysCount(forShareId shareId: String) async throws -> Int {
+    func getItemKeysCount(shareId: String) async throws -> Int {
         let taskContext = newTaskContext(type: .fetch,
                                          transactionAuthor: "getItemKeysCount")
 
@@ -247,9 +231,7 @@ extension LocalDatasource: LocalDatasourceProtocol {
         return try await count(for: fetchRequest, withContext: taskContext)
     }
 
-    func fetchItemKeys(forShareId shareId: String,
-                       page: Int,
-                       pageSize: Int) async throws -> [ItemKey] {
+    func fetchItemKeys(shareId: String, page: Int, pageSize: Int) async throws -> [ItemKey] {
         let taskContext = newTaskContext(type: .fetch,
                                          transactionAuthor: "fetchItemKeys")
 
@@ -257,8 +239,7 @@ extension LocalDatasource: LocalDatasourceProtocol {
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         fetchRequest.fetchLimit = pageSize
         fetchRequest.fetchOffset = page * pageSize
-        let cdItemKeys = try await fetch(request: fetchRequest,
-                                         withContext: taskContext)
+        let cdItemKeys = try await fetch(request: fetchRequest, withContext: taskContext)
         return try cdItemKeys.map { try $0.toItemKey() }
     }
 }

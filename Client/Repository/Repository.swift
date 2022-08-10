@@ -50,7 +50,7 @@ extension Repository: RepositoryProtocol {
             return try await getSharesFromRemoteAndSaveToLocal()
         }
 
-        let localShares = try await localDatasource.fetchShares(forUserId: userId)
+        let localShares = try await localDatasource.fetchShares(userId: userId)
         if localShares.isEmpty {
             PPLogger.shared?.log("No shares in local db => Fetching from remote...")
             return try await getSharesFromRemoteAndSaveToLocal()
@@ -62,7 +62,7 @@ extension Repository: RepositoryProtocol {
 
     private func getSharesFromRemoteAndSaveToLocal() async throws -> [Share] {
         let remoteShares = try await remoteDatasource.getShares()
-        try await localDatasource.insertShares(remoteShares, withUserId: userId)
+        try await localDatasource.insertShares(remoteShares, userId: userId)
         PPLogger.shared?.log("Fetched shares from remote and saved to local")
         return remoteShares
     }
@@ -77,7 +77,7 @@ extension Repository: RepositoryProtocol {
                                                                  pageSize: pageSize)
         }
 
-        let localShareKey = try await localDatasource.fetchShareKey(forShareId: shareId,
+        let localShareKey = try await localDatasource.fetchShareKey(shareId: shareId,
                                                                     page: page,
                                                                     pageSize: pageSize)
         if localShareKey.isEmpty {
@@ -95,7 +95,7 @@ extension Repository: RepositoryProtocol {
         let remoteShareKey = try await remoteDatasource.getShareKey(shareId: shareId,
                                                                     page: page,
                                                                     pageSize: pageSize)
-        try await localDatasource.insertShareKey(remoteShareKey, withShareId: shareId)
+        try await localDatasource.insertShareKey(remoteShareKey, shareId: shareId)
         return remoteShareKey
     }
 }
