@@ -104,4 +104,21 @@ final class CoreDataModelTests: XCTestCase {
         verifyAttribute(named: "rotationID", on: sut, hasType: .string)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
     }
+
+    func testCDItemDataEntity() {
+        let sut = entity(byName: "CDItemData")
+        verifyAttribute(named: "aliasEmail", on: sut, hasType: .string)
+        verifyAttribute(named: "content", on: sut, hasType: .string)
+        verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer16)
+        verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
+        verifyAttribute(named: "itemID", on: sut, hasType: .string)
+        verifyAttribute(named: "itemKeySignature", on: sut, hasType: .string)
+        verifyAttribute(named: "modifyTime", on: sut, hasType: .integer64)
+        verifyAttribute(named: "revision", on: sut, hasType: .integer16)
+        verifyAttribute(named: "rotationID", on: sut, hasType: .string)
+        verifyAttribute(named: "shareID", on: sut, hasType: .string)
+        verifyAttribute(named: "signatureEmail", on: sut, hasType: .string)
+        verifyAttribute(named: "state", on: sut, hasType: .integer16)
+        verifyAttribute(named: "userSignature", on: sut, hasType: .string)
+    }
 }

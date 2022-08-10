@@ -34,12 +34,12 @@ extension LocalDatasourceTests {
             let givenShareId = String.random()
 
             // When
-            try await sut.insertVaultKeys(firstVaultKeys, withShareId: givenShareId)
-            try await sut.insertVaultKeys(secondVaultKeys, withShareId: givenShareId)
-            try await sut.insertVaultKeys(thirdVaultKeys, withShareId: givenShareId)
+            try await sut.insertVaultKeys(firstVaultKeys, shareId: givenShareId)
+            try await sut.insertVaultKeys(secondVaultKeys, shareId: givenShareId)
+            try await sut.insertVaultKeys(thirdVaultKeys, shareId: givenShareId)
 
             // Then
-            let vaultKeys = try await sut.fetchVaultKeys(forShareId: givenShareId,
+            let vaultKeys = try await sut.fetchVaultKeys(shareId: givenShareId,
                                                          page: 0,
                                                          pageSize: Int.max)
             XCTAssertEqual(vaultKeys.count, givenVaultKeys.count)
@@ -66,22 +66,22 @@ extension LocalDatasourceTests {
             let pageSize = 50
 
             // When
-            try await sut.insertVaultKeys(givenVaultKeys, withShareId: shareId)
+            try await sut.insertVaultKeys(givenVaultKeys, shareId: shareId)
 
             // Then
             // Should have 3 pages with following counts: 50, 50 & 20
             // 120 in total
-            let firstPage = try await sut.fetchVaultKeys(forShareId: shareId,
+            let firstPage = try await sut.fetchVaultKeys(shareId: shareId,
                                                          page: 0,
                                                          pageSize: pageSize)
             XCTAssertEqual(firstPage.count, 50)
 
-            let secondPage = try await sut.fetchVaultKeys(forShareId: shareId,
+            let secondPage = try await sut.fetchVaultKeys(shareId: shareId,
                                                           page: 1,
                                                           pageSize: pageSize)
             XCTAssertEqual(secondPage.count, 50)
 
-            let thirdPage = try await sut.fetchVaultKeys(forShareId: shareId,
+            let thirdPage = try await sut.fetchVaultKeys(shareId: shareId,
                                                          page: 2,
                                                          pageSize: pageSize)
             XCTAssertEqual(thirdPage.count, 20)
@@ -107,10 +107,10 @@ extension LocalDatasourceTests {
             let updatedVaultKey = VaultKey.random(rotationId: insertedVaultKey.rotationID)
 
             // When
-            try await sut.insertVaultKeys([updatedVaultKey], withShareId: givenShareId)
+            try await sut.insertVaultKeys([updatedVaultKey], shareId: givenShareId)
 
             // Then
-            let vaultKeys = try await sut.fetchVaultKeys(forShareId: givenShareId,
+            let vaultKeys = try await sut.fetchVaultKeys(shareId: givenShareId,
                                                          page: 0,
                                                          pageSize: 100)
             XCTAssertEqual(vaultKeys.count, 1)
@@ -130,7 +130,7 @@ extension LocalDatasourceTests {
 
     func givenInsertedVaultKey(withShareId shareId: String) async throws -> VaultKey {
         let vaultKey = VaultKey.random()
-        try await sut.insertVaultKeys([vaultKey], withShareId: shareId)
+        try await sut.insertVaultKeys([vaultKey], shareId: shareId)
         return vaultKey
     }
 
@@ -143,10 +143,10 @@ extension LocalDatasourceTests {
             let givenShareId = String.random()
 
             // When
-            try await sut.insertVaultKeys(givenVaultKeys, withShareId: givenShareId)
+            try await sut.insertVaultKeys(givenVaultKeys, shareId: givenShareId)
 
             // Then
-            let count = try await sut.getVaultKeysCount(forShareId: givenShareId)
+            let count = try await sut.getVaultKeysCount(shareId: givenShareId)
             XCTAssertEqual(count, givenVaultKeys.count)
             expectation.fulfill()
         }

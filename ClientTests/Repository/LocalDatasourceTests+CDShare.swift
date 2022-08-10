@@ -34,12 +34,12 @@ extension LocalDatasourceTests {
             let givenUserId = String.random()
 
             // When
-            try await sut.insertShares(firstShares, withUserId: givenUserId)
-            try await sut.insertShares(secondShares, withUserId: givenUserId)
-            try await sut.insertShares(thirdShares, withUserId: givenUserId)
+            try await sut.insertShares(firstShares, userId: givenUserId)
+            try await sut.insertShares(secondShares, userId: givenUserId)
+            try await sut.insertShares(thirdShares, userId: givenUserId)
 
             // Then
-            let shares = try await sut.fetchShares(forUserId: givenUserId)
+            let shares = try await sut.fetchShares(userId: givenUserId)
             XCTAssertEqual(shares.count, givenShares.count)
 
             let shareIds = Set(shares.map { $0.shareID })
@@ -59,15 +59,15 @@ extension LocalDatasourceTests {
             let givenUserId = String.random()
 
             // When
-            try await sut.insertShares(givenShares, withUserId: givenUserId)
+            try await sut.insertShares(givenShares, userId: givenUserId)
             // Populate the database with arbitrary shares
             // this is to test if fetching shares by userId correctly work
             for _ in 0...10 {
-                try await sut.insertShares([.random()], withUserId: .random())
+                try await sut.insertShares([.random()], userId: .random())
             }
 
             // Then
-            let shares = try await sut.fetchShares(forUserId: givenUserId)
+            let shares = try await sut.fetchShares(userId: givenUserId)
             let shareIds = Set(shares.map { $0.shareID })
             let givenShareIds = Set(givenShares.map { $0.shareID })
             if shareIds == givenShareIds {
@@ -88,10 +88,10 @@ extension LocalDatasourceTests {
             let updatedShare = Share.random(shareId: insertedShare.shareID)
 
             // When
-            try await sut.insertShares([updatedShare], withUserId: givenUserId)
+            try await sut.insertShares([updatedShare], userId: givenUserId)
 
             // Then
-            let shares = try await sut.fetchShares(forUserId: givenUserId)
+            let shares = try await sut.fetchShares(userId: givenUserId)
             XCTAssertEqual(shares.count, 1)
 
             let share = try XCTUnwrap(shares.first)

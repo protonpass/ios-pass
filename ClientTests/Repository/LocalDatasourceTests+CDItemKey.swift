@@ -34,12 +34,12 @@ extension LocalDatasourceTests {
             let givenShareId = String.random()
 
             // When
-            try await sut.insertItemKeys(firstItemKeys, withShareId: givenShareId)
-            try await sut.insertItemKeys(secondItemKeys, withShareId: givenShareId)
-            try await sut.insertItemKeys(thirdItemKeys, withShareId: givenShareId)
+            try await sut.insertItemKeys(firstItemKeys, shareId: givenShareId)
+            try await sut.insertItemKeys(secondItemKeys, shareId: givenShareId)
+            try await sut.insertItemKeys(thirdItemKeys, shareId: givenShareId)
 
             // Then
-            let itemKeys = try await sut.fetchItemKeys(forShareId: givenShareId,
+            let itemKeys = try await sut.fetchItemKeys(shareId: givenShareId,
                                                        page: 0,
                                                        pageSize: Int.max)
             XCTAssertEqual(itemKeys.count, givenItemKeys.count)
@@ -66,22 +66,22 @@ extension LocalDatasourceTests {
             let pageSize = 70
 
             // When
-            try await sut.insertItemKeys(givenItemKeys, withShareId: shareId)
+            try await sut.insertItemKeys(givenItemKeys, shareId: shareId)
 
             // Then
             // Should have 3 pages with following counts: 70, 70 & 60
             // 200 in total
-            let firstPage = try await sut.fetchItemKeys(forShareId: shareId,
+            let firstPage = try await sut.fetchItemKeys(shareId: shareId,
                                                         page: 0,
                                                         pageSize: pageSize)
             XCTAssertEqual(firstPage.count, 70)
 
-            let secondPage = try await sut.fetchItemKeys(forShareId: shareId,
+            let secondPage = try await sut.fetchItemKeys(shareId: shareId,
                                                          page: 1,
                                                          pageSize: pageSize)
             XCTAssertEqual(secondPage.count, 70)
 
-            let thirdPage = try await sut.fetchItemKeys(forShareId: shareId,
+            let thirdPage = try await sut.fetchItemKeys(shareId: shareId,
                                                         page: 2,
                                                         pageSize: pageSize)
             XCTAssertEqual(thirdPage.count, 60)
@@ -107,10 +107,10 @@ extension LocalDatasourceTests {
             let updatedItemKey = ItemKey.random(rotationId: insertedItemKey.rotationID)
 
             // When
-            try await sut.insertItemKeys([updatedItemKey], withShareId: givenShareId)
+            try await sut.insertItemKeys([updatedItemKey], shareId: givenShareId)
 
             // Then
-            let itemKeys = try await sut.fetchItemKeys(forShareId: givenShareId,
+            let itemKeys = try await sut.fetchItemKeys(shareId: givenShareId,
                                                        page: 0,
                                                        pageSize: 100)
             XCTAssertEqual(itemKeys.count, 1)
@@ -129,7 +129,7 @@ extension LocalDatasourceTests {
 
     func givenInsertedItemKey(withShareId shareId: String) async throws -> ItemKey {
         let itemKey = ItemKey.random()
-        try await sut.insertItemKeys([itemKey], withShareId: shareId)
+        try await sut.insertItemKeys([itemKey], shareId: shareId)
         return itemKey
     }
 
@@ -142,10 +142,10 @@ extension LocalDatasourceTests {
             let givenShareId = String.random()
 
             // When
-            try await sut.insertItemKeys(givenItemKeys, withShareId: givenShareId)
+            try await sut.insertItemKeys(givenItemKeys, shareId: givenShareId)
 
             // Then
-            let count = try await sut.getItemKeysCount(forShareId: givenShareId)
+            let count = try await sut.getItemKeysCount(shareId: givenShareId)
             XCTAssertEqual(count, givenItemKeys.count)
             expectation.fulfill()
         }

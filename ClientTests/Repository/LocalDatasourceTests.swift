@@ -47,7 +47,7 @@ final class LocalDatasourceTests: XCTestCase {
     /// Create and insert a random share
     func givenInsertedShare(withUserId userId: String? = nil) async throws -> Share {
         let share = Share.random()
-        try await sut.insertShares([share], withUserId: userId ?? .random())
+        try await sut.insertShares([share], userId: userId ?? .random())
         return share
     }
 }

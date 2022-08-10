@@ -35,13 +35,13 @@ extension LocalDatasourceTests {
                                                  randomElement: .random())
 
             // When
-            try await sut.insertVaultKeys(givenVaultKeys, withShareId: givenShareId)
-            try await sut.insertItemKeys(givenItemKeys, withShareId: givenShareId)
+            try await sut.insertVaultKeys(givenVaultKeys, shareId: givenShareId)
+            try await sut.insertItemKeys(givenItemKeys, shareId: givenShareId)
 
             // Then
             // swiftlint:disable:next todo
             // TODO: Post MVP test pagination
-            let shareKey = try await sut.fetchShareKey(forShareId: givenShareId,
+            let shareKey = try await sut.fetchShareKey(shareId: givenShareId,
                                                        page: 0,
                                                        pageSize: Int.max)
             XCTAssertEqual(shareKey.total, keypairCount)
