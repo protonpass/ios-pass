@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDItemData" representedClassName="CDItemData" syncable="YES">
+        <attribute name="aliasEmail" optional="YES" attributeType="String"/>
+        <attribute name="content" attributeType="String"/>
+        <attribute name="contentFormatVersion" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="itemID" attributeType="String"/>
+        <attribute name="itemKeySignature" attributeType="String"/>
+        <attribute name="modifyTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="revision" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="rotationID" attributeType="String"/>
+        <attribute name="shareID" attributeType="String"/>
+        <attribute name="signatureEmail" attributeType="String"/>
+        <attribute name="state" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userSignature" attributeType="String"/>
+    </entity>
     <entity name="CDItemKey" representedClassName="CDItemKey" syncable="YES">
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="key" attributeType="String"/>
@@ -63,5 +78,6 @@
         <element name="CDItemKey" positionX="-36" positionY="135" width="128" height="134"/>
         <element name="CDShare" positionX="-63" positionY="-18" width="128" height="344"/>
         <element name="CDVaultKey" positionX="-54" positionY="126" width="128" height="149"/>
+        <element name="CDItemData" positionX="-45" positionY="144" width="128" height="224"/>
     </elements>
 </model>

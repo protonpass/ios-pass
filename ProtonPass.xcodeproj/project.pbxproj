@@ -37,6 +37,8 @@
 		3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */; };
 		3542F0262899431D004007C7 /* CoreDataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F0252899431D004007C7 /* CoreDataModelTests.swift */; };
 		3542F02828996C70004007C7 /* LocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F02728996C70004007C7 /* LocalDatasource.swift */; };
+		3545BCF628A3BA3200DFE5CF /* CDItemData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545BCF428A3BA3200DFE5CF /* CDItemData+CoreDataProperties.swift */; };
+		3545BCF728A3BA3200DFE5CF /* CDItemData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545BCF528A3BA3200DFE5CF /* CDItemData+CoreDataClass.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
@@ -295,6 +297,8 @@
 		3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthCredential+Preview.swift"; sourceTree = "<group>"; };
 		3542F0252899431D004007C7 /* CoreDataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModelTests.swift; sourceTree = "<group>"; };
 		3542F02728996C70004007C7 /* LocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatasource.swift; sourceTree = "<group>"; };
+		3545BCF428A3BA3200DFE5CF /* CDItemData+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDItemData+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3545BCF528A3BA3200DFE5CF /* CDItemData+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDItemData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
 		3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonSwitchToggleStyle.swift; sourceTree = "<group>"; };
@@ -543,6 +547,8 @@
 			children = (
 				35004A3E289004330073C4A7 /* Pass.xcdatamodeld */,
 				35A909E92890110F00AC54D4 /* CoreDataError.swift */,
+				3545BCF528A3BA3200DFE5CF /* CDItemData+CoreDataClass.swift */,
+				3545BCF428A3BA3200DFE5CF /* CDItemData+CoreDataProperties.swift */,
 				35A909E1289006F700AC54D4 /* CDItemKey+CoreDataClass.swift */,
 				35A909DF289006F600AC54D4 /* CDItemKey+CoreDataProperties.swift */,
 				35A909DE289006F600AC54D4 /* CDShare+CoreDataClass.swift */,
@@ -1668,6 +1674,7 @@
 				3547696E289D349C00581E2E /* Repository.swift in Sources */,
 				350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */,
 				35004A40289004330073C4A7 /* Pass.xcdatamodeld in Sources */,
+				3545BCF628A3BA3200DFE5CF /* CDItemData+CoreDataProperties.swift in Sources */,
 				354BB14428A2683E00F50040 /* ItemProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
 				355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */,
@@ -1680,6 +1687,7 @@
 				35A909E7289006F700AC54D4 /* CDItemKey+CoreDataClass.swift in Sources */,
 				3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */,
 				358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */,
+				3545BCF728A3BA3200DFE5CF /* CDItemData+CoreDataClass.swift in Sources */,
 				3551DFF22885436E008AE633 /* DummyEncodable.swift in Sources */,
 				355E803628A2FBEB00BE7C9B /* CreateItemRequestBody.swift in Sources */,
 				358BD35B287D4D0A00802A91 /* CreateVaultRequestBody.swift in Sources */,

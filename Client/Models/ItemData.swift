@@ -46,7 +46,8 @@ public struct ItemData: Decodable {
     /// In case this item contains an alias, this is the email address for the alias
     public let aliasEmail: String?
 
-    public let labels: [String]
+    // Post MVP
+//    public let labels: [String]
 
     /// Creation time of the item
     public let createTime: Int64
@@ -64,7 +65,6 @@ public struct ItemData: Decodable {
                 state: Int16,
                 signatureEmail: String,
                 aliasEmail: String?,
-                labels: [String],
                 createTime: Int64,
                 modifyTime: Int64) {
         self.itemID = itemID
@@ -77,7 +77,6 @@ public struct ItemData: Decodable {
         self.state = state
         self.signatureEmail = signatureEmail
         self.aliasEmail = aliasEmail
-        self.labels = labels
         self.createTime = createTime
         self.modifyTime = modifyTime
     }
