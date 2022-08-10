@@ -35,14 +35,10 @@ public struct CreateItemEndpoint: Endpoint {
     public var authCredential: AuthCredential?
 
     public init(credential: AuthCredential,
-                addressKey: AddressKey,
                 shareId: String,
-                name: String,
-                note: String,
-                content: ItemContent) throws {
+                requestBody: CreateItemRequestBody) {
         self.path = "/pass/v1/share/\(shareId)/item"
         self.authCredential = credential
-        let item = ItemProtobuf(name: name, note: note, content: content)
-        self.body = try CreateItemRequestBody(item: item)
+        self.body = requestBody
     }
 }

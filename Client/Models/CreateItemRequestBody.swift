@@ -65,7 +65,10 @@ public struct CreateItemRequestBody: Encodable {
         self.itemKeySignature = itemKeySignature
     }
 
-    public init(item: ProtobufableItemProtocol) throws {
+    public init(vaultKey: VaultKey,
+                itemKey: ItemKey,
+                addressKey: AddressKey,
+                item: ProtobufableItemProtocol) throws {
         self.init(rotationID: .random(),
                   labels: [],
                   vaultKeyPacket: .random(),
