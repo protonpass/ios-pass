@@ -59,12 +59,27 @@ typealias ItemNoteProtobuf = ProtonPassItemV1_ItemNote
 typealias ItemLoginProtobuf = ProtonPassItemV1_ItemLogin
 typealias ItemAliasProtobuf = ProtonPassItemV1_ItemAlias
 
-extension ItemMetadataProtobuf: ItemMetadataProtocol {}
 extension ItemNoteProtobuf: ItemNoteProtocol {}
 extension ItemAliasProtobuf: ItemAliasProtocol {}
-extension ItemLoginProtobuf: ItemLoginProtocol {}
 
-extension ItemProtobuf: ItemProtocol {
+extension ItemMetadataProtobuf: ItemMetadataProtocol {
+    public init(name: String, note: String) {
+        self.name = name
+        self.note = note
+    }
+}
+
+extension ItemLoginProtobuf: ItemLoginProtocol {
+    public init(username: String, password: String, urls: [String]) {
+        self.username = username
+        self.password = password
+        self.urls = urls
+    }
+}
+
+public typealias ProtobufableItemProtocol = ItemProtocol & Protobufable
+
+extension ItemProtobuf: ProtobufableItemProtocol {
     public var itemMetadata: ItemMetadataProtocol { metadata }
 
     public var itemContent: ItemContent {
@@ -77,6 +92,28 @@ extension ItemProtobuf: ItemProtocol {
             return .login(login)
         case .none:
             return .note
+        }
+    }
+
+    public func data() throws -> Data {
+        try self.serializedData()
+    }
+
+    public init(data: Data) throws {
+        self = try ItemProtobuf(serializedData: data)
+    }
+
+    public init(name: String, note: String, content: ItemContent) {
+        self.metadata = .init(name: name, note: note)
+        switch content {
+        case .alias:
+            self.content.alias = .init()
+        case .login(let login):
+            self.content.login = .init(username: login.username,
+                                       password: login.password,
+                                       urls: login.urls)
+        case .note:
+            self.content.note = .init()
         }
     }
 }
