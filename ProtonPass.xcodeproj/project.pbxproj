@@ -23,6 +23,8 @@
 		351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */; };
 		353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C02880C45C0021C716 /* GetSharesEndpoint.swift */; };
 		353547C32880CF470021C716 /* UserData+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C22880CF470021C716 /* UserData+Codable.swift */; };
+		35366AA028A4468D0085C24D /* LocalDatasourceTests+CDItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366A9F28A4468D0085C24D /* LocalDatasourceTests+CDItem.swift */; };
+		35366AA228A446CB0085C24D /* Item+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366AA128A446CB0085C24D /* Item+Test.swift */; };
 		3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */; };
 		353C95DF289A9E1900E3CDCA /* LocalDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C95DE289A9E1900E3CDCA /* LocalDatasourceTests.swift */; };
 		353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C95E0289A9E8500E3CDCA /* Share+Test.swift */; };
@@ -279,6 +281,8 @@
 		351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+RandomWithCount.swift"; sourceTree = "<group>"; };
 		353547C02880C45C0021C716 /* GetSharesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharesEndpoint.swift; sourceTree = "<group>"; };
 		353547C22880CF470021C716 /* UserData+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Codable.swift"; sourceTree = "<group>"; };
+		35366A9F28A4468D0085C24D /* LocalDatasourceTests+CDItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalDatasourceTests+CDItem.swift"; sourceTree = "<group>"; };
+		35366AA128A446CB0085C24D /* Item+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+Test.swift"; sourceTree = "<group>"; };
 		3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultViewModel.swift; sourceTree = "<group>"; };
 		353C95DE289A9E1900E3CDCA /* LocalDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatasourceTests.swift; sourceTree = "<group>"; };
 		353C95E0289A9E8500E3CDCA /* Share+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share+Test.swift"; sourceTree = "<group>"; };
@@ -559,10 +563,11 @@
 		350A97D82885C94900A7168B /* TestData */ = {
 			isa = PBXGroup;
 			children = (
-				350A97D92885C95D00A7168B /* UserData+Test.swift */,
-				353C95E0289A9E8500E3CDCA /* Share+Test.swift */,
-				35464B61289B0380008E65C4 /* VaultKey+Test.swift */,
+				35366AA128A446CB0085C24D /* Item+Test.swift */,
 				351E9E38289C508B00BB47EB /* ItemKey+Test.swift */,
+				353C95E0289A9E8500E3CDCA /* Share+Test.swift */,
+				350A97D92885C95D00A7168B /* UserData+Test.swift */,
+				35464B61289B0380008E65C4 /* VaultKey+Test.swift */,
 			);
 			path = TestData;
 			sourceTree = "<group>";
@@ -592,9 +597,10 @@
 			children = (
 				3542F0252899431D004007C7 /* CoreDataModelTests.swift */,
 				353C95DE289A9E1900E3CDCA /* LocalDatasourceTests.swift */,
+				35366A9F28A4468D0085C24D /* LocalDatasourceTests+CDItem.swift */,
+				351E9E36289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift */,
 				35464B5D289B0109008E65C4 /* LocalDatasourceTests+CDShare.swift */,
 				35464B5F289B02EC008E65C4 /* LocalDatasourceTests+CDVaultKey.swift */,
-				351E9E36289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift */,
 				35476969289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift */,
 			);
 			path = Repository;
@@ -1697,12 +1703,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35366AA028A4468D0085C24D /* LocalDatasourceTests+CDItem.swift in Sources */,
 				351E9E37289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift in Sources */,
 				35464B60289B02EC008E65C4 /* LocalDatasourceTests+CDVaultKey.swift in Sources */,
 				353C95DF289A9E1900E3CDCA /* LocalDatasourceTests.swift in Sources */,
 				3547696A289D235F00581E2E /* LocalDatasourceTests+fetchShareKey.swift in Sources */,
 				353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */,
 				351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */,
+				35366AA228A446CB0085C24D /* Item+Test.swift in Sources */,
 				351E9E39289C508B00BB47EB /* ItemKey+Test.swift in Sources */,
 				350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */,
 				35464B62289B0380008E65C4 /* VaultKey+Test.swift in Sources */,
