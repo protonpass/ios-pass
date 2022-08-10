@@ -126,8 +126,8 @@ extension LocalDatasource: LocalDatasourceProtocol {
                                          transactionAuthor: "insertShares")
 
         var index = 0
-        let batchInsertRequest = NSBatchInsertRequest(entity: CDShare.entity(),
-                                                      managedObjectHandler: { object in
+        let request = NSBatchInsertRequest(entity: CDShare.entity(context: taskContext),
+                                           managedObjectHandler: { object in
             guard index < shares.count else { return true }
             let share = shares[index]
             (object as? CDShare)?.copy(from: share, userId: userId)
@@ -135,8 +135,7 @@ extension LocalDatasource: LocalDatasourceProtocol {
             return false
         })
 
-        try await execute(batchInsertRequest: batchInsertRequest,
-                          withContext: taskContext)
+        try await execute(batchInsertRequest: request, withContext: taskContext)
     }
 
     public func fetchShares(userId: String) async throws -> [Share] {
@@ -160,15 +159,15 @@ extension LocalDatasource: LocalDatasourceProtocol {
                                          transactionAuthor: "insertVaultKeys")
 
         var index = 0
-        let batchInsertRequest = NSBatchInsertRequest(entity: CDVaultKey.entity(),
-                                                      managedObjectHandler: { object in
+        let request = NSBatchInsertRequest(entity: CDVaultKey.entity(context: taskContext),
+                                           managedObjectHandler: { object in
             guard index < vaultKeys.count else { return true }
             let vaultKey = vaultKeys[index]
             (object as? CDVaultKey)?.copy(from: vaultKey, shareId: shareId)
             index += 1
             return false
         })
-        try await execute(batchInsertRequest: batchInsertRequest, withContext: taskContext)
+        try await execute(batchInsertRequest: request, withContext: taskContext)
     }
 
     func insertItemKeys(_ itemKeys: [ItemKey], shareId: String) async throws {
@@ -176,15 +175,15 @@ extension LocalDatasource: LocalDatasourceProtocol {
                                          transactionAuthor: "insertItemKeys")
 
         var index = 0
-        let batchInsertRequest = NSBatchInsertRequest(entity: CDItemKey.entity(),
-                                                      managedObjectHandler: { object in
+        let request = NSBatchInsertRequest(entity: CDItemKey.entity(context: taskContext),
+                                           managedObjectHandler: { object in
             guard index < itemKeys.count else { return true }
             let itemKey = itemKeys[index]
             (object as? CDItemKey)?.copy(from: itemKey, shareId: shareId)
             index += 1
             return false
         })
-        try await execute(batchInsertRequest: batchInsertRequest, withContext: taskContext)
+        try await execute(batchInsertRequest: request, withContext: taskContext)
     }
 
     public func fetchShareKey(shareId: String, page: Int, pageSize: Int) async throws -> ShareKey {
@@ -241,5 +240,19 @@ extension LocalDatasource: LocalDatasourceProtocol {
         fetchRequest.fetchOffset = page * pageSize
         let cdItemKeys = try await fetch(request: fetchRequest, withContext: taskContext)
         return try cdItemKeys.map { try $0.toItemKey() }
+    }
+}
+
+extension NSManagedObject {
+    /*
+     Such helper function is due to a very strange 🐛 that makes
+     unit tests failed out of the blue because `CoreDataEntityName.entity()`
+     failed to return a non-null NSEntityDescription.
+     `CoreDataEntityName.entity()` used to work for a while until
+     it stops working on some machines. Not a reproducible 🐛
+     */
+    class func entity(context: NSManagedObjectContext) -> NSEntityDescription {
+        // swiftlint:disable:next force_unwrapping
+        .entity(forEntityName: "\(Self.self)", in: context)!
     }
 }
