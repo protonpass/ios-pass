@@ -42,25 +42,15 @@ public protocol ItemContentMetadataProtocol {
     var note: String { get }
 }
 
-public protocol ItemContentNoteProtocol {}
-
 public protocol ItemContentLoginProtocol {
     var username: String { get }
     var password: String { get }
     var urls: [String] { get }
 }
 
-public protocol ItemContentAliasProtocol {}
-
 typealias ItemContentProtobuf = ProtonPassItemV1_Item
 typealias ItemContentMetadataProtobuf = ProtonPassItemV1_Metadata
-typealias ItemContentContentProtobuf = ProtonPassItemV1_Content
-typealias ItemContentNoteProtobuf = ProtonPassItemV1_ItemNote
 typealias ItemContentLoginProtobuf = ProtonPassItemV1_ItemLogin
-typealias ItemContentAliasProtobuf = ProtonPassItemV1_ItemAlias
-
-extension ItemContentNoteProtobuf: ItemContentNoteProtocol {}
-extension ItemContentAliasProtobuf: ItemContentAliasProtocol {}
 
 extension ItemContentMetadataProtobuf: ItemContentMetadataProtocol {
     public init(name: String, note: String) {

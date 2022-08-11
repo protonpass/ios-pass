@@ -85,10 +85,6 @@ struct DummyItemContentMetadata: ItemContentMetadataProtocol {
     let note: String
 }
 
-struct DummyItemContentAlias: ItemContentAliasProtocol {}
-
-struct DummyItemContentNote: ItemContentNoteProtocol {}
-
 struct DummyItemContentLogin: ItemContentLoginProtocol {
     public let username: String
     public let password: String
