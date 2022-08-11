@@ -1,6 +1,6 @@
 //
-// ShareKey.swift
-// Proton Pass - Created on 19/07/2022.
+// Items.swift
+// Proton Pass - Created on 10/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,18 +20,16 @@
 
 import Foundation
 
-public struct ShareKey: Decodable {
-    public let vaultKeys: [VaultKey]
-    public let itemKeys: [ItemKey]
+public struct Items: Decodable {
+    public let revisionsData: [Item]
     public let total: Int
 
-    init(vaultKeys: [VaultKey], itemKeys: [ItemKey], total: Int) {
-        self.vaultKeys = vaultKeys
-        self.itemKeys = itemKeys
+    init(revisionsData: [Item], total: Int) {
+        self.revisionsData = revisionsData
         self.total = total
     }
 
     public var isEmpty: Bool {
-        total == 0 || vaultKeys.isEmpty || itemKeys.isEmpty
+        total == 0 || revisionsData.isEmpty
     }
 }

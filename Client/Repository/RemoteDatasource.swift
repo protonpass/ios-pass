@@ -25,6 +25,7 @@ public protocol RemoteDatasourceProtocol {
     func getShares() async throws -> [Share]
     func getShareKey(shareId: String, page: Int, pageSize: Int) async throws -> ShareKey
     func createItem(shareId: String, requestBody: CreateItemRequestBody) async throws -> Item
+    func getItems(shareId: String, page: Int, pageSize: Int) async throws -> Items
 }
 
 public final class RemoteDatasource {
@@ -80,5 +81,14 @@ extension RemoteDatasource: RemoteDatasourceProtocol {
                                                     requestBody: requestBody)
         let createItemResponse = try await apiService.exec(endpoint: createItemEndpoint)
         return createItemResponse.item
+    }
+
+    public func getItems(shareId: String, page: Int, pageSize: Int) async throws -> Items {
+        let getItemsEndpoint = GetItemsEndpoint(credential: authCredential,
+                                                shareId: shareId,
+                                                page: page,
+                                                pageSize: pageSize)
+        let getItemsResponse = try await apiService.exec(endpoint: getItemsEndpoint)
+        return getItemsResponse.items
     }
 }

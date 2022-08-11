@@ -1,6 +1,6 @@
 //
-// ShareKey.swift
-// Proton Pass - Created on 19/07/2022.
+// GetItemsEndpoint.swift
+// Proton Pass - Created on 10/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,20 +18,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Networking
+import ProtonCore_Services
 
-public struct ShareKey: Decodable {
-    public let vaultKeys: [VaultKey]
-    public let itemKeys: [ItemKey]
-    public let total: Int
+public struct GetItemsEndpoint: Endpoint {
+    public typealias Body = CreateItemRequestBody
 
-    init(vaultKeys: [VaultKey], itemKeys: [ItemKey], total: Int) {
-        self.vaultKeys = vaultKeys
-        self.itemKeys = itemKeys
-        self.total = total
+    public struct Response: Decodable {
+        public let code: Int
+        public let items: Items
     }
 
-    public var isEmpty: Bool {
-        total == 0 || vaultKeys.isEmpty || itemKeys.isEmpty
+    public var path: String
+    public var authCredential: AuthCredential?
+    public var queries: [String: Any]?
+
+    public init(credential: AuthCredential,
+                shareId: String,
+                page: Int,
+                pageSize: Int) {
+        self.path = "/pass/v1/share/\(shareId)/item"
+        self.authCredential = credential
+        self.queries = ["Page": page, "PageSize": pageSize]
     }
 }

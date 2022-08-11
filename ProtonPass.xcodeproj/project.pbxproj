@@ -25,6 +25,8 @@
 		353547C32880CF470021C716 /* UserData+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C22880CF470021C716 /* UserData+Codable.swift */; };
 		35366AA028A4468D0085C24D /* LocalDatasourceTests+CDItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366A9F28A4468D0085C24D /* LocalDatasourceTests+CDItem.swift */; };
 		35366AA228A446CB0085C24D /* Item+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366AA128A446CB0085C24D /* Item+Test.swift */; };
+		35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366AA328A4580E0085C24D /* GetItemsEndpoint.swift */; };
+		35366AA628A458AB0085C24D /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366AA528A458AB0085C24D /* Items.swift */; };
 		3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */; };
 		353C95DF289A9E1900E3CDCA /* LocalDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C95DE289A9E1900E3CDCA /* LocalDatasourceTests.swift */; };
 		353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C95E0289A9E8500E3CDCA /* Share+Test.swift */; };
@@ -283,6 +285,8 @@
 		353547C22880CF470021C716 /* UserData+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Codable.swift"; sourceTree = "<group>"; };
 		35366A9F28A4468D0085C24D /* LocalDatasourceTests+CDItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalDatasourceTests+CDItem.swift"; sourceTree = "<group>"; };
 		35366AA128A446CB0085C24D /* Item+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+Test.swift"; sourceTree = "<group>"; };
+		35366AA328A4580E0085C24D /* GetItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetItemsEndpoint.swift; sourceTree = "<group>"; };
+		35366AA528A458AB0085C24D /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultViewModel.swift; sourceTree = "<group>"; };
 		353C95DE289A9E1900E3CDCA /* LocalDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatasourceTests.swift; sourceTree = "<group>"; };
 		353C95E0289A9E8500E3CDCA /* Share+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share+Test.swift"; sourceTree = "<group>"; };
@@ -669,6 +673,7 @@
 				355E803528A2FBEB00BE7C9B /* CreateItemRequestBody.swift */,
 				358BD35A287D4D0A00802A91 /* CreateVaultRequestBody.swift */,
 				355E803328A2FA0500BE7C9B /* Item.swift */,
+				35366AA528A458AB0085C24D /* Items.swift */,
 				358AB49A2886FDA400818B44 /* ItemKey.swift */,
 				355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */,
 				355443FC287CA77C0017FCAD /* Share.swift */,
@@ -690,6 +695,7 @@
 			isa = PBXGroup;
 			children = (
 				355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */,
+				35366AA328A4580E0085C24D /* GetItemsEndpoint.swift */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -1680,6 +1686,7 @@
 				358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */,
 				3545BCF728A3BA3200DFE5CF /* CDItem.swift in Sources */,
 				3551DFF22885436E008AE633 /* DummyEncodable.swift in Sources */,
+				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
 				355E803628A2FBEB00BE7C9B /* CreateItemRequestBody.swift in Sources */,
 				358BD35B287D4D0A00802A91 /* CreateVaultRequestBody.swift in Sources */,
 				35A909E4289006F700AC54D4 /* CDShare.swift in Sources */,
@@ -1687,6 +1694,7 @@
 				35A909E8289006F700AC54D4 /* CDVaultKey.swift in Sources */,
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
 				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,
+				35366AA628A458AB0085C24D /* Items.swift in Sources */,
 				358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */,
 				355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
