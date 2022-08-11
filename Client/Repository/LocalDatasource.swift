@@ -27,7 +27,7 @@ public protocol LocalDatasourceProtocol {
     func insertShareKey(_ shareKey: ShareKey, shareId: String) async throws
     func fetchShareKey(shareId: String, page: Int, pageSize: Int) async throws -> ShareKey
     func insertItems(_ items: [Item], shareId: String) async throws
-    func fetchItems(shareId: String, page: Int, pageSize: Int) async throws -> [Item]
+    func fetchItems(shareId: String, page: Int, pageSize: Int) async throws -> Items
 }
 
 public enum LocalDatasourceError: Error {
@@ -262,7 +262,9 @@ extension LocalDatasource: LocalDatasourceProtocol {
         try await execute(batchInsertRequest: request, withContext: taskContext)
     }
 
-    public func fetchItems(shareId: String, page: Int, pageSize: Int) async throws -> [Item] {
+    public func fetchItems(shareId: String, page: Int, pageSize: Int) async throws -> Items {
+        let itemsCount = try await getItemsCount(shareId: shareId)
+
         let taskContext = newTaskContext(type: .fetch, transactionAuthor: "fetchItems")
 
         let fetchRequest = CDItem.fetchRequest()
@@ -271,7 +273,9 @@ extension LocalDatasource: LocalDatasourceProtocol {
         fetchRequest.fetchOffset = page * pageSize
 
         let cdItemDatas = try await fetch(request: fetchRequest, withContext: taskContext)
-        return try cdItemDatas.map { try $0.toItem() }
+        let items = try cdItemDatas.map { try $0.toItem() }
+
+        return .init(revisionsData: items, total: itemsCount)
     }
 
     func getItemsCount(shareId: String) async throws -> Int {

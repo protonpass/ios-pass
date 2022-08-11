@@ -42,9 +42,9 @@ extension LocalDatasourceTests {
             let items = try await sut.fetchItems(shareId: givenShareId,
                                                  page: 0,
                                                  pageSize: .max)
-            XCTAssertEqual(items.count, givenItems.count)
+            XCTAssertEqual(items.total, givenItems.count)
 
-            let itemIds = Set(items.map { $0.itemID })
+            let itemIds = Set(items.revisionsData.map { $0.itemID })
             let givenItemIds = Set(givenItems.map { $0.itemID })
             XCTAssertEqual(itemIds, givenItemIds)
 
@@ -74,20 +74,23 @@ extension LocalDatasourceTests {
             let firstPage = try await sut.fetchItems(shareId: shareId,
                                                      page: 0,
                                                      pageSize: pageSize)
-            XCTAssertEqual(firstPage.count, 120)
+            XCTAssertEqual(firstPage.revisionsData.count, 120)
+            XCTAssertEqual(firstPage.total, 310)
 
             let secondPage = try await sut.fetchItems(shareId: shareId,
                                                       page: 1,
                                                       pageSize: pageSize)
-            XCTAssertEqual(secondPage.count, 120)
+            XCTAssertEqual(secondPage.revisionsData.count, 120)
+            XCTAssertEqual(secondPage.total, 310)
 
             let thirdPage = try await sut.fetchItems(shareId: shareId,
                                                      page: 2,
                                                      pageSize: pageSize)
-            XCTAssertEqual(thirdPage.count, 70)
+            XCTAssertEqual(thirdPage.revisionsData.count, 70)
+            XCTAssertEqual(thirdPage.total, 310)
 
             // Check that the 3 pages make up the correct set of givenItems
-            let items = firstPage + secondPage + thirdPage
+            let items = firstPage.revisionsData + secondPage.revisionsData + thirdPage.revisionsData
             let itemIds = Set(items.map { $0.itemID })
             let givenItemIds = Set(givenItems.map { $0.itemID })
             XCTAssertEqual(itemIds, givenItemIds)
@@ -113,9 +116,9 @@ extension LocalDatasourceTests {
             let items = try await sut.fetchItems(shareId: givenShareId,
                                                  page: 0,
                                                  pageSize: .max)
-            XCTAssertEqual(items.count, 1)
+            XCTAssertEqual(items.total, 1)
 
-            let item = try XCTUnwrap(items.first)
+            let item = try XCTUnwrap(items.revisionsData.first)
             XCTAssertEqual(item.itemID, updatedItem.itemID)
             XCTAssertEqual(item.revision, updatedItem.revision)
             XCTAssertEqual(item.contentFormatVersion, updatedItem.contentFormatVersion)
