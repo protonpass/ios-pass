@@ -144,6 +144,11 @@ extension LocalDatasourceTests {
 
             // When
             try await sut.insertVaultKeys(givenVaultKeys, shareId: givenShareId)
+            // Insert arbitrary vault keys
+            for _ in 0...10 {
+                let dummyVaultKeys = [VaultKey].random(randomElement: .random())
+                try await sut.insertVaultKeys(dummyVaultKeys, shareId: .random())
+            }
 
             // Then
             let count = try await sut.getVaultKeysCount(shareId: givenShareId)

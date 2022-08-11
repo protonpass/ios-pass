@@ -143,6 +143,11 @@ extension LocalDatasourceTests {
 
             // When
             try await sut.insertItemKeys(givenItemKeys, shareId: givenShareId)
+            // Insert arbitrary item keys
+            for _ in 0...10 {
+                let dummyItemKeys = [ItemKey].random(randomElement: .random())
+                try await sut.insertItemKeys(dummyItemKeys, shareId: .random())
+            }
 
             // Then
             let count = try await sut.getItemKeysCount(shareId: givenShareId)
