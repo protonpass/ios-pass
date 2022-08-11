@@ -1,6 +1,6 @@
 //
-// Vault.swift
-// Proton Pass - Created on 18/07/2022.
+// ItemProtocol.swift
+// Proton Pass - Created on 11/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,14 +20,14 @@
 
 import Foundation
 
-public struct Vault: Identifiable {
-    public let id: String
-    public let name: String
-    public let description: String
+public protocol ItemProtocol {
+    func getPartialContent(shareKey: ShareKey) throws -> PartialItemContent
+}
 
-    public init(id: String, name: String, description: String) {
-        self.id = id
-        self.name = name
-        self.description = description
+extension Item: ItemProtocol {
+    public func getPartialContent(shareKey: ShareKey) throws -> PartialItemContent {
+        .init(type: .allCases.randomElement() ?? .note,
+              title: .random(),
+              detail: .random())
     }
 }

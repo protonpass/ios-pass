@@ -1,6 +1,6 @@
 //
-// Items.swift
-// Proton Pass - Created on 10/08/2022.
+// PartialItemContent.swift
+// Proton Pass - Created on 11/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,19 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_UIFoundations
+import UIComponents
+import UIKit
 
-/// Holds results from get/fetch item request
-public struct Items: Decodable {
-    public let revisionsData: [Item]
-    public let total: Int
+/// Hold partial data of item, to be used on item list page
+public struct PartialItemContent: GenericItemProtocol {
+    public let type: ItemContentType
+    public let icon: UIImage
+    public let title: String
+    public let detail: String?
 
-    init(revisionsData: [Item], total: Int) {
-        self.revisionsData = revisionsData
-        self.total = total
-    }
-
-    public var isEmpty: Bool {
-        total == 0 || revisionsData.isEmpty
+    public init(type: ItemContentType, title: String, detail: String?) {
+        self.type = type
+        self.icon = type.icon
+        self.title = title
+        self.detail = detail
     }
 }

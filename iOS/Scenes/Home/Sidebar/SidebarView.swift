@@ -103,9 +103,11 @@ struct SidebarView_Previews: PreviewProvider {
 extension Array where Element == Vault {
     static var preview: [Vault] = [
         Vault(id: UUID().uuidString,
+              shareId: UUID().uuidString,
               name: "Private",
               description: "Private vault"),
         Vault(id: UUID().uuidString,
+              shareId: UUID().uuidString,
               name: "Business",
               description: "Business vault")
     ]

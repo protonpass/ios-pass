@@ -18,12 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_UIFoundations
+import UIKit
 
-public enum ItemContentType {
+public enum ItemContentType: CaseIterable {
     case alias
     case login
     case note
+
+    var icon: UIImage {
+        switch self {
+        case .alias:
+            return IconProvider.alias
+        case .login:
+            return IconProvider.keySkeleton
+        case .note:
+            return IconProvider.note
+        }
+    }
 }
 
 public enum ItemContentData {
@@ -104,21 +116,6 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
                                        urls: login.urls)
         case .note:
             self.content.note = .init()
-        }
-    }
-}
-
-public extension Array where Element == ItemContentProtocol {
-    func filter(by contentType: ItemContentType) -> [Element] {
-        filter { element in
-            switch element.itemContentData {
-            case .alias:
-                return contentType == .alias
-            case .login:
-                return contentType == .login
-            case .note:
-                return contentType == .note
-            }
         }
     }
 }

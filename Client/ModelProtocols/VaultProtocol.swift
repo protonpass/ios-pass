@@ -22,6 +22,7 @@ import Core
 
 public protocol VaultProtocol {
     var id: String { get }
+    var shareId: String { get }
     var name: String { get }
     var description: String { get }
 }
@@ -31,6 +32,7 @@ public typealias ProtobufableVaultProtocol = VaultProtocol & Protobufable
 
 extension VaultProtobuf: ProtobufableVaultProtocol {
     public var id: String { UUID().uuidString }
+    public var shareId: String { UUID().uuidString }
 
     public var description: String { description_p }
 
@@ -48,5 +50,3 @@ extension VaultProtobuf: ProtobufableVaultProtocol {
         self.description_p = note
     }
 }
-
-extension Vault: VaultProtocol {}

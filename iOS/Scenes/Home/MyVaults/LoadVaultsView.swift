@@ -52,7 +52,7 @@ struct LoadVaultsView: View {
         }
         .onAppear {
             if !didAppear {
-                viewModel.fetchVaults(forceUpdate: false)
+                viewModel.fetchVaults()
                 didAppear = true
             }
         }

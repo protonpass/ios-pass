@@ -12,7 +12,6 @@
 		350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97CD2885BA4D00A7168B /* GetShareDataEndpoint.swift */; };
 		350A97D02885BB1800A7168B /* ShareProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97CF2885BB1800A7168B /* ShareProtocol.swift */; };
 		350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D12885BF7E00A7168B /* Protobufable.swift */; };
-		350A97D42885BFFD00A7168B /* Vault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D32885BFFD00A7168B /* Vault.swift */; };
 		350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D62885C0D500A7168B /* Share+ShareProviderTests.swift */; };
 		350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D92885C95D00A7168B /* UserData+Test.swift */; };
 		350A97DC2885FD7900A7168B /* MyVaultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97DB2885FD7900A7168B /* MyVaultsViewModel.swift */; };
@@ -21,6 +20,9 @@
 		351E9E37289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E36289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift */; };
 		351E9E39289C508B00BB47EB /* ItemKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E38289C508B00BB47EB /* ItemKey+Test.swift */; };
 		351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */; };
+		3530092A28A5281800611F8A /* Vault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D32885BFFD00A7168B /* Vault.swift */; };
+		3530092C28A5284900611F8A /* PartialItemContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530092B28A5284900611F8A /* PartialItemContent.swift */; };
+		3530092E28A52B2300611F8A /* ItemProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530092D28A52B2300611F8A /* ItemProtocol.swift */; };
 		353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C02880C45C0021C716 /* GetSharesEndpoint.swift */; };
 		353547C32880CF470021C716 /* UserData+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C22880CF470021C716 /* UserData+Codable.swift */; };
 		35366AA028A4468D0085C24D /* LocalDatasourceTests+CDItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366A9F28A4468D0085C24D /* LocalDatasourceTests+CDItem.swift */; };
@@ -281,6 +283,8 @@
 		351E9E36289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalDatasourceTests+CDItemKey.swift"; sourceTree = "<group>"; };
 		351E9E38289C508B00BB47EB /* ItemKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemKey+Test.swift"; sourceTree = "<group>"; };
 		351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+RandomWithCount.swift"; sourceTree = "<group>"; };
+		3530092B28A5284900611F8A /* PartialItemContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialItemContent.swift; sourceTree = "<group>"; };
+		3530092D28A52B2300611F8A /* ItemProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemProtocol.swift; sourceTree = "<group>"; };
 		353547C02880C45C0021C716 /* GetSharesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharesEndpoint.swift; sourceTree = "<group>"; };
 		353547C22880CF470021C716 /* UserData+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Codable.swift"; sourceTree = "<group>"; };
 		35366A9F28A4468D0085C24D /* LocalDatasourceTests+CDItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalDatasourceTests+CDItem.swift"; sourceTree = "<group>"; };
@@ -524,6 +528,7 @@
 		35004A3B288FEF1C0073C4A7 /* ModelProtocols */ = {
 			isa = PBXGroup;
 			children = (
+				3530092D28A52B2300611F8A /* ItemProtocol.swift */,
 				354BB14328A2683E00F50040 /* ItemContentProtocol.swift */,
 				350A97CF2885BB1800A7168B /* ShareProtocol.swift */,
 				358BD35F287D4EA200802A91 /* VaultProtocol.swift */,
@@ -676,8 +681,10 @@
 				35366AA528A458AB0085C24D /* Items.swift */,
 				358AB49A2886FDA400818B44 /* ItemKey.swift */,
 				355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */,
+				3530092B28A5284900611F8A /* PartialItemContent.swift */,
 				355443FC287CA77C0017FCAD /* Share.swift */,
 				358AB49C2887029400818B44 /* ShareKey.swift */,
+				350A97D32885BFFD00A7168B /* Vault.swift */,
 				358AB4982886FA7B00818B44 /* VaultKey.swift */,
 			);
 			path = Models;
@@ -917,7 +924,6 @@
 				35E50709286FB44800A3F6EA /* PPDoH.swift */,
 				353E10912881827C00E59474 /* UserProtocol.swift */,
 				35E00615288BE5FE00FAAD65 /* SessionData.swift */,
-				350A97D32885BFFD00A7168B /* Vault.swift */,
 			);
 			path = DomainModels;
 			sourceTree = "<group>";
@@ -1666,6 +1672,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3530092E28A52B2300611F8A /* ItemProtocol.swift in Sources */,
 				350A97CC28859D1800A7168B /* AddressKey.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProtocol.swift in Sources */,
 				358AB49D2887029400818B44 /* ShareKey.swift in Sources */,
@@ -1676,6 +1683,7 @@
 				35004A40289004330073C4A7 /* Pass.xcdatamodeld in Sources */,
 				354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
+				3530092C28A5284900611F8A /* PartialItemContent.swift in Sources */,
 				355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */,
 				3547696C289D253600581E2E /* RemoteDatasource.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
@@ -1687,6 +1695,7 @@
 				3545BCF728A3BA3200DFE5CF /* CDItem.swift in Sources */,
 				3551DFF22885436E008AE633 /* DummyEncodable.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
+				3530092A28A5281800611F8A /* Vault.swift in Sources */,
 				355E803628A2FBEB00BE7C9B /* CreateItemRequestBody.swift in Sources */,
 				358BD35B287D4D0A00802A91 /* CreateVaultRequestBody.swift in Sources */,
 				35A909E4289006F700AC54D4 /* CDShare.swift in Sources */,
@@ -1735,7 +1744,6 @@
 			files = (
 				35E506FC286FB37300A3F6EA /* Coordinator.swift in Sources */,
 				35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */,
-				350A97D42885BFFD00A7168B /* Vault.swift in Sources */,
 				35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */,
 				35E50702286FB39600A3F6EA /* AppState.swift in Sources */,
 				356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */,

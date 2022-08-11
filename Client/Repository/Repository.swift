@@ -61,14 +61,14 @@ extension Repository: RepositoryProtocol {
             return try await getSharesFromRemoteAndSaveToLocal()
         }
 
-        PPLogger.shared?.log("Found shares in local db")
+        PPLogger.shared?.log("Found \(localShares.count) shares in local db")
         return localShares
     }
 
     private func getSharesFromRemoteAndSaveToLocal() async throws -> [Share] {
         let remoteShares = try await remoteDatasource.getShares()
         try await localDatasource.insertShares(remoteShares, userId: userId)
-        PPLogger.shared?.log("Fetched shares from remote and saved to local")
+        PPLogger.shared?.log("Fetched \(remoteShares.count) shares from remote and saved to local")
         return remoteShares
     }
 
@@ -108,7 +108,9 @@ extension Repository: RepositoryProtocol {
                          shareId: String,
                          page: Int,
                          pageSize: Int) async throws -> Items {
+        PPLogger.shared?.log("Getting items for shareId \(shareId)")
         if forceUpdate {
+            PPLogger.shared?.log("Force update getting items for shareId \(shareId)")
             return try await getItemsFromRemoteAndSaveToLocal(shareId: shareId,
                                                               page: page,
                                                               pageSize: pageSize)
@@ -119,11 +121,13 @@ extension Repository: RepositoryProtocol {
                                                               pageSize: pageSize)
 
         if localItems.isEmpty {
+            PPLogger.shared?.log("No items for shareId \(shareId) in local db => Fetching from remote...")
             return try await getItemsFromRemoteAndSaveToLocal(shareId: shareId,
                                                               page: page,
                                                               pageSize: pageSize)
         }
 
+        PPLogger.shared?.log("Found \(localItems.revisionsData.count) items in local db for shareId \(shareId)")
         return localItems
     }
 
@@ -134,6 +138,7 @@ extension Repository: RepositoryProtocol {
                                                               page: page,
                                                               pageSize: pageSize)
         try await localDatasource.insertItems(remoteItems.revisionsData, shareId: shareId)
+        PPLogger.shared?.log("Fetched \(remoteItems.revisionsData.count) items from remote and saved to local for shareId \(shareId)")
         return remoteItems
     }
 

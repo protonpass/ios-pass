@@ -1,6 +1,6 @@
 //
-// Items.swift
-// Proton Pass - Created on 10/08/2022.
+// Vault.swift
+// Proton Pass - Created on 18/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,17 +20,16 @@
 
 import Foundation
 
-/// Holds results from get/fetch item request
-public struct Items: Decodable {
-    public let revisionsData: [Item]
-    public let total: Int
+public struct Vault: Identifiable, VaultProtocol {
+    public let id: String
+    public let shareId: String
+    public let name: String
+    public let description: String
 
-    init(revisionsData: [Item], total: Int) {
-        self.revisionsData = revisionsData
-        self.total = total
-    }
-
-    public var isEmpty: Bool {
-        total == 0 || revisionsData.isEmpty
+    public init(id: String, shareId: String, name: String, description: String) {
+        self.id = id
+        self.shareId = shareId
+        self.name = name
+        self.description = description
     }
 }

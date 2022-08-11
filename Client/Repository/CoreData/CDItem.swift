@@ -73,10 +73,6 @@ extension CDItem {
             throw CoreDataError.corruptedObject(self, "signatureEmail")
         }
 
-        guard let aliasEmail = aliasEmail else {
-            throw CoreDataError.corruptedObject(self, "aliasEmail")
-        }
-
         return .init(itemID: itemID,
                      revision: revision,
                      contentFormatVersion: contentFormatVersion,

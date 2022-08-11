@@ -23,6 +23,7 @@ def client_and_ios_pods
   pod 'ProtonCore-Keymaker/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Networking/Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Login/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
 end
 
 def ios_and_uicomponents

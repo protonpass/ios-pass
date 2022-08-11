@@ -25,6 +25,7 @@ import UIComponents
 
 struct VaultContentView: View {
     @StateObject private var viewModel: VaultContentViewModel
+    @State private var didAppear = false
 
     private var selectedVaultName: String {
         viewModel.selectedVault?.name ?? "All vaults"
@@ -35,27 +36,38 @@ struct VaultContentView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            summaryView
-                .frame(height: 150)
-                .padding()
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(viewModel.items.indices, id: \.self) { index in
-                        let item = viewModel.items[index]
-                        GenericItemView(
-                            item: item.toGenericItem(),
-                            showDivider: index != viewModel.items.count - 1,
-                            action: {
-                                print("Tapped on \(item.itemContentMetadata.name)")
-                            })
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    }
+        ScrollView {
+            LazyVStack {
+                summaryView
+                    .frame(height: 150)
+                    .padding()
+                if !viewModel.partialItemContents.isEmpty {
+                    itemList
                 }
+                Spacer()
             }
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbar }
+        .onAppear {
+            if !didAppear {
+                viewModel.fetchItems()
+                didAppear = true
+            }
+        }
+    }
+
+    private var itemList: some View {
+        ForEach(viewModel.partialItemContents.indices, id: \.self) { index in
+            let content = viewModel.partialItemContents[index]
+            GenericItemView(
+                item: content,
+                showDivider: index != viewModel.partialItemContents.count - 1,
+                action: {
+                    print("Tapped on \(content.title)")
+                })
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 
     @ToolbarContentBuilder
@@ -135,14 +147,9 @@ struct VaultContentView: View {
 
     private var summaryView: some View {
         HStack {
-            let aliasItems = viewModel.items.filter(by: .alias)
-            CategorySummaryView(summary: .init(aliasCount: aliasItems.count))
-
-            let loginItems = viewModel.items.filter(by: .login)
-            CategorySummaryView(summary: .init(loginCount: loginItems.count))
-
-            let noteItems = viewModel.items.filter(by: .note)
-            CategorySummaryView(summary: .init(noteCount: noteItems.count))
+            CategorySummaryView(summary: .init(aliasCount: 0))
+            CategorySummaryView(summary: .init(loginCount: 0))
+            CategorySummaryView(summary: .init(noteCount: 0))
         }
     }
 }

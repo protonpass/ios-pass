@@ -30,6 +30,7 @@ protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToSearch()
     func vaultContentViewModelWantsToCreateNewItem()
     func vaultContentViewModelWantsToCreateNewVault()
+    func vaultContentViewModelDidFailWithError(error: Error)
 }
 
 final class VaultContentViewModel: DeinitPrintable, ObservableObject {
@@ -40,23 +41,62 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
 
-    @Published private(set) var items: [ItemContentProtocol] =
-    [DummyItemContent].preview
+    @Published private(set) var items = [Item]()
+    @Published private(set) var partialItemContents = [PartialItemContent]()
 
+    private let repository: RepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: VaultContentViewModelDelegate?
 
-    init(vaultSelection: VaultSelection) {
+    init(vaultSelection: VaultSelection, repository: RepositoryProtocol) {
         self.vaultSelection = vaultSelection
+        self.repository = repository
+
         vaultSelection.objectWillChange
             .sink { [unowned self] _ in
                 self.objectWillChange.send()
+            }
+            .store(in: &cancellables)
+
+        $items
+            .sink { [unowned self] newItems in
+                self.decrypt(items: newItems)
             }
             .store(in: &cancellables)
     }
 
     func update(selectedVault: VaultProtocol?) {
         vaultSelection.update(selectedVault: selectedVault)
+    }
+
+    func fetchItems(forceRefresh: Bool = false) {
+        guard let shareId = selectedVault?.shareId else { return }
+        Task { @MainActor in
+            do {
+                let items = try await repository.getItems(forceUpdate: forceRefresh,
+                                                          shareId: shareId,
+                                                          page: 0,
+                                                          pageSize: .max)
+                self.items = items.revisionsData
+            } catch {
+                delegate?.vaultContentViewModelDidFailWithError(error: error)
+            }
+        }
+    }
+
+    private func decrypt(items: [Item]) {
+        guard let shareId = selectedVault?.shareId else { return }
+        Task { @MainActor in
+            do {
+                let shareKey = try await repository.getShareKey(forceUpdate: false,
+                                                                shareId: shareId,
+                                                                page: 0,
+                                                                pageSize: .max)
+                self.partialItemContents = try items.map { try $0.getPartialContent(shareKey: shareKey) }
+            } catch {
+                delegate?.vaultContentViewModelDidFailWithError(error: error)
+            }
+        }
     }
 }
 
@@ -76,110 +116,5 @@ extension VaultContentViewModel {
 
     func createVaultAction() {
         delegate?.vaultContentViewModelWantsToCreateNewVault()
-    }
-}
-
-// MARK: - Previews
-struct DummyItemContentMetadata: ItemContentMetadataProtocol {
-    let name: String
-    let note: String
-}
-
-struct DummyItemContentLogin: ItemContentLoginProtocol {
-    public let username: String
-    public let password: String
-    public let urls: [String]
-}
-
-struct DummyItemContent: ItemContentProtocol {
-    public let itemContentMetadata: ItemContentMetadataProtocol
-    public let itemContentData: ItemContentData
-}
-
-extension DummyItemContent {
-    static var login1: DummyItemContent {
-        let metadata = DummyItemContentMetadata(name: "Amazon",
-                                                note: "Used for UK & French Amazon")
-        let login = DummyItemContentLogin(username: "adam.smith@proton.me",
-                                          password: "12345678",
-                                          urls: ["https://amazon.co.uk", "https://amazon.fr"])
-        return .init(itemContentMetadata: metadata, itemContentData: .login(login))
-    }
-
-    static var login2: DummyItemContent {
-        let metadata = DummyItemContentMetadata(name: "LinkedIn",
-                                                note: "Used for LinkedIn")
-        let login = DummyItemContentLogin(username: "john.doe@proton.me",
-                                          password: "aaaaaaaa",
-                                          urls: ["https://linkedin.com"])
-        return .init(itemContentMetadata: metadata, itemContentData: .login(login))
-    }
-
-    static var alias1: DummyItemContent {
-        let metadata = DummyItemContentMetadata(name: "Alias for newsletter",
-                                                note: "Used for newsletter")
-        return .init(itemContentMetadata: metadata, itemContentData: .alias)
-    }
-
-    static var alias2: DummyItemContent {
-        let metadata = DummyItemContentMetadata(name: "Alias for online gaming",
-                                                note: "Used for online gaming")
-        return .init(itemContentMetadata: metadata, itemContentData: .alias)
-    }
-
-    static var alias3: DummyItemContent {
-        let metadata = DummyItemContentMetadata(name: "Alias for online shopping",
-                                                note: "Used for online shopping")
-        return .init(itemContentMetadata: metadata, itemContentData: .alias)
-    }
-
-    static var note1: DummyItemContent {
-        let metadata = DummyItemContentMetadata(name: "Cooking recipes",
-                                                note: "Best Vietnamese recipes")
-        return .init(itemContentMetadata: metadata, itemContentData: .note)
-    }
-
-    static var note2: DummyItemContent {
-        let metadata = DummyItemContentMetadata(name: "Places to visit in France",
-                                                note: "Best places to visit in France")
-        return .init(itemContentMetadata: metadata, itemContentData: .note)
-    }
-}
-
-extension Array where Element == DummyItemContent {
-    static var preview: [Element] {
-        [DummyItemContent.login1,
-         DummyItemContent.alias1,
-         DummyItemContent.note1,
-         DummyItemContent.login2,
-         DummyItemContent.alias2,
-         DummyItemContent.note2,
-         DummyItemContent.alias3]
-    }
-}
-
-extension ItemContentProtocol {
-    func toGenericItem() -> GenericItem {
-        let icon: UIImage
-        switch itemContentData {
-        case .alias:
-            icon = IconProvider.alias
-        case .note:
-            icon = IconProvider.note
-        case .login:
-            icon = IconProvider.keySkeleton
-        }
-
-        let detail: String?
-        switch itemContentData {
-        case .alias:
-            detail = itemContentMetadata.note
-        case .note:
-            detail = nil
-        case .login(let login):
-            detail = login.username
-        }
-
-        return .init(icon: icon, title: itemContentMetadata.name, detail: detail)
     }
 }

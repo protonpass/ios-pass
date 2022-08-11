@@ -21,10 +21,16 @@
 import ProtonCore_UIFoundations
 import SwiftUI
 
-public struct GenericItem {
-    let icon: UIImage
-    let title: String
-    var detail: String?
+public protocol GenericItemProtocol {
+    var icon: UIImage { get }
+    var title: String { get }
+    var detail: String? { get }
+}
+
+public struct GenericItem: GenericItemProtocol {
+    public let icon: UIImage
+    public let title: String
+    public var detail: String?
 
     public init(icon: UIImage, title: String, detail: String? = nil) {
         self.icon = icon
@@ -34,11 +40,11 @@ public struct GenericItem {
 }
 
 public struct GenericItemView: View {
-    private let item: GenericItem
+    private let item: GenericItemProtocol
     private let action: () -> Void
     private let showDivider: Bool
 
-    public init(item: GenericItem,
+    public init(item: GenericItemProtocol,
                 showDivider: Bool = true,
                 action: @escaping () -> Void) {
         self.item = item

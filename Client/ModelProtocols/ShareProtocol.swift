@@ -67,7 +67,10 @@ extension Share: ShareProtocol {
                                                    vaultPassphrase: vaultPassphrase,
                                                    publicKeyRing: publicKeyRing)
         let vaultContent = try VaultProtobuf(data: Data(plainContent.utf8))
-        return Vault(id: vaultID, name: vaultContent.name, description: vaultContent.description_p)
+        return Vault(id: vaultID,
+                     shareId: shareID,
+                     name: vaultContent.name,
+                     description: vaultContent.description_p)
     }
 
     private func validateSigningKey(userData: UserData, privateKeyRing: CryptoKeyRing) throws -> Bool {

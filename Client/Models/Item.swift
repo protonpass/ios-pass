@@ -20,6 +20,7 @@
 
 import Foundation
 
+/// Can be anything (login, alias, note, credit card...)
 public struct Item: Decodable {
     public let itemID: String
     public let revision: Int16
