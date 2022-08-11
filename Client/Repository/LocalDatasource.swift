@@ -273,6 +273,15 @@ extension LocalDatasource: LocalDatasourceProtocol {
         let cdItemDatas = try await fetch(request: fetchRequest, withContext: taskContext)
         return try cdItemDatas.map { try $0.toItem() }
     }
+
+    func getItemsCount(shareId: String) async throws -> Int {
+        let taskContext = newTaskContext(type: .fetch,
+                                         transactionAuthor: "getItemsCount")
+
+        let fetchRequest = CDItem.fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        return try await count(for: fetchRequest, withContext: taskContext)
+    }
 }
 
 extension NSManagedObject {

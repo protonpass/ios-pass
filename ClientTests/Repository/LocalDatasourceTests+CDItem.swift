@@ -139,4 +139,23 @@ extension LocalDatasourceTests {
         try await sut.insertItems([item], shareId: shareId)
         return item
     }
+
+    func testCountItems() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let givenItems = [Item].random(randomElement: .random())
+            let givenShareId = String.random()
+
+            // When
+            try await sut.insertItems(givenItems, shareId: givenShareId)
+
+            // Then
+            let count = try await sut.getItemsCount(shareId: givenShareId)
+            XCTAssertEqual(count, givenItems.count)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
 }
