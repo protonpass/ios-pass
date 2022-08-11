@@ -26,8 +26,11 @@ public protocol RepositoryProtocol {
                      shareId: String,
                      page: Int,
                      pageSize: Int) async throws -> ShareKey
-    func createItem(shareId: String,
-                    requestBody: CreateItemRequestBody) async throws -> Item
+    func getItems(forceUpdate: Bool,
+                  shareId: String,
+                  page: Int,
+                  pageSize: Int) async throws -> Items
+    func createItem(shareId: String, requestBody: CreateItemRequestBody) async throws -> Item
 }
 
 public final class Repository {
@@ -99,6 +102,39 @@ extension Repository: RepositoryProtocol {
                                                                     pageSize: pageSize)
         try await localDatasource.insertShareKey(remoteShareKey, shareId: shareId)
         return remoteShareKey
+    }
+
+    public func getItems(forceUpdate: Bool,
+                         shareId: String,
+                         page: Int,
+                         pageSize: Int) async throws -> Items {
+        if forceUpdate {
+            return try await getItemsFromRemoteAndSaveToLocal(shareId: shareId,
+                                                              page: page,
+                                                              pageSize: pageSize)
+        }
+
+        let localItems = try await localDatasource.fetchItems(shareId: shareId,
+                                                              page: page,
+                                                              pageSize: pageSize)
+
+        if localItems.isEmpty {
+            return try await getItemsFromRemoteAndSaveToLocal(shareId: shareId,
+                                                              page: page,
+                                                              pageSize: pageSize)
+        }
+
+        return localItems
+    }
+
+    private func getItemsFromRemoteAndSaveToLocal(shareId: String,
+                                                  page: Int,
+                                                  pageSize: Int) async throws -> Items {
+        let remoteItems = try await remoteDatasource.getItems(shareId: shareId,
+                                                              page: page,
+                                                              pageSize: pageSize)
+        try await localDatasource.insertItems(remoteItems.revisionsData, shareId: shareId)
+        return remoteItems
     }
 
     public func createItem(shareId: String,
