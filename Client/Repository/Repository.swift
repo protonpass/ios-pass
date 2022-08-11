@@ -26,6 +26,8 @@ public protocol RepositoryProtocol {
                      shareId: String,
                      page: Int,
                      pageSize: Int) async throws -> ShareKey
+    func createItem(shareId: String,
+                    requestBody: CreateItemRequestBody) async throws -> Item
 }
 
 public final class Repository {
@@ -97,5 +99,13 @@ extension Repository: RepositoryProtocol {
                                                                     pageSize: pageSize)
         try await localDatasource.insertShareKey(remoteShareKey, shareId: shareId)
         return remoteShareKey
+    }
+
+    public func createItem(shareId: String,
+                           requestBody: CreateItemRequestBody) async throws -> Item {
+        let createdItem = try await remoteDatasource.createItem(shareId: shareId,
+                                                                requestBody: requestBody)
+        try await localDatasource.insertItems([createdItem], shareId: shareId)
+        return createdItem
     }
 }
