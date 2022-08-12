@@ -30,6 +30,7 @@ public enum CryptoError: Error {
     case failedToEncrypt
     case failedToVerifyVault
     case failedToDecryptContent
+    case failedToVerifySignature
 }
 
 public enum CryptoUtils {
@@ -74,5 +75,11 @@ public enum CryptoUtils {
             throw CryptoError.failedToUnarmor(name)
         }
         return unarmoredData.base64EncodedString()
+    }
+
+    public static func armorSignature(_ signature: Data) throws -> String {
+        try throwing { error in
+            ArmorArmorWithType(signature, "SIGNATURE", &error)
+        }
     }
 }

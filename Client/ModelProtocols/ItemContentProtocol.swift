@@ -42,6 +42,17 @@ public enum ItemContentData {
     case alias
     case login(ItemContentLoginProtocol)
     case note
+
+    var contentType: ItemContentType {
+        switch self {
+        case .alias:
+            return .alias
+        case .login:
+            return .login
+        case .note:
+            return .note
+        }
+    }
 }
 
 public protocol ItemContentProtocol {

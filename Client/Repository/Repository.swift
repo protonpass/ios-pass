@@ -138,7 +138,9 @@ extension Repository: RepositoryProtocol {
                                                               page: page,
                                                               pageSize: pageSize)
         try await localDatasource.insertItems(remoteItems.revisionsData, shareId: shareId)
-        PPLogger.shared?.log("Fetched \(remoteItems.revisionsData.count) items from remote and saved to local for shareId \(shareId)")
+        PPLogger.shared?.log("""
+Fetched \(remoteItems.revisionsData.count) items from remote and saved to local for shareId \(shareId)
+""")
         return remoteItems
     }
 

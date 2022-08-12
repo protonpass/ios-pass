@@ -62,7 +62,8 @@ final class MyVaultsCoordinator: Coordinator {
                                                       apiService: apiService,
                                                       vaultSelection: vaultSelection,
                                                       repository: repository)
-        let vaultContentViewModel = VaultContentViewModel(vaultSelection: vaultSelection,
+        let vaultContentViewModel = VaultContentViewModel(userData: sessionData.userData,
+                                                          vaultSelection: vaultSelection,
                                                           repository: repository)
         vaultContentViewModel.delegate = self
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,

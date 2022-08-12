@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import ProtonCore_Login
 import ProtonCore_UIFoundations
 import UIComponents
 import UIKit
@@ -44,11 +45,13 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var items = [Item]()
     @Published private(set) var partialItemContents = [PartialItemContent]()
 
+    private let userData: UserData
     private let repository: RepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: VaultContentViewModelDelegate?
 
-    init(vaultSelection: VaultSelection, repository: RepositoryProtocol) {
+    init(userData: UserData, vaultSelection: VaultSelection, repository: RepositoryProtocol) {
+        self.userData = userData
         self.vaultSelection = vaultSelection
         self.repository = repository
 
@@ -92,7 +95,14 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                                                                 shareId: shareId,
                                                                 page: 0,
                                                                 pageSize: .max)
-                self.partialItemContents = try items.map { try $0.getPartialContent(shareKey: shareKey) }
+                // swiftlint:disable:next force_unwrapping
+                let share = try await repository.getShares(forceUpdate: false).first!
+                let verifyKeys = userData.user.keys.map { $0.publicKey }
+                partialItemContents = try items.map { try $0.getPartialContent(userData: userData,
+                                                                               share: share,
+                                                                               vaultKeys: shareKey.vaultKeys,
+                                                                               itemKeys: shareKey.itemKeys,
+                                                                               verifyKeys: verifyKeys) }
             } catch {
                 delegate?.vaultContentViewModelDidFailWithError(error: error)
             }
