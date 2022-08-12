@@ -40,6 +40,8 @@ final class MyVaultsCoordinator: Coordinator {
     let vaultSelection: VaultSelection
     let repository: RepositoryProtocol
 
+    private let vaultContentViewModel: VaultContentViewModel
+
     init(apiService: APIService,
          sessionData: SessionData,
          vaultSelection: VaultSelection) {
@@ -55,6 +57,10 @@ final class MyVaultsCoordinator: Coordinator {
         self.repository = Repository(userId: userId,
                                      localDatasource: localDatasource,
                                      remoteDatasource: remoteDatasource)
+
+        vaultContentViewModel = VaultContentViewModel(userData: sessionData.userData,
+                                                      vaultSelection: vaultSelection,
+                                                      repository: repository)
         super.init()
 
         let myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
@@ -62,9 +68,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                       apiService: apiService,
                                                       vaultSelection: vaultSelection,
                                                       repository: repository)
-        let vaultContentViewModel = VaultContentViewModel(userData: sessionData.userData,
-                                                          vaultSelection: vaultSelection,
-                                                          repository: repository)
+
         vaultContentViewModel.delegate = self
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
                                       loadVaultsViewModel: loadVaultsViewModel,
@@ -217,6 +221,10 @@ extension MyVaultsCoordinator: CreateLoginViewModelDelegate {
 
     func createLoginViewModelDidFailWithError(error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
+    }
+
+    func createLoginViewModelDidCreateLogin() {
+        vaultContentViewModel.fetchItems(forceRefresh: true)
     }
 }
 

@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 import SwiftUI
@@ -27,6 +28,7 @@ protocol CreateLoginViewModelDelegate: AnyObject {
     func createLoginViewModelStopsLoading()
     func createLoginViewModelWantsToGeneratePassword(delegate: GeneratePasswordViewModelDelegate)
     func createLoginViewModelDidFailWithError(error: Error)
+    func createLoginViewModelDidCreateLogin()
 }
 
 final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
@@ -34,6 +36,7 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
 
     @Published private(set) var isLoading = false
     @Published private(set) var error: Error?
+    @Published private(set) var createdLogin = false
 
     @Published var title = ""
     @Published var username = ""
@@ -71,9 +74,8 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
         isLoading = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.isLoading = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.error = AppCoordinatorError.noSessionData
-            }
+            self.delegate?.createLoginViewModelDidCreateLogin()
+            self.createdLogin = true
         }
     }
 

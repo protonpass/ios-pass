@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -51,6 +52,11 @@ struct CreateLoginView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .disabled(viewModel.isLoading)
+        .onReceive(Just(viewModel.createdLogin)) { createdLogin in
+            if createdLogin {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
     }
 
     @ToolbarContentBuilder
