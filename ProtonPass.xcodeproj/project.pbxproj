@@ -85,6 +85,8 @@
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
+		3555EDF228A611BC00115EBC /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
+		3555EDF328A611BC00115EBC /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		355635B7288947DD00F32353 /* VaultSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635B6288947DD00F32353 /* VaultSelection.swift */; };
 		355635B928895B8E00F32353 /* VaultContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635B828895B8E00F32353 /* VaultContentView.swift */; };
 		355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635BC2889653B00F32353 /* LoadVaultsView.swift */; };
@@ -164,6 +166,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3555EDF428A611BC00115EBC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35E5062F286F819F00A3F6EA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 35E506A9286F920300A3F6EA;
+			remoteInfo = UIComponents;
+		};
 		358BD370287D539F00802A91 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 35E5062F286F819F00A3F6EA /* Project object */;
@@ -229,6 +238,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				3555EDF328A611BC00115EBC /* UIComponents.framework in Embed Frameworks */,
 				358BD36F287D539F00802A91 /* Core.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -470,6 +480,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				675A744B254FF56E1C95D91B /* Pods_Client.framework in Frameworks */,
+				3555EDF228A611BC00115EBC /* UIComponents.framework in Frameworks */,
 				358BD36E287D539F00802A91 /* Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1119,6 +1130,7 @@
 			);
 			dependencies = (
 				358BD371287D539F00802A91 /* PBXTargetDependency */,
+				3555EDF528A611BC00115EBC /* PBXTargetDependency */,
 			);
 			name = Client;
 			productName = Client;
@@ -1791,6 +1803,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3555EDF528A611BC00115EBC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 35E506A9286F920300A3F6EA /* UIComponents */;
+			targetProxy = 3555EDF428A611BC00115EBC /* PBXContainerItemProxy */;
+		};
 		358BD371287D539F00802A91 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 35E50683286F87A600A3F6EA /* Core */;
