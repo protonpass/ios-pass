@@ -1,6 +1,6 @@
 //
-// ItemKey.swift
-// Proton Pass - Created on 19/07/2022.
+// GetShareKeysResponse.swift
+// Proton Pass - Created on 13/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,19 +20,21 @@
 
 import Foundation
 
-public struct ItemKey: Decodable {
-    public let rotationID: String
+public struct GetShareKeysResponse: Decodable {
+    let code: Int
+    let keys: ShareKeysResponse
+}
 
-    /// Armored item key
-    public let key: String
+public struct ShareKeysResponse: Decodable {
+    public let vaultKeys: [VaultKey]
+    public let itemKeys: [ItemKey]
+    public let total: Int
 
-    /// Base64 encoded passphrase to unlock the vault private key. Only for vault shares.
-    /// Encrypted with the user's address key.
-    public let keyPassphrase: String?
+    init(vaultKeys: [VaultKey], itemKeys: [ItemKey], total: Int) {
+        self.vaultKeys = vaultKeys
+        self.itemKeys = itemKeys
+        self.total = total
+    }
 
-    /// Base64 encoded signature for the key fingerprint. Signed with the signing key
-    public let keySignature: String
-
-    /// Creation time of the key
-    public let createTime: Int64
+    public var isEmpty: Bool { vaultKeys.isEmpty || itemKeys.isEmpty }
 }

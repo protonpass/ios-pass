@@ -120,6 +120,7 @@
 		3593DCED28A79E6600C235D3 /* CreateVaultResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCEC28A79E6600C235D3 /* CreateVaultResponse.swift */; };
 		3593DCEF28A79F2E00C235D3 /* GetShareResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCEE28A79F2E00C235D3 /* GetShareResponse.swift */; };
 		3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCF028A7AA1200C235D3 /* GetShareEndpoint.swift */; };
+		3593DCF528A7ACD200C235D3 /* GetShareKeysResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCF428A7ACD200C235D3 /* GetShareKeysResponse.swift */; };
 		35A909E4289006F700AC54D4 /* CDShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909DE289006F600AC54D4 /* CDShare.swift */; };
 		35A909E7289006F700AC54D4 /* CDItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E1289006F700AC54D4 /* CDItemKey.swift */; };
 		35A909E8289006F700AC54D4 /* CDVaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E2289006F700AC54D4 /* CDVaultKey.swift */; };
@@ -393,6 +394,7 @@
 		3593DCEC28A79E6600C235D3 /* CreateVaultResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultResponse.swift; sourceTree = "<group>"; };
 		3593DCEE28A79F2E00C235D3 /* GetShareResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareResponse.swift; sourceTree = "<group>"; };
 		3593DCF028A7AA1200C235D3 /* GetShareEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareEndpoint.swift; sourceTree = "<group>"; };
+		3593DCF428A7ACD200C235D3 /* GetShareKeysResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareKeysResponse.swift; sourceTree = "<group>"; };
 		35A909DE289006F600AC54D4 /* CDShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDShare.swift; sourceTree = "<group>"; };
 		35A909E1289006F700AC54D4 /* CDItemKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDItemKey.swift; sourceTree = "<group>"; };
 		35A909E2289006F700AC54D4 /* CDVaultKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDVaultKey.swift; sourceTree = "<group>"; };
@@ -747,6 +749,7 @@
 		358AB49F2887044500818B44 /* Keys */ = {
 			isa = PBXGroup;
 			children = (
+				3593DCF428A7ACD200C235D3 /* GetShareKeysResponse.swift */,
 				358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */,
 			);
 			path = Keys;
@@ -1760,6 +1763,7 @@
 				35366AA628A458AB0085C24D /* Items.swift in Sources */,
 				358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */,
 				355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */,
+				3593DCF528A7ACD200C235D3 /* GetShareKeysResponse.swift in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
 				350A97D02885BB1800A7168B /* ShareProtocol.swift in Sources */,
 				3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */,

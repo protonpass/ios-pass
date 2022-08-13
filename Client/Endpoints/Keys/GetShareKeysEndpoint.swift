@@ -42,3 +42,23 @@ public struct GetShareKeysEndpoint: Endpoint {
         self.authCredential = credential
     }
 }
+
+public struct GetShareKeysEndpointV2: Endpoint {
+    public typealias Body = DummyEncodable
+    public typealias Response = GetShareKeysResponse
+
+    public var authCredential: AuthCredential?
+    public var path: String
+    public var method: HTTPMethod
+    public var queries: [String: Any]?
+
+    public init(credential: AuthCredential,
+                shareId: String,
+                page: Int,
+                pageSize: Int) {
+        self.authCredential = credential
+        self.path = "/pass/v1/share/\(shareId)/key/vault"
+        self.method = .get
+        self.queries = ["Page": page, "PageSize": pageSize]
+    }
+}
