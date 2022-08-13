@@ -81,9 +81,9 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="VaultKeyEntity" positionX="-63" positionY="-18" width="128" height="149"/>
-        <element name="ShareEntity" positionX="-54" positionY="-9" width="128" height="344"/>
         <element name="ItemEntity" positionX="-36" positionY="9" width="128" height="224"/>
         <element name="ItemKeyEntity" positionX="-18" positionY="27" width="128" height="134"/>
+        <element name="ShareEntity" positionX="-54" positionY="-9" width="128" height="344"/>
+        <element name="VaultKeyEntity" positionX="-63" positionY="-18" width="128" height="149"/>
     </elements>
 </model>

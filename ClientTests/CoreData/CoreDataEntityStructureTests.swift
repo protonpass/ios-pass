@@ -1,5 +1,5 @@
 //
-// CoreDataModelTests.swift
+// CoreDataEntityStructureTests.swift
 // Proton Pass - Created on 02/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -22,17 +22,16 @@
 import CoreData
 import XCTest
 
-final class CoreDataModelTests: XCTestCase {
-    var localDatasource: LocalDatasourceV2!
+final class CoreDataEntityStructureTests: XCTestCase {
+    var container: NSPersistentContainer!
 
     override func setUp() {
         super.setUp()
-        let container = PassPersistentContainerBuilder.build(inMemory: true)
-        localDatasource = LocalDatasourceV2(container: container)
+        container = .Builder.build(name: "ProtonPass", inMemory: true)
     }
 
     override func tearDown() {
-        localDatasource = nil
+        container = nil
         super.tearDown()
     }
 
@@ -51,7 +50,7 @@ final class CoreDataModelTests: XCTestCase {
     }
 
     func entity(byName name: String) -> NSEntityDescription {
-        guard let entity = localDatasource.container.managedObjectModel.entitiesByName[name] else {
+        guard let entity = container.managedObjectModel.entitiesByName[name] else {
             continueAfterFailure = false
             XCTFail("Entity \(name) not found")
 
@@ -62,8 +61,8 @@ final class CoreDataModelTests: XCTestCase {
         return entity
     }
 
-    func testCDItemKeyEntity() {
-        let sut = entity(byName: "CDItemKey")
+    func testItemKeyEntity() {
+        let sut = entity(byName: "ItemKeyEntity")
         verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "key", on: sut, hasType: .string)
         verifyAttribute(named: "keyPassphrase", on: sut, hasType: .string)
@@ -72,8 +71,8 @@ final class CoreDataModelTests: XCTestCase {
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
     }
 
-    func testCDShareEntity() {
-        let sut = entity(byName: "CDShare")
+    func testShareEntity() {
+        let sut = entity(byName: "ShareEntity")
         verifyAttribute(named: "acceptanceSignature", on: sut, hasType: .string)
         verifyAttribute(named: "content", on: sut, hasType: .string)
         verifyAttribute(named: "contentEncryptedAddressSignature", on: sut, hasType: .string)
@@ -95,8 +94,8 @@ final class CoreDataModelTests: XCTestCase {
         verifyAttribute(named: "vaultID", on: sut, hasType: .string)
     }
 
-    func testCDVaultKeyEntity() {
-        let sut = entity(byName: "CDVaultKey")
+    func testVaultKeyEntity() {
+        let sut = entity(byName: "VaultKeyEntity")
         verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "key", on: sut, hasType: .string)
         verifyAttribute(named: "keyPassphrase", on: sut, hasType: .string)
@@ -106,8 +105,8 @@ final class CoreDataModelTests: XCTestCase {
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
     }
 
-    func testCDItemDataEntity() {
-        let sut = entity(byName: "CDItem")
+    func testItemDataEntity() {
+        let sut = entity(byName: "ItemEntity")
         verifyAttribute(named: "aliasEmail", on: sut, hasType: .string)
         verifyAttribute(named: "content", on: sut, hasType: .string)
         verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer16)

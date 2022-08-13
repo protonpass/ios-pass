@@ -41,7 +41,7 @@
 		35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35429B26288AB730000BA22F /* StaticFuncs.swift */; };
 		3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B8882883614D009C9A68 /* DummyApiService.swift */; };
 		3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */; };
-		3542F0262899431D004007C7 /* CoreDataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F0252899431D004007C7 /* CoreDataModelTests.swift */; };
+		3542F0262899431D004007C7 /* CoreDataEntityStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */; };
 		3542F02828996C70004007C7 /* LocalDatasourceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F02728996C70004007C7 /* LocalDatasourceV1.swift */; };
 		3545BCF728A3BA3200DFE5CF /* CDItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545BCF528A3BA3200DFE5CF /* CDItem.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
@@ -126,6 +126,8 @@
 		3593DD0B28A837DD00C235D3 /* ShareEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0728A837DC00C235D3 /* ShareEntity.swift */; };
 		3593DD0C28A837DD00C235D3 /* ItemEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0828A837DD00C235D3 /* ItemEntity.swift */; };
 		3593DD1028A83F7A00C235D3 /* ProtonPass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */; };
+		3593DD1328A8415300C235D3 /* PersistentContainerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD1228A8415300C235D3 /* PersistentContainerBuilder.swift */; };
+		3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */; };
 		35A909E4289006F700AC54D4 /* CDShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909DE289006F600AC54D4 /* CDShare.swift */; };
 		35A909E7289006F700AC54D4 /* CDItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E1289006F700AC54D4 /* CDItemKey.swift */; };
 		35A909E8289006F700AC54D4 /* CDVaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E2289006F700AC54D4 /* CDVaultKey.swift */; };
@@ -324,7 +326,7 @@
 		35429B26288AB730000BA22F /* StaticFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticFuncs.swift; sourceTree = "<group>"; };
 		3542B8882883614D009C9A68 /* DummyApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyApiService.swift; sourceTree = "<group>"; };
 		3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthCredential+Preview.swift"; sourceTree = "<group>"; };
-		3542F0252899431D004007C7 /* CoreDataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModelTests.swift; sourceTree = "<group>"; };
+		3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEntityStructureTests.swift; sourceTree = "<group>"; };
 		3542F02728996C70004007C7 /* LocalDatasourceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatasourceV1.swift; sourceTree = "<group>"; };
 		3545BCF528A3BA3200DFE5CF /* CDItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDItem.swift; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 		3593DD0728A837DC00C235D3 /* ShareEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareEntity.swift; sourceTree = "<group>"; };
 		3593DD0828A837DD00C235D3 /* ItemEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemEntity.swift; sourceTree = "<group>"; };
 		3593DD0F28A83F7A00C235D3 /* ProtonPass.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProtonPass.xcdatamodel; sourceTree = "<group>"; };
+		3593DD1228A8415300C235D3 /* PersistentContainerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainerBuilder.swift; sourceTree = "<group>"; };
 		35A909DE289006F600AC54D4 /* CDShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDShare.swift; sourceTree = "<group>"; };
 		35A909E1289006F700AC54D4 /* CDItemKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDItemKey.swift; sourceTree = "<group>"; };
 		35A909E2289006F700AC54D4 /* CDVaultKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDVaultKey.swift; sourceTree = "<group>"; };
@@ -638,7 +641,6 @@
 		3542F024289942FF004007C7 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
-				3593DCE828A7969A00C235D3 /* CoreData */,
 				3593DCE928A796A300C235D3 /* LocalDatasource */,
 				353C95DE289A9E1900E3CDCA /* LocalDatasourceTests.swift */,
 				35366A9F28A4468D0085C24D /* LocalDatasourceTests+CDItem.swift */,
@@ -803,14 +805,6 @@
 			path = LocalDatasource;
 			sourceTree = "<group>";
 		};
-		3593DCE828A7969A00C235D3 /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-				3542F0252899431D004007C7 /* CoreDataModelTests.swift */,
-			);
-			path = CoreData;
-			sourceTree = "<group>";
-		};
 		3593DCE928A796A300C235D3 /* LocalDatasource */ = {
 			isa = PBXGroup;
 			children = (
@@ -818,17 +812,34 @@
 			path = LocalDatasource;
 			sourceTree = "<group>";
 		};
-		3593DD0128A8375400C235D3 /* CoreDataModels */ = {
+		3593DD0128A8375400C235D3 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
 				3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */,
 				35A909E92890110F00AC54D4 /* CoreDataError.swift */,
+				3593DD1228A8415300C235D3 /* PersistentContainerBuilder.swift */,
+				3593DD1428A8417100C235D3 /* Entities */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		3593DD1128A840BD00C235D3 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		3593DD1428A8417100C235D3 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
 				3593DD0828A837DD00C235D3 /* ItemEntity.swift */,
 				3593DD0528A837DC00C235D3 /* ItemKeyEntity.swift */,
 				3593DD0728A837DC00C235D3 /* ShareEntity.swift */,
 				3593DD0628A837DC00C235D3 /* VaultKeyEntity.swift */,
 			);
-			path = CoreDataModels;
+			path = Entities;
 			sourceTree = "<group>";
 		};
 		35E5062E286F819F00A3F6EA = {
@@ -900,7 +911,7 @@
 			isa = PBXGroup;
 			children = (
 				35E50663286F870500A3F6EA /* Client.h */,
-				3593DD0128A8375400C235D3 /* CoreDataModels */,
+				3593DD0128A8375400C235D3 /* CoreData */,
 				355443FB287CA73E0017FCAD /* Models */,
 				35004A3B288FEF1C0073C4A7 /* ModelProtocols */,
 				355443FA287CA7150017FCAD /* Endpoints */,
@@ -914,6 +925,7 @@
 		35E5066E286F870500A3F6EA /* ClientTests */ = {
 			isa = PBXGroup;
 			children = (
+				3593DD1128A840BD00C235D3 /* CoreData */,
 				358BD364287D4F7C00802A91 /* Models */,
 				3542F024289942FF004007C7 /* Repository */,
 				350A97D82885C94900A7168B /* TestData */,
@@ -1699,6 +1711,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateNoteViewModel.swift in Sources */,
 				3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */,
 				355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */,
@@ -1796,6 +1809,7 @@
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
 				358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */,
 				350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */,
+				3593DD1328A8415300C235D3 /* PersistentContainerBuilder.swift in Sources */,
 				358AB4992886FA7B00818B44 /* VaultKey.swift in Sources */,
 				353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */,
 				3593DCFF28A8322300C235D3 /* CreateItemRequest.swift in Sources */,
@@ -1820,7 +1834,7 @@
 				350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */,
 				35464B62289B0380008E65C4 /* VaultKey+Test.swift in Sources */,
 				350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */,
-				3542F0262899431D004007C7 /* CoreDataModelTests.swift in Sources */,
+				3542F0262899431D004007C7 /* CoreDataEntityStructureTests.swift in Sources */,
 				358BD366287D4F9200802A91 /* CreateVaultRequestBodyTests.swift in Sources */,
 				35464B5E289B0109008E65C4 /* LocalDatasourceTests+CDShare.swift in Sources */,
 			);
