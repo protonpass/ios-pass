@@ -20,7 +20,7 @@
 
 import CoreData
 
-private let passContainerName = "Pass"
+private let kPassContainerName = "Pass"
 
 public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
     case batchInsertError(NSBatchInsertRequest)
@@ -33,9 +33,9 @@ public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
     }
 }
 
-public struct PassPersistentContainerBuilder {
+public enum PassPersistentContainerBuilder {
     public static func build(inMemory: Bool) -> NSPersistentContainer {
-        let container = NSPersistentContainer(name: passContainerName)
+        let container = NSPersistentContainer(name: kPassContainerName)
         if inMemory {
             let description = NSPersistentStoreDescription()
             description.url = URL(fileURLWithPath: "/dev/null")
@@ -54,7 +54,7 @@ public class LocalDatasourceV2 {
     let container: NSPersistentContainer
 
     public init(container: NSPersistentContainer) {
-        guard container.name == passContainerName else {
+        guard container.name == kPassContainerName else {
             fatalError("Unsupported container name \(container.name)")
         }
         self.container = container
