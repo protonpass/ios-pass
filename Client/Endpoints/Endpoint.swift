@@ -19,7 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_KeyManager
 import ProtonCore_Networking
+
+typealias Encryptor = ProtonCore_KeyManager.Encryptor
 
 public protocol Endpoint: Request {
     associatedtype Response: Decodable

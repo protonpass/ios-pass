@@ -1,6 +1,6 @@
 //
-// CreateVaultRequestBody.swift
-// Proton Pass - Created on 12/07/2022.
+// CreateVaultRequest.swift
+// Proton Pass - Created on 13/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,102 +21,81 @@
 import Crypto
 import ProtonCore_DataModel
 
-public struct CreateVaultRequestBody: Encodable {
+public struct CreateVaultRequest: Encodable {
     /// Encrypted ID of the address that created the vault
-    public let addressID: String
+    let addressID: String
 
     /// Content of the vault information encrypted with the Vault public key encoded in Base64
-    public let content: String
+    let content: String
 
     /// Version of the format of the vault content
-    public let contentFormatVersion: Int
+    let contentFormatVersion: Int
 
     /// Base64 encoded content signature with the user's address key
-    public let contentEncryptedAddressSignature: String
+    let contentEncryptedAddressSignature: String
 
     /// Base64 encoded content signature with the vault key
-    public let contentEncryptedVaultSignature: String
+    let contentEncryptedVaultSignature: String
 
     /// Armored vault key locked with the passphrase contained in the VaultKeyPassphrase
-    public let vaultKey: String
+    let vaultKey: String
 
     /// Encrypted passphrase to decrypt the vault key
-    public let vaultKeyPassphrase: String
+    let vaultKeyPassphrase: String
 
     /// Base64 encoded signature of the vault key sha256 primary fingerprint.
     /// Signed with the vault signing key
-    public let vaultKeySignature: String
+    let vaultKeySignature: String
 
     /// SessionKey for the passphrase encrypted with the key of the addressID. Encoded in Base64
-    public let keyPacket: String
+    let keyPacket: String
 
     /// Base64 encoded signature of the unencoded key packet signed by the vault key
-    public let keyPacketSignature: String
+    let keyPacketSignature: String
 
     /// Armored signing key locked with the passphrase contained in the SigningKeyPassphrase
-    public let signingKey: String
+    let signingKey: String
 
     /// Base64 encoded encrypted passphrase for the signing key
-    public let signingKeyPassphrase: String
+    let signingKeyPassphrase: String
 
     /// Base64 encoded SessionKey for the encrypted signing key passphrase encrypted with the key of the addressID
-    public let signingKeyPassphraseKeyPacket: String
+    let signingKeyPassphraseKeyPacket: String
 
     /// Base64 encoded signature of the signing key sha256 primary fingerprint.
     /// Signed with the private key of the addressID
-    public let acceptanceSignature: String
+    let acceptanceSignature: String
 
     /// Armored item key locked with the passphrase contained in the ItemKeyPassphrase
-    public let itemKey: String
+    let itemKey: String
 
     /// Base64 encoded encrypted passphrase for the item key
-    public let itemKeyPassphrase: String
+    let itemKeyPassphrase: String
 
     /// Base64 encoded SessionKey for the encrypted item key passphrase encrypted with the vault key
-    public let itemKeyPassphraseKeyPacket: String
+    let itemKeyPassphraseKeyPacket: String
 
     /// Base64 encoded signature of the item key sha256 primary fingerprint, signed with the vault signing key
-    public let itemKeySignature: String
+    let itemKeySignature: String
 
-    private enum CodingKeys: String, CodingKey {
-        case addressID = "AddressID"
-        case content = "Content"
-        case contentFormatVersion = "ContentFormatVersion"
-        case contentEncryptedAddressSignature = "ContentEncryptedAddressSignature"
-        case contentEncryptedVaultSignature = "ContentEncryptedVaultSignature"
-        case vaultKey = "VaultKey"
-        case vaultKeyPassphrase = "VaultKeyPassphrase"
-        case vaultKeySignature = "VaultKeySignature"
-        case keyPacket = "KeyPacket"
-        case keyPacketSignature = "KeyPacketSignature"
-        case signingKey = "SigningKey"
-        case signingKeyPassphrase = "SigningKeyPassphrase"
-        case signingKeyPassphraseKeyPacket = "SigningKeyPassphraseKeyPacket"
-        case acceptanceSignature = "AcceptanceSignature"
-        case itemKey = "ItemKey"
-        case itemKeyPassphrase = "ItemKeyPassphrase"
-        case itemKeyPassphraseKeyPacket = "ItemKeyPassphraseKeyPacket"
-        case itemKeySignature = "ItemKeySignature"
-    }
-
-    public init(addressID: String,
-                content: String,
-                contentFormatVersion: Int,
-                contentEncryptedAddressSignature: String,
-                contentEncryptedVaultSignature: String,
-                vaultKey: String,
-                vaultKeyPassphrase: String,
-                vaultKeySignature: String,
-                keyPacket: String,
-                keyPacketSignature: String,
-                signingKey: String,
-                signingKeyPassphrase: String,
-                signingKeyPassphraseKeyPacket: String,
-                acceptanceSignature: String,
-                itemKey: String,
-                itemKeyPassphrase: String,
-                itemKeyPassphraseKeyPacket: String,
-                itemKeySignature: String) {
+    init(addressID: String,
+         content: String,
+         contentFormatVersion: Int,
+         contentEncryptedAddressSignature: String,
+         contentEncryptedVaultSignature: String,
+         vaultKey: String,
+         vaultKeyPassphrase: String,
+         vaultKeySignature: String,
+         keyPacket: String,
+         keyPacketSignature: String,
+         signingKey: String,
+         signingKeyPassphrase: String,
+         signingKeyPassphraseKeyPacket: String,
+         acceptanceSignature: String,
+         itemKey: String,
+         itemKeyPassphrase: String,
+         itemKeyPassphraseKeyPacket: String,
+         itemKeySignature: String) {
         self.addressID = addressID
         self.content = content
         self.contentFormatVersion = contentFormatVersion
@@ -138,7 +117,7 @@ public struct CreateVaultRequestBody: Encodable {
     }
 
     // swiftlint:disable:next function_body_length
-    public init(addressKey: AddressKey, vault: ProtobufableVaultProtocol) throws {
+    public init(addressKey: AddressKey, vaultData: Data) throws {
         // Generate signing key
         let (signingKey, signingKeyPassphrase) = try CryptoUtils.generateKey(name: "VaultSigningKey",
                                                                              email: "vault_signing@proton")
@@ -180,7 +159,6 @@ public struct CreateVaultRequestBody: Encodable {
             throw CryptoError.failedToGenerateKeyRing
         }
 
-        let vaultData = try vault.data()
         guard let encryptedVaultData = try keyRing.encrypt(.init(vaultData), privateKey: nil).data else {
             throw CryptoError.failedToEncrypt
         }

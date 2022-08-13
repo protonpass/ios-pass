@@ -30,10 +30,10 @@ public struct CreateVaultEndpoint: Endpoint {
         public let share: PartialShare
     }
 
+    public var authCredential: AuthCredential?
     public var path: String { "/pass/v1/vault" }
     public var method: HTTPMethod { .post }
     public var body: CreateVaultRequestBody?
-    public var authCredential: AuthCredential?
 
     public init(credential: AuthCredential,
                 addressKey: AddressKey,
@@ -42,5 +42,27 @@ public struct CreateVaultEndpoint: Endpoint {
         self.authCredential = credential
         let vaultProtobuf = VaultProtobuf(name: name, note: note)
         self.body = try CreateVaultRequestBody(addressKey: addressKey, vault: vaultProtobuf)
+    }
+}
+
+public struct CreateVaultEndpointV2: Endpoint {
+    public typealias Body = CreateVaultRequest
+    public typealias Response = CreateVaultResponse
+
+    public var path: String
+    public var method: HTTPMethod
+    public var body: CreateVaultRequest?
+    public var authCredential: AuthCredential?
+
+    public init(credential: AuthCredential,
+                addressKey: AddressKey,
+                name: String,
+                note: String) throws {
+        self.authCredential = credential
+        self.path = "/pass/v1/vault"
+        self.method = .post
+        let vault = VaultProtobuf(name: name, note: note)
+        let vaultData = try vault.data()
+        self.body = try CreateVaultRequest(addressKey: addressKey, vaultData: vaultData)
     }
 }
