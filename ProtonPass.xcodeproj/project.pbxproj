@@ -121,6 +121,11 @@
 		3593DCFB28A8291D00C235D3 /* GetShareItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCFA28A8291D00C235D3 /* GetShareItemsEndpoint.swift */; };
 		3593DCFD28A82FA700C235D3 /* ShareKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCFC28A82FA700C235D3 /* ShareKeys.swift */; };
 		3593DCFF28A8322300C235D3 /* CreateItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCFE28A8322300C235D3 /* CreateItemRequest.swift */; };
+		3593DD0928A837DD00C235D3 /* ItemKeyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0528A837DC00C235D3 /* ItemKeyEntity.swift */; };
+		3593DD0A28A837DD00C235D3 /* VaultKeyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0628A837DC00C235D3 /* VaultKeyEntity.swift */; };
+		3593DD0B28A837DD00C235D3 /* ShareEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0728A837DC00C235D3 /* ShareEntity.swift */; };
+		3593DD0C28A837DD00C235D3 /* ItemEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0828A837DD00C235D3 /* ItemEntity.swift */; };
+		3593DD1028A83F7A00C235D3 /* ProtonPass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */; };
 		35A909E4289006F700AC54D4 /* CDShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909DE289006F600AC54D4 /* CDShare.swift */; };
 		35A909E7289006F700AC54D4 /* CDItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E1289006F700AC54D4 /* CDItemKey.swift */; };
 		35A909E8289006F700AC54D4 /* CDVaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E2289006F700AC54D4 /* CDVaultKey.swift */; };
@@ -395,6 +400,11 @@
 		3593DCFA28A8291D00C235D3 /* GetShareItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareItemsEndpoint.swift; sourceTree = "<group>"; };
 		3593DCFC28A82FA700C235D3 /* ShareKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareKeys.swift; sourceTree = "<group>"; };
 		3593DCFE28A8322300C235D3 /* CreateItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemRequest.swift; sourceTree = "<group>"; };
+		3593DD0528A837DC00C235D3 /* ItemKeyEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemKeyEntity.swift; sourceTree = "<group>"; };
+		3593DD0628A837DC00C235D3 /* VaultKeyEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultKeyEntity.swift; sourceTree = "<group>"; };
+		3593DD0728A837DC00C235D3 /* ShareEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareEntity.swift; sourceTree = "<group>"; };
+		3593DD0828A837DD00C235D3 /* ItemEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemEntity.swift; sourceTree = "<group>"; };
+		3593DD0F28A83F7A00C235D3 /* ProtonPass.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProtonPass.xcdatamodel; sourceTree = "<group>"; };
 		35A909DE289006F600AC54D4 /* CDShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDShare.swift; sourceTree = "<group>"; };
 		35A909E1289006F700AC54D4 /* CDItemKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDItemKey.swift; sourceTree = "<group>"; };
 		35A909E2289006F700AC54D4 /* CDVaultKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDVaultKey.swift; sourceTree = "<group>"; };
@@ -575,7 +585,6 @@
 			isa = PBXGroup;
 			children = (
 				35004A3E289004330073C4A7 /* Pass.xcdatamodeld */,
-				35A909E92890110F00AC54D4 /* CoreDataError.swift */,
 				3545BCF528A3BA3200DFE5CF /* CDItem.swift */,
 				35A909E1289006F700AC54D4 /* CDItemKey.swift */,
 				35A909DE289006F600AC54D4 /* CDShare.swift */,
@@ -809,6 +818,19 @@
 			path = LocalDatasource;
 			sourceTree = "<group>";
 		};
+		3593DD0128A8375400C235D3 /* CoreDataModels */ = {
+			isa = PBXGroup;
+			children = (
+				3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */,
+				35A909E92890110F00AC54D4 /* CoreDataError.swift */,
+				3593DD0828A837DD00C235D3 /* ItemEntity.swift */,
+				3593DD0528A837DC00C235D3 /* ItemKeyEntity.swift */,
+				3593DD0728A837DC00C235D3 /* ShareEntity.swift */,
+				3593DD0628A837DC00C235D3 /* VaultKeyEntity.swift */,
+			);
+			path = CoreDataModels;
+			sourceTree = "<group>";
+		};
 		35E5062E286F819F00A3F6EA = {
 			isa = PBXGroup;
 			children = (
@@ -878,6 +900,7 @@
 			isa = PBXGroup;
 			children = (
 				35E50663286F870500A3F6EA /* Client.h */,
+				3593DD0128A8375400C235D3 /* CoreDataModels */,
 				355443FB287CA73E0017FCAD /* Models */,
 				35004A3B288FEF1C0073C4A7 /* ModelProtocols */,
 				355443FA287CA7150017FCAD /* Endpoints */,
@@ -1739,12 +1762,14 @@
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
 				3530092C28A5284900611F8A /* PartialItemContent.swift in Sources */,
 				355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */,
+				3593DD0C28A837DD00C235D3 /* ItemEntity.swift in Sources */,
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,
 				3547696C289D253600581E2E /* RemoteDatasource.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
 				355E803428A2FA0500BE7C9B /* Item.swift in Sources */,
 				358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */,
 				35A909E7289006F700AC54D4 /* CDItemKey.swift in Sources */,
+				3593DD0928A837DD00C235D3 /* ItemKeyEntity.swift in Sources */,
 				3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */,
 				358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */,
 				3545BCF728A3BA3200DFE5CF /* CDItem.swift in Sources */,
@@ -1760,9 +1785,11 @@
 				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,
 				3593DCFD28A82FA700C235D3 /* ShareKeys.swift in Sources */,
 				3593DCFB28A8291D00C235D3 /* GetShareItemsEndpoint.swift in Sources */,
+				3593DD0B28A837DD00C235D3 /* ShareEntity.swift in Sources */,
 				35366AA628A458AB0085C24D /* Items.swift in Sources */,
 				358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */,
 				355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */,
+				3593DD1028A83F7A00C235D3 /* ProtonPass.xcdatamodeld in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
 				350A97D02885BB1800A7168B /* ShareProtocol.swift in Sources */,
 				3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */,
@@ -1773,6 +1800,7 @@
 				353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */,
 				3593DCFF28A8322300C235D3 /* CreateItemRequest.swift in Sources */,
 				3593DCEB28A79CD300C235D3 /* CreateVaultRequest.swift in Sources */,
+				3593DD0A28A837DD00C235D3 /* VaultKeyEntity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3156,6 +3184,16 @@
 			);
 			currentVersion = 35004A3F289004330073C4A7 /* Pass.xcdatamodel */;
 			path = Pass.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3593DD0F28A83F7A00C235D3 /* ProtonPass.xcdatamodel */,
+			);
+			currentVersion = 3593DD0F28A83F7A00C235D3 /* ProtonPass.xcdatamodel */;
+			path = ProtonPass.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

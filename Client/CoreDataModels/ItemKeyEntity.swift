@@ -1,5 +1,5 @@
 //
-// CDItemKey.swift
+// ItemKeyEntity.swift
 // Proton Pass - Created on 18/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,15 +21,15 @@
 import CoreData
 import Foundation
 
-@objc(CDItemKey)
-public final class CDItemKey: NSManagedObject {}
+@objc(ItemKeyEntity)
+public final class ItemKeyEntity: NSManagedObject {}
 
-extension CDItemKey: Identifiable {}
+extension ItemKeyEntity: Identifiable {}
 
-extension CDItemKey {
+extension ItemKeyEntity {
     @nonobjc
-    class func fetchRequest() -> NSFetchRequest<CDItemKey> {
-        NSFetchRequest<CDItemKey>(entityName: "CDItemKey")
+    class func fetchRequest() -> NSFetchRequest<ItemKeyEntity> {
+        NSFetchRequest<ItemKeyEntity>(entityName: "ItemKeyEntity")
     }
 
     @NSManaged var createTime: Int64
@@ -38,10 +38,10 @@ extension CDItemKey {
     @NSManaged var keySignature: String?
     @NSManaged var rotationID: String?
     @NSManaged var shareID: String?
-    @NSManaged var share: CDShare?
+    @NSManaged var share: ShareEntity?
 }
 
-extension CDItemKey {
+extension ItemKeyEntity {
     func toItemKey() throws -> ItemKey {
         guard let rotationID = rotationID else {
             throw CoreDataError.corrupted(object: self, property: "rotationID")
@@ -62,7 +62,7 @@ extension CDItemKey {
                      createTime: createTime)
     }
 
-    func copy(from itemKey: ItemKey, shareId: String) {
+    func hydrate(from itemKey: ItemKey, shareId: String) {
         createTime = itemKey.createTime
         key = itemKey.key
         keyPassphrase = itemKey.keyPassphrase
@@ -72,8 +72,8 @@ extension CDItemKey {
     }
 }
 
-extension CDItemKey {
-    class func allItemKeysFetchRequest(shareId: String) -> NSFetchRequest<CDItemKey> {
+extension ItemKeyEntity {
+    class func allItemKeysFetchRequest(shareId: String) -> NSFetchRequest<ItemKeyEntity> {
         let fetchRequest = fetchRequest()
         fetchRequest.predicate = .init(format: "shareID = %s", shareId)
         return fetchRequest

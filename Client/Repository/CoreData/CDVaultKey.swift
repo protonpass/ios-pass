@@ -45,19 +45,19 @@ extension CDVaultKey {
 extension CDVaultKey {
     func toVaultKey() throws -> VaultKey {
         guard let rotationID = rotationID else {
-            throw CoreDataError.corruptedObject(self, "rotationID")
+            throw CoreDataError.corrupted(object: self, property: "rotationID")
         }
 
         guard let key = key else {
-            throw CoreDataError.corruptedObject(self, "key")
+            throw CoreDataError.corrupted(object: self, property: "key")
         }
 
         guard let keyPassphrase = keyPassphrase else {
-            throw CoreDataError.corruptedObject(self, "keyPassphrase")
+            throw CoreDataError.corrupted(object: self, property: "keyPassphrase")
         }
 
         guard let keySignature = keySignature else {
-            throw CoreDataError.corruptedObject(self, "keySignature")
+            throw CoreDataError.corrupted(object: self, property: "keySignature")
         }
 
         return .init(rotationID: rotationID,

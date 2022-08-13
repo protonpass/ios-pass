@@ -1,5 +1,5 @@
 //
-// CDItem.swift
+// ItemEntity.swift
 // Proton Pass - Created on 10/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,15 +21,15 @@
 import CoreData
 import Foundation
 
-@objc(CDItem)
-public class CDItem: NSManagedObject {}
+@objc(ItemEntity)
+public class ItemEntity: NSManagedObject {}
 
-extension CDItem: Identifiable {}
+extension ItemEntity: Identifiable {}
 
-extension CDItem {
+extension ItemEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<CDItem> {
-        NSFetchRequest<CDItem>(entityName: "CDItem")
+    public class func fetchRequest() -> NSFetchRequest<ItemEntity> {
+        NSFetchRequest<ItemEntity>(entityName: "ItemEntity")
     }
 
     @NSManaged var aliasEmail: String?
@@ -47,8 +47,8 @@ extension CDItem {
     @NSManaged var userSignature: String?
 }
 
-extension CDItem {
-    func toItem() throws -> Item {
+extension ItemEntity {
+    func toItemRevision() throws -> ItemRevision {
         guard let itemID = itemID else {
             throw CoreDataError.corrupted(object: self, property: "itemID")
         }
@@ -87,7 +87,7 @@ extension CDItem {
                      modifyTime: modifyTime)
     }
 
-    func copy(item: Item, shareId: String) {
+    func hydrate(from item: ItemRevision, shareId: String) {
         self.itemID = item.itemID
         self.revision = item.revision
         self.contentFormatVersion = item.contentFormatVersion

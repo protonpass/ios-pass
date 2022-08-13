@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ItemEntity" representedClassName="ItemEntity" syncable="YES">
+        <attribute name="aliasEmail" optional="YES" attributeType="String"/>
+        <attribute name="content" attributeType="String"/>
+        <attribute name="contentFormatVersion" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="itemID" attributeType="String"/>
+        <attribute name="itemKeySignature" attributeType="String"/>
+        <attribute name="modifyTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="revision" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="rotationID" attributeType="String"/>
+        <attribute name="shareID" attributeType="String"/>
+        <attribute name="signatureEmail" attributeType="String"/>
+        <attribute name="state" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userSignature" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="itemID"/>
+                <constraint value="shareID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="ItemKeyEntity" representedClassName="ItemKeyEntity" syncable="YES">
+        <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="key" attributeType="String"/>
+        <attribute name="keyPassphrase" optional="YES" attributeType="String"/>
+        <attribute name="keySignature" attributeType="String"/>
+        <attribute name="rotationID" attributeType="String"/>
+        <attribute name="shareID" attributeType="String"/>
+        <relationship name="share" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="ShareEntity"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="shareID"/>
+                <constraint value="rotationID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="ShareEntity" representedClassName="ShareEntity" syncable="YES">
+        <attribute name="acceptanceSignature" attributeType="String"/>
+        <attribute name="content" optional="YES" attributeType="String"/>
+        <attribute name="contentEncryptedAddressSignature" attributeType="String"/>
+        <attribute name="contentEncryptedVaultSignature" attributeType="String"/>
+        <attribute name="contentFormatVersion" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="contentRotationID" attributeType="String"/>
+        <attribute name="contentSignatureEmail" attributeType="String"/>
+        <attribute name="createTime" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="expireTime" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="inviterAcceptanceSignature" attributeType="String"/>
+        <attribute name="inviterEmail" attributeType="String"/>
+        <attribute name="permission" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="shareID" attributeType="String"/>
+        <attribute name="signingKey" attributeType="String"/>
+        <attribute name="signingKeyPassphrase" optional="YES" attributeType="String"/>
+        <attribute name="targetID" attributeType="String"/>
+        <attribute name="targetType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userID" attributeType="String"/>
+        <attribute name="vaultID" attributeType="String"/>
+        <relationship name="itemKeys" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="ItemKeyEntity"/>
+        <relationship name="vaultKeys" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="VaultKeyEntity"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="shareID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="VaultKeyEntity" representedClassName="VaultKeyEntity" syncable="YES">
+        <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="key" attributeType="String"/>
+        <attribute name="keyPassphrase" optional="YES" attributeType="String"/>
+        <attribute name="keySignature" attributeType="String"/>
+        <attribute name="rotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="rotationID" attributeType="String"/>
+        <attribute name="shareID" optional="YES" attributeType="String"/>
+        <relationship name="share" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="ShareEntity"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="shareID"/>
+                <constraint value="rotationID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <elements>
+        <element name="VaultKeyEntity" positionX="-63" positionY="-18" width="128" height="149"/>
+        <element name="ShareEntity" positionX="-54" positionY="-9" width="128" height="344"/>
+        <element name="ItemEntity" positionX="-36" positionY="9" width="128" height="224"/>
+        <element name="ItemKeyEntity" positionX="-18" positionY="27" width="128" height="134"/>
+    </elements>
+</model>

@@ -1,5 +1,5 @@
 //
-// CDItemKey.swift
+// VaultKeyEntity.swift
 // Proton Pass - Created on 18/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,28 +21,29 @@
 import CoreData
 import Foundation
 
-@objc(CDItemKey)
-public final class CDItemKey: NSManagedObject {}
+@objc(VaultKeyEntity)
+public final class VaultKeyEntity: NSManagedObject {}
 
-extension CDItemKey: Identifiable {}
+extension VaultKeyEntity: Identifiable {}
 
-extension CDItemKey {
+extension VaultKeyEntity {
     @nonobjc
-    class func fetchRequest() -> NSFetchRequest<CDItemKey> {
-        NSFetchRequest<CDItemKey>(entityName: "CDItemKey")
+    class func fetchRequest() -> NSFetchRequest<VaultKeyEntity> {
+        NSFetchRequest<VaultKeyEntity>(entityName: "VaultKeyEntity")
     }
 
     @NSManaged var createTime: Int64
     @NSManaged var key: String?
     @NSManaged var keyPassphrase: String?
     @NSManaged var keySignature: String?
+    @NSManaged var rotation: Int64
     @NSManaged var rotationID: String?
     @NSManaged var shareID: String?
-    @NSManaged var share: CDShare?
+    @NSManaged var share: ShareEntity?
 }
 
-extension CDItemKey {
-    func toItemKey() throws -> ItemKey {
+extension VaultKeyEntity {
+    func toVaultKey() throws -> VaultKey {
         guard let rotationID = rotationID else {
             throw CoreDataError.corrupted(object: self, property: "rotationID")
         }
@@ -51,29 +52,35 @@ extension CDItemKey {
             throw CoreDataError.corrupted(object: self, property: "key")
         }
 
+        guard let keyPassphrase = keyPassphrase else {
+            throw CoreDataError.corrupted(object: self, property: "keyPassphrase")
+        }
+
         guard let keySignature = keySignature else {
             throw CoreDataError.corrupted(object: self, property: "keySignature")
         }
 
         return .init(rotationID: rotationID,
+                     rotation: rotation,
                      key: key,
                      keyPassphrase: keyPassphrase,
                      keySignature: keySignature,
                      createTime: createTime)
     }
 
-    func copy(from itemKey: ItemKey, shareId: String) {
-        createTime = itemKey.createTime
-        key = itemKey.key
-        keyPassphrase = itemKey.keyPassphrase
-        keySignature = itemKey.keySignature
-        rotationID = itemKey.rotationID
+    func hydrate(from vaultKey: VaultKey, shareId: String) {
+        createTime = vaultKey.createTime
+        key = vaultKey.key
+        keyPassphrase = vaultKey.keyPassphrase
+        keySignature = vaultKey.keySignature
+        rotation = vaultKey.rotation
+        rotationID = vaultKey.rotationID
         shareID = shareId
     }
 }
 
-extension CDItemKey {
-    class func allItemKeysFetchRequest(shareId: String) -> NSFetchRequest<CDItemKey> {
+extension VaultKeyEntity {
+    class func allVaultKeysFetchRequest(shareId: String) -> NSFetchRequest<VaultKeyEntity> {
         let fetchRequest = fetchRequest()
         fetchRequest.predicate = .init(format: "shareID = %s", shareId)
         return fetchRequest

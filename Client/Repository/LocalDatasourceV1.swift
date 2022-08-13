@@ -191,7 +191,7 @@ extension LocalDatasource: LocalDatasourceProtocol {
         let itemKeyCount = try await getItemKeysCount(shareId: shareId)
 
         guard vaultKeyCount == itemKeyCount else {
-            throw CoreDataError.corruptedShareKey(shareId)
+            throw CoreDataError.corruptedShareKeys(shareId: shareId)
         }
 
         let vaultKeys = try await fetchVaultKeys(shareId: shareId, page: page, pageSize: pageSize)

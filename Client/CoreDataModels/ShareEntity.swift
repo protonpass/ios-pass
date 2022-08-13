@@ -1,5 +1,5 @@
 //
-// CDShare.swift
+// ShareEntity.swift
 // Proton Pass - Created on 18/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,15 +21,15 @@
 import CoreData
 import Foundation
 
-@objc(CDShare)
-public final class CDShare: NSManagedObject {}
+@objc(ShareEntity)
+public final class ShareEntity: NSManagedObject {}
 
-extension CDShare: Identifiable {}
+extension ShareEntity: Identifiable {}
 
-extension CDShare {
+extension ShareEntity {
     @nonobjc
-    class func fetchRequest() -> NSFetchRequest<CDShare> {
-        NSFetchRequest<CDShare>(entityName: "CDShare")
+    class func fetchRequest() -> NSFetchRequest<ShareEntity> {
+        NSFetchRequest<ShareEntity>(entityName: "ShareEntity")
     }
 
     @NSManaged var acceptanceSignature: String?
@@ -56,12 +56,12 @@ extension CDShare {
 }
 
 // MARK: Generated accessors for itemKeys
-extension CDShare {
+extension ShareEntity {
     @objc(addItemKeysObject:)
-    @NSManaged func addToItemKeys(_ value: CDItemKey)
+    @NSManaged func addToItemKeys(_ value: ItemKeyEntity)
 
     @objc(removeItemKeysObject:)
-    @NSManaged func removeFromItemKeys(_ value: CDItemKey)
+    @NSManaged func removeFromItemKeys(_ value: ItemKeyEntity)
 
     @objc(addItemKeys:)
     @NSManaged func addToItemKeys(_ values: NSSet)
@@ -71,12 +71,12 @@ extension CDShare {
 }
 
 // MARK: Generated accessors for vaultKeys
-extension CDShare {
+extension ShareEntity {
     @objc(addVaultKeysObject:)
-    @NSManaged func addToVaultKeys(_ value: CDVaultKey)
+    @NSManaged func addToVaultKeys(_ value: VaultKeyEntity)
 
     @objc(removeVaultKeysObject:)
-    @NSManaged func removeFromVaultKeys(_ value: CDVaultKey)
+    @NSManaged func removeFromVaultKeys(_ value: VaultKeyEntity)
 
     @objc(addVaultKeys:)
     @NSManaged func addToVaultKeys(_ values: NSSet)
@@ -85,7 +85,7 @@ extension CDShare {
     @NSManaged func removeFromVaultKeys(_ values: NSSet)
 }
 
-extension CDShare {
+extension ShareEntity {
     // swiftlint:disable:next cyclomatic_complexity
     func toShare() throws -> Share {
         guard let shareID = shareID else {
@@ -152,7 +152,7 @@ extension CDShare {
                      createTime: createTime)
     }
 
-    func copy(share: Share, userId: String) {
+    func hydrate(from share: Share, userId: String) {
         acceptanceSignature = share.acceptanceSignature
         content = share.content
         contentEncryptedAddressSignature = share.contentEncryptedAddressSignature
