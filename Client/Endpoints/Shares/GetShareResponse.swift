@@ -20,6 +20,11 @@
 
 import Foundation
 
+public struct GetShareResponse: Decodable {
+    let code: Int
+    let share: ShareResponse
+}
+
 struct ShareResponse: Decodable {
     /// ID of the share
     let shareID: String

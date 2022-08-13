@@ -24,9 +24,12 @@ import ProtonCore_Networking
 
 typealias Encryptor = ProtonCore_KeyManager.Encryptor
 
+/// For endpoints that have no body like GET ones
+public struct EmptyRequest: Encodable {}
+
 public protocol Endpoint: Request {
-    associatedtype Response: Decodable
     associatedtype Body: Encodable
+    associatedtype Response: Decodable
 
     var body: Body? { get }
     var queries: [String: Any]? { get }
