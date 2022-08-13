@@ -45,6 +45,11 @@ public struct CreateVaultEndpoint: Endpoint {
     }
 }
 
+public struct CreateVaultResponse: Decodable {
+    let code: Int
+    let share: Share
+}
+
 public struct CreateVaultEndpointV2: Endpoint {
     public typealias Body = CreateVaultRequest
     public typealias Response = CreateVaultResponse

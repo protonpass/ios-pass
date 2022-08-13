@@ -20,6 +20,11 @@
 
 import ProtonCore_Networking
 
+public struct GetShareResponse: Decodable {
+    let code: Int
+    let share: Share
+}
+
 public struct GetShareEndpoint: Endpoint {
     public typealias Body = EmptyRequest
     public typealias Response = GetShareResponse
