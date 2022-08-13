@@ -61,3 +61,9 @@ public extension Endpoint {
         return finalParams.isEmpty ? nil : finalParams
     }
 }
+
+extension Dictionary where Key == String, Value == Any {
+    static func paginationQuery(page: Int, pageSize: Int) -> Self {
+        ["Page": page, "PageSize": pageSize]
+    }
+}
