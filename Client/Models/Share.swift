@@ -77,6 +77,44 @@ public struct Share: Decodable {
 
     /// Time of creation of this share
     public let createTime: Int64
+
+    public init(shareID: String,
+                vaultID: String,
+                targetType: Int16,
+                targetID: String,
+                permission: Int16,
+                acceptanceSignature: String,
+                inviterEmail: String,
+                inviterAcceptanceSignature: String,
+                signingKey: String,
+                signingKeyPassphrase: String?,
+                content: String?,
+                contentRotationID: String,
+                contentEncryptedAddressSignature: String,
+                contentEncryptedVaultSignature: String,
+                contentSignatureEmail: String,
+                contentFormatVersion: Int16,
+                expireTime: Int64?,
+                createTime: Int64) {
+        self.shareID = shareID
+        self.vaultID = vaultID
+        self.targetType = targetType
+        self.targetID = targetID
+        self.permission = permission
+        self.acceptanceSignature = acceptanceSignature
+        self.inviterEmail = inviterEmail
+        self.inviterAcceptanceSignature = inviterAcceptanceSignature
+        self.signingKey = signingKey
+        self.signingKeyPassphrase = signingKeyPassphrase
+        self.content = content
+        self.contentRotationID = contentRotationID
+        self.contentEncryptedAddressSignature = contentEncryptedAddressSignature
+        self.contentEncryptedVaultSignature = contentEncryptedVaultSignature
+        self.contentSignatureEmail = contentSignatureEmail
+        self.contentFormatVersion = contentFormatVersion
+        self.expireTime = expireTime
+        self.createTime = createTime
+    }
 }
 
 public struct PartialShare: Decodable {
@@ -109,4 +147,26 @@ public struct PartialShare: Decodable {
 
     /// Time of creation of this share
     public let createTime: Int64
+
+    public init(shareID: String,
+                vaultID: String,
+                targetType: Int16,
+                targetID: String,
+                permission: Int16,
+                acceptanceSignature: String,
+                inviterEmail: String,
+                inviterAcceptanceSignature: String,
+                expireTime: Int64?,
+                createTime: Int64) {
+        self.shareID = shareID
+        self.vaultID = vaultID
+        self.targetType = targetType
+        self.targetID = targetID
+        self.permission = permission
+        self.acceptanceSignature = acceptanceSignature
+        self.inviterEmail = inviterEmail
+        self.inviterAcceptanceSignature = inviterAcceptanceSignature
+        self.expireTime = expireTime
+        self.createTime = createTime
+    }
 }

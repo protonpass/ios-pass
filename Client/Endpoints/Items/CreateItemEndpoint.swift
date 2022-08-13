@@ -21,24 +21,25 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public struct CreateItemEndpoint: Endpoint {
-    public typealias Body = CreateItemRequestBody
+public struct CreateItemResponse: Decodable {
+    let code: Int
+    let item: ItemRevision
+}
 
-    public struct Response: Decodable {
-        public let code: Int
-        public let item: Item
-    }
+public struct CreateItemEndpoint: Endpoint {
+    public typealias Body = CreateItemRequest
+    public typealias Response = CreateItemResponse
 
     public var path: String
     public var method: HTTPMethod { .post }
-    public var body: CreateItemRequestBody?
     public var authCredential: AuthCredential?
+    public var body: CreateItemRequest?
 
     public init(credential: AuthCredential,
                 shareId: String,
-                requestBody: CreateItemRequestBody) {
+                request: CreateItemRequest) {
         self.path = "/pass/v1/share/\(shareId)/item"
         self.authCredential = credential
-        self.body = requestBody
+        self.body = request
     }
 }

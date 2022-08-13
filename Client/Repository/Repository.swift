@@ -30,7 +30,7 @@ public protocol RepositoryProtocol {
                   shareId: String,
                   page: Int,
                   pageSize: Int) async throws -> Items
-    func createItem(shareId: String, requestBody: CreateItemRequestBody) async throws -> Item
+    func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision
 }
 
 public final class Repository {
@@ -145,10 +145,10 @@ Fetched \(remoteItems.revisionsData.count) items from remote and saved to local 
     }
 
     public func createItem(shareId: String,
-                           requestBody: CreateItemRequestBody) async throws -> Item {
+                           request: CreateItemRequest) async throws -> ItemRevision {
         let createdItem = try await remoteDatasource.createItem(shareId: shareId,
-                                                                requestBody: requestBody)
-        try await localDatasource.insertItems([createdItem], shareId: shareId)
+                                                                request: request)
+        try await localDatasource.insertItems([], shareId: shareId)
         return createdItem
     }
 }

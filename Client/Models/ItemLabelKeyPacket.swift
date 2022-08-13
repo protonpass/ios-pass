@@ -29,10 +29,4 @@ public struct ItemLabelKeyPacket: Encodable {
 
     /// Base64 encoded keypacket signature
     public let keyPacketSignature: String
-
-    public init(labelID: String, keyPacket: String, keyPacketSignature: String) {
-        self.labelID = labelID
-        self.keyPacket = keyPacket
-        self.keyPacketSignature = keyPacketSignature
-    }
 }

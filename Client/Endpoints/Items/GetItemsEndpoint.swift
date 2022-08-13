@@ -22,7 +22,7 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 public struct GetItemsEndpoint: Endpoint {
-    public typealias Body = CreateItemRequestBody
+    public typealias Body = EmptyRequest
 
     public struct Response: Decodable {
         public let code: Int
@@ -40,5 +40,28 @@ public struct GetItemsEndpoint: Endpoint {
         self.path = "/pass/v1/share/\(shareId)/item"
         self.authCredential = credential
         self.queries = ["Page": page, "PageSize": pageSize]
+    }
+}
+
+public struct GetItemsResponse: Decodable {
+    let code: Int
+    let items: ItemRevisionList
+}
+
+public struct GetItemsEndpointV2: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = GetItemsResponse
+
+    public var path: String
+    public var authCredential: AuthCredential?
+    public var queries: [String: Any]?
+
+    public init(credential: AuthCredential,
+                shareId: String,
+                page: Int,
+                pageSize: Int) {
+        self.path = "/pass/v1/share/\(shareId)/item"
+        self.authCredential = credential
+        self.queries = .paginationQuery(page: page, pageSize: page)
     }
 }

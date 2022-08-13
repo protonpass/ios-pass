@@ -22,7 +22,7 @@ import Foundation
 
 public struct ItemRevisionList: Decodable {
     let total: Int
-    let itemRevisions: [ItemRevision]
+    let revisionsData: [ItemRevision]
 }
 
 public struct ItemRevision: Decodable {

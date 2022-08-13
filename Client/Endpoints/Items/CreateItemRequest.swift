@@ -1,6 +1,6 @@
 //
-// CreateItemRequestBody.swift
-// Proton Pass - Created on 09/08/2022.
+// CreateItemRequest.swift
+// Proton Pass - Created on 13/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,9 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-
-public struct CreateItemRequestBody: Encodable {
+public struct CreateItemRequest: Encodable {
     /// Encrypted ID of the VaultKey used to create this item
     public let rotationID: String
 
@@ -68,7 +66,7 @@ public struct CreateItemRequestBody: Encodable {
     public init(vaultKey: VaultKey,
                 itemKey: ItemKey,
                 addressKey: AddressKey,
-                itemContent: ProtobufableItemContentProtocol) throws {
+                itemData: Data) throws {
         self.init(rotationID: .random(),
                   labels: [],
                   vaultKeyPacket: .random(),

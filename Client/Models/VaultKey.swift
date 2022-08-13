@@ -37,4 +37,18 @@ public struct VaultKey: Decodable {
 
     /// Creation time of the key
     public let createTime: Int64
+
+    public init(rotationID: String,
+                rotation: Int64,
+                key: String,
+                keyPassphrase: String,
+                keySignature: String,
+                createTime: Int64) {
+        self.rotationID = rotationID
+        self.rotation = rotation
+        self.key = key
+        self.keyPassphrase = keyPassphrase
+        self.keySignature = keySignature
+        self.createTime = createTime
+    }
 }
