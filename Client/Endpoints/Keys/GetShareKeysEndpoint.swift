@@ -43,8 +43,13 @@ public struct GetShareKeysEndpoint: Endpoint {
     }
 }
 
+public struct GetShareKeysResponse: Decodable {
+    let code: Int
+    let keys: ShareKeys
+}
+
 public struct GetShareKeysEndpointV2: Endpoint {
-    public typealias Body = DummyEncodable
+    public typealias Body = EmptyRequest
     public typealias Response = GetShareKeysResponse
 
     public var authCredential: AuthCredential?
@@ -59,6 +64,6 @@ public struct GetShareKeysEndpointV2: Endpoint {
         self.authCredential = credential
         self.path = "/pass/v1/share/\(shareId)/key/vault"
         self.method = .get
-        self.queries = ["Page": page, "PageSize": pageSize]
+        self.queries = .paginationQuery(page: page, pageSize: pageSize)
     }
 }

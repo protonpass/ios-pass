@@ -1,5 +1,5 @@
 //
-// GetShareKeysResponse.swift
+// ShareKeys.swift
 // Proton Pass - Created on 13/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,14 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-
-public struct GetShareKeysResponse: Decodable {
-    let code: Int
-    let keys: ShareKeysResponse
-}
-
-public struct ShareKeysResponse: Decodable {
+public struct ShareKeys: Decodable {
     public let vaultKeys: [VaultKey]
     public let itemKeys: [ItemKey]
     public let total: Int
@@ -36,5 +29,7 @@ public struct ShareKeysResponse: Decodable {
         self.total = total
     }
 
-    public var isEmpty: Bool { vaultKeys.isEmpty || itemKeys.isEmpty }
+    public var isEmpty: Bool {
+        total == 0 || vaultKeys.isEmpty || itemKeys.isEmpty
+    }
 }
