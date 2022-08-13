@@ -42,7 +42,7 @@
 		3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B8882883614D009C9A68 /* DummyApiService.swift */; };
 		3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */; };
 		3542F0262899431D004007C7 /* CoreDataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F0252899431D004007C7 /* CoreDataModelTests.swift */; };
-		3542F02828996C70004007C7 /* LocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F02728996C70004007C7 /* LocalDatasource.swift */; };
+		3542F02828996C70004007C7 /* LocalDatasourceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F02728996C70004007C7 /* LocalDatasourceV1.swift */; };
 		3545BCF728A3BA3200DFE5CF /* CDItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545BCF528A3BA3200DFE5CF /* CDItem.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
@@ -115,6 +115,7 @@
 		358BD36F287D539F00802A91 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		358BD374287D565900802A91 /* DummyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD373287D565900802A91 /* DummyTests.swift */; };
 		358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */; };
+		3593DCE728A790F800C235D3 /* LocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCE628A790F800C235D3 /* LocalDatasource.swift */; };
 		35A909E4289006F700AC54D4 /* CDShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909DE289006F600AC54D4 /* CDShare.swift */; };
 		35A909E7289006F700AC54D4 /* CDItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E1289006F700AC54D4 /* CDItemKey.swift */; };
 		35A909E8289006F700AC54D4 /* CDVaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E2289006F700AC54D4 /* CDVaultKey.swift */; };
@@ -314,7 +315,7 @@
 		3542B8882883614D009C9A68 /* DummyApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyApiService.swift; sourceTree = "<group>"; };
 		3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthCredential+Preview.swift"; sourceTree = "<group>"; };
 		3542F0252899431D004007C7 /* CoreDataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModelTests.swift; sourceTree = "<group>"; };
-		3542F02728996C70004007C7 /* LocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatasource.swift; sourceTree = "<group>"; };
+		3542F02728996C70004007C7 /* LocalDatasourceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatasourceV1.swift; sourceTree = "<group>"; };
 		3545BCF528A3BA3200DFE5CF /* CDItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDItem.swift; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
@@ -383,6 +384,7 @@
 		358BD36A287D52AC00802A91 /* vault_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vault_v1.pb.swift; sourceTree = "<group>"; };
 		358BD373287D565900802A91 /* DummyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyTests.swift; sourceTree = "<group>"; };
 		358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+ExecEndpoint.swift"; sourceTree = "<group>"; };
+		3593DCE628A790F800C235D3 /* LocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatasource.swift; sourceTree = "<group>"; };
 		35A909DE289006F600AC54D4 /* CDShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDShare.swift; sourceTree = "<group>"; };
 		35A909E1289006F700AC54D4 /* CDItemKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDItemKey.swift; sourceTree = "<group>"; };
 		35A909E2289006F700AC54D4 /* CDVaultKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDVaultKey.swift; sourceTree = "<group>"; };
@@ -551,7 +553,8 @@
 			isa = PBXGroup;
 			children = (
 				35004A3D289004200073C4A7 /* CoreData */,
-				3542F02728996C70004007C7 /* LocalDatasource.swift */,
+				3593DCE528A790DF00C235D3 /* LocalDatasource */,
+				3542F02728996C70004007C7 /* LocalDatasourceV1.swift */,
 				3547696B289D253600581E2E /* RemoteDatasource.swift */,
 				3547696D289D349C00581E2E /* Repository.swift */,
 			);
@@ -615,7 +618,8 @@
 		3542F024289942FF004007C7 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
-				3542F0252899431D004007C7 /* CoreDataModelTests.swift */,
+				3593DCE828A7969A00C235D3 /* CoreData */,
+				3593DCE928A796A300C235D3 /* LocalDatasource */,
 				353C95DE289A9E1900E3CDCA /* LocalDatasourceTests.swift */,
 				35366A9F28A4468D0085C24D /* LocalDatasourceTests+CDItem.swift */,
 				351E9E36289C504100BB47EB /* LocalDatasourceTests+CDItemKey.swift */,
@@ -766,6 +770,29 @@
 			);
 			path = "Protobuf Objects";
 			sourceTree = SOURCE_ROOT;
+		};
+		3593DCE528A790DF00C235D3 /* LocalDatasource */ = {
+			isa = PBXGroup;
+			children = (
+				3593DCE628A790F800C235D3 /* LocalDatasource.swift */,
+			);
+			path = LocalDatasource;
+			sourceTree = "<group>";
+		};
+		3593DCE828A7969A00C235D3 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				3542F0252899431D004007C7 /* CoreDataModelTests.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		3593DCE928A796A300C235D3 /* LocalDatasource */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = LocalDatasource;
+			sourceTree = "<group>";
 		};
 		35E5062E286F819F00A3F6EA = {
 			isa = PBXGroup;
@@ -1688,7 +1715,7 @@
 				350A97CC28859D1800A7168B /* AddressKey.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProtocol.swift in Sources */,
 				358AB49D2887029400818B44 /* ShareKey.swift in Sources */,
-				3542F02828996C70004007C7 /* LocalDatasource.swift in Sources */,
+				3542F02828996C70004007C7 /* LocalDatasourceV1.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
 				3547696E289D349C00581E2E /* Repository.swift in Sources */,
 				350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */,
@@ -1712,6 +1739,7 @@
 				358BD35B287D4D0A00802A91 /* CreateVaultRequestBody.swift in Sources */,
 				35A909E4289006F700AC54D4 /* CDShare.swift in Sources */,
 				35A909EA2890110F00AC54D4 /* CoreDataError.swift in Sources */,
+				3593DCE728A790F800C235D3 /* LocalDatasource.swift in Sources */,
 				35A909E8289006F700AC54D4 /* CDVaultKey.swift in Sources */,
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
 				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,

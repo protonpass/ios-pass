@@ -30,10 +30,6 @@ public protocol LocalDatasourceProtocol {
     func fetchItems(shareId: String, page: Int, pageSize: Int) async throws -> Items
 }
 
-public enum LocalDatasourceError: Error {
-    case batchInsertError
-}
-
 public final class LocalDatasource {
     let container: NSPersistentContainer
 
@@ -83,7 +79,7 @@ extension LocalDatasource {
                        let success = batchInsertResult.result as? Bool, success {
                         continuation.resume()
                     } else {
-                        continuation.resume(throwing: LocalDatasourceError.batchInsertError)
+                        continuation.resume(throwing: LocalDatasourceError.batchInsertError(batchInsertRequest))
                     }
                 } catch {
                     continuation.resume(throwing: error)
@@ -285,19 +281,5 @@ extension LocalDatasource: LocalDatasourceProtocol {
         let fetchRequest = CDItem.fetchRequest()
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         return try await count(for: fetchRequest, withContext: taskContext)
-    }
-}
-
-extension NSManagedObject {
-    /*
-     Such helper function is due to a very strange 🐛 that makes
-     unit tests failed out of the blue because `CoreDataEntityName.entity()`
-     failed to return a non-null NSEntityDescription.
-     `CoreDataEntityName.entity()` used to work for a while until
-     it stops working on some machines. Not a reproducible 🐛
-     */
-    class func entity(context: NSManagedObjectContext) -> NSEntityDescription {
-        // swiftlint:disable:next force_unwrapping
-        .entity(forEntityName: "\(Self.self)", in: context)!
     }
 }

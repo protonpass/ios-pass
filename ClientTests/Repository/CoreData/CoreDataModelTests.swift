@@ -23,11 +23,12 @@ import CoreData
 import XCTest
 
 final class CoreDataModelTests: XCTestCase {
-    var localDatasource: LocalDatasource!
+    var localDatasource: LocalDatasourceV2!
 
     override func setUp() {
         super.setUp()
-        localDatasource = LocalDatasource(inMemory: true)
+        let container = PassPersistentContainerBuilder.build(inMemory: true)
+        localDatasource = LocalDatasourceV2(container: container)
     }
 
     override func tearDown() {
