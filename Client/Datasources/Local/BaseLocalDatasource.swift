@@ -1,5 +1,5 @@
 //
-// LocalDatasource.swift
+// BaseLocalDatasource.swift
 // Proton Pass - Created on 13/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,54 +20,42 @@
 
 import CoreData
 
-private let kPassContainerName = "Pass"
+public let kProtonPassContainerName = "ProtonPass"
 
 public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
     case batchInsertError(NSBatchInsertRequest)
+    case batchDeleteError(NSBatchDeleteRequest)
 
     public var debugDescription: String {
         switch self {
         case .batchInsertError(let request):
-            return "Failed to batch insert for entity \(request.entityName)"
+            return "Failed to batch insert entity \(request.entityName)"
+        case .batchDeleteError(let request):
+            let entityName = request.fetchRequest.entityName ?? ""
+            return "Failed to batch delete entity \(entityName)"
         }
     }
 }
 
-public enum PassPersistentContainerBuilder {
-    public static func build(inMemory: Bool) -> NSPersistentContainer {
-        let container = NSPersistentContainer(name: kPassContainerName)
-        if inMemory {
-            let description = NSPersistentStoreDescription()
-            description.url = URL(fileURLWithPath: "/dev/null")
-            container.persistentStoreDescriptions = [description]
-        }
-        container.loadPersistentStores { _, error in
-            if let error = error {
-                fatalError("Unresolved error \(error.localizedDescription)")
-            }
-        }
-        return container
-    }
-}
-
-public class LocalDatasourceV2 {
+public class BaseLocalDatasource {
     let container: NSPersistentContainer
 
     public init(container: NSPersistentContainer) {
-        guard container.name == kPassContainerName else {
+        guard container.name == kProtonPassContainerName else {
             fatalError("Unsupported container name \(container.name)")
         }
         self.container = container
     }
 
-    private enum TaskContextType: String {
+    enum TaskContextType: String {
         case insert = "insertContext"
+        case delete = "deleteContext"
         case fetch = "fetchContext"
     }
 
     /// Creates and configures a private queue context.
-    private func newTaskContext(type: TaskContextType,
-                                transactionAuthor: String) -> NSManagedObjectContext {
+    func newTaskContext(type: TaskContextType,
+                        transactionAuthor: String = #function) -> NSManagedObjectContext {
         let taskContext = container.newBackgroundContext()
         taskContext.name = type.rawValue
         taskContext.transactionAuthor = transactionAuthor
@@ -77,12 +65,28 @@ public class LocalDatasourceV2 {
         taskContext.undoManager = nil
         return taskContext
     }
+
+    func newBatchInsertRequest<T>(entity: NSEntityDescription,
+                                  sourceItems: [T],
+                                  hydrateBlock: @escaping (NSManagedObject, T) -> Void)
+    -> NSBatchInsertRequest {
+        var index = 0
+        let request = NSBatchInsertRequest(entity: entity,
+                                           managedObjectHandler: { object in
+            guard index < sourceItems.count else { return true }
+            let item = sourceItems[index]
+            hydrateBlock(object, item)
+            index += 1
+            return false
+        })
+        return request
+    }
 }
 
 // MARK: - Covenience core data methods
-extension LocalDatasourceV2 {
-    private func execute(batchInsertRequest request: NSBatchInsertRequest,
-                         context: NSManagedObjectContext) async throws {
+extension BaseLocalDatasource {
+    func execute(batchInsertRequest request: NSBatchInsertRequest,
+                 context: NSManagedObjectContext) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
             context.performAndWait {
                 do {
@@ -100,8 +104,28 @@ extension LocalDatasourceV2 {
         }
     }
 
-    private func execute<T>(fetchRequest request: NSFetchRequest<T>,
-                            context: NSManagedObjectContext) async throws -> [T] {
+    func execute(batchDeleteRequest request: NSBatchDeleteRequest,
+                 context: NSManagedObjectContext) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
+            context.performAndWait {
+                do {
+                    request.resultType = .resultTypeStatusOnly
+                    let deleteResult = try context.execute(request)
+                    if let result = deleteResult as? NSBatchDeleteResult,
+                       let success = result.result as? Bool, success {
+                        continuation.resume()
+                    } else {
+                        continuation.resume(throwing: LocalDatasourceError.batchDeleteError(request))
+                    }
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    func execute<T>(fetchRequest request: NSFetchRequest<T>,
+                    context: NSManagedObjectContext) async throws -> [T] {
         try await withCheckedThrowingContinuation { continuation in
             context.performAndWait {
                 do {
@@ -114,8 +138,8 @@ extension LocalDatasourceV2 {
         }
     }
 
-    private func count<T>(fetchRequest request: NSFetchRequest<T>,
-                          context: NSManagedObjectContext) async throws -> Int {
+    func count<T>(fetchRequest request: NSFetchRequest<T>,
+                  context: NSManagedObjectContext) async throws -> Int {
         try await withCheckedThrowingContinuation { continuation in
             context.performAndWait {
                 do {

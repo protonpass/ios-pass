@@ -27,7 +27,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        container = .Builder.build(name: "ProtonPass", inMemory: true)
+        container = .Builder.build(name: kProtonPassContainerName, inMemory: true)
     }
 
     override func tearDown() {

@@ -41,7 +41,7 @@
         <attribute name="content" optional="YES" attributeType="String"/>
         <attribute name="contentEncryptedAddressSignature" attributeType="String"/>
         <attribute name="contentEncryptedVaultSignature" attributeType="String"/>
-        <attribute name="contentFormatVersion" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="contentFormatVersion" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="contentRotationID" attributeType="String"/>
         <attribute name="contentSignatureEmail" attributeType="String"/>
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
