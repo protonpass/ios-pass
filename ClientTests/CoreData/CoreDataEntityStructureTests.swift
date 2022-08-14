@@ -105,8 +105,8 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
     }
 
-    func testItemDataEntity() {
-        let sut = entity(byName: "ItemEntity")
+    func testItemRevisionEntity() {
+        let sut = entity(byName: "ItemRevisionEntity")
         verifyAttribute(named: "aliasEmail", on: sut, hasType: .string)
         verifyAttribute(named: "content", on: sut, hasType: .string)
         verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer16)

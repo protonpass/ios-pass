@@ -36,7 +36,7 @@ final class LocalShareDatasourceTests: XCTestCase {
         super.tearDown()
     }
 
-    func assertEqual(lhs: Share, rhs: Share) {
+    func assertEqual(_ lhs: Share, _ rhs: Share) {
         // Skip Int16 assertions because they make the tests very flaky
         // Sometime the value is not updated and is always 0
         // Not sure if this only happens to in-memory containers or not
@@ -110,7 +110,7 @@ extension LocalShareDatasourceTests {
                                                shareId: givenInsertedShare.shareID)
             XCTAssertNotNil(share)
             let nonNilShare = try XCTUnwrap(share)
-            assertEqual(lhs: nonNilShare, rhs: givenInsertedShare)
+            assertEqual(nonNilShare, givenInsertedShare)
             expectation.fulfill()
         }
         waitForExpectations(timeout: expectationTimeOut)
@@ -163,7 +163,7 @@ extension LocalShareDatasourceTests {
             XCTAssertEqual(shares.count, 1)
 
             let share = try XCTUnwrap(shares.first)
-            assertEqual(lhs: share, rhs: updatedShare)
+            assertEqual(share, updatedShare)
 
             expectation.fulfill()
         }

@@ -1,5 +1,5 @@
 //
-// Item+Test.swift
+// ItemRevision+Test.swift
 // Proton Pass - Created on 10/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,6 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+
+extension ItemRevision {
+    static func random(itemId: String? = nil) -> ItemRevision {
+        .init(itemID: itemId ?? .random(),
+              revision: .random(in: 0...100),
+              contentFormatVersion: .random(in: 0...100),
+              rotationID: .random(),
+              content: .random(),
+              userSignature: .random(),
+              itemKeySignature: .random(),
+              state: .random(in: 0...100),
+              signatureEmail: .random(),
+              aliasEmail: .random(),
+              createTime: .random(in: 0...1_000_000),
+              modifyTime: .random(in: 0...1_000_000))
+    }
+}
 
 extension Item {
     static func random(itemId: String? = nil) -> Item {

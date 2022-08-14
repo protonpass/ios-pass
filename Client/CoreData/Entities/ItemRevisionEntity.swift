@@ -1,5 +1,5 @@
 //
-// ItemEntity.swift
+// ItemRevisionEntity.swift
 // Proton Pass - Created on 10/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,15 +21,15 @@
 import CoreData
 import Foundation
 
-@objc(ItemEntity)
-public class ItemEntity: NSManagedObject {}
+@objc(ItemRevisionEntity)
+public class ItemRevisionEntity: NSManagedObject {}
 
-extension ItemEntity: Identifiable {}
+extension ItemRevisionEntity: Identifiable {}
 
-extension ItemEntity {
+extension ItemRevisionEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<ItemEntity> {
-        NSFetchRequest<ItemEntity>(entityName: "ItemEntity")
+    public class func fetchRequest() -> NSFetchRequest<ItemRevisionEntity> {
+        NSFetchRequest<ItemRevisionEntity>(entityName: "ItemRevisionEntity")
     }
 
     @NSManaged var aliasEmail: String?
@@ -47,7 +47,7 @@ extension ItemEntity {
     @NSManaged var userSignature: String?
 }
 
-extension ItemEntity {
+extension ItemRevisionEntity {
     func toItemRevision() throws -> ItemRevision {
         guard let itemID = itemID else {
             throw CoreDataError.corrupted(object: self, property: "itemID")
