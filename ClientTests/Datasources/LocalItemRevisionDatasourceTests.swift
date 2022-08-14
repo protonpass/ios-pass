@@ -128,6 +128,147 @@ extension LocalItemRevisionDatasourceTests {
         }
         waitForExpectations(timeout: expectationTimeOut)
     }
+
+    func testInsertItemRevisions() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let firstItemRevisions = [ItemRevision].random(randomElement: .random())
+            let secondItemRevisions = [ItemRevision].random(randomElement: .random())
+            let thirdItemRevisions = [ItemRevision].random(randomElement: .random())
+            let givenItemsRevisions = firstItemRevisions + secondItemRevisions + thirdItemRevisions
+            let givenShareId = String.random()
+
+            // When
+            try await sut.upsertItemRevisions(firstItemRevisions, shareId: givenShareId)
+            try await sut.upsertItemRevisions(secondItemRevisions, shareId: givenShareId)
+            try await sut.upsertItemRevisions(thirdItemRevisions, shareId: givenShareId)
+
+            // Then
+            let itemRevisionList = try await sut.getItemRevisions(shareId: givenShareId,
+                                                                  page: 0,
+                                                                  pageSize: .max)
+            XCTAssertEqual(itemRevisionList.total, givenItemsRevisions.count)
+
+            let itemRevisionIds = Set(itemRevisionList.revisionsData.map { $0.itemID })
+            let givenItemRevisionIds = Set(givenItemsRevisions.map { $0.itemID })
+            XCTAssertEqual(itemRevisionIds, givenItemRevisionIds)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
+
+    func testUpdateItemRevisions() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let givenItemId = String.random()
+            let givenShareId = String.random()
+            let insertedItemRevision =
+            try await sut.givenInsertedItemRevision(itemId: givenItemId,
+                                                    shareId: givenShareId)
+            let updatedItemRevison = ItemRevision.random(itemId: insertedItemRevision.itemID)
+
+            // When
+            try await sut.upsertItemRevisions([updatedItemRevison], shareId: givenShareId)
+
+            // Then
+            let itemRevisions = try await sut.getItemRevisions(shareId: givenShareId,
+                                                               page: 0,
+                                                               pageSize: .max)
+            XCTAssertEqual(itemRevisions.total, 1)
+
+            let itemRevision = try XCTUnwrap(itemRevisions.revisionsData.first)
+            assertEqual(itemRevision, updatedItemRevison)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
+
+    func testCountItemRevisions() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let givenItemRevisions = [ItemRevision].random(randomElement: .random())
+            let givenShareId = String.random()
+
+            // When
+            try await sut.upsertItemRevisions(givenItemRevisions, shareId: givenShareId)
+            // Insert arbitrary item revisions
+            for _ in 0...10 {
+                let dummyItemRevisions = [ItemRevision].random(randomElement: .random())
+                try await sut.upsertItemRevisions(dummyItemRevisions, shareId: .random())
+            }
+
+            // Then
+            let count = try await sut.getItemRevisionCount(shareId: givenShareId)
+            XCTAssertEqual(count, givenItemRevisions.count)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
+
+    func testRemoveAllRevisions() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let givenFirstShareId = String.random()
+            let givenFirstShareItemRevisions =
+            [ItemRevision].random(randomElement: .random())
+
+            let givenSecondShareId = String.random()
+            let givenSecondShareItemRevisions =
+            [ItemRevision].random(randomElement: .random())
+
+            // When
+            try await sut.upsertItemRevisions(givenFirstShareItemRevisions,
+                                              shareId: givenFirstShareId)
+            try await sut.upsertItemRevisions(givenSecondShareItemRevisions,
+                                              shareId: givenSecondShareId)
+
+            // Then
+            let firstShareItemRevisionsFirstGet =
+            try await sut.getItemRevisions(shareId: givenFirstShareId,
+                                           page: 0,
+                                           pageSize: .max)
+            XCTAssertEqual(firstShareItemRevisionsFirstGet.total,
+                           givenFirstShareItemRevisions.count)
+
+            let secondShareItemRevisionsFirstGet =
+            try await sut.getItemRevisions(shareId: givenSecondShareId,
+                                           page: 0,
+                                           pageSize: .max)
+            XCTAssertEqual(secondShareItemRevisionsFirstGet.total,
+                           givenSecondShareItemRevisions.count)
+
+            // When
+            try await sut.removeAllItemRevisions(shareId: givenFirstShareId)
+
+            // Then
+            let firstShareItemRevisionsSecondGet =
+            try await sut.getItemRevisions(shareId: givenFirstShareId,
+                                           page: 0,
+                                           pageSize: .max)
+            XCTAssertTrue(firstShareItemRevisionsSecondGet.revisionsData.isEmpty)
+            XCTAssertEqual(firstShareItemRevisionsSecondGet.total, 0)
+
+            let secondShareItemRevisionsSecondGet =
+            try await sut.getItemRevisions(shareId: givenSecondShareId,
+                                           page: 0,
+                                           pageSize: .max)
+            XCTAssertEqual(secondShareItemRevisionsSecondGet.revisionsData.count,
+                           givenSecondShareItemRevisions.count)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
 }
 
 extension LocalItemRevisionDatasource {
