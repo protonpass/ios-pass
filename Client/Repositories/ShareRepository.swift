@@ -34,7 +34,7 @@ public extension ShareRepositoryProtocol {
     func getShares(forceRefresh: Bool = false) async throws -> [Share] {
         PPLogger.shared?.log("Getting shares")
         if forceRefresh {
-            PPLogger.shared?.log("Force refresh getting shares")
+            PPLogger.shared?.log("Force refresh shares")
             return try await getSharesFromRemoteAndSaveToLocal()
         }
 
@@ -57,16 +57,19 @@ public extension ShareRepositoryProtocol {
     }
 
     func createVault(request: CreateVaultRequest) async throws -> Share {
+        PPLogger.shared?.log("Creating vault")
         let createdVault = try await remoteShareDatasouce.createVault(request: request)
+        PPLogger.shared?.log("Saving newly create vault to local")
         try await localShareDatasource.upsertShares([createdVault], userId: userId)
+        PPLogger.shared?.log("Vault creation finished with success")
         return createdVault
     }
 }
 
-final class ShareRepository: ShareRepositoryProtocol {
-    let userId: String
-    let localShareDatasource: LocalShareDatasourceProtocol
-    let remoteShareDatasouce: RemoteShareDatasourceProtocol
+public struct ShareRepository: ShareRepositoryProtocol {
+    public let userId: String
+    public let localShareDatasource: LocalShareDatasourceProtocol
+    public let remoteShareDatasouce: RemoteShareDatasourceProtocol
 
     init(userId: String,
          localShareDatasource: LocalShareDatasourceProtocol,

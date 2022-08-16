@@ -105,6 +105,7 @@
 		35610B8228ABCC3000955ACB /* RemoteShareKeysDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B8128ABCC3000955ACB /* RemoteShareKeysDatasource.swift */; };
 		35610B8428ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */; };
 		35610B8928ABCF1900955ACB /* ShareRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B8828ABCF1900955ACB /* ShareRepository.swift */; };
+		35610B8D28ABD8B200955ACB /* ItemRevisionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B8C28ABD8B200955ACB /* ItemRevisionRepository.swift */; };
 		356B21D72870F8F1001220CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D62870F8F1001220CB /* Constants.swift */; };
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
@@ -401,6 +402,7 @@
 		35610B8128ABCC3000955ACB /* RemoteShareKeysDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareKeysDatasource.swift; sourceTree = "<group>"; };
 		35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteItemRevisionDatasource.swift; sourceTree = "<group>"; };
 		35610B8828ABCF1900955ACB /* ShareRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRepository.swift; sourceTree = "<group>"; };
+		35610B8C28ABD8B200955ACB /* ItemRevisionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRevisionRepository.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B21D62870F8F1001220CB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
@@ -776,6 +778,7 @@
 		35610B8528ABCE1900955ACB /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				35610B8C28ABD8B200955ACB /* ItemRevisionRepository.swift */,
 				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
 			);
 			path = Repositories;
@@ -1849,6 +1852,7 @@
 				3547696C289D253600581E2E /* RemoteDatasource.swift in Sources */,
 				35610B7A28ABC07B00955ACB /* LocalShareKeysDatasource.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
+				35610B8D28ABD8B200955ACB /* ItemRevisionRepository.swift in Sources */,
 				355E803428A2FA0500BE7C9B /* Item.swift in Sources */,
 				358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */,
 				35A909E7289006F700AC54D4 /* CDItemKey.swift in Sources */,
