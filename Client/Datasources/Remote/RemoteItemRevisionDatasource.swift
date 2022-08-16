@@ -24,6 +24,7 @@ public protocol RemoteItemRevisionDatasourceProtocol {
     func getItemRevisions(shareId: String,
                           page: Int,
                           pageSize: Int) async throws -> ItemRevisionList
+    func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision
 }
 
 public final class RemoteItemRevisionDatasource: BaseRemoteDatasource {}
@@ -38,5 +39,14 @@ extension RemoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol {
                                           pageSize: pageSize)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.items
+    }
+
+    public func createItem(shareId: String,
+                           request: CreateItemRequest) async throws -> ItemRevision {
+        let endpoint = CreateItemEndpoint(credential: authCredential,
+                                          shareId: shareId,
+                                          request: request)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.item
     }
 }

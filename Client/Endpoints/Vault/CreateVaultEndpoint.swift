@@ -60,14 +60,10 @@ public struct CreateVaultEndpointV2: Endpoint {
     public var authCredential: AuthCredential?
 
     public init(credential: AuthCredential,
-                addressKey: AddressKey,
-                name: String,
-                note: String) throws {
+                request: CreateVaultRequest) {
         self.authCredential = credential
         self.path = "/pass/v1/vault"
         self.method = .post
-        let vault = VaultProtobuf(name: name, note: note)
-        let vaultData = try vault.data()
-        self.body = try CreateVaultRequest(addressKey: addressKey, vaultData: vaultData)
+        self.body = request
     }
 }

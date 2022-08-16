@@ -22,6 +22,7 @@ import Foundation
 
 public protocol RemoteShareDatasourceProtocol {
     func getShares() async throws -> [Share]
+    func createVault(request: CreateVaultRequest) async throws -> Share
 }
 
 public final class RemoteShareDatasource: BaseRemoteDatasource {}
@@ -51,5 +52,12 @@ extension RemoteShareDatasource: RemoteShareDatasourceProtocol {
         }
 
         return shares
+    }
+
+    public func createVault(request: CreateVaultRequest) async throws -> Share {
+        let endpoint = CreateVaultEndpointV2(credential: authCredential,
+                                             request: request)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.share
     }
 }
