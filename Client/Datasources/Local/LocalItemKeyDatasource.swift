@@ -53,8 +53,9 @@ extension LocalItemKeyDatasource: LocalItemKeyDatasourceProtocol {
         let fetchRequest = itemKeyEntityFetchRequest(shareId: shareId)
         fetchRequest.fetchLimit = pageSize
         fetchRequest.fetchOffset = page * pageSize
-        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try itemEntities.map { try $0.toItemKey() }
+        let itemKeyEntities = try await execute(fetchRequest: fetchRequest,
+                                                context: taskContext)
+        return try itemKeyEntities.map { try $0.toItemKey() }
     }
 
     public func getItemKeyCount(shareId: String) async throws -> Int {

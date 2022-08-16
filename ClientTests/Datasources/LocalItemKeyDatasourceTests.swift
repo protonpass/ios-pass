@@ -150,7 +150,7 @@ extension LocalItemKeyDatasourceTests {
             let firstItemKeys = [ItemKey].random(randomElement: .random())
             let secondItemKeys = [ItemKey].random(randomElement: .random())
             let thirdItemKeys = [ItemKey].random(randomElement: .random())
-            let givenItemsKeys = firstItemKeys + secondItemKeys + thirdItemKeys
+            let givenItemKeys = firstItemKeys + secondItemKeys + thirdItemKeys
             let givenShareId = String.random()
 
             // When
@@ -162,10 +162,10 @@ extension LocalItemKeyDatasourceTests {
             let itemKeys = try await sut.getItemKeys(shareId: givenShareId,
                                                      page: 0,
                                                      pageSize: .max)
-            XCTAssertEqual(itemKeys.count, givenItemsKeys.count)
+            XCTAssertEqual(itemKeys.count, givenItemKeys.count)
 
             let rotationIds = Set(itemKeys.map { $0.rotationID })
-            let givenRotationIds = Set(givenItemsKeys.map { $0.rotationID })
+            let givenRotationIds = Set(givenItemKeys.map { $0.rotationID })
             XCTAssertEqual(rotationIds, givenRotationIds)
 
             expectation.fulfill()
