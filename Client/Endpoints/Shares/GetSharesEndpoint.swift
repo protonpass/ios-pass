@@ -27,7 +27,7 @@ public struct GetSharesResponse: Decodable {
 }
 
 public struct GetSharesEndpoint: Endpoint {
-    public typealias Body = DummyEncodable
+    public typealias Body = EmptyRequest
     public typealias Response = GetSharesResponse
 
     public var authCredential: AuthCredential?

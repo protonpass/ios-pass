@@ -21,34 +21,12 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public struct GetShareKeysEndpoint: Endpoint {
-    public typealias Body = DummyEncodable
-    public struct Response: Decodable {
-        public let code: Int
-        public let keys: ShareKey
-    }
-
-    public var path: String
-    public var method: HTTPMethod { .get }
-    public var authCredential: AuthCredential?
-    public var queries: [String: Any]?
-
-    public init(credential: AuthCredential,
-                shareId: String,
-                page: Int,
-                pageSize: Int) {
-        self.path = "/pass/v1/share/\(shareId)/key/vault"
-        self.queries = ["Page": page, "PageSize": pageSize]
-        self.authCredential = credential
-    }
-}
-
 public struct GetShareKeysResponse: Decodable {
     let code: Int
     let keys: ShareKeys
 }
 
-public struct GetShareKeysEndpointV2: Endpoint {
+public struct GetShareKeysEndpoint: Endpoint {
     public typealias Body = EmptyRequest
     public typealias Response = GetShareKeysResponse
 

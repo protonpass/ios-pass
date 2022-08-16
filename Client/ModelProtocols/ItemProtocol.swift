@@ -37,7 +37,7 @@ public enum DataError: Error {
     case keyNotFound
 }
 
-extension Item: ItemProtocol {
+extension ItemRevision: ItemProtocol {
     public func getPartialContent(userData: UserData,
                                   share: Share,
                                   vaultKeys: [VaultKey],

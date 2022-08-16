@@ -28,7 +28,7 @@ import SwiftUI
 protocol CreateVaultViewModelDelegate: AnyObject {
     func createVaultViewModelBeginsLoading()
     func createVaultViewModelStopsLoading()
-    func createVaultViewModelDidCreateShare(share: PartialShare)
+    func createVaultViewModelDidCreateShare(share: Share)
     func createVaultViewModelDidFailWithError(error: Error)
 }
 
@@ -37,18 +37,19 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
 
     @Published private(set) var isLoading = false
     @Published private(set) var error: Error?
-    @Published private var createdShare: PartialShare?
     @Published var name = ""
     @Published var note = ""
 
     private let userData: UserData
-    private let apiService: APIService
+    private let shareRepository: ShareRepositoryProtocol
+
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: CreateVaultViewModelDelegate?
 
-    init(userData: UserData, apiService: APIService) {
+    init(userData: UserData,
+         shareRepository: ShareRepositoryProtocol) {
         self.userData = userData
-        self.apiService = apiService
+        self.shareRepository = shareRepository
 
         $isLoading
             .sink { [weak self] isLoading in
@@ -69,38 +70,25 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
                 }
             }
             .store(in: &cancellables)
-
-        $createdShare
-            .sink { [weak self] createdShare in
-                guard let self = self else { return }
-                if let createdShare = createdShare {
-                    self.delegate?.createVaultViewModelDidCreateShare(share: createdShare)
-                }
-            }
-            .store(in: &cancellables)
     }
 
     func createVault() {
         Task { @MainActor in
             do {
                 isLoading = true
-                let createVaultEndpoint = try CreateVaultEndpoint(credential: userData.credential,
-                                                                  addressKey: userData.getAddressKey(),
-                                                                  name: name,
-                                                                  note: note)
-                let response = try await apiService.exec(endpoint: createVaultEndpoint)
+                let addressKey = userData.getAddressKey()
+                let vaultProtobuf = VaultProtobuf(name: name, note: note)
+                let vaultData = try vaultProtobuf.serializedData()
+                let createVaultRequest = try CreateVaultRequest(addressKey: addressKey,
+                                                                vaultData: vaultData)
+                let createdShare =
+                try await shareRepository.createVault(request: createVaultRequest)
                 isLoading = false
-                createdShare = response.share
+                delegate?.createVaultViewModelDidCreateShare(share: createdShare)
             } catch {
                 self.error = error
                 isLoading = false
             }
         }
-    }
-}
-
-extension CreateVaultViewModel {
-    static var preview: CreateVaultViewModel {
-        .init(userData: .preview, apiService: DummyApiService.preview)
     }
 }

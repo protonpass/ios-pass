@@ -36,20 +36,3 @@ extension ItemRevision {
               modifyTime: .random(in: 0...1_000_000))
     }
 }
-
-extension Item {
-    static func random(itemId: String? = nil) -> Item {
-        .init(itemID: itemId ?? .random(),
-              revision: .random(in: 0...100),
-              contentFormatVersion: .random(in: 0...100),
-              rotationID: .random(),
-              content: .random(),
-              userSignature: .random(),
-              itemKeySignature: .random(),
-              state: .random(in: 0...100),
-              signatureEmail: .random(),
-              aliasEmail: .random(),
-              createTime: .random(in: 0...1_000_000),
-              modifyTime: .random(in: 0...1_000_000))
-    }
-}

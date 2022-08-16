@@ -37,23 +37,30 @@ protocol VaultContentViewModelDelegate: AnyObject {
 final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    private let vaultSelection: VaultSelection
-
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
 
-    @Published private(set) var items = [Item]()
+    @Published private(set) var itemRevisions = [ItemRevision]()
     @Published private(set) var partialItemContents = [PartialItemContent]()
 
     private let userData: UserData
-    private let repository: RepositoryProtocol
+    private let vaultSelection: VaultSelection
+    private let shareRepository: ShareRepositoryProtocol
+    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    private let shareKeysRepository: ShareKeysRepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: VaultContentViewModelDelegate?
 
-    init(userData: UserData, vaultSelection: VaultSelection, repository: RepositoryProtocol) {
+    init(userData: UserData,
+         vaultSelection: VaultSelection,
+         shareRepository: ShareRepositoryProtocol,
+         itemRevisionRepository: ItemRevisionRepositoryProtocol,
+         shareKeysRepository: ShareKeysRepositoryProtocol) {
         self.userData = userData
         self.vaultSelection = vaultSelection
-        self.repository = repository
+        self.shareRepository = shareRepository
+        self.shareKeysRepository = shareKeysRepository
+        self.itemRevisionRepository = itemRevisionRepository
 
         vaultSelection.objectWillChange
             .sink { [unowned self] _ in
@@ -61,9 +68,9 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
             }
             .store(in: &cancellables)
 
-        $items
-            .sink { [unowned self] newItems in
-                self.decrypt(items: newItems)
+        $itemRevisions
+            .sink { [unowned self] newItemRevisions in
+                self.decrypt(itemRevisions: newItemRevisions)
             }
             .store(in: &cancellables)
     }
@@ -76,33 +83,33 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
         guard let shareId = selectedVault?.shareId else { return }
         Task { @MainActor in
             do {
-                let items = try await repository.getItems(forceUpdate: forceRefresh,
-                                                          shareId: shareId,
-                                                          page: 0,
-                                                          pageSize: .max)
-                self.items = items.revisionsData
+                let itemRevisionList =
+                try await itemRevisionRepository.getItemRevisions(forceRefresh: forceRefresh,
+                                                                  shareId: shareId,
+                                                                  page: 0,
+                                                                  pageSize: .max)
+                self.itemRevisions = itemRevisionList.revisionsData
             } catch {
                 delegate?.vaultContentViewModelDidFailWithError(error: error)
             }
         }
     }
 
-    private func decrypt(items: [Item]) {
+    private func decrypt(itemRevisions: [ItemRevision]) {
         guard let shareId = selectedVault?.shareId else { return }
         Task { @MainActor in
             do {
-                let shareKey = try await repository.getShareKey(forceUpdate: false,
-                                                                shareId: shareId,
-                                                                page: 0,
-                                                                pageSize: .max)
-                // swiftlint:disable:next force_unwrapping
-                let share = try await repository.getShares(forceUpdate: false).first!
+                let share = try await shareRepository.getShare(shareId: shareId)
+                let shareKeys = try await shareKeysRepository.getShareKeys(shareId: shareId,
+                                                                           page: 0,
+                                                                           pageSize: .max)
                 let verifyKeys = userData.user.keys.map { $0.publicKey }
-                partialItemContents = try items.map { try $0.getPartialContent(userData: userData,
-                                                                               share: share,
-                                                                               vaultKeys: shareKey.vaultKeys,
-                                                                               itemKeys: shareKey.itemKeys,
-                                                                               verifyKeys: verifyKeys) }
+                partialItemContents =
+                try itemRevisions.map { try $0.getPartialContent(userData: userData,
+                                                                 share: share,
+                                                                 vaultKeys: shareKeys.vaultKeys,
+                                                                 itemKeys: shareKeys.itemKeys,
+                                                                 verifyKeys: verifyKeys) }
             } catch {
                 delegate?.vaultContentViewModelDidFailWithError(error: error)
             }

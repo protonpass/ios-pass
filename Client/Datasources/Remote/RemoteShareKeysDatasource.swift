@@ -24,16 +24,16 @@ public protocol RemoteShareKeysDatasourceProtocol {
     func getShareKeys(shareId: String, page: Int, pageSize: Int) async throws -> ShareKeys
 }
 
-final class RemoteShareKeysDatasource: BaseRemoteDatasource {}
+public final class RemoteShareKeysDatasource: BaseRemoteDatasource {}
 
 extension RemoteShareKeysDatasource: RemoteShareKeysDatasourceProtocol {
     public func getShareKeys(shareId: String,
                              page: Int,
                              pageSize: Int) async throws -> ShareKeys {
-        let endpoint = GetShareKeysEndpointV2(credential: authCredential,
-                                              shareId: shareId,
-                                              page: page,
-                                              pageSize: pageSize)
+        let endpoint = GetShareKeysEndpoint(credential: authCredential,
+                                            shareId: shareId,
+                                            page: page,
+                                            pageSize: pageSize)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.keys
     }

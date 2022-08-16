@@ -21,15 +21,14 @@
 import Foundation
 
 public protocol ShareKeysRepositoryProtocol {
-    var shareId: String { get }
     var localShareKeysDatasource: LocalShareKeysDatasourceProtocol { get }
     var remoteShareKeysDatasource: RemoteShareKeysDatasourceProtocol { get }
 
-    func getShareKeys(page: Int, pageSize: Int) async throws -> ShareKeys
+    func getShareKeys(shareId: String, page: Int, pageSize: Int) async throws -> ShareKeys
 }
 
 public extension ShareKeysRepositoryProtocol {
-    func getShareKeys(page: Int, pageSize: Int) async throws -> ShareKeys {
+    func getShareKeys(shareId: String, page: Int, pageSize: Int) async throws -> ShareKeys {
         let localShareKeys =
         try await localShareKeysDatasource.getShareKeys(shareId: shareId,
                                                         page: page,
@@ -50,14 +49,11 @@ public extension ShareKeysRepositoryProtocol {
 }
 
 public struct ShareKeysRepository: ShareKeysRepositoryProtocol {
-    public let shareId: String
     public let localShareKeysDatasource: LocalShareKeysDatasourceProtocol
     public let remoteShareKeysDatasource: RemoteShareKeysDatasourceProtocol
 
-    public init(shareId: String,
-                localShareKeysDatasource: LocalShareKeysDatasourceProtocol,
+    public init(localShareKeysDatasource: LocalShareKeysDatasourceProtocol,
                 remoteShareKeysDatasource: RemoteShareKeysDatasourceProtocol) {
-        self.shareId = shareId
         self.localShareKeysDatasource = localShareKeysDatasource
         self.remoteShareKeysDatasource = remoteShareKeysDatasource
     }

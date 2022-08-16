@@ -21,26 +21,27 @@
 import Core
 
 public protocol ItemRevisionRepositoryProtocol {
-    var userId: String { get }
-    var shareId: String { get }
     var localItemRevisionDatasoure: LocalItemRevisionDatasourceProtocol { get }
     var remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol { get }
 
     func getItemRevisions(forceRefresh: Bool,
+                          shareId: String,
                           page: Int,
                           pageSize: Int) async throws -> ItemRevisionList
     @discardableResult
-    func createItem(request: CreateItemRequest) async throws -> ItemRevision
+    func createItem(request: CreateItemRequest, shareId: String) async throws -> ItemRevision
 }
 
 public extension ItemRevisionRepositoryProtocol {
     func getItemRevisions(forceRefresh: Bool,
+                          shareId: String,
                           page: Int,
                           pageSize: Int) async throws -> ItemRevisionList {
         PPLogger.shared?.log("Getting item revisions (page =\(page), pageSize = \(pageSize))")
         if forceRefresh {
             PPLogger.shared?.log("Force refresh item revisions (page =\(page), pageSize = \(pageSize))")
-            return try await getItemRevisionsFromRemoteAndSaveToLocal(page: page,
+            return try await getItemRevisionsFromRemoteAndSaveToLocal(shareId: shareId,
+                                                                      page: page,
                                                                       pageSize: pageSize)
         }
 
@@ -53,7 +54,8 @@ public extension ItemRevisionRepositoryProtocol {
             PPLogger.shared?.log("""
 No item revisions in local => Fetching from remote... (page =\(page), pageSize = \(pageSize))
 """)
-            return try await getItemRevisionsFromRemoteAndSaveToLocal(page: page,
+            return try await getItemRevisionsFromRemoteAndSaveToLocal(shareId: shareId,
+                                                                      page: page,
                                                                       pageSize: pageSize)
         }
 
@@ -64,6 +66,7 @@ Found \(localItemRevisionList.revisionsData.count) item revision in local (page 
     }
 
     private func getItemRevisionsFromRemoteAndSaveToLocal(
+        shareId: String,
         page: Int,
         pageSize: Int
     ) async throws -> ItemRevisionList {
@@ -79,7 +82,8 @@ Found \(localItemRevisionList.revisionsData.count) item revision in local (page 
         return itemRevisionList
     }
 
-    func createItem(request: CreateItemRequest) async throws -> ItemRevision {
+    func createItem(request: CreateItemRequest,
+                    shareId: String) async throws -> ItemRevision {
         PPLogger.shared?.log("Creating item revisions")
         let createdItemRevision =
         try await remoteItemRevisionDatasource.createItem(shareId: shareId,
@@ -93,17 +97,11 @@ Found \(localItemRevisionList.revisionsData.count) item revision in local (page 
 }
 
 public struct ItemRevisionRepository: ItemRevisionRepositoryProtocol {
-    public let userId: String
-    public let shareId: String
     public let localItemRevisionDatasoure: LocalItemRevisionDatasourceProtocol
     public let remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol
 
-    public init(userId: String,
-                shareId: String,
-                localItemRevisionDatasoure: LocalItemRevisionDatasourceProtocol,
+    public init(localItemRevisionDatasoure: LocalItemRevisionDatasourceProtocol,
                 remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol) {
-        self.userId = userId
-        self.shareId = shareId
         self.localItemRevisionDatasoure = localItemRevisionDatasoure
         self.remoteItemRevisionDatasource = remoteItemRevisionDatasource
     }

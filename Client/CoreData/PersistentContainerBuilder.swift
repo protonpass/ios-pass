@@ -20,7 +20,7 @@
 
 import CoreData
 
-extension NSPersistentContainer {
+public extension NSPersistentContainer {
     enum Builder {
         public static func build(name: String, inMemory: Bool) -> NSPersistentContainer {
             let container = NSPersistentContainer(name: name)

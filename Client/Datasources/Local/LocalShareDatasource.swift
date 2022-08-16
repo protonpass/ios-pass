@@ -27,8 +27,10 @@ public protocol LocalShareDatasourceProtocol {
     func removeAllShares(userId: String) async throws
 }
 
-final class LocalShareDatasource: BaseLocalDatasource, LocalShareDatasourceProtocol {
-    func getShare(userId: String, shareId: String) async throws -> Share? {
+public final class LocalShareDatasource: BaseLocalDatasource {}
+
+extension LocalShareDatasource: LocalShareDatasourceProtocol {
+    public func getShare(userId: String, shareId: String) async throws -> Share? {
         let taskContext = newTaskContext(type: .fetch)
 
         let fetchRequest = ShareEntity.fetchRequest()
@@ -42,7 +44,7 @@ final class LocalShareDatasource: BaseLocalDatasource, LocalShareDatasourceProto
         return try shareEntities.map { try $0.toShare() }.first
     }
 
-    func getAllShares(userId: String) async throws -> [Share] {
+    public func getAllShares(userId: String) async throws -> [Share] {
         let taskContext = newTaskContext(type: .fetch)
 
         let fetchRequest = ShareEntity.fetchRequest()
@@ -52,7 +54,7 @@ final class LocalShareDatasource: BaseLocalDatasource, LocalShareDatasourceProto
         return try shareEntities.map { try $0.toShare() }
     }
 
-    func upsertShares(_ shares: [Share], userId: String) async throws {
+    public func upsertShares(_ shares: [Share], userId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
@@ -64,7 +66,7 @@ final class LocalShareDatasource: BaseLocalDatasource, LocalShareDatasourceProto
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    func removeAllShares(userId: String) async throws {
+    public func removeAllShares(userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
 
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ShareEntity")

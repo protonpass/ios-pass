@@ -1,5 +1,5 @@
 //
-// CreateVaultRequestBodyTests.swift
+// CreateVaultRequestTests.swift
 // Proton Pass - Created on 12/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -26,7 +26,7 @@ import ProtonCore_DataModel
 import XCTest
 
 // swiftlint:disable function_parameter_count
-final class CreateVaultRequestBodyTests: XCTestCase {
+final class CreateVaultRequestTests: XCTestCase {
     func testCreateVaultSuccess() throws {
         let (key, keyPassphrase) = try CryptoUtils.generateKey(name: "test", email: "test")
         let addressId = String.random()
@@ -35,11 +35,12 @@ final class CreateVaultRequestBodyTests: XCTestCase {
         var vault = VaultProtobuf()
         vault.name = vaultName
         vault.description_p = vaultDescription
+        let vaultData = try vault.serializedData()
         let addressKey = AddressKey(addressId: addressId,
                                     key: Key(keyID: String.random(), privateKey: key),
                                     keyPassphrase: keyPassphrase)
-        let requestBody = try CreateVaultRequestBody(addressKey: addressKey,
-                                                     vault: vault)
+        let requestBody = try CreateVaultRequest(addressKey: addressKey,
+                                                 vaultData: vaultData)
         XCTAssertEqual(requestBody.addressID, addressId)
         let (armoredSigningKey, signingKeyPassphrase) =
         try validateSigningKey(addressKey: addressKey.key,
@@ -70,8 +71,8 @@ final class CreateVaultRequestBodyTests: XCTestCase {
 
     func validateSigningKey(addressKey: Key,
                             addressKeyPassphrase: String,
-                            requestBody: CreateVaultRequestBody) throws -> (signingKey: String,
-                                                                            signingKeyPassphrase: String) {
+                            requestBody: CreateVaultRequest) throws -> (signingKey: String,
+                                                                        signingKeyPassphrase: String) {
         XCTAssertFalse(requestBody.signingKeyPassphrase.isEmpty)
         XCTAssertFalse(requestBody.signingKeyPassphraseKeyPacket.isEmpty)
         XCTAssertFalse(requestBody.signingKey.isEmpty)
@@ -106,7 +107,7 @@ final class CreateVaultRequestBodyTests: XCTestCase {
 
     func validateVaultKey(addressKey: Key,
                           addressKeyPassphrase: String,
-                          requestBody: CreateVaultRequestBody,
+                          requestBody: CreateVaultRequest,
                           signingKey: Key,
                           signingKeyPassphrase: String) throws -> (vaultKey: String,
                                                                    vaultKeyPassphrase: String) {
@@ -142,7 +143,7 @@ final class CreateVaultRequestBodyTests: XCTestCase {
         return (requestBody.vaultKey, try XCTUnwrap(decryptedPassphrase).getString())
     }
 
-    func validateItemKey(requestBody: CreateVaultRequestBody,
+    func validateItemKey(requestBody: CreateVaultRequest,
                          signingKey: Key,
                          signingKeyPassphrase: String,
                          vaultKey: Key,
@@ -182,7 +183,7 @@ final class CreateVaultRequestBodyTests: XCTestCase {
     func validateVaultData(vaultName: String,
                            vaultDescription: String,
                            vaultType: ProtobufableVaultProtocol.Type,
-                           requestBody: CreateVaultRequestBody,
+                           requestBody: CreateVaultRequest,
                            vaultKey: Key,
                            vaultKeyPassphrase: String) throws {
         XCTAssertFalse(requestBody.content.isEmpty)

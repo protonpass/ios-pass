@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import CoreData
 import ProtonCore_Login
 import ProtonCore_Services
 import SwiftUI
@@ -35,12 +36,11 @@ protocol MyVaultsCoordinatorDelegate: AnyObject {
 final class MyVaultsCoordinator: Coordinator {
     weak var delegate: MyVaultsCoordinatorDelegate?
 
-    let apiService: APIService
-    let sessionData: SessionData
-    let vaultSelection: VaultSelection
-    let repository: RepositoryProtocol
-
+    private let apiService: APIService
+    private let sessionData: SessionData
+    private let vaultSelection: VaultSelection
     private let vaultContentViewModel: VaultContentViewModel
+    private let shareRepository: ShareRepositoryProtocol
 
     init(apiService: APIService,
          sessionData: SessionData,
@@ -49,27 +49,57 @@ final class MyVaultsCoordinator: Coordinator {
         self.sessionData = sessionData
         self.vaultSelection = vaultSelection
 
-        let localDatasource = LocalDatasource(inMemory: false)
-        let credential = sessionData.userData.credential
-        let userId = sessionData.userData.user.ID
-        let remoteDatasource = RemoteDatasource(authCredential: credential,
-                                                apiService: apiService)
-        self.repository = Repository(userId: userId,
-                                     localDatasource: localDatasource,
-                                     remoteDatasource: remoteDatasource)
+        let container = NSPersistentContainer.Builder.build(name: kProtonPassContainerName,
+                                                            inMemory: false)
 
-        vaultContentViewModel = VaultContentViewModel(userData: sessionData.userData,
-                                                      vaultSelection: vaultSelection,
-                                                      repository: repository)
+        let userId = sessionData.userData.user.ID
+        let authCredential = sessionData.userData.credential
+
+        // Init ShareRepository
+        let localShareDatasource = LocalShareDatasource(container: container)
+        let remoteShareDatasource = RemoteShareDatasource(authCredential: authCredential,
+                                                          apiService: apiService)
+        let shareRepository = ShareRepository(userId: userId,
+                                              localShareDatasource: localShareDatasource,
+                                              remoteShareDatasouce: remoteShareDatasource)
+        self.shareRepository = shareRepository
+
+        // Init ItemRevisionRepository
+        let localItemRevisionDatasource = LocalItemRevisionDatasource(container: container)
+        let remoteItemRevisionDatasouce =
+        RemoteItemRevisionDatasource(authCredential: authCredential, apiService: apiService)
+        let itemRevisionRepository =
+        ItemRevisionRepository(localItemRevisionDatasoure: localItemRevisionDatasource,
+                               remoteItemRevisionDatasource: remoteItemRevisionDatasouce)
+
+        // Init ShareKeysRepository
+        let localItemKeyDatasource = LocalItemKeyDatasource(container: container)
+        let localVaultKeyDatasource = LocalVaultKeyDatasource(container: container)
+        let localShareKeysDatasource =
+        LocalShareKeysDatasource(localItemKeyDatasource: localItemKeyDatasource,
+                                 localVaultKeyDatasource: localVaultKeyDatasource)
+        let remoteShareKeysDatasource =
+        RemoteShareKeysDatasource(authCredential: authCredential,
+                                  apiService: apiService)
+        let shareKeysRepository =
+        ShareKeysRepository(localShareKeysDatasource: localShareKeysDatasource,
+                            remoteShareKeysDatasource: remoteShareKeysDatasource)
+
+        vaultContentViewModel = .init(userData: sessionData.userData,
+                                      vaultSelection: vaultSelection,
+                                      shareRepository: shareRepository,
+                                      itemRevisionRepository: itemRevisionRepository,
+                                      shareKeysRepository: shareKeysRepository)
         super.init()
 
         let myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
         let loadVaultsViewModel = LoadVaultsViewModel(userData: sessionData.userData,
-                                                      apiService: apiService,
                                                       vaultSelection: vaultSelection,
-                                                      repository: repository)
+                                                      shareRepository: shareRepository,
+                                                      shareKeysRepository: shareKeysRepository)
 
         vaultContentViewModel.delegate = self
+        loadVaultsViewModel.delegate = self
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
                                       loadVaultsViewModel: loadVaultsViewModel,
                                       vaultContentViewModel: vaultContentViewModel))
@@ -91,8 +121,9 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateVaultView() {
-        let createVaultViewModel = CreateVaultViewModel(userData: sessionData.userData,
-                                                        apiService: apiService)
+        let createVaultViewModel =
+        CreateVaultViewModel(userData: sessionData.userData,
+                             shareRepository: shareRepository)
         createVaultViewModel.delegate = self
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         let createVaultViewController = UIHostingController(rootView: createVaultView)
@@ -140,6 +171,13 @@ final class MyVaultsCoordinator: Coordinator {
 
     func showSearchView() {
         presentViewFullScreen(SearchView())
+    }
+}
+
+// MARK: - LoadVaultsViewModelDelegate
+extension MyVaultsCoordinator: LoadVaultsViewModelDelegate {
+    func loadVaultsViewModelWantsToToggleSideBar() {
+        showSidebar()
     }
 }
 
@@ -194,7 +232,7 @@ extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
         delegate?.myVautsCoordinatorWantsToHideLoadingHud()
     }
 
-    func createVaultViewModelDidCreateShare(share: PartialShare) {
+    func createVaultViewModelDidCreateShare(share: Share) {
         // Set vaults to empty to trigger refresh
         vaultSelection.update(vaults: [])
         dismissTopMostViewController()

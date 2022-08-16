@@ -34,20 +34,20 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     private let userData: UserData
-    private let apiService: APIService
     private let vaultSelection: VaultSelection
-    private let repository: RepositoryProtocol
+    private let shareRepository: ShareRepositoryProtocol
+    private let shareKeysRepository: ShareKeysRepositoryProtocol
 
     weak var delegate: LoadVaultsViewModelDelegate?
 
     init(userData: UserData,
-         apiService: APIService,
          vaultSelection: VaultSelection,
-         repository: RepositoryProtocol) {
+         shareRepository: ShareRepositoryProtocol,
+         shareKeysRepository: ShareKeysRepositoryProtocol) {
         self.userData = userData
-        self.apiService = apiService
         self.vaultSelection = vaultSelection
-        self.repository = repository
+        self.shareRepository = shareRepository
+        self.shareKeysRepository = shareKeysRepository
     }
 
     func toggleSidebarAction() {
@@ -58,14 +58,14 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
         error = nil
         Task { @MainActor in
             do {
-                let shares = try await repository.getShares(forceUpdate: forceUpdate)
+                let shares = try await shareRepository.getShares(forceRefresh: forceUpdate)
 
                 var vaults: [VaultProtocol] = []
                 for share in shares {
-                    let shareKey = try await repository.getShareKey(forceUpdate: forceUpdate,
-                                                                    shareId: share.shareID,
-                                                                    page: 0,
-                                                                    pageSize: Int.max)
+                    let shareKey =
+                    try await shareKeysRepository.getShareKeys(shareId: share.shareID,
+                                                               page: 0,
+                                                               pageSize: .max)
                     vaults.append(try share.getVault(userData: userData,
                                                      vaultKeys: shareKey.vaultKeys))
                 }
@@ -84,11 +84,12 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     private func createDefaultVault() {
         Task { @MainActor in
             do {
-                let createVaultEndpoint = try CreateVaultEndpoint(credential: userData.credential,
-                                                                  addressKey: userData.getAddressKey(),
-                                                                  name: "Personal",
-                                                                  note: "Personal vault")
-                _ = try await apiService.exec(endpoint: createVaultEndpoint)
+                let addressKey = userData.getAddressKey()
+                let vault = VaultProtobuf(name: "Personal", note: "Personal vault")
+                let vaultData = try vault.serializedData()
+                let createVaultRequest = try CreateVaultRequest(addressKey: addressKey,
+                                                                vaultData: vaultData)
+                _ = try await shareRepository.createVault(request: createVaultRequest)
                 self.fetchVaults()
             } catch {
                 self.error = error

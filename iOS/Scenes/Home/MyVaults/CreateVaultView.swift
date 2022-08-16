@@ -92,9 +92,3 @@ struct CreateVaultView: View {
         }
     }
 }
-
-struct CreateVaultView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateVaultView(viewModel: .preview)
-    }
-}

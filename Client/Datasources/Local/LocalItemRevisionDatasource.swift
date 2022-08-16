@@ -29,7 +29,7 @@ public protocol LocalItemRevisionDatasourceProtocol {
     func removeAllItemRevisions(shareId: String) async throws
 }
 
-final class LocalItemRevisionDatasource: BaseLocalDatasource {}
+public final class LocalItemRevisionDatasource: BaseLocalDatasource {}
 
 extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
     public func getItemRevision(shareId: String,

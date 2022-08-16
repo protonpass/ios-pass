@@ -33,10 +33,10 @@ extension RemoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol {
     public func getItemRevisions(shareId: String,
                                  page: Int,
                                  pageSize: Int) async throws -> ItemRevisionList {
-        let endpoint = GetItemsEndpointV2(credential: authCredential,
-                                          shareId: shareId,
-                                          page: page,
-                                          pageSize: pageSize)
+        let endpoint = GetItemsEndpoint(credential: authCredential,
+                                        shareId: shareId,
+                                        page: page,
+                                        pageSize: pageSize)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.items
     }
