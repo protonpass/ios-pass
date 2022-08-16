@@ -38,7 +38,7 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
 
         let fetchRequest = ItemRevisionEntity.fetchRequest()
         fetchRequest.predicate = NSCompoundPredicate(
-            orPredicateWithSubpredicates: [
+            andPredicateWithSubpredicates: [
                 .init(format: "shareID = %@", shareId),
                 .init(format: "itemID = %@", itemId)
             ])

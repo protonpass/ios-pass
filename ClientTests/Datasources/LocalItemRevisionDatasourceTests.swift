@@ -88,7 +88,7 @@ extension LocalItemRevisionDatasourceTests {
             // 310 items inserted to the local database
             // pageSize is 90
             let localShareDatasource = LocalShareDatasource(container: sut.container)
-            let givenShare = try await localShareDatasource.givenInsertShare(userId: nil)
+            let givenShare = try await localShareDatasource.givenInsertedShare(userId: nil)
             let shareId = givenShare.shareID
             let givenItemRevisions = [ItemRevision].random(count: 310,
                                                            randomElement: .random())

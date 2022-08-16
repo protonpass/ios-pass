@@ -99,7 +99,7 @@ extension LocalShareDatasourceTests {
         Task {
             // Given
             let givenUserId = String.random()
-            let givenInsertedShare = try await sut.givenInsertShare(userId: givenUserId)
+            let givenInsertedShare = try await sut.givenInsertedShare(userId: givenUserId)
 
             // When
             for _ in 0...10 {
@@ -151,7 +151,7 @@ extension LocalShareDatasourceTests {
         Task {
             // Given
             let givenUserId = String.random()
-            let insertedShare = try await sut.givenInsertShare(userId: givenUserId)
+            let insertedShare = try await sut.givenInsertedShare(userId: givenUserId)
             // Only copy the shareId from givenShare
             let updatedShare = Share.random(shareId: insertedShare.shareID)
 
@@ -209,7 +209,7 @@ extension LocalShareDatasourceTests {
 }
 
 extension LocalShareDatasource {
-    func givenInsertShare(userId: String?) async throws -> Share {
+    func givenInsertedShare(userId: String? = nil) async throws -> Share {
         let share = Share.random(shareId: .random())
         try await upsertShares([share], userId: userId ?? .random())
         return share
