@@ -25,6 +25,7 @@ public let kProtonPassContainerName = "ProtonPass"
 public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
     case batchInsertError(NSBatchInsertRequest)
     case batchDeleteError(NSBatchDeleteRequest)
+    case corruptedShareKeys(shareId: String, itemKeyCount: Int, vaultKeyCount: Int)
 
     public var debugDescription: String {
         switch self {
@@ -33,6 +34,11 @@ public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
         case .batchDeleteError(let request):
             let entityName = request.fetchRequest.entityName ?? ""
             return "Failed to batch delete entity \(entityName)"
+        case let .corruptedShareKeys(shareId, itemKeyCount, vaultKeyCount):
+            return """
+"Corrupted share keys for share \(shareId).
+Item key count (\(itemKeyCount)) not equal to vault key count (\(vaultKeyCount)
+"""
         }
     }
 }
