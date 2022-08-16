@@ -20,6 +20,7 @@
 
 public protocol LocalShareKeysDatasourceProtocol {
     func getShareKeys(shareId: String, page: Int, pageSize: Int) async throws -> ShareKeys
+    func upsertShareKeys(_ shareKeys: ShareKeys, shareId: String) async throws
 }
 
 public final class LocalShareKeysDatasource {
@@ -50,5 +51,12 @@ extension LocalShareKeysDatasource: LocalShareKeysDatasourceProtocol {
                                                                        page: page,
                                                                        pageSize: pageSize)
         return .init(vaultKeys: vaultKeys, itemKeys: itemKeys, total: itemKeyCount)
+    }
+
+    public func upsertShareKeys(_ shareKeys: ShareKeys, shareId: String) async throws {
+        try await localItemKeyDatasource.upsertItemKeys(shareKeys.itemKeys,
+                                                        shareId: shareId)
+        try await localVaultKeyDatasource.upsertVaultKeys(shareKeys.vaultKeys,
+                                                          shareId: shareId)
     }
 }
