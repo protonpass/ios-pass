@@ -100,6 +100,8 @@
 		35610B7728ABB9AD00955ACB /* LocalVaultKeyDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7628ABB9AD00955ACB /* LocalVaultKeyDatasourceTests.swift */; };
 		35610B7A28ABC07B00955ACB /* LocalShareKeysDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7828ABC02F00955ACB /* LocalShareKeysDatasource.swift */; };
 		35610B7C28ABC2F400955ACB /* LocalShareKeysDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7B28ABC2F400955ACB /* LocalShareKeysDatasourceTests.swift */; };
+		35610B7E28ABC9D200955ACB /* BaseRemoteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7D28ABC9D200955ACB /* BaseRemoteDatasource.swift */; };
+		35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */; };
 		356B21D72870F8F1001220CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D62870F8F1001220CB /* Constants.swift */; };
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
@@ -391,6 +393,8 @@
 		35610B7628ABB9AD00955ACB /* LocalVaultKeyDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalVaultKeyDatasourceTests.swift; sourceTree = "<group>"; };
 		35610B7828ABC02F00955ACB /* LocalShareKeysDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareKeysDatasource.swift; sourceTree = "<group>"; };
 		35610B7B28ABC2F400955ACB /* LocalShareKeysDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareKeysDatasourceTests.swift; sourceTree = "<group>"; };
+		35610B7D28ABC9D200955ACB /* BaseRemoteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRemoteDatasource.swift; sourceTree = "<group>"; };
+		35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareDatasource.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B21D62870F8F1001220CB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
@@ -879,6 +883,8 @@
 		3593DD1A28A8462000C235D3 /* Remote */ = {
 			isa = PBXGroup;
 			children = (
+				35610B7D28ABC9D200955ACB /* BaseRemoteDatasource.swift */,
+				35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -1812,6 +1818,7 @@
 				3542F02828996C70004007C7 /* LocalDatasourceV1.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
 				3547696E289D349C00581E2E /* Repository.swift in Sources */,
+				35610B7E28ABC9D200955ACB /* BaseRemoteDatasource.swift in Sources */,
 				350A97CE2885BA4D00A7168B /* GetShareDataEndpoint.swift in Sources */,
 				35004A40289004330073C4A7 /* Pass.xcdatamodeld in Sources */,
 				354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */,
@@ -1836,6 +1843,7 @@
 				358BD35B287D4D0A00802A91 /* CreateVaultRequestBody.swift in Sources */,
 				35A909E4289006F700AC54D4 /* CDShare.swift in Sources */,
 				35610B7128ABAAC500955ACB /* LocalItemKeyDatasource.swift in Sources */,
+				35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */,
 				35A909EA2890110F00AC54D4 /* CoreDataError.swift in Sources */,
 				3593DCE728A790F800C235D3 /* BaseLocalDatasource.swift in Sources */,
 				35A909E8289006F700AC54D4 /* CDVaultKey.swift in Sources */,
