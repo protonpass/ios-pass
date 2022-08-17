@@ -37,6 +37,7 @@ struct GeneratePasswordView: View {
                     Text(viewModel.texts)
                         .font(.title3)
                         .fontWeight(.bold)
+                        .frame(height: 100)
                         .transaction { transaction in
                             transaction.animation = nil
                         }
@@ -50,6 +51,7 @@ struct GeneratePasswordView: View {
 
                 HStack {
                     Text("\(Int(viewModel.length)) characters")
+                        .frame(minWidth: 120, alignment: .leading)
                     Slider(value: $viewModel.length,
                            in: 4...64,
                            step: 1)

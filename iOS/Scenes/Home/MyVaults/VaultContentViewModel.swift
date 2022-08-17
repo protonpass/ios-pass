@@ -40,7 +40,6 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
 
-    @Published private(set) var itemRevisions = [ItemRevision]()
     @Published private(set) var partialItemContents = [PartialItemContent]()
 
     private let userData: UserData
@@ -67,12 +66,6 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                 self.objectWillChange.send()
             }
             .store(in: &cancellables)
-
-        $itemRevisions
-            .sink { [unowned self] newItemRevisions in
-                self.decrypt(itemRevisions: newItemRevisions)
-            }
-            .store(in: &cancellables)
     }
 
     func update(selectedVault: VaultProtocol?) {
@@ -88,32 +81,26 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                                                                   shareId: shareId,
                                                                   page: 0,
                                                                   pageSize: .max)
-                self.itemRevisions = itemRevisionList.revisionsData
+                try await decrypt(itemRevisions: itemRevisionList.revisionsData,
+                                  shareId: shareId)
             } catch {
                 delegate?.vaultContentViewModelDidFailWithError(error: error)
             }
         }
     }
 
-    private func decrypt(itemRevisions: [ItemRevision]) {
-        guard let shareId = selectedVault?.shareId else { return }
-        Task { @MainActor in
-            do {
-                let share = try await shareRepository.getShare(shareId: shareId)
-                let shareKeys = try await shareKeysRepository.getShareKeys(shareId: shareId,
-                                                                           page: 0,
-                                                                           pageSize: .max)
-                let verifyKeys = userData.user.keys.map { $0.publicKey }
-                partialItemContents =
-                try itemRevisions.map { try $0.getPartialContent(userData: userData,
-                                                                 share: share,
-                                                                 vaultKeys: shareKeys.vaultKeys,
-                                                                 itemKeys: shareKeys.itemKeys,
-                                                                 verifyKeys: verifyKeys) }
-            } catch {
-                delegate?.vaultContentViewModelDidFailWithError(error: error)
-            }
-        }
+    private func decrypt(itemRevisions: [ItemRevision], shareId: String) async throws {
+        let share = try await shareRepository.getShare(shareId: shareId)
+        let shareKeys = try await shareKeysRepository.getShareKeys(shareId: shareId,
+                                                                   page: 0,
+                                                                   pageSize: .max)
+        let verifyKeys = userData.user.keys.map { $0.publicKey }
+        partialItemContents =
+        try itemRevisions.map { try $0.getPartialContent(userData: userData,
+                                                         share: share,
+                                                         vaultKeys: shareKeys.vaultKeys,
+                                                         itemKeys: shareKeys.itemKeys,
+                                                         verifyKeys: verifyKeys) }
     }
 }
 
