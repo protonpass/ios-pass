@@ -18,7 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import CoreData
+import ProtonCore_Networking
+import ProtonCore_Services
 
 public protocol ShareKeysRepositoryProtocol {
     var localShareKeysDatasource: LocalShareKeysDatasourceProtocol { get }
@@ -56,5 +58,17 @@ public struct ShareKeysRepository: ShareKeysRepositoryProtocol {
                 remoteShareKeysDatasource: RemoteShareKeysDatasourceProtocol) {
         self.localShareKeysDatasource = localShareKeysDatasource
         self.remoteShareKeysDatasource = remoteShareKeysDatasource
+    }
+
+    public init(container: NSPersistentContainer,
+                authCredential: AuthCredential,
+                apiService: APIService) {
+        let localItemKeyDatasource = LocalItemKeyDatasource(container: container)
+        let localVaultKeyDatasource = LocalVaultKeyDatasource(container: container)
+        self.localShareKeysDatasource =
+        LocalShareKeysDatasource(localItemKeyDatasource: localItemKeyDatasource,
+                                 localVaultKeyDatasource: localVaultKeyDatasource)
+        self.remoteShareKeysDatasource = RemoteShareKeysDatasource(authCredential: authCredential,
+                                                                   apiService: apiService)
     }
 }

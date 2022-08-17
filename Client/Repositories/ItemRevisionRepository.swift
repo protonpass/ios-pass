@@ -19,6 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import CoreData
+import ProtonCore_Networking
+import ProtonCore_Services
 
 public protocol ItemRevisionRepositoryProtocol {
     var localItemRevisionDatasoure: LocalItemRevisionDatasourceProtocol { get }
@@ -104,5 +107,13 @@ public struct ItemRevisionRepository: ItemRevisionRepositoryProtocol {
                 remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol) {
         self.localItemRevisionDatasoure = localItemRevisionDatasoure
         self.remoteItemRevisionDatasource = remoteItemRevisionDatasource
+    }
+
+    public init(container: NSPersistentContainer,
+                authCredential: AuthCredential,
+                apiService: APIService) {
+        self.localItemRevisionDatasoure = LocalItemRevisionDatasource(container: container)
+        self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(authCredential: authCredential,
+                                                                         apiService: apiService)
     }
 }

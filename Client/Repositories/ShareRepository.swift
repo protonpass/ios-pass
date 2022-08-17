@@ -19,6 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import CoreData
+import ProtonCore_Networking
+import ProtonCore_Services
 
 public protocol ShareRepositoryProtocol {
     var userId: String { get }
@@ -86,5 +89,15 @@ public struct ShareRepository: ShareRepositoryProtocol {
         self.userId = userId
         self.localShareDatasource = localShareDatasource
         self.remoteShareDatasouce = remoteShareDatasouce
+    }
+
+    public init(userId: String,
+                container: NSPersistentContainer,
+                authCredential: AuthCredential,
+                apiService: APIService) {
+        self.userId = userId
+        self.localShareDatasource = LocalShareDatasource(container: container)
+        self.remoteShareDatasouce = RemoteShareDatasource(authCredential: authCredential,
+                                                          apiService: apiService)
     }
 }

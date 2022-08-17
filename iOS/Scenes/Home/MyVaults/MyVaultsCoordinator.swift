@@ -55,41 +55,25 @@ final class MyVaultsCoordinator: Coordinator {
         let userId = sessionData.userData.user.ID
         let authCredential = sessionData.userData.credential
 
-        // Init ShareRepository
-        let localShareDatasource = LocalShareDatasource(container: container)
-        let remoteShareDatasource = RemoteShareDatasource(authCredential: authCredential,
-                                                          apiService: apiService)
         let shareRepository = ShareRepository(userId: userId,
-                                              localShareDatasource: localShareDatasource,
-                                              remoteShareDatasouce: remoteShareDatasource)
+                                              container: container,
+                                              authCredential: authCredential,
+                                              apiService: apiService)
         self.shareRepository = shareRepository
 
-        // Init ItemRevisionRepository
-        let localItemRevisionDatasource = LocalItemRevisionDatasource(container: container)
-        let remoteItemRevisionDatasouce =
-        RemoteItemRevisionDatasource(authCredential: authCredential, apiService: apiService)
-        let itemRevisionRepository =
-        ItemRevisionRepository(localItemRevisionDatasoure: localItemRevisionDatasource,
-                               remoteItemRevisionDatasource: remoteItemRevisionDatasouce)
+        let itemRevisionRepository = ItemRevisionRepository(container: container,
+                                                            authCredential: authCredential,
+                                                            apiService: apiService)
 
-        // Init ShareKeysRepository
-        let localItemKeyDatasource = LocalItemKeyDatasource(container: container)
-        let localVaultKeyDatasource = LocalVaultKeyDatasource(container: container)
-        let localShareKeysDatasource =
-        LocalShareKeysDatasource(localItemKeyDatasource: localItemKeyDatasource,
-                                 localVaultKeyDatasource: localVaultKeyDatasource)
-        let remoteShareKeysDatasource =
-        RemoteShareKeysDatasource(authCredential: authCredential,
-                                  apiService: apiService)
-        let shareKeysRepository =
-        ShareKeysRepository(localShareKeysDatasource: localShareKeysDatasource,
-                            remoteShareKeysDatasource: remoteShareKeysDatasource)
+        let shareKeysRepository = ShareKeysRepository(container: container,
+                                                      authCredential: authCredential,
+                                                      apiService: apiService)
 
-        vaultContentViewModel = .init(userData: sessionData.userData,
-                                      vaultSelection: vaultSelection,
-                                      shareRepository: shareRepository,
-                                      itemRevisionRepository: itemRevisionRepository,
-                                      shareKeysRepository: shareKeysRepository)
+        self.vaultContentViewModel = .init(userData: sessionData.userData,
+                                           vaultSelection: vaultSelection,
+                                           shareRepository: shareRepository,
+                                           itemRevisionRepository: itemRevisionRepository,
+                                           shareKeysRepository: shareKeysRepository)
         super.init()
 
         let myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
@@ -98,7 +82,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                       shareRepository: shareRepository,
                                                       shareKeysRepository: shareKeysRepository)
 
-        vaultContentViewModel.delegate = self
+        self.vaultContentViewModel.delegate = self
         loadVaultsViewModel.delegate = self
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
                                       loadVaultsViewModel: loadVaultsViewModel,
