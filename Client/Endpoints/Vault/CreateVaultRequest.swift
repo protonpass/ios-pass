@@ -117,7 +117,7 @@ public struct CreateVaultRequest: Encodable {
     }
 
     // swiftlint:disable:next function_body_length
-    public init(addressKey: AddressKey, vaultData: Data) throws {
+    public init(addressKey: AddressKey, vault: ProtobufableVaultProtocol) throws {
         // Generate signing key
         let (signingKey, signingKeyPassphrase) = try CryptoUtils.generateKey(name: "VaultSigningKey",
                                                                              email: "vault_signing@proton")
@@ -159,6 +159,7 @@ public struct CreateVaultRequest: Encodable {
             throw CryptoError.failedToGenerateKeyRing
         }
 
+        let vaultData = try vault.data()
         guard let encryptedVaultData = try keyRing.encrypt(.init(vaultData), privateKey: nil).data else {
             throw CryptoError.failedToEncrypt
         }

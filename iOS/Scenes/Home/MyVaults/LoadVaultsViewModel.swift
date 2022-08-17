@@ -86,9 +86,8 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
             do {
                 let addressKey = userData.getAddressKey()
                 let vault = VaultProtobuf(name: "Personal", note: "Personal vault")
-                let vaultData = try vault.serializedData()
                 let createVaultRequest = try CreateVaultRequest(addressKey: addressKey,
-                                                                vaultData: vaultData)
+                                                                vault: vault)
                 _ = try await shareRepository.createVault(request: createVaultRequest)
                 self.fetchVaults()
             } catch {

@@ -35,12 +35,10 @@ final class CreateVaultRequestTests: XCTestCase {
         var vault = VaultProtobuf()
         vault.name = vaultName
         vault.description_p = vaultDescription
-        let vaultData = try vault.serializedData()
         let addressKey = AddressKey(addressId: addressId,
                                     key: Key(keyID: String.random(), privateKey: key),
                                     keyPassphrase: keyPassphrase)
-        let requestBody = try CreateVaultRequest(addressKey: addressKey,
-                                                 vaultData: vaultData)
+        let requestBody = try CreateVaultRequest(addressKey: addressKey, vault: vault)
         XCTAssertEqual(requestBody.addressID, addressId)
         let (armoredSigningKey, signingKeyPassphrase) =
         try validateSigningKey(addressKey: addressKey.key,
