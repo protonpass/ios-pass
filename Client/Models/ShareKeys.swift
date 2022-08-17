@@ -23,13 +23,5 @@ public struct ShareKeys: Decodable {
     public let itemKeys: [ItemKey]
     public let total: Int
 
-    init(vaultKeys: [VaultKey], itemKeys: [ItemKey], total: Int) {
-        self.vaultKeys = vaultKeys
-        self.itemKeys = itemKeys
-        self.total = total
-    }
-
-    public var isEmpty: Bool {
-        total == 0 || vaultKeys.isEmpty || itemKeys.isEmpty
-    }
+    public var isEmpty: Bool { vaultKeys.isEmpty || itemKeys.isEmpty }
 }

@@ -35,16 +35,4 @@ public struct ItemKey: Decodable {
 
     /// Creation time of the key
     public let createTime: Int64
-
-    public init(rotationID: String,
-                key: String,
-                keyPassphrase: String?,
-                keySignature: String,
-                createTime: Int64) {
-        self.rotationID = rotationID
-        self.key = key
-        self.keyPassphrase = keyPassphrase
-        self.keySignature = keySignature
-        self.createTime = createTime
-    }
 }

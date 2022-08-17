@@ -23,11 +23,6 @@ import Foundation
 public struct ItemRevisionList: Decodable {
     public let total: Int
     public let revisionsData: [ItemRevision]
-
-    public init(total: Int, revisionsData: [ItemRevision]) {
-        self.total = total
-        self.revisionsData = revisionsData
-    }
 }
 
 public struct ItemRevision: Decodable {
@@ -64,30 +59,4 @@ public struct ItemRevision: Decodable {
 
     /// Time of last update of the item
     public let modifyTime: Int64
-
-    public init(itemID: String,
-                revision: Int16,
-                contentFormatVersion: Int16,
-                rotationID: String,
-                content: String,
-                userSignature: String,
-                itemKeySignature: String,
-                state: Int16,
-                signatureEmail: String,
-                aliasEmail: String?,
-                createTime: Int64,
-                modifyTime: Int64) {
-        self.itemID = itemID
-        self.revision = revision
-        self.contentFormatVersion = contentFormatVersion
-        self.rotationID = rotationID
-        self.content = content
-        self.userSignature = userSignature
-        self.itemKeySignature = itemKeySignature
-        self.state = state
-        self.signatureEmail = signatureEmail
-        self.aliasEmail = aliasEmail
-        self.createTime = createTime
-        self.modifyTime = modifyTime
-    }
 }
