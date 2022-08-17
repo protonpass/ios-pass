@@ -69,7 +69,7 @@ extension LocalItemKeyDatasource: LocalItemKeyDatasourceProtocol {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
-        newBatchInsertRequest(entity: ItemKeyEntity.entity(),
+        newBatchInsertRequest(entity: ItemKeyEntity.entity(context: taskContext),
                               sourceItems: itemKeys) { managedObject, itemKey in
             (managedObject as? ItemKeyEntity)?.hydrate(from: itemKey, shareId: shareId)
         }

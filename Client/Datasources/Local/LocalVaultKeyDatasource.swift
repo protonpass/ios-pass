@@ -69,7 +69,7 @@ extension LocalVaultKeyDatasource: LocalVaultKeyDatasourceProtocol {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
-        newBatchInsertRequest(entity: VaultKeyEntity.entity(),
+        newBatchInsertRequest(entity: VaultKeyEntity.entity(context: taskContext),
                               sourceItems: vaultKeys) { managedObject, vaultKey in
             (managedObject as? VaultKeyEntity)?.hydrate(from: vaultKey, shareId: shareId)
         }

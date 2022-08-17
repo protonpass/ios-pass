@@ -58,7 +58,7 @@ extension LocalShareDatasource: LocalShareDatasourceProtocol {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
-        newBatchInsertRequest(entity: ShareEntity.entity(),
+        newBatchInsertRequest(entity: ShareEntity.entity(context: taskContext),
                               sourceItems: shares) { managedObject, share in
             (managedObject as? ShareEntity)?.hydrate(from: share, userId: userId)
         }

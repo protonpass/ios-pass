@@ -78,7 +78,7 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
-        newBatchInsertRequest(entity: ItemRevisionEntity.entity(),
+        newBatchInsertRequest(entity: ItemRevisionEntity.entity(context: taskContext),
                               sourceItems: itemRevisions) { managedObject, itemRevision in
             (managedObject as? ItemRevisionEntity)?.hydrate(from: itemRevision,
                                                             shareId: shareId)
