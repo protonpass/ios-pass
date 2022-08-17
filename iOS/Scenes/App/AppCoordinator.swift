@@ -18,8 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
+import CoreData
 import Crypto
 import ProtonCore_Authentication
 import ProtonCore_Keymaker
@@ -38,10 +40,12 @@ final class AppCoordinator {
     private let appStateObserver = AppStateObserver()
     private let keymaker: Keymaker
     private let apiService: PMAPIService
+    private let container: NSPersistentContainer
 
     @KeychainStorage(key: "sessionData")
     public private(set) var sessionData: SessionData?
 
+    private var homeCoordinator: HomeCoordinator?
     private var welcomeCoordinator: WelcomeCoordinator?
 
     private var rootViewController: UIViewController? { window.rootViewController }
@@ -56,8 +60,11 @@ final class AppCoordinator {
         self._sessionData.setMainKeyProvider(keymaker)
         self.keymaker = keymaker
         self.apiService = PMAPIService(doh: PPDoH(bundle: .main))
+        self.container = .Builder.build(name: kProtonPassContainerName,
+                                        inMemory: false)
         self.apiService.authDelegate = self
         self.apiService.serviceDelegate = self
+
         bindAppState()
     }
 
@@ -95,6 +102,7 @@ final class AppCoordinator {
         let welcomeCoordinator = WelcomeCoordinator(apiServiceDelegate: self)
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
+        self.homeCoordinator = nil
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [unowned self] in
             if refreshTokenExpired {
                 self.alertRefreshTokenExpired()
@@ -103,8 +111,11 @@ final class AppCoordinator {
     }
 
     private func showHomeScene(sessionData: SessionData) {
-        let homeCoordinator = HomeCoordinator(sessionData: sessionData, apiService: apiService)
+        let homeCoordinator = HomeCoordinator(sessionData: sessionData,
+                                              apiService: apiService,
+                                              container: container)
         homeCoordinator.delegate = self
+        self.homeCoordinator = homeCoordinator
         self.welcomeCoordinator = nil
         animateUpdateRootViewController(homeCoordinator.rootViewController)
     }

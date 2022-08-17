@@ -25,7 +25,7 @@ import SwiftUI
 import UIComponents
 
 struct SidebarView: View {
-    let coordinator: HomeCoordinator
+    let viewModel: SideBarViewModel
     let width: CGFloat
 
     var body: some View {
@@ -33,11 +33,10 @@ struct SidebarView: View {
             Color(ColorProvider.SidebarBackground)
                 .ignoresSafeArea(.all)
 
-            let user = coordinator.sessionData.userData.user
             VStack(spacing: 0) {
                 SidebarCurrentUserView(
-                    user: user,
-                    action: coordinator.showUserSwitcher
+                    user: viewModel.user,
+                    action: viewModel.userSwitcherAction
                 )
                 .padding(.horizontal, 8)
 
@@ -45,16 +44,16 @@ struct SidebarView: View {
                     VStack {
 //                        MyVaultsSidebarItemView(vaultSelection: coordinator.vaultSelection)
                         SidebarItemView(item: .home,
-                                        action: coordinator.handleSidebarItem)
+                                        action: viewModel.sideBarItemAction)
                         Divider()
                         SidebarItemView(item: .settings,
-                                        action: coordinator.handleSidebarItem)
+                                        action: viewModel.sideBarItemAction)
                         SidebarItemView(item: .trash,
-                                        action: coordinator.handleSidebarItem)
+                                        action: viewModel.sideBarItemAction)
                         SidebarItemView(item: .help,
-                                        action: coordinator.handleSidebarItem)
+                                        action: viewModel.sideBarItemAction)
                         SidebarItemView(item: .signOut,
-                                        action: coordinator.handleSidebarItem)
+                                        action: viewModel.sideBarItemAction)
                     }
                     .padding(.vertical)
                     .fixedSize(horizontal: false, vertical: true)
@@ -95,7 +94,7 @@ private struct SidebarItemView: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView(coordinator: .preview,
+        SidebarView(viewModel: .preview,
                     width: 300)
     }
 }

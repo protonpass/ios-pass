@@ -44,13 +44,11 @@ final class MyVaultsCoordinator: Coordinator {
 
     init(apiService: APIService,
          sessionData: SessionData,
+         container: NSPersistentContainer,
          vaultSelection: VaultSelection) {
         self.apiService = apiService
         self.sessionData = sessionData
         self.vaultSelection = vaultSelection
-
-        let container = NSPersistentContainer.Builder.build(name: kProtonPassContainerName,
-                                                            inMemory: false)
 
         let userId = sessionData.userData.user.ID
         let authCredential = sessionData.userData.credential
