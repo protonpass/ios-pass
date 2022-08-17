@@ -102,6 +102,8 @@
 		358A508728AD23F900F5285C /* GlobalLocalDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */; };
 		358A508928AD2E8F00F5285C /* SideBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508828AD2E8F00F5285C /* SideBarViewModel.swift */; };
 		358A508B28AD3BB100F5285C /* DataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508A28AD3BB100F5285C /* DataError.swift */; };
+		358A508D28AD823000F5285C /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508C28AD823000F5285C /* PublicKey.swift */; };
+		358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */; };
 		358AB4992886FA7B00818B44 /* VaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4982886FA7B00818B44 /* VaultKey.swift */; };
 		358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB49A2886FDA400818B44 /* ItemKey.swift */; };
 		358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */; };
@@ -382,6 +384,8 @@
 		358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalLocalDatasourceTests.swift; sourceTree = "<group>"; };
 		358A508828AD2E8F00F5285C /* SideBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarViewModel.swift; sourceTree = "<group>"; };
 		358A508A28AD3BB100F5285C /* DataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataError.swift; sourceTree = "<group>"; };
+		358A508C28AD823000F5285C /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
+		358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPublicKeysEndpoint.swift; sourceTree = "<group>"; };
 		358AB4982886FA7B00818B44 /* VaultKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKey.swift; sourceTree = "<group>"; };
 		358AB49A2886FDA400818B44 /* ItemKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemKey.swift; sourceTree = "<group>"; };
 		358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareKeysEndpoint.swift; sourceTree = "<group>"; };
@@ -672,6 +676,7 @@
 				355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */,
 				3593DCF828A824FE00C235D3 /* ItemRevision.swift */,
 				3530092B28A5284900611F8A /* PartialItemContent.swift */,
+				358A508C28AD823000F5285C /* PublicKey.swift */,
 				355443FC287CA77C0017FCAD /* Share.swift */,
 				3593DCFC28A82FA700C235D3 /* ShareKeys.swift */,
 				350A97D32885BFFD00A7168B /* Vault.swift */,
@@ -743,6 +748,7 @@
 		358AB49F2887044500818B44 /* Keys */ = {
 			isa = PBXGroup;
 			children = (
+				358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */,
 				358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */,
 			);
 			path = Keys;
@@ -1769,7 +1775,9 @@
 				358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */,
 				3593DD0C28A837DD00C235D3 /* ItemRevisionEntity.swift in Sources */,
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,
+				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
 				35610B7A28ABC07B00955ACB /* LocalShareKeysDatasource.swift in Sources */,
+				358A508D28AD823000F5285C /* PublicKey.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
 				35610B8D28ABD8B200955ACB /* ItemRevisionRepository.swift in Sources */,
 				358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */,
