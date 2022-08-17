@@ -23,14 +23,12 @@ import ProtonCore_DataModel
 import ProtonCore_Login
 import XCTest
 
-// swiftlint:disable function_body_length
 final class SharePlusShareProviderTests: XCTestCase {
     func testGetVaultSuccess() throws {
         let vaultProtobuf = VaultProtobuf(name: .random(), note: .random())
-        let vaultData = try vaultProtobuf.serializedData()
         let testUser = UserData.test
         let addressKey = testUser.getAddressKey()
-        let request = try CreateVaultRequest(addressKey: addressKey, vaultData: vaultData)
+        let request = try CreateVaultRequest(addressKey: addressKey, vault: vaultProtobuf)
 
         let signingKeyPassphraseKeyPacketData =
         try XCTUnwrap(request.signingKeyPassphraseKeyPacket.base64Decode())

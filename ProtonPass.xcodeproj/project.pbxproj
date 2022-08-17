@@ -18,7 +18,6 @@
 		351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */; };
 		3530092A28A5281800611F8A /* Vault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D32885BFFD00A7168B /* Vault.swift */; };
 		3530092C28A5284900611F8A /* PartialItemContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530092B28A5284900611F8A /* PartialItemContent.swift */; };
-		3530092E28A52B2300611F8A /* ItemProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530092D28A52B2300611F8A /* ItemProtocol.swift */; };
 		353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C02880C45C0021C716 /* GetSharesEndpoint.swift */; };
 		353547C32880CF470021C716 /* UserData+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C22880CF470021C716 /* UserData+Codable.swift */; };
 		35366AA228A446CB0085C24D /* ItemRevision+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366AA128A446CB0085C24D /* ItemRevision+Test.swift */; };
@@ -102,6 +101,7 @@
 		358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */; };
 		358A508728AD23F900F5285C /* GlobalLocalDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */; };
 		358A508928AD2E8F00F5285C /* SideBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508828AD2E8F00F5285C /* SideBarViewModel.swift */; };
+		358A508B28AD3BB100F5285C /* DataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508A28AD3BB100F5285C /* DataError.swift */; };
 		358AB4992886FA7B00818B44 /* VaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4982886FA7B00818B44 /* VaultKey.swift */; };
 		358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB49A2886FDA400818B44 /* ItemKey.swift */; };
 		358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */; };
@@ -300,7 +300,6 @@
 		351E9E38289C508B00BB47EB /* ItemKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemKey+Test.swift"; sourceTree = "<group>"; };
 		351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+RandomWithCount.swift"; sourceTree = "<group>"; };
 		3530092B28A5284900611F8A /* PartialItemContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialItemContent.swift; sourceTree = "<group>"; };
-		3530092D28A52B2300611F8A /* ItemProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemProtocol.swift; sourceTree = "<group>"; };
 		353547C02880C45C0021C716 /* GetSharesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharesEndpoint.swift; sourceTree = "<group>"; };
 		353547C22880CF470021C716 /* UserData+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Codable.swift"; sourceTree = "<group>"; };
 		35366AA128A446CB0085C24D /* ItemRevision+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemRevision+Test.swift"; sourceTree = "<group>"; };
@@ -382,6 +381,7 @@
 		358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalLocalDatasource.swift; sourceTree = "<group>"; };
 		358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalLocalDatasourceTests.swift; sourceTree = "<group>"; };
 		358A508828AD2E8F00F5285C /* SideBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarViewModel.swift; sourceTree = "<group>"; };
+		358A508A28AD3BB100F5285C /* DataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataError.swift; sourceTree = "<group>"; };
 		358AB4982886FA7B00818B44 /* VaultKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKey.swift; sourceTree = "<group>"; };
 		358AB49A2886FDA400818B44 /* ItemKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemKey.swift; sourceTree = "<group>"; };
 		358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareKeysEndpoint.swift; sourceTree = "<group>"; };
@@ -559,7 +559,6 @@
 		35004A3B288FEF1C0073C4A7 /* ModelProtocols */ = {
 			isa = PBXGroup;
 			children = (
-				3530092D28A52B2300611F8A /* ItemProtocol.swift */,
 				354BB14328A2683E00F50040 /* ItemContentProtocol.swift */,
 				358BD35F287D4EA200802A91 /* VaultProtocol.swift */,
 			);
@@ -668,6 +667,7 @@
 			isa = PBXGroup;
 			children = (
 				350A97CB28859D1800A7168B /* AddressKey.swift */,
+				358A508A28AD3BB100F5285C /* DataError.swift */,
 				358AB49A2886FDA400818B44 /* ItemKey.swift */,
 				355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */,
 				3593DCF828A824FE00C235D3 /* ItemRevision.swift */,
@@ -1755,7 +1755,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3530092E28A52B2300611F8A /* ItemProtocol.swift in Sources */,
 				350A97CC28859D1800A7168B /* AddressKey.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProtocol.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
@@ -1766,6 +1765,7 @@
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
 				3530092C28A5284900611F8A /* PartialItemContent.swift in Sources */,
 				355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */,
+				358A508B28AD3BB100F5285C /* DataError.swift in Sources */,
 				358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */,
 				3593DD0C28A837DD00C235D3 /* ItemRevisionEntity.swift in Sources */,
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,
