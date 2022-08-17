@@ -104,6 +104,10 @@
 		358A508B28AD3BB100F5285C /* DataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508A28AD3BB100F5285C /* DataError.swift */; };
 		358A508D28AD823000F5285C /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508C28AD823000F5285C /* PublicKey.swift */; };
 		358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */; };
+		358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509128AD856D00F5285C /* PublicKeyEntity.swift */; };
+		358A509428AD860200F5285C /* LocalPublicKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */; };
+		358A509628AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */; };
+		358A509828AD87E200F5285C /* PublicKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509728AD87E200F5285C /* PublicKey+Test.swift */; };
 		358AB4992886FA7B00818B44 /* VaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4982886FA7B00818B44 /* VaultKey.swift */; };
 		358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB49A2886FDA400818B44 /* ItemKey.swift */; };
 		358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */; };
@@ -386,6 +390,10 @@
 		358A508A28AD3BB100F5285C /* DataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataError.swift; sourceTree = "<group>"; };
 		358A508C28AD823000F5285C /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
 		358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPublicKeysEndpoint.swift; sourceTree = "<group>"; };
+		358A509128AD856D00F5285C /* PublicKeyEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyEntity.swift; sourceTree = "<group>"; };
+		358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPublicKeyDatasource.swift; sourceTree = "<group>"; };
+		358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPublicKeyDatasourceTests.swift; sourceTree = "<group>"; };
+		358A509728AD87E200F5285C /* PublicKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicKey+Test.swift"; sourceTree = "<group>"; };
 		358AB4982886FA7B00818B44 /* VaultKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKey.swift; sourceTree = "<group>"; };
 		358AB49A2886FDA400818B44 /* ItemKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemKey.swift; sourceTree = "<group>"; };
 		358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareKeysEndpoint.swift; sourceTree = "<group>"; };
@@ -583,6 +591,7 @@
 			children = (
 				35366AA128A446CB0085C24D /* ItemRevision+Test.swift */,
 				351E9E38289C508B00BB47EB /* ItemKey+Test.swift */,
+				358A509728AD87E200F5285C /* PublicKey+Test.swift */,
 				353C95E0289A9E8500E3CDCA /* Share+Test.swift */,
 				350A97D92885C95D00A7168B /* UserData+Test.swift */,
 				35464B61289B0380008E65C4 /* VaultKey+Test.swift */,
@@ -738,6 +747,7 @@
 				358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */,
 				35610B7228ABAF0300955ACB /* LocalItemKeyDatasourceTests.swift */,
 				357D9FD428A9985A00F012BB /* LocalItemRevisionDatasourceTests.swift */,
+				358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */,
 				357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */,
 				35610B7B28ABC2F400955ACB /* LocalShareKeysDatasourceTests.swift */,
 				35610B7628ABB9AD00955ACB /* LocalVaultKeyDatasourceTests.swift */,
@@ -800,6 +810,7 @@
 			children = (
 				3593DD0828A837DD00C235D3 /* ItemRevisionEntity.swift */,
 				3593DD0528A837DC00C235D3 /* ItemKeyEntity.swift */,
+				358A509128AD856D00F5285C /* PublicKeyEntity.swift */,
 				3593DD0728A837DC00C235D3 /* ShareEntity.swift */,
 				3593DD0628A837DC00C235D3 /* VaultKeyEntity.swift */,
 			);
@@ -822,6 +833,7 @@
 				3593DCE628A790F800C235D3 /* BaseLocalDatasource.swift */,
 				35610B7028ABAAC500955ACB /* LocalItemKeyDatasource.swift */,
 				357D9FD128A98CF900F012BB /* LocalItemRevisionDatasource.swift */,
+				358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */,
 				3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */,
 				35610B7828ABC02F00955ACB /* LocalShareKeysDatasource.swift */,
 				35610B7428ABB77800955ACB /* LocalVaultKeyDatasource.swift */,
@@ -1762,6 +1774,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				350A97CC28859D1800A7168B /* AddressKey.swift in Sources */,
+				358A509428AD860200F5285C /* LocalPublicKeyDatasource.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProtocol.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
 				35610B7E28ABC9D200955ACB /* BaseRemoteDatasource.swift in Sources */,
@@ -1774,6 +1787,7 @@
 				358A508B28AD3BB100F5285C /* DataError.swift in Sources */,
 				358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */,
 				3593DD0C28A837DD00C235D3 /* ItemRevisionEntity.swift in Sources */,
+				358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */,
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,
 				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
 				35610B7A28ABC07B00955ACB /* LocalShareKeysDatasource.swift in Sources */,
@@ -1825,8 +1839,10 @@
 				357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */,
 				351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */,
 				357D9FD528A9985A00F012BB /* LocalItemRevisionDatasourceTests.swift in Sources */,
+				358A509828AD87E200F5285C /* PublicKey+Test.swift in Sources */,
 				35366AA228A446CB0085C24D /* ItemRevision+Test.swift in Sources */,
 				35610B7328ABAF0300955ACB /* LocalItemKeyDatasourceTests.swift in Sources */,
+				358A509628AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift in Sources */,
 				351E9E39289C508B00BB47EB /* ItemKey+Test.swift in Sources */,
 				350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */,
 				35610B7728ABB9AD00955ACB /* LocalVaultKeyDatasourceTests.swift in Sources */,
