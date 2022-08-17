@@ -40,7 +40,7 @@ final class AppCoordinator {
     private let appStateObserver = AppStateObserver()
     private let keymaker: Keymaker
     private let apiService: PMAPIService
-    private let container: NSPersistentContainer
+    private var container: NSPersistentContainer
 
     @KeychainStorage(key: "sessionData")
     public private(set) var sessionData: SessionData?
@@ -132,6 +132,23 @@ final class AppCoordinator {
     private func wipeAllData() {
         keymaker.wipeMainKey()
         sessionData = nil
+        Task {
+            do {
+                // Delete existing persistent stores
+                let storeContainer = container.persistentStoreCoordinator
+                for store in storeContainer.persistentStores {
+                    if let url = store.url {
+                        try storeContainer.destroyPersistentStore(at: url, ofType: store.type)
+                    }
+                }
+
+                // Re-create persistent container
+                container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
+                PPLogger.shared?.log("Nuked local data")
+            } catch {
+                PPLogger.shared?.log(error)
+            }
+        }
     }
 
     private func alertRefreshTokenExpired() {
