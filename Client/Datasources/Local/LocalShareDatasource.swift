@@ -35,7 +35,7 @@ extension LocalShareDatasource: LocalShareDatasourceProtocol {
 
         let fetchRequest = ShareEntity.fetchRequest()
         fetchRequest.predicate = NSCompoundPredicate(
-            orPredicateWithSubpredicates: [
+            andPredicateWithSubpredicates: [
                 .init(format: "userID = %@", userId),
                 .init(format: "shareID = %@", shareId)
             ])

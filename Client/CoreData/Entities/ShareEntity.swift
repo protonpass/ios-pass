@@ -55,36 +55,6 @@ extension ShareEntity {
     @NSManaged var vaultKeys: NSSet?
 }
 
-// MARK: Generated accessors for itemKeys
-extension ShareEntity {
-    @objc(addItemKeysObject:)
-    @NSManaged func addToItemKeys(_ value: ItemKeyEntity)
-
-    @objc(removeItemKeysObject:)
-    @NSManaged func removeFromItemKeys(_ value: ItemKeyEntity)
-
-    @objc(addItemKeys:)
-    @NSManaged func addToItemKeys(_ values: NSSet)
-
-    @objc(removeItemKeys:)
-    @NSManaged func removeFromItemKeys(_ values: NSSet)
-}
-
-// MARK: Generated accessors for vaultKeys
-extension ShareEntity {
-    @objc(addVaultKeysObject:)
-    @NSManaged func addToVaultKeys(_ value: VaultKeyEntity)
-
-    @objc(removeVaultKeysObject:)
-    @NSManaged func removeFromVaultKeys(_ value: VaultKeyEntity)
-
-    @objc(addVaultKeys:)
-    @NSManaged func addToVaultKeys(_ values: NSSet)
-
-    @objc(removeVaultKeys:)
-    @NSManaged func removeFromVaultKeys(_ values: NSSet)
-}
-
 extension ShareEntity {
     // swiftlint:disable:next cyclomatic_complexity
     func toShare() throws -> Share {

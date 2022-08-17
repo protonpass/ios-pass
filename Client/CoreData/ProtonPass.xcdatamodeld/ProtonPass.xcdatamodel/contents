@@ -7,7 +7,6 @@
         <attribute name="keySignature" attributeType="String"/>
         <attribute name="rotationID" attributeType="String"/>
         <attribute name="shareID" attributeType="String"/>
-        <relationship name="share" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="ShareEntity"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="shareID"/>
@@ -56,8 +55,6 @@
         <attribute name="targetType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
         <attribute name="vaultID" attributeType="String"/>
-        <relationship name="itemKeys" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="ItemKeyEntity"/>
-        <relationship name="vaultKeys" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="VaultKeyEntity"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="shareID"/>
@@ -72,7 +69,6 @@
         <attribute name="rotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="rotationID" attributeType="String"/>
         <attribute name="shareID" optional="YES" attributeType="String"/>
-        <relationship name="share" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="ShareEntity"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="shareID"/>
