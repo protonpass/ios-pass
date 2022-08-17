@@ -40,10 +40,10 @@ public enum ItemContentType: CaseIterable {
 
 public enum ItemContentData {
     case alias
-    case login(ItemContentLoginProtocol)
+    case login(username: String, password: String, urls: [String])
     case note
 
-    var contentType: ItemContentType {
+    var type: ItemContentType {
         switch self {
         case .alias:
             return .alias
@@ -56,53 +56,31 @@ public enum ItemContentData {
 }
 
 public protocol ItemContentProtocol {
-    var itemContentMetadata: ItemContentMetadataProtocol { get }
-    var itemContentData: ItemContentData { get }
-}
-
-public protocol ItemContentMetadataProtocol {
+    // Metadata
     var name: String { get }
     var note: String { get }
+
+    // Custom data
+    var contentData: ItemContentData { get }
 }
 
-public protocol ItemContentLoginProtocol {
-    var username: String { get }
-    var password: String { get }
-    var urls: [String] { get }
-}
-
-typealias ItemContentProtobuf = ProtonPassItemV1_Item
-typealias ItemContentMetadataProtobuf = ProtonPassItemV1_Metadata
-typealias ItemContentLoginProtobuf = ProtonPassItemV1_ItemLogin
-
-extension ItemContentMetadataProtobuf: ItemContentMetadataProtocol {
-    public init(name: String, note: String) {
-        self.name = name
-        self.note = note
-    }
-}
-
-extension ItemContentLoginProtobuf: ItemContentLoginProtocol {
-    public init(username: String, password: String, urls: [String]) {
-        self.username = username
-        self.password = password
-        self.urls = urls
-    }
-}
-
+public typealias ItemContentProtobuf = ProtonPassItemV1_Item
 public typealias ProtobufableItemContentProtocol = ItemContentProtocol & Protobufable
 
 extension ItemContentProtobuf: ProtobufableItemContentProtocol {
-    public var itemContentMetadata: ItemContentMetadataProtocol { metadata }
+    public var name: String { metadata.name }
+    public var note: String { metadata.note }
 
-    public var itemContentData: ItemContentData {
+    public var contentData: ItemContentData {
         switch content.content {
         case .alias:
             return .alias
         case .note:
             return .note
         case .login(let login):
-            return .login(login)
+            return .login(username: login.username,
+                          password: login.password,
+                          urls: login.urls)
         case .none:
             return .note
         }
@@ -117,16 +95,21 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
     }
 
     public init(name: String, note: String, data: ItemContentData) {
-        self.metadata = .init(name: name, note: note)
+        metadata = .init()
+        metadata.name = name
+        metadata.note = note
         switch data {
         case .alias:
-            self.content.alias = .init()
-        case .login(let login):
-            self.content.login = .init(username: login.username,
-                                       password: login.password,
-                                       urls: login.urls)
+            content.alias = .init()
+
+        case let .login(username, password, urls):
+            content.login = .init()
+            content.login.username = username
+            content.login.password = password
+            content.login.urls = urls
+
         case .note:
-            self.content.note = .init()
+            content.note = .init()
         }
     }
 }

@@ -97,7 +97,7 @@ extension ItemRevision {
 
         let itemProtobuf = try ItemContentProtobuf(data: decryptedContent)
 
-        return .init(type: itemProtobuf.itemContentData.contentType,
+        return .init(type: itemProtobuf.contentData.type,
                      title: itemProtobuf.metadata.name,
                      detail: itemProtobuf.metadata.note)
     }

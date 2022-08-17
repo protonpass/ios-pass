@@ -66,7 +66,7 @@ public struct CreateItemRequest: Encodable {
     public init(vaultKey: VaultKey,
                 itemKey: ItemKey,
                 addressKey: AddressKey,
-                itemData: Data) throws {
+                itemContent: ProtobufableItemContentProtocol) throws {
         self.init(rotationID: .random(),
                   labels: [],
                   vaultKeyPacket: .random(),
