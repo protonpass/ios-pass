@@ -26,9 +26,33 @@ public extension APIService {
     /// Async variant that can take an `Endpoint`
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
         try await withCheckedThrowingContinuation { continuation in
-            exec(route: endpoint) { (_, result: Result<E.Response, ResponseError>) in
+            printDebugInfo(endpoint: endpoint)
+            exec(route: endpoint) { (task: URLSessionDataTask?, result: Result<E.Response, ResponseError>) in
+                printDebugInfo(endpoint: endpoint, task: task, result: result)
                 continuation.resume(with: result)
             }
         }
     }
+}
+
+private func printDebugInfo<E: Endpoint>(endpoint: E) {
+#if DEBUG
+    print("==> \(endpoint.method.toString()) \(endpoint.path)")
+    print("isAuth: \(endpoint.isAuth)")
+    print("authCredential: \(String(describing: endpoint.authCredential))")
+    print("header: \(endpoint.header)")
+    print("parameters: \(String(describing: endpoint.parameters))")
+#endif
+}
+
+private func printDebugInfo<E: Endpoint>(endpoint: E,
+                                         task: URLSessionDataTask?,
+                                         result: Result<E.Response, ResponseError>) {
+#if DEBUG
+    if let response = task?.response as? HTTPURLResponse {
+        print("<== \(response.statusCode) \(endpoint.method.toString()) \(endpoint.path)")
+        print("\(response.allHeaderFields)")
+        print(result)
+    }
+#endif
 }
