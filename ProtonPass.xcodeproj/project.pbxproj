@@ -108,6 +108,8 @@
 		358A509428AD860200F5285C /* LocalPublicKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */; };
 		358A509628AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */; };
 		358A509828AD87E200F5285C /* PublicKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509728AD87E200F5285C /* PublicKey+Test.swift */; };
+		358A509A28AD8A8000F5285C /* RemotePublicKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509928AD8A8000F5285C /* RemotePublicKeyDatasource.swift */; };
+		358A509C28AD8B6C00F5285C /* PublicKeyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */; };
 		358AB4992886FA7B00818B44 /* VaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4982886FA7B00818B44 /* VaultKey.swift */; };
 		358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB49A2886FDA400818B44 /* ItemKey.swift */; };
 		358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */; };
@@ -394,6 +396,8 @@
 		358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPublicKeyDatasource.swift; sourceTree = "<group>"; };
 		358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPublicKeyDatasourceTests.swift; sourceTree = "<group>"; };
 		358A509728AD87E200F5285C /* PublicKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicKey+Test.swift"; sourceTree = "<group>"; };
+		358A509928AD8A8000F5285C /* RemotePublicKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePublicKeyDatasource.swift; sourceTree = "<group>"; };
+		358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyRepository.swift; sourceTree = "<group>"; };
 		358AB4982886FA7B00818B44 /* VaultKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKey.swift; sourceTree = "<group>"; };
 		358AB49A2886FDA400818B44 /* ItemKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemKey.swift; sourceTree = "<group>"; };
 		358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareKeysEndpoint.swift; sourceTree = "<group>"; };
@@ -717,6 +721,7 @@
 			isa = PBXGroup;
 			children = (
 				35610B8C28ABD8B200955ACB /* ItemRevisionRepository.swift */,
+				358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */,
 				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
 				35610B8E28ABDFB400955ACB /* ShareKeysRepository.swift */,
 			);
@@ -848,6 +853,7 @@
 				35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */,
 				35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */,
 				35610B8128ABCC3000955ACB /* RemoteShareKeysDatasource.swift */,
+				358A509928AD8A8000F5285C /* RemotePublicKeyDatasource.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -1777,8 +1783,10 @@
 				358A509428AD860200F5285C /* LocalPublicKeyDatasource.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProtocol.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
+				358A509C28AD8B6C00F5285C /* PublicKeyRepository.swift in Sources */,
 				35610B7E28ABC9D200955ACB /* BaseRemoteDatasource.swift in Sources */,
 				35610B8228ABCC3000955ACB /* RemoteShareKeysDatasource.swift in Sources */,
+				358A509A28AD8A8000F5285C /* RemotePublicKeyDatasource.swift in Sources */,
 				35610B8928ABCF1900955ACB /* ShareRepository.swift in Sources */,
 				354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
