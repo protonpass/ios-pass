@@ -47,6 +47,7 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     private let shareRepository: ShareRepositoryProtocol
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
+    private let publicKeyRepository: PublicKeyRepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: VaultContentViewModelDelegate?
 
@@ -54,12 +55,14 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
          vaultSelection: VaultSelection,
          shareRepository: ShareRepositoryProtocol,
          itemRevisionRepository: ItemRevisionRepositoryProtocol,
-         shareKeysRepository: ShareKeysRepositoryProtocol) {
+         shareKeysRepository: ShareKeysRepositoryProtocol,
+         publicKeyRepository: PublicKeyRepositoryProtocol) {
         self.userData = userData
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
-        self.shareKeysRepository = shareKeysRepository
         self.itemRevisionRepository = itemRevisionRepository
+        self.shareKeysRepository = shareKeysRepository
+        self.publicKeyRepository = publicKeyRepository
 
         vaultSelection.objectWillChange
             .sink { [unowned self] _ in
@@ -94,13 +97,21 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
         let shareKeys = try await shareKeysRepository.getShareKeys(shareId: shareId,
                                                                    page: 0,
                                                                    pageSize: .max)
-        let verifyKeys = userData.user.keys.map { $0.publicKey }
-        partialItemContents =
-        try itemRevisions.map { try $0.getPartialContent(userData: userData,
-                                                         share: share,
-                                                         vaultKeys: shareKeys.vaultKeys,
-                                                         itemKeys: shareKeys.itemKeys,
-                                                         verifyKeys: verifyKeys) }
+
+        var partialItemContents = [PartialItemContent]()
+        for itemRevision in itemRevisions {
+            let publicKeys =
+            try await publicKeyRepository.getPublicKeys(email: itemRevision.signatureEmail)
+            let verifyKeys = publicKeys.map { $0.value }
+            let partialItemContent =
+            try itemRevision.getPartialContent(userData: userData,
+                                               share: share,
+                                               vaultKeys: shareKeys.vaultKeys,
+                                               itemKeys: shareKeys.itemKeys,
+                                               verifyKeys: verifyKeys)
+            partialItemContents.append(partialItemContent)
+        }
+        self.partialItemContents = partialItemContents
     }
 }
 

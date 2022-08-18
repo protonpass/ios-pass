@@ -25,6 +25,9 @@ public struct PublicKey: Decodable {
     public let value: String
 
     enum CodingKeys: String, CodingKey {
-        case value = "PublicKey"
+        /// Lowercase the first letter because this object is parsed by Core
+        /// and Core expects keys with lowercased first letter.
+        /// See more in Core's APIService
+        case value = "publicKey"
     }
 }

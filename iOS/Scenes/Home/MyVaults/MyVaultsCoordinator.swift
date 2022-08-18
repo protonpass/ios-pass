@@ -67,11 +67,15 @@ final class MyVaultsCoordinator: Coordinator {
                                                       authCredential: authCredential,
                                                       apiService: apiService)
 
+        let publicKeyRepository = PublicKeyRepository(container: container,
+                                                      apiService: apiService)
+
         self.vaultContentViewModel = .init(userData: sessionData.userData,
                                            vaultSelection: vaultSelection,
                                            shareRepository: shareRepository,
                                            itemRevisionRepository: itemRevisionRepository,
-                                           shareKeysRepository: shareKeysRepository)
+                                           shareKeysRepository: shareKeysRepository,
+                                           publicKeyRepository: publicKeyRepository)
         super.init()
 
         let myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)

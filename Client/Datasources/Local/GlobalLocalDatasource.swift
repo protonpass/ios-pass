@@ -47,6 +47,8 @@ public extension GlobalLocalDatasourceProtocol {
 /// Do we want to wipe everything when switching user?
 /// Or we only want to do it only when logging out?
 /// Not sure if this struct is useful
+/// For now when logging out, we delete the whole database and recreate it again
+/// See more in AppCoordinator
 struct GlobalLocalDatasource: GlobalLocalDatasourceProtocol {
     let localShareDatasource: LocalShareDatasourceProtocol
     let localItemKeyDatasource: LocalItemKeyDatasourceProtocol

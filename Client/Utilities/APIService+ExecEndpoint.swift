@@ -50,7 +50,8 @@ private func printDebugInfo<E: Endpoint>(endpoint: E,
                                          result: Result<E.Response, ResponseError>) {
 #if DEBUG
     if let response = task?.response as? HTTPURLResponse {
-        print("<== \(response.statusCode) \(endpoint.method.toString()) \(endpoint.path)")
+        let urlString = task?.originalRequest?.url?.absoluteString ?? ""
+        print("<== \(response.statusCode) \(endpoint.method.toString()) \(urlString)")
         print("\(response.allHeaderFields)")
         print(result)
     }
