@@ -77,9 +77,9 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
             do {
                 isLoading = true
                 let addressKey = userData.getAddressKey()
-                let vault = VaultProtobuf(name: name, note: note)
                 let createVaultRequest = try CreateVaultRequest(addressKey: addressKey,
-                                                                vault: vault)
+                                                                name: name,
+                                                                description: note)
                 let createdShare =
                 try await shareRepository.createVault(request: createVaultRequest)
                 isLoading = false

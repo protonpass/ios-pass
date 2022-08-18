@@ -71,7 +71,8 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
                 }
 
                 if vaults.isEmpty {
-                    createDefaultVault()
+                    try await createDefaultVault()
+                    fetchVaults()
                 } else {
                     vaultSelection.update(vaults: vaults)
                 }
@@ -81,18 +82,11 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
         }
     }
 
-    private func createDefaultVault() {
-        Task { @MainActor in
-            do {
-                let addressKey = userData.getAddressKey()
-                let vault = VaultProtobuf(name: "Personal", note: "Personal vault")
-                let createVaultRequest = try CreateVaultRequest(addressKey: addressKey,
-                                                                vault: vault)
-                _ = try await shareRepository.createVault(request: createVaultRequest)
-                self.fetchVaults()
-            } catch {
-                self.error = error
-            }
-        }
+    private func createDefaultVault() async throws {
+        let addressKey = userData.getAddressKey()
+        let createVaultRequest = try CreateVaultRequest(addressKey: addressKey,
+                                                        name: "Personal",
+                                                        description: "Personal vault")
+        try await shareRepository.createVault(request: createVaultRequest)
     }
 }

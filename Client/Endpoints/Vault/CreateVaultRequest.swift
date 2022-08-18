@@ -77,47 +77,16 @@ public struct CreateVaultRequest: Encodable {
 
     /// Base64 encoded signature of the item key sha256 primary fingerprint, signed with the vault signing key
     let itemKeySignature: String
+}
 
-    init(addressID: String,
-         content: String,
-         contentFormatVersion: Int,
-         contentEncryptedAddressSignature: String,
-         contentEncryptedVaultSignature: String,
-         vaultKey: String,
-         vaultKeyPassphrase: String,
-         vaultKeySignature: String,
-         keyPacket: String,
-         keyPacketSignature: String,
-         signingKey: String,
-         signingKeyPassphrase: String,
-         signingKeyPassphraseKeyPacket: String,
-         acceptanceSignature: String,
-         itemKey: String,
-         itemKeyPassphrase: String,
-         itemKeyPassphraseKeyPacket: String,
-         itemKeySignature: String) {
-        self.addressID = addressID
-        self.content = content
-        self.contentFormatVersion = contentFormatVersion
-        self.contentEncryptedAddressSignature = contentEncryptedAddressSignature
-        self.contentEncryptedVaultSignature = contentEncryptedVaultSignature
-        self.vaultKey = vaultKey
-        self.vaultKeyPassphrase = vaultKeyPassphrase
-        self.vaultKeySignature = vaultKeySignature
-        self.keyPacket = keyPacket
-        self.keyPacketSignature = keyPacketSignature
-        self.signingKey = signingKey
-        self.signingKeyPassphrase = signingKeyPassphrase
-        self.signingKeyPassphraseKeyPacket = signingKeyPassphraseKeyPacket
-        self.acceptanceSignature = acceptanceSignature
-        self.itemKey = itemKey
-        self.itemKeyPassphrase = itemKeyPassphrase
-        self.itemKeyPassphraseKeyPacket = itemKeyPassphraseKeyPacket
-        self.itemKeySignature = itemKeySignature
+extension CreateVaultRequest {
+    public init(addressKey: AddressKey, name: String, description: String) throws {
+        let vault = VaultProtobuf(name: name, description: description)
+        try self.init(addressKey: addressKey, vault: vault)
     }
 
     // swiftlint:disable:next function_body_length
-    public init(addressKey: AddressKey, vault: ProtobufableVaultProtocol) throws {
+    private init(addressKey: AddressKey, vault: ProtobufableVaultProtocol) throws {
         // Generate signing key
         let (signingKey, signingKeyPassphrase) = try CryptoUtils.generateKey(name: "VaultSigningKey",
                                                                              email: "vault_signing@proton")

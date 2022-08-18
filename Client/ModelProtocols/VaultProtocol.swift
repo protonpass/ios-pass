@@ -44,9 +44,9 @@ extension VaultProtobuf: ProtobufableVaultProtocol {
         self = try VaultProtobuf(serializedData: data)
     }
 
-    public init(name: String, note: String) {
+    public init(name: String, description: String) {
         self.init()
         self.name = name
-        self.description_p = note
+        self.description_p = description
     }
 }
