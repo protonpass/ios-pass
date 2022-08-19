@@ -22,31 +22,82 @@ import CoreData
 import ProtonCore_Networking
 import ProtonCore_Services
 
+public enum ShareKeysRepositoryError: Error {
+    case failedToGetLatestVaultItemKey
+}
+
 public protocol ShareKeysRepositoryProtocol {
     var localShareKeysDatasource: LocalShareKeysDatasourceProtocol { get }
     var remoteShareKeysDatasource: RemoteShareKeysDatasourceProtocol { get }
 
-    func getShareKeys(shareId: String, page: Int, pageSize: Int) async throws -> ShareKeys
+    func getShareKeys(shareId: String,
+                      page: Int,
+                      pageSize: Int,
+                      forceRefresh: Bool) async throws -> ShareKeys
+    /// Get vault & item key pair with highest rotation
+    func getLatestVaultItemKey(shareId: String,
+                               forceRefresh: Bool) async throws -> (VaultKey, ItemKey)
 }
 
 public extension ShareKeysRepositoryProtocol {
-    func getShareKeys(shareId: String, page: Int, pageSize: Int) async throws -> ShareKeys {
+    func getShareKeys(shareId: String,
+                      page: Int,
+                      pageSize: Int,
+                      forceRefresh: Bool) async throws -> ShareKeys {
+        if forceRefresh {
+            return try await getFromRemoteAndSaveToLocal(shareId: shareId,
+                                                         page: page,
+                                                         pageSize: pageSize)
+        }
+
         let localShareKeys =
         try await localShareKeysDatasource.getShareKeys(shareId: shareId,
                                                         page: page,
                                                         pageSize: pageSize)
 
         if localShareKeys.isEmpty {
-            let remoteShareKeys =
-            try await remoteShareKeysDatasource.getShareKeys(shareId: shareId,
-                                                             page: page,
-                                                             pageSize: pageSize)
-            try await localShareKeysDatasource.upsertShareKeys(remoteShareKeys,
-                                                               shareId: shareId)
-            return remoteShareKeys
+            return try await getFromRemoteAndSaveToLocal(shareId: shareId,
+                                                         page: page,
+                                                         pageSize: pageSize)
         }
 
         return localShareKeys
+    }
+
+    func getLatestVaultItemKey(shareId: String,
+                               forceRefresh: Bool) async throws -> (VaultKey, ItemKey) {
+        // Retrieve share keys normally
+        let shareKeys = try await getShareKeys(shareId: shareId,
+                                               page: 0,
+                                               pageSize: kDefaultPageSize,
+                                               forceRefresh: forceRefresh)
+
+        if let latestVaultItemKey = shareKeys.latestVaultItemKey() {
+            return latestVaultItemKey
+        }
+
+        // Force refresh when first retrieval attempt fails for any reasons
+        let refreshedShareKeys = try await getShareKeys(shareId: shareId,
+                                                        page: 0,
+                                                        pageSize: kDefaultPageSize,
+                                                        forceRefresh: true)
+
+        if let refreshedVaultItemKey = refreshedShareKeys.latestVaultItemKey() {
+            return refreshedVaultItemKey
+        }
+
+        // Something really nasty is going on
+        throw ShareKeysRepositoryError.failedToGetLatestVaultItemKey
+    }
+
+    private func getFromRemoteAndSaveToLocal(shareId: String,
+                                             page: Int,
+                                             pageSize: Int) async throws -> ShareKeys {
+        let remoteShareKeys = try await remoteShareKeysDatasource.getShareKeys(shareId: shareId,
+                                                                               page: page,
+                                                                               pageSize: pageSize)
+        try await localShareKeysDatasource.upsertShareKeys(remoteShareKeys, shareId: shareId)
+        return remoteShareKeys
     }
 }
 

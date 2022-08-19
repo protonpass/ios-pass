@@ -89,14 +89,8 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
                                                     note: "Login for black",
                                                     data: loginData)
 
-                let shareKeys = try await shareKeysRepository.getShareKeys(shareId: shareId,
-                                                                           page: 0,
-                                                                           pageSize: .max)
-                // swiftlint:disable:next todo
-                // TODO: Get latest vault key & item key directly from repository
-                // swiftlint:disable:next force_unwrapping
-                let latestVaultKey = shareKeys.vaultKeys.max(by: { $0.rotation > $1.rotation })!
-                let latestItemKey = shareKeys.itemKeys.first { $0.rotationID == latestVaultKey.rotationID }!
+                let (latestVaultKey, latestItemKey) =
+                try await shareKeysRepository.getLatestVaultItemKey(shareId: shareId, forceRefresh: false)
                 let request = try CreateItemRequest(vaultKey: latestVaultKey,
                                                     itemKey: latestItemKey,
                                                     addressKey: addressKey,

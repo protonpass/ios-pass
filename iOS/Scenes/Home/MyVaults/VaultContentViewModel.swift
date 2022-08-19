@@ -83,20 +83,24 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                 try await itemRevisionRepository.getItemRevisions(forceRefresh: forceRefresh,
                                                                   shareId: shareId,
                                                                   page: 0,
-                                                                  pageSize: .max)
+                                                                  pageSize: kDefaultPageSize)
                 try await decrypt(itemRevisions: itemRevisionList.revisionsData,
-                                  shareId: shareId)
+                                  shareId: shareId,
+                                  forceRefresh: forceRefresh)
             } catch {
                 delegate?.vaultContentViewModelDidFailWithError(error: error)
             }
         }
     }
 
-    private func decrypt(itemRevisions: [ItemRevision], shareId: String) async throws {
+    private func decrypt(itemRevisions: [ItemRevision],
+                         shareId: String,
+                         forceRefresh: Bool) async throws {
         let share = try await shareRepository.getShare(shareId: shareId)
         let shareKeys = try await shareKeysRepository.getShareKeys(shareId: shareId,
                                                                    page: 0,
-                                                                   pageSize: .max)
+                                                                   pageSize: kDefaultPageSize,
+                                                                   forceRefresh: forceRefresh)
 
         var partialItemContents = [PartialItemContent]()
         for itemRevision in itemRevisions {

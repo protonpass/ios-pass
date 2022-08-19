@@ -21,6 +21,8 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
+public let kDefaultPageSize = 100
+
 public class BaseRemoteDatasource {
     let authCredential: AuthCredential
     let apiService: APIService

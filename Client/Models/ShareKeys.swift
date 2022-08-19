@@ -24,4 +24,16 @@ public struct ShareKeys: Decodable {
     public let total: Int
 
     public var isEmpty: Bool { vaultKeys.isEmpty || itemKeys.isEmpty }
+
+    public func latestVaultItemKey() -> (VaultKey, ItemKey)? {
+        guard let vaultKey = vaultKeys.max(by: { $0.rotation > $1.rotation }) else {
+            return nil
+        }
+
+        guard let itemKey = itemKeys.first(where: { $0.rotationID == vaultKey.rotationID }) else {
+            return nil
+        }
+
+        return (vaultKey, itemKey)
+    }
 }

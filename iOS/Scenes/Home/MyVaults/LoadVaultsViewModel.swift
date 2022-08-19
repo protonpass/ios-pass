@@ -65,7 +65,8 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
                     let shareKey =
                     try await shareKeysRepository.getShareKeys(shareId: share.shareID,
                                                                page: 0,
-                                                               pageSize: .max)
+                                                               pageSize: kDefaultPageSize,
+                                                               forceRefresh: forceUpdate)
                     vaults.append(try share.getVault(userData: userData,
                                                      vaultKeys: shareKey.vaultKeys))
                 }
