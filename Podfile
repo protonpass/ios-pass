@@ -31,6 +31,7 @@ def ios_and_uicomponents
   pod 'ProtonCore-CoreTranslation-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'Introspect'
+  pod 'AlertToast'
 end
 
 target 'Client' do
@@ -93,7 +94,6 @@ target 'iOS' do
   pod 'ProtonCore-LoginUI-V5/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'SideMenuSwift', '2.0.9'
   pod 'MBProgressHUD'
-  pod 'AlertToast'
 
 end
 
