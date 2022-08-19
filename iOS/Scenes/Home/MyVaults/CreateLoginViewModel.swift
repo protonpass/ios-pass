@@ -48,7 +48,20 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: CreateLoginViewModelDelegate?
 
-    init() {
+    private let shareId: String
+    private let addressKey: AddressKey
+    private let shareKeysRepository: ShareKeysRepositoryProtocol
+    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+
+    init(shareId: String,
+         addressKey: AddressKey,
+         shareKeysRepository: ShareKeysRepositoryProtocol,
+         itemRevisionRepository: ItemRevisionRepositoryProtocol) {
+        self.shareId = shareId
+        self.addressKey = addressKey
+        self.shareKeysRepository = shareKeysRepository
+        self.itemRevisionRepository = itemRevisionRepository
+
         $isLoading
             .sink { [weak self] isLoading in
                 guard let self = self else { return }
@@ -72,10 +85,32 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
 
     func saveAction() {
         isLoading = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.isLoading = false
-            self.delegate?.createLoginViewModelDidCreateLogin()
-            self.createdLogin = true
+        Task { @MainActor in
+            do {
+                let loginData = ItemContentData.login(username: "nhon@proton.black",
+                                                      password: "12345678",
+                                                      urls: ["https://proton.black"])
+                let loginItem = ItemContentProtobuf(name: "Nhon login",
+                                                    note: "Login for black",
+                                                    data: loginData)
+
+                let shareKeys = try await shareKeysRepository.getShareKeys(shareId: shareId,
+                                                                           page: 0,
+                                                                           pageSize: .max)
+                // swiftlint:disable:next todo
+                // TODO: Get latest vault key & item key directly from repository
+                // swiftlint:disable:next force_unwrapping
+                let latestVaultKey = shareKeys.vaultKeys.max(by: { $0.rotation > $1.rotation })!
+                let latestItemKey = shareKeys.itemKeys.first { $0.rotationID == latestVaultKey.rotationID }!
+                let request = try CreateItemRequest(vaultKey: latestVaultKey,
+                                                    itemKey: latestItemKey,
+                                                    addressKey: addressKey,
+                                                    itemContent: loginItem)
+                try await itemRevisionRepository.createItem(request: request, shareId: shareId)
+            } catch {
+                self.isLoading = false
+                self.error = error
+            }
         }
     }
 

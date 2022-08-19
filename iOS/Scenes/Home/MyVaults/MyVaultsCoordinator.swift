@@ -41,6 +41,8 @@ final class MyVaultsCoordinator: Coordinator {
     private let vaultSelection: VaultSelection
     private let vaultContentViewModel: VaultContentViewModel
     private let shareRepository: ShareRepositoryProtocol
+    private let shareKeysRepository: ShareKeysRepositoryProtocol
+    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
 
     init(apiService: APIService,
          sessionData: SessionData,
@@ -59,13 +61,13 @@ final class MyVaultsCoordinator: Coordinator {
                                               apiService: apiService)
         self.shareRepository = shareRepository
 
-        let itemRevisionRepository = ItemRevisionRepository(container: container,
-                                                            authCredential: authCredential,
-                                                            apiService: apiService)
+        self.itemRevisionRepository = ItemRevisionRepository(container: container,
+                                                             authCredential: authCredential,
+                                                             apiService: apiService)
 
-        let shareKeysRepository = ShareKeysRepository(container: container,
-                                                      authCredential: authCredential,
-                                                      apiService: apiService)
+        self.shareKeysRepository = ShareKeysRepository(container: container,
+                                                       authCredential: authCredential,
+                                                       apiService: apiService)
 
         let publicKeyRepository = PublicKeyRepository(container: container,
                                                       apiService: apiService)
@@ -120,7 +122,11 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateLoginView() {
-        let createLoginViewModel = CreateLoginViewModel()
+        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
+        let createLoginViewModel = CreateLoginViewModel(shareId: shareId,
+                                                        addressKey: sessionData.userData.getAddressKey(),
+                                                        shareKeysRepository: shareKeysRepository,
+                                                        itemRevisionRepository: itemRevisionRepository)
         createLoginViewModel.delegate = self
         let createLoginView = CreateLoginView(viewModel: createLoginViewModel)
         presentViewFullScreen(createLoginView)

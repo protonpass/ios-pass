@@ -67,6 +67,9 @@ public struct CreateItemRequest: Encodable {
                 itemKey: ItemKey,
                 addressKey: AddressKey,
                 itemContent: ProtobufableItemContentProtocol) throws {
+        let itemContentData = try itemContent.data()
+        let vaultKeyPublicKey = vaultKey.key.publicKey
+        throw CryptoError.failedToEncrypt
         self.init(rotationID: .random(),
                   labels: [],
                   vaultKeyPacket: .random(),
