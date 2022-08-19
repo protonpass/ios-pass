@@ -20,19 +20,17 @@
 
 import Foundation
 
-public protocol RemoteItemRevisionDatasourceProtocol {
+public protocol RemoteItemRevisionDatasourceProtocol: BaseRemoteDatasourceProtocol {
     func getItemRevisions(shareId: String,
                           page: Int,
                           pageSize: Int) async throws -> ItemRevisionList
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision
 }
 
-public final class RemoteItemRevisionDatasource: BaseRemoteDatasource {}
-
-extension RemoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol {
-    public func getItemRevisions(shareId: String,
-                                 page: Int,
-                                 pageSize: Int) async throws -> ItemRevisionList {
+public extension RemoteItemRevisionDatasourceProtocol {
+    func getItemRevisions(shareId: String,
+                          page: Int,
+                          pageSize: Int) async throws -> ItemRevisionList {
         let endpoint = GetItemsEndpoint(credential: authCredential,
                                         shareId: shareId,
                                         page: page,
@@ -41,8 +39,8 @@ extension RemoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol {
         return response.items
     }
 
-    public func createItem(shareId: String,
-                           request: CreateItemRequest) async throws -> ItemRevision {
+    func createItem(shareId: String,
+                    request: CreateItemRequest) async throws -> ItemRevision {
         let endpoint = CreateItemEndpoint(credential: authCredential,
                                           shareId: shareId,
                                           request: request)
@@ -50,3 +48,7 @@ extension RemoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol {
         return response.item
     }
 }
+
+public final class RemoteItemRevisionDatasource: BaseRemoteDatasource {}
+
+extension RemoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol {}

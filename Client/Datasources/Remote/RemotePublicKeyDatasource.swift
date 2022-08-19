@@ -20,6 +20,8 @@
 
 import ProtonCore_Services
 
+/// Special repository that doesn't conform to `BaseRemoteDatasourceProtocol`
+/// because it doesn't need `AuthCredential`
 public protocol RemotePublicKeyDatasourceProtocol {
     func getPublicKeys(email: String) async throws -> [PublicKey]
 }

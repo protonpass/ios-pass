@@ -20,16 +20,14 @@
 
 import Foundation
 
-public protocol RemoteShareDatasourceProtocol {
+public protocol RemoteShareDatasourceProtocol: BaseRemoteDatasourceProtocol {
     func getShares() async throws -> [Share]
     func getShare(shareId: String) async throws -> Share
     func createVault(request: CreateVaultRequest) async throws -> Share
 }
 
-public final class RemoteShareDatasource: BaseRemoteDatasource {}
-
-extension RemoteShareDatasource: RemoteShareDatasourceProtocol {
-    public func getShares() async throws -> [Share] {
+public extension RemoteShareDatasourceProtocol {
+    func getShares() async throws -> [Share] {
         var shares = [Share]()
 
         // Fetch the partial shares first
@@ -55,17 +53,21 @@ extension RemoteShareDatasource: RemoteShareDatasourceProtocol {
         return shares
     }
 
-    public func getShare(shareId: String) async throws -> Share {
+    func getShare(shareId: String) async throws -> Share {
         let endpoint = GetShareEndpoint(credential: authCredential,
                                         shareId: shareId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.share
     }
 
-    public func createVault(request: CreateVaultRequest) async throws -> Share {
+    func createVault(request: CreateVaultRequest) async throws -> Share {
         let endpoint = CreateVaultEndpoint(credential: authCredential,
                                            request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.share
     }
 }
+
+public final class RemoteShareDatasource: BaseRemoteDatasource {}
+
+extension RemoteShareDatasource: RemoteShareDatasourceProtocol {}

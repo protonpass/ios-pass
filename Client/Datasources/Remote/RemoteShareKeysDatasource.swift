@@ -20,16 +20,14 @@
 
 import Foundation
 
-public protocol RemoteShareKeysDatasourceProtocol {
+public protocol RemoteShareKeysDatasourceProtocol: BaseRemoteDatasourceProtocol {
     func getShareKeys(shareId: String, page: Int, pageSize: Int) async throws -> ShareKeys
 }
 
-public final class RemoteShareKeysDatasource: BaseRemoteDatasource {}
-
-extension RemoteShareKeysDatasource: RemoteShareKeysDatasourceProtocol {
-    public func getShareKeys(shareId: String,
-                             page: Int,
-                             pageSize: Int) async throws -> ShareKeys {
+public extension RemoteShareKeysDatasourceProtocol {
+    func getShareKeys(shareId: String,
+                      page: Int,
+                      pageSize: Int) async throws -> ShareKeys {
         let endpoint = GetShareKeysEndpoint(credential: authCredential,
                                             shareId: shareId,
                                             page: page,
@@ -38,3 +36,7 @@ extension RemoteShareKeysDatasource: RemoteShareKeysDatasourceProtocol {
         return response.keys
     }
 }
+
+public final class RemoteShareKeysDatasource: BaseRemoteDatasource {}
+
+extension RemoteShareKeysDatasource: RemoteShareKeysDatasourceProtocol {}
