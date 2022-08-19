@@ -140,7 +140,11 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateNoteView() {
-        let createNoteViewModel = CreateNoteViewModel()
+        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
+        let createNoteViewModel = CreateNoteViewModel(shareId: shareId,
+                                                      addressKey: sessionData.userData.getAddressKey(),
+                                                      shareKeysRepository: shareKeysRepository,
+                                                      itemRevisionRepository: itemRevisionRepository)
         createNoteViewModel.delegate = self
         let createNoteView = CreateNoteView(viewModel: createNoteViewModel)
         let createNewNoteController = UIHostingController(rootView: createNoteView)

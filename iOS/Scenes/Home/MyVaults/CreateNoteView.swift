@@ -90,9 +90,3 @@ struct CreateNoteView: View {
         }
     }
 }
-
-struct CreateNoteView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateNoteView(viewModel: .init())
-    }
-}

@@ -31,7 +31,7 @@ protocol CreateLoginViewModelDelegate: AnyObject {
     func createLoginViewModelDidCreateLogin()
 }
 
-final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
+final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     @Published private(set) var isLoading = false
@@ -48,19 +48,14 @@ final class CreateLoginViewModel: DeinitPrintable, ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: CreateLoginViewModelDelegate?
 
-    private let shareId: String
-    private let addressKey: AddressKey
-    private let shareKeysRepository: ShareKeysRepositoryProtocol
-    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
-
-    init(shareId: String,
-         addressKey: AddressKey,
-         shareKeysRepository: ShareKeysRepositoryProtocol,
-         itemRevisionRepository: ItemRevisionRepositoryProtocol) {
-        self.shareId = shareId
-        self.addressKey = addressKey
-        self.shareKeysRepository = shareKeysRepository
-        self.itemRevisionRepository = itemRevisionRepository
+    override init(shareId: String,
+                  addressKey: AddressKey,
+                  shareKeysRepository: ShareKeysRepositoryProtocol,
+                  itemRevisionRepository: ItemRevisionRepositoryProtocol) {
+        super.init(shareId: shareId,
+                   addressKey: addressKey,
+                   shareKeysRepository: shareKeysRepository,
+                   itemRevisionRepository: itemRevisionRepository)
 
         $isLoading
             .sink { [weak self] isLoading in

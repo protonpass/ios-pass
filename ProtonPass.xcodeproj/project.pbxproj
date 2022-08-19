@@ -138,6 +138,7 @@
 		3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */; };
 		3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */; };
 		35A909EA2890110F00AC54D4 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E92890110F00AC54D4 /* CoreDataError.swift */; };
+		35AABE1B28AFB63900CEDDE6 /* BaseCreateItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateItemViewModel.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateNoteViewModel.swift */; };
 		35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E00615288BE5FE00FAAD65 /* SessionData.swift */; };
 		35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
@@ -423,6 +424,7 @@
 		3593DD1228A8415300C235D3 /* PersistentContainerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainerBuilder.swift; sourceTree = "<group>"; };
 		3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasource.swift; sourceTree = "<group>"; };
 		35A909E92890110F00AC54D4 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
+		35AABE1A28AFB63900CEDDE6 /* BaseCreateItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCreateItemViewModel.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNoteViewModel.swift; sourceTree = "<group>"; };
 		35E00615288BE5FE00FAAD65 /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		35E50636286F819F00A3F6EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -627,6 +629,7 @@
 		3547ABCC2876CFA700EE85E1 /* MyVaults */ = {
 			isa = PBXGroup;
 			children = (
+				35AABE1A28AFB63900CEDDE6 /* BaseCreateItemViewModel.swift */,
 				3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */,
 				3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */,
 				350A97DB2885FD7900A7168B /* MyVaultsViewModel.swift */,
@@ -1730,6 +1733,7 @@
 			files = (
 				3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateNoteViewModel.swift in Sources */,
+				35AABE1B28AFB63900CEDDE6 /* BaseCreateItemViewModel.swift in Sources */,
 				3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */,
 				355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */,
 				35476974289D82FE00581E2E /* CreateItemViewModel.swift in Sources */,

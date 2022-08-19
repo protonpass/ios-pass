@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 import SwiftUI
@@ -28,7 +29,7 @@ protocol CreateNoteViewModelDelegate: AnyObject {
     func createNoteViewModelDidFailWithError(error: Error)
 }
 
-final class CreateNoteViewModel: DeinitPrintable, ObservableObject {
+final class CreateNoteViewModel: BaseCreateItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     @Published private(set) var isLoading = false
@@ -39,7 +40,15 @@ final class CreateNoteViewModel: DeinitPrintable, ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: CreateNoteViewModelDelegate?
 
-    init() {
+    override init(shareId: String,
+                  addressKey: AddressKey,
+                  shareKeysRepository: ShareKeysRepositoryProtocol,
+                  itemRevisionRepository: ItemRevisionRepositoryProtocol) {
+        super.init(shareId: shareId,
+                   addressKey: addressKey,
+                   shareKeysRepository: shareKeysRepository,
+                   itemRevisionRepository: itemRevisionRepository)
+
         $isLoading
             .sink { [weak self] isLoading in
                 guard let self = self else { return }
