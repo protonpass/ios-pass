@@ -50,4 +50,29 @@ class BaseCreateItemViewModel {
         self.shareKeysRepository = shareKeysRepository
         self.itemRevisionRepository = itemRevisionRepository
     }
+
+    // swiftlint:disable:next unavailable_function
+    func generateItemContent() -> ItemContentProtobuf {
+        fatalError("Must be overridden by subclasses")
+    }
+
+    func createItem() {
+        Task { @MainActor in
+            do {
+                isLoading = true
+                let itemContent = generateItemContent()
+
+                let (latestVaultKey, latestItemKey) =
+                try await shareKeysRepository.getLatestVaultItemKey(shareId: shareId, forceRefresh: false)
+                let request = try CreateItemRequest(vaultKey: latestVaultKey,
+                                                    itemKey: latestItemKey,
+                                                    addressKey: addressKey,
+                                                    itemContent: itemContent)
+                try await itemRevisionRepository.createItem(request: request, shareId: shareId)
+            } catch {
+                isLoading = false
+                self.error = error
+            }
+        }
+    }
 }

@@ -70,29 +70,13 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
             .store(in: &cancellables)
     }
 
-    func saveAction() {
-        isLoading = true
-        Task { @MainActor in
-            do {
-                let loginData = ItemContentData.login(username: "nhon@proton.black",
-                                                      password: "12345678",
-                                                      urls: ["https://proton.black"])
-                let loginItem = ItemContentProtobuf(name: "Nhon login",
-                                                    note: "Login for black",
-                                                    data: loginData)
-
-                let (latestVaultKey, latestItemKey) =
-                try await shareKeysRepository.getLatestVaultItemKey(shareId: shareId, forceRefresh: false)
-                let request = try CreateItemRequest(vaultKey: latestVaultKey,
-                                                    itemKey: latestItemKey,
-                                                    addressKey: addressKey,
-                                                    itemContent: loginItem)
-                try await itemRevisionRepository.createItem(request: request, shareId: shareId)
-            } catch {
-                self.isLoading = false
-                self.error = error
-            }
-        }
+    override func generateItemContent() -> ItemContentProtobuf {
+        let loginData = ItemContentData.login(username: "nhon@proton.black",
+                                              password: "12345678",
+                                              urls: ["https://proton.black"])
+        return ItemContentProtobuf(name: "Nhon login",
+                                   note: "Login for black",
+                                   data: loginData)
     }
 
     @objc

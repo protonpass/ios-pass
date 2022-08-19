@@ -58,13 +58,9 @@ final class CreateNoteViewModel: BaseCreateItemViewModel, DeinitPrintable, Obser
             .store(in: &cancellables)
     }
 
-    func saveAction() {
-        isLoading = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.isLoading = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.error = AppCoordinatorError.noSessionData
-            }
-        }
+    override func generateItemContent() -> ItemContentProtobuf {
+        ItemContentProtobuf(name: name,
+                            note: note,
+                            data: ItemContentData.note)
     }
 }

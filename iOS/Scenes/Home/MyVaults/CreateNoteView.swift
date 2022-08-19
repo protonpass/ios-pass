@@ -82,7 +82,7 @@ struct CreateNoteView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.saveAction) {
+            Button(action: viewModel.createItem) {
                 Text("Save")
                     .fontWeight(.bold)
                     .foregroundColor(Color(ColorProvider.BrandNorm))
