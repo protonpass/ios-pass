@@ -93,6 +93,7 @@ target 'iOS' do
   pod 'ProtonCore-LoginUI-V5/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'SideMenuSwift', '2.0.9'
   pod 'MBProgressHUD'
+  pod 'AlertToast'
 
 end
 
