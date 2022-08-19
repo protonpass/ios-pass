@@ -58,6 +58,8 @@ final class CreateNoteViewModel: BaseCreateItemViewModel, DeinitPrintable, Obser
             .store(in: &cancellables)
     }
 
+    override func itemContentType() -> ItemContentType { .note }
+
     override func generateItemContent() -> ItemContentProtobuf {
         ItemContentProtobuf(name: name,
                             note: note,

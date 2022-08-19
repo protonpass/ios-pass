@@ -70,6 +70,8 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
             .store(in: &cancellables)
     }
 
+    override func itemContentType() -> ItemContentType { .login }
+
     override func generateItemContent() -> ItemContentProtobuf {
         let loginData = ItemContentData.login(username: "nhon@proton.black",
                                               password: "12345678",

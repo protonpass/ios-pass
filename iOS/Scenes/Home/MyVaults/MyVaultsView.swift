@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIComponents
 
 struct MyVaultsView: View {
     @StateObject private var viewModel: MyVaultsViewModel
@@ -38,6 +39,7 @@ struct MyVaultsView: View {
             LoadVaultsView(viewModel: loadVaultsViewModel)
         } else {
             VaultContentView(viewModel: vaultContentViewModel)
+                .alertToastSuccessMessage($viewModel.successMessage)
         }
     }
 }

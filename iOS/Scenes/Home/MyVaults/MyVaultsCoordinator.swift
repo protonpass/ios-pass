@@ -43,6 +43,7 @@ final class MyVaultsCoordinator: Coordinator {
     private let shareRepository: ShareRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    private let myVaultsViewModel: MyVaultsViewModel
 
     init(apiService: APIService,
          sessionData: SessionData,
@@ -78,9 +79,11 @@ final class MyVaultsCoordinator: Coordinator {
                                            itemRevisionRepository: itemRevisionRepository,
                                            shareKeysRepository: shareKeysRepository,
                                            publicKeyRepository: publicKeyRepository)
+
+        self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
+
         super.init()
 
-        let myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
         let loadVaultsViewModel = LoadVaultsViewModel(userData: sessionData.userData,
                                                       vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
@@ -276,7 +279,17 @@ extension MyVaultsCoordinator: BaseCreateItemViewModelDelegate {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 
-    func createItemViewModelDidCreateItem(_ item: ItemRevision) {
-        vaultContentViewModel.fetchItems(forceRefresh: true)
+    func createItemViewModelDidCreateItem(_ itemContentType: ItemContentType) {
+        dismissTopMostViewController()
+        let message: String
+        switch itemContentType {
+        case .alias:
+            message = "Alias created"
+        case .login:
+            message = "Login created"
+        case .note:
+            message = "Note created"
+        }
+        myVaultsViewModel.successMessage = message
     }
 }

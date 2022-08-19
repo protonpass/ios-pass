@@ -26,7 +26,7 @@ protocol BaseCreateItemViewModelDelegate: AnyObject {
     func createItemViewModelBeginsLoading()
     func createItemViewModelStopsLoading()
     func createItemViewModelDidFailWithError(_ error: Error)
-    func createItemViewModelDidCreateItem(_ item: ItemRevision)
+    func createItemViewModelDidCreateItem(_ itemContentType: ItemContentType)
 }
 
 class BaseCreateItemViewModel {
@@ -52,6 +52,11 @@ class BaseCreateItemViewModel {
     }
 
     // swiftlint:disable:next unavailable_function
+    func itemContentType() -> ItemContentType {
+        fatalError("Must be overridden by subclasses")
+    }
+
+    // swiftlint:disable:next unavailable_function
     func generateItemContent() -> ItemContentProtobuf {
         fatalError("Must be overridden by subclasses")
     }
@@ -59,16 +64,17 @@ class BaseCreateItemViewModel {
     func createItem() {
         Task { @MainActor in
             do {
-                isLoading = true
-                let itemContent = generateItemContent()
-
-                let (latestVaultKey, latestItemKey) =
-                try await shareKeysRepository.getLatestVaultItemKey(shareId: shareId, forceRefresh: false)
-                let request = try CreateItemRequest(vaultKey: latestVaultKey,
-                                                    itemKey: latestItemKey,
-                                                    addressKey: addressKey,
-                                                    itemContent: itemContent)
-                try await itemRevisionRepository.createItem(request: request, shareId: shareId)
+//                isLoading = true
+//                let itemContent = generateItemContent()
+//
+//                let (latestVaultKey, latestItemKey) =
+//                try await shareKeysRepository.getLatestVaultItemKey(shareId: shareId, forceRefresh: false)
+//                let request = try CreateItemRequest(vaultKey: latestVaultKey,
+//                                                    itemKey: latestItemKey,
+//                                                    addressKey: addressKey,
+//                                                    itemContent: itemContent)
+//                try await itemRevisionRepository.createItem(request: request, shareId: shareId)
+                delegate?.createItemViewModelDidCreateItem(itemContentType())
             } catch {
                 isLoading = false
                 self.error = error
