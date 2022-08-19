@@ -128,6 +128,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                         shareKeysRepository: shareKeysRepository,
                                                         itemRevisionRepository: itemRevisionRepository)
         createLoginViewModel.delegate = self
+        createLoginViewModel.createLoginDelegate = self
         let createLoginView = CreateLoginView(viewModel: createLoginViewModel)
         presentViewFullScreen(createLoginView)
     }
@@ -241,24 +242,8 @@ extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
 
 // MARK: - CreateLoginViewModelDelegate
 extension MyVaultsCoordinator: CreateLoginViewModelDelegate {
-    func createLoginViewModelBeginsLoading() {
-        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
-    }
-
-    func createLoginViewModelStopsLoading() {
-        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
-    }
-
     func createLoginViewModelWantsToGeneratePassword(delegate: GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate)
-    }
-
-    func createLoginViewModelDidFailWithError(error: Error) {
-        delegate?.myVautsCoordinatorWantsToAlertError(error)
-    }
-
-    func createLoginViewModelDidCreateLogin() {
-        vaultContentViewModel.fetchItems(forceRefresh: true)
     }
 }
 
@@ -277,17 +262,21 @@ extension MyVaultsCoordinator: CreateAliasViewModelDelegate {
     }
 }
 
-// MARK: - CreateNoteViewModelDelegate
-extension MyVaultsCoordinator: CreateNoteViewModelDelegate {
-    func createNoteViewModelBeginsLoading() {
+// MARK: - BaseCreateItemViewModelDelegate
+extension MyVaultsCoordinator: BaseCreateItemViewModelDelegate {
+    func createItemViewModelBeginsLoading() {
         delegate?.myVautsCoordinatorWantsToShowLoadingHud()
     }
 
-    func createNoteViewModelStopsLoading() {
+    func createItemViewModelStopsLoading() {
         delegate?.myVautsCoordinatorWantsToHideLoadingHud()
     }
 
-    func createNoteViewModelDidFailWithError(error: Error) {
+    func createItemViewModelDidFailWithError(_ error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
+    }
+
+    func createItemViewModelDidCreateItem(_ item: ItemRevision) {
+        vaultContentViewModel.fetchItems(forceRefresh: true)
     }
 }

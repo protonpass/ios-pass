@@ -19,9 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 
+protocol BaseCreateItemViewModelDelegate: AnyObject {
+    func createItemViewModelBeginsLoading()
+    func createItemViewModelStopsLoading()
+    func createItemViewModelDidFailWithError(_ error: Error)
+    func createItemViewModelDidCreateItem(_ item: ItemRevision)
+}
+
 class BaseCreateItemViewModel {
+    @Published var isLoading = false
+    @Published var error: Error?
+
+    var cancellables = Set<AnyCancellable>()
+    weak var delegate: BaseCreateItemViewModelDelegate?
+
     let shareId: String
     let addressKey: AddressKey
     let shareKeysRepository: ShareKeysRepositoryProtocol

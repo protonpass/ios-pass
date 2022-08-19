@@ -19,26 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import Core
 import SwiftUI
-
-protocol CreateNoteViewModelDelegate: AnyObject {
-    func createNoteViewModelBeginsLoading()
-    func createNoteViewModelStopsLoading()
-    func createNoteViewModelDidFailWithError(error: Error)
-}
 
 final class CreateNoteViewModel: BaseCreateItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    @Published private(set) var isLoading = false
-    @Published private(set) var error: Error?
     @Published var name = ""
     @Published var note = ""
-
-    private var cancellables = Set<AnyCancellable>()
-    weak var delegate: CreateNoteViewModelDelegate?
 
     override init(shareId: String,
                   addressKey: AddressKey,
@@ -53,9 +41,9 @@ final class CreateNoteViewModel: BaseCreateItemViewModel, DeinitPrintable, Obser
             .sink { [weak self] isLoading in
                 guard let self = self else { return }
                 if isLoading {
-                    self.delegate?.createNoteViewModelBeginsLoading()
+                    self.delegate?.createItemViewModelBeginsLoading()
                 } else {
-                    self.delegate?.createNoteViewModelStopsLoading()
+                    self.delegate?.createItemViewModelStopsLoading()
                 }
             }
             .store(in: &cancellables)
@@ -64,7 +52,7 @@ final class CreateNoteViewModel: BaseCreateItemViewModel, DeinitPrintable, Obser
             .sink { [weak self] error in
                 guard let self = self else { return }
                 if let error = error {
-                    self.delegate?.createNoteViewModelDidFailWithError(error: error)
+                    self.delegate?.createItemViewModelDidFailWithError(error)
                 }
             }
             .store(in: &cancellables)

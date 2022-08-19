@@ -19,23 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import Core
 import SwiftUI
 
 protocol CreateLoginViewModelDelegate: AnyObject {
-    func createLoginViewModelBeginsLoading()
-    func createLoginViewModelStopsLoading()
     func createLoginViewModelWantsToGeneratePassword(delegate: GeneratePasswordViewModelDelegate)
-    func createLoginViewModelDidFailWithError(error: Error)
-    func createLoginViewModelDidCreateLogin()
 }
 
 final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    @Published private(set) var isLoading = false
-    @Published private(set) var error: Error?
     @Published private(set) var createdLogin = false
 
     @Published var title = ""
@@ -45,8 +38,7 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
     @Published var urls: [String] = [""]
     @Published var note = ""
 
-    private var cancellables = Set<AnyCancellable>()
-    weak var delegate: CreateLoginViewModelDelegate?
+    weak var createLoginDelegate: CreateLoginViewModelDelegate?
 
     override init(shareId: String,
                   addressKey: AddressKey,
@@ -61,9 +53,9 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
             .sink { [weak self] isLoading in
                 guard let self = self else { return }
                 if isLoading {
-                    self.delegate?.createLoginViewModelBeginsLoading()
+                    self.delegate?.createItemViewModelBeginsLoading()
                 } else {
-                    self.delegate?.createLoginViewModelStopsLoading()
+                    self.delegate?.createItemViewModelStopsLoading()
                 }
             }
             .store(in: &cancellables)
@@ -72,7 +64,7 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
             .sink { [weak self] error in
                 guard let self = self else { return }
                 if let error = error {
-                    self.delegate?.createLoginViewModelDidFailWithError(error: error)
+                    self.delegate?.createItemViewModelDidFailWithError(error)
                 }
             }
             .store(in: &cancellables)
@@ -105,7 +97,7 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
 
     @objc
     func generatePasswordAction() {
-        delegate?.createLoginViewModelWantsToGeneratePassword(delegate: self)
+        createLoginDelegate?.createLoginViewModelWantsToGeneratePassword(delegate: self)
     }
 
     func generateAliasAction() {
