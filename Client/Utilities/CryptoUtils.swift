@@ -31,6 +31,8 @@ public enum CryptoError: Error {
     case failedToVerifyVault
     case failedToDecryptContent
     case failedToVerifySignature
+    case failedToGenerateSessionKey
+    case failedToDecode
 }
 
 public enum CryptoUtils {
@@ -81,5 +83,20 @@ public enum CryptoUtils {
         try throwing { error in
             ArmorArmorWithType(signature, "SIGNATURE", &error)
         }
+    }
+
+    public static func armorMessage(_ message: Data) throws -> String {
+        try throwing { error in
+            ArmorArmorWithType(message, "MESSAGE", &error)
+        }
+    }
+
+    public static func generateSessionKey() throws -> CryptoSessionKey {
+        var error: NSError?
+        guard let sessionKey = CryptoGenerateSessionKey(&error) else {
+            throw CryptoError.failedToGenerateSessionKey
+        }
+        if let error = error { throw error }
+        return sessionKey
     }
 }

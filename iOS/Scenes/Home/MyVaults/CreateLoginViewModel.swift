@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import ProtonCore_Login
 import SwiftUI
 
 protocol CreateLoginViewModelDelegate: AnyObject {
@@ -41,11 +42,13 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
     weak var createLoginDelegate: CreateLoginViewModelDelegate?
 
     override init(shareId: String,
-                  addressKey: AddressKey,
+                  userData: UserData,
+                  shareRepository: ShareRepositoryProtocol,
                   shareKeysRepository: ShareKeysRepositoryProtocol,
                   itemRevisionRepository: ItemRevisionRepositoryProtocol) {
         super.init(shareId: shareId,
-                   addressKey: addressKey,
+                   userData: userData,
+                   shareRepository: shareRepository,
                    shareKeysRepository: shareKeysRepository,
                    itemRevisionRepository: itemRevisionRepository)
 

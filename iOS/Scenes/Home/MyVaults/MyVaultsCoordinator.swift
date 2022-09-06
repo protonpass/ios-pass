@@ -127,7 +127,8 @@ final class MyVaultsCoordinator: Coordinator {
     func showCreateLoginView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
         let createLoginViewModel = CreateLoginViewModel(shareId: shareId,
-                                                        addressKey: sessionData.userData.getAddressKey(),
+                                                        userData: sessionData.userData,
+                                                        shareRepository: shareRepository,
                                                         shareKeysRepository: shareKeysRepository,
                                                         itemRevisionRepository: itemRevisionRepository)
         createLoginViewModel.delegate = self
@@ -146,7 +147,8 @@ final class MyVaultsCoordinator: Coordinator {
     func showCreateNoteView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
         let createNoteViewModel = CreateNoteViewModel(shareId: shareId,
-                                                      addressKey: sessionData.userData.getAddressKey(),
+                                                      userData: sessionData.userData,
+                                                      shareRepository: shareRepository,
                                                       shareKeysRepository: shareKeysRepository,
                                                       itemRevisionRepository: itemRevisionRepository)
         createNoteViewModel.delegate = self

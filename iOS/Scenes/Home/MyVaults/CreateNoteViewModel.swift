@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import ProtonCore_Login
 import SwiftUI
 
 final class CreateNoteViewModel: BaseCreateItemViewModel, DeinitPrintable, ObservableObject {
@@ -29,11 +30,13 @@ final class CreateNoteViewModel: BaseCreateItemViewModel, DeinitPrintable, Obser
     @Published var note = ""
 
     override init(shareId: String,
-                  addressKey: AddressKey,
+                  userData: UserData,
+                  shareRepository: ShareRepositoryProtocol,
                   shareKeysRepository: ShareKeysRepositoryProtocol,
                   itemRevisionRepository: ItemRevisionRepositoryProtocol) {
         super.init(shareId: shareId,
-                   addressKey: addressKey,
+                   userData: userData,
+                   shareRepository: shareRepository,
                    shareKeysRepository: shareKeysRepository,
                    itemRevisionRepository: itemRevisionRepository)
 

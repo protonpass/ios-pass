@@ -18,7 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct CreateItemRequest: Encodable {
+import Crypto
+
+public struct CreateItemRequest {
     /// Encrypted ID of the VaultKey used to create this item
     public let rotationID: String
 
@@ -44,39 +46,84 @@ public struct CreateItemRequest: Encodable {
     /// Contents signature by the item key encrypted with the same session key
     /// as the contents encoded in base64
     public let itemKeySignature: String
+}
 
-    public init(rotationID: String,
-                labels: [ItemLabelKeyPacket],
-                vaultKeyPacket: String,
-                vaultKeyPacketSignature: String,
-                contentFormatVersion: Int16,
-                content: String,
-                userSignature: String,
-                itemKeySignature: String) {
-        self.rotationID = rotationID
-        self.labels = labels
-        self.vaultKeyPacket = vaultKeyPacket
-        self.vaultKeyPacketSignature = vaultKeyPacketSignature
-        self.contentFormatVersion = contentFormatVersion
-        self.content = content
-        self.userSignature = userSignature
-        self.itemKeySignature = itemKeySignature
+extension CreateItemRequest: Encodable {
+    private enum CodingKeys: String, CodingKey {
+        case rotationID = "RotationID"
+        case labels = "Labels"
+        case vaultKeyPacket = "VaultKeyPacket"
+        case vaultKeyPacketSignature = "VaultKeyPacketSignature"
+        case contentFormatVersion = "ContentFormatVersion"
+        case content = "Content"
+        case userSignature = "UserSignature"
+        case itemKeySignature = "ItemKeySignature"
     }
 
-    public init(vaultKey: VaultKey,
-                itemKey: ItemKey,
-                addressKey: AddressKey,
-                itemContent: ProtobufableItemContentProtocol) throws {
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(rotationID, forKey: .rotationID)
+        try container.encode(labels, forKey: .labels)
+        try container.encode(vaultKeyPacket, forKey: .vaultKeyPacket)
+        try container.encode(vaultKeyPacketSignature, forKey: .vaultKeyPacketSignature)
+        try container.encode(contentFormatVersion, forKey: .contentFormatVersion)
+        try container.encode(content, forKey: .content)
+        try container.encode(userSignature, forKey: .userSignature)
+        try container.encode(itemKeySignature, forKey: .itemKeySignature)
+    }
+}
+
+public extension CreateItemRequest {
+    init(vaultKey: VaultKey,
+         vaultKeyPassphrase: String,
+         itemKey: ItemKey,
+         itemKeyPassphrase: String,
+         addressKey: AddressKey,
+         itemContent: ProtobufableItemContentProtocol) throws {
         let itemContentData = try itemContent.data()
-        let vaultKeyPublicKey = vaultKey.key.publicKey
-        throw CryptoError.failedToEncrypt
-        self.init(rotationID: .random(),
+
+        let sessionKey = try CryptoUtils.generateSessionKey()
+        let dataPacket = try sessionKey.encrypt(.init(itemContentData))
+        let vaultKeyPacket = try Encryptor.encryptSessionKey(sessionKey,
+                                                             withKey: vaultKey.key.publicKey)
+
+        let userSignature = try Encryptor.sign(list: itemContentData,
+                                               addressKey: addressKey.key.privateKey,
+                                               addressPassphrase: addressKey.keyPassphrase)
+
+        guard let decodedVaultKeyPacket = try vaultKeyPacket.base64Decode() else {
+            throw CryptoError.failedToDecode
+        }
+
+        let vaultKeyPacketSignature = try Encryptor.sign(list: decodedVaultKeyPacket,
+                                                         addressKey: itemKey.key,
+                                                         addressPassphrase: itemKeyPassphrase)
+
+        let itemKeySignature = try Encryptor.sign(list: itemContentData,
+                                                  addressKey: itemKey.key,
+                                                  addressPassphrase: itemKeyPassphrase)
+
+        guard let unarmoredUserSignature = userSignature.unArmor else {
+            throw CryptoError.failedToUnarmor("UserSignature")
+        }
+        let encryptedUserSignature = try sessionKey.encrypt(.init(unarmoredUserSignature))
+
+        guard let unarmoredItemKeySignature = itemKeySignature.unArmor else {
+            throw CryptoError.failedToUnarmor("ItemKeySignature")
+        }
+        let encryptedItemSignature = try sessionKey.encrypt(.init(unarmoredItemKeySignature))
+
+        guard let unarmoredVaultKeyPacketSignature = vaultKeyPacketSignature.unArmor else {
+            throw CryptoError.failedToUnarmor("VaultKeyPacketSignature")
+        }
+
+        self.init(rotationID: vaultKey.rotationID,
                   labels: [],
-                  vaultKeyPacket: .random(),
-                  vaultKeyPacketSignature: .random(),
-                  contentFormatVersion: 0,
-                  content: .random(),
-                  userSignature: .random(),
-                  itemKeySignature: .random())
+                  vaultKeyPacket: vaultKeyPacket,
+                  vaultKeyPacketSignature: unarmoredVaultKeyPacketSignature.base64EncodedString(),
+                  contentFormatVersion: 1,
+                  content: dataPacket.base64EncodedString(),
+                  userSignature: encryptedUserSignature.base64EncodedString(),
+                  itemKeySignature: encryptedItemSignature.base64EncodedString())
     }
 }

@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import ProtonCore_Login
 
 protocol BaseCreateItemViewModelDelegate: AnyObject {
     func createItemViewModelBeginsLoading()
@@ -37,16 +38,19 @@ class BaseCreateItemViewModel {
     weak var delegate: BaseCreateItemViewModelDelegate?
 
     let shareId: String
-    let addressKey: AddressKey
+    let userData: UserData
+    let shareRepository: ShareRepositoryProtocol
     let shareKeysRepository: ShareKeysRepositoryProtocol
     let itemRevisionRepository: ItemRevisionRepositoryProtocol
 
     init(shareId: String,
-         addressKey: AddressKey,
+         userData: UserData,
+         shareRepository: ShareRepositoryProtocol,
          shareKeysRepository: ShareKeysRepositoryProtocol,
          itemRevisionRepository: ItemRevisionRepositoryProtocol) {
         self.shareId = shareId
-        self.addressKey = addressKey
+        self.userData = userData
+        self.shareRepository = shareRepository
         self.shareKeysRepository = shareKeysRepository
         self.itemRevisionRepository = itemRevisionRepository
     }
@@ -64,16 +68,28 @@ class BaseCreateItemViewModel {
     func createItem() {
         Task { @MainActor in
             do {
-//                isLoading = true
-//                let itemContent = generateItemContent()
-//
-//                let (latestVaultKey, latestItemKey) =
-//                try await shareKeysRepository.getLatestVaultItemKey(shareId: shareId, forceRefresh: false)
-//                let request = try CreateItemRequest(vaultKey: latestVaultKey,
-//                                                    itemKey: latestItemKey,
-//                                                    addressKey: addressKey,
-//                                                    itemContent: itemContent)
-//                try await itemRevisionRepository.createItem(request: request, shareId: shareId)
+                isLoading = true
+                let itemContent = generateItemContent()
+
+                let (latestVaultKey, latestItemKey) =
+                try await shareKeysRepository.getLatestVaultItemKey(shareId: shareId, forceRefresh: false)
+                let share = try await shareRepository.getShare(shareId: shareId)
+                let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
+                                                                                share: share,
+                                                                                vaultKey: latestVaultKey)
+                guard let itemKeyPassphrase =
+                        try PassKeyUtils.getItemKeyPassphrase(vaultKey: latestVaultKey,
+                                                              vaultKeyPassphrase: vaultKeyPassphrase,
+                                                              itemKey: latestItemKey) else {
+                    fatalError("Post MVP")
+                }
+                let request = try CreateItemRequest(vaultKey: latestVaultKey,
+                                                    vaultKeyPassphrase: vaultKeyPassphrase,
+                                                    itemKey: latestItemKey,
+                                                    itemKeyPassphrase: itemKeyPassphrase,
+                                                    addressKey: userData.getAddressKey(),
+                                                    itemContent: itemContent)
+                try await itemRevisionRepository.createItem(request: request, shareId: shareId)
                 delegate?.createItemViewModelDidCreateItem(itemContentType())
             } catch {
                 isLoading = false

@@ -62,6 +62,7 @@
 		354BB14F28A27FF500F50040 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14E28A27FF500F50040 /* SearchViewModel.swift */; };
 		354BB15328A2886500F50040 /* SwiftUISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB15228A2886500F50040 /* SwiftUISearchBar.swift */; };
 		354BB15528A2895F00F50040 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB15428A2895F00F50040 /* SearchView.swift */; };
+		354F768A28C72F1000EB2383 /* PassKeyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F768928C72F1000EB2383 /* PassKeyUtils.swift */; };
 		355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */; };
 		3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618628A1372500A68477 /* SwiftUITextView.swift */; };
 		3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618A28A14EB600A68477 /* UserInputContainerView.swift */; };
@@ -355,6 +356,7 @@
 		354BB14E28A27FF500F50040 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		354BB15228A2886500F50040 /* SwiftUISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISearchBar.swift; sourceTree = "<group>"; };
 		354BB15428A2895F00F50040 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		354F768928C72F1000EB2383 /* PassKeyUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKeyUtils.swift; sourceTree = "<group>"; };
 		355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsSidebarItemView.swift; sourceTree = "<group>"; };
 		3552618628A1372500A68477 /* SwiftUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUITextView.swift; sourceTree = "<group>"; };
 		3552618A28A14EB600A68477 /* UserInputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputContainerView.swift; sourceTree = "<group>"; };
@@ -787,6 +789,7 @@
 				3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */,
 				358BD35D287D4E8000802A91 /* CryptoUtils.swift */,
 				3542B8882883614D009C9A68 /* DummyApiService.swift */,
+				354F768928C72F1000EB2383 /* PassKeyUtils.swift */,
 				350A97D12885BF7E00A7168B /* Protobufable.swift */,
 			);
 			path = Utilities;
@@ -1801,6 +1804,7 @@
 				35610B8228ABCC3000955ACB /* RemoteShareKeysDatasource.swift in Sources */,
 				358A509A28AD8A8000F5285C /* RemotePublicKeyDatasource.swift in Sources */,
 				35610B8928ABCF1900955ACB /* ShareRepository.swift in Sources */,
+				354F768A28C72F1000EB2383 /* PassKeyUtils.swift in Sources */,
 				354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
 				3530092C28A5284900611F8A /* PartialItemContent.swift in Sources */,
