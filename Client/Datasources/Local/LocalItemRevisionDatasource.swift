@@ -56,6 +56,7 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
 
         let fetchRequest = ItemRevisionEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
         fetchRequest.fetchLimit = pageSize
         fetchRequest.fetchOffset = page * pageSize
         let itemRevisionEntities = try await execute(fetchRequest: fetchRequest,
