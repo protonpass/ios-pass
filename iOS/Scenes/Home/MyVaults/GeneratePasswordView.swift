@@ -34,20 +34,31 @@ struct GeneratePasswordView: View {
         NavigationView {
             VStack {
                 HStack {
-                    Text(viewModel.texts)
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .frame(height: 100)
-                        .transaction { transaction in
-                            transaction.animation = nil
-                        }
+                    VStack {
+                        Text(viewModel.texts)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .transaction { transaction in
+                                transaction.animation = nil
+                            }
+                        Spacer()
+                    }
                     Spacer()
-                    Button(action: viewModel.regenerate) {
-                        Image(uiImage: IconProvider.arrowsRotate)
-                            .foregroundColor(.primary)
+                    VStack {
+                        Button(action: viewModel.regenerate) {
+                            Image(uiImage: IconProvider.arrowsRotate)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
                     }
                 }
+                .frame(height: 120)
                 .padding()
+                .background(Color(UIColor.secondarySystemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .padding()
+
+                Divider()
 
                 HStack {
                     Text("\(Int(viewModel.length)) characters")
@@ -57,7 +68,7 @@ struct GeneratePasswordView: View {
                            step: 1)
                     .accentColor(Color(ColorProvider.BrandNorm))
                 }
-                .padding(.horizontal)
+                .padding([.horizontal, .top])
 
                 Toggle(isOn: $viewModel.hasSpecialCharacters) {
                     Text("Special characters")
@@ -89,7 +100,7 @@ struct GeneratePasswordView: View {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
                     }, label: {
-                        Text("Cancel")
+                        Image(uiImage: IconProvider.cross)
                             .foregroundColor(.primary)
                     })
                 }

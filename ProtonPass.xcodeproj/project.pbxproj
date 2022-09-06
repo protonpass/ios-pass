@@ -55,9 +55,6 @@
 		3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF12877791000EE85E1 /* CreateVaultView.swift */; };
 		3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */; };
 		354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB13C28A240E000F50040 /* TextExtensions.swift */; };
-		354BB13F28A24F3800F50040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 354BB13E28A24F3800F50040 /* Assets.xcassets */; };
-		354BB14128A2503C00F50040 /* PassColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14028A2503C00F50040 /* PassColor.swift */; };
-		354BB14228A2511C00F50040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 354BB13E28A24F3800F50040 /* Assets.xcassets */; };
 		354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14328A2683E00F50040 /* ItemContentProtocol.swift */; };
 		354BB14F28A27FF500F50040 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14E28A27FF500F50040 /* SearchViewModel.swift */; };
 		354BB15328A2886500F50040 /* SwiftUISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB15228A2886500F50040 /* SwiftUISearchBar.swift */; };
@@ -350,8 +347,6 @@
 		3547ABF12877791000EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
 		3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySummaryView.swift; sourceTree = "<group>"; };
 		354BB13C28A240E000F50040 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
-		354BB13E28A24F3800F50040 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		354BB14028A2503C00F50040 /* PassColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassColor.swift; sourceTree = "<group>"; };
 		354BB14328A2683E00F50040 /* ItemContentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContentProtocol.swift; sourceTree = "<group>"; };
 		354BB14E28A27FF500F50040 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		354BB15228A2886500F50040 /* SwiftUISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISearchBar.swift; sourceTree = "<group>"; };
@@ -992,7 +987,6 @@
 				35AABE1C28B0036A00CEDDE6 /* AlertToastModifiers.swift */,
 				3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */,
 				3547ABE92877684D00EE85E1 /* GenericItemView.swift */,
-				354BB14028A2503C00F50040 /* PassColor.swift */,
 				3547ABDB28771B2900EE85E1 /* PPAlertController.swift */,
 				3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */,
 				353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */,
@@ -1002,7 +996,6 @@
 				3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */,
 				3552618C28A1511000A68477 /* UserInputContentView.swift */,
 				3552618A28A14EB600A68477 /* UserInputContainerView.swift */,
-				354BB13E28A24F3800F50040 /* Assets.xcassets */,
 			);
 			path = UIComponents;
 			sourceTree = "<group>";
@@ -1402,7 +1395,6 @@
 				35E506CF286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig in Resources */,
 				35E506CE286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig in Resources */,
 				35E506D0286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig in Resources */,
-				354BB14228A2511C00F50040 /* Assets.xcassets in Resources */,
 				35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1452,7 +1444,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				354BB13F28A24F3800F50040 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1916,7 +1907,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				354BB14128A2503C00F50040 /* PassColor.swift in Sources */,
 				3552618D28A1511000A68477 /* UserInputContentView.swift in Sources */,
 				3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */,
 				353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */,
