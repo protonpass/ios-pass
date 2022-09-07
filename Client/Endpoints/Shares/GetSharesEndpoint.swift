@@ -21,18 +21,22 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public struct GetSharesEndpoint: Endpoint {
-    public typealias Body = DummyEncodable
-    public struct Response: Codable {
-        public let code: Int
-        public let shares: [PartialShare]
-    }
+public struct GetSharesResponse: Decodable {
+    let code: Int
+    let shares: [PartialShare]
+}
 
-    public var path: String { "/pass/v1/share" }
-    public var method: HTTPMethod { .get }
+public struct GetSharesEndpoint: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = GetSharesResponse
+
     public var authCredential: AuthCredential?
+    public var path: String
+    public var method: HTTPMethod
 
     public init(credential: AuthCredential) {
         self.authCredential = credential
+        self.path = "/pass/v1/share"
+        self.method = .get
     }
 }

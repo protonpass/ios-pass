@@ -107,6 +107,8 @@ line_length: 115
 type_body_length:
   - 300 # warning
   - 400 # error
+trailing_closure:
+  only_single_muted_parameter: true
 # or they can set both explicitly
 file_length:
   warning: 700

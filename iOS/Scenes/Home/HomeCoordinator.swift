@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import CoreData
 import MBProgressHUD
 import ProtonCore_Login
 import ProtonCore_Services
@@ -40,8 +41,9 @@ private let kMenuWidth = UIScreen.main.bounds.width * 4 / 5
 final class HomeCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    let sessionData: SessionData
-    let apiService: APIService
+    private let sessionData: SessionData
+    private let apiService: APIService
+    private let container: NSPersistentContainer
     weak var delegate: HomeCoordinatorDelegate?
 
     var rootViewController: UIViewController { sideMenuController }
@@ -57,7 +59,9 @@ final class HomeCoordinator: DeinitPrintable {
     }
 
     private lazy var sidebarViewController: UIViewController = {
-        let sidebarView = SidebarView(coordinator: self, width: kMenuWidth)
+        let sideBarViewModel = SideBarViewModel(user: sessionData.userData.user)
+        sideBarViewModel.delegate = self
+        let sidebarView = SidebarView(viewModel: sideBarViewModel, width: kMenuWidth)
         return UIHostingController(rootView: sidebarView)
     }()
 
@@ -67,12 +71,13 @@ final class HomeCoordinator: DeinitPrintable {
     private lazy var myVaultsCoordinator: MyVaultsCoordinator = {
         let myVaultsCoordinator = MyVaultsCoordinator(apiService: apiService,
                                                       sessionData: sessionData,
+                                                      container: container,
                                                       vaultSelection: vaultSelection)
         myVaultsCoordinator.delegate = self
         return myVaultsCoordinator
     }()
 
-    private var myVaultsRootViewController: UIViewController { myVaultsCoordinator.router.toPresentable() }
+    private var myVaultsRootViewController: UIViewController { myVaultsCoordinator.rootViewController }
 
     // Trash
     private lazy var trashCoordinator: TrashCoordinator = {
@@ -81,13 +86,16 @@ final class HomeCoordinator: DeinitPrintable {
         return trashCoordinator
     }()
 
-    private var trashRootViewController: UIViewController { trashCoordinator.router.toPresentable() }
+    private var trashRootViewController: UIViewController { trashCoordinator.rootViewController }
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(sessionData: SessionData, apiService: APIService) {
+    init(sessionData: SessionData,
+         apiService: APIService,
+         container: NSPersistentContainer) {
         self.sessionData = sessionData
         self.apiService = apiService
+        self.container = container
         self.vaultSelection = .init(vaults: [])
         self.setUpSideMenuPreferences()
         self.observeVaultSelection()
@@ -129,6 +137,8 @@ extension HomeCoordinator {
 
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
+        case .home:
+            showMyVaultsRootViewController()
         case .settings:
             break
         case .trash:
@@ -148,7 +158,7 @@ extension HomeCoordinator {
     }
 
     func alert(error: Error) {
-        let alert = UIAlertController(title: "Error occured",
+        let alert = PPAlertController(title: "Error occured",
                                       message: error.messageForTheUser,
                                       preferredStyle: .alert)
         alert.addAction(.cancel)
@@ -172,6 +182,17 @@ extension HomeCoordinator {
 
     private func signOut() {
         delegate?.homeCoordinatorDidSignOut()
+    }
+}
+
+// MARK: - SideBarViewModelDelegate
+extension HomeCoordinator: SideBarViewModelDelegate {
+    func sideBarViewModelWantsToShowUsersSwitcher() {
+        showUserSwitcher()
+    }
+
+    func sideBarViewModelWantsToHandleItem(_ item: SidebarItem) {
+        handleSidebarItem(item)
     }
 }
 
@@ -204,6 +225,8 @@ extension HomeCoordinator: TrashCoordinatorDelegate {
 extension HomeCoordinator {
     /// For preview purposes
     static var preview: HomeCoordinator {
-        .init(sessionData: .preview, apiService: DummyApiService.preview)
+        .init(sessionData: .preview,
+              apiService: DummyApiService.preview,
+              container: .init())
     }
 }

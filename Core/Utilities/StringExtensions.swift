@@ -21,10 +21,10 @@
 import Foundation
 
 public enum AllowedCharacter: String {
-    case lowercase = "abcdefghijklmnopqrstuvwxyz"
-    case uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    case lowercase = "abcdefghjkmnpqrstuvwxyz"
+    case uppercase = "ABCDEFGHJKMNPQRSTUVWXYZ"
     case digit = "0123456789"
-    case special = "!&*"
+    case special = "!#$%&()*+.:;<=>?@[]^"
 }
 
 // swiftlint:disable force_unwrapping

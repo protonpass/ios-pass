@@ -18,44 +18,140 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct CreateLoginView: View {
-    let coordinator: MyVaultsCoordinator
+    @Environment(\.presentationMode) private var presentationMode
+    @StateObject private var viewModel: CreateLoginViewModel
+    @State private var isShowingDiscardAlert = false
+    @State private var isFocusedOnTitle = false
+    @State private var isFocusedOnUsername = false
+    @State private var isFocusedOnPassword = false
+    @State private var isFocusedOnURLs = false
+    @State private var isFocusedOnNote = false
+
+    init(viewModel: CreateLoginViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
         NavigationView {
-            Text("Create new login")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: coordinator.dismissTopMostModal) {
-                            Text("Cancel")
-                        }
-                        .foregroundColor(Color(.label))
-                    }
-
-                    ToolbarItem(placement: .principal) {
-                        Text("Create new login")
-                            .fontWeight(.bold)
-                    }
-
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            print("Save")
-                        }, label: {
-                            Text("Save")
-                                .fontWeight(.bold)
-                                .foregroundColor(Color(ColorProvider.BrandNorm))
-                        })
-                    }
+            ScrollView {
+                VStack(spacing: 20) {
+                    loginInputView
+                    usernameInputView
+                    passwordInputView
+                    urlsInputView
+                    noteInputView
                 }
+                .padding()
+            }
+            .toolbar(content: toolbarContent)
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        .disabled(viewModel.isLoading)
+        .onReceive(Just(viewModel.createdLogin)) { createdLogin in
+            if createdLogin {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
+        .alert(isPresented: $isShowingDiscardAlert) {
+            Alert(title: Text("Discard changes"),
+                  message: Text("You will loose all unsaved changes"),
+                  primaryButton: .destructive(Text("Discard Changes"),
+                                              action: { presentationMode.wrappedValue.dismiss() }),
+                  secondaryButton: .default(Text("Keep Editing")))
         }
     }
-}
 
-struct CreateLoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateLoginView(coordinator: .preview)
+    @ToolbarContentBuilder
+    private func toolbarContent() -> some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                if viewModel.isEmpty {
+                    presentationMode.wrappedValue.dismiss()
+                } else {
+                    isShowingDiscardAlert.toggle()
+                }
+            }, label: {
+                Image(uiImage: IconProvider.cross)
+            })
+            .foregroundColor(Color(.label))
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text("Create new login")
+                .fontWeight(.bold)
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: viewModel.createItem) {
+                Text("Save")
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(ColorProvider.BrandNorm))
+            }
+        }
+    }
+
+    private var loginInputView: some View {
+        UserInputContainerView(title: "Title",
+                               isFocused: isFocusedOnTitle) {
+            UserInputContentSingleLineView(
+                text: $viewModel.title,
+                isFocused: $isFocusedOnTitle,
+                placeholder: "Login name")
+        }
+    }
+
+    private var usernameInputView: some View {
+        UserInputContainerView(title: "Username",
+                               isFocused: isFocusedOnUsername) {
+            UserInputContentSingleLineWithTrailingView(
+                text: $viewModel.username,
+                isFocused: $isFocusedOnUsername,
+                placeholder: "Add username",
+                trailingIcon: IconProvider.arrowsRotate,
+                trailingAction: viewModel.generateAliasAction)
+        }
+    }
+
+    private var passwordInputView: some View {
+        let toolbar = UIToolbar()
+        let btn = UIBarButtonItem(title: "Generate password",
+                                  style: .plain,
+                                  target: viewModel,
+                                  action: #selector(viewModel.generatePasswordAction))
+        btn.tintColor = ColorProvider.BrandNorm
+        toolbar.items = [.flexibleSpace(), btn, .flexibleSpace()]
+        toolbar.barStyle = UIBarStyle.default
+        toolbar.sizeToFit()
+        return UserInputContainerView(title: "Password",
+                                      isFocused: isFocusedOnPassword) {
+            UserInputContentPasswordView(
+                text: $viewModel.password,
+                isFocused: $isFocusedOnPassword,
+                isSecure: $viewModel.isPasswordSecure,
+                toolbar: toolbar)
+        }
+    }
+
+    private var urlsInputView: some View {
+        UserInputContainerView(title: "Website address",
+                               isFocused: isFocusedOnURLs) {
+            UserInputContentURLsView(urls: $viewModel.urls,
+                                     isFocused: $isFocusedOnURLs)
+        }
+    }
+
+    private var noteInputView: some View {
+        UserInputContainerView(title: "Note",
+                               isFocused: isFocusedOnNote) {
+            UserInputContentMultilineView(
+                text: $viewModel.note,
+                isFocused: $isFocusedOnNote)
+        }
     }
 }

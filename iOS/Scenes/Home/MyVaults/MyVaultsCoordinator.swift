@@ -20,10 +20,11 @@
 
 import Client
 import Core
+import CoreData
 import ProtonCore_Login
 import ProtonCore_Services
 import SwiftUI
-import UIKit
+import UIComponents
 
 protocol MyVaultsCoordinatorDelegate: AnyObject {
     func myVautsCoordinatorWantsToShowSidebar()
@@ -35,23 +36,64 @@ protocol MyVaultsCoordinatorDelegate: AnyObject {
 final class MyVaultsCoordinator: Coordinator {
     weak var delegate: MyVaultsCoordinatorDelegate?
 
-    private lazy var myVaultsViewController: UIViewController = {
-        let myVaultsView = MyVaultsView(viewModel: .init(coordinator: self))
-        return UIHostingController(rootView: myVaultsView)
-    }()
-
-    override var root: Presentable { myVaultsViewController }
-    let apiService: APIService
-    let sessionData: SessionData
-    let vaultSelection: VaultSelection
+    private let apiService: APIService
+    private let sessionData: SessionData
+    private let vaultSelection: VaultSelection
+    private let vaultContentViewModel: VaultContentViewModel
+    private let shareRepository: ShareRepositoryProtocol
+    private let shareKeysRepository: ShareKeysRepositoryProtocol
+    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    private let myVaultsViewModel: MyVaultsViewModel
 
     init(apiService: APIService,
          sessionData: SessionData,
+         container: NSPersistentContainer,
          vaultSelection: VaultSelection) {
         self.apiService = apiService
         self.sessionData = sessionData
         self.vaultSelection = vaultSelection
-        super.init(router: .init(), navigationType: .newFlow(hideBar: false))
+
+        let userId = sessionData.userData.user.ID
+        let authCredential = sessionData.userData.credential
+
+        let shareRepository = ShareRepository(userId: userId,
+                                              container: container,
+                                              authCredential: authCredential,
+                                              apiService: apiService)
+        self.shareRepository = shareRepository
+
+        self.itemRevisionRepository = ItemRevisionRepository(container: container,
+                                                             authCredential: authCredential,
+                                                             apiService: apiService)
+
+        self.shareKeysRepository = ShareKeysRepository(container: container,
+                                                       authCredential: authCredential,
+                                                       apiService: apiService)
+
+        let publicKeyRepository = PublicKeyRepository(container: container,
+                                                      apiService: apiService)
+
+        self.vaultContentViewModel = .init(userData: sessionData.userData,
+                                           vaultSelection: vaultSelection,
+                                           shareRepository: shareRepository,
+                                           itemRevisionRepository: itemRevisionRepository,
+                                           shareKeysRepository: shareKeysRepository,
+                                           publicKeyRepository: publicKeyRepository)
+
+        self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
+
+        super.init()
+
+        let loadVaultsViewModel = LoadVaultsViewModel(userData: sessionData.userData,
+                                                      vaultSelection: vaultSelection,
+                                                      shareRepository: shareRepository,
+                                                      shareKeysRepository: shareKeysRepository)
+
+        self.vaultContentViewModel.delegate = self
+        loadVaultsViewModel.delegate = self
+        self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
+                                      loadVaultsViewModel: loadVaultsViewModel,
+                                      vaultContentViewModel: vaultContentViewModel))
     }
 
     func showSidebar() {
@@ -59,75 +101,144 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateItemView() {
-        let createItemView = CreateItemView(coordinator: self)
+        let createItemViewModel = CreateItemViewModel()
+        createItemViewModel.delegate = self
+        let createItemView = CreateItemView(viewModel: createItemViewModel)
         let createItemViewController = UIHostingController(rootView: createItemView)
         if #available(iOS 15.0, *) {
             createItemViewController.sheetPresentationController?.detents = [.medium()]
         }
-        router.present(createItemViewController, animated: true)
+        presentViewController(createItemViewController)
     }
 
     func showCreateVaultView() {
-        let createVaultViewModel = CreateVaultViewModel(coordinator: self)
+        let createVaultViewModel =
+        CreateVaultViewModel(userData: sessionData.userData,
+                             shareRepository: shareRepository)
         createVaultViewModel.delegate = self
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         let createVaultViewController = UIHostingController(rootView: createVaultView)
         if #available(iOS 15.0, *) {
             createVaultViewController.sheetPresentationController?.detents = [.medium()]
         }
-        router.present(createVaultViewController, animated: true)
+        presentViewController(createVaultViewController)
     }
 
-    func showLoadingHud() {
-        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    func showCreateLoginView() {
+        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
+        let createLoginViewModel = CreateLoginViewModel(shareId: shareId,
+                                                        userData: sessionData.userData,
+                                                        shareRepository: shareRepository,
+                                                        shareKeysRepository: shareKeysRepository,
+                                                        itemRevisionRepository: itemRevisionRepository)
+        createLoginViewModel.delegate = self
+        createLoginViewModel.createLoginDelegate = self
+        let createLoginView = CreateLoginView(viewModel: createLoginViewModel)
+        presentViewFullScreen(createLoginView)
     }
 
-    func hideLoadingHud() {
-        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    func showCreateAliasView() {
+        let createAliasViewModel = CreateAliasViewModel()
+        createAliasViewModel.delegate = self
+        let createAliasView = CreateAliasView(viewModel: createAliasViewModel)
+        presentViewFullScreen(createAliasView)
     }
 
-    func alert(error: Error) {
+    func showCreateNoteView() {
+        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
+        let createNoteViewModel = CreateNoteViewModel(shareId: shareId,
+                                                      userData: sessionData.userData,
+                                                      shareRepository: shareRepository,
+                                                      shareKeysRepository: shareKeysRepository,
+                                                      itemRevisionRepository: itemRevisionRepository)
+        createNoteViewModel.delegate = self
+        let createNoteView = CreateNoteView(viewModel: createNoteViewModel)
+        presentViewFullScreen(createNoteView)
+    }
+
+    func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?) {
+        let viewModel = GeneratePasswordViewModel()
+        viewModel.delegate = delegate
+        let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
+        let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
+        if #available(iOS 15, *) {
+            generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
+        }
+        presentViewController(generatePasswordViewController)
+    }
+
+    func showSearchView() {
+        presentViewFullScreen(SearchView())
+    }
+
+    func showItemDetailView(itemContent: ItemContent) {
+        switch itemContent.contentData {
+        case .login:
+            let viewModel = LogInDetailViewModel(itemContent: itemContent,
+                                                 itemRevisionRepository: itemRevisionRepository)
+            let logInDetailView = LogInDetailView(viewModel: viewModel)
+            pushView(logInDetailView)
+
+        case .note:
+            let viewModel = NoteDetailViewModel(itemContent: itemContent,
+                                                itemRevisionRepository: itemRevisionRepository)
+            let noteDetailView = NoteDetailView(viewModel: viewModel)
+            pushView(noteDetailView)
+
+        case .alias:
+            break
+        }
+    }
+}
+
+// MARK: - LoadVaultsViewModelDelegate
+extension MyVaultsCoordinator: LoadVaultsViewModelDelegate {
+    func loadVaultsViewModelWantsToToggleSideBar() {
+        showSidebar()
+    }
+}
+
+// MARK: - VaultContentViewModelDelegate
+extension MyVaultsCoordinator: VaultContentViewModelDelegate {
+    func vaultContentViewModelWantsToToggleSidebar() {
+        showSidebar()
+    }
+
+    func vaultContentViewModelWantsToSearch() {
+        showSearchView()
+    }
+
+    func vaultContentViewModelWantsToCreateNewItem() {
+        showCreateItemView()
+    }
+
+    func vaultContentViewModelWantsToCreateNewVault() {
+        showCreateVaultView()
+    }
+
+    func vaultContentViewModelWantsToShowItemDetail(itemContent: ItemContent) {
+        showItemDetailView(itemContent: itemContent)
+    }
+
+    func vaultContentViewModelDidFailWithError(error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
+}
 
-    func dismissTopMostModal() {
-        router.toPresentable().presentedViewController?.dismiss(animated: true)
-    }
-
-    private func dismissTopMostModalAndPresent(viewController: UIViewController) {
-        let present: () -> Void = { [unowned self] in
-            self.router.toPresentable().present(viewController, animated: true, completion: nil)
-        }
-
-        if let presentedViewController = router.toPresentable().presentedViewController {
-            presentedViewController.dismiss(animated: true, completion: present)
-        } else {
-            present()
-        }
-    }
-
-    func handleCreateNewItemOption(_ option: CreateNewItemOption) {
-        switch option {
-        case .login:
-            let createLoginView = CreateLoginView(coordinator: self)
-            let createLoginViewController = UIHostingController(rootView: createLoginView)
-            dismissTopMostModalAndPresent(viewController: createLoginViewController)
-        case .alias:
-            let createAliasView = CreateAliasView(coordinator: self)
-            let createAliasViewController = UIHostingController(rootView: createAliasView)
-            dismissTopMostModalAndPresent(viewController: createAliasViewController)
-        case .note:
-            let createNoteView = CreateNoteView(coordinator: self)
-            let createNewNoteController = UIHostingController(rootView: createNoteView)
-            dismissTopMostModalAndPresent(viewController: createNewNoteController)
-        case .password:
-            let viewModel = GeneratePasswordViewModel(coordinator: self)
-            let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
-            let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
-            if #available(iOS 15, *) {
-                generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
+// MARK: - CreateItemViewModelDelegate
+extension MyVaultsCoordinator: CreateItemViewModelDelegate {
+    func createItemViewDidSelect(option: CreateNewItemOption) {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            switch option {
+            case .login:
+                showCreateLoginView()
+            case .alias:
+                showCreateAliasView()
+            case .note:
+                showCreateNoteView()
+            case .password:
+                showGeneratePasswordView(delegate: nil)
             }
-            dismissTopMostModalAndPresent(viewController: generatePasswordViewController)
         }
     }
 }
@@ -142,26 +253,65 @@ extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
         delegate?.myVautsCoordinatorWantsToHideLoadingHud()
     }
 
-    func createVaultViewModelWantsToBeDismissed() {
-        dismissTopMostModal()
-    }
-
-    func createVaultViewModelDidCreateShare(share: PartialShare) {
+    func createVaultViewModelDidCreateShare(share: Share) {
         // Set vaults to empty to trigger refresh
         vaultSelection.update(vaults: [])
-        dismissTopMostModal()
+        dismissTopMostViewController()
     }
 
-    func createVaultViewModelFailedToCreateShare(error: Error) {
+    func createVaultViewModelDidFailWithError(error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 }
 
-extension MyVaultsCoordinator {
-    /// For preview purposes
-    static var preview: MyVaultsCoordinator {
-        .init(apiService: DummyApiService.preview,
-              sessionData: .preview,
-              vaultSelection: .preview)
+// MARK: - CreateLoginViewModelDelegate
+extension MyVaultsCoordinator: CreateLoginViewModelDelegate {
+    func createLoginViewModelWantsToGeneratePassword(delegate: GeneratePasswordViewModelDelegate) {
+        showGeneratePasswordView(delegate: delegate)
+    }
+}
+
+// MARK: - CreateAliasViewModelDelegate
+extension MyVaultsCoordinator: CreateAliasViewModelDelegate {
+    func createAliasViewModelBeginsLoading() {
+        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    }
+
+    func createAliasViewModelStopsLoading() {
+        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
+    func createAliasViewModelDidFailWithError(error: Error) {
+        delegate?.myVautsCoordinatorWantsToAlertError(error)
+    }
+}
+
+// MARK: - BaseCreateItemViewModelDelegate
+extension MyVaultsCoordinator: BaseCreateItemViewModelDelegate {
+    func createItemViewModelBeginsLoading() {
+        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    }
+
+    func createItemViewModelStopsLoading() {
+        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
+    func createItemViewModelDidFailWithError(_ error: Error) {
+        delegate?.myVautsCoordinatorWantsToAlertError(error)
+    }
+
+    func createItemViewModelDidCreateItem(_ itemContentType: ItemContentType) {
+        dismissTopMostViewController()
+        let message: String
+        switch itemContentType {
+        case .alias:
+            message = "Alias created"
+        case .login:
+            message = "Login created"
+        case .note:
+            message = "Note created"
+        }
+        myVaultsViewModel.successMessage = message
+        vaultContentViewModel.fetchItems()
     }
 }

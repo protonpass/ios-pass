@@ -18,8 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
+import CoreData
+import Crypto
 import ProtonCore_Authentication
 import ProtonCore_Keymaker
 import ProtonCore_Login
@@ -37,10 +40,12 @@ final class AppCoordinator {
     private let appStateObserver = AppStateObserver()
     private let keymaker: Keymaker
     private let apiService: PMAPIService
+    private var container: NSPersistentContainer
 
     @KeychainStorage(key: "sessionData")
-    public private(set) var sessionData: SessionData? // swiftlint:disable:this let_var_whitespace
+    public private(set) var sessionData: SessionData?
 
+    private var homeCoordinator: HomeCoordinator?
     private var welcomeCoordinator: WelcomeCoordinator?
 
     private var rootViewController: UIViewController? { window.rootViewController }
@@ -55,7 +60,11 @@ final class AppCoordinator {
         self._sessionData.setMainKeyProvider(keymaker)
         self.keymaker = keymaker
         self.apiService = PMAPIService(doh: PPDoH(bundle: .main))
+        self.container = .Builder.build(name: kProtonPassContainerName,
+                                        inMemory: false)
         self.apiService.authDelegate = self
+        self.apiService.serviceDelegate = self
+
         bindAppState()
     }
 
@@ -90,9 +99,10 @@ final class AppCoordinator {
     }
 
     private func showWelcomeScene(refreshTokenExpired: Bool) {
-        let welcomeCoordinator = WelcomeCoordinator()
+        let welcomeCoordinator = WelcomeCoordinator(apiServiceDelegate: self)
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
+        self.homeCoordinator = nil
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [unowned self] in
             if refreshTokenExpired {
                 self.alertRefreshTokenExpired()
@@ -101,8 +111,11 @@ final class AppCoordinator {
     }
 
     private func showHomeScene(sessionData: SessionData) {
-        let homeCoordinator = HomeCoordinator(sessionData: sessionData, apiService: apiService)
+        let homeCoordinator = HomeCoordinator(sessionData: sessionData,
+                                              apiService: apiService,
+                                              container: container)
         homeCoordinator.delegate = self
+        self.homeCoordinator = homeCoordinator
         self.welcomeCoordinator = nil
         animateUpdateRootViewController(homeCoordinator.rootViewController)
     }
@@ -119,6 +132,23 @@ final class AppCoordinator {
     private func wipeAllData() {
         keymaker.wipeMainKey()
         sessionData = nil
+        Task {
+            do {
+                // Delete existing persistent stores
+                let storeContainer = container.persistentStoreCoordinator
+                for store in storeContainer.persistentStores {
+                    if let url = store.url {
+                        try storeContainer.destroyPersistentStore(at: url, ofType: store.type)
+                    }
+                }
+
+                // Re-create persistent container
+                container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
+                PPLogger.shared?.log("Nuked local data")
+            } catch {
+                PPLogger.shared?.log(error)
+            }
+        }
     }
 
     private func alertRefreshTokenExpired() {
@@ -207,5 +237,25 @@ extension AppCoordinator: AuthDelegate {
                 complete(nil, .notImplementedYet("Unexpected response"))  // Will trigger onLogout(auth:)
             }
         }
+    }
+}
+
+// MARK: - APIServiceDelegate
+extension AppCoordinator: APIServiceDelegate {
+    var appVersion: String { "iOSPass_\(Bundle.main.versionNumber)" }
+    var userAgent: String? { UserAgent.default.ua }
+    var locale: String { Locale.autoupdatingCurrent.identifier }
+    var additionalHeaders: [String: String]? { nil }
+
+    func onDohTroubleshot() {}
+
+    func onUpdate(serverTime: Int64) {
+        CryptoUpdateTime(serverTime)
+    }
+
+    func isReachable() -> Bool {
+        // swiftlint:disable:next todo
+        // TODO: Handle this
+        return true
     }
 }

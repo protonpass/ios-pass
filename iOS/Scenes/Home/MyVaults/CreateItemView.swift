@@ -23,37 +23,48 @@ import SwiftUI
 import UIComponents
 
 struct CreateItemView: View {
-    let coordinator: MyVaultsCoordinator
+    @Environment(\.presentationMode) private var presentationMode
+    private let viewModel: CreateItemViewModel
+
+    init(viewModel: CreateItemViewModel) {
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                GenericItemView(item: CreateNewItemOption.login) {
-                    coordinator.handleCreateNewItemOption(.login)
+                GenericItemView(
+                    item: CreateNewItemOption.login.toGenericItem()) {
+                    viewModel.select(option: .login)
                 }
 
-                GenericItemView(item: CreateNewItemOption.alias) {
-                    coordinator.handleCreateNewItemOption(.alias)
+                GenericItemView(
+                    item: CreateNewItemOption.alias.toGenericItem()) {
+                    viewModel.select(option: .alias)
                 }
 
-                GenericItemView(item: CreateNewItemOption.note) {
-                    coordinator.handleCreateNewItemOption(.note)
+                GenericItemView(
+                    item: CreateNewItemOption.note.toGenericItem()) {
+                    viewModel.select(option: .note)
                 }
 
-                GenericItemView(item: CreateNewItemOption.password,
-                                showDivider: false) {
-                    coordinator.handleCreateNewItemOption(.password)
+                GenericItemView(
+                    item: CreateNewItemOption.password.toGenericItem(),
+                    showDivider: false) {
+                    viewModel.select(option: .password)
                 }
 
                 Spacer()
             }
-            .navigationTitle("Create new...")
+            .navigationTitle("New...")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: coordinator.dismissTopMostModal) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
                         Image(uiImage: IconProvider.cross)
-                    }
+                    })
                     .foregroundColor(Color(.label))
                 }
             }
@@ -63,49 +74,6 @@ struct CreateItemView: View {
 
 struct CreateItemView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateItemView(coordinator: .preview)
-    }
-}
-
-enum CreateNewItemOption: GenericItemProvider {
-    case login, alias, note, password
-
-    var icon: UIImage {
-        switch self {
-        case .login:
-            return IconProvider.keySkeleton
-        case .alias:
-            return IconProvider.alias
-        case .note:
-            return IconProvider.note
-        case .password:
-            return IconProvider.arrowsRotate
-        }
-    }
-
-    var title: String {
-        switch self {
-        case .login:
-            return "Login"
-        case .alias:
-            return "Alias"
-        case .note:
-            return "Note"
-        case .password:
-            return "Generate password"
-        }
-    }
-
-    var detail: String {
-        switch self {
-        case .login:
-            return "Keep your username and password secure"
-        case .alias:
-            return "Hide your identity with a separate email address"
-        case .note:
-            return "Keep important information secure"
-        case .password:
-            return "Generate a secure password"
-        }
+        CreateItemView(viewModel: .init())
     }
 }

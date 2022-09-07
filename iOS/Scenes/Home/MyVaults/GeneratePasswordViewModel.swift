@@ -20,53 +20,70 @@
 
 import Combine
 import Core
+import ProtonCore_UIFoundations
 import SwiftUI
+
+protocol GeneratePasswordViewModelDelegate: AnyObject {
+    func generatePasswordViewModelDidConfirm(password: String)
+}
 
 final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    private let coordinator: MyVaultsCoordinator
-    private var allowedCharacters: [AllowedCharacter] {
-        var allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit]
-        if hasSpecialCharacters {
-            allowedCharacters.append(.special)
-        }
-        return allowedCharacters
-    }
-
     @Published private(set) var password = ""
-    @Published var length: Double = 32
-    @Published var hasSpecialCharacters = true {
-        didSet {
-            self.regenerate()
-        }
-    }
+    @Published private(set) var texts: [Text] = []
+    @Published var length: Double = 16
+    @Published var hasSpecialCharacters = true
 
     private var cancellables = Set<AnyCancellable>()
 
-    let lengthRange: ClosedRange<Double> = 10...128
+    weak var delegate: GeneratePasswordViewModelDelegate?
 
-    init(coordinator: MyVaultsCoordinator) {
-        self.coordinator = coordinator
+    init() {
         self.regenerate()
+
+        $password
+            .sink { [unowned self] newPassword in
+                texts.removeAll()
+                newPassword.forEach { char in
+                    var color = Color.primary
+                    if AllowedCharacter.digit.rawValue.contains(char) {
+                        color = ColorProvider.NotificationError
+                    } else if AllowedCharacter.special.rawValue.contains(char) {
+                        color = ColorProvider.NotificationSuccess
+                    }
+                    texts.append(Text(String(char)).foregroundColor(color))
+                }
+            }
+            .store(in: &cancellables)
 
         $length
             .removeDuplicates()
-            .sink { [unowned self] _ in
-                self.regenerate()
+            .sink { [unowned self] newValue in
+                regenerate(length: newValue, hasSpecialCharacters: hasSpecialCharacters)
+            }
+            .store(in: &cancellables)
+
+        $hasSpecialCharacters
+            .sink { [unowned self] newValue in
+                regenerate(length: length, hasSpecialCharacters: newValue)
             }
             .store(in: &cancellables)
     }
 
-    func cancelAction() {
-        coordinator.dismissTopMostModal()
+    func regenerate() {
+        regenerate(length: length, hasSpecialCharacters: hasSpecialCharacters)
     }
 
-    func regenerate() {
+    private func regenerate(length: Double, hasSpecialCharacters: Bool) {
+        var allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit]
+        if hasSpecialCharacters {
+            allowedCharacters.append(.special)
+        }
         password = .random(allowedCharacters: allowedCharacters, length: Int(length))
     }
-}
 
-extension GeneratePasswordViewModel {
-    static var preview: GeneratePasswordViewModel { .init(coordinator: .preview) }
+    func confirm() {
+        delegate?.generatePasswordViewModelDidConfirm(password: password)
+    }
 }

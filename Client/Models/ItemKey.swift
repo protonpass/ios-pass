@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct ItemKey: Codable {
+public struct ItemKey: Decodable {
     public let rotationID: String
 
     /// Armored item key
@@ -34,17 +34,5 @@ public struct ItemKey: Codable {
     public let keySignature: String
 
     /// Creation time of the key
-    public let createTime: Int
-
-    public init(rotationID: String,
-                key: String,
-                keyPassphrase: String?,
-                keySignature: String,
-                createTime: Int) {
-        self.rotationID = rotationID
-        self.key = key
-        self.keyPassphrase = keyPassphrase
-        self.keySignature = keySignature
-        self.createTime = createTime
-    }
+    public let createTime: Int64
 }

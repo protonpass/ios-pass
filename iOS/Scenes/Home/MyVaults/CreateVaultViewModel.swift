@@ -28,29 +28,30 @@ import SwiftUI
 protocol CreateVaultViewModelDelegate: AnyObject {
     func createVaultViewModelBeginsLoading()
     func createVaultViewModelStopsLoading()
-    func createVaultViewModelWantsToBeDismissed()
-    func createVaultViewModelDidCreateShare(share: PartialShare)
-    func createVaultViewModelFailedToCreateShare(error: Error)
+    func createVaultViewModelDidCreateShare(share: Share)
+    func createVaultViewModelDidFailWithError(error: Error)
 }
 
 final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    private let coordinator: MyVaultsCoordinator
+    @Published private(set) var isLoading = false
+    @Published private(set) var error: Error?
+    @Published var name = ""
+    @Published var note = ""
 
-    private let isLoadingSubject = PassthroughSubject<Bool, Never>()
-    private let createdShareSubject = PassthroughSubject<PartialShare, Error>()
+    private let userData: UserData
+    private let shareRepository: ShareRepositoryProtocol
+
     private var cancellables = Set<AnyCancellable>()
-
     weak var delegate: CreateVaultViewModelDelegate?
 
-    init(coordinator: MyVaultsCoordinator) {
-        self.coordinator = coordinator
-        self.subscribeToPublishers()
-    }
+    init(userData: UserData,
+         shareRepository: ShareRepositoryProtocol) {
+        self.userData = userData
+        self.shareRepository = shareRepository
 
-    private func subscribeToPublishers() {
-        isLoadingSubject
+        $isLoading
             .sink { [weak self] isLoading in
                 guard let self = self else { return }
                 if isLoading {
@@ -61,49 +62,32 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
             }
             .store(in: &cancellables)
 
-        createdShareSubject
-            .sink { [weak self] completion in
+        $error
+            .sink { [weak self] error in
                 guard let self = self else { return }
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    self.delegate?.createVaultViewModelFailedToCreateShare(error: error)
+                if let error = error {
+                    self.delegate?.createVaultViewModelDidFailWithError(error: error)
                 }
-            } receiveValue: { [weak self] share in
-                guard let self = self else { return }
-                self.delegate?.createVaultViewModelDidCreateShare(share: share)
             }
             .store(in: &cancellables)
     }
 
-    func cancelAction() {
-        delegate?.createVaultViewModelWantsToBeDismissed()
-    }
-
-    func createVault(name: String, note: String) {
+    func createVault() {
         Task { @MainActor in
             do {
-                isLoadingSubject.send(true)
-                let userData = coordinator.sessionData.userData
-                let createVaultEndpoint = try CreateVaultEndpoint(credential: userData.credential,
-                                                                  addressKey: userData.getAddressKey(),
-                                                                  name: name,
-                                                                  note: note)
-                let response = try await coordinator.apiService.exec(endpoint: createVaultEndpoint)
-                isLoadingSubject.send(false)
-                createdShareSubject.send(response.share)
-                createdShareSubject.send(completion: .finished)
+                isLoading = true
+                let addressKey = userData.getAddressKey()
+                let createVaultRequest = try CreateVaultRequest(addressKey: addressKey,
+                                                                name: name,
+                                                                description: note)
+                let createdShare =
+                try await shareRepository.createVault(request: createVaultRequest)
+                isLoading = false
+                delegate?.createVaultViewModelDidCreateShare(share: createdShare)
             } catch {
-                isLoadingSubject.send(false)
-                createdShareSubject.send(completion: .failure(error))
+                self.error = error
+                isLoading = false
             }
         }
-    }
-}
-
-extension CreateVaultViewModel {
-    static var preview: CreateVaultViewModel {
-        .init(coordinator: .preview)
     }
 }

@@ -23,6 +23,7 @@ import UIComponents
 
 struct LoadVaultsView: View {
     @StateObject private var viewModel: LoadVaultsViewModel
+    @State private var didAppear = false
 
     init(viewModel: LoadVaultsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -33,9 +34,11 @@ struct LoadVaultsView: View {
             if let error = viewModel.error {
                 VStack {
                     Text(error.messageForTheUser)
-                    Button(action: viewModel.fetchVaults) {
+                    Button(action: {
+                        viewModel.fetchVaults(forceUpdate: true)
+                    }, label: {
                         Text("Retry")
-                    }
+                    })
                 }
                 .padding()
             } else {
@@ -47,6 +50,11 @@ struct LoadVaultsView: View {
                 ToggleSidebarButton(action: viewModel.toggleSidebarAction)
             }
         }
-        .onAppear(perform: viewModel.fetchVaults)
+        .onAppear {
+            if !didAppear {
+                viewModel.fetchVaults()
+                didAppear = true
+            }
+        }
     }
 }

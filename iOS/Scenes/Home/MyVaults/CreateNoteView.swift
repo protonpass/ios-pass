@@ -20,42 +20,85 @@
 
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct CreateNoteView: View {
-    let coordinator: MyVaultsCoordinator
+    @Environment(\.presentationMode) private var presentationMode
+    @StateObject private var viewModel: CreateNoteViewModel
+    @State private var isShowingDiscardAlert = false
+    @State private var isFocusedOnName = false
+    @State private var isFocusedOnNote = false
+
+    init(viewModel: CreateNoteViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
         NavigationView {
-            Text("Create new note")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: coordinator.dismissTopMostModal) {
-                            Text("Cancel")
-                        }
-                        .foregroundColor(Color(.label))
-                    }
-
-                    ToolbarItem(placement: .principal) {
-                        Text("Create new note")
-                            .fontWeight(.bold)
-                    }
-
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            print("Save")
-                        }, label: {
-                            Text("Save")
-                                .fontWeight(.bold)
-                                .foregroundColor(Color(ColorProvider.BrandNorm))
-                        })
-                    }
-                }
+            VStack(spacing: 30) {
+                nameInputView
+                noteInputView
+                Spacer()
+            }
+            .padding()
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { toolbar }
+        }
+        .disabled(viewModel.isLoading)
+        .alert(isPresented: $isShowingDiscardAlert) {
+            Alert(title: Text("Discard changes"),
+                  message: Text("You will loose all unsaved changes"),
+                  primaryButton: .destructive(Text("Discard Changes"),
+                                              action: { presentationMode.wrappedValue.dismiss() }),
+                  secondaryButton: .default(Text("Keep Editing")))
         }
     }
-}
 
-struct CreateNoteView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateNoteView(coordinator: .preview)
+    private var nameInputView: some View {
+        UserInputContainerView(title: "Note name",
+                               isFocused: isFocusedOnName) {
+            UserInputContentSingleLineView(
+                text: $viewModel.name,
+                isFocused: $isFocusedOnName,
+                placeholder: "Title")
+        }
+    }
+
+    private var noteInputView: some View {
+        UserInputContainerView(title: "Note",
+                               isFocused: isFocusedOnNote) {
+            UserInputContentMultilineView(
+                text: $viewModel.note,
+                isFocused: $isFocusedOnNote)
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                if viewModel.isEmpty {
+                    presentationMode.wrappedValue.dismiss()
+                } else {
+                    isShowingDiscardAlert.toggle()
+                }
+            }, label: {
+                Image(uiImage: IconProvider.cross)
+            })
+            .foregroundColor(Color(.label))
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text("Create new note")
+                .fontWeight(.bold)
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: viewModel.createItem) {
+                Text("Save")
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(ColorProvider.BrandNorm))
+            }
+        }
     }
 }

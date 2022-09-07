@@ -21,7 +21,6 @@
 import Foundation
 
 public extension Bundle {
-    var appVersion: String { "iOSPass_\(versionNumber)" }
     var versionNumber: String { string(forKey: "CFBundleShortVersionString") }
     var buildNumber: String { string(forKey: "CFBundleVersion") }
 

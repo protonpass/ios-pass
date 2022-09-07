@@ -26,9 +26,40 @@ public extension APIService {
     /// Async variant that can take an `Endpoint`
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
         try await withCheckedThrowingContinuation { continuation in
-            exec(route: endpoint) { (_, result: Result<E.Response, ResponseError>) in
+            NetworkDebugger.printDebugInfo(endpoint: endpoint)
+            exec(route: endpoint) { (task: URLSessionDataTask?, result: Result<E.Response, ResponseError>) in
+                NetworkDebugger.printDebugInfo(endpoint: endpoint,
+                                               task: task,
+                                               result: result)
                 continuation.resume(with: result)
             }
+        }
+    }
+}
+
+private enum NetworkDebugger {
+    private static func shouldDebugNetworkTraffic() -> Bool {
+        ProcessInfo.processInfo.environment["me.proton.pass.NetworkDebug"] == "1"
+    }
+
+    static func printDebugInfo<E: Endpoint>(endpoint: E) {
+        guard shouldDebugNetworkTraffic() else { return }
+        print("==> \(endpoint.method.toString()) \(endpoint.path)")
+        print("isAuth: \(endpoint.isAuth)")
+        print("authCredential: \(String(describing: endpoint.authCredential))")
+        print("header: \(endpoint.header)")
+        print("parameters: \(String(describing: endpoint.parameters))")
+    }
+
+    static func printDebugInfo<E: Endpoint>(endpoint: E,
+                                            task: URLSessionDataTask?,
+                                            result: Result<E.Response, ResponseError>) {
+        guard shouldDebugNetworkTraffic() else { return }
+        if let response = task?.response as? HTTPURLResponse {
+            let urlString = task?.originalRequest?.url?.absoluteString ?? ""
+            print("<== \(response.statusCode) \(endpoint.method.toString()) \(urlString)")
+            print("\(response.allHeaderFields)")
+            print(result)
         }
     }
 }

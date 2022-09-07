@@ -23,6 +23,7 @@ import SwiftUI
 import UIComponents
 
 struct GeneratePasswordView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: GeneratePasswordViewModel
 
     init(viewModel: GeneratePasswordViewModel) {
@@ -33,59 +34,75 @@ struct GeneratePasswordView: View {
         NavigationView {
             VStack {
                 HStack {
-                    Text(viewModel.password)
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .transaction { transaction in
-                            transaction.animation = nil
-                        }
+                    VStack {
+                        Text(viewModel.texts)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .transaction { transaction in
+                                transaction.animation = nil
+                            }
+                        Spacer()
+                    }
                     Spacer()
-                    Button(action: viewModel.regenerate) {
-                        Image(uiImage: IconProvider.arrowsRotate)
-                            .foregroundColor(.secondary)
+                    VStack {
+                        Button(action: viewModel.regenerate) {
+                            Image(uiImage: IconProvider.arrowsRotate)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
                     }
                 }
+                .frame(height: 120)
+                .padding()
+                .background(Color(UIColor.secondarySystemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
                 .padding()
 
-                Label(title: {
-                    Text("Strong")
-                }, icon: {
-                    Image(uiImage: IconProvider.shield)
-                })
-                .font(.caption)
-                .foregroundColor(.green)
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
                 Divider()
-                    .padding(.vertical)
 
                 HStack {
                     Text("\(Int(viewModel.length)) characters")
+                        .frame(minWidth: 120, alignment: .leading)
                     Slider(value: $viewModel.length,
-                           in: viewModel.lengthRange,
+                           in: 4...64,
                            step: 1)
                     .accentColor(Color(ColorProvider.BrandNorm))
                 }
-                .padding(.horizontal)
+                .padding([.horizontal, .top])
 
                 Toggle(isOn: $viewModel.hasSpecialCharacters) {
-                    Text("Special characters (!&*)")
+                    Text("Special characters")
                 }
                 .toggleStyle(SwitchToggleStyle.proton)
                 .padding(.horizontal)
 
                 Spacer()
+
+                Button(action: {
+                    viewModel.confirm()
+                    presentationMode.wrappedValue.dismiss()
+                }, label: {
+                    Text("Confirm")
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .contentShape(Rectangle())
+                })
+                .padding()
+                .background(Color(ColorProvider.BrandNorm))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .padding()
             }
             .animation(.default, value: viewModel.password)
             .navigationBarTitle("Generate password")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: viewModel.cancelAction) {
-                        Text("Cancel")
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
+                        Image(uiImage: IconProvider.cross)
                             .foregroundColor(.primary)
-                    }
+                    })
                 }
             }
         }
@@ -94,6 +111,6 @@ struct GeneratePasswordView: View {
 
 struct GeneratePasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneratePasswordView(viewModel: .preview)
+        GeneratePasswordView(viewModel: .init())
     }
 }

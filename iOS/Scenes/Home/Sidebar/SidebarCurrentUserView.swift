@@ -23,13 +23,13 @@ import ProtonCore_UIFoundations
 import SwiftUI
 
 struct SidebarCurrentUserView: View {
-    let userInfoProvider: UserInfoProvider
+    let user: UserProtocol
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             HStack {
-                Text(userInfoProvider.userInfoInitials)
+                Text(user.initials)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
                     .padding(8)
@@ -37,10 +37,10 @@ struct SidebarCurrentUserView: View {
                     .background(Color(ColorProvider.BrandNorm))
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 VStack(alignment: .leading) {
-                    Text(userInfoProvider.userInfoDisplayName)
+                    Text(user.finalDisplayName)
                         .fontWeight(.medium)
                         .foregroundColor(.white)
-                    Text(userInfoProvider.userInfoEmail)
+                    Text(user.email ?? "?")
                         .font(.callout)
                         .foregroundColor(.gray)
                 }
@@ -56,13 +56,13 @@ struct SidebarCurrentUserView: View {
     }
 }
 
-struct PreviewUserInfo: UserInfoProvider {
-    let userInfoInitials = "JD"
-    let userInfoDisplayName = "John Doe"
-    let userInfoEmail = "john.doe@example.com"
+struct PreviewUserInfo: UserProtocol {
+    let email: String? = "john.doe@example.com"
+    let finalDisplayName = "John Doe"
+    let initials = "JD"
 }
 
-extension UserInfoProvider where Self == PreviewUserInfo {
+extension UserProtocol where Self == PreviewUserInfo {
     static var preview: PreviewUserInfo { .init() }
 }
 
@@ -71,7 +71,7 @@ struct SidebarCurrentUserView_Previews: PreviewProvider {
         ZStack {
             Color(ColorProvider.SidebarBackground)
                 .ignoresSafeArea(.all)
-            SidebarCurrentUserView(userInfoProvider: .preview) {}
+            SidebarCurrentUserView(user: .preview) {}
                 .padding()
         }
     }

@@ -18,29 +18,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 
+public struct CreateVaultResponse: Decodable {
+    let code: Int
+    let share: Share
+}
+
 public struct CreateVaultEndpoint: Endpoint {
-    public typealias Body = CreateVaultRequestBody
+    public typealias Body = CreateVaultRequest
+    public typealias Response = CreateVaultResponse
 
-    public struct Response: Codable {
-        public let code: Int
-        public let share: PartialShare
-    }
-
-    public var path: String { "/pass/v1/vault" }
-    public var method: HTTPMethod { .post }
-    public var body: CreateVaultRequestBody?
+    public var path: String
+    public var method: HTTPMethod
+    public var body: CreateVaultRequest?
     public var authCredential: AuthCredential?
 
     public init(credential: AuthCredential,
-                addressKey: AddressKey,
-                name: String,
-                note: String) throws {
+                request: CreateVaultRequest) {
         self.authCredential = credential
-        let vaultProtobuf = VaultProtobuf(name: name, note: note)
-        self.body = try CreateVaultRequestBody(addressKey: addressKey, vault: vaultProtobuf)
+        self.path = "/pass/v1/vault"
+        self.method = .post
+        self.body = request
     }
 }

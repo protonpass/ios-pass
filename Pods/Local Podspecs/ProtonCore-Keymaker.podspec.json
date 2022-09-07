@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Keymaker",
-  "version": "3.20.0",
+  "version": "3.21.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,14 +13,14 @@
   },
   "source": {
     "git": null,
-    "tag": "3.20.0"
+    "tag": "3.21.0"
   },
   "platforms": {
     "ios": "11.0",
     "osx": "10.13"
   },
   "swift_versions": [
-    "5.4"
+    "5.6"
   ],
   "pod_target_xcconfig": {
     "APPLICATION_EXTENSION_API_ONLY": "NO"
@@ -42,7 +42,7 @@
       "name": "UsingCrypto",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "3.20.0"
+          "3.21.0"
         ]
       },
       "source_files": [
@@ -61,7 +61,7 @@
       "name": "UsingCryptoVPN",
       "dependencies": {
         "ProtonCore-Crypto-VPN": [
-          "3.20.0"
+          "3.21.0"
         ]
       },
       "source_files": [
@@ -77,5 +77,5 @@
       ]
     }
   ],
-  "swift_version": "5.4"
+  "swift_version": "5.6"
 }

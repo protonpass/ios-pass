@@ -29,15 +29,9 @@ protocol TrashCoordinatorDelegate: AnyObject {
 final class TrashCoordinator: Coordinator {
     weak var delegate: TrashCoordinatorDelegate?
 
-    private lazy var trashViewController: UIViewController = {
-        let trashView = TrashView(coordinator: self)
-        return UIHostingController(rootView: trashView)
-    }()
-
-    override var root: Presentable { trashViewController }
-
-    convenience init() {
-        self.init(router: .init(), navigationType: .newFlow(hideBar: false))
+    override init() {
+        super.init()
+        self.start(with: TrashView(coordinator: self))
     }
 
     func showSidebar() {

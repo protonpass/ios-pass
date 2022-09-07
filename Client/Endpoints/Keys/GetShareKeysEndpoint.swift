@@ -21,21 +21,27 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
+public struct GetShareKeysResponse: Decodable {
+    let code: Int
+    let keys: ShareKeys
+}
+
 public struct GetShareKeysEndpoint: Endpoint {
-    public typealias Body = DummyEncodable
-    public struct Response: Codable {
-        public let code: Int
-        public let keys: ShareKey
-    }
+    public typealias Body = EmptyRequest
+    public typealias Response = GetShareKeysResponse
 
-    public var path: String
-    public var method: HTTPMethod { .get }
     public var authCredential: AuthCredential?
+    public var path: String
+    public var method: HTTPMethod
+    public var queries: [String: Any]?
 
-    // swiftlint:disable:next todo
-    // TODO: Support pagination
-    public init(credential: AuthCredential, shareId: String) {
-        self.path = "/pass/v1/share/\(shareId)/key/vault"
+    public init(credential: AuthCredential,
+                shareId: String,
+                page: Int,
+                pageSize: Int) {
         self.authCredential = credential
+        self.path = "/pass/v1/share/\(shareId)/key/vault"
+        self.method = .get
+        self.queries = .paginationQuery(page: page, pageSize: pageSize)
     }
 }

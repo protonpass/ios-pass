@@ -20,9 +20,9 @@
 
 import Foundation
 
-public struct VaultKey: Codable {
+public struct VaultKey: Decodable {
     public let rotationID: String
-    public let rotation: Int
+    public let rotation: Int64
 
     /// Armored vault key. Vault shares will have a private key here.
     /// Label and item shares will bet a public one here.
@@ -36,19 +36,5 @@ public struct VaultKey: Codable {
     public let keySignature: String
 
     /// Creation time of the key
-    public let createTime: Int
-
-    public init(rotationID: String,
-                rotation: Int,
-                key: String,
-                keyPassphrase: String,
-                keySignature: String,
-                createTime: Int) {
-        self.rotationID = rotationID
-        self.rotation = rotation
-        self.key = key
-        self.keyPassphrase = keyPassphrase
-        self.keySignature = keySignature
-        self.createTime = createTime
-    }
+    public let createTime: Int64
 }

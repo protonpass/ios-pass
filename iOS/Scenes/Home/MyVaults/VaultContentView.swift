@@ -25,6 +25,7 @@ import UIComponents
 
 struct VaultContentView: View {
     @StateObject private var viewModel: VaultContentViewModel
+    @State private var didAppear = false
 
     private var selectedVaultName: String {
         viewModel.selectedVault?.name ?? "All vaults"
@@ -35,82 +36,122 @@ struct VaultContentView: View {
     }
 
     var body: some View {
-        VStack {
-            List {
-                ForEach(0..<50) { index in
-                    Text("\(selectedVaultName) #\(index)")
-                }
+        Group {
+            if viewModel.partialItemContents.isEmpty {
+                EmptyVaultView(action: viewModel.createItemAction)
+            } else {
+                itemList
             }
-            VaultSummaryView()
-                .frame(height: 250)
         }
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                ToggleSidebarButton(action: viewModel.toggleSidebarAction)
+        .toolbar { toolbar }
+        .onAppear {
+            if !didAppear {
+                viewModel.fetchItems()
+                didAppear = true
             }
+        }
+    }
 
-            ToolbarItem(placement: .principal) {
-                Menu(content: {
-                    Section {
-                        Button(action: {
-                            viewModel.update(selectedVault: nil)
-                        }, label: {
-                            Text("All vaults")
-                        })
-                    }
-
-                    Section {
-                        ForEach(viewModel.vaults, id: \.id) { vault in
-                            Button(action: {
-                                viewModel.update(selectedVault: vault)
-                            }, label: {
-                                Label(title: {
-                                    Text(vault.name)
-                                }, icon: {
-                                    Image(uiImage: IconProvider.vault)
-                                })
-                            })
-                        }
-                    }
-
-                    Section {
-                        Button(action: viewModel.createVaultAction) {
-                            Label(title: {
-                                Text("Add vault")
-                            }, icon: {
-                                Image(uiImage: IconProvider.plus)
-                            })
-                        }
-                    }
-                }, label: {
-                    ZStack {
-                        Text(selectedVaultName)
-                            .fontWeight(.medium)
-                            .transaction { transaction in
-                                transaction.animation = nil
-                            }
-
-                        HStack {
-                            Spacer()
-                            Image(uiImage: IconProvider.chevronDown)
-                        }
-                        .padding(.trailing)
-                    }
-                    .foregroundColor(.white)
-                    .frame(width: UIScreen.main.bounds.width / 2)
-                    .padding(.vertical, 8)
-                    .background(Color(ColorProvider.BrandNorm))
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                })
+    private var itemList: some View {
+        ScrollView {
+            LazyVStack {
+                //                summaryView
+                //                    .frame(height: 150)
+                //                    .padding()
+                ForEach(viewModel.partialItemContents.indices, id: \.self) { index in
+                    let item = viewModel.partialItemContents[index]
+                    GenericItemView(
+                        item: item,
+                        showDivider: index != viewModel.partialItemContents.count - 1,
+                        action: { viewModel.selectItem(item) })
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                Spacer()
             }
+        }
+    }
 
-            ToolbarItem(placement: .navigationBarTrailing) {
+    @ToolbarContentBuilder
+    private var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            ToggleSidebarButton(action: viewModel.toggleSidebarAction)
+        }
+
+//        ToolbarItem(placement: .principal) {
+//            Menu(content: {
+//                Section {
+//                    Button(action: {
+//                        viewModel.update(selectedVault: nil)
+//                    }, label: {
+//                        Text("All vaults")
+//                    })
+//                }
+//
+//                Section {
+//                    ForEach(viewModel.vaults, id: \.id) { vault in
+//                        Button(action: {
+//                            viewModel.update(selectedVault: vault)
+//                        }, label: {
+//                            Label(title: {
+//                                Text(vault.name)
+//                            }, icon: {
+//                                Image(uiImage: IconProvider.vault)
+//                            })
+//                        })
+//                    }
+//                }
+//
+//                Section {
+//                    Button(action: viewModel.createVaultAction) {
+//                        Label(title: {
+//                            Text("Add vault")
+//                        }, icon: {
+//                            Image(uiImage: IconProvider.plus)
+//                        })
+//                    }
+//                }
+//            }, label: {
+//                ZStack {
+//                    Text(selectedVaultName)
+//                        .fontWeight(.medium)
+//                        .transaction { transaction in
+//                            transaction.animation = nil
+//                        }
+//
+//                    HStack {
+//                        Spacer()
+//                        Image(uiImage: IconProvider.chevronDown)
+//                    }
+//                    .padding(.trailing)
+//                }
+//                .foregroundColor(.white)
+//                .frame(width: UIScreen.main.bounds.width / 2)
+//                .padding(.vertical, 8)
+//                .background(Color(ColorProvider.BrandNorm))
+//                .clipShape(RoundedRectangle(cornerRadius: 8))
+//            })
+//        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            HStack {
+                Button(action: viewModel.searchAction) {
+                    Image(uiImage: IconProvider.magnifier)
+                }
+
                 Button(action: viewModel.createItemAction) {
                     Image(uiImage: IconProvider.plus)
                 }
-                .foregroundColor(Color(.label))
             }
+            .foregroundColor(Color(.label))
+        }
+    }
+
+    private var summaryView: some View {
+        HStack {
+            CategorySummaryView(summary: .init(aliasCount: 0))
+            CategorySummaryView(summary: .init(loginCount: 0))
+            CategorySummaryView(summary: .init(noteCount: 0))
         }
     }
 }

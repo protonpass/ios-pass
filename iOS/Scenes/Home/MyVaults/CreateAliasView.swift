@@ -22,16 +22,23 @@ import ProtonCore_UIFoundations
 import SwiftUI
 
 struct CreateAliasView: View {
-    let coordinator: MyVaultsCoordinator
+    @Environment(\.presentationMode) private var presentationMode
+    @StateObject private var viewModel: CreateAliasViewModel
+
+    init(viewModel: CreateAliasViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
         NavigationView {
             Text("Create new alias")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: coordinator.dismissTopMostModal) {
-                            Text("Cancel")
-                        }
+                        Button(action: {
+                            presentationMode.wrappedValue.dismiss()
+                        }, label: {
+                            Image(uiImage: IconProvider.cross)
+                        })
                         .foregroundColor(Color(.label))
                     }
 
@@ -42,7 +49,7 @@ struct CreateAliasView: View {
 
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action: {
-                            print("Save")
+                            viewModel.saveAction()
                         }, label: {
                             Text("Save")
                                 .fontWeight(.bold)
@@ -51,11 +58,12 @@ struct CreateAliasView: View {
                     }
                 }
         }
+        .disabled(viewModel.isLoading)
     }
 }
 
 struct CreateAliasView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateAliasView(coordinator: .preview)
+        CreateAliasView(viewModel: .init())
     }
 }

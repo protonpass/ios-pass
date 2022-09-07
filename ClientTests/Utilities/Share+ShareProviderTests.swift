@@ -26,17 +26,17 @@ import XCTest
 // swiftlint:disable function_body_length
 final class SharePlusShareProviderTests: XCTestCase {
     func testGetVaultSuccess() throws {
-        let vaultProtobuf = VaultProtobuf(name: .random(), note: .random())
+        let givenVault = VaultProtobuf(name: .random(), description: .random())
         let testUser = UserData.test
-        let addressKey = testUser.getAddressKey()
-        let requestBody = try CreateVaultRequestBody(addressKey: addressKey,
-                                                     vault: vaultProtobuf)
+        let request = try CreateVaultRequest(addressKey: testUser.getAddressKey(),
+                                             name: givenVault.name,
+                                             description: givenVault.description)
 
         let signingKeyPassphraseKeyPacketData =
-        try XCTUnwrap(requestBody.signingKeyPassphraseKeyPacket.base64Decode())
+        try XCTUnwrap(request.signingKeyPassphraseKeyPacket.base64Decode())
 
         let signingKeyPassphraseData =
-        try XCTUnwrap(requestBody.signingKeyPassphrase.base64Decode())
+        try XCTUnwrap(request.signingKeyPassphrase.base64Decode())
 
         let signingKeyPassphrase = signingKeyPassphraseKeyPacketData + signingKeyPassphraseData
 
@@ -46,34 +46,34 @@ final class SharePlusShareProviderTests: XCTestCase {
               targetType: 0,
               targetID: .random(),
               permission: 0,
-              acceptanceSignature: requestBody.acceptanceSignature,
+              acceptanceSignature: request.acceptanceSignature,
               inviterEmail: testUser.user.email ?? "",
-              inviterAcceptanceSignature: requestBody.acceptanceSignature,
-              signingKey: requestBody.signingKey,
+              inviterAcceptanceSignature: request.acceptanceSignature,
+              signingKey: request.signingKey,
               signingKeyPassphrase: signingKeyPassphrase.base64EncodedString(),
-              content: requestBody.content,
+              content: request.content,
               contentRotationID: .random(),
-              contentEncryptedAddressSignature: requestBody.contentEncryptedAddressSignature,
-              contentEncryptedVaultSignature: requestBody.contentEncryptedVaultSignature,
+              contentEncryptedAddressSignature: request.contentEncryptedAddressSignature,
+              contentEncryptedVaultSignature: request.contentEncryptedVaultSignature,
               contentSignatureEmail: testUser.user.email ?? "",
               contentFormatVersion: 0,
               expireTime: nil,
               createTime: 0)
 
-        let vaultKeyPassphraseKeyPacketData = try XCTUnwrap(requestBody.keyPacket.base64Decode())
-        let vaultKeyPassphraseData = try XCTUnwrap(requestBody.vaultKeyPassphrase.base64Decode())
+        let vaultKeyPassphraseKeyPacketData = try XCTUnwrap(request.keyPacket.base64Decode())
+        let vaultKeyPassphraseData = try XCTUnwrap(request.vaultKeyPassphrase.base64Decode())
         let vaultKeyPassphrase = vaultKeyPassphraseKeyPacketData + vaultKeyPassphraseData
 
         let vaultKeys: [VaultKey] = [.init(rotationID: .random(),
                                            rotation: 0,
-                                           key: requestBody.vaultKey,
+                                           key: request.vaultKey,
                                            keyPassphrase: vaultKeyPassphrase.base64EncodedString(),
-                                           keySignature: requestBody.vaultKeySignature,
+                                           keySignature: request.vaultKeySignature,
                                            createTime: 0)]
 
         let vault = try createdShare.getVault(userData: testUser, vaultKeys: vaultKeys)
 
-        XCTAssertEqual(vaultProtobuf.name, vault.name)
-        XCTAssertEqual(vaultProtobuf.description_p, vault.description)
+        XCTAssertEqual(givenVault.name, vault.name)
+        XCTAssertEqual(givenVault.description, vault.description)
     }
 }

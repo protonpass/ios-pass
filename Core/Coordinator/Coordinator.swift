@@ -19,105 +19,65 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import SwiftUI
 import UIKit
 
-/// Coordinator is the protocol every coordinator conforms to.
-open class Coordinator: NSObject {
-    deinit {
-        #if DEBUG
-        print("\(Self.self) is deallocated")
-        #endif
+open class Coordinator {
+    private let navigationController: UINavigationController
+    public var rootViewController: UIViewController { navigationController }
+
+    public init() {
+        self.navigationController = UINavigationController()
     }
 
-    public enum NavigationType {
-        /// Push is considered on current flow
-        case currentFlow
-
-        /// Present  or set root for new flow
-        case newFlow(hideBar: Bool) // present, set root
+    public func start<V: View>(with view: V) {
+        start(with: UIHostingController(rootView: view))
     }
 
-    public let router: Router
-    public var cancellables = Set<AnyCancellable>()
-    public let deeplinkSubject = CurrentValueSubject<String?, Never>(nil)
-    public var deeplinkCancellables = Set<AnyCancellable>()
-    private var childCoordinators: [Coordinator] = []
-    private let navigationType: NavigationType
+    public func start(with viewController: UIViewController) {
+        navigationController.setViewControllers([viewController], animated: true)
+    }
 
-    open var root: Presentable { fatalError("To be overridden") }
+    public func pushView<V: View>(_ view: V, animated: Bool = true) {
+        pushViewController(UIHostingController(rootView: view), animated: animated)
+    }
 
-    // MARK: - Initialization
-    public init(router: Router, navigationType: NavigationType) {
-        self.router = router
-        self.navigationType = navigationType
+    public func pushViewController(_ viewController: UIViewController, animated: Bool = true) {
+        navigationController.pushViewController(viewController, animated: animated)
+    }
 
-        super.init()
+    public func presentView<V: View>(_ view: V, animated: Bool = true) {
+        presentViewController(UIHostingController(rootView: view), animated: animated)
+    }
 
-        if case .newFlow(let hideBar) = navigationType {
-            router.setRoot(root, hideBar: hideBar)
+    public func presentViewFullScreen<V: View>(_ view: V, animated: Bool = true) {
+        let viewController = UIHostingController(rootView: view)
+        viewController.modalPresentationStyle = .fullScreen
+        presentViewController(viewController, animated: animated)
+    }
+
+    public func presentViewController(_ viewController: UIViewController,
+                                      animated: Bool = true) {
+        if let presentedViewController = navigationController.presentedViewController {
+            presentedViewController.present(viewController, animated: animated)
+        } else {
+            navigationController.present(viewController, animated: animated)
         }
     }
 
-    // MARK: - Reset deeplink
-    public func resetDeeplink() {
-        for child in childCoordinators {
-            child.deeplinkCancellables = Set<AnyCancellable>()
-        }
-        deeplinkSubject.send(nil)
-    }
-
-    // MARK: - Child coordinator
-    public func addChild(_ coordinator: Coordinator) {
-        deeplinkSubject
-            .subscribe(coordinator.deeplinkSubject)
-            .store(in: &coordinator.deeplinkCancellables)
-
-        childCoordinators.append(coordinator)
-    }
-
-    private func removeChild(_ coordinator: Coordinator) {
-        if let index = childCoordinators.firstIndex(of: coordinator) {
-            childCoordinators.remove(at: index)
+    public func presentViewControllerFullScreen(_ viewController: UIViewController,
+                                                animated: Bool = true) {
+        viewController.modalPresentationStyle = .fullScreen
+        if let presentedViewController = navigationController.presentedViewController {
+            presentedViewController.present(viewController, animated: animated)
+        } else {
+            navigationController.present(viewController, animated: animated)
         }
     }
 
-    public func setRootChild(coordinator: Coordinator, hideBar: Bool) {
-        addChild(coordinator)
-        router.setRoot(coordinator, hideBar: hideBar) { [weak self, weak coordinator] in
-            guard let coord = coordinator else { return }
-            self?.removeChild(coord)
-        }
-    }
-
-    public func pushChild(coordinator: Coordinator, animated: Bool, onRemove: (() -> Void)? = nil) {
-        addChild(coordinator)
-        router.push(coordinator, animated: animated) { [weak self, weak coordinator] in
-            guard let self = self, let coordinator = coordinator else { return }
-            onRemove?()
-            self.removeChild(coordinator)
-        }
-    }
-
-    /// - Important: Make sure to always call dismissChild after
-    public func presentChild(coordinator: Coordinator, animated: Bool) {
-        addChild(coordinator)
-        router.present(coordinator, animated: animated)
-    }
-
-    public func dismissChild(_ coordinator: Coordinator, animated: Bool) {
-        coordinator.toPresentable().presentingViewController?.dismiss(animated: animated, completion: nil)
-        removeChild(coordinator)
-    }
-}
-
-// MARK: - Presentable protocol
-extension Coordinator: Presentable {
-    public func toPresentable() -> UIViewController {
-        switch navigationType {
-        case .currentFlow:
-            return root.toPresentable()
-        case .newFlow:
-            return router.toPresentable()
-        }
+    public func dismissTopMostViewController(animated: Bool = true,
+                                             completion: (() -> Void)? = nil) {
+        navigationController.presentedViewController?.dismiss(animated: animated,
+                                                              completion: completion)
     }
 }

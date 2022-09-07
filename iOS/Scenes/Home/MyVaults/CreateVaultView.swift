@@ -23,60 +23,72 @@ import SwiftUI
 import UIComponents
 
 struct CreateVaultView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: CreateVaultViewModel
-    @State private var name = ""
-    @State private var note = ""
+    @State private var isFocusedOnName = false
+    @State private var isFocusedOnNote = false
 
     init(viewModel: CreateVaultViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                TitledTextField(title: "Name",
-                                text: $name,
-                                placeholder: "Vault name")
-
-                TitledTextField(title: "Note",
-                                text: $note,
-                                placeholder: "Add description")
+                nameInputView
+                noteInputView
                 Spacer()
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: viewModel.cancelAction) {
-                        Text("Cancel")
-                    }
-                    .foregroundColor(Color(.label))
-                }
+            .toolbar { toolbar }
+        }
+        .disabled(viewModel.isLoading)
+    }
 
-                ToolbarItem(placement: .principal) {
-                    Text("Create new vault")
-                        .fontWeight(.bold)
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        viewModel.createVault(name: name,
-                                              note: note)
-                    }, label: {
-                        Text("Save")
-                            .fontWeight(.bold)
-                            .foregroundColor(Color(ColorProvider.BrandNorm))
-                            .opacity(name.isEmpty ? 0.5 : 1)
-                    })
-                    .disabled(name.isEmpty)
-                }
-            }
+    private var nameInputView: some View {
+        UserInputContainerView(title: "Name",
+                               isFocused: isFocusedOnName) {
+            UserInputContentSingleLineView(
+                text: $viewModel.name,
+                isFocused: $isFocusedOnName,
+                placeholder: "Vault name")
         }
     }
-}
 
-struct CreateVaultView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateVaultView(viewModel: .preview)
+    private var noteInputView: some View {
+        UserInputContainerView(title: "Note",
+                               isFocused: isFocusedOnNote) {
+            UserInputContentMultilineView(
+                text: $viewModel.note,
+                isFocused: $isFocusedOnNote)
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Text("Cancel")
+            })
+            .foregroundColor(Color(.label))
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text("Create new vault")
+                .fontWeight(.bold)
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: viewModel.createVault) {
+                Text("Save")
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(ColorProvider.BrandNorm))
+                    .opacity(viewModel.name.isEmpty ? 0.5 : 1)
+            }
+            .disabled(viewModel.name.isEmpty)
+        }
     }
 }

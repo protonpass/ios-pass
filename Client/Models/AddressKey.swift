@@ -26,12 +26,6 @@ public struct AddressKey {
     public let addressId: String
     public let key: Key
     public let keyPassphrase: String
-
-    public init(addressId: String, key: Key, keyPassphrase: String) {
-        self.addressId = addressId
-        self.key = key
-        self.keyPassphrase = keyPassphrase
-    }
 }
 
 public extension UserData {

@@ -1,156 +1,162 @@
 PODS:
   - Alamofire (5.4.4)
+  - AlertToast (1.3.7)
   - EllipticCurveKeyPair (2.0)
-  - lottie-ios (3.3.0)
+  - Introspect (0.1.4)
+  - lottie-ios (3.4.1)
   - MBProgressHUD (1.2.0)
-  - ProtonCore-APIClient/Alamofire (3.20.0):
-    - ProtonCore-DataModel (= 3.20.0)
-    - ProtonCore-Networking/Alamofire (= 3.20.0)
-    - ProtonCore-Services/Alamofire (= 3.20.0)
-  - "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire (3.20.0)":
-    - "ProtonCore-Authentication/UsingCrypto+Alamofire (= 3.20.0)"
-    - ProtonCore-Crypto (= 3.20.0)
-    - ProtonCore-OpenPGP (= 3.20.0)
-  - "ProtonCore-Authentication/UsingCrypto+Alamofire (3.20.0)":
-    - ProtonCore-APIClient/Alamofire (= 3.20.0)
-    - ProtonCore-Crypto (= 3.20.0)
-    - ProtonCore-Services/Alamofire (= 3.20.0)
-  - ProtonCore-Challenge (3.20.0):
-    - ProtonCore-Foundations (= 3.20.0)
-  - ProtonCore-CoreTranslation (3.20.0)
-  - ProtonCore-CoreTranslation-V5 (3.20.0)
-  - ProtonCore-Crypto (3.20.0)
-  - ProtonCore-DataModel (3.20.0):
-    - ProtonCore-Utilities (= 3.20.0)
-  - ProtonCore-Doh (3.20.0):
-    - ProtonCore-Log (= 3.20.0)
-    - ProtonCore-Utilities (= 3.20.0)
-  - ProtonCore-ForceUpgrade-V5/Alamofire (3.20.0):
-    - ProtonCore-CoreTranslation (= 3.20.0)
-    - ProtonCore-Networking/Alamofire (= 3.20.0)
-    - ProtonCore-UIFoundations-V5 (= 3.20.0)
-  - ProtonCore-Foundations (3.20.0):
-    - ProtonCore-Log (= 3.20.0)
-  - ProtonCore-Hash (3.20.0)
-  - ProtonCore-HumanVerification-V5/Alamofire (3.20.0):
-    - ProtonCore-APIClient/Alamofire (= 3.20.0)
-    - ProtonCore-CoreTranslation (= 3.20.0)
-    - ProtonCore-Foundations (= 3.20.0)
-    - ProtonCore-UIFoundations-V5 (= 3.20.0)
-    - ProtonCore-Utilities (= 3.20.0)
-  - ProtonCore-Keymaker/UsingCrypto (3.20.0):
+  - ProtonCore-APIClient/Alamofire (3.21.0):
+    - ProtonCore-DataModel (= 3.21.0)
+    - ProtonCore-Networking/Alamofire (= 3.21.0)
+    - ProtonCore-Services/Alamofire (= 3.21.0)
+  - "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire (3.21.0)":
+    - "ProtonCore-Authentication/UsingCrypto+Alamofire (= 3.21.0)"
+    - ProtonCore-Crypto (= 3.21.0)
+    - ProtonCore-OpenPGP (= 3.21.0)
+  - "ProtonCore-Authentication/UsingCrypto+Alamofire (3.21.0)":
+    - ProtonCore-APIClient/Alamofire (= 3.21.0)
+    - ProtonCore-Crypto (= 3.21.0)
+    - ProtonCore-Services/Alamofire (= 3.21.0)
+  - ProtonCore-Challenge (3.21.0):
+    - ProtonCore-Foundations (= 3.21.0)
+  - ProtonCore-CoreTranslation (3.21.0)
+  - ProtonCore-CoreTranslation-V5 (3.21.0)
+  - ProtonCore-Crypto (3.21.0)
+  - ProtonCore-DataModel (3.21.0):
+    - ProtonCore-Utilities (= 3.21.0)
+  - ProtonCore-Doh (3.21.0):
+    - ProtonCore-Log (= 3.21.0)
+    - ProtonCore-Utilities (= 3.21.0)
+  - ProtonCore-ForceUpgrade-V5/Alamofire (3.21.0):
+    - ProtonCore-CoreTranslation (= 3.21.0)
+    - ProtonCore-Networking/Alamofire (= 3.21.0)
+    - ProtonCore-UIFoundations-V5 (= 3.21.0)
+  - ProtonCore-Foundations (3.21.0):
+    - ProtonCore-Log (= 3.21.0)
+  - ProtonCore-Hash (3.21.0)
+  - ProtonCore-HumanVerification-V5/Alamofire (3.21.0):
+    - ProtonCore-APIClient/Alamofire (= 3.21.0)
+    - ProtonCore-CoreTranslation (= 3.21.0)
+    - ProtonCore-Foundations (= 3.21.0)
+    - ProtonCore-UIFoundations-V5 (= 3.21.0)
+    - ProtonCore-Utilities (= 3.21.0)
+  - ProtonCore-Keymaker/UsingCrypto (3.21.0):
     - EllipticCurveKeyPair (~> 2.0)
-    - ProtonCore-Crypto (= 3.20.0)
-  - ProtonCore-KeyManager/UsingCrypto (3.20.0):
-    - ProtonCore-Crypto (= 3.20.0)
-    - ProtonCore-DataModel (= 3.20.0)
-  - ProtonCore-Log (3.20.0)
-  - "ProtonCore-Login/UsingCrypto+Alamofire (3.20.0)":
-    - "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire (= 3.20.0)"
-    - "ProtonCore-Authentication/UsingCrypto+Alamofire (= 3.20.0)"
-    - ProtonCore-CoreTranslation (= 3.20.0)
-    - ProtonCore-Crypto (= 3.20.0)
-    - ProtonCore-DataModel (= 3.20.0)
-    - ProtonCore-Foundations (= 3.20.0)
-    - ProtonCore-Log (= 3.20.0)
-    - ProtonCore-OpenPGP (= 3.20.0)
+    - ProtonCore-Crypto (= 3.21.0)
+  - ProtonCore-KeyManager/UsingCrypto (3.21.0):
+    - ProtonCore-Crypto (= 3.21.0)
+    - ProtonCore-DataModel (= 3.21.0)
+  - ProtonCore-Log (3.21.0)
+  - "ProtonCore-Login/UsingCrypto+Alamofire (3.21.0)":
+    - "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire (= 3.21.0)"
+    - "ProtonCore-Authentication/UsingCrypto+Alamofire (= 3.21.0)"
+    - ProtonCore-CoreTranslation (= 3.21.0)
+    - ProtonCore-Crypto (= 3.21.0)
+    - ProtonCore-DataModel (= 3.21.0)
+    - ProtonCore-Foundations (= 3.21.0)
+    - ProtonCore-Log (= 3.21.0)
+    - ProtonCore-OpenPGP (= 3.21.0)
     - TrustKit
-  - "ProtonCore-LoginUI-V5/UsingCrypto+Alamofire (3.20.0)":
+  - "ProtonCore-LoginUI-V5/UsingCrypto+Alamofire (3.21.0)":
     - lottie-ios
-    - "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire (= 3.20.0)"
-    - "ProtonCore-Authentication/UsingCrypto+Alamofire (= 3.20.0)"
-    - ProtonCore-Challenge (= 3.20.0)
-    - ProtonCore-CoreTranslation (= 3.20.0)
-    - ProtonCore-Crypto (= 3.20.0)
-    - ProtonCore-DataModel (= 3.20.0)
-    - ProtonCore-Foundations (= 3.20.0)
-    - ProtonCore-HumanVerification-V5/Alamofire (= 3.20.0)
-    - ProtonCore-Log (= 3.20.0)
-    - "ProtonCore-Login/UsingCrypto+Alamofire (= 3.20.0)"
-    - ProtonCore-OpenPGP (= 3.20.0)
-    - "ProtonCore-Payments/UsingCrypto+Alamofire (= 3.20.0)"
-    - "ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire (= 3.20.0)"
-    - ProtonCore-UIFoundations-V5 (= 3.20.0)
+    - "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire (= 3.21.0)"
+    - "ProtonCore-Authentication/UsingCrypto+Alamofire (= 3.21.0)"
+    - ProtonCore-Challenge (= 3.21.0)
+    - ProtonCore-CoreTranslation (= 3.21.0)
+    - ProtonCore-Crypto (= 3.21.0)
+    - ProtonCore-DataModel (= 3.21.0)
+    - ProtonCore-Foundations (= 3.21.0)
+    - ProtonCore-HumanVerification-V5/Alamofire (= 3.21.0)
+    - ProtonCore-Log (= 3.21.0)
+    - "ProtonCore-Login/UsingCrypto+Alamofire (= 3.21.0)"
+    - ProtonCore-OpenPGP (= 3.21.0)
+    - "ProtonCore-Payments/UsingCrypto+Alamofire (= 3.21.0)"
+    - "ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire (= 3.21.0)"
+    - ProtonCore-UIFoundations-V5 (= 3.21.0)
     - TrustKit
-  - ProtonCore-Networking/Alamofire (3.20.0):
+  - ProtonCore-Networking/Alamofire (3.21.0):
     - Alamofire (= 5.4.4)
-    - ProtonCore-CoreTranslation (= 3.20.0)
-    - ProtonCore-Log (= 3.20.0)
+    - ProtonCore-CoreTranslation (= 3.21.0)
+    - ProtonCore-Log (= 3.21.0)
     - TrustKit
-  - ProtonCore-OpenPGP (3.20.0)
-  - "ProtonCore-Payments/UsingCrypto+Alamofire (3.20.0)":
-    - "ProtonCore-Authentication/UsingCrypto+Alamofire (= 3.20.0)"
-    - ProtonCore-CoreTranslation (= 3.20.0)
-    - ProtonCore-Foundations (= 3.20.0)
-    - ProtonCore-Hash (= 3.20.0)
-    - ProtonCore-Log (= 3.20.0)
-    - ProtonCore-Networking/Alamofire (= 3.20.0)
-    - ProtonCore-Services/Alamofire (= 3.20.0)
+  - ProtonCore-OpenPGP (3.21.0)
+  - "ProtonCore-Payments/UsingCrypto+Alamofire (3.21.0)":
+    - "ProtonCore-Authentication/UsingCrypto+Alamofire (= 3.21.0)"
+    - ProtonCore-CoreTranslation (= 3.21.0)
+    - ProtonCore-Foundations (= 3.21.0)
+    - ProtonCore-Hash (= 3.21.0)
+    - ProtonCore-Log (= 3.21.0)
+    - ProtonCore-Networking/Alamofire (= 3.21.0)
+    - ProtonCore-Services/Alamofire (= 3.21.0)
     - ReachabilitySwift (~> 5.0.0)
-  - "ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire (3.20.0)":
-    - ProtonCore-CoreTranslation (= 3.20.0)
-    - ProtonCore-CoreTranslation-V5 (= 3.20.0)
-    - ProtonCore-Foundations (= 3.20.0)
-    - ProtonCore-Log (= 3.20.0)
-    - "ProtonCore-Payments/UsingCrypto+Alamofire (= 3.20.0)"
-    - ProtonCore-UIFoundations-V5 (= 3.20.0)
-  - ProtonCore-Services/Alamofire (3.20.0):
-    - ProtonCore-DataModel (= 3.20.0)
-    - ProtonCore-Doh (= 3.20.0)
-    - ProtonCore-Log (= 3.20.0)
-    - ProtonCore-Networking/Alamofire (= 3.20.0)
-    - ProtonCore-Utilities (= 3.20.0)
+  - "ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire (3.21.0)":
+    - ProtonCore-CoreTranslation (= 3.21.0)
+    - ProtonCore-CoreTranslation-V5 (= 3.21.0)
+    - ProtonCore-Foundations (= 3.21.0)
+    - ProtonCore-Log (= 3.21.0)
+    - "ProtonCore-Payments/UsingCrypto+Alamofire (= 3.21.0)"
+    - ProtonCore-UIFoundations-V5 (= 3.21.0)
+  - ProtonCore-Services/Alamofire (3.21.0):
+    - ProtonCore-DataModel (= 3.21.0)
+    - ProtonCore-Doh (= 3.21.0)
+    - ProtonCore-Log (= 3.21.0)
+    - ProtonCore-Networking/Alamofire (= 3.21.0)
+    - ProtonCore-Utilities (= 3.21.0)
     - TrustKit
-  - ProtonCore-Settings-V5 (3.20.0):
+  - ProtonCore-Settings-V5 (3.21.0):
     - ProtonCore-UIFoundations-V5
-  - ProtonCore-UIFoundations-V5 (3.20.0):
-    - ProtonCore-CoreTranslation (= 3.20.0)
-    - ProtonCore-CoreTranslation-V5 (= 3.20.0)
-    - ProtonCore-Foundations (= 3.20.0)
-    - ProtonCore-Log (= 3.20.0)
-    - ProtonCore-Utilities (= 3.20.0)
-  - ProtonCore-Utilities (3.20.0):
-    - ProtonCore-Log (= 3.20.0)
+  - ProtonCore-UIFoundations-V5 (3.21.0):
+    - ProtonCore-CoreTranslation (= 3.21.0)
+    - ProtonCore-CoreTranslation-V5 (= 3.21.0)
+    - ProtonCore-Foundations (= 3.21.0)
+    - ProtonCore-Log (= 3.21.0)
+    - ProtonCore-Utilities (= 3.21.0)
+  - ProtonCore-Utilities (3.21.0):
+    - ProtonCore-Log (= 3.21.0)
   - ReachabilitySwift (5.0.0)
   - SideMenuSwift (2.0.9)
   - SwiftProtobuf (1.19.0)
   - TrustKit (2.0.0)
 
 DEPENDENCIES:
+  - AlertToast
+  - Introspect
   - MBProgressHUD
-  - "ProtonCore-APIClient/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Authentication/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Challenge (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-CoreTranslation (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-CoreTranslation-V5 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Crypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-DataModel (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Doh (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-ForceUpgrade-V5/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Foundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Hash (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-HumanVerification-V5/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Keymaker/UsingCrypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-KeyManager/UsingCrypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Log (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Login/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-LoginUI-V5/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Networking/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-OpenPGP (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Payments/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Services/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Settings-V5 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-UIFoundations-V5 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
-  - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.20.0`)"
+  - "ProtonCore-APIClient/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Authentication/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Challenge (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-CoreTranslation (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-CoreTranslation-V5 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Crypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-DataModel (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Doh (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-ForceUpgrade-V5/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Foundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Hash (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-HumanVerification-V5/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Keymaker/UsingCrypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-KeyManager/UsingCrypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Log (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Login/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-LoginUI-V5/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Networking/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-OpenPGP (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Payments/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Services/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Settings-V5 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-UIFoundations-V5 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
+  - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.21.0`)"
   - SideMenuSwift (= 2.0.9)
   - SwiftProtobuf
 
 SPEC REPOS:
   trunk:
     - Alamofire
+    - AlertToast
     - EllipticCurveKeyPair
+    - Introspect
     - lottie-ios
     - MBProgressHUD
     - ReachabilitySwift
@@ -161,199 +167,201 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   ProtonCore-APIClient:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Authentication:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Authentication-KeyGeneration:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Challenge:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-CoreTranslation:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-CoreTranslation-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Crypto:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-DataModel:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Doh:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-ForceUpgrade-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Foundations:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Hash:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-HumanVerification-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Keymaker:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-KeyManager:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Log:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Login:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-LoginUI-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Networking:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-OpenPGP:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Payments:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-PaymentsUI-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Services:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Settings-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-UIFoundations-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Utilities:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
 
 CHECKOUT OPTIONS:
   ProtonCore-APIClient:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Authentication:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Authentication-KeyGeneration:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Challenge:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-CoreTranslation:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-CoreTranslation-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Crypto:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-DataModel:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Doh:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-ForceUpgrade-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Foundations:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Hash:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-HumanVerification-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Keymaker:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-KeyManager:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Log:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Login:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-LoginUI-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Networking:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-OpenPGP:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Payments:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-PaymentsUI-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Services:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Settings-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-UIFoundations-V5:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
   ProtonCore-Utilities:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 3.20.0
+    :tag: 3.21.0
 
 SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
+  AlertToast: 8c9d5efb2df6ea728b32b62bce99d876ec3e5393
   EllipticCurveKeyPair: 8c69e5238a6e47243a10a48fbd41dfb19110b22e
-  lottie-ios: 6ac74dcc09904798f59b18cb3075c089d76be9ae
+  Introspect: b62c4dd2063072327c21d618ef2bedc3c87bc366
+  lottie-ios: 016449b5d8be0c3dcbcfa0a9988469999cd04c5d
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
-  ProtonCore-APIClient: 6544cb32093676b9c502c915aa3927b059be7185
-  ProtonCore-Authentication: 93ca152f72a381fef6e0c3f0b599591f9622b5d4
-  ProtonCore-Authentication-KeyGeneration: 89f70f90977cb4aee845a27e7cdf88fe68ae29fe
-  ProtonCore-Challenge: 1f01f22357568c648d5a240a5434479949e26a96
-  ProtonCore-CoreTranslation: e723ba804c99d6d87ca0d718f262594fd9585ce8
-  ProtonCore-CoreTranslation-V5: 3b9c996991bcf75f820f5cb1672795e3a7257d20
-  ProtonCore-Crypto: 7a0b5e15f7d8d76d1e5868f5073b3f0b71eaee70
-  ProtonCore-DataModel: 36d828781fce2748cfef237a6744d2147fdc00ba
-  ProtonCore-Doh: 9dfe6501fc43ff6b039cda1ce812843fc36593d8
-  ProtonCore-ForceUpgrade-V5: aaabacb74a2f56fa1fab8d79fd9772c3380d7c86
-  ProtonCore-Foundations: 548db8b0fe0f82400649b48e06a17aaa9e95bcf3
-  ProtonCore-Hash: 7d56e60e2d538fe36bc3c8618eca681b04f387e4
-  ProtonCore-HumanVerification-V5: de77ee2b5c77b023c6c605ae161aee90075ef33a
-  ProtonCore-Keymaker: 4572c442c141d798f97db2b9e966de1c403cb1dc
-  ProtonCore-KeyManager: b70c9ea00cc89b83aae0ff4fafa290905caf5ff4
-  ProtonCore-Log: 107cd1e6d72d5ebde128a7e50f5e676c940af7f2
-  ProtonCore-Login: aca7a9e9e17e2e3b77b68d157dfd5e40265a62c5
-  ProtonCore-LoginUI-V5: 22094ee9ccc1874e9ea10ac12786607ca73c8e0f
-  ProtonCore-Networking: 1bcfbc9dab4cbb1d188f114cdb6891de0e422012
-  ProtonCore-OpenPGP: aa7b901e284a2b3408ac02e50f39cc8d0bfcdb78
-  ProtonCore-Payments: 8181e68b3bf6043f76cf312601d5b7c81f25f9ee
-  ProtonCore-PaymentsUI-V5: 15d8796e92856ec7bf88567cc81727cc9646a56c
-  ProtonCore-Services: f860aa9a22fac25415af210ba7850fd9ec17eb00
-  ProtonCore-Settings-V5: 539245eeb146a78a42f58351c2243bec24723797
-  ProtonCore-UIFoundations-V5: 80e4d5eadbd16706a738f2ae74f35ca10e4c4191
-  ProtonCore-Utilities: 7d29ad3d73ccd12dc62effecab41783c2b061f3d
+  ProtonCore-APIClient: c1c9c587b527b87a95edcd2201a2440c243f847d
+  ProtonCore-Authentication: a414cf9c47a1955820342dae09fbe15dce30c64a
+  ProtonCore-Authentication-KeyGeneration: 213be2b4a93970b9dcaf3e19f1558ccdafbad7d1
+  ProtonCore-Challenge: 8a0167bb1988526ae9f96e2e92fd2df96e38d444
+  ProtonCore-CoreTranslation: 064c100b22a7226f2c162f2a740a856ca74e40ec
+  ProtonCore-CoreTranslation-V5: a801bbc3a7754d654fa9392525c52d403c0971e6
+  ProtonCore-Crypto: f123fc364829f44ecf152505e4b3c5dc1a969a93
+  ProtonCore-DataModel: 1b980d29e1a2be17f73328fe1882cdacded8ad62
+  ProtonCore-Doh: 9bdc36da643af0e1319e74eaca25135e7bf96969
+  ProtonCore-ForceUpgrade-V5: 9c3b71645382eebaa41836aecadb2289a343bfc9
+  ProtonCore-Foundations: f9fcc15b100c7cb20104e4dfe5a4e3ec59b74a9d
+  ProtonCore-Hash: f9ec445f990da69b0bb477b0339fe9441bcd4378
+  ProtonCore-HumanVerification-V5: bfbd847d8859b3eb0a644d2a1726d25e284343d5
+  ProtonCore-Keymaker: 9cf5408234985d090cb7b4bd465f37aa68889c81
+  ProtonCore-KeyManager: 77f3207588fca9aadb2470e1ccc19c5232dfd0db
+  ProtonCore-Log: d315a6f54b8d05b3f104509477d265217c2551e5
+  ProtonCore-Login: b81991ecce909f70c27926843d1c3b6866fd75db
+  ProtonCore-LoginUI-V5: 89bc252c7b39911274eea8ad2c2a3b7877a0bcbd
+  ProtonCore-Networking: ab67fb9b57cd8a6cb1e38e289d7da096f795a3f7
+  ProtonCore-OpenPGP: 32427af2dcebaba83919e7f1e1e3adc96883ef01
+  ProtonCore-Payments: 4bfcc1bdc9b3daf92ee1e16438caf5438f1dd807
+  ProtonCore-PaymentsUI-V5: cc14d1fa0b3a31981240a1a614a3c93c5ad22e20
+  ProtonCore-Services: 86c6756f86408936322855e726910acb3215a3da
+  ProtonCore-Settings-V5: 36f20a86c9776e889038ae2b96b570dc5073eb6d
+  ProtonCore-UIFoundations-V5: c4aa0112172efbe993f7812e38298bf5a81c40eb
+  ProtonCore-Utilities: 5ce198b4f69e4e9ab48c488838a8e6ea6504e280
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SideMenuSwift: 39f1922e225da4aaa8b16591037a929defe960c9
   SwiftProtobuf: 6ef3f0e422ef90d6605ca20b21a94f6c1324d6b3
   TrustKit: 610b8c71c07914756dd74c380040a3408a747798
 
-PODFILE CHECKSUM: 2aa9dceb6ca82ba1638fe02ddbfa5929e353f627
+PODFILE CHECKSUM: d2044a246ac89591cf4d10d43021e4247b1c51f9
 
 COCOAPODS: 1.11.3

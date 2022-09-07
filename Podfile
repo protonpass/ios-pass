@@ -3,7 +3,7 @@ def proton_core_path
 end
 
 def proton_core_version
-  "3.20.0"
+  "3.21.0"
 end
 
 def pmtest_path
@@ -23,12 +23,15 @@ def client_and_ios_pods
   pod 'ProtonCore-Keymaker/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Networking/Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Login/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
 end
 
 def ios_and_uicomponents
   pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-CoreTranslation-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'Introspect'
+  pod 'AlertToast'
 end
 
 target 'Client' do
