@@ -180,7 +180,10 @@ final class MyVaultsCoordinator: Coordinator {
             pushView(logInDetailView)
 
         case .note:
-            break
+            let viewModel = NoteDetailViewModel(itemContent: itemContent,
+                                                itemRevisionRepository: itemRevisionRepository)
+            let noteDetailView = NoteDetailView(viewModel: viewModel)
+            pushView(noteDetailView)
 
         case .alias:
             break

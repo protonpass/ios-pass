@@ -40,6 +40,7 @@ struct LogInDetailView: View {
             Spacer()
         }
         .padding()
+        .padding(.top)
         .toolbar(content: toolbarContent)
     }
 
@@ -111,7 +112,7 @@ struct LogInDetailView: View {
     private var urlsSection: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Websites")
-            VStack(spacing: 4) {
+            VStack(alignment: .leading, spacing: 4) {
                 ForEach(viewModel.urls, id: \.self) { url in
                     Text(url)
                         .font(.callout)

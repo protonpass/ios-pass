@@ -63,6 +63,8 @@
 		354F769028C861FF00EB2383 /* DestructiveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F768F28C861FF00EB2383 /* DestructiveButton.swift */; };
 		354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769128C8678100EB2383 /* LogInDetailView.swift */; };
 		354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */; };
+		354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769528C879AA00EB2383 /* NoteDetailView.swift */; };
+		354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */; };
 		355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */; };
 		3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618628A1372500A68477 /* SwiftUITextView.swift */; };
 		3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618A28A14EB600A68477 /* UserInputContainerView.swift */; };
@@ -358,6 +360,8 @@
 		354F768F28C861FF00EB2383 /* DestructiveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestructiveButton.swift; sourceTree = "<group>"; };
 		354F769128C8678100EB2383 /* LogInDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInDetailView.swift; sourceTree = "<group>"; };
 		354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInDetailViewModel.swift; sourceTree = "<group>"; };
+		354F769528C879AA00EB2383 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
+		354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewModel.swift; sourceTree = "<group>"; };
 		355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsSidebarItemView.swift; sourceTree = "<group>"; };
 		3552618628A1372500A68477 /* SwiftUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUITextView.swift; sourceTree = "<group>"; };
 		3552618A28A14EB600A68477 /* UserInputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputContainerView.swift; sourceTree = "<group>"; };
@@ -658,6 +662,8 @@
 				355635BE2889664200F32353 /* LoadVaultsViewModel.swift */,
 				354F769128C8678100EB2383 /* LogInDetailView.swift */,
 				354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */,
+				354F769528C879AA00EB2383 /* NoteDetailView.swift */,
+				354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */,
 				355635B828895B8E00F32353 /* VaultContentView.swift */,
 				355635C0288968B000F32353 /* VaultContentViewModel.swift */,
 			);
@@ -1754,6 +1760,7 @@
 				3547ABDE28774D1100EE85E1 /* MyVaultsCoordinator.swift in Sources */,
 				355635B928895B8E00F32353 /* VaultContentView.swift in Sources */,
 				355635C1288968B000F32353 /* VaultContentViewModel.swift in Sources */,
+				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateNoteView.swift in Sources */,
 				358A508928AD2E8F00F5285C /* SideBarViewModel.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateAliasView.swift in Sources */,
@@ -1775,6 +1782,7 @@
 				35476972289D7E6000581E2E /* CreateAliasViewModel.swift in Sources */,
 				3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */,
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
+				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				354BB15528A2895F00F50040 /* SearchView.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
 				355635B7288947DD00F32353 /* VaultSelection.swift in Sources */,
