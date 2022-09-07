@@ -172,10 +172,19 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showItemDetailView(itemContent: ItemContent) {
-        let viewModel = ItemDetailViewModel(itemContent: itemContent,
-                                            itemRevisionRepository: itemRevisionRepository)
-        let itemDetailView = ItemDetailView(viewModel: viewModel)
-        pushView(itemDetailView)
+        switch itemContent.contentData {
+        case .login:
+            let viewModel = LogInDetailViewModel(itemContent: itemContent,
+                                                 itemRevisionRepository: itemRevisionRepository)
+            let logInDetailView = LogInDetailView(viewModel: viewModel)
+            pushView(logInDetailView)
+
+        case .note:
+            break
+
+        case .alias:
+            break
+        }
     }
 }
 
