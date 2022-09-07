@@ -25,6 +25,7 @@ import UIComponents
 struct NoteDetailView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: NoteDetailViewModel
+    @State private var isShowingTrashingAlert = false
 
     init(viewModel: NoteDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -41,6 +42,7 @@ struct NoteDetailView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .padding(.top)
+        .moveToTrashAlert(isPresented: $isShowingTrashingAlert, onTrash: viewModel.trashAction)
         .toolbar(content: toolbarContent)
     }
 
@@ -82,7 +84,7 @@ struct NoteDetailView: View {
             DestructiveButton(title: "Move to trash",
                               icon: IconProvider.trash,
                               action: {
-                print("Delete")
+                isShowingTrashingAlert.toggle()
             })
         }, label: {
             Image(uiImage: IconProvider.threeDotsHorizontal)

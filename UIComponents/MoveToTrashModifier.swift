@@ -1,6 +1,6 @@
 //
-// NoteDetailViewModel.swift
-// Proton Pass - Created on 07/09/2022.
+// MoveToTrashModifier.swift
+// Proton Pass - Created on 08/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,26 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Core
+import SwiftUI
 
-final class NoteDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
-    deinit { print(deinitMessage) }
+private let kTrashingMessage = """
+This action will remove the item from your vault. You can view and restore it from within the Trash in the future.
+"""
 
-    @Published private(set) var name = ""
-    @Published private(set) var note = ""
-
-    override init(itemContent: ItemContent,
-                  itemRevisionRepository: ItemRevisionRepositoryProtocol) {
-        super.init(itemContent: itemContent, itemRevisionRepository: itemRevisionRepository)
-
-        switch itemContent.contentData {
-        case .note:
-            self.name = itemContent.name
-            self.note = itemContent.note
-
-        default:
-            fatalError("Expecting note type")
+public extension View {
+    func moveToTrashAlert(isPresented: Binding<Bool>,
+                          onTrash: @escaping () -> Void) -> some View {
+        alert(isPresented: isPresented) {
+            Alert(title: Text("Move to Trash?"),
+                  message: Text(kTrashingMessage),
+                  primaryButton: .destructive(Text("Move to Trash"), action: onTrash),
+                  secondaryButton: .default(Text("Cancel")))
         }
     }
 }

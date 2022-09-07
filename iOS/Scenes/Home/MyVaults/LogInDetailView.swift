@@ -26,6 +26,7 @@ struct LogInDetailView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
+    @State private var isShowingTrashingAlert = false
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -42,6 +43,7 @@ struct LogInDetailView: View {
         .padding()
         .padding(.top)
         .navigationBarBackButtonHidden(true)
+        .moveToTrashAlert(isPresented: $isShowingTrashingAlert, onTrash: viewModel.trashAction)
         .toolbar(content: toolbarContent)
     }
 
@@ -83,7 +85,7 @@ struct LogInDetailView: View {
             DestructiveButton(title: "Move to trash",
                               icon: IconProvider.trash,
                               action: {
-                print("Delete")
+                isShowingTrashingAlert.toggle()
             })
         }, label: {
             Image(uiImage: IconProvider.threeDotsHorizontal)
