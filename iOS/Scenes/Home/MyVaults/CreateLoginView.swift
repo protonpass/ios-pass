@@ -26,6 +26,7 @@ import UIComponents
 struct CreateLoginView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: CreateLoginViewModel
+    @State private var isShowingDiscardAlert = false
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnUsername = false
     @State private var isFocusedOnPassword = false
@@ -57,13 +58,24 @@ struct CreateLoginView: View {
                 presentationMode.wrappedValue.dismiss()
             }
         }
+        .alert(isPresented: $isShowingDiscardAlert) {
+            Alert(title: Text("Discard changes"),
+                  message: Text("You will loose all unsaved changes"),
+                  primaryButton: .destructive(Text("Discard Changes"),
+                                              action: { presentationMode.wrappedValue.dismiss() }),
+                  secondaryButton: .default(Text("Keep Editing")))
+        }
     }
 
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
-                presentationMode.wrappedValue.dismiss()
+                if viewModel.isEmpty {
+                    presentationMode.wrappedValue.dismiss()
+                } else {
+                    isShowingDiscardAlert.toggle()
+                }
             }, label: {
                 Image(uiImage: IconProvider.cross)
             })

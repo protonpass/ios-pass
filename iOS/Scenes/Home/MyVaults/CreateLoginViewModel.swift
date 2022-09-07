@@ -41,6 +41,14 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
 
     weak var createLoginDelegate: CreateLoginViewModelDelegate?
 
+    private var hasNoUrls: Bool {
+        urls.isEmpty || (urls.count == 1 && urls[0].isEmpty)
+    }
+
+    var isEmpty: Bool {
+        title.isEmpty && username.isEmpty && password.isEmpty && hasNoUrls && note.isEmpty
+    }
+
     override init(shareId: String,
                   userData: UserData,
                   shareRepository: ShareRepositoryProtocol,
