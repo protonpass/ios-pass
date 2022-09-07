@@ -78,7 +78,7 @@ enum CreateNewItemOption {
         case .note:
             return "Keep important information secure"
         case .password:
-            return "Generate a secure password"
+            return "Generate a strong password"
         }
     }
 

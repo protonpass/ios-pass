@@ -56,7 +56,7 @@ struct CreateItemView: View {
 
                 Spacer()
             }
-            .navigationTitle("Create new...")
+            .navigationTitle("New...")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
