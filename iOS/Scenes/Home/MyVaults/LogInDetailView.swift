@@ -41,19 +41,20 @@ struct LogInDetailView: View {
         }
         .padding()
         .padding(.top)
+        .navigationBarBackButtonHidden(true)
         .toolbar(content: toolbarContent)
     }
 
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
-//        ToolbarItem(placement: .navigationBarLeading) {
-//            Button(action: {
-//                presentationMode.wrappedValue.dismiss()
-//            }, label: {
-//                Image(uiImage: IconProvider.chevronLeft)
-//                    .foregroundColor(.primary)
-//            })
-//        }
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Image(uiImage: IconProvider.chevronLeft)
+                    .foregroundColor(.primary)
+            })
+        }
 
         ToolbarItem(placement: .principal) {
             Text(viewModel.name)

@@ -27,7 +27,7 @@ open class Coordinator {
     public var rootViewController: UIViewController { navigationController }
 
     public init() {
-        self.navigationController = UINavigationController()
+        self.navigationController = PPNavigationController()
     }
 
     public func start<V: View>(with view: V) {
@@ -38,11 +38,17 @@ open class Coordinator {
         navigationController.setViewControllers([viewController], animated: true)
     }
 
-    public func pushView<V: View>(_ view: V, animated: Bool = true) {
-        pushViewController(UIHostingController(rootView: view), animated: animated)
+    public func pushView<V: View>(_ view: V,
+                                  animated: Bool = true,
+                                  hidesBackButton: Bool = true) {
+        let viewController = UIHostingController(rootView: view)
+        pushViewController(viewController, animated: animated, hidesBackButton: hidesBackButton)
     }
 
-    public func pushViewController(_ viewController: UIViewController, animated: Bool = true) {
+    public func pushViewController(_ viewController: UIViewController,
+                                   animated: Bool = true,
+                                   hidesBackButton: Bool = true) {
+        viewController.navigationItem.hidesBackButton = hidesBackButton
         navigationController.pushViewController(viewController, animated: animated)
     }
 
@@ -79,5 +85,16 @@ open class Coordinator {
                                              completion: (() -> Void)? = nil) {
         navigationController.presentedViewController?.dismiss(animated: animated,
                                                               completion: completion)
+    }
+}
+
+private final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
+    }
+
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        viewControllers.count > 1
     }
 }

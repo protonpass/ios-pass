@@ -23,6 +23,7 @@ import SwiftUI
 import UIComponents
 
 struct NoteDetailView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: NoteDetailViewModel
 
     init(viewModel: NoteDetailViewModel) {
@@ -45,6 +46,15 @@ struct NoteDetailView: View {
 
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Image(uiImage: IconProvider.chevronLeft)
+                    .foregroundColor(.primary)
+            })
+        }
+
         ToolbarItem(placement: .principal) {
             Text(viewModel.name)
                 .fontWeight(.bold)

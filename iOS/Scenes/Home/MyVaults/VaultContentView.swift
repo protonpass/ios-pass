@@ -56,9 +56,6 @@ struct VaultContentView: View {
     private var itemList: some View {
         ScrollView {
             LazyVStack {
-                //                summaryView
-                //                    .frame(height: 150)
-                //                    .padding()
                 ForEach(viewModel.partialItemContents.indices, id: \.self) { index in
                     let item = viewModel.partialItemContents[index]
                     GenericItemView(
