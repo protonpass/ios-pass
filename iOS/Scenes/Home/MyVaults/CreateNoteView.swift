@@ -25,6 +25,7 @@ import UIComponents
 struct CreateNoteView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: CreateNoteViewModel
+    @State private var isShowingDiscardAlert = false
     @State private var isFocusedOnName = false
     @State private var isFocusedOnNote = false
 
@@ -44,6 +45,13 @@ struct CreateNoteView: View {
             .toolbar { toolbar }
         }
         .disabled(viewModel.isLoading)
+        .alert(isPresented: $isShowingDiscardAlert) {
+            Alert(title: Text("Discard changes"),
+                  message: Text("You will loose all unsaved changes"),
+                  primaryButton: .destructive(Text("Discard Changes"),
+                                              action: { presentationMode.wrappedValue.dismiss() }),
+                  secondaryButton: .default(Text("Keep Editing")))
+        }
     }
 
     private var nameInputView: some View {
@@ -69,9 +77,13 @@ struct CreateNoteView: View {
     private var toolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
-                presentationMode.wrappedValue.dismiss()
+                if viewModel.isEmpty {
+                    presentationMode.wrappedValue.dismiss()
+                } else {
+                    isShowingDiscardAlert.toggle()
+                }
             }, label: {
-                Text("Cancel")
+                Image(uiImage: IconProvider.cross)
             })
             .foregroundColor(Color(.label))
         }

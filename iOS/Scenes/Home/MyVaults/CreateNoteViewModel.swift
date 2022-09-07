@@ -29,6 +29,10 @@ final class CreateNoteViewModel: BaseCreateItemViewModel, DeinitPrintable, Obser
     @Published var name = ""
     @Published var note = ""
 
+    var isEmpty: Bool {
+        name.isEmpty && note.isEmpty
+    }
+
     override init(shareId: String,
                   userData: UserData,
                   shareRepository: ShareRepositoryProtocol,

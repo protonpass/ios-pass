@@ -37,7 +37,7 @@ struct CreateAliasView: View {
                         Button(action: {
                             presentationMode.wrappedValue.dismiss()
                         }, label: {
-                            Text("Cancel")
+                            Image(uiImage: IconProvider.cross)
                         })
                         .foregroundColor(Color(.label))
                     }

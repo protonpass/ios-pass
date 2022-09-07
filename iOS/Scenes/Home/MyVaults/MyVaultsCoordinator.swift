@@ -141,7 +141,7 @@ final class MyVaultsCoordinator: Coordinator {
         let createAliasViewModel = CreateAliasViewModel()
         createAliasViewModel.delegate = self
         let createAliasView = CreateAliasView(viewModel: createAliasViewModel)
-        presentView(createAliasView)
+        presentViewFullScreen(createAliasView)
     }
 
     func showCreateNoteView() {
@@ -153,11 +153,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                       itemRevisionRepository: itemRevisionRepository)
         createNoteViewModel.delegate = self
         let createNoteView = CreateNoteView(viewModel: createNoteViewModel)
-        let createNewNoteController = UIHostingController(rootView: createNoteView)
-        if #available(iOS 15, *) {
-            createNewNoteController.sheetPresentationController?.detents = [.medium()]
-        }
-        presentViewController(createNewNoteController)
+        presentViewFullScreen(createNoteView)
     }
 
     func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?) {
