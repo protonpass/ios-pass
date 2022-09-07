@@ -174,6 +174,13 @@ final class MyVaultsCoordinator: Coordinator {
     func showSearchView() {
         presentViewFullScreen(SearchView())
     }
+
+    func showItemDetailView(itemContent: ItemContent) {
+        let viewModel = ItemDetailViewModel(itemContent: itemContent,
+                                            itemRevisionRepository: itemRevisionRepository)
+        let itemDetailView = ItemDetailView(viewModel: viewModel)
+        pushView(itemDetailView)
+    }
 }
 
 // MARK: - LoadVaultsViewModelDelegate
@@ -199,6 +206,10 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
 
     func vaultContentViewModelWantsToCreateNewVault() {
         showCreateVaultView()
+    }
+
+    func vaultContentViewModelWantsToShowItemDetail(itemContent: ItemContent) {
+        showItemDetailView(itemContent: itemContent)
     }
 
     func vaultContentViewModelDidFailWithError(error: Error) {
@@ -293,5 +304,6 @@ extension MyVaultsCoordinator: BaseCreateItemViewModelDelegate {
             message = "Note created"
         }
         myVaultsViewModel.successMessage = message
+        vaultContentViewModel.fetchItems()
     }
 }

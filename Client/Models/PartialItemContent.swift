@@ -24,12 +24,20 @@ import UIKit
 
 /// Hold partial data of item, to be used on item list page
 public struct PartialItemContent: GenericItemProtocol {
+    public let shareId: String
+    public let itemId: String
     public let type: ItemContentType
     public let icon: UIImage
     public let title: String
     public let detail: String?
 
-    public init(type: ItemContentType, title: String, detail: String?) {
+    public init(shareId: String,
+                itemId: String,
+                type: ItemContentType,
+                title: String,
+                detail: String?) {
+        self.shareId = shareId
+        self.itemId = itemId
         self.type = type
         self.icon = type.icon
         self.title = title

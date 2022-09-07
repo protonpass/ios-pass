@@ -67,11 +67,11 @@ public struct ItemRevision: Decodable {
 }
 
 extension ItemRevision {
-    public func getPartialContent(userData: UserData,
-                                  share: Share,
-                                  vaultKeys: [VaultKey],
-                                  itemKeys: [ItemKey],
-                                  verifyKeys: [String]) throws -> PartialItemContent {
+    public func getContent(userData: UserData,
+                           share: Share,
+                           vaultKeys: [VaultKey],
+                           itemKeys: [ItemKey],
+                           verifyKeys: [String]) throws -> ItemContent {
         guard let vaultKey = vaultKeys.first(where: { $0.rotationID == rotationID }),
               let itemKey = itemKeys.first(where: { $0.rotationID == rotationID }) else {
             throw DataError.keyNotFound(rotationId: rotationID)
@@ -97,9 +97,29 @@ extension ItemRevision {
 
         let itemProtobuf = try ItemContentProtobuf(data: decryptedContent)
 
-        return .init(type: itemProtobuf.contentData.type,
-                     title: itemProtobuf.metadata.name,
-                     detail: itemProtobuf.metadata.note)
+        return .init(shareId: share.shareID,
+                     itemId: itemID,
+                     name: itemProtobuf.name,
+                     note: itemProtobuf.note,
+                     contentData: itemProtobuf.contentData)
+    }
+
+    public func getPartialContent(userData: UserData,
+                                  share: Share,
+                                  vaultKeys: [VaultKey],
+                                  itemKeys: [ItemKey],
+                                  verifyKeys: [String]) throws -> PartialItemContent {
+        let itemContent = try getContent(userData: userData,
+                                         share: share,
+                                         vaultKeys: vaultKeys,
+                                         itemKeys: itemKeys,
+                                         verifyKeys: verifyKeys)
+
+        return .init(shareId: share.shareID,
+                     itemId: itemID,
+                     type: itemContent.contentData.type,
+                     title: itemContent.name,
+                     detail: itemContent.note)
     }
 
     private func decryptField(keyring: CryptoKeyRing, field: String) throws -> Data {

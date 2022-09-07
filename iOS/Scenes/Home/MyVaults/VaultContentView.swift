@@ -38,9 +38,9 @@ struct VaultContentView: View {
     var body: some View {
         ScrollView {
             LazyVStack {
-                summaryView
-                    .frame(height: 150)
-                    .padding()
+//                summaryView
+//                    .frame(height: 150)
+//                    .padding()
                 if !viewModel.partialItemContents.isEmpty {
                     itemList
                 }
@@ -59,13 +59,11 @@ struct VaultContentView: View {
 
     private var itemList: some View {
         ForEach(viewModel.partialItemContents.indices, id: \.self) { index in
-            let content = viewModel.partialItemContents[index]
+            let item = viewModel.partialItemContents[index]
             GenericItemView(
-                item: content,
+                item: item,
                 showDivider: index != viewModel.partialItemContents.count - 1,
-                action: {
-                    print("Tapped on \(content.title)")
-                })
+                action: { viewModel.selectItem(item) })
             .frame(maxWidth: .infinity, alignment: .leading)
         }
     }

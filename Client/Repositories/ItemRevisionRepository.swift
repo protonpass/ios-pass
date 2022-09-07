@@ -27,6 +27,9 @@ public protocol ItemRevisionRepositoryProtocol {
     var localItemRevisionDatasoure: LocalItemRevisionDatasourceProtocol { get }
     var remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol { get }
 
+    /// Get a specific ItemRevision (only from local datasource)
+    func getItemRevision(shareId: String, itemId: String) async throws -> ItemRevision?
+
     func getItemRevisions(forceRefresh: Bool,
                           shareId: String,
                           page: Int,
@@ -36,6 +39,10 @@ public protocol ItemRevisionRepositoryProtocol {
 }
 
 public extension ItemRevisionRepositoryProtocol {
+    func getItemRevision(shareId: String, itemId: String) async throws -> ItemRevision? {
+        try await localItemRevisionDatasoure.getItemRevision(shareId: shareId, itemId: itemId)
+    }
+
     func getItemRevisions(forceRefresh: Bool,
                           shareId: String,
                           page: Int,

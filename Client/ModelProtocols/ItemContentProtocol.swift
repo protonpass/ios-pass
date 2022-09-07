@@ -113,3 +113,23 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         }
     }
 }
+
+public struct ItemContent: ItemContentProtocol {
+    public let shareId: String
+    public let itemId: String
+    public let name: String
+    public let note: String
+    public let contentData: ItemContentData
+
+    public init(shareId: String,
+                itemId: String,
+                name: String,
+                note: String,
+                contentData: ItemContentData) {
+        self.shareId = shareId
+        self.itemId = itemId
+        self.name = name
+        self.note = note
+        self.contentData = contentData
+    }
+}
