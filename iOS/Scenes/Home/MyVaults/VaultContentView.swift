@@ -36,15 +36,11 @@ struct VaultContentView: View {
     }
 
     var body: some View {
-        ScrollView {
-            LazyVStack {
-//                summaryView
-//                    .frame(height: 150)
-//                    .padding()
-                if !viewModel.partialItemContents.isEmpty {
-                    itemList
-                }
-                Spacer()
+        Group {
+            if viewModel.partialItemContents.isEmpty {
+                EmptyVaultView(action: viewModel.createItemAction)
+            } else {
+                itemList
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -58,13 +54,21 @@ struct VaultContentView: View {
     }
 
     private var itemList: some View {
-        ForEach(viewModel.partialItemContents.indices, id: \.self) { index in
-            let item = viewModel.partialItemContents[index]
-            GenericItemView(
-                item: item,
-                showDivider: index != viewModel.partialItemContents.count - 1,
-                action: { viewModel.selectItem(item) })
-            .frame(maxWidth: .infinity, alignment: .leading)
+        ScrollView {
+            LazyVStack {
+                //                summaryView
+                //                    .frame(height: 150)
+                //                    .padding()
+                ForEach(viewModel.partialItemContents.indices, id: \.self) { index in
+                    let item = viewModel.partialItemContents[index]
+                    GenericItemView(
+                        item: item,
+                        showDivider: index != viewModel.partialItemContents.count - 1,
+                        action: { viewModel.selectItem(item) })
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                Spacer()
+            }
         }
     }
 

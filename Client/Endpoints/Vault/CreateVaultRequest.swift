@@ -21,7 +21,7 @@
 import Crypto
 import ProtonCore_DataModel
 
-public struct CreateVaultRequest: Encodable {
+public struct CreateVaultRequest {
     /// Encrypted ID of the address that created the vault
     let addressID: String
 
@@ -174,5 +174,28 @@ extension CreateVaultRequest {
                      itemKeyPassphraseKeyPacket: itemKeyPassphraseKeyPacket.base64EncodedString(),
                      itemKeySignature: try CryptoUtils.unarmorAndBase64(data: itemKeySignature,
                                                                         name: "itemKeySignature"))
+    }
+}
+
+extension CreateVaultRequest: Encodable {
+    enum CodingKeys: String, CodingKey {
+        case addressID = "AddressID"
+        case content = "Content"
+        case contentFormatVersion = "ContentFormatVersion"
+        case contentEncryptedAddressSignature = "ContentEncryptedAddressSignature"
+        case contentEncryptedVaultSignature = "ContentEncryptedVaultSignature"
+        case vaultKey = "VaultKey"
+        case vaultKeyPassphrase = "VaultKeyPassphrase"
+        case vaultKeySignature = "VaultKeySignature"
+        case keyPacket = "KeyPacket"
+        case keyPacketSignature = "KeyPacketSignature"
+        case signingKey = "SigningKey"
+        case signingKeyPassphrase = "SigningKeyPassphrase"
+        case signingKeyPassphraseKeyPacket = "SigningKeyPassphraseKeyPacket"
+        case acceptanceSignature = "AcceptanceSignature"
+        case itemKey = "ItemKey"
+        case itemKeyPassphrase = "ItemKeyPassphrase"
+        case itemKeyPassphraseKeyPacket = "ItemKeyPassphraseKeyPacket"
+        case itemKeySignature = "ItemKeySignature"
     }
 }

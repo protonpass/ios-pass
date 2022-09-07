@@ -65,6 +65,7 @@
 		354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */; };
 		354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769528C879AA00EB2383 /* NoteDetailView.swift */; };
 		354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */; };
+		354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769928C87CD500EB2383 /* EmptyVaultView.swift */; };
 		355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */; };
 		3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618628A1372500A68477 /* SwiftUITextView.swift */; };
 		3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618A28A14EB600A68477 /* UserInputContainerView.swift */; };
@@ -362,6 +363,7 @@
 		354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInDetailViewModel.swift; sourceTree = "<group>"; };
 		354F769528C879AA00EB2383 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
 		354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewModel.swift; sourceTree = "<group>"; };
+		354F769928C87CD500EB2383 /* EmptyVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyVaultView.swift; sourceTree = "<group>"; };
 		355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsSidebarItemView.swift; sourceTree = "<group>"; };
 		3552618628A1372500A68477 /* SwiftUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUITextView.swift; sourceTree = "<group>"; };
 		3552618A28A14EB600A68477 /* UserInputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputContainerView.swift; sourceTree = "<group>"; };
@@ -656,6 +658,7 @@
 				35B089DB288E8A34000D2ECB /* CreateNoteViewModel.swift */,
 				3547ABF12877791000EE85E1 /* CreateVaultView.swift */,
 				3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */,
+				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
 				3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */,
 				3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */,
 				355635BC2889653B00F32353 /* LoadVaultsView.swift */,
@@ -1758,6 +1761,7 @@
 				354BB14F28A27FF500F50040 /* SearchViewModel.swift in Sources */,
 				353E8B6E2876163F00A2C5E3 /* SidebarView.swift in Sources */,
 				3547ABDE28774D1100EE85E1 /* MyVaultsCoordinator.swift in Sources */,
+				354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */,
 				355635B928895B8E00F32353 /* VaultContentView.swift in Sources */,
 				355635C1288968B000F32353 /* VaultContentViewModel.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
