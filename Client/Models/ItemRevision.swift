@@ -25,6 +25,11 @@ import ProtonCore_DataModel
 import ProtonCore_KeyManager
 import ProtonCore_Login
 
+public enum ItemRevisionState: Int16 {
+    case active = 1
+    case trashed = 2
+}
+
 public struct ItemRevisionList: Decodable {
     public let total: Int
     public let revisionsData: [ItemRevision]
@@ -64,6 +69,9 @@ public struct ItemRevision: Decodable {
 
     /// Time of last update of the item
     public let modifyTime: Int64
+
+    /// Enum representation of `state`
+    public var revisionState: ItemRevisionState { .init(rawValue: state) ?? .active }
 }
 
 extension ItemRevision {

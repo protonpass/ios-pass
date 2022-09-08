@@ -47,9 +47,9 @@ public extension ItemRevisionRepositoryProtocol {
                           shareId: String,
                           page: Int,
                           pageSize: Int) async throws -> ItemRevisionList {
-        PPLogger.shared?.log("Getting item revisions (page =\(page), pageSize = \(pageSize))")
+        PPLogger.shared?.log("Getting item revisions (page = \(page), pageSize = \(pageSize))")
         if forceRefresh {
-            PPLogger.shared?.log("Force refresh item revisions (page =\(page), pageSize = \(pageSize))")
+            PPLogger.shared?.log("Force refresh item revisions (page = \(page), pageSize = \(pageSize))")
             return try await getItemRevisionsFromRemoteAndSaveToLocal(shareId: shareId,
                                                                       page: page,
                                                                       pageSize: pageSize)
@@ -62,7 +62,7 @@ public extension ItemRevisionRepositoryProtocol {
 
         if localItemRevisionList.revisionsData.isEmpty {
             PPLogger.shared?.log("""
-No item revisions in local => Fetching from remote... (page =\(page), pageSize = \(pageSize))
+No item revisions in local => Fetching from remote... (page = \(page), pageSize = \(pageSize))
 """)
             return try await getItemRevisionsFromRemoteAndSaveToLocal(shareId: shareId,
                                                                       page: page,
@@ -70,7 +70,7 @@ No item revisions in local => Fetching from remote... (page =\(page), pageSize =
         }
 
         PPLogger.shared?.log("""
-Found \(localItemRevisionList.revisionsData.count) item revision in local (page =\(page), pageSize = \(pageSize))
+Found \(localItemRevisionList.revisionsData.count) item revision in local (page = \(page), pageSize = \(pageSize))
 """)
         return localItemRevisionList
     }
@@ -80,12 +80,12 @@ Found \(localItemRevisionList.revisionsData.count) item revision in local (page 
         page: Int,
         pageSize: Int
     ) async throws -> ItemRevisionList {
-        PPLogger.shared?.log("Getting item revisions from remote (page =\(page), pageSize = \(pageSize))")
+        PPLogger.shared?.log("Getting item revisions from remote (page = \(page), pageSize = \(pageSize))")
         let itemRevisionList =
         try await remoteItemRevisionDatasource.getItemRevisions(shareId: shareId,
                                                                 page: page,
                                                                 pageSize: pageSize)
-        PPLogger.shared?.log("Saving remote item revisions to local (page =\(page), pageSize = \(pageSize))")
+        PPLogger.shared?.log("Saving remote item revisions to local (page = \(page), pageSize = \(pageSize))")
         let itemRevisions = itemRevisionList.revisionsData
         try await localItemRevisionDatasoure.upsertItemRevisions(itemRevisions,
                                                                  shareId: shareId)
