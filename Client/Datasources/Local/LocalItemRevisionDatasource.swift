@@ -22,9 +22,7 @@ import CoreData
 
 public protocol LocalItemRevisionDatasourceProtocol {
     func getItemRevision(shareId: String, itemId: String) async throws -> ItemRevision?
-    func getItemRevisions(shareId: String,
-                          page: Int,
-                          pageSize: Int) async throws -> ItemRevisionList
+    func getItemRevisions(shareId: String) async throws -> [ItemRevision]
     func upsertItemRevisions(_ itemRevisions: [ItemRevision], shareId: String) async throws
     func removeAllItemRevisions(shareId: String) async throws
 }
@@ -47,31 +45,15 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
         return try itemRevisionEntities.map { try $0.toItemRevision() }.first
     }
 
-    public func getItemRevisions(shareId: String,
-                                 page: Int,
-                                 pageSize: Int) async throws -> ItemRevisionList {
+    public func getItemRevisions(shareId: String) async throws -> [ItemRevision] {
         let taskContext = newTaskContext(type: .fetch)
-
-        let itemRevisionCount = try await getItemRevisionCount(shareId: shareId)
 
         let fetchRequest = ItemRevisionEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
-        fetchRequest.fetchLimit = pageSize
-        fetchRequest.fetchOffset = page * pageSize
         let itemRevisionEntities = try await execute(fetchRequest: fetchRequest,
                                                      context: taskContext)
-        let itemRevisions = try itemRevisionEntities.map { try $0.toItemRevision() }
-
-        return .init(total: itemRevisionCount, revisionsData: itemRevisions)
-    }
-
-    func getItemRevisionCount(shareId: String) async throws -> Int {
-        let taskContext = newTaskContext(type: .fetch)
-
-        let fetchRequest = ItemRevisionEntity.fetchRequest()
-        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
-        return try await count(fetchRequest: fetchRequest, context: taskContext)
+        return try itemRevisionEntities.map { try $0.toItemRevision() }
     }
 
     public func upsertItemRevisions(_ itemRevisions: [ItemRevision],

@@ -67,11 +67,8 @@ extension GlobalLocalDatasourceTests {
                                                                    pageSize: .max)
                 XCTAssertFalse(vaultKeys.isEmpty)
 
-                let itemRevisionList =
-                try await sut.localItemRevisionDatasource.getItemRevisions(shareId: shareId,
-                                                                           page: 0,
-                                                                           pageSize: .max)
-                XCTAssertFalse(itemRevisionList.revisionsData.isEmpty)
+                let itemRevisions = try await sut.localItemRevisionDatasource.getItemRevisions(shareId: shareId)
+                XCTAssertFalse(itemRevisions.isEmpty)
             }
 
             // Second set of data
@@ -97,11 +94,8 @@ extension GlobalLocalDatasourceTests {
                                                                    pageSize: .max)
                 XCTAssertFalse(vaultKeys.isEmpty)
 
-                let itemRevisionList =
-                try await sut.localItemRevisionDatasource.getItemRevisions(shareId: shareId,
-                                                                           page: 0,
-                                                                           pageSize: .max)
-                XCTAssertFalse(itemRevisionList.revisionsData.isEmpty)
+                let itemRevisions = try await sut.localItemRevisionDatasource.getItemRevisions(shareId: shareId)
+                XCTAssertFalse(itemRevisions.isEmpty)
             }
 
             // When
@@ -127,11 +121,8 @@ extension GlobalLocalDatasourceTests {
                                                                    pageSize: .max)
                 XCTAssertTrue(vaultKeys.isEmpty)
 
-                let itemRevisionList =
-                try await sut.localItemRevisionDatasource.getItemRevisions(shareId: shareId,
-                                                                           page: 0,
-                                                                           pageSize: .max)
-                XCTAssertTrue(itemRevisionList.revisionsData.isEmpty)
+                let itemRevisions = try await sut.localItemRevisionDatasource.getItemRevisions(shareId: shareId)
+                XCTAssertTrue(itemRevisions.isEmpty)
             }
 
             // Second set of data should be intact
@@ -152,11 +143,8 @@ extension GlobalLocalDatasourceTests {
                                                                    pageSize: .max)
                 XCTAssertFalse(vaultKeys.isEmpty)
 
-                let itemRevisionList =
-                try await sut.localItemRevisionDatasource.getItemRevisions(shareId: shareId,
-                                                                           page: 0,
-                                                                           pageSize: .max)
-                XCTAssertFalse(itemRevisionList.revisionsData.isEmpty)
+                let itemRevisions = try await sut.localItemRevisionDatasource.getItemRevisions(shareId: shareId)
+                XCTAssertFalse(itemRevisions.isEmpty)
             }
 
             expectation.fulfill()

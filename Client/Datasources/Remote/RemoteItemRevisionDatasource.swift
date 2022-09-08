@@ -21,22 +21,30 @@
 import Foundation
 
 public protocol RemoteItemRevisionDatasourceProtocol: BaseRemoteDatasourceProtocol {
-    func getItemRevisions(shareId: String,
-                          page: Int,
-                          pageSize: Int) async throws -> ItemRevisionList
+    /// Get all item revisions of a share
+    func getItemRevisions(shareId: String) async throws -> [ItemRevision]
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision
 }
 
 public extension RemoteItemRevisionDatasourceProtocol {
-    func getItemRevisions(shareId: String,
-                          page: Int,
-                          pageSize: Int) async throws -> ItemRevisionList {
-        let endpoint = GetItemsEndpoint(credential: authCredential,
-                                        shareId: shareId,
-                                        page: page,
-                                        pageSize: pageSize)
-        let response = try await apiService.exec(endpoint: endpoint)
-        return response.items
+    func getItemRevisions(shareId: String) async throws -> [ItemRevision] {
+        var itemRevisions = [ItemRevision]()
+        var page = 0
+        while true {
+            let endpoint = GetItemsEndpoint(credential: authCredential,
+                                            shareId: shareId,
+                                            page: page,
+                                            pageSize: kDefaultPageSize)
+            let response = try await apiService.exec(endpoint: endpoint)
+
+            itemRevisions += response.items.revisionsData
+            if response.items.revisionsData.count < kDefaultPageSize {
+                break
+            } else {
+                page += 1
+            }
+        }
+        return itemRevisions
     }
 
     func createItem(shareId: String,

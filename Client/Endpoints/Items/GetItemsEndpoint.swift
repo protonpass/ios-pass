@@ -40,6 +40,6 @@ public struct GetItemsEndpoint: Endpoint {
                 pageSize: Int) {
         self.path = "/pass/v1/share/\(shareId)/item"
         self.authCredential = credential
-        self.queries = .paginationQuery(page: page, pageSize: page)
+        self.queries = .paginationQuery(page: page, pageSize: pageSize)
     }
 }

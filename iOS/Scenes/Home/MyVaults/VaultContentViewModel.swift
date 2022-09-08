@@ -80,12 +80,9 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
         guard let shareId = selectedVault?.shareId else { return }
         Task { @MainActor in
             do {
-                let itemRevisionList =
-                try await itemRevisionRepository.getItemRevisions(forceRefresh: forceRefresh,
-                                                                  shareId: shareId,
-                                                                  page: 0,
-                                                                  pageSize: kDefaultPageSize)
-                try await decrypt(itemRevisions: itemRevisionList.revisionsData,
+                let itemRevisions = try await itemRevisionRepository.getItemRevisions(forceRefresh: forceRefresh,
+                                                                                      shareId: shareId)
+                try await decrypt(itemRevisions: itemRevisions,
                                   shareId: shareId,
                                   forceRefresh: forceRefresh)
             } catch {

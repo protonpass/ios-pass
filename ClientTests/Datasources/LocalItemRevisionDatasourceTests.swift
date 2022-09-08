@@ -85,41 +85,18 @@ extension LocalItemRevisionDatasourceTests {
         let expectation = expectation(description: #function)
         Task {
             // Given
-            // 310 items inserted to the local database
-            // pageSize is 90
             let localShareDatasource = LocalShareDatasource(container: sut.container)
             let givenShare = try await localShareDatasource.givenInsertedShare(userId: nil)
             let shareId = givenShare.shareID
             let givenItemRevisions = [ItemRevision].random(count: 310,
                                                            randomElement: .random())
-            let pageSize = 120
 
             // When
             try await sut.upsertItemRevisions(givenItemRevisions, shareId: shareId)
 
             // Then
-            // Should have 3 pages with following counts: 120, 120 & 70
-            // 310 in total
-            let firstPage = try await sut.getItemRevisions(shareId: shareId,
-                                                           page: 0,
-                                                           pageSize: pageSize)
-            XCTAssertEqual(firstPage.revisionsData.count, 120)
-            XCTAssertEqual(firstPage.total, 310)
-
-            let secondPage = try await sut.getItemRevisions(shareId: shareId,
-                                                            page: 1,
-                                                            pageSize: pageSize)
-            XCTAssertEqual(secondPage.revisionsData.count, 120)
-            XCTAssertEqual(secondPage.total, 310)
-
-            let thirdPage = try await sut.getItemRevisions(shareId: shareId,
-                                                           page: 2,
-                                                           pageSize: pageSize)
-            XCTAssertEqual(thirdPage.revisionsData.count, 70)
-            XCTAssertEqual(thirdPage.total, 310)
-
-            // Check that the 3 pages make up the correct set of givenItems
-            let itemRevisions = firstPage.revisionsData + secondPage.revisionsData + thirdPage.revisionsData
+            let itemRevisions = try await sut.getItemRevisions(shareId: shareId)
+            XCTAssertEqual(itemRevisions.count, givenItemRevisions.count)
             let itemRevisionIds = Set(itemRevisions.map { $0.itemID })
             let givenItemRevisionIds = Set(givenItemRevisions.map { $0.itemID })
             XCTAssertEqual(itemRevisionIds, givenItemRevisionIds)
@@ -146,12 +123,10 @@ extension LocalItemRevisionDatasourceTests {
             try await sut.upsertItemRevisions(thirdItemRevisions, shareId: givenShareId)
 
             // Then
-            let itemRevisionList = try await sut.getItemRevisions(shareId: givenShareId,
-                                                                  page: 0,
-                                                                  pageSize: .max)
-            XCTAssertEqual(itemRevisionList.total, givenItemsRevisions.count)
+            let itemRevisions = try await sut.getItemRevisions(shareId: givenShareId)
+            XCTAssertEqual(itemRevisions.count, givenItemsRevisions.count)
 
-            let itemRevisionIds = Set(itemRevisionList.revisionsData.map { $0.itemID })
+            let itemRevisionIds = Set(itemRevisions.map { $0.itemID })
             let givenItemRevisionIds = Set(givenItemsRevisions.map { $0.itemID })
             XCTAssertEqual(itemRevisionIds, givenItemRevisionIds)
 
@@ -176,38 +151,12 @@ extension LocalItemRevisionDatasourceTests {
             try await sut.upsertItemRevisions([updatedItemRevison], shareId: givenShareId)
 
             // Then
-            let itemRevisions = try await sut.getItemRevisions(shareId: givenShareId,
-                                                               page: 0,
-                                                               pageSize: .max)
-            XCTAssertEqual(itemRevisions.total, 1)
+            let itemRevisions = try await sut.getItemRevisions(shareId: givenShareId)
+            XCTAssertEqual(itemRevisions.count, 1)
 
-            let itemRevision = try XCTUnwrap(itemRevisions.revisionsData.first)
+            let itemRevision = try XCTUnwrap(itemRevisions.first)
             assertEqual(itemRevision, updatedItemRevison)
 
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
-    }
-
-    func testCountItemRevisions() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let givenItemRevisions = [ItemRevision].random(randomElement: .random())
-            let givenShareId = String.random()
-
-            // When
-            try await sut.upsertItemRevisions(givenItemRevisions, shareId: givenShareId)
-            // Insert arbitrary item revisions
-            for _ in 0...10 {
-                let dummyItemRevisions = [ItemRevision].random(randomElement: .random())
-                try await sut.upsertItemRevisions(dummyItemRevisions, shareId: .random())
-            }
-
-            // Then
-            let count = try await sut.getItemRevisionCount(shareId: givenShareId)
-            XCTAssertEqual(count, givenItemRevisions.count)
             expectation.fulfill()
         }
         waitForExpectations(timeout: expectationTimeOut)
@@ -234,17 +183,13 @@ extension LocalItemRevisionDatasourceTests {
 
             // Then
             let firstShareItemRevisionsFirstGet =
-            try await sut.getItemRevisions(shareId: givenFirstShareId,
-                                           page: 0,
-                                           pageSize: .max)
-            XCTAssertEqual(firstShareItemRevisionsFirstGet.total,
+            try await sut.getItemRevisions(shareId: givenFirstShareId)
+            XCTAssertEqual(firstShareItemRevisionsFirstGet.count,
                            givenFirstShareItemRevisions.count)
 
             let secondShareItemRevisionsFirstGet =
-            try await sut.getItemRevisions(shareId: givenSecondShareId,
-                                           page: 0,
-                                           pageSize: .max)
-            XCTAssertEqual(secondShareItemRevisionsFirstGet.total,
+            try await sut.getItemRevisions(shareId: givenSecondShareId)
+            XCTAssertEqual(secondShareItemRevisionsFirstGet.count,
                            givenSecondShareItemRevisions.count)
 
             // When
@@ -252,17 +197,12 @@ extension LocalItemRevisionDatasourceTests {
 
             // Then
             let firstShareItemRevisionsSecondGet =
-            try await sut.getItemRevisions(shareId: givenFirstShareId,
-                                           page: 0,
-                                           pageSize: .max)
-            XCTAssertTrue(firstShareItemRevisionsSecondGet.revisionsData.isEmpty)
-            XCTAssertEqual(firstShareItemRevisionsSecondGet.total, 0)
+            try await sut.getItemRevisions(shareId: givenFirstShareId)
+            XCTAssertTrue(firstShareItemRevisionsSecondGet.isEmpty)
 
             let secondShareItemRevisionsSecondGet =
-            try await sut.getItemRevisions(shareId: givenSecondShareId,
-                                           page: 0,
-                                           pageSize: .max)
-            XCTAssertEqual(secondShareItemRevisionsSecondGet.revisionsData.count,
+            try await sut.getItemRevisions(shareId: givenSecondShareId)
+            XCTAssertEqual(secondShareItemRevisionsSecondGet.count,
                            givenSecondShareItemRevisions.count)
 
             expectation.fulfill()
