@@ -25,6 +25,7 @@ public protocol LocalItemRevisionDatasourceProtocol {
     func getItemRevisions(shareId: String) async throws -> [ItemRevision]
     func upsertItemRevisions(_ itemRevisions: [ItemRevision], shareId: String) async throws
     func removeAllItemRevisions(shareId: String) async throws
+    func trashItem(shareId: String, itemsToBeTrashed: [ItemToBeTrashed]) async throws
 }
 
 public final class LocalItemRevisionDatasource: BaseLocalDatasource {}
@@ -76,5 +77,25 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
+    }
+
+    public func trashItem(shareId: String, itemsToBeTrashed: [ItemToBeTrashed]) async throws {
+        for itemToBeTrashed in itemsToBeTrashed {
+            guard let item = try await getItemRevision(shareId: shareId,
+                                                       itemId: itemToBeTrashed.itemID) else { return }
+            let trashedItem = ItemRevision(itemID: item.itemID,
+                                           revision: item.revision,
+                                           contentFormatVersion: item.contentFormatVersion,
+                                           rotationID: item.rotationID,
+                                           content: item.content,
+                                           userSignature: item.userSignature,
+                                           itemKeySignature: item.itemKeySignature,
+                                           state: ItemRevisionState.trashed.rawValue,
+                                           signatureEmail: item.signatureEmail,
+                                           aliasEmail: item.aliasEmail,
+                                           createTime: item.createTime,
+                                           modifyTime: Int64(Date().timeIntervalSince1970))
+            try await upsertItemRevisions([trashedItem], shareId: shareId)
+        }
     }
 }

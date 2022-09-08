@@ -33,6 +33,7 @@ public protocol ItemRevisionRepositoryProtocol {
     func getItemRevisions(forceRefresh: Bool, shareId: String) async throws -> [ItemRevision]
     @discardableResult
     func createItem(request: CreateItemRequest, shareId: String) async throws -> ItemRevision
+    func trashItem(request: TrashItemsRequest, shareId: String) async throws -> [ItemToBeTrashed]
 }
 
 public extension ItemRevisionRepositoryProtocol {
@@ -77,6 +78,15 @@ public extension ItemRevisionRepositoryProtocol {
                                                                  shareId: shareId)
         PPLogger.shared?.log("Item revision creation finished with success")
         return createdItemRevision
+    }
+
+    func trashItem(request: TrashItemsRequest, shareId: String) async throws -> [ItemToBeTrashed] {
+        PPLogger.shared?.log("Trashing items for share \(shareId)")
+        let itemsToBeTrashed = try await remoteItemRevisionDatasource.trashItem(shareId: shareId, request: request)
+        PPLogger.shared?.log("Finished trashing remotely \(itemsToBeTrashed.count) items for share \(shareId)")
+        try await localItemRevisionDatasoure.trashItem(shareId: shareId, itemsToBeTrashed: itemsToBeTrashed)
+        PPLogger.shared?.log("Finished trashing locallly \(itemsToBeTrashed.count) items for share \(shareId)")
+        return itemsToBeTrashed
     }
 }
 

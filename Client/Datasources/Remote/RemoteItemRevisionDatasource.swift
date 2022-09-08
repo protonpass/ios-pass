@@ -24,6 +24,7 @@ public protocol RemoteItemRevisionDatasourceProtocol: BaseRemoteDatasourceProtoc
     /// Get all item revisions of a share
     func getItemRevisions(shareId: String) async throws -> [ItemRevision]
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision
+    func trashItem(shareId: String, request: TrashItemsRequest) async throws -> [ItemToBeTrashed]
 }
 
 public extension RemoteItemRevisionDatasourceProtocol {
@@ -54,6 +55,14 @@ public extension RemoteItemRevisionDatasourceProtocol {
                                           request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.item
+    }
+
+    func trashItem(shareId: String, request: TrashItemsRequest) async throws -> [ItemToBeTrashed] {
+        let endpoint = TrashItemsEndpoint(credential: authCredential,
+                                          shareId: shareId,
+                                          request: request)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.items
     }
 }
 
