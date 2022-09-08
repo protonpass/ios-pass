@@ -34,25 +34,41 @@ struct CreateItemView: View {
         NavigationView {
             VStack(spacing: 0) {
                 GenericItemView(
-                    item: CreateNewItemOption.login.toGenericItem()) {
-                    viewModel.select(option: .login)
-                }
+                    item: CreateNewItemOption.login.toGenericItem(),
+                    action: {
+                        viewModel.select(option: .login)
+                    },
+                    trailingView: {
+                        EmptyView()
+                    })
 
                 GenericItemView(
-                    item: CreateNewItemOption.alias.toGenericItem()) {
-                    viewModel.select(option: .alias)
-                }
+                    item: CreateNewItemOption.alias.toGenericItem(),
+                    action: {
+                        viewModel.select(option: .alias)
+                    },
+                    trailingView: {
+                        EmptyView()
+                    })
 
                 GenericItemView(
-                    item: CreateNewItemOption.note.toGenericItem()) {
-                    viewModel.select(option: .note)
-                }
+                    item: CreateNewItemOption.note.toGenericItem(),
+                    action: {
+                        viewModel.select(option: .note)
+                    },
+                    trailingView: {
+                        EmptyView()
+                    })
 
                 GenericItemView(
                     item: CreateNewItemOption.password.toGenericItem(),
-                    showDivider: false) {
-                    viewModel.select(option: .password)
-                }
+                    showDivider: false,
+                    action: {
+                        viewModel.select(option: .password)
+                    },
+                    trailingView: {
+                        EmptyView()
+                    })
 
                 Spacer()
             }

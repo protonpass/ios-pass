@@ -148,6 +148,10 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                                                                    forceRefresh: forceRefresh)
         return (share, shareKeys)
     }
+
+    func trash(itemContent: PartialItemContent) {
+        print(#function)
+    }
 }
 
 // MARK: - Actions

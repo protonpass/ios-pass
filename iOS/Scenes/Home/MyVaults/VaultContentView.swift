@@ -26,6 +26,8 @@ import UIComponents
 struct VaultContentView: View {
     @StateObject private var viewModel: VaultContentViewModel
     @State private var didAppear = false
+    @State private var selectedItemContent: PartialItemContent?
+    @State private var isShowingTrashingAlert = false
 
     private var selectedVaultName: String {
         viewModel.selectedVault?.name ?? "All vaults"
@@ -44,7 +46,12 @@ struct VaultContentView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar { toolbar }
+        .moveToTrashAlert(isPresented: $isShowingTrashingAlert) {
+            if let selectedItemContent = selectedItemContent {
+                viewModel.trash(itemContent: selectedItemContent)
+            }
+        }
+        .toolbar { toolbarContent }
         .onAppear {
             if !didAppear {
                 viewModel.fetchItems()
@@ -61,7 +68,26 @@ struct VaultContentView: View {
                     GenericItemView(
                         item: item,
                         showDivider: index != viewModel.partialItemContents.count - 1,
-                        action: { viewModel.selectItem(item) })
+                        action: { viewModel.selectItem(item) },
+                        trailingView: {
+                            VStack {
+                                Menu(content: {
+                                    DestructiveButton(
+                                        title: "Move to Trash",
+                                        icon: IconProvider.trash,
+                                        action: {
+                                            selectedItemContent = item
+                                            isShowingTrashingAlert.toggle()
+                                        })
+                                }, label: {
+                                    Image(uiImage: IconProvider.threeDotsHorizontal)
+                                        .foregroundColor(.secondary)
+                                })
+                                .padding(.top, 16)
+
+                                Spacer()
+                            }
+                        })
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 Spacer()
@@ -70,7 +96,7 @@ struct VaultContentView: View {
     }
 
     @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
+    private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             ToggleSidebarButton(action: viewModel.toggleSidebarAction)
         }
