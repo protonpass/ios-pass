@@ -45,16 +45,19 @@ struct LoadVaultsView: View {
                 ProgressView()
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                ToggleSidebarButton(action: viewModel.toggleSidebarAction)
-            }
-        }
+        .toolbar { toolbarContent }
         .onAppear {
             if !didAppear {
                 viewModel.fetchVaults()
                 didAppear = true
             }
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            ToggleSidebarButton(action: viewModel.toggleSidebarAction)
         }
     }
 }

@@ -74,16 +74,19 @@ struct CreateItemView: View {
             }
             .navigationTitle("New...")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }, label: {
-                        Image(uiImage: IconProvider.cross)
-                    })
-                    .foregroundColor(Color(.label))
-                }
-            }
+            .toolbar { toolbarContent }
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Image(uiImage: IconProvider.cross)
+            })
+            .foregroundColor(Color(.label))
         }
     }
 }

@@ -31,31 +31,34 @@ struct TrashView: View {
                 Text("Item #\(index)")
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                ToggleSidebarButton(action: coordinator.showSidebar)
-            }
+        .toolbar { toolbarContent }
+    }
 
-            ToolbarItem(placement: .principal) {
-                Text("Trash")
-            }
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            ToggleSidebarButton(action: coordinator.showSidebar)
+        }
 
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Menu(content: {
-                    Button(action: {
-                        print("Empty trash")
-                    }, label: {
-                        Label(title: {
-                            Text("Empty trash")
-                        }, icon: {
-                            Image(uiImage: IconProvider.trash)
-                        })
-                    })
+        ToolbarItem(placement: .principal) {
+            Text("Trash")
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Menu(content: {
+                Button(action: {
+                    print("Empty trash")
                 }, label: {
-                    Image(uiImage: IconProvider.threeDotsHorizontal)
-                        .foregroundColor(Color(.label))
+                    Label(title: {
+                        Text("Empty trash")
+                    }, icon: {
+                        Image(uiImage: IconProvider.trash)
+                    })
                 })
-            }
+            }, label: {
+                Image(uiImage: IconProvider.threeDotsHorizontal)
+                    .foregroundColor(Color(.label))
+            })
         }
     }
 }

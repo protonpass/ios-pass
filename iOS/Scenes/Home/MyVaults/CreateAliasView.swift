@@ -32,33 +32,36 @@ struct CreateAliasView: View {
     var body: some View {
         NavigationView {
             Text("Create new alias")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: {
-                            presentationMode.wrappedValue.dismiss()
-                        }, label: {
-                            Image(uiImage: IconProvider.cross)
-                        })
-                        .foregroundColor(Color(.label))
-                    }
-
-                    ToolbarItem(placement: .principal) {
-                        Text("Create new alias")
-                            .fontWeight(.bold)
-                    }
-
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            viewModel.saveAction()
-                        }, label: {
-                            Text("Save")
-                                .fontWeight(.bold)
-                                .foregroundColor(Color(ColorProvider.BrandNorm))
-                        })
-                    }
-                }
+                .toolbar { toolbarContent }
         }
         .disabled(viewModel.isLoading)
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Image(uiImage: IconProvider.cross)
+            })
+            .foregroundColor(Color(.label))
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text("Create new alias")
+                .fontWeight(.bold)
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: {
+                viewModel.saveAction()
+            }, label: {
+                Text("Save")
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(ColorProvider.BrandNorm))
+            })
+        }
     }
 }
 

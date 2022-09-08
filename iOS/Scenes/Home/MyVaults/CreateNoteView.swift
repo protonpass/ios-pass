@@ -42,7 +42,7 @@ struct CreateNoteView: View {
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar { toolbar }
+            .toolbar { toolbarContent }
         }
         .disabled(viewModel.isLoading)
         .alert(isPresented: $isShowingDiscardAlert) {
@@ -74,7 +74,7 @@ struct CreateNoteView: View {
     }
 
     @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
+    private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
                 if viewModel.isEmpty {

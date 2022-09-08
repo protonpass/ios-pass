@@ -49,7 +49,7 @@ struct CreateLoginView: View {
                 }
                 .padding()
             }
-            .toolbar(content: toolbarContent)
+            .toolbar { toolbarContent }
             .navigationBarTitleDisplayMode(.inline)
         }
         .disabled(viewModel.isLoading)
@@ -68,7 +68,7 @@ struct CreateLoginView: View {
     }
 
     @ToolbarContentBuilder
-    private func toolbarContent() -> some ToolbarContent {
+    private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
                 if viewModel.isEmpty {

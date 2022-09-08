@@ -43,11 +43,11 @@ struct NoteDetailView: View {
         .padding()
         .padding(.top)
         .moveToTrashAlert(isPresented: $isShowingTrashingAlert, onTrash: viewModel.trashAction)
-        .toolbar(content: toolbarContent)
+        .toolbar { toolbarContent }
     }
 
     @ToolbarContentBuilder
-    private func toolbarContent() -> some ToolbarContent {
+    private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
                 presentationMode.wrappedValue.dismiss()
