@@ -32,6 +32,8 @@ protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToCreateNewItem()
     func vaultContentViewModelWantsToCreateNewVault()
     func vaultContentViewModelWantsToShowItemDetail(itemContent: ItemContent)
+    func vaultContentViewModelBeginsLoading()
+    func vaultContentViewModelStopsLoading()
     func vaultContentViewModelDidFailWithError(error: Error)
 }
 
@@ -40,6 +42,9 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
 
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
+
+    @Published private var isLoading = false
+    @Published private var error: Error?
 
     @Published private(set) var partialItemContents = [PartialItemContent]()
 
@@ -70,6 +75,26 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                 self.objectWillChange.send()
             }
             .store(in: &cancellables)
+
+        $isLoading
+            .sink { [weak self] isLoading in
+                guard let self = self else { return }
+                if isLoading {
+                    self.delegate?.vaultContentViewModelBeginsLoading()
+                } else {
+                    self.delegate?.vaultContentViewModelStopsLoading()
+                }
+            }
+            .store(in: &cancellables)
+
+        $error
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                if let error = error {
+                    self.delegate?.vaultContentViewModelDidFailWithError(error: error)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func update(selectedVault: VaultProtocol?) {
@@ -87,7 +112,7 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                                   shareId: shareId,
                                   forceRefresh: forceRefresh)
             } catch {
-                delegate?.vaultContentViewModelDidFailWithError(error: error)
+                self.error = error
             }
         }
     }
@@ -132,7 +157,7 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                     delegate?.vaultContentViewModelWantsToShowItemDetail(itemContent: itemContent)
                 }
             } catch {
-                self.delegate?.vaultContentViewModelDidFailWithError(error: error)
+                self.error = error
             }
         }
     }
@@ -147,8 +172,24 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
         return (share, shareKeys)
     }
 
-    func trash(itemContent: PartialItemContent) {
-        print(#function)
+    func trash(_ partialItemContent: PartialItemContent) {
+        Task { @MainActor in
+            do {
+                isLoading = true
+                if let itemRevision =
+                    try await itemRevisionRepository.getItemRevision(shareId: partialItemContent.shareId,
+                                                                     itemId: partialItemContent.itemId) {
+                    let request = TrashItemsRequest(items: [itemRevision.itemToBeTrashed()])
+                    try await itemRevisionRepository.trashItem(request: request,
+                                                               shareId: partialItemContent.shareId)
+                    partialItemContents.removeAll(where: { $0.itemId == partialItemContent.itemId })
+                }
+                isLoading = false
+            } catch {
+                self.isLoading = false
+                self.error = error
+            }
+        }
     }
 }
 

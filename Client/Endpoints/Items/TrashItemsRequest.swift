@@ -22,9 +22,35 @@ import Foundation
 
 public struct TrashItemsRequest: Encodable {
     public let items: [ItemToBeTrashed]
+
+    enum CodingKeys: String, CodingKey {
+        case items = "Items"
+    }
+
+    public init(items: [ItemToBeTrashed]) {
+        self.items = items
+    }
 }
 
-public struct ItemToBeTrashed: Codable {
+public struct ItemToBeTrashed: Encodable {
     public let itemID: String
     public let revision: Int16
+
+    enum CodingKeys: String, CodingKey {
+        case itemID = "ItemID"
+        case revision = "Revision"
+    }
+}
+
+// swiftlint:disable explicit_enum_raw_value
+extension ItemToBeTrashed: Decodable {
+    enum DecodingKeys: String, CodingKey {
+        case itemID, revision
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: DecodingKeys.self)
+        self.itemID = try container.decode(String.self, forKey: .itemID)
+        self.revision = try container.decode(Int16.self, forKey: .revision)
+    }
 }

@@ -220,6 +220,14 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         showItemDetailView(itemContent: itemContent)
     }
 
+    func vaultContentViewModelBeginsLoading() {
+        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    }
+
+    func vaultContentViewModelStopsLoading() {
+        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
     func vaultContentViewModelDidFailWithError(error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
     }

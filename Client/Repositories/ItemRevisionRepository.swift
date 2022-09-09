@@ -33,8 +33,11 @@ public protocol ItemRevisionRepositoryProtocol {
     func getItemRevisions(forceRefresh: Bool,
                           shareId: String,
                           state: ItemRevisionState) async throws -> [ItemRevision]
+
     @discardableResult
     func createItem(request: CreateItemRequest, shareId: String) async throws -> ItemRevision
+
+    @discardableResult
     func trashItem(request: TrashItemsRequest, shareId: String) async throws -> [ItemToBeTrashed]
 }
 

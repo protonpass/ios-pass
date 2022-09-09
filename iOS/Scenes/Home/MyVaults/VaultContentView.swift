@@ -48,7 +48,7 @@ struct VaultContentView: View {
         .navigationBarTitleDisplayMode(.inline)
         .moveToTrashAlert(isPresented: $isShowingTrashingAlert) {
             if let selectedItemContent = selectedItemContent {
-                viewModel.trash(itemContent: selectedItemContent)
+                viewModel.trash(selectedItemContent)
             }
         }
         .toolbar { toolbarContent }
@@ -63,11 +63,10 @@ struct VaultContentView: View {
     private var itemList: some View {
         ScrollView {
             LazyVStack {
-                ForEach(viewModel.partialItemContents.indices, id: \.self) { index in
-                    let item = viewModel.partialItemContents[index]
+                ForEach(viewModel.partialItemContents, id: \.itemId) { item in
                     GenericItemView(
                         item: item,
-                        showDivider: index != viewModel.partialItemContents.count - 1,
+                        showDivider: item.itemId != viewModel.partialItemContents.last?.itemId,
                         action: { viewModel.selectItem(item) },
                         trailingView: {
                             VStack {
