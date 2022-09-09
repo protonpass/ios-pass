@@ -33,38 +33,6 @@ final class CreateNoteViewModel: BaseCreateItemViewModel, DeinitPrintable, Obser
         name.isEmpty && note.isEmpty
     }
 
-    override init(shareId: String,
-                  userData: UserData,
-                  shareRepository: ShareRepositoryProtocol,
-                  shareKeysRepository: ShareKeysRepositoryProtocol,
-                  itemRevisionRepository: ItemRevisionRepositoryProtocol) {
-        super.init(shareId: shareId,
-                   userData: userData,
-                   shareRepository: shareRepository,
-                   shareKeysRepository: shareKeysRepository,
-                   itemRevisionRepository: itemRevisionRepository)
-
-        $isLoading
-            .sink { [weak self] isLoading in
-                guard let self = self else { return }
-                if isLoading {
-                    self.delegate?.viewModelBeginsLoading()
-                } else {
-                    self.delegate?.viewModelStopsLoading()
-                }
-            }
-            .store(in: &cancellables)
-
-        $error
-            .sink { [weak self] error in
-                guard let self = self else { return }
-                if let error = error {
-                    self.delegate?.viewModelDidFailWithError(error)
-                }
-            }
-            .store(in: &cancellables)
-    }
-
     override func itemContentType() -> ItemContentType { .note }
 
     override func generateItemContent() -> ItemContentProtobuf {
