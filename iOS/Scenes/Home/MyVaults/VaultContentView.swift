@@ -39,10 +39,12 @@ struct VaultContentView: View {
 
     var body: some View {
         Group {
-            if viewModel.partialItemContents.isEmpty {
-                EmptyVaultView(action: viewModel.createItemAction)
-            } else {
+            if !viewModel.partialItemContents.isEmpty {
                 itemList
+            } else if viewModel.isFetchingItems {
+                ProgressView()
+            } else if viewModel.partialItemContents.isEmpty {
+                EmptyVaultView(action: viewModel.createItemAction)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -166,6 +168,8 @@ struct VaultContentView: View {
                 }
             }
             .foregroundColor(Color(.label))
+            .disabled(viewModel.isFetchingItems)
+            .opacity(viewModel.isFetchingItems ? 0.0 : 1.0)
         }
     }
 

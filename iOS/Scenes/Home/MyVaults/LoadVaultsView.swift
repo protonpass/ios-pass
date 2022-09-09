@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -39,6 +40,7 @@ struct LoadVaultsView: View {
                     }, label: {
                         Text("Retry")
                     })
+                    .foregroundColor(Color(ColorProvider.BrandNorm))
                 }
                 .padding()
             } else {

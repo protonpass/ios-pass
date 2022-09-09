@@ -46,6 +46,7 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     @Published private var isLoading = false
     @Published private var error: Error?
 
+    @Published private(set) var isFetchingItems = false
     @Published private(set) var partialItemContents = [PartialItemContent]()
 
     private let userData: UserData
@@ -105,12 +106,14 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
         guard let shareId = selectedVault?.shareId else { return }
         Task { @MainActor in
             do {
+                isFetchingItems = true
                 let itemRevisions = try await itemRevisionRepository.getItemRevisions(forceRefresh: forceRefresh,
                                                                                       shareId: shareId,
                                                                                       state: .active)
                 try await decrypt(itemRevisions: itemRevisions,
                                   shareId: shareId,
                                   forceRefresh: forceRefresh)
+                isFetchingItems = false
             } catch {
                 self.error = error
             }
