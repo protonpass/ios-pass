@@ -231,41 +231,22 @@ extension HomeCoordinator: SideBarViewModelDelegate {
     }
 }
 
-// MARK: - MyVaultsCoordinatorDelegate
-extension HomeCoordinator: MyVaultsCoordinatorDelegate {
-    func myVautsCoordinatorWantsToShowSidebar() {
+// MARK: - CoordinatorDelegate
+extension HomeCoordinator: CoordinatorDelegate {
+    func coordinatorWantsToToggleSidebar() {
         showSidebar()
     }
 
-    func myVautsCoordinatorWantsToShowLoadingHud() {
+    func coordinatorWantsToShowLoadingHud() {
         showLoadingHud()
     }
 
-    func myVautsCoordinatorWantsToHideLoadingHud() {
+    func coordinatorWantsToHideLoadingHud() {
         hideLoadingHud()
     }
 
-    func myVautsCoordinatorWantsToAlertError(_ error: Error) {
+    func coordinatorWantsToAlertError(_ error: Error) {
         alert(error: error)
-    }
-}
-
-// MARK: - TrashCoordinatorDelegate
-extension HomeCoordinator: TrashCoordinatorDelegate {
-    func trashCoordinatorWantsToShowLoadingHud() {
-        showLoadingHud()
-    }
-
-    func trashCoordinatorWantsToHideLoadingHud() {
-        hideLoadingHud()
-    }
-
-    func trashCoordinatorWantsToAlertError(_ error: Error) {
-        alert(error: error)
-    }
-
-    func trashCoordinatorWantsToShowSidebar() {
-        showSidebar()
     }
 }
 

@@ -23,16 +23,7 @@ import Core
 import ProtonCore_Login
 import SwiftUI
 
-protocol MyVaultsCoordinatorDelegate: AnyObject {
-    func myVautsCoordinatorWantsToShowSidebar()
-    func myVautsCoordinatorWantsToShowLoadingHud()
-    func myVautsCoordinatorWantsToHideLoadingHud()
-    func myVautsCoordinatorWantsToAlertError(_ error: Error)
-}
-
 final class MyVaultsCoordinator: Coordinator {
-    weak var delegate: MyVaultsCoordinatorDelegate?
-
     private let userData: UserData
     private let vaultSelection: VaultSelection
     private let vaultContentViewModel: VaultContentViewModel
@@ -66,7 +57,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func observeVaultContentViewModel() {
         vaultContentViewModel.delegate = self
-        vaultContentViewModel.onToggleSidebar = { [unowned self] in showSidebar() }
+        vaultContentViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
         vaultContentViewModel.onSearch = { [unowned self] in showSearchView() }
         vaultContentViewModel.onCreateItem = { [unowned self] in showCreateItemView() }
         vaultContentViewModel.onCreateVault = { [unowned self] in showCreateVaultView() }
@@ -79,14 +70,10 @@ final class MyVaultsCoordinator: Coordinator {
                                                       vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
                                                       shareKeysRepository: shareKeysRepository)
-        loadVaultsViewModel.onToggleSidebar = { [unowned self] in showSidebar() }
+        loadVaultsViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
                                       loadVaultsViewModel: loadVaultsViewModel,
                                       vaultContentViewModel: vaultContentViewModel))
-    }
-
-    func showSidebar() {
-        delegate?.myVautsCoordinatorWantsToShowSidebar()
     }
 
     func showCreateItemView() {
@@ -236,15 +223,9 @@ final class MyVaultsCoordinator: Coordinator {
 
 // MARK: - BaseViewModelDelegate
 extension MyVaultsCoordinator: BaseViewModelDelegate {
-    func viewModelBeginsLoading() {
-        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
-    }
+    func viewModelBeginsLoading() { showLoadingHud() }
 
-    func viewModelStopsLoading() {
-        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
-    }
+    func viewModelStopsLoading() { hideLoadingHud() }
 
-    func viewModelDidFailWithError(_ error: Error) {
-        delegate?.myVautsCoordinatorWantsToAlertError(error)
-    }
+    func viewModelDidFailWithError(_ error: Error) { alertError(error) }
 }

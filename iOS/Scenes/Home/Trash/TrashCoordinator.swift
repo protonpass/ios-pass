@@ -22,16 +22,7 @@ import Client
 import Core
 import ProtonCore_Login
 
-protocol TrashCoordinatorDelegate: AnyObject {
-    func trashCoordinatorWantsToShowSidebar()
-    func trashCoordinatorWantsToShowLoadingHud()
-    func trashCoordinatorWantsToHideLoadingHud()
-    func trashCoordinatorWantsToAlertError(_ error: Error)
-}
-
 final class TrashCoordinator: Coordinator {
-    weak var delegate: TrashCoordinatorDelegate?
-
     private let userData: UserData
     private let shareRepository: ShareRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
@@ -55,24 +46,16 @@ final class TrashCoordinator: Coordinator {
     private func start() {
         let trashViewModel = TrashViewModel()
         trashViewModel.delegate = self
-        trashViewModel.onToggleSidebar = { [unowned self] in
-            delegate?.trashCoordinatorWantsToShowSidebar()
-        }
+        trashViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
         start(with: TrashView(viewModel: trashViewModel))
     }
 }
 
 // MARK: - TrashViewModelDelegate
 extension TrashCoordinator: BaseViewModelDelegate {
-    func viewModelBeginsLoading() {
-        delegate?.trashCoordinatorWantsToShowLoadingHud()
-    }
+    func viewModelBeginsLoading() { showLoadingHud() }
 
-    func viewModelStopsLoading() {
-        delegate?.trashCoordinatorWantsToHideLoadingHud()
-    }
+    func viewModelStopsLoading() { hideLoadingHud() }
 
-    func viewModelDidFailWithError(_ error: Error) {
-        delegate?.trashCoordinatorWantsToAlertError(error)
-    }
+    func viewModelDidFailWithError(_ error: Error) { alertError(error) }
 }

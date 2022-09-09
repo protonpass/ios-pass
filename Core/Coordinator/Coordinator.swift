@@ -22,9 +22,17 @@ import Combine
 import SwiftUI
 import UIKit
 
+public protocol CoordinatorDelegate: AnyObject {
+    func coordinatorWantsToToggleSidebar()
+    func coordinatorWantsToShowLoadingHud()
+    func coordinatorWantsToHideLoadingHud()
+    func coordinatorWantsToAlertError(_ error: Error)
+}
+
 open class Coordinator {
     private let navigationController: UINavigationController
     public var rootViewController: UIViewController { navigationController }
+    public weak var delegate: CoordinatorDelegate?
 
     public init() {
         self.navigationController = PPNavigationController()
@@ -86,6 +94,16 @@ open class Coordinator {
         navigationController.presentedViewController?.dismiss(animated: animated,
                                                               completion: completion)
     }
+}
+
+public extension Coordinator {
+    func toggleSidebar() { delegate?.coordinatorWantsToToggleSidebar() }
+
+    func showLoadingHud() { delegate?.coordinatorWantsToShowLoadingHud() }
+
+    func hideLoadingHud() { delegate?.coordinatorWantsToHideLoadingHud() }
+
+    func alertError(_ error: Error) { delegate?.coordinatorWantsToAlertError(error) }
 }
 
 private final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
