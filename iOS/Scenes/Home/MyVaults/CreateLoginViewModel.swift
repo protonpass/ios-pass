@@ -20,12 +20,7 @@
 
 import Client
 import Core
-import ProtonCore_Login
 import SwiftUI
-
-protocol CreateLoginViewModelDelegate: AnyObject {
-    func createLoginViewModelWantsToGeneratePassword(delegate: GeneratePasswordViewModelDelegate)
-}
 
 final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
@@ -39,7 +34,7 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
     @Published var urls: [String] = [""]
     @Published var note = ""
 
-    weak var createLoginDelegate: CreateLoginViewModelDelegate?
+    var onGeneratePassword: ((GeneratePasswordViewModelDelegate) -> Void)?
 
     private var hasNoUrls: Bool {
         urls.isEmpty || (urls.count == 1 && urls[0].isEmpty)
@@ -47,38 +42,6 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
 
     var isEmpty: Bool {
         title.isEmpty && username.isEmpty && password.isEmpty && hasNoUrls && note.isEmpty
-    }
-
-    override init(shareId: String,
-                  userData: UserData,
-                  shareRepository: ShareRepositoryProtocol,
-                  shareKeysRepository: ShareKeysRepositoryProtocol,
-                  itemRevisionRepository: ItemRevisionRepositoryProtocol) {
-        super.init(shareId: shareId,
-                   userData: userData,
-                   shareRepository: shareRepository,
-                   shareKeysRepository: shareKeysRepository,
-                   itemRevisionRepository: itemRevisionRepository)
-
-        $isLoading
-            .sink { [weak self] isLoading in
-                guard let self = self else { return }
-                if isLoading {
-                    self.delegate?.viewModelBeginsLoading()
-                } else {
-                    self.delegate?.viewModelStopsLoading()
-                }
-            }
-            .store(in: &cancellables)
-
-        $error
-            .sink { [weak self] error in
-                guard let self = self else { return }
-                if let error = error {
-                    self.delegate?.viewModelDidFailWithError(error)
-                }
-            }
-            .store(in: &cancellables)
     }
 
     override func itemContentType() -> ItemContentType { .login }
@@ -93,11 +56,11 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
     }
 
     @objc
-    func generatePasswordAction() {
-        createLoginDelegate?.createLoginViewModelWantsToGeneratePassword(delegate: self)
+    func generatePassword() {
+        onGeneratePassword?(self)
     }
 
-    func generateAliasAction() {
+    func generateAlias() {
         let name = String.random(allowedCharacters: [.lowercase], length: 8)
         let host = String.random(allowedCharacters: [.lowercase], length: 5)
         let domain = String.random(allowedCharacters: [.lowercase], length: 5)

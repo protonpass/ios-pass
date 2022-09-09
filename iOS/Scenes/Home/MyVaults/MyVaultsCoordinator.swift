@@ -127,7 +127,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                         shareKeysRepository: shareKeysRepository,
                                                         itemRevisionRepository: itemRevisionRepository)
         createLoginViewModel.delegate = self
-        createLoginViewModel.createLoginDelegate = self
+        createLoginViewModel.onGeneratePassword = { [unowned self] in showGeneratePasswordView(delegate: $0) }
         createLoginViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
         let createLoginView = CreateLoginView(viewModel: createLoginViewModel)
         presentViewFullScreen(createLoginView)
@@ -258,13 +258,6 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
 
     func vaultContentViewModelDidFailWithError(error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
-    }
-}
-
-// MARK: - CreateLoginViewModelDelegate
-extension MyVaultsCoordinator: CreateLoginViewModelDelegate {
-    func createLoginViewModelWantsToGeneratePassword(delegate: GeneratePasswordViewModelDelegate) {
-        showGeneratePasswordView(delegate: delegate)
     }
 }
 

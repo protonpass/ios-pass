@@ -114,7 +114,7 @@ struct CreateLoginView: View {
                 isFocused: $isFocusedOnUsername,
                 placeholder: "Add username",
                 trailingIcon: IconProvider.arrowsRotate,
-                trailingAction: viewModel.generateAliasAction)
+                trailingAction: viewModel.generateAlias)
         }
     }
 
@@ -123,7 +123,7 @@ struct CreateLoginView: View {
         let btn = UIBarButtonItem(title: "Generate password",
                                   style: .plain,
                                   target: viewModel,
-                                  action: #selector(viewModel.generatePasswordAction))
+                                  action: #selector(viewModel.generatePassword))
         btn.tintColor = ColorProvider.BrandNorm
         toolbar.items = [.flexibleSpace(), btn, .flexibleSpace()]
         toolbar.barStyle = UIBarStyle.default
