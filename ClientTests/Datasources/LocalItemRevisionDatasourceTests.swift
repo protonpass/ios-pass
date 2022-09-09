@@ -173,6 +173,33 @@ extension LocalItemRevisionDatasourceTests {
         waitForExpectations(timeout: expectationTimeOut)
     }
 
+    func testTrashItemRevision() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let givenItemId = String.random()
+            let givenShareId = String.random()
+            let insertedItemRevision =
+            try await sut.givenInsertedItemRevision(itemId: givenItemId,
+                                                    shareId: givenShareId,
+                                                    state: .active)
+
+            // When
+            try await sut.trashItem(shareId: givenShareId,
+                                    itemsToBeTrashed: [insertedItemRevision.itemToBeTrashed()])
+
+            // Then
+            let itemRevision = try await sut.getItemRevision(shareId: givenShareId,
+                                                             itemId: givenItemId)
+            let notNilItemRevision = try XCTUnwrap(itemRevision)
+            XCTAssertEqual(notNilItemRevision.revisionState, .trashed)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
+
     func testRemoveAllRevisions() throws {
         continueAfterFailure = false
         let expectation = expectation(description: #function)
@@ -224,8 +251,9 @@ extension LocalItemRevisionDatasourceTests {
 
 extension LocalItemRevisionDatasource {
     func givenInsertedItemRevision(itemId: String?,
-                                   shareId: String?) async throws -> ItemRevision {
-        let itemRevision = ItemRevision.random(itemId: itemId ?? .random())
+                                   shareId: String?,
+                                   state: ItemRevisionState? = nil) async throws -> ItemRevision {
+        let itemRevision = ItemRevision.random(itemId: itemId ?? .random(), state: state)
         try await upsertItemRevisions([itemRevision], shareId: shareId ?? .random())
         return itemRevision
     }

@@ -158,3 +158,9 @@ extension ItemRevision {
         if !valid { throw CryptoError.failedToVerifySignature }
     }
 }
+
+public extension ItemRevision {
+    func itemToBeTrashed() -> ItemToBeTrashed {
+        .init(itemID: itemID, revision: revision)
+    }
+}
