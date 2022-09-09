@@ -25,7 +25,7 @@ import ProtonCore_DataModel
 import ProtonCore_KeyManager
 import ProtonCore_Login
 
-public enum ItemRevisionState: Int16 {
+public enum ItemRevisionState: Int16, CaseIterable {
     case active = 1
     case trashed = 2
 }

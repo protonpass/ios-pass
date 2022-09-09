@@ -42,13 +42,15 @@ extension GlobalLocalDatasourceTests {
     func testRemoveAllData() throws {
         continueAfterFailure = false
         let expectation = expectation(description: #function)
-        Task {
+        Task { @MainActor in
             // Given
             // First set of data
             let firstUserId = String.random()
             let firstShareIds = [String].random(randomElement: .random())
+            let firstItemCount = Int.random(in: 100...500)
             try await populateData(userId: firstUserId,
-                                   shareIds: firstShareIds)
+                                   shareIds: firstShareIds,
+                                   itemCount: firstItemCount)
 
             let firstSharesFirstGet =
             try await sut.localShareDatasource.getAllShares(userId: firstUserId)
@@ -67,15 +69,18 @@ extension GlobalLocalDatasourceTests {
                                                                    pageSize: .max)
                 XCTAssertFalse(vaultKeys.isEmpty)
 
-                let itemRevisions = try await sut.localItemRevisionDatasource.getItemRevisions(shareId: shareId)
-                XCTAssertFalse(itemRevisions.isEmpty)
+                let itemRevisionCount =
+                try await sut.localItemRevisionDatasource.getItemRevisionCount(shareId: shareId)
+                XCTAssertEqual(itemRevisionCount, firstItemCount)
             }
 
             // Second set of data
             let secondUserId = String.random()
             let secondShareIds = [String].random(randomElement: .random())
+            let secondItemCount = Int.random(in: 100...500)
             try await populateData(userId: secondUserId,
-                                   shareIds: secondShareIds)
+                                   shareIds: secondShareIds,
+                                   itemCount: secondItemCount)
 
             let secondSharesFirstGet =
             try await sut.localShareDatasource.getAllShares(userId: secondUserId)
@@ -94,8 +99,9 @@ extension GlobalLocalDatasourceTests {
                                                                    pageSize: .max)
                 XCTAssertFalse(vaultKeys.isEmpty)
 
-                let itemRevisions = try await sut.localItemRevisionDatasource.getItemRevisions(shareId: shareId)
-                XCTAssertFalse(itemRevisions.isEmpty)
+                let itemRevisionCount =
+                try await sut.localItemRevisionDatasource.getItemRevisionCount(shareId: shareId)
+                XCTAssertEqual(itemRevisionCount, secondItemCount)
             }
 
             // When
@@ -121,8 +127,9 @@ extension GlobalLocalDatasourceTests {
                                                                    pageSize: .max)
                 XCTAssertTrue(vaultKeys.isEmpty)
 
-                let itemRevisions = try await sut.localItemRevisionDatasource.getItemRevisions(shareId: shareId)
-                XCTAssertTrue(itemRevisions.isEmpty)
+                let itemRevisionCount =
+                try await sut.localItemRevisionDatasource.getItemRevisionCount(shareId: shareId)
+                XCTAssertEqual(itemRevisionCount, 0)
             }
 
             // Second set of data should be intact
@@ -143,8 +150,9 @@ extension GlobalLocalDatasourceTests {
                                                                    pageSize: .max)
                 XCTAssertFalse(vaultKeys.isEmpty)
 
-                let itemRevisions = try await sut.localItemRevisionDatasource.getItemRevisions(shareId: shareId)
-                XCTAssertFalse(itemRevisions.isEmpty)
+                let itemRevisionCount =
+                try await sut.localItemRevisionDatasource.getItemRevisionCount(shareId: shareId)
+                XCTAssertEqual(itemRevisionCount, secondItemCount)
             }
 
             expectation.fulfill()
@@ -152,7 +160,7 @@ extension GlobalLocalDatasourceTests {
         waitForExpectations(timeout: expectationTimeOut)
     }
 
-    func populateData(userId: String, shareIds: [String]) async throws {
+    func populateData(userId: String, shareIds: [String], itemCount: Int) async throws {
         // Populate item keys, vault keys & item revisions
         // to a list of shares with given ids
         for shareId in shareIds {
@@ -165,7 +173,7 @@ extension GlobalLocalDatasourceTests {
             let vaultKeys = [VaultKey].random(randomElement: .random())
             try await sut.localVaultKeyDatasource.upsertVaultKeys(vaultKeys, shareId: shareId)
 
-            let itemRevisions = [ItemRevision].random(randomElement: .random())
+            let itemRevisions = [ItemRevision].random(count: itemCount, randomElement: .random())
             try await sut.localItemRevisionDatasource.upsertItemRevisions(itemRevisions,
                                                                           shareId: shareId)
         }

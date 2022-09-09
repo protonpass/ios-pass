@@ -30,7 +30,9 @@ public protocol ItemRevisionRepositoryProtocol {
     /// Get a specific ItemRevision (only from local datasource)
     func getItemRevision(shareId: String, itemId: String) async throws -> ItemRevision?
 
-    func getItemRevisions(forceRefresh: Bool, shareId: String) async throws -> [ItemRevision]
+    func getItemRevisions(forceRefresh: Bool,
+                          shareId: String,
+                          state: ItemRevisionState) async throws -> [ItemRevision]
     @discardableResult
     func createItem(request: CreateItemRequest, shareId: String) async throws -> ItemRevision
     func trashItem(request: TrashItemsRequest, shareId: String) async throws -> [ItemToBeTrashed]
@@ -41,30 +43,42 @@ public extension ItemRevisionRepositoryProtocol {
         try await localItemRevisionDatasoure.getItemRevision(shareId: shareId, itemId: itemId)
     }
 
-    func getItemRevisions(forceRefresh: Bool, shareId: String) async throws -> [ItemRevision] {
-        PPLogger.shared?.log("Getting item revisions")
+    func getItemRevisions(forceRefresh: Bool,
+                          shareId: String,
+                          state: ItemRevisionState) async throws -> [ItemRevision] {
+        let stateDescription: String
+        switch state {
+        case .active: stateDescription = "active"
+        case .trashed: stateDescription = "trashed"
+        }
+
+        PPLogger.shared?.log("Getting \(stateDescription) item revisions")
         if forceRefresh {
             PPLogger.shared?.log("Force refresh item revisions")
-            return try await refreshItemRevisions(shareId: shareId)
+            try await refreshItemRevisions(shareId: shareId)
         }
 
-        let localItemRevisions = try await localItemRevisionDatasoure.getItemRevisions(shareId: shareId)
+        let localItemRevisionCount =
+        try await localItemRevisionDatasoure.getItemRevisionCount(shareId: shareId)
 
-        if localItemRevisions.isEmpty {
-            PPLogger.shared?.log("No item revisions in local databse => Fetch from remote")
-            return try await refreshItemRevisions(shareId: shareId)
+        if localItemRevisionCount == 0 {
+            PPLogger.shared?.log("No item revisions in local database => Fetch from remote")
+            try await refreshItemRevisions(shareId: shareId)
         }
 
-        PPLogger.shared?.log("Found \(localItemRevisions.count) item revision in local database")
+        let localItemRevisions =
+        try await localItemRevisionDatasoure.getItemRevisions(shareId: shareId, state: state)
+
+        let count = localItemRevisions.count
+        PPLogger.shared?.log("Found \(count) \(stateDescription) item revisions in local database")
         return localItemRevisions
     }
 
-    private func refreshItemRevisions(shareId: String) async throws -> [ItemRevision] {
+    private func refreshItemRevisions(shareId: String) async throws {
         PPLogger.shared?.log("Getting item revisions from remote")
         let itemRevisions = try await remoteItemRevisionDatasource.getItemRevisions(shareId: shareId)
         PPLogger.shared?.log("Saving \(itemRevisions.count) remote item revisions to local database")
         try await localItemRevisionDatasoure.upsertItemRevisions(itemRevisions, shareId: shareId)
-        return itemRevisions
     }
 
     func createItem(request: CreateItemRequest,

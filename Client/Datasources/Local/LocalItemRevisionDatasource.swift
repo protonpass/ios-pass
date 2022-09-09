@@ -21,10 +21,22 @@
 import CoreData
 
 public protocol LocalItemRevisionDatasourceProtocol {
+    /// Get a specific item revision
     func getItemRevision(shareId: String, itemId: String) async throws -> ItemRevision?
-    func getItemRevisions(shareId: String) async throws -> [ItemRevision]
+
+    /// Get item revisions by state (active/trashed)
+    func getItemRevisions(shareId: String, state: ItemRevisionState) async throws -> [ItemRevision]
+
+    /// Get total item revisions of a share (both active and trashed ones)
+    func getItemRevisionCount(shareId: String) async throws -> Int
+
+    /// Insert or update a list of item revisions
     func upsertItemRevisions(_ itemRevisions: [ItemRevision], shareId: String) async throws
+
+    /// Nuke item revisions of a share
     func removeAllItemRevisions(shareId: String) async throws
+
+    /// Trash  an item revision
     func trashItem(shareId: String, itemsToBeTrashed: [ItemToBeTrashed]) async throws
 }
 
@@ -46,15 +58,26 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
         return try itemRevisionEntities.map { try $0.toItemRevision() }.first
     }
 
-    public func getItemRevisions(shareId: String) async throws -> [ItemRevision] {
+    public func getItemRevisions(shareId: String, state: ItemRevisionState) async throws -> [ItemRevision] {
         let taskContext = newTaskContext(type: .fetch)
 
         let fetchRequest = ItemRevisionEntity.fetchRequest()
-        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "shareID = %@", shareId),
+            .init(format: "state = %d", state.rawValue)
+        ])
         fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
         let itemRevisionEntities = try await execute(fetchRequest: fetchRequest,
                                                      context: taskContext)
         return try itemRevisionEntities.map { try $0.toItemRevision() }
+    }
+
+    public func getItemRevisionCount(shareId: String) async throws -> Int {
+        let taskContext = newTaskContext(type: .fetch)
+
+        let fetchRequest = ItemRevisionEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        return try await count(fetchRequest: fetchRequest, context: taskContext)
     }
 
     public func upsertItemRevisions(_ itemRevisions: [ItemRevision],

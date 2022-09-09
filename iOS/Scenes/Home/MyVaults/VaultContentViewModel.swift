@@ -81,7 +81,8 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
         Task { @MainActor in
             do {
                 let itemRevisions = try await itemRevisionRepository.getItemRevisions(forceRefresh: forceRefresh,
-                                                                                      shareId: shareId)
+                                                                                      shareId: shareId,
+                                                                                      state: .active)
                 try await decrypt(itemRevisions: itemRevisions,
                                   shareId: shareId,
                                   forceRefresh: forceRefresh)
