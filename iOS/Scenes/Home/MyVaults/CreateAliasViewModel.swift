@@ -18,46 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import Core
-import SwiftUI
 
-protocol CreateAliasViewModelDelegate: AnyObject {
-    func createAliasViewModelBeginsLoading()
-    func createAliasViewModelStopsLoading()
-    func createAliasViewModelDidFailWithError(error: Error)
-}
-
-final class CreateAliasViewModel: DeinitPrintable, ObservableObject {
+final class CreateAliasViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
-
-    @Published private(set) var isLoading = false
-    @Published private(set) var error: Error?
-
-    private var cancellables = Set<AnyCancellable>()
-    weak var delegate: CreateAliasViewModelDelegate?
-
-    init() {
-        $isLoading
-            .sink { [weak self] isLoading in
-                guard let self = self else { return }
-                if isLoading {
-                    self.delegate?.createAliasViewModelBeginsLoading()
-                } else {
-                    self.delegate?.createAliasViewModelStopsLoading()
-                }
-            }
-            .store(in: &cancellables)
-
-        $error
-            .sink { [weak self] error in
-                guard let self = self else { return }
-                if let error = error {
-                    self.delegate?.createAliasViewModelDidFailWithError(error: error)
-                }
-            }
-            .store(in: &cancellables)
-    }
 
     func saveAction() {
         isLoading = true

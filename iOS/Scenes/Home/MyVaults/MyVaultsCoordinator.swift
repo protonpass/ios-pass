@@ -275,21 +275,6 @@ extension MyVaultsCoordinator: CreateLoginViewModelDelegate {
     }
 }
 
-// MARK: - CreateAliasViewModelDelegate
-extension MyVaultsCoordinator: CreateAliasViewModelDelegate {
-    func createAliasViewModelBeginsLoading() {
-        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
-    }
-
-    func createAliasViewModelStopsLoading() {
-        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
-    }
-
-    func createAliasViewModelDidFailWithError(error: Error) {
-        delegate?.myVautsCoordinatorWantsToAlertError(error)
-    }
-}
-
 // MARK: - BaseViewModelDelegate
 extension MyVaultsCoordinator: BaseViewModelDelegate {
     func viewModelBeginsLoading() {
