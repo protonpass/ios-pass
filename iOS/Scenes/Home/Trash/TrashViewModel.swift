@@ -19,56 +19,19 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import Core
 import SwiftUI
 
-protocol TrashViewModelDelegate: AnyObject {
-    func trashViewModelWantsToToggleSidebar()
-    func trashViewModelBeginsLoading()
-    func trashViewModelStopsLoading()
-    func trashViewModelDidFailWithError(error: Error)
-}
-
-final class TrashViewModel: DeinitPrintable, ObservableObject {
-    weak var delegate: TrashViewModelDelegate?
-
-    @Published private var isLoading = false
-    @Published private var error: Error?
-
+final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     @Published private(set) var isFetchingItems = false
     @Published private(set) var trashedItem = [PartialItemContent]()
 
-    private var cancellables = Set<AnyCancellable>()
-
-    init() {
-        $isLoading
-            .sink { [weak self] isLoading in
-                guard let self = self else { return }
-                if isLoading {
-                    self.delegate?.trashViewModelBeginsLoading()
-                } else {
-                    self.delegate?.trashViewModelStopsLoading()
-                }
-            }
-            .store(in: &cancellables)
-
-        $error
-            .sink { [weak self] error in
-                guard let self = self else { return }
-                if let error = error {
-                    self.delegate?.trashViewModelDidFailWithError(error: error)
-                }
-            }
-            .store(in: &cancellables)
-    }
+    var onToggleSidebar: (() -> Void)?
 }
 
 // MARK: - Actions
 extension TrashViewModel {
-    func toggleSidebar() {
-        delegate?.trashViewModelWantsToToggleSidebar()
-    }
+    func toggleSidebar() { onToggleSidebar?() }
 
     func restoreAllItems() {
         print(#function)

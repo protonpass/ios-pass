@@ -55,25 +55,24 @@ final class TrashCoordinator: Coordinator {
     private func start() {
         let trashViewModel = TrashViewModel()
         trashViewModel.delegate = self
+        trashViewModel.onToggleSidebar = { [unowned self] in
+            delegate?.trashCoordinatorWantsToShowSidebar()
+        }
         start(with: TrashView(viewModel: trashViewModel))
     }
 }
 
 // MARK: - TrashViewModelDelegate
-extension TrashCoordinator: TrashViewModelDelegate {
-    func trashViewModelBeginsLoading() {
+extension TrashCoordinator: BaseViewModelDelegate {
+    func viewModelBeginsLoading() {
         delegate?.trashCoordinatorWantsToShowLoadingHud()
     }
 
-    func trashViewModelStopsLoading() {
+    func viewModelStopsLoading() {
         delegate?.trashCoordinatorWantsToHideLoadingHud()
     }
 
-    func trashViewModelDidFailWithError(error: Error) {
+    func viewModelDidFailWithError(_ error: Error) {
         delegate?.trashCoordinatorWantsToAlertError(error)
-    }
-
-    func trashViewModelWantsToToggleSidebar() {
-        delegate?.trashCoordinatorWantsToShowSidebar()
     }
 }
