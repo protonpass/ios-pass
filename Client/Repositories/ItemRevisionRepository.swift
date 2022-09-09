@@ -30,6 +30,7 @@ public protocol ItemRevisionRepositoryProtocol {
     /// Get a specific ItemRevision (only from local datasource)
     func getItemRevision(shareId: String, itemId: String) async throws -> ItemRevision?
 
+    /// Get item revisions of a share by state
     func getItemRevisions(forceRefresh: Bool,
                           shareId: String,
                           state: ItemRevisionState) async throws -> [ItemRevision]

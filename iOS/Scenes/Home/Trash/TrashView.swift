@@ -32,7 +32,13 @@ struct TrashView: View {
 
     var body: some View {
         Group {
-            EmptyTrashView()
+            if !viewModel.trashedItem.isEmpty {
+                itemList
+            } else if viewModel.isFetchingItems {
+                ProgressView()
+            } else if viewModel.trashedItem.isEmpty {
+                EmptyTrashView()
+            }
         }
         .toolbar { toolbarContent }
         .alert(isPresented: $isShowingEmptyTrashAlert) { emptyTrashAlert }
@@ -77,5 +83,36 @@ struct TrashView: View {
               message: Text("Items in trash will be deleted permanently. You can not undo this action"),
               primaryButton: .destructive(Text("Empty trash"), action: viewModel.emptyTrash),
               secondaryButton: .default(Text("Cancel")))
+    }
+
+    private var itemList: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(viewModel.trashedItem, id: \.itemId) { item in
+                    GenericItemView(
+                        item: item,
+                        showDivider: item.itemId != viewModel.trashedItem.last?.itemId,
+                        action: {  },
+                        trailingView: {
+                            VStack {
+                                Menu(content: {
+                                    DestructiveButton(
+                                        title: "Move to Trash",
+                                        icon: IconProvider.trash,
+                                        action: {})
+                                }, label: {
+                                    Image(uiImage: IconProvider.threeDotsHorizontal)
+                                        .foregroundColor(.secondary)
+                                })
+                                .padding(.top, 16)
+
+                                Spacer()
+                            }
+                        })
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                Spacer()
+            }
+        }
     }
 }

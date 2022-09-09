@@ -44,7 +44,11 @@ final class TrashCoordinator: Coordinator {
     }
 
     private func start() {
-        let trashViewModel = TrashViewModel()
+        let trashViewModel = TrashViewModel(userData: userData,
+                                            shareRepository: shareRepository,
+                                            shareKeysRepository: shareKeysRepository,
+                                            itemRevisionRepository: itemRevisionRepository,
+                                            publicKeyRepository: publicKeyRepository)
         trashViewModel.delegate = self
         trashViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
         start(with: TrashView(viewModel: trashViewModel))

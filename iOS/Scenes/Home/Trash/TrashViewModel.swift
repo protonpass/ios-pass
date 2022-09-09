@@ -20,13 +20,81 @@
 
 import Client
 import Core
+import ProtonCore_Login
 import SwiftUI
 
 final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     @Published private(set) var isFetchingItems = false
     @Published private(set) var trashedItem = [PartialItemContent]()
 
+    private let userData: UserData
+    private let shareRepository: ShareRepositoryProtocol
+    private let shareKeysRepository: ShareKeysRepositoryProtocol
+    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    private let publicKeyRepository: PublicKeyRepositoryProtocol
+
     var onToggleSidebar: (() -> Void)?
+
+    init(userData: UserData,
+         shareRepository: ShareRepositoryProtocol,
+         shareKeysRepository: ShareKeysRepositoryProtocol,
+         itemRevisionRepository: ItemRevisionRepositoryProtocol,
+         publicKeyRepository: PublicKeyRepositoryProtocol) {
+        self.userData = userData
+        self.shareRepository = shareRepository
+        self.shareKeysRepository = shareKeysRepository
+        self.itemRevisionRepository = itemRevisionRepository
+        self.publicKeyRepository = publicKeyRepository
+        super.init()
+        getAllTrashedItems(forceRefresh: false)
+    }
+
+    private func getAllTrashedItems(forceRefresh: Bool) {
+        Task { @MainActor in
+            do {
+                isFetchingItems = true
+
+                let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
+                var trashedItems = [PartialItemContent]()
+
+                for share in shares {
+                    let (share, shareKeys) = try await getShareAndKeys(shareId: share.shareID,
+                                                                       forceRefresh: forceRefresh)
+                    let itemRevisions =
+                    try await itemRevisionRepository.getItemRevisions(forceRefresh: forceRefresh,
+                                                                      shareId: share.shareID,
+                                                                      state: .trashed)
+                    for itemRevision in itemRevisions {
+                        let publicKeys =
+                        try await publicKeyRepository.getPublicKeys(email: itemRevision.signatureEmail)
+                        let verifyKeys = publicKeys.map { $0.value }
+                        let partialItemContent =
+                        try itemRevision.getPartialContent(userData: userData,
+                                                           share: share,
+                                                           vaultKeys: shareKeys.vaultKeys,
+                                                           itemKeys: shareKeys.itemKeys,
+                                                           verifyKeys: verifyKeys)
+                        trashedItems.append(partialItemContent)
+                    }
+                }
+
+                isFetchingItems = false
+                self.trashedItem = trashedItems
+            } catch {
+                self.error = error
+            }
+        }
+    }
+
+    private func getShareAndKeys(shareId: String,
+                                 forceRefresh: Bool) async throws -> (Share, ShareKeys) {
+        let share = try await shareRepository.getShare(shareId: shareId)
+        let shareKeys = try await shareKeysRepository.getShareKeys(shareId: shareId,
+                                                                   page: 0,
+                                                                   pageSize: kDefaultPageSize,
+                                                                   forceRefresh: forceRefresh)
+        return (share, shareKeys)
+    }
 }
 
 // MARK: - Actions

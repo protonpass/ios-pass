@@ -56,9 +56,9 @@ public struct GenericItemView<TrailingView: View>: View {
     }
 
     public var body: some View {
-        HStack {
-            Button(action: action) {
-                VStack(spacing: 0) {
+        VStack {
+            HStack {
+                Button(action: action) {
                     HStack {
                         VStack {
                             Image(uiImage: item.icon)
@@ -77,17 +77,18 @@ public struct GenericItemView<TrailingView: View>: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .padding()
-
-                    if showDivider {
-                        Divider()
-                    }
+                    .padding(.horizontal)
+                    .contentShape(Rectangle())
                 }
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
+                .buttonStyle(.plain)
 
-            trailingView
+                trailingView
+                    .padding(.trailing)
+            }
+        }
+
+        if showDivider {
+            Divider()
         }
     }
 }
