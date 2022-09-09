@@ -18,9 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
-import SwiftUI
-import UIKit
+import ProtonCore_Login
 
 protocol TrashCoordinatorDelegate: AnyObject {
     func trashCoordinatorWantsToShowSidebar()
@@ -29,7 +29,22 @@ protocol TrashCoordinatorDelegate: AnyObject {
 final class TrashCoordinator: Coordinator {
     weak var delegate: TrashCoordinatorDelegate?
 
-    override init() {
+    private let userData: UserData
+    private let shareRepository: ShareRepositoryProtocol
+    private let shareKeysRepository: ShareKeysRepositoryProtocol
+    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    private let publicKeyRepository: PublicKeyRepositoryProtocol
+
+    init(userData: UserData,
+         shareRepository: ShareRepositoryProtocol,
+         shareKeysRepository: ShareKeysRepositoryProtocol,
+         itemRevisionRepository: ItemRevisionRepositoryProtocol,
+         publicKeyRepository: PublicKeyRepositoryProtocol) {
+        self.userData = userData
+        self.shareRepository = shareRepository
+        self.shareKeysRepository = shareKeysRepository
+        self.itemRevisionRepository = itemRevisionRepository
+        self.publicKeyRepository = publicKeyRepository
         super.init()
         self.start()
     }

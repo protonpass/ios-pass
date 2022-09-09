@@ -20,11 +20,8 @@
 
 import Client
 import Core
-import CoreData
 import ProtonCore_Login
-import ProtonCore_Services
 import SwiftUI
-import UIComponents
 
 protocol MyVaultsCoordinatorDelegate: AnyObject {
     func myVautsCoordinatorWantsToShowSidebar()
@@ -36,8 +33,7 @@ protocol MyVaultsCoordinatorDelegate: AnyObject {
 final class MyVaultsCoordinator: Coordinator {
     weak var delegate: MyVaultsCoordinatorDelegate?
 
-    private let apiService: APIService
-    private let sessionData: SessionData
+    private let userData: UserData
     private let vaultSelection: VaultSelection
     private let vaultContentViewModel: VaultContentViewModel
     private let shareRepository: ShareRepositoryProtocol
@@ -45,46 +41,27 @@ final class MyVaultsCoordinator: Coordinator {
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
 
-    init(apiService: APIService,
-         sessionData: SessionData,
-         container: NSPersistentContainer,
-         vaultSelection: VaultSelection) {
-        self.apiService = apiService
-        self.sessionData = sessionData
+    init(userData: UserData,
+         vaultSelection: VaultSelection,
+         shareRepository: ShareRepositoryProtocol,
+         shareKeysRepository: ShareKeysRepositoryProtocol,
+         itemRevisionRepository: ItemRevisionRepositoryProtocol,
+         publicKeyRepository: PublicKeyRepositoryProtocol) {
+        self.userData = userData
         self.vaultSelection = vaultSelection
-
-        let userId = sessionData.userData.user.ID
-        let authCredential = sessionData.userData.credential
-
-        let shareRepository = ShareRepository(userId: userId,
-                                              container: container,
-                                              authCredential: authCredential,
-                                              apiService: apiService)
         self.shareRepository = shareRepository
-
-        self.itemRevisionRepository = ItemRevisionRepository(container: container,
-                                                             authCredential: authCredential,
-                                                             apiService: apiService)
-
-        self.shareKeysRepository = ShareKeysRepository(container: container,
-                                                       authCredential: authCredential,
-                                                       apiService: apiService)
-
-        let publicKeyRepository = PublicKeyRepository(container: container,
-                                                      apiService: apiService)
-
-        self.vaultContentViewModel = .init(userData: sessionData.userData,
+        self.itemRevisionRepository = itemRevisionRepository
+        self.shareKeysRepository = shareKeysRepository
+        self.vaultContentViewModel = .init(userData: userData,
                                            vaultSelection: vaultSelection,
                                            shareRepository: shareRepository,
                                            itemRevisionRepository: itemRevisionRepository,
                                            shareKeysRepository: shareKeysRepository,
                                            publicKeyRepository: publicKeyRepository)
-
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
-
         super.init()
 
-        let loadVaultsViewModel = LoadVaultsViewModel(userData: sessionData.userData,
+        let loadVaultsViewModel = LoadVaultsViewModel(userData: userData,
                                                       vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
                                                       shareKeysRepository: shareKeysRepository)
@@ -113,7 +90,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     func showCreateVaultView() {
         let createVaultViewModel =
-        CreateVaultViewModel(userData: sessionData.userData,
+        CreateVaultViewModel(userData: userData,
                              shareRepository: shareRepository)
         createVaultViewModel.delegate = self
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
@@ -127,7 +104,7 @@ final class MyVaultsCoordinator: Coordinator {
     func showCreateLoginView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
         let createLoginViewModel = CreateLoginViewModel(shareId: shareId,
-                                                        userData: sessionData.userData,
+                                                        userData: userData,
                                                         shareRepository: shareRepository,
                                                         shareKeysRepository: shareKeysRepository,
                                                         itemRevisionRepository: itemRevisionRepository)
@@ -147,7 +124,7 @@ final class MyVaultsCoordinator: Coordinator {
     func showCreateNoteView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
         let createNoteViewModel = CreateNoteViewModel(shareId: shareId,
-                                                      userData: sessionData.userData,
+                                                      userData: userData,
                                                       shareRepository: shareRepository,
                                                       shareKeysRepository: shareKeysRepository,
                                                       itemRevisionRepository: itemRevisionRepository)
