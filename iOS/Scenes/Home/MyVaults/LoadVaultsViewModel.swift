@@ -19,14 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import Core
 import ProtonCore_Login
-import ProtonCore_Services
-
-protocol LoadVaultsViewModelDelegate: AnyObject {
-    func loadVaultsViewModelWantsToToggleSideBar()
-}
 
 final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var error: Error?
@@ -38,7 +32,7 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     private let shareRepository: ShareRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
 
-    weak var delegate: LoadVaultsViewModelDelegate?
+    var onToggleSidebar: (() -> Void)?
 
     init(userData: UserData,
          vaultSelection: VaultSelection,
@@ -50,8 +44,8 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
         self.shareKeysRepository = shareKeysRepository
     }
 
-    func toggleSidebarAction() {
-        delegate?.loadVaultsViewModelWantsToToggleSideBar()
+    func toggleSidebar() {
+        onToggleSidebar?()
     }
 
     func fetchVaults(forceUpdate: Bool = false) {

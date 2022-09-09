@@ -67,7 +67,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                       shareKeysRepository: shareKeysRepository)
 
         self.vaultContentViewModel.delegate = self
-        loadVaultsViewModel.delegate = self
+        loadVaultsViewModel.onToggleSidebar = { [unowned self] in showSidebar() }
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
                                       loadVaultsViewModel: loadVaultsViewModel,
                                       vaultContentViewModel: vaultContentViewModel))
@@ -219,13 +219,6 @@ final class MyVaultsCoordinator: Coordinator {
         }
         myVaultsViewModel.successMessage = message
         vaultContentViewModel.fetchItems()
-    }
-}
-
-// MARK: - LoadVaultsViewModelDelegate
-extension MyVaultsCoordinator: LoadVaultsViewModelDelegate {
-    func loadVaultsViewModelWantsToToggleSideBar() {
-        showSidebar()
     }
 }
 
