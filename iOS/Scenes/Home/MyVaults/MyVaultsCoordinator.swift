@@ -79,7 +79,20 @@ final class MyVaultsCoordinator: Coordinator {
 
     func showCreateItemView() {
         let createItemViewModel = CreateItemViewModel()
-        createItemViewModel.delegate = self
+        createItemViewModel.onSelectedOption = { [unowned self] option in
+            dismissTopMostViewController(animated: true) { [unowned self] in
+                switch option {
+                case .login:
+                    showCreateLoginView()
+                case .alias:
+                    showCreateAliasView()
+                case .note:
+                    showCreateNoteView()
+                case .password:
+                    showGeneratePasswordView(delegate: nil)
+                }
+            }
+        }
         let createItemView = CreateItemView(viewModel: createItemViewModel)
         let createItemViewController = UIHostingController(rootView: createItemView)
         if #available(iOS 15.0, *) {
@@ -234,24 +247,6 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
 
     func vaultContentViewModelDidFailWithError(error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
-    }
-}
-
-// MARK: - CreateItemViewModelDelegate
-extension MyVaultsCoordinator: CreateItemViewModelDelegate {
-    func createItemViewDidSelect(option: CreateNewItemOption) {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            switch option {
-            case .login:
-                showCreateLoginView()
-            case .alias:
-                showCreateAliasView()
-            case .note:
-                showCreateNoteView()
-            case .password:
-                showGeneratePasswordView(delegate: nil)
-            }
-        }
     }
 }
 
