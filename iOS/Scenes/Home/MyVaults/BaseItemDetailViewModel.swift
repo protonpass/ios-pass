@@ -21,36 +21,31 @@
 import Client
 import Combine
 
-protocol BaseItemDetailViewModelDelegate: AnyObject {
-    func baseItemDetailViewModelBeginsLoading()
-    func baseItemDetailViewModelStopsLoading()
-    func baseItemDetailViewModelDidFinishTrashing(_ itemContentType: ItemContentType)
-    func baseItemDetailViewModelDidFailWithError(error: Error)
-}
-
-class BaseItemDetailViewModel {
+class BaseItemDetailViewModel: BaseViewModel {
     @Published private var isLoading = false
     @Published private var error: Error?
     @Published var isTrashed = false
 
-    private var cancellables = Set<AnyCancellable>()
-    weak var delegate: BaseItemDetailViewModelDelegate?
-
     private let itemContent: ItemContent
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+
+    private var cancellables = Set<AnyCancellable>()
+
+    var onTrashedItem: ((ItemContentType) -> Void)?
 
     init(itemContent: ItemContent,
          itemRevisionRepository: ItemRevisionRepositoryProtocol) {
         self.itemContent = itemContent
         self.itemRevisionRepository = itemRevisionRepository
+        super.init()
 
         $isLoading
             .sink { [weak self] isLoading in
                 guard let self = self else { return }
                 if isLoading {
-                    self.delegate?.baseItemDetailViewModelBeginsLoading()
+                    self.delegate?.viewModelBeginsLoading()
                 } else {
-                    self.delegate?.baseItemDetailViewModelStopsLoading()
+                    self.delegate?.viewModelStopsLoading()
                 }
             }
             .store(in: &cancellables)
@@ -59,7 +54,7 @@ class BaseItemDetailViewModel {
             .sink { [weak self] error in
                 guard let self = self else { return }
                 if let error = error {
-                    self.delegate?.baseItemDetailViewModelDidFailWithError(error: error)
+                    self.delegate?.viewModelDidFailWithError(error)
                 }
             }
             .store(in: &cancellables)
@@ -68,7 +63,7 @@ class BaseItemDetailViewModel {
             .sink { [weak self] isTrashed in
                 guard let self = self else { return }
                 if isTrashed {
-                    self.delegate?.baseItemDetailViewModelDidFinishTrashing(itemContent.contentData.type)
+                    self.onTrashedItem?(itemContent.contentData.type)
                 }
             }
             .store(in: &cancellables)

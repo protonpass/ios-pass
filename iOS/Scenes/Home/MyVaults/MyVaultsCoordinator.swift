@@ -154,6 +154,7 @@ final class MyVaultsCoordinator: Coordinator {
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
                                                  itemRevisionRepository: itemRevisionRepository)
             viewModel.delegate = self
+            viewModel.onTrashedItem = { [unowned self] in handleTrashedItem($0) }
             let logInDetailView = LogInDetailView(viewModel: viewModel)
             pushView(logInDetailView)
 
@@ -161,6 +162,7 @@ final class MyVaultsCoordinator: Coordinator {
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRevisionRepository: itemRevisionRepository)
             viewModel.delegate = self
+            viewModel.onTrashedItem = { [unowned self] in handleTrashedItem($0) }
             let noteDetailView = NoteDetailView(viewModel: viewModel)
             pushView(noteDetailView)
 
@@ -321,21 +323,17 @@ extension MyVaultsCoordinator: BaseCreateItemViewModelDelegate {
     }
 }
 
-// MARK: - BaseItemDetailViewModelDelegate
-extension MyVaultsCoordinator: BaseItemDetailViewModelDelegate {
-    func baseItemDetailViewModelBeginsLoading() {
+// MARK: - BaseViewModelDelegate
+extension MyVaultsCoordinator: BaseViewModelDelegate {
+    func viewModelBeginsLoading() {
         delegate?.myVautsCoordinatorWantsToShowLoadingHud()
     }
 
-    func baseItemDetailViewModelStopsLoading() {
+    func viewModelStopsLoading() {
         delegate?.myVautsCoordinatorWantsToHideLoadingHud()
     }
 
-    func baseItemDetailViewModelDidFinishTrashing(_ itemContentType: ItemContentType) {
-        handleTrashedItem(itemContentType)
-    }
-
-    func baseItemDetailViewModelDidFailWithError(error: Error) {
+    func viewModelDidFailWithError(_ error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 }
