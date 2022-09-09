@@ -93,6 +93,11 @@ final class MyVaultsCoordinator: Coordinator {
         CreateVaultViewModel(userData: userData,
                              shareRepository: shareRepository)
         createVaultViewModel.delegate = self
+        createVaultViewModel.onCreatedShare = { [unowned self] _ in
+            // Set vaults to empty to trigger refresh
+            self.vaultSelection.update(vaults: [])
+            self.dismissTopMostViewController()
+        }
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         let createVaultViewController = UIHostingController(rootView: createVaultView)
         if #available(iOS 15.0, *) {
@@ -247,27 +252,6 @@ extension MyVaultsCoordinator: CreateItemViewModelDelegate {
                 showGeneratePasswordView(delegate: nil)
             }
         }
-    }
-}
-
-// MARK: - CreateVaultViewModelDelegate
-extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
-    func createVaultViewModelBeginsLoading() {
-        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
-    }
-
-    func createVaultViewModelStopsLoading() {
-        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
-    }
-
-    func createVaultViewModelDidCreateShare(share: Share) {
-        // Set vaults to empty to trigger refresh
-        vaultSelection.update(vaults: [])
-        dismissTopMostViewController()
-    }
-
-    func createVaultViewModelDidFailWithError(error: Error) {
-        delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 }
 
