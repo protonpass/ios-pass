@@ -1,6 +1,6 @@
 //
-// TrashCoordinator.swift
-// Proton Pass - Created on 07/07/2022.
+// TrashViewModel.swift
+// Proton Pass - Created on 09/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,30 +20,28 @@
 
 import Core
 import SwiftUI
-import UIKit
 
-protocol TrashCoordinatorDelegate: AnyObject {
-    func trashCoordinatorWantsToShowSidebar()
+protocol TrashViewModelDelegate: AnyObject {
+    func trashViewModelWantsToToggleSidebar()
 }
 
-final class TrashCoordinator: Coordinator {
-    weak var delegate: TrashCoordinatorDelegate?
+final class TrashViewModel: DeinitPrintable, ObservableObject {
+    weak var delegate: TrashViewModelDelegate?
 
-    override init() {
-        super.init()
-        self.start()
-    }
-
-    private func start() {
-        let trashViewModel = TrashViewModel()
-        trashViewModel.delegate = self
-        start(with: TrashView(viewModel: trashViewModel))
-    }
+    init() {}
 }
 
-// MARK: - TrashViewModelDelegate
-extension TrashCoordinator: TrashViewModelDelegate {
-    func trashViewModelWantsToToggleSidebar() {
-        delegate?.trashCoordinatorWantsToShowSidebar()
+// MARK: - Actions
+extension TrashViewModel {
+    func toggleSidebar() {
+        delegate?.trashViewModelWantsToToggleSidebar()
+    }
+
+    func restoreAllItems() {
+        print(#function)
+    }
+
+    func emptyTrash() {
+        print(#function)
     }
 }

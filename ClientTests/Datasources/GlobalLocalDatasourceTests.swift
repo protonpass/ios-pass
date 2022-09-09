@@ -23,7 +23,7 @@ import XCTest
 
 // swiftlint:disable function_body_length
 final class GlobalLocalDatasourceTests: XCTestCase {
-    let expectationTimeOut: TimeInterval = 3
+    let expectationTimeOut: TimeInterval = 10
     var sut: GlobalLocalDatasource!
 
     override func setUp() {

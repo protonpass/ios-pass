@@ -23,7 +23,12 @@ import SwiftUI
 import UIComponents
 
 struct TrashView: View {
-    let coordinator: TrashCoordinator
+    @StateObject private var viewModel: TrashViewModel
+    @State private var isShowingEmptyTrashAlert = false
+
+    init(viewModel: TrashViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
         List {
@@ -32,39 +37,45 @@ struct TrashView: View {
             }
         }
         .toolbar { toolbarContent }
+        .alert(isPresented: $isShowingEmptyTrashAlert) { emptyTrashAlert }
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            ToggleSidebarButton(action: coordinator.showSidebar)
+            ToggleSidebarButton(action: viewModel.toggleSidebar)
         }
 
         ToolbarItem(placement: .principal) {
             Text("Trash")
+                .fontWeight(.bold)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
             Menu(content: {
-                Button(action: {
-                    print("Empty trash")
-                }, label: {
+                Button(action: viewModel.restoreAllItems) {
                     Label(title: {
-                        Text("Empty trash")
+                        Text("Restore all items")
                     }, icon: {
-                        Image(uiImage: IconProvider.trash)
+                        Image(uiImage: IconProvider.clockRotateLeft)
                     })
-                })
+                }
+
+                DestructiveButton(title: "Empty trash",
+                                  icon: IconProvider.trashCross) {
+                    isShowingEmptyTrashAlert.toggle()
+                }
             }, label: {
                 Image(uiImage: IconProvider.threeDotsHorizontal)
                     .foregroundColor(Color(.label))
             })
         }
     }
-}
 
-struct TrashView_Previews: PreviewProvider {
-    static var previews: some View {
-        TrashView(coordinator: .preview)
+    private var emptyTrashAlert: Alert {
+        Alert(title: Text("Empty trash?"),
+              message: Text("Items in trash will be deleted permanently. You can not undo this action"),
+              primaryButton: .destructive(Text("Empty trash"), action: viewModel.emptyTrash),
+              secondaryButton: .default(Text("Cancel")))
     }
 }
