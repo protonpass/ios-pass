@@ -23,25 +23,19 @@ import Combine
 import Core
 import ProtonCore_Login
 
-protocol BaseCreateItemViewModelDelegate: AnyObject {
-    func createItemViewModelBeginsLoading()
-    func createItemViewModelStopsLoading()
-    func createItemViewModelDidFailWithError(_ error: Error)
-    func createItemViewModelDidCreateItem(_ itemContentType: ItemContentType)
-}
-
-class BaseCreateItemViewModel {
+class BaseCreateItemViewModel: BaseViewModel {
     @Published var isLoading = false
     @Published var error: Error?
 
     var cancellables = Set<AnyCancellable>()
-    weak var delegate: BaseCreateItemViewModelDelegate?
 
     let shareId: String
     let userData: UserData
     let shareRepository: ShareRepositoryProtocol
     let shareKeysRepository: ShareKeysRepositoryProtocol
     let itemRevisionRepository: ItemRevisionRepositoryProtocol
+
+    var onCreatedItem: ((ItemContentType) -> Void)?
 
     init(shareId: String,
          userData: UserData,
@@ -90,7 +84,7 @@ class BaseCreateItemViewModel {
                                                     addressKey: userData.getAddressKey(),
                                                     itemContent: itemContent)
                 try await itemRevisionRepository.createItem(request: request, shareId: shareId)
-                delegate?.createItemViewModelDidCreateItem(itemContentType())
+                onCreatedItem?(itemContentType())
             } catch {
                 isLoading = false
                 self.error = error

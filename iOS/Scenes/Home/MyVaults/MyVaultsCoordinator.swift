@@ -128,6 +128,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                         itemRevisionRepository: itemRevisionRepository)
         createLoginViewModel.delegate = self
         createLoginViewModel.createLoginDelegate = self
+        createLoginViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
         let createLoginView = CreateLoginView(viewModel: createLoginViewModel)
         presentViewFullScreen(createLoginView)
     }
@@ -147,6 +148,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                       shareKeysRepository: shareKeysRepository,
                                                       itemRevisionRepository: itemRevisionRepository)
         createNoteViewModel.delegate = self
+        createNoteViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
         let createNoteView = CreateNoteView(viewModel: createNoteViewModel)
         presentViewFullScreen(createNoteView)
     }
@@ -186,6 +188,22 @@ final class MyVaultsCoordinator: Coordinator {
 
         case .alias:
             break
+        }
+    }
+
+    private func handleCreatedItem(_ itemContentType: ItemContentType) {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            let message: String
+            switch itemContentType {
+            case .alias:
+                message = "Alias created"
+            case .login:
+                message = "Login created"
+            case .note:
+                message = "Note created"
+            }
+            myVaultsViewModel.successMessage = message
+            vaultContentViewModel.fetchItems()
         }
     }
 
@@ -269,36 +287,6 @@ extension MyVaultsCoordinator: CreateAliasViewModelDelegate {
 
     func createAliasViewModelDidFailWithError(error: Error) {
         delegate?.myVautsCoordinatorWantsToAlertError(error)
-    }
-}
-
-// MARK: - BaseCreateItemViewModelDelegate
-extension MyVaultsCoordinator: BaseCreateItemViewModelDelegate {
-    func createItemViewModelBeginsLoading() {
-        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
-    }
-
-    func createItemViewModelStopsLoading() {
-        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
-    }
-
-    func createItemViewModelDidFailWithError(_ error: Error) {
-        delegate?.myVautsCoordinatorWantsToAlertError(error)
-    }
-
-    func createItemViewModelDidCreateItem(_ itemContentType: ItemContentType) {
-        dismissTopMostViewController()
-        let message: String
-        switch itemContentType {
-        case .alias:
-            message = "Alias created"
-        case .login:
-            message = "Login created"
-        case .note:
-            message = "Note created"
-        }
-        myVaultsViewModel.successMessage = message
-        vaultContentViewModel.fetchItems()
     }
 }
 

@@ -64,9 +64,9 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
             .sink { [weak self] isLoading in
                 guard let self = self else { return }
                 if isLoading {
-                    self.delegate?.createItemViewModelBeginsLoading()
+                    self.delegate?.viewModelBeginsLoading()
                 } else {
-                    self.delegate?.createItemViewModelStopsLoading()
+                    self.delegate?.viewModelStopsLoading()
                 }
             }
             .store(in: &cancellables)
@@ -75,7 +75,7 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
             .sink { [weak self] error in
                 guard let self = self else { return }
                 if let error = error {
-                    self.delegate?.createItemViewModelDidFailWithError(error)
+                    self.delegate?.viewModelDidFailWithError(error)
                 }
             }
             .store(in: &cancellables)
