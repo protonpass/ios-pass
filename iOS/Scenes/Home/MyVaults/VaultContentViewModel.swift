@@ -34,6 +34,7 @@ protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToShowItemDetail(itemContent: ItemContent)
     func vaultContentViewModelBeginsLoading()
     func vaultContentViewModelStopsLoading()
+    func vaultContentViewModelDidFinishTrashing(_ itemContentType: ItemContentType)
     func vaultContentViewModelDidFailWithError(error: Error)
 }
 
@@ -187,6 +188,7 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                                                                shareId: partialItemContent.shareId)
                     isLoading = false
                     partialItemContents.removeAll(where: { $0.itemId == partialItemContent.itemId })
+                    delegate?.vaultContentViewModelDidFinishTrashing(partialItemContent.type)
                 }
             } catch {
                 self.isLoading = false

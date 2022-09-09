@@ -24,7 +24,7 @@ import Combine
 protocol BaseItemDetailViewModelDelegate: AnyObject {
     func baseItemDetailViewModelBeginsLoading()
     func baseItemDetailViewModelStopsLoading()
-    func baseItemDetailViewModelDidFinishTrashing()
+    func baseItemDetailViewModelDidFinishTrashing(_ itemContentType: ItemContentType)
     func baseItemDetailViewModelDidFailWithError(error: Error)
 }
 
@@ -68,7 +68,7 @@ class BaseItemDetailViewModel {
             .sink { [weak self] isTrashed in
                 guard let self = self else { return }
                 if isTrashed {
-                    self.delegate?.baseItemDetailViewModelDidFinishTrashing()
+                    self.delegate?.baseItemDetailViewModelDidFinishTrashing(itemContent.contentData.type)
                 }
             }
             .store(in: &cancellables)

@@ -26,7 +26,7 @@ public enum ItemContentType: CaseIterable {
     case login
     case note
 
-    var icon: UIImage {
+    public var icon: UIImage {
         switch self {
         case .alias:
             return IconProvider.alias
@@ -43,7 +43,7 @@ public enum ItemContentData {
     case login(username: String, password: String, urls: [String])
     case note
 
-    var type: ItemContentType {
+    public var type: ItemContentType {
         switch self {
         case .alias:
             return .alias

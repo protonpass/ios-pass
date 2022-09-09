@@ -191,6 +191,20 @@ final class MyVaultsCoordinator: Coordinator {
             break
         }
     }
+
+    private func handleTrashedItem(_ itemContentType: ItemContentType) {
+        let message: String
+        switch itemContentType {
+        case .alias:
+            message = "Alias deleted"
+        case .login:
+            message = "Login deleted"
+        case .note:
+            message = "Note deleted"
+        }
+        myVaultsViewModel.successMessage = message
+        vaultContentViewModel.fetchItems()
+    }
 }
 
 // MARK: - LoadVaultsViewModelDelegate
@@ -228,6 +242,10 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
 
     func vaultContentViewModelStopsLoading() {
         delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
+    func vaultContentViewModelDidFinishTrashing(_ itemContentType: ItemContentType) {
+        handleTrashedItem(itemContentType)
     }
 
     func vaultContentViewModelDidFailWithError(error: Error) {
@@ -336,8 +354,8 @@ extension MyVaultsCoordinator: BaseItemDetailViewModelDelegate {
         delegate?.myVautsCoordinatorWantsToHideLoadingHud()
     }
 
-    func baseItemDetailViewModelDidFinishTrashing() {
-        vaultContentViewModel.fetchItems()
+    func baseItemDetailViewModelDidFinishTrashing(_ itemContentType: ItemContentType) {
+        handleTrashedItem(itemContentType)
     }
 
     func baseItemDetailViewModelDidFailWithError(error: Error) {
