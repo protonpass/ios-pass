@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Combine
 
 protocol BaseViewModelDelegate: AnyObject {
     func viewModelBeginsLoading()
@@ -27,5 +27,30 @@ protocol BaseViewModelDelegate: AnyObject {
 }
 
 class BaseViewModel {
+    @Published var isLoading = false
+    @Published var error: Error?
     weak var delegate: BaseViewModelDelegate?
+    var cancellables = Set<AnyCancellable>()
+
+    init() {
+        $isLoading
+            .sink { [weak self] isLoading in
+                guard let self = self else { return }
+                if isLoading {
+                    self.delegate?.viewModelBeginsLoading()
+                } else {
+                    self.delegate?.viewModelStopsLoading()
+                }
+            }
+            .store(in: &cancellables)
+
+        $error
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                if let error = error {
+                    self.delegate?.viewModelDidFailWithError(error)
+                }
+            }
+            .store(in: &cancellables)
+    }
 }

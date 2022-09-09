@@ -19,17 +19,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 
 class BaseItemDetailViewModel: BaseViewModel {
-    @Published private var isLoading = false
-    @Published private var error: Error?
     @Published var isTrashed = false
 
     private let itemContent: ItemContent
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
-
-    private var cancellables = Set<AnyCancellable>()
 
     var onTrashedItem: ((ItemContentType) -> Void)?
 
@@ -38,26 +33,6 @@ class BaseItemDetailViewModel: BaseViewModel {
         self.itemContent = itemContent
         self.itemRevisionRepository = itemRevisionRepository
         super.init()
-
-        $isLoading
-            .sink { [weak self] isLoading in
-                guard let self = self else { return }
-                if isLoading {
-                    self.delegate?.viewModelBeginsLoading()
-                } else {
-                    self.delegate?.viewModelStopsLoading()
-                }
-            }
-            .store(in: &cancellables)
-
-        $error
-            .sink { [weak self] error in
-                guard let self = self else { return }
-                if let error = error {
-                    self.delegate?.viewModelDidFailWithError(error)
-                }
-            }
-            .store(in: &cancellables)
 
         $isTrashed
             .sink { [weak self] isTrashed in

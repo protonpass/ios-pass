@@ -19,16 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import Core
 import ProtonCore_Login
 
 class BaseCreateItemViewModel: BaseViewModel {
-    @Published var isLoading = false
-    @Published var error: Error?
-
-    var cancellables = Set<AnyCancellable>()
-
     let shareId: String
     let userData: UserData
     let shareRepository: ShareRepositoryProtocol

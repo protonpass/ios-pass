@@ -27,15 +27,11 @@ import SwiftUI
 final class CreateVaultViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    @Published private(set) var isLoading = false
-    @Published private(set) var error: Error?
     @Published var name = ""
     @Published var note = ""
 
     private let userData: UserData
     private let shareRepository: ShareRepositoryProtocol
-
-    private var cancellables = Set<AnyCancellable>()
 
     var onCreatedShare: ((Share) -> Void)?
 
@@ -44,26 +40,6 @@ final class CreateVaultViewModel: BaseViewModel, DeinitPrintable, ObservableObje
         self.userData = userData
         self.shareRepository = shareRepository
         super.init()
-
-        $isLoading
-            .sink { [weak self] isLoading in
-                guard let self = self else { return }
-                if isLoading {
-                    self.delegate?.viewModelBeginsLoading()
-                } else {
-                    self.delegate?.viewModelStopsLoading()
-                }
-            }
-            .store(in: &cancellables)
-
-        $error
-            .sink { [weak self] error in
-                guard let self = self else { return }
-                if let error = error {
-                    self.delegate?.viewModelDidFailWithError(error)
-                }
-            }
-            .store(in: &cancellables)
     }
 
     func createVault() {
