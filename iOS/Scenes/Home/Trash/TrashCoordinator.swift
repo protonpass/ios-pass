@@ -24,6 +24,9 @@ import ProtonCore_Login
 
 protocol TrashCoordinatorDelegate: AnyObject {
     func trashCoordinatorWantsToShowSidebar()
+    func trashCoordinatorWantsToShowLoadingHud()
+    func trashCoordinatorWantsToHideLoadingHud()
+    func trashCoordinatorWantsToAlertError(_ error: Error)
 }
 
 final class TrashCoordinator: Coordinator {
@@ -58,6 +61,18 @@ final class TrashCoordinator: Coordinator {
 
 // MARK: - TrashViewModelDelegate
 extension TrashCoordinator: TrashViewModelDelegate {
+    func trashViewModelBeginsLoading() {
+        delegate?.trashCoordinatorWantsToShowLoadingHud()
+    }
+
+    func trashViewModelStopsLoading() {
+        delegate?.trashCoordinatorWantsToHideLoadingHud()
+    }
+
+    func trashViewModelDidFailWithError(error: Error) {
+        delegate?.trashCoordinatorWantsToAlertError(error)
+    }
+
     func trashViewModelWantsToToggleSidebar() {
         delegate?.trashCoordinatorWantsToShowSidebar()
     }

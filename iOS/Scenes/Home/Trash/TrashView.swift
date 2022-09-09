@@ -31,10 +31,8 @@ struct TrashView: View {
     }
 
     var body: some View {
-        List {
-            ForEach(0..<30, id: \.self) { index in
-                Text("Item #\(index)")
-            }
+        Group {
+            EmptyTrashView()
         }
         .toolbar { toolbarContent }
         .alert(isPresented: $isShowingEmptyTrashAlert) { emptyTrashAlert }
@@ -69,6 +67,8 @@ struct TrashView: View {
                 Image(uiImage: IconProvider.threeDotsHorizontal)
                     .foregroundColor(Color(.label))
             })
+            .opacity(viewModel.trashedItem.isEmpty ? 0 : 1)
+            .disabled(viewModel.trashedItem.isEmpty)
         }
     }
 

@@ -210,6 +210,14 @@ extension HomeCoordinator {
     private func signOut() {
         delegate?.homeCoordinatorDidSignOut()
     }
+
+    private func showLoadingHud() {
+        MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
+    }
+
+    private func hideLoadingHud() {
+        MBProgressHUD.hide(for: topMostViewController.view, animated: true)
+    }
 }
 
 // MARK: - SideBarViewModelDelegate
@@ -230,11 +238,11 @@ extension HomeCoordinator: MyVaultsCoordinatorDelegate {
     }
 
     func myVautsCoordinatorWantsToShowLoadingHud() {
-        MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
+        showLoadingHud()
     }
 
     func myVautsCoordinatorWantsToHideLoadingHud() {
-        MBProgressHUD.hide(for: topMostViewController.view, animated: true)
+        hideLoadingHud()
     }
 
     func myVautsCoordinatorWantsToAlertError(_ error: Error) {
@@ -244,6 +252,18 @@ extension HomeCoordinator: MyVaultsCoordinatorDelegate {
 
 // MARK: - TrashCoordinatorDelegate
 extension HomeCoordinator: TrashCoordinatorDelegate {
+    func trashCoordinatorWantsToShowLoadingHud() {
+        showLoadingHud()
+    }
+
+    func trashCoordinatorWantsToHideLoadingHud() {
+        hideLoadingHud()
+    }
+
+    func trashCoordinatorWantsToAlertError(_ error: Error) {
+        alert(error: error)
+    }
+
     func trashCoordinatorWantsToShowSidebar() {
         showSidebar()
     }
