@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -39,6 +40,11 @@ struct LogInDetailView: View {
             passwordSection
             noteSection
             Spacer()
+        }
+        .onReceive(Just(viewModel.isTrashed)) { isTrashed in
+            if isTrashed {
+                presentationMode.wrappedValue.dismiss()
+            }
         }
         .padding()
         .padding(.top)

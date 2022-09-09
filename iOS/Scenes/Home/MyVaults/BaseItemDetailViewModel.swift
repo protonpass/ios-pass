@@ -24,12 +24,14 @@ import Combine
 protocol BaseItemDetailViewModelDelegate: AnyObject {
     func baseItemDetailViewModelBeginsLoading()
     func baseItemDetailViewModelStopsLoading()
+    func baseItemDetailViewModelDidFinishTrashing()
     func baseItemDetailViewModelDidFailWithError(error: Error)
 }
 
 class BaseItemDetailViewModel {
-    @Published private(set) var isLoading = false
-    @Published private(set) var error: Error?
+    @Published private var isLoading = false
+    @Published private var error: Error?
+    @Published var isTrashed = false
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: BaseItemDetailViewModelDelegate?
@@ -61,9 +63,33 @@ class BaseItemDetailViewModel {
                 }
             }
             .store(in: &cancellables)
+
+        $isTrashed
+            .sink { [weak self] isTrashed in
+                guard let self = self else { return }
+                if isTrashed {
+                    self.delegate?.baseItemDetailViewModelDidFinishTrashing()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func trashAction() {
-        print(#function)
+        Task { @MainActor in
+            do {
+                if let itemRevision =
+                    try await itemRevisionRepository.getItemRevision(shareId: itemContent.shareId,
+                                                                     itemId: itemContent.itemId) {
+                    isLoading = true
+                    let request = TrashItemsRequest(items: [itemRevision.itemToBeTrashed()])
+                    try await itemRevisionRepository.trashItem(request: request,
+                                                               shareId: itemContent.shareId)
+                    isLoading = false
+                    isTrashed = true
+                }
+            } catch {
+                self.error = error
+            }
+        }
     }
 }

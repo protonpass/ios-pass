@@ -176,12 +176,14 @@ final class MyVaultsCoordinator: Coordinator {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
                                                  itemRevisionRepository: itemRevisionRepository)
+            viewModel.delegate = self
             let logInDetailView = LogInDetailView(viewModel: viewModel)
             pushView(logInDetailView)
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRevisionRepository: itemRevisionRepository)
+            viewModel.delegate = self
             let noteDetailView = NoteDetailView(viewModel: viewModel)
             pushView(noteDetailView)
 
@@ -321,5 +323,24 @@ extension MyVaultsCoordinator: BaseCreateItemViewModelDelegate {
         }
         myVaultsViewModel.successMessage = message
         vaultContentViewModel.fetchItems()
+    }
+}
+
+// MARK: - BaseItemDetailViewModelDelegate
+extension MyVaultsCoordinator: BaseItemDetailViewModelDelegate {
+    func baseItemDetailViewModelBeginsLoading() {
+        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    }
+
+    func baseItemDetailViewModelStopsLoading() {
+        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
+    }
+
+    func baseItemDetailViewModelDidFinishTrashing() {
+        vaultContentViewModel.fetchItems()
+    }
+
+    func baseItemDetailViewModelDidFailWithError(error: Error) {
+        delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 }
