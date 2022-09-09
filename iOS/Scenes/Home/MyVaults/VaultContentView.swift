@@ -44,7 +44,7 @@ struct VaultContentView: View {
             } else if viewModel.isFetchingItems {
                 ProgressView()
             } else if viewModel.partialItemContents.isEmpty {
-                EmptyVaultView(action: viewModel.createItemAction)
+                EmptyVaultView(action: viewModel.createItem)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -99,7 +99,7 @@ struct VaultContentView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            ToggleSidebarButton(action: viewModel.toggleSidebarAction)
+            ToggleSidebarButton(action: viewModel.toggleSidebar)
         }
 
 //        ToolbarItem(placement: .principal) {
@@ -159,11 +159,11 @@ struct VaultContentView: View {
 
         ToolbarItem(placement: .navigationBarTrailing) {
             HStack {
-                Button(action: viewModel.searchAction) {
+                Button(action: viewModel.search) {
                     Image(uiImage: IconProvider.magnifier)
                 }
 
-                Button(action: viewModel.createItemAction) {
+                Button(action: viewModel.createItem) {
                     Image(uiImage: IconProvider.plus)
                 }
             }

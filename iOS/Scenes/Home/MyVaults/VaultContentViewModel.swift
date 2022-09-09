@@ -19,33 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import Core
 import ProtonCore_Login
-import ProtonCore_UIFoundations
-import UIComponents
-import UIKit
 
-protocol VaultContentViewModelDelegate: AnyObject {
-    func vaultContentViewModelWantsToToggleSidebar()
-    func vaultContentViewModelWantsToSearch()
-    func vaultContentViewModelWantsToCreateNewItem()
-    func vaultContentViewModelWantsToCreateNewVault()
-    func vaultContentViewModelWantsToShowItemDetail(itemContent: ItemContent)
-    func vaultContentViewModelBeginsLoading()
-    func vaultContentViewModelStopsLoading()
-    func vaultContentViewModelDidFinishTrashing(_ itemContentType: ItemContentType)
-    func vaultContentViewModelDidFailWithError(error: Error)
-}
-
-final class VaultContentViewModel: DeinitPrintable, ObservableObject {
+final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
-
-    @Published private var isLoading = false
-    @Published private var error: Error?
 
     @Published private(set) var isFetchingItems = false
     @Published private(set) var partialItemContents = [PartialItemContent]()
@@ -56,8 +37,13 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
     private let publicKeyRepository: PublicKeyRepositoryProtocol
-    private var cancellables = Set<AnyCancellable>()
-    weak var delegate: VaultContentViewModelDelegate?
+
+    var onToggleSidebar: (() -> Void)?
+    var onSearch: (() -> Void)?
+    var onCreateItem: (() -> Void)?
+    var onCreateVault: (() -> Void)?
+    var onShowItemDetail: ((ItemContent) -> Void)?
+    var onTrashedItem: ((ItemContentType) -> Void)?
 
     init(userData: UserData,
          vaultSelection: VaultSelection,
@@ -71,30 +57,11 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
         self.itemRevisionRepository = itemRevisionRepository
         self.shareKeysRepository = shareKeysRepository
         self.publicKeyRepository = publicKeyRepository
+        super.init()
 
         vaultSelection.objectWillChange
             .sink { [unowned self] _ in
                 self.objectWillChange.send()
-            }
-            .store(in: &cancellables)
-
-        $isLoading
-            .sink { [weak self] isLoading in
-                guard let self = self else { return }
-                if isLoading {
-                    self.delegate?.vaultContentViewModelBeginsLoading()
-                } else {
-                    self.delegate?.vaultContentViewModelStopsLoading()
-                }
-            }
-            .store(in: &cancellables)
-
-        $error
-            .sink { [weak self] error in
-                guard let self = self else { return }
-                if let error = error {
-                    self.delegate?.vaultContentViewModelDidFailWithError(error: error)
-                }
             }
             .store(in: &cancellables)
     }
@@ -158,7 +125,7 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                                                                   vaultKeys: shareKeys.vaultKeys,
                                                                   itemKeys: shareKeys.itemKeys,
                                                                   verifyKeys: verifyKeys)
-                    delegate?.vaultContentViewModelWantsToShowItemDetail(itemContent: itemContent)
+                    onShowItemDetail?(itemContent)
                 }
             } catch {
                 self.error = error
@@ -188,7 +155,7 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                                                                shareId: partialItemContent.shareId)
                     isLoading = false
                     partialItemContents.removeAll(where: { $0.itemId == partialItemContent.itemId })
-                    delegate?.vaultContentViewModelDidFinishTrashing(partialItemContent.type)
+                    onTrashedItem?(partialItemContent.type)
                 }
             } catch {
                 self.isLoading = false
@@ -200,19 +167,11 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
 
 // MARK: - Actions
 extension VaultContentViewModel {
-    func toggleSidebarAction() {
-        delegate?.vaultContentViewModelWantsToToggleSidebar()
-    }
+    func toggleSidebar() { onToggleSidebar?() }
 
-    func searchAction() {
-        delegate?.vaultContentViewModelWantsToSearch()
-    }
+    func search() { onSearch?() }
 
-    func createItemAction() {
-        delegate?.vaultContentViewModelWantsToCreateNewItem()
-    }
+    func createItem() { onCreateItem?() }
 
-    func createVaultAction() {
-        delegate?.vaultContentViewModelWantsToCreateNewVault()
-    }
+    func createVault() { onCreateVault?() }
 }

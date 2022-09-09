@@ -60,13 +60,25 @@ final class MyVaultsCoordinator: Coordinator {
                                            publicKeyRepository: publicKeyRepository)
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
         super.init()
+        observeVaultContentViewModel()
+        start()
+    }
 
+    private func observeVaultContentViewModel() {
+        vaultContentViewModel.delegate = self
+        vaultContentViewModel.onToggleSidebar = { [unowned self] in showSidebar() }
+        vaultContentViewModel.onSearch = { [unowned self] in showSearchView() }
+        vaultContentViewModel.onCreateItem = { [unowned self] in showCreateItemView() }
+        vaultContentViewModel.onCreateVault = { [unowned self] in showCreateVaultView() }
+        vaultContentViewModel.onShowItemDetail = { [unowned self] in showItemDetailView($0) }
+        vaultContentViewModel.onTrashedItem = { [unowned self] in handleTrashedItem($0) }
+    }
+
+    private func start() {
         let loadVaultsViewModel = LoadVaultsViewModel(userData: userData,
                                                       vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
                                                       shareKeysRepository: shareKeysRepository)
-
-        self.vaultContentViewModel.delegate = self
         loadVaultsViewModel.onToggleSidebar = { [unowned self] in showSidebar() }
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
                                       loadVaultsViewModel: loadVaultsViewModel,
@@ -168,7 +180,7 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewFullScreen(SearchView())
     }
 
-    func showItemDetailView(itemContent: ItemContent) {
+    func showItemDetailView(_ itemContent: ItemContent) {
         switch itemContent.contentData {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
@@ -219,45 +231,6 @@ final class MyVaultsCoordinator: Coordinator {
         }
         myVaultsViewModel.successMessage = message
         vaultContentViewModel.fetchItems()
-    }
-}
-
-// MARK: - VaultContentViewModelDelegate
-extension MyVaultsCoordinator: VaultContentViewModelDelegate {
-    func vaultContentViewModelWantsToToggleSidebar() {
-        showSidebar()
-    }
-
-    func vaultContentViewModelWantsToSearch() {
-        showSearchView()
-    }
-
-    func vaultContentViewModelWantsToCreateNewItem() {
-        showCreateItemView()
-    }
-
-    func vaultContentViewModelWantsToCreateNewVault() {
-        showCreateVaultView()
-    }
-
-    func vaultContentViewModelWantsToShowItemDetail(itemContent: ItemContent) {
-        showItemDetailView(itemContent: itemContent)
-    }
-
-    func vaultContentViewModelBeginsLoading() {
-        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
-    }
-
-    func vaultContentViewModelStopsLoading() {
-        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
-    }
-
-    func vaultContentViewModelDidFinishTrashing(_ itemContentType: ItemContentType) {
-        handleTrashedItem(itemContentType)
-    }
-
-    func vaultContentViewModelDidFailWithError(error: Error) {
-        delegate?.myVautsCoordinatorWantsToAlertError(error)
     }
 }
 
