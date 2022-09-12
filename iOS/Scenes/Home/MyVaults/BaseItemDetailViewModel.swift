@@ -26,6 +26,7 @@ class BaseItemDetailViewModel: BaseViewModel {
     private let itemContent: ItemContent
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
 
+    var onEditItem: ((ItemContent) -> Void)?
     var onTrashedItem: ((ItemContentType) -> Void)?
 
     init(itemContent: ItemContent,
@@ -44,7 +45,11 @@ class BaseItemDetailViewModel: BaseViewModel {
             .store(in: &cancellables)
     }
 
-    func trashAction() {
+    func edit() {
+        onEditItem?(itemContent)
+    }
+
+    func trash() {
         Task { @MainActor in
             do {
                 if let itemRevision =

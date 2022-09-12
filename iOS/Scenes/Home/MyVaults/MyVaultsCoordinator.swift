@@ -173,6 +173,7 @@ final class MyVaultsCoordinator: Coordinator {
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
                                                  itemRevisionRepository: itemRevisionRepository)
             viewModel.delegate = self
+            viewModel.onEditItem = { [unowned self] in showEditItemView($0) }
             viewModel.onTrashedItem = { [unowned self] in handleTrashedItem($0) }
             let logInDetailView = LogInDetailView(viewModel: viewModel)
             pushView(logInDetailView)
@@ -181,6 +182,7 @@ final class MyVaultsCoordinator: Coordinator {
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRevisionRepository: itemRevisionRepository)
             viewModel.delegate = self
+            viewModel.onEditItem = { [unowned self] in showEditItemView($0) }
             viewModel.onTrashedItem = { [unowned self] in handleTrashedItem($0) }
             let noteDetailView = NoteDetailView(viewModel: viewModel)
             pushView(noteDetailView)
@@ -204,6 +206,22 @@ final class MyVaultsCoordinator: Coordinator {
             myVaultsViewModel.successMessage = message
             vaultContentViewModel.fetchItems()
         }
+    }
+
+    private func showEditItemView(_ item: ItemContent) {
+        let viewController: UIViewController
+        switch item.contentData.type {
+        case .login:
+            viewController = UIHostingController(rootView: Text("Edit login"))
+        case .note:
+            viewController = UIHostingController(rootView: Text("Edit note"))
+        case .alias:
+            viewController = UIHostingController(rootView: Text("Edit alias"))
+        }
+
+        viewController.modalPresentationStyle = .fullScreen
+        viewController.modalTransitionStyle = .crossDissolve
+        presentViewController(viewController, animated: true)
     }
 
     private func handleTrashedItem(_ itemContentType: ItemContentType) {

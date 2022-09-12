@@ -48,7 +48,7 @@ struct NoteDetailView: View {
         }
         .padding()
         .padding(.top)
-        .moveToTrashAlert(isPresented: $isShowingTrashingAlert, onTrash: viewModel.trashAction)
+        .moveToTrashAlert(isPresented: $isShowingTrashingAlert, onTrash: viewModel.trash)
         .toolbar { toolbarContent }
     }
 
@@ -75,15 +75,13 @@ struct NoteDetailView: View {
 
     private var trailingMenu: some View {
         Menu(content: {
-            Button(action: {
-                print("Edit")
-            }, label: {
+            Button(action: viewModel.edit) {
                 Label(title: {
                     Text("Edit note")
                 }, icon: {
                     Image(uiImage: IconProvider.eraser)
                 })
-            })
+            }
 
             Divider()
 
