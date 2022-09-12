@@ -1,5 +1,5 @@
 //
-// CreateNoteView.swift
+// CreateEditNoteView.swift
 // Proton Pass - Created on 07/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -22,14 +22,14 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct CreateNoteView: View {
+struct CreateEditNoteView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @StateObject private var viewModel: CreateNoteViewModel
+    @StateObject private var viewModel: CreateEditNoteViewModel
     @State private var isShowingDiscardAlert = false
     @State private var isFocusedOnName = false
     @State private var isFocusedOnNote = false
 
-    init(viewModel: CreateNoteViewModel) {
+    init(viewModel: CreateEditNoteViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 

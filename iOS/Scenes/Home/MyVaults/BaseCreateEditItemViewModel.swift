@@ -1,5 +1,5 @@
 //
-// BaseCreateItemViewModel.swift
+// BaseCreateEditItemViewModel.swift
 // Proton Pass - Created on 19/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -22,7 +22,7 @@ import Client
 import Core
 import ProtonCore_Login
 
-class BaseCreateItemViewModel: BaseViewModel {
+class BaseCreateEditItemViewModel: BaseViewModel {
     let shareId: String
     let userData: UserData
     let shareRepository: ShareRepositoryProtocol

@@ -1,5 +1,5 @@
 //
-// CreateNoteViewModel.swift
+// CreateEditNoteViewModel.swift
 // Proton Pass - Created on 25/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -23,7 +23,7 @@ import Core
 import ProtonCore_Login
 import SwiftUI
 
-final class CreateNoteViewModel: BaseCreateItemViewModel, DeinitPrintable, ObservableObject {
+final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     @Published var name = ""

@@ -1,5 +1,5 @@
 //
-// CreateLoginViewModel.swift
+// CreateEditLoginViewModel.swift
 // Proton Pass - Created on 05/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -22,7 +22,7 @@ import Client
 import Core
 import SwiftUI
 
-final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, ObservableObject {
+final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     @Published private(set) var createdLogin = false
@@ -69,7 +69,7 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
 }
 
 // MARK: - GeneratePasswordViewModelDelegate
-extension CreateLoginViewModel: GeneratePasswordViewModelDelegate {
+extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         self.password = password
     }

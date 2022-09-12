@@ -1,5 +1,5 @@
 //
-// CreateLoginView.swift
+// CreateEditLoginView.swift
 // Proton Pass - Created on 07/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -23,9 +23,9 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct CreateLoginView: View {
+struct CreateEditLoginView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @StateObject private var viewModel: CreateLoginViewModel
+    @StateObject private var viewModel: CreateEditLoginViewModel
     @State private var isShowingDiscardAlert = false
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnUsername = false
@@ -33,7 +33,7 @@ struct CreateLoginView: View {
     @State private var isFocusedOnURLs = false
     @State private var isFocusedOnNote = false
 
-    init(viewModel: CreateLoginViewModel) {
+    init(viewModel: CreateEditLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 

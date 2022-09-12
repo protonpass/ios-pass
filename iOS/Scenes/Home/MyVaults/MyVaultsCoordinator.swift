@@ -122,15 +122,15 @@ final class MyVaultsCoordinator: Coordinator {
 
     func showCreateLoginView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        let createLoginViewModel = CreateLoginViewModel(shareId: shareId,
-                                                        userData: userData,
-                                                        shareRepository: shareRepository,
-                                                        shareKeysRepository: shareKeysRepository,
-                                                        itemRevisionRepository: itemRevisionRepository)
+        let createLoginViewModel = CreateEditLoginViewModel(shareId: shareId,
+                                                            userData: userData,
+                                                            shareRepository: shareRepository,
+                                                            shareKeysRepository: shareKeysRepository,
+                                                            itemRevisionRepository: itemRevisionRepository)
         createLoginViewModel.delegate = self
         createLoginViewModel.onGeneratePassword = { [unowned self] in showGeneratePasswordView(delegate: $0) }
         createLoginViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
-        let createLoginView = CreateLoginView(viewModel: createLoginViewModel)
+        let createLoginView = CreateEditLoginView(viewModel: createLoginViewModel)
         presentViewFullScreen(createLoginView)
     }
 
@@ -143,14 +143,14 @@ final class MyVaultsCoordinator: Coordinator {
 
     func showCreateNoteView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        let createNoteViewModel = CreateNoteViewModel(shareId: shareId,
-                                                      userData: userData,
-                                                      shareRepository: shareRepository,
-                                                      shareKeysRepository: shareKeysRepository,
-                                                      itemRevisionRepository: itemRevisionRepository)
+        let createNoteViewModel = CreateEditNoteViewModel(shareId: shareId,
+                                                          userData: userData,
+                                                          shareRepository: shareRepository,
+                                                          shareKeysRepository: shareKeysRepository,
+                                                          itemRevisionRepository: itemRevisionRepository)
         createNoteViewModel.delegate = self
         createNoteViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
-        let createNoteView = CreateNoteView(viewModel: createNoteViewModel)
+        let createNoteView = CreateEditNoteView(viewModel: createNoteViewModel)
         presentViewFullScreen(createNoteView)
     }
 
