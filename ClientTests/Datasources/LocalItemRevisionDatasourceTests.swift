@@ -173,7 +173,7 @@ extension LocalItemRevisionDatasourceTests {
         waitForExpectations(timeout: expectationTimeOut)
     }
 
-    func testTrashItemRevision() throws {
+    func testTrashItemRevisions() throws {
         continueAfterFailure = false
         let expectation = expectation(description: #function)
         Task {
@@ -186,14 +186,43 @@ extension LocalItemRevisionDatasourceTests {
                                                     state: .active)
 
             // When
-            try await sut.trashItem(shareId: givenShareId,
-                                    itemsToBeTrashed: [insertedItemRevision.itemToBeTrashed()])
+            try await sut.trashItems(shareId: givenShareId,
+                                     itemsToBeTrashed: [insertedItemRevision.itemToBeTrashed()])
 
             // Then
             let itemRevision = try await sut.getItemRevision(shareId: givenShareId,
                                                              itemId: givenItemId)
             let notNilItemRevision = try XCTUnwrap(itemRevision)
             XCTAssertEqual(notNilItemRevision.revisionState, .trashed)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
+
+    func testDeleteItemRevisions() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let shareId = String.random()
+            let firstItem = try await sut.givenInsertedItemRevision(shareId: shareId)
+            let secondItem = try await sut.givenInsertedItemRevision(shareId: shareId)
+            let thirdItem = try await sut.givenInsertedItemRevision(shareId: shareId)
+
+            let firstCount = try await sut.getItemRevisionCount(shareId: shareId)
+            XCTAssertEqual(firstCount, 3)
+
+            // Delete third item
+            try await sut.deleteItems(shareId: shareId, itemsToBeDeleted: [thirdItem.itemToBeTrashed()])
+            let secondCount = try await sut.getItemRevisionCount(shareId: shareId)
+            XCTAssertEqual(secondCount, 2)
+
+            // Delete both first and second item
+            try await sut.deleteItems(shareId: shareId, itemsToBeDeleted: [firstItem.itemToBeTrashed(),
+                                                                           secondItem.itemToBeTrashed()])
+            let thirdCount = try await sut.getItemRevisionCount(shareId: shareId)
+            XCTAssertEqual(thirdCount, 0)
 
             expectation.fulfill()
         }
@@ -250,8 +279,8 @@ extension LocalItemRevisionDatasourceTests {
 }
 
 extension LocalItemRevisionDatasource {
-    func givenInsertedItemRevision(itemId: String?,
-                                   shareId: String?,
+    func givenInsertedItemRevision(itemId: String? = nil,
+                                   shareId: String? = nil,
                                    state: ItemRevisionState? = nil) async throws -> ItemRevision {
         let itemRevision = ItemRevision.random(itemId: itemId ?? .random(), state: state)
         try await upsertItemRevisions([itemRevision], shareId: shareId ?? .random())

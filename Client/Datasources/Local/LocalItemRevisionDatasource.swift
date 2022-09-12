@@ -36,8 +36,11 @@ public protocol LocalItemRevisionDatasourceProtocol {
     /// Nuke item revisions of a share
     func removeAllItemRevisions(shareId: String) async throws
 
-    /// Trash  an item revision
-    func trashItem(shareId: String, itemsToBeTrashed: [ItemToBeTrashed]) async throws
+    /// Send  item revisions to trash
+    func trashItems(shareId: String, itemsToBeTrashed: [ItemToBeTrashed]) async throws
+
+    /// Permanently delete item revisions
+    func deleteItems(shareId: String, itemsToBeDeleted: [ItemToBeDeleted]) async throws
 }
 
 public final class LocalItemRevisionDatasource: BaseLocalDatasource {}
@@ -102,7 +105,7 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
                           context: taskContext)
     }
 
-    public func trashItem(shareId: String, itemsToBeTrashed: [ItemToBeTrashed]) async throws {
+    public func trashItems(shareId: String, itemsToBeTrashed: [ItemToBeTrashed]) async throws {
         for itemToBeTrashed in itemsToBeTrashed {
             guard let item = try await getItemRevision(shareId: shareId,
                                                        itemId: itemToBeTrashed.itemID) else { return }
@@ -119,6 +122,20 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
                                            createTime: item.createTime,
                                            modifyTime: Int64(Date().timeIntervalSince1970))
             try await upsertItemRevisions([trashedItem], shareId: shareId)
+        }
+    }
+
+    public func deleteItems(shareId: String, itemsToBeDeleted: [ItemToBeDeleted]) async throws {
+        let taskContext = newTaskContext(type: .delete)
+
+        for itemToBeDeleted in itemsToBeDeleted {
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemRevisionEntity")
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                .init(format: "shareID = %@", shareId),
+                .init(format: "itemID = %@", itemToBeDeleted.itemID)
+            ])
+            try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                              context: taskContext)
         }
     }
 }
