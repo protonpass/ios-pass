@@ -32,7 +32,7 @@ struct CreateItemView: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
+            VStack {
                 GenericItemView(item: CreateNewItemOption.login.toGenericItem(),
                                 action: { viewModel.select(option: .login) },
                                 trailingView: { EmptyView() })

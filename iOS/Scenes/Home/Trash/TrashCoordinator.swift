@@ -21,6 +21,7 @@
 import Client
 import Core
 import ProtonCore_Login
+import SwiftUI
 
 final class TrashCoordinator: Coordinator {
     private let userData: UserData
@@ -28,6 +29,7 @@ final class TrashCoordinator: Coordinator {
     private let shareKeysRepository: ShareKeysRepositoryProtocol
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
     private let publicKeyRepository: PublicKeyRepositoryProtocol
+    private let trashViewModel: TrashViewModel
 
     init(userData: UserData,
          shareRepository: ShareRepositoryProtocol,
@@ -39,18 +41,26 @@ final class TrashCoordinator: Coordinator {
         self.shareKeysRepository = shareKeysRepository
         self.itemRevisionRepository = itemRevisionRepository
         self.publicKeyRepository = publicKeyRepository
+        self.trashViewModel = TrashViewModel(userData: userData,
+                                             shareRepository: shareRepository,
+                                             shareKeysRepository: shareKeysRepository,
+                                             itemRevisionRepository: itemRevisionRepository,
+                                             publicKeyRepository: publicKeyRepository)
         super.init()
         self.start()
     }
 
     private func start() {
-        let trashViewModel = TrashViewModel(userData: userData,
-                                            shareRepository: shareRepository,
-                                            shareKeysRepository: shareKeysRepository,
-                                            itemRevisionRepository: itemRevisionRepository,
-                                            publicKeyRepository: publicKeyRepository)
         trashViewModel.delegate = self
         trashViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
+        trashViewModel.onShowOptions = { [unowned self] item in
+            let optionsView = TrashedItemOptionsView(item: item, delegate: self)
+            let optionsViewController = UIHostingController(rootView: optionsView)
+            if #available(iOS 15.0, *) {
+                optionsViewController.sheetPresentationController?.detents = [.medium()]
+            }
+            presentViewController(optionsViewController)
+        }
         start(with: TrashView(viewModel: trashViewModel))
     }
 }
@@ -62,4 +72,19 @@ extension TrashCoordinator: BaseViewModelDelegate {
     func viewModelStopsLoading() { hideLoadingHud() }
 
     func viewModelDidFailWithError(_ error: Error) { alertError(error) }
+}
+
+// MARK: - TrashedItemOptionsViewDelegate
+extension TrashCoordinator: TrashedItemOptionsViewDelegate {
+    func trashedItemWantsToBeRestored(_ item: PartialItemContent) {
+        trashViewModel.restore(item)
+    }
+
+    func trashedItemWantsToShowDetail(_ item: PartialItemContent) {
+        print(#function)
+    }
+
+    func trashedItemWantsToBeDeletedPermanently(_ item: PartialItemContent) {
+        trashViewModel.deletePermanently(item)
+    }
 }

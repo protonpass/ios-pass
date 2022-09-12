@@ -34,6 +34,7 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     private let publicKeyRepository: PublicKeyRepositoryProtocol
 
     var onToggleSidebar: (() -> Void)?
+    var onShowOptions: ((PartialItemContent) -> Void)?
 
     init(userData: UserData,
          shareRepository: ShareRepositoryProtocol,
@@ -106,6 +107,18 @@ extension TrashViewModel {
     }
 
     func emptyTrash() {
+        print(#function)
+    }
+
+    func showOptions(_ item: PartialItemContent) {
+        onShowOptions?(item)
+    }
+
+    func restore(_ item: PartialItemContent) {
+        print(#function)
+    }
+
+    func deletePermanently(_ item: PartialItemContent) {
         print(#function)
     }
 }

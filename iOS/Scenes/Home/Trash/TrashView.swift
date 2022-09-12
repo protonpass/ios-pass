@@ -94,20 +94,12 @@ struct TrashView: View {
                         showDivider: item.itemId != viewModel.trashedItem.last?.itemId,
                         action: {  },
                         trailingView: {
-                            VStack {
-                                Menu(content: {
-                                    DestructiveButton(
-                                        title: "Move to Trash",
-                                        icon: IconProvider.trash,
-                                        action: {})
-                                }, label: {
-                                    Image(uiImage: IconProvider.threeDotsHorizontal)
-                                        .foregroundColor(.secondary)
-                                })
-                                .padding(.top, 16)
-
-                                Spacer()
-                            }
+                            Button(action: {
+                                viewModel.showOptions(item)
+                            }, label: {
+                                Image(uiImage: IconProvider.threeDotsHorizontal)
+                                    .foregroundColor(.secondary)
+                            })
                         })
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }

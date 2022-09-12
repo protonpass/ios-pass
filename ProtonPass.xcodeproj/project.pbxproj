@@ -19,6 +19,7 @@
 		351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */; };
 		3530092A28A5281800611F8A /* Vault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D32885BFFD00A7168B /* Vault.swift */; };
 		3530092C28A5284900611F8A /* PartialItemContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530092B28A5284900611F8A /* PartialItemContent.swift */; };
+		3530FAD328CED91300CE8A8F /* TrashedItemOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530FAD228CED91300CE8A8F /* TrashedItemOptionsView.swift */; };
 		353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C02880C45C0021C716 /* GetSharesEndpoint.swift */; };
 		353547C32880CF470021C716 /* UserData+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C22880CF470021C716 /* UserData+Codable.swift */; };
 		35366AA228A446CB0085C24D /* ItemRevision+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366AA128A446CB0085C24D /* ItemRevision+Test.swift */; };
@@ -324,6 +325,7 @@
 		351E9E38289C508B00BB47EB /* ItemKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemKey+Test.swift"; sourceTree = "<group>"; };
 		351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+RandomWithCount.swift"; sourceTree = "<group>"; };
 		3530092B28A5284900611F8A /* PartialItemContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialItemContent.swift; sourceTree = "<group>"; };
+		3530FAD228CED91300CE8A8F /* TrashedItemOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashedItemOptionsView.swift; sourceTree = "<group>"; };
 		353547C02880C45C0021C716 /* GetSharesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharesEndpoint.swift; sourceTree = "<group>"; };
 		353547C22880CF470021C716 /* UserData+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Codable.swift"; sourceTree = "<group>"; };
 		35366AA128A446CB0085C24D /* ItemRevision+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemRevision+Test.swift"; sourceTree = "<group>"; };
@@ -691,10 +693,11 @@
 		3547ABD82876DEF300EE85E1 /* Trash */ = {
 			isa = PBXGroup;
 			children = (
+				354AD95F28CB5934000E645B /* EmptyTrashView.swift */,
 				3547ABE12877583B00EE85E1 /* TrashCoordinator.swift */,
 				3547ABD92876DF1300EE85E1 /* TrashView.swift */,
 				3514E85B28CB2BB1006BD54A /* TrashViewModel.swift */,
-				354AD95F28CB5934000E645B /* EmptyTrashView.swift */,
+				3530FAD228CED91300CE8A8F /* TrashedItemOptionsView.swift */,
 			);
 			path = Trash;
 			sourceTree = "<group>";
@@ -1776,6 +1779,7 @@
 				3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateNoteViewModel.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateItemViewModel.swift in Sources */,
+				3530FAD328CED91300CE8A8F /* TrashedItemOptionsView.swift in Sources */,
 				3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */,
 				355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */,
 				3514E85C28CB2BB1006BD54A /* TrashViewModel.swift in Sources */,
