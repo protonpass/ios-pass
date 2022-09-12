@@ -88,7 +88,7 @@ struct CreateEditLoginView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.createItem) {
+            Button(action: viewModel.save) {
                 Text("Save")
                     .fontWeight(.bold)
                     .foregroundColor(Color(ColorProvider.BrandNorm))

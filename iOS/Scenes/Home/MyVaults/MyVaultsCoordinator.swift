@@ -122,7 +122,8 @@ final class MyVaultsCoordinator: Coordinator {
 
     func showCreateLoginView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        let createLoginViewModel = CreateEditLoginViewModel(shareId: shareId,
+        let createLoginViewModel = CreateEditLoginViewModel(mode: .create,
+                                                            shareId: shareId,
                                                             userData: userData,
                                                             shareRepository: shareRepository,
                                                             shareKeysRepository: shareKeysRepository,
@@ -143,7 +144,8 @@ final class MyVaultsCoordinator: Coordinator {
 
     func showCreateNoteView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        let createNoteViewModel = CreateEditNoteViewModel(shareId: shareId,
+        let createNoteViewModel = CreateEditNoteViewModel(mode: .create,
+                                                          shareId: shareId,
                                                           userData: userData,
                                                           shareRepository: shareRepository,
                                                           shareKeysRepository: shareKeysRepository,

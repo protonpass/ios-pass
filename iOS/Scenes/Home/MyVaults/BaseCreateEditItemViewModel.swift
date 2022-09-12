@@ -23,6 +23,7 @@ import Core
 import ProtonCore_Login
 
 class BaseCreateEditItemViewModel: BaseViewModel {
+    let mode: Mode
     let shareId: String
     let userData: UserData
     let shareRepository: ShareRepositoryProtocol
@@ -30,12 +31,20 @@ class BaseCreateEditItemViewModel: BaseViewModel {
     let itemRevisionRepository: ItemRevisionRepositoryProtocol
 
     var onCreatedItem: ((ItemContentType) -> Void)?
+    var onEditedItem: (() -> Void)?
 
-    init(shareId: String,
+    enum Mode {
+        case create
+        case edit(ItemContent)
+    }
+
+    init(mode: Mode,
+         shareId: String,
          userData: UserData,
          shareRepository: ShareRepositoryProtocol,
          shareKeysRepository: ShareKeysRepositoryProtocol,
          itemRevisionRepository: ItemRevisionRepositoryProtocol) {
+        self.mode = mode
         self.shareId = shareId
         self.userData = userData
         self.shareRepository = shareRepository
@@ -53,7 +62,16 @@ class BaseCreateEditItemViewModel: BaseViewModel {
         fatalError("Must be overridden by subclasses")
     }
 
-    func createItem() {
+    func save() {
+        switch mode {
+        case .create:
+            create()
+        case .edit(let itemContent):
+            edit(itemContent)
+        }
+    }
+
+    private func create() {
         Task { @MainActor in
             do {
                 isLoading = true
@@ -84,5 +102,9 @@ class BaseCreateEditItemViewModel: BaseViewModel {
                 self.error = error
             }
         }
+    }
+
+    private func edit(_ itemContent: ItemContent) {
+        print(#function)
     }
 }
