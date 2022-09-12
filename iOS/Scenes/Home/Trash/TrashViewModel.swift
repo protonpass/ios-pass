@@ -35,6 +35,7 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
 
     var onToggleSidebar: (() -> Void)?
     var onShowOptions: ((PartialItemContent) -> Void)?
+    var onDeletedItem: (() -> Void)?
 
     init(userData: UserData,
          shareRepository: ShareRepositoryProtocol,
@@ -50,7 +51,7 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
         getAllTrashedItems(forceRefresh: false)
     }
 
-    private func getAllTrashedItems(forceRefresh: Bool) {
+    func getAllTrashedItems(forceRefresh: Bool) {
         Task { @MainActor in
             do {
                 isFetchingItems = true
@@ -119,6 +120,21 @@ extension TrashViewModel {
     }
 
     func deletePermanently(_ item: PartialItemContent) {
-        print(#function)
+        Task { @MainActor in
+            do {
+                guard let itemRevision =
+                        try await itemRevisionRepository.getItemRevision(shareId: item.shareId,
+                                                                         itemId: item.itemId) else { return }
+                isLoading = true
+                let request = DeleteItemsRequest(items: [itemRevision.itemToBeDeleted()])
+                try await itemRevisionRepository.deleteItems(request: request, shareId: item.shareId)
+                isLoading = false
+                trashedItem.removeAll(where: { $0.itemId == item.itemId })
+                onDeletedItem?()
+            } catch {
+                self.isLoading = false
+                self.error = error
+            }
+        }
     }
 }

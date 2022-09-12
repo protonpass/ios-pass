@@ -163,4 +163,8 @@ public extension ItemRevision {
     func itemToBeTrashed() -> ItemToBeTrashed {
         .init(itemID: itemID, revision: revision)
     }
+
+    func itemToBeDeleted() -> ItemToBeDeleted {
+        .init(itemID: itemID, revision: revision)
+    }
 }

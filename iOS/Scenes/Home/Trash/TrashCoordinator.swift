@@ -61,7 +61,14 @@ final class TrashCoordinator: Coordinator {
             }
             presentViewController(optionsViewController)
         }
+        trashViewModel.onDeletedItem = { [unowned self] in
+            dismissTopMostViewController()
+        }
         start(with: TrashView(viewModel: trashViewModel))
+    }
+
+    func refreshTrashedItems() {
+        trashViewModel.getAllTrashedItems(forceRefresh: false)
     }
 }
 

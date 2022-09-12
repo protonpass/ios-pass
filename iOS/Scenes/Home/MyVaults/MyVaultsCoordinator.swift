@@ -32,6 +32,8 @@ final class MyVaultsCoordinator: Coordinator {
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
 
+    var onTrashedItem: (() -> Void)?
+
     init(userData: UserData,
          vaultSelection: VaultSelection,
          shareRepository: ShareRepositoryProtocol,
@@ -236,6 +238,7 @@ final class MyVaultsCoordinator: Coordinator {
         }
         myVaultsViewModel.successMessage = message
         vaultContentViewModel.fetchItems()
+        onTrashedItem?()
     }
 }
 
