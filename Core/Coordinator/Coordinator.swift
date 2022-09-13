@@ -97,6 +97,10 @@ open class Coordinator {
         navigationController.presentedViewController?.dismiss(animated: animated,
                                                               completion: completion)
     }
+
+    public func popToRoot(animated: Bool = true) {
+        navigationController.popToRootViewController(animated: animated)
+    }
 }
 
 public extension Coordinator {

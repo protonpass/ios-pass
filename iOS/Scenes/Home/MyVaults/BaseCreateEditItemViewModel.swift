@@ -30,7 +30,7 @@ class BaseCreateEditItemViewModel: BaseViewModel {
     let itemRevisionRepository: ItemRevisionRepositoryProtocol
 
     var onCreatedItem: ((ItemContentType) -> Void)?
-    var onEditedItem: (() -> Void)?
+    var onUpdatedItem: ((ItemContentType) -> Void)?
 
     enum Mode {
         case create(shareId: String)
@@ -73,8 +73,8 @@ class BaseCreateEditItemViewModel: BaseViewModel {
         switch mode {
         case .create(let shareId):
             createItem(shareId: shareId)
-        case .edit(let itemContent):
-            edit(itemContent)
+        case .edit(let oldItemContent):
+            editItem(oldItemContent: oldItemContent)
         }
     }
 
@@ -105,13 +105,55 @@ class BaseCreateEditItemViewModel: BaseViewModel {
                 try await itemRevisionRepository.createItem(request: request, shareId: shareId)
                 onCreatedItem?(itemContentType())
             } catch {
-                isLoading = false
+                self.isLoading = false
                 self.error = error
             }
         }
     }
 
-    private func edit(_ itemContent: ItemContent) {
-        print(#function)
+    private func editItem(oldItemContent: ItemContent) {
+        Task { @MainActor in
+            do {
+                let shareId = oldItemContent.shareId
+                let itemId = oldItemContent.itemId
+                isLoading = true
+                guard let oldItemRevision =
+                        try await itemRevisionRepository.getItemRevision(
+                            shareId: oldItemContent.shareId,
+                            itemId: oldItemContent.itemId) else {
+                    isLoading = false
+                    return
+                }
+
+                let (latestVaultKey, latestItemKey) =
+                try await shareKeysRepository.getLatestVaultItemKey(shareId: shareId, forceRefresh: false)
+                let share = try await shareRepository.getShare(shareId: shareId)
+                let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
+                                                                                share: share,
+                                                                                vaultKey: latestVaultKey)
+                guard let itemKeyPassphrase =
+                        try PassKeyUtils.getItemKeyPassphrase(vaultKey: latestVaultKey,
+                                                              vaultKeyPassphrase: vaultKeyPassphrase,
+                                                              itemKey: latestItemKey) else {
+                    fatalError("Post MVP")
+                }
+
+                let request = try UpdateItemRequest(oldRevision: oldItemRevision,
+                                                    vaultKey: latestVaultKey,
+                                                    vaultKeyPassphrase: vaultKeyPassphrase,
+                                                    itemKey: latestItemKey,
+                                                    itemKeyPassphrase: itemKeyPassphrase,
+                                                    addressKey: userData.getAddressKey(),
+                                                    itemContent: generateItemContent())
+                try await itemRevisionRepository.updateItem(request: request,
+                                                            shareId: shareId,
+                                                            itemId: itemId)
+                isLoading = false
+                onUpdatedItem?(itemContentType())
+            } catch {
+                self.isLoading = false
+                self.error = error
+            }
+        }
     }
 }

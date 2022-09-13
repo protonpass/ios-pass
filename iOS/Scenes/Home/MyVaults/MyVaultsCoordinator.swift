@@ -131,6 +131,7 @@ final class MyVaultsCoordinator: Coordinator {
         createEditLoginViewModel.delegate = self
         createEditLoginViewModel.onGeneratePassword = { [unowned self] in showGeneratePasswordView(delegate: $0) }
         createEditLoginViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
+        createEditLoginViewModel.onUpdatedItem = { [unowned self] in handleUpdatedItem($0) }
         let createEditLoginView = CreateEditLoginView(viewModel: createEditLoginViewModel)
         presentViewFullScreen(createEditLoginView,
                               modalTransitionStyle: mode.modalTransitionStyle)
@@ -151,6 +152,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                               itemRevisionRepository: itemRevisionRepository)
         createEditNoteViewModel.delegate = self
         createEditNoteViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
+        createEditNoteViewModel.onUpdatedItem = { [unowned self] in handleUpdatedItem($0) }
         let createEditNoteView = CreateEditNoteView(viewModel: createEditNoteViewModel)
         presentViewFullScreen(createEditNoteView,
                               modalTransitionStyle: mode.modalTransitionStyle)
@@ -237,6 +239,23 @@ final class MyVaultsCoordinator: Coordinator {
         myVaultsViewModel.successMessage = message
         vaultContentViewModel.fetchItems()
         onTrashedItem?()
+    }
+
+    private func handleUpdatedItem(_ itemContentType: ItemContentType) {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            popToRoot()
+            let message: String
+            switch itemContentType {
+            case .alias:
+                message = "Alias updated"
+            case .login:
+                message = "Login updated"
+            case .note:
+                message = "Note updated"
+            }
+            myVaultsViewModel.successMessage = message
+            vaultContentViewModel.fetchItems()
+        }
     }
 }
 

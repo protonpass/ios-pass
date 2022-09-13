@@ -42,6 +42,8 @@ public protocol ItemRevisionRepositoryProtocol {
     func trashItems(request: TrashItemsRequest, shareId: String) async throws -> [ItemToBeTrashed]
 
     func deleteItems(request: DeleteItemsRequest, shareId: String) async throws
+
+    func updateItem(request: UpdateItemRequest, shareId: String, itemId: String) async throws
 }
 
 public extension ItemRevisionRepositoryProtocol {
@@ -118,6 +120,16 @@ public extension ItemRevisionRepositoryProtocol {
         PPLogger.shared?.log("Finished deleting remotely \(count) items for share \(shareId)")
         try await localItemRevisionDatasoure.deleteItems(shareId: shareId, itemsToBeDeleted: request.items)
         PPLogger.shared?.log("Finished deleting locallly \(count) items for share \(shareId)")
+    }
+
+    func updateItem(request: UpdateItemRequest, shareId: String, itemId: String) async throws {
+        PPLogger.shared?.log("Updating item \(itemId) for share \(shareId)")
+        let updatedItemRevision = try await remoteItemRevisionDatasource.updateItem(shareId: shareId,
+                                                                                    itemId: itemId,
+                                                                                    request: request)
+        PPLogger.shared?.log("Finished updating remotely item \(itemId) for share \(shareId)")
+        try await localItemRevisionDatasoure.upsertItemRevisions([updatedItemRevision], shareId: shareId)
+        PPLogger.shared?.log("Finished updating locally item \(itemId) for share \(shareId)")
     }
 }
 
