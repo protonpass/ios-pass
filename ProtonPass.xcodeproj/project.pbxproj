@@ -79,6 +79,9 @@
 		3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618628A1372500A68477 /* SwiftUITextView.swift */; };
 		3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618A28A14EB600A68477 /* UserInputContainerView.swift */; };
 		3552618D28A1511000A68477 /* UserInputContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618C28A1511000A68477 /* UserInputContentView.swift */; };
+		35526B5B28D115340017BB53 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
+		35526B5D28D116350017BB53 /* PassIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35526B5C28D116350017BB53 /* PassIcon.swift */; };
+		35526B5E28D117820017BB53 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
@@ -387,6 +390,8 @@
 		3552618628A1372500A68477 /* SwiftUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUITextView.swift; sourceTree = "<group>"; };
 		3552618A28A14EB600A68477 /* UserInputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputContainerView.swift; sourceTree = "<group>"; };
 		3552618C28A1511000A68477 /* UserInputContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputContentView.swift; sourceTree = "<group>"; };
+		35526B5A28D115340017BB53 /* Pass.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Pass.xcassets; sourceTree = "<group>"; };
+		35526B5C28D116350017BB53 /* PassIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassIcon.swift; sourceTree = "<group>"; };
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
@@ -1034,6 +1039,7 @@
 				354F768F28C861FF00EB2383 /* DestructiveButton.swift */,
 				3547ABE92877684D00EE85E1 /* GenericItemView.swift */,
 				354F769B28C90B4D00EB2383 /* MoveToTrashModifier.swift */,
+				35526B5C28D116350017BB53 /* PassIcon.swift */,
 				3547ABDB28771B2900EE85E1 /* PPAlertController.swift */,
 				3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */,
 				353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */,
@@ -1043,6 +1049,7 @@
 				3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */,
 				3552618C28A1511000A68477 /* UserInputContentView.swift */,
 				3552618A28A14EB600A68477 /* UserInputContainerView.swift */,
+				35526B5A28D115340017BB53 /* Pass.xcassets */,
 			);
 			path = UIComponents;
 			sourceTree = "<group>";
@@ -1439,6 +1446,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35526B5E28D117820017BB53 /* Pass.xcassets in Resources */,
 				35E506D1286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig in Resources */,
 				35E506CF286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig in Resources */,
 				35E506CE286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig in Resources */,
@@ -1492,6 +1500,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35526B5B28D115340017BB53 /* Pass.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1974,6 +1983,7 @@
 				3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */,
 				353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */,
 				354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */,
+				35526B5D28D116350017BB53 /* PassIcon.swift in Sources */,
 				3547ABDC28771B2900EE85E1 /* PPAlertController.swift in Sources */,
 				3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */,
 				3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */,

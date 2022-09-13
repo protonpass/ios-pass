@@ -1,6 +1,6 @@
 //
-// EmptyTrashView.swift
-// Proton Pass - Created on 09/09/2022.
+// PassIcon.swift
+// Proton Pass - Created on 13/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,23 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
-import SwiftUI
-import UIComponents
+import UIKit
 
-struct EmptyTrashView: View {
-    var body: some View {
-        VStack(spacing: 20) {
-            Image(uiImage: PassIcon.trash)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 150)
-            Text("Nothing in Trash")
-                .font(.title3)
-                .fontWeight(.bold)
-            Text("Move items you want to delete to Trash. Items in Trash will be deleted forever after 30 days")
-                .multilineTextAlignment(.center)
-        }
-        .padding()
-    }
+// swiftlint:disable force_unwrapping
+public enum PassIcon {
+    public static var trash = UIImage(named: "Trash")!
+    public static var folder = UIImage(named: "Folder")!
 }

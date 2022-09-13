@@ -31,7 +31,8 @@ struct TrashView: View {
     }
 
     var body: some View {
-        Group {
+        ZStack {
+            Color.clear
             if !viewModel.trashedItem.isEmpty {
                 itemList
             } else if viewModel.isFetchingItems {

@@ -20,15 +20,16 @@
 
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct EmptyVaultView: View {
     let action: () -> Void
     var body: some View {
-        VStack {
-            Image(uiImage: IconProvider.driveMainTransparent)
+        VStack(spacing: 20) {
+            Image(uiImage: PassIcon.folder)
                 .resizable()
-                .frame(width: 200, height: 200)
-                .scaledToFill()
+                .scaledToFit()
+                .frame(width: 150)
             Text("Create your first item\n by clicking the button below")
                 .multilineTextAlignment(.center)
                 .foregroundColor(.secondary)
