@@ -38,7 +38,11 @@ struct VaultContentView: View {
     }
 
     var body: some View {
-        Group {
+        ZStack {
+            // Embed in a ZStack with clear color as background
+            // in order for bottom banner to properly display
+            // as Color occupies the whole ZStack
+            Color.clear
             if !viewModel.partialItemContents.isEmpty {
                 itemList
             } else if viewModel.isFetchingItems {
