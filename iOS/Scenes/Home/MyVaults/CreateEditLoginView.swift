@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -53,11 +52,6 @@ struct CreateEditLoginView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .disabled(viewModel.isLoading)
-        .onReceive(Just(viewModel.createdLogin)) { createdLogin in
-            if createdLogin {
-                presentationMode.wrappedValue.dismiss()
-            }
-        }
         .alert(isPresented: $isShowingDiscardAlert) {
             Alert(title: Text("Discard changes"),
                   message: Text("You will loose all unsaved changes"),
@@ -83,7 +77,7 @@ struct CreateEditLoginView: View {
         }
 
         ToolbarItem(placement: .principal) {
-            Text("Create new login")
+            Text(viewModel.navigationBarTitle())
                 .fontWeight(.bold)
         }
 

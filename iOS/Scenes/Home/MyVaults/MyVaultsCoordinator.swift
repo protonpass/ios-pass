@@ -79,16 +79,18 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func showCreateItemView() {
+        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
+        let mode = BaseCreateEditItemViewModel.Mode.create(shareId: shareId)
         let createItemViewModel = CreateItemViewModel()
         createItemViewModel.onSelectedOption = { [unowned self] option in
             dismissTopMostViewController(animated: true) { [unowned self] in
                 switch option {
                 case .login:
-                    showCreateLoginView()
+                    showCreateEditLoginView(mode: mode)
                 case .alias:
                     showCreateAliasView()
                 case .note:
-                    showCreateNoteView()
+                    showCreateEditNoteView(mode: mode)
                 case .password:
                     showGeneratePasswordView(delegate: nil)
                 }
@@ -120,19 +122,18 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewController(createVaultViewController)
     }
 
-    func showCreateLoginView() {
-        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        let createLoginViewModel = CreateEditLoginViewModel(mode: .create,
-                                                            shareId: shareId,
-                                                            userData: userData,
-                                                            shareRepository: shareRepository,
-                                                            shareKeysRepository: shareKeysRepository,
-                                                            itemRevisionRepository: itemRevisionRepository)
-        createLoginViewModel.delegate = self
-        createLoginViewModel.onGeneratePassword = { [unowned self] in showGeneratePasswordView(delegate: $0) }
-        createLoginViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
-        let createLoginView = CreateEditLoginView(viewModel: createLoginViewModel)
-        presentViewFullScreen(createLoginView)
+    func showCreateEditLoginView(mode: BaseCreateEditItemViewModel.Mode) {
+        let createEditLoginViewModel = CreateEditLoginViewModel(mode: mode,
+                                                                userData: userData,
+                                                                shareRepository: shareRepository,
+                                                                shareKeysRepository: shareKeysRepository,
+                                                                itemRevisionRepository: itemRevisionRepository)
+        createEditLoginViewModel.delegate = self
+        createEditLoginViewModel.onGeneratePassword = { [unowned self] in showGeneratePasswordView(delegate: $0) }
+        createEditLoginViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
+        let createEditLoginView = CreateEditLoginView(viewModel: createEditLoginViewModel)
+        presentViewFullScreen(createEditLoginView,
+                              modalTransitionStyle: mode.modalTransitionStyle)
     }
 
     func showCreateAliasView() {
@@ -142,18 +143,17 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewFullScreen(createAliasView)
     }
 
-    func showCreateNoteView() {
-        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        let createNoteViewModel = CreateEditNoteViewModel(mode: .create,
-                                                          shareId: shareId,
-                                                          userData: userData,
-                                                          shareRepository: shareRepository,
-                                                          shareKeysRepository: shareKeysRepository,
-                                                          itemRevisionRepository: itemRevisionRepository)
-        createNoteViewModel.delegate = self
-        createNoteViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
-        let createNoteView = CreateEditNoteView(viewModel: createNoteViewModel)
-        presentViewFullScreen(createNoteView)
+    func showCreateEditNoteView(mode: BaseCreateEditItemViewModel.Mode) {
+        let createEditNoteViewModel = CreateEditNoteViewModel(mode: mode,
+                                                              userData: userData,
+                                                              shareRepository: shareRepository,
+                                                              shareKeysRepository: shareKeysRepository,
+                                                              itemRevisionRepository: itemRevisionRepository)
+        createEditNoteViewModel.delegate = self
+        createEditNoteViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
+        let createEditNoteView = CreateEditNoteView(viewModel: createEditNoteViewModel)
+        presentViewFullScreen(createEditNoteView,
+                              modalTransitionStyle: mode.modalTransitionStyle)
     }
 
     func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?) {
@@ -213,19 +213,15 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func showEditItemView(_ item: ItemContent) {
-        let viewController: UIViewController
+        let mode = BaseCreateEditItemViewModel.Mode.edit(item)
         switch item.contentData.type {
         case .login:
-            viewController = UIHostingController(rootView: Text("Edit login"))
+            showCreateEditLoginView(mode: mode)
         case .note:
-            viewController = UIHostingController(rootView: Text("Edit note"))
+            showCreateEditNoteView(mode: mode)
         case .alias:
-            viewController = UIHostingController(rootView: Text("Edit alias"))
+            break
         }
-
-        viewController.modalPresentationStyle = .fullScreen
-        viewController.modalTransitionStyle = .crossDissolve
-        presentViewController(viewController, animated: true)
     }
 
     private func handleTrashedItem(_ itemContentType: ItemContentType) {
@@ -251,4 +247,15 @@ extension MyVaultsCoordinator: BaseViewModelDelegate {
     func viewModelStopsLoading() { hideLoadingHud() }
 
     func viewModelDidFailWithError(_ error: Error) { alertError(error) }
+}
+
+private extension BaseCreateEditItemViewModel.Mode {
+    var modalTransitionStyle: UIModalTransitionStyle {
+        switch self {
+        case .create:
+            return .coverVertical
+        case .edit:
+            return .crossDissolve
+        }
+    }
 }

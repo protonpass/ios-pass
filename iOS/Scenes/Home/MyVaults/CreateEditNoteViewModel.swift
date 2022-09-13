@@ -33,6 +33,23 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
         name.isEmpty && note.isEmpty
     }
 
+    override func bindValues() {
+        if case let .edit(itemContent) = mode,
+           case .note = itemContent.contentData {
+            self.name = itemContent.name
+            self.note = itemContent.note
+        }
+    }
+
+    override func navigationBarTitle() -> String {
+        switch mode {
+        case .create:
+            return "Create new note"
+        case .edit:
+            return "Edit note"
+        }
+    }
+
     override func itemContentType() -> ItemContentType { .note }
 
     override func generateItemContent() -> ItemContentProtobuf {

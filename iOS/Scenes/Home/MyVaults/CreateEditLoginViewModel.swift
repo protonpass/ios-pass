@@ -25,8 +25,6 @@ import SwiftUI
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    @Published private(set) var createdLogin = false
-
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
@@ -42,6 +40,26 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     var isEmpty: Bool {
         title.isEmpty && username.isEmpty && password.isEmpty && hasNoUrls && note.isEmpty
+    }
+
+    override func bindValues() {
+        if case let .edit(itemContent) = mode,
+           case let .login(username, password, urls) = itemContent.contentData {
+            self.title = itemContent.name
+            self.username = username
+            self.password = password
+            self.urls = urls
+            self.note = itemContent.note
+        }
+    }
+
+    override func navigationBarTitle() -> String {
+        switch mode {
+        case .create:
+            return "Create new login"
+        case .edit:
+            return "Edit login"
+        }
     }
 
     override func itemContentType() -> ItemContentType { .login }

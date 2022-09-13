@@ -24,7 +24,6 @@ import ProtonCore_Login
 
 class BaseCreateEditItemViewModel: BaseViewModel {
     let mode: Mode
-    let shareId: String
     let userData: UserData
     let shareRepository: ShareRepositoryProtocol
     let shareKeysRepository: ShareKeysRepositoryProtocol
@@ -34,22 +33,30 @@ class BaseCreateEditItemViewModel: BaseViewModel {
     var onEditedItem: (() -> Void)?
 
     enum Mode {
-        case create
+        case create(shareId: String)
         case edit(ItemContent)
     }
 
     init(mode: Mode,
-         shareId: String,
          userData: UserData,
          shareRepository: ShareRepositoryProtocol,
          shareKeysRepository: ShareKeysRepositoryProtocol,
          itemRevisionRepository: ItemRevisionRepositoryProtocol) {
         self.mode = mode
-        self.shareId = shareId
         self.userData = userData
         self.shareRepository = shareRepository
         self.shareKeysRepository = shareKeysRepository
         self.itemRevisionRepository = itemRevisionRepository
+        super.init()
+        bindValues()
+    }
+
+    /// To be overridden by subclasses
+    func bindValues() {}
+
+    // swiftlint:disable:next unavailable_function
+    func navigationBarTitle() -> String {
+        fatalError("Must be overridden by subclasses")
     }
 
     // swiftlint:disable:next unavailable_function
@@ -64,14 +71,14 @@ class BaseCreateEditItemViewModel: BaseViewModel {
 
     func save() {
         switch mode {
-        case .create:
-            create()
+        case .create(let shareId):
+            createItem(shareId: shareId)
         case .edit(let itemContent):
             edit(itemContent)
         }
     }
 
-    private func create() {
+    private func createItem(shareId: String) {
         Task { @MainActor in
             do {
                 isLoading = true

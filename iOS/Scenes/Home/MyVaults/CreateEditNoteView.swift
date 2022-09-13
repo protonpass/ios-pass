@@ -89,7 +89,7 @@ struct CreateEditNoteView: View {
         }
 
         ToolbarItem(placement: .principal) {
-            Text("Create new note")
+            Text(viewModel.navigationBarTitle())
                 .fontWeight(.bold)
         }
 

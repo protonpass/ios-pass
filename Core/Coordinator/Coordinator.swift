@@ -64,9 +64,12 @@ open class Coordinator {
         presentViewController(UIHostingController(rootView: view), animated: animated)
     }
 
-    public func presentViewFullScreen<V: View>(_ view: V, animated: Bool = true) {
+    public func presentViewFullScreen<V: View>(_ view: V,
+                                               modalTransitionStyle: UIModalTransitionStyle = .coverVertical,
+                                               animated: Bool = true) {
         let viewController = UIHostingController(rootView: view)
         viewController.modalPresentationStyle = .fullScreen
+        viewController.modalTransitionStyle = modalTransitionStyle
         presentViewController(viewController, animated: animated)
     }
 
