@@ -23,45 +23,89 @@ import SwiftUI
 import UIComponents
 
 struct TrashView: View {
-    let coordinator: TrashCoordinator
+    @StateObject private var viewModel: TrashViewModel
+    @State private var isShowingEmptyTrashAlert = false
+
+    init(viewModel: TrashViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
-        List {
-            ForEach(0..<30, id: \.self) { index in
-                Text("Item #\(index)")
+        ZStack {
+            Color.clear
+            if !viewModel.trashedItem.isEmpty {
+                itemList
+            } else if viewModel.isFetchingItems {
+                ProgressView()
+            } else if viewModel.trashedItem.isEmpty {
+                EmptyTrashView()
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                ToggleSidebarButton(action: coordinator.showSidebar)
-            }
+        .toolbar { toolbarContent }
+        .alert(isPresented: $isShowingEmptyTrashAlert) { emptyTrashAlert }
+    }
 
-            ToolbarItem(placement: .principal) {
-                Text("Trash")
-            }
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            ToggleSidebarButton(action: viewModel.toggleSidebar)
+        }
 
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Menu(content: {
-                    Button(action: {
-                        print("Empty trash")
-                    }, label: {
-                        Label(title: {
-                            Text("Empty trash")
-                        }, icon: {
-                            Image(uiImage: IconProvider.trash)
-                        })
+        ToolbarItem(placement: .principal) {
+            Text("Trash")
+                .fontWeight(.bold)
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Menu(content: {
+                Button(action: viewModel.restoreAllItems) {
+                    Label(title: {
+                        Text("Restore all items")
+                    }, icon: {
+                        Image(uiImage: IconProvider.clockRotateLeft)
                     })
-                }, label: {
-                    Image(uiImage: IconProvider.threeDotsHorizontal)
-                        .foregroundColor(Color(.label))
-                })
-            }
+                }
+
+                DestructiveButton(title: "Empty trash",
+                                  icon: IconProvider.trashCross) {
+                    isShowingEmptyTrashAlert.toggle()
+                }
+            }, label: {
+                Image(uiImage: IconProvider.threeDotsHorizontal)
+                    .foregroundColor(Color(.label))
+            })
+            .opacity(viewModel.trashedItem.isEmpty ? 0 : 1)
+            .disabled(viewModel.trashedItem.isEmpty)
         }
     }
-}
 
-struct TrashView_Previews: PreviewProvider {
-    static var previews: some View {
-        TrashView(coordinator: .preview)
+    private var emptyTrashAlert: Alert {
+        Alert(title: Text("Empty trash?"),
+              message: Text("Items in trash will be deleted permanently. You can not undo this action"),
+              primaryButton: .destructive(Text("Empty trash"), action: viewModel.emptyTrash),
+              secondaryButton: .default(Text("Cancel")))
+    }
+
+    private var itemList: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(viewModel.trashedItem, id: \.itemId) { item in
+                    GenericItemView(
+                        item: item,
+                        showDivider: item.itemId != viewModel.trashedItem.last?.itemId,
+                        action: {  },
+                        trailingView: {
+                            Button(action: {
+                                viewModel.showOptions(item)
+                            }, label: {
+                                Image(uiImage: IconProvider.threeDotsHorizontal)
+                                    .foregroundColor(.secondary)
+                            })
+                        })
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                Spacer()
+            }
+        }
     }
 }

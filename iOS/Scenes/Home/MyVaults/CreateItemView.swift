@@ -32,42 +32,41 @@ struct CreateItemView: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
-                GenericItemView(
-                    item: CreateNewItemOption.login.toGenericItem()) {
-                    viewModel.select(option: .login)
-                }
+            VStack {
+                GenericItemView(item: CreateNewItemOption.login.toGenericItem(),
+                                action: { viewModel.select(option: .login) },
+                                trailingView: { EmptyView() })
 
-                GenericItemView(
-                    item: CreateNewItemOption.alias.toGenericItem()) {
-                    viewModel.select(option: .alias)
-                }
+                GenericItemView(item: CreateNewItemOption.alias.toGenericItem(),
+                                action: { viewModel.select(option: .alias) },
+                                trailingView: { EmptyView() })
 
-                GenericItemView(
-                    item: CreateNewItemOption.note.toGenericItem()) {
-                    viewModel.select(option: .note)
-                }
+                GenericItemView(item: CreateNewItemOption.note.toGenericItem(),
+                                action: { viewModel.select(option: .note) },
+                                trailingView: { EmptyView() })
 
-                GenericItemView(
-                    item: CreateNewItemOption.password.toGenericItem(),
-                    showDivider: false) {
-                    viewModel.select(option: .password)
-                }
+                GenericItemView(item: CreateNewItemOption.password.toGenericItem(),
+                                showDivider: false,
+                                action: { viewModel.select(option: .password) },
+                                trailingView: { EmptyView() })
 
                 Spacer()
             }
             .navigationTitle("New...")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }, label: {
-                        Image(uiImage: IconProvider.cross)
-                    })
-                    .foregroundColor(Color(.label))
-                }
-            }
+            .toolbar { toolbarContent }
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Image(uiImage: IconProvider.cross)
+            })
+            .foregroundColor(Color(.label))
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-// CreateNoteView.swift
+// CreateEditNoteView.swift
 // Proton Pass - Created on 07/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -22,14 +22,14 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct CreateNoteView: View {
+struct CreateEditNoteView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @StateObject private var viewModel: CreateNoteViewModel
+    @StateObject private var viewModel: CreateEditNoteViewModel
     @State private var isShowingDiscardAlert = false
     @State private var isFocusedOnName = false
     @State private var isFocusedOnNote = false
 
-    init(viewModel: CreateNoteViewModel) {
+    init(viewModel: CreateEditNoteViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
@@ -42,7 +42,7 @@ struct CreateNoteView: View {
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar { toolbar }
+            .toolbar { toolbarContent }
         }
         .disabled(viewModel.isLoading)
         .alert(isPresented: $isShowingDiscardAlert) {
@@ -74,7 +74,7 @@ struct CreateNoteView: View {
     }
 
     @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
+    private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
                 if viewModel.isEmpty {
@@ -89,12 +89,12 @@ struct CreateNoteView: View {
         }
 
         ToolbarItem(placement: .principal) {
-            Text("Create new note")
+            Text(viewModel.navigationBarTitle())
                 .fontWeight(.bold)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.createItem) {
+            Button(action: viewModel.save) {
                 Text("Save")
                     .fontWeight(.bold)
                     .foregroundColor(Color(ColorProvider.BrandNorm))

@@ -1,5 +1,5 @@
 //
-// BaseCreateItemViewModel.swift
+// BaseCreateEditItemViewModel.swift
 // Proton Pass - Created on 19/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,40 +19,44 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import Core
 import ProtonCore_Login
 
-protocol BaseCreateItemViewModelDelegate: AnyObject {
-    func createItemViewModelBeginsLoading()
-    func createItemViewModelStopsLoading()
-    func createItemViewModelDidFailWithError(_ error: Error)
-    func createItemViewModelDidCreateItem(_ itemContentType: ItemContentType)
-}
-
-class BaseCreateItemViewModel {
-    @Published var isLoading = false
-    @Published var error: Error?
-
-    var cancellables = Set<AnyCancellable>()
-    weak var delegate: BaseCreateItemViewModelDelegate?
-
-    let shareId: String
+class BaseCreateEditItemViewModel: BaseViewModel {
+    let mode: Mode
     let userData: UserData
     let shareRepository: ShareRepositoryProtocol
     let shareKeysRepository: ShareKeysRepositoryProtocol
     let itemRevisionRepository: ItemRevisionRepositoryProtocol
 
-    init(shareId: String,
+    var onCreatedItem: ((ItemContentType) -> Void)?
+    var onUpdatedItem: ((ItemContentType) -> Void)?
+
+    enum Mode {
+        case create(shareId: String)
+        case edit(ItemContent)
+    }
+
+    init(mode: Mode,
          userData: UserData,
          shareRepository: ShareRepositoryProtocol,
          shareKeysRepository: ShareKeysRepositoryProtocol,
          itemRevisionRepository: ItemRevisionRepositoryProtocol) {
-        self.shareId = shareId
+        self.mode = mode
         self.userData = userData
         self.shareRepository = shareRepository
         self.shareKeysRepository = shareKeysRepository
         self.itemRevisionRepository = itemRevisionRepository
+        super.init()
+        bindValues()
+    }
+
+    /// To be overridden by subclasses
+    func bindValues() {}
+
+    // swiftlint:disable:next unavailable_function
+    func navigationBarTitle() -> String {
+        fatalError("Must be overridden by subclasses")
     }
 
     // swiftlint:disable:next unavailable_function
@@ -65,7 +69,16 @@ class BaseCreateItemViewModel {
         fatalError("Must be overridden by subclasses")
     }
 
-    func createItem() {
+    func save() {
+        switch mode {
+        case .create(let shareId):
+            createItem(shareId: shareId)
+        case .edit(let oldItemContent):
+            editItem(oldItemContent: oldItemContent)
+        }
+    }
+
+    private func createItem(shareId: String) {
         Task { @MainActor in
             do {
                 isLoading = true
@@ -90,9 +103,55 @@ class BaseCreateItemViewModel {
                                                     addressKey: userData.getAddressKey(),
                                                     itemContent: itemContent)
                 try await itemRevisionRepository.createItem(request: request, shareId: shareId)
-                delegate?.createItemViewModelDidCreateItem(itemContentType())
+                onCreatedItem?(itemContentType())
             } catch {
+                self.isLoading = false
+                self.error = error
+            }
+        }
+    }
+
+    private func editItem(oldItemContent: ItemContent) {
+        Task { @MainActor in
+            do {
+                let shareId = oldItemContent.shareId
+                let itemId = oldItemContent.itemId
+                isLoading = true
+                guard let oldItemRevision =
+                        try await itemRevisionRepository.getItemRevision(
+                            shareId: oldItemContent.shareId,
+                            itemId: oldItemContent.itemId) else {
+                    isLoading = false
+                    return
+                }
+
+                let (latestVaultKey, latestItemKey) =
+                try await shareKeysRepository.getLatestVaultItemKey(shareId: shareId, forceRefresh: false)
+                let share = try await shareRepository.getShare(shareId: shareId)
+                let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
+                                                                                share: share,
+                                                                                vaultKey: latestVaultKey)
+                guard let itemKeyPassphrase =
+                        try PassKeyUtils.getItemKeyPassphrase(vaultKey: latestVaultKey,
+                                                              vaultKeyPassphrase: vaultKeyPassphrase,
+                                                              itemKey: latestItemKey) else {
+                    fatalError("Post MVP")
+                }
+
+                let request = try UpdateItemRequest(oldRevision: oldItemRevision,
+                                                    vaultKey: latestVaultKey,
+                                                    vaultKeyPassphrase: vaultKeyPassphrase,
+                                                    itemKey: latestItemKey,
+                                                    itemKeyPassphrase: itemKeyPassphrase,
+                                                    addressKey: userData.getAddressKey(),
+                                                    itemContent: generateItemContent())
+                try await itemRevisionRepository.updateItem(request: request,
+                                                            shareId: shareId,
+                                                            itemId: itemId)
                 isLoading = false
+                onUpdatedItem?(itemContentType())
+            } catch {
+                self.isLoading = false
                 self.error = error
             }
         }

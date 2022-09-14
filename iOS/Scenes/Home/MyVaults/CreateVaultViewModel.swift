@@ -22,54 +22,24 @@ import Client
 import Combine
 import Core
 import ProtonCore_Login
-import ProtonCore_Services
 import SwiftUI
 
-protocol CreateVaultViewModelDelegate: AnyObject {
-    func createVaultViewModelBeginsLoading()
-    func createVaultViewModelStopsLoading()
-    func createVaultViewModelDidCreateShare(share: Share)
-    func createVaultViewModelDidFailWithError(error: Error)
-}
-
-final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
+final class CreateVaultViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    @Published private(set) var isLoading = false
-    @Published private(set) var error: Error?
     @Published var name = ""
     @Published var note = ""
 
     private let userData: UserData
     private let shareRepository: ShareRepositoryProtocol
 
-    private var cancellables = Set<AnyCancellable>()
-    weak var delegate: CreateVaultViewModelDelegate?
+    var onCreatedShare: ((Share) -> Void)?
 
     init(userData: UserData,
          shareRepository: ShareRepositoryProtocol) {
         self.userData = userData
         self.shareRepository = shareRepository
-
-        $isLoading
-            .sink { [weak self] isLoading in
-                guard let self = self else { return }
-                if isLoading {
-                    self.delegate?.createVaultViewModelBeginsLoading()
-                } else {
-                    self.delegate?.createVaultViewModelStopsLoading()
-                }
-            }
-            .store(in: &cancellables)
-
-        $error
-            .sink { [weak self] error in
-                guard let self = self else { return }
-                if let error = error {
-                    self.delegate?.createVaultViewModelDidFailWithError(error: error)
-                }
-            }
-            .store(in: &cancellables)
+        super.init()
     }
 
     func createVault() {
@@ -83,7 +53,7 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
                 let createdShare =
                 try await shareRepository.createVault(request: createVaultRequest)
                 isLoading = false
-                delegate?.createVaultViewModelDidCreateShare(share: createdShare)
+                onCreatedShare?(createdShare)
             } catch {
                 self.error = error
                 isLoading = false

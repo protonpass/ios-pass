@@ -22,12 +22,20 @@ import Combine
 import SwiftUI
 import UIKit
 
+public protocol CoordinatorDelegate: AnyObject {
+    func coordinatorWantsToToggleSidebar()
+    func coordinatorWantsToShowLoadingHud()
+    func coordinatorWantsToHideLoadingHud()
+    func coordinatorWantsToAlertError(_ error: Error)
+}
+
 open class Coordinator {
     private let navigationController: UINavigationController
     public var rootViewController: UIViewController { navigationController }
+    public weak var delegate: CoordinatorDelegate?
 
     public init() {
-        self.navigationController = UINavigationController()
+        self.navigationController = PPNavigationController()
     }
 
     public func start<V: View>(with view: V) {
@@ -38,11 +46,17 @@ open class Coordinator {
         navigationController.setViewControllers([viewController], animated: true)
     }
 
-    public func pushView<V: View>(_ view: V, animated: Bool = true) {
-        pushViewController(UIHostingController(rootView: view), animated: animated)
+    public func pushView<V: View>(_ view: V,
+                                  animated: Bool = true,
+                                  hidesBackButton: Bool = true) {
+        let viewController = UIHostingController(rootView: view)
+        pushViewController(viewController, animated: animated, hidesBackButton: hidesBackButton)
     }
 
-    public func pushViewController(_ viewController: UIViewController, animated: Bool = true) {
+    public func pushViewController(_ viewController: UIViewController,
+                                   animated: Bool = true,
+                                   hidesBackButton: Bool = true) {
+        viewController.navigationItem.hidesBackButton = hidesBackButton
         navigationController.pushViewController(viewController, animated: animated)
     }
 
@@ -50,9 +64,12 @@ open class Coordinator {
         presentViewController(UIHostingController(rootView: view), animated: animated)
     }
 
-    public func presentViewFullScreen<V: View>(_ view: V, animated: Bool = true) {
+    public func presentViewFullScreen<V: View>(_ view: V,
+                                               modalTransitionStyle: UIModalTransitionStyle = .coverVertical,
+                                               animated: Bool = true) {
         let viewController = UIHostingController(rootView: view)
         viewController.modalPresentationStyle = .fullScreen
+        viewController.modalTransitionStyle = modalTransitionStyle
         presentViewController(viewController, animated: animated)
     }
 
@@ -79,5 +96,30 @@ open class Coordinator {
                                              completion: (() -> Void)? = nil) {
         navigationController.presentedViewController?.dismiss(animated: animated,
                                                               completion: completion)
+    }
+
+    public func popToRoot(animated: Bool = true) {
+        navigationController.popToRootViewController(animated: animated)
+    }
+}
+
+public extension Coordinator {
+    func toggleSidebar() { delegate?.coordinatorWantsToToggleSidebar() }
+
+    func showLoadingHud() { delegate?.coordinatorWantsToShowLoadingHud() }
+
+    func hideLoadingHud() { delegate?.coordinatorWantsToHideLoadingHud() }
+
+    func alertError(_ error: Error) { delegate?.coordinatorWantsToAlertError(error) }
+}
+
+private final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
+    }
+
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        viewControllers.count > 1
     }
 }

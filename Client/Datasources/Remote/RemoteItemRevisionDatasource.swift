@@ -21,28 +21,73 @@
 import Foundation
 
 public protocol RemoteItemRevisionDatasourceProtocol: BaseRemoteDatasourceProtocol {
-    func getItemRevisions(shareId: String,
-                          page: Int,
-                          pageSize: Int) async throws -> ItemRevisionList
+    /// Get all item revisions of a share
+    func getItemRevisions(shareId: String) async throws -> [ItemRevision]
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision
+    func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem]
+    func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem]
+    func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws
+    func updateItem(shareId: String, itemId: String, request: UpdateItemRequest) async throws -> ItemRevision
 }
 
 public extension RemoteItemRevisionDatasourceProtocol {
-    func getItemRevisions(shareId: String,
-                          page: Int,
-                          pageSize: Int) async throws -> ItemRevisionList {
-        let endpoint = GetItemsEndpoint(credential: authCredential,
-                                        shareId: shareId,
-                                        page: page,
-                                        pageSize: pageSize)
-        let response = try await apiService.exec(endpoint: endpoint)
-        return response.items
+    func getItemRevisions(shareId: String) async throws -> [ItemRevision] {
+        var itemRevisions = [ItemRevision]()
+        var page = 0
+        while true {
+            let endpoint = GetItemsEndpoint(credential: authCredential,
+                                            shareId: shareId,
+                                            page: page,
+                                            pageSize: kDefaultPageSize)
+            let response = try await apiService.exec(endpoint: endpoint)
+
+            itemRevisions += response.items.revisionsData
+            if response.items.revisionsData.count < kDefaultPageSize {
+                break
+            } else {
+                page += 1
+            }
+        }
+        return itemRevisions
     }
 
     func createItem(shareId: String,
                     request: CreateItemRequest) async throws -> ItemRevision {
         let endpoint = CreateItemEndpoint(credential: authCredential,
                                           shareId: shareId,
+                                          request: request)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.item
+    }
+
+    func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
+        let endpoint = TrashItemsEndpoint(credential: authCredential,
+                                          shareId: shareId,
+                                          request: .init(items: items))
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.items
+    }
+    func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
+        let endpoint = UntrashItemsEndpoint(credential: authCredential,
+                                            shareId: shareId,
+                                            request: .init(items: items))
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.items
+    }
+
+    func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws {
+        let endpoint = DeleteItemsEndpoint(credential: authCredential,
+                                           shareId: shareId,
+                                           request: .init(items: items))
+        _ = try await apiService.exec(endpoint: endpoint)
+    }
+
+    func updateItem(shareId: String,
+                    itemId: String,
+                    request: UpdateItemRequest) async throws -> ItemRevision {
+        let endpoint = UpdateItemEndpoint(credential: authCredential,
+                                          shareId: shareId,
+                                          itemId: itemId,
                                           request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.item

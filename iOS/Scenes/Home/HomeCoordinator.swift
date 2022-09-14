@@ -43,7 +43,10 @@ final class HomeCoordinator: DeinitPrintable {
 
     private let sessionData: SessionData
     private let apiService: APIService
-    private let container: NSPersistentContainer
+    private let shareRepository: ShareRepositoryProtocol
+    private let shareKeysRepository: ShareKeysRepositoryProtocol
+    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    private let publicKeyRepository: PublicKeyRepositoryProtocol
     weak var delegate: HomeCoordinatorDelegate?
 
     var rootViewController: UIViewController { sideMenuController }
@@ -69,11 +72,16 @@ final class HomeCoordinator: DeinitPrintable {
     let vaultSelection: VaultSelection
 
     private lazy var myVaultsCoordinator: MyVaultsCoordinator = {
-        let myVaultsCoordinator = MyVaultsCoordinator(apiService: apiService,
-                                                      sessionData: sessionData,
-                                                      container: container,
-                                                      vaultSelection: vaultSelection)
+        let myVaultsCoordinator = MyVaultsCoordinator(userData: sessionData.userData,
+                                                      vaultSelection: vaultSelection,
+                                                      shareRepository: shareRepository,
+                                                      shareKeysRepository: shareKeysRepository,
+                                                      itemRevisionRepository: itemRevisionRepository,
+                                                      publicKeyRepository: publicKeyRepository)
         myVaultsCoordinator.delegate = self
+        myVaultsCoordinator.onTrashedItem = { [unowned self] in
+            self.trashCoordinator.refreshTrashedItems()
+        }
         return myVaultsCoordinator
     }()
 
@@ -81,8 +89,15 @@ final class HomeCoordinator: DeinitPrintable {
 
     // Trash
     private lazy var trashCoordinator: TrashCoordinator = {
-        let trashCoordinator = TrashCoordinator()
+        let trashCoordinator = TrashCoordinator(userData: sessionData.userData,
+                                                shareRepository: shareRepository,
+                                                shareKeysRepository: shareKeysRepository,
+                                                itemRevisionRepository: itemRevisionRepository,
+                                                publicKeyRepository: publicKeyRepository)
         trashCoordinator.delegate = self
+        trashCoordinator.onRestoredItem = { [unowned self] in
+            self.myVaultsCoordinator.refreshItems()
+        }
         return trashCoordinator
     }()
 
@@ -95,7 +110,25 @@ final class HomeCoordinator: DeinitPrintable {
          container: NSPersistentContainer) {
         self.sessionData = sessionData
         self.apiService = apiService
-        self.container = container
+
+        let userId = sessionData.userData.user.ID
+        let authCredential = sessionData.userData.credential
+
+        self.shareRepository = ShareRepository(userId: userId,
+                                               container: container,
+                                               authCredential: authCredential,
+                                               apiService: apiService)
+
+        self.shareKeysRepository = ShareKeysRepository(container: container,
+                                                       authCredential: authCredential,
+                                                       apiService: apiService)
+
+        self.itemRevisionRepository = ItemRevisionRepository(container: container,
+                                                             authCredential: authCredential,
+                                                             apiService: apiService)
+
+        self.publicKeyRepository = PublicKeyRepository(container: container,
+                                                       apiService: apiService)
         self.vaultSelection = .init(vaults: [])
         self.setUpSideMenuPreferences()
         self.observeVaultSelection()
@@ -183,6 +216,14 @@ extension HomeCoordinator {
     private func signOut() {
         delegate?.homeCoordinatorDidSignOut()
     }
+
+    private func showLoadingHud() {
+        MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
+    }
+
+    private func hideLoadingHud() {
+        MBProgressHUD.hide(for: topMostViewController.view, animated: true)
+    }
 }
 
 // MARK: - SideBarViewModelDelegate
@@ -196,29 +237,22 @@ extension HomeCoordinator: SideBarViewModelDelegate {
     }
 }
 
-// MARK: - MyVaultsCoordinatorDelegate
-extension HomeCoordinator: MyVaultsCoordinatorDelegate {
-    func myVautsCoordinatorWantsToShowSidebar() {
+// MARK: - CoordinatorDelegate
+extension HomeCoordinator: CoordinatorDelegate {
+    func coordinatorWantsToToggleSidebar() {
         showSidebar()
     }
 
-    func myVautsCoordinatorWantsToShowLoadingHud() {
-        MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
+    func coordinatorWantsToShowLoadingHud() {
+        showLoadingHud()
     }
 
-    func myVautsCoordinatorWantsToHideLoadingHud() {
-        MBProgressHUD.hide(for: topMostViewController.view, animated: true)
+    func coordinatorWantsToHideLoadingHud() {
+        hideLoadingHud()
     }
 
-    func myVautsCoordinatorWantsToAlertError(_ error: Error) {
+    func coordinatorWantsToAlertError(_ error: Error) {
         alert(error: error)
-    }
-}
-
-// MARK: - TrashCoordinatorDelegate
-extension HomeCoordinator: TrashCoordinatorDelegate {
-    func trashCoordinatorWantsToShowSidebar() {
-        showSidebar()
     }
 }
 

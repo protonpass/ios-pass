@@ -1,6 +1,6 @@
 //
-// EmptyVaultView.swift
-// Proton Pass - Created on 07/09/2022.
+// EmptyTrashView.swift
+// Proton Pass - Created on 09/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -22,27 +22,19 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct EmptyVaultView: View {
-    let action: () -> Void
+struct EmptyTrashView: View {
     var body: some View {
         VStack(spacing: 20) {
-            Image(uiImage: PassIcon.folder)
+            Image(uiImage: PassIcon.trash)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 150)
-            Text("Create your first item\n by clicking the button below")
+            Text("Nothing in Trash")
+                .font(.title3)
+                .fontWeight(.bold)
+            Text("Move items you want to delete to Trash. Items in Trash will be deleted forever after 30 days")
                 .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
-            Button(action: action, label: {
-                Text("New item")
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .contentShape(Rectangle())
-            })
-            .padding()
-            .background(Color(ColorProvider.BrandNorm))
-            .cornerRadius(8)
         }
-        .padding(.top, -100)
+        .padding()
     }
 }

@@ -1,5 +1,5 @@
 //
-// CreateLoginViewModel.swift
+// CreateEditLoginViewModel.swift
 // Proton Pass - Created on 05/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,17 +20,10 @@
 
 import Client
 import Core
-import ProtonCore_Login
 import SwiftUI
 
-protocol CreateLoginViewModelDelegate: AnyObject {
-    func createLoginViewModelWantsToGeneratePassword(delegate: GeneratePasswordViewModelDelegate)
-}
-
-final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, ObservableObject {
+final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
-
-    @Published private(set) var createdLogin = false
 
     @Published var title = ""
     @Published var username = ""
@@ -39,7 +32,7 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
     @Published var urls: [String] = [""]
     @Published var note = ""
 
-    weak var createLoginDelegate: CreateLoginViewModelDelegate?
+    var onGeneratePassword: ((GeneratePasswordViewModelDelegate) -> Void)?
 
     private var hasNoUrls: Bool {
         urls.isEmpty || (urls.count == 1 && urls[0].isEmpty)
@@ -49,36 +42,24 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
         title.isEmpty && username.isEmpty && password.isEmpty && hasNoUrls && note.isEmpty
     }
 
-    override init(shareId: String,
-                  userData: UserData,
-                  shareRepository: ShareRepositoryProtocol,
-                  shareKeysRepository: ShareKeysRepositoryProtocol,
-                  itemRevisionRepository: ItemRevisionRepositoryProtocol) {
-        super.init(shareId: shareId,
-                   userData: userData,
-                   shareRepository: shareRepository,
-                   shareKeysRepository: shareKeysRepository,
-                   itemRevisionRepository: itemRevisionRepository)
+    override func bindValues() {
+        if case let .edit(itemContent) = mode,
+           case let .login(username, password, urls) = itemContent.contentData {
+            self.title = itemContent.name
+            self.username = username
+            self.password = password
+            self.urls = urls
+            self.note = itemContent.note
+        }
+    }
 
-        $isLoading
-            .sink { [weak self] isLoading in
-                guard let self = self else { return }
-                if isLoading {
-                    self.delegate?.createItemViewModelBeginsLoading()
-                } else {
-                    self.delegate?.createItemViewModelStopsLoading()
-                }
-            }
-            .store(in: &cancellables)
-
-        $error
-            .sink { [weak self] error in
-                guard let self = self else { return }
-                if let error = error {
-                    self.delegate?.createItemViewModelDidFailWithError(error)
-                }
-            }
-            .store(in: &cancellables)
+    override func navigationBarTitle() -> String {
+        switch mode {
+        case .create:
+            return "Create new login"
+        case .edit:
+            return "Edit login"
+        }
     }
 
     override func itemContentType() -> ItemContentType { .login }
@@ -93,11 +74,11 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
     }
 
     @objc
-    func generatePasswordAction() {
-        createLoginDelegate?.createLoginViewModelWantsToGeneratePassword(delegate: self)
+    func generatePassword() {
+        onGeneratePassword?(self)
     }
 
-    func generateAliasAction() {
+    func generateAlias() {
         let name = String.random(allowedCharacters: [.lowercase], length: 8)
         let host = String.random(allowedCharacters: [.lowercase], length: 5)
         let domain = String.random(allowedCharacters: [.lowercase], length: 5)
@@ -106,7 +87,7 @@ final class CreateLoginViewModel: BaseCreateItemViewModel, DeinitPrintable, Obse
 }
 
 // MARK: - GeneratePasswordViewModelDelegate
-extension CreateLoginViewModel: GeneratePasswordViewModelDelegate {
+extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         self.password = password
     }

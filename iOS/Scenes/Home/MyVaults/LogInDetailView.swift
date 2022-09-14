@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -26,6 +27,7 @@ struct LogInDetailView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
+    @State private var isShowingTrashingAlert = false
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -39,21 +41,28 @@ struct LogInDetailView: View {
             noteSection
             Spacer()
         }
+        .onReceive(Just(viewModel.isTrashed)) { isTrashed in
+            if isTrashed {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
         .padding()
         .padding(.top)
-        .toolbar(content: toolbarContent)
+        .navigationBarBackButtonHidden(true)
+        .moveToTrashAlert(isPresented: $isShowingTrashingAlert, onTrash: viewModel.trash)
+        .toolbar { toolbarContent }
     }
 
     @ToolbarContentBuilder
-    private func toolbarContent() -> some ToolbarContent {
-//        ToolbarItem(placement: .navigationBarLeading) {
-//            Button(action: {
-//                presentationMode.wrappedValue.dismiss()
-//            }, label: {
-//                Image(uiImage: IconProvider.chevronLeft)
-//                    .foregroundColor(.primary)
-//            })
-//        }
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Image(uiImage: IconProvider.chevronLeft)
+                    .foregroundColor(.primary)
+            })
+        }
 
         ToolbarItem(placement: .principal) {
             Text(viewModel.name)
@@ -67,22 +76,20 @@ struct LogInDetailView: View {
 
     private var trailingMenu: some View {
         Menu(content: {
-            Button(action: {
-                print("Edit")
-            }, label: {
+            Button(action: viewModel.edit) {
                 Label(title: {
                     Text("Edit login")
                 }, icon: {
                     Image(uiImage: IconProvider.eraser)
                 })
-            })
+            }
 
             Divider()
 
             DestructiveButton(title: "Move to trash",
                               icon: IconProvider.trash,
                               action: {
-                print("Delete")
+                isShowingTrashingAlert.toggle()
             })
         }, label: {
             Image(uiImage: IconProvider.threeDotsHorizontal)

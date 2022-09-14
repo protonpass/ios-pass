@@ -33,12 +33,12 @@ struct SearchView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar { toolbar }
+            .toolbar { toolbarContent }
         }
     }
 
     @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
+    private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             SwiftUISearchBar(onSearch: viewModel.search(term:),
                              onCancel: { presentationMode.wrappedValue.dismiss() })

@@ -20,8 +20,14 @@
 
 @testable import Client
 
+extension ItemRevisionState {
+    static func random() -> Int16 {
+        allCases.map { $0.rawValue }.randomElement() ?? Self.active.rawValue
+    }
+}
+
 extension ItemRevision {
-    static func random(itemId: String? = nil) -> ItemRevision {
+    static func random(itemId: String? = nil, state: ItemRevisionState? = nil) -> ItemRevision {
         .init(itemID: itemId ?? .random(),
               revision: .random(in: 0...100),
               contentFormatVersion: .random(in: 0...100),
@@ -29,10 +35,11 @@ extension ItemRevision {
               content: .random(),
               userSignature: .random(),
               itemKeySignature: .random(),
-              state: .random(in: 0...100),
+              state: state?.rawValue ?? ItemRevisionState.random(),
               signatureEmail: .random(),
               aliasEmail: .random(),
               createTime: .random(in: 0...1_000_000),
-              modifyTime: .random(in: 0...1_000_000))
+              modifyTime: .random(in: 0...1_000_000),
+              revisionTime: .random(in: 0...1_000_000))
     }
 }

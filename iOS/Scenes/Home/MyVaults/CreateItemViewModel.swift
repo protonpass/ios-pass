@@ -24,19 +24,15 @@ import ProtonCore_UIFoundations
 import UIComponents
 import UIKit
 
-protocol CreateItemViewModelDelegate: AnyObject {
-    func createItemViewDidSelect(option: CreateNewItemOption)
-}
-
 final class CreateItemViewModel: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    weak var delegate: CreateItemViewModelDelegate?
+    var onSelectedOption: ((CreateNewItemOption) -> Void)?
 
     init() {}
 
     func select(option: CreateNewItemOption) {
-        delegate?.createItemViewDidSelect(option: option)
+        onSelectedOption?(option)
     }
 }
 

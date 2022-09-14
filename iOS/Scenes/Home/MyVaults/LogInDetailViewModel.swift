@@ -19,37 +19,20 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import Core
 
-protocol LogInDetailViewModelDelegate: AnyObject {
-    func logInDetailViewModelBeginsLoading()
-    func logInDetailViewModelStopsLoading()
-    func logInDetailViewModelDidFailWithError(error: Error)
-}
-
-final class LogInDetailViewModel: DeinitPrintable, ObservableObject {
+final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    @Published private(set) var isLoading = false
-    @Published private(set) var error: Error?
     @Published private(set) var name = ""
     @Published private(set) var username = ""
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
     @Published private(set) var note = ""
 
-    private let itemContent: ItemContent
-    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
-
-    private var cancellables = Set<AnyCancellable>()
-
-    weak var delegate: LogInDetailViewModelDelegate?
-
-    init(itemContent: ItemContent,
-         itemRevisionRepository: ItemRevisionRepositoryProtocol) {
-        self.itemContent = itemContent
-        self.itemRevisionRepository = itemRevisionRepository
+    override init(itemContent: ItemContent,
+                  itemRevisionRepository: ItemRevisionRepositoryProtocol) {
+        super.init(itemContent: itemContent, itemRevisionRepository: itemRevisionRepository)
 
         switch itemContent.contentData {
         case let .login(username, password, urls):
@@ -61,25 +44,5 @@ final class LogInDetailViewModel: DeinitPrintable, ObservableObject {
         default:
             fatalError("Expecting login type")
         }
-
-        $isLoading
-            .sink { [weak self] isLoading in
-                guard let self = self else { return }
-                if isLoading {
-                    self.delegate?.logInDetailViewModelBeginsLoading()
-                } else {
-                    self.delegate?.logInDetailViewModelStopsLoading()
-                }
-            }
-            .store(in: &cancellables)
-
-        $error
-            .sink { [weak self] error in
-                guard let self = self else { return }
-                if let error = error {
-                    self.delegate?.logInDetailViewModelDidFailWithError(error: error)
-                }
-            }
-            .store(in: &cancellables)
     }
 }

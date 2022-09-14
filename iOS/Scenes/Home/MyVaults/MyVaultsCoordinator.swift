@@ -20,24 +20,11 @@
 
 import Client
 import Core
-import CoreData
 import ProtonCore_Login
-import ProtonCore_Services
 import SwiftUI
-import UIComponents
-
-protocol MyVaultsCoordinatorDelegate: AnyObject {
-    func myVautsCoordinatorWantsToShowSidebar()
-    func myVautsCoordinatorWantsToShowLoadingHud()
-    func myVautsCoordinatorWantsToHideLoadingHud()
-    func myVautsCoordinatorWantsToAlertError(_ error: Error)
-}
 
 final class MyVaultsCoordinator: Coordinator {
-    weak var delegate: MyVaultsCoordinatorDelegate?
-
-    private let apiService: APIService
-    private let sessionData: SessionData
+    private let userData: UserData
     private let vaultSelection: VaultSelection
     private let vaultContentViewModel: VaultContentViewModel
     private let shareRepository: ShareRepositoryProtocol
@@ -45,64 +32,70 @@ final class MyVaultsCoordinator: Coordinator {
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
 
-    init(apiService: APIService,
-         sessionData: SessionData,
-         container: NSPersistentContainer,
-         vaultSelection: VaultSelection) {
-        self.apiService = apiService
-        self.sessionData = sessionData
+    var onTrashedItem: (() -> Void)?
+
+    init(userData: UserData,
+         vaultSelection: VaultSelection,
+         shareRepository: ShareRepositoryProtocol,
+         shareKeysRepository: ShareKeysRepositoryProtocol,
+         itemRevisionRepository: ItemRevisionRepositoryProtocol,
+         publicKeyRepository: PublicKeyRepositoryProtocol) {
+        self.userData = userData
         self.vaultSelection = vaultSelection
-
-        let userId = sessionData.userData.user.ID
-        let authCredential = sessionData.userData.credential
-
-        let shareRepository = ShareRepository(userId: userId,
-                                              container: container,
-                                              authCredential: authCredential,
-                                              apiService: apiService)
         self.shareRepository = shareRepository
-
-        self.itemRevisionRepository = ItemRevisionRepository(container: container,
-                                                             authCredential: authCredential,
-                                                             apiService: apiService)
-
-        self.shareKeysRepository = ShareKeysRepository(container: container,
-                                                       authCredential: authCredential,
-                                                       apiService: apiService)
-
-        let publicKeyRepository = PublicKeyRepository(container: container,
-                                                      apiService: apiService)
-
-        self.vaultContentViewModel = .init(userData: sessionData.userData,
+        self.itemRevisionRepository = itemRevisionRepository
+        self.shareKeysRepository = shareKeysRepository
+        self.vaultContentViewModel = .init(userData: userData,
                                            vaultSelection: vaultSelection,
                                            shareRepository: shareRepository,
                                            itemRevisionRepository: itemRevisionRepository,
                                            shareKeysRepository: shareKeysRepository,
                                            publicKeyRepository: publicKeyRepository)
-
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
-
         super.init()
+        observeVaultContentViewModel()
+        start()
+    }
 
-        let loadVaultsViewModel = LoadVaultsViewModel(userData: sessionData.userData,
+    private func observeVaultContentViewModel() {
+        vaultContentViewModel.delegate = self
+        vaultContentViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
+        vaultContentViewModel.onSearch = { [unowned self] in showSearchView() }
+        vaultContentViewModel.onCreateItem = { [unowned self] in showCreateItemView() }
+        vaultContentViewModel.onCreateVault = { [unowned self] in showCreateVaultView() }
+        vaultContentViewModel.onShowItemDetail = { [unowned self] in showItemDetailView($0) }
+        vaultContentViewModel.onTrashedItem = { [unowned self] in handleTrashedItem($0) }
+    }
+
+    private func start() {
+        let loadVaultsViewModel = LoadVaultsViewModel(userData: userData,
                                                       vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
                                                       shareKeysRepository: shareKeysRepository)
-
-        self.vaultContentViewModel.delegate = self
-        loadVaultsViewModel.delegate = self
+        loadVaultsViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
                                       loadVaultsViewModel: loadVaultsViewModel,
                                       vaultContentViewModel: vaultContentViewModel))
     }
 
-    func showSidebar() {
-        delegate?.myVautsCoordinatorWantsToShowSidebar()
-    }
-
-    func showCreateItemView() {
+    private func showCreateItemView() {
+        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
+        let mode = BaseCreateEditItemViewModel.Mode.create(shareId: shareId)
         let createItemViewModel = CreateItemViewModel()
-        createItemViewModel.delegate = self
+        createItemViewModel.onSelectedOption = { [unowned self] option in
+            dismissTopMostViewController(animated: true) { [unowned self] in
+                switch option {
+                case .login:
+                    showCreateEditLoginView(mode: mode)
+                case .alias:
+                    showCreateAliasView()
+                case .note:
+                    showCreateEditNoteView(mode: mode)
+                case .password:
+                    showGeneratePasswordView(delegate: nil)
+                }
+            }
+        }
         let createItemView = CreateItemView(viewModel: createItemViewModel)
         let createItemViewController = UIHostingController(rootView: createItemView)
         if #available(iOS 15.0, *) {
@@ -111,11 +104,16 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewController(createItemViewController)
     }
 
-    func showCreateVaultView() {
+    private func showCreateVaultView() {
         let createVaultViewModel =
-        CreateVaultViewModel(userData: sessionData.userData,
+        CreateVaultViewModel(userData: userData,
                              shareRepository: shareRepository)
         createVaultViewModel.delegate = self
+        createVaultViewModel.onCreatedShare = { [unowned self] _ in
+            // Set vaults to empty to trigger refresh
+            self.vaultSelection.update(vaults: [])
+            self.dismissTopMostViewController()
+        }
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         let createVaultViewController = UIHostingController(rootView: createVaultView)
         if #available(iOS 15.0, *) {
@@ -124,39 +122,43 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewController(createVaultViewController)
     }
 
-    func showCreateLoginView() {
-        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        let createLoginViewModel = CreateLoginViewModel(shareId: shareId,
-                                                        userData: sessionData.userData,
-                                                        shareRepository: shareRepository,
-                                                        shareKeysRepository: shareKeysRepository,
-                                                        itemRevisionRepository: itemRevisionRepository)
-        createLoginViewModel.delegate = self
-        createLoginViewModel.createLoginDelegate = self
-        let createLoginView = CreateLoginView(viewModel: createLoginViewModel)
-        presentViewFullScreen(createLoginView)
+    private func showCreateEditLoginView(mode: BaseCreateEditItemViewModel.Mode) {
+        let createEditLoginViewModel = CreateEditLoginViewModel(mode: mode,
+                                                                userData: userData,
+                                                                shareRepository: shareRepository,
+                                                                shareKeysRepository: shareKeysRepository,
+                                                                itemRevisionRepository: itemRevisionRepository)
+        createEditLoginViewModel.delegate = self
+        createEditLoginViewModel.onGeneratePassword = { [unowned self] in showGeneratePasswordView(delegate: $0) }
+        createEditLoginViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
+        createEditLoginViewModel.onUpdatedItem = { [unowned self] in handleUpdatedItem($0) }
+        let createEditLoginView = CreateEditLoginView(viewModel: createEditLoginViewModel)
+        presentViewFullScreen(createEditLoginView,
+                              modalTransitionStyle: mode.modalTransitionStyle)
     }
 
-    func showCreateAliasView() {
+    private func showCreateAliasView() {
         let createAliasViewModel = CreateAliasViewModel()
         createAliasViewModel.delegate = self
         let createAliasView = CreateAliasView(viewModel: createAliasViewModel)
         presentViewFullScreen(createAliasView)
     }
 
-    func showCreateNoteView() {
-        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        let createNoteViewModel = CreateNoteViewModel(shareId: shareId,
-                                                      userData: sessionData.userData,
-                                                      shareRepository: shareRepository,
-                                                      shareKeysRepository: shareKeysRepository,
-                                                      itemRevisionRepository: itemRevisionRepository)
-        createNoteViewModel.delegate = self
-        let createNoteView = CreateNoteView(viewModel: createNoteViewModel)
-        presentViewFullScreen(createNoteView)
+    private func showCreateEditNoteView(mode: BaseCreateEditItemViewModel.Mode) {
+        let createEditNoteViewModel = CreateEditNoteViewModel(mode: mode,
+                                                              userData: userData,
+                                                              shareRepository: shareRepository,
+                                                              shareKeysRepository: shareKeysRepository,
+                                                              itemRevisionRepository: itemRevisionRepository)
+        createEditNoteViewModel.delegate = self
+        createEditNoteViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
+        createEditNoteViewModel.onUpdatedItem = { [unowned self] in handleUpdatedItem($0) }
+        let createEditNoteView = CreateEditNoteView(viewModel: createEditNoteViewModel)
+        presentViewFullScreen(createEditNoteView,
+                              modalTransitionStyle: mode.modalTransitionStyle)
     }
 
-    func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?) {
+    private func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?) {
         let viewModel = GeneratePasswordViewModel()
         viewModel.delegate = delegate
         let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
@@ -167,21 +169,27 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewController(generatePasswordViewController)
     }
 
-    func showSearchView() {
+    private func showSearchView() {
         presentViewFullScreen(SearchView())
     }
 
-    func showItemDetailView(itemContent: ItemContent) {
+    private func showItemDetailView(_ itemContent: ItemContent) {
         switch itemContent.contentData {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
                                                  itemRevisionRepository: itemRevisionRepository)
+            viewModel.delegate = self
+            viewModel.onEditItem = { [unowned self] in showEditItemView($0) }
+            viewModel.onTrashedItem = { [unowned self] in handleTrashedItem($0) }
             let logInDetailView = LogInDetailView(viewModel: viewModel)
             pushView(logInDetailView)
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRevisionRepository: itemRevisionRepository)
+            viewModel.delegate = self
+            viewModel.onEditItem = { [unowned self] in showEditItemView($0) }
+            viewModel.onTrashedItem = { [unowned self] in handleTrashedItem($0) }
             let noteDetailView = NoteDetailView(viewModel: viewModel)
             pushView(noteDetailView)
 
@@ -189,129 +197,88 @@ final class MyVaultsCoordinator: Coordinator {
             break
         }
     }
-}
 
-// MARK: - LoadVaultsViewModelDelegate
-extension MyVaultsCoordinator: LoadVaultsViewModelDelegate {
-    func loadVaultsViewModelWantsToToggleSideBar() {
-        showSidebar()
-    }
-}
-
-// MARK: - VaultContentViewModelDelegate
-extension MyVaultsCoordinator: VaultContentViewModelDelegate {
-    func vaultContentViewModelWantsToToggleSidebar() {
-        showSidebar()
-    }
-
-    func vaultContentViewModelWantsToSearch() {
-        showSearchView()
-    }
-
-    func vaultContentViewModelWantsToCreateNewItem() {
-        showCreateItemView()
-    }
-
-    func vaultContentViewModelWantsToCreateNewVault() {
-        showCreateVaultView()
-    }
-
-    func vaultContentViewModelWantsToShowItemDetail(itemContent: ItemContent) {
-        showItemDetailView(itemContent: itemContent)
-    }
-
-    func vaultContentViewModelDidFailWithError(error: Error) {
-        delegate?.myVautsCoordinatorWantsToAlertError(error)
-    }
-}
-
-// MARK: - CreateItemViewModelDelegate
-extension MyVaultsCoordinator: CreateItemViewModelDelegate {
-    func createItemViewDidSelect(option: CreateNewItemOption) {
+    private func handleCreatedItem(_ itemContentType: ItemContentType) {
         dismissTopMostViewController(animated: true) { [unowned self] in
-            switch option {
-            case .login:
-                showCreateLoginView()
+            let message: String
+            switch itemContentType {
             case .alias:
-                showCreateAliasView()
+                message = "Alias created"
+            case .login:
+                message = "Login created"
             case .note:
-                showCreateNoteView()
-            case .password:
-                showGeneratePasswordView(delegate: nil)
+                message = "Note created"
             }
+            myVaultsViewModel.successMessage = message
+            vaultContentViewModel.fetchItems()
         }
     }
-}
 
-// MARK: - CreateVaultViewModelDelegate
-extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
-    func createVaultViewModelBeginsLoading() {
-        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
+    private func showEditItemView(_ item: ItemContent) {
+        let mode = BaseCreateEditItemViewModel.Mode.edit(item)
+        switch item.contentData.type {
+        case .login:
+            showCreateEditLoginView(mode: mode)
+        case .note:
+            showCreateEditNoteView(mode: mode)
+        case .alias:
+            break
+        }
     }
 
-    func createVaultViewModelStopsLoading() {
-        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
-    }
-
-    func createVaultViewModelDidCreateShare(share: Share) {
-        // Set vaults to empty to trigger refresh
-        vaultSelection.update(vaults: [])
-        dismissTopMostViewController()
-    }
-
-    func createVaultViewModelDidFailWithError(error: Error) {
-        delegate?.myVautsCoordinatorWantsToAlertError(error)
-    }
-}
-
-// MARK: - CreateLoginViewModelDelegate
-extension MyVaultsCoordinator: CreateLoginViewModelDelegate {
-    func createLoginViewModelWantsToGeneratePassword(delegate: GeneratePasswordViewModelDelegate) {
-        showGeneratePasswordView(delegate: delegate)
-    }
-}
-
-// MARK: - CreateAliasViewModelDelegate
-extension MyVaultsCoordinator: CreateAliasViewModelDelegate {
-    func createAliasViewModelBeginsLoading() {
-        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
-    }
-
-    func createAliasViewModelStopsLoading() {
-        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
-    }
-
-    func createAliasViewModelDidFailWithError(error: Error) {
-        delegate?.myVautsCoordinatorWantsToAlertError(error)
-    }
-}
-
-// MARK: - BaseCreateItemViewModelDelegate
-extension MyVaultsCoordinator: BaseCreateItemViewModelDelegate {
-    func createItemViewModelBeginsLoading() {
-        delegate?.myVautsCoordinatorWantsToShowLoadingHud()
-    }
-
-    func createItemViewModelStopsLoading() {
-        delegate?.myVautsCoordinatorWantsToHideLoadingHud()
-    }
-
-    func createItemViewModelDidFailWithError(_ error: Error) {
-        delegate?.myVautsCoordinatorWantsToAlertError(error)
-    }
-
-    func createItemViewModelDidCreateItem(_ itemContentType: ItemContentType) {
-        dismissTopMostViewController()
+    private func handleTrashedItem(_ itemContentType: ItemContentType) {
         let message: String
         switch itemContentType {
         case .alias:
-            message = "Alias created"
+            message = "Alias deleted"
         case .login:
-            message = "Login created"
+            message = "Login deleted"
         case .note:
-            message = "Note created"
+            message = "Note deleted"
         }
         myVaultsViewModel.successMessage = message
         vaultContentViewModel.fetchItems()
+        onTrashedItem?()
+    }
+
+    private func handleUpdatedItem(_ itemContentType: ItemContentType) {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            popToRoot()
+            let message: String
+            switch itemContentType {
+            case .alias:
+                message = "Alias updated"
+            case .login:
+                message = "Login updated"
+            case .note:
+                message = "Note updated"
+            }
+            myVaultsViewModel.successMessage = message
+            vaultContentViewModel.fetchItems()
+        }
+    }
+
+    func refreshItems() {
+        vaultContentViewModel.fetchItems()
+    }
+}
+
+// MARK: - BaseViewModelDelegate
+extension MyVaultsCoordinator: BaseViewModelDelegate {
+    func viewModelBeginsLoading() { showLoadingHud() }
+
+    func viewModelStopsLoading() { hideLoadingHud() }
+
+    func viewModelDidFailWithError(_ error: Error) { alertError(error) }
+}
+
+private extension BaseCreateEditItemViewModel.Mode {
+    var modalTransitionStyle: UIModalTransitionStyle {
+        switch self {
+        case .create:
+            return .coverVertical
+        case .edit:
+            return .crossDissolve
+        }
     }
 }

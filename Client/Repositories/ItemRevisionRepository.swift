@@ -30,12 +30,21 @@ public protocol ItemRevisionRepositoryProtocol {
     /// Get a specific ItemRevision (only from local datasource)
     func getItemRevision(shareId: String, itemId: String) async throws -> ItemRevision?
 
+    /// Get item revisions of a share by state
     func getItemRevisions(forceRefresh: Bool,
                           shareId: String,
-                          page: Int,
-                          pageSize: Int) async throws -> ItemRevisionList
+                          state: ItemRevisionState) async throws -> [ItemRevision]
+
     @discardableResult
     func createItem(request: CreateItemRequest, shareId: String) async throws -> ItemRevision
+
+    func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws
+
+    func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws
+
+    func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws
+
+    func updateItem(request: UpdateItemRequest, shareId: String, itemId: String) async throws
 }
 
 public extension ItemRevisionRepositoryProtocol {
@@ -45,51 +54,40 @@ public extension ItemRevisionRepositoryProtocol {
 
     func getItemRevisions(forceRefresh: Bool,
                           shareId: String,
-                          page: Int,
-                          pageSize: Int) async throws -> ItemRevisionList {
-        PPLogger.shared?.log("Getting item revisions (page =\(page), pageSize = \(pageSize))")
+                          state: ItemRevisionState) async throws -> [ItemRevision] {
+        let stateDescription: String
+        switch state {
+        case .active: stateDescription = "active"
+        case .trashed: stateDescription = "trashed"
+        }
+
+        PPLogger.shared?.log("Getting \(stateDescription) item revisions")
         if forceRefresh {
-            PPLogger.shared?.log("Force refresh item revisions (page =\(page), pageSize = \(pageSize))")
-            return try await getItemRevisionsFromRemoteAndSaveToLocal(shareId: shareId,
-                                                                      page: page,
-                                                                      pageSize: pageSize)
+            PPLogger.shared?.log("Force refresh item revisions")
+            try await refreshItemRevisions(shareId: shareId)
         }
 
-        let localItemRevisionList =
-        try await localItemRevisionDatasoure.getItemRevisions(shareId: shareId,
-                                                              page: page,
-                                                              pageSize: pageSize)
+        let localItemRevisionCount =
+        try await localItemRevisionDatasoure.getItemRevisionCount(shareId: shareId)
 
-        if localItemRevisionList.revisionsData.isEmpty {
-            PPLogger.shared?.log("""
-No item revisions in local => Fetching from remote... (page =\(page), pageSize = \(pageSize))
-""")
-            return try await getItemRevisionsFromRemoteAndSaveToLocal(shareId: shareId,
-                                                                      page: page,
-                                                                      pageSize: pageSize)
+        if localItemRevisionCount == 0 {
+            PPLogger.shared?.log("No item revisions in local database => Fetch from remote")
+            try await refreshItemRevisions(shareId: shareId)
         }
 
-        PPLogger.shared?.log("""
-Found \(localItemRevisionList.revisionsData.count) item revision in local (page =\(page), pageSize = \(pageSize))
-""")
-        return localItemRevisionList
+        let localItemRevisions =
+        try await localItemRevisionDatasoure.getItemRevisions(shareId: shareId, state: state)
+
+        let count = localItemRevisions.count
+        PPLogger.shared?.log("Found \(count) \(stateDescription) item revisions in local database")
+        return localItemRevisions
     }
 
-    private func getItemRevisionsFromRemoteAndSaveToLocal(
-        shareId: String,
-        page: Int,
-        pageSize: Int
-    ) async throws -> ItemRevisionList {
-        PPLogger.shared?.log("Getting item revisions from remote (page =\(page), pageSize = \(pageSize))")
-        let itemRevisionList =
-        try await remoteItemRevisionDatasource.getItemRevisions(shareId: shareId,
-                                                                page: page,
-                                                                pageSize: pageSize)
-        PPLogger.shared?.log("Saving remote item revisions to local (page =\(page), pageSize = \(pageSize))")
-        let itemRevisions = itemRevisionList.revisionsData
-        try await localItemRevisionDatasoure.upsertItemRevisions(itemRevisions,
-                                                                 shareId: shareId)
-        return itemRevisionList
+    private func refreshItemRevisions(shareId: String) async throws {
+        PPLogger.shared?.log("Getting item revisions from remote")
+        let itemRevisions = try await remoteItemRevisionDatasource.getItemRevisions(shareId: shareId)
+        PPLogger.shared?.log("Saving \(itemRevisions.count) remote item revisions to local database")
+        try await localItemRevisionDatasoure.upsertItemRevisions(itemRevisions, shareId: shareId)
     }
 
     func createItem(request: CreateItemRequest,
@@ -98,11 +96,53 @@ Found \(localItemRevisionList.revisionsData.count) item revision in local (page 
         let createdItemRevision =
         try await remoteItemRevisionDatasource.createItem(shareId: shareId,
                                                           request: request)
-        PPLogger.shared?.log("Saving newly create item revision to local")
+        PPLogger.shared?.log("Saving newly create item revision to local database")
         try await localItemRevisionDatasoure.upsertItemRevisions([createdItemRevision],
                                                                  shareId: shareId)
         PPLogger.shared?.log("Item revision creation finished with success")
         return createdItemRevision
+    }
+
+    func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws {
+        let count = items.count
+        PPLogger.shared?.log("Trashing \(count) items for share \(shareId)")
+        let modifiedItems = try await remoteItemRevisionDatasource.trashItemRevisions(items, shareId: shareId)
+        PPLogger.shared?.log("Finished trashing remotely \(count) items for share \(shareId)")
+        try await localItemRevisionDatasoure.upsertItemRevisions(items,
+                                                                 modifiedItems: modifiedItems,
+                                                                 shareId: shareId)
+        PPLogger.shared?.log("Finished trashing locallly \(count) items for share \(shareId)")
+    }
+
+    func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws {
+        let count = items.count
+        PPLogger.shared?.log("Untrashing \(count) items for share \(shareId)")
+        let modifiedItems = try await remoteItemRevisionDatasource.untrashItemRevisions(items,
+                                                                                        shareId: shareId)
+        PPLogger.shared?.log("Finished untrashing remotely \(count) items for share \(shareId)")
+        try await localItemRevisionDatasoure.upsertItemRevisions(items,
+                                                                 modifiedItems: modifiedItems,
+                                                                 shareId: shareId)
+        PPLogger.shared?.log("Finished untrashing locallly \(count) items for share \(shareId)")
+    }
+
+    func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws {
+        let count = items.count
+        PPLogger.shared?.log("Deleting \(count) items for share \(shareId)")
+        try await remoteItemRevisionDatasource.deleteItemRevisions(items, shareId: shareId)
+        PPLogger.shared?.log("Finished deleting remotely \(count) items for share \(shareId)")
+        try await localItemRevisionDatasoure.deleteItemRevisions(items, shareId: shareId)
+        PPLogger.shared?.log("Finished deleting locallly \(count) items for share \(shareId)")
+    }
+
+    func updateItem(request: UpdateItemRequest, shareId: String, itemId: String) async throws {
+        PPLogger.shared?.log("Updating item \(itemId) for share \(shareId)")
+        let updatedItemRevision = try await remoteItemRevisionDatasource.updateItem(shareId: shareId,
+                                                                                    itemId: itemId,
+                                                                                    request: request)
+        PPLogger.shared?.log("Finished updating remotely item \(itemId) for share \(shareId)")
+        try await localItemRevisionDatasoure.upsertItemRevisions([updatedItemRevision], shareId: shareId)
+        PPLogger.shared?.log("Finished updating locally item \(itemId) for share \(shareId)")
     }
 }
 

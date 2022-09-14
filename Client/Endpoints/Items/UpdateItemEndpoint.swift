@@ -31,6 +31,7 @@ public struct UpdateItemEndpoint: Endpoint {
     public typealias Response = UpdateItemResponse
 
     public var path: String
+    public var method: HTTPMethod
     public var authCredential: AuthCredential?
     public var body: UpdateItemRequest?
 
@@ -39,6 +40,7 @@ public struct UpdateItemEndpoint: Endpoint {
                 itemId: String,
                 request: UpdateItemRequest) {
         self.path = "/pass/v1/share/\(shareId)/item/\(itemId)"
+        self.method = .put
         self.authCredential = credential
         self.body = request
     }

@@ -1,5 +1,5 @@
 //
-// CreateLoginView.swift
+// CreateEditLoginView.swift
 // Proton Pass - Created on 07/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,14 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct CreateLoginView: View {
+struct CreateEditLoginView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @StateObject private var viewModel: CreateLoginViewModel
+    @StateObject private var viewModel: CreateEditLoginViewModel
     @State private var isShowingDiscardAlert = false
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnUsername = false
@@ -33,7 +32,7 @@ struct CreateLoginView: View {
     @State private var isFocusedOnURLs = false
     @State private var isFocusedOnNote = false
 
-    init(viewModel: CreateLoginViewModel) {
+    init(viewModel: CreateEditLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
@@ -49,15 +48,10 @@ struct CreateLoginView: View {
                 }
                 .padding()
             }
-            .toolbar(content: toolbarContent)
+            .toolbar { toolbarContent }
             .navigationBarTitleDisplayMode(.inline)
         }
         .disabled(viewModel.isLoading)
-        .onReceive(Just(viewModel.createdLogin)) { createdLogin in
-            if createdLogin {
-                presentationMode.wrappedValue.dismiss()
-            }
-        }
         .alert(isPresented: $isShowingDiscardAlert) {
             Alert(title: Text("Discard changes"),
                   message: Text("You will loose all unsaved changes"),
@@ -68,7 +62,7 @@ struct CreateLoginView: View {
     }
 
     @ToolbarContentBuilder
-    private func toolbarContent() -> some ToolbarContent {
+    private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
                 if viewModel.isEmpty {
@@ -83,12 +77,12 @@ struct CreateLoginView: View {
         }
 
         ToolbarItem(placement: .principal) {
-            Text("Create new login")
+            Text(viewModel.navigationBarTitle())
                 .fontWeight(.bold)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.createItem) {
+            Button(action: viewModel.save) {
                 Text("Save")
                     .fontWeight(.bold)
                     .foregroundColor(Color(ColorProvider.BrandNorm))
@@ -114,7 +108,7 @@ struct CreateLoginView: View {
                 isFocused: $isFocusedOnUsername,
                 placeholder: "Add username",
                 trailingIcon: IconProvider.arrowsRotate,
-                trailingAction: viewModel.generateAliasAction)
+                trailingAction: viewModel.generateAlias)
         }
     }
 
@@ -123,7 +117,7 @@ struct CreateLoginView: View {
         let btn = UIBarButtonItem(title: "Generate password",
                                   style: .plain,
                                   target: viewModel,
-                                  action: #selector(viewModel.generatePasswordAction))
+                                  action: #selector(viewModel.generatePassword))
         btn.tintColor = ColorProvider.BrandNorm
         toolbar.items = [.flexibleSpace(), btn, .flexibleSpace()]
         toolbar.barStyle = UIBarStyle.default

@@ -26,6 +26,8 @@ import UIComponents
 struct VaultContentView: View {
     @StateObject private var viewModel: VaultContentViewModel
     @State private var didAppear = false
+    @State private var selectedItemContent: PartialItemContent?
+    @State private var isShowingTrashingAlert = false
 
     private var selectedVaultName: String {
         viewModel.selectedVault?.name ?? "All vaults"
@@ -36,15 +38,26 @@ struct VaultContentView: View {
     }
 
     var body: some View {
-        Group {
-            if viewModel.partialItemContents.isEmpty {
-                EmptyVaultView(action: viewModel.createItemAction)
-            } else {
+        ZStack {
+            // Embed in a ZStack with clear color as background
+            // in order for bottom banner to properly display
+            // as Color occupies the whole ZStack
+            Color.clear
+            if !viewModel.partialItemContents.isEmpty {
                 itemList
+            } else if viewModel.isFetchingItems {
+                ProgressView()
+            } else if viewModel.partialItemContents.isEmpty {
+                EmptyVaultView(action: viewModel.createItem)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar { toolbar }
+        .moveToTrashAlert(isPresented: $isShowingTrashingAlert) {
+            if let selectedItemContent = selectedItemContent {
+                viewModel.trash(selectedItemContent)
+            }
+        }
+        .toolbar { toolbarContent }
         .onAppear {
             if !didAppear {
                 viewModel.fetchItems()
@@ -56,15 +69,30 @@ struct VaultContentView: View {
     private var itemList: some View {
         ScrollView {
             LazyVStack {
-                //                summaryView
-                //                    .frame(height: 150)
-                //                    .padding()
-                ForEach(viewModel.partialItemContents.indices, id: \.self) { index in
-                    let item = viewModel.partialItemContents[index]
+                ForEach(viewModel.partialItemContents, id: \.itemId) { item in
                     GenericItemView(
                         item: item,
-                        showDivider: index != viewModel.partialItemContents.count - 1,
-                        action: { viewModel.selectItem(item) })
+                        showDivider: item.itemId != viewModel.partialItemContents.last?.itemId,
+                        action: { viewModel.selectItem(item) },
+                        trailingView: {
+                            VStack {
+                                Menu(content: {
+                                    DestructiveButton(
+                                        title: "Move to Trash",
+                                        icon: IconProvider.trash,
+                                        action: {
+                                            selectedItemContent = item
+                                            isShowingTrashingAlert.toggle()
+                                        })
+                                }, label: {
+                                    Image(uiImage: IconProvider.threeDotsHorizontal)
+                                        .foregroundColor(.secondary)
+                                })
+                                .padding(.top, 16)
+
+                                Spacer()
+                            }
+                        })
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 Spacer()
@@ -73,9 +101,9 @@ struct VaultContentView: View {
     }
 
     @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
+    private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            ToggleSidebarButton(action: viewModel.toggleSidebarAction)
+            ToggleSidebarButton(action: viewModel.toggleSidebar)
         }
 
 //        ToolbarItem(placement: .principal) {
@@ -135,15 +163,17 @@ struct VaultContentView: View {
 
         ToolbarItem(placement: .navigationBarTrailing) {
             HStack {
-                Button(action: viewModel.searchAction) {
+                Button(action: viewModel.search) {
                     Image(uiImage: IconProvider.magnifier)
                 }
 
-                Button(action: viewModel.createItemAction) {
+                Button(action: viewModel.createItem) {
                     Image(uiImage: IconProvider.plus)
                 }
             }
             .foregroundColor(Color(.label))
+            .disabled(viewModel.isFetchingItems)
+            .opacity(viewModel.isFetchingItems ? 0.0 : 1.0)
         }
     }
 

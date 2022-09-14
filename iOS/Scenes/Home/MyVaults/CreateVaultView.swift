@@ -41,7 +41,7 @@ struct CreateVaultView: View {
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar { toolbar }
+            .toolbar { toolbarContent }
         }
         .disabled(viewModel.isLoading)
     }
@@ -66,7 +66,7 @@ struct CreateVaultView: View {
     }
 
     @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
+    private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
                 presentationMode.wrappedValue.dismiss()

@@ -1,6 +1,6 @@
 //
-// GetItemsEndpoint.swift
-// Proton Pass - Created on 10/08/2022.
+// UntrashItemsEndpoint.swift
+// Proton Pass - Created on 14/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,25 +21,21 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public struct GetItemsResponse: Decodable {
-    let code: Int
-    let items: ItemRevisionList
-}
-
-public struct GetItemsEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetItemsResponse
+public struct UntrashItemsEndpoint: Endpoint {
+    public typealias Body = ModifyItemRequest
+    public typealias Response = ModifyItemResponse
 
     public var path: String
+    public var method: HTTPMethod
     public var authCredential: AuthCredential?
-    public var queries: [String: Any]?
+    public var body: ModifyItemRequest?
 
     public init(credential: AuthCredential,
                 shareId: String,
-                page: Int,
-                pageSize: Int) {
-        self.path = "/pass/v1/share/\(shareId)/item"
+                request: ModifyItemRequest) {
+        self.path = "/pass/v1/share/\(shareId)/item/untrash"
+        self.method = .post
         self.authCredential = credential
-        self.queries = .paginationQuery(page: page, pageSize: pageSize)
+        self.body = request
     }
 }

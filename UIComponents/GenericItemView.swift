@@ -39,57 +39,56 @@ public struct GenericItem: GenericItemProtocol {
     }
 }
 
-public struct GenericItemView: View {
+public struct GenericItemView<TrailingView: View>: View {
     private let item: GenericItemProtocol
-    private let action: () -> Void
     private let showDivider: Bool
+    private let action: () -> Void
+    private let trailingView: TrailingView
 
     public init(item: GenericItemProtocol,
                 showDivider: Bool = true,
-                action: @escaping () -> Void) {
+                action: @escaping () -> Void,
+                @ViewBuilder trailingView: () -> TrailingView) {
         self.item = item
         self.showDivider = showDivider
         self.action = action
+        self.trailingView = trailingView()
     }
 
     public var body: some View {
-        Button(action: action) {
-            VStack(spacing: 0) {
-                HStack {
-                    VStack {
-                        Image(uiImage: item.icon)
-                            .foregroundColor(Color(.label))
-                            .padding(.top, -20)
-                        EmptyView()
-                    }
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(item.title)
-                        if let detail = item.detail {
-                            Text(detail)
-                                .font(.callout)
-                                .foregroundColor(Color(.secondaryLabel))
+        VStack {
+            HStack {
+                Button(action: action) {
+                    HStack {
+                        VStack {
+                            Image(uiImage: item.icon)
+                                .foregroundColor(Color(.label))
+                                .padding(.top, -20)
+                            EmptyView()
                         }
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(item.title)
+                            if let detail = item.detail {
+                                Text(detail)
+                                    .font(.callout)
+                                    .foregroundColor(Color(.secondaryLabel))
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                    .contentShape(Rectangle())
                 }
-                .padding()
+                .buttonStyle(.plain)
 
-                if showDivider {
-                    Divider()
-                }
+                trailingView
+                    .padding(.trailing)
             }
-            .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
-    }
-}
 
-struct GenericItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        let item = GenericItem(icon: IconProvider.note,
-                               title: "Note",
-                               detail: "Keep important information secure")
-        GenericItemView(item: item) {}
+        if showDivider {
+            Divider()
+        }
     }
 }

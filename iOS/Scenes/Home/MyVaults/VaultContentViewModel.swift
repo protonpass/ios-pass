@@ -19,28 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import Core
 import ProtonCore_Login
-import ProtonCore_UIFoundations
-import UIComponents
-import UIKit
 
-protocol VaultContentViewModelDelegate: AnyObject {
-    func vaultContentViewModelWantsToToggleSidebar()
-    func vaultContentViewModelWantsToSearch()
-    func vaultContentViewModelWantsToCreateNewItem()
-    func vaultContentViewModelWantsToCreateNewVault()
-    func vaultContentViewModelWantsToShowItemDetail(itemContent: ItemContent)
-    func vaultContentViewModelDidFailWithError(error: Error)
-}
-
-final class VaultContentViewModel: DeinitPrintable, ObservableObject {
+final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
 
+    @Published private(set) var isFetchingItems = false
     @Published private(set) var partialItemContents = [PartialItemContent]()
 
     private let userData: UserData
@@ -49,8 +37,13 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
     private let publicKeyRepository: PublicKeyRepositoryProtocol
-    private var cancellables = Set<AnyCancellable>()
-    weak var delegate: VaultContentViewModelDelegate?
+
+    var onToggleSidebar: (() -> Void)?
+    var onSearch: (() -> Void)?
+    var onCreateItem: (() -> Void)?
+    var onCreateVault: (() -> Void)?
+    var onShowItemDetail: ((ItemContent) -> Void)?
+    var onTrashedItem: ((ItemContentType) -> Void)?
 
     init(userData: UserData,
          vaultSelection: VaultSelection,
@@ -64,6 +57,7 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
         self.itemRevisionRepository = itemRevisionRepository
         self.shareKeysRepository = shareKeysRepository
         self.publicKeyRepository = publicKeyRepository
+        super.init()
 
         vaultSelection.objectWillChange
             .sink { [unowned self] _ in
@@ -80,16 +74,16 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
         guard let shareId = selectedVault?.shareId else { return }
         Task { @MainActor in
             do {
-                let itemRevisionList =
-                try await itemRevisionRepository.getItemRevisions(forceRefresh: forceRefresh,
-                                                                  shareId: shareId,
-                                                                  page: 0,
-                                                                  pageSize: kDefaultPageSize)
-                try await decrypt(itemRevisions: itemRevisionList.revisionsData,
+                isFetchingItems = true
+                let itemRevisions = try await itemRevisionRepository.getItemRevisions(forceRefresh: forceRefresh,
+                                                                                      shareId: shareId,
+                                                                                      state: .active)
+                try await decrypt(itemRevisions: itemRevisions,
                                   shareId: shareId,
                                   forceRefresh: forceRefresh)
+                isFetchingItems = false
             } catch {
-                delegate?.vaultContentViewModelDidFailWithError(error: error)
+                self.error = error
             }
         }
     }
@@ -131,10 +125,10 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                                                                   vaultKeys: shareKeys.vaultKeys,
                                                                   itemKeys: shareKeys.itemKeys,
                                                                   verifyKeys: verifyKeys)
-                    delegate?.vaultContentViewModelWantsToShowItemDetail(itemContent: itemContent)
+                    onShowItemDetail?(itemContent)
                 }
             } catch {
-                self.delegate?.vaultContentViewModelDidFailWithError(error: error)
+                self.error = error
             }
         }
     }
@@ -148,23 +142,35 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
                                                                    forceRefresh: forceRefresh)
         return (share, shareKeys)
     }
+
+    func trash(_ partialItemContent: PartialItemContent) {
+        Task { @MainActor in
+            do {
+                if let itemRevision =
+                    try await itemRevisionRepository.getItemRevision(shareId: partialItemContent.shareId,
+                                                                     itemId: partialItemContent.itemId) {
+                    isLoading = true
+                    try await itemRevisionRepository.trashItemRevisions([itemRevision],
+                                                                        shareId: partialItemContent.shareId)
+                    isLoading = false
+                    partialItemContents.removeAll(where: { $0.itemId == partialItemContent.itemId })
+                    onTrashedItem?(partialItemContent.type)
+                }
+            } catch {
+                self.isLoading = false
+                self.error = error
+            }
+        }
+    }
 }
 
 // MARK: - Actions
 extension VaultContentViewModel {
-    func toggleSidebarAction() {
-        delegate?.vaultContentViewModelWantsToToggleSidebar()
-    }
+    func toggleSidebar() { onToggleSidebar?() }
 
-    func searchAction() {
-        delegate?.vaultContentViewModelWantsToSearch()
-    }
+    func search() { onSearch?() }
 
-    func createItemAction() {
-        delegate?.vaultContentViewModelWantsToCreateNewItem()
-    }
+    func createItem() { onCreateItem?() }
 
-    func createVaultAction() {
-        delegate?.vaultContentViewModelWantsToCreateNewVault()
-    }
+    func createVault() { onCreateVault?() }
 }

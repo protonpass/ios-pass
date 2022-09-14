@@ -27,6 +27,11 @@ typealias Encryptor = ProtonCore_KeyManager.Encryptor
 /// For endpoints that have no body like GET ones
 public struct EmptyRequest: Encodable {}
 
+/// Holds responses that only have `code` field
+public struct CodeOnlyResponse: Decodable {
+    public let code: Int
+}
+
 public protocol Endpoint: Request {
     associatedtype Body: Encodable
     associatedtype Response: Decodable

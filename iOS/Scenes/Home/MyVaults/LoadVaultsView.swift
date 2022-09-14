@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -39,22 +40,26 @@ struct LoadVaultsView: View {
                     }, label: {
                         Text("Retry")
                     })
+                    .foregroundColor(Color(ColorProvider.BrandNorm))
                 }
                 .padding()
             } else {
                 ProgressView()
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                ToggleSidebarButton(action: viewModel.toggleSidebarAction)
-            }
-        }
+        .toolbar { toolbarContent }
         .onAppear {
             if !didAppear {
                 viewModel.fetchVaults()
                 didAppear = true
             }
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            ToggleSidebarButton(action: viewModel.toggleSidebar)
         }
     }
 }
