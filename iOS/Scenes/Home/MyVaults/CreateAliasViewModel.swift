@@ -18,18 +18,58 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
+import ProtonCore_Login
 
 final class CreateAliasViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    func saveAction() {
-        isLoading = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.isLoading = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.error = AppCoordinatorError.noSessionData
+    let mode: ItemMode
+    let userData: UserData
+    let shareRepository: ShareRepositoryProtocol
+    let shareKeysRepository: ShareKeysRepositoryProtocol
+    let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    let aliasRepository: AliasRepositoryProtocol
+
+    init(mode: ItemMode,
+         userData: UserData,
+         shareRepository: ShareRepositoryProtocol,
+         shareKeysRepository: ShareKeysRepositoryProtocol,
+         itemRevisionRepository: ItemRevisionRepositoryProtocol,
+         aliasRepository: AliasRepositoryProtocol) {
+        self.mode = mode
+        self.userData = userData
+        self.shareRepository = shareRepository
+        self.shareKeysRepository = shareKeysRepository
+        self.itemRevisionRepository = itemRevisionRepository
+        self.aliasRepository = aliasRepository
+        super.init()
+        bindValues()
+    }
+
+    private func bindValues() {
+        switch mode {
+        case .create(let shareId):
+            getAliasOptions(shareId: shareId)
+        case .edit(let itemContent):
+            break
+        }
+    }
+
+    private func getAliasOptions(shareId: String) {
+        Task { @MainActor in
+            do {
+                isLoading = true
+                let options = try await aliasRepository.getAliasOptions(shareId: shareId)
+                isLoading = false
+                print(options)
+            } catch {
+                self.isLoading = false
+                self.error = error
             }
         }
     }
+
+    func save() {}
 }

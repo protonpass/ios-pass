@@ -22,8 +22,13 @@ import Client
 import Core
 import ProtonCore_Login
 
+enum ItemMode {
+    case create(shareId: String)
+    case edit(ItemContent)
+}
+
 class BaseCreateEditItemViewModel: BaseViewModel {
-    let mode: Mode
+    let mode: ItemMode
     let userData: UserData
     let shareRepository: ShareRepositoryProtocol
     let shareKeysRepository: ShareKeysRepositoryProtocol
@@ -32,12 +37,7 @@ class BaseCreateEditItemViewModel: BaseViewModel {
     var onCreatedItem: ((ItemContentType) -> Void)?
     var onUpdatedItem: ((ItemContentType) -> Void)?
 
-    enum Mode {
-        case create(shareId: String)
-        case edit(ItemContent)
-    }
-
-    init(mode: Mode,
+    init(mode: ItemMode,
          userData: UserData,
          shareRepository: ShareRepositoryProtocol,
          shareKeysRepository: ShareKeysRepositoryProtocol,

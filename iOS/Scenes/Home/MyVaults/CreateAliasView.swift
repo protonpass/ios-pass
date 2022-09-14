@@ -54,19 +54,11 @@ struct CreateAliasView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: {
-                viewModel.saveAction()
-            }, label: {
+            Button(action: viewModel.save) {
                 Text("Save")
                     .fontWeight(.bold)
                     .foregroundColor(Color(ColorProvider.BrandNorm))
-            })
+            }
         }
-    }
-}
-
-struct CreateAliasView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateAliasView(viewModel: .init())
     }
 }

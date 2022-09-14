@@ -46,6 +46,7 @@ final class HomeCoordinator: DeinitPrintable {
     private let shareRepository: ShareRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    private let aliasRepository: AliasRepositoryProtocol
     private let publicKeyRepository: PublicKeyRepositoryProtocol
     weak var delegate: HomeCoordinatorDelegate?
 
@@ -77,6 +78,7 @@ final class HomeCoordinator: DeinitPrintable {
                                                       shareRepository: shareRepository,
                                                       shareKeysRepository: shareKeysRepository,
                                                       itemRevisionRepository: itemRevisionRepository,
+                                                      aliasRepository: aliasRepository,
                                                       publicKeyRepository: publicKeyRepository)
         myVaultsCoordinator.delegate = self
         myVaultsCoordinator.onTrashedItem = { [unowned self] in
@@ -126,6 +128,10 @@ final class HomeCoordinator: DeinitPrintable {
         self.itemRevisionRepository = ItemRevisionRepository(container: container,
                                                              authCredential: authCredential,
                                                              apiService: apiService)
+
+        self.aliasRepository = AliasRepository(container: container,
+                                               authCredential: authCredential,
+                                               apiService: apiService)
 
         self.publicKeyRepository = PublicKeyRepository(container: container,
                                                        apiService: apiService)

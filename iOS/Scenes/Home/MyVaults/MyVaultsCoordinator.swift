@@ -30,6 +30,7 @@ final class MyVaultsCoordinator: Coordinator {
     private let shareRepository: ShareRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    private let aliasRepository: AliasRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
 
     var onTrashedItem: (() -> Void)?
@@ -39,12 +40,14 @@ final class MyVaultsCoordinator: Coordinator {
          shareRepository: ShareRepositoryProtocol,
          shareKeysRepository: ShareKeysRepositoryProtocol,
          itemRevisionRepository: ItemRevisionRepositoryProtocol,
+         aliasRepository: AliasRepositoryProtocol,
          publicKeyRepository: PublicKeyRepositoryProtocol) {
         self.userData = userData
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
         self.itemRevisionRepository = itemRevisionRepository
         self.shareKeysRepository = shareKeysRepository
+        self.aliasRepository = aliasRepository
         self.vaultContentViewModel = .init(userData: userData,
                                            vaultSelection: vaultSelection,
                                            shareRepository: shareRepository,
@@ -80,7 +83,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateItemView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        let mode = BaseCreateEditItemViewModel.Mode.create(shareId: shareId)
+        let mode = ItemMode.create(shareId: shareId)
         let createItemViewModel = CreateItemViewModel()
         createItemViewModel.onSelectedOption = { [unowned self] option in
             dismissTopMostViewController(animated: true) { [unowned self] in
@@ -88,7 +91,7 @@ final class MyVaultsCoordinator: Coordinator {
                 case .login:
                     showCreateEditLoginView(mode: mode)
                 case .alias:
-                    showCreateAliasView()
+                    showCreateEditAliasView(mode: mode)
                 case .note:
                     showCreateEditNoteView(mode: mode)
                 case .password:
@@ -122,7 +125,7 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewController(createVaultViewController)
     }
 
-    private func showCreateEditLoginView(mode: BaseCreateEditItemViewModel.Mode) {
+    private func showCreateEditLoginView(mode: ItemMode) {
         let createEditLoginViewModel = CreateEditLoginViewModel(mode: mode,
                                                                 userData: userData,
                                                                 shareRepository: shareRepository,
@@ -137,14 +140,19 @@ final class MyVaultsCoordinator: Coordinator {
                               modalTransitionStyle: mode.modalTransitionStyle)
     }
 
-    private func showCreateAliasView() {
-        let createAliasViewModel = CreateAliasViewModel()
+    private func showCreateEditAliasView(mode: ItemMode) {
+        let createAliasViewModel = CreateAliasViewModel(mode: mode,
+                                                        userData: userData,
+                                                        shareRepository: shareRepository,
+                                                        shareKeysRepository: shareKeysRepository,
+                                                        itemRevisionRepository: itemRevisionRepository,
+                                                        aliasRepository: aliasRepository)
         createAliasViewModel.delegate = self
         let createAliasView = CreateAliasView(viewModel: createAliasViewModel)
         presentViewFullScreen(createAliasView)
     }
 
-    private func showCreateEditNoteView(mode: BaseCreateEditItemViewModel.Mode) {
+    private func showCreateEditNoteView(mode: ItemMode) {
         let createEditNoteViewModel = CreateEditNoteViewModel(mode: mode,
                                                               userData: userData,
                                                               shareRepository: shareRepository,
@@ -215,14 +223,14 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func showEditItemView(_ item: ItemContent) {
-        let mode = BaseCreateEditItemViewModel.Mode.edit(item)
+        let mode = ItemMode.edit(item)
         switch item.contentData.type {
         case .login:
             showCreateEditLoginView(mode: mode)
         case .note:
             showCreateEditNoteView(mode: mode)
         case .alias:
-            break
+            showCreateEditAliasView(mode: mode)
         }
     }
 
@@ -272,7 +280,7 @@ extension MyVaultsCoordinator: BaseViewModelDelegate {
     func viewModelDidFailWithError(_ error: Error) { alertError(error) }
 }
 
-private extension BaseCreateEditItemViewModel.Mode {
+private extension ItemMode {
     var modalTransitionStyle: UIModalTransitionStyle {
         switch self {
         case .create:
