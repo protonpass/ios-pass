@@ -31,6 +31,8 @@ final class TrashCoordinator: Coordinator {
     private let publicKeyRepository: PublicKeyRepositoryProtocol
     private let trashViewModel: TrashViewModel
 
+    var onRestoredItem: (() -> Void)?
+
     init(userData: UserData,
          shareRepository: ShareRepositoryProtocol,
          shareKeysRepository: ShareKeysRepositoryProtocol,
@@ -63,6 +65,10 @@ final class TrashCoordinator: Coordinator {
         }
         trashViewModel.onDeletedItem = { [unowned self] in
             dismissTopMostViewController()
+        }
+        trashViewModel.onRestoredItem = { [unowned self] in
+            dismissTopMostViewController()
+            onRestoredItem?()
         }
         start(with: TrashView(viewModel: trashViewModel))
     }

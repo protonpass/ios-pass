@@ -35,6 +35,7 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
 
     var onToggleSidebar: (() -> Void)?
     var onShowOptions: ((PartialItemContent) -> Void)?
+    var onRestoredItem: (() -> Void)?
     var onDeletedItem: (() -> Void)?
 
     init(userData: UserData,
@@ -116,7 +117,22 @@ extension TrashViewModel {
     }
 
     func restore(_ item: PartialItemContent) {
-        print(#function)
+        Task { @MainActor in
+            do {
+                guard let itemRevision =
+                        try await itemRevisionRepository.getItemRevision(shareId: item.shareId,
+                                                                         itemId: item.itemId) else { return }
+                isLoading = true
+                try await itemRevisionRepository.untrashItemRevisions([itemRevision],
+                                                                      shareId: item.shareId)
+                isLoading = false
+                trashedItem.removeAll(where: { $0.itemId == item.itemId })
+                onRestoredItem?()
+            } catch {
+                self.isLoading = false
+                self.error = error
+            }
+        }
     }
 
     func deletePermanently(_ item: PartialItemContent) {

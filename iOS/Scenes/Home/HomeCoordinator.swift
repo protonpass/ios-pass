@@ -95,6 +95,9 @@ final class HomeCoordinator: DeinitPrintable {
                                                 itemRevisionRepository: itemRevisionRepository,
                                                 publicKeyRepository: publicKeyRepository)
         trashCoordinator.delegate = self
+        trashCoordinator.onRestoredItem = { [unowned self] in
+            self.myVaultsCoordinator.refreshItems()
+        }
         return trashCoordinator
     }()
 

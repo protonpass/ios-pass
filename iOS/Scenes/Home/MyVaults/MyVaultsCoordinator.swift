@@ -78,7 +78,7 @@ final class MyVaultsCoordinator: Coordinator {
                                       vaultContentViewModel: vaultContentViewModel))
     }
 
-    func showCreateItemView() {
+    private func showCreateItemView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
         let mode = BaseCreateEditItemViewModel.Mode.create(shareId: shareId)
         let createItemViewModel = CreateItemViewModel()
@@ -104,7 +104,7 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewController(createItemViewController)
     }
 
-    func showCreateVaultView() {
+    private func showCreateVaultView() {
         let createVaultViewModel =
         CreateVaultViewModel(userData: userData,
                              shareRepository: shareRepository)
@@ -122,7 +122,7 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewController(createVaultViewController)
     }
 
-    func showCreateEditLoginView(mode: BaseCreateEditItemViewModel.Mode) {
+    private func showCreateEditLoginView(mode: BaseCreateEditItemViewModel.Mode) {
         let createEditLoginViewModel = CreateEditLoginViewModel(mode: mode,
                                                                 userData: userData,
                                                                 shareRepository: shareRepository,
@@ -137,14 +137,14 @@ final class MyVaultsCoordinator: Coordinator {
                               modalTransitionStyle: mode.modalTransitionStyle)
     }
 
-    func showCreateAliasView() {
+    private func showCreateAliasView() {
         let createAliasViewModel = CreateAliasViewModel()
         createAliasViewModel.delegate = self
         let createAliasView = CreateAliasView(viewModel: createAliasViewModel)
         presentViewFullScreen(createAliasView)
     }
 
-    func showCreateEditNoteView(mode: BaseCreateEditItemViewModel.Mode) {
+    private func showCreateEditNoteView(mode: BaseCreateEditItemViewModel.Mode) {
         let createEditNoteViewModel = CreateEditNoteViewModel(mode: mode,
                                                               userData: userData,
                                                               shareRepository: shareRepository,
@@ -158,7 +158,7 @@ final class MyVaultsCoordinator: Coordinator {
                               modalTransitionStyle: mode.modalTransitionStyle)
     }
 
-    func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?) {
+    private func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?) {
         let viewModel = GeneratePasswordViewModel()
         viewModel.delegate = delegate
         let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
@@ -169,11 +169,11 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewController(generatePasswordViewController)
     }
 
-    func showSearchView() {
+    private func showSearchView() {
         presentViewFullScreen(SearchView())
     }
 
-    func showItemDetailView(_ itemContent: ItemContent) {
+    private func showItemDetailView(_ itemContent: ItemContent) {
         switch itemContent.contentData {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
@@ -256,6 +256,10 @@ final class MyVaultsCoordinator: Coordinator {
             myVaultsViewModel.successMessage = message
             vaultContentViewModel.fetchItems()
         }
+    }
+
+    func refreshItems() {
+        vaultContentViewModel.fetchItems()
     }
 }
 
