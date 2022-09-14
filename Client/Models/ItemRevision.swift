@@ -70,6 +70,9 @@ public struct ItemRevision: Decodable {
     /// Time of last update of the item
     public let modifyTime: Int64
 
+    /// Creation time of this revision
+    public let revisionTime: Int64
+
     /// Enum representation of `state`
     public var revisionState: ItemRevisionState { .init(rawValue: state) ?? .active }
 }

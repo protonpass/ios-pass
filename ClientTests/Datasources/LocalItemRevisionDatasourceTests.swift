@@ -186,7 +186,14 @@ extension LocalItemRevisionDatasourceTests {
                                                     state: .active)
 
             // When
-            try await sut.trashItemRevisions([insertedItemRevision], shareId: givenShareId)
+            let modifiedItem = ModifiedItem(itemID: insertedItemRevision.itemID,
+                                            revision: insertedItemRevision.revision,
+                                            state: ItemRevisionState.trashed.rawValue,
+                                            modifyTime: insertedItemRevision.modifyTime,
+                                            revisionTime: insertedItemRevision.revisionTime)
+            try await sut.trashItemRevisions([insertedItemRevision],
+                                             modifiedItems: [modifiedItem],
+                                             shareId: givenShareId)
 
             // Then
             let itemRevision = try await sut.getItemRevision(shareId: givenShareId,

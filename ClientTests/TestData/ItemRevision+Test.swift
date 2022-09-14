@@ -39,6 +39,7 @@ extension ItemRevision {
               signatureEmail: .random(),
               aliasEmail: .random(),
               createTime: .random(in: 0...1_000_000),
-              modifyTime: .random(in: 0...1_000_000))
+              modifyTime: .random(in: 0...1_000_000),
+              revisionTime: .random(in: 0...1_000_000))
     }
 }

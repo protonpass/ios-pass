@@ -37,7 +37,9 @@ public protocol LocalItemRevisionDatasourceProtocol {
     func removeAllItemRevisions(shareId: String) async throws
 
     /// Send  item revisions to trash
-    func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws
+    func trashItemRevisions(_ items: [ItemRevision],
+                            modifiedItems: [ModifiedItem],
+                            shareId: String) async throws
 
     /// Permanently delete item revisions
     func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws
@@ -105,21 +107,26 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
                           context: taskContext)
     }
 
-    public func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws {
+    public func trashItemRevisions(_ items: [ItemRevision],
+                                   modifiedItems: [ModifiedItem],
+                                   shareId: String) async throws {
         for item in items {
-            let trashedItem = ItemRevision(itemID: item.itemID,
-                                           revision: item.revision,
-                                           contentFormatVersion: item.contentFormatVersion,
-                                           rotationID: item.rotationID,
-                                           content: item.content,
-                                           userSignature: item.userSignature,
-                                           itemKeySignature: item.itemKeySignature,
-                                           state: ItemRevisionState.trashed.rawValue,
-                                           signatureEmail: item.signatureEmail,
-                                           aliasEmail: item.aliasEmail,
-                                           createTime: item.createTime,
-                                           modifyTime: Int64(Date().timeIntervalSince1970))
-            try await upsertItemRevisions([trashedItem], shareId: shareId)
+            if let modifiedItem = modifiedItems.first(where: { $0.itemID == item.itemID }) {
+                let trashedItem = ItemRevision(itemID: item.itemID,
+                                               revision: modifiedItem.revision,
+                                               contentFormatVersion: item.contentFormatVersion,
+                                               rotationID: item.rotationID,
+                                               content: item.content,
+                                               userSignature: item.userSignature,
+                                               itemKeySignature: item.itemKeySignature,
+                                               state: modifiedItem.state,
+                                               signatureEmail: item.signatureEmail,
+                                               aliasEmail: item.aliasEmail,
+                                               createTime: item.createTime,
+                                               modifyTime: modifiedItem.modifyTime,
+                                               revisionTime: modifiedItem.revisionTime)
+                try await upsertItemRevisions([trashedItem], shareId: shareId)
+            }
         }
     }
 
