@@ -23,6 +23,11 @@ import Foundation
 public struct AliasOptions: Decodable {
     public let suffixes: [Suffix]
     public let mailboxes: [Mailbox]
+
+    public init(suffixes: [Suffix], mailboxes: [Mailbox]) {
+        self.suffixes = suffixes
+        self.mailboxes = mailboxes
+    }
 }
 
 public struct Suffix: Decodable {

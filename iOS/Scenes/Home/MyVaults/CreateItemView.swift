@@ -37,8 +37,8 @@ struct CreateItemView: View {
                                 action: { viewModel.select(option: .login) },
                                 trailingView: { EmptyView() })
 
-                GenericItemView(item: CreateNewItemOption.alias.toGenericItem(),
-                                action: { viewModel.select(option: .alias) },
+                GenericItemView(item: CreateNewItemOption.alias(.preview).toGenericItem(),
+                                action: { viewModel.getAliasOptions() },
                                 trailingView: { EmptyView() })
 
                 GenericItemView(item: CreateNewItemOption.note.toGenericItem(),
@@ -68,11 +68,5 @@ struct CreateItemView: View {
             })
             .foregroundColor(Color(.label))
         }
-    }
-}
-
-struct CreateItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateItemView(viewModel: .init())
     }
 }

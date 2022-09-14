@@ -18,26 +18,49 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 import ProtonCore_UIFoundations
 import UIComponents
 import UIKit
 
-final class CreateItemViewModel: DeinitPrintable {
+final class CreateItemViewModel: BaseViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
+
+    private let shareId: String
+    private let aliasRepository: AliasRepositoryProtocol
 
     var onSelectedOption: ((CreateNewItemOption) -> Void)?
 
-    init() {}
+    init(shareId: String,
+         aliasRepository: AliasRepositoryProtocol) {
+        self.shareId = shareId
+        self.aliasRepository = aliasRepository
+    }
 
     func select(option: CreateNewItemOption) {
         onSelectedOption?(option)
     }
+
+    func getAliasOptions() {
+        Task { @MainActor in
+            do {
+                isLoading = true
+                let aliasOptions = try await aliasRepository.getAliasOptions(shareId: shareId)
+                isLoading = false
+                onSelectedOption?(.alias(aliasOptions))
+            } catch {
+                self.isLoading = false
+                self.error = error
+            }
+        }
+    }
 }
 
 enum CreateNewItemOption {
-    case login, alias, note, password
+    case login, note, password
+    case alias(AliasOptions)
 
     var icon: UIImage {
         switch self {
@@ -80,5 +103,11 @@ enum CreateNewItemOption {
 
     func toGenericItem() -> GenericItem {
         .init(icon: icon, title: title, detail: detail)
+    }
+}
+
+extension AliasOptions {
+    static var preview: AliasOptions {
+        .init(suffixes: [], mailboxes: [])
     }
 }
