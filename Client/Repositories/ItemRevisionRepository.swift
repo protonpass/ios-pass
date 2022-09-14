@@ -40,6 +40,8 @@ public protocol ItemRevisionRepositoryProtocol {
 
     func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws
 
+    func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws
+
     func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws
 
     func updateItem(request: UpdateItemRequest, shareId: String, itemId: String) async throws
@@ -106,10 +108,22 @@ public extension ItemRevisionRepositoryProtocol {
         PPLogger.shared?.log("Trashing \(count) items for share \(shareId)")
         let modifiedItems = try await remoteItemRevisionDatasource.trashItemRevisions(items, shareId: shareId)
         PPLogger.shared?.log("Finished trashing remotely \(count) items for share \(shareId)")
-        try await localItemRevisionDatasoure.trashItemRevisions(items,
-                                                                modifiedItems: modifiedItems,
-                                                                shareId: shareId)
+        try await localItemRevisionDatasoure.upsertItemRevisions(items,
+                                                                 modifiedItems: modifiedItems,
+                                                                 shareId: shareId)
         PPLogger.shared?.log("Finished trashing locallly \(count) items for share \(shareId)")
+    }
+
+    func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws {
+        let count = items.count
+        PPLogger.shared?.log("Untrashing \(count) items for share \(shareId)")
+        let modifiedItems = try await remoteItemRevisionDatasource.untrashItemRevisions(items,
+                                                                                        shareId: shareId)
+        PPLogger.shared?.log("Finished untrashing remotely \(count) items for share \(shareId)")
+        try await localItemRevisionDatasoure.upsertItemRevisions(items,
+                                                                 modifiedItems: modifiedItems,
+                                                                 shareId: shareId)
+        PPLogger.shared?.log("Finished untrashing locallly \(count) items for share \(shareId)")
     }
 
     func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws {

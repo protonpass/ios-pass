@@ -33,6 +33,7 @@
 		353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */; };
 		353E8B74287622F300A2C5E3 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B73287622F300A2C5E3 /* BundleExtensions.swift */; };
 		353E8B76287625D100A2C5E3 /* SidebarCurrentUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B75287625D100A2C5E3 /* SidebarCurrentUserView.swift */; };
+		354146CF28D1C6D5007E45A6 /* UntrashItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354146CE28D1C6D5007E45A6 /* UntrashItemsEndpoint.swift */; };
 		35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35429B26288AB730000BA22F /* StaticFuncs.swift */; };
 		3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B8882883614D009C9A68 /* DummyApiService.swift */; };
 		3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */; };
@@ -343,6 +344,7 @@
 		353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarButtonStyles.swift; sourceTree = "<group>"; };
 		353E8B73287622F300A2C5E3 /* BundleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
 		353E8B75287625D100A2C5E3 /* SidebarCurrentUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarCurrentUserView.swift; sourceTree = "<group>"; };
+		354146CE28D1C6D5007E45A6 /* UntrashItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UntrashItemsEndpoint.swift; sourceTree = "<group>"; };
 		35429B26288AB730000BA22F /* StaticFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticFuncs.swift; sourceTree = "<group>"; };
 		3542B8882883614D009C9A68 /* DummyApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyApiService.swift; sourceTree = "<group>"; };
 		3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthCredential+Preview.swift"; sourceTree = "<group>"; };
@@ -768,6 +770,7 @@
 				354B7A7328C9FF1B00459AED /* TrashItemsEndpoint.swift */,
 				35AABE1E28B027C000CEDDE6 /* UpdateItemRequest.swift */,
 				35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */,
+				354146CE28D1C6D5007E45A6 /* UntrashItemsEndpoint.swift */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -1911,6 +1914,7 @@
 				353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */,
 				3593DCFF28A8322300C235D3 /* CreateItemRequest.swift in Sources */,
 				3593DCEB28A79CD300C235D3 /* CreateVaultRequest.swift in Sources */,
+				354146CF28D1C6D5007E45A6 /* UntrashItemsEndpoint.swift in Sources */,
 				3593DD0A28A837DD00C235D3 /* VaultKeyEntity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

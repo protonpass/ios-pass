@@ -36,10 +36,10 @@ public protocol LocalItemRevisionDatasourceProtocol {
     /// Nuke item revisions of a share
     func removeAllItemRevisions(shareId: String) async throws
 
-    /// Send  item revisions to trash
-    func trashItemRevisions(_ items: [ItemRevision],
-                            modifiedItems: [ModifiedItem],
-                            shareId: String) async throws
+    /// Trash or untrash item revisions
+    func upsertItemRevisions(_ items: [ItemRevision],
+                             modifiedItems: [ModifiedItem],
+                             shareId: String) async throws
 
     /// Permanently delete item revisions
     func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws
@@ -107,9 +107,9 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
                           context: taskContext)
     }
 
-    public func trashItemRevisions(_ items: [ItemRevision],
-                                   modifiedItems: [ModifiedItem],
-                                   shareId: String) async throws {
+    public func upsertItemRevisions(_ items: [ItemRevision],
+                                    modifiedItems: [ModifiedItem],
+                                    shareId: String) async throws {
         for item in items {
             if let modifiedItem = modifiedItems.first(where: { $0.itemID == item.itemID }) {
                 let trashedItem = ItemRevision(itemID: item.itemID,

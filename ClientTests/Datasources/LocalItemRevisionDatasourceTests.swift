@@ -191,15 +191,48 @@ extension LocalItemRevisionDatasourceTests {
                                             state: ItemRevisionState.trashed.rawValue,
                                             modifyTime: insertedItemRevision.modifyTime,
                                             revisionTime: insertedItemRevision.revisionTime)
-            try await sut.trashItemRevisions([insertedItemRevision],
-                                             modifiedItems: [modifiedItem],
-                                             shareId: givenShareId)
+            try await sut.upsertItemRevisions([insertedItemRevision],
+                                              modifiedItems: [modifiedItem],
+                                              shareId: givenShareId)
 
             // Then
             let itemRevision = try await sut.getItemRevision(shareId: givenShareId,
                                                              itemId: givenItemId)
             let notNilItemRevision = try XCTUnwrap(itemRevision)
             XCTAssertEqual(notNilItemRevision.revisionState, .trashed)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
+
+    func testUntrashItemRevisions() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let givenItemId = String.random()
+            let givenShareId = String.random()
+            let insertedItemRevision =
+            try await sut.givenInsertedItemRevision(itemId: givenItemId,
+                                                    shareId: givenShareId,
+                                                    state: .trashed)
+
+            // When
+            let modifiedItem = ModifiedItem(itemID: insertedItemRevision.itemID,
+                                            revision: insertedItemRevision.revision,
+                                            state: ItemRevisionState.active.rawValue,
+                                            modifyTime: insertedItemRevision.modifyTime,
+                                            revisionTime: insertedItemRevision.revisionTime)
+            try await sut.upsertItemRevisions([insertedItemRevision],
+                                              modifiedItems: [modifiedItem],
+                                              shareId: givenShareId)
+
+            // Then
+            let itemRevision = try await sut.getItemRevision(shareId: givenShareId,
+                                                             itemId: givenItemId)
+            let notNilItemRevision = try XCTUnwrap(itemRevision)
+            XCTAssertEqual(notNilItemRevision.revisionState, .active)
 
             expectation.fulfill()
         }
