@@ -25,6 +25,12 @@ import ProtonCore_Login
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
+    @Published var title = ""
+    @Published var prefix = ""
+    @Published var suffix = ""
+    @Published var mailbox = ""
+    @Published var note = ""
+
     let aliasRepository: AliasRepositoryProtocol
 
     init(mode: ItemMode,
@@ -39,5 +45,14 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                    shareRepository: shareRepository,
                    shareKeysRepository: shareKeysRepository,
                    itemRevisionRepository: itemRevisionRepository)
+    }
+
+    override func navigationBarTitle() -> String {
+        switch mode {
+        case .create:
+            return "Create new alias"
+        case .edit:
+            return "Edit alias"
+        }
     }
 }

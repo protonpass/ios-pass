@@ -22,11 +22,11 @@ import ProtonCore_UIFoundations
 import SwiftUI
 
 public struct UserInputContainerView<Content: View>: View {
-    let title: String
+    let title: String?
     let isFocused: Bool
     let content: () -> Content
 
-    public init(title: String,
+    public init(title: String?,
                 isFocused: Bool,
                 @ViewBuilder content: @escaping () -> Content) {
         self.title = title
@@ -36,9 +36,11 @@ public struct UserInputContainerView<Content: View>: View {
 
     public var body: some View {
         VStack(alignment: .leading) {
-            Text(title)
-                .font(.caption)
-                .fontWeight(.medium)
+            if let title = title {
+                Text(title)
+                    .font(.caption)
+                    .fontWeight(.medium)
+            }
 
             content()
             .padding(10)

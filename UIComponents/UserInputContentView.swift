@@ -27,39 +27,53 @@ public struct UserInputContentSingleLineView: View {
     @Binding var text: String
     @Binding var isFocused: Bool
     let placeholder: String
+    let keyboardType: UIKeyboardType
+    let textAutocapitalizationType: UITextAutocapitalizationType
 
     public init(text: Binding<String>,
                 isFocused: Binding<Bool>,
-                placeholder: String) {
+                placeholder: String,
+                keyboardType: UIKeyboardType = .default,
+                textAutocapitalizationType: UITextAutocapitalizationType = .sentences) {
         self._text = text
         self._isFocused = isFocused
         self.placeholder = placeholder
+        self.keyboardType = keyboardType
+        self.textAutocapitalizationType = textAutocapitalizationType
     }
 
     public var body: some View {
         TextField(placeholder, text: $text) { editingChanged in
             isFocused = editingChanged
         }
+        .keyboardType(keyboardType)
+        .autocapitalization(textAutocapitalizationType)
     }
 }
 
 // swiftlint:disable:next type_name
-public struct UserInputContentSingleLineWithTrailingView: View {
+public struct UserInputContentSingleLineWithTrailingView<TrailingView: View>: View {
     @Binding var text: String
     @Binding var isFocused: Bool
     let placeholder: String
-    let trailingIcon: UIImage
+    let keyboardType: UIKeyboardType
+    let textAutocapitalizationType: UITextAutocapitalizationType
+    let trailingView: () -> TrailingView
     let trailingAction: () -> Void
 
     public init(text: Binding<String>,
                 isFocused: Binding<Bool>,
                 placeholder: String,
-                trailingIcon: UIImage,
-                trailingAction: @escaping () -> Void) {
+                trailingView: @escaping () -> TrailingView,
+                trailingAction: @escaping () -> Void,
+                keyboardType: UIKeyboardType = .default,
+                textAutocapitalizationType: UITextAutocapitalizationType = .sentences) {
         self._text = text
         self._isFocused = isFocused
         self.placeholder = placeholder
-        self.trailingIcon = trailingIcon
+        self.keyboardType = keyboardType
+        self.textAutocapitalizationType = textAutocapitalizationType
+        self.trailingView = trailingView
         self.trailingAction = trailingAction
     }
 
@@ -68,9 +82,11 @@ public struct UserInputContentSingleLineWithTrailingView: View {
             TextField(placeholder, text: $text) { editingChanged in
                 isFocused = editingChanged
             }
+            .keyboardType(keyboardType)
+            .autocapitalization(textAutocapitalizationType)
 
             Button(action: trailingAction) {
-                Image(uiImage: trailingIcon)
+                trailingView()
             }
             .foregroundColor(.primary)
         }
@@ -92,6 +108,28 @@ public struct UserInputContentMultilineView: View {
             isFocused = editingChange
         }
         .frame(height: 100)
+    }
+}
+
+public struct UserInputStaticContentView: View {
+    @Binding var text: String
+    let onTap: () -> Void
+
+    public init(text: Binding<String>,
+                onTap: @escaping () -> Void) {
+        self._text = text
+        self.onTap = onTap
+    }
+
+    public var body: some View {
+        HStack {
+            Text(text)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Image(uiImage: IconProvider.chevronRight)
+                .foregroundColor(.primary)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture(perform: onTap)
     }
 }
 
