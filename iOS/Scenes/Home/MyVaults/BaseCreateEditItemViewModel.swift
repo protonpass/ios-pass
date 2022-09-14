@@ -23,8 +23,13 @@ import Core
 import ProtonCore_Login
 
 enum ItemMode {
-    case create(shareId: String)
+    case create(CreateItemOptions)
     case edit(ItemContent)
+}
+
+enum CreateItemOptions {
+    case alias(shareId: String, aliasOptions: AliasOptions)
+    case other(shareId: String)
 }
 
 class BaseCreateEditItemViewModel: BaseViewModel {
@@ -71,8 +76,14 @@ class BaseCreateEditItemViewModel: BaseViewModel {
 
     func save() {
         switch mode {
-        case .create(let shareId):
-            createItem(shareId: shareId)
+        case .create(let createItemOptions):
+            switch createItemOptions {
+            case .alias(let shareId, _):
+                createItem(shareId: shareId)
+            case .other(let shareId):
+                createItem(shareId: shareId)
+            }
+
         case .edit(let oldItemContent):
             editItem(oldItemContent: oldItemContent)
         }

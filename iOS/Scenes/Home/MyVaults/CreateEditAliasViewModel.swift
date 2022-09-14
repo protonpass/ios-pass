@@ -22,42 +22,22 @@ import Client
 import Core
 import ProtonCore_Login
 
-enum AliasItemMode {
-    case create(shareId: String, options: AliasOptions)
-    case edit(ItemContent)
-}
-
-final class CreateEditAliasViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
+final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    let mode: AliasItemMode
-    let userData: UserData
-    let shareRepository: ShareRepositoryProtocol
-    let shareKeysRepository: ShareKeysRepositoryProtocol
-    let itemRevisionRepository: ItemRevisionRepositoryProtocol
     let aliasRepository: AliasRepositoryProtocol
 
-    init(mode: AliasItemMode,
+    init(mode: ItemMode,
          userData: UserData,
          shareRepository: ShareRepositoryProtocol,
          shareKeysRepository: ShareKeysRepositoryProtocol,
          itemRevisionRepository: ItemRevisionRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol) {
-        self.mode = mode
-        self.userData = userData
-        self.shareRepository = shareRepository
-        self.shareKeysRepository = shareKeysRepository
-        self.itemRevisionRepository = itemRevisionRepository
         self.aliasRepository = aliasRepository
-        super.init()
-        bindValues()
+        super.init(mode: mode,
+                   userData: userData,
+                   shareRepository: shareRepository,
+                   shareKeysRepository: shareKeysRepository,
+                   itemRevisionRepository: itemRevisionRepository)
     }
-
-    private func bindValues() {
-        if case .edit(let itemContent) = mode {
-            print(itemContent)
-        }
-    }
-
-    func save() {}
 }

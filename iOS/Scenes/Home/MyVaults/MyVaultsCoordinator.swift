@@ -83,7 +83,6 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateItemView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        let mode = ItemMode.create(shareId: shareId)
         let createItemViewModel = CreateItemViewModel(shareId: shareId,
                                                       aliasRepository: aliasRepository)
         createItemViewModel.delegate = self
@@ -91,12 +90,12 @@ final class MyVaultsCoordinator: Coordinator {
             dismissTopMostViewController(animated: true) { [unowned self] in
                 switch option {
                 case .login:
-                    showCreateEditLoginView(mode: mode)
+                    showCreateEditLoginView(mode: .create(.other(shareId: shareId)))
                 case .alias(let aliasOptions):
-                    showCreateEditAliasView(mode: .create(shareId: shareId,
-                                                          options: aliasOptions))
+                    showCreateEditAliasView(mode: .create(.alias(shareId: shareId,
+                                                                 aliasOptions: aliasOptions)))
                 case .note:
-                    showCreateEditNoteView(mode: mode)
+                    showCreateEditNoteView(mode: .create(.other(shareId: shareId)))
                 case .password:
                     showGeneratePasswordView(delegate: nil)
                 }
@@ -143,7 +142,7 @@ final class MyVaultsCoordinator: Coordinator {
                               modalTransitionStyle: mode.modalTransitionStyle)
     }
 
-    private func showCreateEditAliasView(mode: AliasItemMode) {
+    private func showCreateEditAliasView(mode: ItemMode) {
         let createEditAliasViewModel = CreateEditAliasViewModel(mode: mode,
                                                                 userData: userData,
                                                                 shareRepository: shareRepository,
