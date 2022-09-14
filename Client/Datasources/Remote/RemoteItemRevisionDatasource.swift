@@ -24,8 +24,8 @@ public protocol RemoteItemRevisionDatasourceProtocol: BaseRemoteDatasourceProtoc
     /// Get all item revisions of a share
     func getItemRevisions(shareId: String) async throws -> [ItemRevision]
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision
-    func trashItems(shareId: String, request: TrashItemsRequest) async throws -> [ItemToBeTrashed]
-    func deleteItems(shareId: String, request: DeleteItemsRequest) async throws
+    func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem]
+    func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws
     func updateItem(shareId: String, itemId: String, request: UpdateItemRequest) async throws -> ItemRevision
 }
 
@@ -59,18 +59,18 @@ public extension RemoteItemRevisionDatasourceProtocol {
         return response.item
     }
 
-    func trashItems(shareId: String, request: TrashItemsRequest) async throws -> [ItemToBeTrashed] {
+    func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
         let endpoint = TrashItemsEndpoint(credential: authCredential,
                                           shareId: shareId,
-                                          request: request)
+                                          request: .init(items: items))
         let response = try await apiService.exec(endpoint: endpoint)
         return response.items
     }
 
-    func deleteItems(shareId: String, request: DeleteItemsRequest) async throws {
+    func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws {
         let endpoint = DeleteItemsEndpoint(credential: authCredential,
                                            shareId: shareId,
-                                           request: request)
+                                           request: .init(items: items))
         _ = try await apiService.exec(endpoint: endpoint)
     }
 

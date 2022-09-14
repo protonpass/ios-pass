@@ -56,9 +56,8 @@ class BaseItemDetailViewModel: BaseViewModel {
                     try await itemRevisionRepository.getItemRevision(shareId: itemContent.shareId,
                                                                      itemId: itemContent.itemId) {
                     isLoading = true
-                    let request = TrashItemsRequest(items: [itemRevision.itemToBeTrashed()])
-                    try await itemRevisionRepository.trashItems(request: request,
-                                                                shareId: itemContent.shareId)
+                    try await itemRevisionRepository.trashItemRevisions([itemRevision],
+                                                                        shareId: itemContent.shareId)
                     isLoading = false
                     isTrashed = true
                 }

@@ -150,9 +150,8 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
                     try await itemRevisionRepository.getItemRevision(shareId: partialItemContent.shareId,
                                                                      itemId: partialItemContent.itemId) {
                     isLoading = true
-                    let request = TrashItemsRequest(items: [itemRevision.itemToBeTrashed()])
-                    try await itemRevisionRepository.trashItems(request: request,
-                                                                shareId: partialItemContent.shareId)
+                    try await itemRevisionRepository.trashItemRevisions([itemRevision],
+                                                                        shareId: partialItemContent.shareId)
                     isLoading = false
                     partialItemContents.removeAll(where: { $0.itemId == partialItemContent.itemId })
                     onTrashedItem?(partialItemContent.type)

@@ -31,16 +31,16 @@ public protocol LocalItemRevisionDatasourceProtocol {
     func getItemRevisionCount(shareId: String) async throws -> Int
 
     /// Insert or update a list of item revisions
-    func upsertItemRevisions(_ itemRevisions: [ItemRevision], shareId: String) async throws
+    func upsertItemRevisions(_ items: [ItemRevision], shareId: String) async throws
 
     /// Nuke item revisions of a share
     func removeAllItemRevisions(shareId: String) async throws
 
     /// Send  item revisions to trash
-    func trashItems(shareId: String, itemsToBeTrashed: [ItemToBeTrashed]) async throws
+    func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws
 
     /// Permanently delete item revisions
-    func deleteItems(shareId: String, itemsToBeDeleted: [ItemToBeDeleted]) async throws
+    func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws
 }
 
 public final class LocalItemRevisionDatasource: BaseLocalDatasource {}
@@ -83,13 +83,13 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
         return try await count(fetchRequest: fetchRequest, context: taskContext)
     }
 
-    public func upsertItemRevisions(_ itemRevisions: [ItemRevision],
+    public func upsertItemRevisions(_ items: [ItemRevision],
                                     shareId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
         newBatchInsertRequest(entity: ItemRevisionEntity.entity(context: taskContext),
-                              sourceItems: itemRevisions) { managedObject, itemRevision in
+                              sourceItems: items) { managedObject, itemRevision in
             (managedObject as? ItemRevisionEntity)?.hydrate(from: itemRevision,
                                                             shareId: shareId)
         }
@@ -105,10 +105,8 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
                           context: taskContext)
     }
 
-    public func trashItems(shareId: String, itemsToBeTrashed: [ItemToBeTrashed]) async throws {
-        for itemToBeTrashed in itemsToBeTrashed {
-            guard let item = try await getItemRevision(shareId: shareId,
-                                                       itemId: itemToBeTrashed.itemID) else { return }
+    public func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws {
+        for item in items {
             let trashedItem = ItemRevision(itemID: item.itemID,
                                            revision: item.revision,
                                            contentFormatVersion: item.contentFormatVersion,
@@ -125,14 +123,14 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
         }
     }
 
-    public func deleteItems(shareId: String, itemsToBeDeleted: [ItemToBeDeleted]) async throws {
+    public func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
 
-        for itemToBeDeleted in itemsToBeDeleted {
+        for item in items {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemRevisionEntity")
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                 .init(format: "shareID = %@", shareId),
-                .init(format: "itemID = %@", itemToBeDeleted.itemID)
+                .init(format: "itemID = %@", item.itemID)
             ])
             try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                               context: taskContext)

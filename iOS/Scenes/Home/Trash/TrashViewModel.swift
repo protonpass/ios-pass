@@ -126,8 +126,8 @@ extension TrashViewModel {
                         try await itemRevisionRepository.getItemRevision(shareId: item.shareId,
                                                                          itemId: item.itemId) else { return }
                 isLoading = true
-                let request = DeleteItemsRequest(items: [itemRevision.itemToBeDeleted()])
-                try await itemRevisionRepository.deleteItems(request: request, shareId: item.shareId)
+                try await itemRevisionRepository.deleteItemRevisions([itemRevision],
+                                                                     shareId: item.shareId)
                 isLoading = false
                 trashedItem.removeAll(where: { $0.itemId == item.itemId })
                 onDeletedItem?()

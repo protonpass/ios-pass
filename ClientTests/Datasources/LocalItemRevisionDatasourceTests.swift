@@ -186,8 +186,7 @@ extension LocalItemRevisionDatasourceTests {
                                                     state: .active)
 
             // When
-            try await sut.trashItems(shareId: givenShareId,
-                                     itemsToBeTrashed: [insertedItemRevision.itemToBeTrashed()])
+            try await sut.trashItemRevisions([insertedItemRevision], shareId: givenShareId)
 
             // Then
             let itemRevision = try await sut.getItemRevision(shareId: givenShareId,
@@ -214,13 +213,12 @@ extension LocalItemRevisionDatasourceTests {
             XCTAssertEqual(firstCount, 3)
 
             // Delete third item
-            try await sut.deleteItems(shareId: shareId, itemsToBeDeleted: [thirdItem.itemToBeTrashed()])
+            try await sut.deleteItemRevisions([thirdItem], shareId: shareId)
             let secondCount = try await sut.getItemRevisionCount(shareId: shareId)
             XCTAssertEqual(secondCount, 2)
 
             // Delete both first and second item
-            try await sut.deleteItems(shareId: shareId, itemsToBeDeleted: [firstItem.itemToBeTrashed(),
-                                                                           secondItem.itemToBeTrashed()])
+            try await sut.deleteItemRevisions([firstItem, secondItem], shareId: shareId)
             let thirdCount = try await sut.getItemRevisionCount(shareId: shareId)
             XCTAssertEqual(thirdCount, 0)
 

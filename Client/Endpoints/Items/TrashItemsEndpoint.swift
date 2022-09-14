@@ -21,23 +21,18 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public struct TrashItemsResponse: Decodable {
-    public let code: Int
-    public let items: [ItemToBeTrashed]
-}
-
 public struct TrashItemsEndpoint: Endpoint {
-    public typealias Body = TrashItemsRequest
-    public typealias Response = TrashItemsResponse
+    public typealias Body = ModifyItemRequest
+    public typealias Response = ModifyItemResponse
 
     public var path: String
     public var method: HTTPMethod
     public var authCredential: AuthCredential?
-    public var body: TrashItemsRequest?
+    public var body: ModifyItemRequest?
 
     public init(credential: AuthCredential,
                 shareId: String,
-                request: TrashItemsRequest) {
+                request: ModifyItemRequest) {
         self.path = "/pass/v1/share/\(shareId)/item/trash"
         self.method = .post
         self.authCredential = credential

@@ -39,9 +39,9 @@ public protocol ItemRevisionRepositoryProtocol {
     func createItem(request: CreateItemRequest, shareId: String) async throws -> ItemRevision
 
     @discardableResult
-    func trashItems(request: TrashItemsRequest, shareId: String) async throws -> [ItemToBeTrashed]
+    func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem]
 
-    func deleteItems(request: DeleteItemsRequest, shareId: String) async throws
+    func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws
 
     func updateItem(request: UpdateItemRequest, shareId: String, itemId: String) async throws
 }
@@ -102,23 +102,22 @@ public extension ItemRevisionRepositoryProtocol {
         return createdItemRevision
     }
 
-    func trashItems(request: TrashItemsRequest, shareId: String) async throws -> [ItemToBeTrashed] {
-        let count = request.items.count
+    func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
+        let count = items.count
         PPLogger.shared?.log("Trashing \(count) items for share \(shareId)")
-        let itemsToBeTrashed = try await remoteItemRevisionDatasource.trashItems(shareId: shareId,
-                                                                                 request: request)
+        let trashedItems = try await remoteItemRevisionDatasource.trashItemRevisions(items, shareId: shareId)
         PPLogger.shared?.log("Finished trashing remotely \(count) items for share \(shareId)")
-        try await localItemRevisionDatasoure.trashItems(shareId: shareId, itemsToBeTrashed: itemsToBeTrashed)
+        try await localItemRevisionDatasoure.trashItemRevisions(items, shareId: shareId)
         PPLogger.shared?.log("Finished trashing locallly \(count) items for share \(shareId)")
-        return itemsToBeTrashed
+        return trashedItems
     }
 
-    func deleteItems(request: DeleteItemsRequest, shareId: String) async throws {
-        let count = request.items.count
+    func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws {
+        let count = items.count
         PPLogger.shared?.log("Deleting \(count) items for share \(shareId)")
-        try await remoteItemRevisionDatasource.deleteItems(shareId: shareId, request: request)
+        try await remoteItemRevisionDatasource.deleteItemRevisions(items, shareId: shareId)
         PPLogger.shared?.log("Finished deleting remotely \(count) items for share \(shareId)")
-        try await localItemRevisionDatasoure.deleteItems(shareId: shareId, itemsToBeDeleted: request.items)
+        try await localItemRevisionDatasoure.deleteItemRevisions(items, shareId: shareId)
         PPLogger.shared?.log("Finished deleting locallly \(count) items for share \(shareId)")
     }
 

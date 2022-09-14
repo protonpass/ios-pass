@@ -1,6 +1,6 @@
 //
-// TrashItemsRequest.swift
-// Proton Pass - Created on 08/09/2022.
+// ModifyItemRequest.swift
+// Proton Pass - Created on 13/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,21 +18,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-
-public struct TrashItemsRequest: Encodable {
-    public let items: [ItemToBeTrashed]
+public struct ModifyItemRequest: Encodable {
+    public let items: [ItemToBeModified]
 
     enum CodingKeys: String, CodingKey {
         case items = "Items"
     }
 
-    public init(items: [ItemToBeTrashed]) {
-        self.items = items
+    public init(items: [ItemRevision]) {
+        self.items = items.map { .init(itemID: $0.itemID, revision: $0.revision) }
     }
 }
 
-public struct ItemToBeTrashed: Encodable {
+public struct ModifyItemResponse: Decodable {
+    public let code: Int
+    public let items: [ModifiedItem]
+}
+
+/// To be deleted/trashed/untrashed
+public struct ItemToBeModified: Encodable {
     public let itemID: String
     public let revision: Int16
 
@@ -42,15 +46,11 @@ public struct ItemToBeTrashed: Encodable {
     }
 }
 
-// swiftlint:disable explicit_enum_raw_value
-extension ItemToBeTrashed: Decodable {
-    enum DecodingKeys: String, CodingKey {
-        case itemID, revision
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: DecodingKeys.self)
-        self.itemID = try container.decode(String.self, forKey: .itemID)
-        self.revision = try container.decode(Int16.self, forKey: .revision)
-    }
+/// Trashed/untrashed item
+public struct ModifiedItem: Decodable {
+    public let itemID: String
+    public let revision: Int16
+    public let state: Int16
+    public let modifyTime: Int64
+    public let revisionTime: Int64
 }

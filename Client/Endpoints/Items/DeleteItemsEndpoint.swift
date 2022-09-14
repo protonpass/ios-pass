@@ -22,17 +22,17 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 public struct DeleteItemsEndpoint: Endpoint {
-    public typealias Body = DeleteItemsRequest
+    public typealias Body = ModifyItemRequest
     public typealias Response = CodeOnlyResponse
 
     public var path: String
     public var method: HTTPMethod
     public var authCredential: AuthCredential?
-    public var body: DeleteItemsRequest?
+    public var body: ModifyItemRequest?
 
     public init(credential: AuthCredential,
                 shareId: String,
-                request: DeleteItemsRequest) {
+                request: ModifyItemRequest) {
         self.path = "/pass/v1/share/\(shareId)/item"
         self.method = .delete
         self.authCredential = credential
