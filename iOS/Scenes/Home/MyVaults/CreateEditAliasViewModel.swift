@@ -21,6 +21,25 @@
 import Client
 import Core
 import ProtonCore_Login
+import SwiftUI
+
+final class SuffixSelection: ObservableObject {
+    let suffixes: [Suffix]
+    @Published var selectedSuffix: Suffix?
+
+    init(suffixes: [Suffix]) {
+        self.suffixes = suffixes
+    }
+}
+
+final class MailboxSelection: ObservableObject {
+    let mailboxes: [Mailbox]
+    @Published var selectedMailboxes: [Mailbox] = []
+
+    init(mailboxes: [Mailbox]) {
+        self.mailboxes = mailboxes
+    }
+}
 
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
@@ -31,6 +50,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var mailbox = ""
     @Published var note = ""
 
+    let suffixSelection: SuffixSelection?
+    let mailboxSelection: MailboxSelection?
     let aliasRepository: AliasRepositoryProtocol
 
     init(mode: ItemMode,
@@ -40,11 +61,56 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
          itemRevisionRepository: ItemRevisionRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol) {
         self.aliasRepository = aliasRepository
+
+        switch mode {
+        case .create(let options):
+            switch options {
+            case let .alias(_, aliasOptions):
+                self.suffixSelection = .init(suffixes: aliasOptions.suffixes)
+                self.mailboxSelection = .init(mailboxes: aliasOptions.mailboxes)
+            default:
+                assertionFailure("Expecting alias options")
+                self.suffixSelection = nil
+                self.mailboxSelection = nil
+            }
+
+        case .edit:
+            self.suffixSelection = nil
+            self.mailboxSelection = nil
+        }
+
         super.init(mode: mode,
                    userData: userData,
                    shareRepository: shareRepository,
                    shareKeysRepository: shareKeysRepository,
                    itemRevisionRepository: itemRevisionRepository)
+
+        observeSuffixSelection()
+        observeMailboxSelection()
+    }
+
+    private func observeSuffixSelection() {
+        suffixSelection?.$selectedSuffix
+            .sink { [weak self] selectedSuffix in
+                guard let self = self else { return }
+                self.suffix = selectedSuffix?.suffix ?? ""
+            }
+            .store(in: &cancellables)
+
+        suffixSelection?.selectedSuffix = suffixSelection?.suffixes.first
+    }
+
+    private func observeMailboxSelection() {
+        mailboxSelection?.$selectedMailboxes
+            .sink { [weak self] selectedMailboxes in
+                guard let self = self else { return }
+                self.mailbox = selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
+            }
+            .store(in: &cancellables)
+
+        if let firstMailbox = mailboxSelection?.mailboxes.first {
+            mailboxSelection?.selectedMailboxes = [firstMailbox]
+        }
     }
 
     override func navigationBarTitle() -> String {

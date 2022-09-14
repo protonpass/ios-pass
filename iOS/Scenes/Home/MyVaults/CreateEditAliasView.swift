@@ -104,11 +104,14 @@ struct CreateEditAliasView: View {
                     textAutocapitalizationType: .none)
             }
 
-            UserInputContainerView(title: nil, isFocused: false) {
-                UserInputStaticContentView(text: $viewModel.suffix) {
-                    print("OKAY")
+            NavigationLink(destination: {
+                SuffixesView(suffixSelection: viewModel.suffixSelection ?? .init(suffixes: []))
+            }, label: {
+                UserInputContainerView(title: nil, isFocused: false) {
+                    UserInputStaticContentView(text: $viewModel.suffix)
                 }
-            }
+            })
+            .buttonStyle(.plain)
 
             if !viewModel.prefix.isEmpty {
                 HStack {
@@ -131,9 +134,7 @@ struct CreateEditAliasView: View {
 
     private var mailboxesInputView: some View {
         UserInputContainerView(title: "Mailboxes", isFocused: false) {
-            UserInputStaticContentView(text: $viewModel.mailbox) {
-                print("OKAY")
-            }
+            UserInputStaticContentView(text: $viewModel.mailbox)
         }
     }
 
@@ -143,6 +144,51 @@ struct CreateEditAliasView: View {
             UserInputContentMultilineView(
                 text: $viewModel.note,
                 isFocused: $isFocusedOnNote)
+        }
+    }
+}
+
+private struct SuffixesView: View {
+    @Environment(\.presentationMode) private var presentationMode
+    @ObservedObject var suffixSelection: SuffixSelection
+
+    var body: some View {
+        List {
+            ForEach(suffixSelection.suffixes, id: \.suffix) { suffix in
+                HStack {
+                    Text(suffix.suffix)
+                    Spacer()
+                    if suffixSelection.selectedSuffix == suffix {
+                        Image(uiImage: IconProvider.checkmark)
+                            .foregroundColor(ColorProvider.BrandNorm)
+                    }
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    suffixSelection.selectedSuffix = suffix
+                    presentationMode.wrappedValue.dismiss()
+                }
+            }
+        }
+        .listStyle(.plain)
+        .navigationBarBackButtonHidden(true)
+        .toolbar { toolbarContent }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Image(uiImage: IconProvider.chevronLeft)
+                    .foregroundColor(.primary)
+            })
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text("Alias suffixes")
+                .fontWeight(.bold)
         }
     }
 }

@@ -113,12 +113,9 @@ public struct UserInputContentMultilineView: View {
 
 public struct UserInputStaticContentView: View {
     @Binding var text: String
-    let onTap: () -> Void
 
-    public init(text: Binding<String>,
-                onTap: @escaping () -> Void) {
+    public init(text: Binding<String>) {
         self._text = text
-        self.onTap = onTap
     }
 
     public var body: some View {
@@ -128,8 +125,6 @@ public struct UserInputStaticContentView: View {
             Image(uiImage: IconProvider.chevronRight)
                 .foregroundColor(.primary)
         }
-        .contentShape(Rectangle())
-        .onTapGesture(perform: onTap)
     }
 }
 

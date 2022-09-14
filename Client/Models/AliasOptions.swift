@@ -35,6 +35,22 @@ public struct Suffix: Decodable {
     public let domain: String
     public let signedSuffix: String
     public let isCustom: Bool
+
+    public init(suffix: String, domain: String, signedSuffix: String, isCustom: Bool) {
+        self.suffix = suffix
+        self.domain = domain
+        self.signedSuffix = signedSuffix
+        self.isCustom = isCustom
+    }
+}
+
+extension Suffix: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.suffix == rhs.suffix &&
+        lhs.domain == rhs.domain &&
+        lhs.signedSuffix == rhs.signedSuffix &&
+        lhs.isCustom == rhs.isCustom
+    }
 }
 
 public struct Mailbox: Decodable {
