@@ -1,5 +1,5 @@
 //
-// CreateAliasView.swift
+// CreateEditAliasView.swift
 // Proton Pass - Created on 07/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,11 +21,11 @@
 import ProtonCore_UIFoundations
 import SwiftUI
 
-struct CreateAliasView: View {
+struct CreateEditAliasView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @StateObject private var viewModel: CreateAliasViewModel
+    @StateObject private var viewModel: CreateEditAliasViewModel
 
-    init(viewModel: CreateAliasViewModel) {
+    init(viewModel: CreateEditAliasViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 

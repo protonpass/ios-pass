@@ -1,5 +1,5 @@
 //
-// CreateAliasViewModel.swift
+// CreateEditAliasViewModel.swift
 // Proton Pass - Created on 05/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -27,7 +27,7 @@ enum AliasItemMode {
     case edit(ItemContent)
 }
 
-final class CreateAliasViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
+final class CreateEditAliasViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     let mode: AliasItemMode

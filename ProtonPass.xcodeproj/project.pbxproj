@@ -48,7 +48,7 @@
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
 		35464B62289B0380008E65C4 /* VaultKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35464B61289B0380008E65C4 /* VaultKey+Test.swift */; };
 		35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */; };
-		35476972289D7E6000581E2E /* CreateAliasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476971289D7E6000581E2E /* CreateAliasViewModel.swift */; };
+		35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */; };
 		35476974289D82FE00581E2E /* CreateItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476973289D82FE00581E2E /* CreateItemViewModel.swift */; };
 		3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */; };
 		3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */; };
@@ -59,7 +59,7 @@
 		3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABE12877583B00EE85E1 /* TrashCoordinator.swift */; };
 		3547ABEA2877684D00EE85E1 /* GenericItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABE92877684D00EE85E1 /* GenericItemView.swift */; };
 		3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */; };
-		3547ABEE287777B700EE85E1 /* CreateAliasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABED287777B700EE85E1 /* CreateAliasView.swift */; };
+		3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */; };
 		3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */; };
 		3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF12877791000EE85E1 /* CreateVaultView.swift */; };
 		3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */; };
@@ -364,7 +364,7 @@
 		3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonSwitchToggleStyle.swift; sourceTree = "<group>"; };
 		35464B61289B0380008E65C4 /* VaultKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VaultKey+Test.swift"; sourceTree = "<group>"; };
 		3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditLoginViewModel.swift; sourceTree = "<group>"; };
-		35476971289D7E6000581E2E /* CreateAliasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasViewModel.swift; sourceTree = "<group>"; };
+		35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAliasViewModel.swift; sourceTree = "<group>"; };
 		35476973289D82FE00581E2E /* CreateItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemViewModel.swift; sourceTree = "<group>"; };
 		3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsView.swift; sourceTree = "<group>"; };
 		3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleSidebarButton.swift; sourceTree = "<group>"; };
@@ -375,7 +375,7 @@
 		3547ABE12877583B00EE85E1 /* TrashCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashCoordinator.swift; sourceTree = "<group>"; };
 		3547ABE92877684D00EE85E1 /* GenericItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericItemView.swift; sourceTree = "<group>"; };
 		3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditLoginView.swift; sourceTree = "<group>"; };
-		3547ABED287777B700EE85E1 /* CreateAliasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasView.swift; sourceTree = "<group>"; };
+		3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAliasView.swift; sourceTree = "<group>"; };
 		3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteView.swift; sourceTree = "<group>"; };
 		3547ABF12877791000EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
 		3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySummaryView.swift; sourceTree = "<group>"; };
@@ -696,8 +696,8 @@
 				35476973289D82FE00581E2E /* CreateItemViewModel.swift */,
 				3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */,
 				3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */,
-				3547ABED287777B700EE85E1 /* CreateAliasView.swift */,
-				35476971289D7E6000581E2E /* CreateAliasViewModel.swift */,
+				3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */,
+				35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */,
 				3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */,
 				35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */,
 				3547ABF12877791000EE85E1 /* CreateVaultView.swift */,
@@ -1831,7 +1831,7 @@
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				358A508928AD2E8F00F5285C /* SideBarViewModel.swift in Sources */,
-				3547ABEE287777B700EE85E1 /* CreateAliasView.swift in Sources */,
+				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
 				353E8B76287625D100A2C5E3 /* SidebarCurrentUserView.swift in Sources */,
@@ -1850,7 +1850,7 @@
 				3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */,
 				353E8B7028761A1700A2C5E3 /* SidebarItem.swift in Sources */,
 				354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */,
-				35476972289D7E6000581E2E /* CreateAliasViewModel.swift in Sources */,
+				35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */,
 				3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */,
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,

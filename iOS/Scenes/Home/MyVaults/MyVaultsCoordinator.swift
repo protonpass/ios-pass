@@ -144,15 +144,15 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func showCreateEditAliasView(mode: AliasItemMode) {
-        let createAliasViewModel = CreateAliasViewModel(mode: mode,
-                                                        userData: userData,
-                                                        shareRepository: shareRepository,
-                                                        shareKeysRepository: shareKeysRepository,
-                                                        itemRevisionRepository: itemRevisionRepository,
-                                                        aliasRepository: aliasRepository)
-        createAliasViewModel.delegate = self
-        let createAliasView = CreateAliasView(viewModel: createAliasViewModel)
-        presentViewFullScreen(createAliasView)
+        let createEditAliasViewModel = CreateEditAliasViewModel(mode: mode,
+                                                                userData: userData,
+                                                                shareRepository: shareRepository,
+                                                                shareKeysRepository: shareKeysRepository,
+                                                                itemRevisionRepository: itemRevisionRepository,
+                                                                aliasRepository: aliasRepository)
+        createEditAliasViewModel.delegate = self
+        let createEditAliasView = CreateEditAliasView(viewModel: createEditAliasViewModel)
+        presentViewFullScreen(createEditAliasView)
     }
 
     private func showCreateEditNoteView(mode: ItemMode) {
