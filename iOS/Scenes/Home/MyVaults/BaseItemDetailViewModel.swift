@@ -20,14 +20,18 @@
 
 import Client
 
+protocol ItemDetailViewModelDelegate: AnyObject {
+    func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
+    func itemDetailViewModelDidTrashItem(_ type: ItemContentType)
+}
+
 class BaseItemDetailViewModel: BaseViewModel {
     @Published var isTrashed = false
 
     private let itemContent: ItemContent
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
 
-    var onEditItem: ((ItemContent) -> Void)?
-    var onTrashedItem: ((ItemContentType) -> Void)?
+    weak var itemDetailDelegate: ItemDetailViewModelDelegate?
 
     init(itemContent: ItemContent,
          itemRevisionRepository: ItemRevisionRepositoryProtocol) {
@@ -39,14 +43,14 @@ class BaseItemDetailViewModel: BaseViewModel {
             .sink { [weak self] isTrashed in
                 guard let self = self else { return }
                 if isTrashed {
-                    self.onTrashedItem?(itemContent.contentData.type)
+                    self.itemDetailDelegate?.itemDetailViewModelDidTrashItem(itemContent.contentData.type)
                 }
             }
             .store(in: &cancellables)
     }
 
     func edit() {
-        onEditItem?(itemContent)
+        itemDetailDelegate?.itemDetailViewModelWantsToEditItem(itemContent)
     }
 
     func trash() {

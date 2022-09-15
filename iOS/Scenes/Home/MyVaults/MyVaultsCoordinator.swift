@@ -188,8 +188,7 @@ final class MyVaultsCoordinator: Coordinator {
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
                                                  itemRevisionRepository: itemRevisionRepository)
             viewModel.delegate = self
-            viewModel.onEditItem = { [unowned self] in showEditItemView($0) }
-            viewModel.onTrashedItem = { [unowned self] in handleTrashedItem($0) }
+            viewModel.itemDetailDelegate = self
             let logInDetailView = LogInDetailView(viewModel: viewModel)
             pushView(logInDetailView)
 
@@ -197,8 +196,7 @@ final class MyVaultsCoordinator: Coordinator {
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRevisionRepository: itemRevisionRepository)
             viewModel.delegate = self
-            viewModel.onEditItem = { [unowned self] in showEditItemView($0) }
-            viewModel.onTrashedItem = { [unowned self] in handleTrashedItem($0) }
+            viewModel.itemDetailDelegate = self
             let noteDetailView = NoteDetailView(viewModel: viewModel)
             pushView(noteDetailView)
 
@@ -289,6 +287,17 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
         handleUpdatedItem(type)
+    }
+}
+
+// MARK: - ItemDetailViewModelDelegate
+extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
+    func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
+        showEditItemView(itemContent)
+    }
+
+    func itemDetailViewModelDidTrashItem(_ type: ItemContentType) {
+        handleTrashedItem(type)
     }
 }
 

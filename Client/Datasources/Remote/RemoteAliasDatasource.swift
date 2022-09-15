@@ -22,6 +22,7 @@ import Foundation
 
 public protocol RemoteAliasDatasourceProtocol: BaseRemoteDatasourceProtocol {
     func getAliasOptions(shareId: String) async throws -> AliasOptions
+    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
 }
 
 public extension RemoteAliasDatasourceProtocol {
@@ -30,6 +31,14 @@ public extension RemoteAliasDatasourceProtocol {
                                                shareId: shareId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.options
+    }
+
+    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
+        let endpoint = GetAliasDetailsEndpoint(credential: authCredential,
+                                               shareId: shareId,
+                                               itemId: itemId)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.alias
     }
 }
 

@@ -89,6 +89,10 @@
 		35526B6628D11E0C0017BB53 /* ModifyItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35526B6528D11E0C0017BB53 /* ModifyItemRequest.swift */; };
 		3552F48628D3215600547146 /* CreateCustomAliasRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48528D3215600547146 /* CreateCustomAliasRequest.swift */; };
 		3552F48828D322C100547146 /* CreateCustomAliasEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48728D322C100547146 /* CreateCustomAliasEndpoint.swift */; };
+		3552F48A28D344E100547146 /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48928D344E100547146 /* Alias.swift */; };
+		3552F48C28D3451800547146 /* GetAliasDetailsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48B28D3451800547146 /* GetAliasDetailsEndpoint.swift */; };
+		3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48D28D3467100547146 /* AliasDetailView.swift */; };
+		3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */; };
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
@@ -406,6 +410,10 @@
 		35526B6528D11E0C0017BB53 /* ModifyItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyItemRequest.swift; sourceTree = "<group>"; };
 		3552F48528D3215600547146 /* CreateCustomAliasRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomAliasRequest.swift; sourceTree = "<group>"; };
 		3552F48728D322C100547146 /* CreateCustomAliasEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomAliasEndpoint.swift; sourceTree = "<group>"; };
+		3552F48928D344E100547146 /* Alias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alias.swift; sourceTree = "<group>"; };
+		3552F48B28D3451800547146 /* GetAliasDetailsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAliasDetailsEndpoint.swift; sourceTree = "<group>"; };
+		3552F48D28D3467100547146 /* AliasDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDetailView.swift; sourceTree = "<group>"; };
+		3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDetailViewModel.swift; sourceTree = "<group>"; };
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
@@ -685,6 +693,7 @@
 			children = (
 				3552F48528D3215600547146 /* CreateCustomAliasRequest.swift */,
 				3552F48728D322C100547146 /* CreateCustomAliasEndpoint.swift */,
+				3552F48B28D3451800547146 /* GetAliasDetailsEndpoint.swift */,
 				354146D328D1F235007E45A6 /* GetAliasOptionsEndpoint.swift */,
 			);
 			path = Aliases;
@@ -693,6 +702,8 @@
 		3547ABCC2876CFA700EE85E1 /* MyVaults */ = {
 			isa = PBXGroup;
 			children = (
+				3552F48D28D3467100547146 /* AliasDetailView.swift */,
+				3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */,
 				35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */,
 				354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */,
 				3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */,
@@ -761,6 +772,7 @@
 			isa = PBXGroup;
 			children = (
 				350A97CB28859D1800A7168B /* AddressKey.swift */,
+				3552F48928D344E100547146 /* Alias.swift */,
 				354146D028D1F1E1007E45A6 /* AliasOptions.swift */,
 				358A508A28AD3BB100F5285C /* DataError.swift */,
 				358AB49A2886FDA400818B44 /* ItemKey.swift */,
@@ -1860,6 +1872,8 @@
 				3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */,
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
+				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
+				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
 				354BB15528A2895F00F50040 /* SearchView.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
 				355635B7288947DD00F32353 /* VaultSelection.swift in Sources */,
@@ -1913,6 +1927,7 @@
 				3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */,
 				354146D428D1F235007E45A6 /* GetAliasOptionsEndpoint.swift in Sources */,
 				35526B6628D11E0C0017BB53 /* ModifyItemRequest.swift in Sources */,
+				3552F48A28D344E100547146 /* Alias.swift in Sources */,
 				358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
 				3530092A28A5281800611F8A /* Vault.swift in Sources */,
@@ -1930,6 +1945,7 @@
 				35610B8428ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift in Sources */,
 				35610B7528ABB77800955ACB /* LocalVaultKeyDatasource.swift in Sources */,
 				3593DD0B28A837DD00C235D3 /* ShareEntity.swift in Sources */,
+				3552F48C28D3451800547146 /* GetAliasDetailsEndpoint.swift in Sources */,
 				3552F48828D322C100547146 /* CreateCustomAliasEndpoint.swift in Sources */,
 				358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */,
 				3552F48628D3215600547146 /* CreateCustomAliasRequest.swift in Sources */,

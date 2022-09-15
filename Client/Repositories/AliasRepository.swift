@@ -28,11 +28,16 @@ public protocol AliasRepositoryProtocol {
     var remoteAliasDatasouce: RemoteAliasDatasourceProtocol { get }
 
     func getAliasOptions(shareId: String) async throws -> AliasOptions
+    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
 }
 
 public extension AliasRepositoryProtocol {
     func getAliasOptions(shareId: String) async throws -> AliasOptions {
         try await remoteAliasDatasouce.getAliasOptions(shareId: shareId)
+    }
+
+    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
+        try await remoteAliasDatasouce.getAliasDetails(shareId: shareId, itemId: itemId)
     }
 }
 
