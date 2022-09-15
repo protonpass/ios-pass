@@ -28,12 +28,10 @@ final class NoteDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obser
     @Published private(set) var note = ""
 
     override func bindValues() {
-        switch itemContent.contentData {
-        case .note:
+        if case .note = itemContent.contentData {
             self.name = itemContent.name
             self.note = itemContent.note
-
-        default:
+        } else {
             fatalError("Expecting note type")
         }
     }

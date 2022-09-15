@@ -31,14 +31,13 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     @Published private(set) var note = ""
 
     override func bindValues() {
-        switch itemContent.contentData {
-        case let .login(username, password, urls):
+        if case let .login(username, password, urls) = itemContent.contentData {
             self.name = itemContent.name
             self.username = username
             self.urls = urls
             self.password = password
             self.note = itemContent.note
-        default:
+        } else {
             fatalError("Expecting login type")
         }
     }
