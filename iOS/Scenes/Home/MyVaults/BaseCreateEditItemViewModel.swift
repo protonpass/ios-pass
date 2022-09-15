@@ -22,6 +22,11 @@ import Client
 import Core
 import ProtonCore_Login
 
+protocol CreateEditItemViewModelDelegate: AnyObject {
+    func createEditItemViewModelDidCreateItem(_ type: ItemContentType)
+    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
+}
+
 enum ItemMode {
     case create(CreateItemOptions)
     case edit(ItemContent)
@@ -39,8 +44,7 @@ class BaseCreateEditItemViewModel: BaseViewModel {
     let shareKeysRepository: ShareKeysRepositoryProtocol
     let itemRevisionRepository: ItemRevisionRepositoryProtocol
 
-    var onCreatedItem: ((ItemContentType) -> Void)?
-    var onUpdatedItem: ((ItemContentType) -> Void)?
+    weak var createEditItemDelegate: CreateEditItemViewModelDelegate?
 
     init(mode: ItemMode,
          userData: UserData,
@@ -98,7 +102,7 @@ class BaseCreateEditItemViewModel: BaseViewModel {
                 let request = try await createItemRequest(shareId: shareId)
                 try await itemRevisionRepository.createItem(request: request, shareId: shareId)
                 isLoading = false
-                onCreatedItem?(itemContentType())
+                createEditItemDelegate?.createEditItemViewModelDidCreateItem(itemContentType())
             } catch {
                 self.isLoading = false
                 self.error = error
@@ -118,7 +122,7 @@ class BaseCreateEditItemViewModel: BaseViewModel {
                                                        item: createItemRequest)
                 try await itemRevisionRepository.createAlias(request: request, shareId: shareId)
                 isLoading = false
-                onCreatedItem?(itemContentType())
+                createEditItemDelegate?.createEditItemViewModelDidCreateItem(itemContentType())
             } catch {
                 self.isLoading = false
                 self.error = error
@@ -153,7 +157,7 @@ class BaseCreateEditItemViewModel: BaseViewModel {
                                                             shareId: shareId,
                                                             itemId: itemId)
                 isLoading = false
-                onUpdatedItem?(itemContentType())
+                createEditItemDelegate?.createEditItemViewModelDidUpdateItem(itemContentType())
             } catch {
                 self.isLoading = false
                 self.error = error

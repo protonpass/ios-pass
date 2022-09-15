@@ -134,9 +134,8 @@ final class MyVaultsCoordinator: Coordinator {
                                                                 shareKeysRepository: shareKeysRepository,
                                                                 itemRevisionRepository: itemRevisionRepository)
         createEditLoginViewModel.delegate = self
+        createEditLoginViewModel.createEditItemDelegate = self
         createEditLoginViewModel.onGeneratePassword = { [unowned self] in showGeneratePasswordView(delegate: $0) }
-        createEditLoginViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
-        createEditLoginViewModel.onUpdatedItem = { [unowned self] in handleUpdatedItem($0) }
         let createEditLoginView = CreateEditLoginView(viewModel: createEditLoginViewModel)
         presentViewFullScreen(createEditLoginView,
                               modalTransitionStyle: mode.modalTransitionStyle)
@@ -150,7 +149,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                                 itemRevisionRepository: itemRevisionRepository,
                                                                 aliasRepository: aliasRepository)
         createEditAliasViewModel.delegate = self
-        createEditAliasViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
+        createEditAliasViewModel.createEditItemDelegate = self
         let createEditAliasView = CreateEditAliasView(viewModel: createEditAliasViewModel)
         presentViewFullScreen(createEditAliasView)
     }
@@ -162,8 +161,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                               shareKeysRepository: shareKeysRepository,
                                                               itemRevisionRepository: itemRevisionRepository)
         createEditNoteViewModel.delegate = self
-        createEditNoteViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
-        createEditNoteViewModel.onUpdatedItem = { [unowned self] in handleUpdatedItem($0) }
+        createEditNoteViewModel.createEditItemDelegate = self
         let createEditNoteView = CreateEditNoteView(viewModel: createEditNoteViewModel)
         presentViewFullScreen(createEditNoteView,
                               modalTransitionStyle: mode.modalTransitionStyle)
@@ -281,6 +279,17 @@ extension MyVaultsCoordinator: BaseViewModelDelegate {
     func viewModelStopsLoading() { hideLoadingHud() }
 
     func viewModelDidFailWithError(_ error: Error) { alertError(error) }
+}
+
+// MARK: - CreateEditItemViewModelDelegate
+extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
+    func createEditItemViewModelDidCreateItem(_ type: ItemContentType) {
+        handleCreatedItem(type)
+    }
+
+    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
+        handleUpdatedItem(type)
+    }
 }
 
 private extension ItemMode {
