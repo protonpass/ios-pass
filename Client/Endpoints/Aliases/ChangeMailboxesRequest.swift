@@ -1,6 +1,6 @@
 //
-// CreateAliasViewModel.swift
-// Proton Pass - Created on 05/08/2022.
+// ChangeMailboxesRequest.swift
+// Proton Pass - Created on 15/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,18 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
+public struct ChangeMailboxesRequest: Encodable {
+    public let mailboxIDs: [Int]
 
-final class CreateAliasViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
-    deinit { print(deinitMessage) }
-
-    func saveAction() {
-        isLoading = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.isLoading = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.error = AppCoordinatorError.noSessionData
-            }
-        }
+    enum CodingKeys: String, CodingKey {
+        case mailboxIDs = "MailboxIDs"
     }
 }

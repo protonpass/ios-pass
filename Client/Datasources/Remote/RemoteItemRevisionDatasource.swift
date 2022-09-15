@@ -24,6 +24,7 @@ public protocol RemoteItemRevisionDatasourceProtocol: BaseRemoteDatasourceProtoc
     /// Get all item revisions of a share
     func getItemRevisions(shareId: String) async throws -> [ItemRevision]
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision
+    func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> ItemRevision
     func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem]
     func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem]
     func deleteItemRevisions(_ items: [ItemRevision], shareId: String) async throws
@@ -51,11 +52,18 @@ public extension RemoteItemRevisionDatasourceProtocol {
         return itemRevisions
     }
 
-    func createItem(shareId: String,
-                    request: CreateItemRequest) async throws -> ItemRevision {
+    func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision {
         let endpoint = CreateItemEndpoint(credential: authCredential,
                                           shareId: shareId,
                                           request: request)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.item
+    }
+
+    func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> ItemRevision {
+        let endpoint = CreateCustomAliasEndpoint(credential: authCredential,
+                                                 shareId: shareId,
+                                                 request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.item
     }

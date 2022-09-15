@@ -30,18 +30,14 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     @Published private(set) var password = ""
     @Published private(set) var note = ""
 
-    override init(itemContent: ItemContent,
-                  itemRevisionRepository: ItemRevisionRepositoryProtocol) {
-        super.init(itemContent: itemContent, itemRevisionRepository: itemRevisionRepository)
-
-        switch itemContent.contentData {
-        case let .login(username, password, urls):
+    override func bindValues() {
+        if case let .login(username, password, urls) = itemContent.contentData {
             self.name = itemContent.name
             self.username = username
             self.urls = urls
             self.password = password
             self.note = itemContent.note
-        default:
+        } else {
             fatalError("Expecting login type")
         }
     }

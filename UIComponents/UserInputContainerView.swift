@@ -22,27 +22,32 @@ import ProtonCore_UIFoundations
 import SwiftUI
 
 public struct UserInputContainerView<Content: View>: View {
-    let title: String
+    let title: String?
     let isFocused: Bool
+    var isEditable: Bool
     let content: () -> Content
 
-    public init(title: String,
+    public init(title: String?,
                 isFocused: Bool,
+                isEditable: Bool = true,
                 @ViewBuilder content: @escaping () -> Content) {
         self.title = title
         self.isFocused = isFocused
+        self.isEditable = isEditable
         self.content = content
     }
 
     public var body: some View {
         VStack(alignment: .leading) {
-            Text(title)
-                .font(.caption)
-                .fontWeight(.medium)
+            if let title = title {
+                Text(title)
+                    .font(.caption)
+                    .fontWeight(.medium)
+            }
 
             content()
             .padding(10)
-            .background(Color(ColorProvider.BackgroundSecondary))
+            .background(Color(ColorProvider.BackgroundSecondary).opacity(isEditable ? 1 : 0.25))
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .overlay(
                 RoundedRectangle(cornerRadius: 8)

@@ -1,6 +1,6 @@
 //
-// NoteDetailViewModel.swift
-// Proton Pass - Created on 07/09/2022.
+// GetAliasOptionsEndpoint.swift
+// Proton Pass - Created on 14/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,21 +18,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Core
+import ProtonCore_Networking
+import ProtonCore_Services
 
-final class NoteDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
-    deinit { print(deinitMessage) }
+public struct GetAliasOptionsResponse: Decodable {
+    let code: Int
+    let options: AliasOptions
+}
 
-    @Published private(set) var name = ""
-    @Published private(set) var note = ""
+public struct GetAliasOptionsEndpoint: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = GetAliasOptionsResponse
 
-    override func bindValues() {
-        if case .note = itemContent.contentData {
-            self.name = itemContent.name
-            self.note = itemContent.note
-        } else {
-            fatalError("Expecting note type")
-        }
+    public var path: String
+    public var authCredential: AuthCredential?
+
+    public init(credential: AuthCredential, shareId: String) {
+        self.path = "/pass/v1/share/\(shareId)/alias/options"
+        self.authCredential = credential
     }
 }

@@ -1,6 +1,6 @@
 //
-// NoteDetailViewModel.swift
-// Proton Pass - Created on 07/09/2022.
+// LocalAliasDatasource.swift
+// Proton Pass - Created on 14/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,21 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Core
+import CoreData
 
-final class NoteDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
-    deinit { print(deinitMessage) }
+public protocol LocalAliasDatasourceProtocol {}
 
-    @Published private(set) var name = ""
-    @Published private(set) var note = ""
+public final class LocalAliasDatasource: BaseLocalDatasource {}
 
-    override func bindValues() {
-        if case .note = itemContent.contentData {
-            self.name = itemContent.name
-            self.note = itemContent.note
-        } else {
-            fatalError("Expecting note type")
-        }
-    }
-}
+extension LocalAliasDatasource: LocalAliasDatasourceProtocol {}

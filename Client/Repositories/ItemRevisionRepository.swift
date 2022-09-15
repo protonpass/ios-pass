@@ -38,6 +38,9 @@ public protocol ItemRevisionRepositoryProtocol {
     @discardableResult
     func createItem(request: CreateItemRequest, shareId: String) async throws -> ItemRevision
 
+    @discardableResult
+    func createAlias(request: CreateCustomAliasRequest, shareId: String) async throws -> ItemRevision
+
     func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws
 
     func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws
@@ -90,16 +93,23 @@ public extension ItemRevisionRepositoryProtocol {
         try await localItemRevisionDatasoure.upsertItemRevisions(itemRevisions, shareId: shareId)
     }
 
-    func createItem(request: CreateItemRequest,
-                    shareId: String) async throws -> ItemRevision {
+    func createItem(request: CreateItemRequest, shareId: String) async throws -> ItemRevision {
         PPLogger.shared?.log("Creating item revisions")
-        let createdItemRevision =
-        try await remoteItemRevisionDatasource.createItem(shareId: shareId,
-                                                          request: request)
+        let createdItemRevision = try await remoteItemRevisionDatasource.createItem(shareId: shareId,
+                                                                                    request: request)
         PPLogger.shared?.log("Saving newly create item revision to local database")
-        try await localItemRevisionDatasoure.upsertItemRevisions([createdItemRevision],
-                                                                 shareId: shareId)
+        try await localItemRevisionDatasoure.upsertItemRevisions([createdItemRevision], shareId: shareId)
         PPLogger.shared?.log("Item revision creation finished with success")
+        return createdItemRevision
+    }
+
+    func createAlias(request: CreateCustomAliasRequest, shareId: String) async throws -> ItemRevision {
+        PPLogger.shared?.log("Creating alias item")
+        let createdItemRevision = try await remoteItemRevisionDatasource.createAlias(shareId: shareId,
+                                                                                     request: request)
+        PPLogger.shared?.log("Saving newly create alias item to local database")
+        try await localItemRevisionDatasoure.upsertItemRevisions([createdItemRevision], shareId: shareId)
+        PPLogger.shared?.log("Alias item creation finished with success")
         return createdItemRevision
     }
 

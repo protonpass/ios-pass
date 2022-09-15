@@ -1,6 +1,6 @@
 //
-// NoteDetailViewModel.swift
-// Proton Pass - Created on 07/09/2022.
+// Alias.swift
+// Proton Pass - Created on 15/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,21 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Core
-
-final class NoteDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
-    deinit { print(deinitMessage) }
-
-    @Published private(set) var name = ""
-    @Published private(set) var note = ""
-
-    override func bindValues() {
-        if case .note = itemContent.contentData {
-            self.name = itemContent.name
-            self.note = itemContent.note
-        } else {
-            fatalError("Expecting note type")
-        }
-    }
+public struct Alias: Decodable {
+    public let email: String
+    public let mailboxes: [String]
 }

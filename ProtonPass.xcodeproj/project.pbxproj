@@ -34,6 +34,11 @@
 		353E8B74287622F300A2C5E3 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B73287622F300A2C5E3 /* BundleExtensions.swift */; };
 		353E8B76287625D100A2C5E3 /* SidebarCurrentUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B75287625D100A2C5E3 /* SidebarCurrentUserView.swift */; };
 		354146CF28D1C6D5007E45A6 /* UntrashItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354146CE28D1C6D5007E45A6 /* UntrashItemsEndpoint.swift */; };
+		354146D128D1F1E1007E45A6 /* AliasOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354146D028D1F1E1007E45A6 /* AliasOptions.swift */; };
+		354146D428D1F235007E45A6 /* GetAliasOptionsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354146D328D1F235007E45A6 /* GetAliasOptionsEndpoint.swift */; };
+		354146D628D1F466007E45A6 /* RemoteAliasDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354146D528D1F466007E45A6 /* RemoteAliasDatasource.swift */; };
+		354146D828D1F539007E45A6 /* LocalAliasDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354146D728D1F539007E45A6 /* LocalAliasDatasource.swift */; };
+		354146DA28D1F585007E45A6 /* AliasRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354146D928D1F585007E45A6 /* AliasRepository.swift */; };
 		35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35429B26288AB730000BA22F /* StaticFuncs.swift */; };
 		3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B8882883614D009C9A68 /* DummyApiService.swift */; };
 		3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */; };
@@ -43,7 +48,7 @@
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
 		35464B62289B0380008E65C4 /* VaultKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35464B61289B0380008E65C4 /* VaultKey+Test.swift */; };
 		35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */; };
-		35476972289D7E6000581E2E /* CreateAliasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476971289D7E6000581E2E /* CreateAliasViewModel.swift */; };
+		35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */; };
 		35476974289D82FE00581E2E /* CreateItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476973289D82FE00581E2E /* CreateItemViewModel.swift */; };
 		3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */; };
 		3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */; };
@@ -54,7 +59,7 @@
 		3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABE12877583B00EE85E1 /* TrashCoordinator.swift */; };
 		3547ABEA2877684D00EE85E1 /* GenericItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABE92877684D00EE85E1 /* GenericItemView.swift */; };
 		3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */; };
-		3547ABEE287777B700EE85E1 /* CreateAliasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABED287777B700EE85E1 /* CreateAliasView.swift */; };
+		3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */; };
 		3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */; };
 		3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF12877791000EE85E1 /* CreateVaultView.swift */; };
 		3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */; };
@@ -82,6 +87,14 @@
 		35526B5D28D116350017BB53 /* PassIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35526B5C28D116350017BB53 /* PassIcon.swift */; };
 		35526B5E28D117820017BB53 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
 		35526B6628D11E0C0017BB53 /* ModifyItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35526B6528D11E0C0017BB53 /* ModifyItemRequest.swift */; };
+		3552F48628D3215600547146 /* CreateCustomAliasRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48528D3215600547146 /* CreateCustomAliasRequest.swift */; };
+		3552F48828D322C100547146 /* CreateCustomAliasEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48728D322C100547146 /* CreateCustomAliasEndpoint.swift */; };
+		3552F48A28D344E100547146 /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48928D344E100547146 /* Alias.swift */; };
+		3552F48C28D3451800547146 /* GetAliasDetailsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48B28D3451800547146 /* GetAliasDetailsEndpoint.swift */; };
+		3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48D28D3467100547146 /* AliasDetailView.swift */; };
+		3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */; };
+		3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */; };
+		3552F49428D37CFF00547146 /* ChangeMailboxesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */; };
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
@@ -345,6 +358,11 @@
 		353E8B73287622F300A2C5E3 /* BundleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
 		353E8B75287625D100A2C5E3 /* SidebarCurrentUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarCurrentUserView.swift; sourceTree = "<group>"; };
 		354146CE28D1C6D5007E45A6 /* UntrashItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UntrashItemsEndpoint.swift; sourceTree = "<group>"; };
+		354146D028D1F1E1007E45A6 /* AliasOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasOptions.swift; sourceTree = "<group>"; };
+		354146D328D1F235007E45A6 /* GetAliasOptionsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAliasOptionsEndpoint.swift; sourceTree = "<group>"; };
+		354146D528D1F466007E45A6 /* RemoteAliasDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteAliasDatasource.swift; sourceTree = "<group>"; };
+		354146D728D1F539007E45A6 /* LocalAliasDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAliasDatasource.swift; sourceTree = "<group>"; };
+		354146D928D1F585007E45A6 /* AliasRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasRepository.swift; sourceTree = "<group>"; };
 		35429B26288AB730000BA22F /* StaticFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticFuncs.swift; sourceTree = "<group>"; };
 		3542B8882883614D009C9A68 /* DummyApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyApiService.swift; sourceTree = "<group>"; };
 		3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthCredential+Preview.swift"; sourceTree = "<group>"; };
@@ -354,7 +372,7 @@
 		3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonSwitchToggleStyle.swift; sourceTree = "<group>"; };
 		35464B61289B0380008E65C4 /* VaultKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VaultKey+Test.swift"; sourceTree = "<group>"; };
 		3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditLoginViewModel.swift; sourceTree = "<group>"; };
-		35476971289D7E6000581E2E /* CreateAliasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasViewModel.swift; sourceTree = "<group>"; };
+		35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAliasViewModel.swift; sourceTree = "<group>"; };
 		35476973289D82FE00581E2E /* CreateItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemViewModel.swift; sourceTree = "<group>"; };
 		3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsView.swift; sourceTree = "<group>"; };
 		3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleSidebarButton.swift; sourceTree = "<group>"; };
@@ -365,7 +383,7 @@
 		3547ABE12877583B00EE85E1 /* TrashCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashCoordinator.swift; sourceTree = "<group>"; };
 		3547ABE92877684D00EE85E1 /* GenericItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericItemView.swift; sourceTree = "<group>"; };
 		3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditLoginView.swift; sourceTree = "<group>"; };
-		3547ABED287777B700EE85E1 /* CreateAliasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasView.swift; sourceTree = "<group>"; };
+		3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAliasView.swift; sourceTree = "<group>"; };
 		3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteView.swift; sourceTree = "<group>"; };
 		3547ABF12877791000EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
 		3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySummaryView.swift; sourceTree = "<group>"; };
@@ -392,6 +410,14 @@
 		35526B5A28D115340017BB53 /* Pass.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Pass.xcassets; sourceTree = "<group>"; };
 		35526B5C28D116350017BB53 /* PassIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassIcon.swift; sourceTree = "<group>"; };
 		35526B6528D11E0C0017BB53 /* ModifyItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyItemRequest.swift; sourceTree = "<group>"; };
+		3552F48528D3215600547146 /* CreateCustomAliasRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomAliasRequest.swift; sourceTree = "<group>"; };
+		3552F48728D322C100547146 /* CreateCustomAliasEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomAliasEndpoint.swift; sourceTree = "<group>"; };
+		3552F48928D344E100547146 /* Alias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alias.swift; sourceTree = "<group>"; };
+		3552F48B28D3451800547146 /* GetAliasDetailsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAliasDetailsEndpoint.swift; sourceTree = "<group>"; };
+		3552F48D28D3467100547146 /* AliasDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDetailView.swift; sourceTree = "<group>"; };
+		3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDetailViewModel.swift; sourceTree = "<group>"; };
+		3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesRequest.swift; sourceTree = "<group>"; };
+		3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesEndpoint.swift; sourceTree = "<group>"; };
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
@@ -666,9 +692,24 @@
 			path = Sidebar;
 			sourceTree = "<group>";
 		};
+		354146D228D1F218007E45A6 /* Aliases */ = {
+			isa = PBXGroup;
+			children = (
+				3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */,
+				3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */,
+				3552F48528D3215600547146 /* CreateCustomAliasRequest.swift */,
+				3552F48728D322C100547146 /* CreateCustomAliasEndpoint.swift */,
+				3552F48B28D3451800547146 /* GetAliasDetailsEndpoint.swift */,
+				354146D328D1F235007E45A6 /* GetAliasOptionsEndpoint.swift */,
+			);
+			path = Aliases;
+			sourceTree = "<group>";
+		};
 		3547ABCC2876CFA700EE85E1 /* MyVaults */ = {
 			isa = PBXGroup;
 			children = (
+				3552F48D28D3467100547146 /* AliasDetailView.swift */,
+				3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */,
 				35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */,
 				354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */,
 				3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */,
@@ -678,8 +719,8 @@
 				35476973289D82FE00581E2E /* CreateItemViewModel.swift */,
 				3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */,
 				3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */,
-				3547ABED287777B700EE85E1 /* CreateAliasView.swift */,
-				35476971289D7E6000581E2E /* CreateAliasViewModel.swift */,
+				3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */,
+				35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */,
 				3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */,
 				35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */,
 				3547ABF12877791000EE85E1 /* CreateVaultView.swift */,
@@ -724,6 +765,7 @@
 			isa = PBXGroup;
 			children = (
 				35544406287CB3810017FCAD /* Endpoint.swift */,
+				354146D228D1F218007E45A6 /* Aliases */,
 				355E803D28A3071700BE7C9B /* Items */,
 				358AB49F2887044500818B44 /* Keys */,
 				353547BF2880C4470021C716 /* Shares */,
@@ -736,6 +778,8 @@
 			isa = PBXGroup;
 			children = (
 				350A97CB28859D1800A7168B /* AddressKey.swift */,
+				3552F48928D344E100547146 /* Alias.swift */,
+				354146D028D1F1E1007E45A6 /* AliasOptions.swift */,
 				358A508A28AD3BB100F5285C /* DataError.swift */,
 				358AB49A2886FDA400818B44 /* ItemKey.swift */,
 				355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */,
@@ -778,6 +822,7 @@
 		35610B8528ABCE1900955ACB /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				354146D928D1F585007E45A6 /* AliasRepository.swift */,
 				35610B8C28ABD8B200955ACB /* ItemRevisionRepository.swift */,
 				358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */,
 				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
@@ -895,6 +940,7 @@
 			children = (
 				358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */,
 				3593DCE628A790F800C235D3 /* BaseLocalDatasource.swift */,
+				354146D728D1F539007E45A6 /* LocalAliasDatasource.swift */,
 				35610B7028ABAAC500955ACB /* LocalItemKeyDatasource.swift */,
 				357D9FD128A98CF900F012BB /* LocalItemRevisionDatasource.swift */,
 				358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */,
@@ -909,6 +955,7 @@
 			isa = PBXGroup;
 			children = (
 				35610B7D28ABC9D200955ACB /* BaseRemoteDatasource.swift */,
+				354146D528D1F466007E45A6 /* RemoteAliasDatasource.swift */,
 				35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */,
 				35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */,
 				35610B8128ABCC3000955ACB /* RemoteShareKeysDatasource.swift */,
@@ -1808,7 +1855,7 @@
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				358A508928AD2E8F00F5285C /* SideBarViewModel.swift in Sources */,
-				3547ABEE287777B700EE85E1 /* CreateAliasView.swift in Sources */,
+				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
 				353E8B76287625D100A2C5E3 /* SidebarCurrentUserView.swift in Sources */,
@@ -1827,10 +1874,12 @@
 				3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */,
 				353E8B7028761A1700A2C5E3 /* SidebarItem.swift in Sources */,
 				354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */,
-				35476972289D7E6000581E2E /* CreateAliasViewModel.swift in Sources */,
+				35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */,
 				3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */,
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
+				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
+				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
 				354BB15528A2895F00F50040 /* SearchView.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
 				355635B7288947DD00F32353 /* VaultSelection.swift in Sources */,
@@ -1856,7 +1905,9 @@
 				350A97CC28859D1800A7168B /* AddressKey.swift in Sources */,
 				358A509428AD860200F5285C /* LocalPublicKeyDatasource.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProtocol.swift in Sources */,
+				354146D128D1F1E1007E45A6 /* AliasOptions.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
+				3552F49428D37CFF00547146 /* ChangeMailboxesEndpoint.swift in Sources */,
 				358A509C28AD8B6C00F5285C /* PublicKeyRepository.swift in Sources */,
 				35610B7E28ABC9D200955ACB /* BaseRemoteDatasource.swift in Sources */,
 				35610B8228ABCC3000955ACB /* RemoteShareKeysDatasource.swift in Sources */,
@@ -1868,6 +1919,7 @@
 				3530092C28A5284900611F8A /* PartialItemContent.swift in Sources */,
 				355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */,
 				358A508B28AD3BB100F5285C /* DataError.swift in Sources */,
+				3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */,
 				358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */,
 				3593DD0C28A837DD00C235D3 /* ItemRevisionEntity.swift in Sources */,
 				358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */,
@@ -1881,7 +1933,9 @@
 				358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */,
 				3593DD0928A837DD00C235D3 /* ItemKeyEntity.swift in Sources */,
 				3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */,
+				354146D428D1F235007E45A6 /* GetAliasOptionsEndpoint.swift in Sources */,
 				35526B6628D11E0C0017BB53 /* ModifyItemRequest.swift in Sources */,
+				3552F48A28D344E100547146 /* Alias.swift in Sources */,
 				358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
 				3530092A28A5281800611F8A /* Vault.swift in Sources */,
@@ -1894,19 +1948,25 @@
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
 				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,
 				3593DCFD28A82FA700C235D3 /* ShareKeys.swift in Sources */,
+				354146D628D1F466007E45A6 /* RemoteAliasDatasource.swift in Sources */,
 				354B7A7428C9FF1B00459AED /* TrashItemsEndpoint.swift in Sources */,
 				35610B8428ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift in Sources */,
 				35610B7528ABB77800955ACB /* LocalVaultKeyDatasource.swift in Sources */,
 				3593DD0B28A837DD00C235D3 /* ShareEntity.swift in Sources */,
+				3552F48C28D3451800547146 /* GetAliasDetailsEndpoint.swift in Sources */,
+				3552F48828D322C100547146 /* CreateCustomAliasEndpoint.swift in Sources */,
 				358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */,
+				3552F48628D3215600547146 /* CreateCustomAliasRequest.swift in Sources */,
 				355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */,
 				3593DD1028A83F7A00C235D3 /* ProtonPass.xcdatamodeld in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
+				354146D828D1F539007E45A6 /* LocalAliasDatasource.swift in Sources */,
 				357D9FD228A98CF900F012BB /* LocalItemRevisionDatasource.swift in Sources */,
 				35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */,
 				3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */,
 				3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */,
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
+				354146DA28D1F585007E45A6 /* AliasRepository.swift in Sources */,
 				358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */,
 				350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */,
 				3593DD1328A8415300C235D3 /* PersistentContainerBuilder.swift in Sources */,

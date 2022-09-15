@@ -49,7 +49,7 @@ public struct CreateItemRequest {
 }
 
 extension CreateItemRequest: Encodable {
-    private enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case rotationID = "RotationID"
         case labels = "Labels"
         case vaultKeyPacket = "VaultKeyPacket"
@@ -58,18 +58,6 @@ extension CreateItemRequest: Encodable {
         case content = "Content"
         case userSignature = "UserSignature"
         case itemKeySignature = "ItemKeySignature"
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(rotationID, forKey: .rotationID)
-        try container.encode(labels, forKey: .labels)
-        try container.encode(vaultKeyPacket, forKey: .vaultKeyPacket)
-        try container.encode(vaultKeyPacketSignature, forKey: .vaultKeyPacketSignature)
-        try container.encode(contentFormatVersion, forKey: .contentFormatVersion)
-        try container.encode(content, forKey: .content)
-        try container.encode(userSignature, forKey: .userSignature)
-        try container.encode(itemKeySignature, forKey: .itemKeySignature)
     }
 }
 
