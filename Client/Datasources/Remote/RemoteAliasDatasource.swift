@@ -23,6 +23,7 @@ import Foundation
 public protocol RemoteAliasDatasourceProtocol: BaseRemoteDatasourceProtocol {
     func getAliasOptions(shareId: String) async throws -> AliasOptions
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
+    func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
 }
 
 public extension RemoteAliasDatasourceProtocol {
@@ -37,6 +38,15 @@ public extension RemoteAliasDatasourceProtocol {
         let endpoint = GetAliasDetailsEndpoint(credential: authCredential,
                                                shareId: shareId,
                                                itemId: itemId)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.alias
+    }
+
+    func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
+        let endpoint = ChangeMailboxesEndpoint(credential: authCredential,
+                                               shareId: shareId,
+                                               itemId: itemId,
+                                               mailboxIDs: mailboxIDs)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.alias
     }

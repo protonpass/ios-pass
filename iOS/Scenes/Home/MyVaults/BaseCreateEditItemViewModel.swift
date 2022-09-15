@@ -80,6 +80,8 @@ class BaseCreateEditItemViewModel: BaseViewModel {
         fatalError("Must be overridden by subclasses")
     }
 
+    func additionalEdit() async throws {}
+
     func generateAliasCreationInfo() -> AliasCreationInfo? { nil }
 
     func save() {
@@ -134,6 +136,7 @@ class BaseCreateEditItemViewModel: BaseViewModel {
     private func editItem(oldItemContent: ItemContent) {
         Task { @MainActor in
             do {
+                try await additionalEdit()
                 let shareId = oldItemContent.shareId
                 let itemId = oldItemContent.itemId
                 isLoading = true

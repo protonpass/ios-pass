@@ -56,7 +56,7 @@ struct CreateEditAliasView: View {
                         VStack(spacing: 20) {
                             titleInputView
                             if case .edit = viewModel.mode {
-                                aliasView
+                                aliasEmailView
                             } else {
                                 aliasInputView
                             }
@@ -110,11 +110,11 @@ struct CreateEditAliasView: View {
         }
     }
 
-    private var aliasView: some View {
+    private var aliasEmailView: some View {
         UserInputContainerView(title: "Alias",
                                isFocused: false,
                                isEditable: false) {
-            Text(viewModel.alias)
+            Text(viewModel.aliasEmail)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }

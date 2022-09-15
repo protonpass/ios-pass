@@ -73,7 +73,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var mailboxes = ""
     @Published var note = ""
 
-    @Published private(set) var alias = ""
+    @Published private(set) var aliasEmail = ""
     @Published private(set) var state: State = .loading
 
     enum State {
@@ -91,6 +91,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
+    private(set) var alias: Alias?
     private(set) var suffixSelection: SuffixSelection?
     private(set) var mailboxSelection: MailboxSelection?
     let aliasRepository: AliasRepositoryProtocol
@@ -143,12 +144,11 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             do {
                 state = .loading
 
-                var selectedMailboxes = [String]()
                 if case .edit(let itemContent) = mode {
                     let alias = try await aliasRepository.getAliasDetails(shareId: shareId,
                                                                           itemId: itemContent.itemId)
-                    self.alias = alias.email
-                    selectedMailboxes = alias.mailboxes
+                    self.aliasEmail = alias.email
+                    self.alias = alias
                 }
 
                 let aliasOptions = try await aliasRepository.getAliasOptions(shareId: shareId)
@@ -171,12 +171,22 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                         self.mailboxes = selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
                     }
                     .store(in: &cancellables)
-                mailboxSelection?.selectDefaultMailboxes(selectedMailboxes)
+                mailboxSelection?.selectDefaultMailboxes(alias?.mailboxes ?? [])
 
                 state = .loaded
             } catch {
                 state = .error(error)
             }
+        }
+    }
+
+    override func additionalEdit() async throws {
+        guard let alias = alias, let mailboxSelection = mailboxSelection else { return }
+        if Set(alias.mailboxes) == Set(mailboxSelection.selectedMailboxes.map { $0.email }) { return }
+        if case let .edit(itemContent) = mode {
+            try await aliasRepository.changeMailboxes(shareId: shareId,
+                                                      itemId: itemContent.itemId,
+                                                      mailboxIDs: mailboxSelection.selectedMailboxes.map { $0.ID })
         }
     }
 }
