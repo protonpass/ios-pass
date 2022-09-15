@@ -201,7 +201,13 @@ final class MyVaultsCoordinator: Coordinator {
             pushView(noteDetailView)
 
         case .alias:
-            break
+            let viewModel = AliasDetailViewModel(itemContent: itemContent,
+                                                 itemRevisionRepository: itemRevisionRepository,
+                                                 aliasRepository: aliasRepository)
+            viewModel.delegate = self
+            viewModel.itemDetailDelegate = self
+            let aliasDetailView = AliasDetailView(viewModel: viewModel)
+            pushView(aliasDetailView)
         }
     }
 

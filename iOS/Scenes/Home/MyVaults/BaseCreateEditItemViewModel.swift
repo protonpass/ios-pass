@@ -85,7 +85,7 @@ class BaseCreateEditItemViewModel: BaseViewModel {
         case .create(let createItemOptions):
             switch createItemOptions {
             case .alias(let shareId, _):
-                createItem(shareId: shareId)
+                createAliasItem(shareId: shareId)
             case .other(let shareId):
                 createItem(shareId: shareId)
             }

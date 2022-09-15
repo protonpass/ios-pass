@@ -18,10 +18,84 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct AliasDetailView: View {
+    @Environment(\.presentationMode) private var presentationMode
+    @StateObject private var viewModel: AliasDetailViewModel
+    @State private var isShowingTrashingAlert = false
+
+    init(viewModel: AliasDetailViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
+
     var body: some View {
-        Text("")
+        ZStack {
+            switch viewModel.aliasState {
+            case .loading:
+                ProgressView()
+            case .loaded(let alias):
+                Text(String(describing: alias))
+            case .error(let error):
+                VStack {
+                    Text(error.messageForTheUser)
+                    Button(action: viewModel.getAlias) {
+                        Text("Retry")
+                    }
+                    .foregroundColor(Color(ColorProvider.BrandNorm))
+                }
+                .padding()
+            }
+        }
+        .moveToTrashAlert(isPresented: $isShowingTrashingAlert, onTrash: viewModel.trash)
+        .toolbar { toolbarContent }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Image(uiImage: IconProvider.chevronLeft)
+                    .foregroundColor(.primary)
+            })
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text(viewModel.name)
+                .fontWeight(.bold)
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            trailingMenu
+                .opacity(viewModel.aliasState.isLoaded ? 1 : 0)
+                .disabled(!viewModel.aliasState.isLoaded)
+        }
+    }
+
+    private var trailingMenu: some View {
+        Menu(content: {
+            Button(action: viewModel.edit) {
+                Label(title: {
+                    Text("Edit alias")
+                }, icon: {
+                    Image(uiImage: IconProvider.eraser)
+                })
+            }
+
+            Divider()
+
+            DestructiveButton(title: "Move to trash",
+                              icon: IconProvider.trash,
+                              action: {
+                isShowingTrashingAlert.toggle()
+            })
+        }, label: {
+            Image(uiImage: IconProvider.threeDotsHorizontal)
+                .foregroundColor(.primary)
+        })
     }
 }
