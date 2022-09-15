@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -37,7 +38,7 @@ struct AliasDetailView: View {
             case .loading:
                 ProgressView()
             case .loaded(let alias):
-                Text(String(describing: alias))
+                ConcreteAliasDetailView(alias: alias, note: viewModel.itemContent.note)
             case .error(let error):
                 VStack {
                     Text(error.messageForTheUser)
@@ -97,5 +98,63 @@ struct AliasDetailView: View {
             Image(uiImage: IconProvider.threeDotsHorizontal)
                 .foregroundColor(.primary)
         })
+    }
+}
+
+private struct ConcreteAliasDetailView: View {
+    let alias: Alias
+    let note: String
+
+    var body: some View {
+        VStack(spacing: 32) {
+            aliasSection
+            mailboxesSection
+            noteSection
+            Spacer()
+        }
+        .padding()
+        .padding(.top)
+    }
+
+    private var aliasSection: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Alias")
+
+            HStack {
+                Text(alias.email)
+                    .font(.callout)
+                    .foregroundColor(.secondary)
+
+                Spacer()
+
+                Button(action: {
+                    UIPasteboard.general.string = alias.email
+                }, label: {
+                    Image(uiImage: IconProvider.squares)
+                        .foregroundColor(.secondary)
+                })
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var mailboxesSection: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Mailboxes")
+            Text(alias.mailboxes.joined(separator: "\n"))
+                .font(.callout)
+                .foregroundColor(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var noteSection: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Notes")
+            Text(note)
+                .font(.callout)
+                .foregroundColor(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
