@@ -39,6 +39,15 @@ final class MailboxSelection: ObservableObject {
     init(mailboxes: [Mailbox]) {
         self.mailboxes = mailboxes
     }
+
+    func selectOrDeselect(mailbox: Mailbox) {
+        if selectedMailboxes.contains(mailbox) {
+            if selectedMailboxes.count == 1 { return }
+            selectedMailboxes.removeAll(where: { $0 == mailbox })
+        } else {
+            selectedMailboxes.append(mailbox)
+        }
+    }
 }
 
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
@@ -47,7 +56,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var title = ""
     @Published var prefix = ""
     @Published var suffix = ""
-    @Published var mailbox = ""
+    @Published var mailboxes = ""
     @Published var note = ""
 
     let suffixSelection: SuffixSelection?
@@ -104,7 +113,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         mailboxSelection?.$selectedMailboxes
             .sink { [weak self] selectedMailboxes in
                 guard let self = self else { return }
-                self.mailbox = selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
+                self.mailboxes = selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
             }
             .store(in: &cancellables)
 

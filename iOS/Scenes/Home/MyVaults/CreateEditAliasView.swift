@@ -133,9 +133,14 @@ struct CreateEditAliasView: View {
     }
 
     private var mailboxesInputView: some View {
-        UserInputContainerView(title: "Mailboxes", isFocused: false) {
-            UserInputStaticContentView(text: $viewModel.mailbox)
-        }
+        NavigationLink(destination: {
+            MailboxesView(mailboxSelection: viewModel.mailboxSelection ?? .init(mailboxes: []))
+        }, label: {
+            UserInputContainerView(title: "Mailboxes", isFocused: false) {
+                UserInputStaticContentView(text: $viewModel.mailboxes)
+            }
+        })
+        .buttonStyle(.plain)
     }
 
     private var noteInputView: some View {
@@ -167,6 +172,50 @@ private struct SuffixesView: View {
                 .onTapGesture {
                     suffixSelection.selectedSuffix = suffix
                     presentationMode.wrappedValue.dismiss()
+                }
+            }
+        }
+        .listStyle(.plain)
+        .navigationBarBackButtonHidden(true)
+        .toolbar { toolbarContent }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Image(uiImage: IconProvider.chevronLeft)
+                    .foregroundColor(.primary)
+            })
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text("Alias suffixes")
+                .fontWeight(.bold)
+        }
+    }
+}
+
+private struct MailboxesView: View {
+    @Environment(\.presentationMode) private var presentationMode
+    @ObservedObject var mailboxSelection: MailboxSelection
+
+    var body: some View {
+        List {
+            ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
+                HStack {
+                    Text(mailbox.email)
+                    Spacer()
+                    if mailboxSelection.selectedMailboxes.contains(mailbox) {
+                        Image(uiImage: IconProvider.checkmark)
+                            .foregroundColor(ColorProvider.BrandNorm)
+                    }
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    mailboxSelection.selectOrDeselect(mailbox: mailbox)
                 }
             }
         }

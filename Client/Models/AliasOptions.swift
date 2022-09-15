@@ -58,3 +58,9 @@ public struct Mailbox: Decodable {
     public let ID: Int
     public let email: String
 }
+
+extension Mailbox: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.ID == rhs.ID && lhs.email == rhs.email
+    }
+}
