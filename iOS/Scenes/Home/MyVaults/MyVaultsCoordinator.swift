@@ -150,6 +150,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                                 itemRevisionRepository: itemRevisionRepository,
                                                                 aliasRepository: aliasRepository)
         createEditAliasViewModel.delegate = self
+        createEditAliasViewModel.onCreatedItem = { [unowned self] in handleCreatedItem($0) }
         let createEditAliasView = CreateEditAliasView(viewModel: createEditAliasViewModel)
         presentViewFullScreen(createEditAliasView)
     }

@@ -130,4 +130,18 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             return "Edit alias"
         }
     }
+
+    override func itemContentType() -> ItemContentType { .alias }
+
+    override func generateItemContent() -> ItemContentProtobuf {
+        ItemContentProtobuf(name: title, note: note, data: .alias)
+    }
+
+    override func generateAliasCreationInfo() -> AliasCreationInfo? {
+        guard let selectedSuffix = suffixSelection?.selectedSuffix,
+              let selectedMailboxes = mailboxSelection?.selectedMailboxes else { return nil }
+        return .init(prefix: prefix,
+                     signedSuffix: selectedSuffix.signedSuffix,
+                     mailboxIds: selectedMailboxes.map { $0.ID })
+    }
 }

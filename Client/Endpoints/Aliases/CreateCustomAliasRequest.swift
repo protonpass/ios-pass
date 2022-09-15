@@ -29,6 +29,13 @@ public struct CreateCustomAliasRequest {
     public let mailboxIDs: [Int]
 
     public let item: CreateItemRequest
+
+    public init(prefix: String, signedSuffix: String, mailboxIDs: [Int], item: CreateItemRequest) {
+        self.prefix = prefix
+        self.signedSuffix = signedSuffix
+        self.mailboxIDs = mailboxIDs
+        self.item = item
+    }
 }
 
 extension CreateCustomAliasRequest: Encodable {
