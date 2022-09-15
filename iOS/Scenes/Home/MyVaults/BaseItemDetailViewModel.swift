@@ -28,8 +28,8 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 class BaseItemDetailViewModel: BaseViewModel {
     @Published var isTrashed = false
 
-    private let itemContent: ItemContent
-    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    let itemContent: ItemContent
+    let itemRevisionRepository: ItemRevisionRepositoryProtocol
 
     weak var itemDetailDelegate: ItemDetailViewModelDelegate?
 
@@ -38,6 +38,7 @@ class BaseItemDetailViewModel: BaseViewModel {
         self.itemContent = itemContent
         self.itemRevisionRepository = itemRevisionRepository
         super.init()
+        bindValues()
 
         $isTrashed
             .sink { [weak self] isTrashed in
@@ -48,6 +49,9 @@ class BaseItemDetailViewModel: BaseViewModel {
             }
             .store(in: &cancellables)
     }
+
+    /// To be overidden by subclasses
+    func bindValues() {}
 
     func edit() {
         itemDetailDelegate?.itemDetailViewModelWantsToEditItem(itemContent)

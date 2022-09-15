@@ -27,10 +27,7 @@ final class NoteDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obser
     @Published private(set) var name = ""
     @Published private(set) var note = ""
 
-    override init(itemContent: ItemContent,
-                  itemRevisionRepository: ItemRevisionRepositoryProtocol) {
-        super.init(itemContent: itemContent, itemRevisionRepository: itemRevisionRepository)
-
+    override func bindValues() {
         switch itemContent.contentData {
         case .note:
             self.name = itemContent.name

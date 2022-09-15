@@ -30,10 +30,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     @Published private(set) var password = ""
     @Published private(set) var note = ""
 
-    override init(itemContent: ItemContent,
-                  itemRevisionRepository: ItemRevisionRepositoryProtocol) {
-        super.init(itemContent: itemContent, itemRevisionRepository: itemRevisionRepository)
-
+    override func bindValues() {
         switch itemContent.contentData {
         case let .login(username, password, urls):
             self.name = itemContent.name
