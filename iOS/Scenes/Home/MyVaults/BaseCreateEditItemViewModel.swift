@@ -28,16 +28,12 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
 }
 
 enum ItemMode {
-    case create(CreateItemOptions)
+    case create(shareId: String, alias: Bool)
     case edit(ItemContent)
 }
 
-enum CreateItemOptions {
-    case alias(shareId: String, aliasOptions: AliasOptions)
-    case other(shareId: String)
-}
-
 class BaseCreateEditItemViewModel: BaseViewModel {
+    let shareId: String
     let mode: ItemMode
     let userData: UserData
     let shareRepository: ShareRepositoryProtocol
@@ -51,6 +47,12 @@ class BaseCreateEditItemViewModel: BaseViewModel {
          shareRepository: ShareRepositoryProtocol,
          shareKeysRepository: ShareKeysRepositoryProtocol,
          itemRevisionRepository: ItemRevisionRepositoryProtocol) {
+        switch mode {
+        case .create(let shareId, _):
+            self.shareId = shareId
+        case .edit(let itemContent):
+            self.shareId = itemContent.shareId
+        }
         self.mode = mode
         self.userData = userData
         self.shareRepository = shareRepository
@@ -82,11 +84,10 @@ class BaseCreateEditItemViewModel: BaseViewModel {
 
     func save() {
         switch mode {
-        case .create(let createItemOptions):
-            switch createItemOptions {
-            case .alias(let shareId, _):
+        case let .create(shareId, alias):
+            if alias {
                 createAliasItem(shareId: shareId)
-            case .other(let shareId):
+            } else {
                 createItem(shareId: shareId)
             }
 

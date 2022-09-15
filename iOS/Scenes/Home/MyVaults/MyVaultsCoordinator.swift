@@ -83,19 +83,16 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateItemView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        let createItemViewModel = CreateItemViewModel(shareId: shareId,
-                                                      aliasRepository: aliasRepository)
-        createItemViewModel.delegate = self
+        let createItemViewModel = CreateItemViewModel()
         createItemViewModel.onSelectedOption = { [unowned self] option in
             dismissTopMostViewController(animated: true) { [unowned self] in
                 switch option {
                 case .login:
-                    showCreateEditLoginView(mode: .create(.other(shareId: shareId)))
-                case .alias(let aliasOptions):
-                    showCreateEditAliasView(mode: .create(.alias(shareId: shareId,
-                                                                 aliasOptions: aliasOptions)))
+                    showCreateEditLoginView(mode: .create(shareId: shareId, alias: false))
+                case .alias:
+                    showCreateEditAliasView(mode: .create(shareId: shareId, alias: true))
                 case .note:
-                    showCreateEditNoteView(mode: .create(.other(shareId: shareId)))
+                    showCreateEditNoteView(mode: .create(shareId: shareId, alias: false))
                 case .password:
                     showGeneratePasswordView(delegate: nil)
                 }
@@ -137,8 +134,7 @@ final class MyVaultsCoordinator: Coordinator {
         createEditLoginViewModel.createEditItemDelegate = self
         createEditLoginViewModel.onGeneratePassword = { [unowned self] in showGeneratePasswordView(delegate: $0) }
         let createEditLoginView = CreateEditLoginView(viewModel: createEditLoginViewModel)
-        presentViewFullScreen(createEditLoginView,
-                              modalTransitionStyle: mode.modalTransitionStyle)
+        presentViewFullScreen(createEditLoginView, modalTransitionStyle: mode.modalTransitionStyle)
     }
 
     private func showCreateEditAliasView(mode: ItemMode) {
@@ -151,7 +147,7 @@ final class MyVaultsCoordinator: Coordinator {
         createEditAliasViewModel.delegate = self
         createEditAliasViewModel.createEditItemDelegate = self
         let createEditAliasView = CreateEditAliasView(viewModel: createEditAliasViewModel)
-        presentViewFullScreen(createEditAliasView)
+        presentViewFullScreen(createEditAliasView, modalTransitionStyle: mode.modalTransitionStyle)
     }
 
     private func showCreateEditNoteView(mode: ItemMode) {
@@ -163,8 +159,7 @@ final class MyVaultsCoordinator: Coordinator {
         createEditNoteViewModel.delegate = self
         createEditNoteViewModel.createEditItemDelegate = self
         let createEditNoteView = CreateEditNoteView(viewModel: createEditNoteViewModel)
-        presentViewFullScreen(createEditNoteView,
-                              modalTransitionStyle: mode.modalTransitionStyle)
+        presentViewFullScreen(createEditNoteView, modalTransitionStyle: mode.modalTransitionStyle)
     }
 
     private func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?) {

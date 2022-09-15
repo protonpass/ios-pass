@@ -24,13 +24,16 @@ import SwiftUI
 public struct UserInputContainerView<Content: View>: View {
     let title: String?
     let isFocused: Bool
+    var isEditable: Bool
     let content: () -> Content
 
     public init(title: String?,
                 isFocused: Bool,
+                isEditable: Bool = true,
                 @ViewBuilder content: @escaping () -> Content) {
         self.title = title
         self.isFocused = isFocused
+        self.isEditable = isEditable
         self.content = content
     }
 
@@ -44,7 +47,7 @@ public struct UserInputContainerView<Content: View>: View {
 
             content()
             .padding(10)
-            .background(Color(ColorProvider.BackgroundSecondary))
+            .background(Color(ColorProvider.BackgroundSecondary).opacity(isEditable ? 1 : 0.25))
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .overlay(
                 RoundedRectangle(cornerRadius: 8)

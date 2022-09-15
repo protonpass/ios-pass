@@ -36,14 +36,36 @@ struct CreateEditAliasView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    titleInputView
-                    aliasInputView
-                    mailboxesInputView
-                    noteInputView
+            ZStack {
+                switch viewModel.state {
+                case .loading:
+                    ProgressView()
+
+                case .error(let error):
+                    VStack {
+                        Text(error.messageForTheUser)
+                        Button(action: viewModel.getAliasAndAliasOptions) {
+                            Text("Retry")
+                        }
+                        .foregroundColor(Color(ColorProvider.BrandNorm))
+                    }
+                    .padding()
+
+                case .loaded:
+                    ScrollView {
+                        VStack(spacing: 20) {
+                            titleInputView
+                            if case .edit = viewModel.mode {
+                                aliasView
+                            } else {
+                                aliasInputView
+                            }
+                            mailboxesInputView
+                            noteInputView
+                        }
+                        .padding()
+                    }
                 }
-                .padding()
             }
             .toolbar { toolbarContent }
             .navigationBarTitleDisplayMode(.inline)
@@ -73,6 +95,8 @@ struct CreateEditAliasView: View {
                     .fontWeight(.bold)
                     .foregroundColor(Color(ColorProvider.BrandNorm))
             }
+            .opacity(viewModel.state.isLoaded ? 1 : 0)
+            .disabled(!viewModel.state.isLoaded)
         }
     }
 
@@ -83,6 +107,15 @@ struct CreateEditAliasView: View {
                 text: $viewModel.title,
                 isFocused: $isFocusedOnTitle,
                 placeholder: "Alias name")
+        }
+    }
+
+    private var aliasView: some View {
+        UserInputContainerView(title: "Alias",
+                               isFocused: false,
+                               isEditable: false) {
+            Text(viewModel.alias)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 

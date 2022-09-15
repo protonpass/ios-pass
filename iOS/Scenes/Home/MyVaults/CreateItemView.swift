@@ -37,8 +37,8 @@ struct CreateItemView: View {
                                 action: { viewModel.select(option: .login) },
                                 trailingView: { EmptyView() })
 
-                GenericItemView(item: CreateNewItemOption.alias(.preview).toGenericItem(),
-                                action: { viewModel.getAliasOptions() },
+                GenericItemView(item: CreateNewItemOption.alias.toGenericItem(),
+                                action: { viewModel.select(option: .alias) },
                                 trailingView: { EmptyView() })
 
                 GenericItemView(item: CreateNewItemOption.note.toGenericItem(),

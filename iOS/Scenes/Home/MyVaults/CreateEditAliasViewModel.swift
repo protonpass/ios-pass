@@ -30,6 +30,10 @@ final class SuffixSelection: ObservableObject {
     init(suffixes: [Suffix]) {
         self.suffixes = suffixes
     }
+
+    func selectDefaultSuffix() {
+        selectedSuffix = suffixes.first
+    }
 }
 
 final class MailboxSelection: ObservableObject {
@@ -48,6 +52,16 @@ final class MailboxSelection: ObservableObject {
             selectedMailboxes.append(mailbox)
         }
     }
+
+    func selectDefaultMailboxes(_ mailboxes: [String]) {
+        selectedMailboxes = self.mailboxes.filter { mailbox in
+            mailboxes.contains(where: { $0 == mailbox.email })
+        }
+
+        if selectedMailboxes.isEmpty, let firstMailbox = self.mailboxes.first {
+            selectedMailboxes = [firstMailbox]
+        }
+    }
 }
 
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
@@ -59,8 +73,26 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var mailboxes = ""
     @Published var note = ""
 
-    let suffixSelection: SuffixSelection?
-    let mailboxSelection: MailboxSelection?
+    @Published private(set) var alias = ""
+    @Published private(set) var state: State = .loading
+
+    enum State {
+        case loading
+        case loaded
+        case error(Error)
+
+        var isLoaded: Bool {
+            switch self {
+            case .loaded:
+                return true
+            default:
+                return false
+            }
+        }
+    }
+
+    private(set) var suffixSelection: SuffixSelection?
+    private(set) var mailboxSelection: MailboxSelection?
     let aliasRepository: AliasRepositoryProtocol
 
     init(mode: ItemMode,
@@ -70,56 +102,17 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
          itemRevisionRepository: ItemRevisionRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol) {
         self.aliasRepository = aliasRepository
-
-        switch mode {
-        case .create(let options):
-            switch options {
-            case let .alias(_, aliasOptions):
-                self.suffixSelection = .init(suffixes: aliasOptions.suffixes)
-                self.mailboxSelection = .init(mailboxes: aliasOptions.mailboxes)
-            default:
-                assertionFailure("Expecting alias options")
-                self.suffixSelection = nil
-                self.mailboxSelection = nil
-            }
-
-        case .edit:
-            self.suffixSelection = nil
-            self.mailboxSelection = nil
-        }
-
         super.init(mode: mode,
                    userData: userData,
                    shareRepository: shareRepository,
                    shareKeysRepository: shareKeysRepository,
                    itemRevisionRepository: itemRevisionRepository)
 
-        observeSuffixSelection()
-        observeMailboxSelection()
-    }
-
-    private func observeSuffixSelection() {
-        suffixSelection?.$selectedSuffix
-            .sink { [weak self] selectedSuffix in
-                guard let self = self else { return }
-                self.suffix = selectedSuffix?.suffix ?? ""
-            }
-            .store(in: &cancellables)
-
-        suffixSelection?.selectedSuffix = suffixSelection?.suffixes.first
-    }
-
-    private func observeMailboxSelection() {
-        mailboxSelection?.$selectedMailboxes
-            .sink { [weak self] selectedMailboxes in
-                guard let self = self else { return }
-                self.mailboxes = selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
-            }
-            .store(in: &cancellables)
-
-        if let firstMailbox = mailboxSelection?.mailboxes.first {
-            mailboxSelection?.selectedMailboxes = [firstMailbox]
+        if case let .edit(itemContent) = mode {
+            self.title = itemContent.name
+            self.note = itemContent.note
         }
+        getAliasAndAliasOptions()
     }
 
     override func navigationBarTitle() -> String {
@@ -143,5 +136,47 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return .init(prefix: prefix,
                      signedSuffix: selectedSuffix.signedSuffix,
                      mailboxIds: selectedMailboxes.map { $0.ID })
+    }
+
+    func getAliasAndAliasOptions() {
+        Task { @MainActor in
+            do {
+                state = .loading
+
+                var selectedMailboxes = [String]()
+                if case .edit(let itemContent) = mode {
+                    let alias = try await aliasRepository.getAliasDetails(shareId: shareId,
+                                                                          itemId: itemContent.itemId)
+                    self.alias = alias.email
+                    selectedMailboxes = alias.mailboxes
+                }
+
+                let aliasOptions = try await aliasRepository.getAliasOptions(shareId: shareId)
+
+                // Initialize SuffixSelection
+                suffixSelection = .init(suffixes: aliasOptions.suffixes)
+                suffixSelection?.$selectedSuffix
+                    .sink { [weak self] selectedSuffix in
+                        guard let self = self else { return }
+                        self.suffix = selectedSuffix?.suffix ?? ""
+                    }
+                    .store(in: &cancellables)
+                suffixSelection?.selectDefaultSuffix()
+
+                // Initialize MailboxSelection
+                mailboxSelection = .init(mailboxes: aliasOptions.mailboxes)
+                mailboxSelection?.$selectedMailboxes
+                    .sink { [weak self] selectedMailboxes in
+                        guard let self = self else { return }
+                        self.mailboxes = selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
+                    }
+                    .store(in: &cancellables)
+                mailboxSelection?.selectDefaultMailboxes(selectedMailboxes)
+
+                state = .loaded
+            } catch {
+                state = .error(error)
+            }
+        }
     }
 }
