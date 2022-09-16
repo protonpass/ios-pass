@@ -73,6 +73,7 @@ public struct GenericItemView<TrailingView: View>: View {
                                 Text(detail)
                                     .font(.callout)
                                     .foregroundColor(Color(.secondaryLabel))
+                                    .lineLimit(1)
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)

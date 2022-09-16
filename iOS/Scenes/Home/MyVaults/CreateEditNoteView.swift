@@ -45,12 +45,8 @@ struct CreateEditNoteView: View {
             .toolbar { toolbarContent }
         }
         .disabled(viewModel.isLoading)
-        .alert(isPresented: $isShowingDiscardAlert) {
-            Alert(title: Text("Discard changes"),
-                  message: Text("You will loose all unsaved changes"),
-                  primaryButton: .destructive(Text("Discard Changes"),
-                                              action: { presentationMode.wrappedValue.dismiss() }),
-                  secondaryButton: .default(Text("Keep Editing")))
+        .discardChangesAlert(isPresented: $isShowingDiscardAlert) {
+            presentationMode.wrappedValue.dismiss()
         }
     }
 

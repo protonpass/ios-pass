@@ -33,16 +33,17 @@ struct TrashView: View {
     var body: some View {
         ZStack {
             Color.clear
-            if !viewModel.trashedItem.isEmpty {
+            if !viewModel.trashedItems.isEmpty {
                 itemList
             } else if viewModel.isFetchingItems {
                 ProgressView()
-            } else if viewModel.trashedItem.isEmpty {
+            } else if viewModel.trashedItems.isEmpty {
                 EmptyTrashView()
             }
         }
         .toolbar { toolbarContent }
         .alert(isPresented: $isShowingEmptyTrashAlert) { emptyTrashAlert }
+        .alertToastSuccessMessage($viewModel.successMessage)
     }
 
     @ToolbarContentBuilder
@@ -74,25 +75,25 @@ struct TrashView: View {
                 Image(uiImage: IconProvider.threeDotsHorizontal)
                     .foregroundColor(Color(.label))
             })
-            .opacity(viewModel.trashedItem.isEmpty ? 0 : 1)
-            .disabled(viewModel.trashedItem.isEmpty)
+            .opacity(viewModel.trashedItems.isEmpty ? 0 : 1)
+            .disabled(viewModel.trashedItems.isEmpty)
         }
     }
 
     private var emptyTrashAlert: Alert {
         Alert(title: Text("Empty trash?"),
-              message: Text("Items in trash will be deleted permanently. You can not undo this action"),
+              message: Text("Items in trash will be deleted permanently. You can not undo this action."),
               primaryButton: .destructive(Text("Empty trash"), action: viewModel.emptyTrash),
-              secondaryButton: .default(Text("Cancel")))
+              secondaryButton: .cancel())
     }
 
     private var itemList: some View {
         ScrollView {
             LazyVStack {
-                ForEach(viewModel.trashedItem, id: \.itemId) { item in
+                ForEach(viewModel.trashedItems, id: \.itemId) { item in
                     GenericItemView(
                         item: item,
-                        showDivider: item.itemId != viewModel.trashedItem.last?.itemId,
+                        showDivider: item.itemId != viewModel.trashedItems.last?.itemId,
                         action: {  },
                         trailingView: {
                             Button(action: {

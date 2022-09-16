@@ -29,6 +29,7 @@ struct CreateEditAliasView: View {
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnPrefix = false
     @State private var isFocusedOnNote = false
+    @State private var isShowingDiscardAlert = false
 
     init(viewModel: CreateEditAliasViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -65,6 +66,9 @@ struct CreateEditAliasView: View {
                         }
                         .padding()
                     }
+                    .discardChangesAlert(isPresented: $isShowingDiscardAlert) {
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 }
             }
             .toolbar { toolbarContent }
@@ -77,7 +81,7 @@ struct CreateEditAliasView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
-                presentationMode.wrappedValue.dismiss()
+                isShowingDiscardAlert.toggle()
             }, label: {
                 Image(uiImage: IconProvider.cross)
             })

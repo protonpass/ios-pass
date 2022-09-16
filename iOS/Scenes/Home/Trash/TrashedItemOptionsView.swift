@@ -30,6 +30,7 @@ protocol TrashedItemOptionsViewDelegate: AnyObject {
 
 struct TrashedItemOptionsView: View {
     @Environment(\.presentationMode) private var presentationMode
+    @State private var isShowingDeleteAlert = false
     let item: PartialItemContent
     let delegate: TrashedItemOptionsViewDelegate
 
@@ -69,7 +70,7 @@ struct TrashedItemOptionsView: View {
                 Divider()
 
                 Button(action: {
-                    delegate.trashedItemWantsToBeDeletedPermanently(item)
+                    isShowingDeleteAlert.toggle()
                 }, label: {
                     Label(title: {
                         Text("Delete permanently")
@@ -86,6 +87,15 @@ struct TrashedItemOptionsView: View {
             }
             .toolbar { toolbarContent }
             .navigationBarTitleDisplayMode(.inline)
+        }
+        .alert(isPresented: $isShowingDeleteAlert) {
+            Alert(
+                title: Text("Delete permanently"),
+                message: Text("Item will be deleted permanently. You can not undo this action."),
+                primaryButton: .destructive(Text("Delete item")) {
+                    delegate.trashedItemWantsToBeDeletedPermanently(item)
+                },
+                secondaryButton: .cancel())
         }
     }
 
