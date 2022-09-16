@@ -18,13 +18,63 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import SwiftUI
 
 final class SearchViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
+    private let searchTermSubject = PassthroughSubject<String, Never>()
+    private var lastTask: Task<Void, Never>?
+
+    @Published private var term = ""
+    @Published private(set) var state = State.clean
+
+    private var cancellables = Set<AnyCancellable>()
+
+    enum State {
+        case clean
+        /// Search term is not long enough
+        case idle
+        case searching
+        case results([String])
+        case error(Error)
+    }
+
+    init() {
+        searchTermSubject
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .sink { [unowned self] term in
+                self.doSearch(term: term)
+            }
+            .store(in: &cancellables)
+    }
+
     func search(term: String) {
-        print("Search for \(term)")
+        searchTermSubject.send(term)
+    }
+
+    private func doSearch(term: String) {
+        if term.isEmpty { state = .clean; return }
+        if term.count <= 2 { state = .idle; return }
+
+        lastTask?.cancel()
+        lastTask = Task { @MainActor in
+            do {
+                state = .searching
+                print("Searching for \(term)")
+                try await Task.sleep(nanoseconds: 500_000_000)
+                if Task.isCancelled { return }
+                if Bool.random() {
+                    state = .results(["Touti", "Den", "Ponyo"])
+                } else {
+                    state = .results([])
+                }
+                print("Finished searching for \(term)")
+            } catch {
+                state = .error(error)
+            }
+        }
     }
 }

@@ -27,9 +27,22 @@ struct SearchView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(0...100, id: \.self) { index in
-                    Text("Result #\(index)")
+            ZStack {
+                switch viewModel.state {
+                case .clean:
+                    CleanSearchView()
+                case .idle:
+                    EmptyView()
+                case .searching:
+                    SearchingView()
+                case .results(let results):
+                    if results.isEmpty {
+                        NoSearchResultView()
+                    } else {
+                        Text(results.joined(separator: "\n"))
+                    }
+                case .error(let error):
+                    Text(error.messageForTheUser)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -43,5 +56,48 @@ struct SearchView: View {
             SwiftUISearchBar(onSearch: viewModel.search(term:),
                              onCancel: { presentationMode.wrappedValue.dismiss() })
         }
+    }
+}
+
+private struct CleanSearchView: View {
+    var body: some View {
+        VStack(spacing: 24) {
+            Image(uiImage: PassIcon.magnifyingGlass)
+            Text("Search")
+                .font(.title3)
+                .fontWeight(.bold)
+            Text("Search for alias, login or note easily.")
+                .foregroundColor(.secondary)
+            Spacer()
+        }
+        .padding(.top, 32)
+        .padding(.horizontal)
+    }
+}
+
+private struct SearchingView: View {
+    var body: some View {
+        VStack {
+            ProgressView()
+            Spacer()
+        }
+        .padding(.top, 32)
+        .padding(.horizontal)
+    }
+}
+
+private struct NoSearchResultView: View {
+    var body: some View {
+        VStack(spacing: 24) {
+            Image(uiImage: PassIcon.magnifyingGlassOnPaper)
+            Text("No results found")
+                .font(.title3)
+                .fontWeight(.bold)
+            Text("Try a different search term")
+                .foregroundColor(.secondary)
+            Spacer()
+        }
+        .padding(.top, 32)
+        .padding(.horizontal)
     }
 }
