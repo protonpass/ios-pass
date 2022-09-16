@@ -106,30 +106,36 @@ extension TrashViewModel {
     func toggleSidebar() { onToggleSidebar?() }
 
     func restoreAllItems() {
-        print(#function)
+        Task { @MainActor in
+            do {
+                isLoading = true
+                let dictionary = try await getItemRevisionsByShareId()
+                for shareId in dictionary.keys {
+                    if let items = dictionary[shareId] {
+                        try await itemRevisionRepository.untrashItemRevisions(items, shareId: shareId)
+                    }
+                }
+                isLoading = false
+                successMessage = "\(trashedItems.count) items restored"
+                trashedItems.removeAll()
+                onRestoredItem?()
+            } catch {
+                self.isLoading = false
+                self.error = error
+            }
+        }
     }
 
     func emptyTrash() {
         Task { @MainActor in
             do {
                 isLoading = true
-
-                var itemRevisions = [ItemRevision]()
-                for item in trashedItems {
-                    if let itemRevision =
-                        try await itemRevisionRepository.getItemRevision(shareId: item.shareId,
-                                                                         itemId: item.itemId) {
-                        itemRevisions.append(itemRevision)
-                    }
-                }
-
-                let dictionary = Dictionary(grouping: itemRevisions, by: { getShareId(for: $0) })
+                let dictionary = try await getItemRevisionsByShareId()
                 for shareId in dictionary.keys {
                     if let items = dictionary[shareId] {
                         try await itemRevisionRepository.deleteItemRevisions(items, shareId: shareId)
                     }
                 }
-
                 isLoading = false
                 trashedItems.removeAll()
                 successMessage = "Trash emptied"
@@ -140,8 +146,21 @@ extension TrashViewModel {
         }
     }
 
-    private func getShareId(for itemRevision: ItemRevision) -> String {
-        trashedItems.first(where: { $0.itemId == itemRevision.itemID })?.shareId ?? ""
+    private func getItemRevisionsByShareId() async throws -> [String: [ItemRevision]] {
+        var itemRevisions = [ItemRevision]()
+        for item in trashedItems {
+            if let itemRevision =
+                try await itemRevisionRepository.getItemRevision(shareId: item.shareId,
+                                                                 itemId: item.itemId) {
+                itemRevisions.append(itemRevision)
+            }
+        }
+
+        let getShareId: (ItemRevision) -> String = { itemRevision in
+            self.trashedItems.first(where: { $0.itemId == itemRevision.itemID })?.shareId ?? ""
+        }
+
+        return Dictionary(grouping: itemRevisions, by: { getShareId($0) })
     }
 
     func showOptions(_ item: PartialItemContent) {
