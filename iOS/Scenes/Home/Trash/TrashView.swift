@@ -43,6 +43,7 @@ struct TrashView: View {
         }
         .toolbar { toolbarContent }
         .alert(isPresented: $isShowingEmptyTrashAlert) { emptyTrashAlert }
+        .alertToastSuccessMessage($viewModel.successMessage)
     }
 
     @ToolbarContentBuilder

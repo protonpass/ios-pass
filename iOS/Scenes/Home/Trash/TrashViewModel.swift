@@ -26,6 +26,7 @@ import SwiftUI
 final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     @Published private(set) var isFetchingItems = false
     @Published private(set) var trashedItem = [PartialItemContent]()
+    @Published var successMessage: String?
 
     private let userData: UserData
     private let shareRepository: ShareRepositoryProtocol
@@ -128,6 +129,15 @@ extension TrashViewModel {
                 isLoading = false
                 trashedItem.removeAll(where: { $0.itemId == item.itemId })
                 onRestoredItem?()
+
+                switch item.type {
+                case .note:
+                    successMessage = "Note restored"
+                case .login:
+                    successMessage = "Login restored"
+                case .alias:
+                    successMessage = "Alias restored"
+                }
             } catch {
                 self.isLoading = false
                 self.error = error
@@ -147,6 +157,15 @@ extension TrashViewModel {
                 isLoading = false
                 trashedItem.removeAll(where: { $0.itemId == item.itemId })
                 onDeletedItem?()
+
+                switch item.type {
+                case .note:
+                    successMessage = "Note permanently deleted"
+                case .login:
+                    successMessage = "Login permanently deleted"
+                case .alias:
+                    successMessage = "Alias permanently deleted"
+                }
             } catch {
                 self.isLoading = false
                 self.error = error
