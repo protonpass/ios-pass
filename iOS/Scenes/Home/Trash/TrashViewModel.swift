@@ -25,7 +25,7 @@ import SwiftUI
 
 final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     @Published private(set) var isFetchingItems = false
-    @Published private(set) var trashedItem = [PartialItemContent]()
+    @Published private(set) var trashedItems = [PartialItemContent]()
     @Published var successMessage: String?
 
     private let userData: UserData
@@ -83,7 +83,7 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
                 }
 
                 isFetchingItems = false
-                self.trashedItem = trashedItems
+                self.trashedItems = trashedItems
             } catch {
                 self.error = error
             }
@@ -110,7 +110,38 @@ extension TrashViewModel {
     }
 
     func emptyTrash() {
-        print(#function)
+        Task { @MainActor in
+            do {
+                isLoading = true
+
+                var itemRevisions = [ItemRevision]()
+                for item in trashedItems {
+                    if let itemRevision =
+                        try await itemRevisionRepository.getItemRevision(shareId: item.shareId,
+                                                                         itemId: item.itemId) {
+                        itemRevisions.append(itemRevision)
+                    }
+                }
+
+                let dictionary = Dictionary(grouping: itemRevisions, by: { getShareId(for: $0) })
+                for shareId in dictionary.keys {
+                    if let items = dictionary[shareId] {
+                        try await itemRevisionRepository.deleteItemRevisions(items, shareId: shareId)
+                    }
+                }
+
+                isLoading = false
+                trashedItems.removeAll()
+                successMessage = "Trash emptied"
+            } catch {
+                self.isLoading = false
+                self.error = error
+            }
+        }
+    }
+
+    private func getShareId(for itemRevision: ItemRevision) -> String {
+        trashedItems.first(where: { $0.itemId == itemRevision.itemID })?.shareId ?? ""
     }
 
     func showOptions(_ item: PartialItemContent) {
@@ -127,7 +158,7 @@ extension TrashViewModel {
                 try await itemRevisionRepository.untrashItemRevisions([itemRevision],
                                                                       shareId: item.shareId)
                 isLoading = false
-                trashedItem.removeAll(where: { $0.itemId == item.itemId })
+                trashedItems.removeAll(where: { $0.itemId == item.itemId })
                 onRestoredItem?()
 
                 switch item.type {
@@ -155,7 +186,7 @@ extension TrashViewModel {
                 try await itemRevisionRepository.deleteItemRevisions([itemRevision],
                                                                      shareId: item.shareId)
                 isLoading = false
-                trashedItem.removeAll(where: { $0.itemId == item.itemId })
+                trashedItems.removeAll(where: { $0.itemId == item.itemId })
                 onDeletedItem?()
 
                 switch item.type {

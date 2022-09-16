@@ -91,7 +91,7 @@ struct TrashedItemOptionsView: View {
         .alert(isPresented: $isShowingDeleteAlert) {
             Alert(
                 title: Text("Delete permanently"),
-                message: Text("Item will be deleted permanently. This action is irreversible."),
+                message: Text("Item will be deleted permanently. You can not undo this action."),
                 primaryButton: .destructive(Text("Delete item")) {
                     delegate.trashedItemWantsToBeDeletedPermanently(item)
                 },
