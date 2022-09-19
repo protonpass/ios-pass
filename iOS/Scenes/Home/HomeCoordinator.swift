@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import CoreData
+import CryptoKit
 import MBProgressHUD
 import ProtonCore_Login
 import ProtonCore_Services
@@ -43,6 +44,7 @@ final class HomeCoordinator: DeinitPrintable {
 
     private let sessionData: SessionData
     private let apiService: APIService
+    private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
@@ -109,9 +111,11 @@ final class HomeCoordinator: DeinitPrintable {
 
     init(sessionData: SessionData,
          apiService: APIService,
+         symmetricKey: SymmetricKey,
          container: NSPersistentContainer) {
         self.sessionData = sessionData
         self.apiService = apiService
+        self.symmetricKey = symmetricKey
 
         let userId = sessionData.userData.user.ID
         let authCredential = sessionData.userData.credential
@@ -259,14 +263,5 @@ extension HomeCoordinator: CoordinatorDelegate {
 
     func coordinatorWantsToAlertError(_ error: Error) {
         alert(error: error)
-    }
-}
-
-extension HomeCoordinator {
-    /// For preview purposes
-    static var preview: HomeCoordinator {
-        .init(sessionData: .preview,
-              apiService: DummyApiService.preview,
-              container: .init())
     }
 }

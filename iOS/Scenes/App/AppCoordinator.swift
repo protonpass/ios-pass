@@ -23,6 +23,7 @@ import Combine
 import Core
 import CoreData
 import Crypto
+import CryptoKit
 import ProtonCore_Authentication
 import ProtonCore_Keymaker
 import ProtonCore_Login
@@ -33,6 +34,7 @@ import UIKit
 
 enum AppCoordinatorError: Error {
     case noSessionData
+    case failedToGetOrCreateSymmetricKey
 }
 
 final class AppCoordinator {
@@ -43,7 +45,10 @@ final class AppCoordinator {
     private var container: NSPersistentContainer
 
     @KeychainStorage(key: "sessionData")
-    public private(set) var sessionData: SessionData?
+    private var sessionData: SessionData?
+
+    @KeychainStorage(key: "symmetricKey")
+    private var symmetricKey: String?
 
     private var homeCoordinator: HomeCoordinator?
     private var welcomeCoordinator: WelcomeCoordinator?
@@ -58,6 +63,8 @@ final class AppCoordinator {
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         self._sessionData.setKeychain(keychain)
         self._sessionData.setMainKeyProvider(keymaker)
+        self._symmetricKey.setKeychain(keychain)
+        self._symmetricKey.setMainKeyProvider(keymaker)
         self.keymaker = keymaker
         self.apiService = PMAPIService(doh: PPDoH(bundle: .main))
         self.container = .Builder.build(name: kProtonPassContainerName,
@@ -98,6 +105,20 @@ final class AppCoordinator {
         }
     }
 
+    func getOrCreateSymmetricKey() throws -> SymmetricKey {
+        if symmetricKey == nil {
+            symmetricKey = String.random(length: 32)
+        }
+
+        guard let symmetricKey = symmetricKey,
+              let symmetricKeyData = symmetricKey.data(using: .utf8) else {
+            // Something really nasty is going on 💥
+            throw AppCoordinatorError.failedToGetOrCreateSymmetricKey
+        }
+
+        return .init(data: symmetricKeyData)
+    }
+
     private func showWelcomeScene(refreshTokenExpired: Bool) {
         let welcomeCoordinator = WelcomeCoordinator(apiServiceDelegate: self)
         welcomeCoordinator.delegate = self
@@ -111,13 +132,21 @@ final class AppCoordinator {
     }
 
     private func showHomeScene(sessionData: SessionData) {
-        let homeCoordinator = HomeCoordinator(sessionData: sessionData,
-                                              apiService: apiService,
-                                              container: container)
-        homeCoordinator.delegate = self
-        self.homeCoordinator = homeCoordinator
-        self.welcomeCoordinator = nil
-        animateUpdateRootViewController(homeCoordinator.rootViewController)
+        do {
+            let symmetricKey = try getOrCreateSymmetricKey()
+            let homeCoordinator = HomeCoordinator(sessionData: sessionData,
+                                                  apiService: apiService,
+                                                  symmetricKey: symmetricKey,
+                                                  container: container)
+            homeCoordinator.delegate = self
+            self.homeCoordinator = homeCoordinator
+            self.welcomeCoordinator = nil
+            animateUpdateRootViewController(homeCoordinator.rootViewController)
+        } catch {
+            PPLogger.shared?.log(error)
+            wipeAllData()
+            appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
+        }
     }
 
     private func animateUpdateRootViewController(_ newRootViewController: UIViewController,

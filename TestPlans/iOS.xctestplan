@@ -1,0 +1,52 @@
+{
+  "configurations" : [
+    {
+      "id" : "B193844B-8631-4532-B15B-18C3E9C1145D",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "environmentVariableEntries" : [
+      {
+        "enabled" : false,
+        "key" : "me.proton.pass.NetworkDebug",
+        "value" : "1"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ProtonPass.xcodeproj",
+      "identifier" : "35E5063A286F819F00A3F6EA",
+      "name" : "iOS"
+    }
+  },
+  "testTargets" : [
+    {
+      "enabled" : false,
+      "target" : {
+        "containerPath" : "container:ProtonPass.xcodeproj",
+        "identifier" : "35E5068A286F87A700A3F6EA",
+        "name" : "CoreTests"
+      }
+    },
+    {
+      "enabled" : false,
+      "target" : {
+        "containerPath" : "container:ProtonPass.xcodeproj",
+        "identifier" : "35E50667286F870500A3F6EA",
+        "name" : "ClientTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:ProtonPass.xcodeproj",
+        "identifier" : "354A803B28D8B8D8003F49CF",
+        "name" : "iOSTests"
+      }
+    }
+  ],
+  "version" : 1
+}
