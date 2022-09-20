@@ -26,7 +26,7 @@ import UIComponents
 struct VaultContentView: View {
     @StateObject private var viewModel: VaultContentViewModel
     @State private var didAppear = false
-    @State private var selectedUiModel: VaultContentUiModel?
+    @State private var selectedUiModel: ItemListUiModel?
     @State private var isShowingTrashingAlert = false
 
     private var selectedVaultName: String {
@@ -66,7 +66,7 @@ struct VaultContentView: View {
         .navigationBarTitleDisplayMode(.inline)
         .moveToTrashAlert(isPresented: $isShowingTrashingAlert) {
             if let selectedUiModel = selectedUiModel {
-                viewModel.trash(selectedUiModel)
+                viewModel.trashItem(selectedUiModel)
             }
         }
         .toolbar { toolbarContent }
@@ -78,14 +78,14 @@ struct VaultContentView: View {
         }
     }
 
-    private func itemList(_ models: [VaultContentUiModel]) -> some View {
+    private func itemList(_ uiModels: [ItemListUiModel]) -> some View {
         ScrollView {
             LazyVStack {
-                ForEach(models, id: \.itemId) { model in
+                ForEach(uiModels, id: \.itemId) { uiModel in
                     GenericItemView(
-                        item: model,
-                        showDivider: model.itemId != models.last?.itemId,
-                        action: { viewModel.selectItem(model) },
+                        item: uiModel,
+                        showDivider: uiModel.itemId != uiModels.last?.itemId,
+                        action: { viewModel.selectItem(uiModel) },
                         trailingView: {
                             VStack {
                                 Menu(content: {
@@ -93,7 +93,7 @@ struct VaultContentView: View {
                                         title: "Move to Trash",
                                         icon: IconProvider.trash,
                                         action: {
-                                            selectedUiModel = model
+                                            selectedUiModel = uiModel
                                             isShowingTrashingAlert.toggle()
                                         })
                                 }, label: {

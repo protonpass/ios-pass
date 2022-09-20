@@ -33,7 +33,7 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
     enum State {
         case idle
         case loading
-        case loaded([VaultContentUiModel])
+        case loaded([ItemListUiModel])
         case error(Error)
 
         var isLoaded: Bool {
@@ -95,13 +95,13 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
                                                                        state: .active)
                 let encryptedItemContents = try encryptedItems.map { try $0.getEncryptedItemContent() }
 
-                var uiModels = [VaultContentUiModel]()
+                var uiModels = [ItemListUiModel]()
                 for item in encryptedItemContents {
                     let name = try symmetricKey.decrypt(item.name)
                     let note = try symmetricKey.decrypt(item.note)
                     uiModels.append(.init(itemId: item.itemId,
                                           shareId: item.shareId,
-                                          itemContentType: item.contentData.type,
+                                          icon: item.contentData.type.icon,
                                           title: name,
                                           detail: note))
                 }
@@ -112,7 +112,7 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
         }
     }
 
-    func selectItem(_ uiModel: VaultContentUiModel) {
+    func selectItem(_ uiModel: ItemListUiModel) {
         Task { @MainActor in
             do {
                 guard let item = try await itemRepository.getItem(shareId: uiModel.shareId,
@@ -127,7 +127,7 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
         }
     }
 
-    func trash(_ uiModel: VaultContentUiModel) {
+    func trashItem(_ uiModel: ItemListUiModel) {
         Task { @MainActor in
             do {
                 guard let item = try await itemRepository.getItem(shareId: uiModel.shareId,
@@ -153,24 +153,4 @@ extension VaultContentViewModel {
     func createItem() { onCreateItem?() }
 
     func createVault() { onCreateVault?() }
-}
-
-struct VaultContentUiModel: GenericItemProtocol {
-    let itemId: String
-    let shareId: String
-    let icon: UIImage
-    let title: String
-    let detail: String?
-
-    init(itemId: String,
-         shareId: String,
-         itemContentType: ItemContentType,
-         title: String,
-         detail: String) {
-        self.itemId = itemId
-        self.shareId = shareId
-        self.icon = itemContentType.icon
-        self.title = title
-        self.detail = detail
-    }
 }

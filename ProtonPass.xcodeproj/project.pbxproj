@@ -53,6 +53,7 @@
 		3542E2C928D9EBC000194F24 /* SymmetricallyEncryptedItem+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2C828D9EBC000194F24 /* SymmetricallyEncryptedItem+Test.swift */; };
 		3542E2CB28D9FE8600194F24 /* ItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2CA28D9FE8600194F24 /* ItemRepository.swift */; };
 		3542E2CD28DA11FE00194F24 /* RetryableErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2CC28DA11FE00194F24 /* RetryableErrorView.swift */; };
+		3542E2D028DA4E7400194F24 /* ItemListUiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2CF28DA4E7400194F24 /* ItemListUiModel.swift */; };
 		3542F0262899431D004007C7 /* CoreDataEntityStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
@@ -397,6 +398,7 @@
 		3542E2C828D9EBC000194F24 /* SymmetricallyEncryptedItem+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SymmetricallyEncryptedItem+Test.swift"; sourceTree = "<group>"; };
 		3542E2CA28D9FE8600194F24 /* ItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRepository.swift; sourceTree = "<group>"; };
 		3542E2CC28DA11FE00194F24 /* RetryableErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryableErrorView.swift; sourceTree = "<group>"; };
+		3542E2CF28DA4E7400194F24 /* ItemListUiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListUiModel.swift; sourceTree = "<group>"; };
 		3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEntityStructureTests.swift; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
@@ -758,6 +760,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		3542E2CE28DA4E6000194F24 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3542E2CF28DA4E7400194F24 /* ItemListUiModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		3547ABCC2876CFA700EE85E1 /* MyVaults */ = {
 			isa = PBXGroup;
 			children = (
@@ -1091,6 +1101,7 @@
 				35E50658286F838800A3F6EA /* Info.plist */,
 				35E50653286F82DC00A3F6EA /* AppDelegate.swift */,
 				35E50655286F830A00A3F6EA /* SceneDelegate.swift */,
+				3542E2CE28DA4E6000194F24 /* Models */,
 				35E5070B286FB57800A3F6EA /* Scenes */,
 				35E506C9286FA06300A3F6EA /* BuildConfigs */,
 			);
@@ -1958,6 +1969,7 @@
 				35476974289D82FE00581E2E /* CreateItemViewModel.swift in Sources */,
 				354BB14F28A27FF500F50040 /* SearchViewModel.swift in Sources */,
 				353E8B6E2876163F00A2C5E3 /* SidebarView.swift in Sources */,
+				3542E2D028DA4E7400194F24 /* ItemListUiModel.swift in Sources */,
 				3547ABDE28774D1100EE85E1 /* MyVaultsCoordinator.swift in Sources */,
 				354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */,
 				355635B928895B8E00F32353 /* VaultContentView.swift in Sources */,
