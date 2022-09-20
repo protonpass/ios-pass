@@ -37,7 +37,7 @@ public protocol LocalItemDatasourceProtocol {
     func upsertItems(_ items: [SymmetricallyEncryptedItem], modifiedItems: [ModifiedItem]) async throws
 
     /// Permanently delete items
-    func deleteItems(_ items: [ItemToBeModified], shareId: String) async throws
+    func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
     /// Nuke items of a share
     func removeAllItems(shareId: String) async throws
@@ -89,22 +89,35 @@ extension LocalItemDatasource: LocalItemDatasourceProtocol {
 
     public func upsertItems(_ items: [SymmetricallyEncryptedItem],
                             modifiedItems: [ModifiedItem]) async throws {
-        let taskContext = newTaskContext(type: .insert)
-        let entity = ItemEntity.entity(context: taskContext)
-        let batchInsertRequest = newBatchInsertRequest(entity: entity,
-                                                       sourceItems: items) { managedObject, item in
-            (managedObject as? ItemEntity)?.hydrate(from: item)
+        for item in items {
+            if let modifiedItem = modifiedItems.first(where: { $0.itemID == item.item.itemID }) {
+                let modifiedItem = ItemRevision(itemID: item.item.itemID,
+                                                revision: modifiedItem.revision,
+                                                contentFormatVersion: item.item.contentFormatVersion,
+                                                rotationID: item.item.rotationID,
+                                                content: item.item.content,
+                                                userSignature: item.item.userSignature,
+                                                itemKeySignature: item.item.itemKeySignature,
+                                                state: modifiedItem.state,
+                                                signatureEmail: item.item.signatureEmail,
+                                                aliasEmail: item.item.aliasEmail,
+                                                createTime: item.item.createTime,
+                                                modifyTime: modifiedItem.modifyTime,
+                                                revisionTime: modifiedItem.revisionTime)
+                try await upsertItems([.init(shareId: item.shareId,
+                                             item: modifiedItem,
+                                             encryptedContent: item.encryptedContent)])
+            }
         }
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    public func deleteItems(_ items: [ItemToBeModified], shareId: String) async throws {
+    public func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
         let taskContext = newTaskContext(type: .delete)
         for item in items {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemEntity")
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                .init(format: "shareID = %@", shareId),
-                .init(format: "itemID = %@", item.itemID)
+                .init(format: "shareID = %@", item.shareId),
+                .init(format: "itemID = %@", item.item.itemID)
             ])
             try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                               context: taskContext)

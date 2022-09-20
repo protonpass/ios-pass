@@ -93,7 +93,7 @@ extension ItemEntity {
                                         revisionTime: revisionTime)
         return .init(shareId: shareId,
                      item: itemRevision,
-                     symmetricallyEncryptedContent: symmetricallyEncryptedContent)
+                     encryptedContent: symmetricallyEncryptedContent)
     }
 
     func hydrate(from item: SymmetricallyEncryptedItem) {
@@ -102,7 +102,7 @@ extension ItemEntity {
         self.contentFormatVersion = item.item.contentFormatVersion
         self.rotationID = item.item.rotationID
         self.content = item.item.content
-        self.symmetricallyEncryptedContent = item.symmetricallyEncryptedContent
+        self.symmetricallyEncryptedContent = item.encryptedContent
         self.userSignature = item.item.userSignature
         self.itemKeySignature = item.item.itemKeySignature
         self.state = item.item.state

@@ -319,8 +319,8 @@ extension LocalItemRevisionDatasourceTests {
 extension LocalItemRevisionDatasource {
     func givenInsertedItemRevision(itemId: String? = nil,
                                    shareId: String? = nil,
-                                   state: ItemRevisionState? = nil) async throws -> ItemRevision {
-        let itemRevision = ItemRevision.random(itemId: itemId ?? .random(), state: state)
+                                   state: ItemState? = nil) async throws -> ItemRevision {
+        let itemRevision = ItemRevision.random(itemId: itemId, state: state)
         try await upsertItemRevisions([itemRevision], shareId: shareId ?? .random())
         return itemRevision
     }

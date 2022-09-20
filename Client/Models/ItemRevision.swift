@@ -168,7 +168,7 @@ extension ItemRevision {
 }
 
 public enum SymmetricallyEncryptedItemError: Error {
-    case corruptedSymmetricallyEncryptedContent
+    case corruptedEncryptedContent
 }
 
 /// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
@@ -179,12 +179,12 @@ public struct SymmetricallyEncryptedItem {
     /// Original item revision object as returned by the server
     public let item: ItemRevision
 
-    /// Symmetrically encrypted ItemContent in base 64 format
-    public let symmetricallyEncryptedContent: String
+    /// Symmetrically encrypted content in base 64 format
+    public let encryptedContent: String
 
     public func getEncryptedItemContent() throws -> ItemContent {
-        guard let data = try symmetricallyEncryptedContent.base64Decode() else {
-            throw SymmetricallyEncryptedItemError.corruptedSymmetricallyEncryptedContent
+        guard let data = try encryptedContent.base64Decode() else {
+            throw SymmetricallyEncryptedItemError.corruptedEncryptedContent
         }
         let protobufItem = try ItemContentProtobuf(data: data)
         return .init(shareId: shareId,
