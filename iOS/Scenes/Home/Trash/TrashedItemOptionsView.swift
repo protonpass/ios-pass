@@ -23,15 +23,15 @@ import ProtonCore_UIFoundations
 import SwiftUI
 
 protocol TrashedItemOptionsViewDelegate: AnyObject {
-    func trashedItemWantsToBeRestored(_ item: PartialItemContent)
-    func trashedItemWantsToShowDetail(_ item: PartialItemContent)
-    func trashedItemWantsToBeDeletedPermanently(_ item: PartialItemContent)
+    func trashedItemWantsToBeRestored(_ item: ItemListUiModel)
+    func trashedItemWantsToShowDetail(_ item: ItemListUiModel)
+    func trashedItemWantsToBeDeletedPermanently(_ item: ItemListUiModel)
 }
 
 struct TrashedItemOptionsView: View {
     @Environment(\.presentationMode) private var presentationMode
     @State private var isShowingDeleteAlert = false
-    let item: PartialItemContent
+    let item: ItemListUiModel
     let delegate: TrashedItemOptionsViewDelegate
 
     var body: some View {

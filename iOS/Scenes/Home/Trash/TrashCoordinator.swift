@@ -82,15 +82,15 @@ extension TrashCoordinator: BaseViewModelDelegate {
 
 // MARK: - TrashedItemOptionsViewDelegate
 extension TrashCoordinator: TrashedItemOptionsViewDelegate {
-    func trashedItemWantsToBeRestored(_ item: PartialItemContent) {
+    func trashedItemWantsToBeRestored(_ item: ItemListUiModel) {
         trashViewModel.restore(item)
     }
 
-    func trashedItemWantsToShowDetail(_ item: PartialItemContent) {
+    func trashedItemWantsToShowDetail(_ item: ItemListUiModel) {
         print(#function)
     }
 
-    func trashedItemWantsToBeDeletedPermanently(_ item: PartialItemContent) {
+    func trashedItemWantsToBeDeletedPermanently(_ item: ItemListUiModel) {
         trashViewModel.deletePermanently(item)
     }
 }

@@ -33,7 +33,7 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
 
     var onToggleSidebar: (() -> Void)?
-    var onShowOptions: ((PartialItemContent) -> Void)?
+    var onShowOptions: ((ItemListUiModel) -> Void)?
     var onRestoredItem: (() -> Void)?
     var onDeletedItem: (() -> Void)?
 
@@ -66,7 +66,13 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     func fetchAllTrashedItems(forceRefresh: Bool) {
         Task { @MainActor in
             do {
-                state = .loading
+                // Only show loading indicator on first load
+                switch state {
+                case .error, .idle:
+                    state = .loading
+                default:
+                    break
+                }
 
                 let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
 
@@ -136,31 +142,29 @@ extension TrashViewModel {
         }
     }
 
-    func showOptions(_ item: PartialItemContent) {
+    func showOptions(_ item: ItemListUiModel) {
         onShowOptions?(item)
     }
 
-    func restore(_ item: PartialItemContent) {
+    func restore(_ item: ItemListUiModel) {
         Task { @MainActor in
             do {
-//                guard let itemRevision =
-//                        try await itemRevisionRepository.getItemRevision(shareId: item.shareId,
-//                                                                         itemId: item.itemId) else { return }
-//                isLoading = true
-//                try await itemRevisionRepository.untrashItemRevisions([itemRevision],
-//                                                                      shareId: item.shareId)
-//                isLoading = false
-//                trashedItems.removeAll(where: { $0.itemId == item.itemId })
-//                onRestoredItem?()
-//
-//                switch item.type {
-//                case .note:
-//                    successMessage = "Note restored"
-//                case .login:
-//                    successMessage = "Login restored"
-//                case .alias:
-//                    successMessage = "Alias restored"
-//                }
+                guard let itemToBeRestored =
+                        try await itemRepository.getItem(shareId: item.shareId,
+                                                         itemId: item.itemId) else { return }
+                isLoading = true
+                try await itemRepository.untrashItems([itemToBeRestored])
+                isLoading = false
+                switch item.type {
+                case .note:
+                    successMessage = "Note restored"
+                case .login:
+                    successMessage = "Login restored"
+                case .alias:
+                    successMessage = "Alias restored"
+                }
+                fetchAllTrashedItems(forceRefresh: false)
+                onRestoredItem?()
             } catch {
                 self.isLoading = false
                 self.error = error
@@ -168,27 +172,25 @@ extension TrashViewModel {
         }
     }
 
-    func deletePermanently(_ item: PartialItemContent) {
+    func deletePermanently(_ item: ItemListUiModel) {
         Task { @MainActor in
             do {
-//                guard let itemRevision =
-//                        try await itemRevisionRepository.getItemRevision(shareId: item.shareId,
-//                                                                         itemId: item.itemId) else { return }
-//                isLoading = true
-//                try await itemRevisionRepository.deleteItemRevisions([itemRevision],
-//                                                                     shareId: item.shareId)
-//                isLoading = false
-//                trashedItems.removeAll(where: { $0.itemId == item.itemId })
-//                onDeletedItem?()
-//
-//                switch item.type {
-//                case .note:
-//                    successMessage = "Note permanently deleted"
-//                case .login:
-//                    successMessage = "Login permanently deleted"
-//                case .alias:
-//                    successMessage = "Alias permanently deleted"
-//                }
+                guard let itemToBeDeleted =
+                        try await itemRepository.getItem(shareId: item.shareId,
+                                                         itemId: item.itemId) else { return }
+                isLoading = true
+                try await itemRepository.deleteItems([itemToBeDeleted])
+                isLoading = false
+                switch item.type {
+                case .note:
+                    successMessage = "Note permanently deleted"
+                case .login:
+                    successMessage = "Login permanently deleted"
+                case .alias:
+                    successMessage = "Alias permanently deleted"
+                }
+                fetchAllTrashedItems(forceRefresh: false)
+                onDeletedItem?()
             } catch {
                 self.isLoading = false
                 self.error = error

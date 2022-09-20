@@ -26,6 +26,7 @@ import UIKit
 struct ItemListUiModel: GenericItemProtocol {
     let itemId: String
     let shareId: String
+    let type: ItemContentType
     let icon: UIImage
     let title: String
     let detail: String?
@@ -38,6 +39,7 @@ extension SymmetricallyEncryptedItem {
         let note = try symmetricKey.decrypt(encryptedItemContent.note)
         return .init(itemId: encryptedItemContent.itemId,
                      shareId: encryptedItemContent.shareId,
+                     type: encryptedItemContent.contentData.type,
                      icon: encryptedItemContent.contentData.type.icon,
                      title: name,
                      detail: note)

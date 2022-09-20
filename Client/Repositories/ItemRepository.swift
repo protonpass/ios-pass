@@ -55,7 +55,7 @@ public protocol ItemRepositoryProtocol {
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
-    func deleteItems(_ items: [SymmetricallyEncryptedItem], shareId: String) async throws
+    func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
     func updateItem(oldItem: ItemRevision,
                     newItemContent: ProtobufableItemContentProtocol,
@@ -162,7 +162,7 @@ public extension ItemRepositoryProtocol {
         }
     }
 
-    func deleteItems(_ items: [SymmetricallyEncryptedItem], shareId: String) async throws {
+    func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
         let count = items.count
         PPLogger.shared?.log("Deleting \(count) items")
 
