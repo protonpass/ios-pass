@@ -18,7 +18,6 @@
 		351E9E39289C508B00BB47EB /* ItemKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E38289C508B00BB47EB /* ItemKey+Test.swift */; };
 		351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */; };
 		3530092A28A5281800611F8A /* Vault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D32885BFFD00A7168B /* Vault.swift */; };
-		3530092C28A5284900611F8A /* PartialItemContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530092B28A5284900611F8A /* PartialItemContent.swift */; };
 		3530FAD328CED91300CE8A8F /* TrashedItemOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530FAD228CED91300CE8A8F /* TrashedItemOptionsView.swift */; };
 		3530FADA28CEFA0900CE8A8F /* DeleteItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530FAD928CEFA0900CE8A8F /* DeleteItemsEndpoint.swift */; };
 		353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C02880C45C0021C716 /* GetSharesEndpoint.swift */; };
@@ -363,7 +362,6 @@
 		3514E85B28CB2BB1006BD54A /* TrashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashViewModel.swift; sourceTree = "<group>"; };
 		351E9E38289C508B00BB47EB /* ItemKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemKey+Test.swift"; sourceTree = "<group>"; };
 		351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+RandomWithCount.swift"; sourceTree = "<group>"; };
-		3530092B28A5284900611F8A /* PartialItemContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialItemContent.swift; sourceTree = "<group>"; };
 		3530FAD228CED91300CE8A8F /* TrashedItemOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashedItemOptionsView.swift; sourceTree = "<group>"; };
 		3530FAD928CEFA0900CE8A8F /* DeleteItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteItemsEndpoint.swift; sourceTree = "<group>"; };
 		353547C02880C45C0021C716 /* GetSharesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharesEndpoint.swift; sourceTree = "<group>"; };
@@ -855,7 +853,6 @@
 				358AB49A2886FDA400818B44 /* ItemKey.swift */,
 				355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */,
 				3593DCF828A824FE00C235D3 /* ItemRevision.swift */,
-				3530092B28A5284900611F8A /* PartialItemContent.swift */,
 				358A508C28AD823000F5285C /* PublicKey.swift */,
 				355443FC287CA77C0017FCAD /* Share.swift */,
 				3593DCFC28A82FA700C235D3 /* ShareKeys.swift */,
@@ -2040,7 +2037,6 @@
 				354F768A28C72F1000EB2383 /* PassKeyUtils.swift in Sources */,
 				354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
-				3530092C28A5284900611F8A /* PartialItemContent.swift in Sources */,
 				355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */,
 				358A508B28AD3BB100F5285C /* DataError.swift in Sources */,
 				3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */,

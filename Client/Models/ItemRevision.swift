@@ -115,59 +115,6 @@ extension ItemRevision {
         return try ItemContentProtobuf(data: decryptedContent)
     }
 
-    public func getContent(userData: UserData,
-                           share: Share,
-                           vaultKeys: [VaultKey],
-                           itemKeys: [ItemKey],
-                           verifyKeys: [String]) throws -> ItemContent {
-        guard let vaultKey = vaultKeys.first(where: { $0.rotationID == rotationID }),
-              let itemKey = itemKeys.first(where: { $0.rotationID == rotationID }) else {
-            throw DataError.keyNotFound(rotationId: rotationID)
-        }
-
-        let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
-                                                                        share: share,
-                                                                        vaultKey: vaultKey)
-        let vaultDecryptionKey = DecryptionKey(privateKey: vaultKey.key, passphrase: vaultKeyPassphrase)
-        let vaultKeyring = try Decryptor.buildPrivateKeyRing(with: [vaultDecryptionKey])
-
-        let decryptedContent = try decryptField(keyring: vaultKeyring, field: content)
-
-        let decryptedItemSignature = try decryptField(keyring: vaultKeyring, field: itemKeySignature)
-        try verifyItemSignature(signature: decryptedItemSignature, itemKey: itemKey, content: decryptedContent)
-
-        let decryptedUserSignature = try decryptField(keyring: vaultKeyring, field: userSignature)
-        // swiftlint:disable:next todo
-        // TODO:
-        //        try verifyUserSignature(signature: decryptedUserSignature,
-        //                                verifyKeys: verifyKeys,
-        //                                content: decryptedContent)
-
-        let itemProtobuf = try ItemContentProtobuf(data: decryptedContent)
-
-        return .init(shareId: share.shareID,
-                     itemId: itemID,
-                     contentProtobuf: itemProtobuf)
-    }
-
-    public func getPartialContent(userData: UserData,
-                                  share: Share,
-                                  vaultKeys: [VaultKey],
-                                  itemKeys: [ItemKey],
-                                  verifyKeys: [String]) throws -> PartialItemContent {
-        let itemContent = try getContent(userData: userData,
-                                         share: share,
-                                         vaultKeys: vaultKeys,
-                                         itemKeys: itemKeys,
-                                         verifyKeys: verifyKeys)
-
-        return .init(shareId: share.shareID,
-                     itemId: itemID,
-                     type: itemContent.contentData.type,
-                     title: itemContent.name,
-                     detail: itemContent.note)
-    }
-
     private func decryptField(keyring: CryptoKeyRing, field: String) throws -> Data {
         let decoded = try field.base64Decode()
         let decryptedMessage = try keyring.decrypt(.init(decoded), verifyKey: nil, verifyTime: 0)
