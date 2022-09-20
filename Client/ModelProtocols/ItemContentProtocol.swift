@@ -124,14 +124,12 @@ public struct ItemContent: ItemContentProtocol {
 
     public init(shareId: String,
                 itemId: String,
-                name: String,
-                note: String,
-                contentData: ItemContentData) {
+                contentProtobuf: ItemContentProtobuf) {
         self.shareId = shareId
         self.itemId = itemId
-        self.name = name
-        self.note = note
-        self.contentData = contentData
+        self.name = contentProtobuf.name
+        self.note = contentProtobuf.note
+        self.contentData = contentProtobuf.contentData
     }
 }
 

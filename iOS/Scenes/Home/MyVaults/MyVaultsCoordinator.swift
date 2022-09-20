@@ -176,7 +176,7 @@ final class MyVaultsCoordinator: Coordinator {
         switch itemContent.contentData {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
-                                                 itemRevisionRepository: itemRevisionRepository)
+                                                 itemRepository: itemRepository)
             viewModel.delegate = self
             viewModel.itemDetailDelegate = self
             let logInDetailView = LogInDetailView(viewModel: viewModel)
@@ -184,7 +184,7 @@ final class MyVaultsCoordinator: Coordinator {
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
-                                                itemRevisionRepository: itemRevisionRepository)
+                                                itemRepository: itemRepository)
             viewModel.delegate = self
             viewModel.itemDetailDelegate = self
             let noteDetailView = NoteDetailView(viewModel: viewModel)
@@ -192,7 +192,7 @@ final class MyVaultsCoordinator: Coordinator {
 
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
-                                                 itemRevisionRepository: itemRevisionRepository,
+                                                 itemRepository: itemRepository,
                                                  aliasRepository: aliasRepository)
             viewModel.delegate = self
             viewModel.itemDetailDelegate = self

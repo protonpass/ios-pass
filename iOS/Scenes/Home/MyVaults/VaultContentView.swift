@@ -85,7 +85,7 @@ struct VaultContentView: View {
                     GenericItemView(
                         item: model,
                         showDivider: model.itemId != models.last?.itemId,
-                        action: {  },
+                        action: { viewModel.selectItem(model) },
                         trailingView: {
                             VStack {
                                 Menu(content: {

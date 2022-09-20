@@ -112,9 +112,15 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
         }
     }
 
-    func selectItem(_ partialItemContent: PartialItemContent) {
+    func selectItem(_ uiModel: VaultContentUiModel) {
         Task { @MainActor in
             do {
+                guard let item = try await itemRepository.getItem(shareId: uiModel.shareId,
+                                                                  itemId: uiModel.itemId) else {
+                    return
+                }
+                let itemContent = try item.getDecryptedItemContent(symmetricKey: symmetricKey)
+                onShowItemDetail?(itemContent)
             } catch {
                 self.error = error
             }

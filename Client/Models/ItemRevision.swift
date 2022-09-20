@@ -20,6 +20,7 @@
 
 import Core
 import Crypto
+import CryptoKit
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_KeyManager
@@ -146,9 +147,7 @@ extension ItemRevision {
 
         return .init(shareId: share.shareID,
                      itemId: itemID,
-                     name: itemProtobuf.name,
-                     note: itemProtobuf.note,
-                     contentData: itemProtobuf.contentData)
+                     contentProtobuf: itemProtobuf)
     }
 
     public func getPartialContent(userData: UserData,
@@ -220,8 +219,17 @@ public struct SymmetricallyEncryptedItem {
         let protobufItem = try ItemContentProtobuf(data: data)
         return .init(shareId: shareId,
                      itemId: item.itemID,
-                     name: protobufItem.name,
-                     note: protobufItem.note,
-                     contentData: protobufItem.contentData)
+                     contentProtobuf: protobufItem)
+    }
+
+    public func getDecryptedItemContent(symmetricKey: CryptoKit.SymmetricKey) throws -> ItemContent {
+        guard let data = try encryptedContent.base64Decode() else {
+            throw SymmetricallyEncryptedItemError.corruptedEncryptedContent
+        }
+        let encryptedProtobufItem = try ItemContentProtobuf(data: data)
+        let decryptedProtobufItem = try encryptedProtobufItem.symmetricallyDecrypted(symmetricKey)
+        return .init(shareId: shareId,
+                     itemId: item.itemID,
+                     contentProtobuf: decryptedProtobufItem)
     }
 }
