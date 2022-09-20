@@ -20,34 +20,27 @@
 
 import Client
 import Core
+import CryptoKit
 import ProtonCore_Login
 import SwiftUI
 
 final class TrashCoordinator: Coordinator {
-    private let userData: UserData
+    private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
-    private let shareKeysRepository: ShareKeysRepositoryProtocol
-    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
-    private let publicKeyRepository: PublicKeyRepositoryProtocol
+    private let itemRepository: ItemRepositoryProtocol
     private let trashViewModel: TrashViewModel
 
     var onRestoredItem: (() -> Void)?
 
-    init(userData: UserData,
+    init(symmetricKey: SymmetricKey,
          shareRepository: ShareRepositoryProtocol,
-         shareKeysRepository: ShareKeysRepositoryProtocol,
-         itemRevisionRepository: ItemRevisionRepositoryProtocol,
-         publicKeyRepository: PublicKeyRepositoryProtocol) {
-        self.userData = userData
+         itemRepository: ItemRepositoryProtocol) {
+        self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
-        self.shareKeysRepository = shareKeysRepository
-        self.itemRevisionRepository = itemRevisionRepository
-        self.publicKeyRepository = publicKeyRepository
-        self.trashViewModel = TrashViewModel(userData: userData,
+        self.itemRepository = itemRepository
+        self.trashViewModel = TrashViewModel(symmetricKey: symmetricKey,
                                              shareRepository: shareRepository,
-                                             shareKeysRepository: shareKeysRepository,
-                                             itemRevisionRepository: itemRevisionRepository,
-                                             publicKeyRepository: publicKeyRepository)
+                                             itemRepository: itemRepository)
         super.init()
         self.start()
     }
@@ -74,7 +67,7 @@ final class TrashCoordinator: Coordinator {
     }
 
     func refreshTrashedItems() {
-        trashViewModel.getAllTrashedItems(forceRefresh: false)
+        trashViewModel.fetchAllTrashedItems(forceRefresh: false)
     }
 }
 

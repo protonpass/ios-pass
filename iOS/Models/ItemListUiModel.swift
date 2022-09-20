@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import CryptoKit
 import UIComponents
 import UIKit
 
@@ -28,4 +29,17 @@ struct ItemListUiModel: GenericItemProtocol {
     let icon: UIImage
     let title: String
     let detail: String?
+}
+
+extension SymmetricallyEncryptedItem {
+    func toItemListUiModel(symmetricKey: SymmetricKey) async throws -> ItemListUiModel {
+        let encryptedItemContent = try getEncryptedItemContent()
+        let name = try symmetricKey.decrypt(encryptedItemContent.name)
+        let note = try symmetricKey.decrypt(encryptedItemContent.note)
+        return .init(itemId: encryptedItemContent.itemId,
+                     shareId: encryptedItemContent.shareId,
+                     icon: encryptedItemContent.contentData.type.icon,
+                     title: name,
+                     detail: note)
+    }
 }

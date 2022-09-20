@@ -33,12 +33,23 @@ struct TrashView: View {
     var body: some View {
         ZStack {
             Color.clear
-            if !viewModel.trashedItems.isEmpty {
-                itemList
-            } else if viewModel.isFetchingItems {
+            switch viewModel.state {
+            case .idle:
+                EmptyView()
+
+            case .loading:
                 ProgressView()
-            } else if viewModel.trashedItems.isEmpty {
-                EmptyTrashView()
+
+            case .loaded(let uiModels):
+                if uiModels.isEmpty {
+                    EmptyTrashView()
+                } else {
+                    itemList(uiModels)
+                }
+
+            case .error(let error):
+                RetryableErrorView(errorMessage: error.messageForTheUser,
+                                   onRetry: { viewModel.fetchAllTrashedItems(forceRefresh: true) })
             }
         }
         .toolbar { toolbarContent }
@@ -75,8 +86,8 @@ struct TrashView: View {
                 Image(uiImage: IconProvider.threeDotsHorizontal)
                     .foregroundColor(Color(.label))
             })
-            .opacity(viewModel.trashedItems.isEmpty ? 0 : 1)
-            .disabled(viewModel.trashedItems.isEmpty)
+            .opacity(viewModel.state.isEmpty ? 0 : 1)
+            .disabled(viewModel.state.isEmpty)
         }
     }
 
@@ -87,17 +98,17 @@ struct TrashView: View {
               secondaryButton: .cancel())
     }
 
-    private var itemList: some View {
+    private func itemList(_ uiModels: [ItemListUiModel]) -> some View {
         ScrollView {
             LazyVStack {
-                ForEach(viewModel.trashedItems, id: \.itemId) { item in
+                ForEach(uiModels, id: \.itemId) { uiModel in
                     GenericItemView(
-                        item: item,
-                        showDivider: item.itemId != viewModel.trashedItems.last?.itemId,
+                        item: uiModel,
+                        showDivider: uiModel.itemId != uiModels.last?.itemId,
                         action: {  },
                         trailingView: {
                             Button(action: {
-                                viewModel.showOptions(item)
+//                                viewModel.showOptions(item)
                             }, label: {
                                 Image(uiImage: IconProvider.threeDotsHorizontal)
                                     .foregroundColor(.secondary)

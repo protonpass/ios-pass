@@ -93,17 +93,11 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
                 let encryptedItems = try await itemRepository.getItems(forceRefresh: forceRefresh,
                                                                        shareId: shareId,
                                                                        state: .active)
-                let encryptedItemContents = try encryptedItems.map { try $0.getEncryptedItemContent() }
 
                 var uiModels = [ItemListUiModel]()
-                for item in encryptedItemContents {
-                    let name = try symmetricKey.decrypt(item.name)
-                    let note = try symmetricKey.decrypt(item.note)
-                    uiModels.append(.init(itemId: item.itemId,
-                                          shareId: item.shareId,
-                                          icon: item.contentData.type.icon,
-                                          title: name,
-                                          detail: note))
+                for item in encryptedItems {
+                    let uiModel = try await item.toItemListUiModel(symmetricKey: symmetricKey)
+                    uiModels.append(uiModel)
                 }
                 state = .loaded(uiModels)
             } catch {

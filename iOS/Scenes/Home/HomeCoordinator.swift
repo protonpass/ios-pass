@@ -96,11 +96,9 @@ final class HomeCoordinator: DeinitPrintable {
 
     // Trash
     private lazy var trashCoordinator: TrashCoordinator = {
-        let trashCoordinator = TrashCoordinator(userData: sessionData.userData,
+        let trashCoordinator = TrashCoordinator(symmetricKey: symmetricKey,
                                                 shareRepository: shareRepository,
-                                                shareKeysRepository: shareKeysRepository,
-                                                itemRevisionRepository: itemRevisionRepository,
-                                                publicKeyRepository: publicKeyRepository)
+                                                itemRepository: itemRepository)
         trashCoordinator.delegate = self
         trashCoordinator.onRestoredItem = { [unowned self] in
             self.myVaultsCoordinator.refreshItems()
