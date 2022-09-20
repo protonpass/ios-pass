@@ -43,13 +43,8 @@ struct CreateEditAliasView: View {
                     ProgressView()
 
                 case .error(let error):
-                    VStack {
-                        Text(error.messageForTheUser)
-                        Button(action: viewModel.getAliasAndAliasOptions) {
-                            Text("Retry")
-                        }
-                        .foregroundColor(Color(ColorProvider.BrandNorm))
-                    }
+                    RetryableErrorView(errorMessage: error.messageForTheUser,
+                                       onRetry: viewModel.getAliasAndAliasOptions)
                     .padding()
 
                 case .loaded:

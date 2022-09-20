@@ -40,13 +40,8 @@ struct AliasDetailView: View {
             case .loaded(let alias):
                 ConcreteAliasDetailView(alias: alias, note: viewModel.itemContent.note)
             case .error(let error):
-                VStack {
-                    Text(error.messageForTheUser)
-                    Button(action: viewModel.getAlias) {
-                        Text("Retry")
-                    }
-                    .foregroundColor(Color(ColorProvider.BrandNorm))
-                }
+                RetryableErrorView(errorMessage: error.messageForTheUser,
+                                   onRetry: viewModel.getAlias)
                 .padding()
             }
         }

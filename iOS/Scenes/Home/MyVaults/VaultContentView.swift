@@ -26,7 +26,7 @@ import UIComponents
 struct VaultContentView: View {
     @StateObject private var viewModel: VaultContentViewModel
     @State private var didAppear = false
-    @State private var selectedItemContent: PartialItemContent?
+    @State private var selectedUiModel: VaultContentUiModel?
     @State private var isShowingTrashingAlert = false
 
     private var selectedVaultName: String {
@@ -43,18 +43,30 @@ struct VaultContentView: View {
             // in order for bottom banner to properly display
             // as Color occupies the whole ZStack
             Color.clear
-            if !viewModel.partialItemContents.isEmpty {
-                itemList
-            } else if viewModel.isFetchingItems {
+            switch viewModel.state {
+            case .idle:
+                EmptyView()
+
+            case .loading:
                 ProgressView()
-            } else if viewModel.partialItemContents.isEmpty {
-                EmptyVaultView(action: viewModel.createItem)
+
+            case .loaded(let uiModels):
+                if uiModels.isEmpty {
+                    EmptyVaultView(action: viewModel.createItem)
+                } else {
+                    itemList(uiModels)
+                }
+
+            case .error(let error):
+                RetryableErrorView(errorMessage: error.messageForTheUser,
+                                   onRetry: { viewModel.fetchItems(forceRefresh: true) })
+                .padding()
             }
         }
         .navigationBarTitleDisplayMode(.inline)
         .moveToTrashAlert(isPresented: $isShowingTrashingAlert) {
-            if let selectedItemContent = selectedItemContent {
-                viewModel.trash(selectedItemContent)
+            if let selectedUiModel = selectedUiModel {
+                viewModel.trash(selectedUiModel)
             }
         }
         .toolbar { toolbarContent }
@@ -66,14 +78,14 @@ struct VaultContentView: View {
         }
     }
 
-    private var itemList: some View {
+    private func itemList(_ models: [VaultContentUiModel]) -> some View {
         ScrollView {
             LazyVStack {
-                ForEach(viewModel.partialItemContents, id: \.itemId) { item in
+                ForEach(models, id: \.itemId) { model in
                     GenericItemView(
-                        item: item,
-                        showDivider: item.itemId != viewModel.partialItemContents.last?.itemId,
-                        action: { viewModel.selectItem(item) },
+                        item: model,
+                        showDivider: model.itemId != models.last?.itemId,
+                        action: {  },
                         trailingView: {
                             VStack {
                                 Menu(content: {
@@ -81,7 +93,7 @@ struct VaultContentView: View {
                                         title: "Move to Trash",
                                         icon: IconProvider.trash,
                                         action: {
-                                            selectedItemContent = item
+                                            selectedUiModel = model
                                             isShowingTrashingAlert.toggle()
                                         })
                                 }, label: {
@@ -172,8 +184,8 @@ struct VaultContentView: View {
                 }
             }
             .foregroundColor(Color(.label))
-            .disabled(viewModel.isFetchingItems)
-            .opacity(viewModel.isFetchingItems ? 0.0 : 1.0)
+            .disabled(!viewModel.state.isLoaded)
+            .opacity(!viewModel.state.isLoaded ? 0.0 : 1.0)
         }
     }
 

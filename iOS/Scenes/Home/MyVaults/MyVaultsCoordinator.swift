@@ -20,40 +20,44 @@
 
 import Client
 import Core
+import CryptoKit
 import ProtonCore_Login
 import SwiftUI
 
 final class MyVaultsCoordinator: Coordinator {
+    private let symmetricKey: SymmetricKey
     private let userData: UserData
     private let vaultSelection: VaultSelection
     private let vaultContentViewModel: VaultContentViewModel
     private let shareRepository: ShareRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
 
     var onTrashedItem: (() -> Void)?
 
-    init(userData: UserData,
+    init(symmetricKey: SymmetricKey,
+         userData: UserData,
          vaultSelection: VaultSelection,
          shareRepository: ShareRepositoryProtocol,
          shareKeysRepository: ShareKeysRepositoryProtocol,
          itemRevisionRepository: ItemRevisionRepositoryProtocol,
+         itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          publicKeyRepository: PublicKeyRepositoryProtocol) {
+        self.symmetricKey = symmetricKey
         self.userData = userData
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
         self.itemRevisionRepository = itemRevisionRepository
+        self.itemRepository = itemRepository
         self.shareKeysRepository = shareKeysRepository
         self.aliasRepository = aliasRepository
-        self.vaultContentViewModel = .init(userData: userData,
-                                           vaultSelection: vaultSelection,
-                                           shareRepository: shareRepository,
-                                           itemRevisionRepository: itemRevisionRepository,
-                                           shareKeysRepository: shareKeysRepository,
-                                           publicKeyRepository: publicKeyRepository)
+        self.vaultContentViewModel = .init(vaultSelection: vaultSelection,
+                                           itemRepository: itemRepository,
+                                           symmetricKey: symmetricKey)
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
         super.init()
         observeVaultContentViewModel()

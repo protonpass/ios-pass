@@ -48,6 +48,7 @@ final class HomeCoordinator: DeinitPrintable {
     private let shareRepository: ShareRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
     private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let publicKeyRepository: PublicKeyRepositoryProtocol
     weak var delegate: HomeCoordinatorDelegate?
@@ -75,11 +76,13 @@ final class HomeCoordinator: DeinitPrintable {
     let vaultSelection: VaultSelection
 
     private lazy var myVaultsCoordinator: MyVaultsCoordinator = {
-        let myVaultsCoordinator = MyVaultsCoordinator(userData: sessionData.userData,
+        let myVaultsCoordinator = MyVaultsCoordinator(symmetricKey: symmetricKey,
+                                                      userData: sessionData.userData,
                                                       vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
                                                       shareKeysRepository: shareKeysRepository,
                                                       itemRevisionRepository: itemRevisionRepository,
+                                                      itemRepository: itemRepository,
                                                       aliasRepository: aliasRepository,
                                                       publicKeyRepository: publicKeyRepository)
         myVaultsCoordinator.delegate = self
@@ -120,25 +123,39 @@ final class HomeCoordinator: DeinitPrintable {
         let userId = sessionData.userData.user.ID
         let authCredential = sessionData.userData.credential
 
-        self.shareRepository = ShareRepository(userId: userId,
-                                               container: container,
-                                               authCredential: authCredential,
-                                               apiService: apiService)
+        let localItemDatasource = LocalItemDatasource(container: container)
+        let remoteItemRevisionDatasource = RemoteItemRevisionDatasource(authCredential: authCredential,
+                                                                        apiService: apiService)
+        let publicKeyRepository = PublicKeyRepository(container: container,
+                                                      apiService: apiService)
+        let shareRepository = ShareRepository(userId: userId,
+                                              container: container,
+                                              authCredential: authCredential,
+                                              apiService: apiService)
 
-        self.shareKeysRepository = ShareKeysRepository(container: container,
-                                                       authCredential: authCredential,
-                                                       apiService: apiService)
+        let shareKeysRepository = ShareKeysRepository(container: container,
+                                                      authCredential: authCredential,
+                                                      apiService: apiService)
 
         self.itemRevisionRepository = ItemRevisionRepository(container: container,
                                                              authCredential: authCredential,
                                                              apiService: apiService)
 
+        self.itemRepository = ItemRepository(userData: sessionData.userData,
+                                             symmetricKey: symmetricKey,
+                                             localItemDatasoure: localItemDatasource,
+                                             remoteItemRevisionDatasource: remoteItemRevisionDatasource,
+                                             publicKeyRepository: publicKeyRepository,
+                                             shareRepository: shareRepository,
+                                             shareKeysRepository: shareKeysRepository)
+
         self.aliasRepository = AliasRepository(container: container,
                                                authCredential: authCredential,
                                                apiService: apiService)
 
-        self.publicKeyRepository = PublicKeyRepository(container: container,
-                                                       apiService: apiService)
+        self.publicKeyRepository = publicKeyRepository
+        self.shareRepository = shareRepository
+        self.shareKeysRepository = shareKeysRepository
         self.vaultSelection = .init(vaults: [])
         self.setUpSideMenuPreferences()
         self.observeVaultSelection()

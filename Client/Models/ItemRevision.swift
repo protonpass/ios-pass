@@ -221,7 +221,7 @@ public struct SymmetricallyEncryptedItem {
         return .init(shareId: shareId,
                      itemId: item.itemID,
                      name: protobufItem.name,
-                     note: protobufItem.name,
+                     note: protobufItem.note,
                      contentData: protobufItem.contentData)
     }
 }

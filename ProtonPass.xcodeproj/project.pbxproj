@@ -52,6 +52,7 @@
 		3542E2C728D9EB8000194F24 /* LocalItemDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2C628D9EB8000194F24 /* LocalItemDatasourceTests.swift */; };
 		3542E2C928D9EBC000194F24 /* SymmetricallyEncryptedItem+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2C828D9EBC000194F24 /* SymmetricallyEncryptedItem+Test.swift */; };
 		3542E2CB28D9FE8600194F24 /* ItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2CA28D9FE8600194F24 /* ItemRepository.swift */; };
+		3542E2CD28DA11FE00194F24 /* RetryableErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2CC28DA11FE00194F24 /* RetryableErrorView.swift */; };
 		3542F0262899431D004007C7 /* CoreDataEntityStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
@@ -395,6 +396,7 @@
 		3542E2C628D9EB8000194F24 /* LocalItemDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalItemDatasourceTests.swift; sourceTree = "<group>"; };
 		3542E2C828D9EBC000194F24 /* SymmetricallyEncryptedItem+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SymmetricallyEncryptedItem+Test.swift"; sourceTree = "<group>"; };
 		3542E2CA28D9FE8600194F24 /* ItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRepository.swift; sourceTree = "<group>"; };
+		3542E2CC28DA11FE00194F24 /* RetryableErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryableErrorView.swift; sourceTree = "<group>"; };
 		3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEntityStructureTests.swift; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
@@ -1157,6 +1159,7 @@
 				35526B5C28D116350017BB53 /* PassIcon.swift */,
 				3547ABDB28771B2900EE85E1 /* PPAlertController.swift */,
 				3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */,
+				3542E2CC28DA11FE00194F24 /* RetryableErrorView.swift */,
 				353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */,
 				354BB15228A2886500F50040 /* SwiftUISearchBar.swift */,
 				3552618628A1372500A68477 /* SwiftUITextView.swift */,
@@ -2156,6 +2159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3552618D28A1511000A68477 /* UserInputContentView.swift in Sources */,
+				3542E2CD28DA11FE00194F24 /* RetryableErrorView.swift in Sources */,
 				354F769C28C90B4D00EB2383 /* MoveToTrashModifier.swift in Sources */,
 				3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */,
 				353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */,
