@@ -83,6 +83,37 @@ public struct ItemRevision: Decodable {
 }
 
 extension ItemRevision {
+    public func getContentProtobuf(userData: UserData,
+                                   share: Share,
+                                   vaultKeys: [VaultKey],
+                                   itemKeys: [ItemKey],
+                                   verifyKeys: [String]) throws -> ItemContentProtobuf {
+        guard let vaultKey = vaultKeys.first(where: { $0.rotationID == rotationID }),
+              let itemKey = itemKeys.first(where: { $0.rotationID == rotationID }) else {
+            throw DataError.keyNotFound(rotationId: rotationID)
+        }
+
+        let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
+                                                                        share: share,
+                                                                        vaultKey: vaultKey)
+        let vaultDecryptionKey = DecryptionKey(privateKey: vaultKey.key, passphrase: vaultKeyPassphrase)
+        let vaultKeyring = try Decryptor.buildPrivateKeyRing(with: [vaultDecryptionKey])
+
+        let decryptedContent = try decryptField(keyring: vaultKeyring, field: content)
+
+        let decryptedItemSignature = try decryptField(keyring: vaultKeyring, field: itemKeySignature)
+        try verifyItemSignature(signature: decryptedItemSignature, itemKey: itemKey, content: decryptedContent)
+
+        let decryptedUserSignature = try decryptField(keyring: vaultKeyring, field: userSignature)
+        // swiftlint:disable:next todo
+        // TODO:
+        //        try verifyUserSignature(signature: decryptedUserSignature,
+        //                                verifyKeys: verifyKeys,
+        //                                content: decryptedContent)
+
+        return try ItemContentProtobuf(data: decryptedContent)
+    }
+
     public func getContent(userData: UserData,
                            share: Share,
                            vaultKeys: [VaultKey],
