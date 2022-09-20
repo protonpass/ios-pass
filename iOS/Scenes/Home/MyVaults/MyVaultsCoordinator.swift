@@ -31,7 +31,6 @@ final class MyVaultsCoordinator: Coordinator {
     private let vaultContentViewModel: VaultContentViewModel
     private let shareRepository: ShareRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
-    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
@@ -43,7 +42,6 @@ final class MyVaultsCoordinator: Coordinator {
          vaultSelection: VaultSelection,
          shareRepository: ShareRepositoryProtocol,
          shareKeysRepository: ShareKeysRepositoryProtocol,
-         itemRevisionRepository: ItemRevisionRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          publicKeyRepository: PublicKeyRepositoryProtocol) {
@@ -51,7 +49,6 @@ final class MyVaultsCoordinator: Coordinator {
         self.userData = userData
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
-        self.itemRevisionRepository = itemRevisionRepository
         self.itemRepository = itemRepository
         self.shareKeysRepository = shareKeysRepository
         self.aliasRepository = aliasRepository

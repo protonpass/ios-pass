@@ -47,7 +47,6 @@ final class HomeCoordinator: DeinitPrintable {
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
-    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let publicKeyRepository: PublicKeyRepositoryProtocol
@@ -81,7 +80,6 @@ final class HomeCoordinator: DeinitPrintable {
                                                       vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
                                                       shareKeysRepository: shareKeysRepository,
-                                                      itemRevisionRepository: itemRevisionRepository,
                                                       itemRepository: itemRepository,
                                                       aliasRepository: aliasRepository,
                                                       publicKeyRepository: publicKeyRepository)
@@ -134,10 +132,6 @@ final class HomeCoordinator: DeinitPrintable {
         let shareKeysRepository = ShareKeysRepository(container: container,
                                                       authCredential: authCredential,
                                                       apiService: apiService)
-
-        self.itemRevisionRepository = ItemRevisionRepository(container: container,
-                                                             authCredential: authCredential,
-                                                             apiService: apiService)
 
         self.itemRepository = ItemRepository(userData: sessionData.userData,
                                              symmetricKey: symmetricKey,

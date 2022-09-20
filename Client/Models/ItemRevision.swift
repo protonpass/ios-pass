@@ -26,11 +26,6 @@ import ProtonCore_DataModel
 import ProtonCore_KeyManager
 import ProtonCore_Login
 
-public enum ItemRevisionState: Int16, CaseIterable {
-    case active = 1
-    case trashed = 2
-}
-
 public enum ItemState: Int16, CaseIterable {
     case active = 1
     case trashed = 2
@@ -80,7 +75,7 @@ public struct ItemRevision: Decodable {
     public let revisionTime: Int64
 
     /// Enum representation of `state`
-    public var revisionState: ItemRevisionState { .init(rawValue: state) ?? .active }
+    public var itemState: ItemState { .init(rawValue: state) ?? .active }
 }
 
 extension ItemRevision {

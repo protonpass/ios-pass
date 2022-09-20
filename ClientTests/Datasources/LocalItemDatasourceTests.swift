@@ -176,7 +176,7 @@ extension LocalItemDatasourceTests {
             // Then
             let item = try await sut.getItem(shareId: givenShareId, itemId: givenItemId)
             let notNilItem = try XCTUnwrap(item)
-            XCTAssertEqual(notNilItem.item.revisionState, .trashed)
+            XCTAssertEqual(notNilItem.item.itemState, .trashed)
 
             expectation.fulfill()
         }
@@ -205,7 +205,7 @@ extension LocalItemDatasourceTests {
             // Then
             let item = try await sut.getItem(shareId: givenShareId, itemId: givenItemId)
             let notNilItem = try XCTUnwrap(item)
-            XCTAssertEqual(notNilItem.item.revisionState, .active)
+            XCTAssertEqual(notNilItem.item.itemState, .active)
 
             expectation.fulfill()
         }
