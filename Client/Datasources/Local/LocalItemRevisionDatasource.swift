@@ -93,7 +93,8 @@ extension LocalItemRevisionDatasource: LocalItemRevisionDatasourceProtocol {
         newBatchInsertRequest(entity: ItemRevisionEntity.entity(context: taskContext),
                               sourceItems: items) { managedObject, itemRevision in
             (managedObject as? ItemRevisionEntity)?.hydrate(from: itemRevision,
-                                                            shareId: shareId)
+                                                            shareId: shareId,
+                                                            symmetricallyEncryptedContent: "")
         }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }

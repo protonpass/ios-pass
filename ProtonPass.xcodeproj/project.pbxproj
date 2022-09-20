@@ -42,6 +42,11 @@
 		35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35429B26288AB730000BA22F /* StaticFuncs.swift */; };
 		3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B8882883614D009C9A68 /* DummyApiService.swift */; };
 		3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */; };
+		3542E2B828D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */; };
+		3542E2BA28D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2B928D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift */; };
+		3542E2BD28D9CA9C00194F24 /* ItemContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2BC28D9CA9C00194F24 /* ItemContentTests.swift */; };
+		3542E2BF28D9CAB200194F24 /* SymmetricKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2BE28D9CAB200194F24 /* SymmetricKey+Test.swift */; };
+		3542E2C128D9CB3500194F24 /* ItemContentData+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2C028D9CB3500194F24 /* ItemContentData+Test.swift */; };
 		3542F0262899431D004007C7 /* CoreDataEntityStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
@@ -375,6 +380,11 @@
 		35429B26288AB730000BA22F /* StaticFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticFuncs.swift; sourceTree = "<group>"; };
 		3542B8882883614D009C9A68 /* DummyApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyApiService.swift; sourceTree = "<group>"; };
 		3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthCredential+Preview.swift"; sourceTree = "<group>"; };
+		3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SymmetricKey+ChaChaPoly.swift"; sourceTree = "<group>"; };
+		3542E2B928D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SymmetricKey+ChaChaPolyTests.swift"; sourceTree = "<group>"; };
+		3542E2BC28D9CA9C00194F24 /* ItemContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContentTests.swift; sourceTree = "<group>"; };
+		3542E2BE28D9CAB200194F24 /* SymmetricKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SymmetricKey+Test.swift"; sourceTree = "<group>"; };
+		3542E2C028D9CB3500194F24 /* ItemContentData+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemContentData+Test.swift"; sourceTree = "<group>"; };
 		3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEntityStructureTests.swift; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
@@ -673,6 +683,7 @@
 			children = (
 				351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */,
 				350A97D62885C0D500A7168B /* Share+ShareProviderTests.swift */,
+				3542E2B928D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -680,10 +691,12 @@
 		350A97D82885C94900A7168B /* TestData */ = {
 			isa = PBXGroup;
 			children = (
+				3542E2C028D9CB3500194F24 /* ItemContentData+Test.swift */,
 				35366AA128A446CB0085C24D /* ItemRevision+Test.swift */,
 				351E9E38289C508B00BB47EB /* ItemKey+Test.swift */,
 				358A509728AD87E200F5285C /* PublicKey+Test.swift */,
 				353C95E0289A9E8500E3CDCA /* Share+Test.swift */,
+				3542E2BE28D9CAB200194F24 /* SymmetricKey+Test.swift */,
 				350A97D92885C95D00A7168B /* UserData+Test.swift */,
 				35464B61289B0380008E65C4 /* VaultKey+Test.swift */,
 			);
@@ -722,6 +735,14 @@
 				354146D328D1F235007E45A6 /* GetAliasOptionsEndpoint.swift */,
 			);
 			path = Aliases;
+			sourceTree = "<group>";
+		};
+		3542E2BB28D9CA8D00194F24 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3542E2BC28D9CA9C00194F24 /* ItemContentTests.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		3547ABCC2876CFA700EE85E1 /* MyVaults */ = {
@@ -908,6 +929,7 @@
 				3542B8882883614D009C9A68 /* DummyApiService.swift */,
 				354F768928C72F1000EB2383 /* PassKeyUtils.swift */,
 				350A97D12885BF7E00A7168B /* Protobufable.swift */,
+				3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1080,6 +1102,7 @@
 				35610B9028ABE53000955ACB /* Endpoints */,
 				3593DD1128A840BD00C235D3 /* CoreData */,
 				357D9FCE28A9815500F012BB /* Datasources */,
+				3542E2BB28D9CA8D00194F24 /* Models */,
 				350A97D82885C94900A7168B /* TestData */,
 				350A97D52885C0B400A7168B /* Utilities */,
 			);
@@ -1971,6 +1994,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3542E2B828D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift in Sources */,
 				350A97CC28859D1800A7168B /* AddressKey.swift in Sources */,
 				358A509428AD860200F5285C /* LocalPublicKeyDatasource.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProtocol.swift in Sources */,
@@ -2056,17 +2080,21 @@
 				353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */,
 				357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */,
 				351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */,
+				3542E2C128D9CB3500194F24 /* ItemContentData+Test.swift in Sources */,
 				357D9FD528A9985A00F012BB /* LocalItemRevisionDatasourceTests.swift in Sources */,
 				358A509828AD87E200F5285C /* PublicKey+Test.swift in Sources */,
 				35366AA228A446CB0085C24D /* ItemRevision+Test.swift in Sources */,
+				3542E2BF28D9CAB200194F24 /* SymmetricKey+Test.swift in Sources */,
 				35610B7328ABAF0300955ACB /* LocalItemKeyDatasourceTests.swift in Sources */,
 				358A509628AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift in Sources */,
+				3542E2BA28D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift in Sources */,
 				351E9E39289C508B00BB47EB /* ItemKey+Test.swift in Sources */,
 				350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */,
 				35610B7728ABB9AD00955ACB /* LocalVaultKeyDatasourceTests.swift in Sources */,
 				35464B62289B0380008E65C4 /* VaultKey+Test.swift in Sources */,
 				350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */,
 				35610B7C28ABC2F400955ACB /* LocalShareKeysDatasourceTests.swift in Sources */,
+				3542E2BD28D9CA9C00194F24 /* ItemContentTests.swift in Sources */,
 				3542F0262899431D004007C7 /* CoreDataEntityStructureTests.swift in Sources */,
 				358BD366287D4F9200802A91 /* CreateVaultRequestTests.swift in Sources */,
 			);

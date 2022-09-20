@@ -161,3 +161,26 @@ extension ItemRevision {
         if !valid { throw CryptoError.failedToVerifySignature }
     }
 }
+
+public enum SymmetricallyEncryptedItemError: Error {
+    case corruptedSymmetricallyEncryptedContent
+}
+
+/// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
+public struct SymmetricallyEncryptedItem {
+    public let shareId: String
+    public let item: ItemRevision
+    public let symmetricallyEncryptedContent: String
+
+    public func getEncryptedItemContent() throws -> ItemContent {
+        guard let data = try symmetricallyEncryptedContent.base64Decode() else {
+            throw SymmetricallyEncryptedItemError.corruptedSymmetricallyEncryptedContent
+        }
+        let protobufItem = try ItemContentProtobuf(data: data)
+        return .init(shareId: shareId,
+                     itemId: item.itemID,
+                     name: protobufItem.name,
+                     note: protobufItem.name,
+                     contentData: protobufItem.contentData)
+    }
+}
