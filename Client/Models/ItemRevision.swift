@@ -30,6 +30,11 @@ public enum ItemRevisionState: Int16, CaseIterable {
     case trashed = 2
 }
 
+public enum ItemState: Int16, CaseIterable {
+    case active = 1
+    case trashed = 2
+}
+
 public struct ItemRevisionList: Decodable {
     public let total: Int
     public let revisionsData: [ItemRevision]
@@ -168,8 +173,13 @@ public enum SymmetricallyEncryptedItemError: Error {
 
 /// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
 public struct SymmetricallyEncryptedItem {
+    /// ID of the share that the item belongs to
     public let shareId: String
+
+    /// Original item revision object as returned by the server
     public let item: ItemRevision
+
+    /// Symmetrically encrypted ItemContent in base 64 format
     public let symmetricallyEncryptedContent: String
 
     public func getEncryptedItemContent() throws -> ItemContent {

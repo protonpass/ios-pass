@@ -47,6 +47,8 @@
 		3542E2BD28D9CA9C00194F24 /* ItemContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2BC28D9CA9C00194F24 /* ItemContentTests.swift */; };
 		3542E2BF28D9CAB200194F24 /* SymmetricKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2BE28D9CAB200194F24 /* SymmetricKey+Test.swift */; };
 		3542E2C128D9CB3500194F24 /* ItemContentData+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2C028D9CB3500194F24 /* ItemContentData+Test.swift */; };
+		3542E2C328D9E16600194F24 /* LocalItemDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2C228D9E16600194F24 /* LocalItemDatasource.swift */; };
+		3542E2C528D9E2E700194F24 /* ItemEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2C428D9E2E700194F24 /* ItemEntity.swift */; };
 		3542F0262899431D004007C7 /* CoreDataEntityStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
@@ -385,6 +387,8 @@
 		3542E2BC28D9CA9C00194F24 /* ItemContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContentTests.swift; sourceTree = "<group>"; };
 		3542E2BE28D9CAB200194F24 /* SymmetricKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SymmetricKey+Test.swift"; sourceTree = "<group>"; };
 		3542E2C028D9CB3500194F24 /* ItemContentData+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemContentData+Test.swift"; sourceTree = "<group>"; };
+		3542E2C228D9E16600194F24 /* LocalItemDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalItemDatasource.swift; sourceTree = "<group>"; };
+		3542E2C428D9E2E700194F24 /* ItemEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEntity.swift; sourceTree = "<group>"; };
 		3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEntityStructureTests.swift; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
@@ -966,6 +970,7 @@
 		3593DD1428A8417100C235D3 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				3542E2C428D9E2E700194F24 /* ItemEntity.swift */,
 				3593DD0828A837DD00C235D3 /* ItemRevisionEntity.swift */,
 				3593DD0528A837DC00C235D3 /* ItemKeyEntity.swift */,
 				358A509128AD856D00F5285C /* PublicKeyEntity.swift */,
@@ -990,6 +995,7 @@
 				358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */,
 				3593DCE628A790F800C235D3 /* BaseLocalDatasource.swift */,
 				354146D728D1F539007E45A6 /* LocalAliasDatasource.swift */,
+				3542E2C228D9E16600194F24 /* LocalItemDatasource.swift */,
 				35610B7028ABAAC500955ACB /* LocalItemKeyDatasource.swift */,
 				357D9FD128A98CF900F012BB /* LocalItemRevisionDatasource.swift */,
 				358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */,
@@ -2002,6 +2008,7 @@
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
 				3552F49428D37CFF00547146 /* ChangeMailboxesEndpoint.swift in Sources */,
 				358A509C28AD8B6C00F5285C /* PublicKeyRepository.swift in Sources */,
+				3542E2C528D9E2E700194F24 /* ItemEntity.swift in Sources */,
 				35610B7E28ABC9D200955ACB /* BaseRemoteDatasource.swift in Sources */,
 				35610B8228ABCC3000955ACB /* RemoteShareKeysDatasource.swift in Sources */,
 				358A509A28AD8A8000F5285C /* RemotePublicKeyDatasource.swift in Sources */,
@@ -2039,6 +2046,7 @@
 				3530FADA28CEFA0900CE8A8F /* DeleteItemsEndpoint.swift in Sources */,
 				3593DCE728A790F800C235D3 /* BaseLocalDatasource.swift in Sources */,
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
+				3542E2C328D9E16600194F24 /* LocalItemDatasource.swift in Sources */,
 				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,
 				3593DCFD28A82FA700C235D3 /* ShareKeys.swift in Sources */,
 				354146D628D1F466007E45A6 /* RemoteAliasDatasource.swift in Sources */,

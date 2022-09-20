@@ -45,7 +45,6 @@ extension ItemRevisionEntity {
     @NSManaged var shareID: String?
     @NSManaged var signatureEmail: String?
     @NSManaged var state: Int16
-    @NSManaged var symmetricallyEncryptedContent: String
     @NSManaged var userSignature: String?
 }
 
@@ -91,14 +90,12 @@ extension ItemRevisionEntity {
     }
 
     func hydrate(from item: ItemRevision,
-                 shareId: String,
-                 symmetricallyEncryptedContent: String) {
+                 shareId: String) {
         self.itemID = item.itemID
         self.revision = item.revision
         self.contentFormatVersion = item.contentFormatVersion
         self.rotationID = item.rotationID
         self.content = item.content
-        self.symmetricallyEncryptedContent = symmetricallyEncryptedContent
         self.userSignature = item.userSignature
         self.itemKeySignature = item.itemKeySignature
         self.state = item.state
