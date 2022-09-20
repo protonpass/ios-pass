@@ -106,11 +106,11 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
         }
     }
 
-    func selectItem(_ uiModel: ItemListUiModel) {
+    func selectItem(_ item: ItemListUiModel) {
         Task { @MainActor in
             do {
-                guard let item = try await itemRepository.getItem(shareId: uiModel.shareId,
-                                                                  itemId: uiModel.itemId) else {
+                guard let item = try await itemRepository.getItem(shareId: item.shareId,
+                                                                  itemId: item.itemId) else {
                     return
                 }
                 let itemContent = try item.getDecryptedItemContent(symmetricKey: symmetricKey)
@@ -121,15 +121,17 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
         }
     }
 
-    func trashItem(_ uiModel: ItemListUiModel) {
+    func trashItem(_ item: ItemListUiModel) {
         Task { @MainActor in
             do {
-                guard let item = try await itemRepository.getItem(shareId: uiModel.shareId,
-                                                                  itemId: uiModel.itemId) else { return }
+                guard let itemToBeTrashed =
+                        try await itemRepository.getItem(shareId: item.shareId,
+                                                         itemId: item.itemId) else { return }
                 isLoading = true
-                try await itemRepository.trashItems([item])
+                try await itemRepository.trashItems([itemToBeTrashed])
                 fetchItems(forceRefresh: false)
                 isLoading = false
+                onTrashedItem?(item.type)
             } catch {
                 self.isLoading = false
                 self.error = error
