@@ -43,10 +43,12 @@ public protocol ItemRepositoryProtocol {
                   state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
     @discardableResult
-    func createItem(request: CreateItemRequest, shareId: String) async throws -> SymmetricallyEncryptedItem
+    func createItem(itemContent: ProtobufableItemContentProtocol,
+                    shareId: String) async throws -> SymmetricallyEncryptedItem
 
     @discardableResult
-    func createAlias(request: CreateCustomAliasRequest,
+    func createAlias(info: AliasCreationInfo,
+                     itemContent: ProtobufableItemContentProtocol,
                      shareId: String) async throws -> SymmetricallyEncryptedItem
 
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws
@@ -55,7 +57,9 @@ public protocol ItemRepositoryProtocol {
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem], shareId: String) async throws
 
-    func updateItem(request: UpdateItemRequest, shareId: String, itemId: String) async throws
+    func updateItem(oldItem: ItemRevision,
+                    newItemContent: ProtobufableItemContentProtocol,
+                    shareId: String) async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -92,9 +96,10 @@ public extension ItemRepositoryProtocol {
         return localItems
     }
 
-    func createItem(request: CreateItemRequest,
+    func createItem(itemContent: ProtobufableItemContentProtocol,
                     shareId: String) async throws -> SymmetricallyEncryptedItem {
         PPLogger.shared?.log("Creating item for share \(shareId)")
+        let request = try await createItemRequest(itemContent: itemContent, shareId: shareId)
         let createdItemRevision = try await remoteItemRevisionDatasource.createItem(shareId: shareId,
                                                                                     request: request)
         PPLogger.shared?.log("Saving newly created item \(createdItemRevision.itemID) to local database")
@@ -104,11 +109,16 @@ public extension ItemRepositoryProtocol {
         return encryptedItem
     }
 
-    func createAlias(request: CreateCustomAliasRequest,
+    func createAlias(info: AliasCreationInfo,
+                     itemContent: ProtobufableItemContentProtocol,
                      shareId: String) async throws -> SymmetricallyEncryptedItem {
         PPLogger.shared?.log("Creating alias item")
-        let createdItemRevision = try await remoteItemRevisionDatasource.createAlias(shareId: shareId,
-                                                                                     request: request)
+        let createItemRequest = try await createItemRequest(itemContent: itemContent, shareId: shareId)
+        let createAliasRequest = CreateCustomAliasRequest(info: info,
+                                                          item: createItemRequest)
+        let createdItemRevision =
+        try await remoteItemRevisionDatasource.createAlias(shareId: shareId,
+                                                           request: createAliasRequest)
         PPLogger.shared?.log("Saving newly created alias \(createdItemRevision.itemID) to local database")
         let encryptedItem = try await map(itemRevision: createdItemRevision, shareId: shareId)
         try await localItemDatasoure.upsertItems([encryptedItem])
@@ -167,11 +177,23 @@ public extension ItemRepositoryProtocol {
         }
     }
 
-    func updateItem(request: UpdateItemRequest, shareId: String, itemId: String) async throws {
+    func updateItem(oldItem: ItemRevision,
+                    newItemContent: ProtobufableItemContentProtocol,
+                    shareId: String) async throws {
+        let itemId = oldItem.itemID
         PPLogger.shared?.log("Updating item \(itemId) for share \(shareId)")
-        let updatedItemRevision = try await remoteItemRevisionDatasource.updateItem(shareId: shareId,
-                                                                                    itemId: itemId,
-                                                                                    request: request)
+        let keysAndPassphrases = try await getKeysAndPassphrases(shareId: shareId)
+        let request = try UpdateItemRequest(oldRevision: oldItem,
+                                            vaultKey: keysAndPassphrases.vaultKey,
+                                            vaultKeyPassphrase: keysAndPassphrases.vaultKeyPassphrase,
+                                            itemKey: keysAndPassphrases.itemKey,
+                                            itemKeyPassphrase: keysAndPassphrases.itemKeyPassphrase,
+                                            addressKey: userData.getAddressKey(),
+                                            itemContent: newItemContent)
+        let updatedItemRevision =
+        try await remoteItemRevisionDatasource.updateItem(shareId: shareId,
+                                                          itemId: itemId,
+                                                          request: request)
         PPLogger.shared?.log("Finished updating remotely item \(itemId) for share \(shareId)")
         let encryptedItem = try await map(itemRevision: updatedItemRevision, shareId: shareId)
         try await localItemDatasoure.upsertItems([encryptedItem])
@@ -218,6 +240,37 @@ private extension ItemRepositoryProtocol {
         let encryptedContent = try encryptedContentProtobuf.serializedData().base64EncodedString()
         return .init(shareId: shareId, item: itemRevision, encryptedContent: encryptedContent)
     }
+
+    func createItemRequest(itemContent: ProtobufableItemContentProtocol,
+                           shareId: String) async throws -> CreateItemRequest {
+        let keysAndPassphrases = try await getKeysAndPassphrases(shareId: shareId)
+        return try CreateItemRequest(vaultKey: keysAndPassphrases.vaultKey,
+                                     vaultKeyPassphrase: keysAndPassphrases.vaultKeyPassphrase,
+                                     itemKey: keysAndPassphrases.itemKey,
+                                     itemKeyPassphrase: keysAndPassphrases.itemKeyPassphrase,
+                                     addressKey: keysAndPassphrases.addressKey,
+                                     itemContent: itemContent)
+    }
+
+    func getKeysAndPassphrases(shareId: String) async throws -> KeysAndPassphrases {
+        let (latestVaultKey, latestItemKey) =
+        try await shareKeysRepository.getLatestVaultItemKey(shareId: shareId, forceRefresh: false)
+        let share = try await shareRepository.getShare(shareId: shareId)
+        let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
+                                                                        share: share,
+                                                                        vaultKey: latestVaultKey)
+        guard let itemKeyPassphrase =
+                try PassKeyUtils.getItemKeyPassphrase(vaultKey: latestVaultKey,
+                                                      vaultKeyPassphrase: vaultKeyPassphrase,
+                                                      itemKey: latestItemKey) else {
+            fatalError("Post MVP")
+        }
+        return .init(vaultKey: latestVaultKey,
+                     vaultKeyPassphrase: vaultKeyPassphrase,
+                     itemKey: latestItemKey,
+                     itemKeyPassphrase: itemKeyPassphrase,
+                     addressKey: userData.getAddressKey())
+    }
 }
 
 public struct ItemRepository: ItemRepositoryProtocol {
@@ -244,4 +297,12 @@ public struct ItemRepository: ItemRepositoryProtocol {
         self.shareRepository = shareRepository
         self.shareKeysRepository = shareKeysRepository
     }
+}
+
+private struct KeysAndPassphrases {
+    let vaultKey: VaultKey
+    let vaultKeyPassphrase: String
+    let itemKey: ItemKey
+    let itemKeyPassphrase: String
+    let addressKey: AddressKey
 }

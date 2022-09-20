@@ -130,10 +130,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateEditLoginView(mode: ItemMode) {
         let createEditLoginViewModel = CreateEditLoginViewModel(mode: mode,
-                                                                userData: userData,
-                                                                shareRepository: shareRepository,
-                                                                shareKeysRepository: shareKeysRepository,
-                                                                itemRevisionRepository: itemRevisionRepository)
+                                                                itemRepository: itemRepository)
         createEditLoginViewModel.delegate = self
         createEditLoginViewModel.createEditItemDelegate = self
         createEditLoginViewModel.onGeneratePassword = { [unowned self] in showGeneratePasswordView(delegate: $0) }
@@ -143,10 +140,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateEditAliasView(mode: ItemMode) {
         let createEditAliasViewModel = CreateEditAliasViewModel(mode: mode,
-                                                                userData: userData,
-                                                                shareRepository: shareRepository,
-                                                                shareKeysRepository: shareKeysRepository,
-                                                                itemRevisionRepository: itemRevisionRepository,
+                                                                itemRepository: itemRepository,
                                                                 aliasRepository: aliasRepository)
         createEditAliasViewModel.delegate = self
         createEditAliasViewModel.createEditItemDelegate = self
@@ -156,10 +150,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateEditNoteView(mode: ItemMode) {
         let createEditNoteViewModel = CreateEditNoteViewModel(mode: mode,
-                                                              userData: userData,
-                                                              shareRepository: shareRepository,
-                                                              shareKeysRepository: shareKeysRepository,
-                                                              itemRevisionRepository: itemRevisionRepository)
+                                                              itemRepository: itemRepository)
         createEditNoteViewModel.delegate = self
         createEditNoteViewModel.createEditItemDelegate = self
         let createEditNoteView = CreateEditNoteView(viewModel: createEditNoteViewModel)
