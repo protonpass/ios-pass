@@ -18,6 +18,7 @@
 		351E9E39289C508B00BB47EB /* ItemKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E38289C508B00BB47EB /* ItemKey+Test.swift */; };
 		351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */; };
 		3529432928DAF54900E1F11B /* SearchUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3529432828DAF54900E1F11B /* SearchUtils.swift */; };
+		3529432B28DAF6CA00E1F11B /* SearchUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3529432A28DAF6CA00E1F11B /* SearchUtilsTests.swift */; };
 		3530092A28A5281800611F8A /* Vault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D32885BFFD00A7168B /* Vault.swift */; };
 		3530FAD328CED91300CE8A8F /* TrashedItemOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530FAD228CED91300CE8A8F /* TrashedItemOptionsView.swift */; };
 		3530FADA28CEFA0900CE8A8F /* DeleteItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530FAD928CEFA0900CE8A8F /* DeleteItemsEndpoint.swift */; };
@@ -161,7 +162,6 @@
 		358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD36A287D52AC00802A91 /* vault_v1.pb.swift */; };
 		358BD36E287D539F00802A91 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; };
 		358BD36F287D539F00802A91 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		358BD374287D565900802A91 /* DummyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD373287D565900802A91 /* DummyTests.swift */; };
 		358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */; };
 		358C42A828D48DFB00ADE305 /* DiscardChangesAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C42A728D48DFB00ADE305 /* DiscardChangesAlertModifier.swift */; };
 		3593DCE728A790F800C235D3 /* BaseLocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCE628A790F800C235D3 /* BaseLocalDatasource.swift */; };
@@ -361,6 +361,7 @@
 		351E9E38289C508B00BB47EB /* ItemKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemKey+Test.swift"; sourceTree = "<group>"; };
 		351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+RandomWithCount.swift"; sourceTree = "<group>"; };
 		3529432828DAF54900E1F11B /* SearchUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUtils.swift; sourceTree = "<group>"; };
+		3529432A28DAF6CA00E1F11B /* SearchUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUtilsTests.swift; sourceTree = "<group>"; };
 		3530FAD228CED91300CE8A8F /* TrashedItemOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashedItemOptionsView.swift; sourceTree = "<group>"; };
 		3530FAD928CEFA0900CE8A8F /* DeleteItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteItemsEndpoint.swift; sourceTree = "<group>"; };
 		353547C02880C45C0021C716 /* GetSharesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharesEndpoint.swift; sourceTree = "<group>"; };
@@ -500,7 +501,6 @@
 		358BD368287D52AC00802A91 /* label_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = label_v1.pb.swift; sourceTree = "<group>"; };
 		358BD369287D52AC00802A91 /* item_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = item_v1.pb.swift; sourceTree = "<group>"; };
 		358BD36A287D52AC00802A91 /* vault_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vault_v1.pb.swift; sourceTree = "<group>"; };
-		358BD373287D565900802A91 /* DummyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyTests.swift; sourceTree = "<group>"; };
 		358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+ExecEndpoint.swift"; sourceTree = "<group>"; };
 		358C42A728D48DFB00ADE305 /* DiscardChangesAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscardChangesAlertModifier.swift; sourceTree = "<group>"; };
 		3593DCE628A790F800C235D3 /* BaseLocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLocalDatasource.swift; sourceTree = "<group>"; };
@@ -1142,7 +1142,7 @@
 		35E50691286F87A700A3F6EA /* CoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				358BD373287D565900802A91 /* DummyTests.swift */,
+				3529432A28DAF6CA00E1F11B /* SearchUtilsTests.swift */,
 			);
 			path = CoreTests;
 			sourceTree = "<group>";
@@ -1551,7 +1551,7 @@
 					};
 					35E5068A286F87A700A3F6EA = {
 						CreatedOnToolsVersion = 13.3.1;
-						LastSwiftMigration = 1330;
+						LastSwiftMigration = 1340;
 						TestTargetID = 35E5063A286F819F00A3F6EA;
 					};
 					35E506A9286F920300A3F6EA = {
@@ -2150,7 +2150,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				358BD374287D565900802A91 /* DummyTests.swift in Sources */,
+				3529432B28DAF6CA00E1F11B /* SearchUtilsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

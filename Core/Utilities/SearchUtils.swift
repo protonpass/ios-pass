@@ -19,3 +19,51 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+
+private let kMatchedPhraseMaxCharacterCount = 40
+
+public struct SearchResult {
+    /// The phrase that contains the matched word
+    public let matchedPhrase: String
+
+    /// Matched word (search query)
+    public let matchedWord: String
+
+    /// Whether the begining of the `matchedPhrase` is also the beginning of the text
+    public let isLeadingPhrase: Bool
+
+    /// Whether the ending of the `matchedPhrase` is also the ending of the text
+    public let isTrailingPhrase: Bool
+}
+
+public enum SearchUtils {
+    public static func search(query: String, in text: String) -> SearchResult? {
+        let removedNewLinesText = text.replacingOccurrences(of: "\n", with: " ")
+        let searchRange = NSRange(location: 0, length: removedNewLinesText.utf16.count)
+        guard let regex = try? NSRegularExpression(pattern: query),
+              let firstMatch = regex.firstMatch(in: removedNewLinesText, range: searchRange) else {
+            return nil
+        }
+
+        let matchedRange = firstMatch.range
+        var startIndex = matchedRange.location
+        var endIndex = matchedRange.location + matchedRange.length
+
+        while endIndex - startIndex < kMatchedPhraseMaxCharacterCount {
+            if startIndex - 1 >= 0 {
+                startIndex -= 1
+            }
+
+            if endIndex + 1 <= removedNewLinesText.count {
+                endIndex += 1
+            }
+        }
+
+        let matchedPhrase = removedNewLinesText.subString(from: startIndex, to: endIndex)
+
+        return .init(matchedPhrase: matchedPhrase,
+                     matchedWord: query,
+                     isLeadingPhrase: startIndex == 0,
+                     isTrailingPhrase: endIndex == removedNewLinesText.count)
+    }
+}
