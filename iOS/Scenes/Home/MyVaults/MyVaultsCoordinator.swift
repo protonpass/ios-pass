@@ -166,7 +166,9 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func showSearchView() {
-        presentViewFullScreen(SearchView())
+        let viewModel = SearchViewModel(symmetricKey: symmetricKey,
+                                        itemRepository: itemRepository)
+        presentViewFullScreen(SearchView(viewModel: viewModel))
     }
 
     private func showItemDetailView(_ itemContent: ItemContent) {

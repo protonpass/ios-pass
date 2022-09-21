@@ -18,13 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
+import CryptoKit
 import SwiftUI
 
 final class SearchViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
+    // Injected properties
+    private let symmetricKey: SymmetricKey
+    private let itemRepository: ItemRepositoryProtocol
+
+    // Self-initialized properties
     private let searchTermSubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
 
@@ -42,7 +49,11 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
         case error(Error)
     }
 
-    init() {
+    init(symmetricKey: SymmetricKey,
+         itemRepository: ItemRepositoryProtocol) {
+        self.symmetricKey = symmetricKey
+        self.itemRepository = itemRepository
+
         searchTermSubject
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
             .sink { [unowned self] term in

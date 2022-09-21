@@ -23,7 +23,11 @@ import UIComponents
 
 struct SearchView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @StateObject private var viewModel = SearchViewModel()
+    @StateObject private var viewModel: SearchViewModel
+
+    init(viewModel: SearchViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
         NavigationView {
