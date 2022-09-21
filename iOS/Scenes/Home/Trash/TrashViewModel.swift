@@ -74,15 +74,7 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
                     break
                 }
 
-                let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
-
-                var encryptedItems = [SymmetricallyEncryptedItem]()
-                for share in shares {
-                    let items = try await itemRepository.getItems(forceRefresh: forceRefresh,
-                                                                  shareId: share.shareID,
-                                                                  state: .trashed)
-                    encryptedItems.append(contentsOf: items)
-                }
+                let encryptedItems = try await itemRepository.getItems(forceRefresh: forceRefresh, state: .trashed)
 
                 var uiModels = [ItemListUiModel]()
                 for item in encryptedItems {

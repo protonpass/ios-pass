@@ -34,6 +34,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     // Self-initialized properties
     private let searchTermSubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
+    private var items = [SearchableItem]()
 
     @Published private var term = ""
     @Published private(set) var state = State.clean
@@ -42,10 +43,12 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
 
     enum State {
         case clean
+        /// Loading items to memory
+        case initializing
         /// Search term is not long enough
         case idle
         case searching
-        case results([String])
+        case results([ItemSearchResult])
         case error(Error)
     }
 
@@ -54,12 +57,28 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
         self.symmetricKey = symmetricKey
         self.itemRepository = itemRepository
 
+        loadItems()
         searchTermSubject
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
             .sink { [unowned self] term in
                 self.doSearch(term: term)
             }
             .store(in: &cancellables)
+    }
+
+    private func loadItems() {
+        Task {
+            do {
+                state = .initializing
+                print("Initializing SearchViewModel")
+                let items = try await itemRepository.getItems(forceRefresh: false, state: .active)
+                self.items = try items.map { try SearchableItem(symmetricallyEncryptedItem: $0) }
+                state = .clean
+                print("Initialized SearchViewModel")
+            } catch {
+                state = .error(error)
+            }
+        }
     }
 
     func search(term: String) {
@@ -74,18 +93,62 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
         lastTask = Task { @MainActor in
             do {
                 state = .searching
-                print("Searching for \(term)")
-                try await Task.sleep(nanoseconds: 500_000_000)
-                if Task.isCancelled { return }
-                if Bool.random() {
-                    state = .results(["Touti", "Den", "Ponyo"])
-                } else {
-                    state = .results([])
-                }
-                print("Finished searching for \(term)")
+                let results = try items.compactMap { try result(forItem: $0, term: term) }
+                state = .results(results)
             } catch {
                 state = .error(error)
             }
         }
+    }
+
+    private func result(forItem item: SearchableItem, term: String) throws -> ItemSearchResult? {
+        let decryptedName = try symmetricKey.decrypt(item.encryptedItemContent.name)
+        let title: SearchResultEither
+        if let result = SearchUtils.search(query: term, in: decryptedName) {
+            title = .matched(result)
+        } else {
+            title = .notMatched(decryptedName)
+        }
+
+        var detail = [SearchResultEither]()
+        let decryptedNote = try symmetricKey.decrypt(item.encryptedItemContent.note)
+        if let result = SearchUtils.search(query: term, in: decryptedNote) {
+            detail.append(.matched(result))
+        } else {
+            detail.append(.notMatched(decryptedNote))
+        }
+
+        if case let .login(username, _, urls) = item.encryptedItemContent.contentData {
+            let decryptedUsername = try symmetricKey.decrypt(username)
+            if let result = SearchUtils.search(query: term, in: decryptedUsername) {
+                detail.append(.matched(result))
+            }
+
+            let decryptedUrls = try urls.map { try symmetricKey.decrypt($0) }
+            for decryptedUrl in decryptedUrls {
+                if let result = SearchUtils.search(query: term, in: decryptedUrl) {
+                    detail.append(.matched(result))
+                }
+            }
+        }
+
+        let detailNotMatched = detail.contains { either in
+            if case .matched = either {
+                return false
+            } else {
+                return true
+            }
+        }
+
+        if case .notMatched = title, detailNotMatched {
+            return nil
+        }
+
+        return .init(shareId: item.shareId,
+                     itemId: item.itemId,
+                     type: item.encryptedItemContent.contentData.type,
+                     title: title,
+                     detail: detail,
+                     vaultName: item.vaultName)
     }
 }

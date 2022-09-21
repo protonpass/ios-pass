@@ -35,16 +35,23 @@ struct SearchView: View {
                 switch viewModel.state {
                 case .clean:
                     CleanSearchView()
+
+                case .initializing:
+                    ProgressView()
+
                 case .idle:
                     EmptyView()
+
                 case .searching:
                     SearchingView()
+
                 case .results(let results):
                     if results.isEmpty {
                         NoSearchResultView()
                     } else {
-                        Text(results.joined(separator: "\n"))
+                        EmptyView()
                     }
+
                 case .error(let error):
                     Text(error.messageForTheUser)
                 }

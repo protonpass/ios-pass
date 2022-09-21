@@ -37,6 +37,9 @@ public protocol ItemRepositoryProtocol {
     /// Get a specific Item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
+    /// Get items of all shares by state
+    func getItems(forceRefresh: Bool, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
+
     /// Get item of a share by state
     func getItems(forceRefresh: Bool,
                   shareId: String,
@@ -94,6 +97,18 @@ public extension ItemRepositoryProtocol {
         let count = localItems.count
         PPLogger.shared?.log("Found \(count) \(stateDescription) items in local database")
         return localItems
+    }
+
+    func getItems(forceRefresh: Bool, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+        let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
+        var allItems = [SymmetricallyEncryptedItem]()
+        for share in shares {
+            let items = try await getItems(forceRefresh: forceRefresh,
+                                           shareId: share.shareID,
+                                           state: state)
+            allItems.append(contentsOf: items)
+        }
+        return allItems
     }
 
     func createItem(itemContent: ProtobufableItemContentProtocol,
