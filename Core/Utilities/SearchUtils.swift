@@ -49,13 +49,18 @@ public enum SearchUtils {
         var startIndex = matchedRange.location
         var endIndex = matchedRange.location + matchedRange.length
 
-        while endIndex - startIndex < kMatchedPhraseMaxCharacterCount {
+        while true {
             if startIndex - 1 >= 0 {
                 startIndex -= 1
             }
 
             if endIndex + 1 <= removedNewLinesText.count {
                 endIndex += 1
+            }
+
+            if (startIndex == 0 && endIndex == removedNewLinesText.count) ||
+                (endIndex - startIndex >= kMatchedPhraseMaxCharacterCount) {
+                break
             }
         }
 
