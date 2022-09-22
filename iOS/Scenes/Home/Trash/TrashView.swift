@@ -40,11 +40,11 @@ struct TrashView: View {
             case .loading:
                 ProgressView()
 
-            case .loaded(let items):
-                if items.isEmpty {
+            case .loaded:
+                if viewModel.items.isEmpty {
                     EmptyTrashView()
                 } else {
-                    itemList(items)
+                    itemList
                 }
 
             case .error(let error):
@@ -86,8 +86,8 @@ struct TrashView: View {
                 Image(uiImage: IconProvider.threeDotsHorizontal)
                     .foregroundColor(Color(.label))
             })
-            .opacity(viewModel.state.isEmpty ? 0 : 1)
-            .disabled(viewModel.state.isEmpty)
+            .opacity(viewModel.isEmpty ? 0 : 1)
+            .disabled(viewModel.isEmpty)
         }
     }
 
@@ -98,13 +98,13 @@ struct TrashView: View {
               secondaryButton: .cancel())
     }
 
-    private func itemList(_ items: [ItemListUiModel]) -> some View {
+    private var itemList: some View {
         ScrollView {
             LazyVStack {
-                ForEach(items, id: \.itemId) { item in
+                ForEach(viewModel.items, id: \.itemId) { item in
                     GenericItemView(
                         item: item,
-                        showDivider: item.itemId != items.last?.itemId,
+                        showDivider: item.itemId != viewModel.items.last?.itemId,
                         action: {  },
                         trailingView: {
                             Button(action: {

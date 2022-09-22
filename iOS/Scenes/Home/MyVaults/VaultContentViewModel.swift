@@ -33,7 +33,7 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
     enum State {
         case idle
         case loading
-        case loaded([ItemListUiModel])
+        case loaded
         case error(Error)
 
         var isLoaded: Bool {
@@ -47,6 +47,7 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
     }
 
     @Published private(set) var state = State.idle
+    @Published private(set) var items = [ItemListUiModel]()
 
     private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
@@ -93,13 +94,8 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
                 let encryptedItems = try await itemRepository.getItems(forceRefresh: forceRefresh,
                                                                        shareId: shareId,
                                                                        state: .active)
-
-                var uiModels = [ItemListUiModel]()
-                for item in encryptedItems {
-                    let uiModel = try await item.toItemListUiModel(symmetricKey: symmetricKey)
-                    uiModels.append(uiModel)
-                }
-                state = .loaded(uiModels)
+                items = try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+                state = .loaded
             } catch {
                 state = .error(error)
             }

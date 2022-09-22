@@ -33,7 +33,7 @@ struct ItemListUiModel: GenericItemProtocol {
 }
 
 extension SymmetricallyEncryptedItem {
-    func toItemListUiModel(symmetricKey: SymmetricKey) async throws -> ItemListUiModel {
+    func toItemListUiModel(_ symmetricKey: SymmetricKey) async throws -> ItemListUiModel {
         let encryptedItemContent = try getEncryptedItemContent()
         let name = try symmetricKey.decrypt(encryptedItemContent.name)
         let note = try symmetricKey.decrypt(encryptedItemContent.note)

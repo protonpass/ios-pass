@@ -50,11 +50,11 @@ struct VaultContentView: View {
             case .loading:
                 ProgressView()
 
-            case .loaded(let items):
-                if items.isEmpty {
+            case .loaded:
+                if viewModel.items.isEmpty {
                     EmptyVaultView(action: viewModel.createItem)
                 } else {
-                    itemList(items)
+                    itemList
                 }
 
             case .error(let error):
@@ -78,13 +78,13 @@ struct VaultContentView: View {
         }
     }
 
-    private func itemList(_ items: [ItemListUiModel]) -> some View {
+    private var itemList: some View {
         ScrollView {
             LazyVStack {
-                ForEach(items, id: \.itemId) { item in
+                ForEach(viewModel.items, id: \.itemId) { item in
                     GenericItemView(
                         item: item,
-                        showDivider: item.itemId != items.last?.itemId,
+                        showDivider: item.itemId != viewModel.items.last?.itemId,
                         action: { viewModel.selectItem(item) },
                         trailingView: {
                             VStack {

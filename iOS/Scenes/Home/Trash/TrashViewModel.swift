@@ -26,6 +26,7 @@ import SwiftUI
 
 final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     @Published private(set) var state = State.idle
+    @Published private(set) var items = [ItemListUiModel]()
     @Published var successMessage: String?
 
     private let symmetricKey: SymmetricKey
@@ -40,16 +41,16 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     enum State {
         case idle
         case loading
-        case loaded([ItemListUiModel])
+        case loaded
         case error(Error)
+    }
 
-        var isEmpty: Bool {
-            switch self {
-            case .loaded(let uiModels):
-                return uiModels.isEmpty
-            default:
-                return true
-            }
+    var isEmpty: Bool {
+        switch state {
+        case .loaded:
+            return items.isEmpty
+        default:
+            return true
         }
     }
 
@@ -76,12 +77,8 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
 
                 let encryptedItems = try await itemRepository.getItems(forceRefresh: forceRefresh, state: .trashed)
 
-                var uiModels = [ItemListUiModel]()
-                for item in encryptedItems {
-                    let uiModel = try await item.toItemListUiModel(symmetricKey: symmetricKey)
-                    uiModels.append(uiModel)
-                }
-                state = .loaded(uiModels)
+                items = try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+                state = .loaded
             } catch {
                 state = .error(error)
             }
