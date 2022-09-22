@@ -93,17 +93,13 @@ extension TrashViewModel {
     func restoreAllItems() {
         Task { @MainActor in
             do {
-//                isLoading = true
-//                let dictionary = try await getItemRevisionsByShareId()
-//                for shareId in dictionary.keys {
-//                    if let items = dictionary[shareId] {
-//                        try await itemRevisionRepository.untrashItemRevisions(items, shareId: shareId)
-//                    }
-//                }
-//                isLoading = false
-//                successMessage = "\(trashedItems.count) items restored"
-//                trashedItems.removeAll()
-//                onRestoredItem?()
+                isLoading = true
+                let items = try await itemRepository.getItems(forceRefresh: false, state: .trashed)
+                try await itemRepository.untrashItems(items)
+                isLoading = false
+                removeAllItems()
+                successMessage = "\(items.count) items restored"
+                onRestoredItem?()
             } catch {
                 self.isLoading = false
                 self.error = error
@@ -114,16 +110,12 @@ extension TrashViewModel {
     func emptyTrash() {
         Task { @MainActor in
             do {
-//                isLoading = true
-//                let dictionary = try await getItemRevisionsByShareId()
-//                for shareId in dictionary.keys {
-//                    if let items = dictionary[shareId] {
-//                        try await itemRevisionRepository.deleteItemRevisions(items, shareId: shareId)
-//                    }
-//                }
-//                isLoading = false
-//                trashedItems.removeAll()
-//                successMessage = "Trash emptied"
+                isLoading = true
+                let items = try await itemRepository.getItems(forceRefresh: false, state: .trashed)
+                try await itemRepository.deleteItems(items)
+                isLoading = false
+                removeAllItems()
+                successMessage = "Trash emptied"
             } catch {
                 self.isLoading = false
                 self.error = error
@@ -188,8 +180,10 @@ extension TrashViewModel {
     }
 
     private func remove(_ item: ItemListUiModel) {
-        withAnimation {
-            items.removeAll(where: { $0.itemId == item.itemId })
-        }
+        items.removeAll(where: { $0.itemId == item.itemId })
+    }
+
+    private func removeAllItems() {
+        items = []
     }
 }

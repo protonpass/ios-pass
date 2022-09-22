@@ -119,5 +119,6 @@ struct TrashView: View {
                 Spacer()
             }
         }
+        .animation(.default, value: viewModel.items.count)
     }
 }

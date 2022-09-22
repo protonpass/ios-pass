@@ -93,11 +93,7 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
                 let encryptedItems = try await itemRepository.getItems(forceRefresh: forceRefresh,
                                                                        shareId: shareId,
                                                                        state: .active)
-                let items =
-                try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
-                withAnimation {
-                    self.items = items
-                }
+                items = try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
                 state = .loaded
             } catch {
                 state = .error(error)
@@ -128,7 +124,7 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
                                                          itemId: item.itemId) else { return }
                 isLoading = true
                 try await itemRepository.trashItems([itemToBeTrashed])
-                fetchItems(forceRefresh: false)
+                fetchItems()
                 isLoading = false
                 onTrashedItem?(item.type)
             } catch {
