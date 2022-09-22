@@ -28,24 +28,34 @@ public protocol HighlightableText {
 }
 
 public struct HighlightText: View {
-    public let text: HighlightableText
+    public let texts: [Text]
 
-    public init(text: HighlightableText) {
-        self.text = text
+    public init(highlightableText: HighlightableText) {
+        var texts = [Text]()
+
+        if !highlightableText.isLeadingText {
+            texts.append(Text("..."))
+        }
+
+        if let highlightText = highlightableText.highlightText {
+            let components = highlightableText.fullText.components(separatedBy: highlightText)
+            for (index, eachComponent) in components.enumerated() {
+                texts.append(Text(eachComponent))
+                if index != components.count - 1 {
+                    texts.append(Text(highlightText).fontWeight(.bold))
+                }
+            }
+        } else {
+            texts.append(Text(highlightableText.fullText))
+        }
+
+        if !highlightableText.isTrailingText {
+            texts.append(Text("..."))
+        }
+        self.texts = texts
     }
 
     public var body: some View {
-        let leadingString = text.isLeadingText ? "" : "..."
-        let trailingString = text.isTrailingText ? "" : "..."
-
-        if let highlightText = text.highlightText {
-            let texts = text.fullText.components(separatedBy: highlightText)
-            Text(leadingString + (texts.first ?? "")) +
-            Text(highlightText)
-                .fontWeight(.bold) +
-            Text((texts.last ?? "") + trailingString)
-        } else {
-            Text(leadingString + text.fullText + trailingString)
-        }
+        Text(texts)
     }
 }

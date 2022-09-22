@@ -53,12 +53,12 @@ public struct ItemSearchResultView: View {
                         }
 
                         VStack(alignment: .leading, spacing: 4) {
-                            HighlightText(text: result.title)
+                            HighlightText(highlightableText: result.title)
 
                             VStack(alignment: .leading, spacing: 2) {
                                 ForEach(0..<result.detail.count, id: \.self) { index in
                                     let eachDetail = result.detail[index]
-                                    HighlightText(text: eachDetail)
+                                    HighlightText(highlightableText: eachDetail)
                                         .font(.callout)
                                         .foregroundColor(Color(.secondaryLabel))
                                         .lineLimit(1)
