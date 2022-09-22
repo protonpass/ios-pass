@@ -40,7 +40,7 @@ public enum SearchUtils {
     public static func search(query: String, in text: String) -> SearchResult? {
         let removedNewLinesText = text.replacingOccurrences(of: "\n", with: " ")
         let searchRange = NSRange(location: 0, length: removedNewLinesText.utf16.count)
-        guard let regex = try? NSRegularExpression(pattern: query),
+        guard let regex = try? NSRegularExpression(pattern: query, options: .caseInsensitive),
               let firstMatch = regex.firstMatch(in: removedNewLinesText, range: searchRange) else {
             return nil
         }
@@ -48,6 +48,7 @@ public enum SearchUtils {
         let matchedRange = firstMatch.range
         var startIndex = matchedRange.location
         var endIndex = matchedRange.location + matchedRange.length
+        let matchedWord = removedNewLinesText.subString(from: startIndex, to: endIndex)
 
         while true {
             if startIndex - 1 >= 0 {
@@ -67,7 +68,7 @@ public enum SearchUtils {
         let matchedPhrase = removedNewLinesText.subString(from: startIndex, to: endIndex)
 
         return .init(matchedPhrase: matchedPhrase,
-                     matchedWord: query,
+                     matchedWord: matchedWord,
                      isLeadingPhrase: startIndex == 0,
                      isTrailingPhrase: endIndex == removedNewLinesText.count)
     }

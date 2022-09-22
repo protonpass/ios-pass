@@ -38,6 +38,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
 
     @Published private var term = ""
     @Published private(set) var state = State.clean
+    @Published private(set) var results = [ItemSearchResult]()
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -45,10 +46,8 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
         case clean
         /// Loading items to memory
         case initializing
-        /// Search term is not long enough
-        case idle
         case searching
-        case results([ItemSearchResult])
+        case results
         case error(Error)
     }
 
@@ -86,15 +85,15 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     }
 
     private func doSearch(term: String) {
+        let term = term.trimmingCharacters(in: .whitespacesAndNewlines)
         if term.isEmpty { state = .clean; return }
-        if term.count <= 2 { state = .idle; return }
 
         lastTask?.cancel()
         lastTask = Task { @MainActor in
             do {
                 state = .searching
-                let results = try items.compactMap { try result(forItem: $0, term: term) }
-                state = .results(results)
+                results = try items.compactMap { try result(forItem: $0, term: term) }
+                state = .results
             } catch {
                 state = .error(error)
             }

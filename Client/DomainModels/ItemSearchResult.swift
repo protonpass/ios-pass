@@ -19,18 +19,57 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import UIComponents
+import UIKit
 
-public enum SearchResultEither {
+public enum SearchResultEither: HighlightableText {
     case notMatched(String)
     case matched(SearchResult)
+
+    public var fullText: String {
+        switch self {
+        case .notMatched(let text):
+            return text
+        case .matched(let searchResult):
+            return searchResult.matchedPhrase
+        }
+    }
+
+    public var highlightText: String? {
+        switch self {
+        case .notMatched:
+            return nil
+        case .matched(let searchResult):
+            return searchResult.matchedWord
+        }
+    }
+
+    public var isLeadingText: Bool {
+        switch self {
+        case .notMatched:
+            return true
+        case .matched(let searchResult):
+            return searchResult.isLeadingPhrase
+        }
+    }
+
+    public var isTrailingText: Bool {
+        switch self {
+        case .notMatched:
+            return true
+        case .matched(let searchResult):
+            return searchResult.isTrailingPhrase
+        }
+    }
 }
 
-public struct ItemSearchResult {
+public struct ItemSearchResult: ItemSearchResultProtocol {
     public let shareId: String
     public let itemId: String
     public let type: ItemContentType
-    public let title: SearchResultEither
-    public let detail: [SearchResultEither]
+    public let icon: UIImage
+    public let title: HighlightableText
+    public let detail: [HighlightableText]
     public let vaultName: String
 
     public init(shareId: String,
@@ -42,6 +81,7 @@ public struct ItemSearchResult {
         self.shareId = shareId
         self.itemId = itemId
         self.type = type
+        self.icon = type.icon
         self.title = title
         self.detail = detail
         self.vaultName = vaultName

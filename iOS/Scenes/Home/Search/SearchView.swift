@@ -39,17 +39,14 @@ struct SearchView: View {
                 case .initializing:
                     ProgressView()
 
-                case .idle:
-                    EmptyView()
-
                 case .searching:
                     SearchingView()
 
-                case .results(let results):
-                    if results.isEmpty {
+                case .results:
+                    if viewModel.results.isEmpty {
                         NoSearchResultView()
                     } else {
-                        EmptyView()
+                        resultsList
                     }
 
                 case .error(let error):
@@ -67,6 +64,19 @@ struct SearchView: View {
             SwiftUISearchBar(onSearch: viewModel.search(term:),
                              onCancel: { presentationMode.wrappedValue.dismiss() })
         }
+    }
+
+    private var resultsList: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(viewModel.results, id: \.itemId) { result in
+                    ItemSearchResultView(result: result,
+                                         showDivider: result.itemId != viewModel.results.last?.itemId,
+                                         action: {})
+                }
+            }
+        }
+        .animation(.default, value: viewModel.results.count)
     }
 }
 
