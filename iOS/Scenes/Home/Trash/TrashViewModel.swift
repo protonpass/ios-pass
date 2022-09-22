@@ -152,7 +152,7 @@ extension TrashViewModel {
                 case .alias:
                     successMessage = "Alias restored"
                 }
-                fetchAllTrashedItems(forceRefresh: false)
+                remove(item)
                 onRestoredItem?()
             } catch {
                 self.isLoading = false
@@ -178,12 +178,18 @@ extension TrashViewModel {
                 case .alias:
                     successMessage = "Alias permanently deleted"
                 }
-                fetchAllTrashedItems(forceRefresh: false)
+                remove(item)
                 onDeletedItem?()
             } catch {
                 self.isLoading = false
                 self.error = error
             }
+        }
+    }
+
+    private func remove(_ item: ItemListUiModel) {
+        withAnimation {
+            items.removeAll(where: { $0.itemId == item.itemId })
         }
     }
 }

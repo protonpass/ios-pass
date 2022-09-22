@@ -21,8 +21,7 @@
 import Client
 import Core
 import CryptoKit
-import UIComponents
-import UIKit
+import SwiftUI
 
 final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
@@ -94,7 +93,11 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
                 let encryptedItems = try await itemRepository.getItems(forceRefresh: forceRefresh,
                                                                        shareId: shareId,
                                                                        state: .active)
-                items = try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+                let items =
+                try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+                withAnimation {
+                    self.items = items
+                }
                 state = .loaded
             } catch {
                 state = .error(error)
