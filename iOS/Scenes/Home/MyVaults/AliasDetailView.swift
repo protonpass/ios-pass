@@ -136,7 +136,7 @@ private struct ConcreteAliasDetailView: View {
     private var mailboxesSection: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Mailboxes")
-            Text(alias.mailboxes.joined(separator: "\n"))
+            Text(alias.mailboxes.map { $0.email }.joined(separator: "\n"))
                 .font(.callout)
                 .foregroundColor(.secondary)
         }

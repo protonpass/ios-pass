@@ -76,6 +76,7 @@ struct SearchView: View {
                 }
             }
         }
+        .padding(.top)
         .animation(.default, value: viewModel.results.count)
     }
 }

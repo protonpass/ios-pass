@@ -20,5 +20,5 @@
 
 public struct Alias: Decodable {
     public let email: String
-    public let mailboxes: [String]
+    public let mailboxes: [Mailbox]
 }

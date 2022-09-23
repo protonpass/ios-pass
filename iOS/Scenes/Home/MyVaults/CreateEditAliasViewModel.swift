@@ -164,7 +164,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                         self.mailboxes = selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
                     }
                     .store(in: &cancellables)
-                mailboxSelection?.selectDefaultMailboxes(alias?.mailboxes ?? [])
+                mailboxSelection?.selectDefaultMailboxes(alias?.mailboxes.map { $0.email } ?? [])
 
                 state = .loaded
             } catch {
@@ -175,7 +175,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override func additionalEdit() async throws {
         guard let alias = alias, let mailboxSelection = mailboxSelection else { return }
-        if Set(alias.mailboxes) == Set(mailboxSelection.selectedMailboxes.map { $0.email }) { return }
+        if Set(alias.mailboxes) == Set(mailboxSelection.selectedMailboxes) { return }
         if case let .edit(itemContent) = mode {
             try await aliasRepository.changeMailboxes(shareId: shareId,
                                                       itemId: itemContent.itemId,
