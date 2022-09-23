@@ -20,8 +20,6 @@
 
 import Foundation
 
-private let kMatchedPhraseMaxCharacterCount = 40
-
 public struct SearchResult {
     /// The phrase that contains the matched word
     public let matchedPhrase: String
@@ -38,38 +36,27 @@ public struct SearchResult {
 
 public enum SearchUtils {
     public static func search(query: String, in text: String) -> SearchResult? {
-        let removedNewLinesText = text.replacingOccurrences(of: "\n", with: " ")
-        let searchRange = NSRange(location: 0, length: removedNewLinesText.utf16.count)
-        guard let regex = try? NSRegularExpression(pattern: query, options: .caseInsensitive),
-              let firstMatch = regex.firstMatch(in: removedNewLinesText, range: searchRange) else {
-            return nil
-        }
+        // Remove new lines because search results are for preview purpose
+        // we don't want to have new lines in such case
+        let text = text.replacingOccurrences(of: "\n", with: " ")
 
-        let matchedRange = firstMatch.range
-        var startIndex = matchedRange.location
-        var endIndex = matchedRange.location + matchedRange.length
-        let matchedWord = removedNewLinesText.subString(from: startIndex, to: endIndex)
+        guard let range = text.range(of: query, options: .caseInsensitive) else { return nil }
+        let matchedWord = text[range]
 
-        while true {
-            if startIndex - 1 >= 0 {
-                startIndex -= 1
-            }
+        // We want to extract the matched phrase that has
+        // 20 surrounding characters around the matchedWord
+        let offset = 20
+        let matchedPhraseUpperIndex = text.index(range.upperBound,
+                                                 offsetBy: -offset,
+                                                 limitedBy: text.startIndex) ?? text.startIndex
+        let matchedPhraseLowerIndex = text.index(range.lowerBound,
+                                                 offsetBy: offset,
+                                                 limitedBy: text.endIndex) ?? text.endIndex
+        let matchedPhrase = text[matchedPhraseUpperIndex..<matchedPhraseLowerIndex]
 
-            if endIndex + 1 <= removedNewLinesText.count {
-                endIndex += 1
-            }
-
-            if (startIndex == 0 && endIndex == removedNewLinesText.count) ||
-                (endIndex - startIndex >= kMatchedPhraseMaxCharacterCount) {
-                break
-            }
-        }
-
-        let matchedPhrase = removedNewLinesText.subString(from: startIndex, to: endIndex)
-
-        return .init(matchedPhrase: matchedPhrase,
-                     matchedWord: matchedWord,
-                     isLeadingPhrase: startIndex == 0,
-                     isTrailingPhrase: endIndex == removedNewLinesText.count)
+        return .init(matchedPhrase: String(matchedPhrase),
+                     matchedWord: String(matchedWord),
+                     isLeadingPhrase: matchedPhraseUpperIndex == text.startIndex,
+                     isTrailingPhrase: matchedPhraseLowerIndex == text.endIndex)
     }
 }

@@ -26,8 +26,8 @@ final class SearchUtilsTests: XCTestCase {
     let text = """
 This a very long, meangingless & weird text that helps testing search feature.
 This is how to say "Hello" in some Asian languages: The Japanese say "こんにちは" (konnichiwa), the Chinese say "你好" (nihao) & the Vietnamese say "Xin chào".
-Sometimes words are just not enough to express one's feelings so we can use emoji such as 👻 and 😢.
-And finally a long, meaningless last line with random comma, and semicolon; and no dot at the end like this
+Sometimes words are just not enough to express one's feelings so we can use emoji such AS 👻 and 😢.
+And finally a long, meaningless last line with random comma, and semicolon; and no dot at the End like this
 """
 
     func testSearchWithResultInTheBegining() throws {
@@ -40,7 +40,7 @@ And finally a long, meaningless last line with random comma, and semicolon; and 
         let searchResult = try XCTUnwrap(SearchUtils.search(query: query, in: text))
 
         // Then
-        XCTAssertEqual(searchResult.matchedPhrase, "This a very long, meangingless & weird t")
+        XCTAssertEqual(searchResult.matchedPhrase, "This a very long, meangingless &")
         XCTAssertEqual(searchResult.matchedWord, query)
         XCTAssertTrue(searchResult.isLeadingPhrase)
         XCTAssertFalse(searchResult.isTrailingPhrase)
@@ -56,8 +56,8 @@ And finally a long, meaningless last line with random comma, and semicolon; and 
         let searchResult = try XCTUnwrap(SearchUtils.search(query: query, in: text))
 
         // Then
-        XCTAssertEqual(searchResult.matchedPhrase, "micolon; and no dot at the end like this")
-        XCTAssertEqual(searchResult.matchedWord, query)
+        XCTAssertEqual(searchResult.matchedPhrase, "nd no dot at the End like this")
+        XCTAssertEqual(searchResult.matchedWord, "End")
         XCTAssertFalse(searchResult.isLeadingPhrase)
         XCTAssertTrue(searchResult.isTrailingPhrase)
     }
@@ -72,8 +72,8 @@ And finally a long, meaningless last line with random comma, and semicolon; and 
         let searchResult = try XCTUnwrap(SearchUtils.search(query: query, in: text))
 
         // Then
-        XCTAssertEqual(searchResult.matchedPhrase, "an use emoji such as 👻 and 😢. And finally")
-        XCTAssertEqual(searchResult.matchedWord, query)
+        XCTAssertEqual(searchResult.matchedPhrase, " use emoji such AS 👻 and 😢. And fina")
+        XCTAssertEqual(searchResult.matchedWord, "AS 👻")
         XCTAssertFalse(searchResult.isLeadingPhrase)
         XCTAssertFalse(searchResult.isTrailingPhrase)
     }
@@ -88,7 +88,7 @@ And finally a long, meaningless last line with random comma, and semicolon; and 
         let searchResult = try XCTUnwrap(SearchUtils.search(query: query, in: text))
 
         // Then
-        XCTAssertEqual(searchResult.matchedPhrase, "The Japanese say \"こんにちは\" (konnichiwa), th")
+        XCTAssertEqual(searchResult.matchedPhrase, "e Japanese say \"こんにちは\" (konnichiwa), ")
         XCTAssertEqual(searchResult.matchedWord, query)
         XCTAssertFalse(searchResult.isLeadingPhrase)
         XCTAssertFalse(searchResult.isTrailingPhrase)
