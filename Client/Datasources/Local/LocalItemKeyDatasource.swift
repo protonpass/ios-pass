@@ -20,7 +20,7 @@
 
 import CoreData
 
-public protocol LocalItemKeyDatasourceProtocol {
+public protocol LocalItemKeyDatasourceProtocol: LocalDatasourceProtocol {
     func getItemKey(shareId: String, rotationId: String) async throws -> ItemKey?
     func getItemKeys(shareId: String, page: Int, pageSize: Int) async throws -> [ItemKey]
     func getItemKeyCount(shareId: String) async throws -> Int
@@ -28,9 +28,7 @@ public protocol LocalItemKeyDatasourceProtocol {
     func removeAllItemKeys(shareId: String) async throws
 }
 
-public final class LocalItemKeyDatasource: BaseLocalDatasource {}
-
-extension LocalItemKeyDatasource: LocalItemKeyDatasourceProtocol {
+extension LocalItemKeyDatasourceProtocol {
     public func getItemKey(shareId: String, rotationId: String) async throws -> ItemKey? {
         let taskContext = newTaskContext(type: .fetch)
 
@@ -91,3 +89,5 @@ extension LocalItemKeyDatasource: LocalItemKeyDatasourceProtocol {
         return fetchRequest
     }
 }
+
+public final class LocalItemKeyDatasource: LocalDatasource, LocalItemKeyDatasourceProtocol {}

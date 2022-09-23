@@ -20,7 +20,7 @@
 
 import CoreData
 
-public protocol LocalItemDatasourceProtocol {
+public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     /// Get a specific item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
@@ -43,10 +43,8 @@ public protocol LocalItemDatasourceProtocol {
     func removeAllItems(shareId: String) async throws
 }
 
-public final class LocalItemDatasource: BaseLocalDatasource {}
-
-extension LocalItemDatasource: LocalItemDatasourceProtocol {
-    public func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
+public extension LocalItemDatasourceProtocol {
+    func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = NSCompoundPredicate(
@@ -58,7 +56,7 @@ extension LocalItemDatasource: LocalItemDatasourceProtocol {
         return try itemEntities.map { try $0.toEncryptedItem(shareId: shareId) }.first
     }
 
-    public func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -70,14 +68,14 @@ extension LocalItemDatasource: LocalItemDatasourceProtocol {
         return try itemEntities.map { try $0.toEncryptedItem(shareId: shareId) }
     }
 
-    public func getItemCount(shareId: String) async throws -> Int {
+    func getItemCount(shareId: String) async throws -> Int {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         return try await count(fetchRequest: fetchRequest, context: taskContext)
     }
 
-    public func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws {
+    func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws {
         let taskContext = newTaskContext(type: .insert)
         let entity = ItemEntity.entity(context: taskContext)
         let batchInsertRequest = newBatchInsertRequest(entity: entity,
@@ -87,8 +85,8 @@ extension LocalItemDatasource: LocalItemDatasourceProtocol {
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    public func upsertItems(_ items: [SymmetricallyEncryptedItem],
-                            modifiedItems: [ModifiedItem]) async throws {
+    func upsertItems(_ items: [SymmetricallyEncryptedItem],
+                     modifiedItems: [ModifiedItem]) async throws {
         for item in items {
             if let modifiedItem = modifiedItems.first(where: { $0.itemID == item.item.itemID }) {
                 let modifiedItem = ItemRevision(itemID: item.item.itemID,
@@ -111,7 +109,7 @@ extension LocalItemDatasource: LocalItemDatasourceProtocol {
         }
     }
 
-    public func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
+    func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
         let taskContext = newTaskContext(type: .delete)
         for item in items {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemEntity")
@@ -124,7 +122,7 @@ extension LocalItemDatasource: LocalItemDatasourceProtocol {
         }
     }
 
-    public func removeAllItems(shareId: String) async throws {
+    func removeAllItems(shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemEntity")
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
@@ -132,3 +130,5 @@ extension LocalItemDatasource: LocalItemDatasourceProtocol {
                           context: taskContext)
     }
 }
+
+public final class LocalItemDatasource: LocalDatasource, LocalItemDatasourceProtocol {}

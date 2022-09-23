@@ -40,7 +40,6 @@
 		354146D128D1F1E1007E45A6 /* AliasOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354146D028D1F1E1007E45A6 /* AliasOptions.swift */; };
 		354146D428D1F235007E45A6 /* GetAliasOptionsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354146D328D1F235007E45A6 /* GetAliasOptionsEndpoint.swift */; };
 		354146D628D1F466007E45A6 /* RemoteAliasDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354146D528D1F466007E45A6 /* RemoteAliasDatasource.swift */; };
-		354146D828D1F539007E45A6 /* LocalAliasDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354146D728D1F539007E45A6 /* LocalAliasDatasource.swift */; };
 		354146DA28D1F585007E45A6 /* AliasRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354146D928D1F585007E45A6 /* AliasRepository.swift */; };
 		35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35429B26288AB730000BA22F /* StaticFuncs.swift */; };
 		3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B8882883614D009C9A68 /* DummyApiService.swift */; };
@@ -169,7 +168,7 @@
 		358BD36F287D539F00802A91 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */; };
 		358C42A828D48DFB00ADE305 /* DiscardChangesAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C42A728D48DFB00ADE305 /* DiscardChangesAlertModifier.swift */; };
-		3593DCE728A790F800C235D3 /* BaseLocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCE628A790F800C235D3 /* BaseLocalDatasource.swift */; };
+		3593DCE728A790F800C235D3 /* LocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCE628A790F800C235D3 /* LocalDatasource.swift */; };
 		3593DCEB28A79CD300C235D3 /* CreateVaultRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCEA28A79CD300C235D3 /* CreateVaultRequest.swift */; };
 		3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCF028A7AA1200C235D3 /* GetShareEndpoint.swift */; };
 		3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCF828A824FE00C235D3 /* ItemRevision.swift */; };
@@ -387,7 +386,6 @@
 		354146D028D1F1E1007E45A6 /* AliasOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasOptions.swift; sourceTree = "<group>"; };
 		354146D328D1F235007E45A6 /* GetAliasOptionsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAliasOptionsEndpoint.swift; sourceTree = "<group>"; };
 		354146D528D1F466007E45A6 /* RemoteAliasDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteAliasDatasource.swift; sourceTree = "<group>"; };
-		354146D728D1F539007E45A6 /* LocalAliasDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAliasDatasource.swift; sourceTree = "<group>"; };
 		354146D928D1F585007E45A6 /* AliasRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasRepository.swift; sourceTree = "<group>"; };
 		35429B26288AB730000BA22F /* StaticFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticFuncs.swift; sourceTree = "<group>"; };
 		3542B8882883614D009C9A68 /* DummyApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyApiService.swift; sourceTree = "<group>"; };
@@ -513,7 +511,7 @@
 		358BD36A287D52AC00802A91 /* vault_v1.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vault_v1.pb.swift; sourceTree = "<group>"; };
 		358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+ExecEndpoint.swift"; sourceTree = "<group>"; };
 		358C42A728D48DFB00ADE305 /* DiscardChangesAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscardChangesAlertModifier.swift; sourceTree = "<group>"; };
-		3593DCE628A790F800C235D3 /* BaseLocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLocalDatasource.swift; sourceTree = "<group>"; };
+		3593DCE628A790F800C235D3 /* LocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatasource.swift; sourceTree = "<group>"; };
 		3593DCEA28A79CD300C235D3 /* CreateVaultRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultRequest.swift; sourceTree = "<group>"; };
 		3593DCF028A7AA1200C235D3 /* GetShareEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareEndpoint.swift; sourceTree = "<group>"; };
 		3593DCF828A824FE00C235D3 /* ItemRevision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRevision.swift; sourceTree = "<group>"; };
@@ -1024,8 +1022,7 @@
 			isa = PBXGroup;
 			children = (
 				358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */,
-				3593DCE628A790F800C235D3 /* BaseLocalDatasource.swift */,
-				354146D728D1F539007E45A6 /* LocalAliasDatasource.swift */,
+				3593DCE628A790F800C235D3 /* LocalDatasource.swift */,
 				3542E2C228D9E16600194F24 /* LocalItemDatasource.swift */,
 				35610B7028ABAAC500955ACB /* LocalItemKeyDatasource.swift */,
 				358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */,
@@ -2082,7 +2079,7 @@
 				3542E2CB28D9FE8600194F24 /* ItemRepository.swift in Sources */,
 				35A909EA2890110F00AC54D4 /* CoreDataError.swift in Sources */,
 				3530FADA28CEFA0900CE8A8F /* DeleteItemsEndpoint.swift in Sources */,
-				3593DCE728A790F800C235D3 /* BaseLocalDatasource.swift in Sources */,
+				3593DCE728A790F800C235D3 /* LocalDatasource.swift in Sources */,
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
 				3542E2C328D9E16600194F24 /* LocalItemDatasource.swift in Sources */,
 				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,
@@ -2100,7 +2097,6 @@
 				355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */,
 				3593DD1028A83F7A00C235D3 /* ProtonPass.xcdatamodeld in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
-				354146D828D1F539007E45A6 /* LocalAliasDatasource.swift in Sources */,
 				35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */,
 				3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */,
 				3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */,

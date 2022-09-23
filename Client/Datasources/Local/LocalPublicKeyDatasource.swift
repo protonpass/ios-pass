@@ -20,15 +20,13 @@
 
 import Foundation
 
-public protocol LocalPublicKeyDatasourceProtocol {
+public protocol LocalPublicKeyDatasourceProtocol: LocalDatasourceProtocol {
     func getPublicKeys(email: String) async throws -> [PublicKey]
     func insertPublicKeys(_ publicKeys: [PublicKey], email: String) async throws
 }
 
-public final class LocalPublicKeyDatasource: BaseLocalDatasource {}
-
-extension LocalPublicKeyDatasource: LocalPublicKeyDatasourceProtocol {
-    public func getPublicKeys(email: String) async throws -> [PublicKey] {
+public extension LocalPublicKeyDatasourceProtocol {
+    func getPublicKeys(email: String) async throws -> [PublicKey] {
         let taskContext = newTaskContext(type: .fetch)
 
         let fetchRequest = PublicKeyEntity.fetchRequest()
@@ -38,7 +36,7 @@ extension LocalPublicKeyDatasource: LocalPublicKeyDatasourceProtocol {
         return publicKeyEntities.compactMap { try? $0.toPublicKey() }
     }
 
-    public func insertPublicKeys(_ publicKeys: [PublicKey], email: String) async throws {
+    func insertPublicKeys(_ publicKeys: [PublicKey], email: String) async throws {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
@@ -49,3 +47,5 @@ extension LocalPublicKeyDatasource: LocalPublicKeyDatasourceProtocol {
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 }
+
+public final class LocalPublicKeyDatasource: LocalDatasource, LocalPublicKeyDatasourceProtocol {}

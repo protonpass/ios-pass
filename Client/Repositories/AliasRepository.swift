@@ -24,7 +24,6 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 public protocol AliasRepositoryProtocol {
-    var localAliasDatasource: LocalAliasDatasourceProtocol { get }
     var remoteAliasDatasouce: RemoteAliasDatasourceProtocol { get }
 
     func getAliasOptions(shareId: String) async throws -> AliasOptions
@@ -48,19 +47,14 @@ public extension AliasRepositoryProtocol {
 }
 
 public struct AliasRepository: AliasRepositoryProtocol {
-    public let localAliasDatasource: LocalAliasDatasourceProtocol
     public let remoteAliasDatasouce: RemoteAliasDatasourceProtocol
 
-    public init(localAliasDatasource: LocalAliasDatasourceProtocol,
-                remoteAliasDatasouce: RemoteAliasDatasourceProtocol) {
-        self.localAliasDatasource = localAliasDatasource
+    public init(remoteAliasDatasouce: RemoteAliasDatasourceProtocol) {
         self.remoteAliasDatasouce = remoteAliasDatasouce
     }
 
-    public init(container: NSPersistentContainer,
-                authCredential: AuthCredential,
+    public init(authCredential: AuthCredential,
                 apiService: APIService) {
-        self.localAliasDatasource = LocalAliasDatasource(container: container)
         self.remoteAliasDatasouce = RemoteAliasDatasource(authCredential: authCredential,
                                                           apiService: apiService)
     }

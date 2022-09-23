@@ -141,9 +141,7 @@ final class HomeCoordinator: DeinitPrintable {
                                              shareRepository: shareRepository,
                                              shareKeysRepository: shareKeysRepository)
 
-        self.aliasRepository = AliasRepository(container: container,
-                                               authCredential: authCredential,
-                                               apiService: apiService)
+        self.aliasRepository = AliasRepository(authCredential: authCredential, apiService: apiService)
 
         self.publicKeyRepository = publicKeyRepository
         self.shareRepository = shareRepository
