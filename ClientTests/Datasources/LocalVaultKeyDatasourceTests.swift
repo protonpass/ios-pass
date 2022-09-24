@@ -23,7 +23,7 @@ import XCTest
 
 final class LocalVaultKeyDatasourceTests: XCTestCase {
     let expectationTimeOut: TimeInterval = 3
-    var sut: LocalVaultKeyDatasource!
+    var sut: LocalVaultKeyDatasourceV2!
 
     override func setUp() {
         super.setUp()
@@ -47,97 +47,23 @@ final class LocalVaultKeyDatasourceTests: XCTestCase {
 }
 
 extension LocalVaultKeyDatasourceTests {
-    func testGetVaultKey() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let givenShareId = String.random()
-            let givenRotationId = String.random()
-            let givenInsertedVaultKey =
-            try await sut.givenInsertedVaultKey(shareId: givenShareId,
-                                                rotationId: givenRotationId)
-
-            // When
-            for _ in 0...10 {
-                try await sut.upsertVaultKeys([.random()], shareId: .random())
-            }
-
-            // Then
-            let vaultKey = try await sut.getVaultKey(shareId: givenShareId,
-                                                     rotationId: givenRotationId)
-            XCTAssertNotNil(vaultKey)
-            let nonNilVaultKey = try XCTUnwrap(vaultKey)
-            assertEqual(nonNilVaultKey, givenInsertedVaultKey)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
-    }
-
     func testGetVaultKeys() throws {
         continueAfterFailure = false
         let expectation = expectation(description: #function)
         Task {
             // Given
-            // 200 itemKeys inserted to the local database
-            // pageSize is 70
             let localShareDatasource = LocalShareDatasource(container: sut.container)
             let givenShare = try await localShareDatasource.givenInsertedShare()
-            let shareId = givenShare.shareID
-            let givenVaultKeys = [VaultKey].random(count: 200, randomElement: .random())
-            let pageSize = 70
-
-            // When
-            try await sut.upsertVaultKeys(givenVaultKeys, shareId: shareId)
-
-            // Then
-            // Should have 3 pages with following counts: 70, 70 & 60
-            // 200 in total
-            let firstPage = try await sut.getVaultKeys(shareId: shareId,
-                                                       page: 0,
-                                                       pageSize: pageSize)
-            XCTAssertEqual(firstPage.count, 70)
-
-            let secondPage = try await sut.getVaultKeys(shareId: shareId,
-                                                        page: 1,
-                                                        pageSize: pageSize)
-            XCTAssertEqual(secondPage.count, 70)
-
-            let thirdPage = try await sut.getVaultKeys(shareId: shareId,
-                                                       page: 2,
-                                                       pageSize: pageSize)
-            XCTAssertEqual(thirdPage.count, 60)
-
-            // Check that the 3 pages make up the correct set of givenItemKeys
-            let fetchedVaultKeys = firstPage + secondPage + thirdPage
-            let vaultKeyRotationIds = Set(fetchedVaultKeys.map { $0.rotationID })
-            let givenItemKeyRotationIds = Set(givenVaultKeys.map { $0.rotationID })
-            XCTAssertEqual(vaultKeyRotationIds, givenItemKeyRotationIds)
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
-    }
-
-    func testCountVaultKeys() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
+            let givenShareId = givenShare.shareID
             let givenVaultKeys = [VaultKey].random(randomElement: .random())
-            let givenShareId = String.random()
 
             // When
             try await sut.upsertVaultKeys(givenVaultKeys, shareId: givenShareId)
-            // Insert arbitrary item revisions
-            for _ in 0...10 {
-                let dummyVaultKeys = [VaultKey].random(randomElement: .random())
-                try await sut.upsertVaultKeys(dummyVaultKeys, shareId: .random())
-            }
 
             // Then
-            let count = try await sut.getVaultKeyCount(shareId: givenShareId)
-            XCTAssertEqual(count, givenVaultKeys.count)
+            let vaultKeys = try await sut.getVaultKeys(shareId: givenShareId)
+            XCTAssertEqual(Set(vaultKeys), Set(givenVaultKeys))
+
             expectation.fulfill()
         }
         waitForExpectations(timeout: expectationTimeOut)
@@ -160,14 +86,8 @@ extension LocalVaultKeyDatasourceTests {
             try await sut.upsertVaultKeys(thirdVaultKeys, shareId: givenShareId)
 
             // Then
-            let vaultKeys = try await sut.getVaultKeys(shareId: givenShareId,
-                                                       page: 0,
-                                                       pageSize: .max)
-            XCTAssertEqual(vaultKeys.count, givenVaultKeys.count)
-
-            let rotationIds = Set(vaultKeys.map { $0.rotationID })
-            let givenRotationIds = Set(givenVaultKeys.map { $0.rotationID })
-            XCTAssertEqual(rotationIds, givenRotationIds)
+            let vaultKeys = try await sut.getVaultKeys(shareId: givenShareId)
+            XCTAssertEqual(Set(vaultKeys), Set(givenVaultKeys))
 
             expectation.fulfill()
         }
@@ -180,21 +100,20 @@ extension LocalVaultKeyDatasourceTests {
         Task {
             // Given
             let givenShareId = String.random()
-            let givenRotationId = String.random()
-            _ = try await sut.givenInsertedVaultKey(shareId: givenShareId,
-                                                    rotationId: givenRotationId)
-            let updatedVaultKey = VaultKey.random(rotationId: givenRotationId)
+            let givenVaultKeys = [VaultKey].random(randomElement: .random())
+            try await sut.upsertVaultKeys(givenVaultKeys, shareId: givenShareId)
+            let firstInsertedVaultKey = try XCTUnwrap(givenVaultKeys.first)
+            let updatedFirstVaultKey = VaultKey.random(rotationId: firstInsertedVaultKey.rotationID)
 
             // When
-            try await sut.upsertVaultKeys([updatedVaultKey], shareId: givenShareId)
+            try await sut.upsertVaultKeys([updatedFirstVaultKey], shareId: givenShareId)
 
             // Then
-            let vaultKeys = try await sut.getVaultKeys(shareId: givenShareId,
-                                                       page: 0,
-                                                       pageSize: .max)
-            XCTAssertEqual(vaultKeys.count, 1)
-            let vaultKey = try XCTUnwrap(vaultKeys.first)
-            assertEqual(vaultKey, updatedVaultKey)
+            let vaultKeys = try await sut.getVaultKeys(shareId: givenShareId)
+            XCTAssertEqual(vaultKeys.count, givenVaultKeys.count)
+            let firstVaultKey =
+            try XCTUnwrap(vaultKeys.first(where: { $0.rotationID == firstInsertedVaultKey.rotationID }))
+            assertEqual(firstVaultKey, updatedFirstVaultKey)
 
             expectation.fulfill()
         }
@@ -213,42 +132,25 @@ extension LocalVaultKeyDatasourceTests {
             let givenSecondShareVaultKeys = [VaultKey].random(randomElement: .random())
 
             // When
-            try await sut.upsertVaultKeys(givenFirstShareVaultKeys,
-                                          shareId: givenFirstShareId)
-            try await sut.upsertVaultKeys(givenSecondShareVaultKeys,
-                                          shareId: givenSecondShareId)
+            try await sut.upsertVaultKeys(givenFirstShareVaultKeys, shareId: givenFirstShareId)
+            try await sut.upsertVaultKeys(givenSecondShareVaultKeys, shareId: givenSecondShareId)
 
             // Then
-            let firstShareVaultKeysFirstGet =
-            try await sut.getVaultKeys(shareId: givenFirstShareId,
-                                       page: 0,
-                                       pageSize: .max)
-            XCTAssertEqual(firstShareVaultKeysFirstGet.count,
-                           givenFirstShareVaultKeys.count)
+            let firstShareVaultKeysFirstGet = try await sut.getVaultKeys(shareId: givenFirstShareId)
+            XCTAssertEqual(Set(givenFirstShareVaultKeys), Set(firstShareVaultKeysFirstGet))
 
-            let secondShareVaultKeysFirstGet =
-            try await sut.getVaultKeys(shareId: givenSecondShareId,
-                                       page: 0,
-                                       pageSize: .max)
-            XCTAssertEqual(secondShareVaultKeysFirstGet.count,
-                           givenSecondShareVaultKeys.count)
+            let secondShareVaultKeysFirstGet = try await sut.getVaultKeys(shareId: givenSecondShareId)
+            XCTAssertEqual(Set(secondShareVaultKeysFirstGet), Set(givenSecondShareVaultKeys))
 
             // When
             try await sut.removeAllVaultKeys(shareId: givenFirstShareId)
 
             // Then
-            let firstShareVaultKeysSecondGet =
-            try await sut.getVaultKeys(shareId: givenFirstShareId,
-                                       page: 0,
-                                       pageSize: .max)
+            let firstShareVaultKeysSecondGet = try await sut.getVaultKeys(shareId: givenFirstShareId)
             XCTAssertTrue(firstShareVaultKeysSecondGet.isEmpty)
 
-            let secondShareVaultKeysSecondGet =
-            try await sut.getVaultKeys(shareId: givenSecondShareId,
-                                       page: 0,
-                                       pageSize: .max)
-            XCTAssertEqual(secondShareVaultKeysSecondGet.count,
-                           givenSecondShareVaultKeys.count)
+            let secondShareVaultKeysSecondGet = try await sut.getVaultKeys(shareId: givenSecondShareId)
+            XCTAssertEqual(Set(secondShareVaultKeysSecondGet), Set(givenSecondShareVaultKeys))
 
             expectation.fulfill()
         }
@@ -256,7 +158,7 @@ extension LocalVaultKeyDatasourceTests {
     }
 }
 
-extension LocalVaultKeyDatasource {
+extension LocalVaultKeyDatasourceV2 {
     func givenInsertedVaultKey(shareId: String?, rotationId: String?) async throws -> VaultKey {
         let vaultKey = VaultKey.random(rotationId: rotationId)
         try await upsertVaultKeys([vaultKey], shareId: shareId ?? .random())

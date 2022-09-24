@@ -38,3 +38,11 @@ public struct VaultKey: Decodable {
     /// Creation time of the key
     public let createTime: Int64
 }
+
+extension VaultKey: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(rotationID)
+        hasher.combine(rotation)
+        hasher.combine(createTime)
+    }
+}

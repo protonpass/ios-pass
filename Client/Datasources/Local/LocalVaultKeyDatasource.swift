@@ -20,6 +20,47 @@
 
 import CoreData
 
+public protocol LocalVaultKeyDatasourceProtocolV2: LocalDatasourceProtocol {
+    /// Get vault keys of a share
+    func getVaultKeys(shareId: String) async throws -> [VaultKey]
+
+    /// Insert or update if exist vault keys
+    func upsertVaultKeys(_ keys: [VaultKey], shareId: String) async throws
+
+    /// Remove all item keys of a share
+    func removeAllVaultKeys(shareId: String) async throws
+}
+
+public extension LocalVaultKeyDatasourceProtocolV2 {
+    func getVaultKeys(shareId: String) async throws -> [VaultKey] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = VaultKeyEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try entities.map { try $0.toVaultKey() }
+    }
+
+    func upsertVaultKeys(_ keys: [VaultKey], shareId: String) async throws {
+        let taskContext = newTaskContext(type: .insert)
+        let batchInsertRequest =
+        newBatchInsertRequest(entity: VaultKeyEntity.entity(context: taskContext),
+                              sourceItems: keys) { managedObject, vaultKey in
+            (managedObject as? VaultKeyEntity)?.hydrate(from: vaultKey, shareId: shareId)
+        }
+        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+    }
+
+    func removeAllVaultKeys(shareId: String) async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "VaultKeyEntity")
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
+}
+
+public final class LocalVaultKeyDatasourceV2: LocalDatasource, LocalVaultKeyDatasourceProtocolV2 {}
+
 public protocol LocalVaultKeyDatasourceProtocol: LocalDatasourceProtocol {
     func getVaultKey(shareId: String, rotationId: String) async throws -> VaultKey?
     func getVaultKeys(shareId: String, page: Int, pageSize: Int) async throws -> [VaultKey]

@@ -51,8 +51,6 @@ extension LocalItemKeyDatasourceTests {
         let expectation = expectation(description: #function)
         Task {
             // Given
-            // 200 itemKeys inserted to the local database
-            // pageSize is 70
             let localShareDatasource = LocalShareDatasource(container: sut.container)
             let givenShare = try await localShareDatasource.givenInsertedShare()
             let givenShareId = givenShare.shareID
@@ -133,10 +131,8 @@ extension LocalItemKeyDatasourceTests {
             let givenSecondShareItemKeys = [ItemKey].random(randomElement: .random())
 
             // When
-            try await sut.upsertItemKeys(givenFirstShareItemKeys,
-                                         shareId: givenFirstShareId)
-            try await sut.upsertItemKeys(givenSecondShareItemKeys,
-                                         shareId: givenSecondShareId)
+            try await sut.upsertItemKeys(givenFirstShareItemKeys, shareId: givenFirstShareId)
+            try await sut.upsertItemKeys(givenSecondShareItemKeys, shareId: givenSecondShareId)
 
             // Then
             let firstShareItemKeysFirstGet = try await sut.getItemKeys(shareId: givenFirstShareId)
