@@ -20,7 +20,7 @@
 
 import Foundation
 
-public protocol RemoteItemRevisionDatasourceProtocol: BaseRemoteDatasourceProtocol {
+public protocol RemoteItemRevisionDatasourceProtocol: RemoteDatasourceProtocol {
     /// Get all item revisions of a share
     func getItemRevisions(shareId: String) async throws -> [ItemRevision]
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision
@@ -102,6 +102,4 @@ public extension RemoteItemRevisionDatasourceProtocol {
     }
 }
 
-public final class RemoteItemRevisionDatasource: BaseRemoteDatasource {}
-
-extension RemoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol {}
+public final class RemoteItemRevisionDatasource: RemoteDatasource, RemoteItemRevisionDatasourceProtocol {}

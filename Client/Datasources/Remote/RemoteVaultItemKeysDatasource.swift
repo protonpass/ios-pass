@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public protocol RemoteVaultItemKeysDatasourceProtocol: BaseRemoteDatasourceProtocol {
+public protocol RemoteVaultItemKeysDatasourceProtocol: RemoteDatasourceProtocol {
     func getVaultItemKeys(shareId: String) async throws -> ([VaultKey], [ItemKey])
 }
 
@@ -46,4 +46,4 @@ public extension RemoteVaultItemKeysDatasourceProtocol {
     }
 }
 
-public final class RemoteVaultItemKeysDatasource: BaseRemoteDatasource, RemoteVaultItemKeysDatasourceProtocol {}
+public final class RemoteVaultItemKeysDatasource: RemoteDatasource, RemoteVaultItemKeysDatasourceProtocol {}
