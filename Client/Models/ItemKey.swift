@@ -36,3 +36,10 @@ public struct ItemKey: Decodable {
     /// Creation time of the key
     public let createTime: Int64
 }
+
+extension ItemKey: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(rotationID)
+        hasher.combine(createTime)
+    }
+}

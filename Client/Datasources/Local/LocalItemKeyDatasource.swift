@@ -20,6 +20,47 @@
 
 import CoreData
 
+public protocol LocalItemKeyDatasourceProtocolV2: LocalDatasourceProtocol {
+    /// Get item keys of a share
+    func getItemKeys(shareId: String) async throws -> [ItemKey]
+
+    /// Insert or update if exist item keys
+    func upsertItemKeys(_ keys: [ItemKey], shareId: String) async throws
+
+    /// Remove all item keys of a share
+    func removeAllItemKeys(shareId: String) async throws
+}
+
+public extension LocalItemKeyDatasourceProtocolV2 {
+    func getItemKeys(shareId: String) async throws -> [ItemKey] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ItemKeyEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try entities.map { try $0.toItemKey() }
+    }
+
+    func upsertItemKeys(_ keys: [ItemKey], shareId: String) async throws {
+        let taskContext = newTaskContext(type: .insert)
+        let batchInsertRequest =
+        newBatchInsertRequest(entity: ItemKeyEntity.entity(context: taskContext),
+                              sourceItems: keys) { managedObject, itemKey in
+            (managedObject as? ItemKeyEntity)?.hydrate(from: itemKey, shareId: shareId)
+        }
+        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+    }
+
+    func removeAllItemKeys(shareId: String) async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemKeyEntity")
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
+}
+
+public final class LocalItemKeyDatasourceV2: LocalDatasource, LocalItemKeyDatasourceProtocolV2 {}
+
 public protocol LocalItemKeyDatasourceProtocol: LocalDatasourceProtocol {
     func getItemKey(shareId: String, rotationId: String) async throws -> ItemKey?
     func getItemKeys(shareId: String, page: Int, pageSize: Int) async throws -> [ItemKey]
