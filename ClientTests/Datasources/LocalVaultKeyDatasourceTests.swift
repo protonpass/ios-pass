@@ -23,7 +23,7 @@ import XCTest
 
 final class LocalVaultKeyDatasourceTests: XCTestCase {
     let expectationTimeOut: TimeInterval = 3
-    var sut: LocalVaultKeyDatasourceV2!
+    var sut: LocalVaultKeyDatasource!
 
     override func setUp() {
         super.setUp()
@@ -158,7 +158,7 @@ extension LocalVaultKeyDatasourceTests {
     }
 }
 
-extension LocalVaultKeyDatasourceV2 {
+extension LocalVaultKeyDatasource {
     func givenInsertedVaultKey(shareId: String?, rotationId: String?) async throws -> VaultKey {
         let vaultKey = VaultKey.random(rotationId: rotationId)
         try await upsertVaultKeys([vaultKey], shareId: shareId ?? .random())

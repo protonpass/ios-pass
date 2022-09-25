@@ -23,7 +23,7 @@ import XCTest
 
 final class LocalItemKeyDatasourceTests: XCTestCase {
     let expectationTimeOut: TimeInterval = 3
-    var sut: LocalItemKeyDatasourceV2!
+    var sut: LocalItemKeyDatasource!
 
     override func setUp() {
         super.setUp()
@@ -157,7 +157,7 @@ extension LocalItemKeyDatasourceTests {
     }
 }
 
-extension LocalItemKeyDatasourceV2 {
+extension LocalItemKeyDatasource {
     func givenInsertedItemKey(shareId: String?, rotationId: String?) async throws -> ItemKey {
         let itemKey = ItemKey.random(rotationId: rotationId)
         try await upsertItemKeys([itemKey], shareId: shareId ?? .random())

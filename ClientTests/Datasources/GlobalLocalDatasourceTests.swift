@@ -58,15 +58,11 @@ extension GlobalLocalDatasourceTests {
 
             for shareId in firstShareIds {
                 let itemKeys =
-                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId,
-                                                                 page: 0,
-                                                                 pageSize: .max)
+                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
                 XCTAssertFalse(itemKeys.isEmpty)
 
                 let vaultKeys =
-                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId,
-                                                                   page: 0,
-                                                                   pageSize: .max)
+                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
                 XCTAssertFalse(vaultKeys.isEmpty)
 
                 let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
@@ -87,15 +83,11 @@ extension GlobalLocalDatasourceTests {
 
             for shareId in secondShareIds {
                 let itemKeys =
-                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId,
-                                                                 page: 0,
-                                                                 pageSize: .max)
+                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
                 XCTAssertFalse(itemKeys.isEmpty)
 
                 let vaultKeys =
-                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId,
-                                                                   page: 0,
-                                                                   pageSize: .max)
+                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
                 XCTAssertFalse(vaultKeys.isEmpty)
 
                 let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
@@ -114,15 +106,11 @@ extension GlobalLocalDatasourceTests {
 
             for shareId in firstShareIds {
                 let itemKeys =
-                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId,
-                                                                 page: 0,
-                                                                 pageSize: .max)
+                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
                 XCTAssertTrue(itemKeys.isEmpty)
 
                 let vaultKeys =
-                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId,
-                                                                   page: 0,
-                                                                   pageSize: .max)
+                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
                 XCTAssertTrue(vaultKeys.isEmpty)
 
                 let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
@@ -136,15 +124,11 @@ extension GlobalLocalDatasourceTests {
 
             for shareId in secondShareIds {
                 let itemKeys =
-                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId,
-                                                                 page: 0,
-                                                                 pageSize: .max)
+                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
                 XCTAssertFalse(itemKeys.isEmpty)
 
                 let vaultKeys =
-                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId,
-                                                                   page: 0,
-                                                                   pageSize: .max)
+                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
                 XCTAssertFalse(vaultKeys.isEmpty)
 
                 let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
