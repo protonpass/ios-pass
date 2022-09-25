@@ -129,8 +129,8 @@ final class HomeCoordinator: DeinitPrintable {
                                               authCredential: authCredential,
                                               apiService: apiService)
 
-        let localItemKeyDatasource = LocalItemKeyDatasourceV2(container: container)
-        let localVaultKeyDatasource = LocalVaultKeyDatasourceV2(container: container)
+        let localItemKeyDatasource = LocalItemKeyDatasource(container: container)
+        let localVaultKeyDatasource = LocalVaultKeyDatasource(container: container)
         let remoteVaultItemKeysDatasource = RemoteVaultItemKeysDatasource(authCredential: authCredential,
                                                                           apiService: apiService)
 

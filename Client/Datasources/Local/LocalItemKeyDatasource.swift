@@ -20,7 +20,7 @@
 
 import CoreData
 
-public protocol LocalItemKeyDatasourceProtocolV2: LocalDatasourceProtocol {
+public protocol LocalItemKeyDatasourceProtocol: LocalDatasourceProtocol {
     /// Get item keys of a share
     func getItemKeys(shareId: String) async throws -> [ItemKey]
 
@@ -31,7 +31,7 @@ public protocol LocalItemKeyDatasourceProtocolV2: LocalDatasourceProtocol {
     func removeAllItemKeys(shareId: String) async throws
 }
 
-public extension LocalItemKeyDatasourceProtocolV2 {
+public extension LocalItemKeyDatasourceProtocol {
     func getItemKeys(shareId: String) async throws -> [ItemKey] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemKeyEntity.fetchRequest()
@@ -56,78 +56,6 @@ public extension LocalItemKeyDatasourceProtocolV2 {
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
-    }
-}
-
-public final class LocalItemKeyDatasourceV2: LocalDatasource, LocalItemKeyDatasourceProtocolV2 {}
-
-public protocol LocalItemKeyDatasourceProtocol: LocalDatasourceProtocol {
-    func getItemKey(shareId: String, rotationId: String) async throws -> ItemKey?
-    func getItemKeys(shareId: String, page: Int, pageSize: Int) async throws -> [ItemKey]
-    func getItemKeyCount(shareId: String) async throws -> Int
-    func upsertItemKeys(_ itemKeys: [ItemKey], shareId: String) async throws
-    func removeAllItemKeys(shareId: String) async throws
-}
-
-extension LocalItemKeyDatasourceProtocol {
-    public func getItemKey(shareId: String, rotationId: String) async throws -> ItemKey? {
-        let taskContext = newTaskContext(type: .fetch)
-
-        let fetchRequest = ItemKeyEntity.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(
-            andPredicateWithSubpredicates: [
-                .init(format: "shareID = %@", shareId),
-                .init(format: "rotationID = %@", rotationId)
-            ])
-        let itemKeyEntities = try await execute(fetchRequest: fetchRequest,
-                                                context: taskContext)
-        return try itemKeyEntities.map { try $0.toItemKey() }.first
-    }
-
-    public func getItemKeys(shareId: String,
-                            page: Int,
-                            pageSize: Int) async throws -> [ItemKey] {
-        let taskContext = newTaskContext(type: .fetch)
-
-        let fetchRequest = itemKeyEntityFetchRequest(shareId: shareId)
-        fetchRequest.fetchLimit = pageSize
-        fetchRequest.fetchOffset = page * pageSize
-        let itemKeyEntities = try await execute(fetchRequest: fetchRequest,
-                                                context: taskContext)
-        return try itemKeyEntities.map { try $0.toItemKey() }
-    }
-
-    public func getItemKeyCount(shareId: String) async throws -> Int {
-        let taskContext = newTaskContext(type: .fetch)
-
-        let fetchRequest = itemKeyEntityFetchRequest(shareId: shareId)
-        return try await count(fetchRequest: fetchRequest, context: taskContext)
-    }
-
-    public func upsertItemKeys(_ itemKeys: [ItemKey], shareId: String) async throws {
-        let taskContext = newTaskContext(type: .insert)
-
-        let batchInsertRequest =
-        newBatchInsertRequest(entity: ItemKeyEntity.entity(context: taskContext),
-                              sourceItems: itemKeys) { managedObject, itemKey in
-            (managedObject as? ItemKeyEntity)?.hydrate(from: itemKey, shareId: shareId)
-        }
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
-    }
-
-    public func removeAllItemKeys(shareId: String) async throws {
-        let taskContext = newTaskContext(type: .delete)
-
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemKeyEntity")
-        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
-        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-                          context: taskContext)
-    }
-
-    private func itemKeyEntityFetchRequest(shareId: String) -> NSFetchRequest<ItemKeyEntity> {
-        let fetchRequest = ItemKeyEntity.fetchRequest()
-        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
-        return fetchRequest
     }
 }
 

@@ -26,8 +26,8 @@ public enum VaultItemKeysRepositoryError: Error {
 }
 
 public protocol VaultItemKeysRepositoryProtocol {
-    var localItemKeyDatasource: LocalItemKeyDatasourceProtocolV2 { get }
-    var localVaultKeyDatasource: LocalVaultKeyDatasourceProtocolV2 { get }
+    var localItemKeyDatasource: LocalItemKeyDatasourceProtocol { get }
+    var localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol { get }
     var remoteVaultItemKeysDatasource: RemoteVaultItemKeysDatasourceProtocol { get }
 
     /// Get the pair of vaul key & item key that have latest `rotation`
@@ -113,12 +113,12 @@ public extension VaultItemKeysRepositoryProtocol {
 }
 
 public final class VaultItemKeysRepository: VaultItemKeysRepositoryProtocol {
-    public let localItemKeyDatasource: LocalItemKeyDatasourceProtocolV2
-    public let localVaultKeyDatasource: LocalVaultKeyDatasourceProtocolV2
+    public let localItemKeyDatasource: LocalItemKeyDatasourceProtocol
+    public let localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol
     public let remoteVaultItemKeysDatasource: RemoteVaultItemKeysDatasourceProtocol
 
-    public init(localItemKeyDatasource: LocalItemKeyDatasourceProtocolV2,
-                localVaultKeyDatasource: LocalVaultKeyDatasourceProtocolV2,
+    public init(localItemKeyDatasource: LocalItemKeyDatasourceProtocol,
+                localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol,
                 remoteVaultItemKeysDatasource: RemoteVaultItemKeysDatasourceProtocol) {
         self.localItemKeyDatasource = localItemKeyDatasource
         self.localVaultKeyDatasource = localVaultKeyDatasource
