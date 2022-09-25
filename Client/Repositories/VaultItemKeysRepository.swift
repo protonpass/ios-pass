@@ -35,6 +35,9 @@ public protocol VaultItemKeysRepositoryProtocol {
 
     /// Get vault keys of a share
     func getVaultKeys(shareId: String, forceRefresh: Bool) async throws -> [VaultKey]
+
+    /// Get item keys of a share
+    func getItemKeys(shareId: String, forceRefresh: Bool) async throws -> [ItemKey]
 }
 
 public extension VaultItemKeysRepositoryProtocol {
@@ -79,6 +82,19 @@ public extension VaultItemKeysRepositoryProtocol {
         }
 
         return try await localVaultKeyDatasource.getVaultKeys(shareId: shareId)
+    }
+
+    func getItemKeys(shareId: String, forceRefresh: Bool) async throws -> [ItemKey] {
+        if forceRefresh {
+            try await refreshVaultItemKeys(shareId: shareId)
+        }
+
+        let itemKeys = try await localItemKeyDatasource.getItemKeys(shareId: shareId)
+        if itemKeys.isEmpty {
+            try await refreshVaultItemKeys(shareId: shareId)
+        }
+
+        return try await localItemKeyDatasource.getItemKeys(shareId: shareId)
     }
 
     private func refreshVaultItemKeys(shareId: String) async throws {

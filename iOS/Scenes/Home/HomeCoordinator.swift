@@ -46,7 +46,6 @@ final class HomeCoordinator: DeinitPrintable {
     private let apiService: APIService
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
-    private let shareKeysRepository: ShareKeysRepositoryProtocol
     private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
@@ -130,16 +129,12 @@ final class HomeCoordinator: DeinitPrintable {
                                               authCredential: authCredential,
                                               apiService: apiService)
 
-        let shareKeysRepository = ShareKeysRepository(container: container,
-                                                      authCredential: authCredential,
-                                                      apiService: apiService)
-
         let localItemKeyDatasource = LocalItemKeyDatasourceV2(container: container)
         let localVaultKeyDatasource = LocalVaultKeyDatasourceV2(container: container)
         let remoteVaultItemKeysDatasource = RemoteVaultItemKeysDatasource(authCredential: authCredential,
                                                                           apiService: apiService)
 
-        self.vaultItemKeysRepository =
+        let vaultItemKeysRepository =
         VaultItemKeysRepository(localItemKeyDatasource: localItemKeyDatasource,
                                 localVaultKeyDatasource: localVaultKeyDatasource,
                                 remoteVaultItemKeysDatasource: remoteVaultItemKeysDatasource)
@@ -150,13 +145,13 @@ final class HomeCoordinator: DeinitPrintable {
                                              remoteItemRevisionDatasource: remoteItemRevisionDatasource,
                                              publicKeyRepository: publicKeyRepository,
                                              shareRepository: shareRepository,
-                                             shareKeysRepository: shareKeysRepository)
+                                             vaultItemKeysRepository: vaultItemKeysRepository)
 
         self.aliasRepository = AliasRepository(authCredential: authCredential, apiService: apiService)
 
         self.publicKeyRepository = publicKeyRepository
         self.shareRepository = shareRepository
-        self.shareKeysRepository = shareKeysRepository
+        self.vaultItemKeysRepository = vaultItemKeysRepository
         self.vaultSelection = .init(vaults: [])
         self.setUpSideMenuPreferences()
         self.observeVaultSelection()

@@ -32,7 +32,7 @@ public protocol ItemRepositoryProtocol {
     var remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol { get }
     var publicKeyRepository: PublicKeyRepositoryProtocol { get }
     var shareRepository: ShareRepositoryProtocol { get }
-    var shareKeysRepository: ShareKeysRepositoryProtocol { get }
+    var vaultItemKeysRepository: VaultItemKeysRepositoryProtocol { get }
 
     /// Get a specific Item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
@@ -232,24 +232,16 @@ private extension ItemRepositoryProtocol {
         PPLogger.shared?.log("Saved \(encryptedItems.count) remote item revisions to local database")
     }
 
-    func getShareAndKeys(shareId: String) async throws -> (Share, ShareKeys) {
-        let share = try await shareRepository.getShare(shareId: shareId)
-        let shareKeys = try await shareKeysRepository.getShareKeys(shareId: shareId,
-                                                                   page: 0,
-                                                                   pageSize: kDefaultPageSize,
-                                                                   forceRefresh: true)
-        return (share, shareKeys)
-    }
-
     func map(itemRevision: ItemRevision, shareId: String) async throws -> SymmetricallyEncryptedItem {
-        let (share, shareKeys) = try await getShareAndKeys(shareId: shareId)
-        let publicKeys =
-        try await publicKeyRepository.getPublicKeys(email: itemRevision.signatureEmail)
+        let share = try await shareRepository.getShare(shareId: shareId)
+        let vaultKeys = try await vaultItemKeysRepository.getVaultKeys(shareId: shareId, forceRefresh: false)
+        let itemKeys = try await vaultItemKeysRepository.getItemKeys(shareId: shareId, forceRefresh: false)
+        let publicKeys = try await publicKeyRepository.getPublicKeys(email: itemRevision.signatureEmail)
         let verifyKeys = publicKeys.map { $0.value }
         let contentProtobuf = try itemRevision.getContentProtobuf(userData: userData,
                                                                   share: share,
-                                                                  vaultKeys: shareKeys.vaultKeys,
-                                                                  itemKeys: shareKeys.itemKeys,
+                                                                  vaultKeys: vaultKeys,
+                                                                  itemKeys: itemKeys,
                                                                   verifyKeys: verifyKeys)
         let encryptedContentProtobuf = try contentProtobuf.symmetricallyEncrypted(symmetricKey)
         let encryptedContent = try encryptedContentProtobuf.serializedData().base64EncodedString()
@@ -268,8 +260,10 @@ private extension ItemRepositoryProtocol {
     }
 
     func getKeysAndPassphrases(shareId: String) async throws -> KeysAndPassphrases {
-        let (latestVaultKey, latestItemKey) =
-        try await shareKeysRepository.getLatestVaultItemKey(shareId: shareId, forceRefresh: false)
+        let latestVaultItemKeys = try await vaultItemKeysRepository.getLatestVaultItemKeys(shareId: shareId,
+                                                                                           forceRefresh: false)
+        let latestVaultKey = latestVaultItemKeys.vaultKey
+        let latestItemKey = latestVaultItemKeys.itemKey
         let share = try await shareRepository.getShare(shareId: shareId)
         let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
                                                                         share: share,
@@ -295,7 +289,7 @@ public struct ItemRepository: ItemRepositoryProtocol {
     public let remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol
     public let publicKeyRepository: PublicKeyRepositoryProtocol
     public let shareRepository: ShareRepositoryProtocol
-    public let shareKeysRepository: ShareKeysRepositoryProtocol
+    public let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
 
     public init(userData: UserData,
                 symmetricKey: SymmetricKey,
@@ -303,14 +297,14 @@ public struct ItemRepository: ItemRepositoryProtocol {
                 remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol,
                 publicKeyRepository: PublicKeyRepositoryProtocol,
                 shareRepository: ShareRepositoryProtocol,
-                shareKeysRepository: ShareKeysRepositoryProtocol) {
+                vaultItemKeysRepository: VaultItemKeysRepositoryProtocol) {
         self.userData = userData
         self.symmetricKey = symmetricKey
         self.localItemDatasoure = localItemDatasoure
         self.remoteItemRevisionDatasource = remoteItemRevisionDatasource
         self.publicKeyRepository = publicKeyRepository
         self.shareRepository = shareRepository
-        self.shareKeysRepository = shareKeysRepository
+        self.vaultItemKeysRepository = vaultItemKeysRepository
     }
 }
 
