@@ -1,6 +1,6 @@
 //
-// LocalAliasDatasource.swift
-// Proton Pass - Created on 14/09/2022.
+// SymmetricallyEncryptedItem.swift
+// Proton Pass - Created on 20/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,10 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
+@testable import Client
 
-public protocol LocalAliasDatasourceProtocol {}
-
-public final class LocalAliasDatasource: BaseLocalDatasource {}
-
-extension LocalAliasDatasource: LocalAliasDatasourceProtocol {}
+extension SymmetricallyEncryptedItem {
+    static func random(shareId: String? = nil,
+                       item: ItemRevision? = nil,
+                       encryptedContent: String? = nil) -> SymmetricallyEncryptedItem {
+        .init(shareId: shareId ?? .random(),
+              item: item ?? .random(),
+              encryptedContent: encryptedContent ?? .random())
+    }
+}

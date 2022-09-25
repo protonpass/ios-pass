@@ -23,13 +23,34 @@ import UIComponents
 
 struct SearchView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @StateObject private var viewModel = SearchViewModel()
+    @StateObject private var viewModel: SearchViewModel
+
+    init(viewModel: SearchViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(0...100, id: \.self) { index in
-                    Text("Result #\(index)")
+            ZStack {
+                switch viewModel.state {
+                case .clean:
+                    CleanSearchView()
+
+                case .initializing:
+                    ProgressView()
+
+                case .searching:
+                    SearchingView()
+
+                case .results:
+                    if viewModel.results.isEmpty {
+                        NoSearchResultView()
+                    } else {
+                        resultsList
+                    }
+
+                case .error(let error):
+                    Text(error.messageForTheUser)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -43,5 +64,62 @@ struct SearchView: View {
             SwiftUISearchBar(onSearch: viewModel.search(term:),
                              onCancel: { presentationMode.wrappedValue.dismiss() })
         }
+    }
+
+    private var resultsList: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(viewModel.results, id: \.itemId) { result in
+                    ItemSearchResultView(result: result,
+                                         showDivider: result.itemId != viewModel.results.last?.itemId,
+                                         action: {})
+                }
+            }
+        }
+        .padding(.top)
+        .animation(.default, value: viewModel.results.count)
+    }
+}
+
+private struct CleanSearchView: View {
+    var body: some View {
+        VStack(spacing: 24) {
+            Image(uiImage: PassIcon.magnifyingGlass)
+            Text("Search")
+                .font(.title3)
+                .fontWeight(.bold)
+            Text("Search for alias, login or note easily.")
+                .foregroundColor(.secondary)
+            Spacer()
+        }
+        .padding(.top, 32)
+        .padding(.horizontal)
+    }
+}
+
+private struct SearchingView: View {
+    var body: some View {
+        VStack {
+            ProgressView()
+            Spacer()
+        }
+        .padding(.top, 32)
+        .padding(.horizontal)
+    }
+}
+
+private struct NoSearchResultView: View {
+    var body: some View {
+        VStack(spacing: 24) {
+            Image(uiImage: PassIcon.magnifyingGlassOnPaper)
+            Text("No results found")
+                .font(.title3)
+                .fontWeight(.bold)
+            Text("Try a different search term")
+                .foregroundColor(.secondary)
+            Spacer()
+        }
+        .padding(.top, 32)
+        .padding(.horizontal)
     }
 }

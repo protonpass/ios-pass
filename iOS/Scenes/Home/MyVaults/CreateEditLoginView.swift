@@ -104,7 +104,8 @@ struct CreateEditLoginView: View {
                 isFocused: $isFocusedOnUsername,
                 placeholder: "Add username",
                 trailingView: { Image(uiImage: IconProvider.arrowsRotate) },
-                trailingAction: viewModel.generateAlias)
+                trailingAction: viewModel.generateAlias,
+                textAutocapitalizationType: .none)
         }
     }
 

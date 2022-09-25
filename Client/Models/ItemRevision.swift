@@ -20,12 +20,13 @@
 
 import Core
 import Crypto
+import CryptoKit
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_KeyManager
 import ProtonCore_Login
 
-public enum ItemRevisionState: Int16, CaseIterable {
+public enum ItemState: Int16, CaseIterable {
     case active = 1
     case trashed = 2
 }
@@ -74,15 +75,15 @@ public struct ItemRevision: Decodable {
     public let revisionTime: Int64
 
     /// Enum representation of `state`
-    public var revisionState: ItemRevisionState { .init(rawValue: state) ?? .active }
+    public var itemState: ItemState { .init(rawValue: state) ?? .active }
 }
 
 extension ItemRevision {
-    public func getContent(userData: UserData,
-                           share: Share,
-                           vaultKeys: [VaultKey],
-                           itemKeys: [ItemKey],
-                           verifyKeys: [String]) throws -> ItemContent {
+    public func getContentProtobuf(userData: UserData,
+                                   share: Share,
+                                   vaultKeys: [VaultKey],
+                                   itemKeys: [ItemKey],
+                                   verifyKeys: [String]) throws -> ItemContentProtobuf {
         guard let vaultKey = vaultKeys.first(where: { $0.rotationID == rotationID }),
               let itemKey = itemKeys.first(where: { $0.rotationID == rotationID }) else {
             throw DataError.keyNotFound(rotationId: rotationID)
@@ -106,31 +107,7 @@ extension ItemRevision {
         //                                verifyKeys: verifyKeys,
         //                                content: decryptedContent)
 
-        let itemProtobuf = try ItemContentProtobuf(data: decryptedContent)
-
-        return .init(shareId: share.shareID,
-                     itemId: itemID,
-                     name: itemProtobuf.name,
-                     note: itemProtobuf.note,
-                     contentData: itemProtobuf.contentData)
-    }
-
-    public func getPartialContent(userData: UserData,
-                                  share: Share,
-                                  vaultKeys: [VaultKey],
-                                  itemKeys: [ItemKey],
-                                  verifyKeys: [String]) throws -> PartialItemContent {
-        let itemContent = try getContent(userData: userData,
-                                         share: share,
-                                         vaultKeys: vaultKeys,
-                                         itemKeys: itemKeys,
-                                         verifyKeys: verifyKeys)
-
-        return .init(shareId: share.shareID,
-                     itemId: itemID,
-                     type: itemContent.contentData.type,
-                     title: itemContent.name,
-                     detail: itemContent.note)
+        return try ItemContentProtobuf(data: decryptedContent)
     }
 
     private func decryptField(keyring: CryptoKeyRing, field: String) throws -> Data {
@@ -159,5 +136,42 @@ extension ItemRevision {
                                                 publicKey: itemKey.key.publicKey,
                                                 verifyTime: Int64(Date().timeIntervalSince1970))
         if !valid { throw CryptoError.failedToVerifySignature }
+    }
+}
+
+public enum SymmetricallyEncryptedItemError: Error {
+    case corruptedEncryptedContent
+}
+
+/// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
+public struct SymmetricallyEncryptedItem {
+    /// ID of the share that the item belongs to
+    public let shareId: String
+
+    /// Original item revision object as returned by the server
+    public let item: ItemRevision
+
+    /// Symmetrically encrypted content in base 64 format
+    public let encryptedContent: String
+
+    public func getEncryptedItemContent() throws -> ItemContent {
+        guard let data = try encryptedContent.base64Decode() else {
+            throw SymmetricallyEncryptedItemError.corruptedEncryptedContent
+        }
+        let protobufItem = try ItemContentProtobuf(data: data)
+        return .init(shareId: shareId,
+                     itemId: item.itemID,
+                     contentProtobuf: protobufItem)
+    }
+
+    public func getDecryptedItemContent(symmetricKey: CryptoKit.SymmetricKey) throws -> ItemContent {
+        guard let data = try encryptedContent.base64Decode() else {
+            throw SymmetricallyEncryptedItemError.corruptedEncryptedContent
+        }
+        let encryptedProtobufItem = try ItemContentProtobuf(data: data)
+        let decryptedProtobufItem = try encryptedProtobufItem.symmetricallyDecrypted(symmetricKey)
+        return .init(shareId: shareId,
+                     itemId: item.itemID,
+                     contentProtobuf: decryptedProtobufItem)
     }
 }

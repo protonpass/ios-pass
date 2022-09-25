@@ -20,84 +20,69 @@
 
 import Client
 import Core
+import CryptoKit
 import ProtonCore_Login
 import SwiftUI
 
 final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
-    @Published private(set) var isFetchingItems = false
-    @Published private(set) var trashedItems = [PartialItemContent]()
+    @Published private(set) var state = State.idle
+    @Published private(set) var items = [ItemListUiModel]()
     @Published var successMessage: String?
 
-    private let userData: UserData
+    private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
-    private let shareKeysRepository: ShareKeysRepositoryProtocol
-    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
-    private let publicKeyRepository: PublicKeyRepositoryProtocol
+    private let itemRepository: ItemRepositoryProtocol
 
     var onToggleSidebar: (() -> Void)?
-    var onShowOptions: ((PartialItemContent) -> Void)?
+    var onShowOptions: ((ItemListUiModel) -> Void)?
     var onRestoredItem: (() -> Void)?
     var onDeletedItem: (() -> Void)?
 
-    init(userData: UserData,
-         shareRepository: ShareRepositoryProtocol,
-         shareKeysRepository: ShareKeysRepositoryProtocol,
-         itemRevisionRepository: ItemRevisionRepositoryProtocol,
-         publicKeyRepository: PublicKeyRepositoryProtocol) {
-        self.userData = userData
-        self.shareRepository = shareRepository
-        self.shareKeysRepository = shareKeysRepository
-        self.itemRevisionRepository = itemRevisionRepository
-        self.publicKeyRepository = publicKeyRepository
-        super.init()
-        getAllTrashedItems(forceRefresh: false)
+    enum State {
+        case idle
+        case loading
+        case loaded
+        case error(Error)
     }
 
-    func getAllTrashedItems(forceRefresh: Bool) {
-        Task { @MainActor in
-            do {
-                isFetchingItems = true
-
-                let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
-                var trashedItems = [PartialItemContent]()
-
-                for share in shares {
-                    let (share, shareKeys) = try await getShareAndKeys(shareId: share.shareID,
-                                                                       forceRefresh: forceRefresh)
-                    let itemRevisions =
-                    try await itemRevisionRepository.getItemRevisions(forceRefresh: forceRefresh,
-                                                                      shareId: share.shareID,
-                                                                      state: .trashed)
-                    for itemRevision in itemRevisions {
-                        let publicKeys =
-                        try await publicKeyRepository.getPublicKeys(email: itemRevision.signatureEmail)
-                        let verifyKeys = publicKeys.map { $0.value }
-                        let partialItemContent =
-                        try itemRevision.getPartialContent(userData: userData,
-                                                           share: share,
-                                                           vaultKeys: shareKeys.vaultKeys,
-                                                           itemKeys: shareKeys.itemKeys,
-                                                           verifyKeys: verifyKeys)
-                        trashedItems.append(partialItemContent)
-                    }
-                }
-
-                isFetchingItems = false
-                self.trashedItems = trashedItems
-            } catch {
-                self.error = error
-            }
+    var isEmpty: Bool {
+        switch state {
+        case .loaded:
+            return items.isEmpty
+        default:
+            return true
         }
     }
 
-    private func getShareAndKeys(shareId: String,
-                                 forceRefresh: Bool) async throws -> (Share, ShareKeys) {
-        let share = try await shareRepository.getShare(shareId: shareId)
-        let shareKeys = try await shareKeysRepository.getShareKeys(shareId: shareId,
-                                                                   page: 0,
-                                                                   pageSize: kDefaultPageSize,
-                                                                   forceRefresh: forceRefresh)
-        return (share, shareKeys)
+    init(symmetricKey: SymmetricKey,
+         shareRepository: ShareRepositoryProtocol,
+         itemRepository: ItemRepositoryProtocol) {
+        self.symmetricKey = symmetricKey
+        self.shareRepository = shareRepository
+        self.itemRepository = itemRepository
+        super.init()
+        fetchAllTrashedItems(forceRefresh: false)
+    }
+
+    func fetchAllTrashedItems(forceRefresh: Bool) {
+        Task { @MainActor in
+            do {
+                // Only show loading indicator on first load
+                switch state {
+                case .error, .idle:
+                    state = .loading
+                default:
+                    break
+                }
+
+                let encryptedItems = try await itemRepository.getItems(forceRefresh: forceRefresh, state: .trashed)
+
+                items = try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+                state = .loaded
+            } catch {
+                state = .error(error)
+            }
+        }
     }
 }
 
@@ -109,15 +94,11 @@ extension TrashViewModel {
         Task { @MainActor in
             do {
                 isLoading = true
-                let dictionary = try await getItemRevisionsByShareId()
-                for shareId in dictionary.keys {
-                    if let items = dictionary[shareId] {
-                        try await itemRevisionRepository.untrashItemRevisions(items, shareId: shareId)
-                    }
-                }
+                let items = try await itemRepository.getItems(forceRefresh: false, state: .trashed)
+                try await itemRepository.untrashItems(items)
                 isLoading = false
-                successMessage = "\(trashedItems.count) items restored"
-                trashedItems.removeAll()
+                removeAllItems()
+                successMessage = "\(items.count) items restored"
                 onRestoredItem?()
             } catch {
                 self.isLoading = false
@@ -130,14 +111,10 @@ extension TrashViewModel {
         Task { @MainActor in
             do {
                 isLoading = true
-                let dictionary = try await getItemRevisionsByShareId()
-                for shareId in dictionary.keys {
-                    if let items = dictionary[shareId] {
-                        try await itemRevisionRepository.deleteItemRevisions(items, shareId: shareId)
-                    }
-                }
+                let items = try await itemRepository.getItems(forceRefresh: false, state: .trashed)
+                try await itemRepository.deleteItems(items)
                 isLoading = false
-                trashedItems.removeAll()
+                removeAllItems()
                 successMessage = "Trash emptied"
             } catch {
                 self.isLoading = false
@@ -146,40 +123,19 @@ extension TrashViewModel {
         }
     }
 
-    private func getItemRevisionsByShareId() async throws -> [String: [ItemRevision]] {
-        var itemRevisions = [ItemRevision]()
-        for item in trashedItems {
-            if let itemRevision =
-                try await itemRevisionRepository.getItemRevision(shareId: item.shareId,
-                                                                 itemId: item.itemId) {
-                itemRevisions.append(itemRevision)
-            }
-        }
-
-        let getShareId: (ItemRevision) -> String = { itemRevision in
-            self.trashedItems.first(where: { $0.itemId == itemRevision.itemID })?.shareId ?? ""
-        }
-
-        return Dictionary(grouping: itemRevisions, by: { getShareId($0) })
-    }
-
-    func showOptions(_ item: PartialItemContent) {
+    func showOptions(_ item: ItemListUiModel) {
         onShowOptions?(item)
     }
 
-    func restore(_ item: PartialItemContent) {
+    func restore(_ item: ItemListUiModel) {
         Task { @MainActor in
             do {
-                guard let itemRevision =
-                        try await itemRevisionRepository.getItemRevision(shareId: item.shareId,
-                                                                         itemId: item.itemId) else { return }
+                guard let itemToBeRestored =
+                        try await itemRepository.getItem(shareId: item.shareId,
+                                                         itemId: item.itemId) else { return }
                 isLoading = true
-                try await itemRevisionRepository.untrashItemRevisions([itemRevision],
-                                                                      shareId: item.shareId)
+                try await itemRepository.untrashItems([itemToBeRestored])
                 isLoading = false
-                trashedItems.removeAll(where: { $0.itemId == item.itemId })
-                onRestoredItem?()
-
                 switch item.type {
                 case .note:
                     successMessage = "Note restored"
@@ -188,6 +144,8 @@ extension TrashViewModel {
                 case .alias:
                     successMessage = "Alias restored"
                 }
+                remove(item)
+                onRestoredItem?()
             } catch {
                 self.isLoading = false
                 self.error = error
@@ -195,19 +153,15 @@ extension TrashViewModel {
         }
     }
 
-    func deletePermanently(_ item: PartialItemContent) {
+    func deletePermanently(_ item: ItemListUiModel) {
         Task { @MainActor in
             do {
-                guard let itemRevision =
-                        try await itemRevisionRepository.getItemRevision(shareId: item.shareId,
-                                                                         itemId: item.itemId) else { return }
+                guard let itemToBeDeleted =
+                        try await itemRepository.getItem(shareId: item.shareId,
+                                                         itemId: item.itemId) else { return }
                 isLoading = true
-                try await itemRevisionRepository.deleteItemRevisions([itemRevision],
-                                                                     shareId: item.shareId)
+                try await itemRepository.deleteItems([itemToBeDeleted])
                 isLoading = false
-                trashedItems.removeAll(where: { $0.itemId == item.itemId })
-                onDeletedItem?()
-
                 switch item.type {
                 case .note:
                     successMessage = "Note permanently deleted"
@@ -216,10 +170,20 @@ extension TrashViewModel {
                 case .alias:
                     successMessage = "Alias permanently deleted"
                 }
+                remove(item)
+                onDeletedItem?()
             } catch {
                 self.isLoading = false
                 self.error = error
             }
         }
+    }
+
+    private func remove(_ item: ItemListUiModel) {
+        items.removeAll(where: { $0.itemId == item.itemId })
+    }
+
+    private func removeAllItems() {
+        items = []
     }
 }

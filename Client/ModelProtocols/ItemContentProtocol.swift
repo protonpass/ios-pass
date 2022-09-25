@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import CryptoKit
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -123,13 +124,61 @@ public struct ItemContent: ItemContentProtocol {
 
     public init(shareId: String,
                 itemId: String,
-                name: String,
-                note: String,
-                contentData: ItemContentData) {
+                contentProtobuf: ItemContentProtobuf) {
         self.shareId = shareId
         self.itemId = itemId
-        self.name = name
-        self.note = note
-        self.contentData = contentData
+        self.name = contentProtobuf.name
+        self.note = contentProtobuf.note
+        self.contentData = contentProtobuf.contentData
+    }
+}
+
+extension ItemContentData: SymmetricallyEncryptable {
+    public func symmetricallyEncrypted(_ symmetricKey: SymmetricKey) throws -> ItemContentData {
+        switch self {
+        case .alias, .note:
+            return self
+        case let .login(username, password, urls):
+            let encryptedUsername = try symmetricKey.encrypt(username)
+            let encryptedPassword = try symmetricKey.encrypt(password)
+            let encryptedUrls = try urls.map { try symmetricKey.encrypt($0) }
+            return .login(username: encryptedUsername,
+                          password: encryptedPassword,
+                          urls: encryptedUrls)
+        }
+    }
+
+    public func symmetricallyDecrypted(_ symmetricKey: SymmetricKey) throws -> ItemContentData {
+        switch self {
+        case .alias, .note:
+            return self
+        case let .login(username, password, urls):
+            let decryptedUsername = try symmetricKey.decrypt(username)
+            let decryptedPassword = try symmetricKey.decrypt(password)
+            let decryptedUrls = try urls.map { try symmetricKey.decrypt($0) }
+            return .login(username: decryptedUsername,
+                          password: decryptedPassword,
+                          urls: decryptedUrls)
+        }
+    }
+}
+
+extension ItemContentProtobuf: SymmetricallyEncryptable {
+    public func symmetricallyEncrypted(_ symmetricKey: SymmetricKey) throws -> ItemContentProtobuf {
+        let encryptedName = try symmetricKey.encrypt(name)
+        let encryptedNote = try symmetricKey.encrypt(note)
+        let encryptedData = try contentData.symmetricallyEncrypted(symmetricKey)
+        return .init(name: encryptedName,
+                     note: encryptedNote,
+                     data: encryptedData)
+    }
+
+    public func symmetricallyDecrypted(_ symmetricKey: SymmetricKey) throws -> ItemContentProtobuf {
+        let decryptedName = try symmetricKey.decrypt(name)
+        let decryptedNote = try symmetricKey.decrypt(note)
+        let decryptedData = try contentData.symmetricallyDecrypted(symmetricKey)
+        return .init(name: decryptedName,
+                     note: decryptedNote,
+                     data: decryptedData)
     }
 }

@@ -20,74 +20,43 @@
 
 import CoreData
 
-public protocol LocalVaultKeyDatasourceProtocol {
-    func getVaultKey(shareId: String, rotationId: String) async throws -> VaultKey?
-    func getVaultKeys(shareId: String, page: Int, pageSize: Int) async throws -> [VaultKey]
-    func getVaultKeyCount(shareId: String) async throws -> Int
-    func upsertVaultKeys(_ vaultKeys: [VaultKey], shareId: String) async throws
+public protocol LocalVaultKeyDatasourceProtocol: LocalDatasourceProtocol {
+    /// Get vault keys of a share
+    func getVaultKeys(shareId: String) async throws -> [VaultKey]
+
+    /// Insert or update if exist vault keys
+    func upsertVaultKeys(_ keys: [VaultKey], shareId: String) async throws
+
+    /// Remove all item keys of a share
     func removeAllVaultKeys(shareId: String) async throws
 }
 
-public final class LocalVaultKeyDatasource: BaseLocalDatasource {}
-
-extension LocalVaultKeyDatasource: LocalVaultKeyDatasourceProtocol {
-    public func getVaultKey(shareId: String, rotationId: String) async throws -> VaultKey? {
+public extension LocalVaultKeyDatasourceProtocol {
+    func getVaultKeys(shareId: String) async throws -> [VaultKey] {
         let taskContext = newTaskContext(type: .fetch)
-
         let fetchRequest = VaultKeyEntity.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(
-            andPredicateWithSubpredicates: [
-                .init(format: "shareID = %@", shareId),
-                .init(format: "rotationID = %@", rotationId)
-            ])
-        let vaultKeyEntities = try await execute(fetchRequest: fetchRequest,
-                                                 context: taskContext)
-        return try vaultKeyEntities.map { try $0.toVaultKey() }.first
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try entities.map { try $0.toVaultKey() }
     }
 
-    public func getVaultKeys(shareId: String,
-                             page: Int,
-                             pageSize: Int) async throws -> [VaultKey] {
-        let taskContext = newTaskContext(type: .fetch)
-
-        let fetchRequest = vaultKeyEntityFetchRequest(shareId: shareId)
-        fetchRequest.fetchLimit = pageSize
-        fetchRequest.fetchOffset = page * pageSize
-        let vaultKeyEntities = try await execute(fetchRequest: fetchRequest,
-                                                 context: taskContext)
-        return try vaultKeyEntities.map { try $0.toVaultKey() }
-    }
-
-    public func getVaultKeyCount(shareId: String) async throws -> Int {
-        let taskContext = newTaskContext(type: .fetch)
-
-        let fetchRequest = vaultKeyEntityFetchRequest(shareId: shareId)
-        return try await count(fetchRequest: fetchRequest, context: taskContext)
-    }
-
-    public func upsertVaultKeys(_ vaultKeys: [VaultKey], shareId: String) async throws {
+    func upsertVaultKeys(_ keys: [VaultKey], shareId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
-
         let batchInsertRequest =
         newBatchInsertRequest(entity: VaultKeyEntity.entity(context: taskContext),
-                              sourceItems: vaultKeys) { managedObject, vaultKey in
+                              sourceItems: keys) { managedObject, vaultKey in
             (managedObject as? VaultKeyEntity)?.hydrate(from: vaultKey, shareId: shareId)
         }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    public func removeAllVaultKeys(shareId: String) async throws {
+    func removeAllVaultKeys(shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
-
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "VaultKeyEntity")
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }
-
-    private func vaultKeyEntityFetchRequest(shareId: String) -> NSFetchRequest<VaultKeyEntity> {
-        let fetchRequest = VaultKeyEntity.fetchRequest()
-        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
-        return fetchRequest
-    }
 }
+
+public final class LocalVaultKeyDatasource: LocalDatasource, LocalVaultKeyDatasourceProtocol {}

@@ -20,40 +20,41 @@
 
 import Client
 import Core
+import CryptoKit
 import ProtonCore_Login
 import SwiftUI
 
 final class MyVaultsCoordinator: Coordinator {
+    private let symmetricKey: SymmetricKey
     private let userData: UserData
     private let vaultSelection: VaultSelection
     private let vaultContentViewModel: VaultContentViewModel
     private let shareRepository: ShareRepositoryProtocol
-    private let shareKeysRepository: ShareKeysRepositoryProtocol
-    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
+    private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
 
     var onTrashedItem: (() -> Void)?
 
-    init(userData: UserData,
+    init(symmetricKey: SymmetricKey,
+         userData: UserData,
          vaultSelection: VaultSelection,
          shareRepository: ShareRepositoryProtocol,
-         shareKeysRepository: ShareKeysRepositoryProtocol,
-         itemRevisionRepository: ItemRevisionRepositoryProtocol,
+         vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
+         itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          publicKeyRepository: PublicKeyRepositoryProtocol) {
+        self.symmetricKey = symmetricKey
         self.userData = userData
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
-        self.itemRevisionRepository = itemRevisionRepository
-        self.shareKeysRepository = shareKeysRepository
+        self.itemRepository = itemRepository
+        self.vaultItemKeysRepository = vaultItemKeysRepository
         self.aliasRepository = aliasRepository
-        self.vaultContentViewModel = .init(userData: userData,
-                                           vaultSelection: vaultSelection,
-                                           shareRepository: shareRepository,
-                                           itemRevisionRepository: itemRevisionRepository,
-                                           shareKeysRepository: shareKeysRepository,
-                                           publicKeyRepository: publicKeyRepository)
+        self.vaultContentViewModel = .init(vaultSelection: vaultSelection,
+                                           itemRepository: itemRepository,
+                                           symmetricKey: symmetricKey)
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
         super.init()
         observeVaultContentViewModel()
@@ -74,7 +75,7 @@ final class MyVaultsCoordinator: Coordinator {
         let loadVaultsViewModel = LoadVaultsViewModel(userData: userData,
                                                       vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
-                                                      shareKeysRepository: shareKeysRepository)
+                                                      vaultItemKeysRepository: vaultItemKeysRepository)
         loadVaultsViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
                                       loadVaultsViewModel: loadVaultsViewModel,
@@ -126,10 +127,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateEditLoginView(mode: ItemMode) {
         let createEditLoginViewModel = CreateEditLoginViewModel(mode: mode,
-                                                                userData: userData,
-                                                                shareRepository: shareRepository,
-                                                                shareKeysRepository: shareKeysRepository,
-                                                                itemRevisionRepository: itemRevisionRepository)
+                                                                itemRepository: itemRepository)
         createEditLoginViewModel.delegate = self
         createEditLoginViewModel.createEditItemDelegate = self
         createEditLoginViewModel.onGeneratePassword = { [unowned self] in showGeneratePasswordView(delegate: $0) }
@@ -139,10 +137,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateEditAliasView(mode: ItemMode) {
         let createEditAliasViewModel = CreateEditAliasViewModel(mode: mode,
-                                                                userData: userData,
-                                                                shareRepository: shareRepository,
-                                                                shareKeysRepository: shareKeysRepository,
-                                                                itemRevisionRepository: itemRevisionRepository,
+                                                                itemRepository: itemRepository,
                                                                 aliasRepository: aliasRepository)
         createEditAliasViewModel.delegate = self
         createEditAliasViewModel.createEditItemDelegate = self
@@ -152,10 +147,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateEditNoteView(mode: ItemMode) {
         let createEditNoteViewModel = CreateEditNoteViewModel(mode: mode,
-                                                              userData: userData,
-                                                              shareRepository: shareRepository,
-                                                              shareKeysRepository: shareKeysRepository,
-                                                              itemRevisionRepository: itemRevisionRepository)
+                                                              itemRepository: itemRepository)
         createEditNoteViewModel.delegate = self
         createEditNoteViewModel.createEditItemDelegate = self
         let createEditNoteView = CreateEditNoteView(viewModel: createEditNoteViewModel)
@@ -174,14 +166,16 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func showSearchView() {
-        presentViewFullScreen(SearchView())
+        let viewModel = SearchViewModel(symmetricKey: symmetricKey,
+                                        itemRepository: itemRepository)
+        presentViewFullScreen(SearchView(viewModel: viewModel))
     }
 
     private func showItemDetailView(_ itemContent: ItemContent) {
         switch itemContent.contentData {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
-                                                 itemRevisionRepository: itemRevisionRepository)
+                                                 itemRepository: itemRepository)
             viewModel.delegate = self
             viewModel.itemDetailDelegate = self
             let logInDetailView = LogInDetailView(viewModel: viewModel)
@@ -189,7 +183,7 @@ final class MyVaultsCoordinator: Coordinator {
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
-                                                itemRevisionRepository: itemRevisionRepository)
+                                                itemRepository: itemRepository)
             viewModel.delegate = self
             viewModel.itemDetailDelegate = self
             let noteDetailView = NoteDetailView(viewModel: viewModel)
@@ -197,7 +191,7 @@ final class MyVaultsCoordinator: Coordinator {
 
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
-                                                 itemRevisionRepository: itemRevisionRepository,
+                                                 itemRepository: itemRepository,
                                                  aliasRepository: aliasRepository)
             viewModel.delegate = self
             viewModel.itemDetailDelegate = self

@@ -1,5 +1,5 @@
 //
-// BaseLocalDatasource.swift
+// LocalDatasource.swift
 // Proton Pass - Created on 13/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -22,6 +22,12 @@ import CoreData
 
 public let kProtonPassContainerName = "ProtonPass"
 
+enum TaskContextType: String {
+    case insert = "insertContext"
+    case delete = "deleteContext"
+    case fetch = "fetchContext"
+}
+
 public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
     case batchInsertError(NSBatchInsertRequest)
     case batchDeleteError(NSBatchDeleteRequest)
@@ -43,22 +49,23 @@ Item key count (\(itemKeyCount)) not equal to vault key count (\(vaultKeyCount)
     }
 }
 
-public class BaseLocalDatasource {
-    let container: NSPersistentContainer
+/// A base local datasource protocol that has CoreData common operations
+public protocol LocalDatasourceProtocol {
+    var container: NSPersistentContainer { get }
+}
+
+public class LocalDatasource {
+    public let container: NSPersistentContainer
 
     public init(container: NSPersistentContainer) {
         guard container.name == kProtonPassContainerName else {
-            fatalError("Unsupported container name \(container.name)")
+            fatalError("Unsupported container name \"\(container.name)\"")
         }
         self.container = container
     }
+}
 
-    enum TaskContextType: String {
-        case insert = "insertContext"
-        case delete = "deleteContext"
-        case fetch = "fetchContext"
-    }
-
+extension LocalDatasourceProtocol {
     /// Creates and configures a private queue context.
     func newTaskContext(type: TaskContextType,
                         transactionAuthor: String = #function) -> NSManagedObjectContext {
@@ -90,7 +97,7 @@ public class BaseLocalDatasource {
 }
 
 // MARK: - Covenience core data methods
-extension BaseLocalDatasource {
+extension LocalDatasourceProtocol {
     func execute(batchInsertRequest request: NSBatchInsertRequest,
                  context: NSManagedObjectContext) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in

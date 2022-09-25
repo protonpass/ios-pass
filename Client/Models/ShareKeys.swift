@@ -37,3 +37,22 @@ public struct ShareKeys: Decodable {
         return (vaultKey, itemKey)
     }
 }
+
+public enum VaultItemKeysError: Error {
+    /// `VaultKey` & `ItemKey` must share the same `rotationID`
+    case differentRotationId
+}
+
+/// A pair of `VaultKey` & `ItemKey` that share the same `rotationID`
+public struct VaultItemKeys {
+    public let vaultKey: VaultKey
+    public let itemKey: ItemKey
+
+    init(vaultKey: VaultKey, itemKey: ItemKey) throws {
+        guard vaultKey.rotationID == itemKey.rotationID else {
+            throw VaultItemKeysError.differentRotationId
+        }
+        self.vaultKey = vaultKey
+        self.itemKey = itemKey
+    }
+}

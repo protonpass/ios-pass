@@ -18,6 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+public struct AliasCreationInfo {
+    public let prefix: String
+    public let signedSuffix: String
+    public let mailboxIds: [Int]
+
+    public init(prefix: String, signedSuffix: String, mailboxIds: [Int]) {
+        self.prefix = prefix
+        self.signedSuffix = signedSuffix
+        self.mailboxIds = mailboxIds
+    }
+}
+
 public struct CreateCustomAliasRequest {
     /// Prefix for the alias to be created (prefix.xxx@domain.com)
     public let prefix: String
@@ -30,10 +42,10 @@ public struct CreateCustomAliasRequest {
 
     public let item: CreateItemRequest
 
-    public init(prefix: String, signedSuffix: String, mailboxIDs: [Int], item: CreateItemRequest) {
-        self.prefix = prefix
-        self.signedSuffix = signedSuffix
-        self.mailboxIDs = mailboxIDs
+    public init(info: AliasCreationInfo, item: CreateItemRequest) {
+        self.prefix = info.prefix
+        self.signedSuffix = info.signedSuffix
+        self.mailboxIDs = info.mailboxIds
         self.item = item
     }
 }

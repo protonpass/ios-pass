@@ -20,7 +20,8 @@
 
 import Client
 import Core
-import ProtonCore_Login
+import CryptoKit
+import SwiftUI
 
 final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
@@ -28,15 +29,28 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
 
-    @Published private(set) var isFetchingItems = false
-    @Published private(set) var partialItemContents = [PartialItemContent]()
+    enum State {
+        case idle
+        case loading
+        case loaded
+        case error(Error)
 
-    private let userData: UserData
+        var isLoaded: Bool {
+            switch self {
+            case .loaded:
+                return true
+            default:
+                return false
+            }
+        }
+    }
+
+    @Published private(set) var state = State.idle
+    @Published private(set) var items = [ItemListUiModel]()
+
     private let vaultSelection: VaultSelection
-    private let shareRepository: ShareRepositoryProtocol
-    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
-    private let shareKeysRepository: ShareKeysRepositoryProtocol
-    private let publicKeyRepository: PublicKeyRepositoryProtocol
+    private let itemRepository: ItemRepositoryProtocol
+    private let symmetricKey: SymmetricKey
 
     var onToggleSidebar: (() -> Void)?
     var onSearch: (() -> Void)?
@@ -45,18 +59,12 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
     var onShowItemDetail: ((ItemContent) -> Void)?
     var onTrashedItem: ((ItemContentType) -> Void)?
 
-    init(userData: UserData,
-         vaultSelection: VaultSelection,
-         shareRepository: ShareRepositoryProtocol,
-         itemRevisionRepository: ItemRevisionRepositoryProtocol,
-         shareKeysRepository: ShareKeysRepositoryProtocol,
-         publicKeyRepository: PublicKeyRepositoryProtocol) {
-        self.userData = userData
+    init(vaultSelection: VaultSelection,
+         itemRepository: ItemRepositoryProtocol,
+         symmetricKey: SymmetricKey) {
         self.vaultSelection = vaultSelection
-        self.shareRepository = shareRepository
-        self.itemRevisionRepository = itemRevisionRepository
-        self.shareKeysRepository = shareKeysRepository
-        self.publicKeyRepository = publicKeyRepository
+        self.itemRepository = itemRepository
+        self.symmetricKey = symmetricKey
         super.init()
 
         vaultSelection.objectWillChange
@@ -74,88 +82,51 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
         guard let shareId = selectedVault?.shareId else { return }
         Task { @MainActor in
             do {
-                isFetchingItems = true
-                let itemRevisions = try await itemRevisionRepository.getItemRevisions(forceRefresh: forceRefresh,
-                                                                                      shareId: shareId,
-                                                                                      state: .active)
-                try await decrypt(itemRevisions: itemRevisions,
-                                  shareId: shareId,
-                                  forceRefresh: forceRefresh)
-                isFetchingItems = false
+                // Only show loading indicator on first load
+                switch state {
+                case .error, .idle:
+                    state = .loading
+                default:
+                    break
+                }
+
+                let encryptedItems = try await itemRepository.getItems(forceRefresh: forceRefresh,
+                                                                       shareId: shareId,
+                                                                       state: .active)
+                items = try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+                state = .loaded
+            } catch {
+                state = .error(error)
+            }
+        }
+    }
+
+    func selectItem(_ item: ItemListUiModel) {
+        Task { @MainActor in
+            do {
+                guard let item = try await itemRepository.getItem(shareId: item.shareId,
+                                                                  itemId: item.itemId) else {
+                    return
+                }
+                let itemContent = try item.getDecryptedItemContent(symmetricKey: symmetricKey)
+                onShowItemDetail?(itemContent)
             } catch {
                 self.error = error
             }
         }
     }
 
-    private func decrypt(itemRevisions: [ItemRevision],
-                         shareId: String,
-                         forceRefresh: Bool) async throws {
-        let (share, shareKeys) = try await getShareAndKeys(shareId: shareId, forceRefresh: forceRefresh)
-
-        var partialItemContents = [PartialItemContent]()
-        for itemRevision in itemRevisions {
-            let publicKeys =
-            try await publicKeyRepository.getPublicKeys(email: itemRevision.signatureEmail)
-            let verifyKeys = publicKeys.map { $0.value }
-            let partialItemContent =
-            try itemRevision.getPartialContent(userData: userData,
-                                               share: share,
-                                               vaultKeys: shareKeys.vaultKeys,
-                                               itemKeys: shareKeys.itemKeys,
-                                               verifyKeys: verifyKeys)
-            partialItemContents.append(partialItemContent)
-        }
-        self.partialItemContents = partialItemContents
-    }
-
-    func selectItem(_ partialItemContent: PartialItemContent) {
+    func trashItem(_ item: ItemListUiModel) {
         Task { @MainActor in
             do {
-                if let itemRevision =
-                    try await itemRevisionRepository.getItemRevision(shareId: partialItemContent.shareId,
-                                                                     itemId: partialItemContent.itemId) {
-                    let (share, shareKeys) = try await getShareAndKeys(shareId: partialItemContent.shareId,
-                                                                       forceRefresh: false)
-                    let publicKeys =
-                    try await publicKeyRepository.getPublicKeys(email: itemRevision.signatureEmail)
-                    let verifyKeys = publicKeys.map { $0.value }
-                    let itemContent = try itemRevision.getContent(userData: userData,
-                                                                  share: share,
-                                                                  vaultKeys: shareKeys.vaultKeys,
-                                                                  itemKeys: shareKeys.itemKeys,
-                                                                  verifyKeys: verifyKeys)
-                    onShowItemDetail?(itemContent)
-                }
-            } catch {
-                self.error = error
-            }
-        }
-    }
-
-    private func getShareAndKeys(shareId: String,
-                                 forceRefresh: Bool) async throws -> (Share, ShareKeys) {
-        let share = try await shareRepository.getShare(shareId: shareId)
-        let shareKeys = try await shareKeysRepository.getShareKeys(shareId: shareId,
-                                                                   page: 0,
-                                                                   pageSize: kDefaultPageSize,
-                                                                   forceRefresh: forceRefresh)
-        return (share, shareKeys)
-    }
-
-    func trash(_ partialItemContent: PartialItemContent) {
-        Task { @MainActor in
-            do {
-                if let itemRevision =
-                    try await itemRevisionRepository.getItemRevision(shareId: partialItemContent.shareId,
-                                                                     itemId: partialItemContent.itemId) {
-                    isLoading = true
-                    try await itemRevisionRepository.trashItemRevisions([itemRevision],
-                                                                        shareId: partialItemContent.shareId)
-                    isLoading = false
-                    partialItemContents.removeAll(where: { $0.itemId == partialItemContent.itemId })
-                    onTrashedItem?(partialItemContent.type)
-                }
+                guard let itemToBeTrashed =
+                        try await itemRepository.getItem(shareId: item.shareId,
+                                                         itemId: item.itemId) else { return }
+                isLoading = true
+                try await itemRepository.trashItems([itemToBeTrashed])
+                fetchItems()
+                isLoading = false
+                onTrashedItem?(item.type)
             } catch {
                 self.isLoading = false
                 self.error = error

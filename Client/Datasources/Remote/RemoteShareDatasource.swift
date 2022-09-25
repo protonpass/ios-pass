@@ -20,7 +20,7 @@
 
 import Foundation
 
-public protocol RemoteShareDatasourceProtocol: BaseRemoteDatasourceProtocol {
+public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
     func getShares() async throws -> [Share]
     func getShare(shareId: String) async throws -> Share
     func createVault(request: CreateVaultRequest) async throws -> Share
@@ -68,6 +68,4 @@ public extension RemoteShareDatasourceProtocol {
     }
 }
 
-public final class RemoteShareDatasource: BaseRemoteDatasource {}
-
-extension RemoteShareDatasource: RemoteShareDatasourceProtocol {}
+public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourceProtocol {}

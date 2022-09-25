@@ -89,7 +89,8 @@ extension ItemRevisionEntity {
                      revisionTime: revisionTime)
     }
 
-    func hydrate(from item: ItemRevision, shareId: String) {
+    func hydrate(from item: ItemRevision,
+                 shareId: String) {
         self.itemID = item.itemID
         self.revision = item.revision
         self.contentFormatVersion = item.contentFormatVersion

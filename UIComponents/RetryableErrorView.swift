@@ -1,6 +1,6 @@
 //
-// PartialItemContent.swift
-// Proton Pass - Created on 11/08/2022.
+// RetryableErrorView.swift
+// Proton Pass - Created on 20/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,28 +19,25 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_UIFoundations
-import UIComponents
-import UIKit
+import SwiftUI
 
-/// Hold partial data of item, to be used on item list page
-public struct PartialItemContent: GenericItemProtocol {
-    public let shareId: String
-    public let itemId: String
-    public let type: ItemContentType
-    public let icon: UIImage
-    public let title: String
-    public let detail: String?
+public struct RetryableErrorView: View {
+    let errorMessage: String
+    let onRetry: () -> Void
 
-    public init(shareId: String,
-                itemId: String,
-                type: ItemContentType,
-                title: String,
-                detail: String?) {
-        self.shareId = shareId
-        self.itemId = itemId
-        self.type = type
-        self.icon = type.icon
-        self.title = title
-        self.detail = detail
+    public init(errorMessage: String,
+                onRetry: @escaping () -> Void) {
+        self.errorMessage = errorMessage
+        self.onRetry = onRetry
+    }
+
+    public var body: some View {
+        VStack {
+            Text(errorMessage)
+            Button(action: onRetry) {
+                Text("Retry")
+            }
+            .foregroundColor(Color(ColorProvider.BrandNorm))
+        }
     }
 }

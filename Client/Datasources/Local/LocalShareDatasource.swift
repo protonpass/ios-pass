@@ -20,17 +20,15 @@
 
 import CoreData
 
-public protocol LocalShareDatasourceProtocol {
+public protocol LocalShareDatasourceProtocol: LocalDatasourceProtocol {
     func getShare(userId: String, shareId: String) async throws -> Share?
     func getAllShares(userId: String) async throws -> [Share]
     func upsertShares(_ shares: [Share], userId: String) async throws
     func removeAllShares(userId: String) async throws
 }
 
-public final class LocalShareDatasource: BaseLocalDatasource {}
-
-extension LocalShareDatasource: LocalShareDatasourceProtocol {
-    public func getShare(userId: String, shareId: String) async throws -> Share? {
+public extension LocalShareDatasourceProtocol {
+    func getShare(userId: String, shareId: String) async throws -> Share? {
         let taskContext = newTaskContext(type: .fetch)
 
         let fetchRequest = ShareEntity.fetchRequest()
@@ -44,7 +42,7 @@ extension LocalShareDatasource: LocalShareDatasourceProtocol {
         return try shareEntities.map { try $0.toShare() }.first
     }
 
-    public func getAllShares(userId: String) async throws -> [Share] {
+    func getAllShares(userId: String) async throws -> [Share] {
         let taskContext = newTaskContext(type: .fetch)
 
         let fetchRequest = ShareEntity.fetchRequest()
@@ -54,7 +52,7 @@ extension LocalShareDatasource: LocalShareDatasourceProtocol {
         return try shareEntities.map { try $0.toShare() }
     }
 
-    public func upsertShares(_ shares: [Share], userId: String) async throws {
+    func upsertShares(_ shares: [Share], userId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
@@ -66,7 +64,7 @@ extension LocalShareDatasource: LocalShareDatasourceProtocol {
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    public func removeAllShares(userId: String) async throws {
+    func removeAllShares(userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
 
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ShareEntity")
@@ -75,3 +73,5 @@ extension LocalShareDatasource: LocalShareDatasourceProtocol {
                           context: taskContext)
     }
 }
+
+public final class LocalShareDatasource: LocalDatasource, LocalShareDatasourceProtocol {}

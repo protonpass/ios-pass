@@ -46,97 +46,23 @@ final class LocalItemKeyDatasourceTests: XCTestCase {
 }
 
 extension LocalItemKeyDatasourceTests {
-    func testGetItemKey() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let givenShareId = String.random()
-            let givenRotationId = String.random()
-            let givenInsertedItemKey =
-            try await sut.givenInsertedItemKey(shareId: givenShareId,
-                                               rotationId: givenRotationId)
-
-            // When
-            for _ in 0...10 {
-                try await sut.upsertItemKeys([.random()], shareId: .random())
-            }
-
-            // Then
-            let itemKey = try await sut.getItemKey(shareId: givenShareId,
-                                                   rotationId: givenRotationId)
-            XCTAssertNotNil(itemKey)
-            let nonNilItemKey = try XCTUnwrap(itemKey)
-            assertEqual(nonNilItemKey, givenInsertedItemKey)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
-    }
-
     func testGetItemKeys() throws {
         continueAfterFailure = false
         let expectation = expectation(description: #function)
         Task {
             // Given
-            // 200 itemKeys inserted to the local database
-            // pageSize is 70
             let localShareDatasource = LocalShareDatasource(container: sut.container)
             let givenShare = try await localShareDatasource.givenInsertedShare()
-            let shareId = givenShare.shareID
-            let givenItemKeys = [ItemKey].random(count: 200, randomElement: .random())
-            let pageSize = 70
-
-            // When
-            try await sut.upsertItemKeys(givenItemKeys, shareId: shareId)
-
-            // Then
-            // Should have 3 pages with following counts: 70, 70 & 60
-            // 200 in total
-            let firstPage = try await sut.getItemKeys(shareId: shareId,
-                                                      page: 0,
-                                                      pageSize: pageSize)
-            XCTAssertEqual(firstPage.count, 70)
-
-            let secondPage = try await sut.getItemKeys(shareId: shareId,
-                                                       page: 1,
-                                                       pageSize: pageSize)
-            XCTAssertEqual(secondPage.count, 70)
-
-            let thirdPage = try await sut.getItemKeys(shareId: shareId,
-                                                      page: 2,
-                                                      pageSize: pageSize)
-            XCTAssertEqual(thirdPage.count, 60)
-
-            // Check that the 3 pages make up the correct set of givenItemKeys
-            let fetchedItemKeys = firstPage + secondPage + thirdPage
-            let itemKeyRotationIds = Set(fetchedItemKeys.map { $0.rotationID })
-            let givenItemKeyRotationIds = Set(givenItemKeys.map { $0.rotationID })
-            XCTAssertEqual(itemKeyRotationIds, givenItemKeyRotationIds)
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
-    }
-
-    func testCountItemKeys() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
+            let givenShareId = givenShare.shareID
             let givenItemKeys = [ItemKey].random(randomElement: .random())
-            let givenShareId = String.random()
 
             // When
             try await sut.upsertItemKeys(givenItemKeys, shareId: givenShareId)
-            // Insert arbitrary item revisions
-            for _ in 0...10 {
-                let dummyItemKeys = [ItemKey].random(randomElement: .random())
-                try await sut.upsertItemKeys(dummyItemKeys, shareId: .random())
-            }
 
             // Then
-            let count = try await sut.getItemKeyCount(shareId: givenShareId)
-            XCTAssertEqual(count, givenItemKeys.count)
+            let itemKeys = try await sut.getItemKeys(shareId: givenShareId)
+            XCTAssertEqual(Set(itemKeys), Set(givenItemKeys))
+
             expectation.fulfill()
         }
         waitForExpectations(timeout: expectationTimeOut)
@@ -159,14 +85,8 @@ extension LocalItemKeyDatasourceTests {
             try await sut.upsertItemKeys(thirdItemKeys, shareId: givenShareId)
 
             // Then
-            let itemKeys = try await sut.getItemKeys(shareId: givenShareId,
-                                                     page: 0,
-                                                     pageSize: .max)
-            XCTAssertEqual(itemKeys.count, givenItemKeys.count)
-
-            let rotationIds = Set(itemKeys.map { $0.rotationID })
-            let givenRotationIds = Set(givenItemKeys.map { $0.rotationID })
-            XCTAssertEqual(rotationIds, givenRotationIds)
+            let itemKeys = try await sut.getItemKeys(shareId: givenShareId)
+            XCTAssertEqual(Set(itemKeys), Set(givenItemKeys))
 
             expectation.fulfill()
         }
@@ -179,21 +99,20 @@ extension LocalItemKeyDatasourceTests {
         Task {
             // Given
             let givenShareId = String.random()
-            let givenRotationId = String.random()
-            _ = try await sut.givenInsertedItemKey(shareId: givenShareId,
-                                                   rotationId: givenRotationId)
-            let updatedItemKey = ItemKey.random(rotationId: givenRotationId)
+            let givenItemKeys = [ItemKey].random(randomElement: .random())
+            try await sut.upsertItemKeys(givenItemKeys, shareId: givenShareId)
+            let firstInsertedItemKey = try XCTUnwrap(givenItemKeys.first)
+            let updatedFirstItemKey = ItemKey.random(rotationId: firstInsertedItemKey.rotationID)
 
             // When
-            try await sut.upsertItemKeys([updatedItemKey], shareId: givenShareId)
+            try await sut.upsertItemKeys([updatedFirstItemKey], shareId: givenShareId)
 
             // Then
-            let itemKeys = try await sut.getItemKeys(shareId: givenShareId,
-                                                     page: 0,
-                                                     pageSize: .max)
-            XCTAssertEqual(itemKeys.count, 1)
-            let itemKey = try XCTUnwrap(itemKeys.first)
-            assertEqual(itemKey, updatedItemKey)
+            let itemKeys = try await sut.getItemKeys(shareId: givenShareId)
+            XCTAssertEqual(itemKeys.count, givenItemKeys.count)
+            let firstItemKey =
+            try XCTUnwrap(itemKeys.first(where: { $0.rotationID == firstInsertedItemKey.rotationID }))
+            assertEqual(firstItemKey, updatedFirstItemKey)
 
             expectation.fulfill()
         }
@@ -212,42 +131,25 @@ extension LocalItemKeyDatasourceTests {
             let givenSecondShareItemKeys = [ItemKey].random(randomElement: .random())
 
             // When
-            try await sut.upsertItemKeys(givenFirstShareItemKeys,
-                                         shareId: givenFirstShareId)
-            try await sut.upsertItemKeys(givenSecondShareItemKeys,
-                                         shareId: givenSecondShareId)
+            try await sut.upsertItemKeys(givenFirstShareItemKeys, shareId: givenFirstShareId)
+            try await sut.upsertItemKeys(givenSecondShareItemKeys, shareId: givenSecondShareId)
 
             // Then
-            let firstShareItemKeysFirstGet =
-            try await sut.getItemKeys(shareId: givenFirstShareId,
-                                      page: 0,
-                                      pageSize: .max)
-            XCTAssertEqual(firstShareItemKeysFirstGet.count,
-                           givenFirstShareItemKeys.count)
+            let firstShareItemKeysFirstGet = try await sut.getItemKeys(shareId: givenFirstShareId)
+            XCTAssertEqual(Set(givenFirstShareItemKeys), Set(firstShareItemKeysFirstGet))
 
-            let secondShareItemKeysFirstGet =
-            try await sut.getItemKeys(shareId: givenSecondShareId,
-                                      page: 0,
-                                      pageSize: .max)
-            XCTAssertEqual(secondShareItemKeysFirstGet.count,
-                           givenSecondShareItemKeys.count)
+            let secondShareItemKeysFirstGet = try await sut.getItemKeys(shareId: givenSecondShareId)
+            XCTAssertEqual(Set(secondShareItemKeysFirstGet), Set(givenSecondShareItemKeys))
 
             // When
             try await sut.removeAllItemKeys(shareId: givenFirstShareId)
 
             // Then
-            let firstShareItemKeysSecondGet =
-            try await sut.getItemKeys(shareId: givenFirstShareId,
-                                      page: 0,
-                                      pageSize: .max)
+            let firstShareItemKeysSecondGet = try await sut.getItemKeys(shareId: givenFirstShareId)
             XCTAssertTrue(firstShareItemKeysSecondGet.isEmpty)
 
-            let secondShareItemKeysSecondGet =
-            try await sut.getItemKeys(shareId: givenSecondShareId,
-                                      page: 0,
-                                      pageSize: .max)
-            XCTAssertEqual(secondShareItemKeysSecondGet.count,
-                           givenSecondShareItemKeys.count)
+            let secondShareItemKeysSecondGet = try await sut.getItemKeys(shareId: givenSecondShareId)
+            XCTAssertEqual(Set(secondShareItemKeysSecondGet), Set(givenSecondShareItemKeys))
 
             expectation.fulfill()
         }

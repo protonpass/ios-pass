@@ -24,7 +24,7 @@ public protocol GlobalLocalDatasourceProtocol {
     var localShareDatasource: LocalShareDatasourceProtocol { get }
     var localItemKeyDatasource: LocalItemKeyDatasourceProtocol { get }
     var localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol { get }
-    var localItemRevisionDatasource: LocalItemRevisionDatasourceProtocol { get }
+    var localItemDatasource: LocalItemDatasourceProtocol { get }
 
     func removeAllData(userId: String) async throws
 }
@@ -35,7 +35,7 @@ public extension GlobalLocalDatasourceProtocol {
 
         for share in shares {
             let shareId = share.shareID
-            try await localItemRevisionDatasource.removeAllItemRevisions(shareId: shareId)
+            try await localItemDatasource.removeAllItems(shareId: shareId)
             try await localVaultKeyDatasource.removeAllVaultKeys(shareId: shareId)
             try await localItemKeyDatasource.removeAllItemKeys(shareId: shareId)
         }
@@ -53,12 +53,12 @@ struct GlobalLocalDatasource: GlobalLocalDatasourceProtocol {
     let localShareDatasource: LocalShareDatasourceProtocol
     let localItemKeyDatasource: LocalItemKeyDatasourceProtocol
     let localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol
-    let localItemRevisionDatasource: LocalItemRevisionDatasourceProtocol
+    let localItemDatasource: LocalItemDatasourceProtocol
 
     init(container: NSPersistentContainer) {
         self.localShareDatasource = LocalShareDatasource(container: container)
         self.localItemKeyDatasource = LocalItemKeyDatasource(container: container)
         self.localVaultKeyDatasource = LocalVaultKeyDatasource(container: container)
-        self.localItemRevisionDatasource = LocalItemRevisionDatasource(container: container)
+        self.localItemDatasource = LocalItemDatasource(container: container)
     }
 }

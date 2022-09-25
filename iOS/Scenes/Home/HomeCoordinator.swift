@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import CoreData
+import CryptoKit
 import MBProgressHUD
 import ProtonCore_Login
 import ProtonCore_Services
@@ -43,9 +44,10 @@ final class HomeCoordinator: DeinitPrintable {
 
     private let sessionData: SessionData
     private let apiService: APIService
+    private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
-    private let shareKeysRepository: ShareKeysRepositoryProtocol
-    private let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
+    private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let publicKeyRepository: PublicKeyRepositoryProtocol
     weak var delegate: HomeCoordinatorDelegate?
@@ -73,11 +75,12 @@ final class HomeCoordinator: DeinitPrintable {
     let vaultSelection: VaultSelection
 
     private lazy var myVaultsCoordinator: MyVaultsCoordinator = {
-        let myVaultsCoordinator = MyVaultsCoordinator(userData: sessionData.userData,
+        let myVaultsCoordinator = MyVaultsCoordinator(symmetricKey: symmetricKey,
+                                                      userData: sessionData.userData,
                                                       vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
-                                                      shareKeysRepository: shareKeysRepository,
-                                                      itemRevisionRepository: itemRevisionRepository,
+                                                      vaultItemKeysRepository: vaultItemKeysRepository,
+                                                      itemRepository: itemRepository,
                                                       aliasRepository: aliasRepository,
                                                       publicKeyRepository: publicKeyRepository)
         myVaultsCoordinator.delegate = self
@@ -91,11 +94,9 @@ final class HomeCoordinator: DeinitPrintable {
 
     // Trash
     private lazy var trashCoordinator: TrashCoordinator = {
-        let trashCoordinator = TrashCoordinator(userData: sessionData.userData,
+        let trashCoordinator = TrashCoordinator(symmetricKey: symmetricKey,
                                                 shareRepository: shareRepository,
-                                                shareKeysRepository: shareKeysRepository,
-                                                itemRevisionRepository: itemRevisionRepository,
-                                                publicKeyRepository: publicKeyRepository)
+                                                itemRepository: itemRepository)
         trashCoordinator.delegate = self
         trashCoordinator.onRestoredItem = { [unowned self] in
             self.myVaultsCoordinator.refreshItems()
@@ -109,32 +110,48 @@ final class HomeCoordinator: DeinitPrintable {
 
     init(sessionData: SessionData,
          apiService: APIService,
+         symmetricKey: SymmetricKey,
          container: NSPersistentContainer) {
         self.sessionData = sessionData
         self.apiService = apiService
+        self.symmetricKey = symmetricKey
 
         let userId = sessionData.userData.user.ID
         let authCredential = sessionData.userData.credential
 
-        self.shareRepository = ShareRepository(userId: userId,
-                                               container: container,
-                                               authCredential: authCredential,
-                                               apiService: apiService)
+        let localItemDatasource = LocalItemDatasource(container: container)
+        let remoteItemRevisionDatasource = RemoteItemRevisionDatasource(authCredential: authCredential,
+                                                                        apiService: apiService)
+        let publicKeyRepository = PublicKeyRepository(container: container,
+                                                      apiService: apiService)
+        let shareRepository = ShareRepository(userId: userId,
+                                              container: container,
+                                              authCredential: authCredential,
+                                              apiService: apiService)
 
-        self.shareKeysRepository = ShareKeysRepository(container: container,
-                                                       authCredential: authCredential,
-                                                       apiService: apiService)
+        let localItemKeyDatasource = LocalItemKeyDatasource(container: container)
+        let localVaultKeyDatasource = LocalVaultKeyDatasource(container: container)
+        let remoteVaultItemKeysDatasource = RemoteVaultItemKeysDatasource(authCredential: authCredential,
+                                                                          apiService: apiService)
 
-        self.itemRevisionRepository = ItemRevisionRepository(container: container,
-                                                             authCredential: authCredential,
-                                                             apiService: apiService)
+        let vaultItemKeysRepository =
+        VaultItemKeysRepository(localItemKeyDatasource: localItemKeyDatasource,
+                                localVaultKeyDatasource: localVaultKeyDatasource,
+                                remoteVaultItemKeysDatasource: remoteVaultItemKeysDatasource)
 
-        self.aliasRepository = AliasRepository(container: container,
-                                               authCredential: authCredential,
-                                               apiService: apiService)
+        self.itemRepository = ItemRepository(userData: sessionData.userData,
+                                             symmetricKey: symmetricKey,
+                                             localItemDatasoure: localItemDatasource,
+                                             remoteItemRevisionDatasource: remoteItemRevisionDatasource,
+                                             publicKeyRepository: publicKeyRepository,
+                                             shareRepository: shareRepository,
+                                             vaultItemKeysRepository: vaultItemKeysRepository)
 
-        self.publicKeyRepository = PublicKeyRepository(container: container,
-                                                       apiService: apiService)
+        self.aliasRepository = AliasRepository(authCredential: authCredential, apiService: apiService)
+
+        self.publicKeyRepository = publicKeyRepository
+        self.shareRepository = shareRepository
+        self.vaultItemKeysRepository = vaultItemKeysRepository
         self.vaultSelection = .init(vaults: [])
         self.setUpSideMenuPreferences()
         self.observeVaultSelection()
@@ -259,14 +276,5 @@ extension HomeCoordinator: CoordinatorDelegate {
 
     func coordinatorWantsToAlertError(_ error: Error) {
         alert(error: error)
-    }
-}
-
-extension HomeCoordinator {
-    /// For preview purposes
-    static var preview: HomeCoordinator {
-        .init(sessionData: .preview,
-              apiService: DummyApiService.preview,
-              container: .init())
     }
 }

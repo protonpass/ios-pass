@@ -35,18 +35,12 @@ enum ItemMode {
 class BaseCreateEditItemViewModel: BaseViewModel {
     let shareId: String
     let mode: ItemMode
-    let userData: UserData
-    let shareRepository: ShareRepositoryProtocol
-    let shareKeysRepository: ShareKeysRepositoryProtocol
-    let itemRevisionRepository: ItemRevisionRepositoryProtocol
+    let itemRepository: ItemRepositoryProtocol
 
     weak var createEditItemDelegate: CreateEditItemViewModelDelegate?
 
     init(mode: ItemMode,
-         userData: UserData,
-         shareRepository: ShareRepositoryProtocol,
-         shareKeysRepository: ShareKeysRepositoryProtocol,
-         itemRevisionRepository: ItemRevisionRepositoryProtocol) {
+         itemRepository: ItemRepositoryProtocol) {
         switch mode {
         case .create(let shareId, _):
             self.shareId = shareId
@@ -54,10 +48,7 @@ class BaseCreateEditItemViewModel: BaseViewModel {
             self.shareId = itemContent.shareId
         }
         self.mode = mode
-        self.userData = userData
-        self.shareRepository = shareRepository
-        self.shareKeysRepository = shareKeysRepository
-        self.itemRevisionRepository = itemRevisionRepository
+        self.itemRepository = itemRepository
         super.init()
         bindValues()
     }
@@ -102,8 +93,8 @@ class BaseCreateEditItemViewModel: BaseViewModel {
         Task { @MainActor in
             do {
                 isLoading = true
-                let request = try await createItemRequest(shareId: shareId)
-                try await itemRevisionRepository.createItem(request: request, shareId: shareId)
+                try await itemRepository.createItem(itemContent: generateItemContent(),
+                                                    shareId: shareId)
                 isLoading = false
                 createEditItemDelegate?.createEditItemViewModelDidCreateItem(itemContentType())
             } catch {
@@ -118,12 +109,9 @@ class BaseCreateEditItemViewModel: BaseViewModel {
         Task { @MainActor in
             do {
                 isLoading = true
-                let createItemRequest = try await createItemRequest(shareId: shareId)
-                let request = CreateCustomAliasRequest(prefix: info.prefix,
-                                                       signedSuffix: info.signedSuffix,
-                                                       mailboxIDs: info.mailboxIds,
-                                                       item: createItemRequest)
-                try await itemRevisionRepository.createAlias(request: request, shareId: shareId)
+                try await itemRepository.createAlias(info: info,
+                                                     itemContent: generateItemContent(),
+                                                     shareId: shareId)
                 isLoading = false
                 createEditItemDelegate?.createEditItemViewModelDidCreateItem(itemContentType())
             } catch {
@@ -140,26 +128,14 @@ class BaseCreateEditItemViewModel: BaseViewModel {
                 let shareId = oldItemContent.shareId
                 let itemId = oldItemContent.itemId
                 isLoading = true
-                guard let oldItemRevision =
-                        try await itemRevisionRepository.getItemRevision(
-                            shareId: oldItemContent.shareId,
-                            itemId: oldItemContent.itemId) else {
+                guard let oldItem = try await itemRepository.getItem(shareId: shareId,
+                                                                     itemId: itemId) else {
                     isLoading = false
                     return
                 }
-
-                let keysAndPassphrases = try await getKeysAndPassphrases(shareId: shareId)
-
-                let request = try UpdateItemRequest(oldRevision: oldItemRevision,
-                                                    vaultKey: keysAndPassphrases.vaultKey,
-                                                    vaultKeyPassphrase: keysAndPassphrases.vaultKeyPassphrase,
-                                                    itemKey: keysAndPassphrases.itemKey,
-                                                    itemKeyPassphrase: keysAndPassphrases.itemKeyPassphrase,
-                                                    addressKey: keysAndPassphrases.addressKey,
-                                                    itemContent: generateItemContent())
-                try await itemRevisionRepository.updateItem(request: request,
-                                                            shareId: shareId,
-                                                            itemId: itemId)
+                try await itemRepository.updateItem(oldItem: oldItem.item,
+                                                    newItemContent: generateItemContent(),
+                                                    shareId: shareId)
                 isLoading = false
                 createEditItemDelegate?.createEditItemViewModelDidUpdateItem(itemContentType())
             } catch {
@@ -168,48 +144,4 @@ class BaseCreateEditItemViewModel: BaseViewModel {
             }
         }
     }
-
-    private func getKeysAndPassphrases(shareId: String) async throws -> KeysAndPassphrases {
-        let (latestVaultKey, latestItemKey) =
-        try await shareKeysRepository.getLatestVaultItemKey(shareId: shareId, forceRefresh: false)
-        let share = try await shareRepository.getShare(shareId: shareId)
-        let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
-                                                                        share: share,
-                                                                        vaultKey: latestVaultKey)
-        guard let itemKeyPassphrase =
-                try PassKeyUtils.getItemKeyPassphrase(vaultKey: latestVaultKey,
-                                                      vaultKeyPassphrase: vaultKeyPassphrase,
-                                                      itemKey: latestItemKey) else {
-            fatalError("Post MVP")
-        }
-        return .init(vaultKey: latestVaultKey,
-                     vaultKeyPassphrase: vaultKeyPassphrase,
-                     itemKey: latestItemKey,
-                     itemKeyPassphrase: itemKeyPassphrase,
-                     addressKey: userData.getAddressKey())
-    }
-
-    private func createItemRequest(shareId: String) async throws -> CreateItemRequest {
-        let keysAndPassphrases = try await getKeysAndPassphrases(shareId: shareId)
-        return try CreateItemRequest(vaultKey: keysAndPassphrases.vaultKey,
-                                     vaultKeyPassphrase: keysAndPassphrases.vaultKeyPassphrase,
-                                     itemKey: keysAndPassphrases.itemKey,
-                                     itemKeyPassphrase: keysAndPassphrases.itemKeyPassphrase,
-                                     addressKey: keysAndPassphrases.addressKey,
-                                     itemContent: generateItemContent())
-    }
-}
-
-private struct KeysAndPassphrases {
-    let vaultKey: VaultKey
-    let vaultKeyPassphrase: String
-    let itemKey: ItemKey
-    let itemKeyPassphrase: String
-    let addressKey: AddressKey
-}
-
-struct AliasCreationInfo {
-    let prefix: String
-    let signedSuffix: String
-    let mailboxIds: [Int]
 }

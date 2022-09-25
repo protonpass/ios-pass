@@ -1,6 +1,6 @@
 //
-// BaseRemoteDatasource.swift
-// Proton Pass - Created on 16/08/2022.
+// AppCoordinatorTests.swift
+// Proton Pass - Created on 19/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,23 +18,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Networking
-import ProtonCore_Services
+@testable import Proton_Pass
+import XCTest
 
-public let kDefaultPageSize = 100
+final class AppCoordinatorTests: XCTestCase {
+    var sut: AppCoordinator!
 
-public protocol BaseRemoteDatasourceProtocol: AnyObject {
-    var authCredential: AuthCredential { get }
-    var apiService: APIService { get }
-}
+    override func setUp() {
+        super.setUp()
+        sut = .init(window: .init())
+    }
 
-public class BaseRemoteDatasource: BaseRemoteDatasourceProtocol {
-    public let authCredential: AuthCredential
-    public let apiService: APIService
+    override func tearDown() {
+        sut = nil
+        super.tearDown()
+    }
 
-    public init(authCredential: AuthCredential,
-                apiService: APIService) {
-        self.authCredential = authCredential
-        self.apiService = apiService
+    func testGetOrCreateSymmetricKey() throws {
+        do {
+            _ = try sut.getOrCreateSymmetricKey()
+        } catch {
+            XCTFail("Error getting or creating symmetric key \(error.localizedDescription)")
+        }
     }
 }

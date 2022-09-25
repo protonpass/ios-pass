@@ -30,39 +30,36 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     private let userData: UserData
     private let vaultSelection: VaultSelection
     private let shareRepository: ShareRepositoryProtocol
-    private let shareKeysRepository: ShareKeysRepositoryProtocol
+    private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
 
     var onToggleSidebar: (() -> Void)?
 
     init(userData: UserData,
          vaultSelection: VaultSelection,
          shareRepository: ShareRepositoryProtocol,
-         shareKeysRepository: ShareKeysRepositoryProtocol) {
+         vaultItemKeysRepository: VaultItemKeysRepositoryProtocol) {
         self.userData = userData
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
-        self.shareKeysRepository = shareKeysRepository
+        self.vaultItemKeysRepository = vaultItemKeysRepository
     }
 
     func toggleSidebar() {
         onToggleSidebar?()
     }
 
-    func fetchVaults(forceUpdate: Bool = false) {
+    func fetchVaults(forceRefresh: Bool = false) {
         error = nil
         Task { @MainActor in
             do {
-                let shares = try await shareRepository.getShares(forceRefresh: forceUpdate)
+                let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
 
                 var vaults: [VaultProtocol] = []
                 for share in shares {
-                    let shareKey =
-                    try await shareKeysRepository.getShareKeys(shareId: share.shareID,
-                                                               page: 0,
-                                                               pageSize: kDefaultPageSize,
-                                                               forceRefresh: forceUpdate)
+                    let vaultKeys = try await vaultItemKeysRepository.getVaultKeys(shareId: share.shareID,
+                                                                                   forceRefresh: forceRefresh)
                     vaults.append(try share.getVault(userData: userData,
-                                                     vaultKeys: shareKey.vaultKeys))
+                                                     vaultKeys: vaultKeys))
                 }
 
                 if vaults.isEmpty {

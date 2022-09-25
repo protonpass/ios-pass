@@ -20,74 +20,43 @@
 
 import CoreData
 
-public protocol LocalItemKeyDatasourceProtocol {
-    func getItemKey(shareId: String, rotationId: String) async throws -> ItemKey?
-    func getItemKeys(shareId: String, page: Int, pageSize: Int) async throws -> [ItemKey]
-    func getItemKeyCount(shareId: String) async throws -> Int
-    func upsertItemKeys(_ itemKeys: [ItemKey], shareId: String) async throws
+public protocol LocalItemKeyDatasourceProtocol: LocalDatasourceProtocol {
+    /// Get item keys of a share
+    func getItemKeys(shareId: String) async throws -> [ItemKey]
+
+    /// Insert or update if exist item keys
+    func upsertItemKeys(_ keys: [ItemKey], shareId: String) async throws
+
+    /// Remove all item keys of a share
     func removeAllItemKeys(shareId: String) async throws
 }
 
-public final class LocalItemKeyDatasource: BaseLocalDatasource {}
-
-extension LocalItemKeyDatasource: LocalItemKeyDatasourceProtocol {
-    public func getItemKey(shareId: String, rotationId: String) async throws -> ItemKey? {
+public extension LocalItemKeyDatasourceProtocol {
+    func getItemKeys(shareId: String) async throws -> [ItemKey] {
         let taskContext = newTaskContext(type: .fetch)
-
         let fetchRequest = ItemKeyEntity.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(
-            andPredicateWithSubpredicates: [
-                .init(format: "shareID = %@", shareId),
-                .init(format: "rotationID = %@", rotationId)
-            ])
-        let itemKeyEntities = try await execute(fetchRequest: fetchRequest,
-                                                context: taskContext)
-        return try itemKeyEntities.map { try $0.toItemKey() }.first
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try entities.map { try $0.toItemKey() }
     }
 
-    public func getItemKeys(shareId: String,
-                            page: Int,
-                            pageSize: Int) async throws -> [ItemKey] {
-        let taskContext = newTaskContext(type: .fetch)
-
-        let fetchRequest = itemKeyEntityFetchRequest(shareId: shareId)
-        fetchRequest.fetchLimit = pageSize
-        fetchRequest.fetchOffset = page * pageSize
-        let itemKeyEntities = try await execute(fetchRequest: fetchRequest,
-                                                context: taskContext)
-        return try itemKeyEntities.map { try $0.toItemKey() }
-    }
-
-    public func getItemKeyCount(shareId: String) async throws -> Int {
-        let taskContext = newTaskContext(type: .fetch)
-
-        let fetchRequest = itemKeyEntityFetchRequest(shareId: shareId)
-        return try await count(fetchRequest: fetchRequest, context: taskContext)
-    }
-
-    public func upsertItemKeys(_ itemKeys: [ItemKey], shareId: String) async throws {
+    func upsertItemKeys(_ keys: [ItemKey], shareId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
-
         let batchInsertRequest =
         newBatchInsertRequest(entity: ItemKeyEntity.entity(context: taskContext),
-                              sourceItems: itemKeys) { managedObject, itemKey in
+                              sourceItems: keys) { managedObject, itemKey in
             (managedObject as? ItemKeyEntity)?.hydrate(from: itemKey, shareId: shareId)
         }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    public func removeAllItemKeys(shareId: String) async throws {
+    func removeAllItemKeys(shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
-
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemKeyEntity")
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }
-
-    private func itemKeyEntityFetchRequest(shareId: String) -> NSFetchRequest<ItemKeyEntity> {
-        let fetchRequest = ItemKeyEntity.fetchRequest()
-        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
-        return fetchRequest
-    }
 }
+
+public final class LocalItemKeyDatasource: LocalDatasource, LocalItemKeyDatasourceProtocol {}

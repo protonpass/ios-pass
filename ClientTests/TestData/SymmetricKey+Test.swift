@@ -1,6 +1,6 @@
 //
-// DummyTests.swift
-// Proton Pass - Created on 12/07/2022.
+// SymmetricKey+Test.swift
+// Proton Pass - Created on 20/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,8 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
+import CryptoKit
 
-final class DummyTests: XCTestCase {
-    func testDummy() { XCTAssertTrue(true) }
+// swiftlint:disable force_unwrapping
+extension SymmetricKey {
+    static func random(length: Int = 32) -> SymmetricKey {
+        .init(data: String.random(length: length).data(using: .utf8)!)
+    }
 }

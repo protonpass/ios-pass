@@ -53,10 +53,14 @@ extension Suffix: Equatable {
     }
 }
 
-public struct Mailbox: Decodable {
+public struct Mailbox: Decodable, Hashable {
     // Should not rename to "id" otherwise decode process breaks
     public let ID: Int
     public let email: String
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(ID)
+    }
 }
 
 extension Mailbox: Equatable {

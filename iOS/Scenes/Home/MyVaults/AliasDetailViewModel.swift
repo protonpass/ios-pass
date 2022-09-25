@@ -46,10 +46,10 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     private let aliasRepository: AliasRepositoryProtocol
 
     init(itemContent: ItemContent,
-         itemRevisionRepository: ItemRevisionRepositoryProtocol,
+         itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol) {
         self.aliasRepository = aliasRepository
-        super.init(itemContent: itemContent, itemRevisionRepository: itemRevisionRepository)
+        super.init(itemContent: itemContent, itemRepository: itemRepository)
         getAlias()
     }
 

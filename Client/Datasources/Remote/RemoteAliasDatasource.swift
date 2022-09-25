@@ -20,7 +20,7 @@
 
 import Foundation
 
-public protocol RemoteAliasDatasourceProtocol: BaseRemoteDatasourceProtocol {
+public protocol RemoteAliasDatasourceProtocol: RemoteDatasourceProtocol {
     func getAliasOptions(shareId: String) async throws -> AliasOptions
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
@@ -52,6 +52,4 @@ public extension RemoteAliasDatasourceProtocol {
     }
 }
 
-public final class RemoteAliasDatasource: BaseRemoteDatasource {}
-
-extension RemoteAliasDatasource: RemoteAliasDatasourceProtocol {}
+public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol {}

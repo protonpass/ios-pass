@@ -58,20 +58,15 @@ extension GlobalLocalDatasourceTests {
 
             for shareId in firstShareIds {
                 let itemKeys =
-                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId,
-                                                                 page: 0,
-                                                                 pageSize: .max)
+                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
                 XCTAssertFalse(itemKeys.isEmpty)
 
                 let vaultKeys =
-                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId,
-                                                                   page: 0,
-                                                                   pageSize: .max)
+                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
                 XCTAssertFalse(vaultKeys.isEmpty)
 
-                let itemRevisionCount =
-                try await sut.localItemRevisionDatasource.getItemRevisionCount(shareId: shareId)
-                XCTAssertEqual(itemRevisionCount, firstItemCount)
+                let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
+                XCTAssertEqual(itemCount, firstItemCount)
             }
 
             // Second set of data
@@ -88,20 +83,15 @@ extension GlobalLocalDatasourceTests {
 
             for shareId in secondShareIds {
                 let itemKeys =
-                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId,
-                                                                 page: 0,
-                                                                 pageSize: .max)
+                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
                 XCTAssertFalse(itemKeys.isEmpty)
 
                 let vaultKeys =
-                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId,
-                                                                   page: 0,
-                                                                   pageSize: .max)
+                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
                 XCTAssertFalse(vaultKeys.isEmpty)
 
-                let itemRevisionCount =
-                try await sut.localItemRevisionDatasource.getItemRevisionCount(shareId: shareId)
-                XCTAssertEqual(itemRevisionCount, secondItemCount)
+                let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
+                XCTAssertEqual(itemCount, secondItemCount)
             }
 
             // When
@@ -116,20 +106,15 @@ extension GlobalLocalDatasourceTests {
 
             for shareId in firstShareIds {
                 let itemKeys =
-                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId,
-                                                                 page: 0,
-                                                                 pageSize: .max)
+                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
                 XCTAssertTrue(itemKeys.isEmpty)
 
                 let vaultKeys =
-                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId,
-                                                                   page: 0,
-                                                                   pageSize: .max)
+                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
                 XCTAssertTrue(vaultKeys.isEmpty)
 
-                let itemRevisionCount =
-                try await sut.localItemRevisionDatasource.getItemRevisionCount(shareId: shareId)
-                XCTAssertEqual(itemRevisionCount, 0)
+                let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
+                XCTAssertEqual(itemCount, 0)
             }
 
             // Second set of data should be intact
@@ -139,20 +124,15 @@ extension GlobalLocalDatasourceTests {
 
             for shareId in secondShareIds {
                 let itemKeys =
-                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId,
-                                                                 page: 0,
-                                                                 pageSize: .max)
+                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
                 XCTAssertFalse(itemKeys.isEmpty)
 
                 let vaultKeys =
-                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId,
-                                                                   page: 0,
-                                                                   pageSize: .max)
+                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
                 XCTAssertFalse(vaultKeys.isEmpty)
 
-                let itemRevisionCount =
-                try await sut.localItemRevisionDatasource.getItemRevisionCount(shareId: shareId)
-                XCTAssertEqual(itemRevisionCount, secondItemCount)
+                let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
+                XCTAssertEqual(itemCount, secondItemCount)
             }
 
             expectation.fulfill()
@@ -174,8 +154,9 @@ extension GlobalLocalDatasourceTests {
             try await sut.localVaultKeyDatasource.upsertVaultKeys(vaultKeys, shareId: shareId)
 
             let itemRevisions = [ItemRevision].random(count: itemCount, randomElement: .random())
-            try await sut.localItemRevisionDatasource.upsertItemRevisions(itemRevisions,
-                                                                          shareId: shareId)
+            try await sut.localItemDatasource.upsertItems(itemRevisions.map { .init(shareId: shareId,
+                                                                                    item: $0,
+                                                                                    encryptedContent: .random()) })
         }
     }
 }

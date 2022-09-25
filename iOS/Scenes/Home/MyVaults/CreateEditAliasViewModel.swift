@@ -97,17 +97,10 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     let aliasRepository: AliasRepositoryProtocol
 
     init(mode: ItemMode,
-         userData: UserData,
-         shareRepository: ShareRepositoryProtocol,
-         shareKeysRepository: ShareKeysRepositoryProtocol,
-         itemRevisionRepository: ItemRevisionRepositoryProtocol,
+         itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol) {
         self.aliasRepository = aliasRepository
-        super.init(mode: mode,
-                   userData: userData,
-                   shareRepository: shareRepository,
-                   shareKeysRepository: shareKeysRepository,
-                   itemRevisionRepository: itemRevisionRepository)
+        super.init(mode: mode, itemRepository: itemRepository)
 
         if case let .edit(itemContent) = mode {
             self.title = itemContent.name
@@ -171,7 +164,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                         self.mailboxes = selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
                     }
                     .store(in: &cancellables)
-                mailboxSelection?.selectDefaultMailboxes(alias?.mailboxes ?? [])
+                mailboxSelection?.selectDefaultMailboxes(alias?.mailboxes.map { $0.email } ?? [])
 
                 state = .loaded
             } catch {
@@ -182,7 +175,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override func additionalEdit() async throws {
         guard let alias = alias, let mailboxSelection = mailboxSelection else { return }
-        if Set(alias.mailboxes) == Set(mailboxSelection.selectedMailboxes.map { $0.email }) { return }
+        if Set(alias.mailboxes) == Set(mailboxSelection.selectedMailboxes) { return }
         if case let .edit(itemContent) = mode {
             try await aliasRepository.changeMailboxes(shareId: shareId,
                                                       itemId: itemContent.itemId,

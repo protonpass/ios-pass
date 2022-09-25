@@ -40,13 +40,8 @@ struct AliasDetailView: View {
             case .loaded(let alias):
                 ConcreteAliasDetailView(alias: alias, note: viewModel.itemContent.note)
             case .error(let error):
-                VStack {
-                    Text(error.messageForTheUser)
-                    Button(action: viewModel.getAlias) {
-                        Text("Retry")
-                    }
-                    .foregroundColor(Color(ColorProvider.BrandNorm))
-                }
+                RetryableErrorView(errorMessage: error.messageForTheUser,
+                                   onRetry: viewModel.getAlias)
                 .padding()
             }
         }
@@ -141,7 +136,7 @@ private struct ConcreteAliasDetailView: View {
     private var mailboxesSection: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Mailboxes")
-            Text(alias.mailboxes.joined(separator: "\n"))
+            Text(alias.mailboxes.map { $0.email }.joined(separator: "\n"))
                 .font(.callout)
                 .foregroundColor(.secondary)
         }

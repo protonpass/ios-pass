@@ -28,6 +28,10 @@ public struct ModifyItemRequest: Encodable {
     public init(items: [ItemRevision]) {
         self.items = items.map { .init(itemID: $0.itemID, revision: $0.revision) }
     }
+
+    public init(items: [ItemToBeModified]) {
+        self.items = items
+    }
 }
 
 public struct ModifyItemResponse: Decodable {

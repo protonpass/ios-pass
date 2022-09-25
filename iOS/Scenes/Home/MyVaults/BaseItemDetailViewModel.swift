@@ -28,15 +28,15 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 class BaseItemDetailViewModel: BaseViewModel {
     @Published var isTrashed = false
 
+    private let itemRepository: ItemRepositoryProtocol
     let itemContent: ItemContent
-    let itemRevisionRepository: ItemRevisionRepositoryProtocol
 
     weak var itemDetailDelegate: ItemDetailViewModelDelegate?
 
     init(itemContent: ItemContent,
-         itemRevisionRepository: ItemRevisionRepositoryProtocol) {
+         itemRepository: ItemRepositoryProtocol) {
         self.itemContent = itemContent
-        self.itemRevisionRepository = itemRevisionRepository
+        self.itemRepository = itemRepository
         super.init()
         bindValues()
 
@@ -60,12 +60,10 @@ class BaseItemDetailViewModel: BaseViewModel {
     func trash() {
         Task { @MainActor in
             do {
-                if let itemRevision =
-                    try await itemRevisionRepository.getItemRevision(shareId: itemContent.shareId,
-                                                                     itemId: itemContent.itemId) {
+                if let item = try await itemRepository.getItem(shareId: itemContent.shareId,
+                                                               itemId: itemContent.itemId) {
                     isLoading = true
-                    try await itemRevisionRepository.trashItemRevisions([itemRevision],
-                                                                        shareId: itemContent.shareId)
+                    try await itemRepository.trashItems([item])
                     isLoading = false
                     isTrashed = true
                 }
