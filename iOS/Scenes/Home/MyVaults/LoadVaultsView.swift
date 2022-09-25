@@ -34,7 +34,7 @@ struct LoadVaultsView: View {
         ZStack {
             if let error = viewModel.error {
                 RetryableErrorView(errorMessage: error.messageForTheUser,
-                                   onRetry: { viewModel.fetchVaults(forceUpdate: true) })
+                                   onRetry: { viewModel.fetchVaults(forceRefresh: true) })
                 .padding()
             } else {
                 ProgressView()

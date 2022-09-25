@@ -32,6 +32,9 @@ public protocol VaultItemKeysRepositoryProtocol {
 
     /// Get the pair of vaul key & item key that have latest `rotation`
     func getLatestVaultItemKeys(shareId: String, forceRefresh: Bool) async throws -> VaultItemKeys
+
+    /// Get vault keys of a share
+    func getVaultKeys(shareId: String, forceRefresh: Bool) async throws -> [VaultKey]
 }
 
 public extension VaultItemKeysRepositoryProtocol {
@@ -65,6 +68,19 @@ public extension VaultItemKeysRepositoryProtocol {
         return try .init(vaultKey: latestVaultKey, itemKey: latestItemKey)
     }
 
+    func getVaultKeys(shareId: String, forceRefresh: Bool) async throws -> [VaultKey] {
+        if forceRefresh {
+            try await refreshVaultItemKeys(shareId: shareId)
+        }
+
+        let vaultKeys = try await localVaultKeyDatasource.getVaultKeys(shareId: shareId)
+        if vaultKeys.isEmpty {
+            try await refreshVaultItemKeys(shareId: shareId)
+        }
+
+        return try await localVaultKeyDatasource.getVaultKeys(shareId: shareId)
+    }
+
     private func refreshVaultItemKeys(shareId: String) async throws {
         PPLogger.shared?.log("Getting vault & item keys from remote")
         let (vaultKeys, itemKeys) = try await remoteVaultItemKeysDatasource.getVaultItemKeys(shareId: shareId)
@@ -80,10 +96,10 @@ public extension VaultItemKeysRepositoryProtocol {
     }
 }
 
-public final class VaultItemKeysRepository {
-    let localItemKeyDatasource: LocalItemKeyDatasourceProtocolV2
-    let localVaultKeyDatasource: LocalVaultKeyDatasourceProtocolV2
-    let remoteVaultItemKeysDatasource: RemoteVaultItemKeysDatasourceProtocol
+public final class VaultItemKeysRepository: VaultItemKeysRepositoryProtocol {
+    public let localItemKeyDatasource: LocalItemKeyDatasourceProtocolV2
+    public let localVaultKeyDatasource: LocalVaultKeyDatasourceProtocolV2
+    public let remoteVaultItemKeysDatasource: RemoteVaultItemKeysDatasourceProtocol
 
     public init(localItemKeyDatasource: LocalItemKeyDatasourceProtocolV2,
                 localVaultKeyDatasource: LocalVaultKeyDatasourceProtocolV2,

@@ -47,6 +47,7 @@ final class HomeCoordinator: DeinitPrintable {
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
     private let shareKeysRepository: ShareKeysRepositoryProtocol
+    private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let publicKeyRepository: PublicKeyRepositoryProtocol
@@ -79,7 +80,7 @@ final class HomeCoordinator: DeinitPrintable {
                                                       userData: sessionData.userData,
                                                       vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
-                                                      shareKeysRepository: shareKeysRepository,
+                                                      vaultItemKeysRepository: vaultItemKeysRepository,
                                                       itemRepository: itemRepository,
                                                       aliasRepository: aliasRepository,
                                                       publicKeyRepository: publicKeyRepository)
@@ -132,6 +133,16 @@ final class HomeCoordinator: DeinitPrintable {
         let shareKeysRepository = ShareKeysRepository(container: container,
                                                       authCredential: authCredential,
                                                       apiService: apiService)
+
+        let localItemKeyDatasource = LocalItemKeyDatasourceV2(container: container)
+        let localVaultKeyDatasource = LocalVaultKeyDatasourceV2(container: container)
+        let remoteVaultItemKeysDatasource = RemoteVaultItemKeysDatasource(authCredential: authCredential,
+                                                                          apiService: apiService)
+
+        self.vaultItemKeysRepository =
+        VaultItemKeysRepository(localItemKeyDatasource: localItemKeyDatasource,
+                                localVaultKeyDatasource: localVaultKeyDatasource,
+                                remoteVaultItemKeysDatasource: remoteVaultItemKeysDatasource)
 
         self.itemRepository = ItemRepository(userData: sessionData.userData,
                                              symmetricKey: symmetricKey,
