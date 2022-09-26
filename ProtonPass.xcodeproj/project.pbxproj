@@ -63,6 +63,7 @@
 		3544BCBD28E1E42C00EFE130 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3544BCBE28E1E43000EFE130 /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		3544BCBF28E1E43000EFE130 /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3544F5DA28E2339400834CA4 /* AuthenticationServices.framework */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
@@ -387,6 +388,7 @@
 		3542E2CC28DA11FE00194F24 /* RetryableErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryableErrorView.swift; sourceTree = "<group>"; };
 		3542E2CF28DA4E7400194F24 /* ItemListUiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListUiModel.swift; sourceTree = "<group>"; };
 		3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEntityStructureTests.swift; sourceTree = "<group>"; };
+		3544F5DA28E2339400834CA4 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.5.sdk/System/Library/Frameworks/AuthenticationServices.framework; sourceTree = DEVELOPER_DIR; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
 		3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonSwitchToggleStyle.swift; sourceTree = "<group>"; };
@@ -592,6 +594,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCE7E1B680E6647D25927D82 /* Pods_iOS.framework in Frameworks */,
+				3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */,
 				3544BCB928E1E42B00EFE130 /* Client.framework in Frameworks */,
 				3544BCBE28E1E43000EFE130 /* UIComponents.framework in Frameworks */,
 				3544BCBC28E1E42C00EFE130 /* Core.framework in Frameworks */,
@@ -656,6 +659,7 @@
 		2E7AE4F339A9234C7A1F51F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3544F5DA28E2339400834CA4 /* AuthenticationServices.framework */,
 				303E837161E0B51054C04021 /* Pods_Client.framework */,
 				0D35678054D43CDE3733E788 /* Pods_Client_ClientTests.framework */,
 				81DBB96363B0551C727A1AF9 /* Pods_Core.framework */,
