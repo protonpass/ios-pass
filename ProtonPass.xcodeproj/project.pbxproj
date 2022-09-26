@@ -57,6 +57,12 @@
 		3542E2CD28DA11FE00194F24 /* RetryableErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2CC28DA11FE00194F24 /* RetryableErrorView.swift */; };
 		3542E2D028DA4E7400194F24 /* ItemListUiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2CF28DA4E7400194F24 /* ItemListUiModel.swift */; };
 		3542F0262899431D004007C7 /* CoreDataEntityStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */; };
+		3544BCB928E1E42B00EFE130 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
+		3544BCBA28E1E42B00EFE130 /* Client.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3544BCBC28E1E42C00EFE130 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; };
+		3544BCBD28E1E42C00EFE130 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3544BCBE28E1E43000EFE130 /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
+		3544BCBF28E1E43000EFE130 /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
@@ -117,7 +123,6 @@
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
 		3555EDF228A611BC00115EBC /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
-		3555EDF328A611BC00115EBC /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		355635B7288947DD00F32353 /* VaultSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635B6288947DD00F32353 /* VaultSelection.swift */; };
 		355635B928895B8E00F32353 /* VaultContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635B828895B8E00F32353 /* VaultContentView.swift */; };
 		355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635BC2889653B00F32353 /* LoadVaultsView.swift */; };
@@ -163,7 +168,6 @@
 		358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD369287D52AC00802A91 /* item_v1.pb.swift */; };
 		358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD36A287D52AC00802A91 /* vault_v1.pb.swift */; };
 		358BD36E287D539F00802A91 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; };
-		358BD36F287D539F00802A91 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */; };
 		358C42A828D48DFB00ADE305 /* DiscardChangesAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C42A728D48DFB00ADE305 /* DiscardChangesAlertModifier.swift */; };
 		3593DCE728A790F800C235D3 /* LocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCE628A790F800C235D3 /* LocalDatasource.swift */; };
@@ -194,15 +198,9 @@
 		35E5065B286F865900A3F6EA /* macOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E5065A286F865900A3F6EA /* macOSApp.swift */; };
 		35E50669286F870500A3F6EA /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
 		35E50671286F870500A3F6EA /* Client.h in Headers */ = {isa = PBXBuildFile; fileRef = 35E50663286F870500A3F6EA /* Client.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		35E50674286F870500A3F6EA /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
-		35E50675286F870500A3F6EA /* Client.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35E5068C286F87A700A3F6EA /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; };
 		35E50694286F87A700A3F6EA /* Core.h in Headers */ = {isa = PBXBuildFile; fileRef = 35E50686286F87A600A3F6EA /* Core.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		35E50697286F87A700A3F6EA /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; };
-		35E50698286F87A700A3F6EA /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35E506AD286F920300A3F6EA /* UIComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 35E506AC286F920300A3F6EA /* UIComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		35E506B0286F920300A3F6EA /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
-		35E506B1286F920300A3F6EA /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35E506CE286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */; };
 		35E506CF286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */; };
 		35E506D0286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */; };
@@ -304,27 +302,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		358BD372287D539F00802A91 /* Embed Frameworks */ = {
+		3544BCBB28E1E42B00EFE130 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3555EDF328A611BC00115EBC /* UIComponents.framework in Embed Frameworks */,
-				358BD36F287D539F00802A91 /* Core.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		35E50679286F870500A3F6EA /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				35E50675286F870500A3F6EA /* Client.framework in Embed Frameworks */,
-				35E506B1286F920300A3F6EA /* UIComponents.framework in Embed Frameworks */,
-				35E50698286F87A700A3F6EA /* Core.framework in Embed Frameworks */,
+				3544BCBA28E1E42B00EFE130 /* Client.framework in Embed Frameworks */,
+				3544BCBF28E1E43000EFE130 /* UIComponents.framework in Embed Frameworks */,
+				3544BCBD28E1E42C00EFE130 /* Core.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -605,10 +591,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35E50674286F870500A3F6EA /* Client.framework in Frameworks */,
-				35E50697286F87A700A3F6EA /* Core.framework in Frameworks */,
-				35E506B0286F920300A3F6EA /* UIComponents.framework in Frameworks */,
 				CCE7E1B680E6647D25927D82 /* Pods_iOS.framework in Frameworks */,
+				3544BCB928E1E42B00EFE130 /* Client.framework in Frameworks */,
+				3544BCBE28E1E43000EFE130 /* UIComponents.framework in Frameworks */,
+				3544BCBC28E1E42C00EFE130 /* Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1388,9 +1374,9 @@
 				35E50637286F819F00A3F6EA /* Sources */,
 				35E50638286F819F00A3F6EA /* Frameworks */,
 				35E50639286F819F00A3F6EA /* Resources */,
-				35E50679286F870500A3F6EA /* Embed Frameworks */,
 				1623E0D151267B992DD72C6D /* [CP] Embed Pods Frameworks */,
 				35E506A1286F8DB400A3F6EA /* SwiftLint */,
+				3544BCBB28E1E42B00EFE130 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1433,7 +1419,6 @@
 				35E5065E286F870500A3F6EA /* Frameworks */,
 				35E5065F286F870500A3F6EA /* Resources */,
 				35E506A2286F8E3B00A3F6EA /* SwiftLint */,
-				358BD372287D539F00802A91 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2661,7 +2646,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -2697,12 +2681,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -2721,6 +2705,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
+				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass Distribution";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -2800,7 +2785,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 90C0C1685F4D41658DEF1E6C /* Pods-Client.debug-black.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2837,7 +2821,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0BE4E6BF168DD26038B84CF6 /* Pods-Client.release-black.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -3197,7 +3180,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -3267,7 +3249,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 32C1E0DDBABAC43C35D4832D /* Pods-Client.debug-prod.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -3488,12 +3469,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -3512,6 +3493,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
+				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass Distribution";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -3557,7 +3539,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 50E3D0EFD3C4BE45369D6842 /* Pods-Client.release-prod.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
