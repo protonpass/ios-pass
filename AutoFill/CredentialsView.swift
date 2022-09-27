@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import SwiftUI
 
 struct CredentialsView: View {
@@ -41,7 +42,8 @@ struct CredentialsView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: onCancel) {
-                Text("Cancel")
+                Image(uiImage: IconProvider.cross)
+                    .foregroundColor(.primary)
             }
         }
     }

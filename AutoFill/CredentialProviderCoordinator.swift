@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
+import Core
+import CryptoKit
 import SwiftUI
 
 public final class CredentialProviderCoordinator {
@@ -30,6 +32,18 @@ public final class CredentialProviderCoordinator {
          rootViewController: UIViewController) {
         self.context = context
         self.rootViewController = rootViewController
+    }
+
+    func start(sessionData: SessionData?, symmetricKey: String?) {
+        guard let sessionData = sessionData,
+              let symmetricKey = symmetricKey,
+              let symmetricKeyData = symmetricKey.data(using: .utf8) else {
+            showNoLoggedInView()
+            return
+        }
+
+        showCredentialsView(sessionData: sessionData,
+                            symmetricKey: .init(data: symmetricKeyData))
     }
 }
 
@@ -63,16 +77,24 @@ extension CredentialProviderCoordinator {
         lastChildViewController = viewController
     }
 
-    func showCredentialsView() {
+    private func showCredentialsView(sessionData: SessionData,
+                                     symmetricKey: SymmetricKey) {
         let view = CredentialsView(
             onCancel: { [unowned self] in
                 self.cancel(errorCode: .userCanceled)
             },
             onSelect: { [unowned self] index in
-                let credential = ASPasswordCredential(user: "username\(index)@example.com",
+                let credential = ASPasswordCredential(user: "\(index)@example.com",
                                                       password: "password\(index)")
                 self.complete(with: credential)
             })
+        showView(view)
+    }
+
+    private func showNoLoggedInView() {
+        let view = NotLoggedInView { [unowned self] in
+            self.cancel(errorCode: .userCanceled)
+        }
         showView(view)
     }
 }

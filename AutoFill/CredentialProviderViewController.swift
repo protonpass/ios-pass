@@ -19,15 +19,29 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
+import Core
+import ProtonCore_Keymaker
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
+    @KeychainStorage(key: "sessionData")
+    private var sessionData: SessionData?
+
+    @KeychainStorage(key: "symmetricKey")
+    private var symmetricKey: String?
+
     private lazy var coordinator: CredentialProviderCoordinator = {
         .init(context: extensionContext, rootViewController: self)
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        coordinator.showCredentialsView()
+        let keychain = PPKeychain()
+        let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
+        self._sessionData.setKeychain(keychain)
+        self._sessionData.setMainKeyProvider(keymaker)
+        self._symmetricKey.setKeychain(keychain)
+        self._symmetricKey.setMainKeyProvider(keymaker)
+        coordinator.start(sessionData: sessionData, symmetricKey: symmetricKey)
     }
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
