@@ -32,18 +32,22 @@ final class CredentialsViewModel: ObservableObject {
     }
 
     @Published private(set) var state = State.idle
-    @Published private(set) var items = [ItemListUiModel]()
+    @Published private(set) var matchedItems = [ItemListUiModel]()
+    @Published private(set) var notMatchedItems = [ItemListUiModel]()
 
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
+    private let urls: [URL]
 
     var onClose: (() -> Void)?
     var onSelect: ((ASPasswordCredential) -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
-         symmetricKey: SymmetricKey) {
+         symmetricKey: SymmetricKey,
+         serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
+        self.urls = serviceIdentifiers.map { $0.identifier }.compactMap { URL(string: $0) }
         fetchItems()
     }
 
@@ -53,15 +57,42 @@ final class CredentialsViewModel: ObservableObject {
                 state = .loading
                 let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
 
-                var loginItems = [ItemListUiModel]()
+                var matchedItems = [ItemListUiModel]()
+                var notMatchedItems = [ItemListUiModel]()
                 for encryptedItem in encryptedItems {
-                    let decryptedItem = try await encryptedItem.toItemListUiModel(symmetricKey)
-                    if case .login = decryptedItem.type {
-                        loginItems.append(decryptedItem)
+                    let decryptedItemContent =
+                    try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+
+                    if case let .login(_, _, itemUrlStrings) = decryptedItemContent.contentData {
+                        let itemUrls = itemUrlStrings.compactMap { URL(string: $0) }
+                        let matchedUrls = urls.filter { url in
+                            if let scheme = url.scheme,
+                               let host = url.host {
+                                for itemUrl in itemUrls {
+                                    if let itemScheme = itemUrl.scheme,
+                                       let itemHost = itemUrl.host {
+                                        if scheme == itemScheme && host == itemHost {
+                                            return true
+                                        }
+                                    }
+                                }
+                                return false
+                            } else {
+                                return false
+                            }
+                        }
+
+                        let decryptedItem = try await encryptedItem.toItemListUiModel(symmetricKey)
+                        if matchedUrls.isEmpty {
+                            notMatchedItems.append(decryptedItem)
+                        } else {
+                            matchedItems.append(decryptedItem)
+                        }
                     }
                 }
 
-                items = loginItems
+                self.matchedItems = matchedItems
+                self.notMatchedItems = notMatchedItems
                 state = .loaded
             } catch {
                 state = .error(error)

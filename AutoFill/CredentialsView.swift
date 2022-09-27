@@ -62,17 +62,47 @@ struct CredentialsView: View {
     private var itemList: some View {
         ScrollView {
             LazyVStack {
-                ForEach(viewModel.items, id: \.itemId) { item in
-                    GenericItemView(
-                        item: item,
-                        showDivider: item.itemId != viewModel.items.last?.itemId,
-                        action: { viewModel.select(item: item) },
-                        trailingView: { EmptyView() })
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                if !viewModel.matchedItems.isEmpty {
+                    Section(content: {
+                        ForEach(viewModel.matchedItems, id: \.itemId) { item in
+                            view(for: item,
+                                 showDivider: item.itemId != viewModel.matchedItems.last?.itemId)
+                        }
+                        Spacer()
+                    }, header: {
+                        Text("Matched item(s) (\(viewModel.matchedItems.count))")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(.secondary)
+                            .font(.callout)
+                    })
                 }
-                Spacer()
+
+                if !viewModel.notMatchedItems.isEmpty {
+                    Section(content: {
+                        ForEach(viewModel.notMatchedItems, id: \.itemId) { item in
+                            view(for: item,
+                                 showDivider: item.itemId != viewModel.notMatchedItems.last?.itemId)
+                        }
+                        Spacer()
+                    }, header: {
+                        Text("Others item(s) (\(viewModel.notMatchedItems.count))")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(.secondary)
+                            .font(.callout)
+                    })
+                }
             }
+            .padding()
         }
-        .animation(.default, value: viewModel.items.count)
+        .animation(.default, value: viewModel.matchedItems.count + viewModel.notMatchedItems.count)
+    }
+
+    private func view(for item: ItemListUiModel, showDivider: Bool) -> some View {
+        GenericItemView(
+            item: item,
+            showDivider: showDivider,
+            action: { viewModel.select(item: item) },
+            trailingView: { EmptyView() })
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

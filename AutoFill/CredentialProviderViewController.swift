@@ -31,6 +31,10 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     @KeychainStorage(key: .symmetricKey)
     private var symmetricKey: String?
 
+    private let keychain = PPKeychain()
+    private lazy var keymaker: Keymaker = { .init(autolocker: Autolocker(lockTimeProvider: keychain),
+                                                  keychain: keychain) }()
+
     private lazy var coordinator: CredentialProviderCoordinator = {
         .init(apiService: PMAPIService(doh: PPDoH(bundle: .main)),
               container: .Builder.build(name: kProtonPassContainerName, inMemory: false),
@@ -40,20 +44,20 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let keychain = PPKeychain()
-        let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         self._sessionData.setKeychain(keychain)
         self._sessionData.setMainKeyProvider(keymaker)
         self._symmetricKey.setKeychain(keychain)
         self._symmetricKey.setMainKeyProvider(keymaker)
-        coordinator.start(sessionData: sessionData, symmetricKey: symmetricKey)
     }
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
      'serviceIdentifiers' describe the service the user is logging in to, so your extension can
      prioritize the most relevant credentials in the list.
-    */
+     */
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        coordinator.start(sessionData: sessionData,
+                          symmetricKey: symmetricKey,
+                          serviceIdentifiers: serviceIdentifiers)
     }
 
      /*Implement this method if your extension supports showing credentials in the QuickType bar.

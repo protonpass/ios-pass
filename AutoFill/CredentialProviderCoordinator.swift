@@ -44,7 +44,9 @@ public final class CredentialProviderCoordinator {
         self.rootViewController = rootViewController
     }
 
-    func start(sessionData: SessionData?, symmetricKey: String?) {
+    func start(sessionData: SessionData?,
+               symmetricKey: String?,
+               serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         guard let sessionData = sessionData,
               let symmetricKey = symmetricKey,
               let symmetricKeyData = symmetricKey.data(using: .utf8) else {
@@ -53,7 +55,8 @@ public final class CredentialProviderCoordinator {
         }
 
         showCredentialsView(userData: sessionData.userData,
-                            symmetricKey: .init(data: symmetricKeyData))
+                            symmetricKey: .init(data: symmetricKeyData),
+                            serviceIdentifiers: serviceIdentifiers)
     }
 }
 
@@ -88,13 +91,15 @@ extension CredentialProviderCoordinator {
     }
 
     private func showCredentialsView(userData: UserData,
-                                     symmetricKey: SymmetricKey) {
+                                     symmetricKey: SymmetricKey,
+                                     serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         let itemRepository = ItemRepository(userData: userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
                                             apiService: apiService)
         let viewModel = CredentialsViewModel(itemRepository: itemRepository,
-                                             symmetricKey: symmetricKey)
+                                             symmetricKey: symmetricKey,
+                                             serviceIdentifiers: serviceIdentifiers)
         viewModel.onClose = { [unowned self] in
             self.cancel(errorCode: .userCanceled)
         }
