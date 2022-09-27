@@ -24,11 +24,15 @@ public extension NSPersistentContainer {
     enum Builder {
         public static func build(name: String, inMemory: Bool) -> NSPersistentContainer {
             let container = NSPersistentContainer(name: name)
+
+            let url: URL
             if inMemory {
-                let description = NSPersistentStoreDescription()
-                description.url = URL(fileURLWithPath: "/dev/null")
-                container.persistentStoreDescriptions = [description]
+                url = URL(fileURLWithPath: "/dev/null")
+            } else {
+                url = URL.storeURL(for: "group.me.proton.pass", databaseName: name)
             }
+            container.persistentStoreDescriptions = [.init(url: url)]
+
             container.loadPersistentStores { _, error in
                 if let error = error {
                     fatalError("Unresolved error \(error.localizedDescription)")
@@ -36,5 +40,17 @@ public extension NSPersistentContainer {
             }
             return container
         }
+    }
+}
+
+private extension URL {
+    /// Returns a URL for the given app group and database pointing to the sqlite database.
+    static func storeURL(for appGroup: String, databaseName: String) -> URL {
+        guard let fileContainer =
+                FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
+            fatalError("Shared file container could not be created.")
+        }
+
+        return fileContainer.appendingPathComponent("\(databaseName).sqlite")
     }
 }

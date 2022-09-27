@@ -19,17 +19,27 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
+import Client
 import Core
+import CoreData
 import CryptoKit
+import ProtonCore_Login
+import ProtonCore_Services
 import SwiftUI
 
 public final class CredentialProviderCoordinator {
+    private let apiService: APIService
+    private let container: NSPersistentContainer
     private let context: ASCredentialProviderExtensionContext
     private let rootViewController: UIViewController
     private var lastChildViewController: UIViewController?
 
-    init(context: ASCredentialProviderExtensionContext,
+    init(apiService: APIService,
+         container: NSPersistentContainer,
+         context: ASCredentialProviderExtensionContext,
          rootViewController: UIViewController) {
+        self.apiService = apiService
+        self.container = container
         self.context = context
         self.rootViewController = rootViewController
     }
@@ -42,7 +52,7 @@ public final class CredentialProviderCoordinator {
             return
         }
 
-        showCredentialsView(sessionData: sessionData,
+        showCredentialsView(userData: sessionData.userData,
                             symmetricKey: .init(data: symmetricKeyData))
     }
 }
@@ -77,15 +87,38 @@ extension CredentialProviderCoordinator {
         lastChildViewController = viewController
     }
 
-    private func showCredentialsView(sessionData: SessionData,
+    private func showCredentialsView(userData: UserData,
                                      symmetricKey: SymmetricKey) {
-        let viewModel = CredentialsViewModel(symmetricKey: symmetricKey)
+        let localItemDatasource = LocalItemDatasource(container: container)
+        let remoteItemRevisionDatasource =
+        RemoteItemRevisionDatasource(authCredential: userData.credential,
+                                     apiService: apiService)
+        let publicKeyRepository = PublicKeyRepository(container: container, apiService: apiService)
+        let shareRepository = ShareRepository(userId: userData.user.ID,
+                                              container: container,
+                                              authCredential: userData.credential,
+                                              apiService: apiService)
+        let localItemKeyDatasource = LocalItemKeyDatasource(container: container)
+        let localVaultKeyDatasource = LocalVaultKeyDatasource(container: container)
+        let remoteVaultItemKeysDatasource = RemoteVaultItemKeysDatasource(authCredential: userData.credential,
+                                                                          apiService: apiService)
+        let vaultItemKeysRepository =
+        VaultItemKeysRepository(localItemKeyDatasource: localItemKeyDatasource,
+                                localVaultKeyDatasource: localVaultKeyDatasource,
+                                remoteVaultItemKeysDatasource: remoteVaultItemKeysDatasource)
+        let itemRepository = ItemRepository(userData: userData,
+                                            symmetricKey: symmetricKey,
+                                            localItemDatasoure: localItemDatasource,
+                                            remoteItemRevisionDatasource: remoteItemRevisionDatasource,
+                                            publicKeyRepository: publicKeyRepository,
+                                            shareRepository: shareRepository,
+                                            vaultItemKeysRepository: vaultItemKeysRepository)
+        let viewModel = CredentialsViewModel(itemRepository: itemRepository,
+                                             symmetricKey: symmetricKey)
         viewModel.onClose = { [unowned self] in
             self.cancel(errorCode: .userCanceled)
         }
-        viewModel.onSelect = { [unowned self] in
-            let credential = ASPasswordCredential(user: "john@example.com",
-                                                  password: "password")
+        viewModel.onSelect = { [unowned self] credential in
             self.complete(with: credential)
         }
         showView(CredentialsView(viewModel: viewModel))

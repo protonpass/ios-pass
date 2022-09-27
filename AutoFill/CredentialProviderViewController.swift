@@ -19,8 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
+import Client
 import Core
 import ProtonCore_Keymaker
+import ProtonCore_Services
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
     @KeychainStorage(key: "sessionData")
@@ -30,7 +32,10 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     private var symmetricKey: String?
 
     private lazy var coordinator: CredentialProviderCoordinator = {
-        .init(context: extensionContext, rootViewController: self)
+        .init(apiService: PMAPIService(doh: PPDoH(bundle: .main)),
+              container: .Builder.build(name: kProtonPassContainerName, inMemory: false),
+              context: extensionContext,
+              rootViewController: self)
     }()
 
     override func viewDidLoad() {

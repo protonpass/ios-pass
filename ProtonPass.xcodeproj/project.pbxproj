@@ -20,6 +20,7 @@
 		3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3520F36028E31AF20053A606 /* NotLoggedInView.swift */; };
 		3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3520F36228E325900053A606 /* CredentialsViewModel.swift */; };
 		3520F36828E327420053A606 /* ItemListUiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2CF28DA4E7400194F24 /* ItemListUiModel.swift */; };
+		3520F36928E32DCF0053A606 /* ProtonPass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */; };
 		352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */; };
 		352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BC28E2DCB5000630E2 /* CredentialsView.swift */; };
 		3529432928DAF54900E1F11B /* SearchUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3529432828DAF54900E1F11B /* SearchUtils.swift */; };
@@ -2078,6 +2079,7 @@
 			files = (
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
+				3520F36928E32DCF0053A606 /* ProtonPass.xcdatamodeld in Sources */,
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
 				3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */,
 				3520F36828E327420053A606 /* ItemListUiModel.swift in Sources */,

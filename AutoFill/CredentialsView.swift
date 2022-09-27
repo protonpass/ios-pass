@@ -31,17 +31,21 @@ struct CredentialsView: View {
 
     var body: some View {
         NavigationView {
-            switch viewModel.state {
-            case .idle:
-                EmptyView()
-            case .loading:
-                ProgressView()
-            case .loaded:
-                itemList
-            case .error(let error):
-                RetryableErrorView(errorMessage: error.messageForTheUser,
-                                   onRetry: viewModel.fetchItems)
+            Group {
+                switch viewModel.state {
+                case .idle:
+                    EmptyView()
+                case .loading:
+                    ProgressView()
+                case .loaded:
+                    itemList
+                case .error(let error):
+                    RetryableErrorView(errorMessage: error.messageForTheUser,
+                                       onRetry: viewModel.fetchItems)
+                }
             }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { toolbarContent }
         }
     }
 
@@ -59,14 +63,16 @@ struct CredentialsView: View {
         ScrollView {
             LazyVStack {
                 ForEach(viewModel.items, id: \.itemId) { item in
-                    Text(item.itemId)
-                        .onTapGesture {
-                            viewModel.select(item: item)
-                        }
+                    GenericItemView(
+                        item: item,
+                        showDivider: item.itemId != viewModel.items.last?.itemId,
+                        action: { viewModel.select(item: item) },
+                        trailingView: { EmptyView() })
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                Spacer()
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar { toolbarContent }
+        .animation(.default, value: viewModel.items.count)
     }
 }

@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import AuthenticationServices
+import Client
 import CryptoKit
 import SwiftUI
 
@@ -32,17 +34,40 @@ final class CredentialsViewModel: ObservableObject {
     @Published private(set) var state = State.idle
     @Published private(set) var items = [ItemListUiModel]()
 
+    private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
 
     var onClose: (() -> Void)?
-    var onSelect: (() -> Void)?
+    var onSelect: ((ASPasswordCredential) -> Void)?
 
-    init(symmetricKey: SymmetricKey) {
+    init(itemRepository: ItemRepositoryProtocol,
+         symmetricKey: SymmetricKey) {
+        self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
         fetchItems()
     }
 
-    func fetchItems() {}
+    func fetchItems() {
+        Task { @MainActor in
+            do {
+                state = .loading
+                let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
+
+                var loginItems = [ItemListUiModel]()
+                for encryptedItem in encryptedItems {
+                    let decryptedItem = try await encryptedItem.toItemListUiModel(symmetricKey)
+                    if case .login = decryptedItem.type {
+                        loginItems.append(decryptedItem)
+                    }
+                }
+
+                items = loginItems
+                state = .loaded
+            } catch {
+                state = .error(error)
+            }
+        }
+    }
 }
 
 // MARK: - Actions
@@ -52,6 +77,22 @@ extension CredentialsViewModel {
     }
 
     func select(item: ItemListUiModel) {
-        onSelect?()
+        Task { @MainActor in
+            do {
+                guard let item = try await itemRepository.getItem(shareId: item.shareId,
+                                                                  itemId: item.itemId) else {
+                    return
+                }
+                let itemContent = try item.getDecryptedItemContent(symmetricKey: symmetricKey)
+                switch itemContent.contentData {
+                case let .login(username, password, _):
+                    onSelect?(.init(user: username, password: password))
+                default:
+                    break
+                }
+            } catch {
+                state = .error(error)
+            }
+        }
     }
 }
