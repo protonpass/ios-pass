@@ -44,10 +44,10 @@ final class AppCoordinator {
     private let apiService: PMAPIService
     private var container: NSPersistentContainer
 
-    @KeychainStorage(key: "sessionData")
+    @KeychainStorage(key: .sessionData)
     private var sessionData: SessionData?
 
-    @KeychainStorage(key: "symmetricKey")
+    @KeychainStorage(key: .symmetricKey)
     private var symmetricKey: String?
 
     private var homeCoordinator: HomeCoordinator?

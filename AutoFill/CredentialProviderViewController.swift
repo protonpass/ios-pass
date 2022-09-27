@@ -25,10 +25,10 @@ import ProtonCore_Keymaker
 import ProtonCore_Services
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
-    @KeychainStorage(key: "sessionData")
+    @KeychainStorage(key: .sessionData)
     private var sessionData: SessionData?
 
-    @KeychainStorage(key: "symmetricKey")
+    @KeychainStorage(key: .symmetricKey)
     private var symmetricKey: String?
 
     private lazy var coordinator: CredentialProviderCoordinator = {
