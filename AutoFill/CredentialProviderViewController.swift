@@ -66,13 +66,4 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
     }
     */
-
-    @IBAction private func cancel(_ sender: AnyObject?) {
-        coordinator.cancel(errorCode: .userCanceled)
-    }
-
-    @IBAction private func passwordSelected(_ sender: AnyObject?) {
-        let passwordCredential = ASPasswordCredential(user: "j_appleseed", password: "apple1234")
-        coordinator.complete(with: passwordCredential)
-    }
 }
