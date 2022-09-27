@@ -306,6 +306,25 @@ public struct ItemRepository: ItemRepositoryProtocol {
         self.shareRepository = shareRepository
         self.vaultItemKeysRepository = vaultItemKeysRepository
     }
+
+    public init(userData: UserData,
+                symmetricKey: SymmetricKey,
+                container: NSPersistentContainer,
+                apiService: APIService) {
+        self.userData = userData
+        self.symmetricKey = symmetricKey
+        self.localItemDatasoure = LocalItemDatasource(container: container)
+        self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(authCredential: userData.credential,
+                                                                         apiService: apiService)
+        self.publicKeyRepository = PublicKeyRepository(container: container, apiService: apiService)
+        self.shareRepository = ShareRepository(userId: userData.user.ID,
+                                               container: container,
+                                               authCredential: userData.credential,
+                                               apiService: apiService)
+        self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
+                                                               authCredential: userData.credential,
+                                                               apiService: apiService)
+    }
 }
 
 private struct KeysAndPassphrases {

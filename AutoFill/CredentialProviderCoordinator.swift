@@ -89,30 +89,10 @@ extension CredentialProviderCoordinator {
 
     private func showCredentialsView(userData: UserData,
                                      symmetricKey: SymmetricKey) {
-        let localItemDatasource = LocalItemDatasource(container: container)
-        let remoteItemRevisionDatasource =
-        RemoteItemRevisionDatasource(authCredential: userData.credential,
-                                     apiService: apiService)
-        let publicKeyRepository = PublicKeyRepository(container: container, apiService: apiService)
-        let shareRepository = ShareRepository(userId: userData.user.ID,
-                                              container: container,
-                                              authCredential: userData.credential,
-                                              apiService: apiService)
-        let localItemKeyDatasource = LocalItemKeyDatasource(container: container)
-        let localVaultKeyDatasource = LocalVaultKeyDatasource(container: container)
-        let remoteVaultItemKeysDatasource = RemoteVaultItemKeysDatasource(authCredential: userData.credential,
-                                                                          apiService: apiService)
-        let vaultItemKeysRepository =
-        VaultItemKeysRepository(localItemKeyDatasource: localItemKeyDatasource,
-                                localVaultKeyDatasource: localVaultKeyDatasource,
-                                remoteVaultItemKeysDatasource: remoteVaultItemKeysDatasource)
         let itemRepository = ItemRepository(userData: userData,
                                             symmetricKey: symmetricKey,
-                                            localItemDatasoure: localItemDatasource,
-                                            remoteItemRevisionDatasource: remoteItemRevisionDatasource,
-                                            publicKeyRepository: publicKeyRepository,
-                                            shareRepository: shareRepository,
-                                            vaultItemKeysRepository: vaultItemKeysRepository)
+                                            container: container,
+                                            apiService: apiService)
         let viewModel = CredentialsViewModel(itemRepository: itemRepository,
                                              symmetricKey: symmetricKey)
         viewModel.onClose = { [unowned self] in

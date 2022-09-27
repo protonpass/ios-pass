@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CoreData
 
 public extension NSPersistentContainer {
@@ -29,7 +30,7 @@ public extension NSPersistentContainer {
             if inMemory {
                 url = URL(fileURLWithPath: "/dev/null")
             } else {
-                url = URL.storeURL(for: "group.me.proton.pass", databaseName: name)
+                url = URL.storeURL(for: Constants.appGroup, databaseName: name)
             }
             container.persistentStoreDescriptions = [.init(url: url)]
 
