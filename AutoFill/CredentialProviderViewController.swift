@@ -21,7 +21,14 @@
 import AuthenticationServices
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
-    private lazy var coordinator: CredentialProviderCoordinator = { .init(context: extensionContext) }()
+    private lazy var coordinator: CredentialProviderCoordinator = {
+        .init(context: extensionContext, rootViewController: self)
+    }()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        coordinator.showCredentialsView()
+    }
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
      'serviceIdentifiers' describe the service the user is logging in to, so your extension can
