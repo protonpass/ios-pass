@@ -20,7 +20,8 @@
 
 import AuthenticationServices
 
-class CredentialProviderViewController: ASCredentialProviderViewController {
+final class CredentialProviderViewController: ASCredentialProviderViewController {
+    private lazy var coordinator: CredentialProviderCoordinator = { .init(context: extensionContext) }()
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
      'serviceIdentifiers' describe the service the user is logging in to, so your extension can
@@ -60,13 +61,11 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     */
 
     @IBAction private func cancel(_ sender: AnyObject?) {
-        let error = NSError(domain: ASExtensionErrorDomain,
-                            code: ASExtensionError.userCanceled.rawValue)
-        self.extensionContext.cancelRequest(withError: error)
+        coordinator.cancel(errorCode: .userCanceled)
     }
 
     @IBAction private func passwordSelected(_ sender: AnyObject?) {
         let passwordCredential = ASPasswordCredential(user: "j_appleseed", password: "apple1234")
-        self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+        coordinator.complete(with: passwordCredential)
     }
 }
