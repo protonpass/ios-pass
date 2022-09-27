@@ -18,6 +18,8 @@
 		351E9E39289C508B00BB47EB /* ItemKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E38289C508B00BB47EB /* ItemKey+Test.swift */; };
 		351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */; };
 		3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3520F36028E31AF20053A606 /* NotLoggedInView.swift */; };
+		3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3520F36228E325900053A606 /* CredentialsViewModel.swift */; };
+		3520F36828E327420053A606 /* ItemListUiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2CF28DA4E7400194F24 /* ItemListUiModel.swift */; };
 		352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */; };
 		352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BC28E2DCB5000630E2 /* CredentialsView.swift */; };
 		3529432928DAF54900E1F11B /* SearchUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3529432828DAF54900E1F11B /* SearchUtils.swift */; };
@@ -378,6 +380,7 @@
 		351E9E38289C508B00BB47EB /* ItemKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemKey+Test.swift"; sourceTree = "<group>"; };
 		351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+RandomWithCount.swift"; sourceTree = "<group>"; };
 		3520F36028E31AF20053A606 /* NotLoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotLoggedInView.swift; sourceTree = "<group>"; };
+		3520F36228E325900053A606 /* CredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsViewModel.swift; sourceTree = "<group>"; };
 		352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderCoordinator.swift; sourceTree = "<group>"; };
 		352866BC28E2DCB5000630E2 /* CredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsView.swift; sourceTree = "<group>"; };
 		352866BE28E3065A000630E2 /* iOSDebug-Black.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iOSDebug-Black.entitlements"; sourceTree = "<group>"; };
@@ -823,6 +826,7 @@
 				352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */,
 				3544F5E328E2341900834CA4 /* CredentialProviderViewController.swift */,
 				352866BC28E2DCB5000630E2 /* CredentialsView.swift */,
+				3520F36228E325900053A606 /* CredentialsViewModel.swift */,
 				3520F36028E31AF20053A606 /* NotLoggedInView.swift */,
 				3544F5E528E2341900834CA4 /* MainInterface.storyboard */,
 				3544F5E828E2341900834CA4 /* Info.plist */,
@@ -2072,9 +2076,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
 				3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */,
+				3520F36828E327420053A606 /* ItemListUiModel.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

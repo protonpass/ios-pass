@@ -79,16 +79,16 @@ extension CredentialProviderCoordinator {
 
     private func showCredentialsView(sessionData: SessionData,
                                      symmetricKey: SymmetricKey) {
-        let view = CredentialsView(
-            onCancel: { [unowned self] in
-                self.cancel(errorCode: .userCanceled)
-            },
-            onSelect: { [unowned self] index in
-                let credential = ASPasswordCredential(user: "\(index)@example.com",
-                                                      password: "password\(index)")
-                self.complete(with: credential)
-            })
-        showView(view)
+        let viewModel = CredentialsViewModel(symmetricKey: symmetricKey)
+        viewModel.onClose = { [unowned self] in
+            self.cancel(errorCode: .userCanceled)
+        }
+        viewModel.onSelect = { [unowned self] in
+            let credential = ASPasswordCredential(user: "john@example.com",
+                                                  password: "password")
+            self.complete(with: credential)
+        }
+        showView(CredentialsView(viewModel: viewModel))
     }
 
     private func showNoLoggedInView() {

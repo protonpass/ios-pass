@@ -20,31 +20,53 @@
 
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct CredentialsView: View {
-    let onCancel: () -> Void
-    let onSelect: (Int) -> Void
+    @StateObject private var viewModel: CredentialsViewModel
+
+    init(viewModel: CredentialsViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(0..<100, id: \.self) { index in
-                    Text("#\(index)")
-                        .onTapGesture { onSelect(index) }
-                }
+            switch viewModel.state {
+            case .idle:
+                EmptyView()
+            case .loading:
+                ProgressView()
+            case .loaded:
+                itemList
+            case .error(let error):
+                RetryableErrorView(errorMessage: error.messageForTheUser,
+                                   onRetry: viewModel.fetchItems)
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar { toolbarContent }
         }
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: onCancel) {
+            Button(action: viewModel.closeAction) {
                 Image(uiImage: IconProvider.cross)
                     .foregroundColor(.primary)
             }
         }
+    }
+
+    private var itemList: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(viewModel.items, id: \.itemId) { item in
+                    Text(item.itemId)
+                        .onTapGesture {
+                            viewModel.select(item: item)
+                        }
+                }
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar { toolbarContent }
     }
 }
