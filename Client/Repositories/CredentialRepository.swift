@@ -31,6 +31,9 @@ public protocol CredentialRepositoryProtocol {
 
     /// Remove all login items from `ASCredentialIdentityStore`
     func removeAllCredentials() async throws
+
+    /// Get an `ASPasswordCredential` from an `ASPasswordCredentialIdentity`
+    func getCredential(of identity: ASPasswordCredentialIdentity) async throws -> ASPasswordCredential?
 }
 
 public extension CredentialRepositoryProtocol {
@@ -56,6 +59,18 @@ public extension CredentialRepositoryProtocol {
 
     func removeAllCredentials() async throws {
         try await credentialIdentityStore.removeAllCredentialIdentities()
+    }
+
+    func getCredential(of identity: ASPasswordCredentialIdentity) async throws -> ASPasswordCredential? {
+        let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
+        if let matchedEncryptedItem =
+            encryptedItems.first(where: { $0.item.itemID == identity.recordIdentifier }) {
+            let decryptedItemContent = try matchedEncryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+            if case let .login(username, password, _) = decryptedItemContent.contentData {
+                return .init(user: username, password: password)
+            }
+        }
+        return nil
     }
 }
 

@@ -63,8 +63,7 @@ public final class CredentialProviderCoordinator {
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         guard let sessionData = sessionData,
-              let symmetricKey = symmetricKey,
-              let symmetricKeyData = symmetricKey.data(using: .utf8) else {
+              let symmetricKeyData = symmetricKey?.data(using: .utf8) else {
             showNoLoggedInView()
             return
         }
@@ -76,9 +75,33 @@ public final class CredentialProviderCoordinator {
 
     /// QuickType bar support
     func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
+        guard let sessionData = sessionData,
+              let symmetricKeyData = symmetricKey?.data(using: .utf8) else {
+            cancel(errorCode: .failed)
+            return
+        }
+
         let databaseIsUnlocked = true
         if databaseIsUnlocked {
-            print(credentialIdentity)
+            let symmetricKey = SymmetricKey(data: symmetricKeyData)
+            let itemRepository = ItemRepository(userData: sessionData.userData,
+                                                symmetricKey: symmetricKey,
+                                                container: container,
+                                                apiService: apiService)
+            let credentialRepository = CredentialRepository(itemRepository: itemRepository,
+                                                            credentialIdentityStore: .shared,
+                                                            symmetricKey: symmetricKey)
+            Task { @MainActor in
+                do {
+                    if let credential = try await credentialRepository.getCredential(of: credentialIdentity) {
+                        complete(with: credential)
+                    } else {
+                        cancel(errorCode: .failed)
+                    }
+                } catch {
+                    cancel(errorCode: .failed)
+                }
+            }
         } else {
             cancel(errorCode: .userInteractionRequired)
         }
