@@ -47,9 +47,11 @@ public extension CredentialRepositoryProtocol {
             if case let .login(username, _, urls) = decryptedItemContent.contentData {
                 for url in urls {
                     let identifier = ASCredentialServiceIdentifier(identifier: url, type: .URL)
+                    let ids = CredentialIDs(shareId: decryptedItemContent.shareId,
+                                            itemId: decryptedItemContent.itemId)
                     credentials.append(.init(serviceIdentifier: identifier,
                                              user: username,
-                                             recordIdentifier: decryptedItemContent.itemId))
+                                             recordIdentifier: try ids.serializeBase64()))
                 }
             }
         }
@@ -62,13 +64,15 @@ public extension CredentialRepositoryProtocol {
     }
 
     func getCredential(of identity: ASPasswordCredentialIdentity) async throws -> ASPasswordCredential? {
-        let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
-        if let matchedEncryptedItem =
-            encryptedItems.first(where: { $0.item.itemID == identity.recordIdentifier }) {
-            let decryptedItemContent = try matchedEncryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-            if case let .login(username, password, _) = decryptedItemContent.contentData {
-                return .init(user: username, password: password)
-            }
+        guard let recordIdentifier = identity.recordIdentifier else { return nil }
+        let ids = try CredentialIDs.deserializeBase64(recordIdentifier)
+        guard let encryptedItem = try await itemRepository.getItem(shareId: ids.shareId,
+                                                                   itemId: ids.itemId) else {
+            return nil
+        }
+        let decryptedItemContent = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+        if case let .login(username, password, _) = decryptedItemContent.contentData {
+            return .init(user: username, password: password)
         }
         return nil
     }
