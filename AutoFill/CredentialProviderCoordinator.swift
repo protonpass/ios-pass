@@ -23,11 +23,20 @@ import Client
 import Core
 import CoreData
 import CryptoKit
+import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Services
 import SwiftUI
 
 public final class CredentialProviderCoordinator {
+    @KeychainStorage(key: .sessionData)
+    private var sessionData: SessionData?
+
+    @KeychainStorage(key: .symmetricKey)
+    private var symmetricKey: String?
+
+    private let keychain: Keychain
+    private let keymaker: Keymaker
     private let apiService: APIService
     private let container: NSPersistentContainer
     private let context: ASCredentialProviderExtensionContext
@@ -38,15 +47,21 @@ public final class CredentialProviderCoordinator {
          container: NSPersistentContainer,
          context: ASCredentialProviderExtensionContext,
          rootViewController: UIViewController) {
+        let keychain = PPKeychain()
+        self.keychain = keychain
+        self.keymaker = .init(autolocker: Autolocker(lockTimeProvider: keychain),
+                              keychain: keychain)
+        self._sessionData.setKeychain(keychain)
+        self._sessionData.setMainKeyProvider(keymaker)
+        self._symmetricKey.setKeychain(keychain)
+        self._symmetricKey.setMainKeyProvider(keymaker)
         self.apiService = apiService
         self.container = container
         self.context = context
         self.rootViewController = rootViewController
     }
 
-    func start(sessionData: SessionData?,
-               symmetricKey: String?,
-               serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+    func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         guard let sessionData = sessionData,
               let symmetricKey = symmetricKey,
               let symmetricKeyData = symmetricKey.data(using: .utf8) else {
