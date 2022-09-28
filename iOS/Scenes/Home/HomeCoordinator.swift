@@ -94,7 +94,10 @@ final class HomeCoordinator: DeinitPrintable {
 
     // Settings
     private lazy var settingsCoordinator: SettingsCoordinator = {
-        let settingsCoordinator = SettingsCoordinator()
+        let credentialRepository = CredentialRepository(itemRepository: itemRepository,
+                                                        credentialIdentityStore: .shared,
+                                                        symmetricKey: symmetricKey)
+        let settingsCoordinator = SettingsCoordinator(credentialRepository: credentialRepository)
         settingsCoordinator.delegate = self
         return settingsCoordinator
     }()

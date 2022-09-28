@@ -77,6 +77,7 @@
 		354513CB28E45F960020A93A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513CA28E45F960020A93A /* SettingsView.swift */; };
 		354513CD28E45FB20020A93A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513CC28E45FB20020A93A /* SettingsViewModel.swift */; };
 		354513CF28E460FD0020A93A /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513CE28E460FD0020A93A /* SettingsCoordinator.swift */; };
+		354513D128E4693B0020A93A /* CredentialRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513D028E4693B0020A93A /* CredentialRepository.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
@@ -437,6 +438,7 @@
 		354513CA28E45F960020A93A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		354513CC28E45FB20020A93A /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		354513CE28E460FD0020A93A /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
+		354513D028E4693B0020A93A /* CredentialRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialRepository.swift; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
 		3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonSwitchToggleStyle.swift; sourceTree = "<group>"; };
@@ -977,6 +979,7 @@
 			isa = PBXGroup;
 			children = (
 				354146D928D1F585007E45A6 /* AliasRepository.swift */,
+				354513D028E4693B0020A93A /* CredentialRepository.swift */,
 				3542E2CA28D9FE8600194F24 /* ItemRepository.swift */,
 				358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */,
 				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
@@ -2200,6 +2203,7 @@
 				354F768A28C72F1000EB2383 /* PassKeyUtils.swift in Sources */,
 				354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
+				354513D128E4693B0020A93A /* CredentialRepository.swift in Sources */,
 				355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */,
 				358A508B28AD3BB100F5285C /* DataError.swift in Sources */,
 				3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */,

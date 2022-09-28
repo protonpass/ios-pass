@@ -31,7 +31,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             Section(content: {
-                Toggle(isOn: $viewModel.quickTypeBar) {
+                Toggle(isOn: $viewModel.tempQuickTypeBar) {
                     Text("QuickType bar suggestions")
                 }
             }, footer: {

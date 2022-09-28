@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import SwiftUI
 
@@ -26,9 +27,42 @@ public enum SettingsKeys {
 }
 
 final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
-    @AppStorage(SettingsKeys.quickTypeBar) var quickTypeBar = true
+    private let credentialRepository: CredentialRepositoryProtocol
+
+    @Published var tempQuickTypeBar = true {
+        didSet {
+            populateOrRemoveCredentials()
+        }
+    }
+    @AppStorage(SettingsKeys.quickTypeBar) private var quickTypeBar = true
 
     var onToggleSidebar: (() -> Void)?
+
+    init(credentialRepository: CredentialRepositoryProtocol) {
+        self.credentialRepository = credentialRepository
+        super.init()
+        self.tempQuickTypeBar = quickTypeBar
+    }
+
+    private func populateOrRemoveCredentials() {
+        guard tempQuickTypeBar != quickTypeBar else { return }
+        Task { @MainActor in
+            do {
+                isLoading = true
+                if tempQuickTypeBar {
+                    try await credentialRepository.populateCredentials()
+                } else {
+                    try await credentialRepository.removeAllCredentials()
+                }
+                quickTypeBar = tempQuickTypeBar
+                isLoading = false
+            } catch {
+                self.isLoading = false
+                self.tempQuickTypeBar.toggle()
+                self.error = error
+            }
+        }
+    }
 }
 
 // MARK: - Actions

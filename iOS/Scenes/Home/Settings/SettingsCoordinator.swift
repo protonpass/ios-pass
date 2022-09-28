@@ -18,20 +18,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 
 final class SettingsCoordinator: Coordinator {
-    private let settingsViewModel = SettingsViewModel()
+    private let settingsViewModel: SettingsViewModel
 
-    override init() {
+    init(credentialRepository: CredentialRepositoryProtocol) {
+        self.settingsViewModel = .init(credentialRepository: credentialRepository)
         super.init()
         start()
     }
 
     private func start() {
+        settingsViewModel.delegate = self
         settingsViewModel.onToggleSidebar = { [unowned self] in
             toggleSidebar()
         }
         start(with: SettingsView(viewModel: settingsViewModel))
     }
+}
+
+// MARK: - BaseViewModelDelegate
+extension SettingsCoordinator: BaseViewModelDelegate {
+    func viewModelBeginsLoading() { showLoadingHud() }
+
+    func viewModelStopsLoading() { hideLoadingHud() }
+
+    func viewModelDidFailWithError(_ error: Error) { alertError(error) }
 }
