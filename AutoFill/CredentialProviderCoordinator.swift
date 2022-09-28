@@ -73,6 +73,16 @@ public final class CredentialProviderCoordinator {
                             symmetricKey: .init(data: symmetricKeyData),
                             serviceIdentifiers: serviceIdentifiers)
     }
+
+    /// QuickType bar support
+    func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
+        let databaseIsUnlocked = true
+        if databaseIsUnlocked {
+            print(credentialIdentity)
+        } else {
+            cancel(errorCode: .userInteractionRequired)
+        }
+    }
 }
 
 // MARK: - Context actions

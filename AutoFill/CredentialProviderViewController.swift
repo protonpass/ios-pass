@@ -46,20 +46,11 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
      ASPasswordCredentialIdentity your app has previously saved to the ASCredentialIdentityStore.
      Provide the password by completing the extension request with the associated ASPasswordCredential.
      If using the credential would require showing custom UI for authenticating the user, cancel
-     the request with error code ASExtensionError.userInteractionRequired.
+     the request with error code ASExtensionError.userInteractionRequired.*/
 
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        let databaseIsUnlocked = true
-        if (databaseIsUnlocked) {
-            let passwordCredential = ASPasswordCredential(user: "j_appleseed", password: "apple1234")
-            self.extensionContext.completeRequest(withSelectedCredential: passwordCredential,
-                                                  completionHandler: nil)
-        } else {
-            let error = NSError(domain: ASExtensionErrorDomain,
-                                code:ASExtensionError.userInteractionRequired.rawValue)
-            self.extensionContext.cancelRequest(withError: error)
-        }
-    }*/
+        coordinator.provideCredentialWithoutUserInteraction(for: credentialIdentity)
+    }
 
     /*
      Implement this method if provideCredentialWithoutUserInteraction(for:) can fail with

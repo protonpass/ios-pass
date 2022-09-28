@@ -92,6 +92,15 @@ final class HomeCoordinator: DeinitPrintable {
 
     private var myVaultsRootViewController: UIViewController { myVaultsCoordinator.rootViewController }
 
+    // Settings
+    private lazy var settingsCoordinator: SettingsCoordinator = {
+        let settingsCoordinator = SettingsCoordinator()
+        settingsCoordinator.delegate = self
+        return settingsCoordinator
+    }()
+
+    private var settingsRootViewController: UIViewController { settingsCoordinator.rootViewController }
+
     // Trash
     private lazy var trashCoordinator: TrashCoordinator = {
         let trashCoordinator = TrashCoordinator(symmetricKey: symmetricKey,
@@ -177,7 +186,10 @@ extension HomeCoordinator {
         case .home:
             showMyVaultsRootViewController()
         case .settings:
-            break
+            sideMenuController.setContentViewController(to: settingsRootViewController,
+                                                        animated: true) { [unowned self] in
+                self.sideMenuController.hideMenu()
+            }
         case .trash:
             sideMenuController.setContentViewController(to: trashRootViewController,
                                                         animated: true) { [unowned self] in

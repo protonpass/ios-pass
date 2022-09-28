@@ -74,6 +74,9 @@
 		3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3544F5E328E2341900834CA4 /* CredentialProviderViewController.swift */; };
 		3544F5E728E2341900834CA4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3544F5E528E2341900834CA4 /* MainInterface.storyboard */; };
 		3544F5EC28E2341900834CA4 /* AutoFill.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3544F5E028E2341800834CA4 /* AutoFill.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		354513CB28E45F960020A93A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513CA28E45F960020A93A /* SettingsView.swift */; };
+		354513CD28E45FB20020A93A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513CC28E45FB20020A93A /* SettingsViewModel.swift */; };
+		354513CF28E460FD0020A93A /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513CE28E460FD0020A93A /* SettingsCoordinator.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
@@ -431,6 +434,9 @@
 		3544F5E628E2341900834CA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		3544F5E828E2341900834CA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3544F5E928E2341900834CA4 /* AutoFill.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AutoFill.entitlements; sourceTree = "<group>"; };
+		354513CA28E45F960020A93A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		354513CC28E45FB20020A93A /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		354513CE28E460FD0020A93A /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
 		3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonSwitchToggleStyle.swift; sourceTree = "<group>"; };
@@ -834,6 +840,16 @@
 				3544F5E928E2341900834CA4 /* AutoFill.entitlements */,
 			);
 			path = AutoFill;
+			sourceTree = "<group>";
+		};
+		354513C928E45F840020A93A /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				354513CE28E460FD0020A93A /* SettingsCoordinator.swift */,
+				354513CA28E45F960020A93A /* SettingsView.swift */,
+				354513CC28E45FB20020A93A /* SettingsViewModel.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		3547ABCC2876CFA700EE85E1 /* MyVaults */ = {
@@ -1335,6 +1351,7 @@
 				355635B6288947DD00F32353 /* VaultSelection.swift */,
 				3547ABCC2876CFA700EE85E1 /* MyVaults */,
 				354BB14728A27E8100F50040 /* Search */,
+				354513C928E45F840020A93A /* Settings */,
 				353E8B6C2876162B00A2C5E3 /* Sidebar */,
 				3547ABD82876DEF300EE85E1 /* Trash */,
 			);
@@ -2110,6 +2127,7 @@
 				354BB14F28A27FF500F50040 /* SearchViewModel.swift in Sources */,
 				353E8B6E2876163F00A2C5E3 /* SidebarView.swift in Sources */,
 				3542E2D028DA4E7400194F24 /* ItemListUiModel.swift in Sources */,
+				354513CF28E460FD0020A93A /* SettingsCoordinator.swift in Sources */,
 				3547ABDE28774D1100EE85E1 /* MyVaultsCoordinator.swift in Sources */,
 				354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */,
 				355635B928895B8E00F32353 /* VaultContentView.swift in Sources */,
@@ -2138,6 +2156,7 @@
 				354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */,
 				35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */,
 				3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */,
+				354513CB28E45F960020A93A /* SettingsView.swift in Sources */,
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
@@ -2145,6 +2164,7 @@
 				354BB15528A2895F00F50040 /* SearchView.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
 				355635B7288947DD00F32353 /* VaultSelection.swift in Sources */,
+				354513CD28E45FB20020A93A /* SettingsViewModel.swift in Sources */,
 				3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
