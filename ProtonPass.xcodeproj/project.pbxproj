@@ -78,6 +78,9 @@
 		354513CD28E45FB20020A93A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513CC28E45FB20020A93A /* SettingsViewModel.swift */; };
 		354513CF28E460FD0020A93A /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513CE28E460FD0020A93A /* SettingsCoordinator.swift */; };
 		354513D128E4693B0020A93A /* CredentialRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513D028E4693B0020A93A /* CredentialRepository.swift */; };
+		354513D228E4C70B0020A93A /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; };
+		354513D728E4C70E0020A93A /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
+		354513DB28E4C71F0020A93A /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
@@ -251,6 +254,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 3544F5DF28E2341800834CA4;
 			remoteInfo = AutoFill;
+		};
+		354513D428E4C70B0020A93A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35E5062F286F819F00A3F6EA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 35E50683286F87A600A3F6EA;
+			remoteInfo = Core;
+		};
+		354513D928E4C70E0020A93A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35E5062F286F819F00A3F6EA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 35E50660286F870500A3F6EA;
+			remoteInfo = Client;
+		};
+		354513DD28E4C71F0020A93A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35E5062F286F819F00A3F6EA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 35E506A9286F920300A3F6EA;
+			remoteInfo = UIComponents;
 		};
 		354A804028D8B8D8003F49CF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -640,7 +664,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3544F5E128E2341900834CA4 /* AuthenticationServices.framework in Frameworks */,
+				354513D228E4C70B0020A93A /* Core.framework in Frameworks */,
 				F53DC9E901354CB27344B8B0 /* Pods_AutoFill.framework in Frameworks */,
+				354513D728E4C70E0020A93A /* Client.framework in Frameworks */,
+				354513DB28E4C71F0020A93A /* UIComponents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1462,6 +1489,9 @@
 			buildRules = (
 			);
 			dependencies = (
+				354513D528E4C70B0020A93A /* PBXTargetDependency */,
+				354513DA28E4C70E0020A93A /* PBXTargetDependency */,
+				354513DE28E4C71F0020A93A /* PBXTargetDependency */,
 			);
 			name = AutoFill;
 			productName = AutoFill;
@@ -2360,6 +2390,21 @@
 			isa = PBXTargetDependency;
 			target = 3544F5DF28E2341800834CA4 /* AutoFill */;
 			targetProxy = 3544F5EA28E2341900834CA4 /* PBXContainerItemProxy */;
+		};
+		354513D528E4C70B0020A93A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 35E50683286F87A600A3F6EA /* Core */;
+			targetProxy = 354513D428E4C70B0020A93A /* PBXContainerItemProxy */;
+		};
+		354513DA28E4C70E0020A93A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 35E50660286F870500A3F6EA /* Client */;
+			targetProxy = 354513D928E4C70E0020A93A /* PBXContainerItemProxy */;
+		};
+		354513DE28E4C71F0020A93A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 35E506A9286F920300A3F6EA /* UIComponents */;
+			targetProxy = 354513DD28E4C71F0020A93A /* PBXContainerItemProxy */;
 		};
 		354A804128D8B8D8003F49CF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
