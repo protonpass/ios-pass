@@ -50,6 +50,7 @@ final class HomeCoordinator: DeinitPrintable {
     private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let publicKeyRepository: PublicKeyRepositoryProtocol
+    private let credentialRepository: CredentialRepositoryProtocol
     weak var delegate: HomeCoordinatorDelegate?
 
     var rootViewController: UIViewController { sideMenuController }
@@ -82,6 +83,7 @@ final class HomeCoordinator: DeinitPrintable {
                                                       vaultItemKeysRepository: vaultItemKeysRepository,
                                                       itemRepository: itemRepository,
                                                       aliasRepository: aliasRepository,
+                                                      credentialRepository: credentialRepository,
                                                       publicKeyRepository: publicKeyRepository)
         myVaultsCoordinator.delegate = self
         myVaultsCoordinator.onTrashedItem = { [unowned self] in
@@ -131,10 +133,11 @@ final class HomeCoordinator: DeinitPrintable {
         let userId = sessionData.userData.user.ID
         let authCredential = sessionData.userData.credential
 
-        self.itemRepository = ItemRepository(userData: sessionData.userData,
-                                             symmetricKey: symmetricKey,
-                                             container: container,
-                                             apiService: apiService)
+        let itemRepository = ItemRepository(userData: sessionData.userData,
+                                            symmetricKey: symmetricKey,
+                                            container: container,
+                                            apiService: apiService)
+        self.itemRepository = itemRepository
         self.aliasRepository = AliasRepository(authCredential: authCredential, apiService: apiService)
         self.publicKeyRepository = PublicKeyRepository(container: container,
                                                        apiService: apiService)
@@ -145,6 +148,9 @@ final class HomeCoordinator: DeinitPrintable {
         self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
                                                                authCredential: authCredential,
                                                                apiService: apiService)
+        self.credentialRepository = CredentialRepository(itemRepository: itemRepository,
+                                                         credentialIdentityStore: .shared,
+                                                         symmetricKey: symmetricKey)
         self.vaultSelection = .init(vaults: [])
         self.setUpSideMenuPreferences()
         self.observeVaultSelection()
@@ -233,7 +239,14 @@ extension HomeCoordinator {
     }
 
     private func signOut() {
-        delegate?.homeCoordinatorDidSignOut()
+        Task { @MainActor in
+            do {
+                try await credentialRepository.removeAllCredentials()
+                delegate?.homeCoordinatorDidSignOut()
+            } catch {
+                alert(error: error)
+            }
+        }
     }
 
     private func showLoadingHud() {

@@ -33,6 +33,9 @@ public protocol CredentialRepositoryProtocol {
     /// Whether the user has picked Proton Pass as AutoFill provider
     func isEnabled() async -> Bool
 
+    /// Whether there are already previous credentials in the database
+    func hasCredentials() async -> Bool
+
     /// Populate `ASCredentialIdentityStore` from login items of all shares
     func populateCredentials() async throws
 
@@ -48,7 +51,15 @@ public extension CredentialRepositoryProtocol {
         await getState().isEnabled
     }
 
+    func hasCredentials() async -> Bool {
+        await getState().supportsIncrementalUpdates
+    }
+
     func populateCredentials() async throws {
+        let state = await getState()
+        guard state.isEnabled else {
+            throw CredentialRepositoryError.autoFillNotEnabled
+        }
         try await removeAllCredentials()
 
         var credentials = [ASPasswordCredentialIdentity]()
@@ -74,8 +85,6 @@ public extension CredentialRepositoryProtocol {
         let state = await getState()
         if state.isEnabled {
             try await credentialIdentityStore.removeAllCredentialIdentities()
-        } else {
-            throw CredentialRepositoryError.autoFillNotEnabled
         }
     }
 

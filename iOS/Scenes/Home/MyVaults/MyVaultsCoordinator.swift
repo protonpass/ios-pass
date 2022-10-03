@@ -33,6 +33,7 @@ final class MyVaultsCoordinator: Coordinator {
     private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
+    private let credentialRepository: CredentialRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
 
     var onTrashedItem: (() -> Void)?
@@ -44,6 +45,7 @@ final class MyVaultsCoordinator: Coordinator {
          vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
+         credentialRepository: CredentialRepositoryProtocol,
          publicKeyRepository: PublicKeyRepositoryProtocol) {
         self.symmetricKey = symmetricKey
         self.userData = userData
@@ -52,8 +54,10 @@ final class MyVaultsCoordinator: Coordinator {
         self.itemRepository = itemRepository
         self.vaultItemKeysRepository = vaultItemKeysRepository
         self.aliasRepository = aliasRepository
+        self.credentialRepository = credentialRepository
         self.vaultContentViewModel = .init(vaultSelection: vaultSelection,
                                            itemRepository: itemRepository,
+                                           credetialRepository: credentialRepository,
                                            symmetricKey: symmetricKey)
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
         super.init()

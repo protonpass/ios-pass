@@ -50,6 +50,7 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
 
     private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
+    private let credetialRepository: CredentialRepositoryProtocol
     private let symmetricKey: SymmetricKey
 
     var onToggleSidebar: (() -> Void)?
@@ -61,8 +62,10 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
 
     init(vaultSelection: VaultSelection,
          itemRepository: ItemRepositoryProtocol,
+         credetialRepository: CredentialRepositoryProtocol,
          symmetricKey: SymmetricKey) {
         self.vaultSelection = vaultSelection
+        self.credetialRepository = credetialRepository
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
         super.init()
@@ -94,6 +97,13 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
                                                                        shareId: shareId,
                                                                        state: .active)
                 items = try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+
+                // Populate credential database if necessary
+                let hasCredentials = await credetialRepository.hasCredentials()
+                if !hasCredentials {
+                    try await credetialRepository.populateCredentials()
+                }
+
                 state = .loaded
             } catch {
                 state = .error(error)
