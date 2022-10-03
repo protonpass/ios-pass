@@ -29,6 +29,8 @@ public enum SettingsKeys {
 final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     private let credentialRepository: CredentialRepositoryProtocol
 
+    // Use a temporary boolean here because enabling/disabling can throw errors
+    // and when errors happen, we can rollback this boolean
     @Published var tempQuickTypeBar = true {
         didSet {
             populateOrRemoveCredentials()
@@ -36,17 +38,43 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
     }
     @AppStorage(SettingsKeys.quickTypeBar) private var quickTypeBar = true
 
+    /// Whether user has picked Proton Pass as AutoFill provider in Settings
+    @Published private(set) var autoFillEnabled = false {
+        didSet {
+            populateOrRemoveCredentials()
+        }
+    }
+
     var onToggleSidebar: (() -> Void)?
 
     init(credentialRepository: CredentialRepositoryProtocol) {
         self.credentialRepository = credentialRepository
         super.init()
         self.tempQuickTypeBar = quickTypeBar
+        self.updateAutoFillAvalability()
+
+        NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { [weak self] _ in
+                self?.updateAutoFillAvalability()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func updateAutoFillAvalability() {
+        Task { @MainActor in
+            self.autoFillEnabled = await credentialRepository.isEnabled()
+        }
     }
 
     private func populateOrRemoveCredentials() {
+        // When not enabled, iOS already deleted the credential database.
+        // Atempting to populate this database will throw an error anyway so early exit here
+        guard autoFillEnabled else { return }
+
         guard tempQuickTypeBar != quickTypeBar else { return }
         Task { @MainActor in
+            defer { isLoading = false }
             do {
                 isLoading = true
                 if tempQuickTypeBar {
@@ -55,10 +83,8 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
                     try await credentialRepository.removeAllCredentials()
                 }
                 quickTypeBar = tempQuickTypeBar
-                isLoading = false
             } catch {
-                self.isLoading = false
-                self.tempQuickTypeBar.toggle()
+                self.tempQuickTypeBar.toggle() // rollback to previous value
                 self.error = error
             }
         }

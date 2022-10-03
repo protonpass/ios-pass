@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -30,14 +31,7 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section(content: {
-                Toggle(isOn: $viewModel.tempQuickTypeBar) {
-                    Text("QuickType bar suggestions")
-                }
-            }, footer: {
-                // swiftlint:disable:next line_length
-                Text("By allowing suggestions on QuickType bar, you can quickly select a matched credential if any without opening the AutoFill extension and manually select one.")
-            })
+            AutoFillSection(viewModel: viewModel)
         }
         .toolbar { toolbarContent }
     }
@@ -52,5 +46,46 @@ struct SettingsView: View {
             Text("Settings")
                 .fontWeight(.bold)
         }
+    }
+}
+
+private struct AutoFillSection: View {
+    @ObservedObject var viewModel: SettingsViewModel
+
+    var body: some View {
+        Section(content: {
+            if viewModel.autoFillEnabled {
+                Text("AutoFill is enabled")
+            } else {
+                Text("AutoFill is disabled")
+                    .foregroundColor(.secondary)
+            }
+
+            Toggle(isOn: $viewModel.tempQuickTypeBar) {
+                Text("QuickType bar suggestions")
+            }
+            .disabled(!viewModel.autoFillEnabled)
+            .opacity(viewModel.autoFillEnabled ? 1 : 0.5)
+        }, header: {
+            Text("AutoFill")
+        }, footer: {
+            if viewModel.autoFillEnabled {
+                // swiftlint:disable:next line_length
+                Text("By allowing suggestions on QuickType bar, you can quickly select a matched credential if any without opening the AutoFill extension and manually select one.")
+            } else {
+                VStack(alignment: .leading) {
+                    // swiftlint:disable:next line_length
+                    Text("You can enable AutoFill by going to Settings → Passwords → AutoFill Passwords -> Select Proton Pass")
+                    Button(action: {
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        }
+                    }, label: {
+                        Text("Open Settings")
+                    })
+                    .foregroundColor(ColorProvider.BrandNorm)
+                }
+            }
+        })
     }
 }

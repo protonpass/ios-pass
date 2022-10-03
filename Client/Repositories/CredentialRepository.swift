@@ -21,10 +21,17 @@
 import AuthenticationServices
 import CryptoKit
 
+enum CredentialRepositoryError: Error {
+    case autoFillNotEnabled
+}
+
 public protocol CredentialRepositoryProtocol {
     var itemRepository: ItemRepositoryProtocol { get }
     var credentialIdentityStore: ASCredentialIdentityStore { get }
     var symmetricKey: SymmetricKey { get }
+
+    /// Whether the user has picked Proton Pass as AutoFill provider
+    func isEnabled() async -> Bool
 
     /// Populate `ASCredentialIdentityStore` from login items of all shares
     func populateCredentials() async throws
@@ -37,6 +44,10 @@ public protocol CredentialRepositoryProtocol {
 }
 
 public extension CredentialRepositoryProtocol {
+    func isEnabled() async -> Bool {
+        await getState().isEnabled
+    }
+
     func populateCredentials() async throws {
         try await removeAllCredentials()
 
@@ -60,7 +71,12 @@ public extension CredentialRepositoryProtocol {
     }
 
     func removeAllCredentials() async throws {
-        try await credentialIdentityStore.removeAllCredentialIdentities()
+        let state = await getState()
+        if state.isEnabled {
+            try await credentialIdentityStore.removeAllCredentialIdentities()
+        } else {
+            throw CredentialRepositoryError.autoFillNotEnabled
+        }
     }
 
     func getCredential(of identity: ASPasswordCredentialIdentity) async throws -> ASPasswordCredential? {
@@ -75,6 +91,10 @@ public extension CredentialRepositoryProtocol {
             return .init(user: username, password: password)
         }
         return nil
+    }
+
+    private func getState() async -> ASCredentialIdentityStoreState {
+        await credentialIdentityStore.state()
     }
 }
 
