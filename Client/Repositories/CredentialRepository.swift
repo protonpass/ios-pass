@@ -19,10 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
+import Core
 import CryptoKit
 
-enum CredentialRepositoryError: Error {
-    case autoFillNotEnabled
+public enum CredentialRepositoryError: Error {
+    case notLogInItems
 }
 
 public protocol CredentialRepositoryProtocol {
@@ -44,6 +45,12 @@ public protocol CredentialRepositoryProtocol {
 
     /// Get an `ASPasswordCredential` from an `ASPasswordCredentialIdentity`
     func getCredential(of identity: ASPasswordCredentialIdentity) async throws -> ASPasswordCredential?
+
+    /// Update a login item
+    func update(oldContentData: ItemContentData,
+                newContentData: ItemContentData,
+                shareId: String,
+                itemId: String) async throws
 }
 
 public extension CredentialRepositoryProtocol {
@@ -57,9 +64,7 @@ public extension CredentialRepositoryProtocol {
 
     func populateCredentials() async throws {
         let state = await getState()
-        guard state.isEnabled else {
-            throw CredentialRepositoryError.autoFillNotEnabled
-        }
+        guard state.isEnabled else { return }
         try await removeAllCredentials()
 
         var credentials = [ASPasswordCredentialIdentity]()
@@ -68,12 +73,11 @@ public extension CredentialRepositoryProtocol {
             let decryptedItemContent = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
             if case let .login(username, _, urls) = decryptedItemContent.contentData {
                 for url in urls {
-                    let identifier = ASCredentialServiceIdentifier(identifier: url, type: .URL)
-                    let ids = CredentialIDs(shareId: decryptedItemContent.shareId,
-                                            itemId: decryptedItemContent.itemId)
-                    credentials.append(.init(serviceIdentifier: identifier,
-                                             user: username,
-                                             recordIdentifier: try ids.serializeBase64()))
+                    let credential = try ASPasswordCredentialIdentity(username: username,
+                                                                      url: url,
+                                                                      shareId: decryptedItemContent.shareId,
+                                                                      itemId: decryptedItemContent.itemId)
+                    credentials.append(credential)
                 }
             }
         }
@@ -102,6 +106,35 @@ public extension CredentialRepositoryProtocol {
         return nil
     }
 
+    func update(oldContentData: ItemContentData,
+                newContentData: ItemContentData,
+                shareId: String,
+                itemId: String) async throws {
+        guard case let .login(oldUsername, _, oldUrls) = oldContentData else {
+            throw CredentialRepositoryError.notLogInItems
+        }
+
+        guard case let .login(newUsername, _, newUrls) = newContentData else {
+            throw CredentialRepositoryError.notLogInItems
+        }
+
+        if await hasCredentials() {
+            // First remove all old credentials
+            let oldCredentials = try oldUrls.map { try ASPasswordCredentialIdentity(username: oldUsername,
+                                                                                    url: $0,
+                                                                                    shareId: shareId,
+                                                                                    itemId: itemId)}
+            try await credentialIdentityStore.removeCredentialIdentities(oldCredentials)
+        }
+
+        // Then add new credentials
+        let newCredentials = try newUrls.map { try ASPasswordCredentialIdentity(username: newUsername,
+                                                                                url: $0,
+                                                                                shareId: shareId,
+                                                                                itemId: itemId)}
+        try await credentialIdentityStore.saveCredentialIdentities(newCredentials)
+    }
+
     private func getState() async -> ASCredentialIdentityStoreState {
         await credentialIdentityStore.state()
     }
@@ -118,5 +151,17 @@ public final class CredentialRepository: CredentialRepositoryProtocol {
         self.itemRepository = itemRepository
         self.credentialIdentityStore = credentialIdentityStore
         self.symmetricKey = symmetricKey
+    }
+}
+
+private extension ASPasswordCredentialIdentity {
+    convenience init(username: String,
+                     url: String,
+                     shareId: String,
+                     itemId: String) throws {
+        let ids = CredentialIDs(shareId: shareId, itemId: itemId)
+        self.init(serviceIdentifier: .init(identifier: url, type: .URL),
+                  user: username,
+                  recordIdentifier: try ids.serializeBase64())
     }
 }

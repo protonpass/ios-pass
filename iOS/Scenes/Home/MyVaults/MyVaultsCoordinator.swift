@@ -131,7 +131,8 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateEditLoginView(mode: ItemMode) {
         let createEditLoginViewModel = CreateEditLoginViewModel(mode: mode,
-                                                                itemRepository: itemRepository)
+                                                                itemRepository: itemRepository,
+                                                                credentialRepository: credentialRepository)
         createEditLoginViewModel.delegate = self
         createEditLoginViewModel.createEditItemDelegate = self
         createEditLoginViewModel.onGeneratePassword = { [unowned self] in showGeneratePasswordView(delegate: $0) }
@@ -142,6 +143,7 @@ final class MyVaultsCoordinator: Coordinator {
     private func showCreateEditAliasView(mode: ItemMode) {
         let createEditAliasViewModel = CreateEditAliasViewModel(mode: mode,
                                                                 itemRepository: itemRepository,
+                                                                credentialRepository: credentialRepository,
                                                                 aliasRepository: aliasRepository)
         createEditAliasViewModel.delegate = self
         createEditAliasViewModel.createEditItemDelegate = self
@@ -151,7 +153,8 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateEditNoteView(mode: ItemMode) {
         let createEditNoteViewModel = CreateEditNoteViewModel(mode: mode,
-                                                              itemRepository: itemRepository)
+                                                              itemRepository: itemRepository,
+                                                              credentialRepository: credentialRepository)
         createEditNoteViewModel.delegate = self
         createEditNoteViewModel.createEditItemDelegate = self
         let createEditNoteView = CreateEditNoteView(viewModel: createEditNoteViewModel)
