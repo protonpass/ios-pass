@@ -222,13 +222,11 @@ public struct UserInputContentURLsView: View {
                     TextField("https://", text: urlBinding) { editingChanged in
                         isFocused = editingChanged
                         if !isFocused, index != 0, urls[index].isEmpty {
-                            withAnimation {
-                                urls.remove(at: index)
-                            }
+                            urls.remove(at: index)
                         }
                     }
-                        .keyboardType(.URL)
-                        .disableAutocorrection(true)
+                    .keyboardType(.URL)
+                    .disableAutocorrection(true)
 
                     if !urls[index].isEmpty || index != 0 {
                         Button(action: {
@@ -253,6 +251,7 @@ public struct UserInputContentURLsView: View {
 
             addUrlButton
         }
+        .animation(.default, value: urls.count)
     }
 
     @ViewBuilder
@@ -261,9 +260,7 @@ public struct UserInputContentURLsView: View {
             Button(action: {
                 if urls.last?.isEmpty == false {
                     // Only add new URL when last URL has value to avoid adding blank URLs
-                    withAnimation {
-                        urls.append("")
-                    }
+                    urls.append("")
                 }
             }, label: {
                 Label(title: {
