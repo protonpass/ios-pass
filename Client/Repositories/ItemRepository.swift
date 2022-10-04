@@ -26,15 +26,8 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 public protocol ItemRepositoryDelegate: AnyObject {
-    /// `ItemRepository` fetched log in items from remote datasource & untrash items
     func itemRepositoryHasNewCredentials(_ credentials: [AutoFillCredential])
-
-    /// `ItemRepository` trashed log in items
     func itemRepositoryDeletedCredentials(_ credentials: [AutoFillCredential])
-
-    /// `ItemRepository` updated a log in item
-    func itemRepositoryUpdatedCredential(oldCredential: AutoFillCredential,
-                                         newCredential: AutoFillCredential)
 }
 
 public protocol ItemRepositoryProtocol {
@@ -170,6 +163,11 @@ public extension ItemRepositoryProtocol {
                                                      modifiedItems: modifiedItems)
             PPLogger.shared?.log("Finished trashing locallly \(items.count) items for share \(shareId)")
         }
+
+        PPLogger.shared?.log("Extracting deleted credentials from \(items.count) deleted items")
+        let deletedCredentials = try getCredentials(from: items)
+        delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
+        PPLogger.shared?.log("Delegated \(deletedCredentials.count) deleted credentials")
     }
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws {
@@ -188,6 +186,11 @@ public extension ItemRepositoryProtocol {
                                                      modifiedItems: modifiedItems)
             PPLogger.shared?.log("Finished untrashing locallly \(items.count) items for share \(shareId)")
         }
+
+        PPLogger.shared?.log("Extracting new credentials from \(items.count) untrashed items")
+        let newCredentials = try getCredentials(from: items)
+        delegate?.itemRepositoryHasNewCredentials(newCredentials)
+        PPLogger.shared?.log("Delegated \(newCredentials.count) new credentials")
     }
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
@@ -210,6 +213,9 @@ public extension ItemRepositoryProtocol {
                     shareId: String) async throws {
         let itemId = oldItem.itemID
         PPLogger.shared?.log("Updating item \(itemId) for share \(shareId)")
+        let encryptedOldItemContentData = try await localItemDatasoure.getItem(shareId: shareId, itemId: itemId)
+        let decryptedOldItemContentData =
+        try encryptedOldItemContentData?.getDecryptedItemContent(symmetricKey: symmetricKey)
         let keysAndPassphrases = try await getKeysAndPassphrases(shareId: shareId)
         let request = try UpdateItemRequest(oldRevision: oldItem,
                                             vaultKey: keysAndPassphrases.vaultKey,
@@ -226,6 +232,20 @@ public extension ItemRepositoryProtocol {
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision, shareId: shareId)
         try await localItemDatasoure.upsertItems([encryptedItem])
         PPLogger.shared?.log("Finished updating locally item \(itemId) for share \(shareId)")
+
+        if case let .login(oldUsername, _, oldUrls) = decryptedOldItemContentData?.contentData,
+           case let .login(newUsername, _, newUrls) = newItemContent.contentData {
+            let ids = AutoFillCredential.IDs(shareId: shareId, itemId: itemId)
+            let deletedCredentials = oldUrls.map { AutoFillCredential(ids: ids,
+                                                                      username: oldUsername,
+                                                                      url: $0) }
+            let newCredentials = newUrls.map { AutoFillCredential(ids: ids,
+                                                                  username: newUsername,
+                                                                  url: $0) }
+            delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
+            delegate?.itemRepositoryHasNewCredentials(newCredentials)
+            PPLogger.shared?.log("Delegated updated credential")
+        }
     }
 }
 
@@ -244,22 +264,10 @@ private extension ItemRepositoryProtocol {
         try await localItemDatasoure.upsertItems(encryptedItems)
         PPLogger.shared?.log("Saved \(encryptedItems.count) remote item revisions to local database")
 
-        PPLogger.shared?.log("Filtering log in items and notify the delegate")
-        let logInItems = try encryptedItems
-            .map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
-            .filter { $0.contentData.type == .login }
-        var credentials = [AutoFillCredential]()
-        for logInItem in logInItems {
-            if case let .login(username, _, urls) = logInItem.contentData {
-                for url in urls {
-                    credentials.append(.init(ids: .init(shareId: logInItem.shareId, itemId: logInItem.itemId),
-                                             username: username,
-                                             url: url))
-                }
-            }
-        }
-        delegate?.itemRepositoryHasNewCredentials(credentials)
-        PPLogger.shared?.log("Filtered log in items and notified the delegate")
+        PPLogger.shared?.log("Extracting new credentials from \(encryptedItems.count) remote items")
+        let newCredentials = try getCredentials(from: encryptedItems)
+        delegate?.itemRepositoryHasNewCredentials(newCredentials)
+        PPLogger.shared?.log("Delegated \(newCredentials.count) new credentials")
     }
 
     func symmetricallyEncrypt(itemRevision: ItemRevision,
@@ -277,6 +285,23 @@ private extension ItemRepositoryProtocol {
         let encryptedContentProtobuf = try contentProtobuf.symmetricallyEncrypted(symmetricKey)
         let encryptedContent = try encryptedContentProtobuf.serializedData().base64EncodedString()
         return .init(shareId: shareId, item: itemRevision, encryptedContent: encryptedContent)
+    }
+
+    func getCredentials(from encryptedItems: [SymmetricallyEncryptedItem]) throws -> [AutoFillCredential] {
+        let logInItems = try encryptedItems
+            .map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
+            .filter { $0.contentData.type == .login }
+        var credentials = [AutoFillCredential]()
+        for logInItem in logInItems {
+            if case let .login(username, _, urls) = logInItem.contentData {
+                for url in urls {
+                    credentials.append(.init(ids: .init(shareId: logInItem.shareId, itemId: logInItem.itemId),
+                                             username: username,
+                                             url: url))
+                }
+            }
+        }
+        return credentials
     }
 
     func createItemRequest(itemContent: ProtobufableItemContentProtocol,

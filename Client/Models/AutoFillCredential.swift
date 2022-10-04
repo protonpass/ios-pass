@@ -27,7 +27,7 @@ public struct AutoFillCredential {
         public let itemId: String
     }
 
-    let ids: CredentialIDs
+    let ids: IDs
     let username: String
     let url: String
 }
