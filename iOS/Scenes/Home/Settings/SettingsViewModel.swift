@@ -85,21 +85,9 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
             do {
                 isLoading = true
                 if tempQuickTypeBar {
-                    let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
-                    let decryptedItems =
-                    try encryptedItems.map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
-                    var credentials = [AutoFillCredential]()
-                    for decryptedItem in decryptedItems {
-                        if case let .login(username, _, urls) = decryptedItem.contentData {
-                            for url in urls {
-                                credentials.append(.init(shareId: decryptedItem.shareId,
-                                                         itemId: decryptedItem.itemId,
-                                                         username: username,
-                                                         url: url))
-                            }
-                        }
-                    }
-                    try await credentialManager.insert(credentials: credentials)
+                    try await credentialManager.insertAllCredentials(from: itemRepository,
+                                                                     symmetricKey: symmetricKey,
+                                                                     forceRemoval: true)
                 } else {
                     try await credentialManager.removeAllCredentials()
                 }

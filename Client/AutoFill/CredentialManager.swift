@@ -20,6 +20,7 @@
 
 import AuthenticationServices
 import Core
+import CryptoKit
 
 public protocol CredentialManagerProtocol {
     var store: ASCredentialIdentityStore { get }
@@ -29,6 +30,15 @@ public protocol CredentialManagerProtocol {
 
     func insert(credentials: [AutoFillCredential]) async throws
     func remove(credentials: [AutoFillCredential]) async throws
+
+    /// Get all active login items from `ItemRepository` and insert to credential store
+    /// - Parameter itemRepository: The `ItemRepository` to get items
+    /// - Parameter symmetricKey: The `SymmetricKey` to decrypt items
+    /// - Parameter forceRemoval: If `true`, will remove all credentials before inserting.
+    /// if `false`, only insert when no credentials found in credential store
+    func insertAllCredentials(from itemRepository: ItemRepositoryProtocol,
+                              symmetricKey: SymmetricKey,
+                              forceRemoval: Bool) async throws
     func removeAllCredentials() async throws
 }
 
@@ -74,6 +84,41 @@ public extension CredentialManagerProtocol {
         } else {
             PPLogger.shared?.log("Empty store. Skipped removing \(credentials.count) credentials.")
         }
+    }
+
+    func insertAllCredentials(from itemRepository: ItemRepositoryProtocol,
+                              symmetricKey: SymmetricKey,
+                              forceRemoval: Bool) async throws {
+        PPLogger.shared?.log("Trying to insert all credentials from ItemRepository")
+        let state = await store.state()
+        guard state.isEnabled else {
+            PPLogger.shared?.log("AutoFill is not enabled. Skipped inserting all credentials from ItemRepository")
+            return
+        }
+
+        if forceRemoval {
+            PPLogger.shared?.log("Force removing all credentials before inserting new ones")
+            try await removeAllCredentials()
+        } else if state.supportsIncrementalUpdates {
+            PPLogger.shared?.log("Credentials exist. Skipped inserting all credentials.")
+            return
+        }
+
+        let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
+        let decryptedItems =
+        try encryptedItems.map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
+        var credentials = [AutoFillCredential]()
+        for decryptedItem in decryptedItems {
+            if case let .login(username, _, urls) = decryptedItem.contentData {
+                for url in urls {
+                    credentials.append(.init(shareId: decryptedItem.shareId,
+                                             itemId: decryptedItem.itemId,
+                                             username: username,
+                                             url: url))
+                }
+            }
+        }
+        try await insert(credentials: credentials)
     }
 
     func removeAllCredentials() async throws {

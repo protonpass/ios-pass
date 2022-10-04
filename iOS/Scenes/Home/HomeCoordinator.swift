@@ -152,6 +152,7 @@ final class HomeCoordinator: DeinitPrintable {
         self.vaultSelection = .init(vaults: [])
         self.setUpSideMenuPreferences()
         self.observeVaultSelection()
+        self.observeForegroundEntrance()
     }
 
     private func setUpSideMenuPreferences() {
@@ -170,6 +171,23 @@ final class HomeCoordinator: DeinitPrintable {
         vaultSelection.$selectedVault
             .sink { [unowned self] _ in
                 self.showMyVaultsRootViewController()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func observeForegroundEntrance() {
+        NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { [unowned self] _ in
+                Task {
+                    do {
+                        try await credentialManager.insertAllCredentials(from: itemRepository,
+                                                                         symmetricKey: symmetricKey,
+                                                                         forceRemoval: false)
+                    } catch {
+                        PPLogger.shared?.log(error)
+                    }
+                }
             }
             .store(in: &cancellables)
     }
