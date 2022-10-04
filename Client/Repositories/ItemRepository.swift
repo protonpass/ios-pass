@@ -165,7 +165,7 @@ public extension ItemRepositoryProtocol {
         }
 
         PPLogger.shared?.log("Extracting deleted credentials from \(items.count) deleted items")
-        let deletedCredentials = try getCredentials(from: items)
+        let deletedCredentials = try getCredentials(from: items, state: .active)
         delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
         PPLogger.shared?.log("Delegated \(deletedCredentials.count) deleted credentials")
     }
@@ -188,7 +188,7 @@ public extension ItemRepositoryProtocol {
         }
 
         PPLogger.shared?.log("Extracting new credentials from \(items.count) untrashed items")
-        let newCredentials = try getCredentials(from: items)
+        let newCredentials = try getCredentials(from: items, state: .trashed)
         delegate?.itemRepositoryHasNewCredentials(newCredentials)
         PPLogger.shared?.log("Delegated \(newCredentials.count) new credentials")
     }
@@ -265,7 +265,7 @@ private extension ItemRepositoryProtocol {
         PPLogger.shared?.log("Saved \(encryptedItems.count) remote item revisions to local database")
 
         PPLogger.shared?.log("Extracting new credentials from \(encryptedItems.count) remote items")
-        let newCredentials = try getCredentials(from: encryptedItems)
+        let newCredentials = try getCredentials(from: encryptedItems, state: .active)
         delegate?.itemRepositoryHasNewCredentials(newCredentials)
         PPLogger.shared?.log("Delegated \(newCredentials.count) new credentials")
     }
@@ -287,9 +287,10 @@ private extension ItemRepositoryProtocol {
         return .init(shareId: shareId, item: itemRevision, encryptedContent: encryptedContent)
     }
 
-    func getCredentials(from encryptedItems: [SymmetricallyEncryptedItem]) throws -> [AutoFillCredential] {
+    func getCredentials(from encryptedItems: [SymmetricallyEncryptedItem],
+                        state: ItemState) throws -> [AutoFillCredential] {
         let logInItems = try encryptedItems
-            .filter { $0.item.itemState == .active }
+            .filter { $0.item.itemState == state }
             .map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
             .filter { $0.contentData.type == .login }
         var credentials = [AutoFillCredential]()
