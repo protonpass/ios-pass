@@ -1,5 +1,5 @@
 //
-// CredentialIDs.swift
+// AutoFillCredential.swift
 // Proton Pass - Created on 28/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,6 +19,18 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+
+public struct AutoFillCredential {
+    // swiftlint:disable:next type_name
+    public struct IDs: CodableBase64 {
+        public let shareId: String
+        public let itemId: String
+    }
+
+    let ids: CredentialIDs
+    let username: String
+    let url: String
+}
 
 public struct CredentialIDs: CodableBase64 {
     public let shareId: String

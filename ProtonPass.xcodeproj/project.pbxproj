@@ -83,7 +83,7 @@
 		354513DB28E4C71F0020A93A /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		354513E728E4CE700020A93A /* CodableBase64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513E628E4CE700020A93A /* CodableBase64.swift */; };
 		354513E928E4D2650020A93A /* CodableBase64Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513E828E4D2650020A93A /* CodableBase64Tests.swift */; };
-		354513EB28E4D5310020A93A /* CredentialIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513EA28E4D5310020A93A /* CredentialIDs.swift */; };
+		354513EB28E4D5310020A93A /* AutoFillCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513EA28E4D5310020A93A /* AutoFillCredential.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
@@ -468,7 +468,7 @@
 		354513D028E4693B0020A93A /* CredentialRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialRepository.swift; sourceTree = "<group>"; };
 		354513E628E4CE700020A93A /* CodableBase64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableBase64.swift; sourceTree = "<group>"; };
 		354513E828E4D2650020A93A /* CodableBase64Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableBase64Tests.swift; sourceTree = "<group>"; };
-		354513EA28E4D5310020A93A /* CredentialIDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialIDs.swift; sourceTree = "<group>"; };
+		354513EA28E4D5310020A93A /* AutoFillCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillCredential.swift; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
 		3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonSwitchToggleStyle.swift; sourceTree = "<group>"; };
@@ -969,8 +969,8 @@
 			children = (
 				350A97CB28859D1800A7168B /* AddressKey.swift */,
 				3552F48928D344E100547146 /* Alias.swift */,
+				354513EA28E4D5310020A93A /* AutoFillCredential.swift */,
 				354146D028D1F1E1007E45A6 /* AliasOptions.swift */,
-				354513EA28E4D5310020A93A /* CredentialIDs.swift */,
 				358A508A28AD3BB100F5285C /* DataError.swift */,
 				358AB49A2886FDA400818B44 /* ItemKey.swift */,
 				355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */,
@@ -2290,7 +2290,7 @@
 				35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */,
 				3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */,
 				3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */,
-				354513EB28E4D5310020A93A /* CredentialIDs.swift in Sources */,
+				354513EB28E4D5310020A93A /* AutoFillCredential.swift in Sources */,
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
 				354146DA28D1F585007E45A6 /* AliasRepository.swift in Sources */,
 				358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */,
