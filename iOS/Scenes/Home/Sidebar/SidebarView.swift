@@ -50,8 +50,8 @@ struct SidebarView: View {
                                         action: viewModel.sideBarItemAction)
                         SidebarItemView(item: .trash,
                                         action: viewModel.sideBarItemAction)
-                        SidebarItemView(item: .help,
-                                        action: viewModel.sideBarItemAction)
+//                        SidebarItemView(item: .help,
+//                                        action: viewModel.sideBarItemAction)
                         SidebarItemView(item: .signOut,
                                         action: viewModel.sideBarItemAction)
                     }
