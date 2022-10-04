@@ -54,68 +54,25 @@ final class HomeCoordinator: DeinitPrintable {
     weak var delegate: HomeCoordinatorDelegate?
 
     var rootViewController: UIViewController { sideMenuController }
-
-    private lazy var sideMenuController: SideMenuController = {
-        let sideMenuController = SideMenuController(contentViewController: myVaultsRootViewController,
-                                                    menuViewController: sidebarViewController)
-        return sideMenuController
-    }()
-
     private var topMostViewController: UIViewController {
         sideMenuController.presentedViewController ?? sideMenuController
     }
 
-    private lazy var sidebarViewController: UIViewController = {
-        let sideBarViewModel = SideBarViewModel(user: sessionData.userData.user)
-        sideBarViewModel.delegate = self
-        let sidebarView = SidebarView(viewModel: sideBarViewModel, width: kMenuWidth)
-        return UIHostingController(rootView: sidebarView)
-    }()
+    // Side menu
+    private lazy var sideMenuController = provideSideMenuController()
+    private lazy var sidebarViewController = provideSidebarViewController()
 
     // My vaults
     let vaultSelection: VaultSelection
-
-    private lazy var myVaultsCoordinator: MyVaultsCoordinator = {
-        let myVaultsCoordinator = MyVaultsCoordinator(symmetricKey: symmetricKey,
-                                                      userData: sessionData.userData,
-                                                      vaultSelection: vaultSelection,
-                                                      shareRepository: shareRepository,
-                                                      vaultItemKeysRepository: vaultItemKeysRepository,
-                                                      itemRepository: itemRepository,
-                                                      aliasRepository: aliasRepository,
-                                                      publicKeyRepository: publicKeyRepository)
-        myVaultsCoordinator.delegate = self
-        myVaultsCoordinator.onTrashedItem = { [unowned self] in
-            self.trashCoordinator.refreshTrashedItems()
-        }
-        return myVaultsCoordinator
-    }()
-
+    private lazy var myVaultsCoordinator = provideMyVaultsCoordinator()
     private var myVaultsRootViewController: UIViewController { myVaultsCoordinator.rootViewController }
 
     // Settings
-    private lazy var settingsCoordinator: SettingsCoordinator = {
-        let settingsCoordinator = SettingsCoordinator(itemRepository: itemRepository,
-                                                      credentialManager: credentialManager,
-                                                      symmetricKey: symmetricKey)
-        settingsCoordinator.delegate = self
-        return settingsCoordinator
-    }()
-
+    private lazy var settingsCoordinator = provideSettingsCoordinator()
     private var settingsRootViewController: UIViewController { settingsCoordinator.rootViewController }
 
     // Trash
-    private lazy var trashCoordinator: TrashCoordinator = {
-        let trashCoordinator = TrashCoordinator(symmetricKey: symmetricKey,
-                                                shareRepository: shareRepository,
-                                                itemRepository: itemRepository)
-        trashCoordinator.delegate = self
-        trashCoordinator.onRestoredItem = { [unowned self] in
-            self.myVaultsCoordinator.refreshItems()
-        }
-        return trashCoordinator
-    }()
-
+    private lazy var trashCoordinator = provideTrashCoordinator()
     private var trashRootViewController: UIViewController { trashCoordinator.rootViewController }
 
     private var cancellables = Set<AnyCancellable>()
@@ -154,7 +111,10 @@ final class HomeCoordinator: DeinitPrintable {
         self.observeVaultSelection()
         self.observeForegroundEntrance()
     }
+}
 
+// MARK: - Initialization additional set ups
+private extension HomeCoordinator {
     private func setUpSideMenuPreferences() {
         SideMenuController.preferences.basic.menuWidth = kMenuWidth
         SideMenuController.preferences.basic.position = .sideBySide
@@ -190,6 +150,56 @@ final class HomeCoordinator: DeinitPrintable {
                 }
             }
             .store(in: &cancellables)
+    }
+}
+
+// MARK: - Lazy var providers
+private extension HomeCoordinator {
+    func provideSideMenuController() -> SideMenuController {
+        SideMenuController(contentViewController: myVaultsRootViewController,
+                           menuViewController: sidebarViewController)
+    }
+
+    func provideSidebarViewController() -> UIViewController {
+        let sideBarViewModel = SideBarViewModel(user: sessionData.userData.user)
+        sideBarViewModel.delegate = self
+        let sidebarView = SidebarView(viewModel: sideBarViewModel, width: kMenuWidth)
+        return UIHostingController(rootView: sidebarView)
+    }
+
+    func provideMyVaultsCoordinator() -> MyVaultsCoordinator {
+        let myVaultsCoordinator = MyVaultsCoordinator(symmetricKey: symmetricKey,
+                                                      userData: sessionData.userData,
+                                                      vaultSelection: vaultSelection,
+                                                      shareRepository: shareRepository,
+                                                      vaultItemKeysRepository: vaultItemKeysRepository,
+                                                      itemRepository: itemRepository,
+                                                      aliasRepository: aliasRepository,
+                                                      publicKeyRepository: publicKeyRepository)
+        myVaultsCoordinator.delegate = self
+        myVaultsCoordinator.onTrashedItem = { [unowned self] in
+            self.trashCoordinator.refreshTrashedItems()
+        }
+        return myVaultsCoordinator
+    }
+
+    func provideSettingsCoordinator() -> SettingsCoordinator {
+        let settingsCoordinator = SettingsCoordinator(itemRepository: itemRepository,
+                                                      credentialManager: credentialManager,
+                                                      symmetricKey: symmetricKey)
+        settingsCoordinator.delegate = self
+        return settingsCoordinator
+    }
+
+    func provideTrashCoordinator() -> TrashCoordinator {
+        let trashCoordinator = TrashCoordinator(symmetricKey: symmetricKey,
+                                                shareRepository: shareRepository,
+                                                itemRepository: itemRepository)
+        trashCoordinator.delegate = self
+        trashCoordinator.onRestoredItem = { [unowned self] in
+            self.myVaultsCoordinator.refreshItems()
+        }
+        return trashCoordinator
     }
 }
 
@@ -240,9 +250,20 @@ extension HomeCoordinator {
     }
 }
 
+// MARK: - Common UI operations
+private extension HomeCoordinator {
+    func showLoadingHud() {
+        MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
+    }
+
+    func hideLoadingHud() {
+        MBProgressHUD.hide(for: topMostViewController.view, animated: true)
+    }
+}
+
 // MARK: - Sign out
-extension HomeCoordinator {
-    private func requestSignOutConfirmation() {
+private extension HomeCoordinator {
+    func requestSignOutConfirmation() {
         let alert = PPAlertController(title: "You will be signed out",
                                       message: "All associated data will be deleted. Please confirm.",
                                       preferredStyle: .alert)
@@ -254,7 +275,7 @@ extension HomeCoordinator {
         sideMenuController.present(alert, animated: true)
     }
 
-    private func signOut() {
+    func signOut() {
         Task { @MainActor in
             do {
                 try await credentialManager.removeAllCredentials()
@@ -263,14 +284,6 @@ extension HomeCoordinator {
                 alert(error: error)
             }
         }
-    }
-
-    private func showLoadingHud() {
-        MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
-    }
-
-    private func hideLoadingHud() {
-        MBProgressHUD.hide(for: topMostViewController.view, animated: true)
     }
 }
 
