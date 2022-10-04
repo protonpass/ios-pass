@@ -77,7 +77,6 @@
 		354513CB28E45F960020A93A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513CA28E45F960020A93A /* SettingsView.swift */; };
 		354513CD28E45FB20020A93A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513CC28E45FB20020A93A /* SettingsViewModel.swift */; };
 		354513CF28E460FD0020A93A /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513CE28E460FD0020A93A /* SettingsCoordinator.swift */; };
-		354513D128E4693B0020A93A /* CredentialRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354513D028E4693B0020A93A /* CredentialRepository.swift */; };
 		354513D228E4C70B0020A93A /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; };
 		354513D728E4C70E0020A93A /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
 		354513DB28E4C71F0020A93A /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
@@ -160,6 +159,7 @@
 		35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */; };
 		35610B8428ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */; };
 		35610B8928ABCF1900955ACB /* ShareRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B8828ABCF1900955ACB /* ShareRepository.swift */; };
+		356180F728EC4C0C00B1835A /* CredentialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356180F628EC4C0C00B1835A /* CredentialManager.swift */; };
 		356B21D72870F8F1001220CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D62870F8F1001220CB /* Constants.swift */; };
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
 		356BDA3228DFAA9600B02E5A /* VaultItemKeysRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3128DFAA9600B02E5A /* VaultItemKeysRepository.swift */; };
@@ -465,7 +465,6 @@
 		354513CA28E45F960020A93A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		354513CC28E45FB20020A93A /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		354513CE28E460FD0020A93A /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
-		354513D028E4693B0020A93A /* CredentialRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialRepository.swift; sourceTree = "<group>"; };
 		354513E628E4CE700020A93A /* CodableBase64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableBase64.swift; sourceTree = "<group>"; };
 		354513E828E4D2650020A93A /* CodableBase64Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableBase64Tests.swift; sourceTree = "<group>"; };
 		354513EA28E4D5310020A93A /* AutoFillCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillCredential.swift; sourceTree = "<group>"; };
@@ -544,6 +543,7 @@
 		35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareDatasource.swift; sourceTree = "<group>"; };
 		35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteItemRevisionDatasource.swift; sourceTree = "<group>"; };
 		35610B8828ABCF1900955ACB /* ShareRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRepository.swift; sourceTree = "<group>"; };
+		356180F628EC4C0C00B1835A /* CredentialManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialManager.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B21D62870F8F1001220CB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
@@ -969,7 +969,6 @@
 			children = (
 				350A97CB28859D1800A7168B /* AddressKey.swift */,
 				3552F48928D344E100547146 /* Alias.swift */,
-				354513EA28E4D5310020A93A /* AutoFillCredential.swift */,
 				354146D028D1F1E1007E45A6 /* AliasOptions.swift */,
 				358A508A28AD3BB100F5285C /* DataError.swift */,
 				358AB49A2886FDA400818B44 /* ItemKey.swift */,
@@ -1013,7 +1012,6 @@
 			isa = PBXGroup;
 			children = (
 				354146D928D1F585007E45A6 /* AliasRepository.swift */,
-				354513D028E4693B0020A93A /* CredentialRepository.swift */,
 				3542E2CA28D9FE8600194F24 /* ItemRepository.swift */,
 				358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */,
 				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
@@ -1028,6 +1026,15 @@
 				358BD365287D4F9200802A91 /* CreateVaultRequestTests.swift */,
 			);
 			path = Endpoints;
+			sourceTree = "<group>";
+		};
+		356180F528EC3F6800B1835A /* AutoFill */ = {
+			isa = PBXGroup;
+			children = (
+				354513EA28E4D5310020A93A /* AutoFillCredential.swift */,
+				356180F628EC4C0C00B1835A /* CredentialManager.swift */,
+			);
+			path = AutoFill;
 			sourceTree = "<group>";
 		};
 		356B21D82870F95B001220CB /* Storage */ = {
@@ -1229,6 +1236,7 @@
 			isa = PBXGroup;
 			children = (
 				35E50663286F870500A3F6EA /* Client.h */,
+				356180F528EC3F6800B1835A /* AutoFill */,
 				3593DD0128A8375400C235D3 /* CoreData */,
 				3593DD1828A8454900C235D3 /* Datasources */,
 				3529432C28DB454000E1F11B /* DomainModels */,
@@ -2242,7 +2250,6 @@
 				354F768A28C72F1000EB2383 /* PassKeyUtils.swift in Sources */,
 				354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
-				354513D128E4693B0020A93A /* CredentialRepository.swift in Sources */,
 				355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */,
 				358A508B28AD3BB100F5285C /* DataError.swift in Sources */,
 				3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */,
@@ -2270,6 +2277,7 @@
 				3530FADA28CEFA0900CE8A8F /* DeleteItemsEndpoint.swift in Sources */,
 				3593DCE728A790F800C235D3 /* LocalDatasource.swift in Sources */,
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
+				356180F728EC4C0C00B1835A /* CredentialManager.swift in Sources */,
 				3542E2C328D9E16600194F24 /* LocalItemDatasource.swift in Sources */,
 				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,
 				3593DCFD28A82FA700C235D3 /* ShareKeys.swift in Sources */,

@@ -32,7 +32,13 @@ public struct AutoFillCredential {
     let url: String
 }
 
-public struct CredentialIDs: CodableBase64 {
-    public let shareId: String
-    public let itemId: String
+public extension AutoFillCredential {
+    init(shareId: String,
+         itemId: String,
+         username: String,
+         url: String) {
+        self.ids = .init(shareId: shareId, itemId: itemId)
+        self.username = username
+        self.url = url
+    }
 }

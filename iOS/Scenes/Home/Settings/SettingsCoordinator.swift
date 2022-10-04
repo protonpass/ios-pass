@@ -20,12 +20,17 @@
 
 import Client
 import Core
+import CryptoKit
 
 final class SettingsCoordinator: Coordinator {
     private let settingsViewModel: SettingsViewModel
 
-    init(credentialRepository: CredentialRepositoryProtocol) {
-        self.settingsViewModel = .init(credentialRepository: credentialRepository)
+    init(itemRepository: ItemRepositoryProtocol,
+         credentialManager: CredentialManagerProtocol,
+         symmetricKey: SymmetricKey) {
+        self.settingsViewModel = .init(itemRepository: itemRepository,
+                                       credentialManager: credentialManager,
+                                       symmetricKey: symmetricKey)
         super.init()
         start()
     }

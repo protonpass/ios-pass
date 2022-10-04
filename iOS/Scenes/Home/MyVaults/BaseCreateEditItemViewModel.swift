@@ -36,13 +36,11 @@ class BaseCreateEditItemViewModel: BaseViewModel {
     let shareId: String
     let mode: ItemMode
     let itemRepository: ItemRepositoryProtocol
-    let credentialRepository: CredentialRepositoryProtocol
 
     weak var createEditItemDelegate: CreateEditItemViewModelDelegate?
 
     init(mode: ItemMode,
-         itemRepository: ItemRepositoryProtocol,
-         credentialRepository: CredentialRepositoryProtocol) {
+         itemRepository: ItemRepositoryProtocol) {
         switch mode {
         case .create(let shareId, _):
             self.shareId = shareId
@@ -51,7 +49,6 @@ class BaseCreateEditItemViewModel: BaseViewModel {
         }
         self.mode = mode
         self.itemRepository = itemRepository
-        self.credentialRepository = credentialRepository
         super.init()
         bindValues()
     }
@@ -140,15 +137,6 @@ class BaseCreateEditItemViewModel: BaseViewModel {
                 try await itemRepository.updateItem(oldItem: oldItem.item,
                                                     newItemContent: newItemContentProtobuf,
                                                     shareId: shareId)
-
-                // Update credential database if item is login
-                if itemContentType() == .login {
-                    try await credentialRepository.update(oldContentData: oldItemContent.contentData,
-                                                          newContentData: newItemContentProtobuf.contentData,
-                                                          shareId: shareId,
-                                                          itemId: itemId)
-                }
-
                 isLoading = false
                 createEditItemDelegate?.createEditItemViewModelDidUpdateItem(itemContentType())
             } catch {

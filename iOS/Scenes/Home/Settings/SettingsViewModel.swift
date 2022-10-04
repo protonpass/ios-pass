@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import CryptoKit
 import SwiftUI
 
 public enum SettingsKeys {
@@ -27,7 +28,9 @@ public enum SettingsKeys {
 }
 
 final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
-    private let credentialRepository: CredentialRepositoryProtocol
+    private let itemRepository: ItemRepositoryProtocol
+    private let credentialManager: CredentialManagerProtocol
+    private let symmetricKey: SymmetricKey
 
     // Use a temporary boolean here because enabling/disabling can throw errors
     // and when errors happen, we can rollback this boolean
@@ -47,8 +50,12 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
 
     var onToggleSidebar: (() -> Void)?
 
-    init(credentialRepository: CredentialRepositoryProtocol) {
-        self.credentialRepository = credentialRepository
+    init(itemRepository: ItemRepositoryProtocol,
+         credentialManager: CredentialManagerProtocol,
+         symmetricKey: SymmetricKey) {
+        self.itemRepository = itemRepository
+        self.credentialManager = credentialManager
+        self.symmetricKey = symmetricKey
         super.init()
         self.tempQuickTypeBar = quickTypeBar
         self.updateAutoFillAvalability()
@@ -63,7 +70,7 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
 
     private func updateAutoFillAvalability() {
         Task { @MainActor in
-            self.autoFillEnabled = await credentialRepository.isEnabled()
+            self.autoFillEnabled = await credentialManager.isAutoFillEnabled()
         }
     }
 
@@ -78,9 +85,23 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
             do {
                 isLoading = true
                 if tempQuickTypeBar {
-                    try await credentialRepository.populateCredentials()
+                    let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
+                    let decryptedItems =
+                    try encryptedItems.map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
+                    var credentials = [AutoFillCredential]()
+                    for decryptedItem in decryptedItems {
+                        if case let .login(username, _, urls) = decryptedItem.contentData {
+                            for url in urls {
+                                credentials.append(.init(shareId: decryptedItem.shareId,
+                                                         itemId: decryptedItem.itemId,
+                                                         username: username,
+                                                         url: url))
+                            }
+                        }
+                    }
+                    try await credentialManager.insert(credentials: credentials)
                 } else {
-                    try await credentialRepository.removeAllCredentials()
+                    try await credentialManager.removeAllCredentials()
                 }
                 quickTypeBar = tempQuickTypeBar
             } catch {

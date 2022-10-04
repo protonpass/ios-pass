@@ -289,6 +289,7 @@ private extension ItemRepositoryProtocol {
 
     func getCredentials(from encryptedItems: [SymmetricallyEncryptedItem]) throws -> [AutoFillCredential] {
         let logInItems = try encryptedItems
+            .filter { $0.item.itemState == .active }
             .map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
             .filter { $0.contentData.type == .login }
         var credentials = [AutoFillCredential]()

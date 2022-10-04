@@ -76,7 +76,8 @@ public final class CredentialProviderCoordinator {
     /// QuickType bar support
     func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
         guard let sessionData = sessionData,
-              let symmetricKeyData = symmetricKey?.data(using: .utf8) else {
+              let symmetricKeyData = symmetricKey?.data(using: .utf8),
+              let recordIdentifier = credentialIdentity.recordIdentifier else {
             cancel(errorCode: .failed)
             return
         }
@@ -88,13 +89,15 @@ public final class CredentialProviderCoordinator {
                                                 symmetricKey: symmetricKey,
                                                 container: container,
                                                 apiService: apiService)
-            let credentialRepository = CredentialRepository(itemRepository: itemRepository,
-                                                            credentialIdentityStore: .shared,
-                                                            symmetricKey: symmetricKey)
             Task { @MainActor in
                 do {
-                    if let credential = try await credentialRepository.getCredential(of: credentialIdentity) {
-                        complete(with: credential)
+                    let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
+                    if let encryptedItem = try await itemRepository.getItem(shareId: ids.shareId,
+                                                                            itemId: ids.itemId) {
+                        let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                        if case let .login(username, password, _) = decryptedItem.contentData {
+                            complete(with: .init(user: username, password: password))
+                        }
                     } else {
                         cancel(errorCode: .failed)
                     }
