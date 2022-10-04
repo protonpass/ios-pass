@@ -1,6 +1,6 @@
 //
-// PPKeychain.swift
-// Proton Pass - Created on 03/07/2022.
+// NotLoggedInView.swift
+// Proton Pass - Created on 27/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,26 +18,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Keymaker
+import ProtonCore_UIFoundations
+import SwiftUI
 
-public final class PPKeychain: Keychain {
-    public init() {
-        super.init(service: "ch.protonmail", accessGroup: Constants.keychainGroup)
-    }
-}
+struct NotLoggedInView: View {
+    let onCancel: () -> Void
 
-extension PPKeychain: SettingsProvider {
-    private static let LockTimeKey = "PPKeychain.LockTimeKey"
-
-    public var lockTime: AutolockTimeout {
-        get {
-            guard let string = self.string(forKey: Self.LockTimeKey), let intValue = Int(string) else {
-                return .never
+    var body: some View {
+        NavigationView {
+            VStack {
+                Text("Please log in in order to use AutoFill extension")
             }
-            return AutolockTimeout(rawValue: intValue)
+            .padding()
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { toolbarContent }
         }
-        set {
-            self.set(String(newValue.rawValue), forKey: Self.LockTimeKey)
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: onCancel) {
+                Image(uiImage: IconProvider.cross)
+                    .foregroundColor(.primary)
+            }
         }
     }
 }

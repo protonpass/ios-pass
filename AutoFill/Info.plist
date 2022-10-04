@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionMainStoryboard</key>
+		<string>MainInterface</string>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.authentication-services-credential-provider-ui</string>
+	</dict>
+	<key>ACCOUNT_HOST</key>
+	<string>$(ACCOUNT_HOST)</string>
+	<key>API_HOST</key>
+	<string>$(API_HOST)</string>
+	<key>CAPTCHA_HOST</key>
+	<string>$(CAPTCHA_HOST)</string>
+	<key>DEFAULT_HOST</key>
+	<string>$(DEFAULT_HOST)</string>
+	<key>DEFAULT_PATH</key>
+	<string>$(DEFAULT_PATH)</string>
+	<key>HUMAN_VERIFICATION_V3_HOST</key>
+	<string>$(HUMAN_VERIFICATION_V3_HOST)</string>
+	<key>SIGNUP_DOMAIN</key>
+	<string>$(SIGNUP_DOMAIN)</string>
+</dict>
+</plist>

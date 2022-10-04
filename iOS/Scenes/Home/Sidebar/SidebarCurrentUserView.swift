@@ -45,8 +45,8 @@ struct SidebarCurrentUserView: View {
                         .foregroundColor(.gray)
                 }
                 Spacer()
-                Image(uiImage: IconProvider.chevronDown)
-                    .foregroundColor(.white)
+//                Image(uiImage: IconProvider.chevronDown)
+//                    .foregroundColor(.white)
             }
             .padding(8)
             .contentShape(Rectangle())

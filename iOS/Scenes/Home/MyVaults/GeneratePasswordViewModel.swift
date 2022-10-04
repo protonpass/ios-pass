@@ -27,8 +27,26 @@ protocol GeneratePasswordViewModelDelegate: AnyObject {
     func generatePasswordViewModelDidConfirm(password: String)
 }
 
+enum GeneratePasswordViewMode {
+    /// View is shown as part of create login process
+    case createLogin
+    /// View is shown indepently without any context
+    case random
+
+    var confirmTitle: String {
+        switch self {
+        case .createLogin:
+            return "Confirm"
+        case .random:
+            return "Copy & close"
+        }
+    }
+}
+
 final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
+
+    let mode: GeneratePasswordViewMode
 
     @Published private(set) var password = ""
     @Published private(set) var texts: [Text] = []
@@ -39,7 +57,8 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     weak var delegate: GeneratePasswordViewModelDelegate?
 
-    init() {
+    init(mode: GeneratePasswordViewMode) {
+        self.mode = mode
         self.regenerate()
 
         $password

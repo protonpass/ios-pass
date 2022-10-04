@@ -109,6 +109,7 @@ struct VaultContentView: View {
                 }
                 Spacer()
             }
+            .padding(.top)
         }
         .animation(.default, value: viewModel.items.count)
     }

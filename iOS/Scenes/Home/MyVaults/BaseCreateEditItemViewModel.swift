@@ -133,8 +133,9 @@ class BaseCreateEditItemViewModel: BaseViewModel {
                     isLoading = false
                     return
                 }
+                let newItemContentProtobuf = generateItemContent()
                 try await itemRepository.updateItem(oldItem: oldItem.item,
-                                                    newItemContent: generateItemContent(),
+                                                    newItemContent: newItemContentProtobuf,
                                                     shareId: shareId)
                 isLoading = false
                 createEditItemDelegate?.createEditItemViewModelDidUpdateItem(itemContentType())

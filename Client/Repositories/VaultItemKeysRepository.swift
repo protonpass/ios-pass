@@ -19,6 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import CoreData
+import ProtonCore_Networking
+import ProtonCore_Services
 
 public enum VaultItemKeysRepositoryError: Error {
     case noVaultKey(shareId: String)
@@ -123,5 +126,14 @@ public final class VaultItemKeysRepository: VaultItemKeysRepositoryProtocol {
         self.localItemKeyDatasource = localItemKeyDatasource
         self.localVaultKeyDatasource = localVaultKeyDatasource
         self.remoteVaultItemKeysDatasource = remoteVaultItemKeysDatasource
+    }
+
+    public init(container: NSPersistentContainer,
+                authCredential: AuthCredential,
+                apiService: APIService) {
+        self.localItemKeyDatasource = LocalItemKeyDatasource(container: container)
+        self.localVaultKeyDatasource = LocalVaultKeyDatasource(container: container)
+        self.remoteVaultItemKeysDatasource = RemoteVaultItemKeysDatasource(authCredential: authCredential,
+                                                                           apiService: apiService)
     }
 }

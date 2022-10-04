@@ -1,6 +1,6 @@
 //
-// PPKeychain.swift
-// Proton Pass - Created on 03/07/2022.
+// AutoFillCredential.swift
+// Proton Pass - Created on 28/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,26 +18,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Keymaker
+import Core
 
-public final class PPKeychain: Keychain {
-    public init() {
-        super.init(service: "ch.protonmail", accessGroup: Constants.keychainGroup)
+public struct AutoFillCredential {
+    // swiftlint:disable:next type_name
+    public struct IDs: CodableBase64 {
+        public let shareId: String
+        public let itemId: String
     }
+
+    let ids: IDs
+    let username: String
+    let url: String
 }
 
-extension PPKeychain: SettingsProvider {
-    private static let LockTimeKey = "PPKeychain.LockTimeKey"
-
-    public var lockTime: AutolockTimeout {
-        get {
-            guard let string = self.string(forKey: Self.LockTimeKey), let intValue = Int(string) else {
-                return .never
-            }
-            return AutolockTimeout(rawValue: intValue)
-        }
-        set {
-            self.set(String(newValue.rawValue), forKey: Self.LockTimeKey)
-        }
+public extension AutoFillCredential {
+    init(shareId: String,
+         itemId: String,
+         username: String,
+         url: String) {
+        self.ids = .init(shareId: shareId, itemId: itemId)
+        self.username = username
+        self.url = url
     }
 }

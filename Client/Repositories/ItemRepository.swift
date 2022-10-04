@@ -25,6 +25,11 @@ import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
 
+public protocol ItemRepositoryDelegate: AnyObject {
+    func itemRepositoryHasNewCredentials(_ credentials: [AutoFillCredential])
+    func itemRepositoryDeletedCredentials(_ credentials: [AutoFillCredential])
+}
+
 public protocol ItemRepositoryProtocol {
     var userData: UserData { get }
     var symmetricKey: SymmetricKey { get }
@@ -33,6 +38,7 @@ public protocol ItemRepositoryProtocol {
     var publicKeyRepository: PublicKeyRepositoryProtocol { get }
     var shareRepository: ShareRepositoryProtocol { get }
     var vaultItemKeysRepository: VaultItemKeysRepositoryProtocol { get }
+    var delegate: ItemRepositoryDelegate? { get }
 
     /// Get a specific Item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
@@ -118,7 +124,7 @@ public extension ItemRepositoryProtocol {
         let createdItemRevision = try await remoteItemRevisionDatasource.createItem(shareId: shareId,
                                                                                     request: request)
         PPLogger.shared?.log("Saving newly created item \(createdItemRevision.itemID) to local database")
-        let encryptedItem = try await map(itemRevision: createdItemRevision, shareId: shareId)
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision, shareId: shareId)
         try await localItemDatasoure.upsertItems([encryptedItem])
         PPLogger.shared?.log("Saved item \(createdItemRevision.itemID) to local database")
         return encryptedItem
@@ -135,7 +141,7 @@ public extension ItemRepositoryProtocol {
         try await remoteItemRevisionDatasource.createAlias(shareId: shareId,
                                                            request: createAliasRequest)
         PPLogger.shared?.log("Saving newly created alias \(createdItemRevision.itemID) to local database")
-        let encryptedItem = try await map(itemRevision: createdItemRevision, shareId: shareId)
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision, shareId: shareId)
         try await localItemDatasoure.upsertItems([encryptedItem])
         PPLogger.shared?.log("Saved alias \(createdItemRevision.itemID) to local database")
         return encryptedItem
@@ -157,6 +163,11 @@ public extension ItemRepositoryProtocol {
                                                      modifiedItems: modifiedItems)
             PPLogger.shared?.log("Finished trashing locallly \(items.count) items for share \(shareId)")
         }
+
+        PPLogger.shared?.log("Extracting deleted credentials from \(items.count) deleted items")
+        let deletedCredentials = try getCredentials(from: items, state: .active)
+        delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
+        PPLogger.shared?.log("Delegated \(deletedCredentials.count) deleted credentials")
     }
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws {
@@ -175,6 +186,11 @@ public extension ItemRepositoryProtocol {
                                                      modifiedItems: modifiedItems)
             PPLogger.shared?.log("Finished untrashing locallly \(items.count) items for share \(shareId)")
         }
+
+        PPLogger.shared?.log("Extracting new credentials from \(items.count) untrashed items")
+        let newCredentials = try getCredentials(from: items, state: .trashed)
+        delegate?.itemRepositoryHasNewCredentials(newCredentials)
+        PPLogger.shared?.log("Delegated \(newCredentials.count) new credentials")
     }
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
@@ -197,6 +213,9 @@ public extension ItemRepositoryProtocol {
                     shareId: String) async throws {
         let itemId = oldItem.itemID
         PPLogger.shared?.log("Updating item \(itemId) for share \(shareId)")
+        let encryptedOldItemContentData = try await localItemDatasoure.getItem(shareId: shareId, itemId: itemId)
+        let decryptedOldItemContentData =
+        try encryptedOldItemContentData?.getDecryptedItemContent(symmetricKey: symmetricKey)
         let keysAndPassphrases = try await getKeysAndPassphrases(shareId: shareId)
         let request = try UpdateItemRequest(oldRevision: oldItem,
                                             vaultKey: keysAndPassphrases.vaultKey,
@@ -210,9 +229,23 @@ public extension ItemRepositoryProtocol {
                                                           itemId: itemId,
                                                           request: request)
         PPLogger.shared?.log("Finished updating remotely item \(itemId) for share \(shareId)")
-        let encryptedItem = try await map(itemRevision: updatedItemRevision, shareId: shareId)
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision, shareId: shareId)
         try await localItemDatasoure.upsertItems([encryptedItem])
         PPLogger.shared?.log("Finished updating locally item \(itemId) for share \(shareId)")
+
+        if case let .login(oldUsername, _, oldUrls) = decryptedOldItemContentData?.contentData,
+           case let .login(newUsername, _, newUrls) = newItemContent.contentData {
+            let ids = AutoFillCredential.IDs(shareId: shareId, itemId: itemId)
+            let deletedCredentials = oldUrls.map { AutoFillCredential(ids: ids,
+                                                                      username: oldUsername,
+                                                                      url: $0) }
+            let newCredentials = newUrls.map { AutoFillCredential(ids: ids,
+                                                                  username: newUsername,
+                                                                  url: $0) }
+            delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
+            delegate?.itemRepositoryHasNewCredentials(newCredentials)
+            PPLogger.shared?.log("Delegated updated credential")
+        }
     }
 }
 
@@ -225,14 +258,20 @@ private extension ItemRepositoryProtocol {
         PPLogger.shared?.log("Saving \(itemRevisions.count) remote item revisions to local database")
         var encryptedItems = [SymmetricallyEncryptedItem]()
         for itemRevision in itemRevisions {
-            let encrypedItem = try await map(itemRevision: itemRevision, shareId: shareId)
+            let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision, shareId: shareId)
             encryptedItems.append(encrypedItem)
         }
         try await localItemDatasoure.upsertItems(encryptedItems)
         PPLogger.shared?.log("Saved \(encryptedItems.count) remote item revisions to local database")
+
+        PPLogger.shared?.log("Extracting new credentials from \(encryptedItems.count) remote items")
+        let newCredentials = try getCredentials(from: encryptedItems, state: .active)
+        delegate?.itemRepositoryHasNewCredentials(newCredentials)
+        PPLogger.shared?.log("Delegated \(newCredentials.count) new credentials")
     }
 
-    func map(itemRevision: ItemRevision, shareId: String) async throws -> SymmetricallyEncryptedItem {
+    func symmetricallyEncrypt(itemRevision: ItemRevision,
+                              shareId: String) async throws -> SymmetricallyEncryptedItem {
         let share = try await shareRepository.getShare(shareId: shareId)
         let vaultKeys = try await vaultItemKeysRepository.getVaultKeys(shareId: shareId, forceRefresh: false)
         let itemKeys = try await vaultItemKeysRepository.getItemKeys(shareId: shareId, forceRefresh: false)
@@ -246,6 +285,25 @@ private extension ItemRepositoryProtocol {
         let encryptedContentProtobuf = try contentProtobuf.symmetricallyEncrypted(symmetricKey)
         let encryptedContent = try encryptedContentProtobuf.serializedData().base64EncodedString()
         return .init(shareId: shareId, item: itemRevision, encryptedContent: encryptedContent)
+    }
+
+    func getCredentials(from encryptedItems: [SymmetricallyEncryptedItem],
+                        state: ItemState) throws -> [AutoFillCredential] {
+        let logInItems = try encryptedItems
+            .filter { $0.item.itemState == state }
+            .map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
+            .filter { $0.contentData.type == .login }
+        var credentials = [AutoFillCredential]()
+        for logInItem in logInItems {
+            if case let .login(username, _, urls) = logInItem.contentData {
+                for url in urls {
+                    credentials.append(.init(ids: .init(shareId: logInItem.shareId, itemId: logInItem.itemId),
+                                             username: username,
+                                             url: url))
+                }
+            }
+        }
+        return credentials
     }
 
     func createItemRequest(itemContent: ProtobufableItemContentProtocol,
@@ -282,7 +340,7 @@ private extension ItemRepositoryProtocol {
     }
 }
 
-public struct ItemRepository: ItemRepositoryProtocol {
+public final class ItemRepository: ItemRepositoryProtocol {
     public let userData: UserData
     public let symmetricKey: SymmetricKey
     public let localItemDatasoure: LocalItemDatasourceProtocol
@@ -290,6 +348,7 @@ public struct ItemRepository: ItemRepositoryProtocol {
     public let publicKeyRepository: PublicKeyRepositoryProtocol
     public let shareRepository: ShareRepositoryProtocol
     public let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
+    public weak var delegate: ItemRepositoryDelegate?
 
     public init(userData: UserData,
                 symmetricKey: SymmetricKey,
@@ -305,6 +364,25 @@ public struct ItemRepository: ItemRepositoryProtocol {
         self.publicKeyRepository = publicKeyRepository
         self.shareRepository = shareRepository
         self.vaultItemKeysRepository = vaultItemKeysRepository
+    }
+
+    public init(userData: UserData,
+                symmetricKey: SymmetricKey,
+                container: NSPersistentContainer,
+                apiService: APIService) {
+        self.userData = userData
+        self.symmetricKey = symmetricKey
+        self.localItemDatasoure = LocalItemDatasource(container: container)
+        self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(authCredential: userData.credential,
+                                                                         apiService: apiService)
+        self.publicKeyRepository = PublicKeyRepository(container: container, apiService: apiService)
+        self.shareRepository = ShareRepository(userId: userData.user.ID,
+                                               container: container,
+                                               authCredential: userData.credential,
+                                               apiService: apiService)
+        self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
+                                                               authCredential: userData.credential,
+                                                               apiService: apiService)
     }
 }
 

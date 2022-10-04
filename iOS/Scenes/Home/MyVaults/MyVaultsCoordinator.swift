@@ -95,7 +95,7 @@ final class MyVaultsCoordinator: Coordinator {
                 case .note:
                     showCreateEditNoteView(mode: .create(shareId: shareId, alias: false))
                 case .password:
-                    showGeneratePasswordView(delegate: nil)
+                    showGeneratePasswordView(delegate: self, mode: .random)
                 }
             }
         }
@@ -130,7 +130,9 @@ final class MyVaultsCoordinator: Coordinator {
                                                                 itemRepository: itemRepository)
         createEditLoginViewModel.delegate = self
         createEditLoginViewModel.createEditItemDelegate = self
-        createEditLoginViewModel.onGeneratePassword = { [unowned self] in showGeneratePasswordView(delegate: $0) }
+        createEditLoginViewModel.onGeneratePassword = { [unowned self] in
+            showGeneratePasswordView(delegate: $0, mode: .createLogin)
+        }
         let createEditLoginView = CreateEditLoginView(viewModel: createEditLoginViewModel)
         presentViewFullScreen(createEditLoginView, modalTransitionStyle: mode.modalTransitionStyle)
     }
@@ -154,8 +156,9 @@ final class MyVaultsCoordinator: Coordinator {
         presentViewFullScreen(createEditNoteView, modalTransitionStyle: mode.modalTransitionStyle)
     }
 
-    private func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?) {
-        let viewModel = GeneratePasswordViewModel()
+    private func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?,
+                                          mode: GeneratePasswordViewMode) {
+        let viewModel = GeneratePasswordViewModel(mode: mode)
         viewModel.delegate = delegate
         let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
         let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
@@ -293,6 +296,14 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelDidTrashItem(_ type: ItemContentType) {
         handleTrashedItem(type)
+    }
+}
+
+// MARK: - GeneratePasswordViewModelDelegate
+extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
+    func generatePasswordViewModelDidConfirm(password: String) {
+        UIPasteboard.general.string = password
+        myVaultsViewModel.successMessage = "Password copied to clipboard"
     }
 }
 

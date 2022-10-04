@@ -29,6 +29,7 @@ import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
+import SwiftUI
 import UIComponents
 import UIKit
 
@@ -44,11 +45,14 @@ final class AppCoordinator {
     private let apiService: PMAPIService
     private var container: NSPersistentContainer
 
-    @KeychainStorage(key: "sessionData")
+    @KeychainStorage(key: .sessionData)
     private var sessionData: SessionData?
 
-    @KeychainStorage(key: "symmetricKey")
+    @KeychainStorage(key: .symmetricKey)
     private var symmetricKey: String?
+
+    @AppStorage(SettingsKeys.quickTypeBar)
+    private var quickTypeBar = true
 
     private var homeCoordinator: HomeCoordinator?
     private var welcomeCoordinator: WelcomeCoordinator?
@@ -161,6 +165,7 @@ final class AppCoordinator {
     private func wipeAllData() {
         keymaker.wipeMainKey()
         sessionData = nil
+        quickTypeBar = true
         Task {
             do {
                 // Delete existing persistent stores

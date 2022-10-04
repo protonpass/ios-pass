@@ -100,7 +100,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol) {
         self.aliasRepository = aliasRepository
-        super.init(mode: mode, itemRepository: itemRepository)
+        super.init(mode: mode,
+                   itemRepository: itemRepository)
 
         if case let .edit(itemContent) = mode {
             self.title = itemContent.name

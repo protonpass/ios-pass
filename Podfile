@@ -95,6 +95,10 @@ target 'iOS' do
   pod 'SideMenuSwift', '2.0.9'
   pod 'MBProgressHUD'
 
+  target 'AutoFill' do
+    inherit! :search_paths
+  end
+
 end
 
 target 'macOS' do

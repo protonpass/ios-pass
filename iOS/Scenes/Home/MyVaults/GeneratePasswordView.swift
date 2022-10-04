@@ -82,7 +82,7 @@ struct GeneratePasswordView: View {
                     viewModel.confirm()
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    Text("Confirm")
+                    Text(viewModel.mode.confirmTitle)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .contentShape(Rectangle())
@@ -114,6 +114,6 @@ struct GeneratePasswordView: View {
 
 struct GeneratePasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneratePasswordView(viewModel: .init())
+        GeneratePasswordView(viewModel: .init(mode: .random))
     }
 }

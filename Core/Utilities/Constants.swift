@@ -21,7 +21,7 @@
 import Foundation
 
 public enum Constants {
-    static let teamId = "2SB5Z68H26"
-    static let appGroup = "group.me.proton.pass"
-    static let keychainGroup = "\(teamId).\(appGroup)"
+    public static let teamId = "2SB5Z68H26"
+    public static let appGroup = "group.me.proton.pass"
+    public static let keychainGroup = "\(teamId).\(appGroup)"
 }
