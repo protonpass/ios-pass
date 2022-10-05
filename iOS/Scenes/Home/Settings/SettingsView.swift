@@ -61,7 +61,7 @@ private struct AutoFillSection: View {
                     .foregroundColor(.secondary)
             }
 
-            Toggle(isOn: $viewModel.tempQuickTypeBar) {
+            Toggle(isOn: $viewModel.quickTypeBar) {
                 Text("QuickType bar suggestions")
             }
             .disabled(!viewModel.autoFillEnabled)

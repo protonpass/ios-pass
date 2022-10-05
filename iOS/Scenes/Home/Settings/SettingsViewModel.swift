@@ -23,23 +23,17 @@ import Core
 import CryptoKit
 import SwiftUI
 
-public enum SettingsKeys {
-    public static let quickTypeBar = "quickTypeBar"
-}
-
 final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let symmetricKey: SymmetricKey
+    let preferences: Preferences
 
-    // Use a temporary boolean here because enabling/disabling can throw errors
-    // and when errors happen, we can rollback this boolean
-    @Published var tempQuickTypeBar = true {
+    @Published var quickTypeBar = true {
         didSet {
             populateOrRemoveCredentials()
         }
     }
-    @AppStorage(SettingsKeys.quickTypeBar) private var quickTypeBar = true
 
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
     @Published private(set) var autoFillEnabled = false {
@@ -52,12 +46,14 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
 
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
-         symmetricKey: SymmetricKey) {
+         symmetricKey: SymmetricKey,
+         preferences: Preferences) {
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.symmetricKey = symmetricKey
+        self.preferences = preferences
         super.init()
-        self.tempQuickTypeBar = quickTypeBar
+        self.quickTypeBar = preferences.quickTypeBar
         self.updateAutoFillAvalability()
 
         NotificationCenter.default
@@ -79,21 +75,21 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
         // Atempting to populate this database will throw an error anyway so early exit here
         guard autoFillEnabled else { return }
 
-        guard tempQuickTypeBar != quickTypeBar else { return }
+        guard quickTypeBar != preferences.quickTypeBar else { return }
         Task { @MainActor in
             defer { isLoading = false }
             do {
                 isLoading = true
-                if tempQuickTypeBar {
+                if quickTypeBar {
                     try await credentialManager.insertAllCredentials(from: itemRepository,
                                                                      symmetricKey: symmetricKey,
                                                                      forceRemoval: true)
                 } else {
                     try await credentialManager.removeAllCredentials()
                 }
-                quickTypeBar = tempQuickTypeBar
+                preferences.quickTypeBar = quickTypeBar
             } catch {
-                self.tempQuickTypeBar.toggle() // rollback to previous value
+                self.quickTypeBar.toggle() // rollback to previous value
                 self.error = error
             }
         }

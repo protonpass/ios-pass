@@ -51,6 +51,7 @@ final class HomeCoordinator: DeinitPrintable {
     private let aliasRepository: AliasRepositoryProtocol
     private let publicKeyRepository: PublicKeyRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
+    private let preferences: Preferences
     weak var delegate: HomeCoordinatorDelegate?
 
     var rootViewController: UIViewController { sideMenuController }
@@ -80,7 +81,8 @@ final class HomeCoordinator: DeinitPrintable {
     init(sessionData: SessionData,
          apiService: APIService,
          symmetricKey: SymmetricKey,
-         container: NSPersistentContainer) {
+         container: NSPersistentContainer,
+         preferences: Preferences) {
         self.sessionData = sessionData
         self.apiService = apiService
         self.symmetricKey = symmetricKey
@@ -107,6 +109,7 @@ final class HomeCoordinator: DeinitPrintable {
         itemRepository.delegate = credentialManager
         self.credentialManager = credentialManager
         self.vaultSelection = .init(vaults: [])
+        self.preferences = preferences
         self.setUpSideMenuPreferences()
         self.observeVaultSelection()
         self.observeForegroundEntrance()
@@ -186,7 +189,8 @@ private extension HomeCoordinator {
     func provideSettingsCoordinator() -> SettingsCoordinator {
         let settingsCoordinator = SettingsCoordinator(itemRepository: itemRepository,
                                                       credentialManager: credentialManager,
-                                                      symmetricKey: symmetricKey)
+                                                      symmetricKey: symmetricKey,
+                                                      preferences: preferences)
         settingsCoordinator.delegate = self
         return settingsCoordinator
     }
