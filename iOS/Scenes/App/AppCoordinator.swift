@@ -44,15 +44,13 @@ final class AppCoordinator {
     private let keymaker: Keymaker
     private let apiService: PMAPIService
     private var container: NSPersistentContainer
+    private let preferences: Preferences
 
     @KeychainStorage(key: .sessionData)
     private var sessionData: SessionData?
 
     @KeychainStorage(key: .symmetricKey)
     private var symmetricKey: String?
-
-    @AppStorage(SettingsKeys.quickTypeBar)
-    private var quickTypeBar = true
 
     private var homeCoordinator: HomeCoordinator?
     private var welcomeCoordinator: WelcomeCoordinator?
@@ -73,6 +71,7 @@ final class AppCoordinator {
         self.apiService = PMAPIService(doh: PPDoH(bundle: .main))
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
+        self.preferences = .shared
         self.apiService.authDelegate = self
         self.apiService.serviceDelegate = self
 
@@ -141,7 +140,8 @@ final class AppCoordinator {
             let homeCoordinator = HomeCoordinator(sessionData: sessionData,
                                                   apiService: apiService,
                                                   symmetricKey: symmetricKey,
-                                                  container: container)
+                                                  container: container,
+                                                  preferences: preferences)
             homeCoordinator.delegate = self
             self.homeCoordinator = homeCoordinator
             self.welcomeCoordinator = nil
@@ -165,7 +165,7 @@ final class AppCoordinator {
     private func wipeAllData() {
         keymaker.wipeMainKey()
         sessionData = nil
-        quickTypeBar = true
+        preferences.reset()
         Task {
             do {
                 // Delete existing persistent stores

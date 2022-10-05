@@ -27,10 +27,12 @@ final class SettingsCoordinator: Coordinator {
 
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
-         symmetricKey: SymmetricKey) {
+         symmetricKey: SymmetricKey,
+         preferences: Preferences) {
         self.settingsViewModel = .init(itemRepository: itemRepository,
                                        credentialManager: credentialManager,
-                                       symmetricKey: symmetricKey)
+                                       symmetricKey: symmetricKey,
+                                       preferences: preferences)
         super.init()
         start()
     }
