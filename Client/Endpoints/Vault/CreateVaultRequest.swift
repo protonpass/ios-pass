@@ -128,34 +128,44 @@ extension CreateVaultRequest {
             throw CryptoError.failedToGenerateKeyRing
         }
 
-        let vaultData = try vault.data()
-        guard let encryptedVaultData = try keyRing.encrypt(.init(vaultData), privateKey: nil).data else {
-            throw CryptoError.failedToEncrypt
-        }
-        let nameVaultKeySignature = try Encryptor.sign(list: vaultData,
-                                                       addressKey: vaultKey,
-                                                       addressPassphrase: vaultKeyPassphrase)
-
         let signedVaultKeyPassphraseKeyPacket = try Encryptor.sign(list: vaultKeyPassphraseKeyPacket,
                                                                    addressKey: vaultKey,
                                                                    addressPassphrase: vaultKeyPassphrase)
 
-        let nameAddressSignature = try Encryptor.sign(list: vaultData,
-                                                      addressKey: addressKey.key.privateKey,
-                                                      addressPassphrase: addressKey.keyPassphrase)
+        let vaultData = try vault.data()
+        guard let encryptedVaultData = try keyRing.encrypt(.init(vaultData), privateKey: nil).data else {
+            throw CryptoError.failedToEncrypt
+        }
 
-        let encryptedNameAddressSignature = try Encryptor.encrypt(nameAddressSignature, key: vaultKey)
-        let encryptedNameVaultKeySignature = try Encryptor.encrypt(nameVaultKeySignature, key: vaultKey)
+        guard let nameVaultKeySignature = try Encryptor.sign(list: vaultData,
+                                                             addressKey: vaultKey,
+                                                             addressPassphrase: vaultKeyPassphrase).unArmor else {
+            throw CryptoError.failedToUnarmor("nameVaultKeySignature")
+        }
+
+        guard let nameAddressSignature =
+                try Encryptor.sign(list: vaultData,
+                                   addressKey: addressKey.key.privateKey,
+                                   addressPassphrase: addressKey.keyPassphrase).unArmor else {
+            throw CryptoError.failedToUnarmor("nameAddressSignature")
+        }
+
+        guard let encryptedNameAddressSignature = try keyRing.encrypt(.init(nameAddressSignature),
+                                                                      privateKey: nil).data else {
+            throw CryptoError.failedToEncrypt
+        }
+
+        guard let encryptedNameVaultKeySignature =
+                try keyRing.encrypt(.init(nameVaultKeySignature),
+                                    privateKey: nil).data else {
+            throw CryptoError.failedToEncrypt
+        }
 
         self = .init(addressID: addressKey.addressId,
                      content: encryptedVaultData.base64EncodedString(),
                      contentFormatVersion: 1,
-                     contentEncryptedAddressSignature:
-                        try CryptoUtils.unarmorAndBase64(data: encryptedNameAddressSignature,
-                                                         name: "encryptedNameAddressSignature"),
-                     contentEncryptedVaultSignature:
-                        try CryptoUtils.unarmorAndBase64(data: encryptedNameVaultKeySignature,
-                                                         name: "encryptedNameVaultKeySignature"),
+                     contentEncryptedAddressSignature: encryptedNameAddressSignature.base64EncodedString(),
+                     contentEncryptedVaultSignature: encryptedNameVaultKeySignature.base64EncodedString(),
                      vaultKey: vaultKey,
                      vaultKeyPassphrase: vaultKeyPassphraseDataPacket.base64EncodedString(),
                      vaultKeySignature: try CryptoUtils.unarmorAndBase64(data: vaultKeySignature,

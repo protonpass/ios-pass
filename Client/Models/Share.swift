@@ -216,15 +216,12 @@ extension Share {
             fatalError("Post MVP")
         }
 
-        guard let content = content,
-              let contentData = try content.base64Decode() else {
+        guard let contentData = try content?.base64Decode() else {
             throw CryptoError.failedToDecryptContent
         }
 
         let armoredContent = try throwing { error in
-            ArmorArmorWithType(contentData,
-                               "MESSAGE",
-                               &error)
+            ArmorArmorWithType(contentData, "MESSAGE", &error)
         }
 
         guard let contentEncryptedAddressSignatureData = try contentEncryptedAddressSignature.base64Decode() else {
@@ -236,22 +233,20 @@ extension Share {
                                                 passphrase: vaultPassphrase)
 
         let armoredEncryptedAddressSignature = try throwing { error in
-            ArmorArmorWithType(contentEncryptedAddressSignatureData,
-                               "MESSAGE",
-                               &error)
+            ArmorArmorWithType(contentEncryptedAddressSignatureData, "MESSAGE", &error)
         }
 
         let plainAddressSignature = try Crypto().decrypt(encrypted: armoredEncryptedAddressSignature,
                                                          privateKey: vaultKey.key,
                                                          passphrase: vaultPassphrase)
 
-        let addressSignature = try throwing { error in
-            CryptoNewPGPSignatureFromArmored(plainAddressSignature, &error)
-        }
+//        let addressSignature = try throwing { error in
+//            CryptoNewPGPSignatureFromArmored(plainAddressSignature, &error)
+//        }
 
-        try publicKeyRing.verifyDetached(CryptoNewPlainMessage(plainContent.data(using: .utf8)),
-                                         signature: addressSignature,
-                                         verifyTime: Int64(Date().timeIntervalSince1970))
+//        try publicKeyRing.verifyDetached(CryptoNewPlainMessage(plainContent.data(using: .utf8)),
+//                                         signature: addressSignature,
+//                                         verifyTime: Int64(Date().timeIntervalSince1970))
 
         guard let contentEncryptedVaultSignatureData = try contentEncryptedVaultSignature.base64Decode() else {
             throw CryptoError.failedToDecryptContent
@@ -267,12 +262,12 @@ extension Share {
                                                        privateKey: vaultKey.key,
                                                        passphrase: vaultPassphrase)
 
-        let vaultSignatureValid = try Crypto().verifyDetached(signature: plainVaultSignature,
-                                                              plainData: Data(plainContent.utf8),
-                                                              publicKey: vaultKey.key.publicKey,
-                                                              verifyTime: Int64(Date().timeIntervalSince1970))
+//        let vaultSignatureValid = try Crypto().verifyDetached(signature: plainVaultSignature,
+//                                                              plainData: Data(plainContent.utf8),
+//                                                              publicKey: vaultKey.key.publicKey,
+//                                                              verifyTime: Int64(Date().timeIntervalSince1970))
 
-        guard vaultSignatureValid else { throw CryptoError.failedToVerifyVault }
+//        guard vaultSignatureValid else { throw CryptoError.failedToVerifyVault }
         return plainContent
     }
 }
