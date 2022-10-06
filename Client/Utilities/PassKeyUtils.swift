@@ -25,6 +25,8 @@ import ProtonCore_DataModel
 import ProtonCore_KeyManager
 import ProtonCore_Login
 
+typealias DecryptionKey = ProtonCore_Crypto.DecryptionKey
+
 public enum PassKeyUtils {
     public static func getVaultKeyPassphrase(userData: UserData,
                                              share: Share,
@@ -34,80 +36,78 @@ public enum PassKeyUtils {
             throw CryptoError.failedToEncrypt
         }
 
-        let addressKeys = try firstAddress.keys.compactMap { key -> DecryptionKey? in
+        let addressKeys = try firstAddress.keys.compactMap { key -> ProtonCore_Crypto.DecryptionKey? in
             guard let binKey = userData.user.keys.first?.privateKey.unArmor else { return nil }
             let passphrase = try key.passphrase(userBinKeys: [binKey],
                                                 mailboxPassphrase: userData.passphrases.first?.value ?? "")
-            return DecryptionKey(privateKey: key.privateKey, passphrase: passphrase)
+            return ProtonCore_Crypto.DecryptionKey(privateKey: .init(value: key.privateKey), passphrase: .init(value: passphrase))
         }
-        let privateKeyRing = try Decryptor.buildPrivateKeyRing(with: addressKeys)
 
         let signingKeyValid = try validateSigningKey(userData: userData,
                                                      share: share,
-                                                     privateKeyRing: privateKeyRing)
+                                                     addressKeys: addressKeys)
 
         guard signingKeyValid else { throw CryptoError.failedToVerifyVault }
 
         return try validateVaultKey(userData: userData,
                                     share: share,
                                     vaultKeys: [vaultKey],
-                                    privateKeyRing: privateKeyRing)
+                                    addressKeys: addressKeys)
     }
 
-    private static func validateSigningKey(userData: UserData,
-                                           share: Share,
-                                           privateKeyRing: CryptoKeyRing) throws -> Bool {
-        // Here we have decrypted signing key but it's not used yet
-        let decryptedSigningKeyPassphrase =
-        try privateKeyRing.decrypt(.init(try share.signingKeyPassphrase?.base64Decode()),
-                                   verifyKey: nil,
-                                   verifyTime: 0)
-        let signingKeyFingerprint = try CryptoUtils.getFingerprint(key: share.signingKey)
-        let decodedAcceptanceSignature = try share.acceptanceSignature.base64Decode()
-
-        let armoredDecodedAcceptanceSignature = try throwing { error in
-            ArmorArmorWithType(decodedAcceptanceSignature,
-                               "SIGNATURE",
-                               &error)
+    static func validateSigningKey(userData: UserData,
+                                   share: Share,
+                                   addressKeys: [ProtonCore_Crypto.DecryptionKey]) throws -> Bool {
+        guard let signingKeyPassphraseData = try share.signingKeyPassphrase?.base64Decode() else {
+            throw CryptoError.failedToDecode
         }
+        let armoredSigningKeyPassphrase = try CryptoUtils.armorMessage(signingKeyPassphraseData)
+        let decryptedSigningKeyPassphrase: String =
+        try ProtonCore_Crypto.Decryptor.decrypt(decryptionKeys: addressKeys,
+                                                encrypted: .init(value: armoredSigningKeyPassphrase))
+
+        // Here we have decrypted signing key but it's not used yet
+        let signingKeyFingerprint = try CryptoUtils.getFingerprint(key: share.signingKey)
+        guard let decodedAcceptanceSignature = try share.acceptanceSignature.base64Decode() else {
+            throw CryptoError.failedToDecode
+        }
+        let armoredDecodedAcceptanceSignature = try CryptoUtils.armorSignature(decodedAcceptanceSignature)
 
         // swiftlint:disable:next todo
         // TODO: Should pass server time
-        try privateKeyRing.verifyDetached(.init(Data(signingKeyFingerprint.utf8)),
-                                          signature: .init(fromArmored: armoredDecodedAcceptanceSignature),
-                                          verifyTime: Int64(Date().timeIntervalSince1970))
-        return true
+        return try ProtonCore_Crypto.Sign.verifyDetached(
+            signature: .init(value: armoredDecodedAcceptanceSignature),
+            plainText: signingKeyFingerprint,
+            verifierKeys: addressKeys.toPublicArmored(),
+            verifyTime: Int64(Date().timeIntervalSince1970))
     }
 
-    private static func validateVaultKey(userData: UserData,
-                                         share: Share,
-                                         vaultKeys: [VaultKey],
-                                         privateKeyRing: CryptoKeyRing) throws -> String {
+    static func validateVaultKey(userData: UserData,
+                                 share: Share,
+                                 vaultKeys: [VaultKey],
+                                 addressKeys: [ProtonCore_Crypto.DecryptionKey]) throws -> String {
         guard let vaultKey = vaultKeys.first else {
             fatalError("Post MVP")
         }
         let vaultKeyFingerprint = try CryptoUtils.getFingerprint(key: vaultKey.key)
-        let decodedVaultKeySignature = try vaultKey.keySignature.base64Decode()
-
-        let armoredDecodedVaultKeySignature = try throwing { error in
-            ArmorArmorWithType(decodedVaultKeySignature,
-                               "SIGNATURE",
-                               &error)
+        guard let decodedVaultKeySignature = try vaultKey.keySignature.base64Decode() else {
+            throw CryptoError.failedToDecode
         }
+        let armoredDecodedVaultKeySignature = try CryptoUtils.armorSignature(decodedVaultKeySignature)
 
-        let vaultKeyValid = try Crypto().verifyDetached(signature: armoredDecodedVaultKeySignature,
-                                                        plainData: .init(Data(vaultKeyFingerprint.utf8)),
-                                                        publicKey: share.signingKey.publicKey,
-                                                        verifyTime: Int64(Date().timeIntervalSince1970))
+        let vaultKeyValid = try ProtonCore_Crypto.Sign.verifyDetached(
+            signature: .init(value: armoredDecodedVaultKeySignature),
+            plainText: vaultKeyFingerprint,
+            verifierKey: .init(value: share.signingKey.publicKey))
 
         guard vaultKeyValid else { throw CryptoError.failedToVerifyVault }
 
-        // Here we have decrypted signing key but it's not used yet
-        let decryptedVaultKeyPassphrase =
-        try privateKeyRing.decrypt(.init(try vaultKey.keyPassphrase?.base64Decode()),
-                                   verifyKey: nil,
-                                   verifyTime: 0)
-        return decryptedVaultKeyPassphrase.getString()
+        guard let vaultKeyPassphraseData = try vaultKey.keyPassphrase?.base64Decode() else {
+            throw CryptoError.failedToDecode
+        }
+        let armoredVaultKeyPassphrase = try CryptoUtils.armorMessage(vaultKeyPassphraseData)
+        return try ProtonCore_Crypto.Decryptor.decrypt(decryptionKeys: addressKeys,
+                                                       encrypted: .init(value: armoredVaultKeyPassphrase))
     }
 }
 
@@ -116,12 +116,16 @@ public extension PassKeyUtils {
                                      vaultKeyPassphrase: String,
                                      itemKey: ItemKey) throws -> String? {
         guard let decodedPassphrase = try itemKey.keyPassphrase?.base64Decode() else { return nil }
-        let vaultDecryptionKey = DecryptionKey(privateKey: vaultKey.key, passphrase: vaultKeyPassphrase)
-        let vaultKeyring = try Decryptor.buildPrivateKeyRing(with: [vaultDecryptionKey])
-        let decryptedPassphrase = try vaultKeyring.decrypt(.init(decodedPassphrase), verifyKey: nil, verifyTime: 0)
-        guard let passphrase = decryptedPassphrase.data else {
-            throw CryptoError.failedToDecryptContent
-        }
-        return String(data: passphrase, encoding: .utf8)
+        let armoredDecodedPassphrase = try CryptoUtils.armorMessage(decodedPassphrase)
+        let vaultDecryptionKey = DecryptionKey(privateKey: .init(value: vaultKey.key),
+                                               passphrase: .init(value: vaultKeyPassphrase))
+        return try ProtonCore_Crypto.Decryptor.decrypt(decryptionKeys: [vaultDecryptionKey],
+                                                       encrypted: .init(value: armoredDecodedPassphrase))
+    }
+}
+
+extension Array where Element == ProtonCore_Crypto.DecryptionKey {
+    func toPublicArmored() -> [ArmoredKey] {
+        map { .init(value: $0.privateKey.armoredPublicKey) }
     }
 }

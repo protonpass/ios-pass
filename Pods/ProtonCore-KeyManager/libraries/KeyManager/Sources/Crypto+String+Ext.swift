@@ -52,11 +52,12 @@ extension String {
         var firstError: Error?
         for key in keys {
             do {
-                let addressKeyPassphrase = try key.passphrase(userBinKeys: userKeys, mailboxPassphrase: passphrase)
+                let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys.toArmored,
+                                                              mailboxPassphrase: Passphrase.init(value: passphrase))
                 return try Crypto().decryptVerifyNonOptional(encrypted: self,
                                                              publicKey: verifier,
                                                              privateKey: key.privateKey,
-                                                             passphrase: addressKeyPassphrase,
+                                                             passphrase: addressKeyPassphrase.value,
                                                              verifyTime: time)
             } catch let error {
                 if firstError == nil {

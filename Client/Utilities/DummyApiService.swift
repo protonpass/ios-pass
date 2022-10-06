@@ -44,7 +44,19 @@ public struct DummyApiService: APIService {
                         autoRetry: Bool,
                         customAuthCredential: AuthCredential?,
                         nonDefaultTimeout: TimeInterval?,
-                        completion: CompletionBlock?) {}
+                        retryPolicy: ProtonRetryPolicy.RetryMode,
+                        jsonCompletion: @escaping JSONCompletion) {}
+
+    public func request<T>(method: HTTPMethod,
+                           path: String,
+                           parameters: Any?,
+                           headers: [String: Any]?,
+                           authenticated: Bool,
+                           autoRetry: Bool,
+                           customAuthCredential: AuthCredential?,
+                           nonDefaultTimeout: TimeInterval?,
+                           retryPolicy: ProtonRetryPolicy.RetryMode,
+                           decodableCompletion: @escaping DecodableCompletion<T>) where T: APIDecodableResponse {}
 
     public func download(byUrl url: String,
                          destinationDirectoryURL: URL,
@@ -52,8 +64,9 @@ public struct DummyApiService: APIService {
                          authenticated: Bool,
                          customAuthCredential: AuthCredential?,
                          nonDefaultTimeout: TimeInterval?,
+                         retryPolicy: ProtonRetryPolicy.RetryMode,
                          downloadTask: ((URLSessionDownloadTask) -> Void)?,
-                         completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {}
+                         downloadCompletion: @escaping DownloadCompletion) {}
 
     public func upload(byPath path: String,
                        parameters: [String: String],
@@ -64,7 +77,44 @@ public struct DummyApiService: APIService {
                        authenticated: Bool,
                        customAuthCredential: AuthCredential?,
                        nonDefaultTimeout: TimeInterval?,
-                       completion: @escaping CompletionBlock) {}
+                       retryPolicy: ProtonRetryPolicy.RetryMode,
+                       uploadProgress: ProgressCompletion?,
+                       jsonCompletion: @escaping JSONCompletion) {}
+
+    public func upload<T>(byPath path: String,
+                          parameters: [String: String],
+                          keyPackets: Data,
+                          dataPacket: Data,
+                          signature: Data?,
+                          headers: [String: Any]?,
+                          authenticated: Bool,
+                          customAuthCredential: AuthCredential?,
+                          nonDefaultTimeout: TimeInterval?,
+                          retryPolicy: ProtonRetryPolicy.RetryMode,
+                          uploadProgress: ProgressCompletion?,
+                          decodableCompletion: @escaping DecodableCompletion<T>) where T: APIDecodableResponse {}
+
+    public func upload(byPath path: String,
+                       parameters: Any?,
+                       files: [String: URL],
+                       headers: [String: Any]?,
+                       authenticated: Bool,
+                       customAuthCredential: AuthCredential?,
+                       nonDefaultTimeout: TimeInterval?,
+                       retryPolicy: ProtonRetryPolicy.RetryMode,
+                       uploadProgress: ProgressCompletion?,
+                       jsonCompletion: @escaping JSONCompletion) {}
+
+    public func upload<T>(byPath path: String,
+                          parameters: Any?,
+                          files: [String: URL],
+                          headers: [String: Any]?,
+                          authenticated: Bool,
+                          customAuthCredential: AuthCredential?,
+                          nonDefaultTimeout: TimeInterval?,
+                          retryPolicy: ProtonRetryPolicy.RetryMode,
+                          uploadProgress: ProgressCompletion?,
+                          decodableCompletion: @escaping DecodableCompletion<T>) where T: APIDecodableResponse {}
 
     public func uploadFromFile(byPath path: String,
                                parameters: [String: String],
@@ -75,17 +125,23 @@ public struct DummyApiService: APIService {
                                authenticated: Bool,
                                customAuthCredential: AuthCredential?,
                                nonDefaultTimeout: TimeInterval?,
-                               completion: @escaping CompletionBlock) {}
+                               retryPolicy: ProtonRetryPolicy.RetryMode,
+                               uploadProgress: ProgressCompletion?,
+                               jsonCompletion: @escaping JSONCompletion) {}
 
-    public func upload(byPath path: String,
-                       parameters: Any?,
-                       files: [String: URL],
-                       headers: [String: Any]?,
-                       authenticated: Bool,
-                       customAuthCredential: AuthCredential?,
-                       nonDefaultTimeout: TimeInterval?,
-                       uploadProgress: ProgressCompletion?,
-                       completion: @escaping CompletionBlock) {}
+    public func uploadFromFile<T>(
+        byPath path: String,
+        parameters: [String: String],
+        keyPackets: Data,
+        dataPacketSourceFileURL: URL,
+        signature: Data?,
+        headers: [String: Any]?,
+        authenticated: Bool,
+        customAuthCredential: AuthCredential?,
+        nonDefaultTimeout: TimeInterval?,
+        retryPolicy: ProtonRetryPolicy.RetryMode,
+        uploadProgress: ProgressCompletion?,
+        decodableCompletion: @escaping DecodableCompletion<T>) where T: APIDecodableResponse {}
     // swiftlint:enable function_parameter_count
 
     public static var preview: DummyApiService { .init() }

@@ -38,12 +38,12 @@ extension PMAboutConfiguration {
     }
 
     private static func openPrivacyPolicy() {
-        guard let url = URL(string: "https://protonmail.com/privacy-policy") else { return }
+        guard let url = URL(string: "https://proton.me/legal/privacy") else { return }
         appOpen(url: url)
     }
 
     private static func openTermsOfService() {
-        guard let url = URL(string: "https://protonmail.com/terms-and-conditions") else { return }
+        guard let url = URL(string: "https://proton.me/legal/terms") else { return }
         appOpen(url: url)
     }
 

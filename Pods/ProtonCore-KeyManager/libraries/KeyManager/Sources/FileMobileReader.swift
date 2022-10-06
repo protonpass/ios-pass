@@ -26,6 +26,7 @@ import Crypto_VPN
 import Crypto
 #endif
 
+@available(*, deprecated, message: "please to use ProtonCore-Crypto module FileMobileReader")
 class FileMobileReader: NSObject, HelperMobileReaderProtocol {
     enum Errors: Error {
         case failedToCreateCryptoHelper

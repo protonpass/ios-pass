@@ -59,6 +59,19 @@ extension Array where Element: Key {
     }
 }
 
+/// Array<Key> extensions
+extension Array where Element == Data {
+    public var toArmored: [ArmoredKey] {
+        var out = [ArmoredKey]()
+        var error: NSError?
+        for key in self {
+            let privK = ArmorArmorKey(key, &error)
+            out.append(ArmoredKey.init(value: privK))
+        }
+        return out
+    }
+}
+
 extension Key {
     
     /// TODO:: need to handle the nil case
@@ -105,6 +118,7 @@ extension Key {
     ///   - mailboxPassphrase: user password hashed with the key salt
     /// - Throws: crypt exceptions
     /// - Returns: passphrase
+    @available(*, deprecated, message: "Please use ProtonCore-Crypto, you can find the same function")
     public func passphrase(userBinKeys: [Data], mailboxPassphrase: String) throws -> String {
         guard let token = self.token, let signature = self.signature else {
             return mailboxPassphrase
@@ -142,7 +156,8 @@ extension Key {
     }
     
     public func passphrase(userKeys: [Key], mailboxPassphrase: String) throws -> String {
-        return try self.passphrase(userBinKeys: userKeys.map(\.binPrivKeys), mailboxPassphrase: mailboxPassphrase)
+        return try self.passphrase(userPrivateKeys: userKeys.toArmoredPrivateKeys,
+                                   mailboxPassphrase: Passphrase.init(value: mailboxPassphrase)).value
     }
     
     @available(*, deprecated, message: "Please use the non-optional variant")
@@ -152,7 +167,10 @@ extension Key {
     }
     
     public func decryptMessageNonOptional(encrypted: String, userBinKeys privateKeys: [Data], passphrase: String) throws -> String {
-        let addressKeyPassphrase = try self.passphrase(userBinKeys: privateKeys, mailboxPassphrase: passphrase)
-        return try encrypted.decryptMessageWithSingleKeyNonOptional(self.privateKey, passphrase: addressKeyPassphrase)
+        let addressKeyPassphrase = try self.passphrase(userPrivateKeys: privateKeys.toArmored,
+                                                       mailboxPassphrase: Passphrase.init(value: passphrase))
+        
+        return try encrypted.decryptMessageWithSingleKeyNonOptional(ArmoredKey.init(value: self.privateKey),
+                                                                    passphrase: Passphrase.init(value: addressKeyPassphrase.value))
     }
 }

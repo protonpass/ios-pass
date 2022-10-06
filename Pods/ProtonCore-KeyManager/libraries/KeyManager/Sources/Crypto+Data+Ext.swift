@@ -22,8 +22,14 @@
 import Foundation
 #if canImport(ProtonCore_Crypto_VPN)
 import ProtonCore_Crypto_VPN
+typealias CoreDecryptionKey = ProtonCore_Crypto_VPN.DecryptionKey
+typealias CoreSplitPacket = ProtonCore_Crypto_VPN.SplitPacket
+typealias CoreDecryptor = ProtonCore_Crypto_VPN.Decryptor
 #elseif canImport(ProtonCore_Crypto)
 import ProtonCore_Crypto
+typealias CoreDecryptionKey = ProtonCore_Crypto.DecryptionKey
+typealias CoreSplitPacket = ProtonCore_Crypto.SplitPacket
+typealias CoreDecryptor = ProtonCore_Crypto.Decryptor
 #endif
 import ProtonCore_DataModel
 
@@ -44,11 +50,12 @@ extension Data {
         var firstError: Error?
         for key in keys {
             do {
-                let addressKeyPassphrase = try key.passphrase(userBinKeys: userKeys, mailboxPassphrase: passphrase)
-                return try Crypto().decryptAttachmentNonOptional(keyPacket: keyPackage,
-                                                                 dataPacket: self,
-                                                                 privateKey: key.privateKey,
-                                                                 passphrase: addressKeyPassphrase)
+                let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys.toArmored,
+                                                              mailboxPassphrase: Passphrase.init(value: passphrase))
+                let decryptionKey = CoreDecryptionKey.init(privateKey: ArmoredKey.init(value: key.privateKey),
+                                                           passphrase: addressKeyPassphrase)
+                let split = CoreSplitPacket.init(dataPacket: self, keyPacket: keyPackage)
+                return try CoreDecryptor.decrypt(decryptionKeys: [decryptionKey], split: split)
             } catch let error {
                 if firstError == nil {
                     firstError = error
@@ -72,12 +79,15 @@ extension Data {
         }
     }
     
+    @available(*, deprecated, message: "Plase use ProtonCore-Crypto find a replacement Decryptor")
     public func getSessionFromPubKeyPackageNonOptional(userKeys: [Data], passphrase: String, keys: [Key]) throws -> SymmetricKey {
         var firstError: Error?
         for key in keys {
             do {
                 let addressKeyPassphrase = try key.passphrase(userBinKeys: userKeys, mailboxPassphrase: passphrase)
-                return try Crypto().getSessionNonOptional(keyPacket: self, privateKey: key.privateKey, passphrase: addressKeyPassphrase)
+                return try Crypto().getSessionNonOptional(keyPacket: self,
+                                                          privateKey: key.privateKey,
+                                                          passphrase: addressKeyPassphrase)
             } catch let error {
                 if firstError == nil {
                     firstError = error

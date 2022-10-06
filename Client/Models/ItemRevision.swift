@@ -92,15 +92,15 @@ extension ItemRevision {
         let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
                                                                         share: share,
                                                                         vaultKey: vaultKey)
-        let vaultDecryptionKey = DecryptionKey(privateKey: vaultKey.key, passphrase: vaultKeyPassphrase)
-        let vaultKeyring = try Decryptor.buildPrivateKeyRing(with: [vaultDecryptionKey])
+        let vaultDecryptionKey = DecryptionKey(privateKey: .init(value: vaultKey.key),
+                                               passphrase: .init(value: vaultKeyPassphrase))
 
-        let decryptedContent = try decryptField(keyring: vaultKeyring, field: content)
+        let decryptedContent = try decryptField(decryptionKeys: [vaultDecryptionKey], field: content)
 
-        let decryptedItemSignature = try decryptField(keyring: vaultKeyring, field: itemKeySignature)
+        let decryptedItemSignature = try decryptField(decryptionKeys: [vaultDecryptionKey], field: itemKeySignature)
         try verifyItemSignature(signature: decryptedItemSignature, itemKey: itemKey, content: decryptedContent)
 
-        let decryptedUserSignature = try decryptField(keyring: vaultKeyring, field: userSignature)
+        let decryptedUserSignature = try decryptField(decryptionKeys: [vaultDecryptionKey], field: userSignature)
         // swiftlint:disable:next todo
         // TODO:
         //        try verifyUserSignature(signature: decryptedUserSignature,
@@ -110,13 +110,13 @@ extension ItemRevision {
         return try ItemContentProtobuf(data: decryptedContent)
     }
 
-    private func decryptField(keyring: CryptoKeyRing, field: String) throws -> Data {
-        let decoded = try field.base64Decode()
-        let decryptedMessage = try keyring.decrypt(.init(decoded), verifyKey: nil, verifyTime: 0)
-        guard let data = decryptedMessage.data else {
-            throw CryptoError.failedToDecryptContent
+    private func decryptField(decryptionKeys: [DecryptionKey], field: String) throws -> Data {
+        guard let decoded = try field.base64Decode() else {
+            throw CryptoError.failedToDecode
         }
-        return data
+        let armoredDecoded = try CryptoUtils.armorMessage(decoded)
+        return try ProtonCore_Crypto.Decryptor.decrypt(decryptionKeys: decryptionKeys,
+                                                       encrypted: .init(value: armoredDecoded))
     }
 
     private func verifyUserSignature(signature: Data, verifyKeys: [String], content: Data) throws {

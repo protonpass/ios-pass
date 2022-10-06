@@ -3,7 +3,7 @@ def proton_core_path
 end
 
 def proton_core_version
-  "3.21.0"
+  "3.22.4"
 end
 
 def pmtest_path
@@ -58,6 +58,7 @@ target 'Core' do
   pod 'ProtonCore-Keymaker/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Networking/Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-LoginUI-V5/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Settings-V5', :git => proton_core_path, :tag => proton_core_version
 
   target 'CoreTests' do
@@ -92,6 +93,7 @@ target 'iOS' do
   pod 'ProtonCore-Networking/Alamofire', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-LoginUI-V5/UsingCrypto+Alamofire', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'SideMenuSwift', '2.0.9'
   pod 'MBProgressHUD'
 
