@@ -40,7 +40,8 @@ public enum PassKeyUtils {
             guard let binKey = userData.user.keys.first?.privateKey.unArmor else { return nil }
             let passphrase = try key.passphrase(userBinKeys: [binKey],
                                                 mailboxPassphrase: userData.passphrases.first?.value ?? "")
-            return ProtonCore_Crypto.DecryptionKey(privateKey: .init(value: key.privateKey), passphrase: .init(value: passphrase))
+            return ProtonCore_Crypto.DecryptionKey(privateKey: .init(value: key.privateKey),
+                                                   passphrase: .init(value: passphrase))
         }
 
         let signingKeyValid = try validateSigningKey(userData: userData,

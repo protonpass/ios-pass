@@ -95,12 +95,17 @@ extension ItemRevision {
         let vaultDecryptionKey = DecryptionKey(privateKey: .init(value: vaultKey.key),
                                                passphrase: .init(value: vaultKeyPassphrase))
 
-        let decryptedContent = try decryptField(decryptionKeys: [vaultDecryptionKey], field: content)
+        let decryptedContent = try decryptField(decryptionKeys: [vaultDecryptionKey],
+                                                field: content)
 
-        let decryptedItemSignature = try decryptField(decryptionKeys: [vaultDecryptionKey], field: itemKeySignature)
-        try verifyItemSignature(signature: decryptedItemSignature, itemKey: itemKey, content: decryptedContent)
+        let decryptedItemSignature = try decryptField(decryptionKeys: [vaultDecryptionKey],
+                                                      field: itemKeySignature)
+        try verifyItemSignature(signature: decryptedItemSignature,
+                                itemKey: itemKey,
+                                content: decryptedContent)
 
-        let decryptedUserSignature = try decryptField(decryptionKeys: [vaultDecryptionKey], field: userSignature)
+        let decryptedUserSignature = try decryptField(decryptionKeys: [vaultDecryptionKey],
+                                                      field: userSignature)
         // swiftlint:disable:next todo
         // TODO:
         //        try verifyUserSignature(signature: decryptedUserSignature,
