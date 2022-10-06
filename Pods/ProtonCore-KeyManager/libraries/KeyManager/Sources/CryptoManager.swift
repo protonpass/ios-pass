@@ -24,11 +24,7 @@ import Crypto_VPN
 #elseif canImport(Crypto)
 import Crypto
 #endif
-
-enum Either<Left, Right> {
-    case left(Left)
-    case right(Right)
-}
+import ProtonCore_Utilities
 
 enum CryptoManagerCryptoError: Error {
     case privateKeyDecryptionFailed
@@ -36,6 +32,7 @@ enum CryptoManagerCryptoError: Error {
     case calendarKeyGenerationFailed
 }
 
+@available(*, deprecated, message: "please to use ProtonCore-Crypto module find the replacements")
 public enum CryptoManager {
 
     public static func generateCryptoKeyRing(key: String, passphrase: String) throws -> CryptoKeyRing {

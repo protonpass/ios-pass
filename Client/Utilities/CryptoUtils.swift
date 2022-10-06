@@ -21,10 +21,13 @@
 import Core
 import Crypto
 import ProtonCore_Crypto
+import ProtonCore_DataModel
+import ProtonCore_Login
 
 public enum CryptoError: Error {
     case failedToSplitPGPMessage
     case failedToUnarmor(String)
+    case failedToArmor(String)
     case failedToGetFingerprint
     case failedToGenerateKeyRing
     case failedToEncrypt
@@ -98,5 +101,22 @@ public enum CryptoUtils {
         }
         if let error = error { throw error }
         return sessionKey
+    }
+
+    public static func unlockAddressKeys(userData: UserData) throws -> [ProtonCore_Crypto.DecryptionKey] {
+        guard let firstAddress = userData.addresses.first else {
+            fatalError("Post MVP")
+        }
+        return try firstAddress.keys.compactMap { key -> DecryptionKey? in
+            guard let binKey = userData.user.keys.first?.privateKey.unArmor else { return nil }
+            let passphrase = try key.passphrase(userBinKeys: [binKey],
+                                                mailboxPassphrase: userData.passphrases.first?.value ?? "")
+            return DecryptionKey(privateKey: .init(value: key.privateKey), passphrase: .init(value: passphrase))
+        }
+    }
+
+    public static func unlockKey(_ armoredKey: String,
+                                 passphrase: String) throws -> ProtonCore_Crypto.DecryptionKey {
+        DecryptionKey(privateKey: .init(value: armoredKey), passphrase: .init(value: passphrase))
     }
 }

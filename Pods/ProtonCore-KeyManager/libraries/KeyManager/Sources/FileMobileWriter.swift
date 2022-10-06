@@ -26,7 +26,7 @@ import Crypto_VPN
 import Crypto
 #endif
 
-///
+@available(*, deprecated, message: "please to use ProtonCore-Crypto module FileMobileWriter")
 class FileMobileWriter: NSObject, CryptoWriterProtocol {
     var file: FileHandle
     

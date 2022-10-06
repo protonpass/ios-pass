@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Crypto",
-  "version": "3.21.0",
+  "version": "3.22.3",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": null,
-    "tag": "3.21.0"
+    "tag": "3.22.3"
   },
   "platforms": {
     "ios": "11.0",
@@ -24,6 +24,11 @@
   ],
   "pod_target_xcconfig": {
     "APPLICATION_EXTENSION_API_ONLY": "YES"
+  },
+  "dependencies": {
+    "ProtonCore-DataModel": [
+      "3.22.3"
+    ]
   },
   "default_subspecs": [
 
@@ -38,7 +43,7 @@
       "name": "Tests",
       "test_type": "unit",
       "source_files": "libraries/Crypto/Tests/**/*.swift",
-      "resources": "libraries/Crypto/Tests/TestData/**/*"
+      "resources": "libraries/Crypto/Tests/Resources/**/*"
     }
   ],
   "swift_version": "5.6"

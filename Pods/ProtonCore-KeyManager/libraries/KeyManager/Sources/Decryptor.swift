@@ -25,6 +25,11 @@ import Crypto_VPN
 #elseif canImport(Crypto)
 import Crypto
 #endif
+#if canImport(ProtonCore_Crypto_VPN)
+import ProtonCore_Crypto_VPN
+#elseif canImport(ProtonCore_Crypto)
+import ProtonCore_Crypto
+#endif
 import ProtonCore_DataModel
 import ProtonCore_Utilities
 
@@ -61,6 +66,7 @@ public class DecryptionKey {
     public let passphrase: String
 }
 
+@available(*, deprecated, message: "please to use ProtonCore-Crypto module Decryptor")
 public enum Decryptor {
     public enum Errors: Error {
         case emptyResult
@@ -357,10 +363,11 @@ extension Decryptor {
     public static func decryptPassphrase(encPassphrase: String, decryption: DecryptionAddress) throws -> String {
         for key in decryption.addressKeys {
             do {
-                let clear = try key.passphrase(userBinKeys: decryption.userBinKeys, mailboxPassphrase: decryption.passphrase)
+                let clear = try key.passphrase(userPrivateKeys: decryption.userBinKeys.toArmored,
+                                               mailboxPassphrase: Passphrase.init(value: decryption.passphrase))
                 var error: NSError?
                 let out = HelperDecryptMessageArmored(key.privateKey,
-                                                      clear.data(using: .utf8),
+                                                      clear.data,
                                                       encPassphrase, &error)
                 if let err = error {
                     throw err

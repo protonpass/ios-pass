@@ -26,7 +26,9 @@ import Crypto_VPN
 import Crypto
 #endif
 import CommonCrypto
+import ProtonCore_Utilities
 
+@available(*, deprecated, message: "please to use ProtonCore-Crypto module encryptor")
 public enum Encryptor {
     public typealias HashableString = String
     public typealias HashableData = Data
@@ -138,7 +140,7 @@ public enum Encryptor {
         
         let message = CryptoNewPlainMessage(chunk)
         let sessionKey = HelperDecryptSessionKey(nodeKey,
-                                                 Data(nodePassphrase.utf8),
+                                                 nodePassphrase.utf8,
                                                  contentKeyPacket,
                                                  &error)
         guard error == nil else { throw error! }
