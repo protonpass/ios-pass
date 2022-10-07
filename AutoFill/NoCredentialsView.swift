@@ -1,6 +1,6 @@
 //
-// macOS-Release-Black.swift
-// Proton Pass - Created on 08/06/2022.
+// NoCredentialsView.swift
+// Proton Pass - Created on 07/10/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,8 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+import SwiftUI
 
-#include "../../Pods/Target Support Files/Pods-macOS/Pods-macOS.release-black.xcconfig"
-#include "../../iOS & macOS/Config-Black.xcconfig"
+struct NoCredentialsView: View {
+    var body: some View {
+        Text("You currently have no credential.")
+    }
+}

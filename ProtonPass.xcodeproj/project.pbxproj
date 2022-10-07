@@ -152,6 +152,11 @@
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
 		3555800528F01A37009C3B88 /* URLMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555800428F01A37009C3B88 /* URLMatcher.swift */; };
 		3555800728F01A46009C3B88 /* URLMatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555800628F01A46009C3B88 /* URLMatcherTests.swift */; };
+		3555800E28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555800D28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig */; };
+		3555801028F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555800F28F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig */; };
+		3555801228F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555801128F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig */; };
+		3555801428F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */; };
+		3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555801528F04F5C009C3B88 /* NoCredentialsView.swift */; };
 		3555EDF228A611BC00115EBC /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		355635B7288947DD00F32353 /* VaultSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635B6288947DD00F32353 /* VaultSelection.swift */; };
 		355635B928895B8E00F32353 /* VaultContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635B828895B8E00F32353 /* VaultContentView.swift */; };
@@ -549,6 +554,11 @@
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
 		3555800428F01A37009C3B88 /* URLMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLMatcher.swift; sourceTree = "<group>"; };
 		3555800628F01A46009C3B88 /* URLMatcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLMatcherTests.swift; sourceTree = "<group>"; };
+		3555800D28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Debug-Black.xcconfig"; sourceTree = "<group>"; };
+		3555800F28F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Debug-Prod.xcconfig"; sourceTree = "<group>"; };
+		3555801128F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Release-Black.xcconfig"; sourceTree = "<group>"; };
+		3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Release-Prod.xcconfig"; sourceTree = "<group>"; };
+		3555801528F04F5C009C3B88 /* NoCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCredentialsView.swift; sourceTree = "<group>"; };
 		355635B6288947DD00F32353 /* VaultSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSelection.swift; sourceTree = "<group>"; };
 		355635B828895B8E00F32353 /* VaultContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultContentView.swift; sourceTree = "<group>"; };
 		355635BC2889653B00F32353 /* LoadVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadVaultsView.swift; sourceTree = "<group>"; };
@@ -916,10 +926,12 @@
 				3544F5E328E2341900834CA4 /* CredentialProviderViewController.swift */,
 				352866BC28E2DCB5000630E2 /* CredentialsView.swift */,
 				3520F36228E325900053A606 /* CredentialsViewModel.swift */,
+				3555801528F04F5C009C3B88 /* NoCredentialsView.swift */,
 				3520F36028E31AF20053A606 /* NotLoggedInView.swift */,
 				3544F5E528E2341900834CA4 /* MainInterface.storyboard */,
 				3544F5E828E2341900834CA4 /* Info.plist */,
 				3544F5E928E2341900834CA4 /* AutoFill.entitlements */,
+				3555800C28F04CFF009C3B88 /* BuildConfigs */,
 			);
 			path = AutoFill;
 			sourceTree = "<group>";
@@ -1037,6 +1049,17 @@
 				35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */,
 			);
 			path = Vault;
+			sourceTree = "<group>";
+		};
+		3555800C28F04CFF009C3B88 /* BuildConfigs */ = {
+			isa = PBXGroup;
+			children = (
+				3555800D28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig */,
+				3555800F28F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig */,
+				3555801128F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig */,
+				3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */,
+			);
+			path = BuildConfigs;
 			sourceTree = "<group>";
 		};
 		355E803D28A3071700BE7C9B /* Items */ = {
@@ -1813,6 +1836,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3555801428F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig in Resources */,
+				3555800E28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig in Resources */,
+				3555801028F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig in Resources */,
+				3555801228F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig in Resources */,
 				3544F5E728E2341900834CA4 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2196,6 +2223,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
 				3520F36928E32DCF0053A606 /* ProtonPass.xcdatamodeld in Sources */,
@@ -2554,7 +2582,7 @@
 /* Begin XCBuildConfiguration section */
 		3544F5EE28E2341900834CA4 /* Debug-Black */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D5242ADECD892556B57F1DF /* Pods-AutoFill.debug-black.xcconfig */;
+			baseConfigurationReference = 3555800D28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2638,7 +2666,7 @@
 		};
 		3544F5EF28E2341900834CA4 /* Debug-Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EEE721392C92FACA31BAF6F9 /* Pods-AutoFill.debug-prod.xcconfig */;
+			baseConfigurationReference = 3555800F28F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2722,7 +2750,7 @@
 		};
 		3544F5F028E2341900834CA4 /* Release-Black */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FEFEF778D5E2480849C2E7B7 /* Pods-AutoFill.release-black.xcconfig */;
+			baseConfigurationReference = 3555801128F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2800,7 +2828,7 @@
 		};
 		3544F5F128E2341900834CA4 /* Release-Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 30FB1FEFC42583AF82ADF0CB /* Pods-AutoFill.release-prod.xcconfig */;
+			baseConfigurationReference = 3555800F28F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
