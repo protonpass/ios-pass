@@ -127,6 +127,11 @@ public extension ItemRepositoryProtocol {
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision, shareId: shareId)
         try await localItemDatasoure.upsertItems([encryptedItem])
         PPLogger.shared?.log("Saved item \(createdItemRevision.itemID) to local database")
+
+        let newCredentials = try getCredentials(from: [encryptedItem], state: .active)
+        delegate?.itemRepositoryHasNewCredentials(newCredentials)
+        PPLogger.shared?.log("Delegated \(newCredentials.count) new credentials")
+
         return encryptedItem
     }
 
