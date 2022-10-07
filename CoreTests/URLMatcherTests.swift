@@ -39,7 +39,7 @@ final class URLMatcherTests: XCTestCase {
         XCTAssertFalse(sut.isMatched(try XCTUnwrap(URL(string: "ssh://example.com")),
                                      try XCTUnwrap(URL(string: "ssh://example.com"))))
 
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://example.co.uk")),
+        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://example.co.uk/dsjdh?sajjs")),
                                     try XCTUnwrap(URL(string: "http://example.co.uk"))))
 
         XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://a.b.cexample.dni.us")),

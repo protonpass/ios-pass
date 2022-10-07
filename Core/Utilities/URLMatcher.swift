@@ -23,13 +23,17 @@ import Foundation
 private let kHttpHttpsSet: Set<String> = ["http", "https"]
 
 /// Compare 2 URLs given a set of allowed schemes (protocols)
-struct URLMatcher {
+public struct URLMatcher {
     /// A set of allowed schemes (protocols) e.g `https`, `ftp`, `ssh`.
     /// Use this to ignore schemes that we do not want to support.
     let allowedSchemes: Set<String>
 
     /// Default `URLMatcher` that supports only `https` & `https` schemes
-    static var `default` = URLMatcher(allowedSchemes: kHttpHttpsSet)
+    public static var `default` = URLMatcher(allowedSchemes: kHttpHttpsSet)
+
+    public init(allowedSchemes: Set<String>) {
+        self.allowedSchemes = allowedSchemes
+    }
 
     /// Compare if 2 URLs are matched.
     ///
@@ -51,9 +55,11 @@ struct URLMatcher {
     ///   - leftUrl: Left hand `URL`
     ///   - rightUrl: Right hand `URL`
     ///  - Returns: `true` if matched, `false` if not matched
-    func isMatched(_ leftUrl: URL, _ rightUrl: URL) -> Bool {
+    public func isMatched(_ leftUrl: URL, _ rightUrl: URL) -> Bool {
         guard let leftScheme = leftUrl.scheme,
-              let rightScheme = rightUrl.scheme else { return false }
+              let rightScheme = rightUrl.scheme,
+              let leftHost = leftUrl.host,
+              let rightHost = rightUrl.host else { return false }
 
         if allowedSchemes == kHttpHttpsSet {
             // `https` & `https`
@@ -61,8 +67,8 @@ struct URLMatcher {
                   allowedSchemes.contains(rightScheme) else { return false }
 
             guard let domainParser = try? DomainParser(),
-                  let parsedLeftHost = domainParser.parse(host: leftUrl.absoluteString),
-                  let parsedRightHost = domainParser.parse(host: rightUrl.absoluteString),
+                  let parsedLeftHost = domainParser.parse(host: leftHost),
+                  let parsedRightHost = domainParser.parse(host: rightHost),
                   parsedLeftHost.publicSuffix == parsedRightHost.publicSuffix else {
                 return leftUrl.absoluteString == rightUrl.absoluteString
             }
