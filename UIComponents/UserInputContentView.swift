@@ -201,11 +201,14 @@ public struct UserInputContentPasswordView: View {
 public struct UserInputContentURLsView: View {
     @Binding var urls: [String]
     @Binding var isFocused: Bool
+    @Binding var invalidUrls: [String]
 
     public init(urls: Binding<[String]>,
-                isFocused: Binding<Bool>) {
+                isFocused: Binding<Bool>,
+                invalidUrls: Binding<[String]>) {
         self._urls = urls
         self._isFocused = isFocused
+        self._invalidUrls = invalidUrls
     }
 
     public var body: some View {
@@ -216,6 +219,7 @@ public struct UserInputContentURLsView: View {
                 }, set: { newValue in
                     withAnimation {
                         urls[index] = newValue.lowercased()
+                            .trimmingCharacters(in: .whitespacesAndNewlines)
                     }
                 })
                 HStack {
@@ -225,8 +229,12 @@ public struct UserInputContentURLsView: View {
                             urls.remove(at: index)
                         }
                     }
+                    .onChange(of: urls) { _ in
+                        invalidUrls.removeAll()
+                    }
                     .keyboardType(.URL)
                     .disableAutocorrection(true)
+                    .foregroundColor(isValidUrl(index: index) ? .primary : .red)
 
                     if !urls[index].isEmpty || index != 0 {
                         Button(action: {
@@ -252,6 +260,12 @@ public struct UserInputContentURLsView: View {
             addUrlButton
         }
         .animation(.default, value: urls.count)
+    }
+
+    private func isValidUrl(index: Int) -> Bool {
+        guard urls.indices.contains(index) else { return true }
+        let url = urls[index]
+        return !invalidUrls.contains(url)
     }
 
     @ViewBuilder

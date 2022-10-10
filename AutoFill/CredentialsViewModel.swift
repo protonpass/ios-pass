@@ -20,6 +20,7 @@
 
 import AuthenticationServices
 import Client
+import Core
 import CryptoKit
 import SwiftUI
 
@@ -55,6 +56,7 @@ final class CredentialsViewModel: ObservableObject {
         Task { @MainActor in
             do {
                 state = .loading
+                let matcher = URLMatcher.default
                 let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
 
                 var matchedItems = [ItemListUiModel]()
@@ -66,19 +68,8 @@ final class CredentialsViewModel: ObservableObject {
                     if case let .login(_, _, itemUrlStrings) = decryptedItemContent.contentData {
                         let itemUrls = itemUrlStrings.compactMap { URL(string: $0) }
                         let matchedUrls = urls.filter { url in
-                            if let scheme = url.scheme,
-                               let host = url.host {
-                                for itemUrl in itemUrls {
-                                    if let itemScheme = itemUrl.scheme,
-                                       let itemHost = itemUrl.host {
-                                        if scheme == itemScheme && host == itemHost {
-                                            return true
-                                        }
-                                    }
-                                }
-                                return false
-                            } else {
-                                return false
+                            itemUrls.contains { itemUrl in
+                                matcher.isMatched(itemUrl, url)
                             }
                         }
 

@@ -22,9 +22,11 @@ import AuthenticationServices
 import Client
 import Core
 import CoreData
+import Crypto
 import CryptoKit
 import ProtonCore_Keymaker
 import ProtonCore_Login
+import ProtonCore_Networking
 import ProtonCore_Services
 import SwiftUI
 
@@ -37,7 +39,7 @@ public final class CredentialProviderCoordinator {
 
     private let keychain: Keychain
     private let keymaker: Keymaker
-    private let apiService: APIService
+    private var apiService: APIService
     private let container: NSPersistentContainer
     private let context: ASCredentialProviderExtensionContext
     private let rootViewController: UIViewController
@@ -59,6 +61,8 @@ public final class CredentialProviderCoordinator {
         self.container = container
         self.context = context
         self.rootViewController = rootViewController
+        self.apiService.authDelegate = self
+        self.apiService.serviceDelegate = self
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
@@ -108,6 +112,43 @@ public final class CredentialProviderCoordinator {
         } else {
             cancel(errorCode: .userInteractionRequired)
         }
+    }
+}
+
+// MARK: - AuthDelegate
+extension CredentialProviderCoordinator: AuthDelegate {
+    public func onUpdate(credential: Credential, sessionUID: String) {}
+
+    public func onRefresh(sessionUID: String,
+                          service: APIService,
+                          complete: @escaping AuthRefreshResultCompletion) {}
+
+    public func authCredential(sessionUID: String) -> AuthCredential? {
+        sessionData?.userData.credential
+    }
+
+    public func credential(sessionUID: String) -> Credential? { nil }
+
+    public func onLogout(sessionUID: String) {}
+}
+
+// MARK: - APIServiceDelegate
+extension CredentialProviderCoordinator: APIServiceDelegate {
+    public var appVersion: String { "iOSPass_\(Bundle.main.versionNumber)" }
+    public var userAgent: String? { UserAgent.default.ua }
+    public var locale: String { Locale.autoupdatingCurrent.identifier }
+    public var additionalHeaders: [String: String]? { nil }
+
+    public func onDohTroubleshot() {}
+
+    public func onUpdate(serverTime: Int64) {
+        CryptoUpdateTime(serverTime)
+    }
+
+    public func isReachable() -> Bool {
+        // swiftlint:disable:next todo
+        // TODO: Handle this
+        return true
     }
 }
 

@@ -38,7 +38,11 @@ struct CredentialsView: View {
                 case .loading:
                     ProgressView()
                 case .loaded:
-                    itemList
+                    if viewModel.matchedItems.isEmpty, viewModel.notMatchedItems.isEmpty {
+                        NoCredentialsView()
+                    } else {
+                        itemList
+                    }
                 case .error(let error):
                     RetryableErrorView(errorMessage: error.messageForTheUser,
                                        onRetry: viewModel.fetchItems)
