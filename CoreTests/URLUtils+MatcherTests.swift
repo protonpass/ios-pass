@@ -1,5 +1,5 @@
 //
-// URLMatcherTests.swift
+// URLUtils+MatcherTests.swift
 // Proton Pass - Created on 07/10/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,9 +21,9 @@
 @testable import Core
 import XCTest
 
-final class URLMatcherTests: XCTestCase {
+final class URLUtilsPlusMatcherTests: XCTestCase {
     func testNoSchemesShouldNotMatched() throws {
-        let sut = URLMatcher.default
+        let sut = URLUtils.Matcher.default
         XCTAssertFalse(sut.isMatched(try XCTUnwrap(URL(string: "example.com")),
                                      try XCTUnwrap(URL(string: "example.com"))))
 
@@ -32,7 +32,7 @@ final class URLMatcherTests: XCTestCase {
     }
 
     func testSchemeHttpOrHttps() throws {
-        let sut = URLMatcher.default
+        let sut = URLUtils.Matcher.default
         XCTAssertFalse(sut.isMatched(try XCTUnwrap(URL(string: "example.com")),
                                      try XCTUnwrap(URL(string: "example.com"))))
 
@@ -59,7 +59,7 @@ final class URLMatcherTests: XCTestCase {
     }
 
     func testCustomSchemes() throws {
-        let sut = URLMatcher(allowedSchemes: ["ssh", "ftp"])
+        let sut = URLUtils.Matcher(allowedSchemes: ["ssh", "ftp"])
         XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "ssh://example.com")),
                                     try XCTUnwrap(URL(string: "ssh://example.com"))))
 

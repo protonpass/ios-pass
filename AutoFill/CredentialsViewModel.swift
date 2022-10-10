@@ -56,7 +56,7 @@ final class CredentialsViewModel: ObservableObject {
         Task { @MainActor in
             do {
                 state = .loading
-                let matcher = URLMatcher.default
+                let matcher = URLUtils.Matcher.default
                 let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
 
                 var matchedItems = [ItemListUiModel]()

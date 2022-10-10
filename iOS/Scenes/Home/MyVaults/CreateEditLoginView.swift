@@ -157,7 +157,7 @@ struct CreateEditLoginView: View {
     private func validateUrls() {
         invalidUrls = viewModel.urls.compactMap { url in
             if url.isEmpty { return nil }
-            if URLSanitizer.sanitize(url) == nil {
+            if URLUtils.Sanitizer.sanitize(url) == nil {
                 return url
             }
             return nil
