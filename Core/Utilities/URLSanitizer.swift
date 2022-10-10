@@ -40,7 +40,9 @@ public enum URLSanitizer {
         }
 
         if let url = URL(string: urlString),
-           url.scheme != nil, url.host != nil {
+           url.scheme != nil,
+           let host = url.host,
+           host.components(separatedBy: ".").count > 1 {
             return urlString
         }
 

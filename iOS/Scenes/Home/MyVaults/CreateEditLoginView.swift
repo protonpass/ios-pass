@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -31,6 +32,7 @@ struct CreateEditLoginView: View {
     @State private var isFocusedOnPassword = false
     @State private var isFocusedOnURLs = false
     @State private var isFocusedOnNote = false
+    @State private var invalidUrls = [String]()
 
     init(viewModel: CreateEditLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -78,11 +80,16 @@ struct CreateEditLoginView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.save) {
+            Button(action: {
+                validateUrls()
+                if invalidUrls.isEmpty {
+                    viewModel.save()
+                }
+            }, label: {
                 Text("Save")
                     .fontWeight(.bold)
                     .foregroundColor(Color(ColorProvider.BrandNorm))
-            }
+            })
         }
     }
 
@@ -133,7 +140,8 @@ struct CreateEditLoginView: View {
         UserInputContainerView(title: "Website address",
                                isFocused: isFocusedOnURLs) {
             UserInputContentURLsView(urls: $viewModel.urls,
-                                     isFocused: $isFocusedOnURLs)
+                                     isFocused: $isFocusedOnURLs,
+                                     invalidUrls: $invalidUrls)
         }
     }
 
@@ -143,6 +151,16 @@ struct CreateEditLoginView: View {
             UserInputContentMultilineView(
                 text: $viewModel.note,
                 isFocused: $isFocusedOnNote)
+        }
+    }
+
+    private func validateUrls() {
+        invalidUrls = viewModel.urls.compactMap { url in
+            if url.isEmpty { return nil }
+            if URLSanitizer.sanitize(url) == nil {
+                return url
+            }
+            return nil
         }
     }
 }

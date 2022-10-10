@@ -65,9 +65,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func itemContentType() -> ItemContentType { .login }
 
     override func generateItemContent() -> ItemContentProtobuf {
+        let sanitizedUrls = urls.compactMap { URLSanitizer.sanitize($0) }
         let loginData = ItemContentData.login(username: username,
                                               password: password,
-                                              urls: urls)
+                                              urls: sanitizedUrls)
         return ItemContentProtobuf(name: title,
                                    note: note,
                                    data: loginData)

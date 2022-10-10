@@ -23,18 +23,26 @@ import XCTest
 
 final class URLSanitizerTests: XCTestCase {
     func testSanitization() {
+        // Invalid URLs
         XCTAssertNil(URLSanitizer.sanitize("a b c"))
         XCTAssertNil(URLSanitizer.sanitize("ftp/example"))
         XCTAssertNil(URLSanitizer.sanitize("ftp//example"))
         XCTAssertNil(URLSanitizer.sanitize("ssh:/example"))
         XCTAssertNil(URLSanitizer.sanitize("https:/example"))
+        XCTAssertNil(URLSanitizer.sanitize("https://example"))
         XCTAssertNil(URLSanitizer.sanitize("https://example❤️.com"))
+        XCTAssertNil(URLSanitizer.sanitize("ftp://àbcdé.net"))
+
+        // Valid URLs
         XCTAssertEqual(URLSanitizer.sanitize("example.com/path?param=true"),
                        "https://example.com/path?param=true")
+
         XCTAssertEqual(URLSanitizer.sanitize("http://example.com/path?param=true"),
                        "http://example.com/path?param=true")
+
         XCTAssertEqual(URLSanitizer.sanitize("ssh://example.com/test?abc="),
                        "ssh://example.com/test?abc=")
+
         XCTAssertEqual(URLSanitizer.sanitize("example.com"), "https://example.com")
     }
 }
