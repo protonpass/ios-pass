@@ -35,6 +35,7 @@ extension ItemEntity {
     @NSManaged var content: String?
     @NSManaged var contentFormatVersion: Int16
     @NSManaged var createTime: Int64
+    @NSManaged var isLogInItem: Bool
     @NSManaged var itemID: String?
     @NSManaged var itemKeySignature: String?
     @NSManaged var modifyTime: Int64
@@ -93,7 +94,8 @@ extension ItemEntity {
                                         revisionTime: revisionTime)
         return .init(shareId: shareId,
                      item: itemRevision,
-                     encryptedContent: symmetricallyEncryptedContent)
+                     encryptedContent: symmetricallyEncryptedContent,
+                     isLogInItem: isLogInItem)
     }
 
     func hydrate(from item: SymmetricallyEncryptedItem) {
@@ -111,5 +113,6 @@ extension ItemEntity {
         self.createTime = item.item.createTime
         self.modifyTime = item.item.modifyTime
         self.shareID = item.shareId
+        self.isLogInItem = item.isLogInItem
     }
 }

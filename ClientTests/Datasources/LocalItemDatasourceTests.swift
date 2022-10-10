@@ -135,7 +135,8 @@ extension LocalItemDatasourceTests {
             let updatedItemRevision = ItemRevision.random(itemId: givenInsertedItem.item.itemID)
             let updatedItem = SymmetricallyEncryptedItem(shareId: givenShareId,
                                                          item: updatedItemRevision,
-                                                         encryptedContent: givenInsertedItem.encryptedContent)
+                                                         encryptedContent: givenInsertedItem.encryptedContent,
+                                                         isLogInItem: .random())
 
             // When
             try await sut.upsertItems([updatedItem])
@@ -284,13 +285,15 @@ extension LocalItemDatasource {
     func givenInsertedItem(itemId: String? = nil,
                            shareId: String? = nil,
                            state: ItemState? = nil,
-                           encryptedContent: String? = nil) async throws -> SymmetricallyEncryptedItem {
+                           encryptedContent: String? = nil,
+                           isLogInItem: Bool = .random()) async throws -> SymmetricallyEncryptedItem {
         let shareId = shareId ?? .random()
         let itemRevision = ItemRevision.random(itemId: itemId ?? .random(), state: state)
         let encryptedContent = encryptedContent ?? .random()
         let item = SymmetricallyEncryptedItem(shareId: shareId,
                                               item: itemRevision,
-                                              encryptedContent: encryptedContent)
+                                              encryptedContent: encryptedContent,
+                                              isLogInItem: isLogInItem)
         try await upsertItems([item])
         return item
     }

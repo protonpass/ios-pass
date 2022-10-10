@@ -156,7 +156,8 @@ extension GlobalLocalDatasourceTests {
             let itemRevisions = [ItemRevision].random(count: itemCount, randomElement: .random())
             try await sut.localItemDatasource.upsertItems(itemRevisions.map { .init(shareId: shareId,
                                                                                     item: $0,
-                                                                                    encryptedContent: .random()) })
+                                                                                    encryptedContent: .random(),
+                                                                                    isLogInItem: .random()) })
         }
     }
 }

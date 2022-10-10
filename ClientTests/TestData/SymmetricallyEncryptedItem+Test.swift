@@ -23,9 +23,11 @@
 extension SymmetricallyEncryptedItem {
     static func random(shareId: String? = nil,
                        item: ItemRevision? = nil,
-                       encryptedContent: String? = nil) -> SymmetricallyEncryptedItem {
+                       encryptedContent: String? = nil,
+                       isLogInItem: Bool = .random()) -> SymmetricallyEncryptedItem {
         .init(shareId: shareId ?? .random(),
               item: item ?? .random(),
-              encryptedContent: encryptedContent ?? .random())
+              encryptedContent: encryptedContent ?? .random(),
+              isLogInItem: isLogInItem)
     }
 }

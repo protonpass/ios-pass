@@ -159,6 +159,9 @@ public struct SymmetricallyEncryptedItem {
     /// Symmetrically encrypted content in base 64 format
     public let encryptedContent: String
 
+    /// Whether the item is of type log in or not
+    public let isLogInItem: Bool
+
     public func getEncryptedItemContent() throws -> ItemContent {
         guard let data = try encryptedContent.base64Decode() else {
             throw SymmetricallyEncryptedItemError.corruptedEncryptedContent

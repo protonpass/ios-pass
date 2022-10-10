@@ -105,8 +105,8 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
     }
 
-    func testItemRevisionEntity() {
-        let sut = entity(byName: "ItemRevisionEntity")
+    func testItemEntity() {
+        let sut = entity(byName: "ItemEntity")
         verifyAttribute(named: "aliasEmail", on: sut, hasType: .string)
         verifyAttribute(named: "content", on: sut, hasType: .string)
         verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer16)
@@ -120,5 +120,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "signatureEmail", on: sut, hasType: .string)
         verifyAttribute(named: "state", on: sut, hasType: .integer16)
         verifyAttribute(named: "userSignature", on: sut, hasType: .string)
+        verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
+        verifyAttribute(named: "isLogInItem", on: sut, hasType: .boolean)
     }
 }
