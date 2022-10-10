@@ -157,6 +157,8 @@
 		3555801228F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555801128F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig */; };
 		3555801428F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */; };
 		3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555801528F04F5C009C3B88 /* NoCredentialsView.swift */; };
+		3555801828F05698009C3B88 /* URLSanitizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555801728F05698009C3B88 /* URLSanitizer.swift */; };
+		3555801A28F05899009C3B88 /* URLSanitizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555801928F05899009C3B88 /* URLSanitizerTests.swift */; };
 		3555EDF228A611BC00115EBC /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		355635B7288947DD00F32353 /* VaultSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635B6288947DD00F32353 /* VaultSelection.swift */; };
 		355635B928895B8E00F32353 /* VaultContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635B828895B8E00F32353 /* VaultContentView.swift */; };
@@ -559,6 +561,8 @@
 		3555801128F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Release-Black.xcconfig"; sourceTree = "<group>"; };
 		3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Release-Prod.xcconfig"; sourceTree = "<group>"; };
 		3555801528F04F5C009C3B88 /* NoCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCredentialsView.swift; sourceTree = "<group>"; };
+		3555801728F05698009C3B88 /* URLSanitizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSanitizer.swift; sourceTree = "<group>"; };
+		3555801928F05899009C3B88 /* URLSanitizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSanitizerTests.swift; sourceTree = "<group>"; };
 		355635B6288947DD00F32353 /* VaultSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSelection.swift; sourceTree = "<group>"; };
 		355635B828895B8E00F32353 /* VaultContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultContentView.swift; sourceTree = "<group>"; };
 		355635BC2889653B00F32353 /* LoadVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadVaultsView.swift; sourceTree = "<group>"; };
@@ -1352,6 +1356,7 @@
 				3529432A28DAF6CA00E1F11B /* SearchUtilsTests.swift */,
 				354513E828E4D2650020A93A /* CodableBase64Tests.swift */,
 				3555800628F01A46009C3B88 /* URLMatcherTests.swift */,
+				3555801928F05899009C3B88 /* URLSanitizerTests.swift */,
 			);
 			path = CoreTests;
 			sourceTree = "<group>";
@@ -1440,6 +1445,7 @@
 				3510A2FB287841AD0003BE79 /* StringExtensions.swift */,
 				353547C22880CF470021C716 /* UserData+Codable.swift */,
 				3555800428F01A37009C3B88 /* URLMatcher.swift */,
+				3555801728F05698009C3B88 /* URLSanitizer.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -2440,6 +2446,7 @@
 				356B21D72870F8F1001220CB /* Constants.swift in Sources */,
 				350A97DE2886032000A7168B /* DeinitPrintable.swift in Sources */,
 				356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */,
+				3555801828F05698009C3B88 /* URLSanitizer.swift in Sources */,
 				353E10922881827C00E59474 /* UserProtocol.swift in Sources */,
 				35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */,
 				35E50707286FB3A600A3F6EA /* Logger.swift in Sources */,
@@ -2462,6 +2469,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				354513E928E4D2650020A93A /* CodableBase64Tests.swift in Sources */,
+				3555801A28F05899009C3B88 /* URLSanitizerTests.swift in Sources */,
 				3555800728F01A46009C3B88 /* URLMatcherTests.swift in Sources */,
 				3529432B28DAF6CA00E1F11B /* SearchUtilsTests.swift in Sources */,
 			);
