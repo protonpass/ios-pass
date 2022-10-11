@@ -105,7 +105,7 @@ public extension LocalItemDatasourceProtocol {
                 try await upsertItems([.init(shareId: item.shareId,
                                              item: modifiedItem,
                                              encryptedContent: item.encryptedContent,
-                                             isLogInItem: item.isLogInItem)])
+                                             type: item.type)])
             }
         }
     }

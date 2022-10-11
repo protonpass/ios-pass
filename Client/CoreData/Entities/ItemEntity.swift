@@ -38,6 +38,8 @@ extension ItemEntity {
     @NSManaged var isLogInItem: Bool
     @NSManaged var itemID: String?
     @NSManaged var itemKeySignature: String?
+    /// Is a custom field. The time interval since 1970 of the moment the item is last used in auto filling context
+    @NSManaged var lastUsedTime: Int64
     @NSManaged var modifyTime: Int64
     @NSManaged var revision: Int16
     @NSManaged var revisionTime: Int64
@@ -45,6 +47,7 @@ extension ItemEntity {
     @NSManaged var shareID: String?
     @NSManaged var signatureEmail: String?
     @NSManaged var state: Int16
+    /// Is a custom field. The exact protobuf structure but have the content symmetrically encrypted
     @NSManaged var symmetricallyEncryptedContent: String?
     @NSManaged var userSignature: String?
 }
@@ -92,12 +95,22 @@ extension ItemEntity {
                                         createTime: createTime,
                                         modifyTime: modifyTime,
                                         revisionTime: revisionTime)
+
+        let itemType: SymmetricallyEncryptedItem.ItemType
+        if isLogInItem {
+            itemType = .logIn(lastUsedTime)
+        } else {
+            itemType = .other
+        }
+
         return .init(shareId: shareId,
                      item: itemRevision,
                      encryptedContent: symmetricallyEncryptedContent,
-                     isLogInItem: isLogInItem)
+                     type: itemType)
     }
 
+    /// Hydrate the entity from a `SymmetricallyEncryptedItem`
+    /// but ignore updating `lastUsedTime`
     func hydrate(from item: SymmetricallyEncryptedItem) {
         self.itemID = item.item.itemID
         self.revision = item.item.revision
@@ -113,6 +126,13 @@ extension ItemEntity {
         self.createTime = item.item.createTime
         self.modifyTime = item.item.modifyTime
         self.shareID = item.shareId
-        self.isLogInItem = item.isLogInItem
+        if case .logIn = item.type {
+            // Deliberately ignore the following
+            // self.lastUsedTime = ...
+            // because it should be updated independently
+            self.isLogInItem = true
+        } else {
+            self.isLogInItem = false
+        }
     }
 }

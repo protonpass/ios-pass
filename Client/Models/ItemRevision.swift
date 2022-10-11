@@ -159,8 +159,17 @@ public struct SymmetricallyEncryptedItem {
     /// Symmetrically encrypted content in base 64 format
     public let encryptedContent: String
 
-    /// Whether the item is of type log in or not
-    public let isLogInItem: Bool
+    /// Type of the item, whether it's log in type or something else
+    public let type: ItemType
+
+    /// The type of the item, its purpose is to distinguish log in items from other ones.
+    public enum ItemType {
+        /// Log in type with the time interval since 1970 of the moment
+        /// the item is last used in auto filling context
+        case logIn(Int64)
+        /// Whether it's alias, note or whatever new types.
+        case other
+    }
 
     public func getEncryptedItemContent() throws -> ItemContent {
         guard let data = try encryptedContent.base64Decode() else {
