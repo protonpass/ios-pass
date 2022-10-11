@@ -36,28 +36,37 @@ protocol WelcomeCoordinatorDelegate: AnyObject {
 final class WelcomeCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let apiServiceDelegate: APIServiceDelegate
-    private let doh = PPDoH(bundle: .main)
-    weak var delegate: WelcomeCoordinatorDelegate?
+    private lazy var welcomeViewController = makeWelcomeViewController()
+    private lazy var forceUpgradeServiceDelegate = makeForceUpgradeDelegate()
+    private lazy var logInAndSignUp = makeLoginAndSignUp()
 
+    private let apiServiceDelegate: APIServiceDelegate
+    private let doh: DoH & ServerConfig
+
+    weak var delegate: WelcomeCoordinatorDelegate?
     var rootViewController: UIViewController { welcomeViewController }
 
-    private lazy var welcomeViewController: UIViewController = {
+    init(apiServiceDelegate: APIServiceDelegate) {
+        self.apiServiceDelegate = apiServiceDelegate
+        self.doh = PPDoH(bundle: .main)
+    }
+
+    private func makeWelcomeViewController() -> UIViewController {
         let welcomeScreenTexts = WelcomeScreenTexts(body: "Your next favorite password manager")
         let welcomeScreenVariant = WelcomeScreenVariant.drive(welcomeScreenTexts)
         return WelcomeViewController(variant: welcomeScreenVariant,
                                      delegate: self,
                                      username: nil,
                                      signupAvailable: true)
-    }()
+    }
 
-    private lazy var forceUpgradeServiceDelegate: ForceUpgradeDelegate = {
+    private func makeForceUpgradeDelegate() -> ForceUpgradeDelegate {
         // swiftlint:disable:next force_unwrapping
-        let appStoreUrl = URL(string: "itms-apps://itunes.apple.com/app/id979659905")!
+        let appStoreUrl = URL(string: "itms-apps://itunes.apple.com/app/id6443490629")!
         return ForceUpgradeHelper(config: .mobile(appStoreUrl), responseDelegate: self)
-    }()
+    }
 
-    private lazy var logInAndSignUp: LoginAndSignup = {
+    private func makeLoginAndSignUp() -> LoginAndSignup {
         let summaryScreenVariant = SummaryScreenVariant.screenVariant(.drive("Start using Proton Pass"))
         let signUpParameters = SignupParameters(passwordRestrictions: .default,
                                                 summaryScreenVariant: summaryScreenVariant)
@@ -70,10 +79,6 @@ final class WelcomeCoordinator: DeinitPrintable {
                      minimumAccountType: .internal,
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))
-    }()
-
-    init(apiServiceDelegate: APIServiceDelegate) {
-        self.apiServiceDelegate = apiServiceDelegate
     }
 }
 
