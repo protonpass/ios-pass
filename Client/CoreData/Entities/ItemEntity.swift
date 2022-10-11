@@ -109,9 +109,8 @@ extension ItemEntity {
                      type: itemType)
     }
 
-    /// Hydrate the entity from a `SymmetricallyEncryptedItem`
-    /// but ignore updating `lastUsedTime`
-    func hydrate(from item: SymmetricallyEncryptedItem) {
+    func hydrate(from item: SymmetricallyEncryptedItem,
+                 lastUsedTime: TimeInterval? = nil) {
         self.itemID = item.item.itemID
         self.revision = item.item.revision
         self.contentFormatVersion = item.item.contentFormatVersion
@@ -127,10 +126,10 @@ extension ItemEntity {
         self.modifyTime = item.item.modifyTime
         self.shareID = item.shareId
         if case .logIn = item.type {
-            // Deliberately ignore the following
-            // self.lastUsedTime = ...
-            // because it should be updated independently
             self.isLogInItem = true
+            if let lastUsedTime = lastUsedTime {
+                self.lastUsedTime = Int64(lastUsedTime)
+            }
         } else {
             self.isLogInItem = false
         }

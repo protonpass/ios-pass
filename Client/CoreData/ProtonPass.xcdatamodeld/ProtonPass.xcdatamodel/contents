@@ -8,7 +8,7 @@
         <attribute name="isLogInItem" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="itemID" attributeType="String"/>
         <attribute name="itemKeySignature" attributeType="String"/>
-        <attribute name="lastUsedTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="lastUsedTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="modifyTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="revision" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="revisionTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>

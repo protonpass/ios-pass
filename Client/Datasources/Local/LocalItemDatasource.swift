@@ -41,6 +41,11 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
 
     /// Nuke items of a share
     func removeAllItems(shareId: String) async throws
+
+    // AutoFill related operations
+
+    /// Update the last used time of an item. Item should be of type log in but we're not able to check.
+    func update(item: SymmetricallyEncryptedItem, lastUsedTime: TimeInterval) async throws
 }
 
 public extension LocalItemDatasourceProtocol {
@@ -129,6 +134,16 @@ public extension LocalItemDatasourceProtocol {
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
+    }
+
+    func update(item: SymmetricallyEncryptedItem, lastUsedTime: TimeInterval) async throws {
+        let taskContext = newTaskContext(type: .insert)
+        let entity = ItemEntity.entity(context: taskContext)
+        let batchInsertRequest = newBatchInsertRequest(entity: entity,
+                                                       sourceItems: [item]) { managedObject, item in
+            (managedObject as? ItemEntity)?.hydrate(from: item, lastUsedTime: lastUsedTime)
+        }
+        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 }
 
