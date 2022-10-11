@@ -135,7 +135,7 @@ extension LocalItemDatasourceTests {
             let updatedItemRevision = ItemRevision.random(itemId: givenInsertedItem.item.itemID)
             let updatedItem = SymmetricallyEncryptedItem(shareId: givenShareId,
                                                          item: updatedItemRevision,
-                                                         encryptedContent: givenInsertedItem.encryptedContent,
+                                                         encryptedContent: .random(),
                                                          type: .random())
 
             // When
@@ -149,6 +149,37 @@ extension LocalItemDatasourceTests {
                                              itemId: givenItemId)
             let notNilItem = try XCTUnwrap(item)
             assertEqual(notNilItem, updatedItem)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
+
+    func testUpdateLogInItemNotUpdatingLastUsedTime() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let givenItemId = String.random()
+            let givenShareId = String.random()
+            let givenInsertedLogInItem = try await sut.givenInsertedItem(itemId: givenItemId,
+                                                                         shareId: givenShareId,
+                                                                         state: nil,
+                                                                         encryptedContent: .random(),
+                                                                         type: .randomLogInType())
+            let updatedItemRevision = ItemRevision.random(itemId: givenInsertedLogInItem.item.itemID)
+            let updatedItem = SymmetricallyEncryptedItem(shareId: givenShareId,
+                                                         item: updatedItemRevision,
+                                                         encryptedContent: .random(),
+                                                         type: .randomLogInType())
+            // When
+            try await sut.upsertItems([updatedItem])
+
+            // Then
+            let item = try await sut.getItem(shareId: givenShareId, itemId: givenItemId)
+            let notNilItem = try XCTUnwrap(item)
+            XCTAssertEqual(notNilItem.encryptedContent, updatedItem.encryptedContent)
+            XCTAssertNotEqual(notNilItem.type, updatedItem.type)
 
             expectation.fulfill()
         }

@@ -35,8 +35,12 @@ extension SymmetricallyEncryptedItem {
 extension SymmetricallyEncryptedItem.ItemType {
     static func random() -> Self {
         if Bool.random() {
-            return .logIn(.random(in: 1_234_567...1_987_654))
+            return randomLogInType()
         }
         return .other
+    }
+
+    static func randomLogInType() -> Self {
+        .logIn(.random(in: 1_234_567...1_987_654))
     }
 }

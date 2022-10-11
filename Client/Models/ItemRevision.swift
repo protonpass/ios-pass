@@ -192,3 +192,14 @@ public struct SymmetricallyEncryptedItem {
                      contentProtobuf: decryptedProtobufItem)
     }
 }
+
+extension SymmetricallyEncryptedItem.ItemType: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case let (.logIn(lhsTimestamp), .logIn(rhsTimestamp)):
+            return lhsTimestamp == rhsTimestamp
+        default:
+            return true
+        }
+    }
+}
