@@ -110,7 +110,8 @@ public extension LocalItemDatasourceProtocol {
                 try await upsertItems([.init(shareId: item.shareId,
                                              item: modifiedItem,
                                              encryptedContent: item.encryptedContent,
-                                             type: item.type)])
+                                             lastUsedTime: item.lastUsedTime,
+                                             isLogInItem: item.isLogInItem)])
             }
         }
     }
@@ -141,7 +142,8 @@ public extension LocalItemDatasourceProtocol {
         let entity = ItemEntity.entity(context: taskContext)
         let batchInsertRequest = newBatchInsertRequest(entity: entity,
                                                        sourceItems: [item]) { managedObject, item in
-            (managedObject as? ItemEntity)?.hydrate(from: item, lastUsedTime: lastUsedTime)
+            (managedObject as? ItemEntity)?.hydrate(from: item,
+                                                    lastUsedTime: Int64(lastUsedTime))
         }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }

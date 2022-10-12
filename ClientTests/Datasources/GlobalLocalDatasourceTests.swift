@@ -154,10 +154,8 @@ extension GlobalLocalDatasourceTests {
             try await sut.localVaultKeyDatasource.upsertVaultKeys(vaultKeys, shareId: shareId)
 
             let itemRevisions = [ItemRevision].random(count: itemCount, randomElement: .random())
-            try await sut.localItemDatasource.upsertItems(itemRevisions.map { .init(shareId: shareId,
-                                                                                    item: $0,
-                                                                                    encryptedContent: .random(),
-                                                                                    type: .random()) })
+            try await sut.localItemDatasource.upsertItems(
+                itemRevisions.map { .random(shareId: shareId, item: $0) })
         }
     }
 }

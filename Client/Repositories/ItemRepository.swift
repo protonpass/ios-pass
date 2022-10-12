@@ -290,17 +290,18 @@ private extension ItemRepositoryProtocol {
         let encryptedContentProtobuf = try contentProtobuf.symmetricallyEncrypted(symmetricKey)
         let encryptedContent = try encryptedContentProtobuf.serializedData().base64EncodedString()
 
-        let itemType: SymmetricallyEncryptedItem.ItemType
+        let isLogInItem: Bool
         if case .login = contentProtobuf.contentData {
-            itemType = .logIn(0)
+            isLogInItem = true
         } else {
-            itemType = .other
+            isLogInItem = false
         }
 
         return .init(shareId: shareId,
                      item: itemRevision,
                      encryptedContent: encryptedContent,
-                     type: itemType)
+                     lastUsedTime: 0,
+                     isLogInItem: isLogInItem)
     }
 
     func getCredentials(from encryptedItems: [SymmetricallyEncryptedItem],

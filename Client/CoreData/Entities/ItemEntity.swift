@@ -96,21 +96,15 @@ extension ItemEntity {
                                         modifyTime: modifyTime,
                                         revisionTime: revisionTime)
 
-        let itemType: SymmetricallyEncryptedItem.ItemType
-        if isLogInItem {
-            itemType = .logIn(lastUsedTime)
-        } else {
-            itemType = .other
-        }
-
         return .init(shareId: shareId,
                      item: itemRevision,
                      encryptedContent: symmetricallyEncryptedContent,
-                     type: itemType)
+                     lastUsedTime: lastUsedTime,
+                     isLogInItem: isLogInItem)
     }
 
     func hydrate(from item: SymmetricallyEncryptedItem,
-                 lastUsedTime: TimeInterval? = nil) {
+                 lastUsedTime: Int64? = nil) {
         self.itemID = item.item.itemID
         self.revision = item.item.revision
         self.contentFormatVersion = item.item.contentFormatVersion
@@ -125,13 +119,9 @@ extension ItemEntity {
         self.createTime = item.item.createTime
         self.modifyTime = item.item.modifyTime
         self.shareID = item.shareId
-        if case .logIn = item.type {
-            self.isLogInItem = true
-            if let lastUsedTime = lastUsedTime {
-                self.lastUsedTime = Int64(lastUsedTime)
-            }
-        } else {
-            self.isLogInItem = false
+        self.isLogInItem = item.isLogInItem
+        if let lastUsedTime = lastUsedTime {
+            self.lastUsedTime = lastUsedTime
         }
     }
 }

@@ -130,13 +130,11 @@ extension LocalItemDatasourceTests {
             // Given
             let givenItemId = String.random()
             let givenShareId = String.random()
-            let givenInsertedItem = try await sut.givenInsertedItem(itemId: givenItemId,
-                                                                    shareId: givenShareId)
-            let updatedItemRevision = ItemRevision.random(itemId: givenInsertedItem.item.itemID)
-            let updatedItem = SymmetricallyEncryptedItem(shareId: givenShareId,
-                                                         item: updatedItemRevision,
-                                                         encryptedContent: .random(),
-                                                         type: .random())
+            _ = try await sut.givenInsertedItem(itemId: givenItemId,
+                                                shareId: givenShareId)
+            let updatedItemRevision = ItemRevision.random(itemId: givenItemId)
+            let updatedItem = SymmetricallyEncryptedItem.random(shareId: givenShareId,
+                                                                item: updatedItemRevision)
 
             // When
             try await sut.upsertItems([updatedItem])
@@ -162,16 +160,13 @@ extension LocalItemDatasourceTests {
             // Given
             let givenItemId = String.random()
             let givenShareId = String.random()
-            let givenInsertedLogInItem = try await sut.givenInsertedItem(itemId: givenItemId,
-                                                                         shareId: givenShareId,
-                                                                         state: nil,
-                                                                         encryptedContent: .random(),
-                                                                         type: .randomLogInType())
-            let updatedItemRevision = ItemRevision.random(itemId: givenInsertedLogInItem.item.itemID)
-            let updatedItem = SymmetricallyEncryptedItem(shareId: givenShareId,
-                                                         item: updatedItemRevision,
-                                                         encryptedContent: .random(),
-                                                         type: .randomLogInType())
+            _ = try await sut.givenInsertedItem(itemId: givenItemId,
+                                                shareId: givenShareId,
+                                                isLogInItem: true)
+            let updatedItemRevision = ItemRevision.random(itemId: givenItemId)
+            let updatedItem = SymmetricallyEncryptedItem.random(shareId: givenShareId,
+                                                                item: updatedItemRevision,
+                                                                isLogInItem: true)
             // When
             try await sut.upsertItems([updatedItem])
 
@@ -179,7 +174,7 @@ extension LocalItemDatasourceTests {
             let item = try await sut.getItem(shareId: givenShareId, itemId: givenItemId)
             let notNilItem = try XCTUnwrap(item)
             XCTAssertEqual(notNilItem.encryptedContent, updatedItem.encryptedContent)
-            XCTAssertNotEqual(notNilItem.type, updatedItem.type)
+            XCTAssertNotEqual(notNilItem.lastUsedTime, updatedItem.lastUsedTime)
 
             expectation.fulfill()
         }
@@ -311,14 +306,14 @@ extension LocalItemDatasourceTests {
         waitForExpectations(timeout: expectationTimeOut)
     }
 
+    // Don't now why it is failing because lastUsedTime is not updated
     /*
-     Don't now why it is failing because lastUsedTime is not updated
     func testUpdateLastUsedTime() throws {
         continueAfterFailure = false
         let expectation = expectation(description: #function)
         Task {
             // Given
-            let givenInsertedLogInItem = try await sut.givenInsertedItem(type: .randomLogInType())
+            let givenInsertedLogInItem = try await sut.givenInsertedItem(isLogInItem: true)
             let updatedLastUsedTime = Date().timeIntervalSince1970
 
             // When
@@ -326,13 +321,8 @@ extension LocalItemDatasourceTests {
             let item = try await sut.getItem(shareId: givenInsertedLogInItem.shareId,
                                              itemId: givenInsertedLogInItem.item.itemID)
             let notNilItem = try XCTUnwrap(item)
-            switch notNilItem.type {
-            case .logIn(let lastUsedTime):
-                XCTAssertEqual(lastUsedTime, Int64(updatedLastUsedTime))
-                expectation.fulfill()
-            default:
-                break
-            }
+            XCTAssertEqual(notNilItem.lastUsedTime, Int64(updatedLastUsedTime))
+            expectation.fulfill()
         }
         waitForExpectations(timeout: expectationTimeOut)
     }
@@ -344,7 +334,8 @@ extension LocalItemDatasource {
                            shareId: String? = nil,
                            state: ItemState? = nil,
                            encryptedContent: String? = nil,
-                           type: SymmetricallyEncryptedItem.ItemType = .random())
+                           lastUsedItem: Int64 = .random(in: 1_234_567...1_987_654),
+                           isLogInItem: Bool = .random())
     async throws -> SymmetricallyEncryptedItem {
         let shareId = shareId ?? .random()
         let itemRevision = ItemRevision.random(itemId: itemId ?? .random(), state: state)
@@ -352,7 +343,8 @@ extension LocalItemDatasource {
         let item = SymmetricallyEncryptedItem(shareId: shareId,
                                               item: itemRevision,
                                               encryptedContent: encryptedContent,
-                                              type: type)
+                                              lastUsedTime: lastUsedItem,
+                                              isLogInItem: isLogInItem)
         try await upsertItems([item])
         return item
     }

@@ -24,23 +24,12 @@ extension SymmetricallyEncryptedItem {
     static func random(shareId: String? = nil,
                        item: ItemRevision? = nil,
                        encryptedContent: String? = nil,
-                       type: ItemType = .random()) -> SymmetricallyEncryptedItem {
+                       lastUsedTime: Int64 = .random(in: 1_234_567...1_987_654),
+                       isLogInItem: Bool = .random()) -> SymmetricallyEncryptedItem {
         .init(shareId: shareId ?? .random(),
               item: item ?? .random(),
               encryptedContent: encryptedContent ?? .random(),
-              type: type)
-    }
-}
-
-extension SymmetricallyEncryptedItem.ItemType {
-    static func random() -> Self {
-        if Bool.random() {
-            return randomLogInType()
-        }
-        return .other
-    }
-
-    static func randomLogInType() -> Self {
-        .logIn(.random(in: 1_234_567...1_987_654))
+              lastUsedTime: lastUsedTime,
+              isLogInItem: isLogInItem)
     }
 }
