@@ -250,10 +250,12 @@ public extension ItemRepositoryProtocol {
             let ids = AutoFillCredential.IDs(shareId: shareId, itemId: itemId)
             let deletedCredentials = oldUrls.map { AutoFillCredential(ids: ids,
                                                                       username: oldUsername,
-                                                                      url: $0) }
+                                                                      url: $0,
+                                                                      lastUsedTime: encryptedItem.lastUsedTime) }
             let newCredentials = newUrls.map { AutoFillCredential(ids: ids,
                                                                   username: newUsername,
-                                                                  url: $0) }
+                                                                  url: $0,
+                                                                  lastUsedTime: encryptedItem.lastUsedTime) }
             delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
             delegate?.itemRepositoryHasNewCredentials(newCredentials)
             PPLogger.shared?.log("Delegated updated credential")
@@ -338,17 +340,17 @@ private extension ItemRepositoryProtocol {
 
     func getCredentials(from encryptedItems: [SymmetricallyEncryptedItem],
                         state: ItemState) throws -> [AutoFillCredential] {
-        let logInItems = try encryptedItems
-            .filter { $0.item.itemState == state }
-            .map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
-            .filter { $0.contentData.type == .login }
+        let encryptedLogInItems = encryptedItems.filter { $0.item.itemState == state }
         var credentials = [AutoFillCredential]()
-        for logInItem in logInItems {
-            if case let .login(username, _, urls) = logInItem.contentData {
+        for encryptedLogInItem in encryptedLogInItems {
+            let decryptedLogInItem = try encryptedLogInItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+            if case let .login(username, _, urls) = decryptedLogInItem.contentData {
                 for url in urls {
-                    credentials.append(.init(ids: .init(shareId: logInItem.shareId, itemId: logInItem.itemId),
+                    credentials.append(.init(ids: .init(shareId: decryptedLogInItem.shareId,
+                                                        itemId: decryptedLogInItem.itemId),
                                              username: username,
-                                             url: url))
+                                             url: url,
+                                             lastUsedTime: encryptedLogInItem.lastUsedTime))
                 }
             }
         }

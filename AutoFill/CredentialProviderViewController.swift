@@ -29,6 +29,7 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         .init(apiService: PMAPIService(doh: PPDoH(bundle: .main)),
               container: .Builder.build(name: kProtonPassContainerName, inMemory: false),
               context: extensionContext,
+              credentialManager: CredentialManager(store: .shared),
               rootViewController: self)
     }()
 
