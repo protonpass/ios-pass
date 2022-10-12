@@ -35,8 +35,12 @@ extension ItemEntity {
     @NSManaged var content: String?
     @NSManaged var contentFormatVersion: Int16
     @NSManaged var createTime: Int64
+    /// Is a custom field. Whether the type of item is log in or not
+    @NSManaged var isLogInItem: Bool
     @NSManaged var itemID: String?
     @NSManaged var itemKeySignature: String?
+    /// Is a custom field. The time interval since 1970 of the moment the item is last used in auto filling context
+    @NSManaged var lastUsedTime: Int64
     @NSManaged var modifyTime: Int64
     @NSManaged var revision: Int16
     @NSManaged var revisionTime: Int64
@@ -44,6 +48,7 @@ extension ItemEntity {
     @NSManaged var shareID: String?
     @NSManaged var signatureEmail: String?
     @NSManaged var state: Int16
+    /// Is a custom field. The exact protobuf structure but have the content symmetrically encrypted
     @NSManaged var symmetricallyEncryptedContent: String?
     @NSManaged var userSignature: String?
 }
@@ -91,12 +96,16 @@ extension ItemEntity {
                                         createTime: createTime,
                                         modifyTime: modifyTime,
                                         revisionTime: revisionTime)
+
         return .init(shareId: shareId,
                      item: itemRevision,
-                     encryptedContent: symmetricallyEncryptedContent)
+                     encryptedContent: symmetricallyEncryptedContent,
+                     lastUsedTime: lastUsedTime,
+                     isLogInItem: isLogInItem)
     }
 
-    func hydrate(from item: SymmetricallyEncryptedItem) {
+    func hydrate(from item: SymmetricallyEncryptedItem,
+                 lastUsedTime: Int64? = nil) {
         self.itemID = item.item.itemID
         self.revision = item.item.revision
         self.contentFormatVersion = item.item.contentFormatVersion
@@ -111,5 +120,9 @@ extension ItemEntity {
         self.createTime = item.item.createTime
         self.modifyTime = item.item.modifyTime
         self.shareID = item.shareId
+        self.isLogInItem = item.isLogInItem
+        if let lastUsedTime = lastUsedTime {
+            self.lastUsedTime = lastUsedTime
+        }
     }
 }

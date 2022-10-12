@@ -41,7 +41,7 @@ final class CredentialsViewModel: ObservableObject {
     private let urls: [URL]
 
     var onClose: (() -> Void)?
-    var onSelect: ((ASPasswordCredential) -> Void)?
+    var onSelect: ((ASPasswordCredential, SymmetricallyEncryptedItem) -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey,
@@ -56,11 +56,11 @@ final class CredentialsViewModel: ObservableObject {
         Task { @MainActor in
             do {
                 state = .loading
-                let matcher = URLMatcher.default
+                let matcher = URLUtils.Matcher.default
                 let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
 
-                var matchedItems = [ItemListUiModel]()
-                var notMatchedItems = [ItemListUiModel]()
+                var matchedEncryptedItems = [SymmetricallyEncryptedItem]()
+                var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
                 for encryptedItem in encryptedItems {
                     let decryptedItemContent =
                     try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
@@ -73,17 +73,18 @@ final class CredentialsViewModel: ObservableObject {
                             }
                         }
 
-                        let decryptedItem = try await encryptedItem.toItemListUiModel(symmetricKey)
                         if matchedUrls.isEmpty {
-                            notMatchedItems.append(decryptedItem)
+                            notMatchedEncryptedItems.append(encryptedItem)
                         } else {
-                            matchedItems.append(decryptedItem)
+                            matchedEncryptedItems.append(encryptedItem)
                         }
                     }
                 }
 
-                self.matchedItems = matchedItems
-                self.notMatchedItems = notMatchedItems
+                self.matchedItems = try await matchedEncryptedItems.sorted()
+                    .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+                self.notMatchedItems = try await notMatchedEncryptedItems.sorted()
+                    .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
                 state = .loaded
             } catch {
                 state = .error(error)
@@ -108,7 +109,7 @@ extension CredentialsViewModel {
                 let itemContent = try item.getDecryptedItemContent(symmetricKey: symmetricKey)
                 switch itemContent.contentData {
                 case let .login(username, password, _):
-                    onSelect?(.init(user: username, password: password))
+                    onSelect?(.init(user: username, password: password), item)
                 default:
                     break
                 }

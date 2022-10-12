@@ -42,12 +42,14 @@ public final class CredentialProviderCoordinator {
     private var apiService: APIService
     private let container: NSPersistentContainer
     private let context: ASCredentialProviderExtensionContext
+    private let credentialManager: CredentialManagerProtocol
     private let rootViewController: UIViewController
     private var lastChildViewController: UIViewController?
 
     init(apiService: APIService,
          container: NSPersistentContainer,
          context: ASCredentialProviderExtensionContext,
+         credentialManager: CredentialManagerProtocol,
          rootViewController: UIViewController) {
         let keychain = PPKeychain()
         self.keychain = keychain
@@ -60,6 +62,7 @@ public final class CredentialProviderCoordinator {
         self.apiService = apiService
         self.container = container
         self.context = context
+        self.credentialManager = credentialManager
         self.rootViewController = rootViewController
         self.apiService.authDelegate = self
         self.apiService.serviceDelegate = self
@@ -100,7 +103,11 @@ public final class CredentialProviderCoordinator {
                                                                             itemId: ids.itemId) {
                         let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
                         if case let .login(username, password, _) = decryptedItem.contentData {
-                            complete(with: .init(user: username, password: password))
+                            complete(credential: .init(user: username, password: password),
+                                     encryptedItem: encryptedItem,
+                                     itemRepository: itemRepository,
+                                     symmetricKey: symmetricKey,
+                                     serviceIdentifiers: [credentialIdentity.serviceIdentifier])
                         }
                     } else {
                         cancel(errorCode: .failed)
@@ -150,6 +157,32 @@ extension CredentialProviderCoordinator: APIServiceDelegate {
         // TODO: Handle this
         return true
     }
+
+    private func updateRank(encryptedItem: SymmetricallyEncryptedItem,
+                            symmetricKey: SymmetricKey,
+                            serviceIdentifiers: [ASCredentialServiceIdentifier]) async throws {
+        let matcher = URLUtils.Matcher.default
+        let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+        if case let .login(email, _, urls) = decryptedItem.contentData {
+            let serviceUrls = serviceIdentifiers
+                .map { $0.identifier }
+                .compactMap { URL(string: $0) }
+            let itemUrls = urls.compactMap { URL(string: $0) }
+            let matchedUrls = itemUrls.filter { itemUrl in
+                serviceUrls.contains { serviceUrl in
+                    matcher.isMatched(itemUrl, serviceUrl)
+                }
+            }
+
+            let credentials = matchedUrls
+                .map { AutoFillCredential(shareId: encryptedItem.shareId,
+                                          itemId: encryptedItem.item.itemID,
+                                          username: email,
+                                          url: $0.absoluteString,
+                                          lastUsedTime: Int64(Date().timeIntervalSince1970)) }
+            try await credentialManager.insert(credentials: credentials)
+        }
+    }
 }
 
 // MARK: - Context actions
@@ -159,8 +192,23 @@ extension CredentialProviderCoordinator {
         context.cancelRequest(withError: error)
     }
 
-    func complete(with credential: ASPasswordCredential) {
-        context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
+    func complete(credential: ASPasswordCredential,
+                  encryptedItem: SymmetricallyEncryptedItem,
+                  itemRepository: ItemRepositoryProtocol,
+                  symmetricKey: SymmetricKey,
+                  serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        Task {
+            do {
+                try await updateRank(encryptedItem: encryptedItem,
+                                     symmetricKey: symmetricKey,
+                                     serviceIdentifiers: serviceIdentifiers)
+                try await itemRepository.update(item: encryptedItem,
+                                                lastUsedTime: Date().timeIntervalSince1970)
+                context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
+            } catch {
+                PPLogger.shared?.log(error)
+            }
+        }
     }
 }
 
@@ -195,8 +243,12 @@ extension CredentialProviderCoordinator {
         viewModel.onClose = { [unowned self] in
             self.cancel(errorCode: .userCanceled)
         }
-        viewModel.onSelect = { [unowned self] credential in
-            self.complete(with: credential)
+        viewModel.onSelect = { [unowned self] credential, item in
+            self.complete(credential: credential,
+                          encryptedItem: item,
+                          itemRepository: itemRepository,
+                          symmetricKey: symmetricKey,
+                          serviceIdentifiers: serviceIdentifiers)
         }
         showView(CredentialsView(viewModel: viewModel))
     }

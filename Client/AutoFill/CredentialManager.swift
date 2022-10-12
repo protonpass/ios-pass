@@ -105,16 +105,16 @@ public extension CredentialManagerProtocol {
         }
 
         let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
-        let decryptedItems =
-        try encryptedItems.map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
         var credentials = [AutoFillCredential]()
-        for decryptedItem in decryptedItems {
+        for encryptedItem in encryptedItems {
+            let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
             if case let .login(username, _, urls) = decryptedItem.contentData {
                 for url in urls {
                     credentials.append(.init(shareId: decryptedItem.shareId,
                                              itemId: decryptedItem.itemId,
                                              username: username,
-                                             url: url))
+                                             url: url,
+                                             lastUsedTime: encryptedItem.lastUsedTime))
                 }
             }
         }
@@ -170,5 +170,6 @@ private extension ASPasswordCredentialIdentity {
         self.init(serviceIdentifier: .init(identifier: credential.url, type: .URL),
                   user: credential.username,
                   recordIdentifier: try credential.ids.serializeBase64())
+        self.rank = Int(credential.lastUsedTime)
     }
 }

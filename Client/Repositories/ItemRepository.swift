@@ -69,6 +69,13 @@ public protocol ItemRepositoryProtocol {
     func updateItem(oldItem: ItemRevision,
                     newItemContent: ProtobufableItemContentProtocol,
                     shareId: String) async throws
+
+    // MARK: - AutoFill operations
+    /// Get active log in items of all shares
+    func getActiveLogInItems(forceRefresh: Bool) async throws -> [SymmetricallyEncryptedItem]
+
+    /// Update locally the last used time of an item
+    func update(item: SymmetricallyEncryptedItem, lastUsedTime: TimeInterval) async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -243,17 +250,44 @@ public extension ItemRepositoryProtocol {
             let ids = AutoFillCredential.IDs(shareId: shareId, itemId: itemId)
             let deletedCredentials = oldUrls.map { AutoFillCredential(ids: ids,
                                                                       username: oldUsername,
-                                                                      url: $0) }
+                                                                      url: $0,
+                                                                      lastUsedTime: encryptedItem.lastUsedTime) }
             let newCredentials = newUrls.map { AutoFillCredential(ids: ids,
                                                                   username: newUsername,
-                                                                  url: $0) }
+                                                                  url: $0,
+                                                                  lastUsedTime: encryptedItem.lastUsedTime) }
             delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
             delegate?.itemRepositoryHasNewCredentials(newCredentials)
             PPLogger.shared?.log("Delegated updated credential")
         }
     }
+
+    func getActiveLogInItems(forceRefresh: Bool) async throws -> [SymmetricallyEncryptedItem] {
+        PPLogger.shared?.log("Getting active log in items for all shares")
+        let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
+        var allLogInItems = [SymmetricallyEncryptedItem]()
+        for share in shares {
+            if forceRefresh {
+                PPLogger.shared?.log("Forcing refresh items for share \(share.shareID)")
+                _ = try await remoteItemRevisionDatasource.getItemRevisions(shareId: share.shareID)
+            }
+            PPLogger.shared?.log("Getting active log in items for share \(share.shareID)")
+            let logInItems = try await localItemDatasoure.getActiveLogInItems(shareId: share.shareID)
+            PPLogger.shared?.log("Found \(logInItems.count) active log in items for share \(share.shareID)")
+            allLogInItems.append(contentsOf: logInItems)
+        }
+        PPLogger.shared?.log("Found \(allLogInItems.count) active log in items for all shares")
+        return allLogInItems
+    }
+
+    func update(item: SymmetricallyEncryptedItem, lastUsedTime: TimeInterval) async throws {
+        PPLogger.shared?.log("Updating item's (\(item.item.itemID) lastUsedTime \(lastUsedTime)")
+        try await localItemDatasoure.update(item: item, lastUsedTime: lastUsedTime)
+        PPLogger.shared?.log("Updated item's (\(item.item.itemID) lastUsedTime \(lastUsedTime)")
+    }
 }
 
+// MARK: - Private util functions
 private extension ItemRepositoryProtocol {
     func refreshItems(shareId: String) async throws {
         PPLogger.shared?.log("Getting items from remote")
@@ -289,22 +323,34 @@ private extension ItemRepositoryProtocol {
                                                                   verifyKeys: verifyKeys)
         let encryptedContentProtobuf = try contentProtobuf.symmetricallyEncrypted(symmetricKey)
         let encryptedContent = try encryptedContentProtobuf.serializedData().base64EncodedString()
-        return .init(shareId: shareId, item: itemRevision, encryptedContent: encryptedContent)
+
+        let isLogInItem: Bool
+        if case .login = contentProtobuf.contentData {
+            isLogInItem = true
+        } else {
+            isLogInItem = false
+        }
+
+        return .init(shareId: shareId,
+                     item: itemRevision,
+                     encryptedContent: encryptedContent,
+                     lastUsedTime: 0,
+                     isLogInItem: isLogInItem)
     }
 
     func getCredentials(from encryptedItems: [SymmetricallyEncryptedItem],
                         state: ItemState) throws -> [AutoFillCredential] {
-        let logInItems = try encryptedItems
-            .filter { $0.item.itemState == state }
-            .map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
-            .filter { $0.contentData.type == .login }
+        let encryptedLogInItems = encryptedItems.filter { $0.item.itemState == state }
         var credentials = [AutoFillCredential]()
-        for logInItem in logInItems {
-            if case let .login(username, _, urls) = logInItem.contentData {
+        for encryptedLogInItem in encryptedLogInItems {
+            let decryptedLogInItem = try encryptedLogInItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+            if case let .login(username, _, urls) = decryptedLogInItem.contentData {
                 for url in urls {
-                    credentials.append(.init(ids: .init(shareId: logInItem.shareId, itemId: logInItem.itemId),
+                    credentials.append(.init(ids: .init(shareId: decryptedLogInItem.shareId,
+                                                        itemId: decryptedLogInItem.itemId),
                                              username: username,
-                                             url: url))
+                                             url: url,
+                                             lastUsedTime: encryptedLogInItem.lastUsedTime))
                 }
             }
         }

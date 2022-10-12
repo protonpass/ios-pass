@@ -41,6 +41,13 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
 
     /// Nuke items of a share
     func removeAllItems(shareId: String) async throws
+
+    // MARK: - AutoFill related operations
+    /// Update the last used time of an item. Item should be of type log in but we're not able to check.
+    func update(item: SymmetricallyEncryptedItem, lastUsedTime: TimeInterval) async throws
+
+    /// Get all active log in items of a given share
+    func getActiveLogInItems(shareId: String) async throws -> [SymmetricallyEncryptedItem]
 }
 
 public extension LocalItemDatasourceProtocol {
@@ -104,7 +111,9 @@ public extension LocalItemDatasourceProtocol {
                                                 revisionTime: modifiedItem.revisionTime)
                 try await upsertItems([.init(shareId: item.shareId,
                                              item: modifiedItem,
-                                             encryptedContent: item.encryptedContent)])
+                                             encryptedContent: item.encryptedContent,
+                                             lastUsedTime: item.lastUsedTime,
+                                             isLogInItem: item.isLogInItem)])
             }
         }
     }
@@ -128,6 +137,30 @@ public extension LocalItemDatasourceProtocol {
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
+    }
+
+    func update(item: SymmetricallyEncryptedItem, lastUsedTime: TimeInterval) async throws {
+        let taskContext = newTaskContext(type: .insert)
+        let entity = ItemEntity.entity(context: taskContext)
+        let batchInsertRequest = newBatchInsertRequest(entity: entity,
+                                                       sourceItems: [item]) { managedObject, item in
+            (managedObject as? ItemEntity)?.hydrate(from: item,
+                                                    lastUsedTime: Int64(lastUsedTime))
+        }
+        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+    }
+
+    func getActiveLogInItems(shareId: String) async throws -> [SymmetricallyEncryptedItem] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ItemEntity.fetchRequest()
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "shareID = %@", shareId),
+            .init(format: "state = %d", ItemState.active.rawValue),
+            .init(format: "isLogInItem = %d", true)
+        ])
+        fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
+        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try itemEntities.map { try $0.toEncryptedItem(shareId: shareId) }
     }
 }
 

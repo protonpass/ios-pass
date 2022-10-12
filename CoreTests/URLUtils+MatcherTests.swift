@@ -1,5 +1,5 @@
 //
-// URLMatcherTests.swift
+// URLUtils+MatcherTests.swift
 // Proton Pass - Created on 07/10/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,9 +21,9 @@
 @testable import Core
 import XCTest
 
-final class URLMatcherTests: XCTestCase {
+final class URLUtilsPlusMatcherTests: XCTestCase {
     func testNoSchemesShouldNotMatched() throws {
-        let sut = URLMatcher.default
+        let sut = URLUtils.Matcher.default
         XCTAssertFalse(sut.isMatched(try XCTUnwrap(URL(string: "example.com")),
                                      try XCTUnwrap(URL(string: "example.com"))))
 
@@ -32,7 +32,7 @@ final class URLMatcherTests: XCTestCase {
     }
 
     func testSchemeHttpOrHttps() throws {
-        let sut = URLMatcher.default
+        let sut = URLUtils.Matcher.default
         XCTAssertFalse(sut.isMatched(try XCTUnwrap(URL(string: "example.com")),
                                      try XCTUnwrap(URL(string: "example.com"))))
 
@@ -42,24 +42,24 @@ final class URLMatcherTests: XCTestCase {
         XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://example.co.uk/dsjdh?sajjs")),
                                     try XCTUnwrap(URL(string: "http://example.co.uk"))))
 
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://a.b.cexample.dni.us")),
+        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://a.b.c.example.dni.us")),
                                     try XCTUnwrap(URL(string: "http://d.example.dni.us"))))
 
         XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "https://example.com")),
                                     try XCTUnwrap(URL(string: "https://example.com"))))
 
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "https://a.b.cexample.com")),
+        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "https://a.b.c.example.com")),
                                     try XCTUnwrap(URL(string: "https://d.example.com"))))
 
         XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://example.com")),
                                     try XCTUnwrap(URL(string: "https://example.com"))))
 
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://a.b.cexample.com")),
+        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://a.b.c.example.com")),
                                     try XCTUnwrap(URL(string: "https://d.example.com"))))
     }
 
     func testCustomSchemes() throws {
-        let sut = URLMatcher(allowedSchemes: ["ssh", "ftp"])
+        let sut = URLUtils.Matcher(allowedSchemes: ["ssh", "ftp"])
         XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "ssh://example.com")),
                                     try XCTUnwrap(URL(string: "ssh://example.com"))))
 

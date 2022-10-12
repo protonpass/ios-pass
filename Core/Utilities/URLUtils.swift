@@ -1,6 +1,6 @@
 //
-// SymmetricallyEncryptedItem.swift
-// Proton Pass - Created on 20/09/2022.
+// URLUtils.swift
+// Proton Pass - Created on 10/10/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,18 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Client
+import Foundation
 
-extension SymmetricallyEncryptedItem {
-    static func random(shareId: String? = nil,
-                       item: ItemRevision? = nil,
-                       encryptedContent: String? = nil,
-                       lastUsedTime: Int64 = .random(in: 1_234_567...1_987_654),
-                       isLogInItem: Bool = .random()) -> SymmetricallyEncryptedItem {
-        .init(shareId: shareId ?? .random(),
-              item: item ?? .random(),
-              encryptedContent: encryptedContent ?? .random(),
-              lastUsedTime: lastUsedTime,
-              isLogInItem: isLogInItem)
-    }
-}
+/// A namespace for `URL` related utility functions
+public enum URLUtils {}
