@@ -403,12 +403,14 @@ extension LocalItemDatasource {
                            shareId: String? = nil,
                            state: ItemState? = nil,
                            encryptedContent: String? = nil,
-                           modifiedTime: Int64 = .random(in: 1_234_567...1_987_654),
+                           modifyTime: Int64 = .random(in: 1_234_567...1_987_654),
                            lastUsedItem: Int64 = .random(in: 1_234_567...1_987_654),
                            isLogInItem: Bool = .random())
     async throws -> SymmetricallyEncryptedItem {
         let shareId = shareId ?? .random()
-        let itemRevision = ItemRevision.random(itemId: itemId ?? .random(), state: state)
+        let itemRevision = ItemRevision.random(itemId: itemId ?? .random(),
+                                               state: state,
+                                               modifyTime: modifyTime)
         let encryptedContent = encryptedContent ?? .random()
         let item = SymmetricallyEncryptedItem(shareId: shareId,
                                               item: itemRevision,

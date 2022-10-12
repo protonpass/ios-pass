@@ -34,6 +34,8 @@
 		353547C32880CF470021C716 /* UserData+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C22880CF470021C716 /* UserData+Codable.swift */; };
 		35366AA228A446CB0085C24D /* ItemRevision+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366AA128A446CB0085C24D /* ItemRevision+Test.swift */; };
 		35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366AA328A4580E0085C24D /* GetItemsEndpoint.swift */; };
+		353876D828F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */; };
+		353876DA28F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353876D928F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift */; };
 		3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */; };
 		353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C95E0289A9E8500E3CDCA /* Share+Test.swift */; };
 		353E10922881827C00E59474 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E10912881827C00E59474 /* UserProtocol.swift */; };
@@ -445,6 +447,8 @@
 		353547C22880CF470021C716 /* UserData+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Codable.swift"; sourceTree = "<group>"; };
 		35366AA128A446CB0085C24D /* ItemRevision+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemRevision+Test.swift"; sourceTree = "<group>"; };
 		35366AA328A4580E0085C24D /* GetItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetItemsEndpoint.swift; sourceTree = "<group>"; };
+		353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedItem.swift; sourceTree = "<group>"; };
+		353876D928F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SymmetricallyEncryptedItemSortTests.swift"; sourceTree = "<group>"; };
 		3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultViewModel.swift; sourceTree = "<group>"; };
 		353C95E0289A9E8500E3CDCA /* Share+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share+Test.swift"; sourceTree = "<group>"; };
 		353E10912881827C00E59474 /* UserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
@@ -816,6 +820,7 @@
 		350A97D52885C0B400A7168B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				353876D928F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift */,
 				351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */,
 				350A97D62885C0D500A7168B /* Share+ShareProviderTests.swift */,
 				3542E2B928D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift */,
@@ -1042,6 +1047,7 @@
 				3593DCFC28A82FA700C235D3 /* ShareKeys.swift */,
 				350A97D32885BFFD00A7168B /* Vault.swift */,
 				358AB4982886FA7B00818B44 /* VaultKey.swift */,
+				353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2371,6 +2377,7 @@
 				3529432E28DB455100E1F11B /* ItemSearchResult.swift in Sources */,
 				354B7A7428C9FF1B00459AED /* TrashItemsEndpoint.swift in Sources */,
 				35610B8428ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift in Sources */,
+				353876D828F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift in Sources */,
 				35610B7528ABB77800955ACB /* LocalVaultKeyDatasource.swift in Sources */,
 				3593DD0B28A837DD00C235D3 /* ShareEntity.swift in Sources */,
 				3552F48C28D3451800547146 /* GetAliasDetailsEndpoint.swift in Sources */,
@@ -2423,6 +2430,7 @@
 				350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */,
 				3542E2BD28D9CA9C00194F24 /* ItemContentTests.swift in Sources */,
 				3542E2C728D9EB8000194F24 /* LocalItemDatasourceTests.swift in Sources */,
+				353876DA28F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift in Sources */,
 				3542F0262899431D004007C7 /* CoreDataEntityStructureTests.swift in Sources */,
 				358BD366287D4F9200802A91 /* CreateVaultRequestTests.swift in Sources */,
 			);
