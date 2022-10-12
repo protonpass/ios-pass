@@ -100,7 +100,9 @@ public final class CredentialProviderCoordinator {
                                                                             itemId: ids.itemId) {
                         let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
                         if case let .login(username, password, _) = decryptedItem.contentData {
-                            complete(with: .init(user: username, password: password))
+                            complete(credential: .init(user: username, password: password),
+                                     encryptedItem: encryptedItem,
+                                     itemRepository: itemRepository)
                         }
                     } else {
                         cancel(errorCode: .failed)
@@ -159,8 +161,18 @@ extension CredentialProviderCoordinator {
         context.cancelRequest(withError: error)
     }
 
-    func complete(with credential: ASPasswordCredential) {
-        context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
+    func complete(credential: ASPasswordCredential,
+                  encryptedItem: SymmetricallyEncryptedItem,
+                  itemRepository: ItemRepositoryProtocol) {
+        Task {
+            do {
+                try await itemRepository.update(item: encryptedItem,
+                                                lastUsedTime: Date().timeIntervalSince1970)
+                context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
+            } catch {
+                PPLogger.shared?.log(error)
+            }
+        }
     }
 }
 
@@ -195,8 +207,10 @@ extension CredentialProviderCoordinator {
         viewModel.onClose = { [unowned self] in
             self.cancel(errorCode: .userCanceled)
         }
-        viewModel.onSelect = { [unowned self] credential in
-            self.complete(with: credential)
+        viewModel.onSelect = { [unowned self] credential, item in
+            self.complete(credential: credential,
+                          encryptedItem: item,
+                          itemRepository: itemRepository)
         }
         showView(CredentialsView(viewModel: viewModel))
     }

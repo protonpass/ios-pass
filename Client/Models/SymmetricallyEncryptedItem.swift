@@ -67,7 +67,7 @@ public struct SymmetricallyEncryptedItem {
 private typealias AreInDecreasingOrder = (SymmetricallyEncryptedItem,
                                           SymmetricallyEncryptedItem) -> Bool
 
-extension Array where Element == SymmetricallyEncryptedItem {
+public extension Array where Element == SymmetricallyEncryptedItem {
     // swiftlint:disable opening_brace
     /// Sort by `lastUsedTime` & `modifyTime` in decreasing order
     func sorted() -> Self {

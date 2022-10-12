@@ -69,6 +69,13 @@ public protocol ItemRepositoryProtocol {
     func updateItem(oldItem: ItemRevision,
                     newItemContent: ProtobufableItemContentProtocol,
                     shareId: String) async throws
+
+    // MARK: - AutoFill operations
+    /// Get active log in items of all shares
+    func getActiveLogInItems(forceRefresh: Bool) async throws -> [SymmetricallyEncryptedItem]
+
+    /// Update locally the last used time of an item
+    func update(item: SymmetricallyEncryptedItem, lastUsedTime: TimeInterval) async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -252,8 +259,33 @@ public extension ItemRepositoryProtocol {
             PPLogger.shared?.log("Delegated updated credential")
         }
     }
+
+    func getActiveLogInItems(forceRefresh: Bool) async throws -> [SymmetricallyEncryptedItem] {
+        PPLogger.shared?.log("Getting active log in items for all shares")
+        let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
+        var allLogInItems = [SymmetricallyEncryptedItem]()
+        for share in shares {
+            if forceRefresh {
+                PPLogger.shared?.log("Forcing refresh items for share \(share.shareID)")
+                _ = try await remoteItemRevisionDatasource.getItemRevisions(shareId: share.shareID)
+            }
+            PPLogger.shared?.log("Getting active log in items for share \(share.shareID)")
+            let logInItems = try await localItemDatasoure.getActiveLogInItems(shareId: share.shareID)
+            PPLogger.shared?.log("Found \(logInItems.count) active log in items for share \(share.shareID)")
+            allLogInItems.append(contentsOf: logInItems)
+        }
+        PPLogger.shared?.log("Found \(allLogInItems.count) active log in items for all shares")
+        return allLogInItems
+    }
+
+    func update(item: SymmetricallyEncryptedItem, lastUsedTime: TimeInterval) async throws {
+        PPLogger.shared?.log("Updating item's (\(item.item.itemID) lastUsedTime \(lastUsedTime)")
+        try await localItemDatasoure.update(item: item, lastUsedTime: lastUsedTime)
+        PPLogger.shared?.log("Updated item's (\(item.item.itemID) lastUsedTime \(lastUsedTime)")
+    }
 }
 
+// MARK: - Private util functions
 private extension ItemRepositoryProtocol {
     func refreshItems(shareId: String) async throws {
         PPLogger.shared?.log("Getting items from remote")

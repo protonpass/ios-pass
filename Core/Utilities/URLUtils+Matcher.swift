@@ -79,10 +79,12 @@ public extension URLUtils {
                     return false
                 }
 
-                let leftDomainWithoutTld = leftDomain.replacingOccurrences(of: parsedLeftHost.publicSuffix,
-                                                                           with: "")
-                let rightDomainWithoutTld = rightDomain.replacingOccurrences(of: parsedRightHost.publicSuffix,
-                                                                             with: "")
+                let leftDomainWithoutTld = leftDomain
+                    .replacingOccurrences(of: ".\(parsedLeftHost.publicSuffix)", with: "")
+
+                let rightDomainWithoutTld = rightDomain
+                    .replacingOccurrences(of: ".\(parsedRightHost.publicSuffix)", with: "")
+
                 guard let leftTopSubdomain = leftDomainWithoutTld.components(separatedBy: ".").last,
                       let rightTopSubdomain = rightDomainWithoutTld.components(separatedBy: ".").last else {
                     return false

@@ -42,19 +42,19 @@ final class URLUtilsPlusMatcherTests: XCTestCase {
         XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://example.co.uk/dsjdh?sajjs")),
                                     try XCTUnwrap(URL(string: "http://example.co.uk"))))
 
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://a.b.cexample.dni.us")),
+        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://a.b.c.example.dni.us")),
                                     try XCTUnwrap(URL(string: "http://d.example.dni.us"))))
 
         XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "https://example.com")),
                                     try XCTUnwrap(URL(string: "https://example.com"))))
 
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "https://a.b.cexample.com")),
+        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "https://a.b.c.example.com")),
                                     try XCTUnwrap(URL(string: "https://d.example.com"))))
 
         XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://example.com")),
                                     try XCTUnwrap(URL(string: "https://example.com"))))
 
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://a.b.cexample.com")),
+        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://a.b.c.example.com")),
                                     try XCTUnwrap(URL(string: "https://d.example.com"))))
     }
 
