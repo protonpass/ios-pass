@@ -35,6 +35,7 @@ extension ItemEntity {
     @NSManaged var content: String?
     @NSManaged var contentFormatVersion: Int16
     @NSManaged var createTime: Int64
+    /// Is a custom field. Whether the type of item is log in or not
     @NSManaged var isLogInItem: Bool
     @NSManaged var itemID: String?
     @NSManaged var itemKeySignature: String?

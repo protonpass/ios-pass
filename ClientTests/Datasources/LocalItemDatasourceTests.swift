@@ -21,6 +21,7 @@
 @testable import Client
 import XCTest
 
+// swiftlint:disable function_body_length
 final class LocalItemDatasourceTests: XCTestCase {
     let expectationTimeOut: TimeInterval = 3
     var sut: LocalItemDatasource!
@@ -327,6 +328,74 @@ extension LocalItemDatasourceTests {
         waitForExpectations(timeout: expectationTimeOut)
     }
      */
+
+    func testGetActiveLogInItems() throws {
+        continueAfterFailure = false
+        let expectation = expectation(description: #function)
+        Task {
+            // Given
+            let givenShareId = String.random()
+            // 2 trashed log in items
+            _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                                state: .trashed,
+                                                isLogInItem: true)
+
+            _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                                state: .trashed,
+                                                isLogInItem: true)
+
+            // 3 trashed other items
+            _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                                state: .trashed,
+                                                isLogInItem: false)
+
+            _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                                state: .trashed,
+                                                isLogInItem: false)
+
+            _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                                state: .trashed,
+                                                isLogInItem: false)
+
+            // 4 active log in items
+            _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                                state: .active,
+                                                isLogInItem: true)
+
+            _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                                state: .active,
+                                                isLogInItem: true)
+
+            _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                                state: .active,
+                                                isLogInItem: true)
+
+            _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                                state: .active,
+                                                isLogInItem: true)
+
+            // 4 active other items
+            _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                                state: .active,
+                                                isLogInItem: false)
+
+            _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                                state: .active,
+                                                isLogInItem: false)
+
+            _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                                state: .active,
+                                                isLogInItem: false)
+
+            // When
+            let activeLogInItems = try await sut.getActiveLogInItems(shareId: givenShareId)
+
+            // Then
+            XCTAssertEqual(activeLogInItems.count, 4)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: expectationTimeOut)
+    }
 }
 
 extension LocalItemDatasource {
@@ -334,6 +403,7 @@ extension LocalItemDatasource {
                            shareId: String? = nil,
                            state: ItemState? = nil,
                            encryptedContent: String? = nil,
+                           modifiedTime: Int64 = .random(in: 1_234_567...1_987_654),
                            lastUsedItem: Int64 = .random(in: 1_234_567...1_987_654),
                            isLogInItem: Bool = .random())
     async throws -> SymmetricallyEncryptedItem {
