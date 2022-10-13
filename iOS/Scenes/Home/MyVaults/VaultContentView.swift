@@ -44,9 +44,6 @@ struct VaultContentView: View {
             // as Color occupies the whole ZStack
             Color.clear
             switch viewModel.state {
-            case .idle:
-                EmptyView()
-
             case .loading:
                 ProgressView()
 

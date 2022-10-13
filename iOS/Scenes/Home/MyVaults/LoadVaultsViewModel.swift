@@ -37,8 +37,7 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
          shareRepository: ShareRepositoryProtocol,
          vaultItemKeysRepository: VaultItemKeysRepositoryProtocol) {
         self.shareRepository = shareRepository
-        self.actor = .init(viewModel: self,
-                           userData: userData,
+        self.actor = .init(userData: userData,
                            vaultSelection: vaultSelection,
                            shareRepository: shareRepository,
                            vaultItemKeysRepository: vaultItemKeysRepository)
@@ -57,18 +56,15 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
 }
 
 private actor LoadVaultsViewModelActor {
-    private unowned let viewModel: LoadVaultsViewModel
     private let userData: UserData
     private let vaultSelection: VaultSelection
     private let shareRepository: ShareRepositoryProtocol
     private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
 
-    init(viewModel: LoadVaultsViewModel,
-         userData: UserData,
+    init(userData: UserData,
          vaultSelection: VaultSelection,
          shareRepository: ShareRepositoryProtocol,
          vaultItemKeysRepository: VaultItemKeysRepositoryProtocol) {
-        self.viewModel = viewModel
         self.userData = userData
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
