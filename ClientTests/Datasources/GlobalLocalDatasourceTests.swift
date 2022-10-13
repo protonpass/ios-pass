@@ -42,7 +42,7 @@ extension GlobalLocalDatasourceTests {
     func testRemoveAllData() throws {
         continueAfterFailure = false
         let expectation = expectation(description: #function)
-        Task { @MainActor in
+        Task {
             // Given
             // First set of data
             let firstUserId = String.random()
