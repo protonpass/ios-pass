@@ -45,6 +45,7 @@ extension VaultContentViewModel {
     }
 }
 
+// MARK: - Initialization
 final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
@@ -52,7 +53,8 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
     @Published private(set) var items = [ItemListUiModel]()
 
     private let vaultSelection: VaultSelection
-    private let actor: VaultContentViewModelActor
+    private let itemRepository: ItemRepositoryProtocol
+    private let symmetricKey: SymmetricKey
 
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
@@ -68,9 +70,8 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
          itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey) {
         self.vaultSelection = vaultSelection
-        self.actor = .init(vaultSelection: vaultSelection,
-                           itemRepository: itemRepository,
-                           symmetricKey: symmetricKey)
+        self.itemRepository = itemRepository
+        self.symmetricKey = symmetricKey
         super.init()
 
         vaultSelection.objectWillChange
@@ -81,6 +82,7 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
     }
 }
 
+// MARK: - Public actions
 extension VaultContentViewModel {
     func fetchItems(forceRefresh: Bool) {
         Task { @MainActor in
@@ -89,7 +91,7 @@ extension VaultContentViewModel {
             }
 
             do {
-                items = try await actor.getItems(forceRefresh: forceRefresh)
+                items = try await getItemsTask(forceRefresh: forceRefresh).value
                 state = .loaded
             } catch {
                 state = .error(error)
@@ -100,7 +102,7 @@ extension VaultContentViewModel {
     func selectItem(_ item: ItemListUiModel) {
         Task { @MainActor in
             do {
-                let itemContent = try await actor.getDecryptedItemContent(item)
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
                 onShowItemDetail?(itemContent)
             } catch {
                 self.error = error
@@ -112,7 +114,7 @@ extension VaultContentViewModel {
         Task { @MainActor in
             isLoading = true
             do {
-                try await actor.trashItem(item)
+                try await trashItemTask(for: item).value
                 fetchItems(forceRefresh: false)
                 onTrashedItem?(item.type)
                 isLoading = false
@@ -124,41 +126,35 @@ extension VaultContentViewModel {
     }
 }
 
-// MARK: - Actor
-private actor VaultContentViewModelActor {
-    private let vaultSelection: VaultSelection
-    private let itemRepository: ItemRepositoryProtocol
-    private let symmetricKey: SymmetricKey
-
-    init(vaultSelection: VaultSelection,
-         itemRepository: ItemRepositoryProtocol,
-         symmetricKey: SymmetricKey) {
-        self.vaultSelection = vaultSelection
-        self.itemRepository = itemRepository
-        self.symmetricKey = symmetricKey
-    }
-
-    func getItems(forceRefresh: Bool) async throws -> [ItemListUiModel] {
-        guard let shareId = vaultSelection.selectedVault?.shareId else {
-            throw VaultContentViewModelError.noSelectedVault
+// MARK: - Private supporting tasks
+private extension VaultContentViewModel {
+    func getItemsTask(forceRefresh: Bool) -> Task<[ItemListUiModel], Error> {
+        Task.detached(priority: .userInitiated) {
+            guard let shareId = self.vaultSelection.selectedVault?.shareId else {
+                throw VaultContentViewModelError.noSelectedVault
+            }
+            let encryptedItems = try await self.itemRepository.getItems(forceRefresh: forceRefresh,
+                                                                        shareId: shareId,
+                                                                        state: .active)
+            return try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
         }
-        let encryptedItems = try await itemRepository.getItems(forceRefresh: forceRefresh,
-                                                               shareId: shareId,
-                                                               state: .active)
-        return try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
     }
 
-    func getDecryptedItemContent(_ item: ItemListUiModel) async throws -> ItemContent {
-        let encryptedItem = try await getItem(shareId: item.shareId, itemId: item.itemId)
-        return try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+    func getDecryptedItemContentTask(for item: ItemListUiModel) -> Task<ItemContent, Error> {
+        Task.detached(priority: .userInitiated) {
+            let encryptedItem = try await self.getItem(shareId: item.shareId, itemId: item.itemId)
+            return try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
+        }
     }
 
-    func trashItem(_ item: ItemListUiModel) async throws {
-        let itemToBeTrashed = try await getItem(shareId: item.shareId, itemId: item.itemId)
-        try await itemRepository.trashItems([itemToBeTrashed])
+    func trashItemTask(for item: ItemListUiModel) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            let itemToBeTrashed = try await self.getItem(shareId: item.shareId, itemId: item.itemId)
+            try await self.itemRepository.trashItems([itemToBeTrashed])
+        }
     }
 
-    private func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
+    func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
         guard let item = try await itemRepository.getItem(shareId: shareId,
                                                           itemId: itemId) else {
             throw VaultContentViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
