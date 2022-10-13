@@ -23,14 +23,12 @@ import Core
 import ProtonCore_Login
 
 final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
-    @Published private(set) var error: Error?
-
     deinit { print(deinitMessage) }
 
-    private let userData: UserData
-    private let vaultSelection: VaultSelection
+    @Published private(set) var error: Error?
+
+    private var actor: LoadVaultsViewModelActor!
     private let shareRepository: ShareRepositoryProtocol
-    private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
 
     var onToggleSidebar: (() -> Void)?
 
@@ -38,39 +36,61 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
          vaultSelection: VaultSelection,
          shareRepository: ShareRepositoryProtocol,
          vaultItemKeysRepository: VaultItemKeysRepositoryProtocol) {
+        self.shareRepository = shareRepository
+        self.actor = .init(viewModel: self,
+                           userData: userData,
+                           vaultSelection: vaultSelection,
+                           shareRepository: shareRepository,
+                           vaultItemKeysRepository: vaultItemKeysRepository)
+    }
+
+    func fetchVaults(forceRefresh: Bool) {
+        Task { @MainActor in
+            do {
+                error = nil
+                try await self.actor.fetchVaults(forceRefresh: forceRefresh)
+            } catch {
+                self.error = error
+            }
+        }
+    }
+}
+
+private actor LoadVaultsViewModelActor {
+    private unowned let viewModel: LoadVaultsViewModel
+    private let userData: UserData
+    private let vaultSelection: VaultSelection
+    private let shareRepository: ShareRepositoryProtocol
+    private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
+
+    init(viewModel: LoadVaultsViewModel,
+         userData: UserData,
+         vaultSelection: VaultSelection,
+         shareRepository: ShareRepositoryProtocol,
+         vaultItemKeysRepository: VaultItemKeysRepositoryProtocol) {
+        self.viewModel = viewModel
         self.userData = userData
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
         self.vaultItemKeysRepository = vaultItemKeysRepository
     }
 
-    func toggleSidebar() {
-        onToggleSidebar?()
-    }
+    func fetchVaults(forceRefresh: Bool) async throws {
+        let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
 
-    func fetchVaults(forceRefresh: Bool = false) {
-        error = nil
-        Task { @MainActor in
-            do {
-                let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
+        var vaults: [VaultProtocol] = []
+        for share in shares {
+            let vaultKeys = try await vaultItemKeysRepository.getVaultKeys(shareId: share.shareID,
+                                                                           forceRefresh: forceRefresh)
+            vaults.append(try share.getVault(userData: userData,
+                                             vaultKeys: vaultKeys))
+        }
 
-                var vaults: [VaultProtocol] = []
-                for share in shares {
-                    let vaultKeys = try await vaultItemKeysRepository.getVaultKeys(shareId: share.shareID,
-                                                                                   forceRefresh: forceRefresh)
-                    vaults.append(try share.getVault(userData: userData,
-                                                     vaultKeys: vaultKeys))
-                }
-
-                if vaults.isEmpty {
-                    try await createDefaultVault()
-                    fetchVaults()
-                } else {
-                    vaultSelection.update(vaults: vaults)
-                }
-            } catch {
-                self.error = error
-            }
+        if vaults.isEmpty {
+            try await createDefaultVault()
+            try await fetchVaults(forceRefresh: false)
+        } else {
+            vaultSelection.update(vaults: vaults)
         }
     }
 
