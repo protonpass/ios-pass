@@ -82,6 +82,7 @@ final class HomeCoordinator: DeinitPrintable {
          apiService: APIService,
          symmetricKey: SymmetricKey,
          container: NSPersistentContainer,
+         credentialManager: CredentialManagerProtocol,
          preferences: Preferences) {
         self.sessionData = sessionData
         self.apiService = apiService
@@ -105,8 +106,7 @@ final class HomeCoordinator: DeinitPrintable {
         self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
                                                                authCredential: authCredential,
                                                                apiService: apiService)
-        let credentialManager = CredentialManager()
-        itemRepository.delegate = credentialManager
+        itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
         self.credentialManager = credentialManager
         self.vaultSelection = .init(vaults: [])
         self.preferences = preferences
@@ -280,14 +280,7 @@ private extension HomeCoordinator {
     }
 
     func signOut() {
-        Task { @MainActor in
-            do {
-                try await credentialManager.removeAllCredentials()
-                delegate?.homeCoordinatorDidSignOut()
-            } catch {
-                alert(error: error)
-            }
-        }
+        delegate?.homeCoordinatorDidSignOut()
     }
 }
 
