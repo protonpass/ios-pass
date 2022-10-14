@@ -67,16 +67,12 @@ struct SearchView: View {
     }
 
     private var resultsList: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(viewModel.results, id: \.itemId) { result in
-                    ItemSearchResultView(result: result,
-                                         showDivider: result.itemId != viewModel.results.last?.itemId,
-                                         action: {})
-                }
+        List {
+            ForEach(viewModel.results, id: \.itemId) { result in
+                ItemSearchResultView(result: result, action: {})
             }
         }
-        .padding(.top)
+        .listStyle(.plain)
         .animation(.default, value: viewModel.results.count)
     }
 }

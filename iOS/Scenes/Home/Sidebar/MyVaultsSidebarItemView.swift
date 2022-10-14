@@ -85,6 +85,7 @@ struct MyVaultsSidebarItemView: View {
     }
 }
 
+/*
 struct MyVaultsSidebarItemView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
@@ -94,3 +95,4 @@ struct MyVaultsSidebarItemView_Previews: PreviewProvider {
         }
     }
 }
+*/

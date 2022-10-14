@@ -29,14 +29,11 @@ public protocol ItemSearchResultProtocol {
 
 public struct ItemSearchResultView: View {
     private let result: ItemSearchResultProtocol
-    private let showDivider: Bool
     private let action: () -> Void
 
     public init(result: ItemSearchResultProtocol,
-                showDivider: Bool,
                 action: @escaping () -> Void) {
         self.result = result
-        self.showDivider = showDivider
         self.action = action
     }
 
@@ -67,15 +64,10 @@ public struct ItemSearchResultView: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .padding(.horizontal)
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
             }
-        }
-
-        if showDivider {
-            Divider()
         }
     }
 }
