@@ -103,92 +103,62 @@ extension LocalDatasourceProtocol {
 extension LocalDatasourceProtocol {
     func execute(batchInsertRequest request: NSBatchInsertRequest,
                  context: NSManagedObjectContext) async throws {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
-            context.performAndWait {
+        try await context.perform {
 #if DEBUG
-                if Thread.isMainThread {
-                    continuation.resume(throwing: LocalDatasourceError.databaseOperationsOnMainThread)
-                    return
-                }
+            if Thread.isMainThread {
+                throw LocalDatasourceError.databaseOperationsOnMainThread
+            }
 #endif
-                do {
-                    let fetchResult = try context.execute(request)
-                    if let result = fetchResult as? NSBatchInsertResult,
-                       let success = result.result as? Bool, success {
-                        continuation.resume()
-                    } else {
-                        continuation.resume(throwing: LocalDatasourceError.batchInsertError(request))
-                    }
-                } catch {
-                    continuation.resume(throwing: error)
-                }
+            let fetchResult = try context.execute(request)
+            if let result = fetchResult as? NSBatchInsertResult,
+               let success = result.result as? Bool, success {
+                return
+            } else {
+                throw LocalDatasourceError.batchInsertError(request)
             }
         }
     }
 
     func execute(batchDeleteRequest request: NSBatchDeleteRequest,
                  context: NSManagedObjectContext) async throws {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
-            context.performAndWait {
+        try await context.perform {
 #if DEBUG
-                if Thread.isMainThread {
-                    continuation.resume(throwing: LocalDatasourceError.databaseOperationsOnMainThread)
-                    return
-                }
+            if Thread.isMainThread {
+                throw LocalDatasourceError.databaseOperationsOnMainThread
+            }
 #endif
-                do {
-                    request.resultType = .resultTypeStatusOnly
-                    let deleteResult = try context.execute(request)
-                    if let result = deleteResult as? NSBatchDeleteResult,
-                       let success = result.result as? Bool, success {
-                        continuation.resume()
-                    } else {
-                        continuation.resume(throwing: LocalDatasourceError.batchDeleteError(request))
-                    }
-                } catch {
-                    continuation.resume(throwing: error)
-                }
+            request.resultType = .resultTypeStatusOnly
+            let deleteResult = try context.execute(request)
+            if let result = deleteResult as? NSBatchDeleteResult,
+               let success = result.result as? Bool, success {
+                return
+            } else {
+                throw LocalDatasourceError.batchDeleteError(request)
             }
         }
     }
 
     func execute<T>(fetchRequest request: NSFetchRequest<T>,
                     context: NSManagedObjectContext) async throws -> [T] {
-        try await withCheckedThrowingContinuation { continuation in
-            context.performAndWait {
+        try await context.perform {
 #if DEBUG
-                if Thread.isMainThread {
-                    continuation.resume(throwing: LocalDatasourceError.databaseOperationsOnMainThread)
-                    return
-                }
-#endif
-                do {
-                    let result = try context.fetch(request)
-                    continuation.resume(with: .success(result))
-                } catch {
-                    continuation.resume(with: .failure(error))
-                }
+            if Thread.isMainThread {
+                throw LocalDatasourceError.databaseOperationsOnMainThread
             }
+#endif
+            return try context.fetch(request)
         }
     }
 
     func count<T>(fetchRequest request: NSFetchRequest<T>,
                   context: NSManagedObjectContext) async throws -> Int {
-        try await withCheckedThrowingContinuation { continuation in
-            context.performAndWait {
+        try await context.perform {
 #if DEBUG
-                if Thread.isMainThread {
-                    continuation.resume(throwing: LocalDatasourceError.databaseOperationsOnMainThread)
-                    return
-                }
-#endif
-                do {
-                    let result = try context.count(for: request)
-                    continuation.resume(with: .success(result))
-                } catch {
-                    continuation.resume(with: .failure(error))
-                }
+            if Thread.isMainThread {
+                throw LocalDatasourceError.databaseOperationsOnMainThread
             }
+#endif
+            return try context.count(for: request)
         }
     }
 }
