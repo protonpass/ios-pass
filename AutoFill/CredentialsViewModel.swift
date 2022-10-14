@@ -24,6 +24,16 @@ import Core
 import CryptoKit
 import SwiftUI
 
+enum CredentialsViewModelError: Error {
+    case itemNotFound(shareId: String, itemId: String)
+    case notLogInItem
+}
+
+private struct CredentialsFetchResult {
+    let matchedItems: [ItemListUiModel]
+    let notMatchedItems: [ItemListUiModel]
+}
+
 final class CredentialsViewModel: ObservableObject {
     enum State {
         case idle
@@ -51,41 +61,29 @@ final class CredentialsViewModel: ObservableObject {
         self.urls = serviceIdentifiers.map { $0.identifier }.compactMap { URL(string: $0) }
         fetchItems()
     }
+}
 
+// MARK: - Public actions
+extension CredentialsViewModel {
     func fetchItems() {
         Task { @MainActor in
             do {
                 state = .loading
-                let matcher = URLUtils.Matcher.default
-                let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
-
-                var matchedEncryptedItems = [SymmetricallyEncryptedItem]()
-                var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
-                for encryptedItem in encryptedItems {
-                    let decryptedItemContent =
-                    try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-
-                    if case let .login(_, _, itemUrlStrings) = decryptedItemContent.contentData {
-                        let itemUrls = itemUrlStrings.compactMap { URL(string: $0) }
-                        let matchedUrls = urls.filter { url in
-                            itemUrls.contains { itemUrl in
-                                matcher.isMatched(itemUrl, url)
-                            }
-                        }
-
-                        if matchedUrls.isEmpty {
-                            notMatchedEncryptedItems.append(encryptedItem)
-                        } else {
-                            matchedEncryptedItems.append(encryptedItem)
-                        }
-                    }
-                }
-
-                self.matchedItems = try await matchedEncryptedItems.sorted()
-                    .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
-                self.notMatchedItems = try await notMatchedEncryptedItems.sorted()
-                    .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+                let result = try await fetchCredentialsTask().value
+                self.matchedItems = result.matchedItems
+                self.notMatchedItems = result.notMatchedItems
                 state = .loaded
+            } catch {
+                state = .error(error)
+            }
+        }
+    }
+
+    func select(item: ItemListUiModel) {
+        Task { @MainActor in
+            do {
+                let (credential, item) = try await getCredentialTask(item).value
+                onSelect?(credential, item)
             } catch {
                 state = .error(error)
             }
@@ -93,28 +91,61 @@ final class CredentialsViewModel: ObservableObject {
     }
 }
 
-// MARK: - Actions
-extension CredentialsViewModel {
-    func closeAction() {
-        onClose?()
+// MARK: - Private supporting tasks
+private extension CredentialsViewModel {
+    func fetchCredentialsTask() -> Task<CredentialsFetchResult, Error> {
+        Task.detached(priority: .userInitiated) {
+            let matcher = URLUtils.Matcher.default
+            let encryptedItems = try await self.itemRepository.getItems(forceRefresh: false,
+                                                                        state: .active)
+
+            var matchedEncryptedItems = [SymmetricallyEncryptedItem]()
+            var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
+            for encryptedItem in encryptedItems {
+                let decryptedItemContent =
+                try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
+
+                if case let .login(_, _, itemUrlStrings) = decryptedItemContent.contentData {
+                    let itemUrls = itemUrlStrings.compactMap { URL(string: $0) }
+                    let matchedUrls = self.urls.filter { url in
+                        itemUrls.contains { itemUrl in
+                            matcher.isMatched(itemUrl, url)
+                        }
+                    }
+
+                    if matchedUrls.isEmpty {
+                        notMatchedEncryptedItems.append(encryptedItem)
+                    } else {
+                        matchedEncryptedItems.append(encryptedItem)
+                    }
+                }
+            }
+
+            let matchedItems = try await matchedEncryptedItems.sorted()
+                .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+            let notMatchedItems = try await notMatchedEncryptedItems.sorted()
+                .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+
+            return .init(matchedItems: matchedItems, notMatchedItems: notMatchedItems)
+        }
     }
 
-    func select(item: ItemListUiModel) {
-        Task { @MainActor in
-            do {
-                guard let item = try await itemRepository.getItem(shareId: item.shareId,
-                                                                  itemId: item.itemId) else {
-                    return
-                }
-                let itemContent = try item.getDecryptedItemContent(symmetricKey: symmetricKey)
-                switch itemContent.contentData {
-                case let .login(username, password, _):
-                    onSelect?(.init(user: username, password: password), item)
-                default:
-                    break
-                }
-            } catch {
-                state = .error(error)
+    func getCredentialTask(_ item: ItemListUiModel)
+    -> Task<(ASPasswordCredential, SymmetricallyEncryptedItem), Error> {
+        Task.detached(priority: .userInitiated) {
+            guard let item = try await self.itemRepository.getItem(shareId: item.shareId,
+                                                                   itemId: item.itemId) else {
+                throw CredentialsViewModelError.itemNotFound(shareId: item.shareId,
+                                                             itemId: item.itemId)
+            }
+            let itemContent = try item.getDecryptedItemContent(symmetricKey: self.symmetricKey)
+
+            switch itemContent.contentData {
+            case let .login(username, password, _):
+                let credential = ASPasswordCredential(user: username, password: password)
+                return (credential, item)
+            default:
+                throw CredentialsViewModelError.notLogInItem
             }
         }
     }
