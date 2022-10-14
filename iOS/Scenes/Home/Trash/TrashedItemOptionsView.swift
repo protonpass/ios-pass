@@ -74,15 +74,19 @@ struct TrashedItemOptionsView: View {
             .toolbar { toolbarContent }
             .navigationBarTitleDisplayMode(.inline)
         }
-        .alert(isPresented: $isShowingDeleteAlert) {
-            Alert(
-                title: Text("Delete permanently"),
-                message: Text("Item will be deleted permanently. You can not undo this action."),
-                primaryButton: .destructive(Text("Delete item")) {
-                    delegate.trashedItemWantsToBeDeletedPermanently(item)
-                },
-                secondaryButton: .cancel())
-        }
+        .alert(
+            "Delete permanently",
+            isPresented: $isShowingDeleteAlert,
+            actions: {
+                Button(
+                    "Delete item",
+                    role: .destructive,
+                    action: {
+                        delegate.trashedItemWantsToBeDeletedPermanently(item)
+                    })
+            }, message: {
+                Text("Item will be deleted permanently. You can not undo this action.")
+            })
     }
 
     @ToolbarContentBuilder
