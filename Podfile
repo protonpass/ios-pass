@@ -30,7 +30,6 @@ def ios_and_uicomponents
   pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-CoreTranslation-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
-  pod 'Introspect'
   pod 'AlertToast'
 end
 

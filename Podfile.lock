@@ -2,7 +2,6 @@ PODS:
   - Alamofire (5.4.4)
   - AlertToast (1.3.7)
   - EllipticCurveKeyPair (2.0)
-  - Introspect (0.1.4)
   - lottie-ios (3.4.3)
   - MBProgressHUD (1.2.0)
   - ProtonCore-APIClient/Alamofire (3.22.3):
@@ -130,7 +129,6 @@ PODS:
 
 DEPENDENCIES:
   - AlertToast
-  - Introspect
   - MBProgressHUD
   - "ProtonCore-APIClient/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.22.4`)"
   - "ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.22.4`)"
@@ -167,7 +165,6 @@ SPEC REPOS:
     - Alamofire
     - AlertToast
     - EllipticCurveKeyPair
-    - Introspect
     - lottie-ios
     - MBProgressHUD
     - ReachabilitySwift
@@ -345,7 +342,6 @@ SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
   AlertToast: 8c9d5efb2df6ea728b32b62bce99d876ec3e5393
   EllipticCurveKeyPair: 8c69e5238a6e47243a10a48fbd41dfb19110b22e
-  Introspect: b62c4dd2063072327c21d618ef2bedc3c87bc366
   lottie-ios: 9ae750cdc7820fecbd3c2f0cfc493038208fcdc4
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   ProtonCore-APIClient: 6419ce7655756b99defdf01bf3853be9d33793b4
@@ -380,6 +376,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: 6ef3f0e422ef90d6605ca20b21a94f6c1324d6b3
   TrustKit: dad4c3a08248c21fcb9a3b5be3c2e2b9d4f9b973
 
-PODFILE CHECKSUM: 5f72f77581cf61f31cdf23b49df523875b1f0d98
+PODFILE CHECKSUM: 70e3cb2a6b91b355fa241fcddce612dcebf05707
 
 COCOAPODS: 1.11.3
