@@ -36,7 +36,13 @@ extension SymmetricallyEncryptedItem {
     func toItemListUiModel(_ symmetricKey: SymmetricKey) async throws -> ItemListUiModel {
         let encryptedItemContent = try getEncryptedItemContent()
         let name = try symmetricKey.decrypt(encryptedItemContent.name)
-        let note = try symmetricKey.decrypt(encryptedItemContent.note)
+        let note: String
+        switch encryptedItemContent.contentData {
+        case .login(let username, _, _):
+            note = try symmetricKey.decrypt(username)
+        default:
+            note = try symmetricKey.decrypt(encryptedItemContent.note)
+        }
         return .init(itemId: encryptedItemContent.itemId,
                      shareId: encryptedItemContent.shareId,
                      type: encryptedItemContent.contentData.type,
