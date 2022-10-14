@@ -32,7 +32,7 @@ struct CreateItemView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
+            List {
                 GenericItemView(item: CreateNewItemOption.login.toGenericItem(),
                                 action: { viewModel.select(option: .login) },
                                 trailingView: { EmptyView() })
@@ -46,12 +46,12 @@ struct CreateItemView: View {
                                 trailingView: { EmptyView() })
 
                 GenericItemView(item: CreateNewItemOption.password.toGenericItem(),
-                                showDivider: false,
                                 action: { viewModel.select(option: .password) },
                                 trailingView: { EmptyView() })
 
                 Spacer()
             }
+            .listStyle(.plain)
             .navigationTitle("New...")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbarContent }

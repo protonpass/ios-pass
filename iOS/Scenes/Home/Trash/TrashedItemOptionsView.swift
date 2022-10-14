@@ -36,7 +36,7 @@ struct TrashedItemOptionsView: View {
 
     var body: some View {
         NavigationView {
-            VStack(alignment: .leading) {
+            List {
                 Button(action: {
                     delegate.trashedItemWantsToBeRestored(item)
                 }, label: {
@@ -45,13 +45,8 @@ struct TrashedItemOptionsView: View {
                     }, icon: {
                         Image(uiImage: IconProvider.clockRotateLeft)
                     })
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 })
                 .foregroundColor(.primary)
-                .padding(.horizontal)
-                .padding(.vertical, 8)
-
-                Divider()
 
                 Button(action: {
                     delegate.trashedItemWantsToShowDetail(item)
@@ -61,13 +56,8 @@ struct TrashedItemOptionsView: View {
                     }, icon: {
                         Image(uiImage: IconProvider.infoCircle)
                     })
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 })
                 .foregroundColor(.primary)
-                .padding(.horizontal)
-                .padding(.vertical, 8)
-
-                Divider()
 
                 Button(action: {
                     isShowingDeleteAlert.toggle()
@@ -77,14 +67,10 @@ struct TrashedItemOptionsView: View {
                     }, icon: {
                         Image(uiImage: IconProvider.trash)
                     })
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 })
-                .foregroundColor(.primary)
-                .padding(.horizontal)
-                .padding(.vertical, 8)
-
-                Spacer()
+                .foregroundColor(Color.red)
             }
+            .listStyle(.plain)
             .toolbar { toolbarContent }
             .navigationBarTitleDisplayMode(.inline)
         }

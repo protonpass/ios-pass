@@ -84,6 +84,15 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
 
 // MARK: - Public actions
 extension VaultContentViewModel {
+    @MainActor
+    func forceRefreshItems() async {
+        do {
+            items = try await getItemsTask(forceRefresh: true).value
+        } catch {
+            state = .error(error)
+        }
+    }
+
     func fetchItems(forceRefresh: Bool) {
         Task { @MainActor in
             if case .error = state {

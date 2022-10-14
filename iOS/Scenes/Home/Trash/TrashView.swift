@@ -96,26 +96,25 @@ struct TrashView: View {
     }
 
     private var itemList: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(viewModel.items, id: \.itemId) { item in
-                    GenericItemView(
-                        item: item,
-                        showDivider: item.itemId != viewModel.items.last?.itemId,
-                        action: {  },
-                        trailingView: {
-                            Button(action: {
-                                viewModel.showOptions(item)
-                            }, label: {
-                                Image(uiImage: IconProvider.threeDotsHorizontal)
-                                    .foregroundColor(.secondary)
-                            })
+        List {
+            ForEach(viewModel.items, id: \.itemId) { item in
+                GenericItemView(
+                    item: item,
+                    action: { viewModel.showOptions(item) },
+                    trailingView: {
+                        Button(action: {
+                            viewModel.showOptions(item)
+                        }, label: {
+                            Image(uiImage: IconProvider.threeDotsHorizontal)
+                                .foregroundColor(.secondary)
                         })
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                Spacer()
+                    })
             }
         }
+        .listStyle(.plain)
         .animation(.default, value: viewModel.items.count)
+        .refreshable {
+            await viewModel.forceRefreshItems()
+        }
     }
 }

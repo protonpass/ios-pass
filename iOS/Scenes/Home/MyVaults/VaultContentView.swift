@@ -76,39 +76,39 @@ struct VaultContentView: View {
     }
 
     private var itemList: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(viewModel.items, id: \.itemId) { item in
-                    GenericItemView(
-                        item: item,
-                        showDivider: item.itemId != viewModel.items.last?.itemId,
-                        action: { viewModel.selectItem(item) },
-                        trailingView: {
-                            VStack {
-                                Menu(content: {
-                                    DestructiveButton(
-                                        title: "Move to Trash",
-                                        icon: IconProvider.trash,
-                                        action: {
-                                            selectedItem = item
-                                            isShowingTrashingAlert.toggle()
-                                        })
-                                }, label: {
-                                    Image(uiImage: IconProvider.threeDotsHorizontal)
-                                        .foregroundColor(.secondary)
-                                })
-                                .padding(.top, 16)
+        List {
+            ForEach(viewModel.items, id: \.itemId) { item in
+                GenericItemView(
+                    item: item,
+                    action: { viewModel.selectItem(item) },
+                    trailingView: {
+                        VStack {
+                            Spacer()
 
-                                Spacer()
-                            }
-                        })
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                Spacer()
+                            Menu(content: {
+                                DestructiveButton(
+                                    title: "Move to Trash",
+                                    icon: IconProvider.trash,
+                                    action: {
+                                        selectedItem = item
+                                        isShowingTrashingAlert.toggle()
+                                    })
+                            }, label: {
+                                Image(uiImage: IconProvider.threeDotsHorizontal)
+                                    .foregroundColor(.secondary)
+                            })
+
+                            Spacer()
+                        }
+                    })
             }
-            .padding(.top)
         }
+        .listStyle(.plain)
+        .environment(\.defaultMinListRowHeight, 0)
         .animation(.default, value: viewModel.items.count)
+        .refreshable {
+            await viewModel.forceRefreshItems()
+        }
     }
 
     @ToolbarContentBuilder

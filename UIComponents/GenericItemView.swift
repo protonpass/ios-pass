@@ -41,16 +41,13 @@ public struct GenericItem: GenericItemProtocol {
 
 public struct GenericItemView<TrailingView: View>: View {
     private let item: GenericItemProtocol
-    private let showDivider: Bool
     private let action: () -> Void
     private let trailingView: TrailingView
 
     public init(item: GenericItemProtocol,
-                showDivider: Bool = true,
                 action: @escaping () -> Void,
                 @ViewBuilder trailingView: () -> TrailingView) {
         self.item = item
-        self.showDivider = showDivider
         self.action = action
         self.trailingView = trailingView()
     }
@@ -78,7 +75,6 @@ public struct GenericItemView<TrailingView: View>: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .padding(.horizontal)
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
@@ -86,10 +82,6 @@ public struct GenericItemView<TrailingView: View>: View {
                 trailingView
                     .padding(.trailing)
             }
-        }
-
-        if showDivider {
-            Divider()
         }
     }
 }
