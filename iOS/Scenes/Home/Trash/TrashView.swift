@@ -50,7 +50,15 @@ struct TrashView: View {
             }
         }
         .toolbar { toolbarContent }
-        .alert(isPresented: $isShowingEmptyTrashAlert) { emptyTrashAlert }
+        .alert(
+            "Empty trash?",
+            isPresented: $isShowingEmptyTrashAlert,
+            actions: {
+                Button("Empty trash", role: .destructive, action: viewModel.emptyTrash)
+            },
+            message: {
+                Text("Items in trash will be deleted permanently. You can not undo this action.")
+            })
         .alertToastSuccessMessage($viewModel.successMessage)
     }
 
@@ -86,13 +94,6 @@ struct TrashView: View {
             .opacity(viewModel.isEmpty ? 0 : 1)
             .disabled(viewModel.isEmpty)
         }
-    }
-
-    private var emptyTrashAlert: Alert {
-        Alert(title: Text("Empty trash?"),
-              message: Text("Items in trash will be deleted permanently. You can not undo this action."),
-              primaryButton: .destructive(Text("Empty trash"), action: viewModel.emptyTrash),
-              secondaryButton: .cancel())
     }
 
     private var itemList: some View {

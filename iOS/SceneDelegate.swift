@@ -33,6 +33,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window = window
             window.makeKeyAndVisible()
         }
+        setUpAppearances()
         appCoordinator.start()
+    }
+
+    private func setUpAppearances() {
+        UIView.appearance(whenContainedInInstancesOf:
+                            [UIAlertController.self]).tintColor = .brandNorm
     }
 }

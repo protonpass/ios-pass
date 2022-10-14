@@ -93,7 +93,7 @@ struct CreateEditNoteView: View {
             Button(action: viewModel.save) {
                 Text("Save")
                     .fontWeight(.bold)
-                    .foregroundColor(Color(ColorProvider.BrandNorm))
+                    .foregroundColor(.brandNorm)
             }
         }
     }

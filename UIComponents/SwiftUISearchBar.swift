@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
 import SwiftUI
 
 public struct SwiftUISearchBar: UIViewRepresentable {
@@ -37,7 +36,7 @@ public struct SwiftUISearchBar: UIViewRepresentable {
         searchBar.placeholder = "Login, alias or note"
         searchBar.showsCancelButton = true
         searchBar.autocapitalizationType = .none
-        searchBar.tintColor = ColorProvider.BrandNorm
+        searchBar.tintColor = .brandNorm
         searchBar.becomeFirstResponder()
         return searchBar
     }

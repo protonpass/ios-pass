@@ -18,11 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
 import SwiftUI
 
 public extension SwitchToggleStyle {
     static var proton: SwitchToggleStyle {
-        .init(tint: Color(ColorProvider.BrandNorm))
+        .init(tint: .brandNorm)
     }
 }

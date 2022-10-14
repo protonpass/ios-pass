@@ -92,7 +92,7 @@ struct CreateEditAliasView: View {
             Button(action: viewModel.save) {
                 Text("Save")
                     .fontWeight(.bold)
-                    .foregroundColor(Color(ColorProvider.BrandNorm))
+                    .foregroundColor(.brandNorm)
             }
             .opacity(viewModel.state.isLoaded ? 1 : 0)
             .disabled(!viewModel.state.isLoaded)
@@ -151,7 +151,7 @@ struct CreateEditAliasView: View {
                         Text("You're about to create alias ")
                             .foregroundColor(.secondary) +
                         Text(viewModel.prefix + viewModel.suffix)
-                            .foregroundColor(Color(ColorProvider.BrandNorm))
+                            .foregroundColor(.brandNorm)
                     }
                     .font(.caption)
                     .transaction { transaction in
@@ -197,7 +197,7 @@ private struct SuffixesView: View {
                     Spacer()
                     if suffixSelection.selectedSuffix == suffix {
                         Image(uiImage: IconProvider.checkmark)
-                            .foregroundColor(ColorProvider.BrandNorm)
+                            .foregroundColor(.brandNorm)
                     }
                 }
                 .contentShape(Rectangle())
@@ -242,7 +242,7 @@ private struct MailboxesView: View {
                     Spacer()
                     if mailboxSelection.selectedMailboxes.contains(mailbox) {
                         Image(uiImage: IconProvider.checkmark)
-                            .foregroundColor(ColorProvider.BrandNorm)
+                            .foregroundColor(.brandNorm)
                     }
                 }
                 .contentShape(Rectangle())

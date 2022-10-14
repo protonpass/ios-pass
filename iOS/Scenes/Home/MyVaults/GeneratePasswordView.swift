@@ -66,7 +66,7 @@ struct GeneratePasswordView: View {
                     Slider(value: $viewModel.length,
                            in: 4...64,
                            step: 1)
-                    .accentColor(Color(ColorProvider.BrandNorm))
+                    .accentColor(.brandNorm)
                 }
                 .padding([.horizontal, .top])
 
@@ -88,7 +88,7 @@ struct GeneratePasswordView: View {
                         .contentShape(Rectangle())
                 })
                 .padding()
-                .background(Color(ColorProvider.BrandNorm))
+                .background(Color.brandNorm)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .padding()
             }
@@ -112,8 +112,10 @@ struct GeneratePasswordView: View {
     }
 }
 
+/*
 struct GeneratePasswordView_Previews: PreviewProvider {
     static var previews: some View {
         GeneratePasswordView(viewModel: .init(mode: .random))
     }
 }
+*/
