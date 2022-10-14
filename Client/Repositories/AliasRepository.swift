@@ -46,6 +46,15 @@ public extension AliasRepositoryProtocol {
     }
 }
 
+// MARK: - Public supporting tasks
+public extension AliasRepositoryProtocol {
+    func getAliasDetailsTask(shareId: String, itemId: String) -> Task<Alias, Error> {
+        Task.detached(priority: .userInitiated) {
+            try await getAliasDetails(shareId: shareId, itemId: itemId)
+        }
+    }
+}
+
 public struct AliasRepository: AliasRepositoryProtocol {
     public let remoteAliasDatasouce: RemoteAliasDatasourceProtocol
 

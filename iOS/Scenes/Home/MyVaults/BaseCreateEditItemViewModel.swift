@@ -93,8 +93,7 @@ class BaseCreateEditItemViewModel: BaseViewModel {
         Task { @MainActor in
             do {
                 isLoading = true
-                try await itemRepository.createItem(itemContent: generateItemContent(),
-                                                    shareId: shareId)
+                try await createItemTask(shareId: shareId).value
                 isLoading = false
                 createEditItemDelegate?.createEditItemViewModelDidCreateItem(itemContentType())
             } catch {
@@ -109,9 +108,7 @@ class BaseCreateEditItemViewModel: BaseViewModel {
         Task { @MainActor in
             do {
                 isLoading = true
-                try await itemRepository.createAlias(info: info,
-                                                     itemContent: generateItemContent(),
-                                                     shareId: shareId)
+                try await createAliasItemTask(shareId: shareId, info: info).value
                 isLoading = false
                 createEditItemDelegate?.createEditItemViewModelDidCreateItem(itemContentType())
             } catch {
@@ -124,25 +121,53 @@ class BaseCreateEditItemViewModel: BaseViewModel {
     private func editItem(oldItemContent: ItemContent) {
         Task { @MainActor in
             do {
-                try await additionalEdit()
                 let shareId = oldItemContent.shareId
                 let itemId = oldItemContent.itemId
                 isLoading = true
-                guard let oldItem = try await itemRepository.getItem(shareId: shareId,
-                                                                     itemId: itemId) else {
+                try await additionalEdit()
+                guard let oldItem = try await itemRepository.getItemTask(shareId: shareId,
+                                                                         itemId: itemId).value else {
                     isLoading = false
                     return
                 }
                 let newItemContentProtobuf = generateItemContent()
-                try await itemRepository.updateItem(oldItem: oldItem.item,
-                                                    newItemContent: newItemContentProtobuf,
-                                                    shareId: shareId)
+                try await updateItemTask(oldItem: oldItem.item,
+                                         newItemContent: newItemContentProtobuf,
+                                         shareId: shareId).value
                 isLoading = false
                 createEditItemDelegate?.createEditItemViewModelDidUpdateItem(itemContentType())
             } catch {
                 self.isLoading = false
                 self.error = error
             }
+        }
+    }
+}
+
+// MARK: - Private supporting tasks
+private extension BaseCreateEditItemViewModel {
+    func createItemTask(shareId: String) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            try await self.itemRepository.createItem(itemContent: self.generateItemContent(),
+                                                     shareId: shareId)
+        }
+    }
+
+    func createAliasItemTask(shareId: String, info: AliasCreationInfo) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            try await self.itemRepository.createAlias(info: info,
+                                                      itemContent: self.generateItemContent(),
+                                                      shareId: shareId)
+        }
+    }
+
+    func updateItemTask(oldItem: ItemRevision,
+                        newItemContent: ProtobufableItemContentProtocol,
+                        shareId: String) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            try await self.itemRepository.updateItem(oldItem: oldItem,
+                                                     newItemContent: newItemContent,
+                                                     shareId: shareId)
         }
     }
 }

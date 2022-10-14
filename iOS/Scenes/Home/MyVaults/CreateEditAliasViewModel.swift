@@ -64,6 +64,7 @@ final class MailboxSelection: ObservableObject {
     }
 }
 
+// MARK: - Initialization
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
@@ -133,19 +134,34 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                      mailboxIds: selectedMailboxes.map { $0.ID })
     }
 
+    override func additionalEdit() async throws {
+        guard let alias = alias, let mailboxSelection = mailboxSelection else { return }
+        if Set(alias.mailboxes) == Set(mailboxSelection.selectedMailboxes) { return }
+        if case let .edit(itemContent) = mode {
+            let mailboxIds = mailboxSelection.selectedMailboxes.map { $0.ID }
+            _ = try await changeMailboxesTask(shareId: shareId,
+                                              itemId: itemContent.itemId,
+                                              mailboxIDs: mailboxIds).value
+        }
+    }
+}
+
+// MARK: - Public actions
+extension CreateEditAliasViewModel {
     func getAliasAndAliasOptions() {
         Task { @MainActor in
             do {
                 state = .loading
 
                 if case .edit(let itemContent) = mode {
-                    let alias = try await aliasRepository.getAliasDetails(shareId: shareId,
-                                                                          itemId: itemContent.itemId)
+                    let alias =
+                    try await aliasRepository.getAliasDetailsTask(shareId: shareId,
+                                                                  itemId: itemContent.itemId).value
                     self.aliasEmail = alias.email
                     self.alias = alias
                 }
 
-                let aliasOptions = try await aliasRepository.getAliasOptions(shareId: shareId)
+                let aliasOptions = try await getAliasOptionsTask(shareId: shareId).value
 
                 // Initialize SuffixSelection
                 suffixSelection = .init(suffixes: aliasOptions.suffixes)
@@ -173,14 +189,23 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             }
         }
     }
+}
 
-    override func additionalEdit() async throws {
-        guard let alias = alias, let mailboxSelection = mailboxSelection else { return }
-        if Set(alias.mailboxes) == Set(mailboxSelection.selectedMailboxes) { return }
-        if case let .edit(itemContent) = mode {
-            try await aliasRepository.changeMailboxes(shareId: shareId,
-                                                      itemId: itemContent.itemId,
-                                                      mailboxIDs: mailboxSelection.selectedMailboxes.map { $0.ID })
+// MARK: - Private supporting tasks
+private extension CreateEditAliasViewModel {
+    func getAliasOptionsTask(shareId: String) -> Task<AliasOptions, Error> {
+        Task.detached(priority: .userInitiated) {
+            try await self.aliasRepository.getAliasOptions(shareId: shareId)
+        }
+    }
+
+    func changeMailboxesTask(shareId: String,
+                             itemId: String,
+                             mailboxIDs: [Int]) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            try await self.aliasRepository.changeMailboxes(shareId: shareId,
+                                                           itemId: itemId,
+                                                           mailboxIDs: mailboxIDs)
         }
     }
 }

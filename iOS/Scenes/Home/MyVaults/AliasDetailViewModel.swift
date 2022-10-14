@@ -66,8 +66,9 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
         Task { @MainActor in
             do {
                 aliasState = .loading
-                let alias = try await aliasRepository.getAliasDetails(shareId: itemContent.shareId,
-                                                                      itemId: itemContent.itemId)
+                let alias =
+                try await aliasRepository.getAliasDetailsTask(shareId: itemContent.shareId,
+                                                              itemId: itemContent.itemId).value
                 aliasState = .loaded(alias)
             } catch {
                 aliasState = .error(error)
