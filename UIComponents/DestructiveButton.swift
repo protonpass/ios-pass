@@ -32,27 +32,15 @@ public struct DestructiveButton: View {
     }
 
     public var body: some View {
-        if #available(iOS 15.0, *) {
-            Button(
-                role: .destructive,
-                action: action,
-                label: {
-                    Label(title: {
-                        Text(title)
-                    }, icon: {
-                        Image(uiImage: icon)
-                    })
+        Button(
+            role: .destructive,
+            action: action,
+            label: {
+                Label(title: {
+                    Text(title)
+                }, icon: {
+                    Image(uiImage: icon)
                 })
-        } else {
-            Button(
-                action: action,
-                label: {
-                    Label(title: {
-                        Text(title)
-                    }, icon: {
-                        Image(uiImage: icon)
-                    })
-                })
-        }
+            })
     }
 }

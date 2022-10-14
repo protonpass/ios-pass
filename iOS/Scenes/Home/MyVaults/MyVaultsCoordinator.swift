@@ -101,9 +101,7 @@ final class MyVaultsCoordinator: Coordinator {
         }
         let createItemView = CreateItemView(viewModel: createItemViewModel)
         let createItemViewController = UIHostingController(rootView: createItemView)
-        if #available(iOS 15.0, *) {
-            createItemViewController.sheetPresentationController?.detents = [.medium()]
-        }
+        createItemViewController.sheetPresentationController?.detents = [.medium()]
         presentViewController(createItemViewController)
     }
 
@@ -119,9 +117,7 @@ final class MyVaultsCoordinator: Coordinator {
         }
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         let createVaultViewController = UIHostingController(rootView: createVaultView)
-        if #available(iOS 15.0, *) {
-            createVaultViewController.sheetPresentationController?.detents = [.medium()]
-        }
+        createVaultViewController.sheetPresentationController?.detents = [.medium()]
         presentViewController(createVaultViewController)
     }
 
@@ -162,9 +158,7 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = delegate
         let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
         let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
-        if #available(iOS 15, *) {
-            generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
-        }
+        generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
         presentViewController(generatePasswordViewController)
     }
 
