@@ -34,9 +34,6 @@ struct TrashView: View {
         ZStack {
             Color.clear
             switch viewModel.state {
-            case .idle:
-                EmptyView()
-
             case .loading:
                 ProgressView()
 
@@ -60,7 +57,7 @@ struct TrashView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            ToggleSidebarButton(action: viewModel.toggleSidebar)
+            ToggleSidebarButton { viewModel.onToggleSidebar?() }
         }
 
         ToolbarItem(placement: .principal) {
