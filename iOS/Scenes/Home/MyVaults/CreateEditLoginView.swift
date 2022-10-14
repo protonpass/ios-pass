@@ -88,7 +88,7 @@ struct CreateEditLoginView: View {
             }, label: {
                 Text("Save")
                     .fontWeight(.bold)
-                    .foregroundColor(Color(ColorProvider.BrandNorm))
+                    .foregroundColor(.brandNorm)
             })
         }
     }

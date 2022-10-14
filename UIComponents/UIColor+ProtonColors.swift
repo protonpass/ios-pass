@@ -1,6 +1,6 @@
 //
-// PPAlertController.swift
-// Proton Pass - Created on 07/07/2022.
+// UIColor+ProtonColors.swift
+// Proton Pass - Created on 14/10/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,17 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_UIFoundations
-import UIKit
+import SwiftUI
 
-/// A wrapper of `UIAlertController` that has Proton brand color as `tintColor`
-public final class PPAlertController: UIAlertController {
-    override public func viewDidLoad() {
-        super.viewDidLoad()
-        view.tintColor = ColorProvider.BrandNorm
+public extension UIColor {
+    static var brandNorm: UIColor {
+        ColorProvider.BrandNorm
     }
 }
 
-public extension UIAlertAction {
-    static var cancel = UIAlertAction(title: "Cancel", style: .default)
-    static var ok = UIAlertAction(title: "OK", style: .default)
+public extension Color {
+    static var brandNorm: Color {
+        .init(uiColor: .brandNorm)
+    }
 }

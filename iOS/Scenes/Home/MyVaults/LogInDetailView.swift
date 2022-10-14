@@ -152,7 +152,7 @@ struct LogInDetailView: View {
                 }, label: {
                     Text("Reveal Password")
                         .font(.callout)
-                        .foregroundColor(ColorProvider.BrandNorm)
+                        .foregroundColor(.brandNorm)
                 })
             }
             .frame(maxWidth: .infinity, alignment: .leading)

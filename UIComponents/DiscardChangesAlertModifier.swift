@@ -23,11 +23,14 @@ import SwiftUI
 public extension View {
     func discardChangesAlert(isPresented: Binding<Bool>,
                              onDiscard: @escaping () -> Void) -> some View {
-        alert(isPresented: isPresented) {
-            Alert(title: Text("Discard changes"),
-                  message: Text("You will loose all unsaved changes"),
-                  primaryButton: .destructive(Text("Discard Changes"), action: onDiscard),
-                  secondaryButton: .default(Text("Keep Editing")))
-        }
+        alert(
+            "Discard changes",
+            isPresented: isPresented,
+            actions: {
+                Button("Keep Editing", role: .cancel, action: {})
+                Button("Discard Changes", role: .destructive, action: onDiscard)
+            }, message: {
+                Text("You will loose all unsaved changes")
+            })
     }
 }

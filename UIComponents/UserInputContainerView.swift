@@ -51,9 +51,9 @@ public struct UserInputContainerView<Content: View>: View {
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(isFocused ? Color(ColorProvider.BrandNorm) : Color.clear, lineWidth: 1)
+                    .stroke(isFocused ? Color.brandNorm : .clear, lineWidth: 1)
             )
-            .accentColor(Color(ColorProvider.BrandNorm))
+            .accentColor(.brandNorm)
         }
     }
 }

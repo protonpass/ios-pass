@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct SidebarCurrentUserView: View {
     let user: UserProtocol
@@ -34,7 +34,7 @@ struct SidebarCurrentUserView: View {
                     .foregroundColor(.white)
                     .padding(8)
                     .frame(minWidth: 36)
-                    .background(Color(ColorProvider.BrandNorm))
+                    .background(Color.brandNorm)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 VStack(alignment: .leading) {
                     Text(user.finalDisplayName)
@@ -66,6 +66,7 @@ extension UserProtocol where Self == PreviewUserInfo {
     static var preview: PreviewUserInfo { .init() }
 }
 
+/*
 struct SidebarCurrentUserView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
@@ -76,3 +77,4 @@ struct SidebarCurrentUserView_Previews: PreviewProvider {
         }
     }
 }
+*/

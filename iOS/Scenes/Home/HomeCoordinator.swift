@@ -246,10 +246,10 @@ extension HomeCoordinator {
     }
 
     func alert(error: Error) {
-        let alert = PPAlertController(title: "Error occured",
+        let alert = UIAlertController(title: "Error occured",
                                       message: error.messageForTheUser,
                                       preferredStyle: .alert)
-        alert.addAction(.cancel)
+        alert.addAction(.init(title: "Cancel", style: .cancel))
         topMostViewController.present(alert, animated: true)
     }
 }
@@ -268,14 +268,14 @@ private extension HomeCoordinator {
 // MARK: - Sign out
 private extension HomeCoordinator {
     func requestSignOutConfirmation() {
-        let alert = PPAlertController(title: "You will be signed out",
+        let alert = UIAlertController(title: "You will be signed out",
                                       message: "All associated data will be deleted. Please confirm.",
                                       preferredStyle: .alert)
         let signOutAction = UIAlertAction(title: "Yes, sign me out", style: .destructive) { [unowned self] _ in
             self.signOut()
         }
         alert.addAction(signOutAction)
-        alert.addAction(.cancel)
+        alert.addAction(.init(title: "Cancel", style: .cancel))
         sideMenuController.present(alert, animated: true)
     }
 

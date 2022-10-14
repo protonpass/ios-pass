@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -85,7 +84,7 @@ struct CreateVaultView: View {
             Button(action: viewModel.createVault) {
                 Text("Save")
                     .fontWeight(.bold)
-                    .foregroundColor(Color(ColorProvider.BrandNorm))
+                    .foregroundColor(.brandNorm)
                     .opacity(viewModel.name.isEmpty ? 0.5 : 1)
             }
             .disabled(viewModel.name.isEmpty)

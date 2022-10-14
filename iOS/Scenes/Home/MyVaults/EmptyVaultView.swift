@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -40,7 +39,7 @@ struct EmptyVaultView: View {
                     .contentShape(Rectangle())
             })
             .padding()
-            .background(Color(ColorProvider.BrandNorm))
+            .background(Color.brandNorm)
             .cornerRadius(8)
         }
         .padding(.top, -100)

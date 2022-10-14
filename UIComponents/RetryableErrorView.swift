@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
 import SwiftUI
 
 public struct RetryableErrorView: View {
@@ -37,7 +36,7 @@ public struct RetryableErrorView: View {
             Button(action: onRetry) {
                 Text("Retry")
             }
-            .foregroundColor(Color(ColorProvider.BrandNorm))
+            .foregroundColor(.brandNorm)
         }
     }
 }

@@ -198,10 +198,10 @@ final class AppCoordinator {
     }
 
     private func alertRefreshTokenExpired() {
-        let alert = PPAlertController(title: "Your session is expired",
+        let alert = UIAlertController(title: "Your session is expired",
                                       message: "Please log in again",
                                       preferredStyle: .alert)
-        alert.addAction(.ok)
+        alert.addAction(.init(title: "OK", style: .default))
         rootViewController?.present(alert, animated: true)
     }
 

@@ -27,11 +27,14 @@ This action will remove the item from your vault. You can view and restore it fr
 public extension View {
     func moveToTrashAlert(isPresented: Binding<Bool>,
                           onTrash: @escaping () -> Void) -> some View {
-        alert(isPresented: isPresented) {
-            Alert(title: Text("Move to Trash?"),
-                  message: Text(kTrashingMessage),
-                  primaryButton: .destructive(Text("Move to Trash"), action: onTrash),
-                  secondaryButton: .default(Text("Cancel")))
-        }
+        alert(
+            "Move to Trash?",
+            isPresented: isPresented,
+            actions: {
+                Button("Move to Trash", role: .destructive, action: onTrash)
+            },
+            message: {
+                Text(kTrashingMessage)
+            })
     }
 }
