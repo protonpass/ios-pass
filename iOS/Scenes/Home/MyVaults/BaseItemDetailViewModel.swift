@@ -25,6 +25,10 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelDidTrashItem(_ type: ItemContentType)
 }
 
+enum ItemDetailViewModelError: Error {
+    case itemNotFound(shareId: String, itemId: String)
+}
+
 class BaseItemDetailViewModel: BaseViewModel {
     @Published var isTrashed = false
 
@@ -60,16 +64,35 @@ class BaseItemDetailViewModel: BaseViewModel {
     func trash() {
         Task { @MainActor in
             do {
-                if let item = try await itemRepository.getItem(shareId: itemContent.shareId,
-                                                               itemId: itemContent.itemId) {
-                    isLoading = true
-                    try await itemRepository.trashItems([item])
-                    isLoading = false
-                    isTrashed = true
-                }
+                isLoading = true
+                let item = try await getItemTask(shareId: itemContent.shareId,
+                                                 itemId: itemContent.itemId).value
+                try await trashItemTask(item: item).value
+                isLoading = false
+                isTrashed = true
             } catch {
+                isLoading = false
                 self.error = error
             }
+        }
+    }
+}
+
+// MARK: - Private supporting tasks
+private extension BaseItemDetailViewModel {
+    func getItemTask(shareId: String, itemId: String) -> Task<SymmetricallyEncryptedItem, Error> {
+        Task.detached(priority: .userInitiated) {
+            guard let item = try await self.itemRepository.getItem(shareId: shareId,
+                                                                   itemId: itemId) else {
+                throw ItemDetailViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
+            }
+            return item
+        }
+    }
+
+    func trashItemTask(item: SymmetricallyEncryptedItem) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            try await self.itemRepository.trashItems([item])
         }
     }
 }

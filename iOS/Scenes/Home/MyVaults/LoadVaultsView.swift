@@ -43,7 +43,7 @@ struct LoadVaultsView: View {
         .toolbar { toolbarContent }
         .onAppear {
             if !didAppear {
-                viewModel.fetchVaults()
+                viewModel.fetchVaults(forceRefresh: false)
                 didAppear = true
             }
         }
@@ -52,7 +52,9 @@ struct LoadVaultsView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            ToggleSidebarButton(action: viewModel.toggleSidebar)
+            ToggleSidebarButton {
+                viewModel.onToggleSidebar?()
+            }
         }
     }
 }

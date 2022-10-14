@@ -23,14 +23,13 @@ import Core
 import CryptoKit
 import SwiftUI
 
-final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
-    deinit { print(deinitMessage) }
+enum VaultContentViewModelError: Error {
+    case itemNotFound(shareId: String, itemId: String)
+    case noSelectedVault
+}
 
-    var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
-    var vaults: [VaultProtocol] { vaultSelection.vaults }
-
+extension VaultContentViewModel {
     enum State {
-        case idle
         case loading
         case loaded
         case error(Error)
@@ -44,13 +43,21 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
             }
         }
     }
+}
 
-    @Published private(set) var state = State.idle
+// MARK: - Initialization
+final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
+    deinit { print(deinitMessage) }
+
+    @Published private(set) var state = State.loading
     @Published private(set) var items = [ItemListUiModel]()
 
     private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
+
+    var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
+    var vaults: [VaultProtocol] { vaultSelection.vaults }
 
     var onToggleSidebar: (() -> Void)?
     var onSearch: (() -> Void)?
@@ -73,27 +80,18 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
             }
             .store(in: &cancellables)
     }
+}
 
-    func update(selectedVault: VaultProtocol?) {
-        vaultSelection.update(selectedVault: selectedVault)
-    }
-
-    func fetchItems(forceRefresh: Bool = false) {
-        guard let shareId = selectedVault?.shareId else { return }
+// MARK: - Public actions
+extension VaultContentViewModel {
+    func fetchItems(forceRefresh: Bool) {
         Task { @MainActor in
-            do {
-                // Only show loading indicator on first load
-                switch state {
-                case .error, .idle:
-                    state = .loading
-                default:
-                    break
-                }
+            if case .error = state {
+                state = .loading
+            }
 
-                let encryptedItems = try await itemRepository.getItems(forceRefresh: forceRefresh,
-                                                                       shareId: shareId,
-                                                                       state: .active)
-                items = try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+            do {
+                items = try await getItemsTask(forceRefresh: forceRefresh).value
                 state = .loaded
             } catch {
                 state = .error(error)
@@ -104,11 +102,7 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
     func selectItem(_ item: ItemListUiModel) {
         Task { @MainActor in
             do {
-                guard let item = try await itemRepository.getItem(shareId: item.shareId,
-                                                                  itemId: item.itemId) else {
-                    return
-                }
-                let itemContent = try item.getDecryptedItemContent(symmetricKey: symmetricKey)
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
                 onShowItemDetail?(itemContent)
             } catch {
                 self.error = error
@@ -118,30 +112,53 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
 
     func trashItem(_ item: ItemListUiModel) {
         Task { @MainActor in
+            isLoading = true
             do {
-                guard let itemToBeTrashed =
-                        try await itemRepository.getItem(shareId: item.shareId,
-                                                         itemId: item.itemId) else { return }
-                isLoading = true
-                try await itemRepository.trashItems([itemToBeTrashed])
-                fetchItems()
-                isLoading = false
+                try await trashItemTask(for: item).value
+                fetchItems(forceRefresh: false)
                 onTrashedItem?(item.type)
+                isLoading = false
             } catch {
-                self.isLoading = false
+                isLoading = false
                 self.error = error
             }
         }
     }
 }
 
-// MARK: - Actions
-extension VaultContentViewModel {
-    func toggleSidebar() { onToggleSidebar?() }
+// MARK: - Private supporting tasks
+private extension VaultContentViewModel {
+    func getItemsTask(forceRefresh: Bool) -> Task<[ItemListUiModel], Error> {
+        Task.detached(priority: .userInitiated) {
+            guard let shareId = self.vaultSelection.selectedVault?.shareId else {
+                throw VaultContentViewModelError.noSelectedVault
+            }
+            let encryptedItems = try await self.itemRepository.getItems(forceRefresh: forceRefresh,
+                                                                        shareId: shareId,
+                                                                        state: .active)
+            return try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+        }
+    }
 
-    func search() { onSearch?() }
+    func getDecryptedItemContentTask(for item: ItemListUiModel) -> Task<ItemContent, Error> {
+        Task.detached(priority: .userInitiated) {
+            let encryptedItem = try await self.getItem(shareId: item.shareId, itemId: item.itemId)
+            return try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
+        }
+    }
 
-    func createItem() { onCreateItem?() }
+    func trashItemTask(for item: ItemListUiModel) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            let itemToBeTrashed = try await self.getItem(shareId: item.shareId, itemId: item.itemId)
+            try await self.itemRepository.trashItems([itemToBeTrashed])
+        }
+    }
 
-    func createVault() { onCreateVault?() }
+    func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
+        guard let item = try await itemRepository.getItem(shareId: shareId,
+                                                          itemId: itemId) else {
+            throw VaultContentViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
+        }
+        return item
+    }
 }

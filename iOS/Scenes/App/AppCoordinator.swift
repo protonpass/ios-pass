@@ -40,10 +40,11 @@ enum AppCoordinatorError: Error {
 
 final class AppCoordinator {
     private let window: UIWindow
-    private let appStateObserver = AppStateObserver()
+    private let appStateObserver: AppStateObserver
     private let keymaker: Keymaker
     private let apiService: PMAPIService
     private var container: NSPersistentContainer
+    private let credentialManager: CredentialManagerProtocol
     private let preferences: Preferences
 
     @KeychainStorage(key: .sessionData)
@@ -61,6 +62,7 @@ final class AppCoordinator {
 
     init(window: UIWindow) {
         self.window = window
+        self.appStateObserver = .init()
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         self._sessionData.setKeychain(keychain)
@@ -71,6 +73,7 @@ final class AppCoordinator {
         self.apiService = PMAPIService(doh: PPDoH(bundle: .main))
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
+        self.credentialManager = CredentialManager()
         self.preferences = .shared
         self.apiService.authDelegate = self
         self.apiService.serviceDelegate = self
@@ -141,6 +144,7 @@ final class AppCoordinator {
                                                   apiService: apiService,
                                                   symmetricKey: symmetricKey,
                                                   container: container,
+                                                  credentialManager: credentialManager,
                                                   preferences: preferences)
             homeCoordinator.delegate = self
             self.homeCoordinator = homeCoordinator
@@ -167,6 +171,14 @@ final class AppCoordinator {
         sessionData = nil
         preferences.reset()
         Task {
+            // Do things independently in different `do catch` blocks
+            // because we don't want a failed operation prevents others from running
+            do {
+                try await credentialManager.removeAllCredentials()
+            } catch {
+                PPLogger.shared?.log(error)
+            }
+
             do {
                 // Delete existing persistent stores
                 let storeContainer = container.persistentStoreCoordinator

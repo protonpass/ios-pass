@@ -31,6 +31,7 @@ enum TaskContextType: String {
 public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
     case batchInsertError(NSBatchInsertRequest)
     case batchDeleteError(NSBatchDeleteRequest)
+    case databaseOperationsOnMainThread
     case corruptedShareKeys(shareId: String, itemKeyCount: Int, vaultKeyCount: Int)
 
     public var debugDescription: String {
@@ -40,6 +41,8 @@ public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
         case .batchDeleteError(let request):
             let entityName = request.fetchRequest.entityName ?? ""
             return "Failed to batch delete entity \(entityName)"
+        case .databaseOperationsOnMainThread:
+            return "Can not do database operations on main thread"
         case let .corruptedShareKeys(shareId, itemKeyCount, vaultKeyCount):
             return """
 "Corrupted share keys for share \(shareId).
@@ -102,6 +105,12 @@ extension LocalDatasourceProtocol {
                  context: NSManagedObjectContext) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
             context.performAndWait {
+#if DEBUG
+                if Thread.isMainThread {
+                    continuation.resume(throwing: LocalDatasourceError.databaseOperationsOnMainThread)
+                    return
+                }
+#endif
                 do {
                     let fetchResult = try context.execute(request)
                     if let result = fetchResult as? NSBatchInsertResult,
@@ -121,6 +130,12 @@ extension LocalDatasourceProtocol {
                  context: NSManagedObjectContext) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
             context.performAndWait {
+#if DEBUG
+                if Thread.isMainThread {
+                    continuation.resume(throwing: LocalDatasourceError.databaseOperationsOnMainThread)
+                    return
+                }
+#endif
                 do {
                     request.resultType = .resultTypeStatusOnly
                     let deleteResult = try context.execute(request)
@@ -141,6 +156,12 @@ extension LocalDatasourceProtocol {
                     context: NSManagedObjectContext) async throws -> [T] {
         try await withCheckedThrowingContinuation { continuation in
             context.performAndWait {
+#if DEBUG
+                if Thread.isMainThread {
+                    continuation.resume(throwing: LocalDatasourceError.databaseOperationsOnMainThread)
+                    return
+                }
+#endif
                 do {
                     let result = try context.fetch(request)
                     continuation.resume(with: .success(result))
@@ -155,6 +176,12 @@ extension LocalDatasourceProtocol {
                   context: NSManagedObjectContext) async throws -> Int {
         try await withCheckedThrowingContinuation { continuation in
             context.performAndWait {
+#if DEBUG
+                if Thread.isMainThread {
+                    continuation.resume(throwing: LocalDatasourceError.databaseOperationsOnMainThread)
+                    return
+                }
+#endif
                 do {
                     let result = try context.count(for: request)
                     continuation.resume(with: .success(result))

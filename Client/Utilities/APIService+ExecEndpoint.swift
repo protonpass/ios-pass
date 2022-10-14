@@ -22,17 +22,32 @@ import Combine
 import ProtonCore_Networking
 import ProtonCore_Services
 
+public enum APIServiceError: Error {
+    case networkOperationsOnMainThread
+}
+
 public extension APIService {
     /// Async variant that can take an `Endpoint`
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
         try await withCheckedThrowingContinuation { continuation in
             NetworkDebugger.printDebugInfo(endpoint: endpoint)
-            exec(route: endpoint) { (task: URLSessionDataTask?, result: Result<E.Response, ResponseError>) in
-                NetworkDebugger.printDebugInfo(endpoint: endpoint,
-                                               task: task,
-                                               result: result)
-                continuation.resume(with: result)
+            let perfomRequest: () -> Void = {
+                exec(route: endpoint) { (task: URLSessionDataTask?, result: Result<E.Response, ResponseError>) in
+                    NetworkDebugger.printDebugInfo(endpoint: endpoint,
+                                                   task: task,
+                                                   result: result)
+                    continuation.resume(with: result)
+                }
             }
+#if DEBUG
+            if Thread.isMainThread {
+                continuation.resume(throwing: APIServiceError.networkOperationsOnMainThread)
+            } else {
+                perfomRequest()
+            }
+#else
+            perfomRequest()
+#endif
         }
     }
 }

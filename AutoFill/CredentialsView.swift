@@ -56,10 +56,12 @@ struct CredentialsView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: viewModel.closeAction) {
+            Button(action: {
+                viewModel.onClose?()
+            }, label: {
                 Image(uiImage: IconProvider.cross)
                     .foregroundColor(.primary)
-            }
+            })
         }
     }
 

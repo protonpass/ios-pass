@@ -24,8 +24,12 @@ import CryptoKit
 import ProtonCore_Login
 import SwiftUI
 
+enum TrashViewModelError: Error {
+    case itemNotFound(shareId: String, itemId: String)
+}
+
 final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
-    @Published private(set) var state = State.idle
+    @Published private(set) var state = State.loading
     @Published private(set) var items = [ItemListUiModel]()
     @Published var successMessage: String?
 
@@ -39,7 +43,6 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     var onDeletedItem: (() -> Void)?
 
     enum State {
-        case idle
         case loading
         case loaded
         case error(Error)
@@ -67,17 +70,11 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     func fetchAllTrashedItems(forceRefresh: Bool) {
         Task { @MainActor in
             do {
-                // Only show loading indicator on first load
-                switch state {
-                case .error, .idle:
+                if case .error = state {
                     state = .loading
-                default:
-                    break
                 }
 
-                let encryptedItems = try await itemRepository.getItems(forceRefresh: forceRefresh, state: .trashed)
-
-                items = try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+                items = try await getTrashedItemsTask(forceRefresh: forceRefresh).value
                 state = .loaded
             } catch {
                 state = .error(error)
@@ -88,17 +85,14 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
 
 // MARK: - Actions
 extension TrashViewModel {
-    func toggleSidebar() { onToggleSidebar?() }
-
     func restoreAllItems() {
         Task { @MainActor in
             do {
                 isLoading = true
-                let items = try await itemRepository.getItems(forceRefresh: false, state: .trashed)
-                try await itemRepository.untrashItems(items)
+                let count = try await restoreAllTask().value
                 isLoading = false
-                removeAllItems()
-                successMessage = "\(items.count) items restored"
+                items.removeAll()
+                successMessage = "\(count) items restored"
                 onRestoredItem?()
             } catch {
                 self.isLoading = false
@@ -111,10 +105,9 @@ extension TrashViewModel {
         Task { @MainActor in
             do {
                 isLoading = true
-                let items = try await itemRepository.getItems(forceRefresh: false, state: .trashed)
-                try await itemRepository.deleteItems(items)
+                try await deleteAllTask().value
                 isLoading = false
-                removeAllItems()
+                items.removeAll()
                 successMessage = "Trash emptied"
             } catch {
                 self.isLoading = false
@@ -130,11 +123,8 @@ extension TrashViewModel {
     func restore(_ item: ItemListUiModel) {
         Task { @MainActor in
             do {
-                guard let itemToBeRestored =
-                        try await itemRepository.getItem(shareId: item.shareId,
-                                                         itemId: item.itemId) else { return }
                 isLoading = true
-                try await itemRepository.untrashItems([itemToBeRestored])
+                try await restoreItemTask(item).value
                 isLoading = false
                 switch item.type {
                 case .note:
@@ -156,11 +146,8 @@ extension TrashViewModel {
     func deletePermanently(_ item: ItemListUiModel) {
         Task { @MainActor in
             do {
-                guard let itemToBeDeleted =
-                        try await itemRepository.getItem(shareId: item.shareId,
-                                                         itemId: item.itemId) else { return }
                 isLoading = true
-                try await itemRepository.deleteItems([itemToBeDeleted])
+                try await deleteItemTask(item).value
                 isLoading = false
                 switch item.type {
                 case .note:
@@ -182,8 +169,52 @@ extension TrashViewModel {
     private func remove(_ item: ItemListUiModel) {
         items.removeAll(where: { $0.itemId == item.itemId })
     }
+}
 
-    private func removeAllItems() {
-        items = []
+// MARK: - Private supporting tasks
+private extension TrashViewModel {
+    func getTrashedItemsTask(forceRefresh: Bool) -> Task<[ItemListUiModel], Error> {
+        Task.detached(priority: .userInitiated) {
+            let items = try await self.itemRepository.getItems(forceRefresh: forceRefresh,
+                                                               state: .trashed)
+            return try await items.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+        }
+    }
+
+    func restoreItemTask(_ item: ItemListUiModel) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            let item = try await self.getItem(item)
+            try await self.itemRepository.untrashItems([item])
+        }
+    }
+
+    func restoreAllTask() -> Task<Int, Error> {
+        Task.detached(priority: .userInitiated) {
+            let items = try await self.itemRepository.getItems(forceRefresh: false, state: .trashed)
+            try await self.itemRepository.untrashItems(items)
+            return items.count
+        }
+    }
+
+    func deleteAllTask() -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            let items = try await self.itemRepository.getItems(forceRefresh: false, state: .trashed)
+            try await self.itemRepository.deleteItems(items)
+        }
+    }
+
+    func deleteItemTask(_ item: ItemListUiModel) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            let item = try await self.getItem(item)
+            try await self.itemRepository.deleteItems([item])
+        }
+    }
+
+    func getItem(_ item: ItemListUiModel) async throws -> SymmetricallyEncryptedItem {
+        guard let item = try await itemRepository.getItem(shareId: item.shareId,
+                                                          itemId: item.itemId) else {
+            throw TrashViewModelError.itemNotFound(shareId: item.shareId, itemId: item.itemId)
+        }
+        return item
     }
 }

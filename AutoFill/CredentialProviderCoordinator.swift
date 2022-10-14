@@ -96,7 +96,7 @@ public final class CredentialProviderCoordinator {
                                                 symmetricKey: symmetricKey,
                                                 container: container,
                                                 apiService: apiService)
-            Task { @MainActor in
+            Task {
                 do {
                     let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
                     if let encryptedItem = try await itemRepository.getItem(shareId: ids.shareId,

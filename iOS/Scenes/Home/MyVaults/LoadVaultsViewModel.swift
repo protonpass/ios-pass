@@ -23,9 +23,9 @@ import Core
 import ProtonCore_Login
 
 final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
-    @Published private(set) var error: Error?
-
     deinit { print(deinitMessage) }
+
+    @Published private(set) var error: Error?
 
     private let userData: UserData
     private let vaultSelection: VaultSelection
@@ -44,27 +44,14 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
         self.vaultItemKeysRepository = vaultItemKeysRepository
     }
 
-    func toggleSidebar() {
-        onToggleSidebar?()
-    }
-
-    func fetchVaults(forceRefresh: Bool = false) {
-        error = nil
+    func fetchVaults(forceRefresh: Bool) {
         Task { @MainActor in
             do {
-                let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
-
-                var vaults: [VaultProtocol] = []
-                for share in shares {
-                    let vaultKeys = try await vaultItemKeysRepository.getVaultKeys(shareId: share.shareID,
-                                                                                   forceRefresh: forceRefresh)
-                    vaults.append(try share.getVault(userData: userData,
-                                                     vaultKeys: vaultKeys))
-                }
-
+                error = nil
+                let vaults = try await fetchVaultsTask(forceRefresh: forceRefresh).value
                 if vaults.isEmpty {
-                    try await createDefaultVault()
-                    fetchVaults()
+                    try await createDefaultVaultTask.value
+                    fetchVaults(forceRefresh: false)
                 } else {
                     vaultSelection.update(vaults: vaults)
                 }
@@ -74,11 +61,29 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
         }
     }
 
-    private func createDefaultVault() async throws {
-        let addressKey = userData.getAddressKey()
-        let createVaultRequest = try CreateVaultRequest(addressKey: addressKey,
-                                                        name: "Personal",
-                                                        description: "Personal vault")
-        try await shareRepository.createVault(request: createVaultRequest)
+    private var createDefaultVaultTask: Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            let addressKey = self.userData.getAddressKey()
+            let createVaultRequest = try CreateVaultRequest(addressKey: addressKey,
+                                                            name: "Personal",
+                                                            description: "Personal vault")
+            try await self.shareRepository.createVault(request: createVaultRequest)
+        }
+    }
+
+    private func fetchVaultsTask(forceRefresh: Bool) -> Task<[VaultProtocol], Error> {
+        Task.detached(priority: .userInitiated) {
+            let shares = try await self.shareRepository.getShares(forceRefresh: forceRefresh)
+
+            var vaults: [VaultProtocol] = []
+            for share in shares {
+                let vaultKeys =
+                try await self.vaultItemKeysRepository.getVaultKeys(shareId: share.shareID,
+                                                                    forceRefresh: forceRefresh)
+                vaults.append(try share.getVault(userData: self.userData,
+                                                 vaultKeys: vaultKeys))
+            }
+            return vaults
+        }
     }
 }

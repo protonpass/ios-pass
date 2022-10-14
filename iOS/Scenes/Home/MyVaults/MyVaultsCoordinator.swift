@@ -215,7 +215,7 @@ final class MyVaultsCoordinator: Coordinator {
                 message = "Note created"
             }
             myVaultsViewModel.successMessage = message
-            vaultContentViewModel.fetchItems()
+            vaultContentViewModel.fetchItems(forceRefresh: false)
         }
     }
 
@@ -242,7 +242,7 @@ final class MyVaultsCoordinator: Coordinator {
             message = "Note deleted"
         }
         myVaultsViewModel.successMessage = message
-        vaultContentViewModel.fetchItems()
+        vaultContentViewModel.fetchItems(forceRefresh: false)
         onTrashedItem?()
     }
 
@@ -259,12 +259,12 @@ final class MyVaultsCoordinator: Coordinator {
                 message = "Note updated"
             }
             myVaultsViewModel.successMessage = message
-            vaultContentViewModel.fetchItems()
+            vaultContentViewModel.fetchItems(forceRefresh: false)
         }
     }
 
     func refreshItems() {
-        vaultContentViewModel.fetchItems()
+        vaultContentViewModel.fetchItems(forceRefresh: false)
     }
 }
 

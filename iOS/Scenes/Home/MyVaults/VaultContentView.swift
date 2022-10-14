@@ -44,15 +44,12 @@ struct VaultContentView: View {
             // as Color occupies the whole ZStack
             Color.clear
             switch viewModel.state {
-            case .idle:
-                EmptyView()
-
             case .loading:
                 ProgressView()
 
             case .loaded:
                 if viewModel.items.isEmpty {
-                    EmptyVaultView(action: viewModel.createItem)
+                    EmptyVaultView { viewModel.onCreateItem?() }
                 } else {
                     itemList
                 }
@@ -72,7 +69,7 @@ struct VaultContentView: View {
         .toolbar { toolbarContent }
         .onAppear {
             if !didAppear {
-                viewModel.fetchItems()
+                viewModel.fetchItems(forceRefresh: false)
                 didAppear = true
             }
         }
@@ -117,7 +114,7 @@ struct VaultContentView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            ToggleSidebarButton(action: viewModel.toggleSidebar)
+            ToggleSidebarButton { viewModel.onToggleSidebar?() }
         }
 
 //        ToolbarItem(placement: .principal) {
@@ -177,13 +174,17 @@ struct VaultContentView: View {
 
         ToolbarItem(placement: .navigationBarTrailing) {
             HStack {
-                Button(action: viewModel.search) {
+                Button(action: {
+                    viewModel.onSearch?()
+                }, label: {
                     Image(uiImage: IconProvider.magnifier)
-                }
+                })
 
-                Button(action: viewModel.createItem) {
+                Button(action: {
+                    viewModel.onCreateItem?()
+                }, label: {
                     Image(uiImage: IconProvider.plus)
-                }
+                })
             }
             .foregroundColor(Color(.label))
             .disabled(!viewModel.state.isLoaded)
