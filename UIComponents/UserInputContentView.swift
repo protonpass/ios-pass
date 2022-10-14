@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import Introspect
 import ProtonCore_UIFoundations
 import SwiftUI
 
@@ -128,47 +127,21 @@ public struct UserInputStaticContentView: View {
     }
 }
 
-private final class UserInputContentPasswordViewModel {
-    @Binding var isFocused: Bool
-    private var cancellables = Set<AnyCancellable>()
-
-    init(isFocused: Binding<Bool>) {
-        self._isFocused = isFocused
-    }
-
-    func observe(textField: UITextField) {
-        NotificationCenter.default
-            .publisher(for: UITextField.textDidBeginEditingNotification,
-                       object: textField)
-            .sink { [unowned self] _ in
-                self.isFocused = true
-            }
-            .store(in: &cancellables)
-
-        NotificationCenter.default
-            .publisher(for: UITextField.textDidEndEditingNotification,
-                       object: textField)
-            .sink {[unowned self] _ in
-                self.isFocused = false
-            }
-            .store(in: &cancellables)
-    }
-}
-
 public struct UserInputContentPasswordView: View {
-    private let viewModel: UserInputContentPasswordViewModel
+    @FocusState private var focusState: Bool
     @Binding var text: String
+    @Binding var isFocused: Bool
     @Binding var isSecure: Bool
-    let toolbar: UIToolbar
+    let onGeneratePassword: () -> Void
 
     public init(text: Binding<String>,
                 isFocused: Binding<Bool>,
                 isSecure: Binding<Bool>,
-                toolbar: UIToolbar) {
+                onGeneratePassword: @escaping () -> Void) {
         self._text = text
+        self._isFocused = isFocused
         self._isSecure = isSecure
-        self.toolbar = toolbar
-        self.viewModel = .init(isFocused: isFocused)
+        self.onGeneratePassword = onGeneratePassword
     }
 
     public var body: some View {
@@ -176,16 +149,10 @@ public struct UserInputContentPasswordView: View {
             let placeholder = "Add password"
             if isSecure {
                 SecureField(placeholder, text: $text)
-                    .introspectTextField { textField in
-                        textField.inputAccessoryView = toolbar
-                        viewModel.observe(textField: textField)
-                    }
+                    .focused($focusState)
             } else {
                 TextField(placeholder, text: $text)
-                    .introspectTextField { textField in
-                        textField.inputAccessoryView = toolbar
-                        viewModel.observe(textField: textField)
-                    }
+                    .focused($focusState)
             }
 
             Button(action: {
@@ -194,6 +161,22 @@ public struct UserInputContentPasswordView: View {
                 Image(uiImage: isSecure ? IconProvider.eye : IconProvider.eyeSlash)
             })
             .foregroundColor(.primary)
+        }
+        .onReceive(Just(focusState)) { isFocused in
+            self.isFocused = isFocused
+        }
+        .toolbar {
+            // Hacky solution to hide the toolbar of other TextFields on the same view
+            // https://stackoverflow.com/a/73322274
+            ToolbarItemGroup(placement: .keyboard) {
+                if focusState {
+                    Button(action: onGeneratePassword) {
+                        Text("Generate password")
+                    }
+                } else {
+                    Text("")
+                }
+            }
         }
     }
 }

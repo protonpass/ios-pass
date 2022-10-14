@@ -51,9 +51,7 @@ final class TrashCoordinator: Coordinator {
         trashViewModel.onShowOptions = { [unowned self] item in
             let optionsView = TrashedItemOptionsView(item: item, delegate: self)
             let optionsViewController = UIHostingController(rootView: optionsView)
-            if #available(iOS 15.0, *) {
-                optionsViewController.sheetPresentationController?.detents = [.medium()]
-            }
+            optionsViewController.sheetPresentationController?.detents = [.medium()]
             presentViewController(optionsViewController)
         }
         trashViewModel.onDeletedItem = { [unowned self] in

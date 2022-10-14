@@ -30,12 +30,11 @@ def ios_and_uicomponents
   pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-CoreTranslation-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
-  pod 'Introspect'
   pod 'AlertToast'
 end
 
 target 'Client' do
-  platform :ios, '14.0'
+  platform :ios, '15.0'
   use_frameworks!
 
   client_and_ios_pods
@@ -48,7 +47,7 @@ target 'Client' do
 end
 
 target 'Core' do
-  platform :ios, '14.0'
+  platform :ios, '15.0'
   use_frameworks!
 
   pod 'ProtonCore-DataModel', :git => proton_core_path, :tag => proton_core_version
@@ -68,13 +67,13 @@ target 'Core' do
 end
 
 target 'UIComponents' do
-  platform :ios, '14.0'
+  platform :ios, '15.0'
   use_frameworks!
   ios_and_uicomponents
 end
 
 target 'iOS' do
-  platform :ios, '14.0'
+  platform :ios, '15.0'
   use_frameworks!
 
   client_and_ios_pods
@@ -104,7 +103,7 @@ target 'iOS' do
 end
 
 target 'macOS' do
-  platform :macos, '11.0'
+  platform :macos, '12.0'
   use_frameworks!
 end
 
