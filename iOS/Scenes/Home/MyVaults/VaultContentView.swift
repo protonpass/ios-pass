@@ -106,6 +106,9 @@ struct VaultContentView: View {
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 0)
         .animation(.default, value: viewModel.items.count)
+        .refreshable {
+            await viewModel.forceRefreshItems()
+        }
     }
 
     @ToolbarContentBuilder

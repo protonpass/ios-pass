@@ -113,5 +113,8 @@ struct TrashView: View {
         }
         .listStyle(.plain)
         .animation(.default, value: viewModel.items.count)
+        .refreshable {
+            await viewModel.forceRefreshItems()
+        }
     }
 }

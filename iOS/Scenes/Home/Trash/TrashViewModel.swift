@@ -67,6 +67,15 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
         fetchAllTrashedItems(forceRefresh: false)
     }
 
+    @MainActor
+    func forceRefreshItems() async {
+        do {
+            items = try await getTrashedItemsTask(forceRefresh: true).value
+        } catch {
+            state = .error(error)
+        }
+    }
+
     func fetchAllTrashedItems(forceRefresh: Bool) {
         Task { @MainActor in
             do {
