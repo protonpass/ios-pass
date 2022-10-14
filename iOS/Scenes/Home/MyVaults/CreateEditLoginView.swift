@@ -117,22 +117,13 @@ struct CreateEditLoginView: View {
     }
 
     private var passwordInputView: some View {
-        let toolbar = UIToolbar()
-        let btn = UIBarButtonItem(title: "Generate password",
-                                  style: .plain,
-                                  target: viewModel,
-                                  action: #selector(viewModel.generatePassword))
-        btn.tintColor = ColorProvider.BrandNorm
-        toolbar.items = [.flexibleSpace(), btn, .flexibleSpace()]
-        toolbar.barStyle = UIBarStyle.default
-        toolbar.sizeToFit()
-        return UserInputContainerView(title: "Password",
-                                      isFocused: isFocusedOnPassword) {
+        UserInputContainerView(title: "Password",
+                               isFocused: isFocusedOnPassword) {
             UserInputContentPasswordView(
                 text: $viewModel.password,
                 isFocused: $isFocusedOnPassword,
                 isSecure: $viewModel.isPasswordSecure,
-                toolbar: toolbar)
+                onGeneratePassword: viewModel.generatePassword)
         }
     }
 
