@@ -146,9 +146,13 @@ private struct ConcreteAliasDetailView: View {
     private var noteSection: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Notes")
-            Text(note)
-                .font(.callout)
-                .foregroundColor(.secondary)
+            if note.isEmpty {
+                EmptyText()
+            } else {
+                Text(note)
+                    .font(.callout)
+                    .foregroundColor(.secondary)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

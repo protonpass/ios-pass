@@ -35,9 +35,13 @@ struct NoteDetailView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Note")
-            Text(viewModel.note)
-                .font(.callout)
-                .foregroundColor(.secondary)
+            if viewModel.note.isEmpty {
+                EmptyText()
+            } else {
+                Text(viewModel.note)
+                    .font(.callout)
+                    .foregroundColor(.secondary)
+            }
             Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
