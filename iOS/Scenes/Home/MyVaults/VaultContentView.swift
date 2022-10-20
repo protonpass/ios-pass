@@ -78,37 +78,41 @@ struct VaultContentView: View {
     private var itemList: some View {
         List {
             ForEach(viewModel.items, id: \.itemId) { item in
-                GenericItemView(
-                    item: item,
-                    action: { viewModel.selectItem(item) },
-                    trailingView: {
-                        VStack {
-                            Spacer()
+                VStack(spacing: 8) {
+                    GenericItemView(
+                        item: item,
+                        action: { viewModel.selectItem(item) },
+                        trailingView: {
+                            VStack {
+                                Spacer()
 
-                            Menu(content: {
-                                DestructiveButton(
-                                    title: "Move to Trash",
-                                    icon: IconProvider.trash,
-                                    action: {
-                                        selectedItem = item
-                                        isShowingTrashingAlert.toggle()
-                                    })
-                            }, label: {
-                                Image(uiImage: IconProvider.threeDotsHorizontal)
-                                    .foregroundColor(.secondary)
-                            })
+                                Menu(content: {
+                                    DestructiveButton(
+                                        title: "Move to Trash",
+                                        icon: IconProvider.trash,
+                                        action: {
+                                            selectedItem = item
+                                            isShowingTrashingAlert.toggle()
+                                        })
+                                }, label: {
+                                    Image(uiImage: IconProvider.threeDotsHorizontal)
+                                        .foregroundColor(.secondary)
+                                })
 
-                            Spacer()
-                        }
-                    })
+                                Spacer()
+                            }
+                        })
+                    if item.itemId != viewModel.items.last?.itemId {
+                        Divider()
+                    }
+                }
             }
+            .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 0)
         .animation(.default, value: viewModel.items.count)
-        .refreshable {
-            await viewModel.forceRefreshItems()
-        }
+        .refreshable { await viewModel.forceRefreshItems() }
     }
 
     @ToolbarContentBuilder

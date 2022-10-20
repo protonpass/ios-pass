@@ -45,6 +45,7 @@ struct NoteDetailView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .navigationBarBackButtonHidden(true)
         .onReceive(Just(viewModel.isTrashed)) { isTrashed in
             if isTrashed {
                 presentationMode.wrappedValue.dismiss()

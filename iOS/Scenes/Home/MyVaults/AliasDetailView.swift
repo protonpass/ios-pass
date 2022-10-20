@@ -46,6 +46,7 @@ struct AliasDetailView: View {
             }
         }
         .moveToTrashAlert(isPresented: $isShowingTrashingAlert, onTrash: viewModel.trash)
+        .navigationBarBackButtonHidden(true)
         .toolbar { toolbarContent }
     }
 
