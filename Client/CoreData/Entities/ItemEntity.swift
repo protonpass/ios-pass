@@ -55,31 +55,31 @@ extension ItemEntity {
 
 extension ItemEntity {
     func toEncryptedItem(shareId: String) throws -> SymmetricallyEncryptedItem {
-        guard let itemID = itemID else {
+        guard let itemID else {
             throw CoreDataError.corrupted(object: self, property: "itemID")
         }
 
-        guard let rotationID = rotationID else {
+        guard let rotationID else {
             throw CoreDataError.corrupted(object: self, property: "rotationID")
         }
 
-        guard let symmetricallyEncryptedContent = symmetricallyEncryptedContent else {
+        guard let symmetricallyEncryptedContent else {
             throw CoreDataError.corrupted(object: self, property: "symmetricallyEncryptedContent")
         }
 
-        guard let content = content else {
+        guard let content else {
             throw CoreDataError.corrupted(object: self, property: "content")
         }
 
-        guard let userSignature = userSignature else {
+        guard let userSignature else {
             throw CoreDataError.corrupted(object: self, property: "userSignature")
         }
 
-        guard let itemKeySignature = itemKeySignature else {
+        guard let itemKeySignature else {
             throw CoreDataError.corrupted(object: self, property: "itemKeySignature")
         }
 
-        guard let signatureEmail = signatureEmail else {
+        guard let signatureEmail else {
             throw CoreDataError.corrupted(object: self, property: "signatureEmail")
         }
 

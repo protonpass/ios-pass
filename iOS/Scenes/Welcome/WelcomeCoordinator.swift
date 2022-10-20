@@ -92,7 +92,7 @@ extension WelcomeCoordinator: ForceUpgradeResponseDelegate {
 extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     func userWantsToLogIn(username: String?) {
         logInAndSignUp.presentLoginFlow(over: welcomeViewController) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case .dismissed:
                 break
@@ -106,7 +106,7 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
 
     func userWantsToSignUp() {
         logInAndSignUp.presentSignupFlow(over: welcomeViewController) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case .dismissed:
                 break

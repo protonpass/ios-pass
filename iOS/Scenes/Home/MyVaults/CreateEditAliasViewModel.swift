@@ -135,7 +135,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func additionalEdit() async throws {
-        guard let alias = alias, let mailboxSelection = mailboxSelection else { return }
+        guard let alias, let mailboxSelection = mailboxSelection else { return }
         if Set(alias.mailboxes) == Set(mailboxSelection.selectedMailboxes) { return }
         if case let .edit(itemContent) = mode {
             let mailboxIds = mailboxSelection.selectedMailboxes.map { $0.ID }
@@ -167,7 +167,7 @@ extension CreateEditAliasViewModel {
                 suffixSelection = .init(suffixes: aliasOptions.suffixes)
                 suffixSelection?.$selectedSuffix
                     .sink { [weak self] selectedSuffix in
-                        guard let self = self else { return }
+                        guard let self else { return }
                         self.suffix = selectedSuffix?.suffix ?? ""
                     }
                     .store(in: &cancellables)
@@ -177,7 +177,7 @@ extension CreateEditAliasViewModel {
                 mailboxSelection = .init(mailboxes: aliasOptions.mailboxes)
                 mailboxSelection?.$selectedMailboxes
                     .sink { [weak self] selectedMailboxes in
-                        guard let self = self else { return }
+                        guard let self else { return }
                         self.mailboxes = selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
                     }
                     .store(in: &cancellables)

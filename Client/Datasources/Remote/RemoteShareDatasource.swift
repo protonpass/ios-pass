@@ -36,7 +36,7 @@ public extension RemoteShareDatasourceProtocol {
 
         // Then fetch full share for each partial share
         try await withThrowingTaskGroup(of: Share.self) { [weak self] group in
-            guard let self = self else { return }
+            guard let self else { return }
             for partialShare in getSharesResponse.shares {
                 let getShareEndpoint = GetShareEndpoint(credential: authCredential,
                                                         shareId: partialShare.shareID)

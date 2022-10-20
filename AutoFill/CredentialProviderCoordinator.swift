@@ -69,7 +69,7 @@ public final class CredentialProviderCoordinator {
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard let sessionData = sessionData,
+        guard let sessionData,
               let symmetricKeyData = symmetricKey?.data(using: .utf8) else {
             showNoLoggedInView()
             return
@@ -82,7 +82,7 @@ public final class CredentialProviderCoordinator {
 
     /// QuickType bar support
     func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let sessionData = sessionData,
+        guard let sessionData,
               let symmetricKeyData = symmetricKey?.data(using: .utf8),
               let recordIdentifier = credentialIdentity.recordIdentifier else {
             cancel(errorCode: .failed)

@@ -38,7 +38,7 @@ extension PublicKeyEntity {
 
 extension PublicKeyEntity {
     func toPublicKey() throws -> PublicKey {
-        guard let value = value else {
+        guard let value else {
             throw CoreDataError.corrupted(object: self, property: "value")
         }
         return .init(value: value)

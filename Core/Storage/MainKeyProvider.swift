@@ -33,7 +33,7 @@ extension Keymaker: MainKeyProvider {}
 extension Keymaker: PinUnlocker {
     public func pinUnlock(pin: String, completion: @escaping UnlockResult) {
         obtainMainKey(with: PinProtection(pin: pin, keychain: PPKeychain())) { key in
-            guard let key = key, !key.isEmpty else {
+            guard let key, !key.isEmpty else {
                 print("Tried to unlock with PIN ❌.")
                 return completion(false)
             }
@@ -93,7 +93,7 @@ extension Keymaker: BioLockDeactivator {
 extension Keymaker: BioUnlocker {
     public func bioUnlock(completion: @escaping UnlockResult) {
         obtainMainKey(with: BioProtection(keychain: PPKeychain())) { key in
-            guard let key = key, !key.isEmpty else {
+            guard let key, !key.isEmpty else {
                 print("Tried to unlock with BIO ❌.")
                 return completion(false)
             }
