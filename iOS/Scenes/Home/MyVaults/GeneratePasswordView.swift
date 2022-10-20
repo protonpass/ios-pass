@@ -34,25 +34,21 @@ struct GeneratePasswordView: View {
         NavigationView {
             VStack {
                 HStack {
-                    VStack {
-                        Text(viewModel.texts)
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .transaction { transaction in
-                                transaction.animation = nil
-                            }
-                        Spacer()
-                    }
-                    Spacer()
-                    VStack {
-                        Button(action: viewModel.regenerate) {
-                            Image(uiImage: IconProvider.arrowsRotate)
-                                .foregroundColor(.secondary)
+                    Text(viewModel.texts)
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .minimumScaleFactor(0.5)
+                        .frame(maxHeight: .infinity, alignment: .top)
+                        .transaction { transaction in
+                            transaction.animation = nil
                         }
-                        Spacer()
+                    Spacer()
+                    Button(action: viewModel.regenerate) {
+                        Image(uiImage: IconProvider.arrowsRotate)
+                            .foregroundColor(.secondary)
                     }
+                    .frame(maxHeight: .infinity, alignment: .top)
                 }
-                .frame(height: 120)
                 .padding()
                 .background(Color(UIColor.secondarySystemBackground))
                 .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -63,6 +59,9 @@ struct GeneratePasswordView: View {
                 HStack {
                     Text("\(Int(viewModel.length)) characters")
                         .frame(minWidth: 120, alignment: .leading)
+                        .transaction { transaction in
+                            transaction.animation = nil
+                        }
                     Slider(value: $viewModel.length,
                            in: 4...64,
                            step: 1)
