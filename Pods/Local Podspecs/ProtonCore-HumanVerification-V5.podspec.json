@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-HumanVerification-V5",
   "module_name": "ProtonCore_HumanVerification",
-  "version": "3.22.3",
+  "version": "3.23.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -14,7 +14,7 @@
   },
   "source": {
     "git": null,
-    "tag": "3.22.3"
+    "tag": "3.23.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -27,124 +27,63 @@
     "APPLICATION_EXTENSION_API_ONLY": "NO"
   },
   "ios": {
-    "frameworks": "UIKit"
+    "frameworks": "UIKit",
+    "source_files": [
+      "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
+      "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+    ],
+    "resource_bundles": {
+      "Resources-HumanVerification": [
+        "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+        "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
+      ]
+    }
   },
   "osx": {
-    "frameworks": "AppKit"
+    "frameworks": "AppKit",
+    "source_files": [
+      "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
+      "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}",
+      "libraries/HumanVerification/Sources/V5/**/*.{h,m,swift}"
+    ],
+    "exclude_files": "libraries/HumanVerification/Sources/macOS/NotificationColors.swift",
+    "resource_bundles": {
+      "Resources-HumanVerification": [
+        "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+        "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
+      ]
+    }
   },
   "dependencies": {
     "ProtonCore-UIFoundations-V5": [
-      "3.22.3"
+      "3.23.0"
     ],
     "ProtonCore-CoreTranslation": [
-      "3.22.3"
+      "3.23.0"
     ],
     "ProtonCore-Foundations": [
-      "3.22.3"
+      "3.23.0"
     ],
     "ProtonCore-Utilities": [
-      "3.22.3"
+      "3.23.0"
+    ],
+    "ProtonCore-APIClient": [
+      "3.23.0"
     ]
   },
   "default_subspecs": [
-    "ErrorWarningEmittingDefaultSubspec"
+
   ],
-  "subspecs": [
+  "testspecs": [
     {
-      "name": "ErrorWarningEmittingDefaultSubspec",
-      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
-    },
-    {
-      "name": "Alamofire",
+      "name": "Tests",
+      "test_type": "unit",
       "dependencies": {
-        "ProtonCore-APIClient/Alamofire": [
-          "3.22.3"
+        "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
+          "3.23.0"
         ]
       },
-      "ios": {
-        "source_files": [
-          "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
-          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
-        ],
-        "resource_bundles": {
-          "Resources-HumanVerification": [
-            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
-            "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
-          ]
-        }
-      },
-      "osx": {
-        "source_files": [
-          "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
-          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}",
-          "libraries/HumanVerification/Sources/V5/**/*.{h,m,swift}"
-        ],
-        "exclude_files": "libraries/HumanVerification/Sources/macOS/NotificationColors.swift",
-        "resource_bundles": {
-          "Resources-HumanVerification": [
-            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
-            "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
-          ]
-        }
-      },
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "dependencies": {
-            "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5/Alamofire": [
-              "3.22.3"
-            ]
-          },
-          "source_files": "libraries/HumanVerification/Tests/**/*"
-        }
-      ]
-    },
-    {
-      "name": "AFNetworking",
-      "dependencies": {
-        "ProtonCore-APIClient/AFNetworking": [
-          "3.22.3"
-        ]
-      },
-      "ios": {
-        "source_files": [
-          "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
-          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
-        ],
-        "resource_bundles": {
-          "Resources-HumanVerification": [
-            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
-            "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
-          ]
-        }
-      },
-      "osx": {
-        "source_files": [
-          "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
-          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}",
-          "libraries/HumanVerification/Sources/V5/**/*.{h,m,swift}"
-        ],
-        "exclude_files": "libraries/HumanVerification/Sources/macOS/NotificationColors.swift",
-        "resource_bundles": {
-          "Resources-HumanVerification": [
-            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
-            "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
-          ]
-        }
-      },
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "dependencies": {
-            "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5/AFNetworking": [
-              "3.22.3"
-            ]
-          },
-          "source_files": "libraries/HumanVerification/Tests/**/*"
-        }
-      ]
+      "source_files": "libraries/HumanVerification/Tests/**/*"
     }
   ],
   "swift_version": "5.6"

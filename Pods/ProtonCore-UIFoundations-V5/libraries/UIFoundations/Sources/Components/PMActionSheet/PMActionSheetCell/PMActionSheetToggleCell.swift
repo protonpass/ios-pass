@@ -41,11 +41,6 @@ final class PMActionSheetToggleCell: UITableViewCell, AccessibleView {
         self.setup()
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        textLabel?.font = .adjustedFont(forTextStyle: .subheadline)
-    }
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -58,6 +53,7 @@ extension PMActionSheetToggleCell {
         self.imageView?.image = item.icon
         self.imageView?.tintColor = item.iconColor
         self.textLabel?.text = item.title
+        self.textLabel?.font = .adjustedFont(forTextStyle: .subheadline)
         self.textLabel?.textColor = item.textColor
         self.toggle.isOn = item.isOn
         self.toggle.onTintColor = item.toggleColor
