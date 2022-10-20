@@ -42,13 +42,16 @@ public struct GenericItem: GenericItemProtocol {
 public struct GenericItemView<TrailingView: View>: View {
     private let item: GenericItemProtocol
     private let action: () -> Void
+    private let subtitleLineLimit: Int?
     private let trailingView: TrailingView
 
     public init(item: GenericItemProtocol,
                 action: @escaping () -> Void,
+                subtitleLineLimit: Int? = 1,
                 @ViewBuilder trailingView: () -> TrailingView) {
         self.item = item
         self.action = action
+        self.subtitleLineLimit = subtitleLineLimit
         self.trailingView = trailingView()
     }
 
@@ -70,7 +73,7 @@ public struct GenericItemView<TrailingView: View>: View {
                                 Text(detail)
                                     .font(.callout)
                                     .foregroundColor(Color(.secondaryLabel))
-                                    .lineLimit(1)
+                                    .lineLimit(subtitleLineLimit)
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
