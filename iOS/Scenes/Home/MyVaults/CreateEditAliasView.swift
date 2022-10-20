@@ -75,7 +75,11 @@ struct CreateEditAliasView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
-                isShowingDiscardAlert.toggle()
+                if viewModel.isEmpty {
+                    dismiss()
+                } else {
+                    isShowingDiscardAlert.toggle()
+                }
             }, label: {
                 Image(uiImage: IconProvider.cross)
             })
@@ -93,8 +97,8 @@ struct CreateEditAliasView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.brandNorm)
             }
-            .opacity(viewModel.state.isLoaded ? 1 : 0)
-            .disabled(!viewModel.state.isLoaded)
+            .opacity(viewModel.state.isLoaded && viewModel.isSaveable ? 1 : 0.5)
+            .disabled(!viewModel.state.isLoaded || !viewModel.isSaveable)
         }
     }
 

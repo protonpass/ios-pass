@@ -94,6 +94,8 @@ struct CreateEditNoteView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.brandNorm)
             }
+            .opacity(viewModel.isSaveable ? 1 : 0.5)
+            .disabled(!viewModel.isSaveable)
         }
     }
 }

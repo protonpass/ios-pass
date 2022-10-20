@@ -54,6 +54,8 @@ class BaseCreateEditItemViewModel: BaseViewModel {
     }
 
     /// To be overridden by subclasses
+    var isSaveable: Bool { false }
+
     func bindValues() {}
 
     // swiftlint:disable:next unavailable_function

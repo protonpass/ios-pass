@@ -35,6 +35,8 @@ final class CreateVaultViewModel: BaseViewModel, DeinitPrintable, ObservableObje
 
     var onCreatedShare: ((Share) -> Void)?
 
+    var isSaveable: Bool { !name.isEmpty }
+
     init(userData: UserData,
          shareRepository: ShareRepositoryProtocol) {
         self.userData = userData

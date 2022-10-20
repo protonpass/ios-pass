@@ -84,9 +84,9 @@ struct CreateVaultView: View {
                 Text("Save")
                     .fontWeight(.bold)
                     .foregroundColor(.brandNorm)
-                    .opacity(viewModel.name.isEmpty ? 0.5 : 1)
             }
-            .disabled(viewModel.name.isEmpty)
+            .opacity(viewModel.isSaveable ? 1 : 0.5)
+            .disabled(!viewModel.isSaveable)
         }
     }
 }

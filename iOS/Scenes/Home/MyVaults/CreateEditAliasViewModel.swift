@@ -97,6 +97,14 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var mailboxSelection: MailboxSelection?
     let aliasRepository: AliasRepositoryProtocol
 
+    var isEmpty: Bool {
+        !state.isLoaded || (title.isEmpty && prefix.isEmpty && note.isEmpty)
+    }
+
+    override var isSaveable: Bool {
+        !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty
+    }
+
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol) {
