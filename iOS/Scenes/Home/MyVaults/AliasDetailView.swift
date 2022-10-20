@@ -24,7 +24,7 @@ import SwiftUI
 import UIComponents
 
 struct AliasDetailView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: AliasDetailViewModel
     @State private var isShowingTrashingAlert = false
 
@@ -48,17 +48,20 @@ struct AliasDetailView: View {
         .moveToTrashAlert(isPresented: $isShowingTrashingAlert, onTrash: viewModel.trash)
         .navigationBarBackButtonHidden(true)
         .toolbar { toolbarContent }
+        .onReceive(viewModel.$isTrashed) { isTrashed in
+            if isTrashed {
+                dismiss()
+            }
+        }
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }, label: {
+            Button(action: dismiss.callAsFunction) {
                 Image(uiImage: IconProvider.chevronLeft)
                     .foregroundColor(.primary)
-            })
+            }
         }
 
         ToolbarItem(placement: .principal) {
