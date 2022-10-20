@@ -32,26 +32,38 @@ struct CreateItemView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                GenericItemView(item: CreateNewItemOption.login.toGenericItem(),
-                                action: { viewModel.select(option: .login) },
-                                trailingView: { EmptyView() })
+            ScrollView {
+                LazyVStack {
+                    GenericItemView(item: CreateNewItemOption.login.toGenericItem(),
+                                    action: { viewModel.select(option: .login) },
+                                    subtitleLineLimit: nil,
+                                    trailingView: { EmptyView() })
 
-                GenericItemView(item: CreateNewItemOption.alias.toGenericItem(),
-                                action: { viewModel.select(option: .alias) },
-                                trailingView: { EmptyView() })
+                    Divider()
 
-                GenericItemView(item: CreateNewItemOption.note.toGenericItem(),
-                                action: { viewModel.select(option: .note) },
-                                trailingView: { EmptyView() })
+                    GenericItemView(item: CreateNewItemOption.alias.toGenericItem(),
+                                    action: { viewModel.select(option: .alias) },
+                                    subtitleLineLimit: nil,
+                                    trailingView: { EmptyView() })
 
-                GenericItemView(item: CreateNewItemOption.password.toGenericItem(),
-                                action: { viewModel.select(option: .password) },
-                                trailingView: { EmptyView() })
+                    Divider()
 
-                Spacer()
+                    GenericItemView(item: CreateNewItemOption.note.toGenericItem(),
+                                    action: { viewModel.select(option: .note) },
+                                    subtitleLineLimit: nil,
+                                    trailingView: { EmptyView() })
+
+                    Divider()
+
+                    GenericItemView(item: CreateNewItemOption.password.toGenericItem(),
+                                    action: { viewModel.select(option: .password) },
+                                    subtitleLineLimit: nil,
+                                    trailingView: { EmptyView() })
+
+                    Spacer()
+                }
             }
-            .listStyle(.plain)
+            .padding(.horizontal)
             .navigationTitle("New...")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbarContent }
