@@ -44,19 +44,19 @@ extension VaultKeyEntity {
 
 extension VaultKeyEntity {
     func toVaultKey() throws -> VaultKey {
-        guard let rotationID = rotationID else {
+        guard let rotationID else {
             throw CoreDataError.corrupted(object: self, property: "rotationID")
         }
 
-        guard let key = key else {
+        guard let key else {
             throw CoreDataError.corrupted(object: self, property: "key")
         }
 
-        guard let keyPassphrase = keyPassphrase else {
+        guard let keyPassphrase else {
             throw CoreDataError.corrupted(object: self, property: "keyPassphrase")
         }
 
-        guard let keySignature = keySignature else {
+        guard let keySignature else {
             throw CoreDataError.corrupted(object: self, property: "keySignature")
         }
 

@@ -42,6 +42,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         title.isEmpty && username.isEmpty && password.isEmpty && hasNoUrls && note.isEmpty
     }
 
+    override var isSaveable: Bool {
+        !title.isEmpty && !username.isEmpty && !password.isEmpty
+    }
+
     override func bindValues() {
         if case let .edit(itemContent) = mode,
            case let .login(username, password, urls) = itemContent.contentData {

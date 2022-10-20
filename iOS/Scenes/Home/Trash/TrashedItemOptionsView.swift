@@ -29,48 +29,61 @@ protocol TrashedItemOptionsViewDelegate: AnyObject {
 }
 
 struct TrashedItemOptionsView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @State private var isShowingDeleteAlert = false
     let item: ItemListUiModel
     let delegate: TrashedItemOptionsViewDelegate
 
     var body: some View {
         NavigationView {
-            List {
-                Button(action: {
-                    delegate.trashedItemWantsToBeRestored(item)
-                }, label: {
-                    Label(title: {
-                        Text("Restore")
-                    }, icon: {
-                        Image(uiImage: IconProvider.clockRotateLeft)
+            ScrollView {
+                LazyVStack(alignment: .leading) {
+                    Button(action: {
+                        delegate.trashedItemWantsToBeRestored(item)
+                    }, label: {
+                        Label(title: {
+                            Text("Restore")
+                        }, icon: {
+                            Image(uiImage: IconProvider.clockRotateLeft)
+                        })
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     })
-                })
-                .foregroundColor(.primary)
+                    .foregroundColor(.primary)
 
-                Button(action: {
-                    delegate.trashedItemWantsToShowDetail(item)
-                }, label: {
-                    Label(title: {
-                        Text("Details")
-                    }, icon: {
-                        Image(uiImage: IconProvider.infoCircle)
-                    })
-                })
-                .foregroundColor(.primary)
+                    Divider()
 
-                Button(action: {
-                    isShowingDeleteAlert.toggle()
-                }, label: {
-                    Label(title: {
-                        Text("Delete permanently")
-                    }, icon: {
-                        Image(uiImage: IconProvider.trash)
+                    Button(action: {
+                        delegate.trashedItemWantsToShowDetail(item)
+                    }, label: {
+                        Label(title: {
+                            Text("Details")
+                        }, icon: {
+                            Image(uiImage: IconProvider.infoCircle)
+                        })
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     })
-                })
-                .foregroundColor(Color.red)
+                    .foregroundColor(.primary)
+
+                    Divider()
+
+                    Button(
+                        role: .destructive,
+                        action: {
+                            isShowingDeleteAlert.toggle()
+                        },
+                        label: {
+                            Label(title: {
+                                Text("Delete permanently")
+                            }, icon: {
+                                Image(uiImage: IconProvider.trash)
+                            })
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        })
+
+                    Spacer()
+                }
+                .padding(.horizontal)
             }
-            .listStyle(.plain)
             .toolbar { toolbarContent }
             .navigationBarTitleDisplayMode(.inline)
         }
@@ -92,12 +105,10 @@ struct TrashedItemOptionsView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }, label: {
+            Button(action: dismiss.callAsFunction) {
                 Image(uiImage: IconProvider.cross)
-            })
-            .foregroundColor(.primary)
+                    .foregroundColor(.primary)
+            }
         }
 
         ToolbarItem(placement: .principal) {

@@ -99,18 +99,24 @@ struct TrashView: View {
     private var itemList: some View {
         List {
             ForEach(viewModel.items, id: \.itemId) { item in
-                GenericItemView(
-                    item: item,
-                    action: { viewModel.showOptions(item) },
-                    trailingView: {
-                        Button(action: {
-                            viewModel.showOptions(item)
-                        }, label: {
-                            Image(uiImage: IconProvider.threeDotsHorizontal)
-                                .foregroundColor(.secondary)
+                VStack(spacing: 8) {
+                    GenericItemView(
+                        item: item,
+                        action: { viewModel.showOptions(item) },
+                        trailingView: {
+                            Button(action: {
+                                viewModel.showOptions(item)
+                            }, label: {
+                                Image(uiImage: IconProvider.threeDotsHorizontal)
+                                    .foregroundColor(.secondary)
+                            })
                         })
-                    })
+                    if item.itemId != viewModel.items.last?.itemId {
+                        Divider()
+                    }
+                }
             }
+            .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
         .animation(.default, value: viewModel.items.count)

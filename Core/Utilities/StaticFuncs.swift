@@ -22,13 +22,13 @@ import Foundation
 
 public func unwrap<T>(caller: StaticString = #function, action: () -> T?) throws -> T {
     let optional = action()
-    if let optional = optional { return optional }
+    if let optional { return optional }
     throw NSError(domain: "Expected honest \(T.self), but found nil instead. \nCaller: \(caller)", code: 1)
 }
 
 public func throwing<T>(operation: (inout NSError?) -> T) throws -> T {
     var error: NSError?
     let result = operation(&error)
-    if let error = error { throw error }
+    if let error { throw error }
     return result
 }

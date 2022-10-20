@@ -18,13 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct NoteDetailView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: NoteDetailViewModel
     @State private var isShowingTrashingAlert = false
 
@@ -45,9 +44,10 @@ struct NoteDetailView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .onReceive(Just(viewModel.isTrashed)) { isTrashed in
+        .navigationBarBackButtonHidden(true)
+        .onReceive(viewModel.$isTrashed) { isTrashed in
             if isTrashed {
-                presentationMode.wrappedValue.dismiss()
+                dismiss()
             }
         }
         .padding()
@@ -59,12 +59,10 @@ struct NoteDetailView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }, label: {
+            Button(action: dismiss.callAsFunction) {
                 Image(uiImage: IconProvider.chevronLeft)
                     .foregroundColor(.primary)
-            })
+            }
         }
 
         ToolbarItem(placement: .principal) {

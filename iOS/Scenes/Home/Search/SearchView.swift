@@ -22,7 +22,7 @@ import SwiftUI
 import UIComponents
 
 struct SearchView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: SearchViewModel
 
     init(viewModel: SearchViewModel) {
@@ -61,8 +61,8 @@ struct SearchView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
-            SwiftUISearchBar(onSearch: viewModel.search(term:),
-                             onCancel: { presentationMode.wrappedValue.dismiss() })
+            SwiftUISearchBar(onSearch: viewModel.search,
+                             onCancel: dismiss.callAsFunction)
         }
     }
 

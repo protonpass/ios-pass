@@ -33,6 +33,7 @@ extension ShareEntity {
     }
 
     @NSManaged var acceptanceSignature: String?
+    @NSManaged var addressID: String?
     @NSManaged var content: String?
     @NSManaged var contentEncryptedAddressSignature: String?
     @NSManaged var contentEncryptedVaultSignature: String?
@@ -56,54 +57,60 @@ extension ShareEntity {
 }
 
 extension ShareEntity {
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable function_body_length
     func toShare() throws -> Share {
-        guard let shareID = shareID else {
+        guard let shareID else {
             throw CoreDataError.corrupted(object: self, property: "shareID")
         }
 
-        guard let vaultID = vaultID else {
+        guard let addressID else {
+            throw CoreDataError.corrupted(object: self, property: "addressID")
+        }
+
+        guard let vaultID else {
             throw CoreDataError.corrupted(object: self, property: "vaultID")
         }
 
-        guard let targetID = targetID else {
+        guard let targetID else {
             throw CoreDataError.corrupted(object: self, property: "targetID")
         }
 
-        guard let acceptanceSignature = acceptanceSignature else {
+        guard let acceptanceSignature else {
             throw CoreDataError.corrupted(object: self, property: "acceptanceSignature")
         }
 
-        guard let inviterEmail = inviterEmail else {
+        guard let inviterEmail else {
             throw CoreDataError.corrupted(object: self, property: "inviterEmail")
         }
 
-        guard let inviterAcceptanceSignature = inviterAcceptanceSignature else {
+        guard let inviterAcceptanceSignature else {
             throw CoreDataError.corrupted(object: self, property: "inviterAcceptanceSignature")
         }
 
-        guard let signingKey = signingKey else {
+        guard let signingKey else {
             throw CoreDataError.corrupted(object: self, property: "signingKey")
         }
 
-        guard let contentRotationID = contentRotationID else {
+        guard let contentRotationID else {
             throw CoreDataError.corrupted(object: self, property: "contentRotationID")
         }
 
-        guard let contentEncryptedAddressSignature = contentEncryptedAddressSignature else {
+        guard let contentEncryptedAddressSignature else {
             throw CoreDataError.corrupted(object: self, property: "contentEncryptedAddressSignature")
         }
 
-        guard let contentEncryptedVaultSignature = contentEncryptedVaultSignature else {
+        guard let contentEncryptedVaultSignature else {
             throw CoreDataError.corrupted(object: self, property: "contentEncryptedVaultSignature")
         }
 
-        guard let contentSignatureEmail = contentSignatureEmail else {
+        guard let contentSignatureEmail else {
             throw CoreDataError.corrupted(object: self, property: "contentSignatureEmail")
         }
 
         return .init(shareID: shareID,
                      vaultID: vaultID,
+                     addressID: addressID,
                      targetType: targetType,
                      targetID: targetID,
                      permission: permission,

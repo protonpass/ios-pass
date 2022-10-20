@@ -86,7 +86,7 @@ final class AppCoordinator {
             .receive(on: DispatchQueue.main)
             .dropFirst() // Don't react to default undefined state
             .sink { [weak self] appState in
-                guard let self = self else { return }
+                guard let self else { return }
                 switch appState {
                 case .loggedOut(let refreshTokenExpired):
                     self.wipeAllData()
@@ -104,7 +104,7 @@ final class AppCoordinator {
     }
 
     func start() {
-        if let sessionData = sessionData {
+        if let sessionData {
             appStateObserver.updateAppState(.loggedIn(sessionData))
         } else {
             appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
@@ -116,7 +116,7 @@ final class AppCoordinator {
             symmetricKey = String.random(length: 32)
         }
 
-        guard let symmetricKey = symmetricKey,
+        guard let symmetricKey,
               let symmetricKeyData = symmetricKey.data(using: .utf8) else {
             // Something really nasty is going on 💥
             throw AppCoordinatorError.failedToGetOrCreateSymmetricKey
@@ -256,7 +256,7 @@ extension AppCoordinator: AuthDelegate {
     }
 
     func onUpdate(credential auth: Credential, sessionUID: String) {
-        if let sessionData = sessionData {
+        if let sessionData {
             updateSessionData(sessionData, credential: auth)
         } else {
             appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
@@ -266,7 +266,7 @@ extension AppCoordinator: AuthDelegate {
     func onRefresh(sessionUID: String,
                    service: APIService,
                    complete: @escaping AuthRefreshResultCompletion) {
-        guard let sessionData = sessionData else {
+        guard let sessionData else {
             PPLogger.shared?.log("Access token expired but found no sessionData in keychain. Logging out...")
             appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
             return
@@ -275,7 +275,7 @@ extension AppCoordinator: AuthDelegate {
         let authenticator = Authenticator(api: apiService)
         let userData = sessionData.userData
         authenticator.refreshCredential(.init(userData.credential)) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case .success(.updatedCredential(let credential)), .success(.newCredential(let credential, _)):
                 PPLogger.shared?.log("Refreshed expired access token")

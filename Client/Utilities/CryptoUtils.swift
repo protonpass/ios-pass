@@ -56,7 +56,7 @@ public enum CryptoUtils {
         let data = try throwing { error in
             HelperGetJsonSHA256Fingerprints(key, &error)
         }
-        guard let data = data else {
+        guard let data else {
             throw CryptoError.failedToGetFingerprint
         }
         let array = try JSONDecoder().decode([String].self, from: data)
@@ -99,7 +99,7 @@ public enum CryptoUtils {
         guard let sessionKey = CryptoGenerateSessionKey(&error) else {
             throw CryptoError.failedToGenerateSessionKey
         }
-        if let error = error { throw error }
+        if let error { throw error }
         return sessionKey
     }
 

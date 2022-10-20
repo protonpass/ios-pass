@@ -23,7 +23,7 @@ import SwiftUI
 import UIComponents
 
 struct GeneratePasswordView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: GeneratePasswordViewModel
 
     init(viewModel: GeneratePasswordViewModel) {
@@ -79,7 +79,7 @@ struct GeneratePasswordView: View {
 
                 Button(action: {
                     viewModel.confirm()
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 }, label: {
                     Text(viewModel.mode.confirmTitle)
                         .foregroundColor(.white)
@@ -101,12 +101,10 @@ struct GeneratePasswordView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }, label: {
+            Button(action: dismiss.callAsFunction) {
                 Image(uiImage: IconProvider.cross)
                     .foregroundColor(.primary)
-            })
+            }
         }
     }
 }

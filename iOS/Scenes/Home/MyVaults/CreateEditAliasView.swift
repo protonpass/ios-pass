@@ -24,7 +24,7 @@ import SwiftUI
 import UIComponents
 
 struct CreateEditAliasView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditAliasViewModel
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnPrefix = false
@@ -61,9 +61,8 @@ struct CreateEditAliasView: View {
                         }
                         .padding()
                     }
-                    .discardChangesAlert(isPresented: $isShowingDiscardAlert) {
-                        presentationMode.wrappedValue.dismiss()
-                    }
+                    .discardChangesAlert(isPresented: $isShowingDiscardAlert,
+                                         onDiscard: dismiss.callAsFunction)
                 }
             }
             .toolbar { toolbarContent }
@@ -76,7 +75,11 @@ struct CreateEditAliasView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
-                isShowingDiscardAlert.toggle()
+                if viewModel.isEmpty {
+                    dismiss()
+                } else {
+                    isShowingDiscardAlert.toggle()
+                }
             }, label: {
                 Image(uiImage: IconProvider.cross)
             })
@@ -94,8 +97,8 @@ struct CreateEditAliasView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.brandNorm)
             }
-            .opacity(viewModel.state.isLoaded ? 1 : 0)
-            .disabled(!viewModel.state.isLoaded)
+            .opacity(viewModel.state.isLoaded && viewModel.isSaveable ? 1 : 0.5)
+            .disabled(!viewModel.state.isLoaded || !viewModel.isSaveable)
         }
     }
 
@@ -186,7 +189,7 @@ struct CreateEditAliasView: View {
 }
 
 private struct SuffixesView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @ObservedObject var suffixSelection: SuffixSelection
 
     var body: some View {
@@ -203,7 +206,7 @@ private struct SuffixesView: View {
                 .contentShape(Rectangle())
                 .onTapGesture {
                     suffixSelection.selectedSuffix = suffix
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 }
             }
         }
@@ -215,12 +218,10 @@ private struct SuffixesView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }, label: {
+            Button(action: dismiss.callAsFunction) {
                 Image(uiImage: IconProvider.chevronLeft)
                     .foregroundColor(.primary)
-            })
+            }
         }
 
         ToolbarItem(placement: .principal) {
@@ -231,7 +232,7 @@ private struct SuffixesView: View {
 }
 
 private struct MailboxesView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @ObservedObject var mailboxSelection: MailboxSelection
 
     var body: some View {
@@ -259,12 +260,10 @@ private struct MailboxesView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }, label: {
+            Button(action: dismiss.callAsFunction) {
                 Image(uiImage: IconProvider.chevronLeft)
                     .foregroundColor(.primary)
-            })
+            }
         }
 
         ToolbarItem(placement: .principal) {

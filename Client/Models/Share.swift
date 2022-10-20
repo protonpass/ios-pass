@@ -33,6 +33,9 @@ public struct Share: Decodable {
     /// ID of the vault this share belongs to
     public let vaultID: String
 
+    /// User address ID that has access to this share
+    public let addressID: String
+
     /// Type of share. 1 for vault, 2 for label and 3 for item
     public let targetType: Int16
 

@@ -23,7 +23,7 @@ import SwiftUI
 import UIComponents
 
 struct CreateEditNoteView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditNoteViewModel
     @State private var isShowingDiscardAlert = false
     @State private var isFocusedOnName = false
@@ -45,9 +45,8 @@ struct CreateEditNoteView: View {
             .toolbar { toolbarContent }
         }
         .disabled(viewModel.isLoading)
-        .discardChangesAlert(isPresented: $isShowingDiscardAlert) {
-            presentationMode.wrappedValue.dismiss()
-        }
+        .discardChangesAlert(isPresented: $isShowingDiscardAlert,
+                             onDiscard: dismiss.callAsFunction)
     }
 
     private var nameInputView: some View {
@@ -74,7 +73,7 @@ struct CreateEditNoteView: View {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
                 if viewModel.isEmpty {
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 } else {
                     isShowingDiscardAlert.toggle()
                 }
@@ -95,6 +94,8 @@ struct CreateEditNoteView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.brandNorm)
             }
+            .opacity(viewModel.isSaveable ? 1 : 0.5)
+            .disabled(!viewModel.isSaveable)
         }
     }
 }

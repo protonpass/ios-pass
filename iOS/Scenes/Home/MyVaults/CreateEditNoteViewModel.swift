@@ -29,9 +29,8 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     @Published var name = ""
     @Published var note = ""
 
-    var isEmpty: Bool {
-        name.isEmpty && note.isEmpty
-    }
+    var isEmpty: Bool { name.isEmpty && note.isEmpty }
+    override var isSaveable: Bool { !name.isEmpty }
 
     override func bindValues() {
         if case let .edit(itemContent) = mode,

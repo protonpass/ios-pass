@@ -23,7 +23,7 @@ import SwiftUI
 import UIComponents
 
 struct CreateItemView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     private let viewModel: CreateItemViewModel
 
     init(viewModel: CreateItemViewModel) {
@@ -73,12 +73,10 @@ struct CreateItemView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }, label: {
+            Button(action: dismiss.callAsFunction) {
                 Image(uiImage: IconProvider.cross)
-            })
-            .foregroundColor(Color(.label))
+                    .foregroundColor(Color(.label))
+            }
         }
     }
 }

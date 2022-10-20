@@ -34,7 +34,7 @@ public final class KeychainStorage<T: Codable> {
     }
 
     public func hasCypherdata() -> Bool {
-        guard let keychain = keychain else {
+        guard let keychain else {
             return false
         }
         return keychain.data(forKey: key.rawValue) != nil
@@ -51,12 +51,12 @@ public final class KeychainStorage<T: Codable> {
     public var wrappedValue: T? {
         get {
             let keyRawValue = key.rawValue
-            guard let keychain = keychain else {
+            guard let keychain else {
                 PPLogger.shared?.log("Keychain is not set for key \(keyRawValue). Fall back to defaultValue.")
                 return defaultValue
             }
 
-            guard let mainKeyProvider = mainKeyProvider else {
+            guard let mainKeyProvider else {
                 // swiftlint:disable:next line_length
                 PPLogger.shared?.log("MainKeyProvider is not set for key \(keyRawValue). Fall back to defaultValue.")
                 return defaultValue
@@ -87,12 +87,12 @@ public final class KeychainStorage<T: Codable> {
 
         set {
             let keyRawValue = key.rawValue
-            guard let keychain = keychain else {
+            guard let keychain else {
                 PPLogger.shared?.log("Keychain is not set for key \(key). Early exit.")
                 return
             }
 
-            guard let mainKeyProvider = mainKeyProvider else {
+            guard let mainKeyProvider else {
                 PPLogger.shared?.log("MainKeyProvider is not set for key \(key). Early exit")
                 return
             }
@@ -102,7 +102,7 @@ public final class KeychainStorage<T: Codable> {
                 return
             }
 
-            if let newValue = newValue {
+            if let newValue {
                 do {
                     let data = try JSONEncoder().encode(newValue)
                     let lockedData = try Locked<Data>(clearValue: data, with: mainKey)

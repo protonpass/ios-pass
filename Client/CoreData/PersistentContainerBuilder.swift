@@ -35,7 +35,7 @@ public extension NSPersistentContainer {
             container.persistentStoreDescriptions = [.init(url: url)]
 
             container.loadPersistentStores { _, error in
-                if let error = error {
+                if let error {
                     fatalError("Unresolved error \(error.localizedDescription)")
                 }
             }
