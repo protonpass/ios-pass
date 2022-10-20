@@ -33,6 +33,7 @@ extension ShareEntity {
     }
 
     @NSManaged var acceptanceSignature: String?
+    @NSManaged var addressID: String?
     @NSManaged var content: String?
     @NSManaged var contentEncryptedAddressSignature: String?
     @NSManaged var contentEncryptedVaultSignature: String?
@@ -56,10 +57,15 @@ extension ShareEntity {
 }
 
 extension ShareEntity {
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable function_body_length
     func toShare() throws -> Share {
         guard let shareID = shareID else {
             throw CoreDataError.corrupted(object: self, property: "shareID")
+        }
+
+        guard let addressID = addressID else {
+            throw CoreDataError.corrupted(object: self, property: "addressID")
         }
 
         guard let vaultID = vaultID else {
@@ -104,6 +110,7 @@ extension ShareEntity {
 
         return .init(shareID: shareID,
                      vaultID: vaultID,
+                     addressID: addressID,
                      targetType: targetType,
                      targetID: targetID,
                      permission: permission,
