@@ -29,7 +29,7 @@ protocol TrashedItemOptionsViewDelegate: AnyObject {
 }
 
 struct TrashedItemOptionsView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @State private var isShowingDeleteAlert = false
     let item: ItemListUiModel
     let delegate: TrashedItemOptionsViewDelegate
@@ -46,6 +46,7 @@ struct TrashedItemOptionsView: View {
                         }, icon: {
                             Image(uiImage: IconProvider.clockRotateLeft)
                         })
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     })
                     .foregroundColor(.primary)
 
@@ -59,6 +60,7 @@ struct TrashedItemOptionsView: View {
                         }, icon: {
                             Image(uiImage: IconProvider.infoCircle)
                         })
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     })
                     .foregroundColor(.primary)
 
@@ -75,6 +77,7 @@ struct TrashedItemOptionsView: View {
                             }, icon: {
                                 Image(uiImage: IconProvider.trash)
                             })
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         })
 
                     Spacer()
@@ -102,12 +105,10 @@ struct TrashedItemOptionsView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }, label: {
+            Button(action: dismiss.callAsFunction) {
                 Image(uiImage: IconProvider.cross)
-            })
-            .foregroundColor(.primary)
+                    .foregroundColor(.primary)
+            }
         }
 
         ToolbarItem(placement: .principal) {

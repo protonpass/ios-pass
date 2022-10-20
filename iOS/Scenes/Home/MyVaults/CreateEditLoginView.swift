@@ -24,7 +24,7 @@ import SwiftUI
 import UIComponents
 
 struct CreateEditLoginView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
     @State private var isShowingDiscardAlert = false
     @State private var isFocusedOnTitle = false
@@ -54,9 +54,8 @@ struct CreateEditLoginView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .disabled(viewModel.isLoading)
-        .discardChangesAlert(isPresented: $isShowingDiscardAlert) {
-            presentationMode.wrappedValue.dismiss()
-        }
+        .discardChangesAlert(isPresented: $isShowingDiscardAlert,
+                             onDiscard: dismiss.callAsFunction)
     }
 
     @ToolbarContentBuilder
@@ -64,7 +63,7 @@ struct CreateEditLoginView: View {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
                 if viewModel.isEmpty {
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 } else {
                     isShowingDiscardAlert.toggle()
                 }
