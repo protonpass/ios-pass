@@ -36,41 +36,51 @@ struct TrashedItemOptionsView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                Button(action: {
-                    delegate.trashedItemWantsToBeRestored(item)
-                }, label: {
-                    Label(title: {
-                        Text("Restore")
-                    }, icon: {
-                        Image(uiImage: IconProvider.clockRotateLeft)
+            ScrollView {
+                LazyVStack(alignment: .leading) {
+                    Button(action: {
+                        delegate.trashedItemWantsToBeRestored(item)
+                    }, label: {
+                        Label(title: {
+                            Text("Restore")
+                        }, icon: {
+                            Image(uiImage: IconProvider.clockRotateLeft)
+                        })
                     })
-                })
-                .foregroundColor(.primary)
+                    .foregroundColor(.primary)
 
-                Button(action: {
-                    delegate.trashedItemWantsToShowDetail(item)
-                }, label: {
-                    Label(title: {
-                        Text("Details")
-                    }, icon: {
-                        Image(uiImage: IconProvider.infoCircle)
-                    })
-                })
-                .foregroundColor(.primary)
+                    Divider()
 
-                Button(action: {
-                    isShowingDeleteAlert.toggle()
-                }, label: {
-                    Label(title: {
-                        Text("Delete permanently")
-                    }, icon: {
-                        Image(uiImage: IconProvider.trash)
+                    Button(action: {
+                        delegate.trashedItemWantsToShowDetail(item)
+                    }, label: {
+                        Label(title: {
+                            Text("Details")
+                        }, icon: {
+                            Image(uiImage: IconProvider.infoCircle)
+                        })
                     })
-                })
-                .foregroundColor(Color.red)
+                    .foregroundColor(.primary)
+
+                    Divider()
+
+                    Button(
+                        role: .destructive,
+                        action: {
+                            isShowingDeleteAlert.toggle()
+                        },
+                        label: {
+                            Label(title: {
+                                Text("Delete permanently")
+                            }, icon: {
+                                Image(uiImage: IconProvider.trash)
+                            })
+                        })
+
+                    Spacer()
+                }
+                .padding(.horizontal)
             }
-            .listStyle(.plain)
             .toolbar { toolbarContent }
             .navigationBarTitleDisplayMode(.inline)
         }
