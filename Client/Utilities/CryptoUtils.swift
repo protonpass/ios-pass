@@ -99,7 +99,7 @@ public enum CryptoUtils {
         guard let sessionKey = CryptoGenerateSessionKey(&error) else {
             throw CryptoError.failedToGenerateSessionKey
         }
-        if let error = error { throw error }
+        if let error { throw error }
         return sessionKey
     }
 

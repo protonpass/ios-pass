@@ -102,7 +102,7 @@ public final class KeychainStorage<T: Codable> {
                 return
             }
 
-            if let newValue = newValue {
+            if let newValue {
                 do {
                     let data = try JSONEncoder().encode(newValue)
                     let lockedData = try Locked<Data>(clearValue: data, with: mainKey)

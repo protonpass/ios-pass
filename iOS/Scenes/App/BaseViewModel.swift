@@ -47,7 +47,7 @@ class BaseViewModel {
         $error
             .sink { [weak self] error in
                 guard let self = self else { return }
-                if let error = error {
+                if let error {
                     self.delegate?.viewModelDidFailWithError(error)
                 }
             }

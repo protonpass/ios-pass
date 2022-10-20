@@ -39,7 +39,7 @@ public struct UserInputContainerView<Content: View>: View {
 
     public var body: some View {
         VStack(alignment: .leading) {
-            if let title = title {
+            if let title {
                 Text(title)
                     .font(.caption)
                     .fontWeight(.medium)

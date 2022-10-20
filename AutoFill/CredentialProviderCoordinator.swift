@@ -216,7 +216,7 @@ extension CredentialProviderCoordinator {
 extension CredentialProviderCoordinator {
     /// From Swift 5.7 this can be rewritten as `func showView(_ view: some View)`
     private func showView<V: View>(_ view: V) {
-        if let lastChildViewController = lastChildViewController {
+        if let lastChildViewController {
             lastChildViewController.willMove(toParent: nil)
             lastChildViewController.view.removeFromSuperview()
             lastChildViewController.removeFromParent()

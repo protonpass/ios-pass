@@ -104,7 +104,7 @@ final class AppCoordinator {
     }
 
     func start() {
-        if let sessionData = sessionData {
+        if let sessionData {
             appStateObserver.updateAppState(.loggedIn(sessionData))
         } else {
             appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
@@ -256,7 +256,7 @@ extension AppCoordinator: AuthDelegate {
     }
 
     func onUpdate(credential auth: Credential, sessionUID: String) {
-        if let sessionData = sessionData {
+        if let sessionData {
             updateSessionData(sessionData, credential: auth)
         } else {
             appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))

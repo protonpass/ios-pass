@@ -51,11 +51,11 @@ public extension Endpoint {
     var parameters: [String: Any]? {
         var finalParams: [String: Any] = [:]
 
-        if let queries = queries {
+        if let queries {
             finalParams.merge(queries) { _, new in new }
         }
 
-        if let body = body,
+        if let body,
            let data = try? JSONEncoder().encode(body),
            let bodyParams = (try? JSONSerialization.jsonObject(
             with: data,

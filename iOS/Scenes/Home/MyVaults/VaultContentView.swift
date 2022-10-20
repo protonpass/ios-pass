@@ -62,7 +62,7 @@ struct VaultContentView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .moveToTrashAlert(isPresented: $isShowingTrashingAlert) {
-            if let selectedItem = selectedItem {
+            if let selectedItem {
                 viewModel.trashItem(selectedItem)
             }
         }

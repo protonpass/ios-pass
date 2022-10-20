@@ -121,7 +121,7 @@ extension ItemEntity {
         self.modifyTime = item.item.modifyTime
         self.shareID = item.shareId
         self.isLogInItem = item.isLogInItem
-        if let lastUsedTime = lastUsedTime {
+        if let lastUsedTime {
             self.lastUsedTime = lastUsedTime
         }
     }
