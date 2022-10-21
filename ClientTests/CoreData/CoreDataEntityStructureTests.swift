@@ -92,6 +92,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "targetType", on: sut, hasType: .integer16)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "vaultID", on: sut, hasType: .string)
+        verifyAttribute(named: "addressID", on: sut, hasType: .string)
     }
 
     func testVaultKeyEntity() {

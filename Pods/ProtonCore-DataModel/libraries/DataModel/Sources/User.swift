@@ -22,7 +22,7 @@
 import Foundation
 
 public struct User: Codable, Equatable {
-    
+
     public let ID: String
     public let name: String?
     public let usedSpace: Double
@@ -82,6 +82,7 @@ public struct User: Codable, Equatable {
 public final class UserInfo: NSObject {
     public var attachPublicKey: Int
     public var autoSaveContact: Int
+    public var conversationToolbarActions: ToolbarActions
     public var crashReports: Int
     public var credit: Int
     public var currency: String
@@ -92,17 +93,20 @@ public final class UserInfo: NSObject {
     public var enableFolderColor: Int
     /// 0 - threading, 1 - single message
     public var groupingMode: Int
+    public var hideEmbeddedImages: Int
+    public var hideRemoteImages: Int
     public var imageProxy: ImageProxy
     public var inheritParentFolderColor: Int
     public var language: String
     public var linkConfirmation: LinkOpeningMode
+    public var listToolbarActions: ToolbarActions
     public var maxSpace: Int64
     public var maxUpload: Int64
+    public var messageToolbarActions: ToolbarActions
     public var notificationEmail: String
     public var notify: Int
     public var passwordMode: Int
     public var role: Int
-    public var showImages: ShowImages
     public var sign: Int
     /// 0: free user, > 0: paid user
     public var subscribed: Int
@@ -122,10 +126,12 @@ public final class UserInfo: NSObject {
                      keys: nil, userId: "", linkConfirmation: 0,
                      credit: 0, currency: "", subscribed: 0)
     }
-    
+
     // init from cache
     public required init(
         displayName: String?,
+        hideEmbeddedImages: Int?,
+        hideRemoteImages: Int?,
         imageProxy: Int?,
         maxSpace: Int64?,
         notificationEmail: String?,
@@ -136,7 +142,6 @@ public final class UserInfo: NSObject {
         language: String?,
         maxUpload: Int64?,
         notify: Int?,
-        showImages: Int?,
         swipeLeft: Int?,
         swipeRight: Int?,
         role: Int?,
@@ -157,7 +162,10 @@ public final class UserInfo: NSObject {
         weekStart: Int?,
         delaySendSeconds: Int?,
         telemetry: Int?,
-        crashReports: Int?)
+        crashReports: Int?,
+        conversationToolbarActions: ToolbarActions?,
+        messageToolbarActions: ToolbarActions?,
+        listToolbarActions: ToolbarActions?)
     {
         self.maxSpace = maxSpace ?? DefaultValue.maxSpace
         self.usedSpace = usedSpace ?? DefaultValue.usedSpace
@@ -167,7 +175,7 @@ public final class UserInfo: NSObject {
         self.delinquent = delinquent ?? DefaultValue.delinquent
         self.userKeys = keys ?? DefaultValue.userKeys
         self.userId = userId ?? DefaultValue.userId
-        
+
         // get from user settings
         self.crashReports = crashReports ?? DefaultValue.crashReports
         self.credit = credit ?? DefaultValue.credit
@@ -190,8 +198,9 @@ public final class UserInfo: NSObject {
         self.delaySendSeconds = delaySendSeconds ?? DefaultValue.delaySendSeconds
         self.displayName = displayName ?? DefaultValue.displayName
         self.groupingMode = groupingMode ?? DefaultValue.groupingMode
+        self.hideEmbeddedImages = hideEmbeddedImages ?? DefaultValue.hideEmbeddedImages
+        self.hideRemoteImages = hideRemoteImages ?? DefaultValue.hideRemoteImages
         self.imageProxy = imageProxy.map(ImageProxy.init(rawValue:)) ?? DefaultValue.imageProxy
-        self.showImages = showImages.map(ShowImages.init(rawValue:)) ?? DefaultValue.showImages
         self.sign = sign ?? DefaultValue.sign
         self.swipeLeft = swipeLeft ?? DefaultValue.swipeLeft
         self.swipeRight = swipeRight ?? DefaultValue.swipeRight
@@ -200,8 +209,11 @@ public final class UserInfo: NSObject {
         } else {
             self.linkConfirmation = DefaultValue.linkConfirmation
         }
+        self.conversationToolbarActions = conversationToolbarActions ?? DefaultValue.conversationToolbarActions
+        self.messageToolbarActions = messageToolbarActions ?? DefaultValue.messageToolbarActions
+        self.listToolbarActions = listToolbarActions ?? DefaultValue.listToolbarActions
     }
-    
+
     // init from api
     public required init(maxSpace: Int64?,
                          usedSpace: Int64?,
@@ -217,6 +229,7 @@ public final class UserInfo: NSObject {
                          subscribed: Int?) {
         self.attachPublicKey = DefaultValue.attachPublicKey
         self.autoSaveContact = DefaultValue.autoSaveContact
+        self.conversationToolbarActions = DefaultValue.conversationToolbarActions
         self.crashReports = DefaultValue.crashReports
         self.credit = credit ?? DefaultValue.credit
         self.currency = currency ?? DefaultValue.currency
@@ -226,17 +239,20 @@ public final class UserInfo: NSObject {
         self.displayName = DefaultValue.displayName
         self.enableFolderColor = DefaultValue.enableFolderColor
         self.groupingMode = DefaultValue.groupingMode
+        self.hideEmbeddedImages = DefaultValue.hideEmbeddedImages
+        self.hideRemoteImages = DefaultValue.hideRemoteImages
         self.imageProxy = DefaultValue.imageProxy
         self.inheritParentFolderColor = DefaultValue.inheritParentFolderColor
         self.language = language ?? DefaultValue.language
         self.linkConfirmation = linkConfirmation == 0 ? .openAtWill : DefaultValue.linkConfirmation
+        self.listToolbarActions = DefaultValue.listToolbarActions
         self.maxSpace = maxSpace ?? DefaultValue.maxSpace
         self.maxUpload = maxUpload ?? DefaultValue.maxUpload
+        self.messageToolbarActions = DefaultValue.messageToolbarActions
         self.notificationEmail = DefaultValue.notificationEmail
         self.notify = DefaultValue.notify
         self.passwordMode = DefaultValue.passwordMode
         self.role = role ?? DefaultValue.role
-        self.showImages = DefaultValue.showImages
         self.sign = DefaultValue.sign
         self.subscribed = subscribed ?? DefaultValue.subscribed
         self.swipeLeft = DefaultValue.swipeLeft
@@ -249,14 +265,14 @@ public final class UserInfo: NSObject {
         self.userKeys = keys ?? DefaultValue.userKeys
         self.weekStart = DefaultValue.weekStart
     }
-    
+
     /// Update user addresses
     ///
     /// - Parameter addresses: new addresses
     public func set(addresses: [Address]) {
         self.userAddresses = addresses
     }
-    
+
     /// set User, copy the data from input user object
     ///
     /// - Parameter userinfo: New user info
@@ -277,21 +293,17 @@ public final class UserInfo: NSObject {
 // exposed interfaces
 extension UserInfo {
 
-    public var autoShowRemote: Bool {
-        showImages.contains(.remote)
-    }
-    
     public var isPaid: Bool {
         return self.role > 0 ? true : false
     }
-    
+
     public func firstUserKey() -> Key? {
         if self.userKeys.count > 0 {
             return self.userKeys[0]
         }
         return nil
     }
-    
+
     public func getPrivateKey(by keyID: String?) -> String? {
         if let keyID = keyID {
             for userkey in self.userKeys where userkey.keyID == keyID {
@@ -300,7 +312,7 @@ extension UserInfo {
         }
         return firstUserKey()?.privateKey
     }
-    
+
     @available(*, deprecated, renamed: "isKeyV2")
     internal var newSchema: Bool {
         for key in addressKeys where key.newSchema {
@@ -308,11 +320,11 @@ extension UserInfo {
         }
         return false
     }
-    
+
     public var isKeyV2: Bool {
         return addressKeys.isKeyV2
     }
-    
+
     /// TODO:: fix me - Key stuff
     public var addressKeys: [Key] {
         var out = [Key]()
@@ -328,12 +340,12 @@ extension UserInfo {
         let addr = userAddresses.address(byID: address_id) ?? userAddresses.defaultSendAddress()
         return addr?.keys.first?.privateKey ?? ""
     }
-    
+
     public func getAddressKey(address_id: String) -> Key? {
         let addr = userAddresses.address(byID: address_id) ?? userAddresses.defaultSendAddress()
         return addr?.keys.first
     }
-    
+
     /// Get all keys that belong to the given address id
     /// - Parameter address_id: Address id
     /// - Returns: Keys of the given address id. nil means can't find the address
@@ -360,7 +372,9 @@ extension UserInfo {
         static let displayName: String = ""
         static let enableFolderColor: Int = 0
         static let groupingMode: Int = 0
-        static let imageProxy: ImageProxy = .none
+        static let hideEmbeddedImages: Int = 1
+        static let hideRemoteImages: Int = 0
+        static let imageProxy: ImageProxy = .imageProxy
         static let inheritParentFolderColor: Int = 0
         static let language: String = "en_US"
         static let linkConfirmation: LinkOpeningMode = .confirmationAlert
@@ -370,7 +384,6 @@ extension UserInfo {
         static let notify: Int = 0
         static let passwordMode: Int = 1
         static let role: Int = 0
-        static let showImages: ShowImages = .none
         static let sign: Int = 0
         static let subscribed: Int = 0
         static let swipeLeft: Int = 3
@@ -382,5 +395,8 @@ extension UserInfo {
         static let userId: String = ""
         static let userKeys: [Key] = []
         static let weekStart: Int = 0
+        static let conversationToolbarActions: ToolbarActions = .init(isCustom: false, actions: [])
+        static let messageToolbarActions: ToolbarActions = .init(isCustom: false, actions: [])
+        static let listToolbarActions: ToolbarActions = .init(isCustom: false, actions: [])
     }
 }
