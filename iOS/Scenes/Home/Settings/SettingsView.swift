@@ -18,6 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
+import LocalAuthentication
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -31,6 +34,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             AutoFillSection(viewModel: viewModel)
+            LocalAuthenticationSection(localAuthenticator: viewModel.localAuthenticator)
         }
         .toolbar { toolbarContent }
     }
@@ -86,5 +90,44 @@ private struct AutoFillSection: View {
                 }
             }
         })
+    }
+}
+
+private struct LocalAuthenticationSection: View {
+    @ObservedObject var localAuthenticator: LocalAuthenticator
+
+    var body: some View {
+        Section(content: {
+            switch localAuthenticator.biometryTypeState {
+            case .idle, .initializing:
+                ProgressView()
+            case .initialized(let biometryType):
+                view(for: biometryType)
+            case .error(let error):
+                Text(error.localizedDescription)
+            }
+        }, header: {
+            Text("Local authentication")
+        })
+    }
+
+    @ViewBuilder
+    private func view(for biometryType: LABiometryType) -> some View {
+        if let uiModel = biometryType.uiModel {
+            Toggle(isOn: $localAuthenticator.enabled) {
+                Label(title: {
+                    Text(uiModel.title)
+                }, icon: {
+                    if let icon = uiModel.icon {
+                        Image(systemName: icon)
+                            .foregroundColor(.blue)
+                    } else {
+                        EmptyView()
+                    }
+                })
+            }
+        } else {
+            Text("Not supported")
+        }
     }
 }
