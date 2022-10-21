@@ -85,6 +85,7 @@ private struct AutoFillSection: View {
                         }
                     }, label: {
                         Text("Open Settings")
+                            .font(.caption)
                     })
                     .foregroundColor(.brandNorm)
                 }

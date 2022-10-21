@@ -64,6 +64,15 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
                 self?.refresh()
             }
             .store(in: &cancellables)
+
+        localAuthenticator.$authenticationState
+            .sink { [weak self] state in
+                guard let self else { return }
+                if case let .error(error) = state {
+                    self.delegate?.viewModelDidFailWithError(error)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func refresh() {
