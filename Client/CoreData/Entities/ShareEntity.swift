@@ -148,6 +148,7 @@ extension ShareEntity {
         targetID = share.targetID
         targetType = share.targetType
         vaultID = share.vaultID
+        addressID = share.addressID
         userID = userId
     }
 }
