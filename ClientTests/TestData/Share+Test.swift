@@ -24,6 +24,7 @@ extension Share {
     static func random(shareId: String? = nil) -> Share {
         .init(shareID: shareId ?? .random(),
               vaultID: .random(),
+              addressID: .random(),
               targetType: .random(in: 0...10),
               targetID: .random(),
               permission: .random(in: 0...10),
