@@ -26,8 +26,10 @@ final class Preferences: ObservableObject {
     static let shared = Preferences()
 
     @AppStorage("quickTypeBar") var quickTypeBar = true
+    @AppStorage("failedAttemptCount") var failedAttemptCount = 0
 
     func reset() {
         quickTypeBar = true
+        failedAttemptCount = 0
     }
 }

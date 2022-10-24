@@ -20,10 +20,18 @@
 
 import ProtonCore_Login
 
+public enum LogOutReason {
+    case noSessionData
+    case expiredRefreshToken
+    case failedToGenerateSymmetricKey
+    case failedLocalAuthentication
+    case userInitiated
+}
+
 public enum AppState {
-    /// Log out state can hold a boolean which indicates if it is caused by an expired refresh token
-    case loggedOut(refreshTokenExpired: Bool)
-    case loggedIn(SessionData)
+    case loggedOut(LogOutReason)
+    /// `munualLogIn` to tell if the app uses existing `SessionData` from last session or not
+    case loggedIn(data: SessionData, manualLogIn: Bool)
     case undefined
 }
 
