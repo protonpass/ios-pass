@@ -43,7 +43,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override var isSaveable: Bool {
-        !title.isEmpty && !username.isEmpty && !password.isEmpty
+        !title.isEmpty && !password.isEmpty
     }
 
     override func bindValues() {
