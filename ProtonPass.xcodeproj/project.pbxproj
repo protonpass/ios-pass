@@ -234,6 +234,7 @@
 		35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1E28B027C000CEDDE6 /* UpdateItemRequest.swift */; };
 		35AABE2128B0288B00CEDDE6 /* UpdateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
+		35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B2F5A32906C76D00F74108 /* AppContentCoverView.swift */; };
 		35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E00615288BE5FE00FAAD65 /* SessionData.swift */; };
 		35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
 		35E50649286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
@@ -641,6 +642,7 @@
 		35AABE1E28B027C000CEDDE6 /* UpdateItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateItemRequest.swift; sourceTree = "<group>"; };
 		35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateItemEndpoint.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
+		35B2F5A32906C76D00F74108 /* AppContentCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContentCoverView.swift; sourceTree = "<group>"; };
 		35E00615288BE5FE00FAAD65 /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		35E50636286F819F00A3F6EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35E5063B286F819F00A3F6EA /* Proton Pass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Pass.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1497,6 +1499,7 @@
 		35E50711286FB5EF00A3F6EA /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				35B2F5A32906C76D00F74108 /* AppContentCoverView.swift */,
 				35E50713286FB60500A3F6EA /* HomeCoordinator.swift */,
 				355635B6288947DD00F32353 /* VaultSelection.swift */,
 				3547ABCC2876CFA700EE85E1 /* MyVaults */,
@@ -2309,6 +2312,7 @@
 				35E50714286FB60500A3F6EA /* HomeCoordinator.swift in Sources */,
 				350A97DC2885FD7900A7168B /* MyVaultsViewModel.swift in Sources */,
 				355635BF2889664200F32353 /* LoadVaultsViewModel.swift in Sources */,
+				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
 				3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */,
 				35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */,
 				3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */,

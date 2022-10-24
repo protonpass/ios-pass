@@ -64,6 +64,9 @@ final class HomeCoordinator: DeinitPrintable {
     private lazy var sideMenuController = provideSideMenuController()
     private lazy var sidebarViewController = provideSidebarViewController()
 
+    // Cover view
+    private lazy var appContentCoverViewController = UIHostingController(rootView: AppContentCoverView())
+
     // My vaults
     let vaultSelection: VaultSelection
     private lazy var myVaultsCoordinator = provideMyVaultsCoordinator()
@@ -153,6 +156,20 @@ private extension HomeCoordinator {
                         PPLogger.shared?.log(error)
                     }
                 }
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: UIScene.didActivateNotification)
+            .sink { [unowned self] _ in
+                hideCoverView()
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: UIScene.willDeactivateNotification)
+            .sink { [unowned self] _ in
+                showCoverView()
             }
             .store(in: &cancellables)
     }
@@ -264,6 +281,41 @@ private extension HomeCoordinator {
 
     func hideLoadingHud() {
         MBProgressHUD.hide(for: topMostViewController.view, animated: true)
+    }
+}
+
+// MARK: - Cover
+private extension HomeCoordinator {
+    func showCoverView() {
+        guard let coverView = appContentCoverViewController.view,
+        let sideMenuView = sideMenuController.view else { return }
+        sideMenuController.addChild(appContentCoverViewController)
+        coverView.translatesAutoresizingMaskIntoConstraints = false
+        sideMenuView.addSubview(coverView)
+        coverView.alpha = 0.0
+        NSLayoutConstraint.activate([
+            coverView.topAnchor.constraint(equalTo: sideMenuView.topAnchor),
+            coverView.leadingAnchor.constraint(equalTo: sideMenuView.leadingAnchor),
+            coverView.bottomAnchor.constraint(equalTo: sideMenuView.bottomAnchor),
+            coverView.trailingAnchor.constraint(equalTo: sideMenuView.trailingAnchor)
+        ])
+        appContentCoverViewController.didMove(toParent: sideMenuController)
+        UIView.animate(withDuration: 0.15) {
+            coverView.alpha = 1.0
+        }
+    }
+
+    func hideCoverView() {
+        UIView.animate(
+            withDuration: 0.15,
+            animations: {
+                self.appContentCoverViewController.view.alpha = 0.0
+            },
+            completion: { [unowned self] _ in
+                self.appContentCoverViewController.willMove(toParent: nil)
+                self.appContentCoverViewController.view.removeFromSuperview()
+                self.appContentCoverViewController.removeFromParent()
+            })
     }
 }
 
