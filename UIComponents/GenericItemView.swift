@@ -69,11 +69,13 @@ public struct GenericItemView<TrailingView: View>: View {
 
                         VStack(alignment: .leading, spacing: 4) {
                             Text(item.title)
-                            if let detail = item.detail {
+                            if let detail = item.detail, !detail.isEmpty {
                                 Text(detail)
                                     .font(.callout)
                                     .foregroundColor(Color(.secondaryLabel))
                                     .lineLimit(subtitleLineLimit)
+                            } else {
+                                EmptyNoteText()
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
