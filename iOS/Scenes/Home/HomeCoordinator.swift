@@ -33,6 +33,7 @@ import UIKit
 
 protocol HomeCoordinatorDelegate: AnyObject {
     func homeCoordinatorDidSignOut()
+    func homeCoordinatorRequestsLocalAuthentication()
 }
 
 // swiftlint:disable:next todo
@@ -142,6 +143,7 @@ private extension HomeCoordinator {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [unowned self] _ in
+                delegate?.homeCoordinatorRequestsLocalAuthentication()
                 Task {
                     do {
                         try await credentialManager.insertAllCredentials(from: itemRepository,

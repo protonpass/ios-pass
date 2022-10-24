@@ -156,10 +156,9 @@ final class AppCoordinator {
             homeCoordinator.delegate = self
             self.homeCoordinator = homeCoordinator
             self.welcomeCoordinator = nil
-            animateUpdateRootViewController(homeCoordinator.rootViewController) { [unowned self] in
-                if !manualLogIn {
-                    self.showAppLockedViewControllerIfNecessary()
-                }
+            animateUpdateRootViewController(homeCoordinator.rootViewController)
+            if !manualLogIn {
+                self.requestLocalAuthenticationIfNecessary()
             }
         } catch {
             PPLogger.shared?.log(error)
@@ -247,6 +246,10 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
 extension AppCoordinator: HomeCoordinatorDelegate {
     func homeCoordinatorDidSignOut() {
         appStateObserver.updateAppState(.loggedOut(.userInitiated))
+    }
+
+    func homeCoordinatorRequestsLocalAuthentication() {
+        requestLocalAuthenticationIfNecessary()
     }
 }
 
@@ -341,11 +344,11 @@ private extension AppCoordinator {
         return viewController
     }
 
-    func showAppLockedViewControllerIfNecessary() {
+    func requestLocalAuthenticationIfNecessary() {
         guard LocalAuthenticator().enabled else { return }
-        appLockedViewController = makeAppLockedViewController()
-        guard let appLockedViewController else { return }
-        rootViewController?.present(appLockedViewController, animated: false)
+        self.appLockedViewController = self.makeAppLockedViewController()
+        guard let appLockedViewController = self.appLockedViewController else { return }
+        self.rootViewController?.present(appLockedViewController, animated: false)
     }
 
     func alertFailedLocalAuthentication() {
