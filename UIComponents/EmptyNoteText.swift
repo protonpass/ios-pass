@@ -1,5 +1,5 @@
 //
-// EmptyText.swift
+// EmptyNoteText.swift
 // Proton Pass - Created on 14/10/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,11 +20,11 @@
 
 import SwiftUI
 
-public struct EmptyText: View {
+public struct EmptyNoteText: View {
     public init() {}
 
     public var body: some View {
-        Text("Empty")
+        Text("Empty note")
             .font(.callout.italic())
             .foregroundColor(.secondary)
     }

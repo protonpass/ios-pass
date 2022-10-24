@@ -151,7 +151,7 @@ private struct ConcreteAliasDetailView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Notes")
             if note.isEmpty {
-                EmptyText()
+                EmptyNoteText()
             } else {
                 Text(note)
                     .font(.callout)

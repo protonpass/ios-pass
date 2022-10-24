@@ -35,7 +35,7 @@ struct NoteDetailView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Note")
             if viewModel.note.isEmpty {
-                EmptyText()
+                EmptyNoteText()
             } else {
                 Text(viewModel.note)
                     .font(.callout)
