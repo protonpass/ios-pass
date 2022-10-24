@@ -1,6 +1,6 @@
 //
-// Preferences.swift
-// Proton Pass - Created on 05/10/2022.
+// AppContentCoverView.swift
+// Proton Pass - Created on 24/10/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,16 +20,13 @@
 
 import SwiftUI
 
-final class Preferences: ObservableObject {
-    private init() {}
-
-    static let shared = Preferences()
-
-    @AppStorage("quickTypeBar") var quickTypeBar = true
-    @AppStorage("failedAttemptCount") var failedAttemptCount = 0
-
-    func reset() {
-        quickTypeBar = true
-        failedAttemptCount = 0
+struct AppContentCoverView: View {
+    var body: some View {
+        ZStack {
+            Image("ProtonPassIcon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 150)
+        }
     }
 }

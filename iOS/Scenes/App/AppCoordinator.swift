@@ -58,6 +58,8 @@ final class AppCoordinator {
 
     private var rootViewController: UIViewController? { window.rootViewController }
 
+    private var appLockedViewController: UIViewController?
+
     private var cancellables = Set<AnyCancellable>()
 
     init(window: UIWindow) {
@@ -88,13 +90,13 @@ final class AppCoordinator {
             .sink { [weak self] appState in
                 guard let self else { return }
                 switch appState {
-                case .loggedOut(let refreshTokenExpired):
+                case .loggedOut(let reason):
                     self.wipeAllData()
-                    self.showWelcomeScene(refreshTokenExpired: refreshTokenExpired)
+                    self.showWelcomeScene(reason: reason)
 
-                case .loggedIn(let sessionData):
+                case let .loggedIn(sessionData, manualLogIn):
                     self.sessionData = sessionData
-                    self.showHomeScene(sessionData: sessionData)
+                    self.showHomeScene(sessionData: sessionData, manualLogIn: manualLogIn)
 
                 case .undefined:
                     PPLogger.shared?.log("Undefined app state. Don't know what to do...")
@@ -105,9 +107,9 @@ final class AppCoordinator {
 
     func start() {
         if let sessionData {
-            appStateObserver.updateAppState(.loggedIn(sessionData))
+            appStateObserver.updateAppState(.loggedIn(data: sessionData, manualLogIn: false))
         } else {
-            appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
+            appStateObserver.updateAppState(.loggedOut(.noSessionData))
         }
     }
 
@@ -125,19 +127,24 @@ final class AppCoordinator {
         return .init(data: symmetricKeyData)
     }
 
-    private func showWelcomeScene(refreshTokenExpired: Bool) {
+    private func showWelcomeScene(reason: LogOutReason) {
         let welcomeCoordinator = WelcomeCoordinator(apiServiceDelegate: self)
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
         self.homeCoordinator = nil
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [unowned self] in
-            if refreshTokenExpired {
+            switch reason {
+            case .expiredRefreshToken:
                 self.alertRefreshTokenExpired()
+            case .failedLocalAuthentication:
+                self.alertFailedLocalAuthentication()
+            default:
+                break
             }
         }
     }
 
-    private func showHomeScene(sessionData: SessionData) {
+    private func showHomeScene(sessionData: SessionData, manualLogIn: Bool) {
         do {
             let symmetricKey = try getOrCreateSymmetricKey()
             let homeCoordinator = HomeCoordinator(sessionData: sessionData,
@@ -150,10 +157,13 @@ final class AppCoordinator {
             self.homeCoordinator = homeCoordinator
             self.welcomeCoordinator = nil
             animateUpdateRootViewController(homeCoordinator.rootViewController)
+            if !manualLogIn {
+                self.requestLocalAuthenticationIfNecessary()
+            }
         } catch {
             PPLogger.shared?.log(error)
             wipeAllData()
-            appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
+            appStateObserver.updateAppState(.loggedOut(.failedToGenerateSymmetricKey))
         }
     }
 
@@ -227,7 +237,7 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
             fatalError("Impossible case. Make sure minimumAccountType is set as internal in LoginAndSignUp")
         case .userData(let userData):
             let sessionData = SessionData(userData: userData)
-            appStateObserver.updateAppState(.loggedIn(sessionData))
+            appStateObserver.updateAppState(.loggedIn(data: sessionData, manualLogIn: true))
         }
     }
 }
@@ -235,7 +245,11 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
 // MARK: - HomeCoordinatorDelegate
 extension AppCoordinator: HomeCoordinatorDelegate {
     func homeCoordinatorDidSignOut() {
-        appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
+        appStateObserver.updateAppState(.loggedOut(.userInitiated))
+    }
+
+    func homeCoordinatorRequestsLocalAuthentication() {
+        requestLocalAuthenticationIfNecessary()
     }
 }
 
@@ -252,14 +266,14 @@ extension AppCoordinator: AuthDelegate {
     func getToken(bySessionUID uid: String) -> AuthCredential? { sessionData?.userData.credential }
 
     func onLogout(sessionUID uid: String) {
-        appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: true))
+        appStateObserver.updateAppState(.loggedOut(.expiredRefreshToken))
     }
 
     func onUpdate(credential auth: Credential, sessionUID: String) {
         if let sessionData {
             updateSessionData(sessionData, credential: auth)
         } else {
-            appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
+            appStateObserver.updateAppState(.loggedOut(.noSessionData))
         }
     }
 
@@ -268,7 +282,7 @@ extension AppCoordinator: AuthDelegate {
                    complete: @escaping AuthRefreshResultCompletion) {
         guard let sessionData else {
             PPLogger.shared?.log("Access token expired but found no sessionData in keychain. Logging out...")
-            appStateObserver.updateAppState(.loggedOut(refreshTokenExpired: false))
+            appStateObserver.updateAppState(.loggedOut(.noSessionData))
             return
         }
         PPLogger.shared?.log("Refreshing expired access token")
@@ -313,5 +327,35 @@ extension AppCoordinator: APIServiceDelegate {
         // swiftlint:disable:next todo
         // TODO: Handle this
         return true
+    }
+}
+
+// MARK: - Local authentication
+private extension AppCoordinator {
+    func makeAppLockedViewController() -> UIViewController {
+        let view = AppLockedView(onSuccess: { [unowned self] in
+            self.appLockedViewController?.dismiss(animated: true)
+            self.appLockedViewController = nil
+        }, onFailure: { [unowned self] in
+            self.appStateObserver.updateAppState(.loggedOut(.failedLocalAuthentication))
+        })
+        let viewController = UIHostingController(rootView: view)
+        viewController.modalPresentationStyle = .fullScreen
+        return viewController
+    }
+
+    func requestLocalAuthenticationIfNecessary() {
+        guard LocalAuthenticator().enabled else { return }
+        self.appLockedViewController = self.makeAppLockedViewController()
+        guard let appLockedViewController = self.appLockedViewController else { return }
+        self.rootViewController?.present(appLockedViewController, animated: false)
+    }
+
+    func alertFailedLocalAuthentication() {
+        let alert = UIAlertController(title: "Failed to authenticate",
+                                      message: "You have to log in again in order to continue using Proton Pass",
+                                      preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default))
+        rootViewController?.present(alert, animated: true)
     }
 }

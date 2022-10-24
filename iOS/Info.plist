@@ -33,5 +33,7 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Restrict unwelcome access to your Proton Pass account on this device</string>
 </dict>
 </plist>

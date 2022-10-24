@@ -42,6 +42,8 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
         }
     }
 
+    let localAuthenticator = LocalAuthenticator()
+
     var onToggleSidebar: (() -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
@@ -54,14 +56,28 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
         self.preferences = preferences
         super.init()
         self.quickTypeBar = preferences.quickTypeBar
-        self.updateAutoFillAvalability()
+        self.refresh()
 
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
-                self?.updateAutoFillAvalability()
+                self?.refresh()
             }
             .store(in: &cancellables)
+
+        localAuthenticator.$authenticationState
+            .sink { [weak self] state in
+                guard let self else { return }
+                if case let .error(error) = state {
+                    self.delegate?.viewModelDidFailWithError(error)
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    private func refresh() {
+        updateAutoFillAvalability()
+        localAuthenticator.initializeBiometryType()
     }
 
     private func updateAutoFillAvalability() {
