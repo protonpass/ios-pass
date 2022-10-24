@@ -102,7 +102,12 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override var isSaveable: Bool {
-        !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty
+        switch mode {
+        case .create:
+            return !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty
+        case .edit:
+            return !title.isEmpty && !mailboxes.isEmpty
+        }
     }
 
     init(mode: ItemMode,
