@@ -18,19 +18,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 
 struct LockedCredentialView: View {
+    let preferences: Preferences
     let viewModel: LockedCredentialViewModel
 
-    init(viewModel: LockedCredentialViewModel) {
+    init(preferences: Preferences, viewModel: LockedCredentialViewModel) {
+        self.preferences = preferences
         self.viewModel = viewModel
     }
 
     var body: some View {
         NavigationView {
-            AppLockedView(delayed: true,
+            AppLockedView(preferences: preferences,
+                          delayed: true,
                           onSuccess: viewModel.getAndReturnCredential,
                           onFailure: viewModel.handleAuthenticationFailure)
             .toolbar { toolbarContent }

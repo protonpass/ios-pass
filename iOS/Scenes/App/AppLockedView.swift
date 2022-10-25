@@ -25,8 +25,8 @@ import SwiftUI
 private let kMaxAttemptCount = 3
 
 struct AppLockedView: View {
-    @ObservedObject private var authenticator = LocalAuthenticator()
-    @ObservedObject private var preferences = Preferences.shared
+    @StateObject private var authenticator: LocalAuthenticator
+    @ObservedObject private var preferences: Preferences
     private let delayed: Bool
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
@@ -34,9 +34,12 @@ struct AppLockedView: View {
     private var isLastAttempt: Bool { preferences.failedAttemptCount == kMaxAttemptCount - 1 }
     private var remainingAttempts: Int { kMaxAttemptCount - preferences.failedAttemptCount }
 
-    init(delayed: Bool,
+    init(preferences: Preferences,
+         delayed: Bool,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
+        self._authenticator = .init(wrappedValue: .init(preferences: preferences))
+        self._preferences = .init(wrappedValue: preferences)
         self.delayed = delayed
         self.onSuccess = onSuccess
         self.onFailure = onFailure
@@ -66,6 +69,8 @@ struct AppLockedView: View {
                 .task {
                     if preferences.failedAttemptCount == 0 {
                         await authenticate(delayed: delayed)
+                    } else if preferences.failedAttemptCount >= kMaxAttemptCount {
+                        onFailure()
                     }
                 }
 

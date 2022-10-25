@@ -174,11 +174,10 @@
 		355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F42907FB3200268116 /* LockedCredentialView.swift */; };
 		355751F62907FB9000268116 /* AppLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531B5422902DA890070D2EE /* AppLockedView.swift */; };
 		355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */; };
-		355751F9290803B100268116 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
+		355751FA2908745B00268116 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
 		355C92CC28CB9121000B1D9B /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355C92CB28CB9121000B1D9B /* BaseViewModel.swift */; };
 		355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */; };
 		355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */; };
-		356043F928ED6B54003BDDDC /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
 		35610B7128ABAAC500955ACB /* LocalItemKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7028ABAAC500955ACB /* LocalItemKeyDatasource.swift */; };
 		35610B7328ABAF0300955ACB /* LocalItemKeyDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7228ABAF0300955ACB /* LocalItemKeyDatasourceTests.swift */; };
 		35610B7528ABB77800955ACB /* LocalVaultKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7428ABB77800955ACB /* LocalVaultKeyDatasource.swift */; };
@@ -1145,6 +1144,7 @@
 			children = (
 				356C2AAF28730EF00020F577 /* MainKeyProvider.swift */,
 				356B21D92870F97F001220CB /* PPKeychain.swift */,
+				356043F828ED6B54003BDDDC /* Preferences.swift */,
 				356C2AB1287310D60020F577 /* KeychainStorage.swift */,
 			);
 			path = Storage;
@@ -1499,7 +1499,6 @@
 				3531B5422902DA890070D2EE /* AppLockedView.swift */,
 				355C92CB28CB9121000B1D9B /* BaseViewModel.swift */,
 				35E5070F286FB5BA00A3F6EA /* Flows.swift */,
-				356043F828ED6B54003BDDDC /* Preferences.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -2265,7 +2264,6 @@
 			files = (
 				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
-				355751F9290803B100268116 /* Preferences.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
 				3520F36928E32DCF0053A606 /* ProtonPass.xcdatamodeld in Sources */,
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
@@ -2336,7 +2334,6 @@
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
-				356043F928ED6B54003BDDDC /* Preferences.swift in Sources */,
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
 				354BB15528A2895F00F50040 /* SearchView.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
@@ -2477,6 +2474,7 @@
 				35E506FC286FB37300A3F6EA /* Coordinator.swift in Sources */,
 				35426B5C28EF17F100F89BB7 /* Rule.swift in Sources */,
 				354036DF28F4522000F9E729 /* URLUtils+Matcher.swift in Sources */,
+				355751FA2908745B00268116 /* Preferences.swift in Sources */,
 				35426B5E28EF183900F89BB7 /* RuleLabel.swift in Sources */,
 				35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */,
 				354513E728E4CE700020A93A /* CodableBase64.swift in Sources */,

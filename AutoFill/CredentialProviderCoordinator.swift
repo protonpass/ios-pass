@@ -42,6 +42,7 @@ public final class CredentialProviderCoordinator {
     private var apiService: APIService
     private let container: NSPersistentContainer
     private let context: ASCredentialProviderExtensionContext
+    private let preferences: Preferences
     private let credentialManager: CredentialManagerProtocol
     private let rootViewController: UIViewController
     private var lastChildViewController: UIViewController?
@@ -49,6 +50,7 @@ public final class CredentialProviderCoordinator {
     init(apiService: APIService,
          container: NSPersistentContainer,
          context: ASCredentialProviderExtensionContext,
+         preferences: Preferences,
          credentialManager: CredentialManagerProtocol,
          rootViewController: UIViewController) {
         let keychain = PPKeychain()
@@ -62,6 +64,7 @@ public final class CredentialProviderCoordinator {
         self.apiService = apiService
         self.container = container
         self.context = context
+        self.preferences = preferences
         self.credentialManager = credentialManager
         self.rootViewController = rootViewController
         self.apiService.authDelegate = self
@@ -88,7 +91,7 @@ public final class CredentialProviderCoordinator {
             return
         }
 
-        if LocalAuthenticator().enabled {
+        if preferences.localAuthenticationEnabled {
             cancel(errorCode: .userInteractionRequired)
         } else {
             Task {
@@ -150,7 +153,7 @@ public final class CredentialProviderCoordinator {
                      symmetricKey: symmetricKey,
                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
         }
-        showView(LockedCredentialView(viewModel: viewModel))
+        showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
     }
 
     private func makeSymmetricKeyAndItemRepository() -> (SymmetricKey, ItemRepositoryProtocol)? {
