@@ -24,12 +24,6 @@ import Core
 import CryptoKit
 import SwiftUI
 
-public enum LockedCredentialViewModelError: Error {
-    case emptyRecordIdentifier
-    case failedToAuthenticate
-    case userCancelled
-}
-
 final class LockedCredentialViewModel: ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
@@ -50,7 +44,7 @@ final class LockedCredentialViewModel: ObservableObject {
         Task {
             do {
                 guard let recordIdentifier = credentialIdentity.recordIdentifier else {
-                    throw LockedCredentialViewModelError.emptyRecordIdentifier
+                    throw CredentialProviderError.emptyRecordIdentifier
                 }
                 let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
                 guard let item = try await self.itemRepository.getItem(shareId: ids.shareId,
@@ -74,10 +68,10 @@ final class LockedCredentialViewModel: ObservableObject {
     }
 
     func handleAuthenticationFailure() {
-        onFailure?(LockedCredentialViewModelError.failedToAuthenticate)
+        onFailure?(CredentialProviderError.failedToAuthenticate)
     }
 
     func handleCancellation() {
-        onFailure?(LockedCredentialViewModelError.userCancelled)
+        onFailure?(CredentialProviderError.userCancelled)
     }
 }

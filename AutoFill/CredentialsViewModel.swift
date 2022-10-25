@@ -52,6 +52,7 @@ final class CredentialsViewModel: ObservableObject {
 
     var onClose: (() -> Void)?
     var onSelect: ((ASPasswordCredential, SymmetricallyEncryptedItem) -> Void)?
+    var onFailure: ((Error) -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey,
@@ -88,6 +89,10 @@ extension CredentialsViewModel {
                 state = .error(error)
             }
         }
+    }
+
+    func handleAuthenticationFailure() {
+        onFailure?(CredentialProviderError.failedToAuthenticate)
     }
 }
 

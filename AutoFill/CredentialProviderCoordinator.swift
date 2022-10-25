@@ -30,6 +30,12 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import SwiftUI
 
+enum CredentialProviderError: Error {
+    case emptyRecordIdentifier
+    case failedToAuthenticate
+    case userCancelled
+}
+
 public final class CredentialProviderCoordinator {
     @KeychainStorage(key: .sessionData)
     private var sessionData: SessionData?
@@ -127,25 +133,7 @@ public final class CredentialProviderCoordinator {
         let viewModel = LockedCredentialViewModel(itemRepository: itemRepository,
                                                   symmetricKey: symmetricKey,
                                                   credentialIdentity: credentialIdentity)
-        viewModel.onFailure = { [unowned self] error in
-            switch error as? LockedCredentialViewModelError {
-            case .userCancelled:
-                cancel(errorCode: .userCanceled)
-                return
-            case .failedToAuthenticate:
-                Task {
-                    defer { cancel(errorCode: .failed) }
-                    do {
-                        sessionData = nil
-                        try await credentialManager.removeAllCredentials()
-                    } catch {
-                        PPLogger.shared?.log(error)
-                    }
-                }
-            default:
-                cancel(errorCode: .failed)
-            }
-        }
+        viewModel.onFailure = handle(error:)
         viewModel.onSuccess = { [unowned self] credential, item in
             complete(credential: credential,
                      encryptedItem: item,
@@ -154,6 +142,26 @@ public final class CredentialProviderCoordinator {
                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
         }
         showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
+    }
+
+    private func handle(error: Error) {
+        switch error as? CredentialProviderError {
+        case .userCancelled:
+            cancel(errorCode: .userCanceled)
+            return
+        case .failedToAuthenticate:
+            Task {
+                defer { cancel(errorCode: .failed) }
+                do {
+                    sessionData = nil
+                    try await credentialManager.removeAllCredentials()
+                } catch {
+                    PPLogger.shared?.log(error)
+                }
+            }
+        default:
+            cancel(errorCode: .failed)
+        }
     }
 
     private func makeSymmetricKeyAndItemRepository() -> (SymmetricKey, ItemRepositoryProtocol)? {
@@ -298,7 +306,8 @@ extension CredentialProviderCoordinator {
                           symmetricKey: symmetricKey,
                           serviceIdentifiers: serviceIdentifiers)
         }
-        showView(CredentialsView(viewModel: viewModel))
+        viewModel.onFailure = handle(error:)
+        showView(CredentialsView(viewModel: viewModel, preferences: preferences))
     }
 
     private func showNoLoggedInView() {
