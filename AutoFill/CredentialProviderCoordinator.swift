@@ -30,6 +30,12 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import SwiftUI
 
+enum CredentialProviderError: Error {
+    case emptyRecordIdentifier
+    case failedToAuthenticate
+    case userCancelled
+}
+
 public final class CredentialProviderCoordinator {
     @KeychainStorage(key: .sessionData)
     private var sessionData: SessionData?
@@ -42,6 +48,7 @@ public final class CredentialProviderCoordinator {
     private var apiService: APIService
     private let container: NSPersistentContainer
     private let context: ASCredentialProviderExtensionContext
+    private let preferences: Preferences
     private let credentialManager: CredentialManagerProtocol
     private let rootViewController: UIViewController
     private var lastChildViewController: UIViewController?
@@ -49,6 +56,7 @@ public final class CredentialProviderCoordinator {
     init(apiService: APIService,
          container: NSPersistentContainer,
          context: ASCredentialProviderExtensionContext,
+         preferences: Preferences,
          credentialManager: CredentialManagerProtocol,
          rootViewController: UIViewController) {
         let keychain = PPKeychain()
@@ -62,6 +70,7 @@ public final class CredentialProviderCoordinator {
         self.apiService = apiService
         self.container = container
         self.context = context
+        self.preferences = preferences
         self.credentialManager = credentialManager
         self.rootViewController = rootViewController
         self.apiService.authDelegate = self
@@ -82,20 +91,15 @@ public final class CredentialProviderCoordinator {
 
     /// QuickType bar support
     func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let sessionData,
-              let symmetricKeyData = symmetricKey?.data(using: .utf8),
-              let recordIdentifier = credentialIdentity.recordIdentifier else {
+        guard let (symmetricKey, itemRepository) = makeSymmetricKeyAndItemRepository(),
+        let recordIdentifier = credentialIdentity.recordIdentifier else {
             cancel(errorCode: .failed)
             return
         }
 
-        let databaseIsUnlocked = true
-        if databaseIsUnlocked {
-            let symmetricKey = SymmetricKey(data: symmetricKeyData)
-            let itemRepository = ItemRepository(userData: sessionData.userData,
-                                                symmetricKey: symmetricKey,
-                                                container: container,
-                                                apiService: apiService)
+        if preferences.localAuthenticationEnabled {
+            cancel(errorCode: .userInteractionRequired)
+        } else {
             Task {
                 do {
                     let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
@@ -116,9 +120,62 @@ public final class CredentialProviderCoordinator {
                     cancel(errorCode: .failed)
                 }
             }
-        } else {
-            cancel(errorCode: .userInteractionRequired)
         }
+    }
+
+    // Local authentication
+    func provideCredentialWithLocalAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
+        guard let (symmetricKey, itemRepository) = makeSymmetricKeyAndItemRepository() else {
+            cancel(errorCode: .failed)
+            return
+        }
+
+        let viewModel = LockedCredentialViewModel(itemRepository: itemRepository,
+                                                  symmetricKey: symmetricKey,
+                                                  credentialIdentity: credentialIdentity)
+        viewModel.onFailure = handle(error:)
+        viewModel.onSuccess = { [unowned self] credential, item in
+            complete(credential: credential,
+                     encryptedItem: item,
+                     itemRepository: itemRepository,
+                     symmetricKey: symmetricKey,
+                     serviceIdentifiers: [credentialIdentity.serviceIdentifier])
+        }
+        showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
+    }
+
+    private func handle(error: Error) {
+        switch error as? CredentialProviderError {
+        case .userCancelled:
+            cancel(errorCode: .userCanceled)
+            return
+        case .failedToAuthenticate:
+            Task {
+                defer { cancel(errorCode: .failed) }
+                do {
+                    sessionData = nil
+                    try await credentialManager.removeAllCredentials()
+                } catch {
+                    PPLogger.shared?.log(error)
+                }
+            }
+        default:
+            cancel(errorCode: .failed)
+        }
+    }
+
+    private func makeSymmetricKeyAndItemRepository() -> (SymmetricKey, ItemRepositoryProtocol)? {
+        guard let sessionData,
+              let symmetricKeyData = symmetricKey?.data(using: .utf8) else {
+            return nil
+        }
+
+        let symmetricKey = SymmetricKey(data: symmetricKeyData)
+        let itemRepository = ItemRepository(userData: sessionData.userData,
+                                            symmetricKey: symmetricKey,
+                                            container: container,
+                                            apiService: apiService)
+        return (symmetricKey, itemRepository)
     }
 }
 
@@ -214,8 +271,7 @@ extension CredentialProviderCoordinator {
 
 // MARK: - Views
 extension CredentialProviderCoordinator {
-    /// From Swift 5.7 this can be rewritten as `func showView(_ view: some View)`
-    private func showView<V: View>(_ view: V) {
+    private func showView(_ view: some View) {
         if let lastChildViewController {
             lastChildViewController.willMove(toParent: nil)
             lastChildViewController.view.removeFromSuperview()
@@ -250,7 +306,8 @@ extension CredentialProviderCoordinator {
                           symmetricKey: symmetricKey,
                           serviceIdentifiers: serviceIdentifiers)
         }
-        showView(CredentialsView(viewModel: viewModel))
+        viewModel.onFailure = handle(error:)
+        showView(CredentialsView(viewModel: viewModel, preferences: preferences))
     }
 
     private func showNoLoggedInView() {

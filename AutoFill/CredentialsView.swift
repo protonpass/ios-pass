@@ -18,34 +18,48 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
+    @State private var isLocked: Bool
+    private let preferences: Preferences
 
-    init(viewModel: CredentialsViewModel) {
+    init(viewModel: CredentialsViewModel, preferences: Preferences) {
         _viewModel = .init(wrappedValue: viewModel)
+        _isLocked = .init(wrappedValue: preferences.localAuthenticationEnabled)
+        self.preferences = preferences
     }
 
     var body: some View {
         NavigationView {
-            Group {
-                switch viewModel.state {
-                case .idle:
-                    EmptyView()
-                case .loading:
-                    ProgressView()
-                case .loaded:
-                    if viewModel.matchedItems.isEmpty, viewModel.notMatchedItems.isEmpty {
-                        NoCredentialsView()
-                    } else {
-                        itemList
+            ZStack {
+                if isLocked {
+                    AppLockedView(preferences: preferences,
+                                  delayed: true,
+                                  onSuccess: { isLocked = false },
+                                  onFailure: viewModel.handleAuthenticationFailure)
+                } else {
+                    Group {
+                        switch viewModel.state {
+                        case .idle:
+                            EmptyView()
+                        case .loading:
+                            ProgressView()
+                        case .loaded:
+                            if viewModel.matchedItems.isEmpty, viewModel.notMatchedItems.isEmpty {
+                                NoCredentialsView()
+                            } else {
+                                itemList
+                            }
+                        case .error(let error):
+                            RetryableErrorView(errorMessage: error.messageForTheUser,
+                                               onRetry: viewModel.fetchItems)
+                        }
                     }
-                case .error(let error):
-                    RetryableErrorView(errorMessage: error.messageForTheUser,
-                                       onRetry: viewModel.fetchItems)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)

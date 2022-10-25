@@ -45,7 +45,7 @@ final class AppCoordinator {
     private let apiService: PMAPIService
     private var container: NSPersistentContainer
     private let credentialManager: CredentialManagerProtocol
-    private let preferences: Preferences
+    private var preferences: Preferences
 
     @KeychainStorage(key: .sessionData)
     private var sessionData: SessionData?
@@ -76,7 +76,7 @@ final class AppCoordinator {
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager()
-        self.preferences = .shared
+        self.preferences = .init()
         self.apiService.authDelegate = self
         self.apiService.serviceDelegate = self
 
@@ -101,6 +101,21 @@ final class AppCoordinator {
                 case .undefined:
                     PPLogger.shared?.log("Undefined app state. Don't know what to do...")
                 }
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { _ in
+                // Make sure preferences are up to date
+                self.preferences = .init()
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: UIApplication.didEnterBackgroundNotification)
+            .sink { _ in
+                self.dismissAppLockedViewController()
             }
             .store(in: &cancellables)
     }
@@ -333,19 +348,27 @@ extension AppCoordinator: APIServiceDelegate {
 // MARK: - Local authentication
 private extension AppCoordinator {
     func makeAppLockedViewController() -> UIViewController {
-        let view = AppLockedView(onSuccess: { [unowned self] in
-            self.appLockedViewController?.dismiss(animated: true)
-            self.appLockedViewController = nil
-        }, onFailure: { [unowned self] in
-            self.appStateObserver.updateAppState(.loggedOut(.failedLocalAuthentication))
-        })
+        let view = AppLockedView(
+            preferences: preferences,
+            delayed: false,
+            onSuccess: { [unowned self] in
+                self.dismissAppLockedViewController()
+            },
+            onFailure: { [unowned self] in
+                self.appStateObserver.updateAppState(.loggedOut(.failedLocalAuthentication))
+            })
         let viewController = UIHostingController(rootView: view)
         viewController.modalPresentationStyle = .fullScreen
         return viewController
     }
 
+    func dismissAppLockedViewController() {
+        self.appLockedViewController?.dismiss(animated: true)
+        self.appLockedViewController = nil
+    }
+
     func requestLocalAuthenticationIfNecessary() {
-        guard LocalAuthenticator().enabled else { return }
+        guard preferences.localAuthenticationEnabled else { return }
         self.appLockedViewController = self.makeAppLockedViewController()
         guard let appLockedViewController = self.appLockedViewController else { return }
         self.rootViewController?.present(appLockedViewController, animated: false)

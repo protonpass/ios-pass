@@ -42,19 +42,22 @@ public enum LocalAuthenticatorError: Error {
 }
 
 public final class LocalAuthenticator: ObservableObject {
-    @AppStorage("localAuthenticatorEnabled") public var enabled = true {
+    @Published public private(set) var biometryTypeState: BiometryTypeState = .idle
+    @Published public private(set) var authenticationState: AuthenticationState = .idle
+    @Published public var enabled = true {
         didSet {
             toggleEnabled()
         }
     }
-    @Published public private(set) var biometryTypeState: BiometryTypeState = .idle
-    @Published public private(set) var authenticationState: AuthenticationState = .idle
+    private let preferences: Preferences
     private let context = LAContext()
     private let policy = LAPolicy.deviceOwnerAuthentication // Both biometry & passcode
     private var tempEnabled = true
 
-    public init() {
-        tempEnabled = enabled
+    public init(preferences: Preferences) {
+        self.preferences = preferences
+        self.tempEnabled = preferences.localAuthenticationEnabled
+        self.enabled = preferences.localAuthenticationEnabled
     }
 
     public func initializeBiometryType() {
@@ -78,9 +81,13 @@ public final class LocalAuthenticator: ObservableObject {
 
     public func toggleEnabled() {
         guard tempEnabled != enabled else { return }
+        defer {
+            preferences.localAuthenticationEnabled = enabled
+        }
         Task { @MainActor in
             do {
-                let reason = enabled ? "Please authenticate to enable local authentication" :
+                let reason = enabled ?
+                "Please authenticate to enable local authentication" :
                 "Please authenticate to disable local authentication"
                 let authenticated = try await authenticate(reason: reason)
                 if authenticated {

@@ -25,16 +25,22 @@ import SwiftUI
 private let kMaxAttemptCount = 3
 
 struct AppLockedView: View {
-    @ObservedObject private var authenticator = LocalAuthenticator()
-    @ObservedObject private var preferences = Preferences.shared
+    @StateObject private var authenticator: LocalAuthenticator
+    @ObservedObject private var preferences: Preferences
+    private let delayed: Bool
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
 
     private var isLastAttempt: Bool { preferences.failedAttemptCount == kMaxAttemptCount - 1 }
     private var remainingAttempts: Int { kMaxAttemptCount - preferences.failedAttemptCount }
 
-    init(onSuccess: @escaping () -> Void,
+    init(preferences: Preferences,
+         delayed: Bool,
+         onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
+        self._authenticator = .init(wrappedValue: .init(preferences: preferences))
+        self._preferences = .init(wrappedValue: preferences)
+        self.delayed = delayed
         self.onSuccess = onSuccess
         self.onFailure = onFailure
     }
@@ -62,7 +68,9 @@ struct AppLockedView: View {
                 .padding()
                 .task {
                     if preferences.failedAttemptCount == 0 {
-                        await authenticate()
+                        await authenticate(delayed: delayed)
+                    } else if preferences.failedAttemptCount >= kMaxAttemptCount {
+                        onFailure()
                     }
                 }
 
@@ -89,7 +97,7 @@ struct AppLockedView: View {
     private var retryButton: some View {
         Button(action: {
             Task {
-                await authenticate()
+                await authenticate(delayed: false)
             }
         }, label: {
             Text("Try again")
@@ -98,7 +106,7 @@ struct AppLockedView: View {
     }
 
     @MainActor
-    func authenticate() async {
+    func authenticate(delayed: Bool) async {
         guard preferences.failedAttemptCount < kMaxAttemptCount else {
             onFailure()
             return
@@ -109,6 +117,11 @@ struct AppLockedView: View {
             }
         }
         do {
+            // Delay is neccessary in AutoFill context in order for the view
+            // to get rendered before being able to ask for authentication
+            if delayed {
+                try await Task.sleep(nanoseconds: 200_000_000)
+            }
             let authenticated = try await authenticator.authenticate(reason: "Please authenticate")
             if authenticated {
                 preferences.failedAttemptCount = 0

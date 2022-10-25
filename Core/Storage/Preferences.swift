@@ -20,16 +20,23 @@
 
 import SwiftUI
 
-final class Preferences: ObservableObject {
-    private init() {}
+private let kSharedUserDefaults = UserDefaults(suiteName: Constants.appGroup)
 
-    static let shared = Preferences()
+public final class Preferences: ObservableObject {
+    public init() {}
 
-    @AppStorage("quickTypeBar") var quickTypeBar = true
-    @AppStorage("failedAttemptCount") var failedAttemptCount = 0
+    @AppStorage("quickTypeBar", store: kSharedUserDefaults)
+    public var quickTypeBar = true
 
-    func reset() {
+    @AppStorage("failedAttemptCount", store: kSharedUserDefaults)
+    public var failedAttemptCount = 0
+
+    @AppStorage("localAuthenticationEnabled", store: kSharedUserDefaults)
+    public var localAuthenticationEnabled = true
+
+    public func reset() {
         quickTypeBar = true
         failedAttemptCount = 0
+        localAuthenticationEnabled = true
     }
 }

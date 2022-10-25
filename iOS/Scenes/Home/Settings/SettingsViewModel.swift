@@ -27,6 +27,7 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
     private let itemRepository: ItemRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let symmetricKey: SymmetricKey
+    let localAuthenticator: LocalAuthenticator
     let preferences: Preferences
 
     @Published var quickTypeBar = true {
@@ -42,8 +43,6 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
         }
     }
 
-    let localAuthenticator = LocalAuthenticator()
-
     var onToggleSidebar: (() -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
@@ -53,6 +52,7 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.symmetricKey = symmetricKey
+        self.localAuthenticator = .init(preferences: preferences)
         self.preferences = preferences
         super.init()
         self.quickTypeBar = preferences.quickTypeBar
