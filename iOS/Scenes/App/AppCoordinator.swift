@@ -333,12 +333,15 @@ extension AppCoordinator: APIServiceDelegate {
 // MARK: - Local authentication
 private extension AppCoordinator {
     func makeAppLockedViewController() -> UIViewController {
-        let view = AppLockedView(onSuccess: { [unowned self] in
-            self.appLockedViewController?.dismiss(animated: true)
-            self.appLockedViewController = nil
-        }, onFailure: { [unowned self] in
-            self.appStateObserver.updateAppState(.loggedOut(.failedLocalAuthentication))
-        })
+        let view = AppLockedView(
+            delayed: false,
+            onSuccess: { [unowned self] in
+                self.appLockedViewController?.dismiss(animated: true)
+                self.appLockedViewController = nil
+            },
+            onFailure: { [unowned self] in
+                self.appStateObserver.updateAppState(.loggedOut(.failedLocalAuthentication))
+            })
         let viewController = UIHostingController(rootView: view)
         viewController.modalPresentationStyle = .fullScreen
         return viewController

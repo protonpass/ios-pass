@@ -171,6 +171,10 @@
 		355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635BC2889653B00F32353 /* LoadVaultsView.swift */; };
 		355635BF2889664200F32353 /* LoadVaultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635BE2889664200F32353 /* LoadVaultsViewModel.swift */; };
 		355635C1288968B000F32353 /* VaultContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635C0288968B000F32353 /* VaultContentViewModel.swift */; };
+		355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F42907FB3200268116 /* LockedCredentialView.swift */; };
+		355751F62907FB9000268116 /* AppLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531B5422902DA890070D2EE /* AppLockedView.swift */; };
+		355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */; };
+		355751F9290803B100268116 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
 		355C92CC28CB9121000B1D9B /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355C92CB28CB9121000B1D9B /* BaseViewModel.swift */; };
 		355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */; };
 		355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */; };
@@ -580,6 +584,8 @@
 		355635BC2889653B00F32353 /* LoadVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadVaultsView.swift; sourceTree = "<group>"; };
 		355635BE2889664200F32353 /* LoadVaultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadVaultsViewModel.swift; sourceTree = "<group>"; };
 		355635C0288968B000F32353 /* VaultContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultContentViewModel.swift; sourceTree = "<group>"; };
+		355751F42907FB3200268116 /* LockedCredentialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialView.swift; sourceTree = "<group>"; };
+		355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialViewModel.swift; sourceTree = "<group>"; };
 		355C92CB28CB9121000B1D9B /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLabelKeyPacket.swift; sourceTree = "<group>"; };
 		355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemEndpoint.swift; sourceTree = "<group>"; };
@@ -943,6 +949,8 @@
 				3544F5E328E2341900834CA4 /* CredentialProviderViewController.swift */,
 				352866BC28E2DCB5000630E2 /* CredentialsView.swift */,
 				3520F36228E325900053A606 /* CredentialsViewModel.swift */,
+				355751F42907FB3200268116 /* LockedCredentialView.swift */,
+				355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */,
 				3555801528F04F5C009C3B88 /* NoCredentialsView.swift */,
 				3520F36028E31AF20053A606 /* NotLoggedInView.swift */,
 				3544F5E528E2341900834CA4 /* MainInterface.storyboard */,
@@ -2257,11 +2265,15 @@
 			files = (
 				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
+				355751F9290803B100268116 /* Preferences.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
 				3520F36928E32DCF0053A606 /* ProtonPass.xcdatamodeld in Sources */,
+				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
 				3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */,
 				3520F36828E327420053A606 /* ItemListUiModel.swift in Sources */,
+				355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */,
+				355751F62907FB9000268116 /* AppLockedView.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

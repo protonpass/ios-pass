@@ -53,13 +53,12 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         coordinator.provideCredentialWithoutUserInteraction(for: credentialIdentity)
     }
 
-    /*
-     Implement this method if provideCredentialWithoutUserInteraction(for:) can fail with
+    /*Implement this method if provideCredentialWithoutUserInteraction(for:) can fail with
      ASExtensionError.userInteractionRequired. In this case, the system may present your extension's
      UI and call this method. Show appropriate UI for authenticating the user then provide the password
-     by completing the extension request with the associated ASPasswordCredential.
+     by completing the extension request with the associated ASPasswordCredential.*/
 
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
+        coordinator.provideCredentialWithLocalAuthentication(for: credentialIdentity)
     }
-    */
 }

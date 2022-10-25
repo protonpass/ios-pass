@@ -82,20 +82,15 @@ public final class CredentialProviderCoordinator {
 
     /// QuickType bar support
     func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let sessionData,
-              let symmetricKeyData = symmetricKey?.data(using: .utf8),
-              let recordIdentifier = credentialIdentity.recordIdentifier else {
+        guard let (symmetricKey, itemRepository) = makeSymmetricKeyAndItemRepository(),
+        let recordIdentifier = credentialIdentity.recordIdentifier else {
             cancel(errorCode: .failed)
             return
         }
 
-        let databaseIsUnlocked = true
-        if databaseIsUnlocked {
-            let symmetricKey = SymmetricKey(data: symmetricKeyData)
-            let itemRepository = ItemRepository(userData: sessionData.userData,
-                                                symmetricKey: symmetricKey,
-                                                container: container,
-                                                apiService: apiService)
+        if LocalAuthenticator().enabled {
+            cancel(errorCode: .userInteractionRequired)
+        } else {
             Task {
                 do {
                     let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
@@ -116,9 +111,60 @@ public final class CredentialProviderCoordinator {
                     cancel(errorCode: .failed)
                 }
             }
-        } else {
-            cancel(errorCode: .userInteractionRequired)
         }
+    }
+
+    // Local authentication
+    func provideCredentialWithLocalAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
+        guard let (symmetricKey, itemRepository) = makeSymmetricKeyAndItemRepository() else {
+            cancel(errorCode: .failed)
+            return
+        }
+
+        let viewModel = LockedCredentialViewModel(itemRepository: itemRepository,
+                                                  symmetricKey: symmetricKey,
+                                                  credentialIdentity: credentialIdentity)
+        viewModel.onFailure = { [unowned self] error in
+            switch error as? LockedCredentialViewModelError {
+            case .userCancelled:
+                cancel(errorCode: .userCanceled)
+                return
+            case .failedToAuthenticate:
+                Task {
+                    defer { cancel(errorCode: .failed) }
+                    do {
+                        sessionData = nil
+                        try await credentialManager.removeAllCredentials()
+                    } catch {
+                        PPLogger.shared?.log(error)
+                    }
+                }
+            default:
+                cancel(errorCode: .failed)
+            }
+        }
+        viewModel.onSuccess = { [unowned self] credential, item in
+            complete(credential: credential,
+                     encryptedItem: item,
+                     itemRepository: itemRepository,
+                     symmetricKey: symmetricKey,
+                     serviceIdentifiers: [credentialIdentity.serviceIdentifier])
+        }
+        showView(LockedCredentialView(viewModel: viewModel))
+    }
+
+    private func makeSymmetricKeyAndItemRepository() -> (SymmetricKey, ItemRepositoryProtocol)? {
+        guard let sessionData,
+              let symmetricKeyData = symmetricKey?.data(using: .utf8) else {
+            return nil
+        }
+
+        let symmetricKey = SymmetricKey(data: symmetricKeyData)
+        let itemRepository = ItemRepository(userData: sessionData.userData,
+                                            symmetricKey: symmetricKey,
+                                            container: container,
+                                            apiService: apiService)
+        return (symmetricKey, itemRepository)
     }
 }
 
@@ -214,8 +260,7 @@ extension CredentialProviderCoordinator {
 
 // MARK: - Views
 extension CredentialProviderCoordinator {
-    /// From Swift 5.7 this can be rewritten as `func showView(_ view: some View)`
-    private func showView<V: View>(_ view: V) {
+    private func showView(_ view: some View) {
         if let lastChildViewController {
             lastChildViewController.willMove(toParent: nil)
             lastChildViewController.view.removeFromSuperview()
