@@ -1,6 +1,6 @@
 //
-// EmptyNoteText.swift
-// Proton Pass - Created on 14/10/2022.
+// TextStyleModifiers.swift
+// Proton Pass - Created on 26/10/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,11 +20,12 @@
 
 import SwiftUI
 
-public struct EmptyNoteText: View {
+/// Used for placeholder `Text`s like `Empty notes`, `No items`...
+public struct ItalicSecondaryTextStyle: ViewModifier {
     public init() {}
 
-    public var body: some View {
-        Text("Empty note")
+    public func body(content: Content) -> some View {
+        content
             .font(.callout.italic())
             .foregroundColor(.secondary)
     }

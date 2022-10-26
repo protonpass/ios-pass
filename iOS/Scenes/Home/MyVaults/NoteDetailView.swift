@@ -35,7 +35,8 @@ struct NoteDetailView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Note")
             if viewModel.note.isEmpty {
-                EmptyNoteText()
+                Text("Empty note")
+                    .modifier(ItalicSecondaryTextStyle())
             } else {
                 Text(viewModel.note)
                     .font(.callout)
