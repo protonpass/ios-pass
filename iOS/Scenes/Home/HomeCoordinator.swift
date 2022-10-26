@@ -80,6 +80,8 @@ final class HomeCoordinator: DeinitPrintable {
     private lazy var trashCoordinator = provideTrashCoordinator()
     private var trashRootViewController: UIViewController { trashCoordinator.rootViewController }
 
+    private let eventLoop: SyncEventLoop
+
     private var cancellables = Set<AnyCancellable>()
 
     init(sessionData: SessionData,
@@ -114,6 +116,9 @@ final class HomeCoordinator: DeinitPrintable {
         self.credentialManager = credentialManager
         self.vaultSelection = .init(vaults: [])
         self.preferences = preferences
+        self.eventLoop = .init()
+        self.eventLoop.delegate = self
+        self.eventLoop.start()
         self.setUpSideMenuPreferences()
         self.observeVaultSelection()
         self.observeForegroundEntrance()
@@ -365,5 +370,33 @@ extension HomeCoordinator: CoordinatorDelegate {
 
     func coordinatorWantsToAlertError(_ error: Error) {
         alert(error: error)
+    }
+}
+
+// MARK: - SyncEventLoopDelegate
+extension HomeCoordinator: SyncEventLoopDelegate {
+    func syncEventLoopDidStartLooping() {
+        print(#function)
+    }
+
+    func syncEventLoopDidStopLooping() {
+        print(#function)
+    }
+
+    func syncEventLoopDidBeginNewLoop() {
+        print(#function)
+    }
+
+    func syncEventLoopDidSkipLoop() {
+        print(#function)
+    }
+
+    func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
+        print(#function)
+    }
+
+    func syncEventLoopDidFailLoop(error: Error) {
+        print(#function)
+        print(error.localizedDescription)
     }
 }
