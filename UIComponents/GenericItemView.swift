@@ -21,18 +21,25 @@
 import ProtonCore_UIFoundations
 import SwiftUI
 
+public enum GenericItemDetail {
+    /// When detail has value
+    case value(String)
+    /// Optional placeholder when detail has no value
+    case placeholder(String?)
+}
+
 public protocol GenericItemProtocol {
     var icon: UIImage { get }
     var title: String { get }
-    var detail: String? { get }
+    var detail: GenericItemDetail { get }
 }
 
 public struct GenericItem: GenericItemProtocol {
     public let icon: UIImage
     public let title: String
-    public var detail: String?
+    public var detail: GenericItemDetail
 
-    public init(icon: UIImage, title: String, detail: String? = nil) {
+    public init(icon: UIImage, title: String, detail: GenericItemDetail) {
         self.icon = icon
         self.title = title
         self.detail = detail
@@ -69,13 +76,20 @@ public struct GenericItemView<TrailingView: View>: View {
 
                         VStack(alignment: .leading, spacing: 4) {
                             Text(item.title)
-                            if let detail = item.detail, !detail.isEmpty {
-                                Text(detail)
-                                    .font(.callout)
-                                    .foregroundColor(Color(.secondaryLabel))
-                                    .lineLimit(subtitleLineLimit)
-                            } else {
-                                EmptyNoteText()
+                            switch item.detail {
+                            case .value(let detail):
+                                if !detail.isEmpty {
+                                    Text(detail)
+                                        .font(.callout)
+                                        .foregroundColor(Color(.secondaryLabel))
+                                        .lineLimit(subtitleLineLimit)
+                                }
+
+                            case .placeholder(let placeholder):
+                                if let placeholder, !placeholder.isEmpty {
+                                    Text(placeholder)
+                                        .modifier(ItalicSecondaryTextStyle())
+                                }
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)

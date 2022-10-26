@@ -64,7 +64,7 @@ enum CreateNewItemOption {
         }
     }
 
-    var detail: String? {
+    var detail: String {
         switch self {
         case .login:
             return "Keep your username and password secure"
@@ -78,6 +78,6 @@ enum CreateNewItemOption {
     }
 
     func toGenericItem() -> GenericItem {
-        .init(icon: icon, title: title, detail: detail)
+        .init(icon: icon, title: title, detail: .value(detail))
     }
 }

@@ -98,18 +98,26 @@ struct LogInDetailView: View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Username")
-                Text(viewModel.username)
-                    .font(.callout)
-                    .foregroundColor(.secondary)
+
+                if viewModel.username.isEmpty {
+                    Text("No username")
+                        .modifier(ItalicSecondaryTextStyle())
+                } else {
+                    Text(viewModel.username)
+                        .font(.callout)
+                        .foregroundColor(.secondary)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Button(action: {
-                UIPasteboard.general.string = viewModel.username
-            }, label: {
-                Image(uiImage: IconProvider.squares)
-                    .foregroundColor(.secondary)
-            })
+            if !viewModel.username.isEmpty {
+                Button(action: {
+                    UIPasteboard.general.string = viewModel.username
+                }, label: {
+                    Image(uiImage: IconProvider.squares)
+                        .foregroundColor(.secondary)
+                })
+            }
         }
     }
 
@@ -167,7 +175,8 @@ struct LogInDetailView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Note")
             if viewModel.note.isEmpty {
-                EmptyNoteText()
+                Text("Empty note")
+                    .modifier(ItalicSecondaryTextStyle())
             } else {
                 Text(viewModel.note)
                     .font(.callout)

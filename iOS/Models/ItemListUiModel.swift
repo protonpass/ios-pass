@@ -29,27 +29,40 @@ struct ItemListUiModel: GenericItemProtocol {
     let type: ItemContentType
     let icon: UIImage
     let title: String
-    let detail: String?
+    let detail: GenericItemDetail
 }
 
 extension SymmetricallyEncryptedItem {
     func toItemListUiModel(_ symmetricKey: SymmetricKey) async throws -> ItemListUiModel {
         let encryptedItemContent = try getEncryptedItemContent()
         let name = try symmetricKey.decrypt(encryptedItemContent.name)
+
         let note: String?
+        let notePlaceholder: String?
         switch encryptedItemContent.contentData {
         case .login(let username, _, _):
             note = try symmetricKey.decrypt(username)
+            notePlaceholder = "No username"
         case .alias:
             note = item.aliasEmail
+            notePlaceholder = nil
         default:
             note = try symmetricKey.decrypt(encryptedItemContent.note)
+            notePlaceholder = "Empty note"
         }
+
+        let detail: GenericItemDetail
+        if let note, !note.isEmpty {
+            detail = .value(note)
+        } else {
+            detail = .placeholder(notePlaceholder)
+        }
+
         return .init(itemId: encryptedItemContent.itemId,
                      shareId: encryptedItemContent.shareId,
                      type: encryptedItemContent.contentData.type,
                      icon: encryptedItemContent.contentData.type.icon,
                      title: name,
-                     detail: note)
+                     detail: detail)
     }
 }
