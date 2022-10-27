@@ -177,6 +177,8 @@
 		35581806290A7DBF00DD94DB /* ShareEventIDEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */; };
 		3558180A290A7FA600DD94DB /* LocalShareEventIDDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */; };
 		3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */; };
+		3558180F290A8C0800DD94DB /* GetLastEventIDEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3558180E290A8C0800DD94DB /* GetLastEventIDEndpoint.swift */; };
+		35581811290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581810290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift */; };
 		355C92CC28CB9121000B1D9B /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355C92CB28CB9121000B1D9B /* BaseViewModel.swift */; };
 		355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */; };
 		355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */; };
@@ -591,6 +593,8 @@
 		35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDEntity.swift; sourceTree = "<group>"; };
 		35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasource.swift; sourceTree = "<group>"; };
 		3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasourceTests.swift; sourceTree = "<group>"; };
+		3558180E290A8C0800DD94DB /* GetLastEventIDEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLastEventIDEndpoint.swift; sourceTree = "<group>"; };
+		35581810290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareEventIDDatasource.swift; sourceTree = "<group>"; };
 		355C92CB28CB9121000B1D9B /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLabelKeyPacket.swift; sourceTree = "<group>"; };
 		355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemEndpoint.swift; sourceTree = "<group>"; };
@@ -1047,6 +1051,7 @@
 			children = (
 				35544406287CB3810017FCAD /* Endpoint.swift */,
 				354146D228D1F218007E45A6 /* Aliases */,
+				3558180D290A8BE200DD94DB /* Events */,
 				355E803D28A3071700BE7C9B /* Items */,
 				358AB49F2887044500818B44 /* Keys */,
 				353547BF2880C4470021C716 /* Shares */,
@@ -1093,6 +1098,14 @@
 				3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */,
 			);
 			path = BuildConfigs;
+			sourceTree = "<group>";
+		};
+		3558180D290A8BE200DD94DB /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				3558180E290A8C0800DD94DB /* GetLastEventIDEndpoint.swift */,
+			);
+			path = Events;
 			sourceTree = "<group>";
 		};
 		35588CD52906B1C60040D54B /* LocalAuthenticator */ = {
@@ -1269,6 +1282,7 @@
 				35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */,
 				358A509928AD8A8000F5285C /* RemotePublicKeyDatasource.swift */,
 				35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */,
+				35581810290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift */,
 				356BDA3328DFAC9600B02E5A /* RemoteVaultItemKeysDatasource.swift */,
 			);
 			path = Remote;
@@ -2416,6 +2430,7 @@
 				358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
 				3530092A28A5281800611F8A /* Vault.swift in Sources */,
+				3558180F290A8C0800DD94DB /* GetLastEventIDEndpoint.swift in Sources */,
 				35610B7128ABAAC500955ACB /* LocalItemKeyDatasource.swift in Sources */,
 				35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */,
 				3542E2CB28D9FE8600194F24 /* ItemRepository.swift in Sources */,
@@ -2445,6 +2460,7 @@
 				35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */,
 				3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */,
 				3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */,
+				35581811290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift in Sources */,
 				354513EB28E4D5310020A93A /* AutoFillCredential.swift in Sources */,
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
 				354146DA28D1F585007E45A6 /* AliasRepository.swift in Sources */,
