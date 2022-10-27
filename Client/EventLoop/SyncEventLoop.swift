@@ -88,6 +88,24 @@ public final class SyncEventLoop {
     }
 }
 
+/*
+ Steps of a sync:
+ 1. Fetch all shares from remote.
+ 2. Compare recently fetched shares with local ones.
+    For each new share do the full sync procedure.
+    For each existing share, do the step 3 of the full sync procedure.
+
+ Full sync procedure:
+ 1. Get the last eventID from remote
+ 2. Get the share data (keys, items...) and store in the local db
+ 3. Get events from api using last eventID
+    a. Upsert `UpdatedItems`
+    b. Delete `DeletedItemIDs`
+    c. Labels (Post MVP)
+    d. If `NewRotationID` is not null. Refresh the keys of the share.
+    e. Upsert `LatestEventID` of the share.
+    f. If `EventsPending` is `true`. Repeat this step with the given `LatestEventID`.
+ */
 private extension SyncEventLoop {
     func longRunningTask() async throws {
         print("Started new task")
