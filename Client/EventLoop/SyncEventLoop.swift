@@ -58,14 +58,29 @@ public enum SyncEventLoopSkipReason {
 
 /// A background event loop that keeps data up to date by synching after a given time interval
 public final class SyncEventLoop {
+    // Self-intialized params
     private var reachability: Reachability?
     private var isReachable = true
     private var timer: Timer?
     private var ongoingTask: Task<Void, Error>?
 
+    // Injected params
+    private let userId: String
+    private let shareRepository: ShareRepositoryProtocol
+    private let shareEventIDRepository: ShareEventIDRepositoryProtocol
+    private let remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol
+
     public weak var delegate: SyncEventLoopDelegate?
 
-    public init() {}
+    public init(userId: String,
+                shareRepository: ShareRepositoryProtocol,
+                shareEventIDRepository: ShareEventIDRepositoryProtocol,
+                remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol) {
+        self.userId = userId
+        self.shareRepository = shareRepository
+        self.shareEventIDRepository = shareEventIDRepository
+        self.remoteSyncEventsDatasource = remoteSyncEventsDatasource
+    }
 
     func makeReachabilityIfNecessary() throws {
         guard reachability == nil else { return }
@@ -136,7 +151,7 @@ private extension SyncEventLoop {
                 defer { ongoingTask = nil }
                 do {
                     delegate?.syncEventLoopDidBeginNewLoop()
-                    try await longRunningTask()
+                    try await sync()
                     delegate?.syncEventLoopDidFinishLoop(hasNewEvents: true)
                 } catch {
                     delegate?.syncEventLoopDidFailLoop(error: error)
@@ -145,9 +160,5 @@ private extension SyncEventLoop {
         }
     }
 
-    func longRunningTask() async throws {
-        print("Started new task")
-        try await Task.sleep(nanoseconds: 13_000_000_000)
-        print("Stopped task")
-    }
+    func sync() async throws {}
 }

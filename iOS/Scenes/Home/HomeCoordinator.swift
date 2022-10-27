@@ -105,10 +105,11 @@ final class HomeCoordinator: DeinitPrintable {
         self.aliasRepository = AliasRepository(authCredential: authCredential, apiService: apiService)
         self.publicKeyRepository = PublicKeyRepository(container: container,
                                                        apiService: apiService)
-        self.shareRepository = ShareRepository(userId: userId,
-                                               container: container,
-                                               authCredential: authCredential,
-                                               apiService: apiService)
+        let shareRepository = ShareRepository(userId: userId,
+                                              container: container,
+                                              authCredential: authCredential,
+                                              apiService: apiService)
+        self.shareRepository = shareRepository
         self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
                                                                authCredential: authCredential,
                                                                apiService: apiService)
@@ -116,7 +117,16 @@ final class HomeCoordinator: DeinitPrintable {
         self.credentialManager = credentialManager
         self.vaultSelection = .init(vaults: [])
         self.preferences = preferences
-        self.eventLoop = .init()
+
+        let shareEventIDRepository = ShareEventIDRepository(container: container,
+                                                            authCredential: authCredential,
+                                                            apiService: apiService)
+        let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(authCredential: authCredential,
+                                                                    apiService: apiService)
+        self.eventLoop = .init(userId: userId,
+                               shareRepository: shareRepository,
+                               shareEventIDRepository: shareEventIDRepository,
+                               remoteSyncEventsDatasource: remoteSyncEventsDatasource)
         self.eventLoop.delegate = self
         self.eventLoop.start()
         self.setUpSideMenuPreferences()
