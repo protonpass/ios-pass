@@ -158,7 +158,7 @@ private extension SyncEventLoop {
         if ongoingTask != nil {
             delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished)
         } else {
-            ongoingTask = Task {
+            ongoingTask = Task { @MainActor in
                 defer { ongoingTask = nil }
                 do {
                     delegate?.syncEventLoopDidBeginNewLoop()
@@ -185,6 +185,7 @@ private extension SyncEventLoop {
                 let shareId = remoteShare.shareID
                 _ = try await vaultItemKeysRepository.getLatestVaultItemKeys(shareId: shareId,
                                                                              forceRefresh: true)
+                try await sync(share: remoteShare, hasNewEvents: &hasNewEvents)
             }
         }
     }

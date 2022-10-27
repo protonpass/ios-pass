@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
+import CryptoKit
 
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
@@ -33,14 +35,17 @@ class BaseItemDetailViewModel: BaseViewModel {
     @Published var isTrashed = false
 
     private let itemRepository: ItemRepositoryProtocol
-    let itemContent: ItemContent
+    private let symmetricKey: SymmetricKey
+    private(set) var itemContent: ItemContent
 
     weak var itemDetailDelegate: ItemDetailViewModelDelegate?
 
     init(itemContent: ItemContent,
-         itemRepository: ItemRepositoryProtocol) {
+         itemRepository: ItemRepositoryProtocol,
+         symmetricKey: SymmetricKey) {
         self.itemContent = itemContent
         self.itemRepository = itemRepository
+        self.symmetricKey = symmetricKey
         super.init()
         bindValues()
 
@@ -93,6 +98,25 @@ private extension BaseItemDetailViewModel {
     func trashItemTask(item: SymmetricallyEncryptedItem) -> Task<Void, Error> {
         Task.detached(priority: .userInitiated) {
             try await self.itemRepository.trashItems([item])
+        }
+    }
+}
+
+// MARK: - MyVaultsCoordinatorDelegate
+extension BaseItemDetailViewModel: MyVaultsCoordinatorDelegate {
+    func myVaultsCoordinatorDidRefresh() {
+        Task { @MainActor in
+            do {
+                guard let updatedItem =
+                        try await itemRepository.getItem(shareId: itemContent.shareId,
+                                                         itemId: itemContent.itemId) else {
+                    return
+                }
+                self.itemContent = try updatedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                bindValues()
+            } catch {
+                PPLogger.shared?.log(error)
+            }
         }
     }
 }

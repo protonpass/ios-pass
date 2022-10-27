@@ -411,10 +411,8 @@ extension HomeCoordinator: SyncEventLoopDelegate {
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
         if hasNewEvents {
             PPLogger.shared?.log("Has new events. Refreshing items")
-            DispatchQueue.main.async {
-                self.myVaultsCoordinator.refreshItems()
-                self.trashCoordinator.refreshTrashedItems()
-            }
+            myVaultsCoordinator.refreshItems()
+            trashCoordinator.refreshTrashedItems()
         } else {
             PPLogger.shared?.log("Has no new events. Do nothing.")
         }

@@ -24,6 +24,10 @@ import CryptoKit
 import ProtonCore_Login
 import SwiftUI
 
+protocol MyVaultsCoordinatorDelegate: AnyObject {
+    func myVaultsCoordinatorDidRefresh()
+}
+
 final class MyVaultsCoordinator: Coordinator {
     private let symmetricKey: SymmetricKey
     private let userData: UserData
@@ -34,6 +38,8 @@ final class MyVaultsCoordinator: Coordinator {
     private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
+
+    private weak var myVaultsCoordinatorDelegate: MyVaultsCoordinatorDelegate?
 
     var onTrashedItem: (() -> Void)?
 
@@ -169,32 +175,37 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func showItemDetailView(_ itemContent: ItemContent) {
+        let baseItemDetailViewModel: BaseItemDetailViewModel
         switch itemContent.contentData {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
-                                                 itemRepository: itemRepository)
-            viewModel.delegate = self
-            viewModel.itemDetailDelegate = self
+                                                 itemRepository: itemRepository,
+                                                 symmetricKey: symmetricKey)
+            baseItemDetailViewModel = viewModel
             let logInDetailView = LogInDetailView(viewModel: viewModel)
             pushView(logInDetailView)
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
-                                                itemRepository: itemRepository)
-            viewModel.delegate = self
-            viewModel.itemDetailDelegate = self
+                                                itemRepository: itemRepository,
+                                                symmetricKey: symmetricKey)
+            baseItemDetailViewModel = viewModel
             let noteDetailView = NoteDetailView(viewModel: viewModel)
             pushView(noteDetailView)
 
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
                                                  itemRepository: itemRepository,
+                                                 symmetricKey: symmetricKey,
                                                  aliasRepository: aliasRepository)
-            viewModel.delegate = self
-            viewModel.itemDetailDelegate = self
+            baseItemDetailViewModel = viewModel
             let aliasDetailView = AliasDetailView(viewModel: viewModel)
             pushView(aliasDetailView)
         }
+
+        baseItemDetailViewModel.delegate = self
+        baseItemDetailViewModel.itemDetailDelegate = self
+        myVaultsCoordinatorDelegate = baseItemDetailViewModel
     }
 
     private func handleCreatedItem(_ itemContentType: ItemContentType) {
@@ -259,6 +270,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     func refreshItems() {
         vaultContentViewModel.fetchItems(forceRefresh: false)
+        myVaultsCoordinatorDelegate?.myVaultsCoordinatorDidRefresh()
     }
 }
 
