@@ -179,6 +179,8 @@
 		3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */; };
 		3558180F290A8C0800DD94DB /* GetLastEventIDEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3558180E290A8C0800DD94DB /* GetLastEventIDEndpoint.swift */; };
 		35581811290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581810290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift */; };
+		35581813290AB2B000DD94DB /* SyncEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581812290AB2B000DD94DB /* SyncEvents.swift */; };
+		35581815290AB39C00DD94DB /* GetEventsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581814290AB39C00DD94DB /* GetEventsEndpoint.swift */; };
 		355C92CC28CB9121000B1D9B /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355C92CB28CB9121000B1D9B /* BaseViewModel.swift */; };
 		355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */; };
 		355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */; };
@@ -595,6 +597,8 @@
 		3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasourceTests.swift; sourceTree = "<group>"; };
 		3558180E290A8C0800DD94DB /* GetLastEventIDEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLastEventIDEndpoint.swift; sourceTree = "<group>"; };
 		35581810290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareEventIDDatasource.swift; sourceTree = "<group>"; };
+		35581812290AB2B000DD94DB /* SyncEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEvents.swift; sourceTree = "<group>"; };
+		35581814290AB39C00DD94DB /* GetEventsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetEventsEndpoint.swift; sourceTree = "<group>"; };
 		355C92CB28CB9121000B1D9B /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLabelKeyPacket.swift; sourceTree = "<group>"; };
 		355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemEndpoint.swift; sourceTree = "<group>"; };
@@ -1076,6 +1080,7 @@
 				350A97D32885BFFD00A7168B /* Vault.swift */,
 				358AB4982886FA7B00818B44 /* VaultKey.swift */,
 				353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */,
+				35581812290AB2B000DD94DB /* SyncEvents.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1104,6 +1109,7 @@
 			isa = PBXGroup;
 			children = (
 				3558180E290A8C0800DD94DB /* GetLastEventIDEndpoint.swift */,
+				35581814290AB39C00DD94DB /* GetEventsEndpoint.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -2434,6 +2440,7 @@
 				35610B7128ABAAC500955ACB /* LocalItemKeyDatasource.swift in Sources */,
 				35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */,
 				3542E2CB28D9FE8600194F24 /* ItemRepository.swift in Sources */,
+				35581813290AB2B000DD94DB /* SyncEvents.swift in Sources */,
 				35A909EA2890110F00AC54D4 /* CoreDataError.swift in Sources */,
 				3530FADA28CEFA0900CE8A8F /* DeleteItemsEndpoint.swift in Sources */,
 				3593DCE728A790F800C235D3 /* LocalDatasource.swift in Sources */,
@@ -2458,6 +2465,7 @@
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
 				356BDA3428DFAC9600B02E5A /* RemoteVaultItemKeysDatasource.swift in Sources */,
 				35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */,
+				35581815290AB39C00DD94DB /* GetEventsEndpoint.swift in Sources */,
 				3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */,
 				3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */,
 				35581811290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift in Sources */,

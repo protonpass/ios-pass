@@ -116,6 +116,7 @@ public extension SyncEventLoop {
  */
 // MARK: - Private APIs
 private extension SyncEventLoop {
+    /// The repeated task of the timer
     func timerTask() {
         do {
             try makeReachabilityIfNecessary()
