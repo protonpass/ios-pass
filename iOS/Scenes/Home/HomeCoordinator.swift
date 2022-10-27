@@ -387,8 +387,9 @@ extension HomeCoordinator: SyncEventLoopDelegate {
         print(#function)
     }
 
-    func syncEventLoopDidSkipLoop() {
+    func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
         print(#function)
+        print(reason)
     }
 
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {

@@ -20,6 +20,7 @@
 
 import Combine
 import Foundation
+import Reachability
 
 private let kEventLoopIntervalInSeconds: TimeInterval = 30
 
@@ -33,8 +34,10 @@ public protocol SyncEventLoopDelegate: AnyObject {
     /// Called at the beginning of every sync loop.
     func syncEventLoopDidBeginNewLoop()
 
-    /// Called when a loop is skipped because previous loop is still being processed
-    func syncEventLoopDidSkipLoop()
+    /// Called when a loop is skipped
+    /// - Parameters:
+    ///    - reason: E.g no internet connection, previous loop not yet finished.
+    func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason)
 
     /// Called after every successful sync loop.
     /// - Parameters:
@@ -48,8 +51,15 @@ public protocol SyncEventLoopDelegate: AnyObject {
     func syncEventLoopDidFailLoop(error: Error)
 }
 
+public enum SyncEventLoopSkipReason {
+    case noInternetConnection
+    case previousLoopNotFinished
+}
+
 /// A background event loop that keeps data up to date by synching after a given time interval
 public final class SyncEventLoop {
+    private var reachability: Reachability?
+    private var isReachable = true
     private var timer: Timer?
     private var ongoingTask: Task<Void, Error>?
 
@@ -57,31 +67,29 @@ public final class SyncEventLoop {
 
     public init() {}
 
+    func makeReachabilityIfNecessary() throws {
+        guard reachability == nil else { return }
+        reachability = try .init()
+        reachability?.whenReachable = { [weak self] _ in self?.isReachable = true }
+        reachability?.whenUnreachable = { [weak self] _ in self?.isReachable = false }
+        try reachability?.startNotifier()
+    }
+}
+
+// MARK: - Public APIs
+public extension SyncEventLoop {
     /// Start looping
-    public func start() {
+    func start() {
         delegate?.syncEventLoopDidStartLooping()
         timer = .scheduledTimer(withTimeInterval: kEventLoopIntervalInSeconds,
                                 repeats: true) { [unowned self] _ in
-            if self.ongoingTask != nil {
-                self.delegate?.syncEventLoopDidSkipLoop()
-            } else {
-                self.ongoingTask = Task {
-                    defer { self.ongoingTask = nil }
-                    do {
-                        self.delegate?.syncEventLoopDidBeginNewLoop()
-                        try await longRunningTask()
-                        self.delegate?.syncEventLoopDidFinishLoop(hasNewEvents: true)
-                    } catch {
-                        self.delegate?.syncEventLoopDidFailLoop(error: error)
-                    }
-                }
-            }
+            self.timerTask()
         }
         timer?.fire()
     }
 
     /// Stop looping
-    public func stop() {
+    func stop() {
         timer?.invalidate()
         ongoingTask?.cancel()
         delegate?.syncEventLoopDidStopLooping()
@@ -106,7 +114,36 @@ public final class SyncEventLoop {
     e. Upsert `LatestEventID` of the share.
     f. If `EventsPending` is `true`. Repeat this step with the given `LatestEventID`.
  */
+// MARK: - Private APIs
 private extension SyncEventLoop {
+    func timerTask() {
+        do {
+            try makeReachabilityIfNecessary()
+        } catch {
+            delegate?.syncEventLoopDidFailLoop(error: error)
+        }
+
+        guard isReachable else {
+            delegate?.syncEventLoopDidSkipLoop(reason: .noInternetConnection)
+            return
+        }
+
+        if ongoingTask != nil {
+            delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished)
+        } else {
+            ongoingTask = Task {
+                defer { ongoingTask = nil }
+                do {
+                    delegate?.syncEventLoopDidBeginNewLoop()
+                    try await longRunningTask()
+                    delegate?.syncEventLoopDidFinishLoop(hasNewEvents: true)
+                } catch {
+                    delegate?.syncEventLoopDidFailLoop(error: error)
+                }
+            }
+        }
+    }
+
     func longRunningTask() async throws {
         print("Started new task")
         try await Task.sleep(nanoseconds: 13_000_000_000)
