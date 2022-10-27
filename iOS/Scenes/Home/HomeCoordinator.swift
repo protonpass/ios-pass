@@ -84,6 +84,8 @@ final class HomeCoordinator: DeinitPrintable {
 
     private var cancellables = Set<AnyCancellable>()
 
+    #warning("Try to simplify this function")
+    // swiftlint:disable:next function_body_length
     init(sessionData: SessionData,
          apiService: APIService,
          symmetricKey: SymmetricKey,
@@ -110,9 +112,10 @@ final class HomeCoordinator: DeinitPrintable {
                                               authCredential: authCredential,
                                               apiService: apiService)
         self.shareRepository = shareRepository
-        self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
-                                                               authCredential: authCredential,
-                                                               apiService: apiService)
+        let vaultItemKeysRepository = VaultItemKeysRepository(container: container,
+                                                              authCredential: authCredential,
+                                                              apiService: apiService)
+        self.vaultItemKeysRepository = vaultItemKeysRepository
         itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
         self.credentialManager = credentialManager
         self.vaultSelection = .init(vaults: [])
@@ -126,7 +129,9 @@ final class HomeCoordinator: DeinitPrintable {
         self.eventLoop = .init(userId: userId,
                                shareRepository: shareRepository,
                                shareEventIDRepository: shareEventIDRepository,
-                               remoteSyncEventsDatasource: remoteSyncEventsDatasource)
+                               remoteSyncEventsDatasource: remoteSyncEventsDatasource,
+                               itemRepository: itemRepository,
+                               vaultItemKeysRepository: vaultItemKeysRepository)
         self.eventLoop.delegate = self
         self.eventLoop.start()
         self.setUpSideMenuPreferences()
@@ -349,6 +354,7 @@ private extension HomeCoordinator {
     }
 
     func signOut() {
+        eventLoop.stop()
         delegate?.homeCoordinatorDidSignOut()
     }
 }
@@ -404,6 +410,9 @@ extension HomeCoordinator: SyncEventLoopDelegate {
 
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
         print(#function)
+        if hasNewEvents {
+            myVaultsCoordinator.refreshItems()
+        }
     }
 
     func syncEventLoopDidFailLoop(error: Error) {

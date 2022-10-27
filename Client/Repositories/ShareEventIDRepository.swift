@@ -27,6 +27,7 @@ public protocol ShareEventIDRepositoryProtocol {
     var localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol { get }
     var remoteShareEventIDDatasource: RemoteShareEventIDDatasourceProtocol { get }
 
+    /// Get local last event ID if any. If not fetch from remote and save to local database and return.
     func getLastEventId(userId: String, shareId: String) async throws -> String
     func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws
 }

@@ -70,6 +70,11 @@ public protocol ItemRepositoryProtocol {
                     newItemContent: ProtobufableItemContentProtocol,
                     shareId: String) async throws
 
+    func upsertItems(_ items: [ItemRevision], shareId: String) async throws
+
+    /// Delete items locally after sync events
+    func deleteItemsLocally(itemIds: [String], shareId: String) async throws
+
     // MARK: - AutoFill operations
     /// Get active log in items of all shares
     func getActiveLogInItems(forceRefresh: Bool) async throws -> [SymmetricallyEncryptedItem]
@@ -220,6 +225,10 @@ public extension ItemRepositoryProtocol {
         }
     }
 
+    func deleteItemsLocally(itemIds: [String], shareId: String) async throws {
+        try await localItemDatasoure.deleteItems(itemIds: itemIds, shareId: shareId)
+    }
+
     func updateItem(oldItem: ItemRevision,
                     newItemContent: ProtobufableItemContentProtocol,
                     shareId: String) async throws {
@@ -260,6 +269,13 @@ public extension ItemRepositoryProtocol {
             delegate?.itemRepositoryHasNewCredentials(newCredentials)
             PPLogger.shared?.log("Delegated updated credential")
         }
+    }
+
+    func upsertItems(_ items: [ItemRevision], shareId: String) async throws {
+        let encryptedItems = try await items.parallelMap {
+            try await symmetricallyEncrypt(itemRevision: $0, shareId: shareId)
+        }
+        try await localItemDatasoure.upsertItems(encryptedItems)
     }
 
     func getActiveLogInItems(forceRefresh: Bool) async throws -> [SymmetricallyEncryptedItem] {

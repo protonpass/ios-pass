@@ -69,17 +69,23 @@ public final class SyncEventLoop {
     private let shareRepository: ShareRepositoryProtocol
     private let shareEventIDRepository: ShareEventIDRepositoryProtocol
     private let remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol
+    private let itemRepository: ItemRepositoryProtocol
+    private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
 
     public weak var delegate: SyncEventLoopDelegate?
 
     public init(userId: String,
                 shareRepository: ShareRepositoryProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
-                remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol) {
+                remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
+                itemRepository: ItemRepositoryProtocol,
+                vaultItemKeysRepository: VaultItemKeysRepositoryProtocol) {
         self.userId = userId
         self.shareRepository = shareRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.remoteSyncEventsDatasource = remoteSyncEventsDatasource
+        self.itemRepository = itemRepository
+        self.vaultItemKeysRepository = vaultItemKeysRepository
     }
 
     func makeReachabilityIfNecessary() throws {
@@ -151,8 +157,9 @@ private extension SyncEventLoop {
                 defer { ongoingTask = nil }
                 do {
                     delegate?.syncEventLoopDidBeginNewLoop()
-                    try await sync()
-                    delegate?.syncEventLoopDidFinishLoop(hasNewEvents: true)
+                    var hasNewEvents = false
+                    try await sync(hasNewEvents: &hasNewEvents)
+                    delegate?.syncEventLoopDidFinishLoop(hasNewEvents: hasNewEvents)
                 } catch {
                     delegate?.syncEventLoopDidFailLoop(error: error)
                 }
@@ -160,5 +167,52 @@ private extension SyncEventLoop {
         }
     }
 
-    func sync() async throws {}
+    func sync(hasNewEvents: inout Bool) async throws {
+        let localShares = try await shareRepository.getShares(forceRefresh: false)
+        let remoteShares = try await shareRepository.getShares(forceRefresh: true)
+
+        for remoteShare in remoteShares {
+            if localShares.contains(where: { $0.shareID == remoteShare.shareID }) {
+                // Existing share
+                try await sync(share: remoteShare, hasNewEvents: &hasNewEvents)
+            } else {
+                // New share
+                let shareId = remoteShare.shareID
+                _ = try await vaultItemKeysRepository.getLatestVaultItemKeys(shareId: shareId,
+                                                                             forceRefresh: true)
+            }
+        }
+    }
+
+    /// Sync a single share. Can be a recursion if share has many events
+    func sync(share: Share, hasNewEvents: inout Bool) async throws {
+        let shareId = share.shareID
+        let lastEventId = try await shareEventIDRepository.getLastEventId(userId: userId,
+                                                                          shareId: shareId)
+        let events = try await remoteSyncEventsDatasource.getEvents(shareId: shareId,
+                                                                    lastEventId: lastEventId)
+        try await shareEventIDRepository.upsertLastEventId(userId: userId,
+                                                           shareId: shareId,
+                                                           lastEventId: events.latestEventID)
+        if !events.updatedItems.isEmpty {
+            hasNewEvents = true
+            try await itemRepository.upsertItems(events.updatedItems, shareId: shareId)
+        }
+
+        if !events.deletedItemIDs.isEmpty {
+            hasNewEvents = true
+            try await itemRepository.deleteItemsLocally(itemIds: events.deletedItemIDs,
+                                                        shareId: shareId)
+        }
+
+        if events.newRotationID?.isEmpty == false {
+            hasNewEvents = true
+            _ = try await vaultItemKeysRepository.getLatestVaultItemKeys(shareId: shareId,
+                                                                         forceRefresh: true)
+        }
+
+        if events.eventsPending {
+            try await sync(share: share, hasNewEvents: &hasNewEvents)
+        }
+    }
 }
