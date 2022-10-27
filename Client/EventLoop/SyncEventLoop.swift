@@ -109,6 +109,11 @@ public extension SyncEventLoop {
         timer?.fire()
     }
 
+    /// Force a sync loop e.g when the app goes foreground
+    func forceSync() {
+        timerTask()
+    }
+
     /// Stop looping
     func stop() {
         timer?.invalidate()

@@ -167,6 +167,7 @@ private extension HomeCoordinator {
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [unowned self] _ in
                 delegate?.homeCoordinatorRequestsLocalAuthentication()
+                eventLoop.forceSync()
                 Task {
                     do {
                         try await credentialManager.insertAllCredentials(from: itemRepository,
@@ -392,31 +393,34 @@ extension HomeCoordinator: CoordinatorDelegate {
 // MARK: - SyncEventLoopDelegate
 extension HomeCoordinator: SyncEventLoopDelegate {
     func syncEventLoopDidStartLooping() {
-        print(#function)
+        PPLogger.shared?.log("Started looping")
     }
 
     func syncEventLoopDidStopLooping() {
-        print(#function)
+        PPLogger.shared?.log("Stopped looping")
     }
 
     func syncEventLoopDidBeginNewLoop() {
-        print(#function)
+        PPLogger.shared?.log("Began new sync loop")
     }
 
     func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
-        print(#function)
-        print(reason)
+        PPLogger.shared?.log("Skipped sync loop \(reason)")
     }
 
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
-        print(#function)
         if hasNewEvents {
-            myVaultsCoordinator.refreshItems()
+            PPLogger.shared?.log("Has new events. Refreshing items")
+            DispatchQueue.main.async {
+                self.myVaultsCoordinator.refreshItems()
+                self.trashCoordinator.refreshTrashedItems()
+            }
+        } else {
+            PPLogger.shared?.log("Has no new events. Do nothing.")
         }
     }
 
     func syncEventLoopDidFailLoop(error: Error) {
-        print(#function)
-        print(error.localizedDescription)
+        PPLogger.shared?.log(error)
     }
 }
