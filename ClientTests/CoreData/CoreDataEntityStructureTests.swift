@@ -128,6 +128,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
 
     func testShareEventIDEntity() {
         let sut = entity(byName: "ShareEventIDEntity")
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "lastEventID", on: sut, hasType: .string)
     }

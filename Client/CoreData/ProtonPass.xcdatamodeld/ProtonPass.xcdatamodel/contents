@@ -73,8 +73,10 @@
     <entity name="ShareEventIDEntity" representedClassName="ShareEventIDEntity" syncable="YES">
         <attribute name="lastEventID" attributeType="String"/>
         <attribute name="shareID" attributeType="String"/>
+        <attribute name="userID" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
+                <constraint value="userID"/>
                 <constraint value="shareID"/>
             </uniquenessConstraint>
         </uniquenessConstraints>

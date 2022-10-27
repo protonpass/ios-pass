@@ -32,6 +32,15 @@ extension ShareEventIDEntity {
         NSFetchRequest<ShareEventIDEntity>(entityName: "ShareEventIDEntity")
     }
 
+    @NSManaged var userID: String?
     @NSManaged var shareID: String?
     @NSManaged var lastEventID: String?
+}
+
+extension ShareEventIDEntity {
+    func hydrate(userId: String, shareId: String, lastEventId: String) {
+        self.userID = userId
+        self.shareID = shareId
+        self.lastEventID = lastEventId
+    }
 }
