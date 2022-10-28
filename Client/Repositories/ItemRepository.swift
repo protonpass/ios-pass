@@ -37,6 +37,7 @@ public protocol ItemRepositoryProtocol {
     var remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol { get }
     var publicKeyRepository: PublicKeyRepositoryProtocol { get }
     var shareRepository: ShareRepositoryProtocol { get }
+    var shareEventIDRepository: ShareEventIDRepositoryProtocol { get }
     var vaultItemKeysRepository: VaultItemKeysRepositoryProtocol { get }
     var delegate: ItemRepositoryDelegate? { get }
 
@@ -326,6 +327,12 @@ private extension ItemRepositoryProtocol {
         try await localItemDatasoure.upsertItems(encryptedItems)
         PPLogger.shared?.log("Saved \(encryptedItems.count) remote item revisions to local database")
 
+        PPLogger.shared?.log("Refreshing last event ID for share \(shareId)")
+        try await shareEventIDRepository.getLastEventId(forceRefresh: true,
+                                                        userId: userData.user.ID,
+                                                        shareId: shareId)
+        PPLogger.shared?.log("Refreshed last event ID for share \(shareId)")
+
         PPLogger.shared?.log("Extracting new credentials from \(encryptedItems.count) remote items")
         let newCredentials = try getCredentials(from: encryptedItems, state: .active)
         delegate?.itemRepositoryHasNewCredentials(newCredentials)
@@ -431,6 +438,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
     public let remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol
     public let publicKeyRepository: PublicKeyRepositoryProtocol
     public let shareRepository: ShareRepositoryProtocol
+    public let shareEventIDRepository: ShareEventIDRepositoryProtocol
     public let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
     public weak var delegate: ItemRepositoryDelegate?
 
@@ -440,6 +448,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol,
                 publicKeyRepository: PublicKeyRepositoryProtocol,
                 shareRepository: ShareRepositoryProtocol,
+                shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 vaultItemKeysRepository: VaultItemKeysRepositoryProtocol) {
         self.userData = userData
         self.symmetricKey = symmetricKey
@@ -447,6 +456,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.remoteItemRevisionDatasource = remoteItemRevisionDatasource
         self.publicKeyRepository = publicKeyRepository
         self.shareRepository = shareRepository
+        self.shareEventIDRepository = shareEventIDRepository
         self.vaultItemKeysRepository = vaultItemKeysRepository
     }
 
@@ -456,16 +466,20 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 apiService: APIService) {
         self.userData = userData
         self.symmetricKey = symmetricKey
+        let authCredential = userData.credential
         self.localItemDatasoure = LocalItemDatasource(container: container)
-        self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(authCredential: userData.credential,
+        self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(authCredential: authCredential,
                                                                          apiService: apiService)
         self.publicKeyRepository = PublicKeyRepository(container: container, apiService: apiService)
         self.shareRepository = ShareRepository(userId: userData.user.ID,
                                                container: container,
-                                               authCredential: userData.credential,
+                                               authCredential: authCredential,
                                                apiService: apiService)
+        self.shareEventIDRepository = ShareEventIDRepository(container: container,
+                                                             authCredential: authCredential,
+                                                             apiService: apiService)
         self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
-                                                               authCredential: userData.credential,
+                                                               authCredential: authCredential,
                                                                apiService: apiService)
     }
 }

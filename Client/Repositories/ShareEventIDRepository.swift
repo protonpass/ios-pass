@@ -28,12 +28,17 @@ public protocol ShareEventIDRepositoryProtocol {
     var remoteShareEventIDDatasource: RemoteShareEventIDDatasourceProtocol { get }
 
     /// Get local last event ID if any. If not fetch from remote and save to local database and return.
-    func getLastEventId(userId: String, shareId: String) async throws -> String
+    @discardableResult
+    func getLastEventId(forceRefresh: Bool, userId: String, shareId: String) async throws -> String
     func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws
 }
 
 public extension ShareEventIDRepositoryProtocol {
-    func getLastEventId(userId: String, shareId: String) async throws -> String {
+    func getLastEventId(forceRefresh: Bool, userId: String, shareId: String) async throws -> String {
+        if forceRefresh {
+            PPLogger.shared?.log("Force refreshing last event id of share \(shareId) of user \(userId)")
+            return try await fetchLastEventIdFromRemoteAndSaveToLocal(userId: userId, shareId: shareId)
+        }
         PPLogger.shared?.log("Getting last event id of share \(shareId) of user \(userId)")
         if let localLastEventId =
             try await localShareEventIDDatasource.getLastEventId(userId: userId,
@@ -41,6 +46,18 @@ public extension ShareEventIDRepositoryProtocol {
             PPLogger.shared?.log("Found local last event id of share \(shareId) of user \(userId)")
             return localLastEventId
         }
+        return try await fetchLastEventIdFromRemoteAndSaveToLocal(userId: userId, shareId: shareId)
+    }
+
+    func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws {
+        try await localShareEventIDDatasource.upsertLastEventId(userId: userId,
+                                                                shareId: shareId,
+                                                                lastEventId: lastEventId)
+    }
+}
+
+extension ShareEventIDRepositoryProtocol {
+    func fetchLastEventIdFromRemoteAndSaveToLocal(userId: String, shareId: String) async throws -> String {
         PPLogger.shared?.log("Getting remote last event id of share \(shareId) of user \(userId)")
         let newLastEventId =
         try await remoteShareEventIDDatasource.getLastEventId(shareId: shareId)
@@ -49,12 +66,6 @@ public extension ShareEventIDRepositoryProtocol {
                                                                 shareId: shareId,
                                                                 lastEventId: newLastEventId)
         return newLastEventId
-    }
-
-    func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws {
-        try await localShareEventIDDatasource.upsertLastEventId(userId: userId,
-                                                                shareId: shareId,
-                                                                lastEventId: lastEventId)
     }
 }
 
