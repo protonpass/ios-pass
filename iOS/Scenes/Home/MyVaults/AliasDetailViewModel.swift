@@ -20,7 +20,6 @@
 
 import Client
 import Core
-import CryptoKit
 
 enum AliasState {
     case loading
@@ -48,12 +47,9 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 
     init(itemContent: ItemContent,
          itemRepository: ItemRepositoryProtocol,
-         symmetricKey: SymmetricKey,
          aliasRepository: AliasRepositoryProtocol) {
         self.aliasRepository = aliasRepository
-        super.init(itemContent: itemContent,
-                   itemRepository: itemRepository,
-                   symmetricKey: symmetricKey)
+        super.init(itemContent: itemContent, itemRepository: itemRepository)
         getAlias()
     }
 

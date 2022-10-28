@@ -20,7 +20,6 @@
 
 import Client
 import Core
-import CryptoKit
 
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
@@ -35,17 +34,14 @@ class BaseItemDetailViewModel: BaseViewModel {
     @Published var isTrashed = false
 
     private let itemRepository: ItemRepositoryProtocol
-    private let symmetricKey: SymmetricKey
     private(set) var itemContent: ItemContent
 
     weak var itemDetailDelegate: ItemDetailViewModelDelegate?
 
     init(itemContent: ItemContent,
-         itemRepository: ItemRepositoryProtocol,
-         symmetricKey: SymmetricKey) {
+         itemRepository: ItemRepositoryProtocol) {
         self.itemContent = itemContent
         self.itemRepository = itemRepository
-        self.symmetricKey = symmetricKey
         super.init()
         bindValues()
 
@@ -102,21 +98,16 @@ private extension BaseItemDetailViewModel {
     }
 }
 
-// MARK: - MyVaultsCoordinatorDelegate
-extension BaseItemDetailViewModel: MyVaultsCoordinatorDelegate {
-    func myVaultsCoordinatorDidRefresh() {
+extension BaseItemDetailViewModel {
+    func refresh() {
         Task { @MainActor in
-            do {
-                guard let updatedItem =
-                        try await itemRepository.getItem(shareId: itemContent.shareId,
-                                                         itemId: itemContent.itemId) else {
-                    return
-                }
-                self.itemContent = try updatedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-                bindValues()
-            } catch {
-                PPLogger.shared?.log(error)
+            guard let updatedItemContent =
+                    try await itemRepository.getDecryptedItemContent(shareId: itemContent.shareId,
+                                                                     itemId: itemContent.itemId) else {
+                return
             }
+            itemContent = updatedItemContent
+            bindValues()
         }
     }
 }

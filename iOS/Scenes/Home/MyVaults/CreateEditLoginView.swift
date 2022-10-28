@@ -54,6 +54,8 @@ struct CreateEditLoginView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .disabled(viewModel.isLoading)
+        .modifier(ObsoleteItemAlertModifier(isPresented: $viewModel.isObsolete,
+                                            onAction: dismiss.callAsFunction))
         .discardChangesAlert(isPresented: $isShowingDiscardAlert,
                              onDiscard: dismiss.callAsFunction)
     }

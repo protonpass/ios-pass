@@ -43,6 +43,8 @@ public protocol ItemRepositoryProtocol {
     /// Get a specific Item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
+    func getDecryptedItemContent(shareId: String, itemId: String) async throws -> ItemContent?
+
     /// Get items of all shares by state
     func getItems(forceRefresh: Bool, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
@@ -86,6 +88,11 @@ public protocol ItemRepositoryProtocol {
 public extension ItemRepositoryProtocol {
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         try await localItemDatasoure.getItem(shareId: shareId, itemId: itemId)
+    }
+
+    func getDecryptedItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
+        let encryptedItem = try await getItem(shareId: shareId, itemId: itemId)
+        return try encryptedItem?.getDecryptedItemContent(symmetricKey: symmetricKey)
     }
 
     func getItems(forceRefresh: Bool,

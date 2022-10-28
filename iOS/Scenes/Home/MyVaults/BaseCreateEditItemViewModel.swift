@@ -33,6 +33,7 @@ enum ItemMode {
 }
 
 class BaseCreateEditItemViewModel: BaseViewModel {
+    @Published var isObsolete = false
     let shareId: String
     let mode: ItemMode
     let itemRepository: ItemRepositoryProtocol
@@ -170,6 +171,22 @@ private extension BaseCreateEditItemViewModel {
             try await self.itemRepository.updateItem(oldItem: oldItem,
                                                      newItemContent: newItemContent,
                                                      shareId: shareId)
+        }
+    }
+}
+
+extension BaseCreateEditItemViewModel {
+    /// Refresh the item to detect changes.
+    /// When changes happen, announce via `isObsolete` boolean  so the view can act accordingly
+    func refresh() {
+        guard case .edit(let itemContent) = mode else { return }
+        Task { @MainActor in
+            guard let updatedItem =
+                    try await itemRepository.getItem(shareId: itemContent.shareId,
+                                                     itemId: itemContent.itemId) else {
+                return
+            }
+            isObsolete = itemContent.revision != updatedItem.item.revision
         }
     }
 }

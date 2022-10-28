@@ -45,6 +45,8 @@ struct CreateEditNoteView: View {
             .toolbar { toolbarContent }
         }
         .disabled(viewModel.isLoading)
+        .modifier(ObsoleteItemAlertModifier(isPresented: $viewModel.isObsolete,
+                                            onAction: dismiss.callAsFunction))
         .discardChangesAlert(isPresented: $isShowingDiscardAlert,
                              onDiscard: dismiss.callAsFunction)
     }
