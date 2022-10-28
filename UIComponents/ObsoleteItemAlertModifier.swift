@@ -1,6 +1,6 @@
 //
-// DiscardChangesAlertModifier.swift
-// Proton Pass - Created on 16/09/2022.
+// ObsoleteItemAlertModifier.swift
+// Proton Pass - Created on 28/10/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,27 +20,25 @@
 
 import SwiftUI
 
-public struct DiscardChangesAlertModifier: ViewModifier {
+public struct ObsoleteItemAlertModifier: ViewModifier {
     @Binding var isPresented: Bool
-    let onDiscard: () -> Void
+    let onAction: () -> Void
 
     public init(isPresented: Binding<Bool>,
-                onDiscard: @escaping () -> Void) {
+                onAction: @escaping () -> Void) {
         self._isPresented = isPresented
-        self.onDiscard = onDiscard
+        self.onAction = onAction
     }
 
     public func body(content: Content) -> some View {
         content
             .alert(
-                "Discard changes?",
+                "This item is obsolete",
                 isPresented: $isPresented,
                 actions: {
-                    Button("Keep Editing", role: .cancel, action: {})
-                    Button("Discard Changes", role: .destructive, action: onDiscard)
-                },
-                message: {
-                    Text("You will loose all unsaved changes")
+                    Button("OK", role: .cancel, action: onAction)
+                }, message: {
+                    Text("Some changes happened to this item, heading back to the previous page.")
                 })
     }
 }

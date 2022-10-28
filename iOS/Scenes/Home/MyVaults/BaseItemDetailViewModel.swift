@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
@@ -33,7 +34,7 @@ class BaseItemDetailViewModel: BaseViewModel {
     @Published var isTrashed = false
 
     private let itemRepository: ItemRepositoryProtocol
-    let itemContent: ItemContent
+    private(set) var itemContent: ItemContent
 
     weak var itemDetailDelegate: ItemDetailViewModelDelegate?
 
@@ -93,6 +94,20 @@ private extension BaseItemDetailViewModel {
     func trashItemTask(item: SymmetricallyEncryptedItem) -> Task<Void, Error> {
         Task.detached(priority: .userInitiated) {
             try await self.itemRepository.trashItems([item])
+        }
+    }
+}
+
+extension BaseItemDetailViewModel {
+    func refresh() {
+        Task { @MainActor in
+            guard let updatedItemContent =
+                    try await itemRepository.getDecryptedItemContent(shareId: itemContent.shareId,
+                                                                     itemId: itemContent.itemId) else {
+                return
+            }
+            itemContent = updatedItemContent
+            bindValues()
         }
     }
 }

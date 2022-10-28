@@ -20,6 +20,7 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework
+${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework
 ${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Challenge/ProtonCore_Challenge.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification-V5/ProtonCore_HumanVerification.framework
@@ -27,7 +28,6 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-LoginUI-V5/ProtonCore_LoginUI.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCore_TroubleShooting.framework
-${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework
 ${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework
 ${BUILT_PRODUCTS_DIR}/AlertToast/AlertToast.framework
 ${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework

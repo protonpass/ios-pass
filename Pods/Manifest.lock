@@ -172,6 +172,7 @@ DEPENDENCIES:
   - "ProtonCore-TroubleShooting (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.23.2`)"
   - "ProtonCore-UIFoundations-V5 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.23.2`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.23.2`)"
+  - ReachabilitySwift
   - SideMenuSwift (= 2.0.9)
   - SwiftProtobuf
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `release/1.0.1`)
@@ -411,6 +412,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: 9f458aaa7844a2fc0b910053e66578bc4e2da9c1
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
 
-PODFILE CHECKSUM: ff818942035da3ca5adf39cf8130fed990dec8c1
+PODFILE CHECKSUM: 906b3c10d47bfefc22f9f0ed31d98114ff9af89a
 
 COCOAPODS: 1.11.3

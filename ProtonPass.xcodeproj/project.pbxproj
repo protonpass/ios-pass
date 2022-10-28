@@ -170,10 +170,20 @@
 		355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635BC2889653B00F32353 /* LoadVaultsView.swift */; };
 		355635BF2889664200F32353 /* LoadVaultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635BE2889664200F32353 /* LoadVaultsViewModel.swift */; };
 		355635C1288968B000F32353 /* VaultContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635C0288968B000F32353 /* VaultContentViewModel.swift */; };
+		355696E0290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */; };
 		355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F42907FB3200268116 /* LockedCredentialView.swift */; };
 		355751F62907FB9000268116 /* AppLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531B5422902DA890070D2EE /* AppLockedView.swift */; };
 		355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */; };
 		355751FA2908745B00268116 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
+		35581806290A7DBF00DD94DB /* ShareEventIDEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */; };
+		3558180A290A7FA600DD94DB /* LocalShareEventIDDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */; };
+		3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */; };
+		3558180F290A8C0800DD94DB /* GetLastEventIDEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3558180E290A8C0800DD94DB /* GetLastEventIDEndpoint.swift */; };
+		35581811290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581810290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift */; };
+		35581813290AB2B000DD94DB /* SyncEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581812290AB2B000DD94DB /* SyncEvents.swift */; };
+		35581815290AB39C00DD94DB /* GetEventsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581814290AB39C00DD94DB /* GetEventsEndpoint.swift */; };
+		35581817290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */; };
+		35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */; };
 		355C92CC28CB9121000B1D9B /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355C92CB28CB9121000B1D9B /* BaseViewModel.swift */; };
 		355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */; };
 		355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */; };
@@ -230,6 +240,7 @@
 		3593DD1328A8415300C235D3 /* PersistentContainerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD1228A8415300C235D3 /* PersistentContainerBuilder.swift */; };
 		3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */; };
 		3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */; };
+		359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A800C29096A2200EEBC51 /* SyncEventLoop.swift */; };
 		35A909EA2890110F00AC54D4 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E92890110F00AC54D4 /* CoreDataError.swift */; };
 		35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */; };
 		35AABE1D28B0036A00CEDDE6 /* AlertToastModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1C28B0036A00CEDDE6 /* AlertToastModifiers.swift */; };
@@ -582,8 +593,18 @@
 		355635BC2889653B00F32353 /* LoadVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadVaultsView.swift; sourceTree = "<group>"; };
 		355635BE2889664200F32353 /* LoadVaultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadVaultsViewModel.swift; sourceTree = "<group>"; };
 		355635C0288968B000F32353 /* VaultContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultContentViewModel.swift; sourceTree = "<group>"; };
+		355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObsoleteItemAlertModifier.swift; sourceTree = "<group>"; };
 		355751F42907FB3200268116 /* LockedCredentialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialView.swift; sourceTree = "<group>"; };
 		355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialViewModel.swift; sourceTree = "<group>"; };
+		35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDEntity.swift; sourceTree = "<group>"; };
+		35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasource.swift; sourceTree = "<group>"; };
+		3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasourceTests.swift; sourceTree = "<group>"; };
+		3558180E290A8C0800DD94DB /* GetLastEventIDEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLastEventIDEndpoint.swift; sourceTree = "<group>"; };
+		35581810290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareEventIDDatasource.swift; sourceTree = "<group>"; };
+		35581812290AB2B000DD94DB /* SyncEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEvents.swift; sourceTree = "<group>"; };
+		35581814290AB39C00DD94DB /* GetEventsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetEventsEndpoint.swift; sourceTree = "<group>"; };
+		35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSyncEventsDatasource.swift; sourceTree = "<group>"; };
+		35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDRepository.swift; sourceTree = "<group>"; };
 		355C92CB28CB9121000B1D9B /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLabelKeyPacket.swift; sourceTree = "<group>"; };
 		355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemEndpoint.swift; sourceTree = "<group>"; };
@@ -640,6 +661,7 @@
 		3593DD0F28A83F7A00C235D3 /* ProtonPass.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProtonPass.xcdatamodel; sourceTree = "<group>"; };
 		3593DD1228A8415300C235D3 /* PersistentContainerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainerBuilder.swift; sourceTree = "<group>"; };
 		3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasource.swift; sourceTree = "<group>"; };
+		359A800C29096A2200EEBC51 /* SyncEventLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEventLoop.swift; sourceTree = "<group>"; };
 		35A909E92890110F00AC54D4 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
 		35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCreateEditItemViewModel.swift; sourceTree = "<group>"; };
 		35AABE1C28B0036A00CEDDE6 /* AlertToastModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertToastModifiers.swift; sourceTree = "<group>"; };
@@ -1039,6 +1061,7 @@
 			children = (
 				35544406287CB3810017FCAD /* Endpoint.swift */,
 				354146D228D1F218007E45A6 /* Aliases */,
+				3558180D290A8BE200DD94DB /* Events */,
 				355E803D28A3071700BE7C9B /* Items */,
 				358AB49F2887044500818B44 /* Keys */,
 				353547BF2880C4470021C716 /* Shares */,
@@ -1063,6 +1086,7 @@
 				350A97D32885BFFD00A7168B /* Vault.swift */,
 				358AB4982886FA7B00818B44 /* VaultKey.swift */,
 				353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */,
+				35581812290AB2B000DD94DB /* SyncEvents.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1085,6 +1109,15 @@
 				3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */,
 			);
 			path = BuildConfigs;
+			sourceTree = "<group>";
+		};
+		3558180D290A8BE200DD94DB /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				3558180E290A8C0800DD94DB /* GetLastEventIDEndpoint.swift */,
+				35581814290AB39C00DD94DB /* GetEventsEndpoint.swift */,
+			);
+			path = Events;
 			sourceTree = "<group>";
 		};
 		35588CD52906B1C60040D54B /* LocalAuthenticator */ = {
@@ -1117,6 +1150,7 @@
 				3542E2CA28D9FE8600194F24 /* ItemRepository.swift */,
 				358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */,
 				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
+				35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */,
 				356BDA3128DFAA9600B02E5A /* VaultItemKeysRepository.swift */,
 			);
 			path = Repositories;
@@ -1158,6 +1192,7 @@
 				35610B7228ABAF0300955ACB /* LocalItemKeyDatasourceTests.swift */,
 				358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */,
 				357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */,
+				3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */,
 				35610B7628ABB9AD00955ACB /* LocalVaultKeyDatasourceTests.swift */,
 			);
 			path = Datasources;
@@ -1222,6 +1257,7 @@
 				3593DD0528A837DC00C235D3 /* ItemKeyEntity.swift */,
 				358A509128AD856D00F5285C /* PublicKeyEntity.swift */,
 				3593DD0728A837DC00C235D3 /* ShareEntity.swift */,
+				35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */,
 				3593DD0628A837DC00C235D3 /* VaultKeyEntity.swift */,
 			);
 			path = Entities;
@@ -1245,6 +1281,7 @@
 				35610B7028ABAAC500955ACB /* LocalItemKeyDatasource.swift */,
 				358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */,
 				3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */,
+				35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */,
 				35610B7428ABB77800955ACB /* LocalVaultKeyDatasource.swift */,
 			);
 			path = Local;
@@ -1258,9 +1295,19 @@
 				35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */,
 				358A509928AD8A8000F5285C /* RemotePublicKeyDatasource.swift */,
 				35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */,
+				35581810290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift */,
+				35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */,
 				356BDA3328DFAC9600B02E5A /* RemoteVaultItemKeysDatasource.swift */,
 			);
 			path = Remote;
+			sourceTree = "<group>";
+		};
+		359A800B290969DD00EEBC51 /* EventLoop */ = {
+			isa = PBXGroup;
+			children = (
+				359A800C29096A2200EEBC51 /* SyncEventLoop.swift */,
+			);
+			path = EventLoop;
 			sourceTree = "<group>";
 		};
 		35E5062E286F819F00A3F6EA = {
@@ -1343,6 +1390,7 @@
 				3593DD1828A8454900C235D3 /* Datasources */,
 				3529432C28DB454000E1F11B /* DomainModels */,
 				355443FA287CA7150017FCAD /* Endpoints */,
+				359A800B290969DD00EEBC51 /* EventLoop */,
 				355443FB287CA73E0017FCAD /* Models */,
 				35004A3B288FEF1C0073C4A7 /* ModelProtocols */,
 				358BD367287D52AC00802A91 /* Protobuf Objects */,
@@ -1401,6 +1449,7 @@
 				35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */,
 				3547ABE92877684D00EE85E1 /* GenericItemView.swift */,
 				354F769B28C90B4D00EB2383 /* MoveToTrashModifier.swift */,
+				355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */,
 				35526B5C28D116350017BB53 /* PassIcon.swift */,
 				3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */,
 				3542E2CC28DA11FE00194F24 /* RetryableErrorView.swift */,
@@ -2365,22 +2414,27 @@
 				354146D128D1F1E1007E45A6 /* AliasOptions.swift in Sources */,
 				3529433028DB4C7700E1F11B /* SearchableItem.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
+				359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */,
 				3552F49428D37CFF00547146 /* ChangeMailboxesEndpoint.swift in Sources */,
 				358A509C28AD8B6C00F5285C /* PublicKeyRepository.swift in Sources */,
 				3542E2C528D9E2E700194F24 /* ItemEntity.swift in Sources */,
 				35610B7E28ABC9D200955ACB /* RemoteDatasource.swift in Sources */,
+				3558180A290A7FA600DD94DB /* LocalShareEventIDDatasource.swift in Sources */,
 				358A509A28AD8A8000F5285C /* RemotePublicKeyDatasource.swift in Sources */,
 				35610B8928ABCF1900955ACB /* ShareRepository.swift in Sources */,
 				354F768A28C72F1000EB2383 /* PassKeyUtils.swift in Sources */,
+				35581806290A7DBF00DD94DB /* ShareEventIDEntity.swift in Sources */,
 				354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
 				355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */,
 				358A508B28AD3BB100F5285C /* DataError.swift in Sources */,
 				3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */,
+				35581817290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift in Sources */,
 				358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */,
 				358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */,
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,
 				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
+				35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */,
 				358A508D28AD823000F5285C /* PublicKey.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
 				35AABE2128B0288B00CEDDE6 /* UpdateItemEndpoint.swift in Sources */,
@@ -2393,9 +2447,11 @@
 				358BD36B287D52AC00802A91 /* label_v1.pb.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
 				3530092A28A5281800611F8A /* Vault.swift in Sources */,
+				3558180F290A8C0800DD94DB /* GetLastEventIDEndpoint.swift in Sources */,
 				35610B7128ABAAC500955ACB /* LocalItemKeyDatasource.swift in Sources */,
 				35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */,
 				3542E2CB28D9FE8600194F24 /* ItemRepository.swift in Sources */,
+				35581813290AB2B000DD94DB /* SyncEvents.swift in Sources */,
 				35A909EA2890110F00AC54D4 /* CoreDataError.swift in Sources */,
 				3530FADA28CEFA0900CE8A8F /* DeleteItemsEndpoint.swift in Sources */,
 				3593DCE728A790F800C235D3 /* LocalDatasource.swift in Sources */,
@@ -2420,8 +2476,10 @@
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
 				356BDA3428DFAC9600B02E5A /* RemoteVaultItemKeysDatasource.swift in Sources */,
 				35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */,
+				35581815290AB39C00DD94DB /* GetEventsEndpoint.swift in Sources */,
 				3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */,
 				3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */,
+				35581811290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift in Sources */,
 				354513EB28E4D5310020A93A /* AutoFillCredential.swift in Sources */,
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
 				354146DA28D1F585007E45A6 /* AliasRepository.swift in Sources */,
@@ -2454,6 +2512,7 @@
 				35610B7328ABAF0300955ACB /* LocalItemKeyDatasourceTests.swift in Sources */,
 				358A509628AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift in Sources */,
 				3542E2BA28D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift in Sources */,
+				3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */,
 				351E9E39289C508B00BB47EB /* ItemKey+Test.swift in Sources */,
 				350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */,
 				35610B7728ABB9AD00955ACB /* LocalVaultKeyDatasourceTests.swift in Sources */,
@@ -2524,6 +2583,7 @@
 				3542E2CD28DA11FE00194F24 /* RetryableErrorView.swift in Sources */,
 				354F769C28C90B4D00EB2383 /* MoveToTrashModifier.swift in Sources */,
 				3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */,
+				355696E0290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift in Sources */,
 				35498F8A28DC805400AF1D8F /* ItemSearchResultView.swift in Sources */,
 				353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */,
 				354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */,

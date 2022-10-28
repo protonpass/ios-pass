@@ -39,6 +39,9 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     /// Permanently delete items
     func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
+    /// Permanently delete items with given ids
+    func deleteItems(itemIds: [String], shareId: String) async throws
+
     /// Nuke items of a share
     func removeAllItems(shareId: String) async throws
 
@@ -121,10 +124,17 @@ public extension LocalItemDatasourceProtocol {
     func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
         let taskContext = newTaskContext(type: .delete)
         for item in items {
+            try await deleteItems(itemIds: [item.item.itemID], shareId: item.shareId)
+        }
+    }
+
+    func deleteItems(itemIds: [String], shareId: String) async throws {
+        let taskContext = newTaskContext(type: .delete)
+        for itemId in itemIds {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemEntity")
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                .init(format: "shareID = %@", item.shareId),
-                .init(format: "itemID = %@", item.item.itemID)
+                .init(format: "shareID = %@", shareId),
+                .init(format: "itemID = %@", itemId)
             ])
             try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                               context: taskContext)

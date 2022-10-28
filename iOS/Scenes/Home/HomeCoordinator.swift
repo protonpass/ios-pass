@@ -80,8 +80,12 @@ final class HomeCoordinator: DeinitPrintable {
     private lazy var trashCoordinator = provideTrashCoordinator()
     private var trashRootViewController: UIViewController { trashCoordinator.rootViewController }
 
+    private let eventLoop: SyncEventLoop
+
     private var cancellables = Set<AnyCancellable>()
 
+    #warning("Try to simplify this function")
+    // swiftlint:disable:next function_body_length
     init(sessionData: SessionData,
          apiService: APIService,
          symmetricKey: SymmetricKey,
@@ -103,17 +107,33 @@ final class HomeCoordinator: DeinitPrintable {
         self.aliasRepository = AliasRepository(authCredential: authCredential, apiService: apiService)
         self.publicKeyRepository = PublicKeyRepository(container: container,
                                                        apiService: apiService)
-        self.shareRepository = ShareRepository(userId: userId,
-                                               container: container,
-                                               authCredential: authCredential,
-                                               apiService: apiService)
-        self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
-                                                               authCredential: authCredential,
-                                                               apiService: apiService)
+        let shareRepository = ShareRepository(userId: userId,
+                                              container: container,
+                                              authCredential: authCredential,
+                                              apiService: apiService)
+        self.shareRepository = shareRepository
+        let vaultItemKeysRepository = VaultItemKeysRepository(container: container,
+                                                              authCredential: authCredential,
+                                                              apiService: apiService)
+        self.vaultItemKeysRepository = vaultItemKeysRepository
         itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
         self.credentialManager = credentialManager
         self.vaultSelection = .init(vaults: [])
         self.preferences = preferences
+
+        let shareEventIDRepository = ShareEventIDRepository(container: container,
+                                                            authCredential: authCredential,
+                                                            apiService: apiService)
+        let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(authCredential: authCredential,
+                                                                    apiService: apiService)
+        self.eventLoop = .init(userId: userId,
+                               shareRepository: shareRepository,
+                               shareEventIDRepository: shareEventIDRepository,
+                               remoteSyncEventsDatasource: remoteSyncEventsDatasource,
+                               itemRepository: itemRepository,
+                               vaultItemKeysRepository: vaultItemKeysRepository)
+        self.eventLoop.delegate = self
+        self.eventLoop.start()
         self.setUpSideMenuPreferences()
         self.observeVaultSelection()
         self.observeForegroundEntrance()
@@ -147,6 +167,7 @@ private extension HomeCoordinator {
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [unowned self] _ in
                 delegate?.homeCoordinatorRequestsLocalAuthentication()
+                eventLoop.forceSync()
                 Task {
                     do {
                         try await credentialManager.insertAllCredentials(from: itemRepository,
@@ -334,6 +355,7 @@ private extension HomeCoordinator {
     }
 
     func signOut() {
+        eventLoop.stop()
         delegate?.homeCoordinatorDidSignOut()
     }
 }
@@ -365,5 +387,38 @@ extension HomeCoordinator: CoordinatorDelegate {
 
     func coordinatorWantsToAlertError(_ error: Error) {
         alert(error: error)
+    }
+}
+
+// MARK: - SyncEventLoopDelegate
+extension HomeCoordinator: SyncEventLoopDelegate {
+    func syncEventLoopDidStartLooping() {
+        PPLogger.shared?.log("Started looping")
+    }
+
+    func syncEventLoopDidStopLooping() {
+        PPLogger.shared?.log("Stopped looping")
+    }
+
+    func syncEventLoopDidBeginNewLoop() {
+        PPLogger.shared?.log("Began new sync loop")
+    }
+
+    func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
+        PPLogger.shared?.log("Skipped sync loop \(reason)")
+    }
+
+    func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
+        if hasNewEvents {
+            PPLogger.shared?.log("Has new events. Refreshing items")
+            myVaultsCoordinator.refreshItems()
+            trashCoordinator.refreshTrashedItems()
+        } else {
+            PPLogger.shared?.log("Has no new events. Do nothing.")
+        }
+    }
+
+    func syncEventLoopDidFailLoop(error: Error) {
+        PPLogger.shared?.log(error)
     }
 }

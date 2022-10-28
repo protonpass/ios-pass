@@ -197,6 +197,7 @@ if [[ "$CONFIGURATION" == "Debug-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Challenge/ProtonCore_Challenge.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification-V5/ProtonCore_HumanVerification.framework"
@@ -205,7 +206,6 @@ if [[ "$CONFIGURATION" == "Debug-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings-V5/ProtonCore_Settings.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCore_TroubleShooting.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
@@ -231,6 +231,7 @@ if [[ "$CONFIGURATION" == "Debug-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Challenge/ProtonCore_Challenge.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification-V5/ProtonCore_HumanVerification.framework"
@@ -239,7 +240,6 @@ if [[ "$CONFIGURATION" == "Debug-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings-V5/ProtonCore_Settings.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCore_TroubleShooting.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
@@ -265,6 +265,7 @@ if [[ "$CONFIGURATION" == "Release-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Challenge/ProtonCore_Challenge.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification-V5/ProtonCore_HumanVerification.framework"
@@ -273,7 +274,6 @@ if [[ "$CONFIGURATION" == "Release-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings-V5/ProtonCore_Settings.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCore_TroubleShooting.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
@@ -299,6 +299,7 @@ if [[ "$CONFIGURATION" == "Release-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Challenge/ProtonCore_Challenge.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification-V5/ProtonCore_HumanVerification.framework"
@@ -307,7 +308,6 @@ if [[ "$CONFIGURATION" == "Release-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings-V5/ProtonCore_Settings.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCore_TroubleShooting.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi

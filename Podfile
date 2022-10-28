@@ -43,6 +43,7 @@ target 'Client' do
   client_and_ios_pods
   pod 'SwiftProtobuf'
   pod 'ProtonCore-KeyManager/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ReachabilitySwift'
 
   target 'ClientTests' do
   end

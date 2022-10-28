@@ -39,7 +39,7 @@ public final class PPLogger {
 
     private func log(_ message: String, type: OSLogType, osLog: OSLog) {
         // Add a prefix to message to make filtering easy in a jungle of OS logs
-        let prefixedMessage = "[\(Self.self)] \(message)"
+        let prefixedMessage = "\n[\(Self.self)] \(message)"
         os_log("%{public}@", log: osLog, type: type, prefixedMessage)
     }
 }
@@ -58,7 +58,7 @@ extension PPLogger: Logger {
                     file: StaticString = #file,
                     function: StaticString = #function,
                     line: UInt = #line) {
-        let category = "\(file) - \(function) - \(line)"
+        let category = "\n\(file)\n\(function)\n\(line)"
         let osLog = OSLog(subsystem: bundle.bundleIdentifier ?? "", category: category)
         log(message, type: .default, osLog: osLog)
     }

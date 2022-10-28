@@ -22,6 +22,7 @@ import CoreData
 
 public protocol GlobalLocalDatasourceProtocol {
     var localShareDatasource: LocalShareDatasourceProtocol { get }
+    var localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol { get }
     var localItemKeyDatasource: LocalItemKeyDatasourceProtocol { get }
     var localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol { get }
     var localItemDatasource: LocalItemDatasourceProtocol { get }
@@ -41,6 +42,7 @@ public extension GlobalLocalDatasourceProtocol {
         }
 
         try await localShareDatasource.removeAllShares(userId: userId)
+        try await localShareEventIDDatasource.removeAllEntries(userId: userId)
     }
 }
 
@@ -51,12 +53,14 @@ public extension GlobalLocalDatasourceProtocol {
 /// See more in AppCoordinator
 struct GlobalLocalDatasource: GlobalLocalDatasourceProtocol {
     let localShareDatasource: LocalShareDatasourceProtocol
+    let localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol
     let localItemKeyDatasource: LocalItemKeyDatasourceProtocol
     let localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol
     let localItemDatasource: LocalItemDatasourceProtocol
 
     init(container: NSPersistentContainer) {
         self.localShareDatasource = LocalShareDatasource(container: container)
+        self.localShareEventIDDatasource = LocalShareEventIDDatasource(container: container)
         self.localItemKeyDatasource = LocalItemKeyDatasource(container: container)
         self.localVaultKeyDatasource = LocalVaultKeyDatasource(container: container)
         self.localItemDatasource = LocalItemDatasource(container: container)
