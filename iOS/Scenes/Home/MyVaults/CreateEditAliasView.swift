@@ -61,8 +61,6 @@ struct CreateEditAliasView: View {
                         }
                         .padding()
                     }
-                    .discardChangesAlert(isPresented: $isShowingDiscardAlert,
-                                         onDiscard: dismiss.callAsFunction)
                 }
             }
             .toolbar { toolbarContent }
@@ -71,6 +69,8 @@ struct CreateEditAliasView: View {
         .disabled(viewModel.isLoading)
         .modifier(ObsoleteItemAlertModifier(isPresented: $viewModel.isObsolete,
                                             onAction: dismiss.callAsFunction))
+        .modifier(DiscardChangesAlertModifier(isPresented: $isShowingDiscardAlert,
+                                              onDiscard: dismiss.callAsFunction))
     }
 
     @ToolbarContentBuilder

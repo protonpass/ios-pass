@@ -20,17 +20,27 @@
 
 import SwiftUI
 
-public extension View {
-    func discardChangesAlert(isPresented: Binding<Bool>,
-                             onDiscard: @escaping () -> Void) -> some View {
-        alert(
-            "Discard changes",
-            isPresented: isPresented,
-            actions: {
-                Button("Keep Editing", role: .cancel, action: {})
-                Button("Discard Changes", role: .destructive, action: onDiscard)
-            }, message: {
-                Text("You will loose all unsaved changes")
-            })
+public struct DiscardChangesAlertModifier: ViewModifier {
+    @Binding var isPresented: Bool
+    let onDiscard: () -> Void
+
+    public init(isPresented: Binding<Bool>,
+                onDiscard: @escaping () -> Void) {
+        self._isPresented = isPresented
+        self.onDiscard = onDiscard
+    }
+
+    public func body(content: Content) -> some View {
+        content
+            .alert(
+                "Discard changes?",
+                isPresented: $isPresented,
+                actions: {
+                    Button("Keep Editing", role: .cancel, action: {})
+                    Button("Discard Changes", role: .destructive, action: onDiscard)
+                },
+                message: {
+                    Text("You will loose all unsaved changes")
+                })
     }
 }

@@ -133,6 +133,7 @@ struct LogInDetailView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .animation(.default, value: viewModel.urls)
     }
 
     private var passwordSection: some View {

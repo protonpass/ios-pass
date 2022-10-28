@@ -56,8 +56,8 @@ struct CreateEditLoginView: View {
         .disabled(viewModel.isLoading)
         .modifier(ObsoleteItemAlertModifier(isPresented: $viewModel.isObsolete,
                                             onAction: dismiss.callAsFunction))
-        .discardChangesAlert(isPresented: $isShowingDiscardAlert,
-                             onDiscard: dismiss.callAsFunction)
+        .modifier(DiscardChangesAlertModifier(isPresented: $isShowingDiscardAlert,
+                                              onDiscard: dismiss.callAsFunction))
     }
 
     @ToolbarContentBuilder
