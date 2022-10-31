@@ -21,10 +21,19 @@
 import Foundation
 
 public extension Bundle {
-    var versionNumber: String { string(forKey: "CFBundleShortVersionString") }
-    var buildNumber: String { string(forKey: "CFBundleVersion") }
+    var versionNumber: String { string(forKey: "CFBundleShortVersionString") ?? "0.0.0" }
+    var buildNumber: String { string(forKey: "CFBundleVersion") ?? "0" }
+    var versionIdentifier: String? { string(forKey: "APP_VERSION_IDENTIFIER =
 
-    private func string(forKey key: String) -> String {
-        infoDictionary?[key] as? String ?? "?"
+    private func string(forKey key: String) -> String? {
+        infoDictionary?[key] as? String
+    }
+
+    /// Get the full name of the current version e.g "1.0.0-dev" or "1.2.0"
+    func fullAppVersionName() -> String {
+        if let versionIdentifier {
+            return "\(versionNumber)-\(versionIdentifier)"
+        }
+        return versionNumber
     }
 }
