@@ -30,15 +30,18 @@ public struct CreateItemEndpoint: Endpoint {
     public typealias Body = CreateItemRequest
     public typealias Response = CreateItemResponse
 
+    public var debugDescription: String
     public var path: String
-    public var method: HTTPMethod { .post }
+    public var method: HTTPMethod
     public var authCredential: AuthCredential?
     public var body: CreateItemRequest?
 
     public init(credential: AuthCredential,
                 shareId: String,
                 request: CreateItemRequest) {
+        self.debugDescription = "Create item"
         self.path = "/pass/v1/share/\(shareId)/item"
+        self.method = .post
         self.authCredential = credential
         self.body = request
     }

@@ -25,6 +25,7 @@ public struct ChangeMailboxesEndpoint: Endpoint {
     public typealias Body = ChangeMailboxesRequest
     public typealias Response = GetAliasDetailsResponse
 
+    public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
     public var authCredential: AuthCredential?
@@ -34,6 +35,7 @@ public struct ChangeMailboxesEndpoint: Endpoint {
                 shareId: String,
                 itemId: String,
                 mailboxIDs: [Int]) {
+        self.debugDescription = "Change alias target mailboxes"
         self.path = "/pass/v1/share/\(shareId)/alias/\(itemId)/mailbox"
         self.method = .post
         self.authCredential = credential

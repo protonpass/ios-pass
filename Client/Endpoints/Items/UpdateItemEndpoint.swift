@@ -30,6 +30,7 @@ public struct UpdateItemEndpoint: Endpoint {
     public typealias Body = UpdateItemRequest
     public typealias Response = UpdateItemResponse
 
+    public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
     public var authCredential: AuthCredential?
@@ -39,6 +40,7 @@ public struct UpdateItemEndpoint: Endpoint {
                 shareId: String,
                 itemId: String,
                 request: UpdateItemRequest) {
+        self.debugDescription = "Update item"
         self.path = "/pass/v1/share/\(shareId)/item/\(itemId)"
         self.method = .put
         self.authCredential = credential

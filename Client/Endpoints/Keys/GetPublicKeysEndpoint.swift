@@ -29,13 +29,13 @@ public struct GetPublicKeysEndpoint: Endpoint {
     public typealias Body = EmptyRequest
     public typealias Response = GetPublicKeysResponse
 
+    public var debugDescription: String
     public var path: String
-    public var method: HTTPMethod
     public var parameters: [String: Any]?
 
     init(email: String) {
-        path = "/keys"
-        method = .get
-        parameters = ["Email": email]
+        self.debugDescription = "Get public keys"
+        self.path = "/keys"
+        self.parameters = ["Email": email]
     }
 }
