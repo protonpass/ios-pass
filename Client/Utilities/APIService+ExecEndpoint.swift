@@ -59,11 +59,28 @@ private enum NetworkDebugger {
 
     static func printDebugInfo<E: Endpoint>(endpoint: E) {
         guard shouldDebugNetworkTraffic() else { return }
-        print("==> \(endpoint.method.toString()) \(endpoint.path)")
-        print("isAuth: \(endpoint.isAuth)")
-        print("authCredential: \(String(describing: endpoint.authCredential))")
-        print("header: \(endpoint.header)")
-        print("parameters: \(String(describing: endpoint.parameters))")
+        print("\n==> \(endpoint.method.rawValue) \(endpoint.path)")
+        print("Authenticated endpoint: \(endpoint.isAuth)")
+
+        if let authCredential = endpoint.authCredential {
+            print("Auth credential:")
+            dump(authCredential)
+        }
+
+        if !endpoint.header.isEmpty {
+            print("Headers:")
+            for (key, value) in endpoint.header {
+                print("   \(key): \(value)")
+            }
+        }
+
+        if let parameters = endpoint.parameters,
+           !parameters.isEmpty {
+            print("Parameters:")
+            for(key, value) in parameters {
+                print("   \(key): \(value)")
+            }
+        }
     }
 
     static func printDebugInfo<E: Endpoint>(endpoint: E,
@@ -72,9 +89,23 @@ private enum NetworkDebugger {
         guard shouldDebugNetworkTraffic() else { return }
         if let response = task?.response as? HTTPURLResponse {
             let urlString = task?.originalRequest?.url?.absoluteString ?? ""
-            print("<== \(response.statusCode) \(endpoint.method.toString()) \(urlString)")
-            print("\(response.allHeaderFields)")
-            print(result)
+            print("\n<== \(response.statusCode) \(endpoint.method.rawValue) \(urlString)")
+
+            if !response.allHeaderFields.isEmpty {
+                print("Headers:")
+                for (key, value) in response.allHeaderFields {
+                    print("   \(key): \(value)")
+                }
+            }
+
+            switch result {
+            case .success(let object):
+                print("Success:")
+                dump(object)
+            case .failure(let error):
+                print("Failure:")
+                dump(error)
+            }
         }
     }
 }
