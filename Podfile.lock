@@ -136,6 +136,9 @@ PODS:
   - ProtonCore-Utilities (3.23.0):
     - ProtonCore-Log (= 3.23.0)
   - ReachabilitySwift (5.0.0)
+  - Sentry (7.29.0):
+    - Sentry/Core (= 7.29.0)
+  - Sentry/Core (7.29.0)
   - SideMenuSwift (2.0.9)
   - SwiftProtobuf (1.20.2)
   - TrustKit (2.0.0)
@@ -173,6 +176,7 @@ DEPENDENCIES:
   - "ProtonCore-UIFoundations-V5 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.23.2`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.23.2`)"
   - ReachabilitySwift
+  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.29.0`)
   - SideMenuSwift (= 2.0.9)
   - SwiftProtobuf
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `release/1.0.1`)
@@ -276,6 +280,9 @@ EXTERNAL SOURCES:
   ProtonCore-Utilities:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.23.2
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 7.29.0
   TrustKit:
     :branch: release/1.0.1
     :git: https://github.com/ProtonMail/TrustKit.git
@@ -368,6 +375,9 @@ CHECKOUT OPTIONS:
   ProtonCore-Utilities:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.23.2
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 7.29.0
   TrustKit:
     :commit: 0edccba6b372378246d4b895a4d01e3303d53dc8
     :git: https://github.com/ProtonMail/TrustKit.git
@@ -408,10 +418,11 @@ SPEC CHECKSUMS:
   ProtonCore-UIFoundations-V5: 4376aa781649dbc3ec604468863c9c125b99cfaa
   ProtonCore-Utilities: 510f032758c9504dc634419d0849948f081461c7
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  Sentry: 4272663eb0eda312024d795ca3f5a562a8ce5e18
   SideMenuSwift: 39f1922e225da4aaa8b16591037a929defe960c9
   SwiftProtobuf: 9f458aaa7844a2fc0b910053e66578bc4e2da9c1
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
 
-PODFILE CHECKSUM: 906b3c10d47bfefc22f9f0ed31d98114ff9af89a
+PODFILE CHECKSUM: 62f9dbb54722b62b705b557e2bd89b6c296158eb
 
 COCOAPODS: 1.11.3
