@@ -30,12 +30,14 @@ public struct GetEventsEndpoint: Endpoint {
     public typealias Body = EmptyRequest
     public typealias Response = GetEventsResponse
 
+    public var debugDescription: String
     public var path: String
     public var authCredential: AuthCredential?
 
     public init(credential: AuthCredential,
                 shareId: String,
                 lastEventId: String) {
+        self.debugDescription = "Get events since a given eventID"
         self.path = "/pass/v1/share/\(shareId)/event/\(lastEventId)"
         self.authCredential = credential
     }

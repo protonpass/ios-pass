@@ -25,6 +25,7 @@ public struct DeleteItemsEndpoint: Endpoint {
     public typealias Body = ModifyItemRequest
     public typealias Response = CodeOnlyResponse
 
+    public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
     public var authCredential: AuthCredential?
@@ -33,6 +34,7 @@ public struct DeleteItemsEndpoint: Endpoint {
     public init(credential: AuthCredential,
                 shareId: String,
                 request: ModifyItemRequest) {
+        self.debugDescription = "Delete items"
         self.path = "/pass/v1/share/\(shareId)/item"
         self.method = .delete
         self.authCredential = credential

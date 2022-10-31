@@ -30,6 +30,7 @@ public struct GetItemsEndpoint: Endpoint {
     public typealias Body = EmptyRequest
     public typealias Response = GetItemsResponse
 
+    public var debugDescription: String
     public var path: String
     public var authCredential: AuthCredential?
     public var queries: [String: Any]?
@@ -38,6 +39,7 @@ public struct GetItemsEndpoint: Endpoint {
                 shareId: String,
                 page: Int,
                 pageSize: Int) {
+        self.debugDescription = "Get items for share"
         self.path = "/pass/v1/share/\(shareId)/item"
         self.authCredential = credential
         self.queries = .paginationQuery(page: page, pageSize: pageSize)

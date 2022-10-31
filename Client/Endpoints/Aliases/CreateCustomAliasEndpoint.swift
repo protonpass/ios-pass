@@ -25,6 +25,7 @@ public struct CreateCustomAliasEndpoint: Endpoint {
     public typealias Body = CreateCustomAliasRequest
     public typealias Response = CreateItemResponse
 
+    public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
     public var authCredential: AuthCredential?
@@ -33,6 +34,7 @@ public struct CreateCustomAliasEndpoint: Endpoint {
     public init(credential: AuthCredential,
                 shareId: String,
                 request: CreateCustomAliasRequest) {
+        self.debugDescription = "Create a custom alias"
         self.path = "/pass/v1/share/\(shareId)/alias/custom"
         self.method = .post
         self.authCredential = credential

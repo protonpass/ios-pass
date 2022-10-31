@@ -30,6 +30,7 @@ public struct CreateVaultEndpoint: Endpoint {
     public typealias Body = CreateVaultRequest
     public typealias Response = CreateVaultResponse
 
+    public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
     public var body: CreateVaultRequest?
@@ -37,6 +38,7 @@ public struct CreateVaultEndpoint: Endpoint {
 
     public init(credential: AuthCredential,
                 request: CreateVaultRequest) {
+        self.debugDescription = "Create vault"
         self.authCredential = credential
         self.path = "/pass/v1/vault"
         self.method = .post
