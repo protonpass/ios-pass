@@ -198,7 +198,7 @@ extension CredentialProviderCoordinator: AuthDelegate {
 
 // MARK: - APIServiceDelegate
 extension CredentialProviderCoordinator: APIServiceDelegate {
-    public var appVersion: String { "iOSPass_\(Bundle.main.versionNumber)" }
+    public var appVersion: String { "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName())" }
     public var userAgent: String? { UserAgent.default.ua }
     public var locale: String { Locale.autoupdatingCurrent.identifier }
     public var additionalHeaders: [String: String]? { nil }
