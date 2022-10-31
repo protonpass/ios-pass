@@ -25,6 +25,7 @@ public struct UntrashItemsEndpoint: Endpoint {
     public typealias Body = ModifyItemRequest
     public typealias Response = ModifyItemResponse
 
+    public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
     public var authCredential: AuthCredential?
@@ -33,6 +34,7 @@ public struct UntrashItemsEndpoint: Endpoint {
     public init(credential: AuthCredential,
                 shareId: String,
                 request: ModifyItemRequest) {
+        self.debugDescription = "Untrash items"
         self.path = "/pass/v1/share/\(shareId)/item/untrash"
         self.method = .post
         self.authCredential = credential

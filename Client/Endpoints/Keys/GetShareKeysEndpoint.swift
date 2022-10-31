@@ -30,6 +30,7 @@ public struct GetShareKeysEndpoint: Endpoint {
     public typealias Body = EmptyRequest
     public typealias Response = GetShareKeysResponse
 
+    public var debugDescription: String
     public var authCredential: AuthCredential?
     public var path: String
     public var method: HTTPMethod
@@ -39,6 +40,7 @@ public struct GetShareKeysEndpoint: Endpoint {
                 shareId: String,
                 page: Int,
                 pageSize: Int) {
+        self.debugDescription = "Get keys for share"
         self.authCredential = credential
         self.path = "/pass/v1/share/\(shareId)/key/vault"
         self.method = .get

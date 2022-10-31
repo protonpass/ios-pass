@@ -327,7 +327,7 @@ extension AppCoordinator: AuthDelegate {
 
 // MARK: - APIServiceDelegate
 extension AppCoordinator: APIServiceDelegate {
-    var appVersion: String { "iOSPass_\(Bundle.main.versionNumber)" }
+    var appVersion: String { "ios-pass@\(Bundle.main.fullAppVersionName())" }
     var userAgent: String? { UserAgent.default.ua }
     var locale: String { Locale.autoupdatingCurrent.identifier }
     var additionalHeaders: [String: String]? { nil }

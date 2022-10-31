@@ -36,6 +36,8 @@ public protocol Endpoint: Request {
     associatedtype Body: Encodable
     associatedtype Response: Decodable
 
+    /// The "name" of the endpoint for debugging purposes
+    var debugDescription: String { get }
     var body: Body? { get }
     var queries: [String: Any]? { get }
 }

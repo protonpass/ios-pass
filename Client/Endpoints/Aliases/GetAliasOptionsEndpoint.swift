@@ -30,10 +30,12 @@ public struct GetAliasOptionsEndpoint: Endpoint {
     public typealias Body = EmptyRequest
     public typealias Response = GetAliasOptionsResponse
 
+    public var debugDescription: String
     public var path: String
     public var authCredential: AuthCredential?
 
     public init(credential: AuthCredential, shareId: String) {
+        self.debugDescription = "Get alias options"
         self.path = "/pass/v1/share/\(shareId)/alias/options"
         self.authCredential = credential
     }
