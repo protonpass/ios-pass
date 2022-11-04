@@ -60,18 +60,9 @@ final class MyVaultsCoordinator: Coordinator {
                                            symmetricKey: symmetricKey)
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
         super.init()
-        observeVaultContentViewModel()
-        start()
-    }
-
-    private func observeVaultContentViewModel() {
         vaultContentViewModel.delegate = self
-        vaultContentViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
-        vaultContentViewModel.onSearch = { [unowned self] in showSearchView() }
-        vaultContentViewModel.onCreateItem = { [unowned self] in showCreateItemView() }
-        vaultContentViewModel.onCreateVault = { [unowned self] in showCreateVaultView() }
-        vaultContentViewModel.onShowItemDetail = { [unowned self] in showItemDetailView($0) }
-        vaultContentViewModel.onTrashedItem = { [unowned self] in handleTrashedItem($0) }
+        vaultContentViewModel.vaultContentViewModelDelegate = self
+        start()
     }
 
     private func start() {
@@ -279,6 +270,41 @@ extension MyVaultsCoordinator: BaseViewModelDelegate {
     func viewModelStopsLoading() { hideLoadingHud() }
 
     func viewModelDidFailWithError(_ error: Error) { alertError(error) }
+}
+
+// MARK: - VaultContentViewModelDelegate
+extension MyVaultsCoordinator: VaultContentViewModelDelegate {
+    func vaultContentViewModelWantsToToggleSidebar() {
+        toggleSidebar()
+    }
+
+    func vaultContentViewModelWantsToSearch() {
+        showSearchView()
+    }
+
+    func vaultContentViewModelWantsToCreateItem() {
+        showCreateItemView()
+    }
+
+    func vaultContentViewModelWantsToCreateVault() {
+        showCreateVaultView()
+    }
+
+    func vaultContentViewModelWantsToShowItemDetail(_ item: ItemContent) {
+        showItemDetailView(item)
+    }
+
+    func vaultContentViewModelWantsToEditItem(_ item: ItemContent) {
+        showEditItemView(item)
+    }
+
+    func vaultContentViewModelDidTrashItem(_ type: ItemContentType) {
+        handleTrashedItem(type)
+    }
+
+    func vaultContentViewModelWantsToShowSuccessMessage(_ message: String) {
+        myVaultsViewModel.successMessage = message
+    }
 }
 
 // MARK: - CreateEditItemViewModelDelegate

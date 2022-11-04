@@ -50,7 +50,7 @@ struct VaultContentView: View {
 
             case .loaded:
                 if viewModel.items.isEmpty {
-                    EmptyVaultView { viewModel.onCreateItem?() }
+                    EmptyVaultView(action: viewModel.createItem)
                         .padding(.horizontal)
                 } else {
                     itemList
@@ -84,29 +84,7 @@ struct VaultContentView: View {
                     GenericItemView(
                         item: item,
                         action: { viewModel.selectItem(item) },
-                        trailingView: {
-                            VStack {
-                                Spacer()
-
-                                Menu(content: {
-                                    DestructiveButton(
-                                        title: "Move to Trash",
-                                        icon: IconProvider.trash,
-                                        action: {
-                                            selectedItem = item
-                                            isShowingTrashingAlert.toggle()
-                                        })
-                                }, label: {
-                                    Image(uiImage: IconProvider.threeDotsHorizontal)
-                                        .foregroundColor(.secondary)
-                                })
-
-                                Spacer()
-                            }
-                        })
-                    if item.itemId != viewModel.items.last?.itemId {
-                        Divider()
-                    }
+                        trailingView: { trailingView(for: item) })
                 }
             }
             .listRowSeparator(.hidden)
@@ -117,10 +95,52 @@ struct VaultContentView: View {
         .refreshable { await viewModel.forceRefreshItems() }
     }
 
+    private func trailingView(for item: ItemListUiModel) -> some View {
+        VStack {
+            Spacer()
+
+            Menu(content: {
+                switch item.type {
+                case .login:
+                    CopyMenuButton(title: "Copy username",
+                                   action: { viewModel.copyUsername(item) })
+
+                    CopyMenuButton(title: "Copy password",
+                                   action: { viewModel.copyPassword(item) })
+
+                case .alias:
+                    CopyMenuButton(title: "Copy email address",
+                                   action: { viewModel.copyEmailAddress(item) })
+                default:
+                    EmptyView()
+                }
+
+                EditMenuButton {
+                    viewModel.editItem(item)
+                }
+
+                Divider()
+
+                DestructiveButton(
+                    title: "Move to Trash",
+                    icon: IconProvider.trash,
+                    action: {
+                        selectedItem = item
+                        isShowingTrashingAlert.toggle()
+                    })
+            }, label: {
+                Image(uiImage: IconProvider.threeDotsHorizontal)
+                    .foregroundColor(.secondary)
+            })
+
+            Spacer()
+        }
+    }
+
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            ToggleSidebarButton { viewModel.onToggleSidebar?() }
+            ToggleSidebarButton(action: viewModel.toggleSidebar)
         }
 
 //        ToolbarItem(placement: .principal) {
@@ -180,17 +200,13 @@ struct VaultContentView: View {
 
         ToolbarItem(placement: .navigationBarTrailing) {
             HStack {
-                Button(action: {
-                    viewModel.onSearch?()
-                }, label: {
+                Button(action: viewModel.search) {
                     Image(uiImage: IconProvider.magnifier)
-                })
+                }
 
-                Button(action: {
-                    viewModel.onCreateItem?()
-                }, label: {
+                Button(action: viewModel.createItem) {
                     Image(uiImage: IconProvider.plus)
-                })
+                }
             }
             .foregroundColor(Color(.label))
             .disabled(!viewModel.state.isLoaded)
