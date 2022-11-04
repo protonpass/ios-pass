@@ -45,7 +45,8 @@ struct VaultContentView: View {
             Color.clear
             switch viewModel.state {
             case .loading:
-                ProgressView()
+                LoadingVaultView()
+                    .padding()
 
             case .loaded:
                 if viewModel.items.isEmpty {
