@@ -45,6 +45,17 @@ extension VaultContentViewModel {
     }
 }
 
+protocol VaultContentViewModelDelegate: AnyObject {
+    func vaultContentViewModelWantsToToggleSidebar()
+    func vaultContentViewModelWantsToSearch()
+    func vaultContentViewModelWantsToCreateItem()
+    func vaultContentViewModelWantsToCreateVault()
+    func vaultContentViewModelWantsToShowItemDetail(_ item: ItemContent)
+    func vaultContentViewModelWantsToEditItem(_ item: ItemContent)
+    func vaultContentViewModelDidTrashItem(_ type: ItemContentType)
+    func vaultContentViewModelWantsToShowSuccessMessage(_ message: String)
+}
+
 // MARK: - Initialization
 final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
@@ -59,12 +70,7 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
 
-    var onToggleSidebar: (() -> Void)?
-    var onSearch: (() -> Void)?
-    var onCreateItem: (() -> Void)?
-    var onCreateVault: (() -> Void)?
-    var onShowItemDetail: ((ItemContent) -> Void)?
-    var onTrashedItem: ((ItemContentType) -> Void)?
+    weak var vaultContentViewModelDelegate: VaultContentViewModelDelegate?
 
     init(vaultSelection: VaultSelection,
          itemRepository: ItemRepositoryProtocol,
@@ -84,6 +90,18 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
 
 // MARK: - Public actions
 extension VaultContentViewModel {
+    func toggleSidebar() {
+        vaultContentViewModelDelegate?.vaultContentViewModelWantsToToggleSidebar()
+    }
+
+    func createItem() {
+        vaultContentViewModelDelegate?.vaultContentViewModelWantsToCreateItem()
+    }
+
+    func search() {
+        vaultContentViewModelDelegate?.vaultContentViewModelWantsToSearch()
+    }
+
     @MainActor
     func forceRefreshItems() async {
         do {
@@ -112,7 +130,66 @@ extension VaultContentViewModel {
         Task { @MainActor in
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
-                onShowItemDetail?(itemContent)
+                vaultContentViewModelDelegate?.vaultContentViewModelWantsToShowItemDetail(itemContent)
+            } catch {
+                self.error = error
+            }
+        }
+    }
+
+    func editItem(_ item: ItemListUiModel) {
+        Task { @MainActor in
+            do {
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
+                vaultContentViewModelDelegate?.vaultContentViewModelWantsToEditItem(itemContent)
+            } catch {
+                self.error = error
+            }
+        }
+    }
+
+    func copyUsername(_ item: ItemListUiModel) {
+        guard case .login = item.type else { return }
+        Task { @MainActor in
+            do {
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
+                if case let .login(username, _, _) = itemContent.contentData {
+                    UIPasteboard.general.string = username
+                    let message = "Username copied to clipboard"
+                    vaultContentViewModelDelegate?.vaultContentViewModelWantsToShowSuccessMessage(message)
+                }
+            } catch {
+                self.error = error
+            }
+        }
+    }
+
+    func copyPassword(_ item: ItemListUiModel) {
+        guard case .login = item.type else { return }
+        Task { @MainActor in
+            do {
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
+                if case let .login(_, password, _) = itemContent.contentData {
+                    UIPasteboard.general.string = password
+                    let message = "Password copied to clipboard"
+                    vaultContentViewModelDelegate?.vaultContentViewModelWantsToShowSuccessMessage(message)
+                }
+            } catch {
+                self.error = error
+            }
+        }
+    }
+
+    func copyEmailAddress(_ item: ItemListUiModel) {
+        guard case .alias = item.type else { return }
+        Task { @MainActor in
+            do {
+                let item = try await getItem(shareId: item.shareId, itemId: item.itemId)
+                if let emailAddress = item.item.aliasEmail {
+                    UIPasteboard.general.string = emailAddress
+                    let message = "Email address copied to clipboard"
+                    vaultContentViewModelDelegate?.vaultContentViewModelWantsToShowSuccessMessage(message)
+                }
             } catch {
                 self.error = error
             }
@@ -125,7 +202,7 @@ extension VaultContentViewModel {
             do {
                 try await trashItemTask(for: item).value
                 fetchItems(forceRefresh: false)
-                onTrashedItem?(item.type)
+                vaultContentViewModelDelegate?.vaultContentViewModelDidTrashItem(item.type)
                 isLoading = false
             } catch {
                 isLoading = false

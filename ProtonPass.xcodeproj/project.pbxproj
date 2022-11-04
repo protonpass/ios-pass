@@ -141,6 +141,8 @@
 		355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */; };
 		3552146229150FFC00BA6229 /* GenericItemSkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */; };
 		3552147E2915251C00BA6229 /* LoadingVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552147D2915251C00BA6229 /* LoadingVaultView.swift */; };
+		355214822915517E00BA6229 /* EditMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355214812915517E00BA6229 /* EditMenuButton.swift */; };
+		355214842915524D00BA6229 /* CopyMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355214832915524D00BA6229 /* CopyMenuButton.swift */; };
 		3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618628A1372500A68477 /* SwiftUITextView.swift */; };
 		3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618A28A14EB600A68477 /* UserInputContainerView.swift */; };
 		3552618D28A1511000A68477 /* UserInputContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618C28A1511000A68477 /* UserInputContentView.swift */; };
@@ -568,6 +570,8 @@
 		355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsSidebarItemView.swift; sourceTree = "<group>"; };
 		3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericItemSkeletonView.swift; sourceTree = "<group>"; };
 		3552147D2915251C00BA6229 /* LoadingVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingVaultView.swift; sourceTree = "<group>"; };
+		355214812915517E00BA6229 /* EditMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMenuButton.swift; sourceTree = "<group>"; };
+		355214832915524D00BA6229 /* CopyMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyMenuButton.swift; sourceTree = "<group>"; };
 		3552618628A1372500A68477 /* SwiftUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUITextView.swift; sourceTree = "<group>"; };
 		3552618A28A14EB600A68477 /* UserInputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputContainerView.swift; sourceTree = "<group>"; };
 		3552618C28A1511000A68477 /* UserInputContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputContentView.swift; sourceTree = "<group>"; };
@@ -1449,8 +1453,10 @@
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
 				35AABE1C28B0036A00CEDDE6 /* AlertToastModifiers.swift */,
 				3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */,
+				355214832915524D00BA6229 /* CopyMenuButton.swift */,
 				354F768F28C861FF00EB2383 /* DestructiveButton.swift */,
 				358C42A728D48DFB00ADE305 /* DiscardChangesAlertModifier.swift */,
+				355214812915517E00BA6229 /* EditMenuButton.swift */,
 				35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */,
 				3547ABE92877684D00EE85E1 /* GenericItemView.swift */,
 				3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */,
@@ -2593,6 +2599,7 @@
 				355696E0290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift in Sources */,
 				35498F8A28DC805400AF1D8F /* ItemSearchResultView.swift in Sources */,
 				353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */,
+				355214822915517E00BA6229 /* EditMenuButton.swift in Sources */,
 				354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */,
 				35526B5D28D116350017BB53 /* PassIcon.swift in Sources */,
 				3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */,
@@ -2604,6 +2611,7 @@
 				3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */,
 				3552146229150FFC00BA6229 /* GenericItemSkeletonView.swift in Sources */,
 				354BB15328A2886500F50040 /* SwiftUISearchBar.swift in Sources */,
+				355214842915524D00BA6229 /* CopyMenuButton.swift in Sources */,
 				353DB34828F9A703004A56DF /* UIColor+ProtonColors.swift in Sources */,
 				35BC57352909129600216818 /* TextStyleModifiers.swift in Sources */,
 				358C42A828D48DFB00ADE305 /* DiscardChangesAlertModifier.swift in Sources */,
