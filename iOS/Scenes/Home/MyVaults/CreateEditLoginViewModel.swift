@@ -52,7 +52,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             self.title = itemContent.name
             self.username = username
             self.password = password
-            self.urls = urls
+            if !urls.isEmpty { self.urls = urls }
             self.note = itemContent.note
         }
     }
