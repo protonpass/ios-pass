@@ -274,8 +274,12 @@ extension HomeCoordinator {
                                                         animated: true) { [unowned self] in
                 self.sideMenuController.hideMenu()
             }
-        case .help:
-            break
+        case .bugReport:
+            if let url = URL(string: "https://proton.me/support/contact"),
+               UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            }
+            sideMenuController.hideMenu()
         case .signOut:
             requestSignOutConfirmation()
         }

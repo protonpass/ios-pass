@@ -22,7 +22,7 @@ import ProtonCore_UIFoundations
 import UIKit
 
 enum SidebarItem {
-    case home, settings, trash, help, signOut
+    case home, settings, trash, bugReport, signOut
 
     var title: String {
         switch self {
@@ -32,8 +32,8 @@ enum SidebarItem {
             return "Settings"
         case .trash:
             return "Trash"
-        case .help:
-            return "Help"
+        case .bugReport:
+            return "Report a problem"
         case .signOut:
             return "Sign out"
         }
@@ -47,8 +47,8 @@ enum SidebarItem {
             return IconProvider.cogWheel
         case .trash:
             return IconProvider.trash
-        case .help:
-            return IconProvider.questionCircle
+        case .bugReport:
+            return IconProvider.bug
         case .signOut:
             return IconProvider.arrowOutFromRectangle
         }
