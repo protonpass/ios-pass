@@ -35,7 +35,7 @@ final class CreateItemViewModel: DeinitPrintable {
     }
 }
 
-enum CreateNewItemOption {
+enum CreateNewItemOption: GenericItemProtocolV2, CaseIterable {
     case login, alias, note, password
 
     var icon: UIImage {
@@ -47,7 +47,20 @@ enum CreateNewItemOption {
         case .note:
             return IconProvider.note
         case .password:
-            return IconProvider.arrowsRotate
+            return IconProvider.lock
+        }
+    }
+
+    var iconTintColor: UIColor {
+        switch self {
+        case .login:
+            return ColorProvider.InteractionNorm
+        case .alias:
+            return ColorProvider.IconWeak
+        case .note:
+            return ColorProvider.NotificationWarning
+        case .password:
+            return ColorProvider.NotificationSuccess
         }
     }
 
@@ -60,24 +73,20 @@ enum CreateNewItemOption {
         case .note:
             return "Note"
         case .password:
-            return "Generate password"
+            return "Password"
         }
     }
 
-    var detail: String {
+    var detail: GenericItemDetail {
         switch self {
         case .login:
-            return "Keep your username and password secure"
+            return .value("Keep your username and password secure.")
         case .alias:
-            return "Hide your identity with a separate email address"
+            return .value("Hide your identity with a separate email address.")
         case .note:
-            return "Keep important information secure"
+            return .value("Keep important information secure.")
         case .password:
-            return "Generate a strong password"
+            return .value("Generate & copy a secure password.")
         }
-    }
-
-    func toGenericItem() -> GenericItem {
-        .init(icon: icon, title: title, detail: .value(detail))
     }
 }
