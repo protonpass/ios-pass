@@ -251,9 +251,23 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
         case .credential:
             fatalError("Impossible case. Make sure minimumAccountType is set as internal in LoginAndSignUp")
         case .userData(let userData):
+            guard userData.scopes.contains("pass") else {
+                alertNoPassScope()
+                return
+            }
             let sessionData = SessionData(userData: userData)
             appStateObserver.updateAppState(.loggedIn(data: sessionData, manualLogIn: true))
         }
+    }
+
+    private func alertNoPassScope() {
+        // swiftlint:disable line_length
+        let alert = UIAlertController(title: "Error occured",
+                                      message: "You are not eligible for using this application. Please contact our customer service.",
+                                      preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default))
+        rootViewController?.present(alert, animated: true)
+        // swiftlint:enable line_length
     }
 }
 
