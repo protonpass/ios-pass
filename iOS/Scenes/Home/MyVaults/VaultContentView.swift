@@ -80,12 +80,11 @@ struct VaultContentView: View {
     private var itemList: some View {
         List {
             ForEach(viewModel.items, id: \.itemId) { item in
-                VStack(spacing: 8) {
-                    GenericItemView(
-                        item: item,
-                        action: { viewModel.selectItem(item) },
-                        trailingView: { trailingView(for: item) })
-                }
+                GenericItemView(item: item,
+                                action: { viewModel.selectItem(item) },
+                                subtitleLineLimit: 1,
+                                trailingView: { trailingView(for: item) })
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
             }
             .listRowSeparator(.hidden)
         }

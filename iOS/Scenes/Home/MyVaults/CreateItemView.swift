@@ -34,8 +34,8 @@ struct CreateItemView: View {
         ScrollView {
             LazyVStack(spacing: 8) {
                 ForEach(CreateNewItemOption.allCases, id: \.self) { option in
-                    GenericItemViewV2(item: option,
-                                      action: { viewModel.select(option: option) })
+                    GenericItemView(item: option,
+                                    action: { viewModel.select(option: option) })
                 }
             }
             .padding(.vertical, 8)
