@@ -95,7 +95,14 @@ final class MyVaultsCoordinator: Coordinator {
         }
         let createItemView = CreateItemView(viewModel: createItemViewModel)
         let createItemViewController = UIHostingController(rootView: createItemView)
-        createItemViewController.sheetPresentationController?.detents = [.medium()]
+        if #available(iOS 16.0, *) {
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(CreateNewItemOption.allCases.count * 80)
+            }
+            createItemViewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            createItemViewController.sheetPresentationController?.detents = [.medium()]
+        }
         presentViewController(createItemViewController)
     }
 
