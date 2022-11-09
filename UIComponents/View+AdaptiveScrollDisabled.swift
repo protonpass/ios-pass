@@ -1,6 +1,6 @@
 //
-// CreateItemView.swift
-// Proton Pass - Created on 07/07/2022.
+// View+AdaptiveScrollDisabled.swift
+// Proton Pass - Created on 09/11/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,28 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
 import SwiftUI
-import UIComponents
 
-struct CreateItemView: View {
-    @Environment(\.dismiss) private var dismiss
-    private let viewModel: CreateItemViewModel
+struct AdaptiveScrollDisabledModifier: ViewModifier {
+    let disabled: Bool
 
-    init(viewModel: CreateItemViewModel) {
-        self.viewModel = viewModel
-    }
-
-    var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 8) {
-                ForEach(CreateNewItemOption.allCases, id: \.self) { option in
-                    GenericItemViewV2(item: option,
-                                      action: { viewModel.select(option: option) })
-                }
-            }
-            .padding(.vertical, 8)
+    func body(content: Content) -> some View {
+        if #available(iOS 16.0, *) {
+            content
+                .scrollDisabled(disabled)
         }
-        .adaptiveScrollDisabled(true)
+    }
+}
+
+public extension View {
+    /// Wrapper modifier of `scrollDisabled` modifier. Only apply if iOS 16 and above.
+    func adaptiveScrollDisabled(_ disabled: Bool) -> some View {
+        modifier(AdaptiveScrollDisabledModifier(disabled: disabled))
     }
 }
