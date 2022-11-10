@@ -22,25 +22,19 @@ import SwiftUI
 import UIComponents
 
 struct EmptyVaultView: View {
-    let action: () -> Void
     var body: some View {
-        VStack(spacing: 20) {
-            Image(uiImage: PassIcon.folder)
+        VStack(spacing: 24) {
+            Image(uiImage: PassIcon.emptyFolder)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 150)
-            Text("Create your first item\n by clicking the button below")
-                .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
-            Button(action: action, label: {
-                Text("New item")
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .contentShape(Rectangle())
-            })
-            .padding()
-            .background(Color.brandNorm)
-            .cornerRadius(8)
+
+            VStack(spacing: 4) {
+                Text("No items")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                Text("Create a new item")
+                    .foregroundColor(.secondary)
+            }
         }
         .padding(.top, -100)
     }
