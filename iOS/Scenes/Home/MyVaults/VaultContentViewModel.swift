@@ -62,6 +62,8 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
 
     @Published private(set) var state = State.loading
     @Published private(set) var items = [ItemListUiModel]()
+    @Published var sortType = SortType.modificationDate
+    @Published var sortDirection = SortDirection.descending
 
     private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
