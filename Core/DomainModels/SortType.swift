@@ -1,6 +1,6 @@
 //
-// EmptyVaultView.swift
-// Proton Pass - Created on 07/09/2022.
+// SortType.swift
+// Proton Pass - Created on 11/11/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,24 +18,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
-import UIComponents
+import Foundation
 
-struct EmptyVaultView: View {
-    var body: some View {
-        VStack(spacing: 24) {
-            Image(uiImage: PassIcon.emptyFolder)
-                .resizable()
-                .scaledToFit()
+public enum SortType: CustomStringConvertible, CaseIterable {
+    case title, type, createTime, modifyTime
 
-            VStack(spacing: 4) {
-                Text("No items")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                Text("Create a new item")
-                    .foregroundColor(.secondary)
-            }
+    public var description: String {
+        switch self {
+        case .title: return "Title"
+        case .type: return "Type"
+        case .createTime: return "Creation date"
+        case .modifyTime: return "Modification date"
         }
-        .padding(.top, -100)
+    }
+}
+
+public enum SortDirection: CustomStringConvertible, CaseIterable {
+    case ascending, descending
+
+    public var description: String {
+        switch self {
+        case .ascending: return "Ascending"
+        case .descending: return "Descending"
+        }
     }
 }

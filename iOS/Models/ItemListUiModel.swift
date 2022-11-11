@@ -20,6 +20,7 @@
 
 import Client
 import CryptoKit
+import ProtonCore_UIFoundations
 import UIComponents
 import UIKit
 
@@ -29,7 +30,20 @@ struct ItemListUiModel: GenericItemProtocol {
     let type: ItemContentType
     let icon: UIImage
     let title: String
+    let createTime: Int64
+    let modifyTime: Int64
     let detail: GenericItemDetail
+
+    var iconTintColor: UIColor {
+        switch type {
+        case .alias:
+            return ColorProvider.IconWeak
+        case .login:
+            return ColorProvider.InteractionNorm
+        case .note:
+            return ColorProvider.NotificationWarning
+        }
+    }
 }
 
 extension SymmetricallyEncryptedItem {
@@ -63,6 +77,8 @@ extension SymmetricallyEncryptedItem {
                      type: encryptedItemContent.contentData.type,
                      icon: encryptedItemContent.contentData.type.icon,
                      title: name,
+                     createTime: item.createTime,
+                     modifyTime: item.modifyTime,
                      detail: detail)
     }
 }

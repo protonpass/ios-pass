@@ -28,34 +28,14 @@ public enum GenericItemDetail {
     case placeholder(String?)
 }
 
-#warning("To be removed")
 public protocol GenericItemProtocol {
-    var icon: UIImage { get }
-    var title: String { get }
-    var detail: GenericItemDetail { get }
-}
-
-#warning("To be removed")
-public struct GenericItem: GenericItemProtocol {
-    public let icon: UIImage
-    public let title: String
-    public var detail: GenericItemDetail
-
-    public init(icon: UIImage, title: String, detail: GenericItemDetail) {
-        self.icon = icon
-        self.title = title
-        self.detail = detail
-    }
-}
-
-public protocol GenericItemProtocolV2 {
     var icon: UIImage { get }
     var iconTintColor: UIColor { get }
     var title: String { get }
     var detail: GenericItemDetail { get }
 }
 
-public struct GenericItemV2: GenericItemProtocolV2 {
+public struct GenericItemV2: GenericItemProtocol {
     public let icon: UIImage
     public let iconTintColor: UIColor
     public let title: String
@@ -72,7 +52,6 @@ public struct GenericItemV2: GenericItemProtocolV2 {
     }
 }
 
-#warning("To be removed")
 public struct GenericItemView<TrailingView: View>: View {
     private let item: GenericItemProtocol
     private let action: () -> Void
@@ -80,65 +59,6 @@ public struct GenericItemView<TrailingView: View>: View {
     private let trailingView: TrailingView
 
     public init(item: GenericItemProtocol,
-                action: @escaping () -> Void,
-                subtitleLineLimit: Int? = 1,
-                @ViewBuilder trailingView: () -> TrailingView) {
-        self.item = item
-        self.action = action
-        self.subtitleLineLimit = subtitleLineLimit
-        self.trailingView = trailingView()
-    }
-
-    public var body: some View {
-        VStack {
-            HStack {
-                Button(action: action) {
-                    HStack {
-                        VStack {
-                            Image(uiImage: item.icon)
-                                .foregroundColor(Color(.label))
-                                .padding(.top, -20)
-                            EmptyView()
-                        }
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(item.title)
-                            switch item.detail {
-                            case .value(let detail):
-                                if !detail.isEmpty {
-                                    Text(detail)
-                                        .font(.callout)
-                                        .foregroundColor(Color(.secondaryLabel))
-                                        .lineLimit(subtitleLineLimit)
-                                }
-
-                            case .placeholder(let placeholder):
-                                if let placeholder, !placeholder.isEmpty {
-                                    Text(placeholder)
-                                        .modifier(ItalicSecondaryTextStyle())
-                                }
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-
-                trailingView
-                    .padding(.trailing)
-            }
-        }
-    }
-}
-
-public struct GenericItemViewV2<TrailingView: View>: View {
-    private let item: GenericItemProtocolV2
-    private let action: () -> Void
-    private let subtitleLineLimit: Int?
-    private let trailingView: TrailingView
-
-    public init(item: GenericItemProtocolV2,
                 action: @escaping () -> Void,
                 subtitleLineLimit: Int? = nil,
                 @ViewBuilder trailingView: () -> TrailingView = { EmptyView() }) {

@@ -66,7 +66,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     }
 
     private func loadItems() {
-        Task {
+        Task { @MainActor in
             do {
                 state = .initializing
                 print("Initializing SearchViewModel")

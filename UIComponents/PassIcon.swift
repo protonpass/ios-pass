@@ -25,5 +25,5 @@ public enum PassIcon {
     public static var trash = UIImage(named: "Trash")!
     public static var magnifyingGlass = UIImage(named: "MagnifyingGlass")!
     public static var magnifyingGlassOnPaper = UIImage(named: "MagnifyingGlassOnPaper")!
-    public static var folder = UIImage(named: "Folder")!
+    public static var emptyFolder = UIImage(named: "EmptyFolder")!
 }
