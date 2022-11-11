@@ -77,8 +77,8 @@ extension SymmetricallyEncryptedItem {
                      type: encryptedItemContent.contentData.type,
                      icon: encryptedItemContent.contentData.type.icon,
                      title: name,
-                     createTime: createTime,
-                     modifyTime: modifyTime,
+                     createTime: item.createTime,
+                     modifyTime: item.modifyTime,
                      detail: detail)
     }
 }
