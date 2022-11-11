@@ -35,7 +35,7 @@ final class CreateItemViewModel: DeinitPrintable {
     }
 }
 
-enum CreateNewItemOption: GenericItemProtocolV2, CaseIterable {
+enum CreateNewItemOption: GenericItemProtocol, CaseIterable {
     case login, alias, note, password
 
     var icon: UIImage {

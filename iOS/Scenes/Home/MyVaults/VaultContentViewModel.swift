@@ -62,6 +62,8 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
 
     @Published private(set) var state = State.loading
     @Published private(set) var items = [ItemListUiModel]()
+    @Published var sortType = SortType.modifyTime { didSet { sortItems() } }
+    @Published var sortDirection = SortDirection.descending { didSet { sortItems() } }
 
     private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
@@ -119,6 +121,7 @@ extension VaultContentViewModel {
 
             do {
                 items = try await getItemsTask(forceRefresh: forceRefresh).value
+                sortItems()
                 state = .loaded
             } catch {
                 state = .error(error)
@@ -246,5 +249,28 @@ private extension VaultContentViewModel {
             throw VaultContentViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
         }
         return item
+    }
+
+    func sortItems() {
+        items.sort { lhs, rhs in
+            switch (sortType, sortDirection) {
+            case (.title, .ascending):
+                return lhs.title < rhs.title
+            case (.title, .descending):
+                return lhs.title > rhs.title
+            case (.type, .ascending):
+                return lhs.type.rawValue < rhs.type.rawValue
+            case (.type, .descending):
+                return lhs.type.rawValue > rhs.type.rawValue
+            case (.createTime, .ascending):
+                return lhs.createTime < rhs.createTime
+            case (.createTime, .descending):
+                return lhs.createTime > rhs.createTime
+            case (.modifyTime, .ascending):
+                return lhs.modifyTime < rhs.modifyTime
+            case (.modifyTime, .descending):
+                return lhs.modifyTime > rhs.modifyTime
+            }
+        }
     }
 }

@@ -119,6 +119,8 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     }
 
     private func handle(logInData: LoginData) {
+        // Have to refresh `logInAndSignUp` in case `logInData` is ignored and user has to authenticate again.
+        logInAndSignUp = makeLoginAndSignUp()
         delegate?.welcomeCoordinator(didFinishWith: logInData)
     }
 }

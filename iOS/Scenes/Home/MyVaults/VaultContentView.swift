@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -50,7 +51,7 @@ struct VaultContentView: View {
 
             case .loaded:
                 if viewModel.items.isEmpty {
-                    EmptyVaultView(action: viewModel.createItem)
+                    EmptyVaultView()
                         .padding(.horizontal)
                 } else {
                     itemList
@@ -77,17 +78,64 @@ struct VaultContentView: View {
         }
     }
 
+    private var filterStatus: some View {
+        Menu(content: {
+            ForEach(SortType.allCases, id: \.self) { sortType in
+                Button(action: {
+                    viewModel.sortType = sortType
+                }, label: {
+                    Label(title: {
+                        Text(sortType.description)
+                    }, icon: {
+                        if sortType == viewModel.sortType {
+                            Image(systemName: "checkmark")
+                        }
+                    })
+                })
+            }
+            Divider()
+            ForEach(SortDirection.allCases, id: \.self) { sortDirection in
+                Button(action: {
+                    viewModel.sortDirection = sortDirection
+                }, label: {
+                    Label(title: {
+                        Text(sortDirection.description)
+                    }, icon: {
+                        if sortDirection == viewModel.sortDirection {
+                            Image(systemName: "checkmark")
+                        }
+                    })
+                })
+            }
+        }, label: {
+            HStack {
+                Text("Sort by: \(viewModel.sortType.description)")
+                Image(systemName: "chevron.down")
+                    .imageScale(.small)
+            }
+            .font(.callout)
+            .foregroundColor(.secondary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        })
+        .transaction { transaction in
+            transaction.animation = nil
+        }
+    }
+
     private var itemList: some View {
         List {
-            ForEach(viewModel.items, id: \.itemId) { item in
-                VStack(spacing: 8) {
-                    GenericItemView(
-                        item: item,
-                        action: { viewModel.selectItem(item) },
-                        trailingView: { trailingView(for: item) })
+            Section(content: {
+                ForEach(viewModel.items, id: \.itemId) { item in
+                    GenericItemView(item: item,
+                                    action: { viewModel.selectItem(item) },
+                                    subtitleLineLimit: 1,
+                                    trailingView: { trailingView(for: item) })
+                    .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
                 }
-            }
-            .listRowSeparator(.hidden)
+                .listRowSeparator(.hidden)
+            }, header: {
+                filterStatus
+            })
         }
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 0)
