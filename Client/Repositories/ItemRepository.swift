@@ -365,9 +365,7 @@ private extension ItemRepositoryProtocol {
                      item: itemRevision,
                      encryptedContent: encryptedContent,
                      lastUsedTime: 0,
-                     isLogInItem: isLogInItem,
-                     createTime: itemRevision.createTime,
-                     modifyTime: itemRevision.modifyTime)
+                     isLogInItem: isLogInItem)
     }
 
     func getCredentials(from encryptedItems: [SymmetricallyEncryptedItem],

@@ -101,9 +101,7 @@ extension ItemEntity {
                      item: itemRevision,
                      encryptedContent: symmetricallyEncryptedContent,
                      lastUsedTime: lastUsedTime,
-                     isLogInItem: isLogInItem,
-                     createTime: createTime,
-                     modifyTime: modifyTime)
+                     isLogInItem: isLogInItem)
     }
 
     func hydrate(from item: SymmetricallyEncryptedItem,

@@ -116,9 +116,7 @@ public extension LocalItemDatasourceProtocol {
                                              item: modifiedItem,
                                              encryptedContent: item.encryptedContent,
                                              lastUsedTime: item.lastUsedTime,
-                                             isLogInItem: item.isLogInItem,
-                                             createTime: item.createTime,
-                                             modifyTime: item.modifyTime)])
+                                             isLogInItem: item.isLogInItem)])
             }
         }
     }
