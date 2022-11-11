@@ -116,13 +116,14 @@ public extension LocalItemDatasourceProtocol {
                                              item: modifiedItem,
                                              encryptedContent: item.encryptedContent,
                                              lastUsedTime: item.lastUsedTime,
-                                             isLogInItem: item.isLogInItem)])
+                                             isLogInItem: item.isLogInItem,
+                                             createTime: item.createTime,
+                                             modifyTime: item.modifyTime)])
             }
         }
     }
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
-        let taskContext = newTaskContext(type: .delete)
         for item in items {
             try await deleteItems(itemIds: [item.item.itemID], shareId: item.shareId)
         }

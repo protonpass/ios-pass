@@ -30,6 +30,8 @@ struct ItemListUiModel: GenericItemProtocol {
     let type: ItemContentType
     let icon: UIImage
     let title: String
+    let createTime: Int64
+    let modifyTime: Int64
     let detail: GenericItemDetail
 
     var iconTintColor: UIColor {
@@ -75,6 +77,8 @@ extension SymmetricallyEncryptedItem {
                      type: encryptedItemContent.contentData.type,
                      icon: encryptedItemContent.contentData.type.icon,
                      title: name,
+                     createTime: createTime,
+                     modifyTime: modifyTime,
                      detail: detail)
     }
 }
