@@ -21,14 +21,14 @@
 import Foundation
 
 public enum SortType: CustomStringConvertible, CaseIterable {
-    case title, type, creationDate, modificationDate
+    case title, type, createTime, modifyTime
 
     public var description: String {
         switch self {
         case .title: return "Title"
         case .type: return "Type"
-        case .creationDate: return "Creation date"
-        case .modificationDate: return "Modification date"
+        case .createTime: return "Creation date"
+        case .modifyTime: return "Modification date"
         }
     }
 }

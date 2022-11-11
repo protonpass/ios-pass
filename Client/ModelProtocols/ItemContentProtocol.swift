@@ -22,10 +22,10 @@ import CryptoKit
 import ProtonCore_UIFoundations
 import UIKit
 
-public enum ItemContentType: CaseIterable {
-    case alias
-    case login
-    case note
+public enum ItemContentType: Int, CaseIterable {
+    case alias = 0
+    case login = 1
+    case note = 2
 
     public var icon: UIImage {
         switch self {

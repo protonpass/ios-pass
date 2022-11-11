@@ -41,6 +41,10 @@ public struct SymmetricallyEncryptedItem {
     /// Whether the item is type log in or not
     public let isLogInItem: Bool
 
+    public let createTime: Int64
+
+    public let modifyTime: Int64
+
     public func getEncryptedItemContent() throws -> ItemContent {
         guard let data = try encryptedContent.base64Decode() else {
             throw SymmetricallyEncryptedItemError.corruptedEncryptedContent
