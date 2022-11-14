@@ -4,6 +4,16 @@ PODS:
   - EllipticCurveKeyPair (2.0)
   - lottie-ios (3.4.1)
   - MBProgressHUD (1.2.0)
+  - ProtonCore-AccountDeletion-V5/UsingCrypto (3.23.0):
+    - ProtonCore-Authentication/UsingCrypto (= 3.23.0)
+    - ProtonCore-CoreTranslation (= 3.23.0)
+    - ProtonCore-Doh (= 3.23.0)
+    - ProtonCore-Foundations (= 3.23.0)
+    - ProtonCore-Log (= 3.23.0)
+    - ProtonCore-Networking (= 3.23.0)
+    - ProtonCore-Services (= 3.23.0)
+    - ProtonCore-UIFoundations-V5 (= 3.23.0)
+    - ProtonCore-Utilities (= 3.23.0)
   - ProtonCore-APIClient (3.23.0):
     - ProtonCore-DataModel (= 3.23.0)
     - ProtonCore-Networking (= 3.23.0)
@@ -146,6 +156,7 @@ PODS:
 DEPENDENCIES:
   - AlertToast
   - MBProgressHUD
+  - "ProtonCore-AccountDeletion-V5/UsingCrypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.23.2`)"
   - "ProtonCore-APIClient (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.23.2`)"
   - "ProtonCore-Authentication-KeyGeneration/UsingCrypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.23.2`)"
   - "ProtonCore-Authentication/UsingCrypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.23.2`)"
@@ -193,6 +204,9 @@ SPEC REPOS:
     - SwiftProtobuf
 
 EXTERNAL SOURCES:
+  ProtonCore-AccountDeletion-V5:
+    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+    :tag: 3.23.2
   ProtonCore-APIClient:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.23.2
@@ -288,6 +302,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/ProtonMail/TrustKit.git
 
 CHECKOUT OPTIONS:
+  ProtonCore-AccountDeletion-V5:
+    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+    :tag: 3.23.2
   ProtonCore-APIClient:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.23.2
@@ -388,6 +405,7 @@ SPEC CHECKSUMS:
   EllipticCurveKeyPair: 8c69e5238a6e47243a10a48fbd41dfb19110b22e
   lottie-ios: 016449b5d8be0c3dcbcfa0a9988469999cd04c5d
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
+  ProtonCore-AccountDeletion-V5: 39cc0f6cad969d9004d22e00f6077edbfbe46cbb
   ProtonCore-APIClient: 3c92a86fe92ecc1dfb833afd2266196834fdaa88
   ProtonCore-Authentication: e00f1abe6b8c433b9d8fa95faacbc3cb5c7c13b0
   ProtonCore-Authentication-KeyGeneration: ed26e66f9c81c0d1ff727c17b139924e35c58138
@@ -423,6 +441,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: 9f458aaa7844a2fc0b910053e66578bc4e2da9c1
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
 
-PODFILE CHECKSUM: 62f9dbb54722b62b705b557e2bd89b6c296158eb
+PODFILE CHECKSUM: 68926a605755f20c4b4b704f3aca71f7247aa424
 
 COCOAPODS: 1.11.3

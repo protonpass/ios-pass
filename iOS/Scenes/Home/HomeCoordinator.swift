@@ -24,6 +24,7 @@ import Core
 import CoreData
 import CryptoKit
 import MBProgressHUD
+import ProtonCore_AccountDeletion
 import ProtonCore_Login
 import ProtonCore_Services
 import SideMenuSwift
@@ -232,6 +233,9 @@ private extension HomeCoordinator {
                                                       symmetricKey: symmetricKey,
                                                       preferences: preferences)
         settingsCoordinator.delegate = self
+        settingsCoordinator.onDeleteAccount = { [unowned self] in
+            self.beginAccountDeletionFlow()
+        }
         return settingsCoordinator
     }
 
@@ -300,12 +304,12 @@ extension HomeCoordinator {
 
 // MARK: - Common UI operations
 private extension HomeCoordinator {
-    func showLoadingHud() {
-        MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
+    func showLoadingHud(to view: UIView? = nil) {
+        MBProgressHUD.showAdded(to: view ?? topMostViewController.view, animated: true)
     }
 
-    func hideLoadingHud() {
-        MBProgressHUD.hide(for: topMostViewController.view, animated: true)
+    func hideLoadingHud(for view: UIView? = nil) {
+        MBProgressHUD.hide(for: view ?? topMostViewController.view, animated: true)
     }
 }
 
@@ -360,6 +364,7 @@ private extension HomeCoordinator {
 
     func signOut() {
         eventLoop.stop()
+        eventLoop.delegate = nil
         delegate?.homeCoordinatorDidSignOut()
     }
 }
@@ -424,5 +429,34 @@ extension HomeCoordinator: SyncEventLoopDelegate {
 
     func syncEventLoopDidFailLoop(error: Error) {
         PPLogger.shared?.log(error)
+    }
+}
+
+// MARK: - Account deletion
+private extension HomeCoordinator {
+    func beginAccountDeletionFlow() {
+        showLoadingHud(to: rootViewController.view)
+        let accountDeletion = AccountDeletionService(api: apiService)
+        accountDeletion.initiateAccountDeletionProcess(
+            over: self.rootViewController,
+            performAfterShowingAccountDeletionScreen: { [weak self] in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    self.hideLoadingHud(for: self.rootViewController.view)
+                }
+            },
+            completion: { [weak self] result in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self.signOut()
+                    case .failure(AccountDeletionError.closedByUser):
+                        break
+                    case .failure(let error):
+                        self.alert(error: error)
+                    }
+                }
+            })
     }
 }
