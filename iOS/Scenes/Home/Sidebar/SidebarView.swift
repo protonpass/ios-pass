@@ -82,7 +82,7 @@ private struct SidebarItemView: View {
                     .foregroundColor(.white)
             }, icon: {
                 Image(uiImage: item.icon)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondary)
             })
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
@@ -92,12 +92,14 @@ private struct SidebarItemView: View {
     }
 }
 
+/*
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
         SidebarView(viewModel: .preview,
                     width: 300)
     }
 }
+ */
 
 extension Array where Element == Vault {
     static var preview: [Vault] = [

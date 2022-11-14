@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 
 protocol SideBarViewModelDelegate: AnyObject {
@@ -26,6 +27,7 @@ protocol SideBarViewModelDelegate: AnyObject {
 }
 
 final class SideBarViewModel {
+    @Published private(set) var itemCount: ItemCount?
     let user: UserProtocol
     weak var delegate: SideBarViewModelDelegate?
 
@@ -39,6 +41,12 @@ final class SideBarViewModel {
 
     func sideBarItemAction(_ item: SidebarItem) {
         delegate?.sideBarViewModelWantsToHandleItem(item)
+    }
+}
+
+extension SideBarViewModel: ItemCountDelegate {
+    func itemCountDidUpdate(_ itemCount: ItemCount) {
+        self.itemCount = itemCount
     }
 }
 
