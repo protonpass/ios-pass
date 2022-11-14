@@ -44,23 +44,23 @@
         <attribute name="value" attributeType="String"/>
     </entity>
     <entity name="ShareEntity" representedClassName="ShareEntity" syncable="YES">
-        <attribute name="acceptanceSignature" attributeType="String"/>
-        <attribute name="addressID" attributeType="String"/>
+        <attribute name="acceptanceSignature" attributeType="String" defaultValueString=""/>
+        <attribute name="addressID" attributeType="String" defaultValueString=""/>
         <attribute name="content" optional="YES" attributeType="String"/>
-        <attribute name="contentEncryptedAddressSignature" attributeType="String"/>
-        <attribute name="contentEncryptedVaultSignature" attributeType="String"/>
+        <attribute name="contentEncryptedAddressSignature" attributeType="String" defaultValueString=""/>
+        <attribute name="contentEncryptedVaultSignature" attributeType="String" defaultValueString=""/>
         <attribute name="contentFormatVersion" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="contentRotationID" attributeType="String"/>
-        <attribute name="contentSignatureEmail" attributeType="String"/>
+        <attribute name="contentRotationID" attributeType="String" defaultValueString=""/>
+        <attribute name="contentSignatureEmail" attributeType="String" defaultValueString=""/>
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="expireTime" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="inviterAcceptanceSignature" attributeType="String"/>
-        <attribute name="inviterEmail" attributeType="String"/>
+        <attribute name="inviterAcceptanceSignature" attributeType="String" defaultValueString=""/>
+        <attribute name="inviterEmail" attributeType="String" defaultValueString=""/>
         <attribute name="permission" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="shareID" attributeType="String"/>
-        <attribute name="signingKey" attributeType="String"/>
+        <attribute name="shareID" attributeType="String" defaultValueString=""/>
+        <attribute name="signingKey" attributeType="String" defaultValueString=""/>
         <attribute name="signingKeyPassphrase" optional="YES" attributeType="String"/>
-        <attribute name="targetID" attributeType="String"/>
+        <attribute name="targetID" attributeType="String" defaultValueString=""/>
         <attribute name="targetType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
         <attribute name="vaultID" attributeType="String"/>
