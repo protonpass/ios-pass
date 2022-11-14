@@ -25,6 +25,8 @@ import CryptoKit
 final class SettingsCoordinator: Coordinator {
     private let settingsViewModel: SettingsViewModel
 
+    var onDeleteAccount: (() -> Void)?
+
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
@@ -41,6 +43,9 @@ final class SettingsCoordinator: Coordinator {
         settingsViewModel.delegate = self
         settingsViewModel.onToggleSidebar = { [unowned self] in
             toggleSidebar()
+        }
+        settingsViewModel.onDeleteAccount = { [unowned self] in
+            onDeleteAccount?()
         }
         start(with: SettingsView(viewModel: settingsViewModel))
     }

@@ -35,6 +35,7 @@ struct SettingsView: View {
         Form {
             AutoFillSection(viewModel: viewModel)
             LocalAuthenticationSection(localAuthenticator: viewModel.localAuthenticator)
+            DeleteAccountSection(onDelete: viewModel.deleteAccount)
         }
         .toolbar { toolbarContent }
     }
@@ -129,6 +130,19 @@ private struct LocalAuthenticationSection: View {
             }
         } else {
             Text("Not supported")
+        }
+    }
+}
+
+private struct DeleteAccountSection: View {
+    let onDelete: (() -> Void)
+
+    var body: some View {
+        Section {
+            Button(action: onDelete) {
+                Text("Delete account")
+                    .foregroundColor(.red)
+            }
         }
     }
 }

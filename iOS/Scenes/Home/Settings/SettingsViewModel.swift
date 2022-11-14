@@ -44,6 +44,7 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
     }
 
     var onToggleSidebar: (() -> Void)?
+    var onDeleteAccount: (() -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
@@ -115,4 +116,5 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
 // MARK: - Actions
 extension SettingsViewModel {
     func toggleSidebar() { onToggleSidebar?() }
+    func deleteAccount() { onDeleteAccount?() }
 }
