@@ -69,6 +69,8 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
 
+    weak var itemCountDelegate: ItemCountDelegate?
+
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
 
@@ -204,14 +206,13 @@ extension VaultContentViewModel {
 
     func trashItem(_ item: ItemListUiModel) {
         Task { @MainActor in
+            defer { isLoading = false }
             isLoading = true
             do {
                 try await trashItemTask(for: item).value
                 fetchItems(forceRefresh: false)
                 vaultContentViewModelDelegate?.vaultContentViewModelDidTrashItem(item.type)
-                isLoading = false
             } catch {
-                isLoading = false
                 self.error = error
             }
         }
@@ -230,6 +231,7 @@ private extension VaultContentViewModel {
                                                                         state: .active)
             var items = try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
             items.sort(type: self.sortType, direction: self.sortDirection)
+            self.itemCountDelegate?.itemCountDidUpdate(items.generateItemCount())
             return items
         }
     }
@@ -279,5 +281,14 @@ private extension Array where Element == ItemListUiModel {
                 return lhs.modifyTime > rhs.modifyTime
             }
         }
+    }
+
+    func generateItemCount() -> ItemCount {
+        var dictionary: [ItemContentType: Int] = [:]
+        for type in ItemContentType.allCases {
+            let count = filter { $0.type == type }.count
+            dictionary[type] = count
+        }
+        return .init(total: count, typeCountDictionary: dictionary)
     }
 }

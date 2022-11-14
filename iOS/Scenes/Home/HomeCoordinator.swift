@@ -63,6 +63,7 @@ final class HomeCoordinator: DeinitPrintable {
 
     // Side menu
     private lazy var sideMenuController = provideSideMenuController()
+    private lazy var sidebarViewModel = provideSidebarViewModel()
     private lazy var sidebarViewController = provideSidebarViewController()
 
     // Cover view
@@ -204,10 +205,14 @@ private extension HomeCoordinator {
                            menuViewController: sidebarViewController)
     }
 
-    func provideSidebarViewController() -> UIViewController {
+    func provideSidebarViewModel() -> SideBarViewModel {
         let sideBarViewModel = SideBarViewModel(user: sessionData.userData.user)
         sideBarViewModel.delegate = self
-        let sidebarView = SidebarView(viewModel: sideBarViewModel, width: kMenuWidth)
+        return sideBarViewModel
+    }
+
+    func provideSidebarViewController() -> UIViewController {
+        let sidebarView = SidebarView(viewModel: self.sidebarViewModel, width: kMenuWidth)
         return UIHostingController(rootView: sidebarView)
     }
 
@@ -224,6 +229,7 @@ private extension HomeCoordinator {
         myVaultsCoordinator.onTrashedItem = { [unowned self] in
             self.trashCoordinator.refreshTrashedItems()
         }
+        myVaultsCoordinator.itemCountDelegate = sidebarViewModel
         return myVaultsCoordinator
     }
 
