@@ -88,6 +88,10 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
             }
             .store(in: &cancellables)
     }
+
+    private func sortItems() {
+        items.sort(type: sortType, direction: sortDirection)
+    }
 }
 
 // MARK: - Public actions
@@ -121,7 +125,6 @@ extension VaultContentViewModel {
 
             do {
                 items = try await getItemsTask(forceRefresh: forceRefresh).value
-                sortItems()
                 state = .loaded
             } catch {
                 state = .error(error)
@@ -225,7 +228,9 @@ private extension VaultContentViewModel {
             let encryptedItems = try await self.itemRepository.getItems(forceRefresh: forceRefresh,
                                                                         shareId: shareId,
                                                                         state: .active)
-            return try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+            var items = try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+            items.sort(type: self.sortType, direction: self.sortDirection)
+            return items
         }
     }
 
@@ -250,10 +255,12 @@ private extension VaultContentViewModel {
         }
         return item
     }
+}
 
-    func sortItems() {
-        items.sort { lhs, rhs in
-            switch (sortType, sortDirection) {
+private extension Array where Element == ItemListUiModel {
+    mutating func sort(type: SortType, direction: SortDirection) {
+        sort { lhs, rhs in
+            switch (type, direction) {
             case (.title, .ascending):
                 return lhs.title < rhs.title
             case (.title, .descending):
