@@ -272,8 +272,6 @@ extension HomeCoordinator {
 
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
-        case .home:
-            showMyVaultsRootViewController()
         case .settings:
             sideMenuController.setContentViewController(to: settingsRootViewController,
                                                         animated: true) { [unowned self] in
@@ -384,6 +382,12 @@ extension HomeCoordinator: SideBarViewModelDelegate {
     func sideBarViewModelWantsToHandleItem(_ item: SidebarItem) {
         handleSidebarItem(item)
     }
+
+    func sideBarViewModelWantsToShowAllItems() {
+        showMyVaultsRootViewController()
+    }
+
+    func sideBarViewModelWantsToShowItems(ofType type: ItemContentType) {}
 }
 
 // MARK: - CoordinatorDelegate

@@ -24,7 +24,9 @@ import SwiftUI
 public struct SidebarItemButtonStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .background(configuration.isPressed ? Color(ColorProvider.SidebarInteractionWeakPressed) : Color.clear)
+            .background(configuration.isPressed ?
+                        Color(ColorProvider.SidebarInteractionPressed) :
+                            Color.clear)
     }
 }
 
@@ -37,7 +39,7 @@ public struct SidebarCurrentUserButtonStyle: ButtonStyle {
         configuration.label
             .background(configuration.isPressed ?
                         Color(ColorProvider.SidebarInteractionPressed) :
-                        Color(ColorProvider.SidebarInteractionWeakPressed))
+                            Color(ColorProvider.SidebarInteractionWeakNorm))
     }
 }
 

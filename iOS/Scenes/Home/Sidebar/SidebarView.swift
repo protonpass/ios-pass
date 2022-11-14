@@ -25,7 +25,7 @@ import SwiftUI
 import UIComponents
 
 struct SidebarView: View {
-    let viewModel: SideBarViewModel
+    @StateObject var viewModel: SideBarViewModel
     let width: CGFloat
 
     var body: some View {
@@ -41,19 +41,27 @@ struct SidebarView: View {
                 .padding(.horizontal, 8)
 
                 ScrollView(showsIndicators: false) {
-                    VStack {
+                    VStack(spacing: 0) {
 //                        MyVaultsSidebarItemView(vaultSelection: coordinator.vaultSelection)
-                        SidebarItemView(item: .home,
-                                        action: viewModel.sideBarItemAction)
-                        Divider()
-                        SidebarItemView(item: .settings,
-                                        action: viewModel.sideBarItemAction)
-                        SidebarItemView(item: .trash,
-                                        action: viewModel.sideBarItemAction)
-                        SidebarItemView(item: .bugReport,
-                                        action: viewModel.sideBarItemAction)
-                        SidebarItemView(item: .signOut,
-                                        action: viewModel.sideBarItemAction)
+                        ItemCountView(itemCount: viewModel.itemCount,
+                                      onSelectAll: viewModel.showAllItemsAction,
+                                      onSelectType: viewModel.showItemsAction)
+
+                        Color(ColorProvider.SidebarSeparator)
+                            .frame(height: 1)
+
+                        Text("More")
+                            .foregroundColor(ColorProvider.SidebarIconWeak)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(14)
+
+                        SidebarItemView(item: .settings, action: viewModel.sideBarItemAction)
+
+                        SidebarItemView(item: .trash, action: viewModel.sideBarItemAction)
+
+                        SidebarItemView(item: .bugReport, action: viewModel.sideBarItemAction)
+
+                        SidebarItemView(item: .signOut, action: viewModel.sideBarItemAction)
                     }
                     .padding(.vertical)
                     .fixedSize(horizontal: false, vertical: true)
@@ -79,13 +87,13 @@ private struct SidebarItemView: View {
         }, label: {
             Label(title: {
                 Text(item.title)
-                    .foregroundColor(.white)
+                    .foregroundColor(ColorProvider.SidebarTextNorm)
             }, icon: {
                 Image(uiImage: item.icon)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(ColorProvider.SidebarIconWeak)
             })
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
+            .padding(14)
             .contentShape(Rectangle())
         })
         .buttonStyle(.sidebarItem)
