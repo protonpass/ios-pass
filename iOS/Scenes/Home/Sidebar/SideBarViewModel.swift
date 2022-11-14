@@ -24,9 +24,11 @@ import Core
 protocol SideBarViewModelDelegate: AnyObject {
     func sideBarViewModelWantsToShowUsersSwitcher()
     func sideBarViewModelWantsToHandleItem(_ item: SidebarItem)
+    func sideBarViewModelWantsToShowAllItems()
+    func sideBarViewModelWantsToShowItems(ofType type: ItemContentType)
 }
 
-final class SideBarViewModel {
+final class SideBarViewModel: ObservableObject {
     @Published private(set) var itemCount: ItemCount?
     let user: UserProtocol
     weak var delegate: SideBarViewModelDelegate?
@@ -42,11 +44,21 @@ final class SideBarViewModel {
     func sideBarItemAction(_ item: SidebarItem) {
         delegate?.sideBarViewModelWantsToHandleItem(item)
     }
+
+    func showAllItemsAction() {
+        delegate?.sideBarViewModelWantsToShowAllItems()
+    }
+
+    func showItemsAction(_ type: ItemContentType) {
+        delegate?.sideBarViewModelWantsToShowItems(ofType: type)
+    }
 }
 
 extension SideBarViewModel: ItemCountDelegate {
     func itemCountDidUpdate(_ itemCount: ItemCount) {
-        self.itemCount = itemCount
+        DispatchQueue.main.async {
+            self.itemCount = itemCount
+        }
     }
 }
 

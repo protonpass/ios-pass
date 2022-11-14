@@ -27,12 +27,23 @@ public enum ItemContentType: Int, CaseIterable {
     case login = 1
     case note = 2
 
+    public var countTitle: String {
+        switch self {
+        case .alias:
+            return "Aliases"
+        case .login:
+            return "Logins"
+        case .note:
+            return "Notes"
+        }
+    }
+
     public var icon: UIImage {
         switch self {
         case .alias:
             return IconProvider.alias
         case .login:
-            return IconProvider.keySkeleton
+            return IconProvider.key
         case .note:
             return IconProvider.note
         }
