@@ -18,15 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
 import SwiftUI
 
 public struct SidebarItemButtonStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .background(configuration.isPressed ?
-                        Color(ColorProvider.SidebarInteractionPressed) :
-                            Color.clear)
+            .background(configuration.isPressed ? Color.sidebarInteractionPressed : .clear)
     }
 }
 
@@ -38,8 +35,7 @@ public struct SidebarCurrentUserButtonStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .background(configuration.isPressed ?
-                        Color(ColorProvider.SidebarInteractionPressed) :
-                            Color(ColorProvider.SidebarInteractionWeakNorm))
+                        Color.sidebarInteractionPressed : .sidebarInteractionWeakNorm)
     }
 }
 

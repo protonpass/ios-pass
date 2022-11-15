@@ -22,6 +22,6 @@ import SwiftUI
 
 public extension SwitchToggleStyle {
     static var proton: SwitchToggleStyle {
-        .init(tint: .brandNorm)
+        .init(tint: .interactionNorm)
     }
 }

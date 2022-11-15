@@ -34,7 +34,7 @@ struct SidebarCurrentUserView: View {
                     .foregroundColor(.white)
                     .padding(8)
                     .frame(minWidth: 36)
-                    .background(Color.brandNorm)
+                    .background(Color.interactionNorm)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 VStack(alignment: .leading) {
                     Text(user.finalDisplayName)

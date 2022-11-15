@@ -47,13 +47,13 @@ public struct UserInputContainerView<Content: View>: View {
 
             content()
             .padding(10)
-            .background(Color(ColorProvider.BackgroundSecondary).opacity(isEditable ? 1 : 0.25))
+            .background(Color.backgroundSecondary.opacity(isEditable ? 1 : 0.25))
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(isFocused ? Color.brandNorm : .clear, lineWidth: 1)
+                    .stroke(isFocused ? Color.interactionNorm : .clear, lineWidth: 1)
             )
-            .accentColor(.brandNorm)
+            .accentColor(.interactionNorm)
         }
     }
 }

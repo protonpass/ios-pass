@@ -43,9 +43,9 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     override func navigationBarTitle() -> String {
         switch mode {
         case .create:
-            return "Create new note"
+            return "New note"
         case .edit:
-            return "Edit note"
+            return "Edit"
         }
     }
 
