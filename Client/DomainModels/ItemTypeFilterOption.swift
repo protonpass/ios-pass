@@ -39,7 +39,7 @@ extension ItemTypeFilterOption: Equatable {
         switch (lhs, rhs) {
         case (.all, .all):
             return true
-        case (.filtered(let lhsType), .filtered(let rhsType)):
+        case let (.filtered(lhsType), .filtered(rhsType)):
             return lhsType == rhsType
         default:
             return false
