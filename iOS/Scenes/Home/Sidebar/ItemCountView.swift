@@ -56,8 +56,8 @@ struct ItemCountView: View {
             .buttonStyle(.sidebarItem)
 
             ForEach(ItemContentType.allCases, id: \.self) { type in
-                ItemContentTypeCountView(itemCount: itemCount,
-                                         type: type,
+                ItemContentTypeCountView(type: type,
+                                         count: itemCount?.typeCountDictionary[type],
                                          onSelect: { onSelectType(type) })
             }
         }
@@ -65,8 +65,8 @@ struct ItemCountView: View {
 }
 
 private struct ItemContentTypeCountView: View {
-    let itemCount: ItemCount?
     let type: ItemContentType
+    let count: Int?
     let onSelect: () -> Void
 
     var body: some View {
@@ -82,16 +82,10 @@ private struct ItemContentTypeCountView: View {
 
                 Spacer()
 
-                if let itemCount {
-                    if let count = itemCount.typeCountDictionary[type] {
-                        Text("\(count)")
-                            .foregroundColor(ColorProvider.SidebarTextNorm)
-                            .font(.callout)
-                    } else {
-                        Text("?")
-                            .foregroundColor(ColorProvider.SidebarTextNorm)
-                            .font(.callout)
-                    }
+                if let count {
+                    Text("\(count)")
+                        .foregroundColor(ColorProvider.SidebarTextNorm)
+                        .font(.callout)
                 } else {
                     ProgressView()
                 }
@@ -102,5 +96,6 @@ private struct ItemContentTypeCountView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.sidebarItem)
+        .disabled(count == nil || count == 0) // swiftlint:disable:this empty_count
     }
 }

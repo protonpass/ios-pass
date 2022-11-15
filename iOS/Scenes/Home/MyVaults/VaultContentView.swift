@@ -50,7 +50,7 @@ struct VaultContentView: View {
                     .padding()
 
             case .loaded:
-                if viewModel.items.isEmpty {
+                if viewModel.filteredItems.isEmpty {
                     EmptyVaultView()
                         .padding(.horizontal)
                 } else {
@@ -80,7 +80,7 @@ struct VaultContentView: View {
 
     private var filterStatus: some View {
         Menu(content: {
-            ForEach(SortType.allCases, id: \.self) { sortType in
+            ForEach(viewModel.sortTypes, id: \.self) { sortType in
                 Button(action: {
                     viewModel.sortType = sortType
                 }, label: {
@@ -125,7 +125,7 @@ struct VaultContentView: View {
     private var itemList: some View {
         List {
             Section(content: {
-                ForEach(viewModel.items, id: \.itemId) { item in
+                ForEach(viewModel.filteredItems, id: \.itemId) { item in
                     GenericItemView(item: item,
                                     action: { viewModel.selectItem(item) },
                                     subtitleLineLimit: 1,
@@ -139,7 +139,7 @@ struct VaultContentView: View {
         }
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 0)
-        .animation(.default, value: viewModel.items.count)
+        .animation(.default, value: viewModel.filteredItems.count)
         .refreshable { await viewModel.forceRefreshItems() }
     }
 
@@ -189,6 +189,11 @@ struct VaultContentView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             ToggleSidebarButton(action: viewModel.toggleSidebar)
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text(viewModel.filterOption.title)
+                .fontWeight(.semibold)
         }
 
 //        ToolbarItem(placement: .principal) {
