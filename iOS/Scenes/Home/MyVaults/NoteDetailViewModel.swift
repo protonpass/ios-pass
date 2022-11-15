@@ -35,4 +35,8 @@ final class NoteDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obser
             fatalError("Expecting note type")
         }
     }
+
+    func copyNote() {
+        copyToClipboard(text: note, message: "Note copied")
+    }
 }

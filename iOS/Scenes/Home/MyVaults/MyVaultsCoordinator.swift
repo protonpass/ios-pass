@@ -212,7 +212,7 @@ final class MyVaultsCoordinator: Coordinator {
             case .note:
                 message = "Note created"
             }
-            myVaultsViewModel.successMessage = message
+            vaultContentViewModel.successMessage = message
             vaultContentViewModel.fetchItems(forceRefresh: false)
         }
     }
@@ -239,7 +239,7 @@ final class MyVaultsCoordinator: Coordinator {
         case .note:
             message = "Note deleted"
         }
-        myVaultsViewModel.successMessage = message
+        vaultContentViewModel.successMessage = message
         vaultContentViewModel.fetchItems(forceRefresh: false)
         onTrashedItem?()
     }
@@ -256,7 +256,7 @@ final class MyVaultsCoordinator: Coordinator {
             case .note:
                 message = "Note updated"
             }
-            myVaultsViewModel.successMessage = message
+            vaultContentViewModel.successMessage = message
             vaultContentViewModel.fetchItems(forceRefresh: false)
         }
     }
@@ -310,10 +310,6 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
     func vaultContentViewModelDidTrashItem(_ type: ItemContentType) {
         handleTrashedItem(type)
     }
-
-    func vaultContentViewModelWantsToShowSuccessMessage(_ message: String) {
-        myVaultsViewModel.successMessage = message
-    }
 }
 
 // MARK: - CreateEditItemViewModelDelegate
@@ -342,7 +338,7 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         UIPasteboard.general.string = password
-        myVaultsViewModel.successMessage = "Password copied to clipboard"
+        vaultContentViewModel.informativeMessage = "Password copied"
     }
 }
 

@@ -25,36 +25,31 @@ import UIComponents
 struct NoteDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: NoteDetailViewModel
-    @State private var isShowingTrashingAlert = false
 
     init(viewModel: NoteDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("Note")
-            if viewModel.note.isEmpty {
-                Text("Empty note")
-                    .modifier(ItalicSecondaryTextStyle())
-            } else {
-                Text(viewModel.note)
-                    .font(.callout)
-                    .foregroundColor(.secondary)
+        ScrollView {
+            Group {
+                if viewModel.note.isEmpty {
+                    Text("Empty note")
+                        .modifier(ItalicSecondaryTextStyle())
+                } else {
+                    Text(viewModel.note)
+                        .font(.callout)
+                        .foregroundColor(.secondary)
+                        .onTapGesture(perform: viewModel.copyNote)
+                }
             }
-            Spacer()
+            .padding(.vertical, 28)
+            .padding(.horizontal, 32)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden(true)
-        .onReceive(viewModel.$isTrashed) { isTrashed in
-            if isTrashed {
-                dismiss()
-            }
-        }
-        .padding()
-        .padding(.top)
-        .moveToTrashAlert(isPresented: $isShowingTrashingAlert, onTrash: viewModel.trash)
         .toolbar { toolbarContent }
+        .alertToastInformativeMessage($viewModel.informativeMessage)
     }
 
     @ToolbarContentBuilder
@@ -72,30 +67,10 @@ struct NoteDetailView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            trailingMenu
-        }
-    }
-
-    private var trailingMenu: some View {
-        Menu(content: {
             Button(action: viewModel.edit) {
-                Label(title: {
-                    Text("Edit note")
-                }, icon: {
-                    Image(uiImage: IconProvider.eraser)
-                })
+                Text("Edit")
+                    .foregroundColor(ColorProvider.InteractionNorm)
             }
-
-            Divider()
-
-            DestructiveButton(title: "Move to trash",
-                              icon: IconProvider.trash,
-                              action: {
-                isShowingTrashingAlert.toggle()
-            })
-        }, label: {
-            Image(uiImage: IconProvider.threeDotsHorizontal)
-                .foregroundColor(.primary)
-        })
+        }
     }
 }
