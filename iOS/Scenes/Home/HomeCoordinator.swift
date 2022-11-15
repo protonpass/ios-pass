@@ -159,7 +159,7 @@ private extension HomeCoordinator {
     private func observeVaultSelection() {
         vaultSelection.$selectedVault
             .sink { [unowned self] _ in
-                self.showMyVaultsRootViewController()
+                self.showMyVaultsRootViewController(filterOption: .all)
             }
             .store(in: &cancellables)
     }
@@ -263,7 +263,8 @@ extension HomeCoordinator {
         sideMenuController.revealMenu()
     }
 
-    private func showMyVaultsRootViewController() {
+    private func showMyVaultsRootViewController(filterOption: ItemTypeFilterOption) {
+        myVaultsCoordinator.updateFilterOption(filterOption)
         sideMenuController.setContentViewController(to: myVaultsRootViewController,
                                                     animated: true) { [unowned self] in
             self.sideMenuController.hideMenu()
@@ -384,10 +385,12 @@ extension HomeCoordinator: SideBarViewModelDelegate {
     }
 
     func sideBarViewModelWantsToShowAllItems() {
-        showMyVaultsRootViewController()
+        showMyVaultsRootViewController(filterOption: .all)
     }
 
-    func sideBarViewModelWantsToShowItems(ofType type: ItemContentType) {}
+    func sideBarViewModelWantsToShowItems(ofType type: ItemContentType) {
+        showMyVaultsRootViewController(filterOption: .filtered(type))
+    }
 }
 
 // MARK: - CoordinatorDelegate

@@ -273,6 +273,10 @@ final class MyVaultsCoordinator: Coordinator {
         currentItemDetailViewModel?.refresh()
         currentCreateEditItemViewModel?.refresh()
     }
+
+    func updateFilterOption(_ filterOption: ItemTypeFilterOption) {
+        vaultContentViewModel.filterOption = filterOption
+    }
 }
 
 // MARK: - BaseViewModelDelegate

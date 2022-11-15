@@ -23,27 +23,38 @@ import ProtonCore_UIFoundations
 import UIKit
 
 public enum ItemContentType: Int, CaseIterable {
-    case alias = 0
-    case login = 1
+    case login = 0
+    case alias = 1
     case note = 2
 
     public var countTitle: String {
         switch self {
-        case .alias:
-            return "Aliases"
         case .login:
             return "Logins"
+        case .alias:
+            return "Aliases"
         case .note:
             return "Notes"
         }
     }
 
+    public var filterTitle: String {
+        switch self {
+        case .login:
+            return "All logins"
+        case .alias:
+            return "All aliases"
+        case .note:
+            return "All notes"
+        }
+    }
+
     public var icon: UIImage {
         switch self {
-        case .alias:
-            return IconProvider.alias
         case .login:
             return IconProvider.key
+        case .alias:
+            return IconProvider.alias
         case .note:
             return IconProvider.note
         }

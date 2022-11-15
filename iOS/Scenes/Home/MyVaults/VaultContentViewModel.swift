@@ -60,10 +60,28 @@ protocol VaultContentViewModelDelegate: AnyObject {
 final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
+    private var allItems = [ItemListUiModel]()
     @Published private(set) var state = State.loading
-    @Published private(set) var items = [ItemListUiModel]()
-    @Published var sortType = SortType.modifyTime { didSet { sortItems() } }
-    @Published var sortDirection = SortDirection.descending { didSet { sortItems() } }
+    @Published private(set) var filteredItems = [ItemListUiModel]()
+    @Published private(set) var sortTypes = SortType.allCases
+    @Published var filterOption = ItemTypeFilterOption.all {
+        didSet {
+            self.sortTypes = SortType.allCases
+            switch filterOption {
+            case .all:
+                break
+            case .filtered:
+                sortTypes.removeAll { $0 == .type }
+                if sortType == .type {
+                    sortType = .modifyTime
+                    return
+                }
+            }
+            filterAndSort()
+        }
+    }
+    @Published var sortType = SortType.modifyTime { didSet { filterAndSort() } }
+    @Published var sortDirection = SortDirection.descending { didSet { filterAndSort() } }
 
     private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
@@ -91,8 +109,14 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
             .store(in: &cancellables)
     }
 
-    private func sortItems() {
-        items.sort(type: sortType, direction: sortDirection)
+    private func updateItemCount() {
+        itemCountDelegate?.itemCountDidUpdate(allItems.generateItemCount())
+    }
+
+    private func filterAndSort() {
+        filteredItems = allItems.filteredAndSorted(filterOption: filterOption,
+                                                   type: sortType,
+                                                   direction: sortDirection)
     }
 }
 
@@ -113,7 +137,9 @@ extension VaultContentViewModel {
     @MainActor
     func forceRefreshItems() async {
         do {
-            items = try await getItemsTask(forceRefresh: true).value
+            allItems = try await getItemsTask(forceRefresh: true).value
+            updateItemCount()
+            filterAndSort()
         } catch {
             state = .error(error)
         }
@@ -126,7 +152,9 @@ extension VaultContentViewModel {
             }
 
             do {
-                items = try await getItemsTask(forceRefresh: forceRefresh).value
+                allItems = try await getItemsTask(forceRefresh: forceRefresh).value
+                updateItemCount()
+                filterAndSort()
                 state = .loaded
             } catch {
                 state = .error(error)
@@ -229,10 +257,7 @@ private extension VaultContentViewModel {
             let encryptedItems = try await self.itemRepository.getItems(forceRefresh: forceRefresh,
                                                                         shareId: shareId,
                                                                         state: .active)
-            var items = try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
-            items.sort(type: self.sortType, direction: self.sortDirection)
-            self.itemCountDelegate?.itemCountDidUpdate(items.generateItemCount())
-            return items
+            return try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
         }
     }
 
@@ -260,8 +285,18 @@ private extension VaultContentViewModel {
 }
 
 private extension Array where Element == ItemListUiModel {
-    mutating func sort(type: SortType, direction: SortDirection) {
-        sort { lhs, rhs in
+    mutating func filteredAndSorted(filterOption: ItemTypeFilterOption,
+                                    type: SortType,
+                                    direction: SortDirection) -> Self {
+        filter { item in
+            switch filterOption {
+            case .all:
+                return true
+            case .filtered(let type):
+                return item.type == type
+            }
+        }
+        .sorted { lhs, rhs in
             switch (type, direction) {
             case (.title, .ascending):
                 return lhs.title < rhs.title
