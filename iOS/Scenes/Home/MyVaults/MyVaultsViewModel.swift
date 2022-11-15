@@ -26,8 +26,6 @@ import SwiftUI
 final class MyVaultsViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    @Published var successMessage: String?
-
     private let vaultSelection: VaultSelection
     private var cancellables = Set<AnyCancellable>()
 

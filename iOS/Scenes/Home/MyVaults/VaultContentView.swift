@@ -76,6 +76,8 @@ struct VaultContentView: View {
                 didAppear = true
             }
         }
+        .alertToastSuccessMessage($viewModel.successMessage)
+        .alertToastInformativeMessage($viewModel.informativeMessage)
     }
 
     private var filterStatus: some View {
@@ -159,8 +161,11 @@ struct VaultContentView: View {
                 case .alias:
                     CopyMenuButton(title: "Copy email address",
                                    action: { viewModel.copyEmailAddress(item) })
-                default:
-                    EmptyView()
+                case .note:
+                    if case .value = item.detail {
+                        CopyMenuButton(title: "Copy note",
+                                       action: { viewModel.copyNote(item) })
+                    }
                 }
 
                 EditMenuButton {

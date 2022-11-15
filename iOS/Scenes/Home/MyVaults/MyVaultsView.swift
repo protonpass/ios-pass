@@ -39,7 +39,6 @@ struct MyVaultsView: View {
             LoadVaultsView(viewModel: loadVaultsViewModel)
         } else {
             VaultContentView(viewModel: vaultContentViewModel)
-                .alertToastSuccessMessage($viewModel.successMessage)
         }
     }
 }

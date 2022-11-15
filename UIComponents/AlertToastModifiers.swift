@@ -34,12 +34,33 @@ public extension View {
                 message.wrappedValue = nil
             }
         })
-        return toast(isPresenting: binding, duration: 3.5) {
+        return toast(isPresenting: binding, duration: duration) {
             AlertToast(displayMode: .banner(.pop),
                        type: .regular,
                        title: message.wrappedValue,
                        style: .style(backgroundColor: Color(ColorProvider.NotificationSuccess),
                                      titleColor: .white,
+                                     subTitleColor: nil,
+                                     titleFont: .body,
+                                     subTitleFont: nil))
+        }
+    }
+
+    func alertToastInformativeMessage(_ message: Binding<String?>,
+                                      duration: Double = kDefaultToastDuration) -> some View {
+        let binding = Binding<Bool>(get: {
+            message.wrappedValue != nil
+        }, set: { isPresenting in
+            if !isPresenting {
+                message.wrappedValue = nil
+            }
+        })
+        return toast(isPresenting: binding, duration: duration) {
+            AlertToast(displayMode: .banner(.pop),
+                       type: .regular,
+                       title: message.wrappedValue,
+                       style: .style(backgroundColor: Color.primary,
+                                     titleColor: Color(.systemBackground),
                                      subTitleColor: nil,
                                      titleFont: .body,
                                      subTitleFont: nil))

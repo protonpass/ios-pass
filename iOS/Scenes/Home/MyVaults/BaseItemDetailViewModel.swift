@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import UIKit
 
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
@@ -31,7 +32,9 @@ enum ItemDetailViewModelError: Error {
 }
 
 class BaseItemDetailViewModel: BaseViewModel {
+    #warning("To be removed")
     @Published var isTrashed = false
+    @Published var informativeMessage: String?
 
     private let itemRepository: ItemRepositoryProtocol
     private(set) var itemContent: ItemContent
@@ -57,6 +60,15 @@ class BaseItemDetailViewModel: BaseViewModel {
 
     /// To be overidden by subclasses
     func bindValues() {}
+
+    /// Copy to clipboard and trigger a toast message
+    /// - Parameters:
+    ///    - text: The text to be copied to clipboard.
+    ///    - message: The message of the toast (e.g. "Note copied", "Alias copied")
+    func copyToClipboard(text: String, message: String) {
+        UIPasteboard.general.string = text
+        informativeMessage = message
+    }
 
     func edit() {
         itemDetailDelegate?.itemDetailViewModelWantsToEditItem(itemContent)
