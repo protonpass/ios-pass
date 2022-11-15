@@ -31,15 +31,25 @@ struct CreateItemView: View {
     }
 
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 8) {
-                ForEach(CreateNewItemOption.allCases, id: \.self) { option in
-                    GenericItemView(item: option,
-                                    action: { viewModel.select(option: option) })
+        VStack(spacing: 0) {
+            NotchView()
+                .padding(.top, 5)
+                .padding(.bottom, 17)
+
+            Text("Create new")
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.bottom, 15)
+
+            ScrollView {
+                LazyVStack(spacing: 8) {
+                    ForEach(CreateNewItemOption.allCases, id: \.self) { option in
+                        GenericItemView(item: option,
+                                        action: { viewModel.select(option: option) })
+                    }
                 }
+                .padding(.vertical, 8)
             }
-            .padding(.vertical, 8)
         }
-        .adaptiveScrollDisabled(true)
     }
 }

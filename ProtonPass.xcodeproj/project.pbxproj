@@ -205,6 +205,7 @@
 		3561A1802922D1700097078B /* ItemCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561A17F2922D1700097078B /* ItemCount.swift */; };
 		3561A1822922DA6E0097078B /* ItemCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561A1812922DA6E0097078B /* ItemCountView.swift */; };
 		35690C112923846E00F60C20 /* ItemTypeFilterOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C102923846E00F60C20 /* ItemTypeFilterOption.swift */; };
+		35690C132923D5DA00F60C20 /* NotchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C122923D5DA00F60C20 /* NotchView.swift */; };
 		356B21D72870F8F1001220CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D62870F8F1001220CB /* Constants.swift */; };
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
 		356BDA3228DFAA9600B02E5A /* VaultItemKeysRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3128DFAA9600B02E5A /* VaultItemKeysRepository.swift */; };
@@ -636,6 +637,7 @@
 		3561A17F2922D1700097078B /* ItemCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCount.swift; sourceTree = "<group>"; };
 		3561A1812922DA6E0097078B /* ItemCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountView.swift; sourceTree = "<group>"; };
 		35690C102923846E00F60C20 /* ItemTypeFilterOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilterOption.swift; sourceTree = "<group>"; };
+		35690C122923D5DA00F60C20 /* NotchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchView.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B21D62870F8F1001220CB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
@@ -1466,6 +1468,7 @@
 				3547ABE92877684D00EE85E1 /* GenericItemView.swift */,
 				3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */,
 				354F769B28C90B4D00EB2383 /* MoveToTrashModifier.swift */,
+				35690C122923D5DA00F60C20 /* NotchView.swift */,
 				355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */,
 				35526B5C28D116350017BB53 /* PassIcon.swift */,
 				3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */,
@@ -2614,6 +2617,7 @@
 				354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */,
 				35526B5D28D116350017BB53 /* PassIcon.swift in Sources */,
 				3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */,
+				35690C132923D5DA00F60C20 /* NotchView.swift in Sources */,
 				3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */,
 				35AABE1D28B0036A00CEDDE6 /* AlertToastModifiers.swift in Sources */,
 				3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */,
