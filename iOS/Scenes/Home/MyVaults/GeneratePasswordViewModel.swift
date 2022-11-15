@@ -20,8 +20,8 @@
 
 import Combine
 import Core
-import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 protocol GeneratePasswordViewModelDelegate: AnyObject {
     func generatePasswordViewModelDidConfirm(password: String)
@@ -67,9 +67,9 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
                 newPassword.forEach { char in
                     var color = Color.primary
                     if AllowedCharacter.digit.rawValue.contains(char) {
-                        color = ColorProvider.NotificationError
+                        color = .notificationError
                     } else if AllowedCharacter.special.rawValue.contains(char) {
-                        color = ColorProvider.NotificationSuccess
+                        color = .notificationSuccess
                     }
                     texts.append(Text(String(char)).foregroundColor(color))
                 }

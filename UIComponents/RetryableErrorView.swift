@@ -36,7 +36,7 @@ public struct RetryableErrorView: View {
             Button(action: onRetry) {
                 Text("Retry")
             }
-            .foregroundColor(.brandNorm)
+            .foregroundColor(.interactionNorm)
         }
     }
 }

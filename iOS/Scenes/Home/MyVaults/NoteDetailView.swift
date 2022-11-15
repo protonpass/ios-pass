@@ -69,7 +69,7 @@ struct NoteDetailView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button(action: viewModel.edit) {
                 Text("Edit")
-                    .foregroundColor(ColorProvider.InteractionNorm)
+                    .foregroundColor(.interactionNorm)
             }
         }
     }

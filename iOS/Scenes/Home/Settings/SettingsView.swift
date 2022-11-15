@@ -20,7 +20,6 @@
 
 import Core
 import LocalAuthentication
-import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -88,7 +87,7 @@ private struct AutoFillSection: View {
                         Text("Open Settings")
                             .font(.caption)
                     })
-                    .foregroundColor(.brandNorm)
+                    .foregroundColor(.interactionNorm)
                 }
             }
         })
