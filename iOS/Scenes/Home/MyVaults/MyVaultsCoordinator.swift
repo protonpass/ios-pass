@@ -239,7 +239,7 @@ final class MyVaultsCoordinator: Coordinator {
         case .note:
             message = "Note deleted"
         }
-        vaultContentViewModel.successMessage = message
+        vaultContentViewModel.informativeMessage = message
         vaultContentViewModel.fetchItems(forceRefresh: false)
         onTrashedItem?()
     }
@@ -320,6 +320,11 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
         handleUpdatedItem(type)
+    }
+
+    func createEditItemViewModelDidTrashItem(_ type: ItemContentType) {
+        popToRoot()
+        handleTrashedItem(type)
     }
 }
 

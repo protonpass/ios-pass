@@ -32,7 +32,7 @@ enum ItemDetailViewModelError: Error {
 }
 
 class BaseItemDetailViewModel: BaseViewModel {
-    #warning("To be removed")
+#warning("To be removed because deletion will happen in edit page, not detail page anymore")
     @Published var isTrashed = false
     @Published var informativeMessage: String?
 
@@ -74,6 +74,7 @@ class BaseItemDetailViewModel: BaseViewModel {
         itemDetailDelegate?.itemDetailViewModelWantsToEditItem(itemContent)
     }
 
+#warning("To be removed because deletion will happen in edit page, not detail page anymore")
     func trash() {
         Task { @MainActor in
             do {
@@ -91,6 +92,7 @@ class BaseItemDetailViewModel: BaseViewModel {
     }
 }
 
+#warning("To be removed because deletion will happen in edit page, not detail page anymore")
 // MARK: - Private supporting tasks
 private extension BaseItemDetailViewModel {
     func getItemTask(shareId: String, itemId: String) -> Task<SymmetricallyEncryptedItem, Error> {

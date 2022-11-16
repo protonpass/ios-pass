@@ -25,14 +25,27 @@ import ProtonCore_Login
 protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelDidCreateItem(_ type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
+    func createEditItemViewModelDidTrashItem(_ type: ItemContentType)
 }
 
 enum ItemMode {
     case create(shareId: String, alias: Bool)
     case edit(ItemContent)
+
+    var isEditMode: Bool {
+        switch self {
+        case .edit:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isCreateMode: Bool { !isEditMode }
 }
 
 class BaseCreateEditItemViewModel: BaseViewModel {
+    @Published private(set) var isTrashed = false
     @Published var isObsolete = false
     let shareId: String
     let mode: ItemMode
@@ -89,6 +102,23 @@ class BaseCreateEditItemViewModel: BaseViewModel {
 
         case .edit(let oldItemContent):
             editItem(oldItemContent: oldItemContent)
+        }
+    }
+
+    func trash() {
+        guard case .edit(let itemContent) = mode else { return }
+        Task { @MainActor in
+            defer { isLoading = false }
+            do {
+                isLoading = true
+                let item = try await getItemTask(shareId: itemContent.shareId,
+                                                 itemId: itemContent.itemId).value
+                try await trashItemTask(item: item).value
+                isTrashed = true
+                createEditItemDelegate?.createEditItemViewModelDidTrashItem(itemContentType())
+            } catch {
+                self.error = error
+            }
         }
     }
 
@@ -171,6 +201,22 @@ private extension BaseCreateEditItemViewModel {
             try await self.itemRepository.updateItem(oldItem: oldItem,
                                                      newItemContent: newItemContent,
                                                      shareId: shareId)
+        }
+    }
+
+    func getItemTask(shareId: String, itemId: String) -> Task<SymmetricallyEncryptedItem, Error> {
+        Task.detached(priority: .userInitiated) {
+            guard let item = try await self.itemRepository.getItem(shareId: shareId,
+                                                                   itemId: itemId) else {
+                throw ItemDetailViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
+            }
+            return item
+        }
+    }
+
+    func trashItemTask(item: SymmetricallyEncryptedItem) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            try await self.itemRepository.trashItems([item])
         }
     }
 }

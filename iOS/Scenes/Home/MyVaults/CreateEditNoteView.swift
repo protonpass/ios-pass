@@ -25,6 +25,7 @@ import UIComponents
 struct CreateEditNoteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditNoteViewModel
+    @State private var isShowingTrashAlert = false
     @State private var isShowingDiscardAlert = false
     @State private var isFocusedOnName = false
     @State private var isFocusedOnNote = false
@@ -35,9 +36,19 @@ struct CreateEditNoteView: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 30) {
+            VStack {
                 nameInputView
+                    .padding(.bottom, 20)
+
                 noteInputView
+                    .padding(.bottom, 56)
+
+                if viewModel.mode.isEditMode {
+                    MoveToTrashButton {
+                        isShowingTrashAlert.toggle()
+                    }
+                }
+
                 Spacer()
             }
             .padding()
@@ -49,6 +60,12 @@ struct CreateEditNoteView: View {
                                             onAction: dismiss.callAsFunction))
         .modifier(DiscardChangesAlertModifier(isPresented: $isShowingDiscardAlert,
                                               onDiscard: dismiss.callAsFunction))
+        .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
+        .onReceive(viewModel.$isTrashed) { isTrashed in
+            if isTrashed {
+                dismiss()
+            }
+        }
     }
 
     private var nameInputView: some View {

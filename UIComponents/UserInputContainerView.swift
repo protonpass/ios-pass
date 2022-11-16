@@ -38,7 +38,7 @@ public struct UserInputContainerView<Content: View>: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 8) {
             if let title {
                 Text(title)
                     .font(.caption)
