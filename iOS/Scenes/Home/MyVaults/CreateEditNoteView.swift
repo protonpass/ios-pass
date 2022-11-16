@@ -61,11 +61,7 @@ struct CreateEditNoteView: View {
         .modifier(DiscardChangesAlertModifier(isPresented: $isShowingDiscardAlert,
                                               onDiscard: dismiss.callAsFunction))
         .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
-        .onReceive(viewModel.$isTrashed) { isTrashed in
-            if isTrashed {
-                dismiss()
-            }
-        }
+        .onReceiveBoolean(viewModel.$isTrashed, perform: dismiss.callAsFunction)
     }
 
     private var nameInputView: some View {
