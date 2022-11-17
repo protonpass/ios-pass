@@ -21,6 +21,7 @@
 import Client
 import Core
 import CryptoKit
+import UIComponents
 
 final class SettingsCoordinator: Coordinator {
     private let settingsViewModel: SettingsViewModel
@@ -30,17 +31,18 @@ final class SettingsCoordinator: Coordinator {
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
-         preferences: Preferences) {
+         preferences: Preferences,
+         bannerManager: BannerManager) {
         self.settingsViewModel = .init(itemRepository: itemRepository,
                                        credentialManager: credentialManager,
                                        symmetricKey: symmetricKey,
-                                       preferences: preferences)
+                                       preferences: preferences,
+                                       bannerManager: bannerManager)
         super.init()
         start()
     }
 
     private func start() {
-        settingsViewModel.delegate = self
         settingsViewModel.onToggleSidebar = { [unowned self] in
             toggleSidebar()
         }
@@ -49,13 +51,4 @@ final class SettingsCoordinator: Coordinator {
         }
         start(with: SettingsView(viewModel: settingsViewModel))
     }
-}
-
-// MARK: - BaseViewModelDelegate
-extension SettingsCoordinator: BaseViewModelDelegate {
-    func viewModelBeginsLoading() { showLoadingHud() }
-
-    func viewModelStopsLoading() { hideLoadingHud() }
-
-    func viewModelDidFailWithError(_ error: Error) { alertError(error) }
 }
