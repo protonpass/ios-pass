@@ -66,7 +66,6 @@ struct CreateEditAliasView: View {
             .toolbar { toolbarContent }
             .navigationBarTitleDisplayMode(.inline)
         }
-        .disabled(viewModel.isLoading)
         .modifier(ObsoleteItemAlertModifier(isPresented: $viewModel.isObsolete,
                                             onAction: dismiss.callAsFunction))
         .modifier(DiscardChangesAlertModifier(isPresented: $isShowingDiscardAlert,
@@ -110,6 +109,7 @@ struct CreateEditAliasView: View {
                 text: $viewModel.title,
                 isFocused: $isFocusedOnTitle,
                 placeholder: "Alias name")
+            .opacityReduced(viewModel.isSaving)
         }
     }
 
@@ -138,6 +138,7 @@ struct CreateEditAliasView: View {
                     },
                     trailingAction: { viewModel.prefix = "" },
                     textAutocapitalizationType: .none)
+                .opacityReduced(viewModel.isSaving)
             }
 
             NavigationLink(destination: {
@@ -148,6 +149,7 @@ struct CreateEditAliasView: View {
                 }
             })
             .buttonStyle(.plain)
+            .opacityReduced(viewModel.isSaving)
 
             if !viewModel.prefix.isEmpty {
                 HStack {
@@ -175,6 +177,7 @@ struct CreateEditAliasView: View {
             UserInputContainerView(title: "Mailboxes", isFocused: false) {
                 UserInputStaticContentView(text: $viewModel.mailboxes)
             }
+            .opacityReduced(viewModel.isSaving)
         })
         .buttonStyle(.plain)
     }
@@ -185,6 +188,7 @@ struct CreateEditAliasView: View {
             UserInputContentMultilineView(
                 text: $viewModel.note,
                 isFocused: $isFocusedOnNote)
+            .opacityReduced(viewModel.isSaving)
         }
     }
 }

@@ -23,6 +23,7 @@ import Core
 import CryptoKit
 import ProtonCore_Login
 import SwiftUI
+import UIComponents
 
 final class TrashCoordinator: Coordinator {
     private let symmetricKey: SymmetricKey
@@ -30,6 +31,7 @@ final class TrashCoordinator: Coordinator {
     private let itemRepository: ItemRepositoryProtocol
     private let trashViewModel: TrashViewModel
 
+    weak var bannerManager: BannerManager?
     var onRestoredItem: (() -> Void)?
 
     init(symmetricKey: SymmetricKey,
@@ -47,20 +49,6 @@ final class TrashCoordinator: Coordinator {
 
     private func start() {
         trashViewModel.delegate = self
-        trashViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
-        trashViewModel.onShowOptions = { [unowned self] item in
-            let optionsView = TrashedItemOptionsView(item: item, delegate: self)
-            let optionsViewController = UIHostingController(rootView: optionsView)
-            optionsViewController.sheetPresentationController?.detents = [.medium()]
-            presentViewController(optionsViewController)
-        }
-        trashViewModel.onDeletedItem = { [unowned self] in
-            dismissTopMostViewController()
-        }
-        trashViewModel.onRestoredItem = { [unowned self] in
-            dismissTopMostViewController()
-            onRestoredItem?()
-        }
         start(with: TrashView(viewModel: trashViewModel))
     }
 
@@ -70,12 +58,57 @@ final class TrashCoordinator: Coordinator {
 }
 
 // MARK: - TrashViewModelDelegate
-extension TrashCoordinator: BaseViewModelDelegate {
-    func viewModelBeginsLoading() { showLoadingHud() }
+extension TrashCoordinator: TrashViewModelDelegate {
+    func trashViewModelWantsToToggleSidebar() {
+        toggleSidebar()
+    }
 
-    func viewModelStopsLoading() { hideLoadingHud() }
+    func trashViewModelWantsToShowOptions(for item: ItemListUiModel) {
+        let optionsView = TrashedItemOptionsView(item: item, delegate: self)
+        let optionsViewController = UIHostingController(rootView: optionsView)
+        optionsViewController.sheetPresentationController?.detents = [.medium()]
+        presentViewController(optionsViewController)
+    }
 
-    func viewModelDidFailWithError(_ error: Error) { alertError(error) }
+    func trashViewModelDidRestoreItem(_ type: Client.ItemContentType) {
+        dismissTopMostViewController { [unowned self] in
+            let message: String
+            switch type {
+            case .alias: message = "Alias restored"
+            case .login: message = "Login restored"
+            case .note: message = "Note restored"
+            }
+            self.bannerManager?.displayBottomInfoMessage(message)
+            self.onRestoredItem?()
+        }
+    }
+
+    func trashViewModelDidRestoreAllItems(count: Int) {
+        dismissTopMostViewController { [unowned self] in
+            self.bannerManager?.displayBottomInfoMessage("\(count) item(s) restored")
+            self.onRestoredItem?()
+        }
+    }
+
+    func trashViewModelDidDeleteItem(_ type: Client.ItemContentType) {
+        dismissTopMostViewController { [unowned self] in
+            let message: String
+            switch type {
+            case .alias: message = "Alias permanently deleted"
+            case .login: message = "Login permanently deleted"
+            case .note: message = "Note permanently deleted"
+            }
+            self.bannerManager?.displayBottomInfoMessage(message)
+        }
+    }
+
+    func trashViewModelDidEmptyTrash() {
+        bannerManager?.displayBottomInfoMessage("Trash emptied")
+    }
+
+    func trashViewModelDidFail(_ error: Error) {
+        bannerManager?.displayTopErrorMessage(error)
+    }
 }
 
 // MARK: - TrashedItemOptionsViewDelegate

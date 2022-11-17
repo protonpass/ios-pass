@@ -21,10 +21,12 @@
 import Client
 import Core
 import CryptoKit
+import UIComponents
 
 final class SettingsCoordinator: Coordinator {
     private let settingsViewModel: SettingsViewModel
 
+    weak var bannerManager: BannerManager?
     var onDeleteAccount: (() -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
@@ -36,11 +38,11 @@ final class SettingsCoordinator: Coordinator {
                                        symmetricKey: symmetricKey,
                                        preferences: preferences)
         super.init()
+        self.settingsViewModel.delegate = self
         start()
     }
 
     private func start() {
-        settingsViewModel.delegate = self
         settingsViewModel.onToggleSidebar = { [unowned self] in
             toggleSidebar()
         }
@@ -51,11 +53,9 @@ final class SettingsCoordinator: Coordinator {
     }
 }
 
-// MARK: - BaseViewModelDelegate
-extension SettingsCoordinator: BaseViewModelDelegate {
-    func viewModelBeginsLoading() { showLoadingHud() }
-
-    func viewModelStopsLoading() { hideLoadingHud() }
-
-    func viewModelDidFailWithError(_ error: Error) { alertError(error) }
+// MARK: - SettingsViewModelDelegate
+extension SettingsCoordinator: SettingsViewModelDelegate {
+    func settingsViewModelDidFail(_ error: Error) {
+        bannerManager?.displayTopErrorMessage(error)
+    }
 }

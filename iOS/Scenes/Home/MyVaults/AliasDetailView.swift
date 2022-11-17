@@ -26,7 +26,6 @@ import UIComponents
 struct AliasDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: AliasDetailViewModel
-    @State private var isShowingTrashingAlert = false
 
     init(viewModel: AliasDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -45,14 +44,8 @@ struct AliasDetailView: View {
                 .padding()
             }
         }
-        .moveToTrashAlert(isPresented: $isShowingTrashingAlert, onTrash: viewModel.trash)
         .navigationBarBackButtonHidden(true)
         .toolbar { toolbarContent }
-        .onReceive(viewModel.$isTrashed) { isTrashed in
-            if isTrashed {
-                dismiss()
-            }
-        }
     }
 
     @ToolbarContentBuilder
@@ -70,32 +63,11 @@ struct AliasDetailView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            trailingMenu
-                .opacityReduced(!viewModel.aliasState.isLoaded, reducedOpacity: 0)
-        }
-    }
-
-    private var trailingMenu: some View {
-        Menu(content: {
             Button(action: viewModel.edit) {
-                Label(title: {
-                    Text("Edit alias")
-                }, icon: {
-                    Image(uiImage: IconProvider.eraser)
-                })
+                Text("Edit")
+                    .foregroundColor(.interactionNorm)
             }
-
-            Divider()
-
-            DestructiveButton(title: "Move to trash",
-                              icon: IconProvider.trash,
-                              action: {
-                isShowingTrashingAlert.toggle()
-            })
-        }, label: {
-            Image(uiImage: IconProvider.threeDotsHorizontal)
-                .foregroundColor(.primary)
-        })
+        }
     }
 }
 

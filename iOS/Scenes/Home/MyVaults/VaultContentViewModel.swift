@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import CryptoKit
 import SwiftUI
@@ -47,16 +48,20 @@ extension VaultContentViewModel {
 
 protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToToggleSidebar()
+    func vaultContentViewModelWantsToShowLoadingHud()
+    func vaultContentViewModelWantsToHideLoadingHud()
     func vaultContentViewModelWantsToSearch()
     func vaultContentViewModelWantsToCreateItem()
     func vaultContentViewModelWantsToCreateVault()
     func vaultContentViewModelWantsToShowItemDetail(_ item: ItemContent)
     func vaultContentViewModelWantsToEditItem(_ item: ItemContent)
+    func vaultContentViewModelWantsToDisplayInformativeMessage(_ message: String)
     func vaultContentViewModelDidTrashItem(_ type: ItemContentType)
+    func vaultContentViewModelDidFail(_ error: Error)
 }
 
 // MARK: - Initialization
-final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
+final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     private var allItems = [ItemListUiModel]()
@@ -81,19 +86,18 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
     }
     @Published var sortType = SortType.modifyTime { didSet { filterAndSort() } }
     @Published var sortDirection = SortDirection.descending { didSet { filterAndSort() } }
-    @Published var successMessage: String?
-    @Published var informativeMessage: String?
 
     private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
+    private var cancellables = Set<AnyCancellable>()
 
     weak var itemCountDelegate: ItemCountDelegate?
 
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
 
-    weak var vaultContentViewModelDelegate: VaultContentViewModelDelegate?
+    weak var delegate: VaultContentViewModelDelegate?
 
     init(vaultSelection: VaultSelection,
          itemRepository: ItemRepositoryProtocol,
@@ -101,7 +105,6 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
         self.vaultSelection = vaultSelection
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
-        super.init()
 
         vaultSelection.objectWillChange
             .sink { [unowned self] _ in
@@ -124,15 +127,15 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
 // MARK: - Public actions
 extension VaultContentViewModel {
     func toggleSidebar() {
-        vaultContentViewModelDelegate?.vaultContentViewModelWantsToToggleSidebar()
+        delegate?.vaultContentViewModelWantsToToggleSidebar()
     }
 
     func createItem() {
-        vaultContentViewModelDelegate?.vaultContentViewModelWantsToCreateItem()
+        delegate?.vaultContentViewModelWantsToCreateItem()
     }
 
     func search() {
-        vaultContentViewModelDelegate?.vaultContentViewModelWantsToSearch()
+        delegate?.vaultContentViewModelWantsToSearch()
     }
 
     @MainActor
@@ -167,9 +170,9 @@ extension VaultContentViewModel {
         Task { @MainActor in
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
-                vaultContentViewModelDelegate?.vaultContentViewModelWantsToShowItemDetail(itemContent)
+                delegate?.vaultContentViewModelWantsToShowItemDetail(itemContent)
             } catch {
-                self.error = error
+                delegate?.vaultContentViewModelDidFail(error)
             }
         }
     }
@@ -178,9 +181,9 @@ extension VaultContentViewModel {
         Task { @MainActor in
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
-                vaultContentViewModelDelegate?.vaultContentViewModelWantsToEditItem(itemContent)
+                delegate?.vaultContentViewModelWantsToEditItem(itemContent)
             } catch {
-                self.error = error
+                delegate?.vaultContentViewModelDidFail(error)
             }
         }
     }
@@ -192,10 +195,10 @@ extension VaultContentViewModel {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 if case .note = itemContent.contentData {
                     UIPasteboard.general.string = itemContent.note
-                    informativeMessage = "Note copied"
+                    delegate?.vaultContentViewModelWantsToDisplayInformativeMessage("Note copied")
                 }
             } catch {
-                self.error = error
+                delegate?.vaultContentViewModelDidFail(error)
             }
         }
     }
@@ -207,10 +210,10 @@ extension VaultContentViewModel {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 if case let .login(username, _, _) = itemContent.contentData {
                     UIPasteboard.general.string = username
-                    informativeMessage = "Username copied"
+                    delegate?.vaultContentViewModelWantsToDisplayInformativeMessage("Username copied")
                 }
             } catch {
-                self.error = error
+                delegate?.vaultContentViewModelDidFail(error)
             }
         }
     }
@@ -222,10 +225,10 @@ extension VaultContentViewModel {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 if case let .login(_, password, _) = itemContent.contentData {
                     UIPasteboard.general.string = password
-                    informativeMessage = "Password copied"
+                    delegate?.vaultContentViewModelWantsToDisplayInformativeMessage("Password copied")
                 }
             } catch {
-                self.error = error
+                delegate?.vaultContentViewModelDidFail(error)
             }
         }
     }
@@ -237,24 +240,24 @@ extension VaultContentViewModel {
                 let item = try await getItem(shareId: item.shareId, itemId: item.itemId)
                 if let emailAddress = item.item.aliasEmail {
                     UIPasteboard.general.string = emailAddress
-                    informativeMessage = "Email address copied"
+                    delegate?.vaultContentViewModelWantsToDisplayInformativeMessage("Email address copied")
                 }
             } catch {
-                self.error = error
+                delegate?.vaultContentViewModelDidFail(error)
             }
         }
     }
 
     func trashItem(_ item: ItemListUiModel) {
         Task { @MainActor in
-            defer { isLoading = false }
-            isLoading = true
+            defer { delegate?.vaultContentViewModelWantsToHideLoadingHud() }
+            delegate?.vaultContentViewModelWantsToShowLoadingHud()
             do {
                 try await trashItemTask(for: item).value
                 fetchItems(forceRefresh: false)
-                vaultContentViewModelDelegate?.vaultContentViewModelDidTrashItem(item.type)
+                delegate?.vaultContentViewModelDidTrashItem(item.type)
             } catch {
-                self.error = error
+                delegate?.vaultContentViewModelDidFail(error)
             }
         }
     }

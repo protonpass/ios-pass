@@ -43,7 +43,6 @@ struct CreateVaultView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbarContent }
         }
-        .disabled(viewModel.isLoading)
     }
 
     private var nameInputView: some View {
@@ -53,6 +52,7 @@ struct CreateVaultView: View {
                 text: $viewModel.name,
                 isFocused: $isFocusedOnName,
                 placeholder: "Vault name")
+            .opacityReduced(viewModel.isCreating)
         }
     }
 
@@ -62,6 +62,7 @@ struct CreateVaultView: View {
             UserInputContentMultilineView(
                 text: $viewModel.note,
                 isFocused: $isFocusedOnNote)
+            .opacityReduced(viewModel.isCreating)
         }
     }
 

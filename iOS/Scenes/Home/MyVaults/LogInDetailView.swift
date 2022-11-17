@@ -26,7 +26,6 @@ struct LogInDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
-    @State private var isShowingTrashingAlert = false
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -40,15 +39,9 @@ struct LogInDetailView: View {
             noteSection
             Spacer()
         }
-        .onReceive(viewModel.$isTrashed) { isTrashed in
-            if isTrashed {
-                dismiss()
-            }
-        }
         .padding()
         .padding(.top)
         .navigationBarBackButtonHidden(true)
-        .moveToTrashAlert(isPresented: $isShowingTrashingAlert, onTrash: viewModel.trash)
         .toolbar { toolbarContent }
     }
 
@@ -67,31 +60,11 @@ struct LogInDetailView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            trailingMenu
-        }
-    }
-
-    private var trailingMenu: some View {
-        Menu(content: {
             Button(action: viewModel.edit) {
-                Label(title: {
-                    Text("Edit login")
-                }, icon: {
-                    Image(uiImage: IconProvider.eraser)
-                })
+                Text("Edit")
+                    .foregroundColor(.interactionNorm)
             }
-
-            Divider()
-
-            DestructiveButton(title: "Move to trash",
-                              icon: IconProvider.trash,
-                              action: {
-                isShowingTrashingAlert.toggle()
-            })
-        }, label: {
-            Image(uiImage: IconProvider.threeDotsHorizontal)
-                .foregroundColor(.primary)
-        })
+        }
     }
 
     private var usernameSection: some View {
