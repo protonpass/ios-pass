@@ -24,38 +24,24 @@ import UIKit
 
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
-    func itemDetailViewModelDidTrashItem(_ type: ItemContentType)
+    func itemDetailViewModelDidCopySomething(_ message: String)
 }
 
 enum ItemDetailViewModelError: Error {
     case itemNotFound(shareId: String, itemId: String)
 }
 
-class BaseItemDetailViewModel: BaseViewModel {
-#warning("To be removed because deletion will happen in edit page, not detail page anymore")
-    @Published var isTrashed = false
-    @Published var informativeMessage: String?
-
+class BaseItemDetailViewModel {
     private let itemRepository: ItemRepositoryProtocol
     private(set) var itemContent: ItemContent
 
-    weak var itemDetailDelegate: ItemDetailViewModelDelegate?
+    weak var delegate: ItemDetailViewModelDelegate?
 
     init(itemContent: ItemContent,
          itemRepository: ItemRepositoryProtocol) {
         self.itemContent = itemContent
         self.itemRepository = itemRepository
-        super.init()
-        bindValues()
-
-        $isTrashed
-            .sink { [weak self] isTrashed in
-                guard let self else { return }
-                if isTrashed {
-                    self.itemDetailDelegate?.itemDetailViewModelDidTrashItem(itemContent.contentData.type)
-                }
-            }
-            .store(in: &cancellables)
+        self.bindValues()
     }
 
     /// To be overidden by subclasses
@@ -67,48 +53,11 @@ class BaseItemDetailViewModel: BaseViewModel {
     ///    - message: The message of the toast (e.g. "Note copied", "Alias copied")
     func copyToClipboard(text: String, message: String) {
         UIPasteboard.general.string = text
-        informativeMessage = message
+        delegate?.itemDetailViewModelDidCopySomething(message)
     }
 
     func edit() {
-        itemDetailDelegate?.itemDetailViewModelWantsToEditItem(itemContent)
-    }
-
-#warning("To be removed because deletion will happen in edit page, not detail page anymore")
-    func trash() {
-        Task { @MainActor in
-            do {
-                isLoading = true
-                let item = try await getItemTask(shareId: itemContent.shareId,
-                                                 itemId: itemContent.itemId).value
-                try await trashItemTask(item: item).value
-                isLoading = false
-                isTrashed = true
-            } catch {
-                isLoading = false
-                self.error = error
-            }
-        }
-    }
-}
-
-#warning("To be removed because deletion will happen in edit page, not detail page anymore")
-// MARK: - Private supporting tasks
-private extension BaseItemDetailViewModel {
-    func getItemTask(shareId: String, itemId: String) -> Task<SymmetricallyEncryptedItem, Error> {
-        Task.detached(priority: .userInitiated) {
-            guard let item = try await self.itemRepository.getItem(shareId: shareId,
-                                                                   itemId: itemId) else {
-                throw ItemDetailViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
-            }
-            return item
-        }
-    }
-
-    func trashItemTask(item: SymmetricallyEncryptedItem) -> Task<Void, Error> {
-        Task.detached(priority: .userInitiated) {
-            try await self.itemRepository.trashItems([item])
-        }
+        delegate?.itemDetailViewModelWantsToEditItem(itemContent)
     }
 }
 

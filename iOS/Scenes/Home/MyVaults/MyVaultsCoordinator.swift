@@ -191,7 +191,7 @@ final class MyVaultsCoordinator: Coordinator {
             pushView(aliasDetailView)
         }
 
-        baseItemDetailViewModel.itemDetailDelegate = self
+        baseItemDetailViewModel.delegate = self
         currentItemDetailViewModel = baseItemDetailViewModel
     }
 
@@ -329,6 +329,10 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelDidTrashItem(_ type: ItemContentType) {
         handleTrashedItem(type)
+    }
+
+    func itemDetailViewModelDidCopySomething(_ message: String) {
+        bannerManager?.displayBottomInfoMessage(message)
     }
 }
 

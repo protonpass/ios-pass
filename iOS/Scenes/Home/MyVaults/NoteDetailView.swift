@@ -49,7 +49,6 @@ struct NoteDetailView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden(true)
         .toolbar { toolbarContent }
-        .alertToastInformativeMessage($viewModel.informativeMessage)
     }
 
     @ToolbarContentBuilder
