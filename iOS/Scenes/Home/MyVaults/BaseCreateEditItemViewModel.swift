@@ -23,6 +23,8 @@ import Core
 import ProtonCore_Login
 
 protocol CreateEditItemViewModelDelegate: AnyObject {
+    func createEditItemViewModelWantsToShowLoadingHud()
+    func createEditItemViewModelWantsToHideLoadingHud()
     func createEditItemViewModelDidCreateItem(_ type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
     func createEditItemViewModelDidTrashItem(_ type: ItemContentType)
@@ -110,9 +112,9 @@ class BaseCreateEditItemViewModel {
     func trash() {
         guard case .edit(let itemContent) = mode else { return }
         Task { @MainActor in
-            defer { isSaving = false }
+            defer { delegate?.createEditItemViewModelWantsToHideLoadingHud() }
             do {
-                isSaving = true
+                delegate?.createEditItemViewModelWantsToShowLoadingHud()
                 let item = try await getItemTask(shareId: itemContent.shareId,
                                                  itemId: itemContent.itemId).value
                 try await trashItemTask(item: item).value

@@ -26,6 +26,7 @@ import UIComponents
 
 struct VaultContentView: View {
     @StateObject private var viewModel: VaultContentViewModel
+    @State private var didAppear = false
     @State private var selectedItem: ItemListUiModel?
     @State private var isShowingTrashingAlert = false
 
@@ -50,11 +51,6 @@ struct VaultContentView: View {
                         .padding(.horizontal)
                 } else {
                     itemList
-                        .opacityReduced(viewModel.isLoading)
-
-                    if viewModel.isLoading {
-                        ProgressView()
-                    }
                 }
 
             case .error(let error):
@@ -69,7 +65,12 @@ struct VaultContentView: View {
             }
         }
         .toolbar { toolbarContent }
-        .onAppear { viewModel.fetchItems(forceRefresh: false) }
+        .onAppear {
+            if !didAppear {
+                viewModel.fetchItems(forceRefresh: false)
+                didAppear = true
+            }
+        }
     }
 
     private var filterStatus: some View {
