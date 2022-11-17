@@ -96,7 +96,7 @@ struct CreateEditNoteView: View {
                     isShowingDiscardAlert.toggle()
                 }
             }, label: {
-                Image(uiImage: IconProvider.cross)
+                Text("Cancel")
             })
             .foregroundColor(Color(.label))
         }
