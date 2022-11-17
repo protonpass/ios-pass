@@ -178,6 +178,7 @@
 		355696E0290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */; };
 		35570A802926321B00125727 /* View+OpacityReduced.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35570A7F2926321B00125727 /* View+OpacityReduced.swift */; };
 		35570A8229263F5900125727 /* SpinnerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35570A8129263F5900125727 /* SpinnerButton.swift */; };
+		35570A8429264C2800125727 /* BannerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35570A8329264C2800125727 /* BannerManager.swift */; };
 		355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F42907FB3200268116 /* LockedCredentialView.swift */; };
 		355751F62907FB9000268116 /* AppLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531B5422902DA890070D2EE /* AppLockedView.swift */; };
 		355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */; };
@@ -615,6 +616,7 @@
 		355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObsoleteItemAlertModifier.swift; sourceTree = "<group>"; };
 		35570A7F2926321B00125727 /* View+OpacityReduced.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OpacityReduced.swift"; sourceTree = "<group>"; };
 		35570A8129263F5900125727 /* SpinnerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerButton.swift; sourceTree = "<group>"; };
+		35570A8329264C2800125727 /* BannerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerManager.swift; sourceTree = "<group>"; };
 		355751F42907FB3200268116 /* LockedCredentialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialView.swift; sourceTree = "<group>"; };
 		355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialViewModel.swift; sourceTree = "<group>"; };
 		35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDEntity.swift; sourceTree = "<group>"; };
@@ -1467,6 +1469,7 @@
 			children = (
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
 				35AABE1C28B0036A00CEDDE6 /* AlertToastModifiers.swift */,
+				35570A8329264C2800125727 /* BannerManager.swift */,
 				3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */,
 				355214832915524D00BA6229 /* CopyMenuButton.swift */,
 				35690C142923EA8400F60C20 /* Color+ProtonColors.swift */,
@@ -2626,6 +2629,7 @@
 				35570A8229263F5900125727 /* SpinnerButton.swift in Sources */,
 				355696E0290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift in Sources */,
 				35498F8A28DC805400AF1D8F /* ItemSearchResultView.swift in Sources */,
+				35570A8429264C2800125727 /* BannerManager.swift in Sources */,
 				353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */,
 				355214822915517E00BA6229 /* EditMenuButton.swift in Sources */,
 				356423412925184100D2B7E3 /* OutlinedRoundedButton.swift in Sources */,

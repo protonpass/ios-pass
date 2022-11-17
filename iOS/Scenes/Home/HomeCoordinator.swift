@@ -66,6 +66,9 @@ final class HomeCoordinator: DeinitPrintable {
     private lazy var sidebarViewModel = provideSidebarViewModel()
     private lazy var sidebarViewController = provideSidebarViewController()
 
+    // Banner
+    private lazy var bannerManager = provideBannerManager()
+
     // Cover view
     private lazy var appContentCoverViewController = UIHostingController(rootView: AppContentCoverView())
 
@@ -216,6 +219,10 @@ private extension HomeCoordinator {
         return UIHostingController(rootView: sidebarView)
     }
 
+    func provideBannerManager() -> BannerManager {
+        .init(container: sideMenuController)
+    }
+
     func provideMyVaultsCoordinator() -> MyVaultsCoordinator {
         let myVaultsCoordinator = MyVaultsCoordinator(symmetricKey: symmetricKey,
                                                       userData: sessionData.userData,
@@ -237,7 +244,8 @@ private extension HomeCoordinator {
         let settingsCoordinator = SettingsCoordinator(itemRepository: itemRepository,
                                                       credentialManager: credentialManager,
                                                       symmetricKey: symmetricKey,
-                                                      preferences: preferences)
+                                                      preferences: preferences,
+                                                      bannerManager: bannerManager)
         settingsCoordinator.delegate = self
         settingsCoordinator.onDeleteAccount = { [unowned self] in
             self.beginAccountDeletionFlow()
@@ -471,5 +479,11 @@ private extension HomeCoordinator {
                     }
                 }
             })
+    }
+}
+
+extension BannerManager {
+    func displayTopErrorMessage(_ error: Error) {
+        displayTopErrorMessage(error.messageForTheUser)
     }
 }

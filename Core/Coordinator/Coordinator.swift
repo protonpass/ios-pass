@@ -112,10 +112,13 @@ open class Coordinator {
 public extension Coordinator {
     func toggleSidebar() { delegate?.coordinatorWantsToToggleSidebar() }
 
+    #warning("To be removed")
     func showLoadingHud() { delegate?.coordinatorWantsToShowLoadingHud() }
 
+    #warning("To be removed")
     func hideLoadingHud() { delegate?.coordinatorWantsToHideLoadingHud() }
 
+    #warning("To be removed")
     func alertError(_ error: Error) { delegate?.coordinatorWantsToAlertError(error) }
 }
 
