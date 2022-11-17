@@ -267,8 +267,7 @@ struct VaultContentView: View {
                 }
             }
             .foregroundColor(Color(.label))
-            .disabled(!viewModel.state.isLoaded)
-            .opacity(!viewModel.state.isLoaded ? 0.0 : 1.0)
+            .opacityReduced(!viewModel.state.isLoaded, reducedOpacity: 0)
         }
     }
 

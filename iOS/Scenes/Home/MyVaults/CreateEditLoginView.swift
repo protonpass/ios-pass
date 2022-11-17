@@ -91,8 +91,7 @@ struct CreateEditLoginView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.interactionNorm)
             })
-            .opacity(viewModel.isSaveable ? 1 : 0.5)
-            .disabled(!viewModel.isSaveable)
+            .opacityReduced(!viewModel.isSaveable)
         }
     }
 
