@@ -26,7 +26,6 @@ import UIComponents
 
 struct VaultContentView: View {
     @StateObject private var viewModel: VaultContentViewModel
-    @State private var didAppear = false
     @State private var selectedItem: ItemListUiModel?
     @State private var isShowingTrashingAlert = false
 
@@ -39,11 +38,7 @@ struct VaultContentView: View {
     }
 
     var body: some View {
-        ZStack {
-            // Embed in a ZStack with clear color as background
-            // in order for bottom banner to properly display
-            // as Color occupies the whole ZStack
-            Color.clear
+        Group {
             switch viewModel.state {
             case .loading:
                 LoadingVaultView()
@@ -68,19 +63,13 @@ struct VaultContentView: View {
                 .padding()
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
         .moveToTrashAlert(isPresented: $isShowingTrashingAlert) {
             if let selectedItem {
                 viewModel.trashItem(selectedItem)
             }
         }
         .toolbar { toolbarContent }
-        .onAppear {
-            if !didAppear {
-                viewModel.fetchItems(forceRefresh: false)
-                didAppear = true
-            }
-        }
+        .onAppear { viewModel.fetchItems(forceRefresh: false) }
     }
 
     private var filterStatus: some View {

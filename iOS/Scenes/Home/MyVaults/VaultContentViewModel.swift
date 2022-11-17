@@ -149,6 +149,7 @@ extension VaultContentViewModel {
     }
 
     func fetchItems(forceRefresh: Bool) {
+        if !forceRefresh, !allItems.isEmpty { return }
         Task { @MainActor in
             if case .error = state {
                 state = .loading
