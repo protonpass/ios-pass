@@ -69,7 +69,7 @@ final class MyVaultsCoordinator: Coordinator {
                                            symmetricKey: symmetricKey)
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
         super.init()
-        vaultContentViewModel.vaultContentViewModelDelegate = self
+        vaultContentViewModel.delegate = self
         start()
     }
 
@@ -296,8 +296,16 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         showEditItemView(item)
     }
 
+    func vaultContentViewModelWantsToDisplayInformativeMessage(_ message: String) {
+        bannerManager?.displayBottomInfoMessage(message)
+    }
+
     func vaultContentViewModelDidTrashItem(_ type: ItemContentType) {
         handleTrashedItem(type)
+    }
+
+    func vaultContentViewModelDidFail(_ error: Error) {
+        bannerManager?.displayTopErrorMessage(error)
     }
 }
 
@@ -331,7 +339,7 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
         handleTrashedItem(type)
     }
 
-    func itemDetailViewModelDidCopySomething(_ message: String) {
+    func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String) {
         bannerManager?.displayBottomInfoMessage(message)
     }
 }
@@ -340,6 +348,6 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         UIPasteboard.general.string = password
-        vaultContentViewModel.informativeMessage = "Password copied"
+        bannerManager?.displayBottomInfoMessage("Password copied")
     }
 }

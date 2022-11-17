@@ -55,6 +55,11 @@ struct VaultContentView: View {
                         .padding(.horizontal)
                 } else {
                     itemList
+                        .opacityReduced(viewModel.isLoading)
+
+                    if viewModel.isLoading {
+                        ProgressView()
+                    }
                 }
 
             case .error(let error):
@@ -76,8 +81,6 @@ struct VaultContentView: View {
                 didAppear = true
             }
         }
-        .alertToastSuccessMessage($viewModel.successMessage)
-        .alertToastInformativeMessage($viewModel.informativeMessage)
     }
 
     private var filterStatus: some View {
