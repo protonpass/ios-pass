@@ -48,6 +48,8 @@ extension VaultContentViewModel {
 
 protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToToggleSidebar()
+    func vaultContentViewModelWantsToShowLoadingHud()
+    func vaultContentViewModelWantsToHideLoadingHud()
     func vaultContentViewModelWantsToSearch()
     func vaultContentViewModelWantsToCreateItem()
     func vaultContentViewModelWantsToCreateVault()
@@ -63,7 +65,6 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     private var allItems = [ItemListUiModel]()
-    @Published private(set) var isLoading = false
     @Published private(set) var state = State.loading
     @Published private(set) var filteredItems = [ItemListUiModel]()
     @Published private(set) var sortTypes = SortType.allCases
@@ -149,7 +150,6 @@ extension VaultContentViewModel {
     }
 
     func fetchItems(forceRefresh: Bool) {
-        if !forceRefresh, !allItems.isEmpty { return }
         Task { @MainActor in
             if case .error = state {
                 state = .loading
@@ -250,8 +250,8 @@ extension VaultContentViewModel {
 
     func trashItem(_ item: ItemListUiModel) {
         Task { @MainActor in
-            defer { isLoading = false }
-            isLoading = true
+            defer { delegate?.vaultContentViewModelWantsToHideLoadingHud() }
+            delegate?.vaultContentViewModelWantsToShowLoadingHud()
             do {
                 try await trashItemTask(for: item).value
                 fetchItems(forceRefresh: false)

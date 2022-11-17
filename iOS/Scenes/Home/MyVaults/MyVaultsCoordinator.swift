@@ -276,6 +276,14 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         toggleSidebar()
     }
 
+    func vaultContentViewModelWantsToShowLoadingHud() {
+        delegate?.coordinatorWantsToShowLoadingHud()
+    }
+
+    func vaultContentViewModelWantsToHideLoadingHud() {
+        delegate?.coordinatorWantsToHideLoadingHud()
+    }
+
     func vaultContentViewModelWantsToSearch() {
         showSearchView()
     }
@@ -311,6 +319,14 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
 
 // MARK: - CreateEditItemViewModelDelegate
 extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
+    func createEditItemViewModelWantsToShowLoadingHud() {
+        delegate?.coordinatorWantsToShowLoadingHud()
+    }
+
+    func createEditItemViewModelWantsToHideLoadingHud() {
+        delegate?.coordinatorWantsToHideLoadingHud()
+    }
+
     func createEditItemViewModelDidCreateItem(_ type: ItemContentType) {
         handleCreatedItem(type)
     }
