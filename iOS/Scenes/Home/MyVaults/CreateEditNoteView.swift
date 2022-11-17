@@ -25,6 +25,7 @@ import UIComponents
 struct CreateEditNoteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditNoteViewModel
+    @State private var isShowingTrashAlert = false
     @State private var isShowingDiscardAlert = false
     @State private var isFocusedOnName = false
     @State private var isFocusedOnNote = false
@@ -35,9 +36,20 @@ struct CreateEditNoteView: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 30) {
+            VStack {
                 nameInputView
+                    .padding(.bottom, 20)
+
                 noteInputView
+                    .padding(.bottom, 56)
+
+                if viewModel.mode.isEditMode {
+                    MoveToTrashButton {
+                        isShowingTrashAlert.toggle()
+                    }
+                    .opacityReduced(viewModel.isSaving)
+                }
+
                 Spacer()
             }
             .padding()
@@ -49,6 +61,8 @@ struct CreateEditNoteView: View {
                                             onAction: dismiss.callAsFunction))
         .modifier(DiscardChangesAlertModifier(isPresented: $isShowingDiscardAlert,
                                               onDiscard: dismiss.callAsFunction))
+        .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
+        .onReceiveBoolean(viewModel.$isTrashed, perform: dismiss.callAsFunction)
     }
 
     private var nameInputView: some View {
@@ -58,6 +72,7 @@ struct CreateEditNoteView: View {
                 text: $viewModel.name,
                 isFocused: $isFocusedOnName,
                 placeholder: "Title")
+            .opacityReduced(viewModel.isSaving)
         }
     }
 
@@ -67,6 +82,7 @@ struct CreateEditNoteView: View {
             UserInputContentMultilineView(
                 text: $viewModel.note,
                 isFocused: $isFocusedOnNote)
+            .opacityReduced(viewModel.isSaving)
         }
     }
 
@@ -80,7 +96,7 @@ struct CreateEditNoteView: View {
                     isShowingDiscardAlert.toggle()
                 }
             }, label: {
-                Image(uiImage: IconProvider.cross)
+                Text("Cancel")
             })
             .foregroundColor(Color(.label))
         }
@@ -91,13 +107,10 @@ struct CreateEditNoteView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.save) {
-                Text("Save")
-                    .fontWeight(.bold)
-                    .foregroundColor(.brandNorm)
-            }
-            .opacity(viewModel.isSaveable ? 1 : 0.5)
-            .disabled(!viewModel.isSaveable)
+            SpinnerButton(title: "Save",
+                          disabled: !viewModel.isSaveable,
+                          spinning: viewModel.isSaving,
+                          action: viewModel.save)
         }
     }
 }

@@ -71,8 +71,7 @@ struct AliasDetailView: View {
 
         ToolbarItem(placement: .navigationBarTrailing) {
             trailingMenu
-                .opacity(viewModel.aliasState.isLoaded ? 1 : 0)
-                .disabled(!viewModel.aliasState.isLoaded)
+                .opacityReduced(!viewModel.aliasState.isLoaded, reducedOpacity: 0)
         }
     }
 

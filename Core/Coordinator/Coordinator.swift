@@ -60,8 +60,12 @@ open class Coordinator {
         navigationController.pushViewController(viewController, animated: animated)
     }
 
-    public func presentView<V: View>(_ view: V, animated: Bool = true) {
-        presentViewController(UIHostingController(rootView: view), animated: animated)
+    public func presentView<V: View>(_ view: V,
+                                     animated: Bool = true,
+                                     dismissible: Bool = false) {
+        presentViewController(UIHostingController(rootView: view),
+                              animated: animated,
+                              dismissible: dismissible)
     }
 
     public func presentViewFullScreen<V: View>(_ view: V,
@@ -74,7 +78,9 @@ open class Coordinator {
     }
 
     public func presentViewController(_ viewController: UIViewController,
-                                      animated: Bool = true) {
+                                      animated: Bool = true,
+                                      dismissible: Bool = false) {
+        viewController.isModalInPresentation = !dismissible
         if let presentedViewController = navigationController.presentedViewController {
             presentedViewController.present(viewController, animated: animated)
         } else {

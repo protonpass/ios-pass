@@ -20,6 +20,7 @@
 
 import Core
 import SwiftUI
+import UIComponents
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -39,6 +40,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private func setUpAppearances() {
         UIView.appearance(whenContainedInInstancesOf:
-                            [UIAlertController.self]).tintColor = .brandNorm
+                            [UIAlertController.self]).tintColor = .interactionNorm
     }
 }

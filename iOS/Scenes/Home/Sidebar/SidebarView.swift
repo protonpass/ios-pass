@@ -20,7 +20,6 @@
 
 import Client
 import Core
-import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -30,7 +29,7 @@ struct SidebarView: View {
 
     var body: some View {
         ZStack {
-            Color(ColorProvider.SidebarBackground)
+            Color.sidebarBackground
                 .ignoresSafeArea(.all)
 
             VStack(spacing: 0) {
@@ -47,11 +46,11 @@ struct SidebarView: View {
                                       onSelectAll: viewModel.showAllItemsAction,
                                       onSelectType: viewModel.showItemsAction)
 
-                        Color(ColorProvider.SidebarSeparator)
+                        Color.sidebarSeparator
                             .frame(height: 1)
 
                         Text("More")
-                            .foregroundColor(ColorProvider.SidebarIconWeak)
+                            .foregroundColor(.sidebarIconWeak)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(14)
 
@@ -87,10 +86,10 @@ private struct SidebarItemView: View {
         }, label: {
             Label(title: {
                 Text(item.title)
-                    .foregroundColor(ColorProvider.SidebarTextNorm)
+                    .foregroundColor(.sidebarTextNorm)
             }, icon: {
                 Image(uiImage: item.icon)
-                    .foregroundColor(ColorProvider.SidebarIconWeak)
+                    .foregroundColor(.sidebarIconWeak)
             })
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(14)

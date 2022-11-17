@@ -36,7 +36,7 @@ public struct SwiftUISearchBar: UIViewRepresentable {
         searchBar.placeholder = "Login, alias or note"
         searchBar.showsCancelButton = true
         searchBar.autocapitalizationType = .none
-        searchBar.tintColor = .brandNorm
+        searchBar.tintColor = .interactionNorm
         searchBar.becomeFirstResponder()
         return searchBar
     }

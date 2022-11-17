@@ -95,18 +95,21 @@ public struct UserInputContentSingleLineWithTrailingView<TrailingView: View>: Vi
 public struct UserInputContentMultilineView: View {
     @Binding var text: String
     @Binding var isFocused: Bool
+    let height: CGFloat
 
     public init(text: Binding<String>,
-                isFocused: Binding<Bool>) {
+                isFocused: Binding<Bool>,
+                height: CGFloat = 256) {
         self._text = text
         self._isFocused = isFocused
+        self.height = height
     }
 
     public var body: some View {
         SwiftUITextView(text: $text) { editingChange in
             isFocused = editingChange
         }
-        .frame(height: 100)
+        .frame(height: height)
     }
 }
 

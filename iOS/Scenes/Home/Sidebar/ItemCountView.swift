@@ -21,6 +21,7 @@
 import Client
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct ItemCountView: View {
     let itemCount: ItemCount?
@@ -33,10 +34,10 @@ struct ItemCountView: View {
                 HStack {
                     Label(title: {
                         Text("All items")
-                            .foregroundColor(ColorProvider.SidebarTextNorm)
+                            .foregroundColor(.sidebarTextNorm)
                     }, icon: {
                         Image(uiImage: IconProvider.vault)
-                            .foregroundColor(ColorProvider.SidebarIconWeak)
+                            .foregroundColor(.sidebarIconWeak)
                     })
 
                     Spacer()
@@ -74,17 +75,17 @@ private struct ItemContentTypeCountView: View {
             HStack {
                 Label(title: {
                     Text(type.countTitle)
-                        .foregroundColor(ColorProvider.SidebarTextNorm)
+                        .foregroundColor(.sidebarTextNorm)
                 }, icon: {
                     Image(uiImage: type.icon)
-                        .foregroundColor(ColorProvider.SidebarIconWeak)
+                        .foregroundColor(.sidebarIconWeak)
                 })
 
                 Spacer()
 
                 if let count {
                     Text("\(count)")
-                        .foregroundColor(ColorProvider.SidebarTextNorm)
+                        .foregroundColor(.sidebarTextNorm)
                         .font(.callout)
                 } else {
                     ProgressView()

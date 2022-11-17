@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AlertToast
-import ProtonCore_UIFoundations
 import SwiftUI
 
 public let kDefaultToastDuration = 3.5
@@ -34,12 +33,33 @@ public extension View {
                 message.wrappedValue = nil
             }
         })
-        return toast(isPresenting: binding, duration: 3.5) {
+        return toast(isPresenting: binding, duration: duration) {
             AlertToast(displayMode: .banner(.pop),
                        type: .regular,
                        title: message.wrappedValue,
-                       style: .style(backgroundColor: Color(ColorProvider.NotificationSuccess),
+                       style: .style(backgroundColor: .notificationSuccess,
                                      titleColor: .white,
+                                     subTitleColor: nil,
+                                     titleFont: .body,
+                                     subTitleFont: nil))
+        }
+    }
+
+    func alertToastInformativeMessage(_ message: Binding<String?>,
+                                      duration: Double = kDefaultToastDuration) -> some View {
+        let binding = Binding<Bool>(get: {
+            message.wrappedValue != nil
+        }, set: { isPresenting in
+            if !isPresenting {
+                message.wrappedValue = nil
+            }
+        })
+        return toast(isPresenting: binding, duration: duration) {
+            AlertToast(displayMode: .banner(.pop),
+                       type: .regular,
+                       title: message.wrappedValue,
+                       style: .style(backgroundColor: .primary,
+                                     titleColor: Color(.systemBackground),
                                      subTitleColor: nil,
                                      titleFont: .body,
                                      subTitleFont: nil))

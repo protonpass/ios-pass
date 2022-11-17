@@ -1,6 +1,6 @@
 //
-// RetryableErrorView.swift
-// Proton Pass - Created on 20/09/2022.
+// View+OpacityReduced.swift
+// Proton Pass - Created on 17/11/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,23 +20,15 @@
 
 import SwiftUI
 
-public struct RetryableErrorView: View {
-    let errorMessage: String
-    let onRetry: () -> Void
-
-    public init(errorMessage: String,
-                onRetry: @escaping () -> Void) {
-        self.errorMessage = errorMessage
-        self.onRetry = onRetry
-    }
-
-    public var body: some View {
-        VStack {
-            Text(errorMessage)
-            Button(action: onRetry) {
-                Text("Retry")
-            }
-            .foregroundColor(.interactionNorm)
-        }
+public extension View {
+    /// Reduce view's opacity when condition is `true`
+    /// - Parameters:
+    ///   - condition: Condition to reduce the opacity
+    ///   - reducedOpacity: The opacity when `condition` is true. Default is `0.5`
+    ///   - disabled: Whether to disable the view when opacity is reduced. Default is `true`
+    func opacityReduced(_ condition: Bool,
+                        reducedOpacity: Double = 0.5,
+                        disabled: Bool = true) -> some View {
+        opacity(condition ? reducedOpacity : 1).disabled(disabled && condition)
     }
 }

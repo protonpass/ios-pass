@@ -53,7 +53,6 @@ protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToShowItemDetail(_ item: ItemContent)
     func vaultContentViewModelWantsToEditItem(_ item: ItemContent)
     func vaultContentViewModelDidTrashItem(_ type: ItemContentType)
-    func vaultContentViewModelWantsToShowSuccessMessage(_ message: String)
 }
 
 // MARK: - Initialization
@@ -82,6 +81,8 @@ final class VaultContentViewModel: BaseViewModel, DeinitPrintable, ObservableObj
     }
     @Published var sortType = SortType.modifyTime { didSet { filterAndSort() } }
     @Published var sortDirection = SortDirection.descending { didSet { filterAndSort() } }
+    @Published var successMessage: String?
+    @Published var informativeMessage: String?
 
     private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
@@ -184,6 +185,21 @@ extension VaultContentViewModel {
         }
     }
 
+    func copyNote(_ item: ItemListUiModel) {
+        guard case .note = item.type else { return }
+        Task { @MainActor in
+            do {
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
+                if case .note = itemContent.contentData {
+                    UIPasteboard.general.string = itemContent.note
+                    informativeMessage = "Note copied"
+                }
+            } catch {
+                self.error = error
+            }
+        }
+    }
+
     func copyUsername(_ item: ItemListUiModel) {
         guard case .login = item.type else { return }
         Task { @MainActor in
@@ -191,8 +207,7 @@ extension VaultContentViewModel {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 if case let .login(username, _, _) = itemContent.contentData {
                     UIPasteboard.general.string = username
-                    let message = "Username copied to clipboard"
-                    vaultContentViewModelDelegate?.vaultContentViewModelWantsToShowSuccessMessage(message)
+                    informativeMessage = "Username copied"
                 }
             } catch {
                 self.error = error
@@ -207,8 +222,7 @@ extension VaultContentViewModel {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 if case let .login(_, password, _) = itemContent.contentData {
                     UIPasteboard.general.string = password
-                    let message = "Password copied to clipboard"
-                    vaultContentViewModelDelegate?.vaultContentViewModelWantsToShowSuccessMessage(message)
+                    informativeMessage = "Password copied"
                 }
             } catch {
                 self.error = error
@@ -223,8 +237,7 @@ extension VaultContentViewModel {
                 let item = try await getItem(shareId: item.shareId, itemId: item.itemId)
                 if let emailAddress = item.item.aliasEmail {
                     UIPasteboard.general.string = emailAddress
-                    let message = "Email address copied to clipboard"
-                    vaultContentViewModelDelegate?.vaultContentViewModelWantsToShowSuccessMessage(message)
+                    informativeMessage = "Email address copied"
                 }
             } catch {
                 self.error = error

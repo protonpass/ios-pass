@@ -129,7 +129,7 @@ final class MyVaultsCoordinator: Coordinator {
             showGeneratePasswordView(delegate: $0, mode: .createLogin)
         }
         let view = CreateEditLoginView(viewModel: viewModel)
-        presentViewFullScreen(view, modalTransitionStyle: mode.modalTransitionStyle)
+        presentView(view)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -140,7 +140,7 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = self
         viewModel.createEditItemDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
-        presentViewFullScreen(view, modalTransitionStyle: mode.modalTransitionStyle)
+        presentView(view)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -150,7 +150,7 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = self
         viewModel.createEditItemDelegate = self
         let view = CreateEditNoteView(viewModel: viewModel)
-        presentViewFullScreen(view, modalTransitionStyle: mode.modalTransitionStyle)
+        presentView(view)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -212,7 +212,7 @@ final class MyVaultsCoordinator: Coordinator {
             case .note:
                 message = "Note created"
             }
-            myVaultsViewModel.successMessage = message
+            vaultContentViewModel.successMessage = message
             vaultContentViewModel.fetchItems(forceRefresh: false)
         }
     }
@@ -239,24 +239,14 @@ final class MyVaultsCoordinator: Coordinator {
         case .note:
             message = "Note deleted"
         }
-        myVaultsViewModel.successMessage = message
+        vaultContentViewModel.informativeMessage = message
         vaultContentViewModel.fetchItems(forceRefresh: false)
         onTrashedItem?()
     }
 
     private func handleUpdatedItem(_ itemContentType: ItemContentType) {
         dismissTopMostViewController(animated: true) { [unowned self] in
-            popToRoot()
-            let message: String
-            switch itemContentType {
-            case .alias:
-                message = "Alias updated"
-            case .login:
-                message = "Login updated"
-            case .note:
-                message = "Note updated"
-            }
-            myVaultsViewModel.successMessage = message
+            vaultContentViewModel.successMessage = "Changes saved"
             vaultContentViewModel.fetchItems(forceRefresh: false)
         }
     }
@@ -310,10 +300,6 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
     func vaultContentViewModelDidTrashItem(_ type: ItemContentType) {
         handleTrashedItem(type)
     }
-
-    func vaultContentViewModelWantsToShowSuccessMessage(_ message: String) {
-        myVaultsViewModel.successMessage = message
-    }
 }
 
 // MARK: - CreateEditItemViewModelDelegate
@@ -324,6 +310,11 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
         handleUpdatedItem(type)
+    }
+
+    func createEditItemViewModelDidTrashItem(_ type: ItemContentType) {
+        popToRoot()
+        handleTrashedItem(type)
     }
 }
 
@@ -342,17 +333,6 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         UIPasteboard.general.string = password
-        myVaultsViewModel.successMessage = "Password copied to clipboard"
-    }
-}
-
-private extension ItemMode {
-    var modalTransitionStyle: UIModalTransitionStyle {
-        switch self {
-        case .create:
-            return .coverVertical
-        case .edit:
-            return .crossDissolve
-        }
+        vaultContentViewModel.informativeMessage = "Password copied"
     }
 }

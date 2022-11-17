@@ -21,6 +21,7 @@
 import Core
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 private let kMaxAttemptCount = 3
 
@@ -101,7 +102,7 @@ struct AppLockedView: View {
             }
         }, label: {
             Text("Try again")
-                .foregroundColor(ColorProvider.BrandNorm)
+                .foregroundColor(.brandNorm)
         })
     }
 

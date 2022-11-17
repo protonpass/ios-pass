@@ -21,6 +21,7 @@
 import ProtonCore_UIFoundations
 import SwiftUI
 
+#warning("To be removed")
 public struct CategorySummary {
     let icon: UIImage
     let backgroundColor: UIColor

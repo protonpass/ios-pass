@@ -37,11 +37,11 @@ struct ItemListUiModel: GenericItemProtocol {
     var iconTintColor: UIColor {
         switch type {
         case .alias:
-            return ColorProvider.IconWeak
+            return .iconWeak
         case .login:
-            return ColorProvider.InteractionNorm
+            return .interactionNorm
         case .note:
-            return ColorProvider.NotificationWarning
+            return .notificationWarning
         }
     }
 }
