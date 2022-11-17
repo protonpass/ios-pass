@@ -24,7 +24,7 @@ import UIKit
 
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
-    func itemDetailViewModelDidCopySomething(_ message: String)
+    func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String)
 }
 
 enum ItemDetailViewModelError: Error {
@@ -53,7 +53,7 @@ class BaseItemDetailViewModel {
     ///    - message: The message of the toast (e.g. "Note copied", "Alias copied")
     func copyToClipboard(text: String, message: String) {
         UIPasteboard.general.string = text
-        delegate?.itemDetailViewModelDidCopySomething(message)
+        delegate?.itemDetailViewModelWantsToDisplayInformativeMessage(message)
     }
 
     func edit() {
