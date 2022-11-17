@@ -24,23 +24,30 @@ import CryptoKit
 import ProtonCore_Login
 import SwiftUI
 
+protocol TrashViewModelDelegate: AnyObject {
+    func trashViewModelWantsToToggleSidebar()
+    func trashViewModelWantsToShowOptions(for item: ItemListUiModel)
+    func trashViewModelDidRestoreItem(_ type: ItemContentType)
+    func trashViewModelDidRestoreAllItems(count: Int)
+    func trashViewModelDidDeleteItem(_ type: ItemContentType)
+    func trashViewModelDidEmptyTrash()
+    func trashViewModelDidFail(_ error: Error)
+}
+
 enum TrashViewModelError: Error {
     case itemNotFound(shareId: String, itemId: String)
 }
 
-final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
+final class TrashViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var state = State.loading
     @Published private(set) var items = [ItemListUiModel]()
-    @Published var successMessage: String?
+    @Published private(set) var isLoading = false
 
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
 
-    var onToggleSidebar: (() -> Void)?
-    var onShowOptions: ((ItemListUiModel) -> Void)?
-    var onRestoredItem: (() -> Void)?
-    var onDeletedItem: (() -> Void)?
+    weak var delegate: TrashViewModelDelegate?
 
     enum State {
         case loading
@@ -63,7 +70,6 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
         self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
-        super.init()
         fetchAllTrashedItems(forceRefresh: false)
     }
 
@@ -94,83 +100,66 @@ final class TrashViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
 
 // MARK: - Actions
 extension TrashViewModel {
+    func toggleSidebar() {
+        delegate?.trashViewModelWantsToToggleSidebar()
+    }
+
     func restoreAllItems() {
         Task { @MainActor in
+            defer { isLoading = false }
             do {
                 isLoading = true
                 let count = try await restoreAllTask().value
-                isLoading = false
                 items.removeAll()
-                successMessage = "\(count) items restored"
-                onRestoredItem?()
+                delegate?.trashViewModelDidRestoreAllItems(count: count)
             } catch {
-                self.isLoading = false
-                self.error = error
+                delegate?.trashViewModelDidFail(error)
             }
         }
     }
 
     func emptyTrash() {
         Task { @MainActor in
+            defer { isLoading = false }
             do {
                 isLoading = true
                 try await deleteAllTask().value
-                isLoading = false
                 items.removeAll()
-                successMessage = "Trash emptied"
+                delegate?.trashViewModelDidEmptyTrash()
             } catch {
-                self.isLoading = false
-                self.error = error
+                delegate?.trashViewModelDidFail(error)
             }
         }
     }
 
     func showOptions(_ item: ItemListUiModel) {
-        onShowOptions?(item)
+        delegate?.trashViewModelWantsToShowOptions(for: item)
     }
 
     func restore(_ item: ItemListUiModel) {
         Task { @MainActor in
+            defer { isLoading = false }
             do {
                 isLoading = true
                 try await restoreItemTask(item).value
-                isLoading = false
-                switch item.type {
-                case .note:
-                    successMessage = "Note restored"
-                case .login:
-                    successMessage = "Login restored"
-                case .alias:
-                    successMessage = "Alias restored"
-                }
                 remove(item)
-                onRestoredItem?()
+                delegate?.trashViewModelDidRestoreItem(item.type)
             } catch {
-                self.isLoading = false
-                self.error = error
+                delegate?.trashViewModelDidFail(error)
             }
         }
     }
 
     func deletePermanently(_ item: ItemListUiModel) {
         Task { @MainActor in
+            defer { isLoading = false }
             do {
                 isLoading = true
                 try await deleteItemTask(item).value
-                isLoading = false
-                switch item.type {
-                case .note:
-                    successMessage = "Note permanently deleted"
-                case .login:
-                    successMessage = "Login permanently deleted"
-                case .alias:
-                    successMessage = "Alias permanently deleted"
-                }
                 remove(item)
-                onDeletedItem?()
+                delegate?.trashViewModelDidDeleteItem(item.type)
             } catch {
-                self.isLoading = false
-                self.error = error
+                delegate?.trashViewModelDidFail(error)
             }
         }
     }
