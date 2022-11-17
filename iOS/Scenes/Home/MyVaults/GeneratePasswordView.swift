@@ -31,79 +31,82 @@ struct GeneratePasswordView: View {
     }
 
     var body: some View {
-        NavigationView {
-            VStack {
-                HStack {
-                    Text(viewModel.texts)
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .minimumScaleFactor(0.5)
-                        .frame(maxHeight: .infinity, alignment: .top)
-                        .transaction { transaction in
-                            transaction.animation = nil
-                        }
-                    Spacer()
-                    Button(action: viewModel.regenerate) {
-                        Image(uiImage: IconProvider.arrowsRotate)
-                            .foregroundColor(.secondary)
-                    }
-                    .frame(maxHeight: .infinity, alignment: .top)
-                }
-                .padding()
-                .background(Color(UIColor.secondarySystemBackground))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                .padding()
+        VStack(spacing: 0) {
+            NotchView()
+                .padding(.top, 5)
+                .padding(.bottom, 7)
 
-                Divider()
+            titleView
 
-                HStack {
-                    Text("\(Int(viewModel.length)) characters")
-                        .frame(minWidth: 120, alignment: .leading)
-                        .transaction { transaction in
-                            transaction.animation = nil
-                        }
-                    Slider(value: $viewModel.length,
-                           in: 4...64,
-                           step: 1)
-                    .accentColor(.interactionNorm)
-                }
-                .padding([.horizontal, .top])
-
-                Toggle(isOn: $viewModel.hasSpecialCharacters) {
-                    Text("Special characters")
-                }
-                .toggleStyle(SwitchToggleStyle.proton)
+            Text(viewModel.texts)
+                .font(.title3)
+                .fontWeight(.bold)
+                .minimumScaleFactor(0.5)
+                .frame(maxHeight: .infinity, alignment: .center)
                 .padding(.horizontal)
+                .transaction { transaction in
+                    transaction.animation = nil
+                }
 
-                Spacer()
+            Divider()
+                .padding(.vertical, 24)
 
-                Button(action: {
-                    viewModel.confirm()
-                    dismiss()
-                }, label: {
-                    Text(viewModel.mode.confirmTitle)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .contentShape(Rectangle())
-                })
-                .padding()
-                .background(Color.interactionNorm)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                .padding()
+            HStack {
+                Text("\(Int(viewModel.length)) characters")
+                    .frame(minWidth: 120, alignment: .leading)
+                    .transaction { transaction in
+                        transaction.animation = nil
+                    }
+                Slider(value: $viewModel.length,
+                       in: 4...64,
+                       step: 1)
+                .accentColor(.interactionNorm)
             }
-            .animation(.default, value: viewModel.password)
-            .navigationBarTitle("Generate password")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar { toolbarContent }
+            .padding(.horizontal)
+            .padding(.vertical, 12)
+
+            Toggle(isOn: $viewModel.hasSpecialCharacters) {
+                Text("Special characters")
+            }
+            .toggleStyle(SwitchToggleStyle.proton)
+            .padding(.horizontal, 16)
+
+            Spacer()
+
+            Button(action: {
+                viewModel.confirm()
+                dismiss()
+            }, label: {
+                Text(viewModel.mode.confirmTitle)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
+            })
+            .padding()
+            .background(Color.interactionNorm)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .padding()
         }
+        .animation(.default, value: viewModel.password)
     }
 
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: dismiss.callAsFunction) {
-                Image(uiImage: IconProvider.cross)
-                    .foregroundColor(.primary)
+    private var titleView: some View {
+        ZStack {
+            Text("Generate password")
+                .fontWeight(.bold)
+            HStack {
+                Spacer()
+                Button(action: dismiss.callAsFunction) {
+                    ZStack {
+                        Color.secondary.opacity(0.5)
+                        Image(uiImage: IconProvider.cross)
+                            .foregroundColor(.secondary)
+                            .frame(width: 12, height: 12)
+                    }
+                    .clipShape(Circle())
+                    .frame(width: 30, height: 30)
+                }
+                .padding(.trailing)
             }
         }
     }
