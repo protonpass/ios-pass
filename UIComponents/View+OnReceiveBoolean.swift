@@ -1,6 +1,6 @@
 //
-// UIColor+ProtonColors.swift
-// Proton Pass - Created on 14/10/2022.
+// View+OnReceiveBoolean.swift
+// Proton Pass - Created on 16/11/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,17 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import Combine
 import SwiftUI
 
-public extension UIColor {
-    static var brandNorm: UIColor {
-        ColorProvider.BrandNorm
-    }
-}
-
-public extension Color {
-    static var brandNorm: Color {
-        .init(uiColor: .brandNorm)
+public extension View {
+    /// Receive a boolean publisher and perform an action if the boolean is `true`
+    func onReceiveBoolean<P>(_ publisher: P, perform action: @escaping () -> Void)
+    -> some View where P: Publisher, P.Output == Bool, P.Failure == Never {
+        onReceive(publisher) { condition in
+            if condition {
+                action()
+            }
+        }
     }
 }

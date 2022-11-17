@@ -20,7 +20,6 @@
 
 import Core
 import LocalAuthentication
-import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -68,8 +67,7 @@ private struct AutoFillSection: View {
             Toggle(isOn: $viewModel.quickTypeBar) {
                 Text("QuickType bar suggestions")
             }
-            .disabled(!viewModel.autoFillEnabled)
-            .opacity(viewModel.autoFillEnabled ? 1 : 0.5)
+            .opacityReduced(!viewModel.autoFillEnabled)
         }, header: {
             Text("AutoFill")
         }, footer: {
@@ -88,7 +86,7 @@ private struct AutoFillSection: View {
                         Text("Open Settings")
                             .font(.caption)
                     })
-                    .foregroundColor(.brandNorm)
+                    .foregroundColor(.interactionNorm)
                 }
             }
         })

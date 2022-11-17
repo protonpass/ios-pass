@@ -25,14 +25,28 @@ import ProtonCore_Login
 protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelDidCreateItem(_ type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
+    func createEditItemViewModelDidTrashItem(_ type: ItemContentType)
 }
 
 enum ItemMode {
     case create(shareId: String, alias: Bool)
     case edit(ItemContent)
+
+    var isEditMode: Bool {
+        switch self {
+        case .edit:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isCreateMode: Bool { !isEditMode }
 }
 
 class BaseCreateEditItemViewModel: BaseViewModel {
+    @Published private(set) var isSaving = false
+    @Published private(set) var isTrashed = false
     @Published var isObsolete = false
     let shareId: String
     let mode: ItemMode
@@ -92,15 +106,31 @@ class BaseCreateEditItemViewModel: BaseViewModel {
         }
     }
 
+    func trash() {
+        guard case .edit(let itemContent) = mode else { return }
+        Task { @MainActor in
+            defer { isSaving = false }
+            do {
+                isSaving = true
+                let item = try await getItemTask(shareId: itemContent.shareId,
+                                                 itemId: itemContent.itemId).value
+                try await trashItemTask(item: item).value
+                isTrashed = true
+                createEditItemDelegate?.createEditItemViewModelDidTrashItem(itemContentType())
+            } catch {
+                self.error = error
+            }
+        }
+    }
+
     private func createItem(shareId: String) {
         Task { @MainActor in
+            defer { isSaving = false }
             do {
-                isLoading = true
+                isSaving = true
                 try await createItemTask(shareId: shareId).value
-                isLoading = false
                 createEditItemDelegate?.createEditItemViewModelDidCreateItem(itemContentType())
             } catch {
-                self.isLoading = false
                 self.error = error
             }
         }
@@ -109,13 +139,12 @@ class BaseCreateEditItemViewModel: BaseViewModel {
     private func createAliasItem(shareId: String) {
         guard let info = generateAliasCreationInfo() else { return }
         Task { @MainActor in
+            defer { isSaving = false }
             do {
-                isLoading = true
+                isSaving = true
                 try await createAliasItemTask(shareId: shareId, info: info).value
-                isLoading = false
                 createEditItemDelegate?.createEditItemViewModelDidCreateItem(itemContentType())
             } catch {
-                self.isLoading = false
                 self.error = error
             }
         }
@@ -123,24 +152,22 @@ class BaseCreateEditItemViewModel: BaseViewModel {
 
     private func editItem(oldItemContent: ItemContent) {
         Task { @MainActor in
+            defer { isSaving = false }
             do {
                 let shareId = oldItemContent.shareId
                 let itemId = oldItemContent.itemId
-                isLoading = true
+                isSaving = true
                 try await additionalEdit()
                 guard let oldItem = try await itemRepository.getItemTask(shareId: shareId,
                                                                          itemId: itemId).value else {
-                    isLoading = false
                     return
                 }
                 let newItemContentProtobuf = generateItemContent()
                 try await updateItemTask(oldItem: oldItem.item,
                                          newItemContent: newItemContentProtobuf,
                                          shareId: shareId).value
-                isLoading = false
                 createEditItemDelegate?.createEditItemViewModelDidUpdateItem(itemContentType())
             } catch {
-                self.isLoading = false
                 self.error = error
             }
         }
@@ -171,6 +198,22 @@ private extension BaseCreateEditItemViewModel {
             try await self.itemRepository.updateItem(oldItem: oldItem,
                                                      newItemContent: newItemContent,
                                                      shareId: shareId)
+        }
+    }
+
+    func getItemTask(shareId: String, itemId: String) -> Task<SymmetricallyEncryptedItem, Error> {
+        Task.detached(priority: .userInitiated) {
+            guard let item = try await self.itemRepository.getItem(shareId: shareId,
+                                                                   itemId: itemId) else {
+                throw ItemDetailViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
+            }
+            return item
+        }
+    }
+
+    func trashItemTask(item: SymmetricallyEncryptedItem) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            try await self.itemRepository.trashItems([item])
         }
     }
 }

@@ -89,10 +89,9 @@ struct CreateEditLoginView: View {
             }, label: {
                 Text("Save")
                     .fontWeight(.bold)
-                    .foregroundColor(.brandNorm)
+                    .foregroundColor(.interactionNorm)
             })
-            .opacity(viewModel.isSaveable ? 1 : 0.5)
-            .disabled(!viewModel.isSaveable)
+            .opacityReduced(!viewModel.isSaveable)
         }
     }
 

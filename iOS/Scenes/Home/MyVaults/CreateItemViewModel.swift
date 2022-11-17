@@ -54,13 +54,13 @@ enum CreateNewItemOption: GenericItemProtocol, CaseIterable {
     var iconTintColor: UIColor {
         switch self {
         case .login:
-            return ColorProvider.InteractionNorm
+            return .interactionNorm
         case .alias:
-            return ColorProvider.IconWeak
+            return .iconWeak
         case .note:
-            return ColorProvider.NotificationWarning
+            return .notificationWarning
         case .password:
-            return ColorProvider.NotificationSuccess
+            return .notificationSuccess
         }
     }
 
