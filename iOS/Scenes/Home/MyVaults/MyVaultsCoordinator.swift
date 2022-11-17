@@ -111,11 +111,7 @@ final class MyVaultsCoordinator: Coordinator {
         let createVaultViewModel =
         CreateVaultViewModel(userData: userData,
                              shareRepository: shareRepository)
-        createVaultViewModel.onCreatedShare = { [unowned self] _ in
-            // Set vaults to empty to trigger refresh
-            self.vaultSelection.update(vaults: [])
-            self.dismissTopMostViewController()
-        }
+        createVaultViewModel.delegate = self
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         let createVaultViewController = UIHostingController(rootView: createVaultView)
         createVaultViewController.sheetPresentationController?.detents = [.medium()]
@@ -258,6 +254,19 @@ final class MyVaultsCoordinator: Coordinator {
 
     func updateFilterOption(_ filterOption: ItemTypeFilterOption) {
         vaultContentViewModel.filterOption = filterOption
+    }
+}
+
+// MARK: - CreateVaultViewModelDelegate
+extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
+    func createVaultViewModelDidCreateShare(_ share: Share) {
+        // Set vaults to empty to trigger refresh
+        self.vaultSelection.update(vaults: [])
+        self.dismissTopMostViewController()
+    }
+
+    func createVaultViewModelDidFail(_ error: Error) {
+        bannerManager?.displayTopErrorMessage(error)
     }
 }
 
