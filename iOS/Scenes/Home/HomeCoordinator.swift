@@ -290,6 +290,7 @@ extension HomeCoordinator {
         case .trash:
             sideMenuController.setContentViewController(to: trashRootViewController,
                                                         animated: true) { [unowned self] in
+                self.trashCoordinator.bannerManager = self.bannerManager
                 self.sideMenuController.hideMenu()
             }
         case .bugReport:
