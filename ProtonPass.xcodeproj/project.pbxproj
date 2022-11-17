@@ -256,7 +256,6 @@
 		359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A800C29096A2200EEBC51 /* SyncEventLoop.swift */; };
 		35A909EA2890110F00AC54D4 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A909E92890110F00AC54D4 /* CoreDataError.swift */; };
 		35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */; };
-		35AABE1D28B0036A00CEDDE6 /* AlertToastModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1C28B0036A00CEDDE6 /* AlertToastModifiers.swift */; };
 		35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1E28B027C000CEDDE6 /* UpdateItemRequest.swift */; };
 		35AABE2128B0288B00CEDDE6 /* UpdateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
@@ -690,7 +689,6 @@
 		359A800C29096A2200EEBC51 /* SyncEventLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEventLoop.swift; sourceTree = "<group>"; };
 		35A909E92890110F00AC54D4 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
 		35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCreateEditItemViewModel.swift; sourceTree = "<group>"; };
-		35AABE1C28B0036A00CEDDE6 /* AlertToastModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertToastModifiers.swift; sourceTree = "<group>"; };
 		35AABE1E28B027C000CEDDE6 /* UpdateItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateItemRequest.swift; sourceTree = "<group>"; };
 		35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateItemEndpoint.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
@@ -1464,7 +1462,6 @@
 			isa = PBXGroup;
 			children = (
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
-				35AABE1C28B0036A00CEDDE6 /* AlertToastModifiers.swift */,
 				35570A8329264C2800125727 /* BannerManager.swift */,
 				355214832915524D00BA6229 /* CopyMenuButton.swift */,
 				35690C142923EA8400F60C20 /* Color+ProtonColors.swift */,
@@ -2630,7 +2627,6 @@
 				3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */,
 				35690C132923D5DA00F60C20 /* NotchView.swift in Sources */,
 				3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */,
-				35AABE1D28B0036A00CEDDE6 /* AlertToastModifiers.swift in Sources */,
 				3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */,
 				3547ABEA2877684D00EE85E1 /* GenericItemView.swift in Sources */,
 				354F769028C861FF00EB2383 /* DestructiveButton.swift in Sources */,
