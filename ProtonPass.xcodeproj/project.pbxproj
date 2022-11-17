@@ -176,6 +176,7 @@
 		355635BF2889664200F32353 /* LoadVaultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635BE2889664200F32353 /* LoadVaultsViewModel.swift */; };
 		355635C1288968B000F32353 /* VaultContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635C0288968B000F32353 /* VaultContentViewModel.swift */; };
 		355696E0290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */; };
+		35570A802926321B00125727 /* View+OpacityReduced.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35570A7F2926321B00125727 /* View+OpacityReduced.swift */; };
 		355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F42907FB3200268116 /* LockedCredentialView.swift */; };
 		355751F62907FB9000268116 /* AppLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531B5422902DA890070D2EE /* AppLockedView.swift */; };
 		355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */; };
@@ -611,6 +612,7 @@
 		355635BE2889664200F32353 /* LoadVaultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadVaultsViewModel.swift; sourceTree = "<group>"; };
 		355635C0288968B000F32353 /* VaultContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultContentViewModel.swift; sourceTree = "<group>"; };
 		355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObsoleteItemAlertModifier.swift; sourceTree = "<group>"; };
+		35570A7F2926321B00125727 /* View+OpacityReduced.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OpacityReduced.swift"; sourceTree = "<group>"; };
 		355751F42907FB3200268116 /* LockedCredentialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialView.swift; sourceTree = "<group>"; };
 		355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialViewModel.swift; sourceTree = "<group>"; };
 		35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDEntity.swift; sourceTree = "<group>"; };
@@ -1490,6 +1492,7 @@
 				3552618A28A14EB600A68477 /* UserInputContainerView.swift */,
 				354DCCF8291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift */,
 				356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */,
+				35570A7F2926321B00125727 /* View+OpacityReduced.swift */,
 				35526B5A28D115340017BB53 /* Pass.xcassets */,
 			);
 			path = UIComponents;
@@ -2634,6 +2637,7 @@
 				354DCCF9291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift in Sources */,
 				3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */,
 				35690C152923EA8400F60C20 /* Color+ProtonColors.swift in Sources */,
+				35570A802926321B00125727 /* View+OpacityReduced.swift in Sources */,
 				3552146229150FFC00BA6229 /* GenericItemSkeletonView.swift in Sources */,
 				354BB15328A2886500F50040 /* SwiftUISearchBar.swift in Sources */,
 				355214842915524D00BA6229 /* CopyMenuButton.swift in Sources */,

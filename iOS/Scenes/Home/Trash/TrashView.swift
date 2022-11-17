@@ -91,8 +91,7 @@ struct TrashView: View {
                 Image(uiImage: IconProvider.threeDotsHorizontal)
                     .foregroundColor(Color(.label))
             })
-            .opacity(viewModel.isEmpty ? 0 : 1)
-            .disabled(viewModel.isEmpty)
+            .opacityReduced(viewModel.isEmpty, reducedOpacity: 0)
         }
     }
 

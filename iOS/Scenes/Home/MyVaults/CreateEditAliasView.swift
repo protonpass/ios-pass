@@ -99,8 +99,7 @@ struct CreateEditAliasView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.brandNorm)
             }
-            .opacity(viewModel.state.isLoaded && viewModel.isSaveable ? 1 : 0.5)
-            .disabled(!viewModel.state.isLoaded || !viewModel.isSaveable)
+            .opacityReduced(!viewModel.state.isLoaded || !viewModel.isSaveable)
         }
     }
 
@@ -134,8 +133,8 @@ struct CreateEditAliasView: View {
                     trailingView: {
                         Image(uiImage: IconProvider.crossCircleFilled)
                         .foregroundColor(.secondary)
-                        .opacity(isFocusedOnPrefix ? 1 : 0)
-                        .disabled(!isFocusedOnPrefix)
+                        .opacityReduced(!isFocusedOnPrefix, reducedOpacity: 0)
+                        .animation(.linear(duration: 0.1), value: isFocusedOnPrefix)
                     },
                     trailingAction: { viewModel.prefix = "" },
                     textAutocapitalizationType: .none)
