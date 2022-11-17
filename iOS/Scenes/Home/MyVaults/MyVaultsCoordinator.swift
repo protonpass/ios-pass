@@ -129,7 +129,7 @@ final class MyVaultsCoordinator: Coordinator {
             showGeneratePasswordView(delegate: $0, mode: .createLogin)
         }
         let view = CreateEditLoginView(viewModel: viewModel)
-        presentViewFullScreen(view, modalTransitionStyle: mode.modalTransitionStyle)
+        presentView(view)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -140,7 +140,7 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = self
         viewModel.createEditItemDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
-        presentViewFullScreen(view, modalTransitionStyle: mode.modalTransitionStyle)
+        presentView(view)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -150,7 +150,7 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = self
         viewModel.createEditItemDelegate = self
         let view = CreateEditNoteView(viewModel: viewModel)
-        presentViewFullScreen(view, modalTransitionStyle: mode.modalTransitionStyle)
+        presentView(view)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -246,17 +246,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func handleUpdatedItem(_ itemContentType: ItemContentType) {
         dismissTopMostViewController(animated: true) { [unowned self] in
-            popToRoot()
-            let message: String
-            switch itemContentType {
-            case .alias:
-                message = "Alias updated"
-            case .login:
-                message = "Login updated"
-            case .note:
-                message = "Note updated"
-            }
-            vaultContentViewModel.successMessage = message
+            vaultContentViewModel.successMessage = "Changes saved"
             vaultContentViewModel.fetchItems(forceRefresh: false)
         }
     }
@@ -344,16 +334,5 @@ extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         UIPasteboard.general.string = password
         vaultContentViewModel.informativeMessage = "Password copied"
-    }
-}
-
-private extension ItemMode {
-    var modalTransitionStyle: UIModalTransitionStyle {
-        switch self {
-        case .create:
-            return .coverVertical
-        case .edit:
-            return .crossDissolve
-        }
     }
 }
