@@ -47,6 +47,7 @@ struct CreateEditNoteView: View {
                     MoveToTrashButton {
                         isShowingTrashAlert.toggle()
                     }
+                    .opacityReduced(viewModel.isSaving)
                 }
 
                 Spacer()
@@ -71,6 +72,7 @@ struct CreateEditNoteView: View {
                 text: $viewModel.name,
                 isFocused: $isFocusedOnName,
                 placeholder: "Title")
+            .opacityReduced(viewModel.isSaving)
         }
     }
 
@@ -80,6 +82,7 @@ struct CreateEditNoteView: View {
             UserInputContentMultilineView(
                 text: $viewModel.note,
                 isFocused: $isFocusedOnNote)
+            .opacityReduced(viewModel.isSaving)
         }
     }
 
@@ -104,12 +107,10 @@ struct CreateEditNoteView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.save) {
-                Text("Save")
-                    .fontWeight(.bold)
-                    .foregroundColor(.interactionNorm)
-            }
-            .opacityReduced(!viewModel.isSaveable)
+            SpinnerButton(title: "Save",
+                          disabled: !viewModel.isSaveable,
+                          spinning: viewModel.isSaving,
+                          action: viewModel.save)
         }
     }
 }
