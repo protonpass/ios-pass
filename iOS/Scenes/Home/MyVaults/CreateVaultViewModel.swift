@@ -24,16 +24,22 @@ import Core
 import ProtonCore_Login
 import SwiftUI
 
-final class CreateVaultViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
+protocol CreateVaultViewModelDelegate: AnyObject {
+    func createVaultViewModelDidCreateShare(_ share: Share)
+    func createVaultViewModelDidFail(_ error: Error)
+}
+
+final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
+    @Published private(set) var isCreating = false
     @Published var name = ""
     @Published var note = ""
 
     private let userData: UserData
     private let shareRepository: ShareRepositoryProtocol
 
-    var onCreatedShare: ((Share) -> Void)?
+    weak var delegate: CreateVaultViewModelDelegate?
 
     var isSaveable: Bool { !name.isEmpty }
 
@@ -41,24 +47,22 @@ final class CreateVaultViewModel: BaseViewModel, DeinitPrintable, ObservableObje
          shareRepository: ShareRepositoryProtocol) {
         self.userData = userData
         self.shareRepository = shareRepository
-        super.init()
     }
 
     func createVault() {
         Task { @MainActor in
+            defer { isCreating = false }
             do {
-                isLoading = true
+                isCreating = true
                 let addressKey = userData.getAddressKey()
                 let createVaultRequest = try CreateVaultRequest(addressKey: addressKey,
                                                                 name: name,
                                                                 description: note)
                 let createdShare =
                 try await shareRepository.createVault(request: createVaultRequest)
-                isLoading = false
-                onCreatedShare?(createdShare)
+                delegate?.createVaultViewModelDidCreateShare(createdShare)
             } catch {
-                self.error = error
-                isLoading = false
+                delegate?.createVaultViewModelDidFail(error)
             }
         }
     }

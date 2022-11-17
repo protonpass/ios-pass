@@ -42,6 +42,11 @@ struct TrashView: View {
                     EmptyTrashView()
                 } else {
                     itemList
+                        .opacityReduced(viewModel.isLoading)
+
+                    if viewModel.isLoading {
+                        ProgressView()
+                    }
                 }
 
             case .error(let error):
@@ -59,13 +64,12 @@ struct TrashView: View {
             message: {
                 Text("Items in trash will be deleted permanently. You can not undo this action.")
             })
-        .alertToastSuccessMessage($viewModel.successMessage)
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            ToggleSidebarButton { viewModel.onToggleSidebar?() }
+            ToggleSidebarButton(action: viewModel.toggleSidebar)
         }
 
         ToolbarItem(placement: .principal) {

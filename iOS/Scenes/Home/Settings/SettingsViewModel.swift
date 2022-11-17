@@ -19,16 +19,25 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import CryptoKit
 import SwiftUI
+import UIComponents
 
-final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject {
+protocol SettingsViewModelDelegate: AnyObject {
+    func settingsViewModelDidFail(_ error: Error)
+}
+
+final class SettingsViewModel: DeinitPrintable, ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let symmetricKey: SymmetricKey
     let localAuthenticator: LocalAuthenticator
     let preferences: Preferences
+
+    weak var delegate: SettingsViewModelDelegate?
+    private var cancellables = Set<AnyCancellable>()
 
     @Published var quickTypeBar = true {
         didSet {
@@ -55,7 +64,6 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
         self.symmetricKey = symmetricKey
         self.localAuthenticator = .init(preferences: preferences)
         self.preferences = preferences
-        super.init()
         self.quickTypeBar = preferences.quickTypeBar
         self.refresh()
 
@@ -70,7 +78,7 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
             .sink { [weak self] state in
                 guard let self else { return }
                 if case let .error(error) = state {
-                    self.delegate?.viewModelDidFailWithError(error)
+                    self.delegate?.settingsViewModelDidFail(error)
                 }
             }
             .store(in: &cancellables)
@@ -94,9 +102,10 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
 
         guard quickTypeBar != preferences.quickTypeBar else { return }
         Task { @MainActor in
-            defer { isLoading = false }
+            #warning("Show spinner somehow and disable user interaction")
+//            defer { isLoading = false }
             do {
-                isLoading = true
+//                isLoading = true
                 if quickTypeBar {
                     try await credentialManager.insertAllCredentials(from: itemRepository,
                                                                      symmetricKey: symmetricKey,
@@ -106,8 +115,8 @@ final class SettingsViewModel: BaseViewModel, DeinitPrintable, ObservableObject 
                 }
                 preferences.quickTypeBar = quickTypeBar
             } catch {
-                self.quickTypeBar.toggle() // rollback to previous value
-                self.error = error
+                quickTypeBar.toggle() // rollback to previous value
+                delegate?.settingsViewModelDidFail(error)
             }
         }
     }

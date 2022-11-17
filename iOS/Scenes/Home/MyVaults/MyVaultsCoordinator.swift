@@ -23,6 +23,7 @@ import Core
 import CryptoKit
 import ProtonCore_Login
 import SwiftUI
+import UIComponents
 
 final class MyVaultsCoordinator: Coordinator {
     private let symmetricKey: SymmetricKey
@@ -43,6 +44,9 @@ final class MyVaultsCoordinator: Coordinator {
             vaultContentViewModel.itemCountDelegate = itemCountDelegate
         }
     }
+
+    weak var bannerManager: BannerManager?
+
     var onTrashedItem: (() -> Void)?
 
     init(symmetricKey: SymmetricKey,
@@ -66,7 +70,6 @@ final class MyVaultsCoordinator: Coordinator {
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
         super.init()
         vaultContentViewModel.delegate = self
-        vaultContentViewModel.vaultContentViewModelDelegate = self
         start()
     }
 
@@ -101,7 +104,7 @@ final class MyVaultsCoordinator: Coordinator {
         let createItemView = CreateItemView(viewModel: createItemViewModel)
         let createItemViewController = UIHostingController(rootView: createItemView)
         createItemViewController.sheetPresentationController?.detents = [.medium(), .large()]
-        presentViewController(createItemViewController)
+        presentViewController(createItemViewController, dismissible: true)
     }
 
     private func showCreateVaultView() {
@@ -109,11 +112,6 @@ final class MyVaultsCoordinator: Coordinator {
         CreateVaultViewModel(userData: userData,
                              shareRepository: shareRepository)
         createVaultViewModel.delegate = self
-        createVaultViewModel.onCreatedShare = { [unowned self] _ in
-            // Set vaults to empty to trigger refresh
-            self.vaultSelection.update(vaults: [])
-            self.dismissTopMostViewController()
-        }
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         let createVaultViewController = UIHostingController(rootView: createVaultView)
         createVaultViewController.sheetPresentationController?.detents = [.medium()]
@@ -124,7 +122,6 @@ final class MyVaultsCoordinator: Coordinator {
         let viewModel = CreateEditLoginViewModel(mode: mode,
                                                  itemRepository: itemRepository)
         viewModel.delegate = self
-        viewModel.createEditItemDelegate = self
         viewModel.onGeneratePassword = { [unowned self] in
             showGeneratePasswordView(delegate: $0, mode: .createLogin)
         }
@@ -138,7 +135,6 @@ final class MyVaultsCoordinator: Coordinator {
                                                  itemRepository: itemRepository,
                                                  aliasRepository: aliasRepository)
         viewModel.delegate = self
-        viewModel.createEditItemDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
         presentView(view)
         currentCreateEditItemViewModel = viewModel
@@ -148,7 +144,6 @@ final class MyVaultsCoordinator: Coordinator {
         let viewModel = CreateEditNoteViewModel(mode: mode,
                                                 itemRepository: itemRepository)
         viewModel.delegate = self
-        viewModel.createEditItemDelegate = self
         let view = CreateEditNoteView(viewModel: viewModel)
         presentView(view)
         currentCreateEditItemViewModel = viewModel
@@ -197,7 +192,6 @@ final class MyVaultsCoordinator: Coordinator {
         }
 
         baseItemDetailViewModel.delegate = self
-        baseItemDetailViewModel.itemDetailDelegate = self
         currentItemDetailViewModel = baseItemDetailViewModel
     }
 
@@ -212,7 +206,7 @@ final class MyVaultsCoordinator: Coordinator {
             case .note:
                 message = "Note created"
             }
-            vaultContentViewModel.successMessage = message
+            bannerManager?.displayBottomSuccessMessage(message)
             vaultContentViewModel.fetchItems(forceRefresh: false)
         }
     }
@@ -239,14 +233,15 @@ final class MyVaultsCoordinator: Coordinator {
         case .note:
             message = "Note deleted"
         }
-        vaultContentViewModel.informativeMessage = message
+        bannerManager?.displayBottomInfoMessage(message)
         vaultContentViewModel.fetchItems(forceRefresh: false)
         onTrashedItem?()
     }
 
     private func handleUpdatedItem(_ itemContentType: ItemContentType) {
         dismissTopMostViewController(animated: true) { [unowned self] in
-            vaultContentViewModel.successMessage = "Changes saved"
+            currentItemDetailViewModel?.refresh()
+            bannerManager?.displayBottomInfoMessage("Changes saved")
             vaultContentViewModel.fetchItems(forceRefresh: false)
         }
     }
@@ -262,19 +257,31 @@ final class MyVaultsCoordinator: Coordinator {
     }
 }
 
-// MARK: - BaseViewModelDelegate
-extension MyVaultsCoordinator: BaseViewModelDelegate {
-    func viewModelBeginsLoading() { showLoadingHud() }
+// MARK: - CreateVaultViewModelDelegate
+extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
+    func createVaultViewModelDidCreateShare(_ share: Share) {
+        // Set vaults to empty to trigger refresh
+        self.vaultSelection.update(vaults: [])
+        self.dismissTopMostViewController()
+    }
 
-    func viewModelStopsLoading() { hideLoadingHud() }
-
-    func viewModelDidFailWithError(_ error: Error) { alertError(error) }
+    func createVaultViewModelDidFail(_ error: Error) {
+        bannerManager?.displayTopErrorMessage(error)
+    }
 }
 
 // MARK: - VaultContentViewModelDelegate
 extension MyVaultsCoordinator: VaultContentViewModelDelegate {
     func vaultContentViewModelWantsToToggleSidebar() {
         toggleSidebar()
+    }
+
+    func vaultContentViewModelWantsToShowLoadingHud() {
+        delegate?.coordinatorWantsToShowLoadingHud()
+    }
+
+    func vaultContentViewModelWantsToHideLoadingHud() {
+        delegate?.coordinatorWantsToHideLoadingHud()
     }
 
     func vaultContentViewModelWantsToSearch() {
@@ -297,13 +304,29 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         showEditItemView(item)
     }
 
+    func vaultContentViewModelWantsToDisplayInformativeMessage(_ message: String) {
+        bannerManager?.displayBottomInfoMessage(message)
+    }
+
     func vaultContentViewModelDidTrashItem(_ type: ItemContentType) {
         handleTrashedItem(type)
+    }
+
+    func vaultContentViewModelDidFail(_ error: Error) {
+        bannerManager?.displayTopErrorMessage(error)
     }
 }
 
 // MARK: - CreateEditItemViewModelDelegate
 extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
+    func createEditItemViewModelWantsToShowLoadingHud() {
+        delegate?.coordinatorWantsToShowLoadingHud()
+    }
+
+    func createEditItemViewModelWantsToHideLoadingHud() {
+        delegate?.coordinatorWantsToHideLoadingHud()
+    }
+
     func createEditItemViewModelDidCreateItem(_ type: ItemContentType) {
         handleCreatedItem(type)
     }
@@ -316,6 +339,10 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
         popToRoot()
         handleTrashedItem(type)
     }
+
+    func createEditItemViewModelDidFail(_ error: Error) {
+        bannerManager?.displayTopErrorMessage(error)
+    }
 }
 
 // MARK: - ItemDetailViewModelDelegate
@@ -327,12 +354,16 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
     func itemDetailViewModelDidTrashItem(_ type: ItemContentType) {
         handleTrashedItem(type)
     }
+
+    func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String) {
+        bannerManager?.displayBottomInfoMessage(message)
+    }
 }
 
 // MARK: - GeneratePasswordViewModelDelegate
 extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         UIPasteboard.general.string = password
-        vaultContentViewModel.informativeMessage = "Password copied"
+        bannerManager?.displayBottomInfoMessage("Password copied")
     }
 }

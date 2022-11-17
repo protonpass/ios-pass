@@ -66,6 +66,9 @@ final class HomeCoordinator: DeinitPrintable {
     private lazy var sidebarViewModel = provideSidebarViewModel()
     private lazy var sidebarViewController = provideSidebarViewController()
 
+    // Banner
+    private lazy var bannerManager = provideBannerManager()
+
     // Cover view
     private lazy var appContentCoverViewController = UIHostingController(rootView: AppContentCoverView())
 
@@ -216,6 +219,10 @@ private extension HomeCoordinator {
         return UIHostingController(rootView: sidebarView)
     }
 
+    func provideBannerManager() -> BannerManager {
+        .init(container: sideMenuController)
+    }
+
     func provideMyVaultsCoordinator() -> MyVaultsCoordinator {
         let myVaultsCoordinator = MyVaultsCoordinator(symmetricKey: symmetricKey,
                                                       userData: sessionData.userData,
@@ -267,6 +274,7 @@ extension HomeCoordinator {
         myVaultsCoordinator.updateFilterOption(filterOption)
         sideMenuController.setContentViewController(to: myVaultsRootViewController,
                                                     animated: true) { [unowned self] in
+            self.myVaultsCoordinator.bannerManager = self.bannerManager
             self.sideMenuController.hideMenu()
         }
     }
@@ -276,11 +284,13 @@ extension HomeCoordinator {
         case .settings:
             sideMenuController.setContentViewController(to: settingsRootViewController,
                                                         animated: true) { [unowned self] in
+                self.settingsCoordinator.bannerManager = self.bannerManager
                 self.sideMenuController.hideMenu()
             }
         case .trash:
             sideMenuController.setContentViewController(to: trashRootViewController,
                                                         animated: true) { [unowned self] in
+                self.trashCoordinator.bannerManager = self.bannerManager
                 self.sideMenuController.hideMenu()
             }
         case .bugReport:
@@ -471,5 +481,11 @@ private extension HomeCoordinator {
                     }
                 }
             })
+    }
+}
+
+extension BannerManager {
+    func displayTopErrorMessage(_ error: Error) {
+        displayTopErrorMessage(error.messageForTheUser)
     }
 }
