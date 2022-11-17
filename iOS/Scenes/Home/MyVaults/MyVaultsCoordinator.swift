@@ -155,8 +155,15 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = delegate
         let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
         let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
-        generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
-        presentViewController(generatePasswordViewController)
+        if #available(iOS 16, *) {
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                344
+            }
+            generatePasswordViewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
+        }
+        presentViewController(generatePasswordViewController, dismissible: true)
     }
 
     private func showSearchView() {
