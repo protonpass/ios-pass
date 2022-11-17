@@ -26,6 +26,7 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelDidCreateItem(_ type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
     func createEditItemViewModelDidTrashItem(_ type: ItemContentType)
+    func createEditItemViewModelDidFail(_ error: Error)
 }
 
 enum ItemMode {
@@ -44,15 +45,16 @@ enum ItemMode {
     var isCreateMode: Bool { !isEditMode }
 }
 
-class BaseCreateEditItemViewModel: BaseViewModel {
+class BaseCreateEditItemViewModel {
     @Published private(set) var isSaving = false
     @Published private(set) var isTrashed = false
     @Published var isObsolete = false
+
     let shareId: String
     let mode: ItemMode
     let itemRepository: ItemRepositoryProtocol
 
-    weak var createEditItemDelegate: CreateEditItemViewModelDelegate?
+    weak var delegate: CreateEditItemViewModelDelegate?
 
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol) {
@@ -64,8 +66,7 @@ class BaseCreateEditItemViewModel: BaseViewModel {
         }
         self.mode = mode
         self.itemRepository = itemRepository
-        super.init()
-        bindValues()
+        self.bindValues()
     }
 
     /// To be overridden by subclasses
@@ -116,9 +117,9 @@ class BaseCreateEditItemViewModel: BaseViewModel {
                                                  itemId: itemContent.itemId).value
                 try await trashItemTask(item: item).value
                 isTrashed = true
-                createEditItemDelegate?.createEditItemViewModelDidTrashItem(itemContentType())
+                delegate?.createEditItemViewModelDidTrashItem(itemContentType())
             } catch {
-                self.error = error
+                delegate?.createEditItemViewModelDidFail(error)
             }
         }
     }
@@ -129,9 +130,9 @@ class BaseCreateEditItemViewModel: BaseViewModel {
             do {
                 isSaving = true
                 try await createItemTask(shareId: shareId).value
-                createEditItemDelegate?.createEditItemViewModelDidCreateItem(itemContentType())
+                delegate?.createEditItemViewModelDidCreateItem(itemContentType())
             } catch {
-                self.error = error
+                delegate?.createEditItemViewModelDidFail(error)
             }
         }
     }
@@ -143,9 +144,9 @@ class BaseCreateEditItemViewModel: BaseViewModel {
             do {
                 isSaving = true
                 try await createAliasItemTask(shareId: shareId, info: info).value
-                createEditItemDelegate?.createEditItemViewModelDidCreateItem(itemContentType())
+                delegate?.createEditItemViewModelDidCreateItem(itemContentType())
             } catch {
-                self.error = error
+                delegate?.createEditItemViewModelDidFail(error)
             }
         }
     }
@@ -166,9 +167,9 @@ class BaseCreateEditItemViewModel: BaseViewModel {
                 try await updateItemTask(oldItem: oldItem.item,
                                          newItemContent: newItemContentProtobuf,
                                          shareId: shareId).value
-                createEditItemDelegate?.createEditItemViewModelDidUpdateItem(itemContentType())
+                delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
             } catch {
-                self.error = error
+                delegate?.createEditItemViewModelDidFail(error)
             }
         }
     }

@@ -26,19 +26,19 @@ import UIComponents
 final class SettingsCoordinator: Coordinator {
     private let settingsViewModel: SettingsViewModel
 
+    weak var bannerManager: BannerManager?
     var onDeleteAccount: (() -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
-         preferences: Preferences,
-         bannerManager: BannerManager) {
+         preferences: Preferences) {
         self.settingsViewModel = .init(itemRepository: itemRepository,
                                        credentialManager: credentialManager,
                                        symmetricKey: symmetricKey,
-                                       preferences: preferences,
-                                       bannerManager: bannerManager)
+                                       preferences: preferences)
         super.init()
+        self.settingsViewModel.delegate = self
         start()
     }
 
@@ -50,5 +50,12 @@ final class SettingsCoordinator: Coordinator {
             onDeleteAccount?()
         }
         start(with: SettingsView(viewModel: settingsViewModel))
+    }
+}
+
+// MARK: - SettingsViewModelDelegate
+extension SettingsCoordinator: SettingsViewModelDelegate {
+    func settingsViewModelDidFail(_ error: Error) {
+        bannerManager?.displayTopErrorMessage(error)
     }
 }

@@ -53,7 +53,6 @@ struct CreateEditLoginView: View {
             .toolbar { toolbarContent }
             .navigationBarTitleDisplayMode(.inline)
         }
-        .disabled(viewModel.isLoading)
         .modifier(ObsoleteItemAlertModifier(isPresented: $viewModel.isObsolete,
                                             onAction: dismiss.callAsFunction))
         .modifier(DiscardChangesAlertModifier(isPresented: $isShowingDiscardAlert,
@@ -102,6 +101,7 @@ struct CreateEditLoginView: View {
                 text: $viewModel.title,
                 isFocused: $isFocusedOnTitle,
                 placeholder: "Login name")
+            .opacityReduced(viewModel.isSaving)
         }
     }
 
@@ -115,6 +115,7 @@ struct CreateEditLoginView: View {
                 trailingView: { Image(uiImage: IconProvider.arrowsRotate) },
                 trailingAction: viewModel.generateAlias,
                 textAutocapitalizationType: .none)
+            .opacityReduced(viewModel.isSaving)
         }
     }
 
@@ -126,6 +127,7 @@ struct CreateEditLoginView: View {
                 isFocused: $isFocusedOnPassword,
                 isSecure: $viewModel.isPasswordSecure,
                 onGeneratePassword: viewModel.generatePassword)
+            .opacityReduced(viewModel.isSaving)
         }
     }
 
@@ -135,6 +137,7 @@ struct CreateEditLoginView: View {
             UserInputContentURLsView(urls: $viewModel.urls,
                                      isFocused: $isFocusedOnURLs,
                                      invalidUrls: $invalidUrls)
+            .opacityReduced(viewModel.isSaving)
         }
     }
 
@@ -144,6 +147,7 @@ struct CreateEditLoginView: View {
             UserInputContentMultilineView(
                 text: $viewModel.note,
                 isFocused: $isFocusedOnNote)
+            .opacityReduced(viewModel.isSaving)
         }
     }
 

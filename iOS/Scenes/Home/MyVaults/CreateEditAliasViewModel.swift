@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import ProtonCore_Login
 import SwiftUI
@@ -37,8 +38,8 @@ final class SuffixSelection: ObservableObject {
 }
 
 final class MailboxSelection: ObservableObject {
-    let mailboxes: [Mailbox]
     @Published var selectedMailboxes: [Mailbox] = []
+    let mailboxes: [Mailbox]
 
     init(mailboxes: [Mailbox]) {
         self.mailboxes = mailboxes
@@ -76,6 +77,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     @Published private(set) var aliasEmail = ""
     @Published private(set) var state: State = .loading
+
+    private var cancellables = Set<AnyCancellable>()
 
     enum State {
         case loading
