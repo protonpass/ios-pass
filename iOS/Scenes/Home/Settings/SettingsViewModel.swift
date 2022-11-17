@@ -25,14 +25,18 @@ import CryptoKit
 import SwiftUI
 import UIComponents
 
+protocol SettingsViewModelDelegate: AnyObject {
+    func settingsViewModelDidFail(_ error: Error)
+}
+
 final class SettingsViewModel: DeinitPrintable, ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let symmetricKey: SymmetricKey
-    private let bannerManager: BannerManager
     let localAuthenticator: LocalAuthenticator
     let preferences: Preferences
 
+    weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
     @Published var quickTypeBar = true {
@@ -54,15 +58,13 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
-         preferences: Preferences,
-         bannerManager: BannerManager) {
+         preferences: Preferences) {
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.symmetricKey = symmetricKey
         self.localAuthenticator = .init(preferences: preferences)
         self.preferences = preferences
         self.quickTypeBar = preferences.quickTypeBar
-        self.bannerManager = bannerManager
         self.refresh()
 
         NotificationCenter.default
@@ -76,7 +78,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
             .sink { [weak self] state in
                 guard let self else { return }
                 if case let .error(error) = state {
-                    self.bannerManager.displayTopErrorMessage(error)
+                    self.delegate?.settingsViewModelDidFail(error)
                 }
             }
             .store(in: &cancellables)
@@ -114,7 +116,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
                 preferences.quickTypeBar = quickTypeBar
             } catch {
                 quickTypeBar.toggle() // rollback to previous value
-                bannerManager.displayTopErrorMessage(error)
+                delegate?.settingsViewModelDidFail(error)
             }
         }
     }

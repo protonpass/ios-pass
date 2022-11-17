@@ -244,8 +244,7 @@ private extension HomeCoordinator {
         let settingsCoordinator = SettingsCoordinator(itemRepository: itemRepository,
                                                       credentialManager: credentialManager,
                                                       symmetricKey: symmetricKey,
-                                                      preferences: preferences,
-                                                      bannerManager: bannerManager)
+                                                      preferences: preferences)
         settingsCoordinator.delegate = self
         settingsCoordinator.onDeleteAccount = { [unowned self] in
             self.beginAccountDeletionFlow()
@@ -275,6 +274,7 @@ extension HomeCoordinator {
         myVaultsCoordinator.updateFilterOption(filterOption)
         sideMenuController.setContentViewController(to: myVaultsRootViewController,
                                                     animated: true) { [unowned self] in
+            self.myVaultsCoordinator.bannerManager = self.bannerManager
             self.sideMenuController.hideMenu()
         }
     }
@@ -284,6 +284,7 @@ extension HomeCoordinator {
         case .settings:
             sideMenuController.setContentViewController(to: settingsRootViewController,
                                                         animated: true) { [unowned self] in
+                self.settingsCoordinator.bannerManager = self.bannerManager
                 self.sideMenuController.hideMenu()
             }
         case .trash:
