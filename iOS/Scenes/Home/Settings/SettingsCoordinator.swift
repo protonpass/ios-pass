@@ -55,6 +55,14 @@ final class SettingsCoordinator: Coordinator {
 
 // MARK: - SettingsViewModelDelegate
 extension SettingsCoordinator: SettingsViewModelDelegate {
+    func settingsViewModelWantsToShowLoadingHud() {
+        delegate?.coordinatorWantsToShowLoadingHud()
+    }
+
+    func settingsViewModelWantsToHideLoadingHud() {
+        delegate?.coordinatorWantsToHideLoadingHud()
+    }
+
     func settingsViewModelDidFail(_ error: Error) {
         bannerManager?.displayTopErrorMessage(error)
     }

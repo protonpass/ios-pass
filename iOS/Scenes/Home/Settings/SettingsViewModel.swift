@@ -26,6 +26,8 @@ import SwiftUI
 import UIComponents
 
 protocol SettingsViewModelDelegate: AnyObject {
+    func settingsViewModelWantsToShowLoadingHud()
+    func settingsViewModelWantsToHideLoadingHud()
     func settingsViewModelDidFail(_ error: Error)
 }
 
@@ -102,10 +104,9 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
 
         guard quickTypeBar != preferences.quickTypeBar else { return }
         Task { @MainActor in
-            #warning("Show spinner somehow and disable user interaction")
-//            defer { isLoading = false }
+            defer { delegate?.settingsViewModelWantsToHideLoadingHud() }
             do {
-//                isLoading = true
+                delegate?.settingsViewModelWantsToShowLoadingHud()
                 if quickTypeBar {
                     try await credentialManager.insertAllCredentials(from: itemRepository,
                                                                      symmetricKey: symmetricKey,
