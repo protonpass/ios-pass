@@ -117,7 +117,6 @@
 		3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */; };
 		3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */; };
 		3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF12877791000EE85E1 /* CreateVaultView.swift */; };
-		3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */; };
 		35498F8628DC5D0500AF1D8F /* Collection+ParallelMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */; };
 		35498F8828DC769300AF1D8F /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35498F8728DC769300AF1D8F /* HighlightText.swift */; };
 		35498F8A28DC805400AF1D8F /* ItemSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */; };
@@ -192,7 +191,6 @@
 		35581815290AB39C00DD94DB /* GetEventsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581814290AB39C00DD94DB /* GetEventsEndpoint.swift */; };
 		35581817290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */; };
 		35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */; };
-		355C92CC28CB9121000B1D9B /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355C92CB28CB9121000B1D9B /* BaseViewModel.swift */; };
 		355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */; };
 		355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */; };
 		35610B7128ABAAC500955ACB /* LocalItemKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7028ABAAC500955ACB /* LocalItemKeyDatasource.swift */; };
@@ -556,7 +554,6 @@
 		3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAliasView.swift; sourceTree = "<group>"; };
 		3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteView.swift; sourceTree = "<group>"; };
 		3547ABF12877791000EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
-		3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySummaryView.swift; sourceTree = "<group>"; };
 		35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+ParallelMap.swift"; sourceTree = "<group>"; };
 		35498F8728DC769300AF1D8F /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSearchResultView.swift; sourceTree = "<group>"; };
@@ -628,7 +625,6 @@
 		35581814290AB39C00DD94DB /* GetEventsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetEventsEndpoint.swift; sourceTree = "<group>"; };
 		35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSyncEventsDatasource.swift; sourceTree = "<group>"; };
 		35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDRepository.swift; sourceTree = "<group>"; };
-		355C92CB28CB9121000B1D9B /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLabelKeyPacket.swift; sourceTree = "<group>"; };
 		355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemEndpoint.swift; sourceTree = "<group>"; };
 		356043F828ED6B54003BDDDC /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -1470,7 +1466,6 @@
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
 				35AABE1C28B0036A00CEDDE6 /* AlertToastModifiers.swift */,
 				35570A8329264C2800125727 /* BannerManager.swift */,
-				3547ABF328777BE300EE85E1 /* CategorySummaryView.swift */,
 				355214832915524D00BA6229 /* CopyMenuButton.swift */,
 				35690C142923EA8400F60C20 /* Color+ProtonColors.swift */,
 				354F768F28C861FF00EB2383 /* DestructiveButton.swift */,
@@ -1583,7 +1578,6 @@
 			children = (
 				35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */,
 				3531B5422902DA890070D2EE /* AppLockedView.swift */,
-				355C92CB28CB9121000B1D9B /* BaseViewModel.swift */,
 				35E5070F286FB5BA00A3F6EA /* Flows.swift */,
 			);
 			path = App;
@@ -2402,7 +2396,6 @@
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */,
-				355C92CC28CB9121000B1D9B /* BaseViewModel.swift in Sources */,
 				35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */,
 				3561A1822922DA6E0097078B /* ItemCountView.swift in Sources */,
 				35E50710286FB5BA00A3F6EA /* Flows.swift in Sources */,
@@ -2624,7 +2617,6 @@
 				3552618D28A1511000A68477 /* UserInputContentView.swift in Sources */,
 				3542E2CD28DA11FE00194F24 /* RetryableErrorView.swift in Sources */,
 				354F769C28C90B4D00EB2383 /* MoveToTrashModifier.swift in Sources */,
-				3547ABF428777BE300EE85E1 /* CategorySummaryView.swift in Sources */,
 				356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */,
 				35570A8229263F5900125727 /* SpinnerButton.swift in Sources */,
 				355696E0290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift in Sources */,

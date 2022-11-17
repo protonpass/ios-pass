@@ -204,61 +204,6 @@ struct VaultContentView: View {
                 .fontWeight(.semibold)
         }
 
-//        ToolbarItem(placement: .principal) {
-//            Menu(content: {
-//                Section {
-//                    Button(action: {
-//                        viewModel.update(selectedVault: nil)
-//                    }, label: {
-//                        Text("All vaults")
-//                    })
-//                }
-//
-//                Section {
-//                    ForEach(viewModel.vaults, id: \.id) { vault in
-//                        Button(action: {
-//                            viewModel.update(selectedVault: vault)
-//                        }, label: {
-//                            Label(title: {
-//                                Text(vault.name)
-//                            }, icon: {
-//                                Image(uiImage: IconProvider.vault)
-//                            })
-//                        })
-//                    }
-//                }
-//
-//                Section {
-//                    Button(action: viewModel.createVaultAction) {
-//                        Label(title: {
-//                            Text("Add vault")
-//                        }, icon: {
-//                            Image(uiImage: IconProvider.plus)
-//                        })
-//                    }
-//                }
-//            }, label: {
-//                ZStack {
-//                    Text(selectedVaultName)
-//                        .fontWeight(.medium)
-//                        .transaction { transaction in
-//                            transaction.animation = nil
-//                        }
-//
-//                    HStack {
-//                        Spacer()
-//                        Image(uiImage: IconProvider.chevronDown)
-//                    }
-//                    .padding(.trailing)
-//                }
-//                .foregroundColor(.white)
-//                .frame(width: UIScreen.main.bounds.width / 2)
-//                .padding(.vertical, 8)
-//                .background(Color(ColorProvider.BrandNorm))
-//                .clipShape(RoundedRectangle(cornerRadius: 8))
-//            })
-//        }
-
         ToolbarItem(placement: .navigationBarTrailing) {
             HStack {
                 Button(action: viewModel.search) {
@@ -271,14 +216,6 @@ struct VaultContentView: View {
             }
             .foregroundColor(Color(.label))
             .opacityReduced(!viewModel.state.isLoaded, reducedOpacity: 0)
-        }
-    }
-
-    private var summaryView: some View {
-        HStack {
-            CategorySummaryView(summary: .init(aliasCount: 0))
-            CategorySummaryView(summary: .init(loginCount: 0))
-            CategorySummaryView(summary: .init(noteCount: 0))
         }
     }
 }
