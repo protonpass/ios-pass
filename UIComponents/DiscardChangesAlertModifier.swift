@@ -24,8 +24,7 @@ public struct DiscardChangesAlertModifier: ViewModifier {
     @Binding var isPresented: Bool
     let onDiscard: () -> Void
 
-    public init(isPresented: Binding<Bool>,
-                onDiscard: @escaping () -> Void) {
+    public init(isPresented: Binding<Bool>, onDiscard: @escaping () -> Void) {
         self._isPresented = isPresented
         self.onDiscard = onDiscard
     }
@@ -42,5 +41,11 @@ public struct DiscardChangesAlertModifier: ViewModifier {
                 message: {
                     Text("You will loose all unsaved changes")
                 })
+    }
+}
+
+public extension View {
+    func discardChangesAlert(isPresented: Binding<Bool>, onDiscard: @escaping () -> Void) -> some View {
+        modifier(DiscardChangesAlertModifier(isPresented: isPresented, onDiscard: onDiscard))
     }
 }

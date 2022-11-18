@@ -66,10 +66,8 @@ struct CreateEditAliasView: View {
             .toolbar { toolbarContent }
             .navigationBarTitleDisplayMode(.inline)
         }
-        .modifier(ObsoleteItemAlertModifier(isPresented: $viewModel.isObsolete,
-                                            onAction: dismiss.callAsFunction))
-        .modifier(DiscardChangesAlertModifier(isPresented: $isShowingDiscardAlert,
-                                              onDiscard: dismiss.callAsFunction))
+        .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
+        .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
     }
 
     @ToolbarContentBuilder

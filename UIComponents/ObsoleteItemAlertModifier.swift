@@ -24,8 +24,7 @@ public struct ObsoleteItemAlertModifier: ViewModifier {
     @Binding var isPresented: Bool
     let onAction: () -> Void
 
-    public init(isPresented: Binding<Bool>,
-                onAction: @escaping () -> Void) {
+    public init(isPresented: Binding<Bool>, onAction: @escaping () -> Void) {
         self._isPresented = isPresented
         self.onAction = onAction
     }
@@ -40,5 +39,11 @@ public struct ObsoleteItemAlertModifier: ViewModifier {
                 }, message: {
                     Text("Some changes happened to this item, heading back to the previous page.")
                 })
+    }
+}
+
+public extension View {
+    func obsoleteItemAlert(isPresented: Binding<Bool>, onAction: @escaping () -> Void) -> some View {
+        modifier(ObsoleteItemAlertModifier(isPresented: isPresented, onAction: onAction))
     }
 }
