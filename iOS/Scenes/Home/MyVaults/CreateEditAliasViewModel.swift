@@ -78,6 +78,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var aliasEmail = ""
     @Published private(set) var state: State = .loading
 
+    private let prefixCharacterSet = CharacterSet.alphanumerics.union(.init(charactersIn: ".-_"))
+
     private var cancellables = Set<AnyCancellable>()
 
     enum State {
@@ -104,10 +106,14 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         !state.isLoaded || (title.isEmpty && prefix.isEmpty && note.isEmpty)
     }
 
+    var prefixIsValid: Bool {
+        prefix.isValid(allowedCharacters: prefixCharacterSet)
+    }
+
     override var isSaveable: Bool {
         switch mode {
         case .create:
-            return !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty
+            return !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixIsValid
         case .edit:
             return !title.isEmpty && !mailboxes.isEmpty
         }
