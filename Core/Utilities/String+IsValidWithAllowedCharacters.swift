@@ -22,6 +22,7 @@ import Foundation
 
 public extension String {
     func isValid(allowedCharacters: CharacterSet) -> Bool {
+        guard !isEmpty else { return false }
         for character in unicodeScalars where !allowedCharacters.contains(character) {
             return false
         }
