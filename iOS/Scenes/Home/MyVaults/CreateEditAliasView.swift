@@ -29,6 +29,7 @@ struct CreateEditAliasView: View {
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnPrefix = false
     @State private var isFocusedOnNote = false
+    @State private var isShowingTrashAlert = false
     @State private var isShowingDiscardAlert = false
 
     init(viewModel: CreateEditAliasViewModel) {
@@ -58,6 +59,13 @@ struct CreateEditAliasView: View {
                             }
                             mailboxesInputView
                             noteInputView
+
+                            if viewModel.mode.isEditMode {
+                                MoveToTrashButton {
+                                    isShowingTrashAlert.toggle()
+                                }
+                                .opacityReduced(viewModel.isSaving)
+                            }
                         }
                         .padding()
                     }
@@ -68,6 +76,8 @@ struct CreateEditAliasView: View {
         }
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
+        .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
+        .onReceiveBoolean(viewModel.$isTrashed, perform: dismiss.callAsFunction)
     }
 
     @ToolbarContentBuilder
@@ -80,7 +90,7 @@ struct CreateEditAliasView: View {
                     isShowingDiscardAlert.toggle()
                 }
             }, label: {
-                Image(uiImage: IconProvider.cross)
+                Text("Cancel")
             })
             .foregroundColor(Color(.label))
         }
@@ -91,12 +101,10 @@ struct CreateEditAliasView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.save) {
-                Text("Save")
-                    .fontWeight(.bold)
-                    .foregroundColor(.brandNorm)
-            }
-            .opacityReduced(!viewModel.state.isLoaded || !viewModel.isSaveable)
+            SpinnerButton(title: "Save",
+                          disabled: !viewModel.state.isLoaded || !viewModel.isSaveable,
+                          spinning: viewModel.isSaving,
+                          action: viewModel.save)
         }
     }
 
