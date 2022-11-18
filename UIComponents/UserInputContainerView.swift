@@ -42,7 +42,7 @@ public struct UserInputContainerView<Content: View>: View {
             if let title {
                 Text(title)
                     .font(.caption)
-                    .fontWeight(.medium)
+                    .fontWeight(.semibold)
             }
 
             content()

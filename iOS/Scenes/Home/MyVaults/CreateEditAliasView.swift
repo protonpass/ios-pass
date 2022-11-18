@@ -149,12 +149,14 @@ struct CreateEditAliasView: View {
             .buttonStyle(.plain)
             .opacityReduced(viewModel.isSaving)
 
-            if viewModel.prefixIsValid {
-                fullAlias
-                    .animation(.default, value: viewModel.prefixIsValid)
-            } else {
-                prefixExplanation
-                    .animation(.default, value: viewModel.prefixIsValid)
+            if !viewModel.prefix.isEmpty {
+                if viewModel.prefixIsValid {
+                    fullAlias
+                        .animation(.default, value: viewModel.prefixIsValid)
+                } else {
+                    prefixExplanation
+                        .animation(.default, value: viewModel.prefixIsValid)
+                }
             }
         }
     }

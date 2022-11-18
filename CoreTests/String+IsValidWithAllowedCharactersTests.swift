@@ -28,5 +28,6 @@ final class StringPlusIsValidWithAllowedCharactersTests: XCTestCase {
         XCTAssertTrue("abcDEF012".isValid(allowedCharacters: .alphanumerics))
         XCTAssertFalse("abcDEF012&".isValid(allowedCharacters: .alphanumerics))
         XCTAssertFalse("😊".isValid(allowedCharacters: .alphanumerics))
+        XCTAssertFalse("".isValid(allowedCharacters: .alphanumerics))
     }
 }
