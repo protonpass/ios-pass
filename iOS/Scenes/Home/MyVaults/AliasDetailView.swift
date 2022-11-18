@@ -98,14 +98,28 @@ private struct ConcreteAliasDetailView: View {
 
             Text(alias.email)
                 .sectionContentText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    viewModel.copyAliasEmail(alias.email)
+                }
+                .contextMenu {
+                    Button(action: {
+                        viewModel.copyAliasEmail(alias.email)
+                    }, label: {
+                        Text("Copy")
+                    })
+
+                    Button(action: {
+                        viewModel.showLarge(alias.email)
+                    }, label: {
+                        Text("Show large")
+                    })
+                }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .contentShape(Rectangle())
         .roundedDetail()
-        .onTapGesture {
-            viewModel.copyToClipboard(text: alias.email, message: "Alias copied")
-        }
     }
 
     private var mailboxesSection: some View {
@@ -116,6 +130,21 @@ private struct ConcreteAliasDetailView: View {
             ForEach(alias.mailboxes, id: \.ID) { mailbox in
                 Text(mailbox.email)
                     .sectionContentText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(Rectangle())
+                    .contextMenu {
+                        Button(action: {
+                            viewModel.copyMailboxEmail(mailbox.email)
+                        }, label: {
+                            Text("Copy")
+                        })
+
+                        Button(action: {
+                            viewModel.showLarge(mailbox.email)
+                        }, label: {
+                            Text("Show large")
+                        })
+                    }
 
                 if mailbox != alias.mailboxes.last {
                     Divider()
@@ -140,8 +169,16 @@ private struct ConcreteAliasDetailView: View {
             } else {
                 Text(note)
                     .sectionContentText()
+                    .contextMenu {
+                        Button(action: {
+                            viewModel.copyNote(note)
+                        }, label: {
+                            Text("Copy")
+                        })
+                    }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal)
     }
 }
