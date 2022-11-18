@@ -42,6 +42,10 @@ public extension UIColor {
         ColorProvider.InteractionNormPressed
     }
 
+    static var interactionWeak: UIColor {
+        ColorProvider.InteractionWeak
+    }
+
     static var notificationError: UIColor {
         ColorProvider.NotificationError
     }
@@ -77,6 +81,14 @@ public extension UIColor {
     static var sidebarTextNorm: UIColor {
         ColorProvider.SidebarTextNorm
     }
+
+    static var textNorm: UIColor {
+        ColorProvider.TextNorm
+    }
+
+    static var textWeak: UIColor {
+        ColorProvider.TextWeak
+    }
 }
 
 public extension Color {
@@ -98,6 +110,10 @@ public extension Color {
 
     static var interactionNormPressed: Color {
         .init(uiColor: .interactionNormPressed)
+    }
+
+    static var interactionWeak: Color {
+        .init(uiColor: .interactionWeak)
     }
 
     static var notificationError: Color {
@@ -134,5 +150,13 @@ public extension Color {
 
     static var sidebarTextNorm: Color {
         .init(uiColor: .sidebarTextNorm)
+    }
+
+    static var textNorm: Color {
+        .init(uiColor: .textNorm)
+    }
+
+    static var textWeak: Color {
+        .init(uiColor: .textWeak)
     }
 }

@@ -75,4 +75,17 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
             }
         }
     }
+
+    override func refresh() {
+        getAlias()
+        super.refresh()
+    }
+
+    func copyAliasEmail(_ email: String) {
+        copyToClipboard(text: email, message: "Alias copied")
+    }
+
+    func copyMailboxEmail(_ email: String) {
+        copyToClipboard(text: email, message: "Mailbox copied")
+    }
 }

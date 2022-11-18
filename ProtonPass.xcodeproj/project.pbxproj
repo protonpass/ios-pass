@@ -23,6 +23,8 @@
 		3520F36928E32DCF0053A606 /* ProtonPass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */; };
 		35283E4A292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E49292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift */; };
 		35283E4C29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E4B29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift */; };
+		35283E4E2927A9A9002F5B84 /* View+ItemDetailModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E4D2927A9A9002F5B84 /* View+ItemDetailModifiers.swift */; };
+		35283E502927B55D002F5B84 /* LargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E4F2927B55D002F5B84 /* LargeView.swift */; };
 		352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */; };
 		352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BC28E2DCB5000630E2 /* CredentialsView.swift */; };
 		3529432928DAF54900E1F11B /* SearchUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3529432828DAF54900E1F11B /* SearchUtils.swift */; };
@@ -262,7 +264,6 @@
 		35AABE2128B0288B00CEDDE6 /* UpdateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
 		35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B2F5A32906C76D00F74108 /* AppContentCoverView.swift */; };
-		35BC57352909129600216818 /* TextStyleModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BC57342909129600216818 /* TextStyleModifiers.swift */; };
 		35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E00615288BE5FE00FAAD65 /* SessionData.swift */; };
 		35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
 		35E50649286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
@@ -467,6 +468,8 @@
 		3520F36228E325900053A606 /* CredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsViewModel.swift; sourceTree = "<group>"; };
 		35283E49292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+IsValidWithAllowedCharacters.swift"; sourceTree = "<group>"; };
 		35283E4B29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+IsValidWithAllowedCharactersTests.swift"; sourceTree = "<group>"; };
+		35283E4D2927A9A9002F5B84 /* View+ItemDetailModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemDetailModifiers.swift"; sourceTree = "<group>"; };
+		35283E4F2927B55D002F5B84 /* LargeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeView.swift; sourceTree = "<group>"; };
 		352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderCoordinator.swift; sourceTree = "<group>"; };
 		352866BC28E2DCB5000630E2 /* CredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsView.swift; sourceTree = "<group>"; };
 		352866BE28E3065A000630E2 /* iOSDebug-Black.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iOSDebug-Black.entitlements"; sourceTree = "<group>"; };
@@ -697,7 +700,6 @@
 		35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateItemEndpoint.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
 		35B2F5A32906C76D00F74108 /* AppContentCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContentCoverView.swift; sourceTree = "<group>"; };
-		35BC57342909129600216818 /* TextStyleModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyleModifiers.swift; sourceTree = "<group>"; };
 		35E00615288BE5FE00FAAD65 /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		35E50636286F819F00A3F6EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35E5063B286F819F00A3F6EA /* Proton Pass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Pass.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1046,6 +1048,7 @@
 				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
 				3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */,
 				3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */,
+				35283E4F2927B55D002F5B84 /* LargeView.swift */,
 				355635BC2889653B00F32353 /* LoadVaultsView.swift */,
 				355635BE2889664200F32353 /* LoadVaultsViewModel.swift */,
 				3552147D2915251C00BA6229 /* LoadingVaultView.swift */,
@@ -1476,6 +1479,7 @@
 				35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */,
 				3547ABE92877684D00EE85E1 /* GenericItemView.swift */,
 				3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */,
+				35498F8728DC769300AF1D8F /* HighlightText.swift */,
 				354F769B28C90B4D00EB2383 /* MoveToTrashModifier.swift */,
 				35690C122923D5DA00F60C20 /* NotchView.swift */,
 				355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */,
@@ -1483,19 +1487,18 @@
 				35526B5C28D116350017BB53 /* PassIcon.swift */,
 				3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */,
 				3542E2CC28DA11FE00194F24 /* RetryableErrorView.swift */,
-				35498F8728DC769300AF1D8F /* HighlightText.swift */,
 				353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */,
 				35570A8129263F5900125727 /* SpinnerButton.swift */,
 				354BB15228A2886500F50040 /* SwiftUISearchBar.swift */,
 				3552618628A1372500A68477 /* SwiftUITextView.swift */,
 				354BB13C28A240E000F50040 /* TextExtensions.swift */,
-				35BC57342909129600216818 /* TextStyleModifiers.swift */,
 				3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */,
 				3552618C28A1511000A68477 /* UserInputContentView.swift */,
 				3552618A28A14EB600A68477 /* UserInputContainerView.swift */,
 				354DCCF8291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift */,
 				356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */,
 				35570A7F2926321B00125727 /* View+OpacityReduced.swift */,
+				35283E4D2927A9A9002F5B84 /* View+ItemDetailModifiers.swift */,
 				35526B5A28D115340017BB53 /* Pass.xcassets */,
 			);
 			path = UIComponents;
@@ -2394,6 +2397,7 @@
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
 				353E8B76287625D100A2C5E3 /* SidebarCurrentUserView.swift in Sources */,
+				35283E502927B55D002F5B84 /* LargeView.swift in Sources */,
 				3531B5432902DA890070D2EE /* AppLockedView.swift in Sources */,
 				355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */,
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
@@ -2627,6 +2631,7 @@
 				355696E0290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift in Sources */,
 				35498F8A28DC805400AF1D8F /* ItemSearchResultView.swift in Sources */,
 				35570A8429264C2800125727 /* BannerManager.swift in Sources */,
+				35283E4E2927A9A9002F5B84 /* View+ItemDetailModifiers.swift in Sources */,
 				353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */,
 				355214822915517E00BA6229 /* EditMenuButton.swift in Sources */,
 				356423412925184100D2B7E3 /* OutlinedRoundedButton.swift in Sources */,
@@ -2645,7 +2650,6 @@
 				3552146229150FFC00BA6229 /* GenericItemSkeletonView.swift in Sources */,
 				354BB15328A2886500F50040 /* SwiftUISearchBar.swift in Sources */,
 				355214842915524D00BA6229 /* CopyMenuButton.swift in Sources */,
-				35BC57352909129600216818 /* TextStyleModifiers.swift in Sources */,
 				358C42A828D48DFB00ADE305 /* DiscardChangesAlertModifier.swift in Sources */,
 				35498F8828DC769300AF1D8F /* HighlightText.swift in Sources */,
 			);

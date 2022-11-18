@@ -25,6 +25,7 @@ import UIKit
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String)
+    func itemDetailViewModelWantsToShowLarge(_ text: String)
 }
 
 enum ItemDetailViewModelError: Error {
@@ -59,9 +60,7 @@ class BaseItemDetailViewModel {
     func edit() {
         delegate?.itemDetailViewModelWantsToEditItem(itemContent)
     }
-}
 
-extension BaseItemDetailViewModel {
     func refresh() {
         Task { @MainActor in
             guard let updatedItemContent =
@@ -72,5 +71,13 @@ extension BaseItemDetailViewModel {
             itemContent = updatedItemContent
             bindValues()
         }
+    }
+
+    func showLarge(_ text: String) {
+        delegate?.itemDetailViewModelWantsToShowLarge(text)
+    }
+
+    func copyNote(_ text: String) {
+        copyToClipboard(text: text, message: "Note copied")
     }
 }

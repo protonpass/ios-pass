@@ -1,5 +1,5 @@
 //
-// String+IsValidWithAllowedCharactersTests.swift
+// View+ItemDetailModifiers.swift
 // Proton Pass - Created on 18/11/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,16 +18,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Core
-import XCTest
+import SwiftUI
 
-// swiftlint:disable:next type_name
-final class StringPlusIsValidWithAllowedCharactersTests: XCTestCase {
-    func testIsValidWithAllowedCharacterSet() {
-        XCTAssertTrue("abcDEF".isValid(allowedCharacters: .alphanumerics))
-        XCTAssertTrue("abcDEF012".isValid(allowedCharacters: .alphanumerics))
-        XCTAssertFalse("abcDEF012&".isValid(allowedCharacters: .alphanumerics))
-        XCTAssertFalse("😊".isValid(allowedCharacters: .alphanumerics))
-        XCTAssertFalse("".isValid(allowedCharacters: .alphanumerics))
+public extension View {
+    func roundedDetail() -> some View {
+        overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.interactionWeak, lineWidth: 1)
+        )
+    }
+}
+
+public extension Text {
+    func sectionTitleText() -> Text {
+        self
+            .font(.callout)
+            .foregroundColor(.textNorm)
+            .fontWeight(.semibold)
+    }
+
+    func sectionContentText() -> Text {
+        self
+            .foregroundColor(.textWeak)
+    }
+
+    /// Used for placeholder `Text`s like `Empty notes`, `No items`...
+    func placeholderText() -> Text {
+        self
+            .font(.body.italic())
+            .foregroundColor(.textWeak)
     }
 }
