@@ -135,6 +135,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                  itemRepository: itemRepository,
                                                  aliasRepository: aliasRepository)
         viewModel.delegate = self
+        viewModel.createEditAliasViewModelDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
         presentView(view)
         currentCreateEditItemViewModel = viewModel
@@ -357,6 +358,16 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelDidFail(_ error: Error) {
         bannerManager?.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - CreateEditAliasViewModelDelegate
+extension MyVaultsCoordinator: CreateEditAliasViewModelDelegate {
+    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
+        let view = MailboxesView(mailboxSelection: mailboxSelection)
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        presentViewController(viewController, dismissible: true)
     }
 }
 

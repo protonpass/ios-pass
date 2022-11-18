@@ -139,13 +139,35 @@ struct CreateEditAliasView: View {
                 .opacityReduced(viewModel.isSaving)
             }
 
-            NavigationLink(destination: {
-                SuffixesView(suffixSelection: viewModel.suffixSelection ?? .init(suffixes: []))
-            }, label: {
-                UserInputContainerView(title: nil, isFocused: false) {
-                    UserInputStaticContentView(text: $viewModel.suffix)
+            UserInputContainerView(title: nil, isFocused: false) {
+                if let suffixes = viewModel.suffixSelection?.suffixes {
+                    Menu(content: {
+                        ForEach(suffixes, id: \.suffix) { suffix in
+                            Button(action: {
+                                viewModel.suffixSelection?.selectedSuffix = suffix
+                            }, label: {
+                                Label(title: {
+                                    Text(suffix.suffix)
+                                }, icon: {
+                                    if suffix.suffix == viewModel.suffix {
+                                        Image(systemName: "checkmark")
+                                    }
+                                })
+                            })
+                        }
+                    }, label: {
+                        UserInputStaticContentView(text: viewModel.suffix) {
+                            Image(uiImage: IconProvider.chevronDown)
+                                .foregroundColor(.textNorm)
+                        }
+                        .transaction { transaction in
+                            transaction.animation = nil
+                        }
+                    })
+                } else {
+                    EmptyView()
                 }
-            })
+            }
             .buttonStyle(.plain)
             .opacityReduced(viewModel.isSaving)
 
@@ -185,15 +207,17 @@ struct CreateEditAliasView: View {
     }
 
     private var mailboxesInputView: some View {
-        NavigationLink(destination: {
-            MailboxesView(mailboxSelection: viewModel.mailboxSelection ?? .init(mailboxes: []))
-        }, label: {
-            UserInputContainerView(title: "Mailboxes", isFocused: false) {
-                UserInputStaticContentView(text: $viewModel.mailboxes)
+        UserInputContainerView(title: "Mailboxes", isFocused: false) {
+            UserInputStaticContentView(text: viewModel.mailboxes) {
+                Image(uiImage: IconProvider.chevronDown)
+                    .foregroundColor(.textNorm)
             }
-            .opacityReduced(viewModel.isSaving)
-        })
-        .buttonStyle(.plain)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                viewModel.showMailboxSelection()
+            }
+        }
+        .opacityReduced(viewModel.isSaving)
     }
 
     private var noteInputView: some View {
@@ -207,87 +231,37 @@ struct CreateEditAliasView: View {
     }
 }
 
-private struct SuffixesView: View {
-    @Environment(\.dismiss) private var dismiss
-    @ObservedObject var suffixSelection: SuffixSelection
-
-    var body: some View {
-        List {
-            ForEach(suffixSelection.suffixes, id: \.suffix) { suffix in
-                HStack {
-                    Text(suffix.suffix)
-                    Spacer()
-                    if suffixSelection.selectedSuffix == suffix {
-                        Image(uiImage: IconProvider.checkmark)
-                            .foregroundColor(.brandNorm)
-                    }
-                }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    suffixSelection.selectedSuffix = suffix
-                    dismiss()
-                }
-            }
-        }
-        .listStyle(.plain)
-        .navigationBarBackButtonHidden(true)
-        .toolbar { toolbarContent }
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: dismiss.callAsFunction) {
-                Image(uiImage: IconProvider.chevronLeft)
-                    .foregroundColor(.primary)
-            }
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text("Alias suffixes")
-                .fontWeight(.bold)
-        }
-    }
-}
-
-private struct MailboxesView: View {
+struct MailboxesView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var mailboxSelection: MailboxSelection
 
     var body: some View {
-        List {
-            ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
-                HStack {
-                    Text(mailbox.email)
-                    Spacer()
-                    if mailboxSelection.selectedMailboxes.contains(mailbox) {
-                        Image(uiImage: IconProvider.checkmark)
-                            .foregroundColor(.brandNorm)
+        VStack {
+            NotchView()
+                .padding(.top, 5)
+                .padding(.bottom, 7)
+
+            Text("Destination mailboxes")
+                .fontWeight(.bold)
+
+            List {
+                ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
+                    HStack {
+                        Text(mailbox.email)
+                            .foregroundColor(.textNorm)
+                        Spacer()
+                        if mailboxSelection.selectedMailboxes.contains(mailbox) {
+                            Image(uiImage: IconProvider.checkmark)
+                                .foregroundColor(.brandNorm)
+                        }
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        mailboxSelection.selectOrDeselect(mailbox: mailbox)
                     }
                 }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    mailboxSelection.selectOrDeselect(mailbox: mailbox)
-                }
             }
-        }
-        .listStyle(.plain)
-        .navigationBarBackButtonHidden(true)
-        .toolbar { toolbarContent }
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: dismiss.callAsFunction) {
-                Image(uiImage: IconProvider.chevronLeft)
-                    .foregroundColor(.primary)
-            }
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text("Alias suffixes")
-                .fontWeight(.bold)
+            .listStyle(.plain)
         }
     }
 }
