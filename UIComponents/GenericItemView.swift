@@ -84,19 +84,22 @@ public struct GenericItemView<TrailingView: View>: View {
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text(item.title)
+                            .foregroundColor(.textNorm)
+
                         switch item.detail {
                         case .value(let detail):
                             if !detail.isEmpty {
                                 Text(detail)
                                     .font(.callout)
-                                    .foregroundColor(Color(.secondaryLabel))
+                                    .foregroundColor(.textWeak)
                                     .lineLimit(subtitleLineLimit)
                             }
 
                         case .placeholder(let placeholder):
                             if let placeholder, !placeholder.isEmpty {
                                 Text(placeholder)
-                                    .modifier(ItalicSecondaryTextStyle())
+                                    .font(.callout.italic())
+                                    .foregroundColor(.textWeak)
                             }
                         }
                     }

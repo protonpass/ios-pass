@@ -37,7 +37,9 @@ struct AliasDetailView: View {
             case .loading:
                 ProgressView()
             case .loaded(let alias):
-                ConcreteAliasDetailView(alias: alias, note: viewModel.itemContent.note)
+                ConcreteAliasDetailView(viewModel: viewModel,
+                                        alias: alias,
+                                        note: viewModel.itemContent.note)
             case .error(let error):
                 RetryableErrorView(errorMessage: error.messageForTheUser,
                                    onRetry: viewModel.getAlias)
@@ -72,64 +74,111 @@ struct AliasDetailView: View {
 }
 
 private struct ConcreteAliasDetailView: View {
+    @ObservedObject var viewModel: AliasDetailViewModel
     let alias: Alias
     let note: String
 
     var body: some View {
-        VStack(spacing: 32) {
-            aliasSection
-            mailboxesSection
-            noteSection
-            Spacer()
+        ScrollView {
+            VStack(spacing: 0) {
+                aliasSection
+                mailboxesSection
+                    .padding(.vertical)
+                noteSection
+                Spacer()
+            }
+            .padding()
         }
-        .padding()
-        .padding(.top)
     }
 
     private var aliasSection: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("Alias")
+                .sectionTitleText()
 
-            HStack {
-                Text(alias.email)
-                    .font(.callout)
-                    .foregroundColor(.secondary)
+            Text(alias.email)
+                .sectionContentText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    viewModel.copyAliasEmail(alias.email)
+                }
+                .contextMenu {
+                    Button(action: {
+                        viewModel.copyAliasEmail(alias.email)
+                    }, label: {
+                        Text("Copy")
+                    })
 
-                Spacer()
-
-                Button(action: {
-                    UIPasteboard.general.string = alias.email
-                }, label: {
-                    Image(uiImage: IconProvider.squares)
-                        .foregroundColor(.secondary)
-                })
-            }
+                    Button(action: {
+                        viewModel.showLarge(alias.email)
+                    }, label: {
+                        Text("Show large")
+                    })
+                }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .roundedDetail()
     }
 
     private var mailboxesSection: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("Mailboxes")
-            Text(alias.mailboxes.map { $0.email }.joined(separator: "\n"))
-                .font(.callout)
-                .foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
+                .sectionTitleText()
 
-    private var noteSection: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("Notes")
-            if note.isEmpty {
-                Text("Empty note")
-                    .modifier(ItalicSecondaryTextStyle())
-            } else {
-                Text(note)
-                    .font(.callout)
-                    .foregroundColor(.secondary)
+            ForEach(alias.mailboxes, id: \.ID) { mailbox in
+                Text(mailbox.email)
+                    .sectionContentText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(Rectangle())
+                    .contextMenu {
+                        Button(action: {
+                            viewModel.copyMailboxEmail(mailbox.email)
+                        }, label: {
+                            Text("Copy")
+                        })
+
+                        Button(action: {
+                            viewModel.showLarge(mailbox.email)
+                        }, label: {
+                            Text("Show large")
+                        })
+                    }
+
+                if mailbox != alias.mailboxes.last {
+                    Divider()
+                        .padding(.vertical, 2)
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .contentShape(Rectangle())
+        .roundedDetail()
+    }
+
+    private var noteSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Note")
+                .sectionTitleText()
+
+            if note.isEmpty {
+                Text("Empty note")
+                    .placeholderText()
+            } else {
+                Text(note)
+                    .sectionContentText()
+                    .contextMenu {
+                        Button(action: {
+                            viewModel.copyNote(note)
+                        }, label: {
+                            Text("Copy")
+                        })
+                    }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal)
     }
 }

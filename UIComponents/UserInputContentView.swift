@@ -113,19 +113,21 @@ public struct UserInputContentMultilineView: View {
     }
 }
 
-public struct UserInputStaticContentView: View {
-    @Binding var text: String
+public struct UserInputStaticContentView<TrailingView: View>: View {
+    let text: String
+    let trailingView: TrailingView
 
-    public init(text: Binding<String>) {
-        self._text = text
+    public init(text: String,
+                @ViewBuilder trailingView: () -> TrailingView = { EmptyView() }) {
+        self.text = text
+        self.trailingView = trailingView()
     }
 
     public var body: some View {
         HStack {
             Text(text)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            Image(uiImage: IconProvider.chevronRight)
-                .foregroundColor(.primary)
+            Spacer()
+            trailingView
         }
     }
 }

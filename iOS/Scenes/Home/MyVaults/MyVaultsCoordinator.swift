@@ -135,6 +135,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                  itemRepository: itemRepository,
                                                  aliasRepository: aliasRepository)
         viewModel.delegate = self
+        viewModel.createEditAliasViewModelDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
         presentView(view)
         currentCreateEditItemViewModel = viewModel
@@ -202,6 +203,10 @@ final class MyVaultsCoordinator: Coordinator {
         currentItemDetailViewModel = baseItemDetailViewModel
     }
 
+    private func showLargeView(text: String) {
+        presentView(LargeView(text: text), dismissible: true)
+    }
+
     private func handleCreatedItem(_ itemContentType: ItemContentType) {
         dismissTopMostViewController(animated: true) { [unowned self] in
             let message: String
@@ -255,7 +260,11 @@ final class MyVaultsCoordinator: Coordinator {
 
     func refreshItems() {
         vaultContentViewModel.fetchItems(forceRefresh: false)
-        currentItemDetailViewModel?.refresh()
+        if let aliasDetailViewModel = currentItemDetailViewModel as? AliasDetailViewModel {
+            aliasDetailViewModel.refresh()
+        } else {
+            currentItemDetailViewModel?.refresh()
+        }
         currentCreateEditItemViewModel?.refresh()
     }
 
@@ -352,6 +361,16 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
     }
 }
 
+// MARK: - CreateEditAliasViewModelDelegate
+extension MyVaultsCoordinator: CreateEditAliasViewModelDelegate {
+    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
+        let view = MailboxesView(mailboxSelection: mailboxSelection)
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        presentViewController(viewController, dismissible: true)
+    }
+}
+
 // MARK: - ItemDetailViewModelDelegate
 extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
@@ -364,6 +383,10 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String) {
         bannerManager?.displayBottomInfoMessage(message)
+    }
+
+    func itemDetailViewModelWantsToShowLarge(_ text: String) {
+        showLargeView(text: text)
     }
 }
 

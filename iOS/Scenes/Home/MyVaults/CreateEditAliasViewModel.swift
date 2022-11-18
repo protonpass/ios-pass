@@ -65,6 +65,10 @@ final class MailboxSelection: ObservableObject {
     }
 }
 
+protocol CreateEditAliasViewModelDelegate: AnyObject {
+    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection)
+}
+
 // MARK: - Initialization
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
@@ -101,6 +105,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var suffixSelection: SuffixSelection?
     private(set) var mailboxSelection: MailboxSelection?
     let aliasRepository: AliasRepositoryProtocol
+
+    weak var createEditAliasViewModelDelegate: CreateEditAliasViewModelDelegate?
 
     var isEmpty: Bool {
         !state.isLoaded || (title.isEmpty && prefix.isEmpty && note.isEmpty)
@@ -210,6 +216,12 @@ extension CreateEditAliasViewModel {
                 state = .error(error)
             }
         }
+    }
+
+    func showMailboxSelection() {
+        guard let mailboxSelection else { return }
+        createEditAliasViewModelDelegate?
+            .createEditAliasViewModelWantsToSelectMailboxes(mailboxSelection)
     }
 }
 
