@@ -149,23 +149,37 @@ struct CreateEditAliasView: View {
             .buttonStyle(.plain)
             .opacityReduced(viewModel.isSaving)
 
-            if !viewModel.prefix.isEmpty {
-                HStack {
-                    Group {
-                        Text("You're about to create alias ")
-                            .foregroundColor(.secondary) +
-                        Text(viewModel.prefix + viewModel.suffix)
-                            .foregroundColor(.brandNorm)
-                    }
-                    .font(.caption)
-                    .transaction { transaction in
-                        transaction.animation = nil
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .transition(AnyTransition.opacity.animation(.linear(duration: 0.2)))
+            if viewModel.prefixIsValid {
+                fullAlias
+                    .animation(.default, value: viewModel.prefixIsValid)
+            } else {
+                prefixExplanation
+                    .animation(.default, value: viewModel.prefixIsValid)
             }
         }
+    }
+
+    private var fullAlias: some View {
+        HStack {
+            Group {
+                Text("You're about to create alias ")
+                    .foregroundColor(.secondary) +
+                Text(viewModel.prefix + viewModel.suffix)
+                    .foregroundColor(.interactionNorm)
+            }
+            .font(.caption)
+            .transaction { transaction in
+                transaction.animation = nil
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .transition(AnyTransition.opacity.animation(.linear(duration: 0.2)))
+    }
+
+    private var prefixExplanation: some View {
+        Text("Prefix must contain only alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_).")
+            .font(.caption)
+            .foregroundColor(.red)
     }
 
     private var mailboxesInputView: some View {
