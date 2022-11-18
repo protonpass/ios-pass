@@ -56,10 +56,8 @@ struct CreateEditNoteView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbarContent }
         }
-        .modifier(ObsoleteItemAlertModifier(isPresented: $viewModel.isObsolete,
-                                            onAction: dismiss.callAsFunction))
-        .modifier(DiscardChangesAlertModifier(isPresented: $isShowingDiscardAlert,
-                                              onDiscard: dismiss.callAsFunction))
+        .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
+        .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
         .onReceiveBoolean(viewModel.$isTrashed, perform: dismiss.callAsFunction)
     }
