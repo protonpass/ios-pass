@@ -80,4 +80,12 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
         getAlias()
         super.refresh()
     }
+
+    func copyAliasEmail(_ email: String) {
+        copyToClipboard(text: email, message: "Alias copied")
+    }
+
+    func copyMailboxEmail(_ email: String) {
+        copyToClipboard(text: email, message: "Mailbox copied")
+    }
 }

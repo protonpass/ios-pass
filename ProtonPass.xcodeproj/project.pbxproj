@@ -24,6 +24,7 @@
 		35283E4A292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E49292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift */; };
 		35283E4C29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E4B29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift */; };
 		35283E4E2927A9A9002F5B84 /* View+ItemDetailModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E4D2927A9A9002F5B84 /* View+ItemDetailModifiers.swift */; };
+		35283E502927B55D002F5B84 /* LargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E4F2927B55D002F5B84 /* LargeView.swift */; };
 		352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */; };
 		352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BC28E2DCB5000630E2 /* CredentialsView.swift */; };
 		3529432928DAF54900E1F11B /* SearchUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3529432828DAF54900E1F11B /* SearchUtils.swift */; };
@@ -468,6 +469,7 @@
 		35283E49292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+IsValidWithAllowedCharacters.swift"; sourceTree = "<group>"; };
 		35283E4B29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+IsValidWithAllowedCharactersTests.swift"; sourceTree = "<group>"; };
 		35283E4D2927A9A9002F5B84 /* View+ItemDetailModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemDetailModifiers.swift"; sourceTree = "<group>"; };
+		35283E4F2927B55D002F5B84 /* LargeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeView.swift; sourceTree = "<group>"; };
 		352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderCoordinator.swift; sourceTree = "<group>"; };
 		352866BC28E2DCB5000630E2 /* CredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsView.swift; sourceTree = "<group>"; };
 		352866BE28E3065A000630E2 /* iOSDebug-Black.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iOSDebug-Black.entitlements"; sourceTree = "<group>"; };
@@ -1046,6 +1048,7 @@
 				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
 				3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */,
 				3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */,
+				35283E4F2927B55D002F5B84 /* LargeView.swift */,
 				355635BC2889653B00F32353 /* LoadVaultsView.swift */,
 				355635BE2889664200F32353 /* LoadVaultsViewModel.swift */,
 				3552147D2915251C00BA6229 /* LoadingVaultView.swift */,
@@ -2394,6 +2397,7 @@
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
 				353E8B76287625D100A2C5E3 /* SidebarCurrentUserView.swift in Sources */,
+				35283E502927B55D002F5B84 /* LargeView.swift in Sources */,
 				3531B5432902DA890070D2EE /* AppLockedView.swift in Sources */,
 				355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */,
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,

@@ -202,6 +202,10 @@ final class MyVaultsCoordinator: Coordinator {
         currentItemDetailViewModel = baseItemDetailViewModel
     }
 
+    private func showLargeView(text: String) {
+        presentView(LargeView(text: text), dismissible: true)
+    }
+
     private func handleCreatedItem(_ itemContentType: ItemContentType) {
         dismissTopMostViewController(animated: true) { [unowned self] in
             let message: String
@@ -368,6 +372,10 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String) {
         bannerManager?.displayBottomInfoMessage(message)
+    }
+
+    func itemDetailViewModelWantsToShowLarge(_ text: String) {
+        showLargeView(text: text)
     }
 }
 
