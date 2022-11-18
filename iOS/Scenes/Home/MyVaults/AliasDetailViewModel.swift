@@ -75,4 +75,9 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
             }
         }
     }
+
+    override func refresh() {
+        getAlias()
+        super.refresh()
+    }
 }

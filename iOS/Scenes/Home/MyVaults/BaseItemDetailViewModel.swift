@@ -59,9 +59,7 @@ class BaseItemDetailViewModel {
     func edit() {
         delegate?.itemDetailViewModelWantsToEditItem(itemContent)
     }
-}
 
-extension BaseItemDetailViewModel {
     func refresh() {
         Task { @MainActor in
             guard let updatedItemContent =

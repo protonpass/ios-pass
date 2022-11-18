@@ -74,7 +74,7 @@ struct LogInDetailView: View {
 
                 if viewModel.username.isEmpty {
                     Text("No username")
-                        .modifier(ItalicSecondaryTextStyle())
+                        .placeholderText()
                 } else {
                     Text(viewModel.username)
                         .font(.callout)
@@ -150,7 +150,7 @@ struct LogInDetailView: View {
             Text("Note")
             if viewModel.note.isEmpty {
                 Text("Empty note")
-                    .modifier(ItalicSecondaryTextStyle())
+                    .placeholderText()
             } else {
                 Text(viewModel.note)
                     .font(.callout)

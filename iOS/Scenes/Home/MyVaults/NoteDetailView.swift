@@ -35,11 +35,10 @@ struct NoteDetailView: View {
             Group {
                 if viewModel.note.isEmpty {
                     Text("Empty note")
-                        .modifier(ItalicSecondaryTextStyle())
+                        .placeholderText()
                 } else {
                     Text(viewModel.note)
-                        .font(.callout)
-                        .foregroundColor(.secondary)
+                        .sectionContentText()
                         .onTapGesture(perform: viewModel.copyNote)
                 }
             }

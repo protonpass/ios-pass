@@ -255,7 +255,11 @@ final class MyVaultsCoordinator: Coordinator {
 
     func refreshItems() {
         vaultContentViewModel.fetchItems(forceRefresh: false)
-        currentItemDetailViewModel?.refresh()
+        if let aliasDetailViewModel = currentItemDetailViewModel as? AliasDetailViewModel {
+            aliasDetailViewModel.refresh()
+        } else {
+            currentItemDetailViewModel?.refresh()
+        }
         currentCreateEditItemViewModel?.refresh()
     }
 
