@@ -248,7 +248,7 @@ final class MyVaultsCoordinator: Coordinator {
     private func handleUpdatedItem(_ itemContentType: ItemContentType) {
         dismissTopMostViewController(animated: true) { [unowned self] in
             currentItemDetailViewModel?.refresh()
-            bannerManager?.displayBottomInfoMessage("Changes saved")
+            bannerManager?.displayBottomSuccessMessage("Changes saved")
             vaultContentViewModel.fetchItems(forceRefresh: false)
         }
     }
