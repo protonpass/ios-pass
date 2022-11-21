@@ -74,13 +74,14 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     deinit { print(deinitMessage) }
 
     @Published var title = ""
-    @Published var prefix = ""
+    @Published var prefix = "" { didSet { validatePrefix() } }
     @Published var suffix = ""
     @Published var mailboxes = ""
     @Published var note = ""
 
     @Published private(set) var aliasEmail = ""
     @Published private(set) var state: State = .loading
+    @Published private(set) var prefixError: AliasPrefixError?
 
     private let prefixCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
 
@@ -112,14 +113,10 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         !state.isLoaded || (title.isEmpty && prefix.isEmpty && note.isEmpty)
     }
 
-    var prefixIsValid: Bool {
-        prefix.isValid(allowedCharacters: prefixCharacterSet)
-    }
-
     override var isSaveable: Bool {
         switch mode {
         case .create:
-            return !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixIsValid
+            return !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixError == nil
         case .edit:
             return !title.isEmpty && !mailboxes.isEmpty
         }
@@ -170,6 +167,15 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             _ = try await changeMailboxesTask(shareId: shareId,
                                               itemId: itemContent.itemId,
                                               mailboxIDs: mailboxIds).value
+        }
+    }
+
+    private func validatePrefix() {
+        do {
+            try AliasPrefixValidator.validate(prefix: prefix)
+            self.prefixError = nil
+        } catch {
+            self.prefixError = error as? AliasPrefixError
         }
     }
 }
