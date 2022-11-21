@@ -180,12 +180,15 @@ struct CreateEditAliasView: View {
             .opacityReduced(viewModel.isSaving)
 
             if !viewModel.prefix.isEmpty {
-                if viewModel.prefixIsValid {
-                    fullAlias
-                        .animation(.default, value: viewModel.prefixIsValid)
+                if let prefixError = viewModel.prefixError {
+                    Text(prefixError.localizedDescription)
+                        .font(.caption)
+                        .foregroundColor(.red)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .animation(.default, value: viewModel.prefixError)
                 } else {
-                    prefixExplanation
-                        .animation(.default, value: viewModel.prefixIsValid)
+                    fullAlias
+                        .animation(.default, value: viewModel.prefixError)
                 }
             }
         }
@@ -206,12 +209,6 @@ struct CreateEditAliasView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .transition(AnyTransition.opacity.animation(.linear(duration: 0.2)))
-    }
-
-    private var prefixExplanation: some View {
-        Text("Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_).")
-            .font(.caption)
-            .foregroundColor(.red)
     }
 
     private var mailboxesInputView: some View {
