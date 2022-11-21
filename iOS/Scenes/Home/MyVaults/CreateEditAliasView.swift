@@ -209,7 +209,7 @@ struct CreateEditAliasView: View {
     }
 
     private var prefixExplanation: some View {
-        Text("Prefix must contain only alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_).")
+        Text("Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_).")
             .font(.caption)
             .foregroundColor(.red)
     }
