@@ -20,13 +20,13 @@
 
 import Foundation
 
-public enum AliasPrefixError: Error, LocalizedError {
+public enum AliasPrefixError: LocalizedError {
     case emptyPrefix
     case disallowedCharacters
     case twoConsecutiveDots
     case dotAtTheEnd
 
-    var errorDescription: String {
+    public var localizedDescription: String {
         switch self {
         case .emptyPrefix:
             return "Prefix can not be empty"
