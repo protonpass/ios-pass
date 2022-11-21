@@ -82,7 +82,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var aliasEmail = ""
     @Published private(set) var state: State = .loading
 
-    private let prefixCharacterSet = CharacterSet.alphanumerics.union(.init(charactersIn: ".-_"))
+    private let prefixCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
 
     private var cancellables = Set<AnyCancellable>()
 
