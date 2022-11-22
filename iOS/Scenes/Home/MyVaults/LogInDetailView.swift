@@ -32,15 +32,18 @@ struct LogInDetailView: View {
     }
 
     var body: some View {
-        VStack(spacing: 32) {
-            usernameSection
-            urlsSection
-            passwordSection
-            noteSection
-            Spacer()
+        ScrollView {
+            VStack(spacing: 0) {
+                usernameSection
+                passwordSection
+                    .padding(.vertical)
+                urlsSection
+                noteSection
+                    .padding(.vertical)
+                Spacer()
+            }
+            .padding()
         }
-        .padding()
-        .padding(.top)
         .navigationBarBackButtonHidden(true)
         .toolbar { toolbarContent }
     }
@@ -68,95 +71,122 @@ struct LogInDetailView: View {
     }
 
     private var usernameSection: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Username")
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Username")
+                .sectionTitleText()
 
-                if viewModel.username.isEmpty {
-                    Text("No username")
-                        .placeholderText()
-                } else {
-                    Text(viewModel.username)
-                        .font(.callout)
-                        .foregroundColor(.secondary)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            if viewModel.username.isEmpty {
+                Text("No username")
+                    .placeholderText()
+            } else {
+                Text(viewModel.username)
+                    .sectionContentText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(Rectangle())
+                    .onTapGesture(perform: viewModel.copyUsername)
+                    .contextMenu {
+                        Button(action: viewModel.copyUsername) {
+                            Text("Copy")
+                        }
 
-            if !viewModel.username.isEmpty {
-                Button(action: {
-                    UIPasteboard.general.string = viewModel.username
-                }, label: {
-                    Image(uiImage: IconProvider.squares)
-                        .foregroundColor(.secondary)
-                })
+                        Button(action: {
+                            viewModel.showLarge(viewModel.username)
+                        }, label: {
+                            Text("Show large")
+                        })
+                    }
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .roundedDetail()
+    }
+
+    private var passwordSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Password")
+                .sectionTitleText()
+
+            Text(isShowingPassword ?
+                 viewModel.password : String(repeating: "•", count: viewModel.password.count))
+            .sectionContentText()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: viewModel.copyPassword)
+            .contextMenu {
+                Button(action: {
+                    isShowingPassword.toggle()
+                }, label: {
+                    Text(isShowingPassword ? "Conceal" : "Reveal")
+                })
+
+                Button(action: viewModel.copyPassword) {
+                    Text("Copy")
+                }
+
+                Button(action: viewModel.showLargePassword) {
+                    Text("Show large")
+                }
+            }
+            .transaction { transaction in
+                transaction.animation = .default
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .roundedDetail()
     }
 
     private var urlsSection: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("Websites")
-            VStack(alignment: .leading, spacing: 4) {
-                ForEach(viewModel.urls, id: \.self) { url in
-                    Text(url)
-                        .font(.callout)
-                        .foregroundColor(.secondary)
+
+            if viewModel.urls.isEmpty {
+                Text("No websites")
+                    .placeholderText()
+            } else {
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(viewModel.urls, id: \.self) { url in
+                        Button(action: {
+                            viewModel.openUrl(url)
+                        }, label: {
+                            Text(url)
+                                .foregroundColor(.interactionNorm)
+                        })
+                        .contextMenu {
+                            Button(action: {
+                                viewModel.openUrl(url)
+                            }, label: {
+                                Text("Open")
+                            })
+
+                            Button(action: {
+                                viewModel.copyToClipboard(text: url, message: "Website copied")
+                            }, label: {
+                                Text("Copy")
+                            })
+                        }
+                    }
                 }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .animation(.default, value: viewModel.urls)
-    }
-
-    private var passwordSection: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Password")
-
-                if isShowingPassword {
-                    Text(viewModel.password)
-                        .font(.callout)
-                        .foregroundColor(.secondary)
-                } else {
-                    let hiddenPassword = viewModel.password.map { _ in "•" }.joined()
-                    Text(hiddenPassword)
-                        .font(.callout)
-                }
-
-                Button(action: {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        isShowingPassword.toggle()
-                    }
-                }, label: {
-                    Text("Reveal Password")
-                        .font(.callout)
-                        .foregroundColor(.brandNorm)
-                })
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            Button(action: {
-                UIPasteboard.general.string = viewModel.password
-            }, label: {
-                Image(uiImage: IconProvider.squares)
-                    .foregroundColor(.secondary)
-            })
-        }
+        .padding(.horizontal)
     }
 
     private var noteSection: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("Note")
             if viewModel.note.isEmpty {
                 Text("Empty note")
                     .placeholderText()
             } else {
                 Text(viewModel.note)
-                    .font(.callout)
-                    .foregroundColor(.secondary)
+                    .sectionContentText()
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal)
     }
 }
