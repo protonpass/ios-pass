@@ -30,6 +30,10 @@ public extension UIColor {
         ColorProvider.BrandNorm
     }
 
+    static var iconHint: UIColor {
+        ColorProvider.IconHint
+    }
+
     static var iconWeak: UIColor {
         ColorProvider.IconWeak
     }
@@ -98,6 +102,10 @@ public extension Color {
 
     static var brandNorm: Color {
         .init(uiColor: .brandNorm)
+    }
+
+    static var iconHint: Color {
+        .init(uiColor: .iconHint)
     }
 
     static var iconWeak: Color {

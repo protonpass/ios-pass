@@ -92,10 +92,11 @@ struct CreateEditLoginView: View {
     private var loginInputView: some View {
         UserInputContainerView(title: "Title",
                                isFocused: isFocusedOnTitle) {
-            UserInputContentSingleLineView(
+            UserInputContentSingleLineWithClearButton(
                 text: $viewModel.title,
                 isFocused: $isFocusedOnTitle,
-                placeholder: "Login name")
+                placeholder: "Login title",
+                onClear: { viewModel.title = "" })
             .opacityReduced(viewModel.isSaving)
         }
     }
