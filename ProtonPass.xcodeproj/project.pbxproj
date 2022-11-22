@@ -205,6 +205,7 @@
 		35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */; };
 		35610B8428ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */; };
 		35610B8928ABCF1900955ACB /* ShareRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B8828ABCF1900955ACB /* ShareRepository.swift */; };
+		35613DCE292D27900095D5A1 /* BorderedImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35613DCD292D27900095D5A1 /* BorderedImageButton.swift */; };
 		356180F728EC4C0C00B1835A /* CredentialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356180F628EC4C0C00B1835A /* CredentialManager.swift */; };
 		3561A1802922D1700097078B /* ItemCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561A17F2922D1700097078B /* ItemCount.swift */; };
 		3561A1822922DA6E0097078B /* ItemCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561A1812922DA6E0097078B /* ItemCountView.swift */; };
@@ -644,6 +645,7 @@
 		35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareDatasource.swift; sourceTree = "<group>"; };
 		35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteItemRevisionDatasource.swift; sourceTree = "<group>"; };
 		35610B8828ABCF1900955ACB /* ShareRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRepository.swift; sourceTree = "<group>"; };
+		35613DCD292D27900095D5A1 /* BorderedImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedImageButton.swift; sourceTree = "<group>"; };
 		356180F628EC4C0C00B1835A /* CredentialManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialManager.swift; sourceTree = "<group>"; };
 		3561A17F2922D1700097078B /* ItemCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCount.swift; sourceTree = "<group>"; };
 		3561A1812922DA6E0097078B /* ItemCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountView.swift; sourceTree = "<group>"; };
@@ -1476,6 +1478,7 @@
 			children = (
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
 				35570A8329264C2800125727 /* BannerManager.swift */,
+				35613DCD292D27900095D5A1 /* BorderedImageButton.swift */,
 				355214832915524D00BA6229 /* CopyMenuButton.swift */,
 				35690C142923EA8400F60C20 /* Color+ProtonColors.swift */,
 				354F768F28C861FF00EB2383 /* DestructiveButton.swift */,
@@ -2631,6 +2634,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35613DCE292D27900095D5A1 /* BorderedImageButton.swift in Sources */,
 				3552618D28A1511000A68477 /* UserInputContentView.swift in Sources */,
 				3542E2CD28DA11FE00194F24 /* RetryableErrorView.swift in Sources */,
 				354F769C28C90B4D00EB2383 /* MoveToTrashModifier.swift in Sources */,

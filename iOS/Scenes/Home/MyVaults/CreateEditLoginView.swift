@@ -102,28 +102,44 @@ struct CreateEditLoginView: View {
     }
 
     private var usernameInputView: some View {
-        UserInputContainerView(title: "Username",
-                               isFocused: isFocusedOnUsername) {
-            UserInputContentSingleLineWithClearButton(
-                text: $viewModel.username,
-                isFocused: $isFocusedOnUsername,
-                placeholder: "Add username",
-                onClear: { viewModel.username = "" },
-                keyboardType: .emailAddress,
-                textAutocapitalizationType: .none)
-            .opacityReduced(viewModel.isSaving)
-        }
+        UserInputContainerView(
+            title: "Username",
+            isFocused: isFocusedOnUsername,
+            content: {
+                UserInputContentSingleLineWithClearButton(
+                    text: $viewModel.username,
+                    isFocused: $isFocusedOnUsername,
+                    placeholder: "Add username",
+                    onClear: { viewModel.username = "" },
+                    keyboardType: .emailAddress,
+                    textAutocapitalizationType: .none)
+                .opacityReduced(viewModel.isSaving)
+            },
+            trailingView: {
+                BorderedImageButton(image: IconProvider.alias,
+                                    action: viewModel.generateAlias)
+                .frame(width: 48, height: 48)
+                .opacityReduced(viewModel.isSaving)
+            })
     }
 
     private var passwordInputView: some View {
-        UserInputContainerView(title: "Password",
-                               isFocused: isFocusedOnPassword) {
-            UserInputContentPasswordView(
-                text: $viewModel.password,
-                isFocused: $isFocusedOnPassword,
-                isSecure: $viewModel.isPasswordSecure)
-            .opacityReduced(viewModel.isSaving)
-        }
+        UserInputContainerView(
+            title: "Password",
+            isFocused: isFocusedOnPassword,
+            content: {
+                UserInputContentPasswordView(
+                    text: $viewModel.password,
+                    isFocused: $isFocusedOnPassword,
+                    isSecure: $viewModel.isPasswordSecure)
+                .opacityReduced(viewModel.isSaving)
+            },
+            trailingView: {
+                BorderedImageButton(image: IconProvider.arrowsRotate,
+                                    action: viewModel.generatePassword)
+                .frame(width: 48, height: 48)
+                .opacityReduced(viewModel.isSaving)
+            })
     }
 
     private var urlsInputView: some View {
