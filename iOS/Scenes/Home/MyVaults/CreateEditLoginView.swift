@@ -67,7 +67,7 @@ struct CreateEditLoginView: View {
                     isShowingDiscardAlert.toggle()
                 }
             }, label: {
-                Image(uiImage: IconProvider.cross)
+                Text("Cancel")
             })
             .foregroundColor(Color(.label))
         }
@@ -78,17 +78,14 @@ struct CreateEditLoginView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: {
+            SpinnerButton(title: "Save",
+                          disabled: !viewModel.isSaveable,
+                          spinning: viewModel.isSaving) {
                 validateUrls()
                 if invalidUrls.isEmpty {
                     viewModel.save()
                 }
-            }, label: {
-                Text("Save")
-                    .fontWeight(.bold)
-                    .foregroundColor(.interactionNorm)
-            })
-            .opacityReduced(!viewModel.isSaveable)
+            }
         }
     }
 

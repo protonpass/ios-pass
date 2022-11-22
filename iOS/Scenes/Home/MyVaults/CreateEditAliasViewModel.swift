@@ -139,9 +139,9 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func navigationBarTitle() -> String {
         switch mode {
         case .create:
-            return "Create new alias"
+            return "New alias"
         case .edit:
-            return "Edit alias"
+            return "Edit"
         }
     }
 
