@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import UIKit
 
 final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
@@ -40,5 +41,23 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
         } else {
             fatalError("Expecting login type")
         }
+    }
+
+    func copyUsername() {
+        copyToClipboard(text: username, message: "Username copied")
+    }
+
+    func copyPassword() {
+        copyToClipboard(text: password, message: "Password copied")
+    }
+
+    func showLargePassword() {
+        showLarge(password)
+    }
+
+    func openUrl(_ urlString: String) {
+        guard let url = URL(string: urlString),
+              UIApplication.shared.canOpenURL(url) else { return }
+        UIApplication.shared.open(url)
     }
 }
