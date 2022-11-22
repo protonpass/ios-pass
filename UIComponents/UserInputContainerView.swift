@@ -21,20 +21,23 @@
 import ProtonCore_UIFoundations
 import SwiftUI
 
-public struct UserInputContainerView<Content: View>: View {
+public struct UserInputContainerView<Content: View, TrailingView: View>: View {
     let title: String?
     let isFocused: Bool
     var isEditable: Bool
     let content: () -> Content
+    let trailingView: (() -> TrailingView)
 
     public init(title: String?,
                 isFocused: Bool,
                 isEditable: Bool = true,
-                @ViewBuilder content: @escaping () -> Content) {
+                @ViewBuilder content: @escaping () -> Content,
+                @ViewBuilder trailingView: @escaping (() -> TrailingView) = { EmptyView() }) {
         self.title = title
         self.isFocused = isFocused
         self.isEditable = isEditable
         self.content = content
+        self.trailingView = trailingView
     }
 
     public var body: some View {
@@ -45,15 +48,19 @@ public struct UserInputContainerView<Content: View>: View {
                     .fontWeight(.semibold)
             }
 
-            content()
-            .padding(10)
-            .background(Color.backgroundSecondary.opacity(isEditable ? 1 : 0.25))
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(isFocused ? Color.interactionNorm : .clear, lineWidth: 1)
-            )
-            .accentColor(.interactionNorm)
+            HStack {
+                content()
+                    .padding(12)
+                    .background(Color.backgroundSecondary.opacity(isEditable ? 1 : 0.25))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(isFocused ? Color.interactionNorm : .clear, lineWidth: 1)
+                    )
+                    .accentColor(.interactionNorm)
+                trailingView()
+            }
+            .frame(minHeight: 48)
         }
     }
 }

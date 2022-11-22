@@ -78,16 +78,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                    data: loginData)
     }
 
-    @objc
+    func generateAlias() {}
+
     func generatePassword() {
         onGeneratePassword?(self)
-    }
-
-    func generateAlias() {
-        let name = String.random(allowedCharacters: [.lowercase], length: 8)
-        let host = String.random(allowedCharacters: [.lowercase], length: 5)
-        let domain = String.random(allowedCharacters: [.lowercase], length: 5)
-        username = "\(name)@\(host).\(domain)"
     }
 }
 
