@@ -86,6 +86,7 @@ public struct UserInputContentSingleLineWithTrailingView<TrailingView: View>: Vi
 
             Button(action: trailingAction) {
                 trailingView()
+                    .foregroundColor(.iconHint)
             }
             .foregroundColor(.primary)
         }
@@ -122,11 +123,12 @@ public struct UserInputContentSingleLineWithClearButton: View {
             placeholder: placeholder,
             trailingView: {
                 Image(uiImage: IconProvider.crossCircleFilled)
-                    .foregroundColor(.iconHint)
                     .opacityReduced(!isFocused, reducedOpacity: 0)
                     .animation(.linear(duration: 0.1), value: isFocused)
             },
-            trailingAction: onClear)
+            trailingAction: onClear,
+            keyboardType: keyboardType,
+            textAutocapitalizationType: textAutocapitalizationType)
     }
 }
 
@@ -175,16 +177,13 @@ public struct UserInputContentPasswordView: View {
     @Binding var text: String
     @Binding var isFocused: Bool
     @Binding var isSecure: Bool
-    let onGeneratePassword: () -> Void
 
     public init(text: Binding<String>,
                 isFocused: Binding<Bool>,
-                isSecure: Binding<Bool>,
-                onGeneratePassword: @escaping () -> Void) {
+                isSecure: Binding<Bool>) {
         self._text = text
         self._isFocused = isFocused
         self._isSecure = isSecure
-        self.onGeneratePassword = onGeneratePassword
     }
 
     public var body: some View {
@@ -202,24 +201,12 @@ public struct UserInputContentPasswordView: View {
                 isSecure.toggle()
             }, label: {
                 Image(uiImage: isSecure ? IconProvider.eye : IconProvider.eyeSlash)
+                    .foregroundColor(.iconHint)
             })
             .foregroundColor(.primary)
         }
         .onReceive(Just(focusState)) { isFocused in
             self.isFocused = isFocused
-        }
-        .toolbar {
-            // Hacky solution to hide the toolbar of other TextFields on the same view
-            // https://stackoverflow.com/a/73322274
-            ToolbarItemGroup(placement: .keyboard) {
-                if focusState {
-                    Button(action: onGeneratePassword) {
-                        Text("Generate password")
-                    }
-                } else {
-                    Text("")
-                }
-            }
         }
     }
 }

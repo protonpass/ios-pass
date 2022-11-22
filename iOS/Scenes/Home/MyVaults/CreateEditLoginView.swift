@@ -104,12 +104,12 @@ struct CreateEditLoginView: View {
     private var usernameInputView: some View {
         UserInputContainerView(title: "Username",
                                isFocused: isFocusedOnUsername) {
-            UserInputContentSingleLineWithTrailingView(
+            UserInputContentSingleLineWithClearButton(
                 text: $viewModel.username,
                 isFocused: $isFocusedOnUsername,
                 placeholder: "Add username",
-                trailingView: { Image(uiImage: IconProvider.arrowsRotate) },
-                trailingAction: viewModel.generateAlias,
+                onClear: { viewModel.username = "" },
+                keyboardType: .emailAddress,
                 textAutocapitalizationType: .none)
             .opacityReduced(viewModel.isSaving)
         }
@@ -121,8 +121,7 @@ struct CreateEditLoginView: View {
             UserInputContentPasswordView(
                 text: $viewModel.password,
                 isFocused: $isFocusedOnPassword,
-                isSecure: $viewModel.isPasswordSecure,
-                onGeneratePassword: viewModel.generatePassword)
+                isSecure: $viewModel.isPasswordSecure)
             .opacityReduced(viewModel.isSaving)
         }
     }
