@@ -92,6 +92,44 @@ public struct UserInputContentSingleLineWithTrailingView<TrailingView: View>: Vi
     }
 }
 
+// swiftlint:disable:next type_name
+public struct UserInputContentSingleLineWithClearButton: View {
+    @Binding var text: String
+    @Binding var isFocused: Bool
+    let placeholder: String
+    let keyboardType: UIKeyboardType
+    let textAutocapitalizationType: UITextAutocapitalizationType
+    let onClear: () -> Void
+
+    public init(text: Binding<String>,
+                isFocused: Binding<Bool>,
+                placeholder: String,
+                onClear: @escaping () -> Void,
+                keyboardType: UIKeyboardType = .default,
+                textAutocapitalizationType: UITextAutocapitalizationType = .sentences) {
+        self._text = text
+        self._isFocused = isFocused
+        self.placeholder = placeholder
+        self.keyboardType = keyboardType
+        self.textAutocapitalizationType = textAutocapitalizationType
+        self.onClear = onClear
+    }
+
+    public var body: some View {
+        UserInputContentSingleLineWithTrailingView(
+            text: $text,
+            isFocused: $isFocused,
+            placeholder: placeholder,
+            trailingView: {
+                Image(uiImage: IconProvider.crossCircleFilled)
+                    .foregroundColor(.iconHint)
+                    .opacityReduced(!isFocused, reducedOpacity: 0)
+                    .animation(.linear(duration: 0.1), value: isFocused)
+            },
+            trailingAction: onClear)
+    }
+}
+
 public struct UserInputContentMultilineView: View {
     @Binding var text: String
     @Binding var isFocused: Bool
