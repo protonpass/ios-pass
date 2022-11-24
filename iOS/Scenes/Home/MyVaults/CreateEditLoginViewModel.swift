@@ -25,12 +25,14 @@ import SwiftUI
 protocol CreateEditLoginViewModelDelegate: AnyObject {
     func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate)
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
+    func createEditLoginViewModelDidTrashAlias()
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     @Published private(set) var isAlias = false // `Username` is an alias or a custom one
+    @Published private(set) var isTrashingAlias = false
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
@@ -92,9 +94,18 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToGeneratePassword(self)
     }
 
-    func removeAlias() {
-        username = ""
-        isAlias = false
+    @MainActor
+    func removeAlias() async {
+        defer { isTrashingAlias = false }
+        isTrashingAlias = true
+        do {
+            try await itemRepository.trashAlias(email: username)
+            username = ""
+            isAlias = false
+            createEditLoginViewModelDelegate?.createEditLoginViewModelDidTrashAlias()
+        } catch {
+            delegate?.createEditItemViewModelDidFail(error)
+        }
     }
 }
 

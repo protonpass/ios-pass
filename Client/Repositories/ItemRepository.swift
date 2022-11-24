@@ -65,6 +65,8 @@ public protocol ItemRepositoryProtocol {
 
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
+    func trashAlias(email: String) async throws
+
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws
@@ -193,6 +195,15 @@ public extension ItemRepositoryProtocol {
         let deletedCredentials = try getCredentials(from: items, state: .active)
         delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
         PPLogger.shared?.log("Delegated \(deletedCredentials.count) deleted credentials")
+    }
+
+    func trashAlias(email: String) async throws {
+        PPLogger.shared?.log("Trashing alias item \(email)")
+        guard let item = try await localItemDatasoure.getAliasItem(email: email) else {
+            PPLogger.shared?.log("Failed to trash alias item. No alias item found for \(email)")
+            return
+        }
+        try await trashItems([item])
     }
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws {
