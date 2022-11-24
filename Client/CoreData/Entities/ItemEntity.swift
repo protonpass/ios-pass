@@ -54,7 +54,11 @@ extension ItemEntity {
 }
 
 extension ItemEntity {
-    func toEncryptedItem(shareId: String) throws -> SymmetricallyEncryptedItem {
+    func toEncryptedItem() throws -> SymmetricallyEncryptedItem {
+        guard let shareID else {
+            throw CoreDataError.corrupted(object: self, property: "shareID")
+        }
+
         guard let itemID else {
             throw CoreDataError.corrupted(object: self, property: "itemID")
         }
@@ -97,7 +101,7 @@ extension ItemEntity {
                                         modifyTime: modifyTime,
                                         revisionTime: revisionTime)
 
-        return .init(shareId: shareId,
+        return .init(shareId: shareID,
                      item: itemRevision,
                      encryptedContent: symmetricallyEncryptedContent,
                      lastUsedTime: lastUsedTime,

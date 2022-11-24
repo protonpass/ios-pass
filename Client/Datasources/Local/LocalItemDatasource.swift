@@ -24,6 +24,9 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     /// Get a specific item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
+    /// Get alias item by alias email
+    func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
+
     /// Get items by state
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
@@ -63,7 +66,15 @@ public extension LocalItemDatasourceProtocol {
                 .init(format: "itemID = %@", itemId)
             ])
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try itemEntities.map { try $0.toEncryptedItem(shareId: shareId) }.first
+        return try itemEntities.map { try $0.toEncryptedItem() }.first
+    }
+
+    func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ItemEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "aliasEmail = %@", email)
+        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try itemEntities.map { try $0.toEncryptedItem() }.first
     }
 
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
@@ -75,7 +86,7 @@ public extension LocalItemDatasourceProtocol {
         ])
         fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try itemEntities.map { try $0.toEncryptedItem(shareId: shareId) }
+        return try itemEntities.map { try $0.toEncryptedItem() }
     }
 
     func getItemCount(shareId: String) async throws -> Int {
@@ -169,7 +180,7 @@ public extension LocalItemDatasourceProtocol {
         ])
         fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try itemEntities.map { try $0.toEncryptedItem(shareId: shareId) }
+        return try itemEntities.map { try $0.toEncryptedItem() }
     }
 }
 
