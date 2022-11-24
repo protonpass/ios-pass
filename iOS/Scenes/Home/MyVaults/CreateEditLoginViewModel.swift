@@ -22,9 +22,15 @@ import Client
 import Core
 import SwiftUI
 
+protocol CreateEditLoginViewModelDelegate: AnyObject {
+    func createEditLoginViewModelWantsToGenerateAlias()
+    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
+}
+
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
+    @Published private(set) var isAlias = false // `Username` is an alias or a custom one
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
@@ -32,7 +38,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var urls: [String] = [""]
     @Published var note = ""
 
-    var onGeneratePassword: ((GeneratePasswordViewModelDelegate) -> Void)?
+    weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
     private var hasNoUrls: Bool {
         urls.isEmpty || (urls.count == 1 && urls[0].isEmpty)
@@ -78,10 +84,22 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                    data: loginData)
     }
 
-    func generateAlias() {}
+    func generateAlias() {
+        createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToGenerateAlias()
+    }
 
     func generatePassword() {
-        onGeneratePassword?(self)
+        createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToGeneratePassword(self)
+    }
+
+    func setAlias(email: String) {
+        username = email
+        isAlias = true
+    }
+
+    func removeAlias() {
+        username = ""
+        isAlias = false
     }
 }
 

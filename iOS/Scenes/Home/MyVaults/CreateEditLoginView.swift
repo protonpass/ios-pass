@@ -83,7 +83,9 @@ struct CreateEditLoginView: View {
                           spinning: viewModel.isSaving) {
                 validateUrls()
                 if invalidUrls.isEmpty {
-                    viewModel.save()
+                    Task {
+                        await viewModel.save()
+                    }
                 }
             }
         }
@@ -113,13 +115,31 @@ struct CreateEditLoginView: View {
                     onClear: { viewModel.username = "" },
                     keyboardType: .emailAddress,
                     textAutocapitalizationType: .none)
-                .opacityReduced(viewModel.isSaving)
+                .opacityReduced(viewModel.isSaving || viewModel.isAlias)
             },
             trailingView: {
-                BorderedImageButton(image: IconProvider.alias,
-                                    action: viewModel.generateAlias)
-                .frame(width: 48, height: 48)
-                .opacityReduced(viewModel.isSaving)
+                if viewModel.isAlias {
+                    Menu(content: {
+                        Button(role: .destructive, action: viewModel.removeAlias) {
+                            Label(title: {
+                                Text("Remove")
+                            }, icon: {
+                                Image(uiImage: IconProvider.crossCircle)
+                            })
+                        }
+                    }, label: {
+                        BorderedImageButton(image: IconProvider.threeDotsVertical) {}
+                        .frame(width: 48, height: 48)
+                        .opacityReduced(viewModel.isSaving)
+                    })
+                    .animation(.default, value: viewModel.isAlias)
+                } else {
+                    BorderedImageButton(image: IconProvider.alias,
+                                        action: viewModel.generateAlias)
+                    .frame(width: 48, height: 48)
+                    .opacityReduced(viewModel.isSaving)
+                    .animation(.default, value: viewModel.isAlias)
+                }
             })
     }
 
