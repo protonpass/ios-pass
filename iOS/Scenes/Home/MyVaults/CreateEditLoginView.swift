@@ -27,6 +27,7 @@ struct CreateEditLoginView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
     @State private var isShowingDiscardAlert = false
+    @State private var isShowingTrashAlert = false
     @State private var isShowingTrashAliasAlert = false
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnUsername = false
@@ -48,6 +49,13 @@ struct CreateEditLoginView: View {
                     passwordInputView
                     urlsInputView
                     noteInputView
+                    if viewModel.mode.isEditMode {
+                        MoveToTrashButton {
+                            isShowingTrashAlert.toggle()
+                        }
+                        .opacityReduced(viewModel.isSaving)
+                    }
+                    Spacer()
                 }
                 .padding()
             }
@@ -56,6 +64,8 @@ struct CreateEditLoginView: View {
         }
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
+        .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
+        .onReceiveBoolean(viewModel.$isTrashed, perform: dismiss.callAsFunction)
         .alert(
             "Remove this alias",
             isPresented: $isShowingTrashAliasAlert,
