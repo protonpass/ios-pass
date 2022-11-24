@@ -383,6 +383,12 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate, mode: .createLogin)
     }
+
+    func createEditLoginViewModelDidTrashAlias() {
+        bannerManager?.displayBottomInfoMessage("Alias moved to trash")
+        vaultContentViewModel.fetchItems(forceRefresh: false)
+        onTrashedItem?()
+    }
 }
 
 // MARK: - ItemDetailViewModelDelegate

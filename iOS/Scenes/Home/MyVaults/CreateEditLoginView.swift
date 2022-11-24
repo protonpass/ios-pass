@@ -117,20 +117,28 @@ struct CreateEditLoginView: View {
             },
             trailingView: {
                 if viewModel.isAlias {
-                    Menu(content: {
-                        Button(role: .destructive, action: viewModel.removeAlias) {
-                            Label(title: {
-                                Text("Remove")
-                            }, icon: {
-                                Image(uiImage: IconProvider.crossCircle)
-                            })
-                        }
-                    }, label: {
-                        BorderedImageButton(image: IconProvider.threeDotsVertical) {}
-                        .frame(width: 48, height: 48)
-                        .opacityReduced(viewModel.isSaving)
-                    })
-                    .animation(.default, value: viewModel.isAlias)
+                    if viewModel.isTrashingAlias {
+                        ProgressView()
+                            .frame(width: 48, height: 48)
+                    } else {
+                        Menu(content: {
+                            Button(
+                                role: .destructive,
+                                action: { Task { await viewModel.removeAlias() } },
+                                label: {
+                                    Label(title: {
+                                        Text("Remove")
+                                    }, icon: {
+                                        Image(uiImage: IconProvider.crossCircle)
+                                    })
+                                })
+                        }, label: {
+                            BorderedImageButton(image: IconProvider.threeDotsVertical) {}
+                                .frame(width: 48, height: 48)
+                                .opacityReduced(viewModel.isSaving)
+                        })
+                        .animation(.default, value: viewModel.isAlias)
+                    }
                 } else {
                     BorderedImageButton(image: IconProvider.alias,
                                         action: viewModel.generateAlias)
