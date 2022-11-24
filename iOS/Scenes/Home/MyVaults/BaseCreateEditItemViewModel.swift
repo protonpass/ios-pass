@@ -152,6 +152,7 @@ class BaseCreateEditItemViewModel {
         }
     }
 
+    @MainActor
     private func editItem(oldItemContent: ItemContent) async {
         defer { isSaving = false }
         do {

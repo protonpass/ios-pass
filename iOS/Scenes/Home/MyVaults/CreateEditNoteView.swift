@@ -107,11 +107,8 @@ struct CreateEditNoteView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             SpinnerButton(title: "Save",
                           disabled: !viewModel.isSaveable,
-                          spinning: viewModel.isSaving) {
-                Task {
-                    await viewModel.save()
-                }
-            }
+                          spinning: viewModel.isSaving,
+                          action: viewModel.save)
         }
     }
 }

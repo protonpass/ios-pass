@@ -30,12 +30,12 @@ public struct SpinnerButton: View {
     let title: String
     let disabled: Bool
     let spinning: Bool
-    let action: () -> Void
+    let action: () async -> Void
 
     public init(title: String,
                 disabled: Bool,
                 spinning: Bool,
-                action: @escaping () -> Void) {
+                action: @escaping () async -> Void) {
         self.title = title
         self.disabled = disabled
         self.spinning = spinning
@@ -47,11 +47,13 @@ public struct SpinnerButton: View {
             ProgressView()
                 .animation(.default, value: spinning)
         } else {
-            Button(action: action) {
+            Button(action: {
+                Task { await action() }
+            }, label: {
                 Text(title)
                     .fontWeight(.bold)
                     .foregroundColor(.interactionNorm)
-            }
+            })
             .opacityReduced(disabled)
             .animation(.default, value: spinning)
         }

@@ -83,9 +83,7 @@ struct CreateEditLoginView: View {
                           spinning: viewModel.isSaving) {
                 validateUrls()
                 if invalidUrls.isEmpty {
-                    Task {
-                        await viewModel.save()
-                    }
+                    await viewModel.save()
                 }
             }
         }
