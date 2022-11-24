@@ -124,7 +124,7 @@ struct CreateEditLoginView: View {
                         Menu(content: {
                             Button(
                                 role: .destructive,
-                                action: { Task { await viewModel.removeAlias() } },
+                                action: viewModel.removeAlias,
                                 label: {
                                     Label(title: {
                                         Text("Remove")
