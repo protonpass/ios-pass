@@ -1,5 +1,5 @@
 //
-// Button+AsyncInitializers.swift
+// Button+ConvenientInitializers.swift
 // Proton Pass - Created on 24/11/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -27,5 +27,9 @@ public extension Button {
         self = Button(role: role,
                       action: { Task { await action() } },
                       label: label)
+    }
+
+    init(role: ButtonRole?, @ViewBuilder label: () -> Label) {
+        self = Button(role: role, action: {}, label: label)
     }
 }
