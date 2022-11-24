@@ -27,6 +27,7 @@ struct CreateEditLoginView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
     @State private var isShowingDiscardAlert = false
+    @State private var isShowingTrashAliasAlert = false
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnUsername = false
     @State private var isFocusedOnPassword = false
@@ -55,6 +56,19 @@ struct CreateEditLoginView: View {
         }
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
+        .alert(
+            "Remove this alias",
+            isPresented: $isShowingTrashAliasAlert,
+            actions: {
+                Button(role: .destructive,
+                       action: viewModel.removeAlias,
+                       label: { Text("Yes, move to trash") })
+
+                Button(role: .cancel, label: { Text("Cancel") })
+            },
+            message: {
+                Text("The alias will be moved to trash")
+            })
     }
 
     @ToolbarContentBuilder
@@ -124,7 +138,7 @@ struct CreateEditLoginView: View {
                         Menu(content: {
                             Button(
                                 role: .destructive,
-                                action: viewModel.removeAlias,
+                                action: { isShowingTrashAliasAlert.toggle() },
                                 label: {
                                     Label(title: {
                                         Text("Remove")
