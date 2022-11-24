@@ -75,7 +75,9 @@ struct GeneratePasswordView: View {
 
             Button(action: {
                 viewModel.confirm()
-                dismiss()
+                if case .createLogin = viewModel.mode {
+                    dismiss()
+                }
             }, label: {
                 Text(viewModel.mode.confirmTitle)
                     .foregroundColor(.white)

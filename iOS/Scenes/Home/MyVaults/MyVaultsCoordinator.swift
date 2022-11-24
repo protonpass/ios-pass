@@ -407,7 +407,9 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 // MARK: - GeneratePasswordViewModelDelegate
 extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
-        UIPasteboard.general.string = password
-        bannerManager?.displayBottomInfoMessage("Password copied")
+        dismissTopMostViewController { [unowned self] in
+            UIPasteboard.general.string = password
+            self.bannerManager?.displayBottomInfoMessage("Password copied")
+        }
     }
 }
