@@ -38,6 +38,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
+    private var currentCreateEditLoginViewModel: CreateEditLoginViewModel?
 
     weak var itemCountDelegate: ItemCountDelegate? {
         didSet {
@@ -122,12 +123,11 @@ final class MyVaultsCoordinator: Coordinator {
         let viewModel = CreateEditLoginViewModel(mode: mode,
                                                  itemRepository: itemRepository)
         viewModel.delegate = self
-        viewModel.onGeneratePassword = { [unowned self] in
-            showGeneratePasswordView(delegate: $0, mode: .createLogin)
-        }
+        viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
         presentView(view)
         currentCreateEditItemViewModel = viewModel
+        currentCreateEditLoginViewModel = viewModel
     }
 
     private func showCreateEditAliasView(mode: ItemMode) {
@@ -136,6 +136,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                  aliasRepository: aliasRepository)
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
+        viewModel.aliasCreationDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
         presentView(view)
         currentCreateEditItemViewModel = viewModel
@@ -368,6 +369,25 @@ extension MyVaultsCoordinator: CreateEditAliasViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         presentViewController(viewController, dismissible: true)
+    }
+}
+
+// MARK: - CreateEditLoginViewModelDelegate
+extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
+    func createEditLoginViewModelWantsToGenerateAlias() {
+        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
+        showCreateEditAliasView(mode: .create(shareId: shareId, alias: true))
+    }
+
+    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
+        showGeneratePasswordView(delegate: delegate, mode: .createLogin)
+    }
+}
+
+// MARK: - AliasCreationDelegate
+extension MyVaultsCoordinator: AliasCreationDelegate {
+    func aliasCreationDidFinish(email: String) {
+        currentCreateEditLoginViewModel?.setAlias(email: email)
     }
 }
 

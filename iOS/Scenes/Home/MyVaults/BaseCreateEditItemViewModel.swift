@@ -95,17 +95,18 @@ class BaseCreateEditItemViewModel {
 
     func generateAliasCreationInfo() -> AliasCreationInfo? { nil }
 
-    func save() {
+    @MainActor
+    func save() async {
         switch mode {
         case let .create(shareId, alias):
             if alias {
-                createAliasItem(shareId: shareId)
+                await createAliasItem(shareId: shareId)
             } else {
-                createItem(shareId: shareId)
+                await createItem(shareId: shareId)
             }
 
         case .edit(let oldItemContent):
-            editItem(oldItemContent: oldItemContent)
+            await editItem(oldItemContent: oldItemContent)
         }
     }
 
@@ -126,53 +127,49 @@ class BaseCreateEditItemViewModel {
         }
     }
 
-    private func createItem(shareId: String) {
-        Task { @MainActor in
-            defer { isSaving = false }
-            do {
-                isSaving = true
-                try await createItemTask(shareId: shareId).value
-                delegate?.createEditItemViewModelDidCreateItem(itemContentType())
-            } catch {
-                delegate?.createEditItemViewModelDidFail(error)
-            }
+    @MainActor
+    private func createItem(shareId: String) async {
+        defer { isSaving = false }
+        do {
+            isSaving = true
+            try await createItemTask(shareId: shareId).value
+            delegate?.createEditItemViewModelDidCreateItem(itemContentType())
+        } catch {
+            delegate?.createEditItemViewModelDidFail(error)
         }
     }
 
-    private func createAliasItem(shareId: String) {
+    @MainActor
+    private func createAliasItem(shareId: String) async {
         guard let info = generateAliasCreationInfo() else { return }
-        Task { @MainActor in
-            defer { isSaving = false }
-            do {
-                isSaving = true
-                try await createAliasItemTask(shareId: shareId, info: info).value
-                delegate?.createEditItemViewModelDidCreateItem(itemContentType())
-            } catch {
-                delegate?.createEditItemViewModelDidFail(error)
-            }
+        defer { isSaving = false }
+        do {
+            isSaving = true
+            try await createAliasItemTask(shareId: shareId, info: info).value
+            delegate?.createEditItemViewModelDidCreateItem(itemContentType())
+        } catch {
+            delegate?.createEditItemViewModelDidFail(error)
         }
     }
 
-    private func editItem(oldItemContent: ItemContent) {
-        Task { @MainActor in
-            defer { isSaving = false }
-            do {
-                let shareId = oldItemContent.shareId
-                let itemId = oldItemContent.itemId
-                isSaving = true
-                try await additionalEdit()
-                guard let oldItem = try await itemRepository.getItemTask(shareId: shareId,
-                                                                         itemId: itemId).value else {
-                    return
-                }
-                let newItemContentProtobuf = generateItemContent()
-                try await updateItemTask(oldItem: oldItem.item,
-                                         newItemContent: newItemContentProtobuf,
-                                         shareId: shareId).value
-                delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
-            } catch {
-                delegate?.createEditItemViewModelDidFail(error)
+    private func editItem(oldItemContent: ItemContent) async {
+        defer { isSaving = false }
+        do {
+            let shareId = oldItemContent.shareId
+            let itemId = oldItemContent.itemId
+            isSaving = true
+            try await additionalEdit()
+            guard let oldItem = try await itemRepository.getItemTask(shareId: shareId,
+                                                                     itemId: itemId).value else {
+                return
             }
+            let newItemContentProtobuf = generateItemContent()
+            try await updateItemTask(oldItem: oldItem.item,
+                                     newItemContent: newItemContentProtobuf,
+                                     shareId: shareId).value
+            delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
+        } catch {
+            delegate?.createEditItemViewModelDidFail(error)
         }
     }
 }
