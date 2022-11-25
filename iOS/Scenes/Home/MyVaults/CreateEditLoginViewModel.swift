@@ -63,6 +63,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             self.password = password
             if !urls.isEmpty { self.urls = urls }
             self.note = itemContent.note
+
+            Task { @MainActor in
+                let aliasItem = try await itemRepository.getAliasItem(email: username)
+                self.isAlias = aliasItem != nil
+            }
         }
     }
 

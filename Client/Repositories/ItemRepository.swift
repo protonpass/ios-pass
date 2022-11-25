@@ -44,6 +44,9 @@ public protocol ItemRepositoryProtocol {
     /// Get a specific Item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
+    /// Get alias item by alias email
+    func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
+
     func getDecryptedItemContent(shareId: String, itemId: String) async throws -> ItemContent?
 
     /// Get items of all shares by state
@@ -125,6 +128,10 @@ public extension ItemRepositoryProtocol {
         let count = localItems.count
         PPLogger.shared?.log("Found \(count) \(stateDescription) items in local database")
         return localItems
+    }
+
+    func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
+        try await localItemDatasoure.getAliasItem(email: email)
     }
 
     func getItems(forceRefresh: Bool, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
