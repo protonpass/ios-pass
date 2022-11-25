@@ -65,6 +65,10 @@ final class MailboxSelection: ObservableObject {
     }
 }
 
+protocol AliasCreationDelegate: AnyObject {
+    func aliasCreationDidFinish(email: String)
+}
+
 protocol CreateEditAliasViewModelDelegate: AnyObject {
     func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection)
 }
@@ -107,6 +111,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var mailboxSelection: MailboxSelection?
     let aliasRepository: AliasRepositoryProtocol
 
+    weak var aliasCreationDelegate: AliasCreationDelegate?
     weak var createEditAliasViewModelDelegate: CreateEditAliasViewModelDelegate?
 
     var isEmpty: Bool {
@@ -139,9 +144,9 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func navigationBarTitle() -> String {
         switch mode {
         case .create:
-            return "Create new alias"
+            return "New alias"
         case .edit:
-            return "Edit alias"
+            return "Edit"
         }
     }
 
@@ -168,6 +173,13 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                               itemId: itemContent.itemId,
                                               mailboxIDs: mailboxIds).value
         }
+    }
+
+    @MainActor
+    override func save() async {
+        await super.save()
+        guard let selectedSuffix = suffixSelection?.selectedSuffix else { return }
+        aliasCreationDelegate?.aliasCreationDidFinish(email: prefix + selectedSuffix.suffix)
     }
 
     private func validatePrefix() {

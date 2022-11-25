@@ -81,8 +81,18 @@ open class Coordinator {
                                       animated: Bool = true,
                                       dismissible: Bool = false) {
         viewController.isModalInPresentation = !dismissible
-        if let presentedViewController = navigationController.presentedViewController {
-            presentedViewController.present(viewController, animated: animated)
+
+        var topMostPresentedViewController = navigationController.presentedViewController
+
+        while true {
+            guard let vc = topMostPresentedViewController?.presentedViewController else {
+                break
+            }
+            topMostPresentedViewController = vc
+        }
+
+        if let topMostPresentedViewController {
+            topMostPresentedViewController.present(viewController, animated: animated)
         } else {
             navigationController.present(viewController, animated: animated)
         }

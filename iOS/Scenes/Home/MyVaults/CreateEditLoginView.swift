@@ -27,6 +27,8 @@ struct CreateEditLoginView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
     @State private var isShowingDiscardAlert = false
+    @State private var isShowingTrashAlert = false
+    @State private var isShowingTrashAliasAlert = false
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnUsername = false
     @State private var isFocusedOnPassword = false
@@ -47,6 +49,13 @@ struct CreateEditLoginView: View {
                     passwordInputView
                     urlsInputView
                     noteInputView
+                    if viewModel.mode.isEditMode {
+                        MoveToTrashButton {
+                            isShowingTrashAlert.toggle()
+                        }
+                        .opacityReduced(viewModel.isSaving)
+                    }
+                    Spacer()
                 }
                 .padding()
             }
@@ -55,6 +64,21 @@ struct CreateEditLoginView: View {
         }
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
+        .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
+        .onReceiveBoolean(viewModel.$isTrashed, perform: dismiss.callAsFunction)
+        .alert(
+            "Remove this alias",
+            isPresented: $isShowingTrashAliasAlert,
+            actions: {
+                Button(role: .destructive,
+                       action: viewModel.removeAlias,
+                       label: { Text("Yes, move to trash") })
+
+                Button(role: .cancel, label: { Text("Cancel") })
+            },
+            message: {
+                Text("The alias will be moved to trash")
+            })
     }
 
     @ToolbarContentBuilder
@@ -67,7 +91,7 @@ struct CreateEditLoginView: View {
                     isShowingDiscardAlert.toggle()
                 }
             }, label: {
-                Image(uiImage: IconProvider.cross)
+                Text("Cancel")
             })
             .foregroundColor(Color(.label))
         }
@@ -78,55 +102,94 @@ struct CreateEditLoginView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: {
+            SpinnerButton(title: "Save",
+                          disabled: !viewModel.isSaveable,
+                          spinning: viewModel.isSaving) {
                 validateUrls()
                 if invalidUrls.isEmpty {
-                    viewModel.save()
+                    await viewModel.save()
                 }
-            }, label: {
-                Text("Save")
-                    .fontWeight(.bold)
-                    .foregroundColor(.interactionNorm)
-            })
-            .opacityReduced(!viewModel.isSaveable)
+            }
         }
     }
 
     private var loginInputView: some View {
         UserInputContainerView(title: "Title",
                                isFocused: isFocusedOnTitle) {
-            UserInputContentSingleLineView(
+            UserInputContentSingleLineWithClearButton(
                 text: $viewModel.title,
                 isFocused: $isFocusedOnTitle,
-                placeholder: "Login name")
+                placeholder: "Login title",
+                onClear: { viewModel.title = "" })
             .opacityReduced(viewModel.isSaving)
         }
     }
 
     private var usernameInputView: some View {
-        UserInputContainerView(title: "Username",
-                               isFocused: isFocusedOnUsername) {
-            UserInputContentSingleLineWithTrailingView(
-                text: $viewModel.username,
-                isFocused: $isFocusedOnUsername,
-                placeholder: "Add username",
-                trailingView: { Image(uiImage: IconProvider.arrowsRotate) },
-                trailingAction: viewModel.generateAlias,
-                textAutocapitalizationType: .none)
-            .opacityReduced(viewModel.isSaving)
-        }
+        UserInputContainerView(
+            title: "Username",
+            isFocused: isFocusedOnUsername,
+            content: {
+                UserInputContentSingleLineWithClearButton(
+                    text: $viewModel.username,
+                    isFocused: $isFocusedOnUsername,
+                    placeholder: "Add username",
+                    onClear: { viewModel.username = "" },
+                    keyboardType: .emailAddress,
+                    textAutocapitalizationType: .none)
+                .opacityReduced(viewModel.isSaving || viewModel.isAlias)
+            },
+            trailingView: {
+                if viewModel.isAlias {
+                    if viewModel.isTrashingAlias {
+                        ProgressView()
+                            .frame(width: 48, height: 48)
+                    } else {
+                        Menu(content: {
+                            Button(
+                                role: .destructive,
+                                action: { isShowingTrashAliasAlert.toggle() },
+                                label: {
+                                    Label(title: {
+                                        Text("Remove")
+                                    }, icon: {
+                                        Image(uiImage: IconProvider.crossCircle)
+                                    })
+                                })
+                        }, label: {
+                            BorderedImageButton(image: IconProvider.threeDotsVertical) {}
+                                .frame(width: 48, height: 48)
+                                .opacityReduced(viewModel.isSaving)
+                        })
+                        .animation(.default, value: viewModel.isAlias)
+                    }
+                } else {
+                    BorderedImageButton(image: IconProvider.alias,
+                                        action: viewModel.generateAlias)
+                    .frame(width: 48, height: 48)
+                    .opacityReduced(viewModel.isSaving)
+                    .animation(.default, value: viewModel.isAlias)
+                }
+            })
     }
 
     private var passwordInputView: some View {
-        UserInputContainerView(title: "Password",
-                               isFocused: isFocusedOnPassword) {
-            UserInputContentPasswordView(
-                text: $viewModel.password,
-                isFocused: $isFocusedOnPassword,
-                isSecure: $viewModel.isPasswordSecure,
-                onGeneratePassword: viewModel.generatePassword)
-            .opacityReduced(viewModel.isSaving)
-        }
+        UserInputContainerView(
+            title: "Password",
+            isFocused: isFocusedOnPassword,
+            content: {
+                UserInputContentPasswordView(
+                    text: $viewModel.password,
+                    isFocused: $isFocusedOnPassword,
+                    isSecure: $viewModel.isPasswordSecure)
+                .opacityReduced(viewModel.isSaving)
+            },
+            trailingView: {
+                BorderedImageButton(image: IconProvider.arrowsRotate,
+                                    action: viewModel.generatePassword)
+                .frame(width: 48, height: 48)
+                .opacityReduced(viewModel.isSaving)
+            })
     }
 
     private var urlsInputView: some View {

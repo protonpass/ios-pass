@@ -80,6 +80,26 @@ extension LocalItemDatasourceTests {
         waitForExpectations(timeout: expectationTimeOut)
     }
 
+    func testGetAliasItem() async throws {
+        // Given
+        let givenShareId = String.random()
+        let givenItemId = String.random()
+        let givenAliasEmail = String.random()
+        let givenInsertedItem = try await sut.givenInsertedItem(itemId: givenItemId,
+                                                                shareId: givenShareId,
+                                                                aliasEmail: givenAliasEmail)
+
+        // When
+        for _ in 0...10 {
+            try await sut.upsertItems(.random(randomElement: .random()))
+        }
+
+        // Then
+        let item = try await sut.getAliasItem(email: givenAliasEmail)
+        let nonNilItem = try XCTUnwrap(item)
+        assertEqual(nonNilItem, givenInsertedItem)
+    }
+
     func testInsertItems() throws {
         continueAfterFailure = false
         let expectation = expectation(description: #function)
@@ -403,6 +423,7 @@ extension LocalItemDatasource {
                            shareId: String? = nil,
                            state: ItemState? = nil,
                            encryptedContent: String? = nil,
+                           aliasEmail: String? = nil,
                            modifyTime: Int64 = .random(in: 1_234_567...1_987_654),
                            lastUsedItem: Int64 = .random(in: 1_234_567...1_987_654),
                            isLogInItem: Bool = .random())
@@ -410,6 +431,7 @@ extension LocalItemDatasource {
         let shareId = shareId ?? .random()
         let itemRevision = ItemRevision.random(itemId: itemId ?? .random(),
                                                state: state,
+                                               aliasEmail: aliasEmail,
                                                modifyTime: modifyTime)
         let encryptedContent = encryptedContent ?? .random()
         let item = SymmetricallyEncryptedItem(shareId: shareId,

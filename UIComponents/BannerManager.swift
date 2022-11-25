@@ -29,7 +29,14 @@ public final class BannerManager {
 
     public func display(message: String, at position: PMBannerPosition, style: PMBannerNewStyle) {
         let banner = PMBanner(message: message, style: style)
-        banner.show(at: position, on: container)
+        let viewController: UIViewController
+        if let presentedViewController = container.presentedViewController,
+           !presentedViewController.isBeingDismissed {
+            viewController = presentedViewController
+        } else {
+            viewController = container
+        }
+        banner.show(at: position, on: viewController)
     }
 
     public func displayBottomSuccessMessage(_ message: String) {

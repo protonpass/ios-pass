@@ -27,7 +27,7 @@ struct CreateEditNoteView: View {
     @StateObject private var viewModel: CreateEditNoteViewModel
     @State private var isShowingTrashAlert = false
     @State private var isShowingDiscardAlert = false
-    @State private var isFocusedOnName = false
+    @State private var isFocusedOnTitle = false
     @State private var isFocusedOnNote = false
 
     init(viewModel: CreateEditNoteViewModel) {
@@ -63,12 +63,13 @@ struct CreateEditNoteView: View {
     }
 
     private var nameInputView: some View {
-        UserInputContainerView(title: "Note name",
-                               isFocused: isFocusedOnName) {
-            UserInputContentSingleLineView(
+        UserInputContainerView(title: "Title",
+                               isFocused: isFocusedOnTitle) {
+            UserInputContentSingleLineWithClearButton(
                 text: $viewModel.name,
-                isFocused: $isFocusedOnName,
-                placeholder: "Title")
+                isFocused: $isFocusedOnTitle,
+                placeholder: "Title",
+                onClear: { viewModel.name = "" })
             .opacityReduced(viewModel.isSaving)
         }
     }

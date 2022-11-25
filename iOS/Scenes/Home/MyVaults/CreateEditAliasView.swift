@@ -111,10 +111,11 @@ struct CreateEditAliasView: View {
     private var titleInputView: some View {
         UserInputContainerView(title: "Title",
                                isFocused: isFocusedOnTitle) {
-            UserInputContentSingleLineView(
+            UserInputContentSingleLineWithClearButton(
                 text: $viewModel.title,
                 isFocused: $isFocusedOnTitle,
-                placeholder: "Alias name")
+                placeholder: "Alias title",
+                onClear: { viewModel.title = "" })
             .opacityReduced(viewModel.isSaving)
         }
     }
@@ -132,17 +133,11 @@ struct CreateEditAliasView: View {
         VStack {
             UserInputContainerView(title: "Alias",
                                    isFocused: isFocusedOnPrefix) {
-                UserInputContentSingleLineWithTrailingView(
+                UserInputContentSingleLineWithClearButton(
                     text: $viewModel.prefix,
                     isFocused: $isFocusedOnPrefix,
-                    placeholder: "Prefix",
-                    trailingView: {
-                        Image(uiImage: IconProvider.crossCircleFilled)
-                        .foregroundColor(.secondary)
-                        .opacityReduced(!isFocusedOnPrefix, reducedOpacity: 0)
-                        .animation(.linear(duration: 0.1), value: isFocusedOnPrefix)
-                    },
-                    trailingAction: { viewModel.prefix = "" },
+                    placeholder: "Custom prefix",
+                    onClear: { viewModel.prefix = "" },
                     textAutocapitalizationType: .none)
                 .opacityReduced(viewModel.isSaving)
             }
