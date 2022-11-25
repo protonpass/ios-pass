@@ -22,7 +22,6 @@
 import XCTest
 
 final class LocalShareEventIDDatasourceTests: XCTestCase {
-    let expectationTimeOut: TimeInterval = 3
     var sut: LocalShareEventIDDatasource!
 
     override func setUp() {
@@ -38,95 +37,81 @@ final class LocalShareEventIDDatasourceTests: XCTestCase {
 }
 
 extension LocalShareEventIDDatasourceTests {
-    func testUpsertLastEventId() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let userId = String.random()
-            let shareId = String.random()
+    func testUpsertLastEventId() async throws {
+        // Given
+        let userId = String.random()
+        let shareId = String.random()
 
-            // When
-            let eventId0 = try await sut.getLastEventId(userId: userId, shareId: shareId)
+        // When
+        let eventId0 = try await sut.getLastEventId(userId: userId, shareId: shareId)
 
-            // Then
-            XCTAssertNil(eventId0)
+        // Then
+        XCTAssertNil(eventId0)
 
-            // Given
-            let givenEventId1 = String.random()
+        // Given
+        let givenEventId1 = String.random()
 
-            // When
-            try await sut.upsertLastEventId(userId: userId,
-                                            shareId: shareId,
-                                            lastEventId: givenEventId1)
+        // When
+        try await sut.upsertLastEventId(userId: userId,
+                                        shareId: shareId,
+                                        lastEventId: givenEventId1)
 
-            // Then
-            let eventId1 = try await sut.getLastEventId(userId: userId, shareId: shareId)
-            let notNilEventId1 = try XCTUnwrap(eventId1)
-            XCTAssertEqual(notNilEventId1, givenEventId1)
+        // Then
+        let eventId1 = try await sut.getLastEventId(userId: userId, shareId: shareId)
+        let notNilEventId1 = try XCTUnwrap(eventId1)
+        XCTAssertEqual(notNilEventId1, givenEventId1)
 
-            // Given
-            let givenEventId2 = String.random()
+        // Given
+        let givenEventId2 = String.random()
 
-            // When
-            try await sut.upsertLastEventId(userId: userId,
-                                            shareId: shareId,
-                                            lastEventId: givenEventId2)
+        // When
+        try await sut.upsertLastEventId(userId: userId,
+                                        shareId: shareId,
+                                        lastEventId: givenEventId2)
 
-            // Then
-            let eventId2 = try await sut.getLastEventId(userId: userId, shareId: shareId)
-            let notNitEventId2 = try XCTUnwrap(eventId2)
-            XCTAssertEqual(notNitEventId2, givenEventId2)
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
+        // Then
+        let eventId2 = try await sut.getLastEventId(userId: userId, shareId: shareId)
+        let notNitEventId2 = try XCTUnwrap(eventId2)
+        XCTAssertEqual(notNitEventId2, givenEventId2)
     }
 
-    func testRemoveAllEntries() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let userId1 = String.random()
-            let shareId1 = String.random()
-            try await sut.upsertLastEventId(userId: userId1,
-                                            shareId: shareId1,
-                                            lastEventId: .random())
-            let shareId2 = String.random()
-            try await sut.upsertLastEventId(userId: userId1,
-                                            shareId: shareId2,
-                                            lastEventId: .random())
+    func testRemoveAllEntries() async throws {
+        // Given
+        let userId1 = String.random()
+        let shareId1 = String.random()
+        try await sut.upsertLastEventId(userId: userId1,
+                                        shareId: shareId1,
+                                        lastEventId: .random())
+        let shareId2 = String.random()
+        try await sut.upsertLastEventId(userId: userId1,
+                                        shareId: shareId2,
+                                        lastEventId: .random())
 
-            let userId2 = String.random()
-            let shareId3 = String.random()
-            try await sut.upsertLastEventId(userId: userId2,
-                                            shareId: shareId3,
-                                            lastEventId: .random())
+        let userId2 = String.random()
+        let shareId3 = String.random()
+        try await sut.upsertLastEventId(userId: userId2,
+                                        shareId: shareId3,
+                                        lastEventId: .random())
 
-            let shareId4 = String.random()
-            try await sut.upsertLastEventId(userId: userId2,
-                                            shareId: shareId4,
-                                            lastEventId: .random())
+        let shareId4 = String.random()
+        try await sut.upsertLastEventId(userId: userId2,
+                                        shareId: shareId4,
+                                        lastEventId: .random())
 
-            // When
-            try await sut.removeAllEntries(userId: userId1)
+        // When
+        try await sut.removeAllEntries(userId: userId1)
 
-            // Then
-            let eventId1 = try await sut.getLastEventId(userId: userId1, shareId: shareId1)
-            XCTAssertNil(eventId1)
+        // Then
+        let eventId1 = try await sut.getLastEventId(userId: userId1, shareId: shareId1)
+        XCTAssertNil(eventId1)
 
-            let eventId2 = try await sut.getLastEventId(userId: userId1, shareId: shareId2)
-            XCTAssertNil(eventId2)
+        let eventId2 = try await sut.getLastEventId(userId: userId1, shareId: shareId2)
+        XCTAssertNil(eventId2)
 
-            let eventId3 = try await sut.getLastEventId(userId: userId2, shareId: shareId3)
-            XCTAssertNotNil(eventId3)
+        let eventId3 = try await sut.getLastEventId(userId: userId2, shareId: shareId3)
+        XCTAssertNotNil(eventId3)
 
-            let eventId4 = try await sut.getLastEventId(userId: userId2, shareId: shareId4)
-            XCTAssertNotNil(eventId4)
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
+        let eventId4 = try await sut.getLastEventId(userId: userId2, shareId: shareId4)
+        XCTAssertNotNil(eventId4)
     }
 }
