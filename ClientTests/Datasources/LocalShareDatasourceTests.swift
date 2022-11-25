@@ -22,7 +22,6 @@
 import XCTest
 
 final class LocalShareDatasourceTests: XCTestCase {
-    let expectationTimeOut: TimeInterval = 3
     var sut: LocalShareDatasource!
 
     override func setUp() {
@@ -66,145 +65,111 @@ final class LocalShareDatasourceTests: XCTestCase {
 }
 
 extension LocalShareDatasourceTests {
-    func testGetAllShares() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let givenShares = [Share].random(randomElement: .random())
-            let givenUserId = String.random()
+    func testGetAllShares() async throws {
+        // Given
+        let givenShares = [Share].random(randomElement: .random())
+        let givenUserId = String.random()
 
-            // When
-            try await sut.upsertShares(givenShares, userId: givenUserId)
-            // Populate the database with arbitrary shares
-            // this is to test if fetching shares by userId correctly work
-            for _ in 0...10 {
-                try await sut.upsertShares([.random()], userId: .random())
-            }
-
-            // Then
-            let shares = try await sut.getAllShares(userId: givenUserId)
-            let shareIds = Set(shares.map { $0.shareID })
-            let givenShareIds = Set(givenShares.map { $0.shareID })
-            if shareIds == givenShareIds {
-                expectation.fulfill()
-            }
+        // When
+        try await sut.upsertShares(givenShares, userId: givenUserId)
+        // Populate the database with arbitrary shares
+        // this is to test if fetching shares by userId correctly work
+        for _ in 0...10 {
+            try await sut.upsertShares([.random()], userId: .random())
         }
-        waitForExpectations(timeout: expectationTimeOut)
+
+        // Then
+        let shares = try await sut.getAllShares(userId: givenUserId)
+        let shareIds = Set(shares.map { $0.shareID })
+        let givenShareIds = Set(givenShares.map { $0.shareID })
+        XCTAssertEqual(shareIds, givenShareIds)
     }
 
-    func testGetShare() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let givenUserId = String.random()
-            let givenInsertedShare = try await sut.givenInsertedShare(userId: givenUserId)
+    func testGetShare() async throws {
+        // Given
+        let givenUserId = String.random()
+        let givenInsertedShare = try await sut.givenInsertedShare(userId: givenUserId)
 
-            // When
-            for _ in 0...10 {
-                try await sut.upsertShares([.random()], userId: givenUserId)
-            }
-
-            let share = try await sut.getShare(userId: givenUserId,
-                                               shareId: givenInsertedShare.shareID)
-            XCTAssertNotNil(share)
-            let nonNilShare = try XCTUnwrap(share)
-            assertEqual(nonNilShare, givenInsertedShare)
-            expectation.fulfill()
+        // When
+        for _ in 0...10 {
+            try await sut.upsertShares([.random()], userId: givenUserId)
         }
-        waitForExpectations(timeout: expectationTimeOut)
+
+        let share = try await sut.getShare(userId: givenUserId,
+                                           shareId: givenInsertedShare.shareID)
+        XCTAssertNotNil(share)
+        let nonNilShare = try XCTUnwrap(share)
+        assertEqual(nonNilShare, givenInsertedShare)
     }
 
-    func testInsertShares() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let firstShares = [Share].random(randomElement: .random())
-            let secondShares = [Share].random(randomElement: .random())
-            let thirdShares = [Share].random(randomElement: .random())
-            let givenShares = firstShares + secondShares + thirdShares
-            let givenUserId = String.random()
+    func testInsertShares() async throws {
+        // Given
+        let firstShares = [Share].random(randomElement: .random())
+        let secondShares = [Share].random(randomElement: .random())
+        let thirdShares = [Share].random(randomElement: .random())
+        let givenShares = firstShares + secondShares + thirdShares
+        let givenUserId = String.random()
 
-            // When
-            try await sut.upsertShares(firstShares, userId: givenUserId)
-            try await sut.upsertShares(secondShares, userId: givenUserId)
-            try await sut.upsertShares(thirdShares, userId: givenUserId)
+        // When
+        try await sut.upsertShares(firstShares, userId: givenUserId)
+        try await sut.upsertShares(secondShares, userId: givenUserId)
+        try await sut.upsertShares(thirdShares, userId: givenUserId)
 
-            // Then
-            let shares = try await sut.getAllShares(userId: givenUserId)
-            XCTAssertEqual(shares.count, givenShares.count)
+        // Then
+        let shares = try await sut.getAllShares(userId: givenUserId)
+        XCTAssertEqual(shares.count, givenShares.count)
 
-            let shareIds = Set(shares.map { $0.shareID })
-            let givenShareIds = Set(givenShares.map { $0.shareID })
-            XCTAssertEqual(shareIds, givenShareIds)
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
+        let shareIds = Set(shares.map { $0.shareID })
+        let givenShareIds = Set(givenShares.map { $0.shareID })
+        XCTAssertEqual(shareIds, givenShareIds)
     }
 
-    func testUpdateShares() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let givenUserId = String.random()
-            let insertedShare = try await sut.givenInsertedShare(userId: givenUserId)
-            // Only copy the shareId from givenShare
-            let updatedShare = Share.random(shareId: insertedShare.shareID)
+    func testUpdateShares() async throws {
+        // Given
+        let givenUserId = String.random()
+        let insertedShare = try await sut.givenInsertedShare(userId: givenUserId)
+        // Only copy the shareId from givenShare
+        let updatedShare = Share.random(shareId: insertedShare.shareID)
 
-            // When
-            try await sut.upsertShares([updatedShare], userId: givenUserId)
+        // When
+        try await sut.upsertShares([updatedShare], userId: givenUserId)
 
-            // Then
-            let shares = try await sut.getAllShares(userId: givenUserId)
-            XCTAssertEqual(shares.count, 1)
+        // Then
+        let shares = try await sut.getAllShares(userId: givenUserId)
+        XCTAssertEqual(shares.count, 1)
 
-            let share = try XCTUnwrap(shares.first)
-            assertEqual(share, updatedShare)
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
+        let share = try XCTUnwrap(shares.first)
+        assertEqual(share, updatedShare)
     }
 
-    func testRemoveAllShares() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let givenFirstUserId = String.random()
-            let givenFirstUserShares = [Share].random(randomElement: .random())
+    func testRemoveAllShares() async throws {
+        // Given
+        let givenFirstUserId = String.random()
+        let givenFirstUserShares = [Share].random(randomElement: .random())
 
-            let givenSecondUserId = String.random()
-            let givenSecondUserShares = [Share].random(randomElement: .random())
+        let givenSecondUserId = String.random()
+        let givenSecondUserShares = [Share].random(randomElement: .random())
 
-            // When
-            try await sut.upsertShares(givenFirstUserShares, userId: givenFirstUserId)
-            try await sut.upsertShares(givenSecondUserShares, userId: givenSecondUserId)
+        // When
+        try await sut.upsertShares(givenFirstUserShares, userId: givenFirstUserId)
+        try await sut.upsertShares(givenSecondUserShares, userId: givenSecondUserId)
 
-            // Then
-            let firstUserSharesFirstGet = try await sut.getAllShares(userId: givenFirstUserId)
-            XCTAssertEqual(firstUserSharesFirstGet.count, givenFirstUserShares.count)
+        // Then
+        let firstUserSharesFirstGet = try await sut.getAllShares(userId: givenFirstUserId)
+        XCTAssertEqual(firstUserSharesFirstGet.count, givenFirstUserShares.count)
 
-            let secondUserSharesFirstGet = try await sut.getAllShares(userId: givenSecondUserId)
-            XCTAssertEqual(secondUserSharesFirstGet.count, givenSecondUserShares.count)
+        let secondUserSharesFirstGet = try await sut.getAllShares(userId: givenSecondUserId)
+        XCTAssertEqual(secondUserSharesFirstGet.count, givenSecondUserShares.count)
 
-            // When
-            try await sut.removeAllShares(userId: givenFirstUserId)
+        // When
+        try await sut.removeAllShares(userId: givenFirstUserId)
 
-            // Then
-            let firstUserSharesSecondGet = try await sut.getAllShares(userId: givenFirstUserId)
-            XCTAssertTrue(firstUserSharesSecondGet.isEmpty)
+        // Then
+        let firstUserSharesSecondGet = try await sut.getAllShares(userId: givenFirstUserId)
+        XCTAssertTrue(firstUserSharesSecondGet.isEmpty)
 
-            let secondUserSharesSecondGet = try await sut.getAllShares(userId: givenSecondUserId)
-            XCTAssertEqual(secondUserSharesSecondGet.count, givenSecondUserShares.count)
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
+        let secondUserSharesSecondGet = try await sut.getAllShares(userId: givenSecondUserId)
+        XCTAssertEqual(secondUserSharesSecondGet.count, givenSecondUserShares.count)
     }
 }
 

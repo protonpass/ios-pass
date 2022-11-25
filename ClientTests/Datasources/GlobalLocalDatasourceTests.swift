@@ -23,7 +23,6 @@ import XCTest
 
 // swiftlint:disable function_body_length
 final class GlobalLocalDatasourceTests: XCTestCase {
-    let expectationTimeOut: TimeInterval = 10
     var sut: GlobalLocalDatasource!
 
     override func setUp() {
@@ -39,105 +38,98 @@ final class GlobalLocalDatasourceTests: XCTestCase {
 }
 
 extension GlobalLocalDatasourceTests {
-    func testRemoveAllData() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            // First set of data
-            let firstUserId = String.random()
-            let firstShareIds = [String].random(randomElement: .random())
-            let firstItemCount = Int.random(in: 100...500)
-            try await populateData(userId: firstUserId,
-                                   shareIds: firstShareIds,
-                                   itemCount: firstItemCount)
+    func testRemoveAllData() async throws {
+        // Given
+        // First set of data
+        let firstUserId = String.random()
+        let firstShareIds = [String].random(randomElement: .random())
+        let firstItemCount = Int.random(in: 100...500)
+        try await populateData(userId: firstUserId,
+                               shareIds: firstShareIds,
+                               itemCount: firstItemCount)
 
-            let firstSharesFirstGet =
-            try await sut.localShareDatasource.getAllShares(userId: firstUserId)
-            XCTAssertEqual(firstSharesFirstGet.count, firstShareIds.count)
+        let firstSharesFirstGet =
+        try await sut.localShareDatasource.getAllShares(userId: firstUserId)
+        XCTAssertEqual(firstSharesFirstGet.count, firstShareIds.count)
 
-            for shareId in firstShareIds {
-                let itemKeys =
-                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
-                XCTAssertFalse(itemKeys.isEmpty)
+        for shareId in firstShareIds {
+            let itemKeys =
+            try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
+            XCTAssertFalse(itemKeys.isEmpty)
 
-                let vaultKeys =
-                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
-                XCTAssertFalse(vaultKeys.isEmpty)
+            let vaultKeys =
+            try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
+            XCTAssertFalse(vaultKeys.isEmpty)
 
-                let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
-                XCTAssertEqual(itemCount, firstItemCount)
-            }
-
-            // Second set of data
-            let secondUserId = String.random()
-            let secondShareIds = [String].random(randomElement: .random())
-            let secondItemCount = Int.random(in: 100...500)
-            try await populateData(userId: secondUserId,
-                                   shareIds: secondShareIds,
-                                   itemCount: secondItemCount)
-
-            let secondSharesFirstGet =
-            try await sut.localShareDatasource.getAllShares(userId: secondUserId)
-            XCTAssertEqual(secondSharesFirstGet.count, secondShareIds.count)
-
-            for shareId in secondShareIds {
-                let itemKeys =
-                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
-                XCTAssertFalse(itemKeys.isEmpty)
-
-                let vaultKeys =
-                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
-                XCTAssertFalse(vaultKeys.isEmpty)
-
-                let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
-                XCTAssertEqual(itemCount, secondItemCount)
-            }
-
-            // When
-            // Remove first set of data
-            try await sut.removeAllData(userId: firstUserId)
-
-            // Then
-            // First set of data should be null
-            let firstSharesSecondGet =
-            try await sut.localShareDatasource.getAllShares(userId: firstUserId)
-            XCTAssertTrue(firstSharesSecondGet.isEmpty)
-
-            for shareId in firstShareIds {
-                let itemKeys =
-                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
-                XCTAssertTrue(itemKeys.isEmpty)
-
-                let vaultKeys =
-                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
-                XCTAssertTrue(vaultKeys.isEmpty)
-
-                let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
-                XCTAssertEqual(itemCount, 0)
-            }
-
-            // Second set of data should be intact
-            let secondSharesSecondGet =
-            try await sut.localShareDatasource.getAllShares(userId: secondUserId)
-            XCTAssertEqual(secondSharesSecondGet.count, secondShareIds.count)
-
-            for shareId in secondShareIds {
-                let itemKeys =
-                try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
-                XCTAssertFalse(itemKeys.isEmpty)
-
-                let vaultKeys =
-                try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
-                XCTAssertFalse(vaultKeys.isEmpty)
-
-                let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
-                XCTAssertEqual(itemCount, secondItemCount)
-            }
-
-            expectation.fulfill()
+            let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
+            XCTAssertEqual(itemCount, firstItemCount)
         }
-        waitForExpectations(timeout: expectationTimeOut)
+
+        // Second set of data
+        let secondUserId = String.random()
+        let secondShareIds = [String].random(randomElement: .random())
+        let secondItemCount = Int.random(in: 100...500)
+        try await populateData(userId: secondUserId,
+                               shareIds: secondShareIds,
+                               itemCount: secondItemCount)
+
+        let secondSharesFirstGet =
+        try await sut.localShareDatasource.getAllShares(userId: secondUserId)
+        XCTAssertEqual(secondSharesFirstGet.count, secondShareIds.count)
+
+        for shareId in secondShareIds {
+            let itemKeys =
+            try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
+            XCTAssertFalse(itemKeys.isEmpty)
+
+            let vaultKeys =
+            try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
+            XCTAssertFalse(vaultKeys.isEmpty)
+
+            let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
+            XCTAssertEqual(itemCount, secondItemCount)
+        }
+
+        // When
+        // Remove first set of data
+        try await sut.removeAllData(userId: firstUserId)
+
+        // Then
+        // First set of data should be null
+        let firstSharesSecondGet =
+        try await sut.localShareDatasource.getAllShares(userId: firstUserId)
+        XCTAssertTrue(firstSharesSecondGet.isEmpty)
+
+        for shareId in firstShareIds {
+            let itemKeys =
+            try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
+            XCTAssertTrue(itemKeys.isEmpty)
+
+            let vaultKeys =
+            try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
+            XCTAssertTrue(vaultKeys.isEmpty)
+
+            let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
+            XCTAssertEqual(itemCount, 0)
+        }
+
+        // Second set of data should be intact
+        let secondSharesSecondGet =
+        try await sut.localShareDatasource.getAllShares(userId: secondUserId)
+        XCTAssertEqual(secondSharesSecondGet.count, secondShareIds.count)
+
+        for shareId in secondShareIds {
+            let itemKeys =
+            try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
+            XCTAssertFalse(itemKeys.isEmpty)
+
+            let vaultKeys =
+            try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
+            XCTAssertFalse(vaultKeys.isEmpty)
+
+            let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
+            XCTAssertEqual(itemCount, secondItemCount)
+        }
     }
 
     func populateData(userId: String, shareIds: [String], itemCount: Int) async throws {

@@ -22,7 +22,6 @@
 import XCTest
 
 final class LocalItemKeyDatasourceTests: XCTestCase {
-    let expectationTimeOut: TimeInterval = 3
     var sut: LocalItemKeyDatasource!
 
     override func setUp() {
@@ -46,114 +45,86 @@ final class LocalItemKeyDatasourceTests: XCTestCase {
 }
 
 extension LocalItemKeyDatasourceTests {
-    func testGetItemKeys() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let localShareDatasource = LocalShareDatasource(container: sut.container)
-            let givenShare = try await localShareDatasource.givenInsertedShare()
-            let givenShareId = givenShare.shareID
-            let givenItemKeys = [ItemKey].random(randomElement: .random())
+    func testGetItemKeys() async throws {
+        // Given
+        let localShareDatasource = LocalShareDatasource(container: sut.container)
+        let givenShare = try await localShareDatasource.givenInsertedShare()
+        let givenShareId = givenShare.shareID
+        let givenItemKeys = [ItemKey].random(randomElement: .random())
 
-            // When
-            try await sut.upsertItemKeys(givenItemKeys, shareId: givenShareId)
+        // When
+        try await sut.upsertItemKeys(givenItemKeys, shareId: givenShareId)
 
-            // Then
-            let itemKeys = try await sut.getItemKeys(shareId: givenShareId)
-            XCTAssertEqual(Set(itemKeys), Set(givenItemKeys))
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
+        // Then
+        let itemKeys = try await sut.getItemKeys(shareId: givenShareId)
+        XCTAssertEqual(Set(itemKeys), Set(givenItemKeys))
     }
 
-    func testInsertItemKeys() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let firstItemKeys = [ItemKey].random(randomElement: .random())
-            let secondItemKeys = [ItemKey].random(randomElement: .random())
-            let thirdItemKeys = [ItemKey].random(randomElement: .random())
-            let givenItemKeys = firstItemKeys + secondItemKeys + thirdItemKeys
-            let givenShareId = String.random()
+    func testInsertItemKeys() async throws {
+        // Given
+        let firstItemKeys = [ItemKey].random(randomElement: .random())
+        let secondItemKeys = [ItemKey].random(randomElement: .random())
+        let thirdItemKeys = [ItemKey].random(randomElement: .random())
+        let givenItemKeys = firstItemKeys + secondItemKeys + thirdItemKeys
+        let givenShareId = String.random()
 
-            // When
-            try await sut.upsertItemKeys(firstItemKeys, shareId: givenShareId)
-            try await sut.upsertItemKeys(secondItemKeys, shareId: givenShareId)
-            try await sut.upsertItemKeys(thirdItemKeys, shareId: givenShareId)
+        // When
+        try await sut.upsertItemKeys(firstItemKeys, shareId: givenShareId)
+        try await sut.upsertItemKeys(secondItemKeys, shareId: givenShareId)
+        try await sut.upsertItemKeys(thirdItemKeys, shareId: givenShareId)
 
-            // Then
-            let itemKeys = try await sut.getItemKeys(shareId: givenShareId)
-            XCTAssertEqual(Set(itemKeys), Set(givenItemKeys))
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
+        // Then
+        let itemKeys = try await sut.getItemKeys(shareId: givenShareId)
+        XCTAssertEqual(Set(itemKeys), Set(givenItemKeys))
     }
 
-    func testUpdateItemKeys() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let givenShareId = String.random()
-            let givenItemKeys = [ItemKey].random(randomElement: .random())
-            try await sut.upsertItemKeys(givenItemKeys, shareId: givenShareId)
-            let firstInsertedItemKey = try XCTUnwrap(givenItemKeys.first)
-            let updatedFirstItemKey = ItemKey.random(rotationId: firstInsertedItemKey.rotationID)
+    func testUpdateItemKeys() async throws {
+        // Given
+        let givenShareId = String.random()
+        let givenItemKeys = [ItemKey].random(randomElement: .random())
+        try await sut.upsertItemKeys(givenItemKeys, shareId: givenShareId)
+        let firstInsertedItemKey = try XCTUnwrap(givenItemKeys.first)
+        let updatedFirstItemKey = ItemKey.random(rotationId: firstInsertedItemKey.rotationID)
 
-            // When
-            try await sut.upsertItemKeys([updatedFirstItemKey], shareId: givenShareId)
+        // When
+        try await sut.upsertItemKeys([updatedFirstItemKey], shareId: givenShareId)
 
-            // Then
-            let itemKeys = try await sut.getItemKeys(shareId: givenShareId)
-            XCTAssertEqual(itemKeys.count, givenItemKeys.count)
-            let firstItemKey =
-            try XCTUnwrap(itemKeys.first(where: { $0.rotationID == firstInsertedItemKey.rotationID }))
-            assertEqual(firstItemKey, updatedFirstItemKey)
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
+        // Then
+        let itemKeys = try await sut.getItemKeys(shareId: givenShareId)
+        XCTAssertEqual(itemKeys.count, givenItemKeys.count)
+        let firstItemKey =
+        try XCTUnwrap(itemKeys.first(where: { $0.rotationID == firstInsertedItemKey.rotationID }))
+        assertEqual(firstItemKey, updatedFirstItemKey)
     }
 
-    func testRemoveAllItemKeys() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let givenFirstShareId = String.random()
-            let givenFirstShareItemKeys = [ItemKey].random(randomElement: .random())
+    func testRemoveAllItemKeys() async throws {
+        // Given
+        let givenFirstShareId = String.random()
+        let givenFirstShareItemKeys = [ItemKey].random(randomElement: .random())
 
-            let givenSecondShareId = String.random()
-            let givenSecondShareItemKeys = [ItemKey].random(randomElement: .random())
+        let givenSecondShareId = String.random()
+        let givenSecondShareItemKeys = [ItemKey].random(randomElement: .random())
 
-            // When
-            try await sut.upsertItemKeys(givenFirstShareItemKeys, shareId: givenFirstShareId)
-            try await sut.upsertItemKeys(givenSecondShareItemKeys, shareId: givenSecondShareId)
+        // When
+        try await sut.upsertItemKeys(givenFirstShareItemKeys, shareId: givenFirstShareId)
+        try await sut.upsertItemKeys(givenSecondShareItemKeys, shareId: givenSecondShareId)
 
-            // Then
-            let firstShareItemKeysFirstGet = try await sut.getItemKeys(shareId: givenFirstShareId)
-            XCTAssertEqual(Set(givenFirstShareItemKeys), Set(firstShareItemKeysFirstGet))
+        // Then
+        let firstShareItemKeysFirstGet = try await sut.getItemKeys(shareId: givenFirstShareId)
+        XCTAssertEqual(Set(givenFirstShareItemKeys), Set(firstShareItemKeysFirstGet))
 
-            let secondShareItemKeysFirstGet = try await sut.getItemKeys(shareId: givenSecondShareId)
-            XCTAssertEqual(Set(secondShareItemKeysFirstGet), Set(givenSecondShareItemKeys))
+        let secondShareItemKeysFirstGet = try await sut.getItemKeys(shareId: givenSecondShareId)
+        XCTAssertEqual(Set(secondShareItemKeysFirstGet), Set(givenSecondShareItemKeys))
 
-            // When
-            try await sut.removeAllItemKeys(shareId: givenFirstShareId)
+        // When
+        try await sut.removeAllItemKeys(shareId: givenFirstShareId)
 
-            // Then
-            let firstShareItemKeysSecondGet = try await sut.getItemKeys(shareId: givenFirstShareId)
-            XCTAssertTrue(firstShareItemKeysSecondGet.isEmpty)
+        // Then
+        let firstShareItemKeysSecondGet = try await sut.getItemKeys(shareId: givenFirstShareId)
+        XCTAssertTrue(firstShareItemKeysSecondGet.isEmpty)
 
-            let secondShareItemKeysSecondGet = try await sut.getItemKeys(shareId: givenSecondShareId)
-            XCTAssertEqual(Set(secondShareItemKeysSecondGet), Set(givenSecondShareItemKeys))
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
+        let secondShareItemKeysSecondGet = try await sut.getItemKeys(shareId: givenSecondShareId)
+        XCTAssertEqual(Set(secondShareItemKeysSecondGet), Set(givenSecondShareItemKeys))
     }
 }
 
