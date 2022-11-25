@@ -22,7 +22,6 @@
 import XCTest
 
 final class LocalPublicKeyDatasourceTests: XCTestCase {
-    let expectationTimeOut: TimeInterval = 3
     var sut: LocalPublicKeyDatasource!
 
     override func setUp() {
@@ -38,31 +37,24 @@ final class LocalPublicKeyDatasourceTests: XCTestCase {
 }
 
 extension LocalPublicKeyDatasourceTests {
-    func testInsertAndGetPublicKeys() throws {
-        continueAfterFailure = false
-        let expectation = expectation(description: #function)
-        Task {
-            // Given
-            let givenEmail1 = String.random()
-            let givenPublicKeys1 = [PublicKey].random(randomElement: .random())
-            let givenEmail2 = String.random()
-            let givenPublicKeys2 = [PublicKey].random(randomElement: .random())
+    func testInsertAndGetPublicKeys() async throws {
+        // Given
+        let givenEmail1 = String.random()
+        let givenPublicKeys1 = [PublicKey].random(randomElement: .random())
+        let givenEmail2 = String.random()
+        let givenPublicKeys2 = [PublicKey].random(randomElement: .random())
 
-            // When
-            try await sut.insertPublicKeys(givenPublicKeys1, email: givenEmail1)
-            try await sut.insertPublicKeys(givenPublicKeys2, email: givenEmail2)
+        // When
+        try await sut.insertPublicKeys(givenPublicKeys1, email: givenEmail1)
+        try await sut.insertPublicKeys(givenPublicKeys2, email: givenEmail2)
 
-            // Then
-            let publicKeys1 = try await sut.getPublicKeys(email: givenEmail1)
-            XCTAssertEqual(Set(publicKeys1.map { $0.value }),
-                           Set(givenPublicKeys1.map { $0.value }))
+        // Then
+        let publicKeys1 = try await sut.getPublicKeys(email: givenEmail1)
+        XCTAssertEqual(Set(publicKeys1.map { $0.value }),
+                       Set(givenPublicKeys1.map { $0.value }))
 
-            let publicKeys2 = try await sut.getPublicKeys(email: givenEmail2)
-            XCTAssertEqual(Set(publicKeys2.map { $0.value }),
-                           Set(givenPublicKeys2.map { $0.value }))
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: expectationTimeOut)
+        let publicKeys2 = try await sut.getPublicKeys(email: givenEmail2)
+        XCTAssertEqual(Set(publicKeys2.map { $0.value }),
+                       Set(givenPublicKeys2.map { $0.value }))
     }
 }
