@@ -30,6 +30,10 @@ public extension UIColor {
         ColorProvider.BrandNorm
     }
 
+    static var iconHint: UIColor {
+        ColorProvider.IconHint
+    }
+
     static var iconWeak: UIColor {
         ColorProvider.IconWeak
     }
@@ -56,6 +60,10 @@ public extension UIColor {
 
     static var notificationWarning: UIColor {
         ColorProvider.NotificationWarning
+    }
+
+    static var separatorNorm: UIColor {
+        ColorProvider.SeparatorNorm
     }
 
     static var sidebarBackground: UIColor {
@@ -100,6 +108,10 @@ public extension Color {
         .init(uiColor: .brandNorm)
     }
 
+    static var iconHint: Color {
+        .init(uiColor: .iconHint)
+    }
+
     static var iconWeak: Color {
         .init(uiColor: .iconWeak)
     }
@@ -126,6 +138,10 @@ public extension Color {
 
     static var notificationWarning: Color {
         .init(uiColor: .notificationWarning)
+    }
+
+    static var separatorNorm: Color {
+        .init(uiColor: .separatorNorm)
     }
 
     static var sidebarBackground: Color {

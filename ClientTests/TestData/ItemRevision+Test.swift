@@ -29,6 +29,7 @@ extension ItemState {
 extension ItemRevision {
     static func random(itemId: String? = nil,
                        state: ItemState? = nil,
+                       aliasEmail: String? = nil,
                        modifyTime: Int64 = .random(in: 0...1_000_000)) -> ItemRevision {
         .init(itemID: itemId ?? .random(),
               revision: .random(in: 0...100),
@@ -39,7 +40,7 @@ extension ItemRevision {
               itemKeySignature: .random(),
               state: state?.rawValue ?? ItemState.random(),
               signatureEmail: .random(),
-              aliasEmail: .random(),
+              aliasEmail: aliasEmail,
               createTime: .random(in: 0...1_000_000),
               modifyTime: modifyTime,
               revisionTime: .random(in: 0...1_000_000))

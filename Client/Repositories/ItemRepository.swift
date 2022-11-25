@@ -44,6 +44,9 @@ public protocol ItemRepositoryProtocol {
     /// Get a specific Item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
+    /// Get alias item by alias email
+    func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
+
     func getDecryptedItemContent(shareId: String, itemId: String) async throws -> ItemContent?
 
     /// Get items of all shares by state
@@ -64,6 +67,8 @@ public protocol ItemRepositoryProtocol {
                      shareId: String) async throws -> SymmetricallyEncryptedItem
 
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws
+
+    func trashAlias(email: String) async throws
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
@@ -123,6 +128,10 @@ public extension ItemRepositoryProtocol {
         let count = localItems.count
         PPLogger.shared?.log("Found \(count) \(stateDescription) items in local database")
         return localItems
+    }
+
+    func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
+        try await localItemDatasoure.getAliasItem(email: email)
     }
 
     func getItems(forceRefresh: Bool, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
@@ -193,6 +202,15 @@ public extension ItemRepositoryProtocol {
         let deletedCredentials = try getCredentials(from: items, state: .active)
         delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
         PPLogger.shared?.log("Delegated \(deletedCredentials.count) deleted credentials")
+    }
+
+    func trashAlias(email: String) async throws {
+        PPLogger.shared?.log("Trashing alias item \(email)")
+        guard let item = try await localItemDatasoure.getAliasItem(email: email) else {
+            PPLogger.shared?.log("Failed to trash alias item. No alias item found for \(email)")
+            return
+        }
+        try await trashItems([item])
     }
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws {

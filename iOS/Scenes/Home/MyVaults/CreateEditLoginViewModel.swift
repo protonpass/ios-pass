@@ -22,9 +22,18 @@ import Client
 import Core
 import SwiftUI
 
+protocol CreateEditLoginViewModelDelegate: AnyObject {
+    func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
+                                                      title: String)
+    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
+    func createEditLoginViewModelDidTrashAlias()
+}
+
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
+    @Published private(set) var isAlias = false // `Username` is an alias or a custom one
+    @Published private(set) var isTrashingAlias = false
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
@@ -32,7 +41,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var urls: [String] = [""]
     @Published var note = ""
 
-    var onGeneratePassword: ((GeneratePasswordViewModelDelegate) -> Void)?
+    weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
     private var hasNoUrls: Bool {
         urls.isEmpty || (urls.count == 1 && urls[0].isEmpty)
@@ -54,15 +63,20 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             self.password = password
             if !urls.isEmpty { self.urls = urls }
             self.note = itemContent.note
+
+            Task { @MainActor in
+                let aliasItem = try await itemRepository.getAliasItem(email: username)
+                self.isAlias = aliasItem != nil
+            }
         }
     }
 
     override func navigationBarTitle() -> String {
         switch mode {
         case .create:
-            return "Create new login"
+            return "New login"
         case .edit:
-            return "Edit login"
+            return "Edit"
         }
     }
 
@@ -78,16 +92,27 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                    data: loginData)
     }
 
-    @objc
-    func generatePassword() {
-        onGeneratePassword?(self)
+    func generateAlias() {
+        createEditLoginViewModelDelegate?
+            .createEditLoginViewModelWantsToGenerateAlias(self, title: title)
     }
 
-    func generateAlias() {
-        let name = String.random(allowedCharacters: [.lowercase], length: 8)
-        let host = String.random(allowedCharacters: [.lowercase], length: 5)
-        let domain = String.random(allowedCharacters: [.lowercase], length: 5)
-        username = "\(name)@\(host).\(domain)"
+    func generatePassword() {
+        createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToGeneratePassword(self)
+    }
+
+    @MainActor
+    func removeAlias() async {
+        defer { isTrashingAlias = false }
+        isTrashingAlias = true
+        do {
+            try await itemRepository.trashAlias(email: username)
+            username = ""
+            isAlias = false
+            createEditLoginViewModelDelegate?.createEditLoginViewModelDidTrashAlias()
+        } catch {
+            delegate?.createEditItemViewModelDidFail(error)
+        }
     }
 }
 
@@ -95,5 +120,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         self.password = password
+    }
+}
+
+// MARK: - AliasCreationDelegate
+extension CreateEditLoginViewModel: AliasCreationDelegate {
+    func aliasCreationDidFinish(email: String) {
+        username = email
+        isAlias = true
     }
 }

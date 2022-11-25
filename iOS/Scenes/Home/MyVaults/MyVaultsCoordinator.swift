@@ -91,11 +91,14 @@ final class MyVaultsCoordinator: Coordinator {
             dismissTopMostViewController(animated: true) { [unowned self] in
                 switch option {
                 case .login:
-                    showCreateEditLoginView(mode: .create(shareId: shareId, alias: false))
+                    showCreateEditLoginView(mode: .create(shareId: shareId,
+                                                          type: .other))
                 case .alias:
-                    showCreateEditAliasView(mode: .create(shareId: shareId, alias: true))
+                    showCreateEditAliasView(mode: .create(shareId: shareId,
+                                                          type: .alias(delegate: nil, title: "")))
                 case .note:
-                    showCreateEditNoteView(mode: .create(shareId: shareId, alias: false))
+                    showCreateEditNoteView(mode: .create(shareId: shareId,
+                                                         type: .other))
                 case .password:
                     showGeneratePasswordView(delegate: self, mode: .random)
                 }
@@ -122,9 +125,7 @@ final class MyVaultsCoordinator: Coordinator {
         let viewModel = CreateEditLoginViewModel(mode: mode,
                                                  itemRepository: itemRepository)
         viewModel.delegate = self
-        viewModel.onGeneratePassword = { [unowned self] in
-            showGeneratePasswordView(delegate: $0, mode: .createLogin)
-        }
+        viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
         presentView(view)
         currentCreateEditItemViewModel = viewModel
@@ -136,6 +137,11 @@ final class MyVaultsCoordinator: Coordinator {
                                                  aliasRepository: aliasRepository)
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
+        if case let .create(_, type) = mode,
+           case let .alias(aliasCreationDelegate, title) = type {
+            viewModel.aliasCreationDelegate = aliasCreationDelegate
+            viewModel.title = title
+        }
         let view = CreateEditAliasView(viewModel: viewModel)
         presentView(view)
         currentCreateEditItemViewModel = viewModel
@@ -231,7 +237,7 @@ final class MyVaultsCoordinator: Coordinator {
         case .note:
             showCreateEditNoteView(mode: mode)
         case .alias:
-            showCreateEditAliasView(mode: .edit(item))
+            showCreateEditAliasView(mode: mode)
         }
     }
 
@@ -371,6 +377,27 @@ extension MyVaultsCoordinator: CreateEditAliasViewModelDelegate {
     }
 }
 
+// MARK: - CreateEditLoginViewModelDelegate
+extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
+    func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
+                                                      title: String) {
+        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
+        showCreateEditAliasView(mode: .create(shareId: shareId,
+                                              type: .alias(delegate: delegate,
+                                                           title: title)))
+    }
+
+    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
+        showGeneratePasswordView(delegate: delegate, mode: .createLogin)
+    }
+
+    func createEditLoginViewModelDidTrashAlias() {
+        bannerManager?.displayBottomInfoMessage("Alias moved to trash")
+        vaultContentViewModel.fetchItems(forceRefresh: false)
+        onTrashedItem?()
+    }
+}
+
 // MARK: - ItemDetailViewModelDelegate
 extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
@@ -393,7 +420,9 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 // MARK: - GeneratePasswordViewModelDelegate
 extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
-        UIPasteboard.general.string = password
-        bannerManager?.displayBottomInfoMessage("Password copied")
+        dismissTopMostViewController { [unowned self] in
+            UIPasteboard.general.string = password
+            self.bannerManager?.displayBottomInfoMessage("Password copied")
+        }
     }
 }

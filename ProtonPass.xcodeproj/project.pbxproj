@@ -195,6 +195,7 @@
 		35581815290AB39C00DD94DB /* GetEventsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581814290AB39C00DD94DB /* GetEventsEndpoint.swift */; };
 		35581817290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */; };
 		35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */; };
+		355E6DFC292FD56000C60796 /* Button+ConvenientInitializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */; };
 		355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */; };
 		355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */; };
 		35610B7128ABAAC500955ACB /* LocalItemKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7028ABAAC500955ACB /* LocalItemKeyDatasource.swift */; };
@@ -205,6 +206,7 @@
 		35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */; };
 		35610B8428ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */; };
 		35610B8928ABCF1900955ACB /* ShareRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B8828ABCF1900955ACB /* ShareRepository.swift */; };
+		35613DCE292D27900095D5A1 /* BorderedImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35613DCD292D27900095D5A1 /* BorderedImageButton.swift */; };
 		356180F728EC4C0C00B1835A /* CredentialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356180F628EC4C0C00B1835A /* CredentialManager.swift */; };
 		3561A1802922D1700097078B /* ItemCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561A17F2922D1700097078B /* ItemCount.swift */; };
 		3561A1822922DA6E0097078B /* ItemCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561A1812922DA6E0097078B /* ItemCountView.swift */; };
@@ -633,6 +635,7 @@
 		35581814290AB39C00DD94DB /* GetEventsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetEventsEndpoint.swift; sourceTree = "<group>"; };
 		35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSyncEventsDatasource.swift; sourceTree = "<group>"; };
 		35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDRepository.swift; sourceTree = "<group>"; };
+		355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+ConvenientInitializers.swift"; sourceTree = "<group>"; };
 		355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLabelKeyPacket.swift; sourceTree = "<group>"; };
 		355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemEndpoint.swift; sourceTree = "<group>"; };
 		356043F828ED6B54003BDDDC /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -644,6 +647,7 @@
 		35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareDatasource.swift; sourceTree = "<group>"; };
 		35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteItemRevisionDatasource.swift; sourceTree = "<group>"; };
 		35610B8828ABCF1900955ACB /* ShareRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRepository.swift; sourceTree = "<group>"; };
+		35613DCD292D27900095D5A1 /* BorderedImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedImageButton.swift; sourceTree = "<group>"; };
 		356180F628EC4C0C00B1835A /* CredentialManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialManager.swift; sourceTree = "<group>"; };
 		3561A17F2922D1700097078B /* ItemCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCount.swift; sourceTree = "<group>"; };
 		3561A1812922DA6E0097078B /* ItemCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountView.swift; sourceTree = "<group>"; };
@@ -1476,6 +1480,8 @@
 			children = (
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
 				35570A8329264C2800125727 /* BannerManager.swift */,
+				35613DCD292D27900095D5A1 /* BorderedImageButton.swift */,
+				355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */,
 				355214832915524D00BA6229 /* CopyMenuButton.swift */,
 				35690C142923EA8400F60C20 /* Color+ProtonColors.swift */,
 				354F768F28C861FF00EB2383 /* DestructiveButton.swift */,
@@ -2631,6 +2637,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35613DCE292D27900095D5A1 /* BorderedImageButton.swift in Sources */,
 				3552618D28A1511000A68477 /* UserInputContentView.swift in Sources */,
 				3542E2CD28DA11FE00194F24 /* RetryableErrorView.swift in Sources */,
 				354F769C28C90B4D00EB2383 /* MoveToTrashModifier.swift in Sources */,
@@ -2648,6 +2655,7 @@
 				3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */,
 				35690C132923D5DA00F60C20 /* NotchView.swift in Sources */,
 				3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */,
+				355E6DFC292FD56000C60796 /* Button+ConvenientInitializers.swift in Sources */,
 				3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */,
 				3547ABEA2877684D00EE85E1 /* GenericItemView.swift in Sources */,
 				354F769028C861FF00EB2383 /* DestructiveButton.swift in Sources */,
