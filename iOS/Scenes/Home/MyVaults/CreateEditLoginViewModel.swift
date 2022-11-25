@@ -23,7 +23,8 @@ import Core
 import SwiftUI
 
 protocol CreateEditLoginViewModelDelegate: AnyObject {
-    func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate)
+    func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
+                                                      title: String)
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
     func createEditLoginViewModelDidTrashAlias()
 }
@@ -87,7 +88,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func generateAlias() {
-        createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToGenerateAlias(self)
+        createEditLoginViewModelDelegate?
+            .createEditLoginViewModelWantsToGenerateAlias(self, title: title)
     }
 
     func generatePassword() {
