@@ -32,7 +32,7 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
 }
 
 enum ItemMode {
-    case create(shareId: String, alias: Bool)
+    case create(shareId: String, type: ItemCreationType)
     case edit(ItemContent)
 
     var isEditMode: Bool {
@@ -45,6 +45,20 @@ enum ItemMode {
     }
 
     var isCreateMode: Bool { !isEditMode }
+}
+
+enum ItemCreationType {
+    case alias(delegate: AliasCreationDelegate?, title: String)
+    case other
+
+    var isAlias: Bool {
+        switch self {
+        case .alias:
+            return true
+        case .other:
+            return false
+        }
+    }
 }
 
 class BaseCreateEditItemViewModel {
@@ -98,8 +112,8 @@ class BaseCreateEditItemViewModel {
     @MainActor
     func save() async {
         switch mode {
-        case let .create(shareId, alias):
-            if alias {
+        case let .create(shareId, type):
+            if type.isAlias {
                 await createAliasItem(shareId: shareId)
             } else {
                 await createItem(shareId: shareId)

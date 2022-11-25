@@ -84,19 +84,21 @@ final class MyVaultsCoordinator: Coordinator {
                                       vaultContentViewModel: vaultContentViewModel))
     }
 
-    private func showCreateItemView(aliasCreationDelegate: AliasCreationDelegate?) {
+    private func showCreateItemView() {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
         let createItemViewModel = CreateItemViewModel()
         createItemViewModel.onSelectedOption = { [unowned self] option in
             dismissTopMostViewController(animated: true) { [unowned self] in
                 switch option {
                 case .login:
-                    showCreateEditLoginView(mode: .create(shareId: shareId, alias: false))
+                    showCreateEditLoginView(mode: .create(shareId: shareId,
+                                                          type: .other))
                 case .alias:
-                    showCreateEditAliasView(mode: .create(shareId: shareId, alias: true),
-                                            aliasCreationDelegate: aliasCreationDelegate)
+                    showCreateEditAliasView(mode: .create(shareId: shareId,
+                                                          type: .alias(delegate: nil, title: "")))
                 case .note:
-                    showCreateEditNoteView(mode: .create(shareId: shareId, alias: false))
+                    showCreateEditNoteView(mode: .create(shareId: shareId,
+                                                         type: .other))
                 case .password:
                     showGeneratePasswordView(delegate: self, mode: .random)
                 }
@@ -129,14 +131,17 @@ final class MyVaultsCoordinator: Coordinator {
         currentCreateEditItemViewModel = viewModel
     }
 
-    private func showCreateEditAliasView(mode: ItemMode,
-                                         aliasCreationDelegate: AliasCreationDelegate?) {
+    private func showCreateEditAliasView(mode: ItemMode) {
         let viewModel = CreateEditAliasViewModel(mode: mode,
                                                  itemRepository: itemRepository,
                                                  aliasRepository: aliasRepository)
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
-        viewModel.aliasCreationDelegate = aliasCreationDelegate
+        if case let .create(_, type) = mode,
+           case let .alias(aliasCreationDelegate, title) = type {
+            viewModel.aliasCreationDelegate = aliasCreationDelegate
+            viewModel.title = title
+        }
         let view = CreateEditAliasView(viewModel: viewModel)
         presentView(view)
         currentCreateEditItemViewModel = viewModel
@@ -232,7 +237,7 @@ final class MyVaultsCoordinator: Coordinator {
         case .note:
             showCreateEditNoteView(mode: mode)
         case .alias:
-            showCreateEditAliasView(mode: .edit(item), aliasCreationDelegate: nil)
+            showCreateEditAliasView(mode: mode)
         }
     }
 
@@ -306,7 +311,7 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
     }
 
     func vaultContentViewModelWantsToCreateItem() {
-        showCreateItemView(aliasCreationDelegate: nil)
+        showCreateItemView()
     }
 
     func vaultContentViewModelWantsToCreateVault() {
@@ -374,10 +379,12 @@ extension MyVaultsCoordinator: CreateEditAliasViewModelDelegate {
 
 // MARK: - CreateEditLoginViewModelDelegate
 extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
-    func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate) {
+    func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
+                                                      title: String) {
         guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        showCreateEditAliasView(mode: .create(shareId: shareId, alias: true),
-                                aliasCreationDelegate: delegate)
+        showCreateEditAliasView(mode: .create(shareId: shareId,
+                                              type: .alias(delegate: delegate,
+                                                           title: title)))
     }
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
