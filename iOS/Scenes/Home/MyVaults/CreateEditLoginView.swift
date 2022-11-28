@@ -66,12 +66,7 @@ struct CreateEditLoginView: View {
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
         .onReceiveBoolean(viewModel.$isTrashed, perform: dismiss.callAsFunction)
-        .onReceiveBoolean(viewModel.$isSaved) {
-            if !viewModel.aliasRemoved {
-                // Do not dismiss after deleting an alias
-                dismiss()
-            }
-        }
+        .onReceiveBoolean(viewModel.$isSaved, perform: dismiss.callAsFunction)
         .alert(
             "Delete this alias",
             isPresented: $isShowingDeleteAliasAlert,

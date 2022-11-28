@@ -25,6 +25,10 @@ import ProtonCore_Login
 import SwiftUI
 import UIComponents
 
+protocol MyVaultsCoordinatorDelegate: AnyObject {
+    func myVaultsCoordinatorWantsToRefreshTrash()
+}
+
 final class MyVaultsCoordinator: Coordinator {
     private let symmetricKey: SymmetricKey
     private let userData: UserData
@@ -45,9 +49,9 @@ final class MyVaultsCoordinator: Coordinator {
         }
     }
 
-    weak var bannerManager: BannerManager?
+    weak var myVaultsCoordinatorDelegate: MyVaultsCoordinatorDelegate?
 
-    var onTrashedItem: (() -> Void)?
+    weak var bannerManager: BannerManager?
 
     init(symmetricKey: SymmetricKey,
          userData: UserData,
@@ -253,7 +257,7 @@ final class MyVaultsCoordinator: Coordinator {
         }
         bannerManager?.displayBottomInfoMessage(message)
         vaultContentViewModel.fetchItems(forceRefresh: false)
-        onTrashedItem?()
+        myVaultsCoordinatorDelegate?.myVaultsCoordinatorWantsToRefreshTrash()
     }
 
     private func handleUpdatedItem(_ itemContentType: ItemContentType) {
@@ -395,7 +399,7 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelDidRemoveAlias() {
         bannerManager?.displayBottomInfoMessage("Alias deleted")
         vaultContentViewModel.fetchItems(forceRefresh: false)
-        onTrashedItem?()
+        myVaultsCoordinatorDelegate?.myVaultsCoordinatorWantsToRefreshTrash()
     }
 }
 
