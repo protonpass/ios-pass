@@ -19,18 +19,25 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public struct ModifyItemRequest: Encodable {
+    /// Pairs of item IDs with their latest revision
     public let items: [ItemToBeModified]
+
+    /// Skip checking that the items are in the trash. Allows to delete directly
+    public let skipTrash: Bool
 
     enum CodingKeys: String, CodingKey {
         case items = "Items"
+        case skipTrash = "SkipTrash"
     }
 
-    public init(items: [ItemRevision]) {
-        self.items = items.map { .init(itemID: $0.itemID, revision: $0.revision) }
-    }
-
-    public init(items: [ItemToBeModified]) {
+    public init(items: [ItemToBeModified], skipTrash: Bool) {
         self.items = items
+        self.skipTrash = skipTrash
+    }
+
+    public init(items: [ItemRevision], skipTrash: Bool) {
+        self.items = items.map { .init(itemID: $0.itemID, revision: $0.revision) }
+        self.skipTrash = skipTrash
     }
 }
 

@@ -33,11 +33,11 @@ public struct UntrashItemsEndpoint: Endpoint {
 
     public init(credential: AuthCredential,
                 shareId: String,
-                request: ModifyItemRequest) {
+                items: [ItemRevision]) {
         self.debugDescription = "Untrash items"
         self.path = "/pass/v1/share/\(shareId)/item/untrash"
         self.method = .post
         self.authCredential = credential
-        self.body = request
+        self.body = .init(items: items, skipTrash: false)
     }
 }
