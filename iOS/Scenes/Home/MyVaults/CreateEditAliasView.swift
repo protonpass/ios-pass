@@ -78,7 +78,6 @@ struct CreateEditAliasView: View {
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
         .onReceiveBoolean(viewModel.$isTrashed, perform: dismiss.callAsFunction)
-        .onReceiveBoolean(viewModel.$isSaved, perform: dismiss.callAsFunction)
     }
 
     @ToolbarContentBuilder

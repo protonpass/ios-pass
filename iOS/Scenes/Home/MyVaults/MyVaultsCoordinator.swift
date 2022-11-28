@@ -261,12 +261,11 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func handleUpdatedItem(_ itemContentType: ItemContentType) {
-        currentItemDetailViewModel?.refresh()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-            // Wait for the edit item modal to be dismissed completely before showing banner
-            self.bannerManager?.displayBottomSuccessMessage("Changes saved")
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            currentItemDetailViewModel?.refresh()
+            bannerManager?.displayBottomSuccessMessage("Changes saved")
+            vaultContentViewModel.fetchItems(forceRefresh: false)
         }
-        vaultContentViewModel.fetchItems(forceRefresh: false)
     }
 
     func refreshItems() {
