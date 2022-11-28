@@ -109,7 +109,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             try await itemRepository.deleteAlias(email: username)
             username = ""
             isAlias = false
-            await save()
             createEditLoginViewModelDelegate?.createEditLoginViewModelDidRemoveAlias()
         } catch {
             delegate?.createEditItemViewModelDidFail(error)
