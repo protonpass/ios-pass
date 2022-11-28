@@ -257,11 +257,12 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func handleUpdatedItem(_ itemContentType: ItemContentType) {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            currentItemDetailViewModel?.refresh()
-            bannerManager?.displayBottomSuccessMessage("Changes saved")
-            vaultContentViewModel.fetchItems(forceRefresh: false)
+        currentItemDetailViewModel?.refresh()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+            // Wait for the edit item modal to be dismissed completely before showing banner
+            self.bannerManager?.displayBottomSuccessMessage("Changes saved")
         }
+        vaultContentViewModel.fetchItems(forceRefresh: false)
     }
 
     func refreshItems() {
@@ -391,8 +392,8 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
         showGeneratePasswordView(delegate: delegate, mode: .createLogin)
     }
 
-    func createEditLoginViewModelDidTrashAlias() {
-        bannerManager?.displayBottomInfoMessage("Alias moved to trash")
+    func createEditLoginViewModelDidRemoveAlias() {
+        bannerManager?.displayBottomInfoMessage("Alias deleted")
         vaultContentViewModel.fetchItems(forceRefresh: false)
         onTrashedItem?()
     }

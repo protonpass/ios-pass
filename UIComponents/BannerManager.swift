@@ -23,20 +23,26 @@ import ProtonCore_UIFoundations
 public final class BannerManager {
     let container: UIViewController
 
+    private var finalContainer: UIViewController {
+        var finalContainer = container
+        while true {
+            if let presentedViewController = finalContainer.presentedViewController,
+               !presentedViewController.isBeingDismissed {
+                finalContainer = presentedViewController
+            } else {
+                break
+            }
+        }
+        return finalContainer
+    }
+
     public init(container: UIViewController) {
         self.container = container
     }
 
     public func display(message: String, at position: PMBannerPosition, style: PMBannerNewStyle) {
         let banner = PMBanner(message: message, style: style)
-        let viewController: UIViewController
-        if let presentedViewController = container.presentedViewController,
-           !presentedViewController.isBeingDismissed {
-            viewController = presentedViewController
-        } else {
-            viewController = container
-        }
-        banner.show(at: position, on: viewController)
+        banner.show(at: position, on: finalContainer)
     }
 
     public func displayBottomSuccessMessage(_ message: String) {
@@ -53,6 +59,6 @@ public final class BannerManager {
         let dismissClosure = onDismiss ?? { banner in banner.dismiss() }
         let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
         banner.addButton(text: dismissButtonTitle, handler: dismissClosure)
-        banner.show(at: .top, on: container)
+        banner.show(at: .top, on: finalContainer)
     }
 }

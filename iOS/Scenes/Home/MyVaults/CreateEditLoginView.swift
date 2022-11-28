@@ -28,7 +28,7 @@ struct CreateEditLoginView: View {
     @StateObject private var viewModel: CreateEditLoginViewModel
     @State private var isShowingDiscardAlert = false
     @State private var isShowingTrashAlert = false
-    @State private var isShowingTrashAliasAlert = false
+    @State private var isShowingDeleteAliasAlert = false
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnUsername = false
     @State private var isFocusedOnPassword = false
@@ -66,18 +66,24 @@ struct CreateEditLoginView: View {
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
         .onReceiveBoolean(viewModel.$isTrashed, perform: dismiss.callAsFunction)
+        .onReceiveBoolean(viewModel.$isSaved) {
+            if !viewModel.aliasRemoved {
+                // Do not dismiss after deleting an alias
+                dismiss()
+            }
+        }
         .alert(
-            "Remove this alias",
-            isPresented: $isShowingTrashAliasAlert,
+            "Delete this alias",
+            isPresented: $isShowingDeleteAliasAlert,
             actions: {
                 Button(role: .destructive,
                        action: viewModel.removeAlias,
-                       label: { Text("Yes, move to trash") })
+                       label: { Text("Yes, delete this alias") })
 
                 Button(role: .cancel, label: { Text("Cancel") })
             },
             message: {
-                Text("The alias will be moved to trash")
+                Text("The alias will be deleted permanently")
             })
     }
 
@@ -141,17 +147,17 @@ struct CreateEditLoginView: View {
             },
             trailingView: {
                 if viewModel.isAlias {
-                    if viewModel.isTrashingAlias {
+                    if viewModel.isRemovingAlias {
                         ProgressView()
                             .frame(width: 48, height: 48)
                     } else {
                         Menu(content: {
                             Button(
                                 role: .destructive,
-                                action: { isShowingTrashAliasAlert.toggle() },
+                                action: { isShowingDeleteAliasAlert.toggle() },
                                 label: {
                                     Label(title: {
-                                        Text("Remove")
+                                        Text("Delete")
                                     }, icon: {
                                         Image(uiImage: IconProvider.crossCircle)
                                     })

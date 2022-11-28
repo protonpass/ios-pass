@@ -63,6 +63,7 @@ enum ItemCreationType {
 
 class BaseCreateEditItemViewModel {
     @Published private(set) var isSaving = false
+    @Published private(set) var isSaved = false
     @Published private(set) var isTrashed = false
     @Published var isObsolete = false
 
@@ -182,6 +183,7 @@ class BaseCreateEditItemViewModel {
             try await updateItemTask(oldItem: oldItem.item,
                                      newItemContent: newItemContentProtobuf,
                                      shareId: shareId).value
+            isSaved = true
             delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
         } catch {
             delegate?.createEditItemViewModelDidFail(error)
