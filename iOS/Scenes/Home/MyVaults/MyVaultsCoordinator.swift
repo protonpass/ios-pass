@@ -408,6 +408,10 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
         showEditItemView(itemContent)
     }
 
+    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel) {
+        print("\(#function) not applicable")
+    }
+
     func itemDetailViewModelDidTrashItem(_ type: ItemContentType) {
         handleTrashedItem(type)
     }
@@ -418,6 +422,10 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelWantsToShowLarge(_ text: String) {
         showLargeView(text: text)
+    }
+
+    func itemDetailViewModelDidFail(_ error: Error) {
+        bannerManager?.displayTopErrorMessage(error)
     }
 }
 
