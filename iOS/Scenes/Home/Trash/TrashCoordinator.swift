@@ -98,15 +98,13 @@ extension TrashCoordinator: TrashViewModelDelegate {
     }
 
     func trashViewModelDidDeleteItem(_ type: Client.ItemContentType) {
-        dismissTopMostViewController { [unowned self] in
-            let message: String
-            switch type {
-            case .alias: message = "Alias permanently deleted"
-            case .login: message = "Login permanently deleted"
-            case .note: message = "Note permanently deleted"
-            }
-            self.bannerManager?.displayBottomInfoMessage(message)
+        let message: String
+        switch type {
+        case .alias: message = "Alias permanently deleted"
+        case .login: message = "Login permanently deleted"
+        case .note: message = "Note permanently deleted"
         }
+        bannerManager?.displayBottomInfoMessage(message)
     }
 
     func trashViewModelDidEmptyTrash() {

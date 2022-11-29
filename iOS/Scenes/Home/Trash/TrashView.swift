@@ -24,6 +24,7 @@ import UIComponents
 
 struct TrashView: View {
     @StateObject private var viewModel: TrashViewModel
+    @State private var itemToBeDeleted: ItemListUiModel?
     @State private var isShowingEmptyTrashAlert = false
 
     init(viewModel: TrashViewModel) {
@@ -31,6 +32,14 @@ struct TrashView: View {
     }
 
     var body: some View {
+        let isShowingDeleteConfirmation = Binding<Bool>(get: {
+            itemToBeDeleted != nil
+        }, set: { newValue in
+            if !newValue {
+                itemToBeDeleted = nil
+            }
+        })
+
         Group {
             switch viewModel.state {
             case .loading:
@@ -57,6 +66,20 @@ struct TrashView: View {
             },
             message: {
                 Text("Items in trash will be deleted permanently. You can not undo this action.")
+            })
+        .alert(
+            "Delete permanently",
+            isPresented: isShowingDeleteConfirmation,
+            actions: {
+                if let itemToBeDeleted {
+                    Button(role: .destructive,
+                           action: { viewModel.deletePermanently(itemToBeDeleted) },
+                           label: { Text("Delete item") })
+                }
+            },
+            message: {
+                // swiftlint:disable:next line_length
+                Text("\"\(itemToBeDeleted?.title ?? "")\" will be deleted permanently.\nYou can not undo this action.")
             })
     }
 
@@ -128,7 +151,7 @@ struct TrashView: View {
             DestructiveButton(
                 title: "Delete permanently",
                 icon: IconProvider.trash,
-                action: {})
+                action: { itemToBeDeleted = item })
         }, label: {
             Image(uiImage: IconProvider.threeDotsHorizontal)
                 .foregroundColor(.secondary)
