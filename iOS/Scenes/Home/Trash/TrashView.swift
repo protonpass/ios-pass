@@ -102,22 +102,18 @@ struct TrashView: View {
     private var itemList: some View {
         List {
             ForEach(viewModel.items, id: \.itemId) { item in
-                VStack(spacing: 8) {
-                    GenericItemView(
-                        item: item,
-                        action: { viewModel.showOptions(item) },
-                        trailingView: {
-                            Button(action: {
-                                viewModel.showOptions(item)
-                            }, label: {
-                                Image(uiImage: IconProvider.threeDotsHorizontal)
-                                    .foregroundColor(.secondary)
-                            })
+                GenericItemView(
+                    item: item,
+                    action: { viewModel.showOptions(item) },
+                    trailingView: {
+                        Button(action: {
+                            viewModel.showOptions(item)
+                        }, label: {
+                            Image(uiImage: IconProvider.threeDotsHorizontal)
+                                .foregroundColor(.secondary)
                         })
-                    if item.itemId != viewModel.items.last?.itemId {
-                        Divider()
-                    }
-                }
+                    })
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
             }
             .listRowSeparator(.hidden)
         }
