@@ -68,11 +68,11 @@ public protocol ItemRepositoryProtocol {
 
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
-    func trashAlias(email: String) async throws
+    func deleteAlias(email: String) async throws
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
-    func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws
+    func deleteItems(_ items: [SymmetricallyEncryptedItem], skipTrash: Bool) async throws
 
     func updateItem(oldItem: ItemRevision,
                     newItemContent: ProtobufableItemContentProtocol,
@@ -204,13 +204,13 @@ public extension ItemRepositoryProtocol {
         PPLogger.shared?.log("Delegated \(deletedCredentials.count) deleted credentials")
     }
 
-    func trashAlias(email: String) async throws {
-        PPLogger.shared?.log("Trashing alias item \(email)")
+    func deleteAlias(email: String) async throws {
+        PPLogger.shared?.log("Deleting alias item \(email)")
         guard let item = try await localItemDatasoure.getAliasItem(email: email) else {
-            PPLogger.shared?.log("Failed to trash alias item. No alias item found for \(email)")
+            PPLogger.shared?.log("Failed to delete alias item. No alias item found for \(email)")
             return
         }
-        try await trashItems([item])
+        try await deleteItems([item], skipTrash: true)
     }
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws {
@@ -236,7 +236,7 @@ public extension ItemRepositoryProtocol {
         PPLogger.shared?.log("Delegated \(newCredentials.count) new credentials")
     }
 
-    func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
+    func deleteItems(_ items: [SymmetricallyEncryptedItem], skipTrash: Bool) async throws {
         let count = items.count
         PPLogger.shared?.log("Deleting \(count) items")
 
@@ -244,7 +244,9 @@ public extension ItemRepositoryProtocol {
         for shareId in itemsByShareId.keys {
             guard let encryptedItems = itemsByShareId[shareId] else { continue }
             let items = encryptedItems.map { $0.item }
-            try await remoteItemRevisionDatasource.deleteItemRevisions(items, shareId: shareId)
+            try await remoteItemRevisionDatasource.deleteItemRevisions(items,
+                                                                       shareId: shareId,
+                                                                       skipTrash: skipTrash)
             PPLogger.shared?.log("Finished deleting remotely \(items.count) items for share \(shareId)")
             try await localItemDatasoure.deleteItems(encryptedItems)
             PPLogger.shared?.log("Finished deleting locallly \(items.count) items for share \(shareId)")

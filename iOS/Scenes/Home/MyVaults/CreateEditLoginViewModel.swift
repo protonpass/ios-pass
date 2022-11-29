@@ -26,14 +26,14 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
     func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
                                                       title: String)
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
-    func createEditLoginViewModelDidTrashAlias()
+    func createEditLoginViewModelDidRemoveAlias()
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     @Published private(set) var isAlias = false // `Username` is an alias or a custom one
-    @Published private(set) var isTrashingAlias = false
+    @Published private(set) var isRemovingAlias = false
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
@@ -103,13 +103,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     @MainActor
     func removeAlias() async {
-        defer { isTrashingAlias = false }
-        isTrashingAlias = true
+        defer { isRemovingAlias = false }
+        isRemovingAlias = true
         do {
-            try await itemRepository.trashAlias(email: username)
+            try await itemRepository.deleteAlias(email: username)
             username = ""
             isAlias = false
-            createEditLoginViewModelDelegate?.createEditLoginViewModelDidTrashAlias()
+            createEditLoginViewModelDelegate?.createEditLoginViewModelDidRemoveAlias()
         } catch {
             delegate?.createEditItemViewModelDidFail(error)
         }

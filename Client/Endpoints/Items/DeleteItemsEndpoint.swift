@@ -33,11 +33,12 @@ public struct DeleteItemsEndpoint: Endpoint {
 
     public init(credential: AuthCredential,
                 shareId: String,
-                request: ModifyItemRequest) {
+                items: [ItemRevision],
+                skipTrash: Bool) {
         self.debugDescription = "Delete items"
         self.path = "/pass/v1/share/\(shareId)/item"
         self.method = .delete
         self.authCredential = credential
-        self.body = request
+        self.body = .init(items: items, skipTrash: skipTrash)
     }
 }
