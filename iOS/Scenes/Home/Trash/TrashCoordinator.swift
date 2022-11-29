@@ -57,6 +57,13 @@ final class TrashCoordinator: Coordinator {
     }
 }
 
+// MARK: - MyVaultsCoordinatorDelegate
+extension TrashCoordinator: MyVaultsCoordinatorDelegate {
+    func myVaultsCoordinatorWantsToRefreshTrash() {
+        refreshTrashedItems()
+    }
+}
+
 // MARK: - TrashViewModelDelegate
 extension TrashCoordinator: TrashViewModelDelegate {
     func trashViewModelWantsToToggleSidebar() {

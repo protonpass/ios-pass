@@ -233,9 +233,7 @@ private extension HomeCoordinator {
                                                       aliasRepository: aliasRepository,
                                                       publicKeyRepository: publicKeyRepository)
         myVaultsCoordinator.delegate = self
-        myVaultsCoordinator.onTrashedItem = { [unowned self] in
-            self.trashCoordinator.refreshTrashedItems()
-        }
+        myVaultsCoordinator.myVaultsCoordinatorDelegate = self.trashCoordinator
         myVaultsCoordinator.itemCountDelegate = sidebarViewModel
         return myVaultsCoordinator
     }

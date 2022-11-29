@@ -197,14 +197,14 @@ private extension TrashViewModel {
     func deleteAllTask() -> Task<Void, Error> {
         Task.detached(priority: .userInitiated) {
             let items = try await self.itemRepository.getItems(forceRefresh: false, state: .trashed)
-            try await self.itemRepository.deleteItems(items)
+            try await self.itemRepository.deleteItems(items, skipTrash: false)
         }
     }
 
     func deleteItemTask(_ item: ItemListUiModel) -> Task<Void, Error> {
         Task.detached(priority: .userInitiated) {
             let item = try await self.getItem(item)
-            try await self.itemRepository.deleteItems([item])
+            try await self.itemRepository.deleteItems([item], skipTrash: false)
         }
     }
 
