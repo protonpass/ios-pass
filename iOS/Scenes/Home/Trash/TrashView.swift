@@ -31,8 +31,7 @@ struct TrashView: View {
     }
 
     var body: some View {
-        ZStack {
-            Color.clear
+        Group {
             switch viewModel.state {
             case .loading:
                 ProgressView()
@@ -42,11 +41,6 @@ struct TrashView: View {
                     EmptyTrashView()
                 } else {
                     itemList
-                        .opacityReduced(viewModel.isLoading)
-
-                    if viewModel.isLoading {
-                        ProgressView()
-                    }
                 }
 
             case .error(let error):

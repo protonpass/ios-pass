@@ -21,6 +21,7 @@
 import Client
 import Core
 import CryptoKit
+import MBProgressHUD
 import ProtonCore_Login
 import SwiftUI
 import UIComponents
@@ -70,17 +71,23 @@ extension TrashCoordinator: TrashViewModelDelegate {
         toggleSidebar()
     }
 
+    func trashViewModelWantsToShowLoadingHud() {
+        showLoadingHud()
+    }
+
+    func trashViewModelWantsToHideLoadingHud() {
+        hideLoadingHud()
+    }
+
     func trashViewModelDidRestoreItem(_ type: Client.ItemContentType) {
-        dismissTopMostViewController { [unowned self] in
-            let message: String
-            switch type {
-            case .alias: message = "Alias restored"
-            case .login: message = "Login restored"
-            case .note: message = "Note restored"
-            }
-            self.bannerManager?.displayBottomInfoMessage(message)
-            self.onRestoredItem?()
+        let message: String
+        switch type {
+        case .alias: message = "Alias restored"
+        case .login: message = "Login restored"
+        case .note: message = "Note restored"
         }
+        bannerManager?.displayBottomInfoMessage(message)
+        onRestoredItem?()
     }
 
     func trashViewModelDidRestoreAllItems(count: Int) {
