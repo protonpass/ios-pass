@@ -21,25 +21,33 @@
 import Client
 import Core
 import CryptoKit
+import MBProgressHUD
 import ProtonCore_Login
 import SwiftUI
 import UIComponents
+
+protocol TrashCoordinatorDelegate: AnyObject {
+    func trashCoordinatorDidRestoreItems()
+}
 
 final class TrashCoordinator: Coordinator {
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
+    private let aliasRepository: AliasRepositoryProtocol
     private let trashViewModel: TrashViewModel
 
+    weak var trashCoordinatorDelegate: TrashCoordinatorDelegate?
     weak var bannerManager: BannerManager?
-    var onRestoredItem: (() -> Void)?
 
     init(symmetricKey: SymmetricKey,
          shareRepository: ShareRepositoryProtocol,
-         itemRepository: ItemRepositoryProtocol) {
+         itemRepository: ItemRepositoryProtocol,
+         aliasRepository: AliasRepositoryProtocol) {
         self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
+        self.aliasRepository = aliasRepository
         self.trashViewModel = TrashViewModel(symmetricKey: symmetricKey,
                                              shareRepository: shareRepository,
                                              itemRepository: itemRepository)
@@ -57,6 +65,37 @@ final class TrashCoordinator: Coordinator {
     }
 }
 
+private extension TrashCoordinator {
+    func showItemDetailView(_ itemContent: ItemContent) {
+        let baseItemDetailViewModel: BaseItemDetailViewModel
+        switch itemContent.contentData {
+        case .login:
+            let viewModel = LogInDetailViewModel(itemContent: itemContent,
+                                                 itemRepository: itemRepository)
+            baseItemDetailViewModel = viewModel
+            let logInDetailView = LogInDetailView(viewModel: viewModel)
+            pushView(logInDetailView)
+
+        case .note:
+            let viewModel = NoteDetailViewModel(itemContent: itemContent,
+                                                itemRepository: itemRepository)
+            baseItemDetailViewModel = viewModel
+            let noteDetailView = NoteDetailView(viewModel: viewModel)
+            pushView(noteDetailView)
+
+        case .alias:
+            let viewModel = AliasDetailViewModel(itemContent: itemContent,
+                                                 itemRepository: itemRepository,
+                                                 aliasRepository: aliasRepository)
+            baseItemDetailViewModel = viewModel
+            let aliasDetailView = AliasDetailView(viewModel: viewModel)
+            pushView(aliasDetailView)
+        }
+
+        baseItemDetailViewModel.delegate = self
+    }
+}
+
 // MARK: - MyVaultsCoordinatorDelegate
 extension TrashCoordinator: MyVaultsCoordinatorDelegate {
     func myVaultsCoordinatorWantsToRefreshTrash() {
@@ -70,43 +109,43 @@ extension TrashCoordinator: TrashViewModelDelegate {
         toggleSidebar()
     }
 
-    func trashViewModelWantsToShowOptions(for item: ItemListUiModel) {
-        let optionsView = TrashedItemOptionsView(item: item, delegate: self)
-        let optionsViewController = UIHostingController(rootView: optionsView)
-        optionsViewController.sheetPresentationController?.detents = [.medium()]
-        presentViewController(optionsViewController)
+    func trashViewModelWantsToShowLoadingHud() {
+        showLoadingHud()
+    }
+
+    func trashViewModelWantsShowItemDetail(_ item: Client.ItemContent) {
+        showItemDetailView(item)
+    }
+
+    func trashViewModelWantsToHideLoadingHud() {
+        hideLoadingHud()
     }
 
     func trashViewModelDidRestoreItem(_ type: Client.ItemContentType) {
-        dismissTopMostViewController { [unowned self] in
-            let message: String
-            switch type {
-            case .alias: message = "Alias restored"
-            case .login: message = "Login restored"
-            case .note: message = "Note restored"
-            }
-            self.bannerManager?.displayBottomInfoMessage(message)
-            self.onRestoredItem?()
+        let message: String
+        switch type {
+        case .alias: message = "Alias restored"
+        case .login: message = "Login restored"
+        case .note: message = "Note restored"
         }
+        popToRoot()
+        bannerManager?.displayBottomInfoMessage(message)
+        trashCoordinatorDelegate?.trashCoordinatorDidRestoreItems()
     }
 
     func trashViewModelDidRestoreAllItems(count: Int) {
-        dismissTopMostViewController { [unowned self] in
-            self.bannerManager?.displayBottomInfoMessage("\(count) item(s) restored")
-            self.onRestoredItem?()
-        }
+        bannerManager?.displayBottomInfoMessage("\(count) item(s) restored")
+        trashCoordinatorDelegate?.trashCoordinatorDidRestoreItems()
     }
 
     func trashViewModelDidDeleteItem(_ type: Client.ItemContentType) {
-        dismissTopMostViewController { [unowned self] in
-            let message: String
-            switch type {
-            case .alias: message = "Alias permanently deleted"
-            case .login: message = "Login permanently deleted"
-            case .note: message = "Note permanently deleted"
-            }
-            self.bannerManager?.displayBottomInfoMessage(message)
+        let message: String
+        switch type {
+        case .alias: message = "Alias permanently deleted"
+        case .login: message = "Login permanently deleted"
+        case .note: message = "Note permanently deleted"
         }
+        bannerManager?.displayBottomInfoMessage(message)
     }
 
     func trashViewModelDidEmptyTrash() {
@@ -118,17 +157,25 @@ extension TrashCoordinator: TrashViewModelDelegate {
     }
 }
 
-// MARK: - TrashedItemOptionsViewDelegate
-extension TrashCoordinator: TrashedItemOptionsViewDelegate {
-    func trashedItemWantsToBeRestored(_ item: ItemListUiModel) {
+// MARK: - BaseItemDetailViewModel
+extension TrashCoordinator: ItemDetailViewModelDelegate {
+    func itemDetailViewModelWantsToEditItem(_ itemContent: Client.ItemContent) {
+        print("\(#function) not applicable")
+    }
+
+    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel) {
         trashViewModel.restore(item)
     }
 
-    func trashedItemWantsToShowDetail(_ item: ItemListUiModel) {
-        print(#function)
+    func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String) {
+        bannerManager?.displayBottomInfoMessage(message)
     }
 
-    func trashedItemWantsToBeDeletedPermanently(_ item: ItemListUiModel) {
-        trashViewModel.deletePermanently(item)
+    func itemDetailViewModelWantsToShowLarge(_ text: String) {
+        presentView(LargeView(text: text), dismissible: true)
+    }
+
+    func itemDetailViewModelDidFail(_ error: Error) {
+        bannerManager?.displayTopErrorMessage(error)
     }
 }

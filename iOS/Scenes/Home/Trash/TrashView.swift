@@ -24,6 +24,7 @@ import UIComponents
 
 struct TrashView: View {
     @StateObject private var viewModel: TrashViewModel
+    @State private var itemToBeDeleted: ItemListUiModel?
     @State private var isShowingEmptyTrashAlert = false
 
     init(viewModel: TrashViewModel) {
@@ -31,8 +32,15 @@ struct TrashView: View {
     }
 
     var body: some View {
-        ZStack {
-            Color.clear
+        let isShowingDeleteConfirmation = Binding<Bool>(get: {
+            itemToBeDeleted != nil
+        }, set: { newValue in
+            if !newValue {
+                itemToBeDeleted = nil
+            }
+        })
+
+        Group {
             switch viewModel.state {
             case .loading:
                 ProgressView()
@@ -42,11 +50,6 @@ struct TrashView: View {
                     EmptyTrashView()
                 } else {
                     itemList
-                        .opacityReduced(viewModel.isLoading)
-
-                    if viewModel.isLoading {
-                        ProgressView()
-                    }
                 }
 
             case .error(let error):
@@ -63,6 +66,20 @@ struct TrashView: View {
             },
             message: {
                 Text("Items in trash will be deleted permanently. You can not undo this action.")
+            })
+        .alert(
+            "Delete permanently",
+            isPresented: isShowingDeleteConfirmation,
+            actions: {
+                if let itemToBeDeleted {
+                    Button(role: .destructive,
+                           action: { viewModel.deletePermanently(itemToBeDeleted) },
+                           label: { Text("Delete item") })
+                }
+            },
+            message: {
+                // swiftlint:disable:next line_length
+                Text("\"\(itemToBeDeleted?.title ?? "")\" will be deleted permanently.\nYou can not undo this action.")
             })
     }
 
@@ -102,22 +119,11 @@ struct TrashView: View {
     private var itemList: some View {
         List {
             ForEach(viewModel.items, id: \.itemId) { item in
-                VStack(spacing: 8) {
-                    GenericItemView(
-                        item: item,
-                        action: { viewModel.showOptions(item) },
-                        trailingView: {
-                            Button(action: {
-                                viewModel.showOptions(item)
-                            }, label: {
-                                Image(uiImage: IconProvider.threeDotsHorizontal)
-                                    .foregroundColor(.secondary)
-                            })
-                        })
-                    if item.itemId != viewModel.items.last?.itemId {
-                        Divider()
-                    }
-                }
+                GenericItemView(
+                    item: item,
+                    action: { viewModel.selectItem(item) },
+                    trailingView: { trailingView(for: item) })
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
             }
             .listRowSeparator(.hidden)
         }
@@ -126,5 +132,29 @@ struct TrashView: View {
         .refreshable {
             await viewModel.forceRefreshItems()
         }
+    }
+
+    private func trailingView(for item: ItemListUiModel) -> some View {
+        Menu(content: {
+            Button(action: {
+                viewModel.restore(item)
+            }, label: {
+                Label(title: {
+                    Text("Restore")
+                }, icon: {
+                    Image(uiImage: IconProvider.clockRotateLeft)
+                })
+            })
+
+            Divider()
+
+            DestructiveButton(
+                title: "Delete permanently",
+                icon: IconProvider.trash,
+                action: { itemToBeDeleted = item })
+        }, label: {
+            Image(uiImage: IconProvider.threeDotsHorizontal)
+                .foregroundColor(.secondary)
+        })
     }
 }

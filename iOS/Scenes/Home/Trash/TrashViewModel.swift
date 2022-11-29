@@ -26,7 +26,9 @@ import SwiftUI
 
 protocol TrashViewModelDelegate: AnyObject {
     func trashViewModelWantsToToggleSidebar()
-    func trashViewModelWantsToShowOptions(for item: ItemListUiModel)
+    func trashViewModelWantsToShowLoadingHud()
+    func trashViewModelWantsToHideLoadingHud()
+    func trashViewModelWantsShowItemDetail(_ item: ItemContent)
     func trashViewModelDidRestoreItem(_ type: ItemContentType)
     func trashViewModelDidRestoreAllItems(count: Int)
     func trashViewModelDidDeleteItem(_ type: ItemContentType)
@@ -41,7 +43,6 @@ enum TrashViewModelError: Error {
 final class TrashViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var state = State.loading
     @Published private(set) var items = [ItemListUiModel]()
-    @Published private(set) var isLoading = false
 
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
@@ -106,9 +107,9 @@ extension TrashViewModel {
 
     func restoreAllItems() {
         Task { @MainActor in
-            defer { isLoading = false }
+            defer { delegate?.trashViewModelWantsToHideLoadingHud() }
             do {
-                isLoading = true
+                delegate?.trashViewModelWantsToShowLoadingHud()
                 let count = try await restoreAllTask().value
                 items.removeAll()
                 delegate?.trashViewModelDidRestoreAllItems(count: count)
@@ -120,9 +121,9 @@ extension TrashViewModel {
 
     func emptyTrash() {
         Task { @MainActor in
-            defer { isLoading = false }
+            defer { delegate?.trashViewModelWantsToHideLoadingHud() }
             do {
-                isLoading = true
+                delegate?.trashViewModelWantsToShowLoadingHud()
                 try await deleteAllTask().value
                 items.removeAll()
                 delegate?.trashViewModelDidEmptyTrash()
@@ -132,15 +133,22 @@ extension TrashViewModel {
         }
     }
 
-    func showOptions(_ item: ItemListUiModel) {
-        delegate?.trashViewModelWantsToShowOptions(for: item)
+    func selectItem(_ item: ItemListUiModel) {
+        Task { @MainActor in
+            do {
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
+                delegate?.trashViewModelWantsShowItemDetail(itemContent)
+            } catch {
+                delegate?.trashViewModelDidFail(error)
+            }
+        }
     }
 
     func restore(_ item: ItemListUiModel) {
         Task { @MainActor in
-            defer { isLoading = false }
+            defer { delegate?.trashViewModelWantsToHideLoadingHud() }
             do {
-                isLoading = true
+                delegate?.trashViewModelWantsToShowLoadingHud()
                 try await restoreItemTask(item).value
                 remove(item)
                 delegate?.trashViewModelDidRestoreItem(item.type)
@@ -152,9 +160,9 @@ extension TrashViewModel {
 
     func deletePermanently(_ item: ItemListUiModel) {
         Task { @MainActor in
-            defer { isLoading = false }
+            defer { delegate?.trashViewModelWantsToHideLoadingHud() }
             do {
-                isLoading = true
+                delegate?.trashViewModelWantsToShowLoadingHud()
                 try await deleteItemTask(item).value
                 remove(item)
                 delegate?.trashViewModelDidDeleteItem(item.type)
@@ -214,5 +222,12 @@ private extension TrashViewModel {
             throw TrashViewModelError.itemNotFound(shareId: item.shareId, itemId: item.itemId)
         }
         return item
+    }
+
+    func getDecryptedItemContentTask(for item: ItemListUiModel) -> Task<ItemContent, Error> {
+        Task.detached(priority: .userInitiated) {
+            let encryptedItem = try await self.getItem(item)
+            return try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
+        }
     }
 }

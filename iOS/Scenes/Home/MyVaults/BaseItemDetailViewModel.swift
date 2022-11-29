@@ -24,8 +24,10 @@ import UIKit
 
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
+    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel)
     func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String)
     func itemDetailViewModelWantsToShowLarge(_ text: String)
+    func itemDetailViewModelDidFail(_ error: Error)
 }
 
 enum ItemDetailViewModelError: Error {
@@ -59,6 +61,21 @@ class BaseItemDetailViewModel {
 
     func edit() {
         delegate?.itemDetailViewModelWantsToEditItem(itemContent)
+    }
+
+    func restore() {
+        Task { @MainActor in
+            do {
+                if let encryptedItem = try await itemRepository.getItemTask(shareId: itemContent.shareId,
+                                                                            itemId: itemContent.itemId).value {
+                    let symmetricKey = itemRepository.symmetricKey
+                    let item = try await encryptedItem.toItemListUiModel(symmetricKey)
+                    delegate?.itemDetailViewModelWantsToRestore(item)
+                }
+            } catch {
+                delegate?.itemDetailViewModelDidFail(error)
+            }
+        }
     }
 
     func refresh() {

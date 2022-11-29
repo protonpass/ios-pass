@@ -139,48 +139,42 @@ struct VaultContentView: View {
     }
 
     private func trailingView(for item: ItemListUiModel) -> some View {
-        VStack {
-            Spacer()
+        Menu(content: {
+            switch item.type {
+            case .login:
+                CopyMenuButton(title: "Copy username",
+                               action: { viewModel.copyUsername(item) })
 
-            Menu(content: {
-                switch item.type {
-                case .login:
-                    CopyMenuButton(title: "Copy username",
-                                   action: { viewModel.copyUsername(item) })
+                CopyMenuButton(title: "Copy password",
+                               action: { viewModel.copyPassword(item) })
 
-                    CopyMenuButton(title: "Copy password",
-                                   action: { viewModel.copyPassword(item) })
-
-                case .alias:
-                    CopyMenuButton(title: "Copy email address",
-                                   action: { viewModel.copyEmailAddress(item) })
-                case .note:
-                    if case .value = item.detail {
-                        CopyMenuButton(title: "Copy note",
-                                       action: { viewModel.copyNote(item) })
-                    }
+            case .alias:
+                CopyMenuButton(title: "Copy email address",
+                               action: { viewModel.copyEmailAddress(item) })
+            case .note:
+                if case .value = item.detail {
+                    CopyMenuButton(title: "Copy note",
+                                   action: { viewModel.copyNote(item) })
                 }
+            }
 
-                EditMenuButton {
-                    viewModel.editItem(item)
-                }
+            EditMenuButton {
+                viewModel.editItem(item)
+            }
 
-                Divider()
+            Divider()
 
-                DestructiveButton(
-                    title: "Move to Trash",
-                    icon: IconProvider.trash,
-                    action: {
-                        selectedItem = item
-                        isShowingTrashingAlert.toggle()
-                    })
-            }, label: {
-                Image(uiImage: IconProvider.threeDotsHorizontal)
-                    .foregroundColor(.secondary)
-            })
-
-            Spacer()
-        }
+            DestructiveButton(
+                title: "Move to Trash",
+                icon: IconProvider.trash,
+                action: {
+                    selectedItem = item
+                    isShowingTrashingAlert.toggle()
+                })
+        }, label: {
+            Image(uiImage: IconProvider.threeDotsHorizontal)
+                .foregroundColor(.secondary)
+        })
     }
 
     @ToolbarContentBuilder

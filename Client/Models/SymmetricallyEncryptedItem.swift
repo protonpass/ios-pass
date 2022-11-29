@@ -49,6 +49,7 @@ public struct SymmetricallyEncryptedItem {
         return .init(shareId: shareId,
                      itemId: item.itemID,
                      revision: item.revision,
+                     state: item.itemState,
                      contentProtobuf: protobufItem)
     }
 
@@ -61,6 +62,7 @@ public struct SymmetricallyEncryptedItem {
         return .init(shareId: shareId,
                      itemId: item.itemID,
                      revision: item.revision,
+                     state: item.itemState,
                      contentProtobuf: decryptedProtobufItem)
     }
 }
