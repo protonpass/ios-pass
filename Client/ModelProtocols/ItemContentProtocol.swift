@@ -141,6 +141,7 @@ public struct ItemContent: ItemContentProtocol {
     public let shareId: String
     public let itemId: String
     public let revision: Int16
+    public let state: ItemState
     public let name: String
     public let note: String
     public let contentData: ItemContentData
@@ -148,10 +149,12 @@ public struct ItemContent: ItemContentProtocol {
     public init(shareId: String,
                 itemId: String,
                 revision: Int16,
+                state: ItemState,
                 contentProtobuf: ItemContentProtobuf) {
         self.shareId = shareId
         self.itemId = itemId
         self.revision = revision
+        self.state = state
         self.name = contentProtobuf.name
         self.note = contentProtobuf.note
         self.contentData = contentProtobuf.contentData

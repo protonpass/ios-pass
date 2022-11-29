@@ -253,7 +253,8 @@ private extension HomeCoordinator {
     func provideTrashCoordinator() -> TrashCoordinator {
         let trashCoordinator = TrashCoordinator(symmetricKey: symmetricKey,
                                                 shareRepository: shareRepository,
-                                                itemRepository: itemRepository)
+                                                itemRepository: itemRepository,
+                                                aliasRepository: aliasRepository)
         trashCoordinator.delegate = self
         trashCoordinator.trashCoordinatorDelegate = self
         return trashCoordinator
