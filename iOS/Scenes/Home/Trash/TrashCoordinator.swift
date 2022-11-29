@@ -70,13 +70,6 @@ extension TrashCoordinator: TrashViewModelDelegate {
         toggleSidebar()
     }
 
-    func trashViewModelWantsToShowOptions(for item: ItemListUiModel) {
-        let optionsView = TrashedItemOptionsView(item: item, delegate: self)
-        let optionsViewController = UIHostingController(rootView: optionsView)
-        optionsViewController.sheetPresentationController?.detents = [.medium()]
-        presentViewController(optionsViewController)
-    }
-
     func trashViewModelDidRestoreItem(_ type: Client.ItemContentType) {
         dismissTopMostViewController { [unowned self] in
             let message: String
@@ -115,20 +108,5 @@ extension TrashCoordinator: TrashViewModelDelegate {
 
     func trashViewModelDidFail(_ error: Error) {
         bannerManager?.displayTopErrorMessage(error)
-    }
-}
-
-// MARK: - TrashedItemOptionsViewDelegate
-extension TrashCoordinator: TrashedItemOptionsViewDelegate {
-    func trashedItemWantsToBeRestored(_ item: ItemListUiModel) {
-        trashViewModel.restore(item)
-    }
-
-    func trashedItemWantsToShowDetail(_ item: ItemListUiModel) {
-        print(#function)
-    }
-
-    func trashedItemWantsToBeDeletedPermanently(_ item: ItemListUiModel) {
-        trashViewModel.deletePermanently(item)
     }
 }
