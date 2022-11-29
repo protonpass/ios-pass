@@ -121,7 +121,7 @@ struct TrashView: View {
             ForEach(viewModel.items, id: \.itemId) { item in
                 GenericItemView(
                     item: item,
-                    action: {},
+                    action: { viewModel.selectItem(item) },
                     trailingView: { trailingView(for: item) })
                 .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
             }

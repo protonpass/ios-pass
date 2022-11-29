@@ -34,6 +34,7 @@ final class TrashCoordinator: Coordinator {
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
+    private let aliasRepository: AliasRepositoryProtocol
     private let trashViewModel: TrashViewModel
 
     weak var trashCoordinatorDelegate: TrashCoordinatorDelegate?
@@ -41,10 +42,12 @@ final class TrashCoordinator: Coordinator {
 
     init(symmetricKey: SymmetricKey,
          shareRepository: ShareRepositoryProtocol,
-         itemRepository: ItemRepositoryProtocol) {
+         itemRepository: ItemRepositoryProtocol,
+         aliasRepository: AliasRepositoryProtocol) {
         self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
+        self.aliasRepository = aliasRepository
         self.trashViewModel = TrashViewModel(symmetricKey: symmetricKey,
                                              shareRepository: shareRepository,
                                              itemRepository: itemRepository)
@@ -59,6 +62,37 @@ final class TrashCoordinator: Coordinator {
 
     func refreshTrashedItems() {
         trashViewModel.fetchAllTrashedItems(forceRefresh: false)
+    }
+}
+
+private extension TrashCoordinator {
+    func showItemDetailView(_ itemContent: ItemContent) {
+        let baseItemDetailViewModel: BaseItemDetailViewModel
+        switch itemContent.contentData {
+        case .login:
+            let viewModel = LogInDetailViewModel(itemContent: itemContent,
+                                                 itemRepository: itemRepository)
+            baseItemDetailViewModel = viewModel
+            let logInDetailView = LogInDetailView(viewModel: viewModel)
+            pushView(logInDetailView)
+
+        case .note:
+            let viewModel = NoteDetailViewModel(itemContent: itemContent,
+                                                itemRepository: itemRepository)
+            baseItemDetailViewModel = viewModel
+            let noteDetailView = NoteDetailView(viewModel: viewModel)
+            pushView(noteDetailView)
+
+        case .alias:
+            let viewModel = AliasDetailViewModel(itemContent: itemContent,
+                                                 itemRepository: itemRepository,
+                                                 aliasRepository: aliasRepository)
+            baseItemDetailViewModel = viewModel
+            let aliasDetailView = AliasDetailView(viewModel: viewModel)
+            pushView(aliasDetailView)
+        }
+
+        baseItemDetailViewModel.delegate = self
     }
 }
 
@@ -79,6 +113,10 @@ extension TrashCoordinator: TrashViewModelDelegate {
         showLoadingHud()
     }
 
+    func trashViewModelWantsShowItemDetail(_ item: Client.ItemContent) {
+        showItemDetailView(item)
+    }
+
     func trashViewModelWantsToHideLoadingHud() {
         hideLoadingHud()
     }
@@ -90,6 +128,7 @@ extension TrashCoordinator: TrashViewModelDelegate {
         case .login: message = "Login restored"
         case .note: message = "Note restored"
         }
+        popToRoot()
         bannerManager?.displayBottomInfoMessage(message)
         trashCoordinatorDelegate?.trashCoordinatorDidRestoreItems()
     }
@@ -114,6 +153,29 @@ extension TrashCoordinator: TrashViewModelDelegate {
     }
 
     func trashViewModelDidFail(_ error: Error) {
+        bannerManager?.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - BaseItemDetailViewModel
+extension TrashCoordinator: ItemDetailViewModelDelegate {
+    func itemDetailViewModelWantsToEditItem(_ itemContent: Client.ItemContent) {
+        print("\(#function) not applicable")
+    }
+
+    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel) {
+        trashViewModel.restore(item)
+    }
+
+    func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String) {
+        bannerManager?.displayBottomInfoMessage(message)
+    }
+
+    func itemDetailViewModelWantsToShowLarge(_ text: String) {
+        presentView(LargeView(text: text), dismissible: true)
+    }
+
+    func itemDetailViewModelDidFail(_ error: Error) {
         bannerManager?.displayTopErrorMessage(error)
     }
 }

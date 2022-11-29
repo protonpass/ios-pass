@@ -65,9 +65,18 @@ struct NoteDetailView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.edit) {
-                Text("Edit")
-                    .foregroundColor(.interactionNorm)
+            switch viewModel.itemContent.state {
+            case .active:
+                Button(action: viewModel.edit) {
+                    Text("Edit")
+                        .foregroundColor(.interactionNorm)
+                }
+
+            case .trashed:
+                Button(action: viewModel.restore) {
+                    Text("Restore")
+                        .foregroundColor(.interactionNorm)
+                }
             }
         }
     }

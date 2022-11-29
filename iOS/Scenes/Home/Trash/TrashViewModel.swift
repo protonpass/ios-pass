@@ -28,6 +28,7 @@ protocol TrashViewModelDelegate: AnyObject {
     func trashViewModelWantsToToggleSidebar()
     func trashViewModelWantsToShowLoadingHud()
     func trashViewModelWantsToHideLoadingHud()
+    func trashViewModelWantsShowItemDetail(_ item: ItemContent)
     func trashViewModelDidRestoreItem(_ type: ItemContentType)
     func trashViewModelDidRestoreAllItems(count: Int)
     func trashViewModelDidDeleteItem(_ type: ItemContentType)
@@ -132,6 +133,17 @@ extension TrashViewModel {
         }
     }
 
+    func selectItem(_ item: ItemListUiModel) {
+        Task { @MainActor in
+            do {
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
+                delegate?.trashViewModelWantsShowItemDetail(itemContent)
+            } catch {
+                delegate?.trashViewModelDidFail(error)
+            }
+        }
+    }
+
     func restore(_ item: ItemListUiModel) {
         Task { @MainActor in
             defer { delegate?.trashViewModelWantsToHideLoadingHud() }
@@ -210,5 +222,12 @@ private extension TrashViewModel {
             throw TrashViewModelError.itemNotFound(shareId: item.shareId, itemId: item.itemId)
         }
         return item
+    }
+
+    func getDecryptedItemContentTask(for item: ItemListUiModel) -> Task<ItemContent, Error> {
+        Task.detached(priority: .userInitiated) {
+            let encryptedItem = try await self.getItem(item)
+            return try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
+        }
     }
 }
