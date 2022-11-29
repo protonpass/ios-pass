@@ -26,7 +26,6 @@ import SwiftUI
 
 protocol TrashViewModelDelegate: AnyObject {
     func trashViewModelWantsToToggleSidebar()
-    func trashViewModelWantsToShowOptions(for item: ItemListUiModel)
     func trashViewModelDidRestoreItem(_ type: ItemContentType)
     func trashViewModelDidRestoreAllItems(count: Int)
     func trashViewModelDidDeleteItem(_ type: ItemContentType)
@@ -130,10 +129,6 @@ extension TrashViewModel {
                 delegate?.trashViewModelDidFail(error)
             }
         }
-    }
-
-    func showOptions(_ item: ItemListUiModel) {
-        delegate?.trashViewModelWantsToShowOptions(for: item)
     }
 
     func restore(_ item: ItemListUiModel) {

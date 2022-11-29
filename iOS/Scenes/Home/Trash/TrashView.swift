@@ -104,15 +104,8 @@ struct TrashView: View {
             ForEach(viewModel.items, id: \.itemId) { item in
                 GenericItemView(
                     item: item,
-                    action: { viewModel.showOptions(item) },
-                    trailingView: {
-                        Button(action: {
-                            viewModel.showOptions(item)
-                        }, label: {
-                            Image(uiImage: IconProvider.threeDotsHorizontal)
-                                .foregroundColor(.secondary)
-                        })
-                    })
+                    action: {},
+                    trailingView: { trailingView(for: item) })
                 .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
             }
             .listRowSeparator(.hidden)
@@ -122,5 +115,29 @@ struct TrashView: View {
         .refreshable {
             await viewModel.forceRefreshItems()
         }
+    }
+
+    private func trailingView(for item: ItemListUiModel) -> some View {
+        Menu(content: {
+            Button(action: {
+                viewModel.restore(item)
+            }, label: {
+                Label(title: {
+                    Text("Restore")
+                }, icon: {
+                    Image(uiImage: IconProvider.clockRotateLeft)
+                })
+            })
+
+            Divider()
+
+            DestructiveButton(
+                title: "Delete permanently",
+                icon: IconProvider.trash,
+                action: {})
+        }, label: {
+            Image(uiImage: IconProvider.threeDotsHorizontal)
+                .foregroundColor(.secondary)
+        })
     }
 }
