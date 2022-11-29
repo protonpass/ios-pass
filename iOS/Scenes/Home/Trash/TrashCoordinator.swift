@@ -26,14 +26,18 @@ import ProtonCore_Login
 import SwiftUI
 import UIComponents
 
+protocol TrashCoordinatorDelegate: AnyObject {
+    func trashCoordinatorDidRestoreItems()
+}
+
 final class TrashCoordinator: Coordinator {
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let trashViewModel: TrashViewModel
 
+    weak var trashCoordinatorDelegate: TrashCoordinatorDelegate?
     weak var bannerManager: BannerManager?
-    var onRestoredItem: (() -> Void)?
 
     init(symmetricKey: SymmetricKey,
          shareRepository: ShareRepositoryProtocol,
@@ -87,14 +91,12 @@ extension TrashCoordinator: TrashViewModelDelegate {
         case .note: message = "Note restored"
         }
         bannerManager?.displayBottomInfoMessage(message)
-        onRestoredItem?()
+        trashCoordinatorDelegate?.trashCoordinatorDidRestoreItems()
     }
 
     func trashViewModelDidRestoreAllItems(count: Int) {
-        dismissTopMostViewController { [unowned self] in
-            self.bannerManager?.displayBottomInfoMessage("\(count) item(s) restored")
-            self.onRestoredItem?()
-        }
+        bannerManager?.displayBottomInfoMessage("\(count) item(s) restored")
+        trashCoordinatorDelegate?.trashCoordinatorDidRestoreItems()
     }
 
     func trashViewModelDidDeleteItem(_ type: Client.ItemContentType) {
