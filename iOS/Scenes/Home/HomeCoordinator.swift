@@ -255,9 +255,7 @@ private extension HomeCoordinator {
                                                 shareRepository: shareRepository,
                                                 itemRepository: itemRepository)
         trashCoordinator.delegate = self
-        trashCoordinator.onRestoredItem = { [unowned self] in
-            self.myVaultsCoordinator.refreshItems()
-        }
+        trashCoordinator.trashCoordinatorDelegate = self
         return trashCoordinator
     }
 }
@@ -479,6 +477,13 @@ private extension HomeCoordinator {
                     }
                 }
             })
+    }
+}
+
+// MARK: - TrashCoordinatorDelegate
+extension HomeCoordinator: TrashCoordinatorDelegate {
+    func trashCoordinatorDidRestoreItems() {
+        myVaultsCoordinator.refreshItems()
     }
 }
 
