@@ -34,6 +34,7 @@ struct SettingsView: View {
         Form {
             AutoFillSection(viewModel: viewModel)
             LocalAuthenticationSection(localAuthenticator: viewModel.localAuthenticator)
+            FullSyncSection(viewModel: viewModel)
             DeleteAccountSection(onDelete: viewModel.deleteAccount)
         }
         .toolbar { toolbarContent }
@@ -129,6 +130,24 @@ private struct LocalAuthenticationSection: View {
         } else {
             Text("Not supported")
         }
+    }
+}
+
+private struct FullSyncSection: View {
+    @ObservedObject var viewModel: SettingsViewModel
+
+    var body: some View {
+        Section(content: {
+            Button(action: viewModel.fullSync) {
+                Text("Trigger a full synchronization")
+            }
+            .foregroundColor(.interactionNorm)
+        }, header: {
+            Text("Full synchronization")
+        }, footer: {
+            // swiftlint:disable:next line_length
+            Text("Your items should be synchronized automatically in an incremental manner or by doing a pull to refresh gesture. A full synchronization is helpful if you want to forcefully synchronize everything as if you were logged in for the first time.")
+        })
     }
 }
 
