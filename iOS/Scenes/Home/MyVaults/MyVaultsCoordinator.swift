@@ -60,7 +60,8 @@ final class MyVaultsCoordinator: Coordinator {
          vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
-         publicKeyRepository: PublicKeyRepositoryProtocol) {
+         publicKeyRepository: PublicKeyRepositoryProtocol,
+         syncEventLoop: SyncEventLoop) {
         self.symmetricKey = symmetricKey
         self.userData = userData
         self.vaultSelection = vaultSelection
@@ -70,7 +71,8 @@ final class MyVaultsCoordinator: Coordinator {
         self.aliasRepository = aliasRepository
         self.vaultContentViewModel = .init(vaultSelection: vaultSelection,
                                            itemRepository: itemRepository,
-                                           symmetricKey: symmetricKey)
+                                           symmetricKey: symmetricKey,
+                                           syncEventLoop: syncEventLoop)
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
         super.init()
         vaultContentViewModel.delegate = self

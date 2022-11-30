@@ -90,7 +90,9 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
+    private let syncEventLoop: SyncEventLoop
     private var cancellables = Set<AnyCancellable>()
+    private var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
 
     weak var itemCountDelegate: ItemCountDelegate?
 
@@ -101,10 +103,12 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
 
     init(vaultSelection: VaultSelection,
          itemRepository: ItemRepositoryProtocol,
-         symmetricKey: SymmetricKey) {
+         symmetricKey: SymmetricKey,
+         syncEventLoop: SyncEventLoop) {
         self.vaultSelection = vaultSelection
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
+        self.syncEventLoop = syncEventLoop
 
         vaultSelection.objectWillChange
             .sink { [unowned self] _ in
@@ -139,13 +143,12 @@ extension VaultContentViewModel {
     }
 
     @MainActor
-    func forceRefreshItems() async {
-        do {
-            allItems = try await getItemsTask(forceRefresh: true).value
-            updateItemCount()
-            filterAndSort()
-        } catch {
-            state = .error(error)
+    func forceSync() async {
+        await withCheckedContinuation { [weak self] (continuation: CheckedContinuation<Void, Never>) in
+            guard let self else { return }
+            self.pullToRefreshContinuation = continuation
+            self.syncEventLoop.pullToRefreshDelegate = self
+            self.syncEventLoop.forceSync()
         }
     }
 
@@ -297,6 +300,15 @@ private extension VaultContentViewModel {
             throw VaultContentViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
         }
         return item
+    }
+}
+
+// MARK: - SyncEventLoopPullToRefreshDelegate
+extension VaultContentViewModel: SyncEventLoopPullToRefreshDelegate {
+    func pullToRefreshShouldStopRefreshing() {
+        pullToRefreshContinuation?.resume()
+        pullToRefreshContinuation = nil
+        syncEventLoop.pullToRefreshDelegate = nil
     }
 }
 

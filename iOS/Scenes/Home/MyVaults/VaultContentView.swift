@@ -135,7 +135,7 @@ struct VaultContentView: View {
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 0)
         .animation(.default, value: viewModel.filteredItems.count)
-        .refreshable { await viewModel.forceRefreshItems() }
+        .refreshable { await viewModel.forceSync() }
     }
 
     private func trailingView(for item: ItemListUiModel) -> some View {
