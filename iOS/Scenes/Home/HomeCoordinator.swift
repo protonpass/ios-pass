@@ -231,7 +231,8 @@ private extension HomeCoordinator {
                                                       vaultItemKeysRepository: vaultItemKeysRepository,
                                                       itemRepository: itemRepository,
                                                       aliasRepository: aliasRepository,
-                                                      publicKeyRepository: publicKeyRepository)
+                                                      publicKeyRepository: publicKeyRepository,
+                                                      syncEventLoop: eventLoop)
         myVaultsCoordinator.delegate = self
         myVaultsCoordinator.myVaultsCoordinatorDelegate = self.trashCoordinator
         myVaultsCoordinator.itemCountDelegate = sidebarViewModel
@@ -433,6 +434,7 @@ extension HomeCoordinator: SyncEventLoopDelegate {
         PPLogger.shared?.log("Began new sync loop")
     }
 
+    #warning("Handle no connection reason")
     func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
         PPLogger.shared?.log("Skipped sync loop \(reason)")
     }
@@ -449,6 +451,7 @@ extension HomeCoordinator: SyncEventLoopDelegate {
 
     func syncEventLoopDidFailLoop(error: Error) {
         PPLogger.shared?.log(error)
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
