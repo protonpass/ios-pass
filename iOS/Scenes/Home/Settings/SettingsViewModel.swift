@@ -126,5 +126,8 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
 // MARK: - Actions
 extension SettingsViewModel {
     func toggleSidebar() { onToggleSidebar?() }
+
     func deleteAccount() { onDeleteAccount?() }
+
+    func fullSync() { print(#function) }
 }
