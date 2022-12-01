@@ -43,14 +43,16 @@ final class TrashCoordinator: Coordinator {
     init(symmetricKey: SymmetricKey,
          shareRepository: ShareRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
-         aliasRepository: AliasRepositoryProtocol) {
+         aliasRepository: AliasRepositoryProtocol,
+         syncEventLoop: SyncEventLoop) {
         self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.aliasRepository = aliasRepository
         self.trashViewModel = TrashViewModel(symmetricKey: symmetricKey,
                                              shareRepository: shareRepository,
-                                             itemRepository: itemRepository)
+                                             itemRepository: itemRepository,
+                                             syncEventLoop: syncEventLoop)
         super.init()
         self.start()
     }
@@ -61,7 +63,7 @@ final class TrashCoordinator: Coordinator {
     }
 
     func refreshTrashedItems() {
-        trashViewModel.fetchAllTrashedItems(forceRefresh: false)
+        trashViewModel.fetchAllTrashedItems()
     }
 }
 

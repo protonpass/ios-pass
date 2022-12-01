@@ -54,7 +54,7 @@ struct TrashView: View {
 
             case .error(let error):
                 RetryableErrorView(errorMessage: error.messageForTheUser,
-                                   onRetry: { viewModel.fetchAllTrashedItems(forceRefresh: true) })
+                                   onRetry: { Task { await viewModel.forceSync() } })
             }
         }
         .toolbar { toolbarContent }
@@ -129,9 +129,7 @@ struct TrashView: View {
         }
         .listStyle(.plain)
         .animation(.default, value: viewModel.items.count)
-        .refreshable {
-            await viewModel.forceRefreshItems()
-        }
+        .refreshable { await viewModel.forceSync() }
     }
 
     private func trailingView(for item: ItemListUiModel) -> some View {
