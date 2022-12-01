@@ -59,6 +59,17 @@ public enum ItemContentType: Int, CaseIterable {
             return IconProvider.note
         }
     }
+
+    public var iconTintColor: UIColor {
+        switch self {
+        case .alias:
+            return .iconWeak
+        case .login:
+            return .interactionNorm
+        case .note:
+            return .notificationWarning
+        }
+    }
 }
 
 public enum ItemContentData {
