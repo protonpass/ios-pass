@@ -22,6 +22,7 @@ import SwiftUI
 
 public protocol ItemSearchResultProtocol {
     var icon: UIImage { get }
+    var iconTintColor: UIColor { get }
     var title: HighlightableText { get }
     var detail: [HighlightableText] { get }
     var vaultName: String { get }
@@ -42,12 +43,15 @@ public struct ItemSearchResultView: View {
             HStack {
                 Button(action: action) {
                     HStack {
-                        VStack {
+                        ZStack {
+                            Color(result.iconTintColor).opacity(0.1)
                             Image(uiImage: result.icon)
-                                .foregroundColor(Color(.label))
-                                .padding(.top, -20)
-                            EmptyView()
+                                .resizable()
+                                .foregroundColor(Color(result.iconTintColor))
+                                .padding(7.5)
                         }
+                        .frame(width: 36, height: 36)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
 
                         VStack(alignment: .leading, spacing: 4) {
                             HighlightText(highlightableText: result.title)
@@ -55,10 +59,12 @@ public struct ItemSearchResultView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 ForEach(0..<result.detail.count, id: \.self) { index in
                                     let eachDetail = result.detail[index]
-                                    HighlightText(highlightableText: eachDetail)
-                                        .font(.callout)
-                                        .foregroundColor(Color(.secondaryLabel))
-                                        .lineLimit(1)
+                                    if !eachDetail.fullText.isEmpty {
+                                        HighlightText(highlightableText: eachDetail)
+                                            .font(.callout)
+                                            .foregroundColor(Color(.secondaryLabel))
+                                            .lineLimit(1)
+                                    }
                                 }
                             }
                         }
