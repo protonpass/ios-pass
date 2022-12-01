@@ -25,6 +25,8 @@ import UIComponents
 
 struct SearchView: View {
     @StateObject private var viewModel: SearchViewModel
+    @State private var selectedItem: ItemSearchResult?
+    @State private var isShowingTrashingAlert = false
 
     init(viewModel: SearchViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -56,6 +58,11 @@ struct SearchView: View {
         .navigationBarTitleDisplayMode(.inline)
         .animation(.default, value: viewModel.state)
         .toolbar { toolbarContent }
+        .moveToTrashAlert(isPresented: $isShowingTrashingAlert) {
+            if let selectedItem {
+                viewModel.trashItem(selectedItem)
+            }
+        }
     }
 
     @ToolbarContentBuilder
@@ -111,8 +118,8 @@ struct SearchView: View {
                 title: "Move to Trash",
                 icon: IconProvider.trash,
                 action: {
-//                    selectedItem = item
-//                    isShowingTrashingAlert.toggle()
+                    selectedItem = item
+                    isShowingTrashingAlert.toggle()
                 })
         }, label: {
             Image(uiImage: IconProvider.threeDotsHorizontal)

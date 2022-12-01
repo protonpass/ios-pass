@@ -42,6 +42,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
+    private var searchViewModel: SearchViewModel?
 
     weak var itemCountDelegate: ItemCountDelegate? {
         didSet {
@@ -183,6 +184,7 @@ final class MyVaultsCoordinator: Coordinator {
         let viewModel = SearchViewModel(symmetricKey: symmetricKey,
                                         itemRepository: itemRepository)
         viewModel.delegate = self
+        searchViewModel = viewModel
         presentViewFullScreen(SearchView(viewModel: viewModel),
                               embedInNavigationController: true)
     }
@@ -259,9 +261,19 @@ final class MyVaultsCoordinator: Coordinator {
         case .note:
             message = "Note deleted"
         }
-        bannerManager?.displayBottomInfoMessage(message)
+
+        if isAtRootViewController() {
+            bannerManager?.displayBottomInfoMessage(message)
+        } else {
+            popToRoot()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                self.bannerManager?.displayBottomInfoMessage(message)
+            }
+        }
+
         vaultContentViewModel.fetchItems(forceRefresh: false)
         delegate?.myVaultsCoordinatorWantsToRefreshTrash()
+        Task { await searchViewModel?.refreshResults() }
     }
 
     private func handleUpdatedItem(_ itemContentType: ItemContentType) {
@@ -269,6 +281,7 @@ final class MyVaultsCoordinator: Coordinator {
             currentItemDetailViewModel?.refresh()
             bannerManager?.displayBottomSuccessMessage("Changes saved")
             vaultContentViewModel.fetchItems(forceRefresh: false)
+            Task { await searchViewModel?.refreshResults() }
         }
     }
 
@@ -366,7 +379,6 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelDidTrashItem(_ type: ItemContentType) {
-        popToRoot()
         handleTrashedItem(type)
     }
 
@@ -461,13 +473,17 @@ extension MyVaultsCoordinator: SearchViewModelDelegate {
         showItemDetailView(item)
     }
 
-    func searchViewModelWantsToEditItem(_ item: Client.ItemContent) {}
+    func searchViewModelWantsToEditItem(_ item: Client.ItemContent) {
+        showEditItemView(item)
+    }
 
     func searchViewModelWantsToDisplayInformativeMessage(_ message: String) {
         bannerManager?.displayBottomInfoMessage(message)
     }
 
-    func searchViewModelDidTrashItem(_ type: Client.ItemContentType) {}
+    func searchViewModelDidTrashItem(_ type: Client.ItemContentType) {
+        handleTrashedItem(type)
+    }
 
     func searchViewModelDidFail(_ error: Error) {
         bannerManager?.displayTopErrorMessage(error.messageForTheUser)

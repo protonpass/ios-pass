@@ -127,7 +127,21 @@ open class Coordinator {
     }
 
     public func popToRoot(animated: Bool = true) {
-        navigationController.popToRootViewController(animated: animated)
+        if let presentedNavigationController =
+            navigationController.presentedViewController as? UINavigationController {
+            presentedNavigationController.popToRootViewController(animated: animated)
+        } else {
+            navigationController.popToRootViewController(animated: animated)
+        }
+    }
+
+    public func isAtRootViewController() -> Bool {
+        if let presentedNavigationController =
+            navigationController.presentedViewController as? UINavigationController {
+            return presentedNavigationController.viewControllers.count == 1
+        } else {
+            return navigationController.viewControllers.count == 1
+        }
     }
 }
 
