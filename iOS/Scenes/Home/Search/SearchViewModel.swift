@@ -47,7 +47,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     private var lastTask: Task<Void, Never>?
     private var items = [SearchableItem]()
 
-    @Published private var term = ""
+    private var lastSearchTerm = ""
     @Published private(set) var state = State.clean
     @Published private(set) var results = [ItemSearchResult]()
 
@@ -95,6 +95,12 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     }
 
     @MainActor
+    func refreshResults() async {
+        await loadItems()
+        doSearch(term: lastSearchTerm)
+    }
+
+    @MainActor
     private func loadItems() async {
         do {
             state = .initializing
@@ -109,6 +115,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     }
 
     private func doSearch(term: String) {
+        lastSearchTerm = term
         let term = term.trimmingCharacters(in: .whitespacesAndNewlines)
         if term.isEmpty { state = .clean; return }
 
@@ -299,8 +306,7 @@ extension SearchViewModel {
             delegate?.searchViewModelWantsToShowLoadingHud()
             do {
                 try await trashItemTask(for: item).value
-                await loadItems()
-                doSearch(term: term)
+                await refreshResults()
                 delegate?.searchViewModelDidTrashItem(item.type)
             } catch {
                 delegate?.searchViewModelDidFail(error)
