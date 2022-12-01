@@ -30,7 +30,7 @@ protocol SettingsCoordinatorDelegate: AnyObject {
 final class SettingsCoordinator: Coordinator {
     private let settingsViewModel: SettingsViewModel
 
-    weak var settingsCoordinatorDelegate: SettingsCoordinatorDelegate?
+    weak var delegate: SettingsCoordinatorDelegate?
     weak var bannerManager: BannerManager?
     var onDeleteAccount: (() -> Void)?
 
@@ -61,15 +61,15 @@ final class SettingsCoordinator: Coordinator {
 // MARK: - SettingsViewModelDelegate
 extension SettingsCoordinator: SettingsViewModelDelegate {
     func settingsViewModelWantsToShowLoadingHud() {
-        delegate?.coordinatorWantsToShowLoadingHud()
+        coordinatorDelegate?.coordinatorWantsToShowLoadingHud()
     }
 
     func settingsViewModelWantsToHideLoadingHud() {
-        delegate?.coordinatorWantsToHideLoadingHud()
+        coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
     }
 
     func settingsViewModelDidFinishFullSync() {
-        settingsCoordinatorDelegate?.settingsCoordinatorDidFinishFullSync()
+        delegate?.settingsCoordinatorDidFinishFullSync()
     }
 
     func settingsViewModelDidFail(_ error: Error) {

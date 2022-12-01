@@ -49,7 +49,7 @@ final class MyVaultsCoordinator: Coordinator {
         }
     }
 
-    weak var myVaultsCoordinatorDelegate: MyVaultsCoordinatorDelegate?
+    weak var delegate: MyVaultsCoordinatorDelegate?
 
     weak var bannerManager: BannerManager?
 
@@ -259,7 +259,7 @@ final class MyVaultsCoordinator: Coordinator {
         }
         bannerManager?.displayBottomInfoMessage(message)
         vaultContentViewModel.fetchItems(forceRefresh: false)
-        myVaultsCoordinatorDelegate?.myVaultsCoordinatorWantsToRefreshTrash()
+        delegate?.myVaultsCoordinatorWantsToRefreshTrash()
     }
 
     private func handleUpdatedItem(_ itemContentType: ItemContentType) {
@@ -305,11 +305,11 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
     }
 
     func vaultContentViewModelWantsToShowLoadingHud() {
-        delegate?.coordinatorWantsToShowLoadingHud()
+        coordinatorDelegate?.coordinatorWantsToShowLoadingHud()
     }
 
     func vaultContentViewModelWantsToHideLoadingHud() {
-        delegate?.coordinatorWantsToHideLoadingHud()
+        coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
     }
 
     func vaultContentViewModelWantsToSearch() {
@@ -348,11 +348,11 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
 // MARK: - CreateEditItemViewModelDelegate
 extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
     func createEditItemViewModelWantsToShowLoadingHud() {
-        delegate?.coordinatorWantsToShowLoadingHud()
+        coordinatorDelegate?.coordinatorWantsToShowLoadingHud()
     }
 
     func createEditItemViewModelWantsToHideLoadingHud() {
-        delegate?.coordinatorWantsToHideLoadingHud()
+        coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
     }
 
     func createEditItemViewModelDidCreateItem(_ type: ItemContentType) {
@@ -400,7 +400,7 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelDidRemoveAlias() {
         bannerManager?.displayBottomInfoMessage("Alias deleted")
         vaultContentViewModel.fetchItems(forceRefresh: false)
-        myVaultsCoordinatorDelegate?.myVaultsCoordinatorWantsToRefreshTrash()
+        delegate?.myVaultsCoordinatorWantsToRefreshTrash()
     }
 }
 
