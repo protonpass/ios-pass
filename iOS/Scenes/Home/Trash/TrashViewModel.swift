@@ -40,13 +40,17 @@ enum TrashViewModelError: Error {
     case itemNotFound(shareId: String, itemId: String)
 }
 
-final class TrashViewModel: DeinitPrintable, ObservableObject {
+final class TrashViewModel: DeinitPrintable, PullToRefreshable, ObservableObject {
     @Published private(set) var state = State.loading
     @Published private(set) var items = [ItemListUiModel]()
 
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
+
+    /// `PullToRefreshable` conformance
+    var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
+    let syncEventLoop: SyncEventLoop
 
     weak var delegate: TrashViewModelDelegate?
 
@@ -67,30 +71,23 @@ final class TrashViewModel: DeinitPrintable, ObservableObject {
 
     init(symmetricKey: SymmetricKey,
          shareRepository: ShareRepositoryProtocol,
-         itemRepository: ItemRepositoryProtocol) {
+         itemRepository: ItemRepositoryProtocol,
+         syncEventLoop: SyncEventLoop) {
         self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
-        fetchAllTrashedItems(forceRefresh: false)
+        self.syncEventLoop = syncEventLoop
+        fetchAllTrashedItems()
     }
 
-    @MainActor
-    func forceRefreshItems() async {
-        do {
-            items = try await getTrashedItemsTask(forceRefresh: true).value
-        } catch {
-            state = .error(error)
-        }
-    }
-
-    func fetchAllTrashedItems(forceRefresh: Bool) {
+    func fetchAllTrashedItems() {
         Task { @MainActor in
             do {
                 if case .error = state {
                     state = .loading
                 }
 
-                items = try await getTrashedItemsTask(forceRefresh: forceRefresh).value
+                items = try await getTrashedItemsTask().value
                 state = .loaded
             } catch {
                 state = .error(error)
@@ -179,10 +176,9 @@ extension TrashViewModel {
 
 // MARK: - Private supporting tasks
 private extension TrashViewModel {
-    func getTrashedItemsTask(forceRefresh: Bool) -> Task<[ItemListUiModel], Error> {
+    func getTrashedItemsTask() -> Task<[ItemListUiModel], Error> {
         Task.detached(priority: .userInitiated) {
-            let items = try await self.itemRepository.getItems(forceRefresh: forceRefresh,
-                                                               state: .trashed)
+            let items = try await self.itemRepository.getItems(forceRefresh: false, state: .trashed)
             return try await items.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
         }
     }
@@ -229,5 +225,11 @@ private extension TrashViewModel {
             let encryptedItem = try await self.getItem(item)
             return try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
         }
+    }
+}
+
+extension TrashViewModel: SyncEventLoopPullToRefreshDelegate {
+    func pullToRefreshShouldStopRefreshing() {
+        stopRefreshing()
     }
 }

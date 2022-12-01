@@ -61,7 +61,7 @@ protocol VaultContentViewModelDelegate: AnyObject {
 }
 
 // MARK: - Initialization
-final class VaultContentViewModel: DeinitPrintable, ObservableObject {
+final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, ObservableObject {
     deinit { print(deinitMessage) }
 
     private var allItems = [ItemListUiModel]()
@@ -90,9 +90,11 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
-    private let syncEventLoop: SyncEventLoop
     private var cancellables = Set<AnyCancellable>()
-    private var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
+
+    /// `PullToRefreshable` conformance
+    var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
+    let syncEventLoop: SyncEventLoop
 
     weak var itemCountDelegate: ItemCountDelegate?
 
@@ -140,16 +142,6 @@ extension VaultContentViewModel {
 
     func search() {
         delegate?.vaultContentViewModelWantsToSearch()
-    }
-
-    @MainActor
-    func forceSync() async {
-        await withCheckedContinuation { [weak self] (continuation: CheckedContinuation<Void, Never>) in
-            guard let self else { return }
-            self.pullToRefreshContinuation = continuation
-            self.syncEventLoop.pullToRefreshDelegate = self
-            self.syncEventLoop.forceSync()
-        }
     }
 
     func fetchItems(forceRefresh: Bool) {
@@ -306,9 +298,7 @@ private extension VaultContentViewModel {
 // MARK: - SyncEventLoopPullToRefreshDelegate
 extension VaultContentViewModel: SyncEventLoopPullToRefreshDelegate {
     func pullToRefreshShouldStopRefreshing() {
-        pullToRefreshContinuation?.resume()
-        pullToRefreshContinuation = nil
-        syncEventLoop.pullToRefreshDelegate = nil
+        stopRefreshing()
     }
 }
 

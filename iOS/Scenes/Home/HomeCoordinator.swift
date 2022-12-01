@@ -255,7 +255,8 @@ private extension HomeCoordinator {
         let trashCoordinator = TrashCoordinator(symmetricKey: symmetricKey,
                                                 shareRepository: shareRepository,
                                                 itemRepository: itemRepository,
-                                                aliasRepository: aliasRepository)
+                                                aliasRepository: aliasRepository,
+                                                syncEventLoop: eventLoop)
         trashCoordinator.delegate = self
         trashCoordinator.trashCoordinatorDelegate = self
         return trashCoordinator
