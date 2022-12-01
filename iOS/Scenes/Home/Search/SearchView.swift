@@ -24,7 +24,6 @@ import SwiftUI
 import UIComponents
 
 struct SearchView: View {
-    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: SearchViewModel
 
     init(viewModel: SearchViewModel) {
@@ -32,40 +31,38 @@ struct SearchView: View {
     }
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                switch viewModel.state {
-                case .clean:
-                    CleanSearchView()
+        ZStack {
+            switch viewModel.state {
+            case .clean:
+                CleanSearchView()
 
-                case .initializing:
-                    ProgressView()
+            case .initializing:
+                ProgressView()
 
-                case .searching:
-                    SearchingView()
+            case .searching:
+                SearchingView()
 
-                case .results:
-                    if viewModel.results.isEmpty {
-                        NoSearchResultView()
-                    } else {
-                        resultsList
-                    }
-
-                case .error(let error):
-                    Text(error.messageForTheUser)
+            case .results:
+                if viewModel.results.isEmpty {
+                    NoSearchResultView()
+                } else {
+                    resultsList
                 }
+
+            case .error(let error):
+                Text(error.messageForTheUser)
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .animation(.default, value: viewModel.state)
-            .toolbar { toolbarContent }
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .animation(.default, value: viewModel.state)
+        .toolbar { toolbarContent }
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             SwiftUISearchBar(onSearch: viewModel.search,
-                             onCancel: dismiss.callAsFunction)
+                             onCancel: viewModel.dismiss)
             .transaction { transaction in
                 transaction.animation = nil
             }
@@ -76,7 +73,7 @@ struct SearchView: View {
         List {
             ForEach(viewModel.results, id: \.itemId) { result in
                 ItemSearchResultView(result: result,
-                                     action: {},
+                                     action: { viewModel.selectItem(result) },
                                      trailingView: { trailingView(for: result) })
             }
         }

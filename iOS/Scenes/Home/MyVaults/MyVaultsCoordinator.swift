@@ -183,7 +183,8 @@ final class MyVaultsCoordinator: Coordinator {
         let viewModel = SearchViewModel(symmetricKey: symmetricKey,
                                         itemRepository: itemRepository)
         viewModel.delegate = self
-        presentViewFullScreen(SearchView(viewModel: viewModel))
+        presentViewFullScreen(SearchView(viewModel: viewModel),
+                              embedInNavigationController: true)
     }
 
     private func showItemDetailView(_ itemContent: ItemContent) {
@@ -452,7 +453,13 @@ extension MyVaultsCoordinator: SearchViewModelDelegate {
         coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
     }
 
-    func searchViewModelWantsToShowItemDetail(_ item: Client.ItemContent) {}
+    func searchViewModelWantsToDismiss() {
+        dismissTopMostViewController()
+    }
+
+    func searchViewModelWantsToShowItemDetail(_ item: Client.ItemContent) {
+        showItemDetailView(item)
+    }
 
     func searchViewModelWantsToEditItem(_ item: Client.ItemContent) {}
 
