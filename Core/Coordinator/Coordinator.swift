@@ -57,7 +57,12 @@ open class Coordinator {
                                    animated: Bool = true,
                                    hidesBackButton: Bool = true) {
         viewController.navigationItem.hidesBackButton = hidesBackButton
-        navigationController.pushViewController(viewController, animated: animated)
+        if let presentedNavigationController =
+            navigationController.presentedViewController as? UINavigationController {
+            presentedNavigationController.pushViewController(viewController, animated: animated)
+        } else {
+            navigationController.pushViewController(viewController, animated: animated)
+        }
     }
 
     public func presentView<V: View>(_ view: V,
@@ -69,9 +74,16 @@ open class Coordinator {
     }
 
     public func presentViewFullScreen<V: View>(_ view: V,
+                                               embedInNavigationController: Bool = false,
                                                modalTransitionStyle: UIModalTransitionStyle = .coverVertical,
                                                animated: Bool = true) {
-        let viewController = UIHostingController(rootView: view)
+        let hostedViewController = UIHostingController(rootView: view)
+        let viewController: UIViewController
+        if embedInNavigationController {
+            viewController = UINavigationController(rootViewController: hostedViewController)
+        } else {
+            viewController = hostedViewController
+        }
         viewController.modalPresentationStyle = .fullScreen
         viewController.modalTransitionStyle = modalTransitionStyle
         presentViewController(viewController, animated: animated)

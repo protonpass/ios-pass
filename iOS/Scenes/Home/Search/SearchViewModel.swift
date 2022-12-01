@@ -27,6 +27,7 @@ import SwiftUI
 protocol SearchViewModelDelegate: AnyObject {
     func searchViewModelWantsToShowLoadingHud()
     func searchViewModelWantsToHideLoadingHud()
+    func searchViewModelWantsToDismiss()
     func searchViewModelWantsToShowItemDetail(_ item: ItemContent)
     func searchViewModelWantsToEditItem(_ item: ItemContent)
     func searchViewModelWantsToDisplayInformativeMessage(_ message: String)
@@ -202,6 +203,10 @@ private extension SearchViewModel {
 
 // MARK: - Public actions
 extension SearchViewModel {
+    func dismiss() {
+        delegate?.searchViewModelWantsToDismiss()
+    }
+
     func search(term: String) {
         searchTermSubject.send(term)
     }
