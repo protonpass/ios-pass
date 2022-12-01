@@ -67,10 +67,12 @@ public struct ItemSearchResult: ItemSearchResultProtocol {
     public let shareId: String
     public let itemId: String
     public let type: ItemContentType
-    public let icon: UIImage
     public let title: HighlightableText
     public let detail: [HighlightableText]
     public let vaultName: String
+
+    public var icon: UIImage { type.icon }
+    public var iconTintColor: UIColor { type.iconTintColor }
 
     public init(shareId: String,
                 itemId: String,
@@ -81,7 +83,6 @@ public struct ItemSearchResult: ItemSearchResultProtocol {
         self.shareId = shareId
         self.itemId = itemId
         self.type = type
-        self.icon = type.icon
         self.title = title
         self.detail = detail
         self.vaultName = vaultName

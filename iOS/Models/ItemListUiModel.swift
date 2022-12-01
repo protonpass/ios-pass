@@ -28,22 +28,13 @@ struct ItemListUiModel: GenericItemProtocol {
     let itemId: String
     let shareId: String
     let type: ItemContentType
-    let icon: UIImage
     let title: String
     let createTime: Int64
     let modifyTime: Int64
     let detail: GenericItemDetail
 
-    var iconTintColor: UIColor {
-        switch type {
-        case .alias:
-            return .iconWeak
-        case .login:
-            return .interactionNorm
-        case .note:
-            return .notificationWarning
-        }
-    }
+    var icon: UIImage { type.icon }
+    var iconTintColor: UIColor { type.iconTintColor }
 }
 
 extension SymmetricallyEncryptedItem {
@@ -75,7 +66,6 @@ extension SymmetricallyEncryptedItem {
         return .init(itemId: encryptedItemContent.itemId,
                      shareId: encryptedItemContent.shareId,
                      type: encryptedItemContent.contentData.type,
-                     icon: encryptedItemContent.contentData.type.icon,
                      title: name,
                      createTime: item.createTime,
                      modifyTime: item.modifyTime,

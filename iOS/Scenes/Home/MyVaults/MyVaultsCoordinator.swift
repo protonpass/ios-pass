@@ -182,6 +182,7 @@ final class MyVaultsCoordinator: Coordinator {
     private func showSearchView() {
         let viewModel = SearchViewModel(symmetricKey: symmetricKey,
                                         itemRepository: itemRepository)
+        viewModel.delegate = self
         presentViewFullScreen(SearchView(viewModel: viewModel))
     }
 
@@ -438,5 +439,30 @@ extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
             UIPasteboard.general.string = password
             self.bannerManager?.displayBottomInfoMessage("Password copied")
         }
+    }
+}
+
+// MARK: - SearchViewModelDelegate
+extension MyVaultsCoordinator: SearchViewModelDelegate {
+    func searchViewModelWantsToShowLoadingHud() {
+        coordinatorDelegate?.coordinatorWantsToShowLoadingHud()
+    }
+
+    func searchViewModelWantsToHideLoadingHud() {
+        coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
+    }
+
+    func searchViewModelWantsToShowItemDetail(_ item: Client.ItemContent) {}
+
+    func searchViewModelWantsToEditItem(_ item: Client.ItemContent) {}
+
+    func searchViewModelWantsToDisplayInformativeMessage(_ message: String) {
+        bannerManager?.displayBottomInfoMessage(message)
+    }
+
+    func searchViewModelDidTrashItem(_ type: Client.ItemContentType) {}
+
+    func searchViewModelDidFail(_ error: Error) {
+        bannerManager?.displayTopErrorMessage(error.messageForTheUser)
     }
 }
