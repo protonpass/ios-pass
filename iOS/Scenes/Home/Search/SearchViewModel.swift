@@ -42,13 +42,27 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    enum State {
+    enum State: Equatable {
         case clean
         /// Loading items to memory
         case initializing
         case searching
         case results
         case error(Error)
+
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            switch (lhs, rhs) {
+            case (.clean, .clean),
+                (.initializing, .initializing),
+                (.searching, .searching),
+                (.results, .results):
+                return true
+            case let (.error(lhsError), .error(rhsError)):
+                return lhsError.messageForTheUser == rhsError.messageForTheUser
+            default:
+                return false
+            }
+        }
     }
 
     init(symmetricKey: SymmetricKey,

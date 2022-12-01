@@ -54,6 +54,7 @@ struct SearchView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .animation(.default, value: viewModel.state)
             .toolbar { toolbarContent }
         }
     }
@@ -63,6 +64,9 @@ struct SearchView: View {
         ToolbarItem(placement: .principal) {
             SwiftUISearchBar(onSearch: viewModel.search,
                              onCancel: dismiss.callAsFunction)
+            .transaction { transaction in
+                transaction.animation = nil
+            }
         }
     }
 
@@ -88,7 +92,7 @@ private struct CleanSearchView: View {
                 .foregroundColor(.secondary)
             Spacer()
         }
-        .padding(.top, 32)
+        .padding(.top, 100)
         .padding(.horizontal)
     }
 }
@@ -111,11 +115,11 @@ private struct NoSearchResultView: View {
             Text("No results found")
                 .font(.title3)
                 .fontWeight(.bold)
-            Text("Try a different search term")
+            Text("Try a different search term.")
                 .foregroundColor(.secondary)
             Spacer()
         }
-        .padding(.top, 32)
+        .padding(.top, 100)
         .padding(.horizontal)
     }
 }
