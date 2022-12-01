@@ -28,6 +28,7 @@ import UIComponents
 protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToShowLoadingHud()
     func settingsViewModelWantsToHideLoadingHud()
+    func settingsViewModelDidFinishFullSync()
     func settingsViewModelDidFail(_ error: Error)
 }
 
@@ -129,5 +130,17 @@ extension SettingsViewModel {
 
     func deleteAccount() { onDeleteAccount?() }
 
-    func fullSync() { print(#function) }
+    func fullSync() {
+        Task { @MainActor in
+            defer { delegate?.settingsViewModelWantsToHideLoadingHud() }
+            do {
+                delegate?.settingsViewModelWantsToShowLoadingHud()
+                /// Does not matter getting `active` or `trashed` items. We only want to force refresh.
+                _ = try await itemRepository.getItems(forceRefresh: true, state: .active)
+                delegate?.settingsViewModelDidFinishFullSync()
+            } catch {
+                delegate?.settingsViewModelDidFail(error)
+            }
+        }
+    }
 }
