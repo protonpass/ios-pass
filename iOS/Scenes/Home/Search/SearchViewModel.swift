@@ -24,6 +24,16 @@ import Core
 import CryptoKit
 import SwiftUI
 
+protocol SearchViewModelDelegate: AnyObject {
+    func searchViewModelWantsToShowLoadingHud()
+    func searchViewModelWantsToHideLoadingHud()
+    func searchViewModelWantsToShowItemDetail(_ item: ItemContent)
+    func searchViewModelWantsToEditItem(_ item: ItemContent)
+    func searchViewModelWantsToDisplayInformativeMessage(_ message: String)
+    func searchViewModelDidTrashItem(_ type: ItemContentType)
+    func searchViewModelDidFail(_ error: Error)
+}
+
 final class SearchViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
@@ -41,6 +51,8 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var results = [ItemSearchResult]()
 
     private var cancellables = Set<AnyCancellable>()
+
+    weak var delegate: SearchViewModelDelegate?
 
     enum State: Equatable {
         case clean
@@ -70,7 +82,9 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
         self.symmetricKey = symmetricKey
         self.itemRepository = itemRepository
 
-        loadItems()
+        Task {
+            await loadItems()
+        }
         searchTermSubject
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
             .sink { [unowned self] term in
@@ -79,23 +93,18 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
             .store(in: &cancellables)
     }
 
-    private func loadItems() {
-        Task { @MainActor in
-            do {
-                state = .initializing
-                print("Initializing SearchViewModel")
-                let items = try await itemRepository.getItems(forceRefresh: false, state: .active)
-                self.items = try items.map { try SearchableItem(symmetricallyEncryptedItem: $0) }
-                state = .clean
-                print("Initialized SearchViewModel")
-            } catch {
-                state = .error(error)
-            }
+    @MainActor
+    private func loadItems() async {
+        do {
+            state = .initializing
+            print("Initializing SearchViewModel")
+            let items = try await itemRepository.getItems(forceRefresh: false, state: .active)
+            self.items = try items.map { try SearchableItem(symmetricallyEncryptedItem: $0) }
+            state = .clean
+            print("Initialized SearchViewModel")
+        } catch {
+            state = .error(error)
         }
-    }
-
-    func search(term: String) {
-        searchTermSubject.send(term)
     }
 
     private func doSearch(term: String) {
@@ -163,5 +172,134 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
                      title: title,
                      detail: detail,
                      vaultName: item.vaultName)
+    }
+}
+
+// MARK: - Private supporting tasks
+private extension SearchViewModel {
+    func getDecryptedItemContentTask(for item: ItemSearchResult) -> Task<ItemContent, Error> {
+        Task.detached(priority: .userInitiated) {
+            let encryptedItem = try await self.getItem(shareId: item.shareId, itemId: item.itemId)
+            return try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
+        }
+    }
+
+    func trashItemTask(for item: ItemSearchResult) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            let itemToBeTrashed = try await self.getItem(shareId: item.shareId, itemId: item.itemId)
+            try await self.itemRepository.trashItems([itemToBeTrashed])
+        }
+    }
+
+    func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
+        guard let item = try await itemRepository.getItem(shareId: shareId,
+                                                          itemId: itemId) else {
+            throw VaultContentViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
+        }
+        return item
+    }
+}
+
+// MARK: - Public actions
+extension SearchViewModel {
+    func search(term: String) {
+        searchTermSubject.send(term)
+    }
+
+    func selectItem(_ item: ItemSearchResult) {
+        Task { @MainActor in
+            do {
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
+                delegate?.searchViewModelWantsToShowItemDetail(itemContent)
+            } catch {
+                delegate?.searchViewModelDidFail(error)
+            }
+        }
+    }
+
+    func editItem(_ item: ItemSearchResult) {
+        Task { @MainActor in
+            do {
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
+                delegate?.searchViewModelWantsToEditItem(itemContent)
+            } catch {
+                delegate?.searchViewModelDidFail(error)
+            }
+        }
+    }
+
+    func copyNote(_ item: ItemSearchResult) {
+        guard case .note = item.type else { return }
+        Task { @MainActor in
+            do {
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
+                if case .note = itemContent.contentData {
+                    UIPasteboard.general.string = itemContent.note
+                    delegate?.searchViewModelWantsToDisplayInformativeMessage("Note copied")
+                }
+            } catch {
+                delegate?.searchViewModelDidFail(error)
+            }
+        }
+    }
+
+    func copyUsername(_ item: ItemSearchResult) {
+        guard case .login = item.type else { return }
+        Task { @MainActor in
+            do {
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
+                if case let .login(username, _, _) = itemContent.contentData {
+                    UIPasteboard.general.string = username
+                    delegate?.searchViewModelWantsToDisplayInformativeMessage("Username copied")
+                }
+            } catch {
+                delegate?.searchViewModelDidFail(error)
+            }
+        }
+    }
+
+    func copyPassword(_ item: ItemSearchResult) {
+        guard case .login = item.type else { return }
+        Task { @MainActor in
+            do {
+                let itemContent = try await getDecryptedItemContentTask(for: item).value
+                if case let .login(_, password, _) = itemContent.contentData {
+                    UIPasteboard.general.string = password
+                    delegate?.searchViewModelWantsToDisplayInformativeMessage("Password copied")
+                }
+            } catch {
+                delegate?.searchViewModelDidFail(error)
+            }
+        }
+    }
+
+    func copyEmailAddress(_ item: ItemSearchResult) {
+        guard case .alias = item.type else { return }
+        Task { @MainActor in
+            do {
+                let item = try await getItem(shareId: item.shareId, itemId: item.itemId)
+                if let emailAddress = item.item.aliasEmail {
+                    UIPasteboard.general.string = emailAddress
+                    delegate?.searchViewModelWantsToDisplayInformativeMessage("Email address copied")
+                }
+            } catch {
+                delegate?.searchViewModelDidFail(error)
+            }
+        }
+    }
+
+    func trashItem(_ item: ItemSearchResult) {
+        Task { @MainActor in
+            defer { delegate?.searchViewModelWantsToHideLoadingHud() }
+            delegate?.searchViewModelWantsToShowLoadingHud()
+            do {
+                try await trashItemTask(for: item).value
+                await loadItems()
+                doSearch(term: term)
+                delegate?.searchViewModelDidTrashItem(item.type)
+            } catch {
+                delegate?.searchViewModelDidFail(error)
+            }
+        }
     }
 }
