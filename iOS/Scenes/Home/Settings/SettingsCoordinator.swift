@@ -23,9 +23,14 @@ import Core
 import CryptoKit
 import UIComponents
 
+protocol SettingsCoordinatorDelegate: AnyObject {
+    func settingsCoordinatorDidFinishFullSync()
+}
+
 final class SettingsCoordinator: Coordinator {
     private let settingsViewModel: SettingsViewModel
 
+    weak var settingsCoordinatorDelegate: SettingsCoordinatorDelegate?
     weak var bannerManager: BannerManager?
     var onDeleteAccount: (() -> Void)?
 
@@ -61,6 +66,10 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelWantsToHideLoadingHud() {
         delegate?.coordinatorWantsToHideLoadingHud()
+    }
+
+    func settingsViewModelDidFinishFullSync() {
+        settingsCoordinatorDelegate?.settingsCoordinatorDidFinishFullSync()
     }
 
     func settingsViewModelDidFail(_ error: Error) {

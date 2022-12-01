@@ -245,6 +245,7 @@ private extension HomeCoordinator {
                                                       symmetricKey: symmetricKey,
                                                       preferences: preferences)
         settingsCoordinator.delegate = self
+        settingsCoordinator.settingsCoordinatorDelegate = self
         settingsCoordinator.onDeleteAccount = { [unowned self] in
             self.beginAccountDeletionFlow()
         }
@@ -489,6 +490,15 @@ private extension HomeCoordinator {
 extension HomeCoordinator: TrashCoordinatorDelegate {
     func trashCoordinatorDidRestoreItems() {
         myVaultsCoordinator.refreshItems()
+    }
+}
+
+// MARK: - SettingsCoordinatorDelegate
+extension HomeCoordinator: SettingsCoordinatorDelegate {
+    func settingsCoordinatorDidFinishFullSync() {
+        myVaultsCoordinator.refreshItems()
+        trashCoordinator.refreshTrashedItems()
+        bannerManager.displayBottomInfoMessage("Fully synchronized")
     }
 }
 
