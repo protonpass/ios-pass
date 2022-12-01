@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -54,6 +56,7 @@ struct SearchView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .animation(.default, value: viewModel.state)
             .toolbar { toolbarContent }
         }
     }
@@ -63,17 +66,61 @@ struct SearchView: View {
         ToolbarItem(placement: .principal) {
             SwiftUISearchBar(onSearch: viewModel.search,
                              onCancel: dismiss.callAsFunction)
+            .transaction { transaction in
+                transaction.animation = nil
+            }
         }
     }
 
     private var resultsList: some View {
         List {
             ForEach(viewModel.results, id: \.itemId) { result in
-                ItemSearchResultView(result: result, action: {})
+                ItemSearchResultView(result: result,
+                                     action: {},
+                                     trailingView: { trailingView(for: result) })
             }
         }
         .listStyle(.plain)
         .animation(.default, value: viewModel.results.count)
+    }
+
+    private func trailingView(for item: ItemSearchResult) -> some View {
+        Menu(content: {
+            switch item.type {
+            case .login:
+                CopyMenuButton(title: "Copy username",
+                               action: { viewModel.copyUsername(item) })
+
+                CopyMenuButton(title: "Copy password",
+                               action: { viewModel.copyPassword(item) })
+
+            case .alias:
+                CopyMenuButton(title: "Copy email address",
+                               action: { viewModel.copyEmailAddress(item) })
+            case .note:
+                if item.detail.first?.fullText.isEmpty == false {
+                    CopyMenuButton(title: "Copy note",
+                                   action: { viewModel.copyNote(item) })
+                }
+            }
+
+            EditMenuButton {
+                viewModel.editItem(item)
+            }
+
+            Divider()
+
+            DestructiveButton(
+                title: "Move to Trash",
+                icon: IconProvider.trash,
+                action: {
+//                    selectedItem = item
+//                    isShowingTrashingAlert.toggle()
+                })
+        }, label: {
+            Image(uiImage: IconProvider.threeDotsHorizontal)
+                .foregroundColor(.secondary)
+        })
     }
 }
 
@@ -88,7 +135,7 @@ private struct CleanSearchView: View {
                 .foregroundColor(.secondary)
             Spacer()
         }
-        .padding(.top, 32)
+        .padding(.top, 100)
         .padding(.horizontal)
     }
 }
@@ -111,11 +158,11 @@ private struct NoSearchResultView: View {
             Text("No results found")
                 .font(.title3)
                 .fontWeight(.bold)
-            Text("Try a different search term")
+            Text("Try a different search term.")
                 .foregroundColor(.secondary)
             Spacer()
         }
-        .padding(.top, 32)
+        .padding(.top, 100)
         .padding(.horizontal)
     }
 }

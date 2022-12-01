@@ -22,39 +22,46 @@ import SwiftUI
 
 public protocol ItemSearchResultProtocol {
     var icon: UIImage { get }
+    var iconTintColor: UIColor { get }
     var title: HighlightableText { get }
     var detail: [HighlightableText] { get }
     var vaultName: String { get }
 }
 
-public struct ItemSearchResultView: View {
+public struct ItemSearchResultView<TrailingView: View>: View {
     private let result: ItemSearchResultProtocol
     private let action: () -> Void
+    private let trailingView: TrailingView
 
     public init(result: ItemSearchResultProtocol,
-                action: @escaping () -> Void) {
+                action: @escaping () -> Void,
+                @ViewBuilder trailingView: () -> TrailingView = { EmptyView() }) {
         self.result = result
         self.action = action
+        self.trailingView = trailingView()
     }
 
     public var body: some View {
-        VStack {
-            HStack {
-                Button(action: action) {
-                    HStack {
-                        VStack {
-                            Image(uiImage: result.icon)
-                                .foregroundColor(Color(.label))
-                                .padding(.top, -20)
-                            EmptyView()
-                        }
+        HStack {
+            Button(action: action) {
+                HStack {
+                    ZStack {
+                        Color(result.iconTintColor).opacity(0.1)
+                        Image(uiImage: result.icon)
+                            .resizable()
+                            .foregroundColor(Color(result.iconTintColor))
+                            .padding(7.5)
+                    }
+                    .frame(width: 36, height: 36)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
 
-                        VStack(alignment: .leading, spacing: 4) {
-                            HighlightText(highlightableText: result.title)
+                    VStack(alignment: .leading, spacing: 4) {
+                        HighlightText(highlightableText: result.title)
 
-                            VStack(alignment: .leading, spacing: 2) {
-                                ForEach(0..<result.detail.count, id: \.self) { index in
-                                    let eachDetail = result.detail[index]
+                        VStack(alignment: .leading, spacing: 2) {
+                            ForEach(0..<result.detail.count, id: \.self) { index in
+                                let eachDetail = result.detail[index]
+                                if !eachDetail.fullText.isEmpty {
                                     HighlightText(highlightableText: eachDetail)
                                         .font(.callout)
                                         .foregroundColor(Color(.secondaryLabel))
@@ -62,12 +69,14 @@ public struct ItemSearchResultView: View {
                                 }
                             }
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .contentShape(Rectangle())
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .buttonStyle(.plain)
+                .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
+
+            trailingView
         }
     }
 }
