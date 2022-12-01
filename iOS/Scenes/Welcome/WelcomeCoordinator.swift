@@ -27,6 +27,7 @@ import ProtonCore_Login
 import ProtonCore_LoginUI
 import ProtonCore_Networking
 import ProtonCore_Services
+import UIComponents
 import UIKit
 
 protocol WelcomeCoordinatorDelegate: AnyObject {
@@ -52,8 +53,12 @@ final class WelcomeCoordinator: DeinitPrintable {
     }
 
     private func makeWelcomeViewController() -> UIViewController {
-        let welcomeScreenTexts = WelcomeScreenTexts(body: "Your next favorite password manager")
-        let welcomeScreenVariant = WelcomeScreenVariant.drive(welcomeScreenTexts)
+        let welcomeScreenVariant = WelcomeScreenVariant.custom(
+            .init(topImage: PassIcon.swirls,
+                  logo: PassIcon.passIcon,
+                  wordmark: PassIcon.passTextLogo,
+                  body: "Secure password manager and more",
+                  brand: .proton))
         return WelcomeViewController(variant: welcomeScreenVariant,
                                      delegate: self,
                                      username: nil,
@@ -67,11 +72,13 @@ final class WelcomeCoordinator: DeinitPrintable {
     }
 
     private func makeLoginAndSignUp() -> LoginAndSignup {
-        let summaryScreenVariant = SummaryScreenVariant.screenVariant(.drive("Start using Proton Pass"))
+        let summaryScreenVariant = SummaryScreenVariant.screenVariant(
+            .custom(.init(image: PassIcon.passIcon,
+                          startButtonText: "Start using Proton Pass")))
         let signUpParameters = SignupParameters(passwordRestrictions: .default,
                                                 summaryScreenVariant: summaryScreenVariant)
         return .init(appName: "Proton Pass",
-                     clientApp: .drive,
+                     clientApp: .other(named: "pass"),
                      doh: doh,
                      apiServiceDelegate: apiServiceDelegate,
                      forceUpgradeDelegate: forceUpgradeServiceDelegate,
