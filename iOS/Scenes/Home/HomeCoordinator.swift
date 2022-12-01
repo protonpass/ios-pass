@@ -233,8 +233,8 @@ private extension HomeCoordinator {
                                                       aliasRepository: aliasRepository,
                                                       publicKeyRepository: publicKeyRepository,
                                                       syncEventLoop: eventLoop)
-        myVaultsCoordinator.delegate = self
-        myVaultsCoordinator.myVaultsCoordinatorDelegate = self.trashCoordinator
+        myVaultsCoordinator.coordinatorDelegate = self
+        myVaultsCoordinator.delegate = self.trashCoordinator
         myVaultsCoordinator.itemCountDelegate = sidebarViewModel
         return myVaultsCoordinator
     }
@@ -244,8 +244,8 @@ private extension HomeCoordinator {
                                                       credentialManager: credentialManager,
                                                       symmetricKey: symmetricKey,
                                                       preferences: preferences)
+        settingsCoordinator.coordinatorDelegate = self
         settingsCoordinator.delegate = self
-        settingsCoordinator.settingsCoordinatorDelegate = self
         settingsCoordinator.onDeleteAccount = { [unowned self] in
             self.beginAccountDeletionFlow()
         }
@@ -258,8 +258,8 @@ private extension HomeCoordinator {
                                                 itemRepository: itemRepository,
                                                 aliasRepository: aliasRepository,
                                                 syncEventLoop: eventLoop)
+        trashCoordinator.coordinatorDelegate = self
         trashCoordinator.delegate = self
-        trashCoordinator.trashCoordinatorDelegate = self
         return trashCoordinator
     }
 }

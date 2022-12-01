@@ -32,7 +32,7 @@ public protocol CoordinatorDelegate: AnyObject {
 open class Coordinator {
     private let navigationController: UINavigationController
     public var rootViewController: UIViewController { navigationController }
-    public weak var delegate: CoordinatorDelegate?
+    public weak var coordinatorDelegate: CoordinatorDelegate?
 
     public init() {
         self.navigationController = PPNavigationController()
@@ -120,13 +120,13 @@ open class Coordinator {
 }
 
 public extension Coordinator {
-    func toggleSidebar() { delegate?.coordinatorWantsToToggleSidebar() }
+    func toggleSidebar() { coordinatorDelegate?.coordinatorWantsToToggleSidebar() }
 
-    func showLoadingHud() { delegate?.coordinatorWantsToShowLoadingHud() }
+    func showLoadingHud() { coordinatorDelegate?.coordinatorWantsToShowLoadingHud() }
 
-    func hideLoadingHud() { delegate?.coordinatorWantsToHideLoadingHud() }
+    func hideLoadingHud() { coordinatorDelegate?.coordinatorWantsToHideLoadingHud() }
 
-    func alertError(_ error: Error) { delegate?.coordinatorWantsToAlertError(error) }
+    func alertError(_ error: Error) { coordinatorDelegate?.coordinatorWantsToAlertError(error) }
 }
 
 private final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {

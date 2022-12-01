@@ -37,7 +37,7 @@ final class TrashCoordinator: Coordinator {
     private let aliasRepository: AliasRepositoryProtocol
     private let trashViewModel: TrashViewModel
 
-    weak var trashCoordinatorDelegate: TrashCoordinatorDelegate?
+    weak var delegate: TrashCoordinatorDelegate?
     weak var bannerManager: BannerManager?
 
     init(symmetricKey: SymmetricKey,
@@ -132,12 +132,12 @@ extension TrashCoordinator: TrashViewModelDelegate {
         }
         popToRoot()
         bannerManager?.displayBottomInfoMessage(message)
-        trashCoordinatorDelegate?.trashCoordinatorDidRestoreItems()
+        delegate?.trashCoordinatorDidRestoreItems()
     }
 
     func trashViewModelDidRestoreAllItems(count: Int) {
         bannerManager?.displayBottomInfoMessage("\(count) item(s) restored")
-        trashCoordinatorDelegate?.trashCoordinatorDidRestoreItems()
+        delegate?.trashCoordinatorDidRestoreItems()
     }
 
     func trashViewModelDidDeleteItem(_ type: Client.ItemContentType) {
