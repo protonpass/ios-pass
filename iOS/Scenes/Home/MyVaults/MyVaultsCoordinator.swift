@@ -49,7 +49,7 @@ final class MyVaultsCoordinator: Coordinator {
         }
     }
 
-    weak var myVaultsCoordinatorDelegate: MyVaultsCoordinatorDelegate?
+    weak var delegate: MyVaultsCoordinatorDelegate?
 
     weak var bannerManager: BannerManager?
 
@@ -60,7 +60,8 @@ final class MyVaultsCoordinator: Coordinator {
          vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
-         publicKeyRepository: PublicKeyRepositoryProtocol) {
+         publicKeyRepository: PublicKeyRepositoryProtocol,
+         syncEventLoop: SyncEventLoop) {
         self.symmetricKey = symmetricKey
         self.userData = userData
         self.vaultSelection = vaultSelection
@@ -70,7 +71,8 @@ final class MyVaultsCoordinator: Coordinator {
         self.aliasRepository = aliasRepository
         self.vaultContentViewModel = .init(vaultSelection: vaultSelection,
                                            itemRepository: itemRepository,
-                                           symmetricKey: symmetricKey)
+                                           symmetricKey: symmetricKey,
+                                           syncEventLoop: syncEventLoop)
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
         super.init()
         vaultContentViewModel.delegate = self
@@ -257,7 +259,7 @@ final class MyVaultsCoordinator: Coordinator {
         }
         bannerManager?.displayBottomInfoMessage(message)
         vaultContentViewModel.fetchItems(forceRefresh: false)
-        myVaultsCoordinatorDelegate?.myVaultsCoordinatorWantsToRefreshTrash()
+        delegate?.myVaultsCoordinatorWantsToRefreshTrash()
     }
 
     private func handleUpdatedItem(_ itemContentType: ItemContentType) {
@@ -303,11 +305,11 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
     }
 
     func vaultContentViewModelWantsToShowLoadingHud() {
-        delegate?.coordinatorWantsToShowLoadingHud()
+        coordinatorDelegate?.coordinatorWantsToShowLoadingHud()
     }
 
     func vaultContentViewModelWantsToHideLoadingHud() {
-        delegate?.coordinatorWantsToHideLoadingHud()
+        coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
     }
 
     func vaultContentViewModelWantsToSearch() {
@@ -346,11 +348,11 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
 // MARK: - CreateEditItemViewModelDelegate
 extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
     func createEditItemViewModelWantsToShowLoadingHud() {
-        delegate?.coordinatorWantsToShowLoadingHud()
+        coordinatorDelegate?.coordinatorWantsToShowLoadingHud()
     }
 
     func createEditItemViewModelWantsToHideLoadingHud() {
-        delegate?.coordinatorWantsToHideLoadingHud()
+        coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
     }
 
     func createEditItemViewModelDidCreateItem(_ type: ItemContentType) {
@@ -398,7 +400,7 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelDidRemoveAlias() {
         bannerManager?.displayBottomInfoMessage("Alias deleted")
         vaultContentViewModel.fetchItems(forceRefresh: false)
-        myVaultsCoordinatorDelegate?.myVaultsCoordinatorWantsToRefreshTrash()
+        delegate?.myVaultsCoordinatorWantsToRefreshTrash()
     }
 }
 

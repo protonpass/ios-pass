@@ -231,9 +231,10 @@ private extension HomeCoordinator {
                                                       vaultItemKeysRepository: vaultItemKeysRepository,
                                                       itemRepository: itemRepository,
                                                       aliasRepository: aliasRepository,
-                                                      publicKeyRepository: publicKeyRepository)
-        myVaultsCoordinator.delegate = self
-        myVaultsCoordinator.myVaultsCoordinatorDelegate = self.trashCoordinator
+                                                      publicKeyRepository: publicKeyRepository,
+                                                      syncEventLoop: eventLoop)
+        myVaultsCoordinator.coordinatorDelegate = self
+        myVaultsCoordinator.delegate = self.trashCoordinator
         myVaultsCoordinator.itemCountDelegate = sidebarViewModel
         return myVaultsCoordinator
     }
@@ -243,6 +244,7 @@ private extension HomeCoordinator {
                                                       credentialManager: credentialManager,
                                                       symmetricKey: symmetricKey,
                                                       preferences: preferences)
+        settingsCoordinator.coordinatorDelegate = self
         settingsCoordinator.delegate = self
         settingsCoordinator.onDeleteAccount = { [unowned self] in
             self.beginAccountDeletionFlow()
@@ -254,9 +256,10 @@ private extension HomeCoordinator {
         let trashCoordinator = TrashCoordinator(symmetricKey: symmetricKey,
                                                 shareRepository: shareRepository,
                                                 itemRepository: itemRepository,
-                                                aliasRepository: aliasRepository)
+                                                aliasRepository: aliasRepository,
+                                                syncEventLoop: eventLoop)
+        trashCoordinator.coordinatorDelegate = self
         trashCoordinator.delegate = self
-        trashCoordinator.trashCoordinatorDelegate = self
         return trashCoordinator
     }
 }
@@ -433,6 +436,7 @@ extension HomeCoordinator: SyncEventLoopDelegate {
         PPLogger.shared?.log("Began new sync loop")
     }
 
+    #warning("Handle no connection reason")
     func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
         PPLogger.shared?.log("Skipped sync loop \(reason)")
     }
@@ -449,6 +453,7 @@ extension HomeCoordinator: SyncEventLoopDelegate {
 
     func syncEventLoopDidFailLoop(error: Error) {
         PPLogger.shared?.log(error)
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
@@ -485,6 +490,15 @@ private extension HomeCoordinator {
 extension HomeCoordinator: TrashCoordinatorDelegate {
     func trashCoordinatorDidRestoreItems() {
         myVaultsCoordinator.refreshItems()
+    }
+}
+
+// MARK: - SettingsCoordinatorDelegate
+extension HomeCoordinator: SettingsCoordinatorDelegate {
+    func settingsCoordinatorDidFinishFullSync() {
+        myVaultsCoordinator.refreshItems()
+        trashCoordinator.refreshTrashedItems()
+        bannerManager.displayBottomInfoMessage("Fully synchronized")
     }
 }
 

@@ -37,20 +37,22 @@ final class TrashCoordinator: Coordinator {
     private let aliasRepository: AliasRepositoryProtocol
     private let trashViewModel: TrashViewModel
 
-    weak var trashCoordinatorDelegate: TrashCoordinatorDelegate?
+    weak var delegate: TrashCoordinatorDelegate?
     weak var bannerManager: BannerManager?
 
     init(symmetricKey: SymmetricKey,
          shareRepository: ShareRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
-         aliasRepository: AliasRepositoryProtocol) {
+         aliasRepository: AliasRepositoryProtocol,
+         syncEventLoop: SyncEventLoop) {
         self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.aliasRepository = aliasRepository
         self.trashViewModel = TrashViewModel(symmetricKey: symmetricKey,
                                              shareRepository: shareRepository,
-                                             itemRepository: itemRepository)
+                                             itemRepository: itemRepository,
+                                             syncEventLoop: syncEventLoop)
         super.init()
         self.start()
     }
@@ -61,7 +63,7 @@ final class TrashCoordinator: Coordinator {
     }
 
     func refreshTrashedItems() {
-        trashViewModel.fetchAllTrashedItems(forceRefresh: false)
+        trashViewModel.fetchAllTrashedItems()
     }
 }
 
@@ -130,12 +132,12 @@ extension TrashCoordinator: TrashViewModelDelegate {
         }
         popToRoot()
         bannerManager?.displayBottomInfoMessage(message)
-        trashCoordinatorDelegate?.trashCoordinatorDidRestoreItems()
+        delegate?.trashCoordinatorDidRestoreItems()
     }
 
     func trashViewModelDidRestoreAllItems(count: Int) {
         bannerManager?.displayBottomInfoMessage("\(count) item(s) restored")
-        trashCoordinatorDelegate?.trashCoordinatorDidRestoreItems()
+        delegate?.trashCoordinatorDidRestoreItems()
     }
 
     func trashViewModelDidDeleteItem(_ type: Client.ItemContentType) {

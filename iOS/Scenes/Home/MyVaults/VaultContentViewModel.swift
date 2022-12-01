@@ -61,7 +61,7 @@ protocol VaultContentViewModelDelegate: AnyObject {
 }
 
 // MARK: - Initialization
-final class VaultContentViewModel: DeinitPrintable, ObservableObject {
+final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, ObservableObject {
     deinit { print(deinitMessage) }
 
     private var allItems = [ItemListUiModel]()
@@ -92,6 +92,10 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
     private let symmetricKey: SymmetricKey
     private var cancellables = Set<AnyCancellable>()
 
+    /// `PullToRefreshable` conformance
+    var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
+    let syncEventLoop: SyncEventLoop
+
     weak var itemCountDelegate: ItemCountDelegate?
 
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
@@ -101,10 +105,12 @@ final class VaultContentViewModel: DeinitPrintable, ObservableObject {
 
     init(vaultSelection: VaultSelection,
          itemRepository: ItemRepositoryProtocol,
-         symmetricKey: SymmetricKey) {
+         symmetricKey: SymmetricKey,
+         syncEventLoop: SyncEventLoop) {
         self.vaultSelection = vaultSelection
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
+        self.syncEventLoop = syncEventLoop
 
         vaultSelection.objectWillChange
             .sink { [unowned self] _ in
@@ -136,17 +142,6 @@ extension VaultContentViewModel {
 
     func search() {
         delegate?.vaultContentViewModelWantsToSearch()
-    }
-
-    @MainActor
-    func forceRefreshItems() async {
-        do {
-            allItems = try await getItemsTask(forceRefresh: true).value
-            updateItemCount()
-            filterAndSort()
-        } catch {
-            state = .error(error)
-        }
     }
 
     func fetchItems(forceRefresh: Bool) {
@@ -297,6 +292,13 @@ private extension VaultContentViewModel {
             throw VaultContentViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
         }
         return item
+    }
+}
+
+// MARK: - SyncEventLoopPullToRefreshDelegate
+extension VaultContentViewModel: SyncEventLoopPullToRefreshDelegate {
+    func pullToRefreshShouldStopRefreshing() {
+        stopRefreshing()
     }
 }
 
