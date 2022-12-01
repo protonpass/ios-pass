@@ -22,6 +22,9 @@ import UIKit
 
 // swiftlint:disable force_unwrapping
 public enum PassIcon {
+    public static var passIcon = UIImage(named: "ProtonPassIcon")!
+    public static var passTextLogo = UIImage(named: "PassTextLogo")!
+    public static var swirls = UIImage(named: "Swirls")!
     public static var trash = UIImage(named: "Trash")!
     public static var magnifyingGlass = UIImage(named: "MagnifyingGlass")!
     public static var magnifyingGlassOnPaper = UIImage(named: "MagnifyingGlassOnPaper")!
