@@ -25,6 +25,12 @@ import Reachability
 
 private let kEventLoopIntervalInSeconds: TimeInterval = 30
 
+public protocol SyncEventLoopPullToRefreshDelegate: AnyObject {
+    /// Do not care if the loop is finished with error or skipped.
+    func pullToRefreshShouldStopRefreshing()
+}
+
+/// Emit operations of `SyncEventLoop` in detail. Should be implemeted by an application-wide object.
 public protocol SyncEventLoopDelegate: AnyObject {
     /// Called when start looping
     func syncEventLoopDidStartLooping()
@@ -74,6 +80,7 @@ public final class SyncEventLoop {
     private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
 
     public weak var delegate: SyncEventLoopDelegate?
+    public weak var pullToRefreshDelegate: SyncEventLoopPullToRefreshDelegate?
 
     public init(userId: String,
                 shareRepository: ShareRepositoryProtocol,
@@ -110,7 +117,7 @@ public extension SyncEventLoop {
         timer?.fire()
     }
 
-    /// Force a sync loop e.g when the app goes foreground
+    /// Force a sync loop e.g when the app goes foreground, pull to refresh is triggered
     func forceSync() {
         timerTask()
     }
@@ -148,10 +155,12 @@ private extension SyncEventLoop {
         do {
             try makeReachabilityIfNecessary()
         } catch {
+            pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
             delegate?.syncEventLoopDidFailLoop(error: error)
         }
 
         guard isReachable else {
+            pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
             delegate?.syncEventLoopDidSkipLoop(reason: .noInternetConnection)
             return
         }
@@ -160,7 +169,11 @@ private extension SyncEventLoop {
             delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished)
         } else {
             ongoingTask = Task { @MainActor in
-                defer { ongoingTask = nil }
+                defer {
+                    ongoingTask = nil
+                    pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+                }
+
                 do {
                     delegate?.syncEventLoopDidBeginNewLoop()
                     var hasNewEvents = false
