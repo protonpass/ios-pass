@@ -68,7 +68,10 @@ struct SearchView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
-            SwiftUISearchBar(onSearch: viewModel.search,
+            SwiftUISearchBar(placeholder: "login, alias or note",
+                             showsCancelButton: true,
+                             shouldBecomeFirstResponder: true,
+                             onSearch: viewModel.search,
                              onCancel: viewModel.dismiss)
             .transaction { transaction in
                 transaction.animation = nil
