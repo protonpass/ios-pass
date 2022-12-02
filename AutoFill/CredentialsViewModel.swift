@@ -20,6 +20,7 @@
 
 import AuthenticationServices
 import Client
+import Combine
 import Core
 import CryptoKit
 import SwiftUI
@@ -54,6 +55,10 @@ final class CredentialsViewModel: ObservableObject {
     @Published private(set) var matchedItems = [ItemListUiModel]()
     @Published private(set) var notMatchedItems = [ItemListUiModel]()
 
+    private let searchTermSubject = PassthroughSubject<String, Never>()
+    private var lastTask: Task<Void, Never>?
+    private var cancellables = Set<AnyCancellable>()
+
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
@@ -70,7 +75,33 @@ final class CredentialsViewModel: ObservableObject {
         self.serviceIdentifiers = serviceIdentifiers
         self.urls = serviceIdentifiers.map { $0.identifier }.compactMap { URL(string: $0) }
         self.matchedHost = urls.first?.host ?? ""
+
         fetchItems()
+        searchTermSubject
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .sink { [unowned self] term in
+                self.doSearch(term: term)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func doSearch(term: String) {
+        print(term)
+        /*
+        let term = term.trimmingCharacters(in: .whitespacesAndNewlines)
+        if term.isEmpty { state = .clean; return }
+
+        lastTask?.cancel()
+        lastTask = Task { @MainActor in
+            do {
+                state = .searching
+                results = try items.compactMap { try result(forItem: $0, term: term) }
+                state = .results
+            } catch {
+                state = .error(error)
+            }
+        }
+         */
     }
 }
 
@@ -106,6 +137,10 @@ extension CredentialsViewModel {
                 state = .error(error)
             }
         }
+    }
+
+    func search(term: String) {
+        searchTermSubject.send(term)
     }
 
     func handleAuthenticationFailure() {
