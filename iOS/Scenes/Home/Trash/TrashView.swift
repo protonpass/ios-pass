@@ -122,6 +122,7 @@ struct TrashView: View {
                 GenericItemView(
                     item: item,
                     action: { viewModel.selectItem(item) },
+                    subtitleLineLimit: 1,
                     trailingView: { trailingView(for: item) })
                 .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
             }

@@ -221,6 +221,7 @@
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
 		356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AB1287310D60020F577 /* KeychainStorage.swift */; };
 		356E88CC293899B100B27104 /* PullToRefreshable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E88CB293899B100B27104 /* PullToRefreshable.swift */; };
+		356E88D02938FA1F00B27104 /* UIViewController+TopMostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E88CF2938FA1F00B27104 /* UIViewController+TopMostViewController.swift */; };
 		3573CD23292C139900A9EF82 /* AliasPrefixValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */; };
 		3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
@@ -663,6 +664,7 @@
 		356C2AAF28730EF00020F577 /* MainKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProvider.swift; sourceTree = "<group>"; };
 		356C2AB1287310D60020F577 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
 		356E88CB293899B100B27104 /* PullToRefreshable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshable.swift; sourceTree = "<group>"; };
+		356E88CF2938FA1F00B27104 /* UIViewController+TopMostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopMostViewController.swift"; sourceTree = "<group>"; };
 		3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidator.swift; sourceTree = "<group>"; };
 		3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidatorTests.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
@@ -1510,6 +1512,7 @@
 				356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */,
 				35570A7F2926321B00125727 /* View+OpacityReduced.swift */,
 				35283E4D2927A9A9002F5B84 /* View+ItemDetailModifiers.swift */,
+				356E88CF2938FA1F00B27104 /* UIViewController+TopMostViewController.swift */,
 				35526B5A28D115340017BB53 /* Pass.xcassets */,
 			);
 			path = UIComponents;
@@ -2641,6 +2644,7 @@
 				3552618D28A1511000A68477 /* UserInputContentView.swift in Sources */,
 				3542E2CD28DA11FE00194F24 /* RetryableErrorView.swift in Sources */,
 				354F769C28C90B4D00EB2383 /* MoveToTrashModifier.swift in Sources */,
+				356E88D02938FA1F00B27104 /* UIViewController+TopMostViewController.swift in Sources */,
 				356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */,
 				35570A8229263F5900125727 /* SpinnerButton.swift in Sources */,
 				355696E0290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift in Sources */,
@@ -2795,7 +2799,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -2879,7 +2883,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -2963,7 +2967,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -3041,7 +3045,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -3500,7 +3504,7 @@
 				CODE_SIGN_ENTITLEMENTS = "iOS/iOSDebug-Black.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -3538,7 +3542,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -4038,7 +4042,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -4330,7 +4334,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
