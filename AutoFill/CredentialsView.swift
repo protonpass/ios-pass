@@ -55,7 +55,7 @@ struct CredentialsView: View {
                                     SwiftUISearchBar(placeholder: "Search...",
                                                      showsCancelButton: false,
                                                      shouldBecomeFirstResponder: false,
-                                                     onSearch: { _ in },
+                                                     onSearch: viewModel.search,
                                                      onCancel: {})
                                     itemList
                                 }
