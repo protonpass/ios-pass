@@ -30,9 +30,14 @@ enum CredentialsViewModelError: Error {
     case notLogInItem
 }
 
-private struct CredentialsFetchResult {
+struct CredentialsFetchResult {
+    let searchableItems: [SearchableItem]
     let matchedItems: [ItemListUiModel]
     let notMatchedItems: [ItemListUiModel]
+
+    var isEmpty: Bool {
+        searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
+    }
 }
 
 protocol CredentialsViewModelDelegate: AnyObject {
@@ -52,8 +57,7 @@ final class CredentialsViewModel: ObservableObject {
     }
 
     @Published private(set) var state = State.loading
-    @Published private(set) var matchedItems = [ItemListUiModel]()
-    @Published private(set) var notMatchedItems = [ItemListUiModel]()
+    private(set) var fetchResult: CredentialsFetchResult?
 
     private let searchTermSubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
@@ -62,8 +66,7 @@ final class CredentialsViewModel: ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
-    private let urls: [URL]
-    let matchedHost: String
+    let urls: [URL]
 
     weak var delegate: CredentialsViewModelDelegate?
 
@@ -74,7 +77,6 @@ final class CredentialsViewModel: ObservableObject {
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
         self.urls = serviceIdentifiers.map { $0.identifier }.compactMap { URL(string: $0) }
-        self.matchedHost = urls.first?.host ?? ""
 
         fetchItems()
         searchTermSubject
@@ -115,9 +117,7 @@ extension CredentialsViewModel {
         Task { @MainActor in
             do {
                 state = .loading
-                let result = try await fetchCredentialsTask().value
-                self.matchedItems = result.matchedItems
-                self.notMatchedItems = result.notMatchedItems
+                fetchResult = try await fetchCredentialsTask().value
                 state = .loaded
             } catch {
                 state = .error(error)
@@ -156,6 +156,7 @@ private extension CredentialsViewModel {
             let encryptedItems = try await self.itemRepository.getItems(forceRefresh: false,
                                                                         state: .active)
 
+            var searchableItems = [SearchableItem]()
             var matchedEncryptedItems = [SymmetricallyEncryptedItem]()
             var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
             for encryptedItem in encryptedItems {
@@ -163,6 +164,8 @@ private extension CredentialsViewModel {
                 try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
                 if case let .login(_, _, itemUrlStrings) = decryptedItemContent.contentData {
+                    searchableItems.append(try SearchableItem(symmetricallyEncryptedItem: encryptedItem))
+
                     let itemUrls = itemUrlStrings.compactMap { URL(string: $0) }
                     let matchedUrls = self.urls.filter { url in
                         itemUrls.contains { itemUrl in
@@ -183,7 +186,9 @@ private extension CredentialsViewModel {
             let notMatchedItems = try await notMatchedEncryptedItems.sorted()
                 .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
 
-            return .init(matchedItems: matchedItems, notMatchedItems: notMatchedItems)
+            return .init(searchableItems: searchableItems,
+                         matchedItems: matchedItems,
+                         notMatchedItems: notMatchedItems)
         }
     }
 

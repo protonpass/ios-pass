@@ -47,19 +47,22 @@ struct CredentialsView: View {
                         switch viewModel.state {
                         case .loading:
                             ProgressView()
+
                         case .loaded:
-                            if viewModel.matchedItems.isEmpty, viewModel.notMatchedItems.isEmpty {
-                                NoCredentialsView()
-                            } else {
+                            if let result = viewModel.fetchResult, !result.isEmpty {
                                 VStack(spacing: 0) {
                                     SwiftUISearchBar(placeholder: "Search...",
                                                      showsCancelButton: false,
                                                      shouldBecomeFirstResponder: false,
                                                      onSearch: viewModel.search,
                                                      onCancel: {})
-                                    itemList
+                                    itemList(matchedItems: result.matchedItems,
+                                             notMatchedItems: result.notMatchedItems)
                                 }
+                            } else {
+                                NoCredentialsView()
                             }
+
                         case .error(let error):
                             RetryableErrorView(errorMessage: error.messageForTheUser,
                                                onRetry: viewModel.fetchItems)
@@ -87,38 +90,32 @@ struct CredentialsView: View {
         }
     }
 
-    private var itemList: some View {
+    private func itemList(matchedItems: [ItemListUiModel],
+                          notMatchedItems: [ItemListUiModel]) -> some View {
         List {
-            if !viewModel.matchedItems.isEmpty {
+            if !matchedItems.isEmpty {
                 Section(content: {
-                    ForEach(viewModel.matchedItems, id: \.itemId) { item in
+                    ForEach(matchedItems) { item in
                         view(for: item)
                     }
                     .listRowSeparator(.hidden)
                 }, header: {
-                    Text("Suggestions for \(viewModel.matchedHost)")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundColor(.secondary)
-                        .font(.callout)
+                    header(text: "Suggestions for \(viewModel.urls.first?.host ?? "")")
                 })
             }
 
-            if !viewModel.notMatchedItems.isEmpty {
+            if !notMatchedItems.isEmpty {
                 Section(content: {
-                    ForEach(viewModel.notMatchedItems, id: \.itemId) { item in
+                    ForEach(notMatchedItems) { item in
                         view(for: item)
                     }
                     .listRowSeparator(.hidden)
                 }, header: {
-                    Text("Others items")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundColor(.secondary)
-                        .font(.callout)
+                    header(text: "Others items")
                 })
             }
         }
         .listStyle(.plain)
-        .animation(.default, value: viewModel.matchedItems.count + viewModel.notMatchedItems.count)
     }
 
     private func view(for item: ItemListUiModel) -> some View {
@@ -128,5 +125,12 @@ struct CredentialsView: View {
             trailingView: { EmptyView() })
         .frame(maxWidth: .infinity, alignment: .leading)
         .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
+    }
+
+    private func header(text: String) -> some View {
+        Text(text)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundColor(.secondary)
+            .font(.callout)
     }
 }
