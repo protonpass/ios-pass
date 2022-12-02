@@ -19,11 +19,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIComponents
 
 struct AppContentCoverView: View {
     var body: some View {
         ZStack {
-            Image("ProtonPassIcon")
+            Image(uiImage: PassIcon.passIcon)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 150)

@@ -31,7 +31,7 @@ public extension Bundle {
 
     /// Get the full name of the current version e.g "1.0.0-dev" or "1.2.0"
     func fullAppVersionName() -> String {
-        if let versionIdentifier {
+        if let versionIdentifier, !versionIdentifier.isEmpty {
             return "\(versionNumber)-\(versionIdentifier)"
         }
         return versionNumber

@@ -38,7 +38,7 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Restrict unwelcome access to your Proton Pass account on this device</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
-	<true/>
+	<false/>
 	<key>ITSEncryptionExportComplianceCode</key>
 	<string>72e333d0-d159-45e3-ad41-39acb89134e8</string>
 </dict>
