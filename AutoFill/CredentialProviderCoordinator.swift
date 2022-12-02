@@ -110,7 +110,6 @@ public final class CredentialProviderCoordinator {
                             complete(credential: .init(user: username, password: password),
                                      encryptedItem: encryptedItem,
                                      itemRepository: itemRepository,
-                                     symmetricKey: symmetricKey,
                                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
                         }
                     } else {
@@ -138,7 +137,6 @@ public final class CredentialProviderCoordinator {
             complete(credential: credential,
                      encryptedItem: item,
                      itemRepository: itemRepository,
-                     symmetricKey: symmetricKey,
                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
         }
         showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
@@ -252,12 +250,11 @@ extension CredentialProviderCoordinator {
     func complete(credential: ASPasswordCredential,
                   encryptedItem: SymmetricallyEncryptedItem,
                   itemRepository: ItemRepositoryProtocol,
-                  symmetricKey: SymmetricKey,
                   serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         Task {
             do {
                 try await updateRank(encryptedItem: encryptedItem,
-                                     symmetricKey: symmetricKey,
+                                     symmetricKey: itemRepository.symmetricKey,
                                      serviceIdentifiers: serviceIdentifiers)
                 try await itemRepository.update(item: encryptedItem,
                                                 lastUsedTime: Date().timeIntervalSince1970)
@@ -296,17 +293,7 @@ extension CredentialProviderCoordinator {
         let viewModel = CredentialsViewModel(itemRepository: itemRepository,
                                              symmetricKey: symmetricKey,
                                              serviceIdentifiers: serviceIdentifiers)
-        viewModel.onClose = { [unowned self] in
-            self.cancel(errorCode: .userCanceled)
-        }
-        viewModel.onSelect = { [unowned self] credential, item in
-            self.complete(credential: credential,
-                          encryptedItem: item,
-                          itemRepository: itemRepository,
-                          symmetricKey: symmetricKey,
-                          serviceIdentifiers: serviceIdentifiers)
-        }
-        viewModel.onFailure = handle(error:)
+        viewModel.delegate = self
         showView(CredentialsView(viewModel: viewModel, preferences: preferences))
     }
 
@@ -315,5 +302,26 @@ extension CredentialProviderCoordinator {
             self.cancel(errorCode: .userCanceled)
         }
         showView(view)
+    }
+}
+
+// MARK: - CredentialsViewModelDelegate
+extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
+    func credentialsViewModelWantsToCancel() {
+        cancel(errorCode: .userCanceled)
+    }
+
+    func credentialsViewModelDidSelect(credential: ASPasswordCredential,
+                                       item: Client.SymmetricallyEncryptedItem,
+                                       itemRepository: ItemRepositoryProtocol,
+                                       serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        complete(credential: credential,
+                 encryptedItem: item,
+                 itemRepository: itemRepository,
+                 serviceIdentifiers: serviceIdentifiers)
+    }
+
+    func credentialsViewModelWantsDidFail(_ error: Error) {
+        handle(error: error)
     }
 }

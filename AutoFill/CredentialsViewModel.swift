@@ -34,38 +34,52 @@ private struct CredentialsFetchResult {
     let notMatchedItems: [ItemListUiModel]
 }
 
+protocol CredentialsViewModelDelegate: AnyObject {
+    func credentialsViewModelWantsToCancel()
+    func credentialsViewModelDidSelect(credential: ASPasswordCredential,
+                                       item: SymmetricallyEncryptedItem,
+                                       itemRepository: ItemRepositoryProtocol,
+                                       serviceIdentifiers: [ASCredentialServiceIdentifier])
+    func credentialsViewModelWantsDidFail(_ error: Error)
+}
+
 final class CredentialsViewModel: ObservableObject {
     enum State {
-        case idle
         case loading
         case loaded
         case error(Error)
     }
 
-    @Published private(set) var state = State.idle
+    @Published private(set) var state = State.loading
     @Published private(set) var matchedItems = [ItemListUiModel]()
     @Published private(set) var notMatchedItems = [ItemListUiModel]()
 
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
+    private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let urls: [URL]
+    let matchedHost: String
 
-    var onClose: (() -> Void)?
-    var onSelect: ((ASPasswordCredential, SymmetricallyEncryptedItem) -> Void)?
-    var onFailure: ((Error) -> Void)?
+    weak var delegate: CredentialsViewModelDelegate?
 
     init(itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey,
          serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
+        self.serviceIdentifiers = serviceIdentifiers
         self.urls = serviceIdentifiers.map { $0.identifier }.compactMap { URL(string: $0) }
+        self.matchedHost = urls.first?.host ?? ""
         fetchItems()
     }
 }
 
 // MARK: - Public actions
 extension CredentialsViewModel {
+    func cancel() {
+        delegate?.credentialsViewModelWantsToCancel()
+    }
+
     func fetchItems() {
         Task { @MainActor in
             do {
@@ -84,7 +98,10 @@ extension CredentialsViewModel {
         Task { @MainActor in
             do {
                 let (credential, item) = try await getCredentialTask(item).value
-                onSelect?(credential, item)
+                delegate?.credentialsViewModelDidSelect(credential: credential,
+                                                        item: item,
+                                                        itemRepository: itemRepository,
+                                                        serviceIdentifiers: serviceIdentifiers)
             } catch {
                 state = .error(error)
             }
@@ -92,7 +109,7 @@ extension CredentialsViewModel {
     }
 
     func handleAuthenticationFailure() {
-        onFailure?(CredentialProviderError.failedToAuthenticate)
+        delegate?.credentialsViewModelWantsDidFail(CredentialProviderError.failedToAuthenticate)
     }
 }
 
