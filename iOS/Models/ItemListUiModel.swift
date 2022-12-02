@@ -37,6 +37,10 @@ struct ItemListUiModel: GenericItemProtocol {
     var iconTintColor: UIColor { type.iconTintColor }
 }
 
+extension ItemListUiModel: Identifiable {
+    var id: String { itemId + shareId }
+}
+
 extension SymmetricallyEncryptedItem {
     func toItemListUiModel(_ symmetricKey: SymmetricKey) async throws -> ItemListUiModel {
         let encryptedItemContent = try getEncryptedItemContent()
