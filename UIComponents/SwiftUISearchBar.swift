@@ -21,11 +21,20 @@
 import SwiftUI
 
 public struct SwiftUISearchBar: UIViewRepresentable {
+    let placeholder: String
+    let showsCancelButton: Bool
+    let shouldBecomeFirstResponder: Bool
     let onSearch: (String) -> Void
     let onCancel: () -> Void
 
-    public init(onSearch: @escaping (String) -> Void,
+    public init(placeholder: String,
+                showsCancelButton: Bool,
+                shouldBecomeFirstResponder: Bool,
+                onSearch: @escaping (String) -> Void,
                 onCancel: @escaping () -> Void) {
+        self.placeholder = placeholder
+        self.showsCancelButton = showsCancelButton
+        self.shouldBecomeFirstResponder = shouldBecomeFirstResponder
         self.onSearch = onSearch
         self.onCancel = onCancel
     }
@@ -33,11 +42,13 @@ public struct SwiftUISearchBar: UIViewRepresentable {
     public func makeUIView(context: Context) -> UISearchBar {
         let searchBar = UISearchBar()
         searchBar.delegate = context.coordinator
-        searchBar.placeholder = "Login, alias or note"
-        searchBar.showsCancelButton = true
+        searchBar.placeholder = placeholder
+        searchBar.showsCancelButton = showsCancelButton
         searchBar.autocapitalizationType = .none
         searchBar.tintColor = .interactionNorm
-        searchBar.becomeFirstResponder()
+        if shouldBecomeFirstResponder {
+            searchBar.becomeFirstResponder()
+        }
         return searchBar
     }
 

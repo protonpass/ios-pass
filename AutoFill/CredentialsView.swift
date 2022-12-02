@@ -51,7 +51,14 @@ struct CredentialsView: View {
                             if viewModel.matchedItems.isEmpty, viewModel.notMatchedItems.isEmpty {
                                 NoCredentialsView()
                             } else {
-                                itemList
+                                VStack(spacing: 0) {
+                                    SwiftUISearchBar(placeholder: "Search...",
+                                                     showsCancelButton: false,
+                                                     shouldBecomeFirstResponder: false,
+                                                     onSearch: { _ in },
+                                                     onCancel: {})
+                                    itemList
+                                }
                             }
                         case .error(let error):
                             RetryableErrorView(errorMessage: error.messageForTheUser,
