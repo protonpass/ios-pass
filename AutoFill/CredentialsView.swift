@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import ProtonCore_UIFoundations
 import SwiftUI
@@ -43,30 +44,44 @@ struct CredentialsView: View {
                                   onSuccess: { isLocked = false },
                                   onFailure: viewModel.handleAuthenticationFailure)
                 } else {
-                    Group {
-                        switch viewModel.state {
-                        case .loading:
-                            ProgressView()
+                    switch viewModel.state {
+                    case .loading:
+                        ProgressView()
 
-                        case .loaded:
-                            if let result = viewModel.fetchResult, !result.isEmpty {
-                                VStack(spacing: 0) {
-                                    SwiftUISearchBar(placeholder: "Search...",
-                                                     showsCancelButton: false,
-                                                     shouldBecomeFirstResponder: false,
-                                                     onSearch: viewModel.search,
-                                                     onCancel: {})
+                    case let .loaded(result, state):
+                        if result.isEmpty {
+                            NoCredentialsView()
+                        } else {
+                            VStack(spacing: 0) {
+                                SwiftUISearchBar(placeholder: "Search...",
+                                                 showsCancelButton: false,
+                                                 shouldBecomeFirstResponder: false,
+                                                 onSearch: viewModel.search,
+                                                 onCancel: {})
+
+                                switch state {
+                                case .idle:
                                     itemList(matchedItems: result.matchedItems,
                                              notMatchedItems: result.notMatchedItems)
-                                }
-                            } else {
-                                NoCredentialsView()
-                            }
 
-                        case .error(let error):
-                            RetryableErrorView(errorMessage: error.messageForTheUser,
-                                               onRetry: viewModel.fetchItems)
+                                case .searching:
+                                    ProgressView()
+
+                                case .noSearchResults:
+                                    NoSearchResultsView()
+
+                                case .searchResults(let searchResults):
+                                    searchResultsList(searchResults)
+                                }
+
+                                Spacer()
+                            }
+                            .animation(.default, value: state)
                         }
+
+                    case .error(let error):
+                        RetryableErrorView(errorMessage: error.messageForTheUser,
+                                           onRetry: viewModel.fetchItems)
                     }
                 }
             }
@@ -132,5 +147,16 @@ struct CredentialsView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .foregroundColor(.secondary)
             .font(.callout)
+    }
+
+    private func searchResultsList(_ results: [ItemSearchResult]) -> some View {
+        List {
+            ForEach(results) { result in
+                ItemSearchResultView(result: result,
+                                     action: {})
+            }
+        }
+        .listStyle(.plain)
+        .animation(.default, value: results.count)
     }
 }

@@ -88,3 +88,7 @@ public struct ItemSearchResult: ItemSearchResultProtocol {
         self.vaultName = vaultName
     }
 }
+
+extension ItemSearchResult: Identifiable {
+    public var id: String { itemId + shareId }
+}

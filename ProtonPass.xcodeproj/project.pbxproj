@@ -164,6 +164,9 @@
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
+		3554DAB5293A8F7D00595FC7 /* NoSearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554DAB4293A8F7D00595FC7 /* NoSearchResultsView.swift */; };
+		3554DAB6293A8F9500595FC7 /* NoSearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554DAB4293A8F7D00595FC7 /* NoSearchResultsView.swift */; };
+		3554DAB7293A910700595FC7 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
 		3555800728F01A46009C3B88 /* URLUtils+MatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555800628F01A46009C3B88 /* URLUtils+MatcherTests.swift */; };
 		3555800E28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555800D28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig */; };
 		3555801028F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555800F28F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig */; };
@@ -608,6 +611,7 @@
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
+		3554DAB4293A8F7D00595FC7 /* NoSearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSearchResultsView.swift; sourceTree = "<group>"; };
 		3555800628F01A46009C3B88 /* URLUtils+MatcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+MatcherTests.swift"; sourceTree = "<group>"; };
 		3555800D28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Debug-Black.xcconfig"; sourceTree = "<group>"; };
 		3555800F28F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Debug-Prod.xcconfig"; sourceTree = "<group>"; };
@@ -1094,6 +1098,7 @@
 		354BB14728A27E8100F50040 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				3554DAB4293A8F7D00595FC7 /* NoSearchResultsView.swift */,
 				354BB15428A2895F00F50040 /* SearchView.swift */,
 				354BB14E28A27FF500F50040 /* SearchViewModel.swift */,
 			);
@@ -1976,6 +1981,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3554DAB7293A910700595FC7 /* Pass.xcassets in Resources */,
 				3555801428F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig in Resources */,
 				3555800E28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig in Resources */,
 				3555801028F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig in Resources */,
@@ -2363,6 +2369,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3554DAB6293A8F9500595FC7 /* NoSearchResultsView.swift in Sources */,
 				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
@@ -2434,6 +2441,7 @@
 				3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */,
 				354513CB28E45F960020A93A /* SettingsView.swift in Sources */,
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
+				3554DAB5293A8F7D00595FC7 /* NoSearchResultsView.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,

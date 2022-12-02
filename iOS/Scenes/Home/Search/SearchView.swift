@@ -46,7 +46,7 @@ struct SearchView: View {
 
             case .results:
                 if viewModel.results.isEmpty {
-                    NoSearchResultView()
+                    NoSearchResultsView()
                 } else {
                     resultsList
                 }
@@ -81,7 +81,7 @@ struct SearchView: View {
 
     private var resultsList: some View {
         List {
-            ForEach(viewModel.results, id: \.itemId) { result in
+            ForEach(viewModel.results) { result in
                 ItemSearchResultView(result: result,
                                      action: { viewModel.selectItem(result) },
                                      trailingView: { trailingView(for: result) })
@@ -154,22 +154,6 @@ private struct SearchingView: View {
             Spacer()
         }
         .padding(.top, 32)
-        .padding(.horizontal)
-    }
-}
-
-private struct NoSearchResultView: View {
-    var body: some View {
-        VStack(spacing: 24) {
-            Image(uiImage: PassIcon.magnifyingGlassOnPaper)
-            Text("No results found")
-                .font(.title3)
-                .fontWeight(.bold)
-            Text("Try a different search term.")
-                .foregroundColor(.secondary)
-            Spacer()
-        }
-        .padding(.top, 100)
         .padding(.horizontal)
     }
 }
