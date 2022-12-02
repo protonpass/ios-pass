@@ -49,15 +49,34 @@ protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsDidFail(_ error: Error)
 }
 
-final class CredentialsViewModel: ObservableObject {
-    enum State {
-        case loading
-        case loaded
-        case error(Error)
-    }
+enum CredentialsViewState {
+    case loading
+    case loaded(CredentialsFetchResult, CredentialsViewLoadedState)
+    case error(Error)
+}
 
-    @Published private(set) var state = State.loading
-    private(set) var fetchResult: CredentialsFetchResult?
+enum CredentialsViewLoadedState: Equatable {
+    /// Empty search query
+    case idle
+    case searching
+    case noSearchResults
+    case searchResults([ItemSearchResult])
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.idle, .idle),
+            (.searching, .searching),
+            (.noSearchResults, .noSearchResults),
+            (.searchResults, .searchResults):
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+final class CredentialsViewModel: ObservableObject {
+    @Published private(set) var state = CredentialsViewState.loading
 
     private let searchTermSubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
@@ -88,22 +107,29 @@ final class CredentialsViewModel: ObservableObject {
     }
 
     private func doSearch(term: String) {
-        print(term)
-        /*
+        guard case let .loaded(fetchResult, _) = state else { return }
+
         let term = term.trimmingCharacters(in: .whitespacesAndNewlines)
-        if term.isEmpty { state = .clean; return }
+        guard !term.isEmpty else {
+            state = .loaded(fetchResult, .idle)
+            return
+        }
 
         lastTask?.cancel()
         lastTask = Task { @MainActor in
             do {
-                state = .searching
-                results = try items.compactMap { try result(forItem: $0, term: term) }
-                state = .results
+                state = .loaded(fetchResult, .searching)
+                let searchResults = try fetchResult.searchableItems.result(for: term,
+                                                                           symmetricKey: symmetricKey)
+                if searchResults.isEmpty {
+                    state = .loaded(fetchResult, .noSearchResults)
+                } else {
+                    state = .loaded(fetchResult, .searchResults(searchResults))
+                }
             } catch {
                 state = .error(error)
             }
         }
-         */
     }
 }
 
@@ -117,8 +143,8 @@ extension CredentialsViewModel {
         Task { @MainActor in
             do {
                 state = .loading
-                fetchResult = try await fetchCredentialsTask().value
-                state = .loaded
+                let result = try await fetchCredentialsTask().value
+                state = .loaded(result, .idle)
             } catch {
                 state = .error(error)
             }

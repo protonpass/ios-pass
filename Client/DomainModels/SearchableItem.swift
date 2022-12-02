@@ -58,6 +58,8 @@ extension SearchableItem {
             let decryptedUsername = try symmetricKey.decrypt(username)
             if let result = SearchUtils.search(query: term, in: decryptedUsername) {
                 detail.append(.matched(result))
+            } else {
+                detail.append(.notMatched(decryptedUsername))
             }
 
             let decryptedUrls = try urls.map { try symmetricKey.decrypt($0) }
