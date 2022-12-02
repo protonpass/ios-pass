@@ -18,7 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Core
+import CryptoKit
 
 /// Items that live in memory for search purpose
 public struct SearchableItem {
@@ -32,5 +33,64 @@ public struct SearchableItem {
         self.itemId = symmetricallyEncryptedItem.item.itemID
         self.encryptedItemContent = try symmetricallyEncryptedItem.getEncryptedItemContent()
         self.vaultName = "Vault name"
+    }
+}
+
+extension SearchableItem {
+    func result(for term: String, symmetricKey: SymmetricKey) throws -> ItemSearchResult? {
+        let decryptedName = try symmetricKey.decrypt(encryptedItemContent.name)
+        let title: SearchResultEither
+        if let result = SearchUtils.search(query: term, in: decryptedName) {
+            title = .matched(result)
+        } else {
+            title = .notMatched(decryptedName)
+        }
+
+        var detail = [SearchResultEither]()
+        let decryptedNote = try symmetricKey.decrypt(encryptedItemContent.note)
+        if let result = SearchUtils.search(query: term, in: decryptedNote) {
+            detail.append(.matched(result))
+        } else {
+            detail.append(.notMatched(decryptedNote))
+        }
+
+        if case let .login(username, _, urls) = encryptedItemContent.contentData {
+            let decryptedUsername = try symmetricKey.decrypt(username)
+            if let result = SearchUtils.search(query: term, in: decryptedUsername) {
+                detail.append(.matched(result))
+            }
+
+            let decryptedUrls = try urls.map { try symmetricKey.decrypt($0) }
+            for decryptedUrl in decryptedUrls {
+                if let result = SearchUtils.search(query: term, in: decryptedUrl) {
+                    detail.append(.matched(result))
+                }
+            }
+        }
+
+        let detailNotMatched = detail.contains { either in
+            if case .matched = either {
+                return false
+            } else {
+                return true
+            }
+        }
+
+        if case .notMatched = title, detailNotMatched {
+            return nil
+        }
+
+        return .init(shareId: shareId,
+                     itemId: itemId,
+                     type: encryptedItemContent.contentData.type,
+                     title: title,
+                     detail: detail,
+                     vaultName: vaultName)
+    }
+}
+
+public extension Array where Element == SearchableItem {
+    func result(for term: String, symmetricKey: SymmetricKey) throws -> [ItemSearchResult] {
+        try compactMap { try $0.result(for: term, symmetricKey: symmetricKey) }
     }
 }
