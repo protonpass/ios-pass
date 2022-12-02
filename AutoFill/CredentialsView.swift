@@ -45,8 +45,6 @@ struct CredentialsView: View {
                 } else {
                     Group {
                         switch viewModel.state {
-                        case .idle:
-                            EmptyView()
                         case .loading:
                             ProgressView()
                         case .loaded:
@@ -69,13 +67,16 @@ struct CredentialsView: View {
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text("Autofill password")
+                .fontWeight(.bold)
+        }
+
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                viewModel.onClose?()
-            }, label: {
-                Image(uiImage: IconProvider.cross)
+            Button(action: viewModel.cancel) {
+                Text("Cancel")
                     .foregroundColor(.primary)
-            })
+            }
         }
     }
 
@@ -86,8 +87,9 @@ struct CredentialsView: View {
                     ForEach(viewModel.matchedItems, id: \.itemId) { item in
                         view(for: item)
                     }
+                    .listRowSeparator(.hidden)
                 }, header: {
-                    Text("Matched item(s) (\(viewModel.matchedItems.count))")
+                    Text("Suggestions for \(viewModel.matchedHost)")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundColor(.secondary)
                         .font(.callout)
@@ -99,8 +101,9 @@ struct CredentialsView: View {
                     ForEach(viewModel.notMatchedItems, id: \.itemId) { item in
                         view(for: item)
                     }
+                    .listRowSeparator(.hidden)
                 }, header: {
-                    Text("Others item(s) (\(viewModel.notMatchedItems.count))")
+                    Text("Others items")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundColor(.secondary)
                         .font(.callout)
@@ -117,5 +120,6 @@ struct CredentialsView: View {
             action: { viewModel.select(item: item) },
             trailingView: { EmptyView() })
         .frame(maxWidth: .infinity, alignment: .leading)
+        .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
     }
 }
