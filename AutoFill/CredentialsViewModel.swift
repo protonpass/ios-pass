@@ -151,10 +151,10 @@ extension CredentialsViewModel {
         }
     }
 
-    func select(item: ItemListUiModel) {
+    func select(item: ItemIdentifiable) {
         Task { @MainActor in
             do {
-                let (credential, item) = try await getCredentialTask(item).value
+                let (credential, item) = try await getCredentialTask(for: item).value
                 delegate?.credentialsViewModelDidSelect(credential: credential,
                                                         item: item,
                                                         itemRepository: itemRepository,
@@ -218,7 +218,7 @@ private extension CredentialsViewModel {
         }
     }
 
-    func getCredentialTask(_ item: ItemListUiModel)
+    func getCredentialTask(for item: ItemIdentifiable)
     -> Task<(ASPasswordCredential, SymmetricallyEncryptedItem), Error> {
         Task.detached(priority: .userInitiated) {
             guard let item = try await self.itemRepository.getItem(shareId: item.shareId,

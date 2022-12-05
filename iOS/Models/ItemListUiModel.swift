@@ -24,7 +24,7 @@ import ProtonCore_UIFoundations
 import UIComponents
 import UIKit
 
-struct ItemListUiModel: GenericItemProtocol {
+struct ItemListUiModel: ItemIdentifiable, GenericItemProtocol {
     let itemId: String
     let shareId: String
     let type: ItemContentType

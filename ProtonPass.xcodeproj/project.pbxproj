@@ -120,6 +120,7 @@
 		3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */; };
 		3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */; };
 		3547ABF22877791000EE85E1 /* CreateVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABF12877791000EE85E1 /* CreateVaultView.swift */; };
+		35492E3A293DFB8700BDE231 /* ItemIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35492E39293DFB8700BDE231 /* ItemIdentifiable.swift */; };
 		35498F8628DC5D0500AF1D8F /* Collection+ParallelMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */; };
 		35498F8828DC769300AF1D8F /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35498F8728DC769300AF1D8F /* HighlightText.swift */; };
 		35498F8A28DC805400AF1D8F /* ItemSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */; };
@@ -567,6 +568,7 @@
 		3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAliasView.swift; sourceTree = "<group>"; };
 		3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteView.swift; sourceTree = "<group>"; };
 		3547ABF12877791000EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
+		35492E39293DFB8700BDE231 /* ItemIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemIdentifiable.swift; sourceTree = "<group>"; };
 		35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+ParallelMap.swift"; sourceTree = "<group>"; };
 		35498F8728DC769300AF1D8F /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSearchResultView.swift; sourceTree = "<group>"; };
@@ -891,6 +893,7 @@
 			isa = PBXGroup;
 			children = (
 				354BB14328A2683E00F50040 /* ItemContentProtocol.swift */,
+				35492E39293DFB8700BDE231 /* ItemIdentifiable.swift */,
 				358BD35F287D4EA200802A91 /* VaultProtocol.swift */,
 			);
 			path = ModelProtocols;
@@ -2534,6 +2537,7 @@
 				35690C112923846E00F60C20 /* ItemTypeFilterOption.swift in Sources */,
 				358AB49B2886FDA400818B44 /* ItemKey.swift in Sources */,
 				3552F48628D3215600547146 /* CreateCustomAliasRequest.swift in Sources */,
+				35492E3A293DFB8700BDE231 /* ItemIdentifiable.swift in Sources */,
 				355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */,
 				3593DD1028A83F7A00C235D3 /* ProtonPass.xcdatamodeld in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
