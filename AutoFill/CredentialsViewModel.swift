@@ -42,11 +42,12 @@ struct CredentialsFetchResult {
 
 protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToCancel()
+    func credentialsViewModelWantsToCreateLoginItem()
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        item: SymmetricallyEncryptedItem,
                                        itemRepository: ItemRepositoryProtocol,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier])
-    func credentialsViewModelWantsDidFail(_ error: Error)
+    func credentialsViewModelDidFail(_ error: Error)
 }
 
 enum CredentialsViewState {
@@ -170,7 +171,11 @@ extension CredentialsViewModel {
     }
 
     func handleAuthenticationFailure() {
-        delegate?.credentialsViewModelWantsDidFail(CredentialProviderError.failedToAuthenticate)
+        delegate?.credentialsViewModelDidFail(CredentialProviderError.failedToAuthenticate)
+    }
+
+    func showCreateLoginView() {
+        delegate?.credentialsViewModelWantsToCreateLoginItem()
     }
 }
 
