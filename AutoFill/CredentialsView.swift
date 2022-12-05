@@ -153,7 +153,7 @@ struct CredentialsView: View {
         List {
             ForEach(results) { result in
                 ItemSearchResultView(result: result,
-                                     action: {})
+                                     action: { viewModel.select(item: result) })
             }
         }
         .listStyle(.plain)
