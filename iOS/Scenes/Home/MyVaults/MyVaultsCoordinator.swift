@@ -99,7 +99,7 @@ final class MyVaultsCoordinator: Coordinator {
                 switch option {
                 case .login:
                     showCreateEditLoginView(mode: .create(shareId: shareId,
-                                                          type: .other))
+                                                          type: .login(title: nil, url: nil)))
                 case .alias:
                     showCreateEditAliasView(mode: .create(shareId: shareId,
                                                           type: .alias(delegate: nil, title: "")))
@@ -144,11 +144,6 @@ final class MyVaultsCoordinator: Coordinator {
                                                  aliasRepository: aliasRepository)
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
-        if case let .create(_, type) = mode,
-           case let .alias(aliasCreationDelegate, title) = type {
-            viewModel.aliasCreationDelegate = aliasCreationDelegate
-            viewModel.title = title
-        }
         let view = CreateEditAliasView(viewModel: viewModel)
         presentView(view)
         currentCreateEditItemViewModel = viewModel

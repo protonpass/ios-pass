@@ -138,6 +138,7 @@ struct CredentialsView: View {
             }
         }
         .listStyle(.plain)
+        .animation(.default, value: matchedItems.count + notMatchedItems.count)
     }
 
     private func view(for item: ItemListUiModel) -> some View {

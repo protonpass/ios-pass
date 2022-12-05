@@ -24,11 +24,13 @@ import Core
 import CoreData
 import Crypto
 import CryptoKit
+import MBProgressHUD
 import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
 import SwiftUI
+import UIComponents
 
 enum CredentialProviderError: Error {
     case emptyRecordIdentifier
@@ -41,8 +43,9 @@ public final class CredentialProviderCoordinator {
     private var sessionData: SessionData?
 
     @KeychainStorage(key: .symmetricKey)
-    private var symmetricKey: String?
+    private var symmetricKeyString: String?
 
+    /// Self-initialized properties
     private let keychain: Keychain
     private let keymaker: Keymaker
     private var apiService: APIService
@@ -51,7 +54,20 @@ public final class CredentialProviderCoordinator {
     private let preferences: Preferences
     private let credentialManager: CredentialManagerProtocol
     private let rootViewController: UIViewController
+    private let bannerManager: BannerManager
+
+    /// Derived properties
     private var lastChildViewController: UIViewController?
+    private var symmetricKey: SymmetricKey?
+    private var itemRepository: ItemRepositoryProtocol?
+    private var aliasRepository: AliasRepositoryProtocol?
+    private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
+    private var currentShareId: String?
+    private var credentialsViewModel: CredentialsViewModel?
+
+    private var topMostViewController: UIViewController {
+        rootViewController.getTopMostPresentedViewController()
+    }
 
     init(apiService: APIService,
          container: NSPersistentContainer,
@@ -65,34 +81,35 @@ public final class CredentialProviderCoordinator {
                               keychain: keychain)
         self._sessionData.setKeychain(keychain)
         self._sessionData.setMainKeyProvider(keymaker)
-        self._symmetricKey.setKeychain(keychain)
-        self._symmetricKey.setMainKeyProvider(keymaker)
+        self._symmetricKeyString.setKeychain(keychain)
+        self._symmetricKeyString.setMainKeyProvider(keymaker)
         self.apiService = apiService
         self.container = container
         self.context = context
         self.preferences = preferences
+        self.bannerManager = .init(container: rootViewController)
         self.credentialManager = credentialManager
         self.rootViewController = rootViewController
         self.apiService.authDelegate = self
         self.apiService.serviceDelegate = self
+        makeSymmetricKeyAndRepositories()
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard let sessionData,
-              let symmetricKeyData = symmetricKey?.data(using: .utf8) else {
+        guard let sessionData, let symmetricKey else {
             showNoLoggedInView()
             return
         }
 
         showCredentialsView(userData: sessionData.userData,
-                            symmetricKey: .init(data: symmetricKeyData),
+                            symmetricKey: symmetricKey,
                             serviceIdentifiers: serviceIdentifiers)
     }
 
     /// QuickType bar support
     func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let (symmetricKey, itemRepository) = makeSymmetricKeyAndItemRepository(),
-        let recordIdentifier = credentialIdentity.recordIdentifier else {
+        guard let symmetricKey, let itemRepository,
+              let recordIdentifier = credentialIdentity.recordIdentifier else {
             cancel(errorCode: .failed)
             return
         }
@@ -124,7 +141,7 @@ public final class CredentialProviderCoordinator {
 
     // Local authentication
     func provideCredentialWithLocalAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let (symmetricKey, itemRepository) = makeSymmetricKeyAndItemRepository() else {
+        guard let symmetricKey, let itemRepository else {
             cancel(errorCode: .failed)
             return
         }
@@ -162,18 +179,24 @@ public final class CredentialProviderCoordinator {
         }
     }
 
-    private func makeSymmetricKeyAndItemRepository() -> (SymmetricKey, ItemRepositoryProtocol)? {
+    private func makeSymmetricKeyAndRepositories() {
         guard let sessionData,
-              let symmetricKeyData = symmetricKey?.data(using: .utf8) else {
-            return nil
-        }
+              let symmetricKeyData = symmetricKeyString?.data(using: .utf8) else { return }
 
         let symmetricKey = SymmetricKey(data: symmetricKeyData)
         let itemRepository = ItemRepository(userData: sessionData.userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
                                             apiService: apiService)
-        return (symmetricKey, itemRepository)
+
+        let credential = sessionData.userData.credential
+        let remoteAliasDatasource = RemoteAliasDatasource(authCredential: credential,
+                                                          apiService: apiService)
+        let aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
+
+        self.symmetricKey = symmetricKey
+        self.itemRepository = itemRepository
+        self.aliasRepository = aliasRepository
     }
 }
 
@@ -267,8 +290,8 @@ extension CredentialProviderCoordinator {
 }
 
 // MARK: - Views
-extension CredentialProviderCoordinator {
-    private func showView(_ view: some View) {
+private extension CredentialProviderCoordinator {
+    func showView(_ view: some View) {
         if let lastChildViewController {
             lastChildViewController.willMove(toParent: nil)
             lastChildViewController.view.removeFromSuperview()
@@ -283,25 +306,116 @@ extension CredentialProviderCoordinator {
         lastChildViewController = viewController
     }
 
-    private func showCredentialsView(userData: UserData,
-                                     symmetricKey: SymmetricKey,
-                                     serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        let itemRepository = ItemRepository(userData: userData,
-                                            symmetricKey: symmetricKey,
-                                            container: container,
-                                            apiService: apiService)
+    func showCredentialsView(userData: UserData,
+                             symmetricKey: SymmetricKey,
+                             serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        guard let itemRepository else { return }
         let viewModel = CredentialsViewModel(itemRepository: itemRepository,
                                              symmetricKey: symmetricKey,
                                              serviceIdentifiers: serviceIdentifiers)
         viewModel.delegate = self
+        credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel, preferences: preferences))
     }
 
-    private func showNoLoggedInView() {
+    func showNoLoggedInView() {
         let view = NotLoggedInView { [unowned self] in
             self.cancel(errorCode: .userCanceled)
         }
         showView(view)
+    }
+
+    func showCreateLoginView(shareId: String,
+                             itemRepository: ItemRepositoryProtocol,
+                             url: URL?) {
+        currentShareId = shareId
+
+        let creationType: ItemCreationType
+        if let url, let host = url.host, let scheme = url.scheme {
+            creationType = .login(title: host,
+                                  url: "\(scheme)://\(host)")
+        } else {
+            creationType = .login(title: nil, url: nil)
+        }
+
+        let viewModel = CreateEditLoginViewModel(mode: .create(shareId: shareId,
+                                                               type: creationType),
+                                                 itemRepository: itemRepository)
+        viewModel.delegate = self
+        viewModel.createEditLoginViewModelDelegate = self
+        let view = CreateEditLoginView(viewModel: viewModel)
+        presentView(view)
+        currentCreateEditItemViewModel = viewModel
+    }
+
+    func showCreateEditAliasView(shareId: String,
+                                 title: String,
+                                 delegate: AliasCreationDelegate,
+                                 itemRepository: ItemRepositoryProtocol,
+                                 aliasRepository: AliasRepositoryProtocol) {
+        let viewModel = CreateEditAliasViewModel(mode: .create(shareId: shareId,
+                                                               type: .alias(delegate: delegate,
+                                                                            title: title)),
+                                                 itemRepository: itemRepository,
+                                                 aliasRepository: aliasRepository)
+        viewModel.delegate = self
+        viewModel.createEditAliasViewModelDelegate = self
+        let view = CreateEditAliasView(viewModel: viewModel)
+        presentView(view)
+    }
+
+    func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate) {
+        let viewModel = GeneratePasswordViewModel(mode: .createLogin)
+        viewModel.delegate = delegate
+        let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
+        let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
+        if #available(iOS 16, *) {
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                344
+            }
+            generatePasswordViewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
+        }
+        presentViewController(generatePasswordViewController, dismissible: true)
+    }
+
+    func showLoadingHud() {
+        MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
+    }
+
+    func hideLoadingHud() {
+        MBProgressHUD.hide(for: topMostViewController.view, animated: true)
+    }
+
+    func handleCreatedItem(_ itemContentType: ItemContentType) {
+        topMostViewController.dismiss(animated: true) { [unowned self] in
+            let message: String
+            switch itemContentType {
+            case .alias:
+                message = "Alias created"
+            case .login:
+                message = "Login created"
+            case .note:
+                message = "Note created"
+            }
+            bannerManager.displayBottomSuccessMessage(message)
+            credentialsViewModel?.fetchItems()
+        }
+    }
+
+    func presentView<V: View>(_ view: V,
+                              animated: Bool = true,
+                              dismissible: Bool = false) {
+        let viewController = UIHostingController(rootView: view)
+        presentViewController(viewController)
+    }
+
+    func presentViewController(_ viewController: UIViewController,
+                               animated: Bool = true,
+                               dismissible: Bool = false) {
+        viewController.isModalInPresentation = !dismissible
+        topMostViewController.present(viewController, animated: animated)
     }
 }
 
@@ -311,14 +425,15 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
         cancel(errorCode: .userCanceled)
     }
 
-    func credentialsViewModelWantsToCreateLoginItem() {
-        print(#function)
+    func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?) {
+        guard let itemRepository else { return }
+        showCreateLoginView(shareId: shareId, itemRepository: itemRepository, url: url)
     }
 
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        item: Client.SymmetricallyEncryptedItem,
-                                       itemRepository: ItemRepositoryProtocol,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        guard let itemRepository else { return }
         complete(credential: credential,
                  encryptedItem: item,
                  itemRepository: itemRepository,
@@ -327,5 +442,63 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
 
     func credentialsViewModelDidFail(_ error: Error) {
         handle(error: error)
+    }
+}
+
+// MARK: - CreateEditItemViewModelDelegate
+extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
+    func createEditItemViewModelWantsToShowLoadingHud() {
+        showLoadingHud()
+    }
+
+    func createEditItemViewModelWantsToHideLoadingHud() {
+        hideLoadingHud()
+    }
+
+    func createEditItemViewModelDidCreateItem(_ type: Client.ItemContentType) {
+        handleCreatedItem(type)
+    }
+
+    func createEditItemViewModelDidUpdateItem(_ type: Client.ItemContentType) {
+        print("\(#function) not applicable")
+    }
+
+    func createEditItemViewModelDidTrashItem(_ type: Client.ItemContentType) {
+        print("\(#function) not applicable")
+    }
+
+    func createEditItemViewModelDidFail(_ error: Error) {
+        bannerManager.displayTopErrorMessage(error.messageForTheUser)
+    }
+}
+
+// MARK: - CreateEditLoginViewModelDelegate
+extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
+    func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
+                                                      title: String) {
+        guard let currentShareId, let itemRepository, let aliasRepository else { return }
+        showCreateEditAliasView(shareId: currentShareId,
+                                title: title,
+                                delegate: delegate,
+                                itemRepository: itemRepository,
+                                aliasRepository: aliasRepository)
+    }
+
+    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
+        showGeneratePasswordView(delegate: delegate)
+    }
+
+    func createEditLoginViewModelDidRemoveAlias() {
+        bannerManager.displayBottomInfoMessage("Alias deleted")
+    }
+}
+
+// MARK: - CreateEditAliasViewModelDelegate
+extension CredentialProviderCoordinator: CreateEditAliasViewModelDelegate {
+    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
+        let view = MailboxesView(mailboxSelection: mailboxSelection)
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        presentViewController(viewController, dismissible: true)
     }
 }

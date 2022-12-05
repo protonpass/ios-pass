@@ -42,10 +42,9 @@ struct CredentialsFetchResult {
 
 protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToCancel()
-    func credentialsViewModelWantsToCreateLoginItem()
+    func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?)
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        item: SymmetricallyEncryptedItem,
-                                       itemRepository: ItemRepositoryProtocol,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier])
     func credentialsViewModelDidFail(_ error: Error)
 }
@@ -143,7 +142,10 @@ extension CredentialsViewModel {
     func fetchItems() {
         Task { @MainActor in
             do {
-                state = .loading
+                if case .error = state {
+                    state = .loading
+                }
+
                 let result = try await fetchCredentialsTask().value
                 state = .loaded(result, .idle)
             } catch {
@@ -158,7 +160,6 @@ extension CredentialsViewModel {
                 let (credential, item) = try await getCredentialTask(for: item).value
                 delegate?.credentialsViewModelDidSelect(credential: credential,
                                                         item: item,
-                                                        itemRepository: itemRepository,
                                                         serviceIdentifiers: serviceIdentifiers)
             } catch {
                 state = .error(error)
@@ -174,8 +175,11 @@ extension CredentialsViewModel {
         delegate?.credentialsViewModelDidFail(CredentialProviderError.failedToAuthenticate)
     }
 
+    #warning("Ask users to choose a vault")
     func showCreateLoginView() {
-        delegate?.credentialsViewModelWantsToCreateLoginItem()
+        guard case let .loaded(fetchResult, _) = state,
+        let shareId = fetchResult.searchableItems.first?.shareId else { return }
+        delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: shareId, url: urls.first)
     }
 }
 
