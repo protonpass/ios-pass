@@ -311,6 +311,10 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
         cancel(errorCode: .userCanceled)
     }
 
+    func credentialsViewModelWantsToCreateLoginItem() {
+        print(#function)
+    }
+
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        item: Client.SymmetricallyEncryptedItem,
                                        itemRepository: ItemRepositoryProtocol,
@@ -321,7 +325,7 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                  serviceIdentifiers: serviceIdentifiers)
     }
 
-    func credentialsViewModelWantsDidFail(_ error: Error) {
+    func credentialsViewModelDidFail(_ error: Error) {
         handle(error: error)
     }
 }

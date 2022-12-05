@@ -103,6 +103,13 @@ struct CredentialsView: View {
                     .foregroundColor(.primary)
             }
         }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: viewModel.showCreateLoginView) {
+                Image(uiImage: IconProvider.plus)
+                    .foregroundColor(.primary)
+            }
+        }
     }
 
     private func itemList(matchedItems: [ItemListUiModel],
