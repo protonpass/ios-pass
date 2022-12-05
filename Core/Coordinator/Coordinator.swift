@@ -20,6 +20,7 @@
 
 import Combine
 import SwiftUI
+import UIComponents
 import UIKit
 
 public protocol CoordinatorDelegate: AnyObject {
@@ -33,6 +34,9 @@ open class Coordinator {
     private let navigationController: UINavigationController
     public var rootViewController: UIViewController { navigationController }
     public weak var coordinatorDelegate: CoordinatorDelegate?
+    private var topMostViewController: UIViewController {
+        navigationController.getTopMostPresentedViewController()
+    }
 
     public init() {
         self.navigationController = PPNavigationController()
@@ -93,21 +97,7 @@ open class Coordinator {
                                       animated: Bool = true,
                                       dismissible: Bool = false) {
         viewController.isModalInPresentation = !dismissible
-
-        var topMostPresentedViewController = navigationController.presentedViewController
-
-        while true {
-            guard let vc = topMostPresentedViewController?.presentedViewController else {
-                break
-            }
-            topMostPresentedViewController = vc
-        }
-
-        if let topMostPresentedViewController {
-            topMostPresentedViewController.present(viewController, animated: animated)
-        } else {
-            navigationController.present(viewController, animated: animated)
-        }
+        topMostViewController.present(viewController, animated: animated)
     }
 
     public func presentViewControllerFullScreen(_ viewController: UIViewController,
@@ -122,14 +112,12 @@ open class Coordinator {
 
     public func dismissTopMostViewController(animated: Bool = true,
                                              completion: (() -> Void)? = nil) {
-        navigationController.presentedViewController?.dismiss(animated: animated,
-                                                              completion: completion)
+        topMostViewController.dismiss(animated: animated, completion: completion)
     }
 
     public func popToRoot(animated: Bool = true) {
-        if let presentedNavigationController =
-            navigationController.presentedViewController as? UINavigationController {
-            presentedNavigationController.popToRootViewController(animated: animated)
+        if let topMostNavigationController = topMostViewController as? UINavigationController {
+            topMostNavigationController.popToRootViewController(animated: animated)
         } else {
             navigationController.popToRootViewController(animated: animated)
         }

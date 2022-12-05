@@ -111,7 +111,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var mailboxSelection: MailboxSelection?
     let aliasRepository: AliasRepositoryProtocol
 
-    weak var aliasCreationDelegate: AliasCreationDelegate?
+    private weak var aliasCreationDelegate: AliasCreationDelegate?
     weak var createEditAliasViewModelDelegate: CreateEditAliasViewModelDelegate?
 
     var isEmpty: Bool {
@@ -147,6 +147,15 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             return "New alias"
         case .edit:
             return "Edit"
+        }
+    }
+
+    override func bindValues() {
+        super.bindValues()
+        if case let .create(_, type) = mode,
+           case let .alias(delegate, title) = type {
+            self.aliasCreationDelegate = delegate
+            self.title = title
         }
     }
 

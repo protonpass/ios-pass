@@ -49,13 +49,14 @@ enum ItemMode {
 
 enum ItemCreationType {
     case alias(delegate: AliasCreationDelegate?, title: String)
+    case login(title: String?, url: String?)
     case other
 
     var isAlias: Bool {
         switch self {
         case .alias:
             return true
-        case .other:
+        default:
             return false
         }
     }
