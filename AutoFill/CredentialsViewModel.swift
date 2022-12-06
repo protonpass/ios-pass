@@ -20,6 +20,7 @@
 
 import AuthenticationServices
 import Client
+import Combine
 import Core
 import CryptoKit
 import SwiftUI
@@ -29,81 +30,209 @@ enum CredentialsViewModelError: Error {
     case notLogInItem
 }
 
-private struct CredentialsFetchResult {
+struct CredentialsFetchResult {
+    let searchableItems: [SearchableItem]
     let matchedItems: [ItemListUiModel]
     let notMatchedItems: [ItemListUiModel]
+
+    var isEmpty: Bool {
+        searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
+    }
+}
+
+protocol CredentialsViewModelDelegate: AnyObject {
+    func credentialsViewModelWantsToShowLoadingHud()
+    func credentialsViewModelWantsToHideLoadingHud()
+    func credentialsViewModelWantsToCancel()
+    func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?)
+    func credentialsViewModelDidSelect(credential: ASPasswordCredential,
+                                       item: SymmetricallyEncryptedItem,
+                                       serviceIdentifiers: [ASCredentialServiceIdentifier])
+    func credentialsViewModelDidFail(_ error: Error)
+}
+
+enum CredentialsViewState {
+    case loading
+    case loaded(CredentialsFetchResult, CredentialsViewLoadedState)
+    case error(Error)
+}
+
+enum CredentialsViewLoadedState: Equatable {
+    /// Empty search query
+    case idle
+    case searching
+    case noSearchResults
+    case searchResults([ItemSearchResult])
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.idle, .idle),
+            (.searching, .searching),
+            (.noSearchResults, .noSearchResults),
+            (.searchResults, .searchResults):
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 final class CredentialsViewModel: ObservableObject {
-    enum State {
-        case idle
-        case loading
-        case loaded
-        case error(Error)
-    }
+    @Published private(set) var state = CredentialsViewState.loading
 
-    @Published private(set) var state = State.idle
-    @Published private(set) var matchedItems = [ItemListUiModel]()
-    @Published private(set) var notMatchedItems = [ItemListUiModel]()
+    private let searchTermSubject = PassthroughSubject<String, Never>()
+    private var lastTask: Task<Void, Never>?
+    private var cancellables = Set<AnyCancellable>()
 
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
-    private let urls: [URL]
+    private let serviceIdentifiers: [ASCredentialServiceIdentifier]
+    let urls: [URL]
 
-    var onClose: (() -> Void)?
-    var onSelect: ((ASPasswordCredential, SymmetricallyEncryptedItem) -> Void)?
-    var onFailure: ((Error) -> Void)?
+    weak var delegate: CredentialsViewModelDelegate?
 
     init(itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey,
          serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
+        self.serviceIdentifiers = serviceIdentifiers
         self.urls = serviceIdentifiers.map { $0.identifier }.compactMap { URL(string: $0) }
+
         fetchItems()
+        searchTermSubject
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .sink { [unowned self] term in
+                self.doSearch(term: term)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func doSearch(term: String) {
+        guard case let .loaded(fetchResult, _) = state else { return }
+
+        let term = term.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !term.isEmpty else {
+            state = .loaded(fetchResult, .idle)
+            return
+        }
+
+        lastTask?.cancel()
+        lastTask = Task { @MainActor in
+            do {
+                state = .loaded(fetchResult, .searching)
+                let searchResults = try fetchResult.searchableItems.result(for: term,
+                                                                           symmetricKey: symmetricKey)
+                if searchResults.isEmpty {
+                    state = .loaded(fetchResult, .noSearchResults)
+                } else {
+                    state = .loaded(fetchResult, .searchResults(searchResults))
+                }
+            } catch {
+                state = .error(error)
+            }
+        }
     }
 }
 
 // MARK: - Public actions
 extension CredentialsViewModel {
+    func cancel() {
+        delegate?.credentialsViewModelWantsToCancel()
+    }
+
     func fetchItems() {
         Task { @MainActor in
             do {
-                state = .loading
+                if case .error = state {
+                    state = .loading
+                }
+
                 let result = try await fetchCredentialsTask().value
-                self.matchedItems = result.matchedItems
-                self.notMatchedItems = result.notMatchedItems
-                state = .loaded
+                state = .loaded(result, .idle)
             } catch {
                 state = .error(error)
             }
         }
     }
 
-    func select(item: ItemListUiModel) {
+    func associateAndAutofill(item: ItemIdentifiable) {
         Task { @MainActor in
+            defer { delegate?.credentialsViewModelWantsToHideLoadingHud() }
+            delegate?.credentialsViewModelWantsToShowLoadingHud()
             do {
-                let (credential, item) = try await getCredentialTask(item).value
-                onSelect?(credential, item)
+                let encryptedItem = try await getItemTask(item: item).value
+                let oldContent = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                guard case let .login(oldUsername, oldPassword, oldUrls) = oldContent.contentData,
+                      let newUrl = urls.first?.schemeAndHost else {
+                    throw CredentialsViewModelError.notLogInItem
+                }
+                let newLoginData = ItemContentData.login(username: oldUsername,
+                                                         password: oldPassword,
+                                                         urls: oldUrls + [newUrl])
+                let newContent = ItemContentProtobuf(name: oldContent.name,
+                                                     note: oldContent.note,
+                                                     data: newLoginData)
+                try await itemRepository.updateItem(oldItem: encryptedItem.item,
+                                                    newItemContent: newContent,
+                                                    shareId: encryptedItem.shareId)
+                select(item: item)
             } catch {
                 state = .error(error)
             }
         }
+    }
+
+    func select(item: ItemIdentifiable) {
+        Task { @MainActor in
+            do {
+                let (credential, item) = try await getCredentialTask(for: item).value
+                delegate?.credentialsViewModelDidSelect(credential: credential,
+                                                        item: item,
+                                                        serviceIdentifiers: serviceIdentifiers)
+            } catch {
+                state = .error(error)
+            }
+        }
+    }
+
+    func search(term: String) {
+        searchTermSubject.send(term)
     }
 
     func handleAuthenticationFailure() {
-        onFailure?(CredentialProviderError.failedToAuthenticate)
+        delegate?.credentialsViewModelDidFail(CredentialProviderError.failedToAuthenticate)
+    }
+
+    #warning("Ask users to choose a vault")
+    func showCreateLoginView() {
+        guard case let .loaded(fetchResult, _) = state,
+        let shareId = fetchResult.searchableItems.first?.shareId else { return }
+        delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: shareId, url: urls.first)
     }
 }
 
 // MARK: - Private supporting tasks
 private extension CredentialsViewModel {
+    func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
+        Task.detached(priority: .userInitiated) {
+            guard let encryptedItem =
+                    try await self.itemRepository.getItem(shareId: item.shareId,
+                                                          itemId: item.itemId) else {
+                throw CredentialsViewModelError.itemNotFound(shareId: item.shareId,
+                                                             itemId: item.itemId)
+            }
+            return encryptedItem
+        }
+    }
+
     func fetchCredentialsTask() -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) {
             let matcher = URLUtils.Matcher.default
             let encryptedItems = try await self.itemRepository.getItems(forceRefresh: false,
                                                                         state: .active)
 
+            var searchableItems = [SearchableItem]()
             var matchedEncryptedItems = [SymmetricallyEncryptedItem]()
             var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
             for encryptedItem in encryptedItems {
@@ -111,6 +240,8 @@ private extension CredentialsViewModel {
                 try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
                 if case let .login(_, _, itemUrlStrings) = decryptedItemContent.contentData {
+                    searchableItems.append(try SearchableItem(symmetricallyEncryptedItem: encryptedItem))
+
                     let itemUrls = itemUrlStrings.compactMap { URL(string: $0) }
                     let matchedUrls = self.urls.filter { url in
                         itemUrls.contains { itemUrl in
@@ -131,11 +262,13 @@ private extension CredentialsViewModel {
             let notMatchedItems = try await notMatchedEncryptedItems.sorted()
                 .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
 
-            return .init(matchedItems: matchedItems, notMatchedItems: notMatchedItems)
+            return .init(searchableItems: searchableItems,
+                         matchedItems: matchedItems,
+                         notMatchedItems: notMatchedItems)
         }
     }
 
-    func getCredentialTask(_ item: ItemListUiModel)
+    func getCredentialTask(for item: ItemIdentifiable)
     -> Task<(ASPasswordCredential, SymmetricallyEncryptedItem), Error> {
         Task.detached(priority: .userInitiated) {
             guard let item = try await self.itemRepository.getItem(shareId: item.shareId,

@@ -36,23 +36,25 @@ struct CreateEditNoteView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                nameInputView
-                    .padding(.bottom, 20)
+            ScrollView {
+                VStack {
+                    nameInputView
+                        .padding(.bottom, 20)
 
-                noteInputView
-                    .padding(.bottom, 56)
+                    noteInputView
+                        .padding(.bottom, 56)
 
-                if viewModel.mode.isEditMode {
-                    MoveToTrashButton {
-                        isShowingTrashAlert.toggle()
+                    if viewModel.mode.isEditMode {
+                        MoveToTrashButton {
+                            isShowingTrashAlert.toggle()
+                        }
+                        .opacityReduced(viewModel.isSaving)
                     }
-                    .opacityReduced(viewModel.isSaving)
-                }
 
-                Spacer()
+                    Spacer()
+                }
+                .padding()
             }
-            .padding()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbarContent }
         }

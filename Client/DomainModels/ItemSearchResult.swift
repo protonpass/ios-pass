@@ -63,7 +63,7 @@ public enum SearchResultEither: HighlightableText {
     }
 }
 
-public struct ItemSearchResult: ItemSearchResultProtocol {
+public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol {
     public let shareId: String
     public let itemId: String
     public let type: ItemContentType
@@ -87,4 +87,8 @@ public struct ItemSearchResult: ItemSearchResultProtocol {
         self.detail = detail
         self.vaultName = vaultName
     }
+}
+
+extension ItemSearchResult: Identifiable {
+    public var id: String { itemId + shareId }
 }

@@ -57,6 +57,7 @@ public struct UserInputContentSingleLineWithTrailingView<TrailingView: View>: Vi
     let placeholder: String
     let keyboardType: UIKeyboardType
     let textAutocapitalizationType: UITextAutocapitalizationType
+    let autocorrectionDisabled: Bool
     let trailingView: () -> TrailingView
     let trailingAction: () -> Void
 
@@ -66,12 +67,14 @@ public struct UserInputContentSingleLineWithTrailingView<TrailingView: View>: Vi
                 trailingView: @escaping () -> TrailingView,
                 trailingAction: @escaping () -> Void,
                 keyboardType: UIKeyboardType = .default,
-                textAutocapitalizationType: UITextAutocapitalizationType = .sentences) {
+                textAutocapitalizationType: UITextAutocapitalizationType = .sentences,
+                autocorrectionDisabled: Bool = false) {
         self._text = text
         self._isFocused = isFocused
         self.placeholder = placeholder
         self.keyboardType = keyboardType
         self.textAutocapitalizationType = textAutocapitalizationType
+        self.autocorrectionDisabled = autocorrectionDisabled
         self.trailingView = trailingView
         self.trailingAction = trailingAction
     }
@@ -83,6 +86,7 @@ public struct UserInputContentSingleLineWithTrailingView<TrailingView: View>: Vi
             }
             .keyboardType(keyboardType)
             .autocapitalization(textAutocapitalizationType)
+            .autocorrectionDisabled(autocorrectionDisabled)
 
             Button(action: trailingAction) {
                 trailingView()
@@ -100,6 +104,7 @@ public struct UserInputContentSingleLineWithClearButton: View {
     let placeholder: String
     let keyboardType: UIKeyboardType
     let textAutocapitalizationType: UITextAutocapitalizationType
+    let autocorrectionDisabled: Bool
     let onClear: () -> Void
 
     public init(text: Binding<String>,
@@ -107,12 +112,14 @@ public struct UserInputContentSingleLineWithClearButton: View {
                 placeholder: String,
                 onClear: @escaping () -> Void,
                 keyboardType: UIKeyboardType = .default,
-                textAutocapitalizationType: UITextAutocapitalizationType = .sentences) {
+                textAutocapitalizationType: UITextAutocapitalizationType = .sentences,
+                autocorrectionDisabled: Bool = false) {
         self._text = text
         self._isFocused = isFocused
         self.placeholder = placeholder
         self.keyboardType = keyboardType
         self.textAutocapitalizationType = textAutocapitalizationType
+        self.autocorrectionDisabled = autocorrectionDisabled
         self.onClear = onClear
     }
 
@@ -128,7 +135,8 @@ public struct UserInputContentSingleLineWithClearButton: View {
             },
             trailingAction: onClear,
             keyboardType: keyboardType,
-            textAutocapitalizationType: textAutocapitalizationType)
+            textAutocapitalizationType: textAutocapitalizationType,
+            autocorrectionDisabled: autocorrectionDisabled)
     }
 }
 

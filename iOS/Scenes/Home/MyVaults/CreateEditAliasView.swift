@@ -138,7 +138,8 @@ struct CreateEditAliasView: View {
                     isFocused: $isFocusedOnPrefix,
                     placeholder: "Custom prefix",
                     onClear: { viewModel.prefix = "" },
-                    textAutocapitalizationType: .none)
+                    textAutocapitalizationType: .none,
+                    autocorrectionDisabled: true)
                 .opacityReduced(viewModel.isSaving)
             }
 
