@@ -92,3 +92,7 @@ public extension Array where Element == SymmetricallyEncryptedItem {
         }
     }
 }
+
+extension SymmetricallyEncryptedItem: ItemIdentifiable {
+    public var itemId: String { item.itemID }
+}

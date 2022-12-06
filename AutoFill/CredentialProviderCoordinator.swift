@@ -63,6 +63,7 @@ public final class CredentialProviderCoordinator {
     private var aliasRepository: AliasRepositoryProtocol?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var currentShareId: String?
+    private var credentialsViewModel: CredentialsViewModel?
 
     private var topMostViewController: UIViewController {
         rootViewController.getTopMostPresentedViewController()
@@ -313,6 +314,7 @@ private extension CredentialProviderCoordinator {
                                              symmetricKey: symmetricKey,
                                              serviceIdentifiers: serviceIdentifiers)
         viewModel.delegate = self
+        credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel, preferences: preferences))
     }
 
@@ -446,7 +448,12 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: Client.ItemContentType) {
-        handleCreatedItem(type)
+        switch type {
+        case .login:
+            credentialsViewModel?.select(item: item)
+        default:
+            handleCreatedItem(type)
+        }
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: Client.ItemContentType) {
