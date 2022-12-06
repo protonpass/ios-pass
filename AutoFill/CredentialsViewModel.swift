@@ -154,6 +154,10 @@ extension CredentialsViewModel {
         }
     }
 
+    func associateAndAutofill(item: ItemIdentifiable) {
+        print(#function)
+    }
+
     func select(item: ItemIdentifiable) {
         Task { @MainActor in
             do {

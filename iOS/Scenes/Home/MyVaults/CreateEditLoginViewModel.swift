@@ -80,9 +80,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             }
 
         case let .create(_, type):
-            if case let .login(title, url, _) = type, let title, let url {
-                self.title = title
-                self.urls = [url]
+            if case let .login(title, url, _) = type {
+                self.title = title ?? ""
+                self.urls = [url ?? ""]
             }
         }
     }

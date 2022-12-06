@@ -330,15 +330,9 @@ private extension CredentialProviderCoordinator {
                              url: URL?) {
         currentShareId = shareId
 
-        let creationType: ItemCreationType
-        if let url, let host = url.host, let scheme = url.scheme {
-            creationType = .login(title: host,
-                                  url: "\(scheme)://\(host)",
-                                  autofill: true)
-        } else {
-            creationType = .login(title: nil, url: nil, autofill: true)
-        }
-
+        let creationType = ItemCreationType.login(title: url?.host,
+                                                  url: url?.schemeAndHost,
+                                                  autofill: true)
         let viewModel = CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                type: creationType),
                                                  itemRepository: itemRepository)
