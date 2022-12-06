@@ -115,30 +115,39 @@ struct CredentialsView: View {
     private func itemList(matchedItems: [ItemListUiModel],
                           notMatchedItems: [ItemListUiModel]) -> some View {
         List {
-            if !matchedItems.isEmpty {
-                Section(content: {
+            Section(content: {
+                if matchedItems.isEmpty {
+                    Text("No suggestions")
+                        .font(.callout.italic())
+                        .listRowSeparator(.hidden)
+                } else {
                     ForEach(matchedItems) { item in
                         view(for: item)
                     }
                     .listRowSeparator(.hidden)
-                }, header: {
-                    header(text: "Suggestions for \(viewModel.urls.first?.host ?? "")")
-                })
-            }
+                }
+            }, header: {
+                header(text: "Suggestions for \(viewModel.urls.first?.host ?? "")")
+            })
 
-            if !notMatchedItems.isEmpty {
-                Section(content: {
+            Section(content: {
+                if notMatchedItems.isEmpty {
+                    Text("No other items")
+                        .font(.callout.italic())
+                        .listRowSeparator(.hidden)
+                } else {
                     ForEach(notMatchedItems) { item in
                         view(for: item)
                     }
                     .listRowSeparator(.hidden)
-                }, header: {
-                    header(text: "Others items")
-                })
-            }
+                }
+            }, header: {
+                header(text: "Others items")
+            })
         }
         .listStyle(.plain)
         .animation(.default, value: matchedItems.count + notMatchedItems.count)
+        .padding(.bottom, 44) // Otherwise content goes below the visible area. SwiftUI bug?
     }
 
     private func view(for item: ItemListUiModel) -> some View {
