@@ -27,6 +27,7 @@ import UIComponents
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
     @State private var isLocked: Bool
+    @State private var selectedNotMatchedItem: ItemListUiModel?
     private let preferences: Preferences
 
     init(viewModel: CredentialsViewModel, preferences: Preferences) {
@@ -36,6 +37,14 @@ struct CredentialsView: View {
     }
 
     var body: some View {
+        let isShowingConfirmationAlert = Binding<Bool>(get: {
+            viewModel.urls.first != nil && selectedNotMatchedItem != nil
+        }, set: { newValue in
+            if !newValue {
+                selectedNotMatchedItem = nil
+            }
+        })
+
         NavigationView {
             ZStack {
                 if isLocked {
@@ -88,6 +97,35 @@ struct CredentialsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbarContent }
         }
+        .alert(
+            "Associate URL?",
+            isPresented: isShowingConfirmationAlert,
+            actions: {
+                if let selectedNotMatchedItem {
+                    Button(action: {
+                        viewModel.associateAndAutofill(item: selectedNotMatchedItem)
+                    }, label: {
+                        Text("Associate and autofill")
+                    })
+
+                    Button(action: {
+                        viewModel.select(item: selectedNotMatchedItem)
+                    }, label: {
+                        Text("Just autofill")
+                    })
+                }
+
+                Button(role: .cancel) {
+                    Text("Cancel")
+                }
+            },
+            message: {
+                if let selectedNotMatchedItem,
+                   let schemeAndHost = viewModel.urls.first?.schemeAndHost {
+                    // swiftlint:disable:next line_length
+                    Text("Would you want to associate \"\(schemeAndHost)\" with \"\(selectedNotMatchedItem.title)\"?")
+                }
+            })
     }
 
     @ToolbarContentBuilder
@@ -122,12 +160,16 @@ struct CredentialsView: View {
                         .listRowSeparator(.hidden)
                 } else {
                     ForEach(matchedItems) { item in
-                        view(for: item)
+                        view(for: item) {
+                            viewModel.select(item: item)
+                        }
                     }
                     .listRowSeparator(.hidden)
                 }
             }, header: {
-                header(text: "Suggestions for \(viewModel.urls.first?.host ?? "")")
+                if let host = viewModel.urls.first?.host {
+                    header(text: "Suggestions for \(host)")
+                }
             })
 
             Section(content: {
@@ -137,7 +179,9 @@ struct CredentialsView: View {
                         .listRowSeparator(.hidden)
                 } else {
                     ForEach(notMatchedItems) { item in
-                        view(for: item)
+                        view(for: item) {
+                            selectedNotMatchedItem = item
+                        }
                     }
                     .listRowSeparator(.hidden)
                 }
@@ -150,10 +194,10 @@ struct CredentialsView: View {
         .padding(.bottom, 44) // Otherwise content goes below the visible area. SwiftUI bug?
     }
 
-    private func view(for item: ItemListUiModel) -> some View {
+    private func view(for item: ItemListUiModel, action: @escaping () -> Void) -> some View {
         GenericItemView(
             item: item,
-            action: { viewModel.select(item: item) },
+            action: action,
             trailingView: { EmptyView() })
         .frame(maxWidth: .infinity, alignment: .leading)
         .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))

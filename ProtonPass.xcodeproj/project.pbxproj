@@ -157,6 +157,7 @@
 		3552147E2915251C00BA6229 /* LoadingVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552147D2915251C00BA6229 /* LoadingVaultView.swift */; };
 		355214822915517E00BA6229 /* EditMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355214812915517E00BA6229 /* EditMenuButton.swift */; };
 		355214842915524D00BA6229 /* CopyMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355214832915524D00BA6229 /* CopyMenuButton.swift */; };
+		355222ED293F67A600786F64 /* URL+SchemeAndHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355222EC293F67A600786F64 /* URL+SchemeAndHost.swift */; };
 		3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618628A1372500A68477 /* SwiftUITextView.swift */; };
 		3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618A28A14EB600A68477 /* UserInputContainerView.swift */; };
 		3552618D28A1511000A68477 /* UserInputContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618C28A1511000A68477 /* UserInputContentView.swift */; };
@@ -624,6 +625,7 @@
 		3552147D2915251C00BA6229 /* LoadingVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingVaultView.swift; sourceTree = "<group>"; };
 		355214812915517E00BA6229 /* EditMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMenuButton.swift; sourceTree = "<group>"; };
 		355214832915524D00BA6229 /* CopyMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyMenuButton.swift; sourceTree = "<group>"; };
+		355222EC293F67A600786F64 /* URL+SchemeAndHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+SchemeAndHost.swift"; sourceTree = "<group>"; };
 		3552618628A1372500A68477 /* SwiftUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUITextView.swift; sourceTree = "<group>"; };
 		3552618A28A14EB600A68477 /* UserInputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputContainerView.swift; sourceTree = "<group>"; };
 		3552618C28A1511000A68477 /* UserInputContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputContentView.swift; sourceTree = "<group>"; };
@@ -1614,6 +1616,7 @@
 				3510A2FB287841AD0003BE79 /* StringExtensions.swift */,
 				35283E49292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift */,
 				353547C22880CF470021C716 /* UserData+Codable.swift */,
+				355222EC293F67A600786F64 /* URL+SchemeAndHost.swift */,
 				354036DC28F451AE00F9E729 /* URLUtils.swift */,
 				354036DE28F4522000F9E729 /* URLUtils+Matcher.swift */,
 				354036E028F452F200F9E729 /* URLUtils+Sanitizer.swift */,
@@ -2666,6 +2669,7 @@
 				356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */,
 				35426B6828EF196C00F89BB7 /* RulesParser.swift in Sources */,
 				353E8B74287622F300A2C5E3 /* BundleExtensions.swift in Sources */,
+				355222ED293F67A600786F64 /* URL+SchemeAndHost.swift in Sources */,
 				35426B6028EF187800F89BB7 /* DomainParserContant.swift in Sources */,
 				3529432928DAF54900E1F11B /* SearchUtils.swift in Sources */,
 				35426B6228EF18E600F89BB7 /* DomainParser.swift in Sources */,
