@@ -41,6 +41,8 @@ struct CredentialsFetchResult {
 }
 
 protocol CredentialsViewModelDelegate: AnyObject {
+    func credentialsViewModelWantsToShowLoadingHud()
+    func credentialsViewModelWantsToHideLoadingHud()
     func credentialsViewModelWantsToCancel()
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?)
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
@@ -155,7 +157,30 @@ extension CredentialsViewModel {
     }
 
     func associateAndAutofill(item: ItemIdentifiable) {
-        print(#function)
+        Task { @MainActor in
+            defer { delegate?.credentialsViewModelWantsToHideLoadingHud() }
+            delegate?.credentialsViewModelWantsToShowLoadingHud()
+            do {
+                let encryptedItem = try await getItemTask(item: item).value
+                let oldContent = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                guard case let .login(oldUsername, oldPassword, oldUrls) = oldContent.contentData,
+                      let newUrl = urls.first?.schemeAndHost else {
+                    throw CredentialsViewModelError.notLogInItem
+                }
+                let newLoginData = ItemContentData.login(username: oldUsername,
+                                                         password: oldPassword,
+                                                         urls: oldUrls + [newUrl])
+                let newContent = ItemContentProtobuf(name: oldContent.name,
+                                                     note: oldContent.note,
+                                                     data: newLoginData)
+                try await itemRepository.updateItem(oldItem: encryptedItem.item,
+                                                    newItemContent: newContent,
+                                                    shareId: encryptedItem.shareId)
+                select(item: item)
+            } catch {
+                state = .error(error)
+            }
+        }
     }
 
     func select(item: ItemIdentifiable) {
@@ -189,6 +214,18 @@ extension CredentialsViewModel {
 
 // MARK: - Private supporting tasks
 private extension CredentialsViewModel {
+    func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
+        Task.detached(priority: .userInitiated) {
+            guard let encryptedItem =
+                    try await self.itemRepository.getItem(shareId: item.shareId,
+                                                          itemId: item.itemId) else {
+                throw CredentialsViewModelError.itemNotFound(shareId: item.shareId,
+                                                             itemId: item.itemId)
+            }
+            return encryptedItem
+        }
+    }
+
     func fetchCredentialsTask() -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) {
             let matcher = URLUtils.Matcher.default
