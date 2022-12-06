@@ -406,6 +406,14 @@ private extension CredentialProviderCoordinator {
 
 // MARK: - CredentialsViewModelDelegate
 extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
+    func credentialsViewModelWantsToShowLoadingHud() {
+        showLoadingHud()
+    }
+
+    func credentialsViewModelWantsToHideLoadingHud() {
+        hideLoadingHud()
+    }
+
     func credentialsViewModelWantsToCancel() {
         cancel(errorCode: .userCanceled)
     }
