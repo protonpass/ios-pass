@@ -63,7 +63,6 @@ public final class CredentialProviderCoordinator {
     private var aliasRepository: AliasRepositoryProtocol?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var currentShareId: String?
-    private var credentialsViewModel: CredentialsViewModel?
 
     private var topMostViewController: UIViewController {
         rootViewController.getTopMostPresentedViewController()
@@ -314,7 +313,6 @@ private extension CredentialProviderCoordinator {
                                              symmetricKey: symmetricKey,
                                              serviceIdentifiers: serviceIdentifiers)
         viewModel.delegate = self
-        credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel, preferences: preferences))
     }
 
@@ -333,9 +331,10 @@ private extension CredentialProviderCoordinator {
         let creationType: ItemCreationType
         if let url, let host = url.host, let scheme = url.scheme {
             creationType = .login(title: host,
-                                  url: "\(scheme)://\(host)")
+                                  url: "\(scheme)://\(host)",
+                                  autofill: true)
         } else {
-            creationType = .login(title: nil, url: nil)
+            creationType = .login(title: nil, url: nil, autofill: true)
         }
 
         let viewModel = CreateEditLoginViewModel(mode: .create(shareId: shareId,
@@ -390,17 +389,7 @@ private extension CredentialProviderCoordinator {
 
     func handleCreatedItem(_ itemContentType: ItemContentType) {
         topMostViewController.dismiss(animated: true) { [unowned self] in
-            let message: String
-            switch itemContentType {
-            case .alias:
-                message = "Alias created"
-            case .login:
-                message = "Login created"
-            case .note:
-                message = "Note created"
-            }
-            bannerManager.displayBottomSuccessMessage(message)
-            credentialsViewModel?.fetchItems()
+            bannerManager.displayBottomSuccessMessage(itemContentType.creationMessage)
         }
     }
 
@@ -455,7 +444,8 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         hideLoadingHud()
     }
 
-    func createEditItemViewModelDidCreateItem(_ type: Client.ItemContentType) {
+    func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
+                                              type: Client.ItemContentType) {
         handleCreatedItem(type)
     }
 

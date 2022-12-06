@@ -102,7 +102,7 @@ struct CreateEditLoginView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            SpinnerButton(title: "Save",
+            SpinnerButton(title: viewModel.isAutoFilling ? "Save & AutoFill" : "Save",
                           disabled: !viewModel.isSaveable,
                           spinning: viewModel.isSaving) {
                 validateUrls()

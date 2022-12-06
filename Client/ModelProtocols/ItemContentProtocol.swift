@@ -49,6 +49,17 @@ public enum ItemContentType: Int, CaseIterable {
         }
     }
 
+    public var creationMessage: String {
+        switch self {
+        case .login:
+            return "Login created"
+        case .alias:
+            return "Alias created"
+        case .note:
+            return "Note created"
+        }
+    }
+
     public var icon: UIImage {
         switch self {
         case .login:
