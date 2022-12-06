@@ -136,7 +136,8 @@ struct CreateEditLoginView: View {
                     placeholder: "Add username",
                     onClear: { viewModel.username = "" },
                     keyboardType: .emailAddress,
-                    textAutocapitalizationType: .none)
+                    textAutocapitalizationType: .none,
+                    autocorrectionDisabled: true)
                 .opacityReduced(viewModel.isSaving || viewModel.isAlias)
             },
             trailingView: {
