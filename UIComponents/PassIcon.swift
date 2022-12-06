@@ -29,4 +29,11 @@ public enum PassIcon {
     public static var magnifyingGlass = UIImage(named: "MagnifyingGlass")!
     public static var magnifyingGlassOnPaper = UIImage(named: "MagnifyingGlassOnPaper")!
     public static var emptyFolder = UIImage(named: "EmptyFolder")!
+    public static var topLeftGradient = UIImage(named: "TopLeftGradient")!
+    public static var onboardAutoFillGradient = UIImage(named: "OnboardAutoFillGradient")!
+    public static var onboardAutoFillStep1 = UIImage(named: "OnboardAutoFillStep1")!
+    public static var onboardAutoFillStep2 = UIImage(named: "OnboardAutoFillStep2")!
+    public static var onboardAutoFillStep3 = UIImage(named: "OnboardAutoFillStep3")!
+    public static var onboardAutoFillStep4 = UIImage(named: "OnboardAutoFillStep4")!
+    public static var onboardAutoFillStep5 = UIImage(named: "OnboardAutoFillStep5")!
 }
