@@ -51,22 +51,38 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         title.isEmpty && username.isEmpty && password.isEmpty && hasNoUrls && note.isEmpty
     }
 
+    var isAutoFilling: Bool {
+        if case let .create(_, type) = mode,
+           case let .login(_, _, autofill) = type {
+            return autofill
+        }
+        return false
+    }
+
     override var isSaveable: Bool {
         !title.isEmpty && !password.isEmpty
     }
 
     override func bindValues() {
-        if case let .edit(itemContent) = mode,
-           case let .login(username, password, urls) = itemContent.contentData {
-            self.title = itemContent.name
-            self.username = username
-            self.password = password
-            if !urls.isEmpty { self.urls = urls }
-            self.note = itemContent.note
+        switch mode {
+        case .edit(let itemContent):
+            if case let .login(username, password, urls) = itemContent.contentData {
+                self.title = itemContent.name
+                self.username = username
+                self.password = password
+                if !urls.isEmpty { self.urls = urls }
+                self.note = itemContent.note
 
-            Task { @MainActor in
-                let aliasItem = try await itemRepository.getAliasItem(email: username)
-                self.isAlias = aliasItem != nil
+                Task { @MainActor in
+                    let aliasItem = try await itemRepository.getAliasItem(email: username)
+                    self.isAlias = aliasItem != nil
+                }
+            }
+
+        case let .create(_, type):
+            if case let .login(title, url, _) = type {
+                self.title = title ?? ""
+                self.urls = [url ?? ""]
             }
         }
     }

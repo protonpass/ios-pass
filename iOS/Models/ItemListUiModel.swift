@@ -24,7 +24,7 @@ import ProtonCore_UIFoundations
 import UIComponents
 import UIKit
 
-struct ItemListUiModel: GenericItemProtocol {
+struct ItemListUiModel: ItemIdentifiable, GenericItemProtocol {
     let itemId: String
     let shareId: String
     let type: ItemContentType
@@ -35,6 +35,10 @@ struct ItemListUiModel: GenericItemProtocol {
 
     var icon: UIImage { type.icon }
     var iconTintColor: UIColor { type.iconTintColor }
+}
+
+extension ItemListUiModel: Identifiable {
+    var id: String { itemId + shareId }
 }
 
 extension SymmetricallyEncryptedItem {

@@ -25,7 +25,8 @@ import ProtonCore_Login
 protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToShowLoadingHud()
     func createEditItemViewModelWantsToHideLoadingHud()
-    func createEditItemViewModelDidCreateItem(_ type: ItemContentType)
+    func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
+                                              type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
     func createEditItemViewModelDidTrashItem(_ type: ItemContentType)
     func createEditItemViewModelDidFail(_ error: Error)
@@ -49,13 +50,14 @@ enum ItemMode {
 
 enum ItemCreationType {
     case alias(delegate: AliasCreationDelegate?, title: String)
+    case login(title: String?, url: String?, autofill: Bool)
     case other
 
     var isAlias: Bool {
         switch self {
         case .alias:
             return true
-        case .other:
+        default:
             return false
         }
     }
@@ -146,8 +148,8 @@ class BaseCreateEditItemViewModel {
         defer { isSaving = false }
         do {
             isSaving = true
-            try await createItemTask(shareId: shareId).value
-            delegate?.createEditItemViewModelDidCreateItem(itemContentType())
+            let item = try await createItemTask(shareId: shareId).value
+            delegate?.createEditItemViewModelDidCreateItem(item, type: itemContentType())
         } catch {
             delegate?.createEditItemViewModelDidFail(error)
         }
@@ -159,8 +161,8 @@ class BaseCreateEditItemViewModel {
         defer { isSaving = false }
         do {
             isSaving = true
-            try await createAliasItemTask(shareId: shareId, info: info).value
-            delegate?.createEditItemViewModelDidCreateItem(itemContentType())
+            let item = try await createAliasItemTask(shareId: shareId, info: info).value
+            delegate?.createEditItemViewModelDidCreateItem(item, type: itemContentType())
         } catch {
             delegate?.createEditItemViewModelDidFail(error)
         }
@@ -191,14 +193,14 @@ class BaseCreateEditItemViewModel {
 
 // MARK: - Private supporting tasks
 private extension BaseCreateEditItemViewModel {
-    func createItemTask(shareId: String) -> Task<Void, Error> {
+    func createItemTask(shareId: String) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) {
             try await self.itemRepository.createItem(itemContent: self.generateItemContent(),
                                                      shareId: shareId)
         }
     }
 
-    func createAliasItemTask(shareId: String, info: AliasCreationInfo) -> Task<Void, Error> {
+    func createAliasItemTask(shareId: String, info: AliasCreationInfo) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) {
             try await self.itemRepository.createAlias(info: info,
                                                       itemContent: self.generateItemContent(),

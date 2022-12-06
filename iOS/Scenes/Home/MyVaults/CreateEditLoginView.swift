@@ -102,7 +102,7 @@ struct CreateEditLoginView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            SpinnerButton(title: "Save",
+            SpinnerButton(title: viewModel.isAutoFilling ? "Save & AutoFill" : "Save",
                           disabled: !viewModel.isSaveable,
                           spinning: viewModel.isSaving) {
                 validateUrls()
@@ -136,7 +136,8 @@ struct CreateEditLoginView: View {
                     placeholder: "Add username",
                     onClear: { viewModel.username = "" },
                     keyboardType: .emailAddress,
-                    textAutocapitalizationType: .none)
+                    textAutocapitalizationType: .none,
+                    autocorrectionDisabled: true)
                 .opacityReduced(viewModel.isSaving || viewModel.isAlias)
             },
             trailingView: {

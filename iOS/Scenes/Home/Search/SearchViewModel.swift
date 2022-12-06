@@ -123,63 +123,12 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
         lastTask = Task { @MainActor in
             do {
                 state = .searching
-                results = try items.compactMap { try result(forItem: $0, term: term) }
+                results = try items.result(for: term, symmetricKey: symmetricKey)
                 state = .results
             } catch {
                 state = .error(error)
             }
         }
-    }
-
-    private func result(forItem item: SearchableItem, term: String) throws -> ItemSearchResult? {
-        let decryptedName = try symmetricKey.decrypt(item.encryptedItemContent.name)
-        let title: SearchResultEither
-        if let result = SearchUtils.search(query: term, in: decryptedName) {
-            title = .matched(result)
-        } else {
-            title = .notMatched(decryptedName)
-        }
-
-        var detail = [SearchResultEither]()
-        let decryptedNote = try symmetricKey.decrypt(item.encryptedItemContent.note)
-        if let result = SearchUtils.search(query: term, in: decryptedNote) {
-            detail.append(.matched(result))
-        } else {
-            detail.append(.notMatched(decryptedNote))
-        }
-
-        if case let .login(username, _, urls) = item.encryptedItemContent.contentData {
-            let decryptedUsername = try symmetricKey.decrypt(username)
-            if let result = SearchUtils.search(query: term, in: decryptedUsername) {
-                detail.append(.matched(result))
-            }
-
-            let decryptedUrls = try urls.map { try symmetricKey.decrypt($0) }
-            for decryptedUrl in decryptedUrls {
-                if let result = SearchUtils.search(query: term, in: decryptedUrl) {
-                    detail.append(.matched(result))
-                }
-            }
-        }
-
-        let detailNotMatched = detail.contains { either in
-            if case .matched = either {
-                return false
-            } else {
-                return true
-            }
-        }
-
-        if case .notMatched = title, detailNotMatched {
-            return nil
-        }
-
-        return .init(shareId: item.shareId,
-                     itemId: item.itemId,
-                     type: item.encryptedItemContent.contentData.type,
-                     title: title,
-                     detail: detail,
-                     vaultName: item.vaultName)
     }
 }
 

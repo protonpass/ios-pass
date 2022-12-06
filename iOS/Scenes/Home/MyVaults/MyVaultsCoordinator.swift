@@ -99,7 +99,9 @@ final class MyVaultsCoordinator: Coordinator {
                 switch option {
                 case .login:
                     showCreateEditLoginView(mode: .create(shareId: shareId,
-                                                          type: .other))
+                                                          type: .login(title: nil,
+                                                                       url: nil,
+                                                                       autofill: false)))
                 case .alias:
                     showCreateEditAliasView(mode: .create(shareId: shareId,
                                                           type: .alias(delegate: nil, title: "")))
@@ -144,11 +146,6 @@ final class MyVaultsCoordinator: Coordinator {
                                                  aliasRepository: aliasRepository)
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
-        if case let .create(_, type) = mode,
-           case let .alias(aliasCreationDelegate, title) = type {
-            viewModel.aliasCreationDelegate = aliasCreationDelegate
-            viewModel.title = title
-        }
         let view = CreateEditAliasView(viewModel: viewModel)
         presentView(view)
         currentCreateEditItemViewModel = viewModel
@@ -225,16 +222,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func handleCreatedItem(_ itemContentType: ItemContentType) {
         dismissTopMostViewController(animated: true) { [unowned self] in
-            let message: String
-            switch itemContentType {
-            case .alias:
-                message = "Alias created"
-            case .login:
-                message = "Login created"
-            case .note:
-                message = "Note created"
-            }
-            bannerManager?.displayBottomSuccessMessage(message)
+            bannerManager?.displayBottomSuccessMessage(itemContentType.creationMessage)
             vaultContentViewModel.fetchItems(forceRefresh: false)
         }
     }
@@ -370,7 +358,8 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
         coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
     }
 
-    func createEditItemViewModelDidCreateItem(_ type: ItemContentType) {
+    func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
+                                              type: ItemContentType) {
         handleCreatedItem(type)
     }
 
