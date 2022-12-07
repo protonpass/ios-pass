@@ -29,6 +29,9 @@ struct DevPreviewsView: View {
                 Section(content: {
                     NavigationLink(destination: { OnboardingAutoFill(onProceed: {}, onCancel: {}) },
                                    label: { Text("AutoFill") })
+
+                    NavigationLink(destination: { OnboardingBiometricAuthentication(onProceed: {}, onCancel: {}) },
+                                   label: { Text("Biometric Authentication") })
                 }, header: {
                     Text("Onboarding")
                 })
