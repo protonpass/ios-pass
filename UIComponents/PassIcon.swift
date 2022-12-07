@@ -37,4 +37,5 @@ public enum PassIcon {
     public static var onboardAutoFillStep4 = UIImage(named: "OnboardAutoFillStep4")!
     public static var onboardAutoFillStep5 = UIImage(named: "OnboardAutoFillStep5")!
     public static var onboardBiometricAuthentication = UIImage(named: "OnboardBiometricAuthentication")!
+    public static var onboardAliases = UIImage(named: "OnboardAliases")!
 }

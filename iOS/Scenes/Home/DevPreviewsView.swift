@@ -27,11 +27,16 @@ struct DevPreviewsView: View {
         NavigationView {
             Form {
                 Section(content: {
-                    NavigationLink(destination: { OnboardingAutoFill(onProceed: {}, onCancel: {}) },
+                    NavigationLink(destination: { OnboardingAutoFill(onProceed: {},
+                                                                     onCancel: {}) },
                                    label: { Text("AutoFill") })
 
-                    NavigationLink(destination: { OnboardingBiometricAuthentication(onProceed: {}, onCancel: {}) },
+                    NavigationLink(destination: { OnboardingBiometricAuthentication(onProceed: {},
+                                                                                    onCancel: {}) },
                                    label: { Text("Biometric Authentication") })
+
+                    NavigationLink(destination: { OnboardingAliases(onAction: {}) },
+                                   label: { Text("Aliases") })
                 }, header: {
                     Text("Onboarding")
                 })
