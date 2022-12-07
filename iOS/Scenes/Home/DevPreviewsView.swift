@@ -20,14 +20,43 @@
 
 import SwiftUI
 
+/// Preview features under development
 struct DevPreviewsView: View {
     var body: some View {
-        Text("Hello, World!")
-    }
-}
+        NavigationView {
+            Form {
+                Section(content: {
+                    NavigationLink(destination: { OnboardingAutoFill(onProceed: {}, onCancel: {}) },
+                                   label: { Text("AutoFill") })
+                }, header: {
+                    Text("Onboarding")
+                })
 
-struct DevPreviewsView_Previews: PreviewProvider {
-    static var previews: some View {
-        DevPreviewsView()
+                Section(content: {
+                    Button(action: {
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    }, label: {
+                        Text("Success")
+                    })
+
+                    Button(action: {
+                        UINotificationFeedbackGenerator().notificationOccurred(.warning)
+                    }, label: {
+                        Text("Warning")
+                    })
+
+                    Button(action: {
+                        UINotificationFeedbackGenerator().notificationOccurred(.error)
+                    }, label: {
+                        Text("Error")
+                    })
+                }, header: {
+                    Text("Haptic feedbacks")
+                })
+            }
+            .navigationTitle("Developer previews")
+            .navigationBarTitleDisplayMode(.large)
+        }
+        .accentColor(.interactionNorm)
     }
 }
