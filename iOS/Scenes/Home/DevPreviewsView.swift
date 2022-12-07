@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import AVFoundation
 import SwiftUI
 
 /// Preview features under development
@@ -32,31 +33,132 @@ struct DevPreviewsView: View {
                     Text("Onboarding")
                 })
 
-                Section(content: {
-                    Button(action: {
-                        UINotificationFeedbackGenerator().notificationOccurred(.success)
-                    }, label: {
-                        Text("Success")
-                    })
-
-                    Button(action: {
-                        UINotificationFeedbackGenerator().notificationOccurred(.warning)
-                    }, label: {
-                        Text("Warning")
-                    })
-
-                    Button(action: {
-                        UINotificationFeedbackGenerator().notificationOccurred(.error)
-                    }, label: {
-                        Text("Error")
-                    })
-                }, header: {
-                    Text("Haptic feedbacks")
-                })
+                HapticFeedbacksSection()
             }
             .navigationTitle("Developer previews")
             .navigationBarTitleDisplayMode(.large)
         }
         .accentColor(.interactionNorm)
+    }
+}
+
+private struct HapticFeedbacksSection: View {
+    var body: some View {
+        Section(content: {
+            Group {
+                Button(action: {
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                }, label: {
+                    Text("Success")
+                })
+
+                Button(action: {
+                    UINotificationFeedbackGenerator().notificationOccurred(.warning)
+                }, label: {
+                    Text("Warning")
+                })
+
+                Button(action: {
+                    UINotificationFeedbackGenerator().notificationOccurred(.error)
+                }, label: {
+                    Text("Error")
+                })
+            }
+
+            Button(action: {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }, label: {
+                Text("Light")
+            })
+
+            Button(action: {
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            }, label: {
+                Text("Medium")
+            })
+
+            Button(action: {
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+            }, label: {
+                Text("Heavy")
+            })
+
+            Button(action: {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            }, label: {
+                Text("Soft")
+            })
+
+            Button(action: {
+                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+            }, label: {
+                Text("Rigid")
+            })
+
+            Button(action: {
+                UISelectionFeedbackGenerator().selectionChanged()
+            }, label: {
+                Text("Selection")
+            })
+
+            Button(action: {
+                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+            }, label: {
+                Text("Old school")
+            })
+
+            NavigationLink(destination: { FineTunedHapticFeedbackView() },
+                           label: { Text("Fine-tuned haptic feedbacks") })
+        }, header: {
+            Text("Haptic feedbacks")
+        })
+    }
+}
+
+private struct FineTunedHapticFeedbackView: View {
+    @State private var intensity: CGFloat = 0.5
+    var body: some View {
+        Form {
+            Section {
+                VStack {
+                    Text("Intensity \(intensity)")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Slider(value: $intensity, in: 0.0...1.0, step: 0.1)
+                }
+            }
+
+            Section {
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred(intensity: intensity)
+                }, label: {
+                    Text("Light")
+                })
+
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred(intensity: intensity)
+                }, label: {
+                    Text("Medium")
+                })
+
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .heavy).impactOccurred(intensity: intensity)
+                }, label: {
+                    Text("Heavy")
+                })
+
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: intensity)
+                }, label: {
+                    Text("Soft")
+                })
+
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred(intensity: intensity)
+                }, label: {
+                    Text("Rigid")
+                })
+            }
+        }
+        .navigationTitle("Fine-tuned haptic feedbacks")
     }
 }
