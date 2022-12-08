@@ -25,6 +25,7 @@ import UIComponents
 
 struct SidebarView: View {
     @StateObject var viewModel: SideBarViewModel
+    @State private var isShowingDevPreviewsOption = false
     let width: CGFloat
 
     var body: some View {
@@ -41,7 +42,6 @@ struct SidebarView: View {
 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 0) {
-//                        MyVaultsSidebarItemView(vaultSelection: coordinator.vaultSelection)
                         ItemCountView(itemCount: viewModel.itemCount,
                                       onSelectAll: viewModel.showAllItemsAction,
                                       onSelectType: viewModel.showItemsAction)
@@ -53,6 +53,10 @@ struct SidebarView: View {
                             .foregroundColor(.sidebarIconWeak)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(14)
+
+                        if isShowingDevPreviewsOption {
+                            SidebarItemView(item: .devPreviews, action: viewModel.sideBarItemAction)
+                        }
 
                         SidebarItemView(item: .settings, action: viewModel.sideBarItemAction)
 
@@ -70,6 +74,13 @@ struct SidebarView: View {
                 Spacer()
                 Text("Proton Pass \(Bundle.main.versionNumber) (\(Bundle.main.buildNumber))")
                     .foregroundColor(.gray)
+                    .onTapGesture(count: 7) {
+                        if ProcessInfo.processInfo.environment["me.proton.pass.DevPreviews"] == "1" {
+                            withAnimation {
+                                isShowingDevPreviewsOption.toggle()
+                            }
+                        }
+                    }
             }
             .padding(.leading, UIScreen.main.bounds.width - width)
         }

@@ -1,6 +1,6 @@
 //
-// OutlinedRoundedButton.swift
-// Proton Pass - Created on 16/11/2022.
+// ColoredRoundedButton.swift
+// Proton Pass - Created on 06/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,46 +20,30 @@
 
 import SwiftUI
 
-/// Button without a rounded outlined stroke
-/// - Parameters:
-///  - title: The title of the button
-///  - tintColor: The color of the title as well as the stroke
-///  - action: Action of the button
-public struct OutlinedRoundedButton: View {
+public struct ColoredRoundedButton: View {
     let title: String
-    let tintColor: Color
+    let titleColor: Color
+    let backgroundColor: Color
     let action: () -> Void
 
     public init(title: String,
-                tintColor: Color,
+                titleColor: Color = .white,
+                backgroundColor: Color = .interactionNorm,
                 action: @escaping () -> Void) {
         self.title = title
-        self.tintColor = tintColor
+        self.titleColor = titleColor
+        self.backgroundColor = backgroundColor
         self.action = action
     }
 
     public var body: some View {
         Button(action: action) {
             Text(title)
-                .foregroundColor(tintColor)
+                .foregroundColor(titleColor)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(12)
-                .overlay(RoundedRectangle(cornerRadius: 8)
-                    .stroke(tintColor, lineWidth: 1))
+                .background(backgroundColor)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
         }
-    }
-}
-
-public struct MoveToTrashButton: View {
-    let action: () -> Void
-
-    public init(action: @escaping () -> Void) {
-        self.action = action
-    }
-
-    public var body: some View {
-        OutlinedRoundedButton(title: "Move to trash",
-                              tintColor: .notificationError,
-                              action: action)
     }
 }

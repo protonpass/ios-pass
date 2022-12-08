@@ -34,7 +34,7 @@ import UIKit
 
 protocol HomeCoordinatorDelegate: AnyObject {
     func homeCoordinatorDidSignOut()
-    func homeCoordinatorRequestsLocalAuthentication()
+    func homeCoordinatorRequestsBiometricAuthentication()
 }
 
 // swiftlint:disable:next todo
@@ -58,7 +58,7 @@ final class HomeCoordinator: DeinitPrintable {
 
     var rootViewController: UIViewController { sideMenuController }
     private var topMostViewController: UIViewController {
-        sideMenuController.getTopMostPresentedViewController()
+        sideMenuController.topMostViewController
     }
 
     // Side menu
@@ -143,6 +143,18 @@ final class HomeCoordinator: DeinitPrintable {
         self.observeVaultSelection()
         self.observeForegroundEntrance()
     }
+
+    func onboardIfNecessary() {
+        guard !preferences.onboarded else { return }
+        preferences.onboarded = true
+        let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
+                                                      preferences: preferences,
+                                                      bannerManager: bannerManager)
+        let onboardingView = OnboardingView(viewModel: onboardingViewModel)
+        let onboardingViewController = UIHostingController(rootView: onboardingView)
+        onboardingViewController.modalPresentationStyle = .fullScreen
+        rootViewController.present(onboardingViewController, animated: true)
+    }
 }
 
 // MARK: - Initialization additional set ups
@@ -171,7 +183,7 @@ private extension HomeCoordinator {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [unowned self] _ in
-                delegate?.homeCoordinatorRequestsLocalAuthentication()
+                delegate?.homeCoordinatorRequestsBiometricAuthentication()
                 eventLoop.forceSync()
                 Task {
                     do {
@@ -281,6 +293,11 @@ extension HomeCoordinator {
 
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
+        case .devPreviews:
+            let view = DevPreviewsView(credentialManager: credentialManager,
+                                       preferences: preferences,
+                                       bannerManager: bannerManager)
+            rootViewController.present(UIHostingController(rootView: view), animated: true)
         case .settings:
             sideMenuController.setContentViewController(to: settingsRootViewController,
                                                         animated: true) { [unowned self] in
