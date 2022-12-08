@@ -175,6 +175,7 @@ final class AppCoordinator {
             if !manualLogIn {
                 self.requestBiometricAuthenticationIfNecessary()
             }
+            onboardIfNecessary()
         } catch {
             PPLogger.shared?.log(error)
             wipeAllData()
@@ -241,6 +242,17 @@ final class AppCoordinator {
                                        addresses: currentUserData.addresses,
                                        scopes: currentUserData.scopes)
         self.sessionData = .init(userData: updatedUserData)
+    }
+
+    private func onboardIfNecessary() {
+        guard !preferences.onboarded else { return }
+        preferences.onboarded = true
+        let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
+                                                      preferences: preferences)
+        let onboardingView = OnboardingView(viewModel: onboardingViewModel)
+        let onboardingViewController = UIHostingController(rootView: onboardingView)
+        onboardingViewController.modalPresentationStyle = .fullScreen
+        rootViewController?.present(onboardingViewController, animated: true)
     }
 }
 
