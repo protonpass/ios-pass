@@ -84,6 +84,7 @@
 		3542F0262899431D004007C7 /* CoreDataEntityStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */; };
 		354361552941D251000CAE12 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361542941D251000CAE12 /* OnboardingView.swift */; };
 		354361572941D419000CAE12 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361562941D419000CAE12 /* OnboardingViewModel.swift */; };
+		354361592941DA0C000CAE12 /* OnboardingViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361582941DA0C000CAE12 /* OnboardingViewState.swift */; };
 		3544BCB928E1E42B00EFE130 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
 		3544BCBA28E1E42B00EFE130 /* Client.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3544BCBC28E1E42C00EFE130 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; };
@@ -574,6 +575,7 @@
 		3542F0252899431D004007C7 /* CoreDataEntityStructureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEntityStructureTests.swift; sourceTree = "<group>"; };
 		354361542941D251000CAE12 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		354361562941D419000CAE12 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		354361582941DA0C000CAE12 /* OnboardingViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewState.swift; sourceTree = "<group>"; };
 		3544F5DA28E2339400834CA4 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.5.sdk/System/Library/Frameworks/AuthenticationServices.framework; sourceTree = DEVELOPER_DIR; };
 		3544F5E028E2341800834CA4 /* AutoFill.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AutoFill.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3544F5E328E2341900834CA4 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
@@ -1153,6 +1155,7 @@
 			children = (
 				354361542941D251000CAE12 /* OnboardingView.swift */,
 				354361562941D419000CAE12 /* OnboardingViewModel.swift */,
+				354361582941DA0C000CAE12 /* OnboardingViewState.swift */,
 				356AD3FE2940CAC000EBE4E9 /* OnboardingAliases.swift */,
 				354E19F3293F8EDD00A3F853 /* OnboardingAutoFill.swift */,
 				356AD3FC2940AEFA00EBE4E9 /* OnboardingBiometricAuthentication.swift */,
@@ -2479,6 +2482,7 @@
 				354513CF28E460FD0020A93A /* SettingsCoordinator.swift in Sources */,
 				3547ABDE28774D1100EE85E1 /* MyVaultsCoordinator.swift in Sources */,
 				354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */,
+				354361592941DA0C000CAE12 /* OnboardingViewState.swift in Sources */,
 				355635B928895B8E00F32353 /* VaultContentView.swift in Sources */,
 				355635C1288968B000F32353 /* VaultContentViewModel.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,

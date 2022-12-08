@@ -33,28 +33,28 @@ struct OnboardingView: View {
 
             VStack(spacing: 0) {
                 VStack {
-                    Text(viewModel.title)
+                    Text(viewModel.state.title)
                         .font(.title2)
                         .fontWeight(.medium)
                         .padding(.vertical, 24)
 
-                    Text(viewModel.description)
+                    Text(viewModel.state.description)
                         .foregroundColor(.textWeak)
                         .multilineTextAlignment(.center)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
                 VStack {
-                    ColoredRoundedButton(title: viewModel.primaryButtonTitle,
+                    ColoredRoundedButton(title: viewModel.state.primaryButtonTitle,
                                          action: viewModel.primaryAction)
                         .padding(.vertical, 26)
 
-                    if let secondaryButtonTitle = viewModel.secondaryButtonTitle {
+                    if let secondaryButtonTitle = viewModel.state.secondaryButtonTitle {
                         Button(action: viewModel.secondaryAction) {
                             Text(secondaryButtonTitle)
                                 .foregroundColor(.interactionNorm)
                         }
-                        .animation(.default, value: viewModel.secondaryButtonTitle)
+                        .animation(.default, value: viewModel.state.secondaryButtonTitle)
                     }
 
                     Spacer()
