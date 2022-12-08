@@ -37,5 +37,7 @@ public enum PassIcon {
     public static var onboardAutoFillStep4 = UIImage(named: "OnboardAutoFillStep4")!
     public static var onboardAutoFillStep5 = UIImage(named: "OnboardAutoFillStep5")!
     public static var onboardBiometricAuthentication = UIImage(named: "OnboardBiometricAuthentication")!
+    // swiftlint:disable:next line_length
+    public static var onboardBiometricAuthenticationEnabled = UIImage(named: "OnboardBiometricAuthenticationEnabled")!
     public static var onboardAliases = UIImage(named: "OnboardAliases")!
 }

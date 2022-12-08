@@ -34,33 +34,41 @@ struct OnboardingView: View {
                 case .autoFillEnabled:
                     OnboardingAutoFillEnabledView()
                 case .biometricAuthentication:
-                    OnboardingBiometricAuthenticationView()
+                    OnboardingBiometricAuthenticationView(enabled: false)
                 case .biometricAuthenticationEnabled:
-                    Text("biometricAuthenticationEnabled")
+                    OnboardingBiometricAuthenticationView(enabled: true)
                 case .aliases:
-                    Text("aliases")
+                    OnboardingAliasesView()
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .animation(.default, value: viewModel.state)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             VStack(spacing: 0) {
                 VStack {
+                    Spacer()
+
                     Text(viewModel.state.title)
                         .font(.title2)
                         .fontWeight(.medium)
                         .padding(.vertical, 24)
 
+                    Spacer()
+
                     Text(viewModel.state.description)
                         .foregroundColor(.textWeak)
                         .multilineTextAlignment(.center)
+
+                    Spacer()
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                Spacer()
 
                 VStack {
                     ColoredRoundedButton(title: viewModel.state.primaryButtonTitle,
                                          action: viewModel.primaryAction)
-                        .padding(.vertical, 26)
+                    .frame(height: 48)
+                    .padding(.vertical, 26)
 
                     if let secondaryButtonTitle = viewModel.state.secondaryButtonTitle {
                         Button(action: viewModel.secondaryAction) {
@@ -72,9 +80,8 @@ struct OnboardingView: View {
 
                     Spacer()
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding(.horizontal)
             }
+            .padding(.horizontal)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(maxWidth: .infinity, alignment: .center)
@@ -146,10 +153,26 @@ private struct OnboardingAutoFillEnabledView: View {
 }
 
 private struct OnboardingBiometricAuthenticationView: View {
+    let enabled: Bool
     var body: some View {
-        Image(uiImage: PassIcon.onboardBiometricAuthentication)
+        VStack {
+            Spacer()
+                .frame(height: 80)
+            Image(uiImage: enabled ?
+                  PassIcon.onboardBiometricAuthenticationEnabled :
+                    PassIcon.onboardBiometricAuthentication)
             .resizable()
-            .scaledToFill()
-            .padding(.top, 80)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+private struct OnboardingAliasesView: View {
+    var body: some View {
+        VStack {
+            Spacer()
+            Image(uiImage: PassIcon.onboardAliases)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
