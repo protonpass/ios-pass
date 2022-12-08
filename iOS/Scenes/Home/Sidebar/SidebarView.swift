@@ -42,7 +42,6 @@ struct SidebarView: View {
 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 0) {
-//                        MyVaultsSidebarItemView(vaultSelection: coordinator.vaultSelection)
                         ItemCountView(itemCount: viewModel.itemCount,
                                       onSelectAll: viewModel.showAllItemsAction,
                                       onSelectType: viewModel.showItemsAction)
