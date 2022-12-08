@@ -21,24 +21,16 @@
 import UIKit
 
 public extension UIViewController {
-    /// Heuristic way to look for top most presented view controller.
-    /// Max depth level is 5 (should be enough in most cases)
-    func getTopMostPresentedViewController() -> UIViewController {
-        self.presentedViewController?
-            .presentedViewController?
-            .presentedViewController?
-            .presentedViewController?
-            .presentedViewController ??
-        self.presentedViewController?
-            .presentedViewController?
-            .presentedViewController?
-            .presentedViewController ??
-        self.presentedViewController?
-            .presentedViewController?
-            .presentedViewController ??
-        self.presentedViewController?
-            .presentedViewController ??
-        self.presentedViewController ??
-        self
+    /// Top most presented view controller
+    var topMostViewController: UIViewController {
+        var topMostViewController = self
+        while true {
+            if let presentationController = topMostViewController.presentedViewController {
+                topMostViewController = presentationController
+            } else {
+                break
+            }
+        }
+        return topMostViewController
     }
 }

@@ -66,7 +66,7 @@ public final class CredentialProviderCoordinator {
     private var credentialsViewModel: CredentialsViewModel?
 
     private var topMostViewController: UIViewController {
-        rootViewController.getTopMostPresentedViewController()
+        rootViewController.topMostViewController
     }
 
     init(apiService: APIService,

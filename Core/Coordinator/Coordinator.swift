@@ -35,7 +35,7 @@ open class Coordinator {
     public var rootViewController: UIViewController { navigationController }
     public weak var coordinatorDelegate: CoordinatorDelegate?
     private var topMostViewController: UIViewController {
-        navigationController.getTopMostPresentedViewController()
+        navigationController.topMostViewController
     }
 
     public init() {
