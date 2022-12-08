@@ -47,7 +47,7 @@ private struct OnboardingSection: View {
             })
         })
         .fullScreenCover(isPresented: $isShowing, content: {
-            OnboardingView()
+            OnboardingView(viewModel: .init())
         })
     }
 }

@@ -19,9 +19,58 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIComponents
 
 struct OnboardingView: View {
+    @StateObject var viewModel: OnboardingViewModel
+
     var body: some View {
-        Text("Onboaring")
+        VStack {
+            VStack {
+                Text("Some other view")
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            VStack(spacing: 0) {
+                VStack {
+                    Text(viewModel.title)
+                        .font(.title2)
+                        .fontWeight(.medium)
+                        .padding(.vertical, 24)
+
+                    Text(viewModel.description)
+                        .foregroundColor(.textWeak)
+                        .multilineTextAlignment(.center)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                VStack {
+                    ColoredRoundedButton(title: viewModel.primaryButtonTitle,
+                                         action: viewModel.primaryAction)
+                        .padding(.vertical, 26)
+
+                    if let secondaryButtonTitle = viewModel.secondaryButtonTitle {
+                        Button(action: viewModel.secondaryAction) {
+                            Text(secondaryButtonTitle)
+                                .foregroundColor(.interactionNorm)
+                        }
+                        .animation(.default, value: viewModel.secondaryButtonTitle)
+                    }
+
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(maxWidth: .infinity, alignment: .center)
+        .padding()
+        .background(
+            LinearGradient(colors: [.brandNorm.opacity(0.2), .clear],
+                           startPoint: .topLeading,
+                           endPoint: .bottomTrailing)
+        )
+        .background(Color(.systemBackground))
+        .edgesIgnoringSafeArea(.all)
     }
 }

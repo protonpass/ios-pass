@@ -57,12 +57,6 @@ struct OnboardingAliases: View {
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .padding()
-        .background(
-            Image(uiImage: PassIcon.topLeftGradient)
-                .resizable()
-                .scaledToFill()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        )
         .background(Color(.systemBackground))
         .edgesIgnoringSafeArea(.all)
     }
