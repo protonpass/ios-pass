@@ -20,14 +20,19 @@
 
 import AVFoundation
 import Client
+import Core
 import SwiftUI
 
 /// Preview features under development
 struct DevPreviewsView: View {
+    let credentialManager: CredentialManagerProtocol
+    let preferences: Preferences
+
     var body: some View {
         NavigationView {
             Form {
-                OnboardingSection()
+                OnboardingSection(credentialManager: credentialManager,
+                                  preferences: preferences)
                 HapticFeedbacksSection()
             }
             .navigationTitle("Developer previews")
@@ -39,6 +44,9 @@ struct DevPreviewsView: View {
 
 private struct OnboardingSection: View {
     @State private var isShowing = false
+    let credentialManager: CredentialManagerProtocol
+    let preferences: Preferences
+
     var body: some View {
         Section(content: {
             Button(action: {
@@ -48,7 +56,8 @@ private struct OnboardingSection: View {
             })
         })
         .fullScreenCover(isPresented: $isShowing, content: {
-            OnboardingView(viewModel: .init(credentialManager: CredentialManager()))
+            OnboardingView(viewModel: .init(credentialManager: credentialManager,
+                                            preferences: preferences))
         })
     }
 }

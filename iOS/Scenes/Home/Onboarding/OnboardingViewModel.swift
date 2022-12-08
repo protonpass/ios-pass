@@ -20,6 +20,7 @@
 
 import Client
 import Combine
+import Core
 import SwiftUI
 
 final class OnboardingViewModel: ObservableObject {
@@ -27,15 +28,33 @@ final class OnboardingViewModel: ObservableObject {
     @Published private(set) var state = OnboardingViewState.autoFill
 
     private let credentialManager: CredentialManagerProtocol
+    private let preferences: Preferences
+    private let localAuthenticator: LocalAuthenticator
     private var cancellables = Set<AnyCancellable>()
 
-    init(credentialManager: CredentialManagerProtocol) {
+    init(credentialManager: CredentialManagerProtocol,
+         preferences: Preferences) {
         self.credentialManager = credentialManager
+        self.preferences = preferences
+        self.localAuthenticator = .init(preferences: preferences)
+
+        localAuthenticator.initializeBiometryType()
         checkAutoFillStatus()
+
         NotificationCenter.default
             .publisher(for: UIApplication.didBecomeActiveNotification)
             .sink { [weak self] _ in
                 self?.checkAutoFillStatus()
+            }
+            .store(in: &cancellables)
+
+        preferences.objectWillChange
+            .sink { [weak self] _ in
+                guard let self else { return }
+                if self.preferences.localAuthenticationEnabled,
+                    case .biometricAuthentication = self.state {
+                    self.state = .biometricAuthenticationEnabled
+                }
             }
             .store(in: &cancellables)
     }
@@ -43,8 +62,12 @@ final class OnboardingViewModel: ObservableObject {
     private func checkAutoFillStatus() {
         Task { @MainActor in
             let autoFillEnabled = await credentialManager.isAutoFillEnabled()
-            if case .autoFill = state, autoFillEnabled {
-                state = .autoFillEnabled
+            if autoFillEnabled {
+                if case .autoFill = state {
+                    state = .autoFillEnabled
+                }
+            } else {
+                state = .autoFill
             }
         }
     }
@@ -56,14 +79,22 @@ extension OnboardingViewModel {
         switch state {
         case .autoFill:
             UIApplication.shared.openSettings()
+
         case .autoFillEnabled:
-            break
+            if preferences.localAuthenticationEnabled {
+                state = .biometricAuthenticationEnabled
+            } else {
+                state = .biometricAuthentication
+            }
+
         case .biometricAuthentication:
-            break
+            localAuthenticator.toggleEnabled(force: true)
+
         case .biometricAuthenticationEnabled:
-            break
+            state = .aliases
+
         case .aliases:
-            break
+            finished = true
         }
     }
 

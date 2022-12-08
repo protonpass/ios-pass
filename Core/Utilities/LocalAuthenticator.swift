@@ -44,19 +44,17 @@ public enum LocalAuthenticatorError: Error {
 public final class LocalAuthenticator: ObservableObject {
     @Published public private(set) var biometryTypeState: BiometryTypeState = .idle
     @Published public private(set) var authenticationState: AuthenticationState = .idle
-    @Published public var enabled = true {
+    @Published public var enabled = false {
         didSet {
-            toggleEnabled()
+            toggleEnabled(force: false)
         }
     }
     private let preferences: Preferences
     private let context = LAContext()
     private let policy = LAPolicy.deviceOwnerAuthentication // Both biometry & passcode
-    private var tempEnabled = true
 
     public init(preferences: Preferences) {
         self.preferences = preferences
-        self.tempEnabled = preferences.localAuthenticationEnabled
         self.enabled = preferences.localAuthenticationEnabled
     }
 
@@ -79,24 +77,21 @@ public final class LocalAuthenticator: ObservableObject {
         return try await context.evaluatePolicy(policy, localizedReason: reason)
     }
 
-    public func toggleEnabled() {
-        guard tempEnabled != enabled else { return }
-        defer {
-            preferences.localAuthenticationEnabled = enabled
-        }
+    public func toggleEnabled(force: Bool) {
+        if !force, enabled == preferences.localAuthenticationEnabled { return }
         Task { @MainActor in
+            defer {
+                enabled = preferences.localAuthenticationEnabled
+            }
             do {
                 let reason = enabled ?
                 "Please authenticate to enable local authentication" :
                 "Please authenticate to disable local authentication"
                 let authenticated = try await authenticate(reason: reason)
                 if authenticated {
-                    tempEnabled.toggle()
-                } else {
-                    enabled.toggle()
+                    preferences.localAuthenticationEnabled.toggle()
                 }
             } catch {
-                enabled.toggle()
                 authenticationState = .error(error)
             }
         }

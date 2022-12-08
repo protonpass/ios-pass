@@ -32,11 +32,11 @@ public final class Preferences: ObservableObject {
     public var failedAttemptCount = 0
 
     @AppStorage("localAuthenticationEnabled", store: kSharedUserDefaults)
-    public var localAuthenticationEnabled = true
+    public var localAuthenticationEnabled = false
 
     public func reset() {
         quickTypeBar = true
         failedAttemptCount = 0
-        localAuthenticationEnabled = true
+        localAuthenticationEnabled = false
     }
 }

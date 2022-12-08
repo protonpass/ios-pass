@@ -139,8 +139,8 @@ public final class CredentialProviderCoordinator {
         }
     }
 
-    // Local authentication
-    func provideCredentialWithLocalAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
+    // Biometric authentication
+    func provideCredentialWithBiometricAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
         guard let symmetricKey, let itemRepository else {
             cancel(errorCode: .failed)
             return

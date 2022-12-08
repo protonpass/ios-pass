@@ -85,11 +85,18 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
                 }
             }
             .store(in: &cancellables)
+
+        preferences.objectWillChange
+            .sink { [weak self] _ in
+                self?.refresh()
+            }
+            .store(in: &cancellables)
     }
 
     private func refresh() {
         updateAutoFillAvalability()
         localAuthenticator.initializeBiometryType()
+        localAuthenticator.enabled = preferences.localAuthenticationEnabled
     }
 
     private func updateAutoFillAvalability() {
