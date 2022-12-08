@@ -143,6 +143,18 @@ final class HomeCoordinator: DeinitPrintable {
         self.observeVaultSelection()
         self.observeForegroundEntrance()
     }
+
+    func onboardIfNecessary() {
+        guard !preferences.onboarded else { return }
+        preferences.onboarded = true
+        let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
+                                                      preferences: preferences,
+                                                      bannerManager: bannerManager)
+        let onboardingView = OnboardingView(viewModel: onboardingViewModel)
+        let onboardingViewController = UIHostingController(rootView: onboardingView)
+        onboardingViewController.modalPresentationStyle = .fullScreen
+        rootViewController.present(onboardingViewController, animated: true)
+    }
 }
 
 // MARK: - Initialization additional set ups
@@ -283,7 +295,8 @@ extension HomeCoordinator {
         switch sidebarItem {
         case .devPreviews:
             let view = DevPreviewsView(credentialManager: credentialManager,
-                                       preferences: preferences)
+                                       preferences: preferences,
+                                       bannerManager: bannerManager)
             rootViewController.present(UIHostingController(rootView: view), animated: true)
         case .settings:
             sideMenuController.setContentViewController(to: settingsRootViewController,

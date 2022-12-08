@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import SwiftUI
+import UIComponents
 
 final class OnboardingViewModel: ObservableObject {
     @Published private(set) var finished = false
@@ -30,13 +31,16 @@ final class OnboardingViewModel: ObservableObject {
     private let credentialManager: CredentialManagerProtocol
     private let preferences: Preferences
     private let biometricAuthenticator: BiometricAuthenticator
+    private let bannerManager: BannerManager
     private var cancellables = Set<AnyCancellable>()
 
     init(credentialManager: CredentialManagerProtocol,
-         preferences: Preferences) {
+         preferences: Preferences,
+         bannerManager: BannerManager) {
         self.credentialManager = credentialManager
         self.preferences = preferences
         self.biometricAuthenticator = .init(preferences: preferences)
+        self.bannerManager = bannerManager
 
         biometricAuthenticator.initializeBiometryType()
         checkAutoFillStatus()
@@ -57,17 +61,23 @@ final class OnboardingViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+
+        biometricAuthenticator.$authenticationState
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self else { return }
+                if case .error(let error) = state {
+                    self.bannerManager.displayTopErrorMessage(error)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func checkAutoFillStatus() {
         Task { @MainActor in
             let autoFillEnabled = await credentialManager.isAutoFillEnabled()
-            if autoFillEnabled {
-                if case .autoFill = state {
-                    state = .autoFillEnabled
-                }
-            } else {
-                state = .autoFill
+            if case .autoFill = state, autoFillEnabled {
+                state = .autoFillEnabled
             }
         }
     }
