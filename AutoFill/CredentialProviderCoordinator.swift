@@ -66,7 +66,7 @@ public final class CredentialProviderCoordinator {
     private var credentialsViewModel: CredentialsViewModel?
 
     private var topMostViewController: UIViewController {
-        rootViewController.getTopMostPresentedViewController()
+        rootViewController.topMostViewController
     }
 
     init(apiService: APIService,
@@ -114,7 +114,7 @@ public final class CredentialProviderCoordinator {
             return
         }
 
-        if preferences.localAuthenticationEnabled {
+        if preferences.biometricAuthenticationEnabled {
             cancel(errorCode: .userInteractionRequired)
         } else {
             Task {
@@ -139,8 +139,8 @@ public final class CredentialProviderCoordinator {
         }
     }
 
-    // Local authentication
-    func provideCredentialWithLocalAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
+    // Biometric authentication
+    func provideCredentialWithBiometricAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
         guard let symmetricKey, let itemRepository else {
             cancel(errorCode: .failed)
             return

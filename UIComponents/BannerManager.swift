@@ -29,7 +29,7 @@ public final class BannerManager {
 
     public func display(message: String, at position: PMBannerPosition, style: PMBannerNewStyle) {
         let banner = PMBanner(message: message, style: style)
-        banner.show(at: position, on: container.getTopMostPresentedViewController())
+        banner.show(at: position, on: container.topMostViewController)
     }
 
     public func displayBottomSuccessMessage(_ message: String) {
@@ -46,6 +46,6 @@ public final class BannerManager {
         let dismissClosure = onDismiss ?? { banner in banner.dismiss() }
         let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
         banner.addButton(text: dismissButtonTitle, handler: dismissClosure)
-        banner.show(at: .top, on: container.getTopMostPresentedViewController())
+        banner.show(at: .top, on: container.topMostViewController)
     }
 }

@@ -31,12 +31,16 @@ public final class Preferences: ObservableObject {
     @AppStorage("failedAttemptCount", store: kSharedUserDefaults)
     public var failedAttemptCount = 0
 
-    @AppStorage("localAuthenticationEnabled", store: kSharedUserDefaults)
-    public var localAuthenticationEnabled = true
+    @AppStorage("biometricAuthenticationEnabled", store: kSharedUserDefaults)
+    public var biometricAuthenticationEnabled = false
+
+    @AppStorage("onboarded", store: kSharedUserDefaults)
+    public var onboarded = false
 
     public func reset() {
         quickTypeBar = true
         failedAttemptCount = 0
-        localAuthenticationEnabled = true
+        biometricAuthenticationEnabled = false
+        onboarded = false
     }
 }

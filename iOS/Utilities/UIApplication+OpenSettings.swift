@@ -1,6 +1,6 @@
 //
-// UIViewController+TopMostViewController.swift
-// Proton Pass - Created on 01/12/2022.
+// UIApplication+OpenSettings.swift
+// Proton Pass - Created on 08/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,17 +20,10 @@
 
 import UIKit
 
-public extension UIViewController {
-    /// Top most presented view controller
-    var topMostViewController: UIViewController {
-        var topMostViewController = self
-        while true {
-            if let presentationController = topMostViewController.presentedViewController {
-                topMostViewController = presentationController
-            } else {
-                break
-            }
+extension UIApplication {
+    func openSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString), canOpenURL(url) {
+            open(url)
         }
-        return topMostViewController
     }
 }

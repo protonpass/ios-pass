@@ -1,5 +1,5 @@
 //
-// LocalAuthenticator.swift
+// BiometricAuthenticator.swift
 // Proton Pass - Created on 21/10/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,7 +21,7 @@
 import LocalAuthentication
 import SwiftUI
 
-public extension LocalAuthenticator {
+public extension BiometricAuthenticator {
     enum BiometryTypeState {
         case idle
         case initializing
@@ -37,27 +37,25 @@ public extension LocalAuthenticator {
     }
 }
 
-public enum LocalAuthenticatorError: Error {
+public enum BiometricAuthenticatorError: Error {
     case biometryTypeNotInitialized
 }
 
-public final class LocalAuthenticator: ObservableObject {
+public final class BiometricAuthenticator: ObservableObject {
     @Published public private(set) var biometryTypeState: BiometryTypeState = .idle
     @Published public private(set) var authenticationState: AuthenticationState = .idle
-    @Published public var enabled = true {
+    @Published public var enabled = false {
         didSet {
-            toggleEnabled()
+            toggleEnabled(force: false)
         }
     }
     private let preferences: Preferences
     private let context = LAContext()
     private let policy = LAPolicy.deviceOwnerAuthentication // Both biometry & passcode
-    private var tempEnabled = true
 
     public init(preferences: Preferences) {
         self.preferences = preferences
-        self.tempEnabled = preferences.localAuthenticationEnabled
-        self.enabled = preferences.localAuthenticationEnabled
+        self.enabled = preferences.biometricAuthenticationEnabled
     }
 
     public func initializeBiometryType() {
@@ -73,30 +71,27 @@ public final class LocalAuthenticator: ObservableObject {
 
     public func authenticate(reason: String) async throws -> Bool {
         guard case .initialized = biometryTypeState else {
-            throw LocalAuthenticatorError.biometryTypeNotInitialized
+            throw BiometricAuthenticatorError.biometryTypeNotInitialized
         }
 
         return try await context.evaluatePolicy(policy, localizedReason: reason)
     }
 
-    public func toggleEnabled() {
-        guard tempEnabled != enabled else { return }
-        defer {
-            preferences.localAuthenticationEnabled = enabled
-        }
+    public func toggleEnabled(force: Bool) {
+        if !force, enabled == preferences.biometricAuthenticationEnabled { return }
         Task { @MainActor in
+            defer {
+                enabled = preferences.biometricAuthenticationEnabled
+            }
             do {
                 let reason = enabled ?
                 "Please authenticate to enable local authentication" :
                 "Please authenticate to disable local authentication"
                 let authenticated = try await authenticate(reason: reason)
                 if authenticated {
-                    tempEnabled.toggle()
-                } else {
-                    enabled.toggle()
+                    preferences.biometricAuthenticationEnabled.toggle()
                 }
             } catch {
-                enabled.toggle()
                 authenticationState = .error(error)
             }
         }

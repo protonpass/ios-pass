@@ -36,7 +36,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let symmetricKey: SymmetricKey
-    let localAuthenticator: LocalAuthenticator
+    let biometricAuthenticator: BiometricAuthenticator
     let preferences: Preferences
 
     weak var delegate: SettingsViewModelDelegate?
@@ -65,7 +65,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.symmetricKey = symmetricKey
-        self.localAuthenticator = .init(preferences: preferences)
+        self.biometricAuthenticator = .init(preferences: preferences)
         self.preferences = preferences
         self.quickTypeBar = preferences.quickTypeBar
         self.refresh()
@@ -77,7 +77,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
             }
             .store(in: &cancellables)
 
-        localAuthenticator.$authenticationState
+        biometricAuthenticator.$authenticationState
             .sink { [weak self] state in
                 guard let self else { return }
                 if case let .error(error) = state {
@@ -85,11 +85,18 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
                 }
             }
             .store(in: &cancellables)
+
+        preferences.objectWillChange
+            .sink { [weak self] _ in
+                self?.refresh()
+            }
+            .store(in: &cancellables)
     }
 
     private func refresh() {
         updateAutoFillAvalability()
-        localAuthenticator.initializeBiometryType()
+        biometricAuthenticator.initializeBiometryType()
+        biometricAuthenticator.enabled = preferences.biometricAuthenticationEnabled
     }
 
     private func updateAutoFillAvalability() {

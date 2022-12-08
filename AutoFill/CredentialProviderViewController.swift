@@ -60,6 +60,6 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
      by completing the extension request with the associated ASPasswordCredential.*/
 
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
-        coordinator.provideCredentialWithLocalAuthentication(for: credentialIdentity)
+        coordinator.provideCredentialWithBiometricAuthentication(for: credentialIdentity)
     }
 }
