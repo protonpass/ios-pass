@@ -18,24 +18,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import Combine
 import SwiftUI
 
 final class OnboardingViewModel: ObservableObject {
     @Published private(set) var finished = false
     @Published private(set) var state = OnboardingViewState.autoFill
 
-    private func goToNextState() {
-        switch state {
-        case .autoFill:
-            state = .autoFillEnabled
-        case .autoFillEnabled:
-            state = .biometricAuthentication
-        case .biometricAuthentication:
-            state = .biometricAuthenticationEnabled
-        case .biometricAuthenticationEnabled:
-            state = .aliases
-        case .aliases:
-            finished = true
+    private let credentialManager: CredentialManagerProtocol
+    private var cancellables = Set<AnyCancellable>()
+
+    init(credentialManager: CredentialManagerProtocol) {
+        self.credentialManager = credentialManager
+        checkAutoFillStatus()
+        NotificationCenter.default
+            .publisher(for: UIApplication.didBecomeActiveNotification)
+            .sink { [weak self] _ in
+                self?.checkAutoFillStatus()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func checkAutoFillStatus() {
+        Task { @MainActor in
+            let autoFillEnabled = await credentialManager.isAutoFillEnabled()
+            if case .autoFill = state, autoFillEnabled {
+                state = .autoFillEnabled
+            }
         }
     }
 }
@@ -43,10 +53,28 @@ final class OnboardingViewModel: ObservableObject {
 // MARK: - Public actions
 extension OnboardingViewModel {
     func primaryAction() {
-        goToNextState()
+        switch state {
+        case .autoFill:
+            UIApplication.shared.openSettings()
+        case .autoFillEnabled:
+            break
+        case .biometricAuthentication:
+            break
+        case .biometricAuthenticationEnabled:
+            break
+        case .aliases:
+            break
+        }
     }
 
     func secondaryAction() {
-        goToNextState()
+        switch state {
+        case .autoFill, .autoFillEnabled:
+            state = .biometricAuthentication
+        case .biometricAuthentication, .biometricAuthenticationEnabled:
+            state = .aliases
+        case .aliases:
+            finished = true
+        }
     }
 }
