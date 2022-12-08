@@ -32,9 +32,9 @@ struct OnboardingView: View {
                 case .autoFill:
                     OnboardingAutoFillView()
                 case .autoFillEnabled:
-                    Text("autoFillEnabled")
+                    OnboardingAutoFillEnabledView()
                 case .biometricAuthentication:
-                    Text("biometricAuthentication")
+                    OnboardingBiometricAuthenticationView()
                 case .biometricAuthenticationEnabled:
                     Text("biometricAuthenticationEnabled")
                 case .aliases:
@@ -73,11 +73,11 @@ struct OnboardingView: View {
                     Spacer()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .padding()
         .background(
             LinearGradient(colors: [.brandNorm.opacity(0.2), .clear],
                            startPoint: .topLeading,
@@ -128,5 +128,28 @@ private struct OnboardingAutoFillView: View {
         Image(uiImage: image)
             .resizable()
             .frame(width: 36, height: 36)
+    }
+}
+
+private struct OnboardingAutoFillEnabledView: View {
+    var body: some View {
+        VStack {
+            Spacer()
+            Color.clear
+            Spacer()
+            Image(uiImage: PassIcon.onboardAutoFillEnabled)
+                .resizable()
+                .scaledToFit()
+            Spacer()
+        }
+    }
+}
+
+private struct OnboardingBiometricAuthenticationView: View {
+    var body: some View {
+        Image(uiImage: PassIcon.onboardBiometricAuthentication)
+            .resizable()
+            .scaledToFill()
+            .padding(.top, 80)
     }
 }
