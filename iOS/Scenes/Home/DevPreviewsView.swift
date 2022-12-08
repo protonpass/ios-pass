@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AVFoundation
+import Client
 import SwiftUI
 
 /// Preview features under development
@@ -47,7 +48,7 @@ private struct OnboardingSection: View {
             })
         })
         .fullScreenCover(isPresented: $isShowing, content: {
-            OnboardingView(viewModel: .init())
+            OnboardingView(viewModel: .init(credentialManager: CredentialManager()))
         })
     }
 }
