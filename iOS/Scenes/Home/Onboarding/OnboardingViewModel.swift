@@ -21,10 +21,7 @@
 import SwiftUI
 
 final class OnboardingViewModel: ObservableObject {
-    @Published private(set) var title = ""
-    @Published private(set) var description = ""
-    @Published private(set) var primaryButtonTitle = ""
-    @Published private(set) var secondaryButtonTitle: String?
+    @Published private(set) var state = OnboardingViewState.autoFill
 }
 
 // MARK: - Public actions
