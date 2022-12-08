@@ -359,7 +359,7 @@ extension AppCoordinator: APIServiceDelegate {
     }
 }
 
-// MARK: - Local authentication
+// MARK: - Biometric authentication
 private extension AppCoordinator {
     func makeAppLockedViewController() -> UIViewController {
         let view = AppLockedView(

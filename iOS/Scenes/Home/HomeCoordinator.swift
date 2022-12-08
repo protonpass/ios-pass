@@ -282,7 +282,9 @@ extension HomeCoordinator {
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
         case .devPreviews:
-            rootViewController.present(UIHostingController(rootView: DevPreviewsView()), animated: true)
+            let view = DevPreviewsView(credentialManager: credentialManager,
+                                       preferences: preferences)
+            rootViewController.present(UIHostingController(rootView: view), animated: true)
         case .settings:
             sideMenuController.setContentViewController(to: settingsRootViewController,
                                                         animated: true) { [unowned self] in

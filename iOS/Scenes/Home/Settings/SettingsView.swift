@@ -104,7 +104,7 @@ private struct LocalAuthenticationSection: View {
                 Text(error.localizedDescription)
             }
         }, header: {
-            Text("Local authentication")
+            Text("Biometric authentication")
         })
     }
 
