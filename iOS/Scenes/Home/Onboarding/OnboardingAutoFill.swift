@@ -90,12 +90,6 @@ struct OnboardingAutoFill: View {
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .padding()
-        .background(
-            Image(uiImage: PassIcon.topLeftGradient)
-                .resizable()
-                .scaledToFill()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                )
         .background(Color(.systemBackground))
         .edgesIgnoringSafeArea(.all)
     }
@@ -106,13 +100,3 @@ struct OnboardingAutoFill: View {
             .frame(width: 36, height: 36)
     }
 }
-
-/*
-struct OnboardingAutoFill_Previews: PreviewProvider {
-    static var previews: some View {
-        OnboardingAutoFill(onProceed: {}, onCancel: {})
-        OnboardingAutoFill(onProceed: {}, onCancel: {})
-            .environment(\.colorScheme, .dark)
-    }
-}
-*/

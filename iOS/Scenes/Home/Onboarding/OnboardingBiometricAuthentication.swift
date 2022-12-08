@@ -69,12 +69,6 @@ struct OnboardingBiometricAuthentication: View {
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .center)
             }
-            .background(
-                Image(uiImage: PassIcon.topLeftGradient)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            )
             .background(Color(.systemBackground))
             .edgesIgnoringSafeArea(.all)
         }
