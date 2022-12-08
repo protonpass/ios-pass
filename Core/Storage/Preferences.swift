@@ -34,9 +34,13 @@ public final class Preferences: ObservableObject {
     @AppStorage("biometricAuthenticationEnabled", store: kSharedUserDefaults)
     public var biometricAuthenticationEnabled = false
 
+    @AppStorage("onboarded", store: kSharedUserDefaults)
+    public var onboarded = false
+
     public func reset() {
         quickTypeBar = true
         failedAttemptCount = 0
         biometricAuthenticationEnabled = false
+        onboarded = false
     }
 }
