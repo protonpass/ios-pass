@@ -22,14 +22,27 @@ import SwiftUI
 import UIComponents
 
 struct OnboardingView: View {
+    @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: OnboardingViewModel
 
     var body: some View {
         VStack {
             VStack {
-                Text("Some other view")
+                switch viewModel.state {
+                case .autoFill:
+                    Text("AutoFill")
+                case .autoFillEnabled:
+                    Text("autoFillEnabled")
+                case .biometricAuthentication:
+                    Text("biometricAuthentication")
+                case .biometricAuthenticationEnabled:
+                    Text("biometricAuthenticationEnabled")
+                case .aliases:
+                    Text("aliases")
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .animation(.default, value: viewModel.state)
 
             VStack(spacing: 0) {
                 VStack {
@@ -72,5 +85,6 @@ struct OnboardingView: View {
         )
         .background(Color(.systemBackground))
         .edgesIgnoringSafeArea(.all)
+        .onReceiveBoolean(viewModel.$finished, perform: dismiss.callAsFunction)
     }
 }
