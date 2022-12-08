@@ -21,16 +21,32 @@
 import SwiftUI
 
 final class OnboardingViewModel: ObservableObject {
+    @Published private(set) var finished = false
     @Published private(set) var state = OnboardingViewState.autoFill
+
+    private func goToNextState() {
+        switch state {
+        case .autoFill:
+            state = .autoFillEnabled
+        case .autoFillEnabled:
+            state = .biometricAuthentication
+        case .biometricAuthentication:
+            state = .biometricAuthenticationEnabled
+        case .biometricAuthenticationEnabled:
+            state = .aliases
+        case .aliases:
+            finished = true
+        }
+    }
 }
 
 // MARK: - Public actions
 extension OnboardingViewModel {
     func primaryAction() {
-        print(#function)
+        goToNextState()
     }
 
     func secondaryAction() {
-        print(#function)
+        goToNextState()
     }
 }
