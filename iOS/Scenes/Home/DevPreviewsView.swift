@@ -26,27 +26,29 @@ struct DevPreviewsView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(content: {
-                    NavigationLink(destination: { OnboardingAutoFill(onProceed: {},
-                                                                     onCancel: {}) },
-                                   label: { Text("AutoFill") })
-
-                    NavigationLink(destination: { OnboardingBiometricAuthentication(onProceed: {},
-                                                                                    onCancel: {}) },
-                                   label: { Text("Biometric Authentication") })
-
-                    NavigationLink(destination: { OnboardingAliases(onAction: {}) },
-                                   label: { Text("Aliases") })
-                }, header: {
-                    Text("Onboarding")
-                })
-
+                OnboardingSection()
                 HapticFeedbacksSection()
             }
             .navigationTitle("Developer previews")
             .navigationBarTitleDisplayMode(.large)
         }
         .accentColor(.interactionNorm)
+    }
+}
+
+private struct OnboardingSection: View {
+    @State private var isShowing = false
+    var body: some View {
+        Section(content: {
+            Button(action: {
+                isShowing.toggle()
+            }, label: {
+                Text("Trigger onboarding process")
+            })
+        })
+        .fullScreenCover(isPresented: $isShowing, content: {
+            OnboardingView()
+        })
     }
 }
 
