@@ -58,7 +58,7 @@ final class HomeCoordinator: DeinitPrintable {
 
     var rootViewController: UIViewController { sideMenuController }
     private var topMostViewController: UIViewController {
-        sideMenuController.getTopMostPresentedViewController()
+        sideMenuController.topMostViewController
     }
 
     // Side menu
