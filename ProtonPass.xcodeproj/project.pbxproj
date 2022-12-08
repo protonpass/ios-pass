@@ -154,7 +154,6 @@
 		354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769928C87CD500EB2383 /* EmptyVaultView.swift */; };
 		354F769C28C90B4D00EB2383 /* MoveToTrashModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769B28C90B4D00EB2383 /* MoveToTrashModifier.swift */; };
 		354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */; };
-		355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */; };
 		3552146229150FFC00BA6229 /* GenericItemSkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */; };
 		3552147E2915251C00BA6229 /* LoadingVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552147D2915251C00BA6229 /* LoadingVaultView.swift */; };
 		355214822915517E00BA6229 /* EditMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355214812915517E00BA6229 /* EditMenuButton.swift */; };
@@ -315,7 +314,6 @@
 		35E50708286FB3A600A3F6EA /* Publisher+Unwrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */; };
 		35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50709286FB44800A3F6EA /* PPDoH.swift */; };
 		35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */; };
-		35E50710286FB5BA00A3F6EA /* Flows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E5070F286FB5BA00A3F6EA /* Flows.swift */; };
 		35E50714286FB60500A3F6EA /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50713286FB60500A3F6EA /* HomeCoordinator.swift */; };
 		35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50715286FB61E00A3F6EA /* WelcomeCoordinator.swift */; };
 		43D8E83DEA8EF33F5E68C83E /* Pods_Core_CoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A8977220EAD2E5C505F8CF /* Pods_Core_CoreTests.framework */; };
@@ -627,7 +625,6 @@
 		354F769928C87CD500EB2383 /* EmptyVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyVaultView.swift; sourceTree = "<group>"; };
 		354F769B28C90B4D00EB2383 /* MoveToTrashModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToTrashModifier.swift; sourceTree = "<group>"; };
 		354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseItemDetailViewModel.swift; sourceTree = "<group>"; };
-		355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsSidebarItemView.swift; sourceTree = "<group>"; };
 		3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericItemSkeletonView.swift; sourceTree = "<group>"; };
 		3552147D2915251C00BA6229 /* LoadingVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingVaultView.swift; sourceTree = "<group>"; };
 		355214812915517E00BA6229 /* EditMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMenuButton.swift; sourceTree = "<group>"; };
@@ -790,7 +787,6 @@
 		35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publisher+Unwrap.swift"; sourceTree = "<group>"; };
 		35E50709286FB44800A3F6EA /* PPDoH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPDoH.swift; sourceTree = "<group>"; };
 		35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
-		35E5070F286FB5BA00A3F6EA /* Flows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flows.swift; sourceTree = "<group>"; };
 		35E50713286FB60500A3F6EA /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		35E50715286FB61E00A3F6EA /* WelcomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinator.swift; sourceTree = "<group>"; };
 		3CDC57C290CF2F32BE9B8B39 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -991,7 +987,6 @@
 			isa = PBXGroup;
 			children = (
 				3561A1812922DA6E0097078B /* ItemCountView.swift */,
-				355101AB28885820000BDC8A /* MyVaultsSidebarItemView.swift */,
 				353E8B6F28761A1700A2C5E3 /* SidebarItem.swift */,
 				353E8B6D2876163F00A2C5E3 /* SidebarView.swift */,
 				358A508828AD2E8F00F5285C /* SideBarViewModel.swift */,
@@ -1660,7 +1655,6 @@
 			children = (
 				35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */,
 				3531B5422902DA890070D2EE /* AppLockedView.swift */,
-				35E5070F286FB5BA00A3F6EA /* Flows.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -2490,14 +2484,12 @@
 				353E8B76287625D100A2C5E3 /* SidebarCurrentUserView.swift in Sources */,
 				35283E502927B55D002F5B84 /* LargeView.swift in Sources */,
 				3531B5432902DA890070D2EE /* AppLockedView.swift in Sources */,
-				355101AC28885820000BDC8A /* MyVaultsSidebarItemView.swift in Sources */,
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */,
 				35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */,
 				3561A1822922DA6E0097078B /* ItemCountView.swift in Sources */,
 				354E19F4293F8EDD00A3F853 /* OnboardingAutoFill.swift in Sources */,
-				35E50710286FB5BA00A3F6EA /* Flows.swift in Sources */,
 				35E50714286FB60500A3F6EA /* HomeCoordinator.swift in Sources */,
 				350A97DC2885FD7900A7168B /* MyVaultsViewModel.swift in Sources */,
 				355635BF2889664200F32353 /* LoadVaultsViewModel.swift in Sources */,
