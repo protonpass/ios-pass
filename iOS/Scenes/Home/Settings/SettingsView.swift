@@ -33,7 +33,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             AutoFillSection(viewModel: viewModel)
-            LocalAuthenticationSection(localAuthenticator: viewModel.localAuthenticator)
+            BiometricAuthenticationSection(biometricAuthenticator: viewModel.biometricAuthenticator)
             FullSyncSection(viewModel: viewModel)
             DeleteAccountSection(onDelete: viewModel.deleteAccount)
         }
@@ -90,12 +90,12 @@ private struct AutoFillSection: View {
     }
 }
 
-private struct LocalAuthenticationSection: View {
-    @ObservedObject var localAuthenticator: LocalAuthenticator
+private struct BiometricAuthenticationSection: View {
+    @ObservedObject var biometricAuthenticator: BiometricAuthenticator
 
     var body: some View {
         Section(content: {
-            switch localAuthenticator.biometryTypeState {
+            switch biometricAuthenticator.biometryTypeState {
             case .idle, .initializing:
                 ProgressView()
             case .initialized(let biometryType):
@@ -111,7 +111,7 @@ private struct LocalAuthenticationSection: View {
     @ViewBuilder
     private func view(for biometryType: LABiometryType) -> some View {
         if let uiModel = biometryType.uiModel {
-            Toggle(isOn: $localAuthenticator.enabled) {
+            Toggle(isOn: $biometricAuthenticator.enabled) {
                 Label(title: {
                     Text(uiModel.title)
                 }, icon: {

@@ -1,5 +1,5 @@
 //
-// LocalAuthenticator.swift
+// BiometricAuthenticator.swift
 // Proton Pass - Created on 21/10/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,7 +21,7 @@
 import LocalAuthentication
 import SwiftUI
 
-public extension LocalAuthenticator {
+public extension BiometricAuthenticator {
     enum BiometryTypeState {
         case idle
         case initializing
@@ -37,11 +37,11 @@ public extension LocalAuthenticator {
     }
 }
 
-public enum LocalAuthenticatorError: Error {
+public enum BiometricAuthenticatorError: Error {
     case biometryTypeNotInitialized
 }
 
-public final class LocalAuthenticator: ObservableObject {
+public final class BiometricAuthenticator: ObservableObject {
     @Published public private(set) var biometryTypeState: BiometryTypeState = .idle
     @Published public private(set) var authenticationState: AuthenticationState = .idle
     @Published public var enabled = false {
@@ -55,7 +55,7 @@ public final class LocalAuthenticator: ObservableObject {
 
     public init(preferences: Preferences) {
         self.preferences = preferences
-        self.enabled = preferences.localAuthenticationEnabled
+        self.enabled = preferences.biometricAuthenticationEnabled
     }
 
     public func initializeBiometryType() {
@@ -71,17 +71,17 @@ public final class LocalAuthenticator: ObservableObject {
 
     public func authenticate(reason: String) async throws -> Bool {
         guard case .initialized = biometryTypeState else {
-            throw LocalAuthenticatorError.biometryTypeNotInitialized
+            throw BiometricAuthenticatorError.biometryTypeNotInitialized
         }
 
         return try await context.evaluatePolicy(policy, localizedReason: reason)
     }
 
     public func toggleEnabled(force: Bool) {
-        if !force, enabled == preferences.localAuthenticationEnabled { return }
+        if !force, enabled == preferences.biometricAuthenticationEnabled { return }
         Task { @MainActor in
             defer {
-                enabled = preferences.localAuthenticationEnabled
+                enabled = preferences.biometricAuthenticationEnabled
             }
             do {
                 let reason = enabled ?
@@ -89,7 +89,7 @@ public final class LocalAuthenticator: ObservableObject {
                 "Please authenticate to disable local authentication"
                 let authenticated = try await authenticate(reason: reason)
                 if authenticated {
-                    preferences.localAuthenticationEnabled.toggle()
+                    preferences.biometricAuthenticationEnabled.toggle()
                 }
             } catch {
                 authenticationState = .error(error)

@@ -33,7 +33,7 @@
 		3529433028DB4C7700E1F11B /* SearchableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3529432F28DB4C7700E1F11B /* SearchableItem.swift */; };
 		3530092A28A5281800611F8A /* Vault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D32885BFFD00A7168B /* Vault.swift */; };
 		3530FADA28CEFA0900CE8A8F /* DeleteItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530FAD928CEFA0900CE8A8F /* DeleteItemsEndpoint.swift */; };
-		3531B5412902A9DD0070D2EE /* LocalAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531B5402902A9DD0070D2EE /* LocalAuthenticator.swift */; };
+		3531B5412902A9DD0070D2EE /* BiometricAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531B5402902A9DD0070D2EE /* BiometricAuthenticator.swift */; };
 		3531B5432902DA890070D2EE /* AppLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531B5422902DA890070D2EE /* AppLockedView.swift */; };
 		353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C02880C45C0021C716 /* GetSharesEndpoint.swift */; };
 		353547C32880CF470021C716 /* UserData+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C22880CF470021C716 /* UserData+Codable.swift */; };
@@ -524,7 +524,7 @@
 		3529432D28DB455100E1F11B /* ItemSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSearchResult.swift; sourceTree = "<group>"; };
 		3529432F28DB4C7700E1F11B /* SearchableItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableItem.swift; sourceTree = "<group>"; };
 		3530FAD928CEFA0900CE8A8F /* DeleteItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteItemsEndpoint.swift; sourceTree = "<group>"; };
-		3531B5402902A9DD0070D2EE /* LocalAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticator.swift; sourceTree = "<group>"; };
+		3531B5402902A9DD0070D2EE /* BiometricAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthenticator.swift; sourceTree = "<group>"; };
 		3531B5422902DA890070D2EE /* AppLockedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockedView.swift; sourceTree = "<group>"; };
 		353547C02880C45C0021C716 /* GetSharesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharesEndpoint.swift; sourceTree = "<group>"; };
 		353547C22880CF470021C716 /* UserData+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Codable.swift"; sourceTree = "<group>"; };
@@ -1644,7 +1644,7 @@
 				35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */,
 				356B21D62870F8F1001220CB /* Constants.swift */,
 				350A97DD2886032000A7168B /* DeinitPrintable.swift */,
-				3531B5402902A9DD0070D2EE /* LocalAuthenticator.swift */,
+				3531B5402902A9DD0070D2EE /* BiometricAuthenticator.swift */,
 				35E50705286FB3A600A3F6EA /* Logger.swift */,
 				35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */,
 				3529432828DAF54900E1F11B /* SearchUtils.swift */,
@@ -2703,7 +2703,7 @@
 				356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */,
 				353E10922881827C00E59474 /* UserProtocol.swift in Sources */,
 				35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */,
-				3531B5412902A9DD0070D2EE /* LocalAuthenticator.swift in Sources */,
+				3531B5412902A9DD0070D2EE /* BiometricAuthenticator.swift in Sources */,
 				353C2841291DC729008A5EBF /* SortType.swift in Sources */,
 				35E50707286FB3A600A3F6EA /* Logger.swift in Sources */,
 				35426B6428EF193800F89BB7 /* BasicRuleParser.swift in Sources */,

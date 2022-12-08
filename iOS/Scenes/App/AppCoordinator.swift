@@ -151,8 +151,8 @@ final class AppCoordinator {
             switch reason {
             case .expiredRefreshToken:
                 self.alertRefreshTokenExpired()
-            case .failedLocalAuthentication:
-                self.alertFailedLocalAuthentication()
+            case .failedBiometricAuthentication:
+                self.alertFailedBiometricAuthentication()
             default:
                 break
             }
@@ -173,7 +173,7 @@ final class AppCoordinator {
             self.welcomeCoordinator = nil
             animateUpdateRootViewController(homeCoordinator.rootViewController)
             if !manualLogIn {
-                self.requestLocalAuthenticationIfNecessary()
+                self.requestBiometricAuthenticationIfNecessary()
             }
         } catch {
             PPLogger.shared?.log(error)
@@ -277,8 +277,8 @@ extension AppCoordinator: HomeCoordinatorDelegate {
         appStateObserver.updateAppState(.loggedOut(.userInitiated))
     }
 
-    func homeCoordinatorRequestsLocalAuthentication() {
-        requestLocalAuthenticationIfNecessary()
+    func homeCoordinatorRequestsBiometricAuthentication() {
+        requestBiometricAuthenticationIfNecessary()
     }
 }
 
@@ -369,7 +369,7 @@ private extension AppCoordinator {
                 self.dismissAppLockedViewController()
             },
             onFailure: { [unowned self] in
-                self.appStateObserver.updateAppState(.loggedOut(.failedLocalAuthentication))
+                self.appStateObserver.updateAppState(.loggedOut(.failedBiometricAuthentication))
             })
         let viewController = UIHostingController(rootView: view)
         viewController.modalPresentationStyle = .fullScreen
@@ -381,14 +381,14 @@ private extension AppCoordinator {
         self.appLockedViewController = nil
     }
 
-    func requestLocalAuthenticationIfNecessary() {
-        guard preferences.localAuthenticationEnabled else { return }
+    func requestBiometricAuthenticationIfNecessary() {
+        guard preferences.biometricAuthenticationEnabled else { return }
         self.appLockedViewController = self.makeAppLockedViewController()
         guard let appLockedViewController = self.appLockedViewController else { return }
         self.rootViewController?.present(appLockedViewController, animated: false)
     }
 
-    func alertFailedLocalAuthentication() {
+    func alertFailedBiometricAuthentication() {
         let alert = UIAlertController(title: "Failed to authenticate",
                                       message: "You have to log in again in order to continue using Proton Pass",
                                       preferredStyle: .alert)

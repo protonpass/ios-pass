@@ -29,16 +29,16 @@ final class OnboardingViewModel: ObservableObject {
 
     private let credentialManager: CredentialManagerProtocol
     private let preferences: Preferences
-    private let localAuthenticator: LocalAuthenticator
+    private let biometricAuthenticator: BiometricAuthenticator
     private var cancellables = Set<AnyCancellable>()
 
     init(credentialManager: CredentialManagerProtocol,
          preferences: Preferences) {
         self.credentialManager = credentialManager
         self.preferences = preferences
-        self.localAuthenticator = .init(preferences: preferences)
+        self.biometricAuthenticator = .init(preferences: preferences)
 
-        localAuthenticator.initializeBiometryType()
+        biometricAuthenticator.initializeBiometryType()
         checkAutoFillStatus()
 
         NotificationCenter.default
@@ -51,7 +51,7 @@ final class OnboardingViewModel: ObservableObject {
         preferences.objectWillChange
             .sink { [weak self] _ in
                 guard let self else { return }
-                if self.preferences.localAuthenticationEnabled,
+                if self.preferences.biometricAuthenticationEnabled,
                     case .biometricAuthentication = self.state {
                     self.state = .biometricAuthenticationEnabled
                 }
@@ -81,14 +81,14 @@ extension OnboardingViewModel {
             UIApplication.shared.openSettings()
 
         case .autoFillEnabled:
-            if preferences.localAuthenticationEnabled {
+            if preferences.biometricAuthenticationEnabled {
                 state = .biometricAuthenticationEnabled
             } else {
                 state = .biometricAuthentication
             }
 
         case .biometricAuthentication:
-            localAuthenticator.toggleEnabled(force: true)
+            biometricAuthenticator.toggleEnabled(force: true)
 
         case .biometricAuthenticationEnabled:
             state = .aliases
