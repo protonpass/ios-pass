@@ -32,7 +32,7 @@ struct CredentialsView: View {
 
     init(viewModel: CredentialsViewModel, preferences: Preferences) {
         _viewModel = .init(wrappedValue: viewModel)
-        _isLocked = .init(wrappedValue: preferences.localAuthenticationEnabled)
+        _isLocked = .init(wrappedValue: preferences.biometricAuthenticationEnabled)
         self.preferences = preferences
     }
 

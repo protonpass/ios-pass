@@ -26,7 +26,7 @@ import UIComponents
 private let kMaxAttemptCount = 3
 
 struct AppLockedView: View {
-    @StateObject private var authenticator: LocalAuthenticator
+    @StateObject private var authenticator: BiometricAuthenticator
     @ObservedObject private var preferences: Preferences
     private let delayed: Bool
     private let onSuccess: () -> Void

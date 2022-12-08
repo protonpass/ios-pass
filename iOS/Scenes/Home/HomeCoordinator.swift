@@ -34,7 +34,7 @@ import UIKit
 
 protocol HomeCoordinatorDelegate: AnyObject {
     func homeCoordinatorDidSignOut()
-    func homeCoordinatorRequestsLocalAuthentication()
+    func homeCoordinatorRequestsBiometricAuthentication()
 }
 
 // swiftlint:disable:next todo
@@ -171,7 +171,7 @@ private extension HomeCoordinator {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [unowned self] _ in
-                delegate?.homeCoordinatorRequestsLocalAuthentication()
+                delegate?.homeCoordinatorRequestsBiometricAuthentication()
                 eventLoop.forceSync()
                 Task {
                     do {
