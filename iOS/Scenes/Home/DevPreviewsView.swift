@@ -59,7 +59,8 @@ private struct OnboardingSection: View {
                 Text("Trigger onboarding process")
             })
 
-            TurnOnAutoFillBanner()
+            TurnOnAutoFillBanner(onAction: { print("onAction") },
+                                 onCancel: { print("onCancel") })
         }, header: {
             Text("Onboarding")
         })
