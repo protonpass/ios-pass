@@ -88,11 +88,6 @@
       </BuildableProductRunnable>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "me.proton.pass.DevPreviews"
-            value = "1"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
             key = "me.proton.pass.SentryDebug"
             value = "1"
             isEnabled = "NO">

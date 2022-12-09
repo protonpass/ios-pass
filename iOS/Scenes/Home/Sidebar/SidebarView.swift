@@ -74,15 +74,13 @@ struct SidebarView: View {
                 Spacer()
                 Text("Proton Pass \(Bundle.main.versionNumber) (\(Bundle.main.buildNumber))")
                     .foregroundColor(.gray)
+                    .onTapGesture(count: 7) {
+                        withAnimation {
+                            isShowingDevPreviewsOption.toggle()
+                        }
+                    }
             }
             .padding(.leading, UIScreen.main.bounds.width - width)
-        }
-        .onTapGesture(count: 7) {
-            if ProcessInfo.processInfo.environment["me.proton.pass.DevPreviews"] == "1" {
-                withAnimation {
-                    isShowingDevPreviewsOption.toggle()
-                }
-            }
         }
     }
 }
