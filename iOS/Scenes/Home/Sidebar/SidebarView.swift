@@ -62,7 +62,7 @@ struct SidebarView: View {
 
                         SidebarItemView(item: .trash, action: viewModel.sideBarItemAction)
 
-                        SidebarItemView(item: .bugReport, action: viewModel.sideBarItemAction)
+//                        SidebarItemView(item: .bugReport, action: viewModel.sideBarItemAction)
 
                         SidebarItemView(item: .signOut, action: viewModel.sideBarItemAction)
                     }
@@ -74,15 +74,15 @@ struct SidebarView: View {
                 Spacer()
                 Text("Proton Pass \(Bundle.main.versionNumber) (\(Bundle.main.buildNumber))")
                     .foregroundColor(.gray)
-                    .onTapGesture(count: 7) {
-                        if ProcessInfo.processInfo.environment["me.proton.pass.DevPreviews"] == "1" {
-                            withAnimation {
-                                isShowingDevPreviewsOption.toggle()
-                            }
-                        }
-                    }
             }
             .padding(.leading, UIScreen.main.bounds.width - width)
+        }
+        .onTapGesture(count: 7) {
+            if ProcessInfo.processInfo.environment["me.proton.pass.DevPreviews"] == "1" {
+                withAnimation {
+                    isShowingDevPreviewsOption.toggle()
+                }
+            }
         }
     }
 }
