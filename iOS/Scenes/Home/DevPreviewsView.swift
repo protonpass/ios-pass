@@ -46,7 +46,8 @@ struct DevPreviewsView: View {
 }
 
 private struct OnboardingSection: View {
-    @State private var isShowing = false
+    @State private var isShowingOnboarding = false
+    @State private var isShowingTurnOnAutoFill = false
     let credentialManager: CredentialManagerProtocol
     let preferences: Preferences
     let bannerManager: BannerManager
@@ -54,15 +55,29 @@ private struct OnboardingSection: View {
     var body: some View {
         Section(content: {
             Button(action: {
-                isShowing.toggle()
+                isShowingOnboarding.toggle()
             }, label: {
                 Text("Trigger onboarding process")
             })
+
+            Button(action: {
+                isShowingTurnOnAutoFill.toggle()
+            }, label: {
+                Text("Trigger turn on AutoFill page")
+            })
+
+            TurnOnAutoFillBanner(onAction: { print("onAction") },
+                                 onCancel: { print("onCancel") })
+        }, header: {
+            Text("Onboarding")
         })
-        .fullScreenCover(isPresented: $isShowing, content: {
+        .fullScreenCover(isPresented: $isShowingOnboarding, content: {
             OnboardingView(viewModel: .init(credentialManager: credentialManager,
                                             preferences: preferences,
                                             bannerManager: bannerManager))
+        })
+        .fullScreenCover(isPresented: $isShowingTurnOnAutoFill, content: {
+            TurnOnAutoFillView(credentialManager: credentialManager)
         })
     }
 }

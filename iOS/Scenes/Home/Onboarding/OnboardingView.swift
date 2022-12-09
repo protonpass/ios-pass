@@ -74,6 +74,9 @@ struct OnboardingView: View {
                         Button(action: viewModel.secondaryAction) {
                             Text(secondaryButtonTitle)
                                 .foregroundColor(.interactionNorm)
+                                .transaction { transaction in
+                                    transaction.animation = nil
+                                }
                         }
                         .animation(.default, value: viewModel.state.secondaryButtonTitle)
                     }
@@ -96,7 +99,7 @@ struct OnboardingView: View {
     }
 }
 
-private struct OnboardingAutoFillView: View {
+struct OnboardingAutoFillView: View {
     var body: some View {
         VStack {
             Spacer()
@@ -138,7 +141,7 @@ private struct OnboardingAutoFillView: View {
     }
 }
 
-private struct OnboardingAutoFillEnabledView: View {
+struct OnboardingAutoFillEnabledView: View {
     var body: some View {
         VStack {
             Spacer()

@@ -40,4 +40,6 @@ public enum PassIcon {
     // swiftlint:disable:next line_length
     public static var onboardBiometricAuthenticationEnabled = UIImage(named: "OnboardBiometricAuthenticationEnabled")!
     public static var onboardAliases = UIImage(named: "OnboardAliases")!
+    public static var turnOnAutoFillBannerGradient = UIImage(named: "TurnOnAutoFillBannerGradient")!
+    public static var turnOnAutoFillBannerKeyboard = UIImage(named: "TurnOnAutoFillBannerKeyboard")!
 }
