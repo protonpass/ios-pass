@@ -146,7 +146,6 @@ final class HomeCoordinator: DeinitPrintable {
 
     func onboardIfNecessary() {
         guard !preferences.onboarded else { return }
-        preferences.onboarded = true
         let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
                                                       preferences: preferences,
                                                       bannerManager: bannerManager)
@@ -244,7 +243,9 @@ private extension HomeCoordinator {
                                                       itemRepository: itemRepository,
                                                       aliasRepository: aliasRepository,
                                                       publicKeyRepository: publicKeyRepository,
-                                                      syncEventLoop: eventLoop)
+                                                      credentialManager: credentialManager,
+                                                      syncEventLoop: eventLoop,
+                                                      preferences: preferences)
         myVaultsCoordinator.coordinatorDelegate = self
         myVaultsCoordinator.delegate = self.trashCoordinator
         myVaultsCoordinator.itemCountDelegate = sidebarViewModel

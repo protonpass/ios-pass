@@ -29,6 +29,7 @@ struct VaultContentView: View {
     @State private var didAppear = false
     @State private var selectedItem: ItemListUiModel?
     @State private var isShowingTrashingAlert = false
+    @State private var isShowingTurnOnAutoFill = false
 
     private var selectedVaultName: String {
         viewModel.selectedVault?.name ?? "All vaults"
@@ -119,6 +120,16 @@ struct VaultContentView: View {
 
     private var itemList: some View {
         List {
+            if viewModel.shouldShowAutoFillBanner {
+                TurnOnAutoFillBanner(
+                    onAction: {
+                        isShowingTurnOnAutoFill.toggle()
+                        viewModel.cancelAutoFillBanner()
+                    },
+                    onCancel: viewModel.cancelAutoFillBanner)
+                .shadow(radius: 16)
+                .listRowSeparator(.hidden)
+            }
             Section(content: {
                 ForEach(viewModel.filteredItems, id: \.itemId) { item in
                     GenericItemView(item: item,
@@ -135,7 +146,11 @@ struct VaultContentView: View {
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 0)
         .animation(.default, value: viewModel.filteredItems.count)
+        .animation(.default, value: viewModel.shouldShowAutoFillBanner)
         .refreshable { await viewModel.forceSync() }
+        .fullScreenCover(isPresented: $isShowingTurnOnAutoFill) {
+            TurnOnAutoFillView(credentialManager: viewModel.credentialManager)
+        }
     }
 
     private func trailingView(for item: ItemListUiModel) -> some View {

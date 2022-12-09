@@ -68,7 +68,7 @@ struct SearchView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
-            SwiftUISearchBar(placeholder: "login, alias or note",
+            SwiftUISearchBar(placeholder: "Search",
                              showsCancelButton: true,
                              shouldBecomeFirstResponder: true,
                              onSearch: viewModel.search,
@@ -135,11 +135,9 @@ private struct CleanSearchView: View {
     var body: some View {
         VStack(spacing: 24) {
             Image(uiImage: PassIcon.magnifyingGlass)
-            Text("Search")
+            Text("Find an alias, login, or note")
                 .font(.title3)
                 .fontWeight(.bold)
-            Text("Search for alias, login or note easily.")
-                .foregroundColor(.secondary)
             Spacer()
         }
         .padding(.top, 100)

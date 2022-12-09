@@ -37,10 +37,14 @@ public final class Preferences: ObservableObject {
     @AppStorage("onboarded", store: kSharedUserDefaults)
     public var onboarded = false
 
+    @AppStorage("autoFillBannerDisplayed", store: kSharedUserDefaults)
+    public var autoFillBannerDisplayed = false
+
     public func reset() {
         quickTypeBar = true
         failedAttemptCount = 0
         biometricAuthenticationEnabled = false
         onboarded = false
+        autoFillBannerDisplayed = false
     }
 }
