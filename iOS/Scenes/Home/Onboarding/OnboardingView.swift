@@ -99,7 +99,7 @@ struct OnboardingView: View {
     }
 }
 
-private struct OnboardingAutoFillView: View {
+struct OnboardingAutoFillView: View {
     var body: some View {
         VStack {
             Spacer()
@@ -141,7 +141,7 @@ private struct OnboardingAutoFillView: View {
     }
 }
 
-private struct OnboardingAutoFillEnabledView: View {
+struct OnboardingAutoFillEnabledView: View {
     var body: some View {
         VStack {
             Spacer()

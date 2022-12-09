@@ -243,6 +243,8 @@
 		3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */; };
 		357D7BC329435C4800AAC594 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC229435C4800AAC594 /* Color+Hex.swift */; };
 		357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */; };
+		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
+		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
 		358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */; };
 		358A508728AD23F900F5285C /* GlobalLocalDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */; };
@@ -704,6 +706,8 @@
 		3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidatorTests.swift; sourceTree = "<group>"; };
 		357D7BC229435C4800AAC594 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillBanner.swift; sourceTree = "<group>"; };
+		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
+		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
 		358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalLocalDatasource.swift; sourceTree = "<group>"; };
 		358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalLocalDatasourceTests.swift; sourceTree = "<group>"; };
@@ -1153,6 +1157,8 @@
 				354361562941D419000CAE12 /* OnboardingViewModel.swift */,
 				354361582941DA0C000CAE12 /* OnboardingViewState.swift */,
 				357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */,
+				357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */,
+				357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -2482,6 +2488,7 @@
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				358A508928AD2E8F00F5285C /* SideBarViewModel.swift in Sources */,
+				357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
@@ -2519,6 +2526,7 @@
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
 				355635B7288947DD00F32353 /* VaultSelection.swift in Sources */,
 				354513CD28E45FB20020A93A /* SettingsViewModel.swift in Sources */,
+				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
