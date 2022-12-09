@@ -241,6 +241,8 @@
 		356E88D02938FA1F00B27104 /* UIViewController+TopMostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E88CF2938FA1F00B27104 /* UIViewController+TopMostViewController.swift */; };
 		3573CD23292C139900A9EF82 /* AliasPrefixValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */; };
 		3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */; };
+		357D7BC329435C4800AAC594 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC229435C4800AAC594 /* Color+Hex.swift */; };
+		357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
 		358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */; };
 		358A508728AD23F900F5285C /* GlobalLocalDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */; };
@@ -700,6 +702,8 @@
 		356E88CF2938FA1F00B27104 /* UIViewController+TopMostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopMostViewController.swift"; sourceTree = "<group>"; };
 		3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidator.swift; sourceTree = "<group>"; };
 		3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidatorTests.swift; sourceTree = "<group>"; };
+		357D7BC229435C4800AAC594 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
+		357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillBanner.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
 		358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalLocalDatasource.swift; sourceTree = "<group>"; };
 		358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalLocalDatasourceTests.swift; sourceTree = "<group>"; };
@@ -1148,6 +1152,7 @@
 				354361542941D251000CAE12 /* OnboardingView.swift */,
 				354361562941D419000CAE12 /* OnboardingViewModel.swift */,
 				354361582941DA0C000CAE12 /* OnboardingViewState.swift */,
+				357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -1538,6 +1543,7 @@
 				35613DCD292D27900095D5A1 /* BorderedImageButton.swift */,
 				355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */,
 				355214832915524D00BA6229 /* CopyMenuButton.swift */,
+				357D7BC229435C4800AAC594 /* Color+Hex.swift */,
 				35690C142923EA8400F60C20 /* Color+ProtonColors.swift */,
 				354E19F5293F90F500A3F853 /* ColoredRoundedButton.swift */,
 				354F768F28C861FF00EB2383 /* DestructiveButton.swift */,
@@ -2495,6 +2501,7 @@
 				355635BF2889664200F32353 /* LoadVaultsViewModel.swift in Sources */,
 				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
 				3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */,
+				357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */,
 				35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */,
 				3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */,
 				3552147E2915251C00BA6229 /* LoadingVaultView.swift in Sources */,
@@ -2730,6 +2737,7 @@
 				356423412925184100D2B7E3 /* OutlinedRoundedButton.swift in Sources */,
 				354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */,
 				35526B5D28D116350017BB53 /* PassIcon.swift in Sources */,
+				357D7BC329435C4800AAC594 /* Color+Hex.swift in Sources */,
 				3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */,
 				35690C132923D5DA00F60C20 /* NotchView.swift in Sources */,
 				3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */,

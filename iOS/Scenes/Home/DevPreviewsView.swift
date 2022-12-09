@@ -58,6 +58,10 @@ private struct OnboardingSection: View {
             }, label: {
                 Text("Trigger onboarding process")
             })
+
+            TurnOnAutoFillBanner()
+        }, header: {
+            Text("Onboarding")
         })
         .fullScreenCover(isPresented: $isShowing, content: {
             OnboardingView(viewModel: .init(credentialManager: credentialManager,
