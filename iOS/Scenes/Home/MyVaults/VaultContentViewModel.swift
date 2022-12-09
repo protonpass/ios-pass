@@ -68,6 +68,7 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
     @Published private(set) var state = State.loading
     @Published private(set) var filteredItems = [ItemListUiModel]()
     @Published private(set) var sortTypes = SortType.allCases
+    @Published var shouldShowAutoFillBanner = false
     @Published var filterOption = ItemTypeFilterOption.all {
         didSet {
             self.sortTypes = SortType.allCases
@@ -90,6 +91,9 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
     private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
+    private let preferences: Preferences
+    let credentialManager: CredentialManagerProtocol
+
     private var cancellables = Set<AnyCancellable>()
 
     /// `PullToRefreshable` conformance
@@ -105,12 +109,17 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
 
     init(vaultSelection: VaultSelection,
          itemRepository: ItemRepositoryProtocol,
+         credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
-         syncEventLoop: SyncEventLoop) {
+         syncEventLoop: SyncEventLoop,
+         preferences: Preferences) {
         self.vaultSelection = vaultSelection
         self.itemRepository = itemRepository
+        self.credentialManager = credentialManager
         self.symmetricKey = symmetricKey
         self.syncEventLoop = syncEventLoop
+        self.preferences = preferences
+        showAutoFillBannerIfNecessary()
 
         vaultSelection.objectWillChange
             .sink { [unowned self] _ in
@@ -128,6 +137,15 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
                                                    type: sortType,
                                                    direction: sortDirection)
     }
+
+    private func showAutoFillBannerIfNecessary() {
+        Task { @MainActor in
+            let autoFillEnabled = await credentialManager.isAutoFillEnabled()
+            if !autoFillEnabled, !self.preferences.autoFillBannerDisplayed, self.preferences.onboarded {
+                shouldShowAutoFillBanner = true
+            }
+        }
+    }
 }
 
 // MARK: - Public actions
@@ -142,6 +160,11 @@ extension VaultContentViewModel {
 
     func search() {
         delegate?.vaultContentViewModelWantsToSearch()
+    }
+
+    func cancelAutoFillBanner() {
+        shouldShowAutoFillBanner = false
+        preferences.autoFillBannerDisplayed = true
     }
 
     func fetchItems(forceRefresh: Bool) {
