@@ -82,7 +82,6 @@ final class WelcomeCoordinator: DeinitPrintable {
                      doh: doh,
                      apiServiceDelegate: apiServiceDelegate,
                      forceUpgradeDelegate: forceUpgradeServiceDelegate,
-                     humanVerificationVersion: .v3,
                      minimumAccountType: .internal,
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .notAvailable)
