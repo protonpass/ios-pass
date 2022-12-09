@@ -1,6 +1,6 @@
 //
-// NoSearchResultsView.swift
-// Proton Pass - Created on 02/12/2022.
+// TurnOnAutoFillBanner.swift
+// Proton Pass - Created on 09/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,20 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import UIComponents
 
-struct NoSearchResultsView: View {
+struct TurnOnAutoFillBanner: View {
     var body: some View {
-        VStack(spacing: 24) {
-            Image(uiImage: PassIcon.magnifyingGlassOnPaper)
-            Text("No results found")
-                .font(.title3)
-                .fontWeight(.bold)
-            Text("Try searching by service, website, or keywords.")
-                .foregroundColor(.secondary)
-            Spacer()
-        }
-        .padding(.top, 100)
-        .padding(.horizontal)
+        Text("TurnOnAutoFillBanner")
     }
 }
