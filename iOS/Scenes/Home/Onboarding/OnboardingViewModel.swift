@@ -81,6 +81,11 @@ final class OnboardingViewModel: ObservableObject {
             }
         }
     }
+
+    private func finishOnboarding() {
+        preferences.onboarded = true
+        finished = true
+    }
 }
 
 // MARK: - Public actions
@@ -104,7 +109,7 @@ extension OnboardingViewModel {
             state = .aliases
 
         case .aliases:
-            finished = true
+            finishOnboarding()
         }
     }
 
@@ -115,7 +120,7 @@ extension OnboardingViewModel {
         case .biometricAuthentication, .biometricAuthenticationEnabled:
             state = .aliases
         case .aliases:
-            finished = true
+            finishOnboarding()
         }
     }
 }
