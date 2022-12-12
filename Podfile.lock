@@ -223,6 +223,11 @@ PODS:
     - ProtonCore-CoreTranslation (= 3.25.1)
     - ProtonCore-Doh (= 3.25.1)
     - ProtonCore-QuarkCommands (= 3.25.1)
+  - ProtonCore-TestingToolkit/UITests/PaymentsUI (3.25.1):
+    - pmtest
+    - ProtonCore-CoreTranslation (= 3.25.1)
+    - ProtonCore-Doh (= 3.25.1)
+    - ProtonCore-QuarkCommands (= 3.25.1)
   - ProtonCore-TroubleShooting (3.25.1):
     - ProtonCore-CoreTranslation (= 3.25.1)
     - ProtonCore-Doh (= 3.25.1)
@@ -283,6 +288,7 @@ DEPENDENCIES:
   - "ProtonCore-TestingToolkit/TestData (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.25.1`)"
   - "ProtonCore-TestingToolkit/UITests/Core (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.25.1`)"
   - "ProtonCore-TestingToolkit/UITests/Login (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.25.1`)"
+  - "ProtonCore-TestingToolkit/UITests/PaymentsUI (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.25.1`)"
   - "ProtonCore-TroubleShooting (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.25.1`)"
   - "ProtonCore-UIFoundations-V5 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.25.1`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.25.1`)"
@@ -578,6 +584,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: b02b5075dcf60c9f5f403000b3b0c202a11b6ae1
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
 
-PODFILE CHECKSUM: c8645d0f11c38bcf8ee1371c8df66f4c133fa6d8
+PODFILE CHECKSUM: 144d30c37fcc75aa8197143d0721d9308a93c2b4
 
 COCOAPODS: 1.11.3

@@ -121,6 +121,7 @@ target "iOSUITests" do
   pod "ProtonCore-TestingToolkit/TestData", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-TestingToolkit/UITests/Core", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-TestingToolkit/UITests/Login", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-TestingToolkit/UITests/PaymentsUI", :git => proton_core_path, :tag => proton_core_version
   pod 'swift-snapshot-testing', :git => proton_core_path, :tag => proton_core_version
   pod "pmtest", :git => "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
 end
@@ -137,6 +138,9 @@ post_install do |installer|
       config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "15.0"
       config.build_settings["MACOSX_DEPLOYMENT_TARGET"] = "12.0"
       config.build_settings['ENABLE_BITCODE'] = 'No'
+      if config.name == "Debug" || config.name == "Debug-Black" || config.name == "Debug-Prod"
+        config.build_settings["SWIFT_ACTIVE_COMPILATION_CONDITIONS"] = "$(inherited) DEBUG"
+      end
     end
   end
 end

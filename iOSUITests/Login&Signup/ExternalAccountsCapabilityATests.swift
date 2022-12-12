@@ -23,32 +23,19 @@ import Foundation
 import XCTest
 import pmtest
 import ProtonCore_Environment
-import ProtonCore_TestingToolkit
 import ProtonCore_QuarkCommands
+import ProtonCore_TestingToolkit
 
 final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
-    
     let welcomeRobot = WelcomeRobot()
-    
-    override class func setUp() {
-        environmentFileName = "environment_black"
-        super.setUp()
-    }
-    
-    override func tearDown() {
-//        environmentFileName = "environment"
-        super.tearDown()
-    }
-    
-//    Sign-in:
-//
-//    Sign-in with internal account works
-//    Sign-in with external account works
-//    Sign-in with username account works (account is converted to internal under the hood)
+
+    // Sign-in with internal account works
+    // Sign-in with external account works
+    // Sign-in with username account works (account is converted to internal under the hood)
     func testSignInWithInternalAccountWorks() {
-        let randomUsername = StringUtils().randomAlphanumericString(length: 8)
-        let randomPassword = StringUtils().randomAlphanumericString(length: 8)
-        
+        let randomUsername = StringUtils.randomAlphanumericString(length: 8)
+        let randomPassword = StringUtils.randomAlphanumericString(length: 8)
+
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
         var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
         QuarkCommands.create(account: .freeWithAddressAndKeys(username: randomUsername, password: randomPassword),
@@ -56,24 +43,24 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
             quarkCommandResult = result
             expectQuarkCommandToFinish.fulfill()
         }
-        
+
         wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
         if case .failure(let error) = quarkCommandResult {
             XCTFail("Internal account creation failed in test \(#function) because of \(error.userFacingMessageInQuarkCommands)")
             return
         }
-        
+
         welcomeRobot.logIn()
             .fillUsername(username: randomUsername)
             .fillpassword(password: randomPassword)
-            .signIn(robot: InboxRobot.self)
-            .verify.inboxShown()
+            .signIn(robot: HomeRobot.self)
+            .verify.emptyVaultViewIsShown()
     }
-    
+
     func testSignInWithExternalAccountWorks() {
-        let randomEmail = "\(StringUtils().randomAlphanumericString(length: 8))@proton.uitests"
-        let randomPassword = StringUtils().randomAlphanumericString(length: 8)
-        
+        let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
+        let randomPassword = StringUtils.randomAlphanumericString(length: 8)
+
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
         var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
         QuarkCommands.create(account: .external(email: randomEmail, password: randomPassword),
@@ -93,10 +80,10 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
             .signIn(robot: ExternalAccountsNotSupportedDialogRobot.self)
             .verify.externalAccountsNotSupportedDialog()
     }
-    
+
     func testSignInWithUsernameAccountWorks() {
-        let randomUsername = StringUtils().randomAlphanumericString(length: 8)
-        let randomPassword = StringUtils().randomAlphanumericString(length: 8)
+        let randomUsername = StringUtils.randomAlphanumericString(length: 8)
+        let randomPassword = StringUtils.randomAlphanumericString(length: 8)
         
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
         var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
@@ -114,8 +101,8 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
         welcomeRobot.logIn()
             .fillUsername(username: randomUsername)
             .fillpassword(password: randomPassword)
-            .signIn(robot: InboxRobot.self)
-            .verify.inboxShown()
+            .signIn(robot: HomeRobot.self)
+            .verify.emptyVaultViewIsShown()
     }
     
 
@@ -126,11 +113,9 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
 //    The UI for sign-up with username account is not available
     
     func testSignUpWithInternalAccountWorks() {
-        
-        let randomUsername = StringUtils().randomAlphanumericString(length: 8)
-        let randomPassword = StringUtils().randomAlphanumericString(length: 8)
-        let randomEmail = "\(StringUtils().randomAlphanumericString(length: 8))@proton.uitests"
-        
+        let randomUsername = StringUtils.randomAlphanumericString(length: 8)
+        let randomPassword = StringUtils.randomAlphanumericString(length: 8)
+        let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
         welcomeRobot.logIn()
             .switchToCreateAccount()
             .verify.domainsButtonIsShown()
@@ -144,22 +129,19 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
             .verify.recoveryScreenIsShown()
             .skipButtonTap()
             .verify.recoveryDialogDisplay()
-            .skipButtonTap(robot: PaymentsUIRobot.self)
-            .verify.paymentsUIScreenIsShown()
-            .expandPlan(plan: .free)
-            .freePlanV3ButtonTap()
-            .proceed(email: randomEmail, code: "666666", to: AccountSummaryRobot.self)
-            .startUsingAppTap(robot: InboxRobot.self)
-            .verify.inboxShown()
+            .skipButtonTap(robot: SignupHumanVerificationV3Robot.self)
+            .switchToEmailHVMethod()
+            .performEmailVerificationV3(email: randomEmail, code: "666666", to: AccountSummaryRobot.self)
+            .startUsingAppTap(robot: HomeRobot.self)
+            .verify.emptyVaultViewIsShown()
     }
-    
-    
+
     func testSignUpWithExternalAccountIsNotAvailable() {
         welcomeRobot.logIn()
             .switchToCreateAccount()
             .verify.otherAccountExtButtonIsNotShown()
     }
-    
+
     func testSignUpWithUsernameAccountIsNotAvailable() {
         welcomeRobot.logIn()
             .switchToCreateAccount()
@@ -167,12 +149,12 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
     }
 }
 
-private let domainsButtonId = "SignupViewController.nextButton"
+private let kDomainsButtonId = "SignupViewController.nextButton"
 
-extension SignupRobot.Verify {
+public extension SignupRobot.Verify {
     @discardableResult
-    public func domainsButtonIsShown() -> SignupRobot {
-        button(domainsButtonId).checkExists()
+    func domainsButtonIsShown() -> SignupRobot {
+        button(kDomainsButtonId).checkExists()
         return SignupRobot()
     }
 }
