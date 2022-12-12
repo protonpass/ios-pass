@@ -20,11 +20,11 @@
 
 import Foundation
 
-import XCTest
 import pmtest
 import ProtonCore_Environment
 import ProtonCore_QuarkCommands
 import ProtonCore_TestingToolkit
+import XCTest
 
 final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()
@@ -46,7 +46,7 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
 
         wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
         if case .failure(let error) = quarkCommandResult {
-            XCTFail("Internal account creation failed in test \(#function) because of \(error.userFacingMessageInQuarkCommands)")
+            XCTFail("Internal account creation failed: \(error.userFacingMessageInQuarkCommands)")
             return
         }
 
@@ -70,10 +70,10 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
         }
         wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
         if case .failure(let error) = quarkCommandResult {
-            XCTFail("External account creation failed in test \(#function) because of \(error.userFacingMessageInQuarkCommands)")
+            XCTFail("External account creation failed: \(error.userFacingMessageInQuarkCommands)")
             return
         }
-        
+
         welcomeRobot.logIn()
             .fillUsername(username: randomEmail)
             .fillpassword(password: randomPassword)
@@ -84,7 +84,6 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
     func testSignInWithUsernameAccountWorks() {
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-        
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
         var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
         QuarkCommands.create(account: .freeNoAddressNoKeys(username: randomUsername, password: randomPassword),
@@ -94,7 +93,7 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
         }
         wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
         if case .failure(let error) = quarkCommandResult {
-            XCTFail("Username account creation failed in test \(#function) because of \(error.userFacingMessageInQuarkCommands)")
+            XCTFail("Username account creation failed: \(error.userFacingMessageInQuarkCommands)")
             return
         }
 
@@ -104,14 +103,11 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
             .signIn(robot: HomeRobot.self)
             .verify.emptyVaultViewIsShown()
     }
-    
 
-//    Sign-up:
-//
-//    Sign-up with internal account works
-//    The UI for sign-up with external account is not available
-//    The UI for sign-up with username account is not available
-    
+    // Sign-up with internal account works
+    // The UI for sign-up with external account is not available
+    // The UI for sign-up with username account is not available
+
     func testSignUpWithInternalAccountWorks() {
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
