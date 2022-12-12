@@ -22,7 +22,7 @@ import AuthenticationServices
 import Client
 import Core
 import CoreData
-import Crypto
+import GoLibs
 import CryptoKit
 import MBProgressHUD
 import ProtonCore_Keymaker

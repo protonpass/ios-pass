@@ -20,11 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-#if canImport(Crypto_VPN)
-import Crypto_VPN
-#elseif canImport(Crypto)
-import Crypto
-#endif
+import GoLibs
 
 @available(*, deprecated, message: "please to use ProtonCore-Crypto module FileMobileWriter")
 class FileMobileWriter: NSObject, CryptoWriterProtocol {

@@ -62,6 +62,7 @@ public class PMSettingsViewController: UITableViewController {
         tableView.register(cellType: PMHostCell.self)
         tableView.register(cellType: PMSelectableCell.self)
         tableView.register(cellType: PMDrillDownCell.self)
+        tableView.register(cellType: PMSwitchCell.self)
     }
 
     override public func viewWillAppear(_ animated: Bool) {
