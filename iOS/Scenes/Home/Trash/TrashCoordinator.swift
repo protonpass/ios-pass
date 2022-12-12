@@ -173,8 +173,8 @@ extension TrashCoordinator: ItemDetailViewModelDelegate {
         bannerManager?.displayBottomInfoMessage(message)
     }
 
-    func itemDetailViewModelWantsToShowLarge(_ text: String) {
-        presentView(LargeView(text: text), dismissible: true)
+    func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
+        presentView(FullScreenView(text: text), dismissible: true)
     }
 
     func itemDetailViewModelDidFail(_ error: Error) {

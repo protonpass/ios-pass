@@ -26,7 +26,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel)
     func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String)
-    func itemDetailViewModelWantsToShowLarge(_ text: String)
+    func itemDetailViewModelWantsToShowFullScreen(_ text: String)
     func itemDetailViewModelDidFail(_ error: Error)
 }
 
@@ -91,7 +91,7 @@ class BaseItemDetailViewModel {
     }
 
     func showLarge(_ text: String) {
-        delegate?.itemDetailViewModelWantsToShowLarge(text)
+        delegate?.itemDetailViewModelWantsToShowFullScreen(text)
     }
 
     func copyNote(_ text: String) {

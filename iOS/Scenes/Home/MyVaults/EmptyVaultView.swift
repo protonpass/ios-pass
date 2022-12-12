@@ -23,19 +23,24 @@ import UIComponents
 
 struct EmptyVaultView: View {
     var body: some View {
-        VStack(spacing: 24) {
-            Image(uiImage: PassIcon.emptyFolder)
-                .resizable()
-                .scaledToFit()
+        VStack {
+            VStack {
+                Spacer()
+                Image(uiImage: PassIcon.emptyFolder)
+                    .resizable()
+                    .scaledToFit()
+            }
 
-            VStack(spacing: 4) {
-                Text("No items")
+            VStack(alignment: .center) {
+                Text("Add your first item")
                     .font(.title2)
                     .fontWeight(.bold)
-                Text("Create a new item")
+                    .padding(.bottom)
+                Text("Or use the Proton Pass web extension to import items from another password manager.")
                     .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                Spacer()
             }
         }
-        .padding(.top, -100)
     }
 }
