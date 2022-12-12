@@ -39,7 +39,7 @@ public struct DiscardChangesAlertModifier: ViewModifier {
                     Button("Discard Changes", role: .destructive, action: onDiscard)
                 },
                 message: {
-                    Text("You will loose all unsaved changes")
+                    Text("You will lose all unsaved changes")
                 })
     }
 }
