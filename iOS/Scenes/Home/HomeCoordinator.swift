@@ -151,7 +151,8 @@ final class HomeCoordinator: DeinitPrintable {
                                                       bannerManager: bannerManager)
         let onboardingView = OnboardingView(viewModel: onboardingViewModel)
         let onboardingViewController = UIHostingController(rootView: onboardingView)
-        onboardingViewController.modalPresentationStyle = .fullScreen
+        onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
+        onboardingViewController.isModalInPresentation = true
         rootViewController.present(onboardingViewController, animated: true)
     }
 }
