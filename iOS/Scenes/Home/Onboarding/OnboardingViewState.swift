@@ -30,37 +30,42 @@ enum OnboardingViewState {
     var title: String {
         switch self {
         case .autoFill:
-            return "Turn on Autofill"
+            return "Enjoy the magic of AutoFill"
         case .autoFillEnabled:
-            return "Autofill enabled"
+            return "Ready to AutoFill"
         case .biometricAuthentication:
-            return "Protect what matters most"
+            return "Protect your most sensitive data"
         case .biometricAuthenticationEnabled:
-            return "Biometric authentication enabled"
+            return "Face ID enabled"
         case .aliases:
-            return "Protect your true email address"
+            return "Don’t give spam a chance"
         }
     }
 
     var description: String {
         switch self {
-        case .autoFill, .autoFillEnabled:
+        case .autoFill:
             // swiftlint:disable:next line_length
-            return "AutoFill allows you to automatically enter your passwords in Safari and other apps, in a really fast and easy way."
-        case .biometricAuthentication, .biometricAuthenticationEnabled:
-            return "Enable Face ID or Touch ID to shield your device from prying eyes."
+            return "Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours."
+        case .autoFillEnabled:
+            // swiftlint:disable:next line_length
+            return "When logging it to a site or service, tap the Proton Pass icon to automatically fill in your login details."
+        case .biometricAuthentication:
+            return "Set Proton Pass to unlock with your face or fingerprint so only you have access."
+        case .biometricAuthenticationEnabled:
+            return "Now you can unlock Proton Pass only when you need it⏤quickly and securely."
         case .aliases:
             // swiftlint:disable:next line_length
-            return "With email aliases, you can be anonymous online and protect your inbox against spams and phishing."
+            return "Use email aliases to hide your actual email address and prevent spam from filling up your inbox."
         }
     }
 
     var primaryButtonTitle: String {
         switch self {
         case .autoFill:
-            return "Turn on"
+            return "Go to Settings"
         case .biometricAuthentication:
-            return "Enable"
+            return "Enable FaceID"
         case .aliases:
             return "Get started"
         case .autoFillEnabled, .biometricAuthenticationEnabled:
