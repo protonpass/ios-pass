@@ -24,17 +24,25 @@ import UIComponents
 
 struct EmptyTrashView: View {
     var body: some View {
-        VStack(spacing: 20) {
-            Image(uiImage: PassIcon.trash)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 150)
-            Text("Nothing in Trash")
-                .font(.title3)
-                .fontWeight(.bold)
-            Text("Move items you want to delete to Trash. Items in Trash will be deleted forever after 30 days")
-                .multilineTextAlignment(.center)
+        VStack {
+            VStack {
+                Spacer()
+                Image(uiImage: PassIcon.trash)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 160)
+            }
+
+            VStack {
+                Text("No items in trash")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding(.vertical)
+                Text("Items you move here will stay here until you empty the trash.")
+                    .multilineTextAlignment(.center)
+                Spacer()
+            }
         }
-        .padding()
+        .padding(.horizontal)
     }
 }
