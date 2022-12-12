@@ -76,7 +76,8 @@ final class WelcomeCoordinator: DeinitPrintable {
             .custom(.init(image: PassIcon.passIcon,
                           startButtonText: "Start using Proton Pass")))
         let signUpParameters = SignupParameters(passwordRestrictions: .default,
-                                                summaryScreenVariant: summaryScreenVariant)
+                                                summaryScreenVariant: summaryScreenVariant,
+                                                signupMode: .internal)
         return .init(appName: "Proton Pass",
                      clientApp: .other(named: "pass"),
                      doh: doh,
@@ -84,7 +85,7 @@ final class WelcomeCoordinator: DeinitPrintable {
                      forceUpgradeDelegate: forceUpgradeServiceDelegate,
                      minimumAccountType: .internal,
                      paymentsAvailability: .notAvailable,
-                     signupAvailability: .notAvailable)
+                     signupAvailability: .available(parameters: signUpParameters))
     }
 }
 
