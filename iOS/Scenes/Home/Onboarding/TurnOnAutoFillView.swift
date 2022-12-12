@@ -53,9 +53,11 @@ struct TurnOnAutoFillView: View {
 
                     Spacer()
 
-                    Text(OnboardingViewState.autoFill.description)
-                        .foregroundColor(.textWeak)
-                        .multilineTextAlignment(.center)
+                    Text(viewModel.enabled ?
+                         OnboardingViewState.autoFillEnabled.description :
+                            OnboardingViewState.autoFill.description)
+                    .foregroundColor(.textWeak)
+                    .multilineTextAlignment(.center)
 
                     Spacer()
                 }
@@ -63,7 +65,7 @@ struct TurnOnAutoFillView: View {
                 Spacer()
 
                 VStack {
-                    ColoredRoundedButton(title: viewModel.enabled ? "Close" : "Turn on") {
+                    ColoredRoundedButton(title: viewModel.enabled ? "Close" : "Go to Settings") {
                         if viewModel.enabled {
                             dismiss()
                         } else {

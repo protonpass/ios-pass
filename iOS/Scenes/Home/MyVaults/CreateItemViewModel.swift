@@ -80,13 +80,13 @@ enum CreateNewItemOption: GenericItemProtocol, CaseIterable {
     var detail: GenericItemDetail {
         switch self {
         case .login:
-            return .value("Keep your username and password secure.")
+            return .value("Add login details for an app or site")
         case .alias:
-            return .value("Hide your identity with a separate email address.")
+            return .value("Hide your identity with a separate email address")
         case .note:
-            return .value("Keep important information secure.")
+            return .value("Jot down a PIN, code, or note to self")
         case .password:
-            return .value("Generate & copy a secure password.")
+            return .value("Generate a secure password")
         }
     }
 }

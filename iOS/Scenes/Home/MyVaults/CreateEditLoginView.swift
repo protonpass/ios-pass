@@ -67,17 +67,17 @@ struct CreateEditLoginView: View {
         .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
         .onReceiveBoolean(viewModel.$isTrashed, perform: dismiss.callAsFunction)
         .alert(
-            "Delete this alias",
+            "Delete alias?",
             isPresented: $isShowingDeleteAliasAlert,
             actions: {
                 Button(role: .destructive,
                        action: viewModel.removeAlias,
-                       label: { Text("Yes, delete this alias") })
+                       label: { Text("Yes, delete alias") })
 
                 Button(role: .cancel, label: { Text("Cancel") })
             },
             message: {
-                Text("The alias will be deleted permanently")
+                Text("The alias will be deleted permanently.")
             })
     }
 

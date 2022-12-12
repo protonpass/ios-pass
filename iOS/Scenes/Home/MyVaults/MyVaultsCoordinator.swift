@@ -220,8 +220,8 @@ final class MyVaultsCoordinator: Coordinator {
         currentItemDetailViewModel = baseItemDetailViewModel
     }
 
-    private func showLargeView(text: String) {
-        presentView(LargeView(text: text), dismissible: true)
+    private func showFullScreen(text: String) {
+        presentView(FullScreenView(text: text), dismissible: true)
     }
 
     private func handleCreatedItem(_ itemContentType: ItemContentType) {
@@ -429,8 +429,8 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
         bannerManager?.displayBottomInfoMessage(message)
     }
 
-    func itemDetailViewModelWantsToShowLarge(_ text: String) {
-        showLargeView(text: text)
+    func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
+        showFullScreen(text: text)
     }
 
     func itemDetailViewModelDidFail(_ error: Error) {
