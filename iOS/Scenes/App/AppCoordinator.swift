@@ -22,8 +22,8 @@ import Client
 import Combine
 import Core
 import CoreData
-import GoLibs
 import CryptoKit
+import GoLibs
 import ProtonCore_Authentication
 import ProtonCore_Keymaker
 import ProtonCore_Login
