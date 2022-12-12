@@ -65,7 +65,7 @@ struct TurnOnAutoFillView: View {
                 Spacer()
 
                 VStack {
-                    ColoredRoundedButton(title: viewModel.enabled ? "Close" : "Turn on") {
+                    ColoredRoundedButton(title: viewModel.enabled ? "Close" : "Go to Settings") {
                         if viewModel.enabled {
                             dismiss()
                         } else {
