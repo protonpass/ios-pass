@@ -186,8 +186,15 @@ final class MyVaultsCoordinator: Coordinator {
                                         itemRepository: itemRepository)
         viewModel.delegate = self
         searchViewModel = viewModel
-        presentViewFullScreen(SearchView(viewModel: viewModel),
-                              embedInNavigationController: true)
+        let viewController = UIHostingController(rootView: SearchView(viewModel: viewModel))
+        let navigationController = UINavigationController(rootViewController: viewController)
+        if UIDevice.current.isIpad {
+            navigationController.modalPresentationStyle = .formSheet
+        } else {
+            navigationController.modalPresentationStyle = .fullScreen
+            navigationController.modalTransitionStyle = .coverVertical
+        }
+        presentViewController(navigationController, dismissible: UIDevice.current.isIpad)
     }
 
     private func showItemDetailView(_ itemContent: ItemContent) {
