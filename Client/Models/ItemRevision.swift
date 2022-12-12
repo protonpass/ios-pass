@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import GoLibs
 import CryptoKit
+import GoLibs
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_KeyManager
