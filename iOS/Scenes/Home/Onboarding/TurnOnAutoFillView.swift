@@ -53,9 +53,11 @@ struct TurnOnAutoFillView: View {
 
                     Spacer()
 
-                    Text(OnboardingViewState.autoFill.description)
-                        .foregroundColor(.textWeak)
-                        .multilineTextAlignment(.center)
+                    Text(viewModel.enabled ?
+                         OnboardingViewState.autoFillEnabled.description :
+                            OnboardingViewState.autoFill.description)
+                    .foregroundColor(.textWeak)
+                    .multilineTextAlignment(.center)
 
                     Spacer()
                 }
