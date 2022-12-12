@@ -20,7 +20,7 @@
 
 import Client
 import Core
-import Crypto
+import GoLibs
 import ProtonCore_Doh
 import ProtonCore_ForceUpgrade
 import ProtonCore_Login

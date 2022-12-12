@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Crypto
+import GoLibs
 import ProtonCore_DataModel
 
 public struct CreateVaultRequest {

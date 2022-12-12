@@ -20,17 +20,10 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-#if canImport(ProtonCore_Crypto_VPN)
-import ProtonCore_Crypto_VPN
-typealias CoreDecryptionKey = ProtonCore_Crypto_VPN.DecryptionKey
-typealias CoreSplitPacket = ProtonCore_Crypto_VPN.SplitPacket
-typealias CoreDecryptor = ProtonCore_Crypto_VPN.Decryptor
-#elseif canImport(ProtonCore_Crypto)
 import ProtonCore_Crypto
 typealias CoreDecryptionKey = ProtonCore_Crypto.DecryptionKey
 typealias CoreSplitPacket = ProtonCore_Crypto.SplitPacket
 typealias CoreDecryptor = ProtonCore_Crypto.Decryptor
-#endif
 import ProtonCore_DataModel
 
 extension Data {
