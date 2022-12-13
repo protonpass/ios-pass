@@ -30,6 +30,127 @@ public protocol CoordinatorDelegate: AnyObject {
     func coordinatorWantsToAlertError(_ error: Error)
 }
 
+public protocol CoordinatorProtocol: AnyObject {
+    var rootViewController: UIViewController { get }
+    var coordinatorDelegate: CoordinatorDelegate? { get }
+
+    func start<V: View>(with view: V)
+    func start(with viewController: UIViewController)
+    func push<V: View>(_ view: V, animated: Bool, hidesBackButton: Bool)
+    func push(_ viewController: UIViewController, animated: Bool, hidesBackButton: Bool)
+    func present<V: View>(_ view: V, animated: Bool, dismissible: Bool)
+    func present(_ viewController: UIViewController, animated: Bool, dismissible: Bool)
+    func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
+    func popToRoot(animated: Bool)
+    func isAtRootViewController() -> Bool
+}
+
+public extension CoordinatorProtocol {
+    func start<V: View>(with view: V) {
+        start(with: UIHostingController(rootView: view))
+    }
+
+    func push<V: View>(_ view: V, animated: Bool, hidesBackButton: Bool) {
+        push(UIHostingController(rootView: view), animated: animated, hidesBackButton: hidesBackButton)
+    }
+
+    func present<V: View>(_ view: V, animated: Bool, dismissible: Bool) {
+        present(UIHostingController(rootView: view), animated: animated, dismissible: dismissible)
+    }
+
+    func present(_ viewController: UIViewController, animated: Bool, dismissible: Bool) {
+        viewController.isModalInPresentation = !dismissible
+        rootViewController.topMostViewController.present(viewController, animated: animated)
+    }
+
+    func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?) {
+        rootViewController.topMostViewController.dismiss(animated: animated, completion: completion)
+    }
+}
+
+enum CoordinatorType {
+    case navigation(UINavigationController)
+    case split(UISplitViewController)
+
+    var controller: UIViewController {
+        switch self {
+        case .navigation(let navigationController):
+            return navigationController
+        case .split(let splitViewController):
+            return splitViewController
+        }
+    }
+}
+
+open class Coordinator2: CoordinatorProtocol {
+    private let type: CoordinatorType
+
+    public var rootViewController: UIViewController { type.controller }
+    public weak var coordinatorDelegate: CoordinatorDelegate?
+    private var topMostViewController: UIViewController? { rootViewController.topMostViewController }
+
+    public init() {
+        if UIDevice.current.isIpad {
+            let splitViewController = UISplitViewController(style: .doubleColumn)
+            splitViewController.preferredPrimaryColumnWidth = 450
+            splitViewController.preferredDisplayMode = .oneBesideSecondary
+            splitViewController.displayModeButtonVisibility = .never
+            type = .split(splitViewController)
+        } else {
+            type = .navigation(PPNavigationController())
+        }
+    }
+
+    public func start(with viewController: UIViewController) {
+        switch type {
+        case .navigation(let navigationController):
+            navigationController.setViewControllers([viewController], animated: true)
+        case .split(let splitViewController):
+            splitViewController.setViewController(viewController, for: .primary)
+        }
+    }
+
+    public func push(_ viewController: UIViewController, animated: Bool, hidesBackButton: Bool) {
+        switch type {
+        case .navigation(let navigationController):
+            viewController.navigationItem.hidesBackButton = hidesBackButton
+            if let topMostNavigationController = topMostViewController as? UINavigationController {
+                topMostNavigationController.pushViewController(viewController, animated: animated)
+            } else {
+                navigationController.pushViewController(viewController, animated: animated)
+            }
+        case .split(let splitViewController):
+            splitViewController.setViewController(viewController, for: .secondary)
+        }
+    }
+
+    public func popToRoot(animated: Bool) {
+        switch type {
+        case .navigation(let navigationController):
+            if let topMostNavigationController = topMostViewController as? UINavigationController {
+                topMostNavigationController.popViewController(animated: animated)
+            } else {
+                navigationController.popViewController(animated: animated)
+            }
+        case .split:
+            break
+        }
+    }
+
+    public func isAtRootViewController() -> Bool {
+        switch type {
+        case .navigation(let navigationController):
+            if let topMostNavigationController = topMostViewController as? UINavigationController {
+                return topMostNavigationController.viewControllers.count == 1
+            } else {
+                return navigationController.viewControllers.count == 1
+            }
+        case .split:
+            return true
+        }
+    }
+}
+
 open class Coordinator {
     private let navigationController: UINavigationController
     public var rootViewController: UIViewController { navigationController }
@@ -140,6 +261,13 @@ public extension Coordinator {
 
     func hideLoadingHud() { coordinatorDelegate?.coordinatorWantsToHideLoadingHud() }
 
+    func alertError(_ error: Error) { coordinatorDelegate?.coordinatorWantsToAlertError(error) }
+}
+
+public extension Coordinator2 {
+    func toggleSidebar() { coordinatorDelegate?.coordinatorWantsToToggleSidebar() }
+    func showLoadingHud() { coordinatorDelegate?.coordinatorWantsToShowLoadingHud() }
+    func hideLoadingHud() { coordinatorDelegate?.coordinatorWantsToHideLoadingHud() }
     func alertError(_ error: Error) { coordinatorDelegate?.coordinatorWantsToAlertError(error) }
 }
 
