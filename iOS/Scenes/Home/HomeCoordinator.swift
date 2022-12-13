@@ -37,10 +37,6 @@ protocol HomeCoordinatorDelegate: AnyObject {
     func homeCoordinatorRequestsBiometricAuthentication()
 }
 
-// swiftlint:disable:next todo
-// TODO: Make width dynamic based on screen orientation
-private let kMenuWidth = UIScreen.main.bounds.width * 4 / 5
-
 final class HomeCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -62,6 +58,7 @@ final class HomeCoordinator: DeinitPrintable {
     }
 
     // Side menu
+    private lazy var sideMenuWidth = calculateSideMenuWidth()
     private lazy var sideMenuController = provideSideMenuController()
     private lazy var sidebarViewModel = provideSidebarViewModel()
     private lazy var sidebarViewController = provideSidebarViewController()
@@ -160,7 +157,7 @@ final class HomeCoordinator: DeinitPrintable {
 // MARK: - Initialization additional set ups
 private extension HomeCoordinator {
     private func setUpSideMenuPreferences() {
-        SideMenuController.preferences.basic.menuWidth = kMenuWidth
+        SideMenuController.preferences.basic.menuWidth = sideMenuWidth
         SideMenuController.preferences.basic.position = .sideBySide
         SideMenuController.preferences.basic.enablePanGesture = true
         SideMenuController.preferences.basic.enableRubberEffectWhenPanning = false
@@ -215,6 +212,16 @@ private extension HomeCoordinator {
 
 // MARK: - Lazy var providers
 private extension HomeCoordinator {
+    func calculateSideMenuWidth() -> CGFloat {
+        if UIDevice.current.isIpad {
+            return 327
+        } else {
+            let bounds = UIScreen.main.bounds
+            let minEdge = min(bounds.width, bounds.height)
+            return minEdge * 4 / 5
+        }
+    }
+
     func provideSideMenuController() -> SideMenuController {
         SideMenuController(contentViewController: myVaultsRootViewController,
                            menuViewController: sidebarViewController)
@@ -227,7 +234,7 @@ private extension HomeCoordinator {
     }
 
     func provideSidebarViewController() -> UIViewController {
-        let sidebarView = SidebarView(viewModel: self.sidebarViewModel, width: kMenuWidth)
+        let sidebarView = SidebarView(viewModel: self.sidebarViewModel, width: sideMenuWidth)
         return UIHostingController(rootView: sidebarView)
     }
 
