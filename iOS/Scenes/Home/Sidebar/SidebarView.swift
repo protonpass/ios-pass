@@ -29,10 +29,8 @@ struct SidebarView: View {
     let width: CGFloat
 
     var body: some View {
-        ZStack {
-            Color.sidebarBackground
-                .ignoresSafeArea(.all)
-
+        HStack {
+            Spacer()
             VStack(spacing: 0) {
                 SidebarCurrentUserView(
                     user: viewModel.user,
@@ -62,7 +60,7 @@ struct SidebarView: View {
 
                         SidebarItemView(item: .trash, action: viewModel.sideBarItemAction)
 
-//                        SidebarItemView(item: .bugReport, action: viewModel.sideBarItemAction)
+                        // SidebarItemView(item: .bugReport, action: viewModel.sideBarItemAction)
 
                         SidebarItemView(item: .signOut, action: viewModel.sideBarItemAction)
                     }
@@ -80,7 +78,8 @@ struct SidebarView: View {
                         }
                     }
             }
-            .padding(.leading, UIScreen.main.bounds.width - width)
+            .frame(width: width)
+            .background(Color.sidebarBackground.edgesIgnoringSafeArea(.all))
         }
     }
 }
