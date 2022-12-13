@@ -24,7 +24,6 @@ import SwiftUI
 import UIComponents
 
 struct AliasDetailView: View {
-    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: AliasDetailViewModel
 
     init(viewModel: AliasDetailViewModel) {
@@ -53,7 +52,7 @@ struct AliasDetailView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: dismiss.callAsFunction) {
+            Button(action: viewModel.goBack) {
                 Image(uiImage: IconProvider.chevronLeft)
                     .foregroundColor(.primary)
             }

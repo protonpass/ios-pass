@@ -23,7 +23,6 @@ import SwiftUI
 import UIComponents
 
 struct LogInDetailView: View {
-    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
 
@@ -51,7 +50,7 @@ struct LogInDetailView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: dismiss.callAsFunction) {
+            Button(action: viewModel.goBack) {
                 Image(uiImage: IconProvider.chevronLeft)
                     .foregroundColor(.primary)
             }

@@ -161,6 +161,8 @@ extension TrashCoordinator: TrashViewModelDelegate {
 
 // MARK: - BaseItemDetailViewModel
 extension TrashCoordinator: ItemDetailViewModelDelegate {
+    func itemDetailViewModelWantsToGoBack() {}
+
     func itemDetailViewModelWantsToEditItem(_ itemContent: Client.ItemContent) {
         print("\(#function) not applicable")
     }

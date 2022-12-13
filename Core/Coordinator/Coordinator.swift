@@ -41,6 +41,7 @@ public protocol CoordinatorProtocol: AnyObject {
     func present<V: View>(_ view: V, animated: Bool, dismissible: Bool)
     func present(_ viewController: UIViewController, animated: Bool, dismissible: Bool)
     func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
+    func popTopViewController(animated: Bool)
     func popToRoot(animated: Bool)
     func isAtRootViewController() -> Bool
 }
@@ -111,29 +112,43 @@ open class Coordinator2: CoordinatorProtocol {
     }
 
     public func push(_ viewController: UIViewController, animated: Bool, hidesBackButton: Bool) {
-        switch type {
-        case .navigation(let navigationController):
-            viewController.navigationItem.hidesBackButton = hidesBackButton
-            if let topMostNavigationController = topMostViewController as? UINavigationController {
-                topMostNavigationController.pushViewController(viewController, animated: animated)
-            } else {
+        viewController.navigationItem.hidesBackButton = hidesBackButton
+        if let topMostNavigationController = topMostViewController as? UINavigationController {
+            topMostNavigationController.pushViewController(viewController, animated: true)
+        } else {
+            switch type {
+            case .navigation(let navigationController):
                 navigationController.pushViewController(viewController, animated: animated)
+            case .split(let splitViewController):
+                splitViewController.setViewController(viewController, for: .secondary)
+                splitViewController.show(.secondary)
             }
-        case .split(let splitViewController):
-            splitViewController.setViewController(viewController, for: .secondary)
+        }
+    }
+
+    public func popTopViewController(animated: Bool) {
+        if let topMostNavigationController = topMostViewController as? UINavigationController {
+            topMostNavigationController.popViewController(animated: animated)
+        } else {
+            switch type {
+            case .navigation(let navigationController):
+                navigationController.popViewController(animated: animated)
+            case .split(let splitViewController):
+                splitViewController.show(.primary)
+            }
         }
     }
 
     public func popToRoot(animated: Bool) {
-        switch type {
-        case .navigation(let navigationController):
-            if let topMostNavigationController = topMostViewController as? UINavigationController {
-                topMostNavigationController.popViewController(animated: animated)
-            } else {
-                navigationController.popViewController(animated: animated)
+        if let topMostNavigationController = topMostViewController as? UINavigationController {
+            topMostNavigationController.popToRootViewController(animated: animated)
+        } else {
+            switch type {
+            case .navigation(let navigationController):
+                navigationController.popToRootViewController(animated: animated)
+            case .split:
+                break
             }
-        case .split:
-            break
         }
     }
 

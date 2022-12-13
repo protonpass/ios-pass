@@ -227,10 +227,6 @@ final class MyVaultsCoordinator: Coordinator2 {
         currentItemDetailViewModel = baseItemDetailViewModel
     }
 
-    private func showFullScreen(text: String) {
-        present(FullScreenView(text: text), animated: true, dismissible: true)
-    }
-
     private func handleCreatedItem(_ itemContentType: ItemContentType) {
         dismissTopMostViewController(animated: true) { [unowned self] in
             bannerManager?.displayBottomSuccessMessage(itemContentType.creationMessage)
@@ -420,6 +416,10 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
 
 // MARK: - ItemDetailViewModelDelegate
 extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
+    func itemDetailViewModelWantsToGoBack() {
+        popTopViewController(animated: true)
+    }
+
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
         showEditItemView(itemContent)
     }
