@@ -96,7 +96,9 @@ open class Coordinator: CoordinatorProtocol {
     public init() {
         if UIDevice.current.isIpad {
             let splitViewController = UISplitViewController(style: .doubleColumn)
-            splitViewController.preferredPrimaryColumnWidth = 450
+            splitViewController.maximumPrimaryColumnWidth = 450
+            splitViewController.minimumPrimaryColumnWidth = 400
+            splitViewController.preferredPrimaryColumnWidthFraction = 0.4
             splitViewController.preferredDisplayMode = .oneBesideSecondary
             splitViewController.displayModeButtonVisibility = .never
             type = .split(splitViewController)
@@ -144,7 +146,14 @@ open class Coordinator: CoordinatorProtocol {
             case .navigation(let navigationController):
                 navigationController.popViewController(animated: animated)
             case .split(let splitViewController):
-                splitViewController.show(.primary)
+                /// Show primary view controller if it's hidden
+                /// Hide primary view controller if it's visible
+                switch splitViewController.displayMode {
+                case .oneBesideSecondary:
+                    splitViewController.hide(.primary)
+                default:
+                    splitViewController.show(.primary)
+                }
             }
         }
     }
