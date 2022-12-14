@@ -78,7 +78,6 @@ struct CreateEditAliasView: View {
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
-        .onReceiveBoolean(viewModel.$isTrashed, perform: dismiss.callAsFunction)
     }
 
     @ToolbarContentBuilder

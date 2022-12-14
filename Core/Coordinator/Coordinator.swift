@@ -91,7 +91,7 @@ open class Coordinator: CoordinatorProtocol {
 
     public var rootViewController: UIViewController { type.controller }
     public weak var coordinatorDelegate: CoordinatorDelegate?
-    private var topMostViewController: UIViewController? { rootViewController.topMostViewController }
+    private var topMostViewController: UIViewController { rootViewController.topMostViewController }
 
     public init() {
         if UIDevice.current.isIpad {
@@ -172,16 +172,17 @@ open class Coordinator: CoordinatorProtocol {
     }
 
     public func isAtRootViewController() -> Bool {
-        switch type {
-        case .navigation(let navigationController):
-            if let topMostNavigationController = topMostViewController as? UINavigationController {
-                return topMostNavigationController.viewControllers.count == 1
-            } else {
+        if topMostViewController == rootViewController {
+            switch type {
+            case .navigation(let navigationController):
                 return navigationController.viewControllers.count == 1
+            case .split:
+                return true
             }
-        case .split:
-            return true
+        } else if let topMostNavigationController = topMostViewController as? UINavigationController {
+            return topMostNavigationController.viewControllers.count == 1
         }
+        return false
     }
 }
 

@@ -249,9 +249,9 @@ final class MyVaultsCoordinator: Coordinator {
         }
     }
 
-    private func handleTrashedItem(_ itemContentType: ItemContentType) {
+    private func handleTrashedItem(_ item: ItemIdentifiable, type: ItemContentType) {
         let message: String
-        switch itemContentType {
+        switch type {
         case .alias:
             message = "Alias deleted"
         case .login:
@@ -263,10 +263,20 @@ final class MyVaultsCoordinator: Coordinator {
         if isAtRootViewController() {
             bannerManager?.displayBottomInfoMessage(message)
         } else {
-            popToRoot(animated: true)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                self.bannerManager?.displayBottomInfoMessage(message)
+            dismissTopMostViewController(animated: true) { [unowned self] in
+                self.popToRoot(animated: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [unowned self] in
+                    self.bannerManager?.displayBottomInfoMessage(message)
+                }
             }
+        }
+
+        if UIDevice.current.isIpad,
+           let currentItemDetailViewModel,
+           currentItemDetailViewModel.itemContent.shareId == item.shareId,
+           currentItemDetailViewModel.itemContent.itemId == item.itemId {
+            let placeholderView = ItemDetailPlaceholderView { self.popTopViewController(animated: true) }
+            push(placeholderView, animated: true, hidesBackButton: true)
         }
 
         vaultContentViewModel.fetchItems(forceRefresh: false)
@@ -358,8 +368,8 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         bannerManager?.displayBottomInfoMessage(message)
     }
 
-    func vaultContentViewModelDidTrashItem(_ type: ItemContentType) {
-        handleTrashedItem(type)
+    func vaultContentViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
+        handleTrashedItem(item, type: type)
     }
 
     func vaultContentViewModelDidFail(_ error: Error) {
@@ -386,8 +396,8 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
         handleUpdatedItem(type)
     }
 
-    func createEditItemViewModelDidTrashItem(_ type: ItemContentType) {
-        handleTrashedItem(type)
+    func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
+        handleTrashedItem(item, type: type)
     }
 
     func createEditItemViewModelDidFail(_ error: Error) {
@@ -440,10 +450,6 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
         print("\(#function) not applicable")
     }
 
-    func itemDetailViewModelDidTrashItem(_ type: ItemContentType) {
-        handleTrashedItem(type)
-    }
-
     func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String) {
         bannerManager?.displayBottomInfoMessage(message)
     }
@@ -493,8 +499,8 @@ extension MyVaultsCoordinator: SearchViewModelDelegate {
         bannerManager?.displayBottomInfoMessage(message)
     }
 
-    func searchViewModelDidTrashItem(_ type: Client.ItemContentType) {
-        handleTrashedItem(type)
+    func searchViewModelDidTrashItem(_ item: ItemIdentifiable, type: Client.ItemContentType) {
+        handleTrashedItem(item, type: type)
     }
 
     func searchViewModelDidFail(_ error: Error) {
