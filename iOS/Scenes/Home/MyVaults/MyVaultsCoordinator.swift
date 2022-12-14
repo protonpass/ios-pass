@@ -29,7 +29,7 @@ protocol MyVaultsCoordinatorDelegate: AnyObject {
     func myVaultsCoordinatorWantsToRefreshTrash()
 }
 
-final class MyVaultsCoordinator: Coordinator2 {
+final class MyVaultsCoordinator: Coordinator {
     private let symmetricKey: SymmetricKey
     private let userData: UserData
     private let vaultSelection: VaultSelection

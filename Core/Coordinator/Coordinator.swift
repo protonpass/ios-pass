@@ -86,7 +86,7 @@ enum CoordinatorType {
     }
 }
 
-open class Coordinator2: CoordinatorProtocol {
+open class Coordinator: CoordinatorProtocol {
     private let type: CoordinatorType
 
     public var rootViewController: UIViewController { type.controller }
@@ -176,120 +176,7 @@ open class Coordinator2: CoordinatorProtocol {
     }
 }
 
-open class Coordinator {
-    private let navigationController: UINavigationController
-    public var rootViewController: UIViewController { navigationController }
-    public weak var coordinatorDelegate: CoordinatorDelegate?
-    private var topMostViewController: UIViewController {
-        navigationController.topMostViewController
-    }
-
-    public init() {
-        self.navigationController = PPNavigationController()
-    }
-
-    public func start<V: View>(with view: V) {
-        start(with: UIHostingController(rootView: view))
-    }
-
-    public func start(with viewController: UIViewController) {
-        navigationController.setViewControllers([viewController], animated: true)
-    }
-
-    public func pushView<V: View>(_ view: V,
-                                  animated: Bool = true,
-                                  hidesBackButton: Bool = true) {
-        let viewController = UIHostingController(rootView: view)
-        pushViewController(viewController, animated: animated, hidesBackButton: hidesBackButton)
-    }
-
-    public func pushViewController(_ viewController: UIViewController,
-                                   animated: Bool = true,
-                                   hidesBackButton: Bool = true) {
-        viewController.navigationItem.hidesBackButton = hidesBackButton
-        if let presentedNavigationController =
-            navigationController.presentedViewController as? UINavigationController {
-            presentedNavigationController.pushViewController(viewController, animated: animated)
-        } else {
-            navigationController.pushViewController(viewController, animated: animated)
-        }
-    }
-
-    public func presentView<V: View>(_ view: V,
-                                     animated: Bool = true,
-                                     dismissible: Bool = false) {
-        presentViewController(UIHostingController(rootView: view),
-                              animated: animated,
-                              dismissible: dismissible)
-    }
-
-    public func presentViewFullScreen<V: View>(_ view: V,
-                                               embedInNavigationController: Bool = false,
-                                               modalTransitionStyle: UIModalTransitionStyle = .coverVertical,
-                                               animated: Bool = true) {
-        let hostedViewController = UIHostingController(rootView: view)
-        let viewController: UIViewController
-        if embedInNavigationController {
-            viewController = UINavigationController(rootViewController: hostedViewController)
-        } else {
-            viewController = hostedViewController
-        }
-        viewController.modalPresentationStyle = .fullScreen
-        viewController.modalTransitionStyle = modalTransitionStyle
-        presentViewController(viewController, animated: animated)
-    }
-
-    public func presentViewController(_ viewController: UIViewController,
-                                      animated: Bool = true,
-                                      dismissible: Bool = false) {
-        viewController.isModalInPresentation = !dismissible
-        topMostViewController.present(viewController, animated: animated)
-    }
-
-    public func presentViewControllerFullScreen(_ viewController: UIViewController,
-                                                animated: Bool = true) {
-        viewController.modalPresentationStyle = .fullScreen
-        if let presentedViewController = navigationController.presentedViewController {
-            presentedViewController.present(viewController, animated: animated)
-        } else {
-            navigationController.present(viewController, animated: animated)
-        }
-    }
-
-    public func dismissTopMostViewController(animated: Bool = true,
-                                             completion: (() -> Void)? = nil) {
-        topMostViewController.dismiss(animated: animated, completion: completion)
-    }
-
-    public func popToRoot(animated: Bool = true) {
-        if let topMostNavigationController = topMostViewController as? UINavigationController {
-            topMostNavigationController.popToRootViewController(animated: animated)
-        } else {
-            navigationController.popToRootViewController(animated: animated)
-        }
-    }
-
-    public func isAtRootViewController() -> Bool {
-        if let presentedNavigationController =
-            navigationController.presentedViewController as? UINavigationController {
-            return presentedNavigationController.viewControllers.count == 1
-        } else {
-            return navigationController.viewControllers.count == 1
-        }
-    }
-}
-
 public extension Coordinator {
-    func toggleSidebar() { coordinatorDelegate?.coordinatorWantsToToggleSidebar() }
-
-    func showLoadingHud() { coordinatorDelegate?.coordinatorWantsToShowLoadingHud() }
-
-    func hideLoadingHud() { coordinatorDelegate?.coordinatorWantsToHideLoadingHud() }
-
-    func alertError(_ error: Error) { coordinatorDelegate?.coordinatorWantsToAlertError(error) }
-}
-
-public extension Coordinator2 {
     func toggleSidebar() { coordinatorDelegate?.coordinatorWantsToToggleSidebar() }
     func showLoadingHud() { coordinatorDelegate?.coordinatorWantsToShowLoadingHud() }
     func hideLoadingHud() { coordinatorDelegate?.coordinatorWantsToHideLoadingHud() }

@@ -21,7 +21,7 @@
 import Core
 import SwiftUI
 
-extension Coordinator2 {
+extension Coordinator {
     func showFullScreen(text: String) {
         let view = FullScreenView(text: text)
         let viewController = UIHostingController(rootView: view)
