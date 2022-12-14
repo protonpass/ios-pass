@@ -299,9 +299,15 @@ private extension CredentialProviderCoordinator {
         }
 
         let viewController = UIHostingController(rootView: view)
-        rootViewController.addChild(viewController)
-        viewController.view.frame = rootViewController.view.frame
+        viewController.view.translatesAutoresizingMaskIntoConstraints = false
         rootViewController.view.addSubview(viewController.view)
+        NSLayoutConstraint.activate([
+            viewController.view.topAnchor.constraint(equalTo: rootViewController.view.topAnchor),
+            viewController.view.leadingAnchor.constraint(equalTo: rootViewController.view.leadingAnchor),
+            viewController.view.bottomAnchor.constraint(equalTo: rootViewController.view.bottomAnchor),
+            viewController.view.trailingAnchor.constraint(equalTo: rootViewController.view.trailingAnchor)
+        ])
+        rootViewController.addChild(viewController)
         viewController.didMove(toParent: rootViewController)
         lastChildViewController = viewController
     }
