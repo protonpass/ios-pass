@@ -534,7 +534,9 @@ extension HomeCoordinator: DevPreviewsViewModelDelegate {
         onboardIfNecessary(force: true)
     }
 
-    func devPreviewsViewModelWantsToEnableAutoFill() {}
+    func devPreviewsViewModelWantsToEnableAutoFill() {
+        myVaultsCoordinator.vaultContentViewModelWantsToEnableAutoFill()
+    }
 }
 
 extension BannerManager {
