@@ -59,7 +59,8 @@ final class TrashCoordinator: Coordinator {
 
     private func start() {
         trashViewModel.delegate = self
-        start(with: TrashView(viewModel: trashViewModel))
+        start(with: TrashView(viewModel: trashViewModel),
+              secondaryView: ItemDetailPlaceholderView {})
     }
 
     func refreshTrashedItems() {
@@ -76,14 +77,14 @@ private extension TrashCoordinator {
                                                  itemRepository: itemRepository)
             baseItemDetailViewModel = viewModel
             let logInDetailView = LogInDetailView(viewModel: viewModel)
-            pushView(logInDetailView)
+            push(logInDetailView, animated: true, hidesBackButton: true)
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRepository: itemRepository)
             baseItemDetailViewModel = viewModel
             let noteDetailView = NoteDetailView(viewModel: viewModel)
-            pushView(noteDetailView)
+            push(noteDetailView, animated: true, hidesBackButton: true)
 
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
@@ -91,7 +92,7 @@ private extension TrashCoordinator {
                                                  aliasRepository: aliasRepository)
             baseItemDetailViewModel = viewModel
             let aliasDetailView = AliasDetailView(viewModel: viewModel)
-            pushView(aliasDetailView)
+            push(aliasDetailView, animated: true, hidesBackButton: true)
         }
 
         baseItemDetailViewModel.delegate = self
@@ -130,7 +131,7 @@ extension TrashCoordinator: TrashViewModelDelegate {
         case .login: message = "Login restored"
         case .note: message = "Note restored"
         }
-        popToRoot()
+        popToRoot(animated: true)
         bannerManager?.displayBottomInfoMessage(message)
         delegate?.trashCoordinatorDidRestoreItems()
     }
@@ -161,7 +162,9 @@ extension TrashCoordinator: TrashViewModelDelegate {
 
 // MARK: - BaseItemDetailViewModel
 extension TrashCoordinator: ItemDetailViewModelDelegate {
-    func itemDetailViewModelWantsToGoBack() {}
+    func itemDetailViewModelWantsToGoBack() {
+        popTopViewController(animated: true)
+    }
 
     func itemDetailViewModelWantsToEditItem(_ itemContent: Client.ItemContent) {
         print("\(#function) not applicable")
@@ -176,7 +179,7 @@ extension TrashCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
-        presentView(FullScreenView(text: text), dismissible: true)
+        showFullScreen(text: text)
     }
 
     func itemDetailViewModelDidFail(_ error: Error) {
