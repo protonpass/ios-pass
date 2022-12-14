@@ -141,8 +141,8 @@ final class HomeCoordinator: DeinitPrintable {
         self.observeForegroundEntrance()
     }
 
-    func onboardIfNecessary() {
-        guard !preferences.onboarded else { return }
+    func onboardIfNecessary(force: Bool) {
+        if !force, preferences.onboarded { return }
         let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
                                                       preferences: preferences,
                                                       bannerManager: bannerManager)
@@ -150,7 +150,7 @@ final class HomeCoordinator: DeinitPrintable {
         let onboardingViewController = UIHostingController(rootView: onboardingView)
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         onboardingViewController.isModalInPresentation = true
-        rootViewController.present(onboardingViewController, animated: true)
+        rootViewController.topMostViewController.present(onboardingViewController, animated: true)
     }
 }
 
@@ -303,9 +303,9 @@ extension HomeCoordinator {
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
         case .devPreviews:
-            let view = DevPreviewsView(credentialManager: credentialManager,
-                                       preferences: preferences,
-                                       bannerManager: bannerManager)
+            let viewModel = DevPreviewsViewModel()
+            viewModel.delegate = self
+            let view = DevPreviewsView(viewModel: viewModel)
             rootViewController.present(UIHostingController(rootView: view), animated: true)
         case .settings:
             sideMenuController.setContentViewController(to: settingsRootViewController,
@@ -526,6 +526,15 @@ extension HomeCoordinator: SettingsCoordinatorDelegate {
         trashCoordinator.refreshTrashedItems()
         bannerManager.displayBottomInfoMessage("Fully synchronized")
     }
+}
+
+// MARK: - DevPreviewsViewModelDelegate
+extension HomeCoordinator: DevPreviewsViewModelDelegate {
+    func devPreviewsViewModelWantsToOnboard() {
+        onboardIfNecessary(force: true)
+    }
+
+    func devPreviewsViewModelWantsToEnableAutoFill() {}
 }
 
 extension BannerManager {

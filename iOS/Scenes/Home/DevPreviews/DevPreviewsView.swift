@@ -21,65 +21,67 @@
 import AVFoundation
 import Client
 import Core
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 /// Preview features under development
 struct DevPreviewsView: View {
-    let credentialManager: CredentialManagerProtocol
-    let preferences: Preferences
-    let bannerManager: BannerManager
+    @Environment(\.dismiss) private var dismiss
+    let viewModel: DevPreviewsViewModel
 
     var body: some View {
         NavigationView {
             Form {
-                OnboardingSection(credentialManager: credentialManager,
-                                  preferences: preferences,
-                                  bannerManager: bannerManager)
+                OnboardingSection(viewModel: viewModel)
                 HapticFeedbacksSection()
             }
             .navigationTitle("Developer previews")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar { toolbarContent }
         }
         .accentColor(.interactionNorm)
         .navigationViewStyle(.stack)
     }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: dismiss.callAsFunction) {
+                Image(uiImage: IconProvider.cross)
+                    .foregroundColor(.primary)
+            }
+        }
+    }
 }
 
 private struct OnboardingSection: View {
-    @State private var isShowingOnboarding = false
-    @State private var isShowingTurnOnAutoFill = false
-    let credentialManager: CredentialManagerProtocol
-    let preferences: Preferences
-    let bannerManager: BannerManager
+    @State private var isShowingAutoFillBanner = true
+    let viewModel: DevPreviewsViewModel
 
     var body: some View {
         Section(content: {
-            Button(action: {
-                isShowingOnboarding.toggle()
-            }, label: {
+            Button(action: viewModel.onboard) {
                 Text("Trigger onboarding process")
-            })
+            }
 
-            Button(action: {
-                isShowingTurnOnAutoFill.toggle()
-            }, label: {
+            Button(action: viewModel.enableAutoFill) {
                 Text("Trigger turn on AutoFill page")
-            })
+            }
 
-            TurnOnAutoFillBanner(onAction: { print("onAction") },
-                                 onCancel: { print("onCancel") })
+            if isShowingAutoFillBanner {
+                TurnOnAutoFillBanner(onAction: viewModel.enableAutoFill,
+                                     onCancel: hideAutoFillBanner)
+            }
         }, header: {
             Text("Onboarding")
         })
-        .fullScreenCover(isPresented: $isShowingOnboarding, content: {
-            OnboardingView(viewModel: .init(credentialManager: credentialManager,
-                                            preferences: preferences,
-                                            bannerManager: bannerManager))
-        })
-        .fullScreenCover(isPresented: $isShowingTurnOnAutoFill, content: {
-            TurnOnAutoFillView(credentialManager: credentialManager)
-        })
+    }
+
+    private func hideAutoFillBanner() {
+        withAnimation {
+            isShowingAutoFillBanner.toggle()
+        }
     }
 }
 

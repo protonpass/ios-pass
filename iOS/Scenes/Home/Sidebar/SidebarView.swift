@@ -71,7 +71,8 @@ struct SidebarView: View {
 
                 Spacer()
                 Text("Proton Pass \(Bundle.main.versionNumber) (\(Bundle.main.buildNumber))")
-                    .foregroundColor(.gray)
+                    .foregroundColor(.sidebarTextWeak)
+                    .padding(.bottom)
                     .onTapGesture(count: 7) {
                         withAnimation {
                             isShowingDevPreviewsOption.toggle()
