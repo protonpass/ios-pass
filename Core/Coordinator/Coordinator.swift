@@ -34,8 +34,9 @@ public protocol CoordinatorProtocol: AnyObject {
     var rootViewController: UIViewController { get }
     var coordinatorDelegate: CoordinatorDelegate? { get }
 
-    func start<V: View>(with view: V)
-    func start(with viewController: UIViewController)
+    func start<PrimaryView: View, SecondaryView: View>(with view: PrimaryView,
+                                                       secondaryView: SecondaryView)
+    func start(with viewController: UIViewController, secondaryViewController: UIViewController?)
     func push<V: View>(_ view: V, animated: Bool, hidesBackButton: Bool)
     func push(_ viewController: UIViewController, animated: Bool, hidesBackButton: Bool)
     func present<V: View>(_ view: V, animated: Bool, dismissible: Bool)
@@ -47,8 +48,10 @@ public protocol CoordinatorProtocol: AnyObject {
 }
 
 public extension CoordinatorProtocol {
-    func start<V: View>(with view: V) {
-        start(with: UIHostingController(rootView: view))
+    func start<PrimaryView: View, SecondaryView: View>(with view: PrimaryView,
+                                                       secondaryView: SecondaryView) {
+        start(with: UIHostingController(rootView: view),
+              secondaryViewController: UIHostingController(rootView: secondaryView))
     }
 
     func push<V: View>(_ view: V, animated: Bool, hidesBackButton: Bool) {
@@ -102,12 +105,15 @@ open class Coordinator2: CoordinatorProtocol {
         }
     }
 
-    public func start(with viewController: UIViewController) {
+    public func start(with viewController: UIViewController, secondaryViewController: UIViewController?) {
         switch type {
         case .navigation(let navigationController):
             navigationController.setViewControllers([viewController], animated: true)
         case .split(let splitViewController):
             splitViewController.setViewController(viewController, for: .primary)
+            if let secondaryViewController {
+                splitViewController.setViewController(secondaryViewController, for: .secondary)
+            }
         }
     }
 
@@ -120,7 +126,11 @@ open class Coordinator2: CoordinatorProtocol {
             case .navigation(let navigationController):
                 navigationController.pushViewController(viewController, animated: animated)
             case .split(let splitViewController):
-                splitViewController.setViewController(viewController, for: .secondary)
+                /// Embed in a `UINavigationController` so that `splitViewController` replaces the secondary view
+                /// instead of pushing it into the navigation stack of the current secondary view controller.
+                /// This is to reduce memory footprint.
+                let navigationController = UINavigationController(rootViewController: viewController)
+                splitViewController.setViewController(navigationController, for: .secondary)
                 splitViewController.show(.secondary)
             }
         }

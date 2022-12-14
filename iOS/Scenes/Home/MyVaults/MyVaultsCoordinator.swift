@@ -92,7 +92,8 @@ final class MyVaultsCoordinator: Coordinator2 {
         loadVaultsViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
                                       loadVaultsViewModel: loadVaultsViewModel,
-                                      vaultContentViewModel: vaultContentViewModel))
+                                      vaultContentViewModel: vaultContentViewModel),
+                   secondaryView: ItemDetailPlaceholderView { self.popTopViewController(animated: true) })
     }
 
     private func showCreateItemView() {
