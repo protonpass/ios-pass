@@ -42,6 +42,7 @@ struct DevPreviewsView: View {
             .navigationBarTitleDisplayMode(.large)
         }
         .accentColor(.interactionNorm)
+        .navigationViewStyle(.stack)
     }
 }
 

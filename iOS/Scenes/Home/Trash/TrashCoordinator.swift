@@ -60,7 +60,7 @@ final class TrashCoordinator: Coordinator {
     private func start() {
         trashViewModel.delegate = self
         start(with: TrashView(viewModel: trashViewModel),
-              secondaryView: ItemDetailPlaceholderView {})
+              secondaryView: ItemDetailPlaceholderView { self.popTopViewController(animated: true) })
     }
 
     func refreshTrashedItems() {
