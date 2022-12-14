@@ -50,6 +50,7 @@ protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToToggleSidebar()
     func vaultContentViewModelWantsToShowLoadingHud()
     func vaultContentViewModelWantsToHideLoadingHud()
+    func vaultContentViewModelWantsToEnableAutoFill()
     func vaultContentViewModelWantsToSearch()
     func vaultContentViewModelWantsToCreateItem()
     func vaultContentViewModelWantsToCreateVault()
@@ -160,6 +161,11 @@ extension VaultContentViewModel {
 
     func search() {
         delegate?.vaultContentViewModelWantsToSearch()
+    }
+
+    func enableAutoFill() {
+        delegate?.vaultContentViewModelWantsToEnableAutoFill()
+        cancelAutoFillBanner()
     }
 
     func cancelAutoFillBanner() {

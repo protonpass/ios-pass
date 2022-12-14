@@ -37,6 +37,7 @@ final class MyVaultsCoordinator: Coordinator {
     private let shareRepository: ShareRepositoryProtocol
     private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
+    private let credentialManager: CredentialManagerProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
 
@@ -70,6 +71,7 @@ final class MyVaultsCoordinator: Coordinator {
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
+        self.credentialManager = credentialManager
         self.vaultItemKeysRepository = vaultItemKeysRepository
         self.aliasRepository = aliasRepository
         self.vaultContentViewModel = .init(vaultSelection: vaultSelection,
@@ -325,6 +327,15 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
 
     func vaultContentViewModelWantsToSearch() {
         showSearchView()
+    }
+
+    func vaultContentViewModelWantsToEnableAutoFill() {
+        let view = TurnOnAutoFillView(credentialManager: credentialManager)
+        let viewController = UIHostingController(rootView: view)
+        if !UIDevice.current.isIpad {
+            viewController.modalPresentationStyle = .fullScreen
+        }
+        present(viewController, animated: true, dismissible: false)
     }
 
     func vaultContentViewModelWantsToCreateItem() {
