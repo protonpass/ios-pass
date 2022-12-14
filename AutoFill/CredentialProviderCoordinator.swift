@@ -462,7 +462,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         print("\(#function) not applicable")
     }
 
-    func createEditItemViewModelDidTrashItem(_ type: Client.ItemContentType) {
+    func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
         print("\(#function) not applicable")
     }
 

@@ -31,7 +31,7 @@ protocol SearchViewModelDelegate: AnyObject {
     func searchViewModelWantsToShowItemDetail(_ item: ItemContent)
     func searchViewModelWantsToEditItem(_ item: ItemContent)
     func searchViewModelWantsToDisplayInformativeMessage(_ message: String)
-    func searchViewModelDidTrashItem(_ type: ItemContentType)
+    func searchViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType)
     func searchViewModelDidFail(_ error: Error)
 }
 
@@ -256,7 +256,7 @@ extension SearchViewModel {
             do {
                 try await trashItemTask(for: item).value
                 await refreshResults()
-                delegate?.searchViewModelDidTrashItem(item.type)
+                delegate?.searchViewModelDidTrashItem(item, type: item.type)
             } catch {
                 delegate?.searchViewModelDidFail(error)
             }
