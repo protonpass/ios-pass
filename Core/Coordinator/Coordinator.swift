@@ -43,7 +43,7 @@ public protocol CoordinatorProtocol: AnyObject {
     func present(_ viewController: UIViewController, animated: Bool, dismissible: Bool)
     func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
     func popTopViewController(animated: Bool)
-    func popToRoot(animated: Bool)
+    func popToRoot(animated: Bool, secondaryViewController: UIViewController?)
     func isAtRootViewController() -> Bool
 }
 
@@ -95,7 +95,7 @@ open class Coordinator: CoordinatorProtocol {
 
     public init() {
         if UIDevice.current.isIpad {
-            let splitViewController = UISplitViewController(style: .doubleColumn)
+            let splitViewController = PPSplitViewController(style: .doubleColumn)
             splitViewController.maximumPrimaryColumnWidth = 450
             splitViewController.minimumPrimaryColumnWidth = 400
             splitViewController.preferredPrimaryColumnWidthFraction = 0.4
@@ -113,7 +113,7 @@ open class Coordinator: CoordinatorProtocol {
             navigationController.setViewControllers([viewController], animated: true)
         case .split(let splitViewController):
             splitViewController.setViewController(viewController, for: .primary)
-            if splitViewController.isCollapsed, let secondaryViewController {
+            if let secondaryViewController {
                 splitViewController.setViewController(secondaryViewController, for: .secondary)
             }
         }
@@ -164,15 +164,23 @@ open class Coordinator: CoordinatorProtocol {
         }
     }
 
-    public func popToRoot(animated: Bool) {
+    public func popToRoot(animated: Bool, secondaryViewController: UIViewController?) {
         if let topMostNavigationController = topMostViewController as? UINavigationController {
             topMostNavigationController.popToRootViewController(animated: animated)
         } else {
             switch type {
             case .navigation(let navigationController):
                 navigationController.popToRootViewController(animated: animated)
-            case .split:
-                break
+            case .split(let splitViewController):
+                splitViewController.show(.primary)
+                if let secondaryViewController {
+                    secondaryViewController.navigationItem.hidesBackButton = true
+                    let navigationController = UINavigationController(rootViewController: secondaryViewController)
+                    // Set to nil before setting to the real secondary view controller
+                    // otherwise in spit mode, secondary view is shown instead of primary one.
+                    splitViewController.setViewController(nil, for: .secondary)
+                    splitViewController.setViewController(navigationController, for: .secondary)
+                }
             }
         }
     }
@@ -207,5 +215,17 @@ private final class PPNavigationController: UINavigationController, UIGestureRec
 
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         viewControllers.count > 1
+    }
+}
+
+private final class PPSplitViewController: UISplitViewController {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        show(.primary)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        show(.primary)
     }
 }

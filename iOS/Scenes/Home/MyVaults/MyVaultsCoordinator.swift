@@ -264,19 +264,19 @@ final class MyVaultsCoordinator: Coordinator {
             bannerManager?.displayBottomInfoMessage(message)
         } else {
             dismissTopMostViewController(animated: true) { [unowned self] in
-                self.popToRoot(animated: true)
+                var placeholderViewController: UIViewController?
+                if UIDevice.current.isIpad,
+                   let currentItemDetailViewModel,
+                   currentItemDetailViewModel.itemContent.shareId == item.shareId,
+                   currentItemDetailViewModel.itemContent.itemId == item.itemId {
+                    let placeholderView = ItemDetailPlaceholderView { self.popTopViewController(animated: true) }
+                    placeholderViewController = UIHostingController(rootView: placeholderView)
+                }
+                self.popToRoot(animated: true, secondaryViewController: placeholderViewController)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [unowned self] in
                     self.bannerManager?.displayBottomInfoMessage(message)
                 }
             }
-        }
-
-        if UIDevice.current.isIpad,
-           let currentItemDetailViewModel,
-           currentItemDetailViewModel.itemContent.shareId == item.shareId,
-           currentItemDetailViewModel.itemContent.itemId == item.itemId {
-            let placeholderView = ItemDetailPlaceholderView { self.popTopViewController(animated: true) }
-            push(placeholderView, animated: true, hidesBackButton: true)
         }
 
         vaultContentViewModel.fetchItems(forceRefresh: false)

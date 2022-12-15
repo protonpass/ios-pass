@@ -37,6 +37,7 @@ final class TrashCoordinator: Coordinator {
     private let aliasRepository: AliasRepositoryProtocol
     private let trashViewModel: TrashViewModel
 
+    private var currentItemDetailViewModel: BaseItemDetailViewModel?
     weak var delegate: TrashCoordinatorDelegate?
     weak var bannerManager: BannerManager?
 
@@ -96,6 +97,7 @@ private extension TrashCoordinator {
         }
 
         baseItemDetailViewModel.delegate = self
+        currentItemDetailViewModel = baseItemDetailViewModel
     }
 }
 
@@ -124,14 +126,23 @@ extension TrashCoordinator: TrashViewModelDelegate {
         hideLoadingHud()
     }
 
-    func trashViewModelDidRestoreItem(_ type: Client.ItemContentType) {
+    func trashViewModelDidRestoreItem(_ item: ItemIdentifiable, type: Client.ItemContentType) {
         let message: String
         switch type {
         case .alias: message = "Alias restored"
         case .login: message = "Login restored"
         case .note: message = "Note restored"
         }
-        popToRoot(animated: true)
+
+        var placeholderViewController: UIViewController?
+        if UIDevice.current.isIpad,
+           let currentItemDetailViewModel,
+           currentItemDetailViewModel.itemContent.shareId == item.shareId,
+           currentItemDetailViewModel.itemContent.itemId == item.itemId {
+            let placeholderView = ItemDetailPlaceholderView { self.popTopViewController(animated: true) }
+            placeholderViewController = UIHostingController(rootView: placeholderView)
+        }
+        popToRoot(animated: true, secondaryViewController: placeholderViewController)
         bannerManager?.displayBottomInfoMessage(message)
         delegate?.trashCoordinatorDidRestoreItems()
     }
