@@ -82,7 +82,7 @@ enum CreateNewItemOption: GenericItemProtocol, CaseIterable {
         case .login:
             return .value("Add login details for an app or site")
         case .alias:
-            return .value("Hide your identity with a separate email address")
+            return .value("Get an email alias to use on new apps")
         case .note:
             return .value("Jot down a PIN, code, or note to self")
         case .password:

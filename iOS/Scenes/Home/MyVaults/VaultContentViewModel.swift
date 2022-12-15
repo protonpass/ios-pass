@@ -50,13 +50,14 @@ protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToToggleSidebar()
     func vaultContentViewModelWantsToShowLoadingHud()
     func vaultContentViewModelWantsToHideLoadingHud()
+    func vaultContentViewModelWantsToEnableAutoFill()
     func vaultContentViewModelWantsToSearch()
     func vaultContentViewModelWantsToCreateItem()
     func vaultContentViewModelWantsToCreateVault()
     func vaultContentViewModelWantsToShowItemDetail(_ item: ItemContent)
     func vaultContentViewModelWantsToEditItem(_ item: ItemContent)
     func vaultContentViewModelWantsToDisplayInformativeMessage(_ message: String)
-    func vaultContentViewModelDidTrashItem(_ type: ItemContentType)
+    func vaultContentViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType)
     func vaultContentViewModelDidFail(_ error: Error)
 }
 
@@ -160,6 +161,11 @@ extension VaultContentViewModel {
 
     func search() {
         delegate?.vaultContentViewModelWantsToSearch()
+    }
+
+    func enableAutoFill() {
+        delegate?.vaultContentViewModelWantsToEnableAutoFill()
+        cancelAutoFillBanner()
     }
 
     func cancelAutoFillBanner() {
@@ -273,7 +279,7 @@ extension VaultContentViewModel {
             do {
                 try await trashItemTask(for: item).value
                 fetchItems(forceRefresh: false)
-                delegate?.vaultContentViewModelDidTrashItem(item.type)
+                delegate?.vaultContentViewModelDidTrashItem(item, type: item.type)
             } catch {
                 delegate?.vaultContentViewModelDidFail(error)
             }

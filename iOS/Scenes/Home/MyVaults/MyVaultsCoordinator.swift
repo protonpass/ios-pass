@@ -37,6 +37,7 @@ final class MyVaultsCoordinator: Coordinator {
     private let shareRepository: ShareRepositoryProtocol
     private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
+    private let credentialManager: CredentialManagerProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
 
@@ -70,6 +71,7 @@ final class MyVaultsCoordinator: Coordinator {
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
+        self.credentialManager = credentialManager
         self.vaultItemKeysRepository = vaultItemKeysRepository
         self.aliasRepository = aliasRepository
         self.vaultContentViewModel = .init(vaultSelection: vaultSelection,
@@ -92,7 +94,8 @@ final class MyVaultsCoordinator: Coordinator {
         loadVaultsViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
                                       loadVaultsViewModel: loadVaultsViewModel,
-                                      vaultContentViewModel: vaultContentViewModel))
+                                      vaultContentViewModel: vaultContentViewModel),
+                   secondaryView: ItemDetailPlaceholderView { self.popTopViewController(animated: true) })
     }
 
     private func showCreateItemView() {
@@ -120,7 +123,7 @@ final class MyVaultsCoordinator: Coordinator {
         let createItemView = CreateItemView(viewModel: createItemViewModel)
         let createItemViewController = UIHostingController(rootView: createItemView)
         createItemViewController.sheetPresentationController?.detents = [.medium(), .large()]
-        presentViewController(createItemViewController, dismissible: true)
+        present(createItemViewController, animated: true, dismissible: true)
     }
 
     private func showCreateVaultView() {
@@ -131,7 +134,7 @@ final class MyVaultsCoordinator: Coordinator {
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         let createVaultViewController = UIHostingController(rootView: createVaultView)
         createVaultViewController.sheetPresentationController?.detents = [.medium()]
-        presentViewController(createVaultViewController)
+        present(createVaultViewController, animated: true, dismissible: true)
     }
 
     private func showCreateEditLoginView(mode: ItemMode) {
@@ -140,7 +143,7 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
-        presentView(view)
+        present(view, animated: true, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -151,7 +154,7 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
-        presentView(view)
+        present(view, animated: true, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -160,7 +163,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                 itemRepository: itemRepository)
         viewModel.delegate = self
         let view = CreateEditNoteView(viewModel: viewModel)
-        presentView(view)
+        present(view, animated: true, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -178,7 +181,7 @@ final class MyVaultsCoordinator: Coordinator {
         } else {
             generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
         }
-        presentViewController(generatePasswordViewController, dismissible: true)
+        present(generatePasswordViewController, animated: true, dismissible: true)
     }
 
     private func showSearchView() {
@@ -186,8 +189,15 @@ final class MyVaultsCoordinator: Coordinator {
                                         itemRepository: itemRepository)
         viewModel.delegate = self
         searchViewModel = viewModel
-        presentViewFullScreen(SearchView(viewModel: viewModel),
-                              embedInNavigationController: true)
+        let viewController = UIHostingController(rootView: SearchView(viewModel: viewModel))
+        let navigationController = UINavigationController(rootViewController: viewController)
+        if UIDevice.current.isIpad {
+            navigationController.modalPresentationStyle = .formSheet
+        } else {
+            navigationController.modalPresentationStyle = .fullScreen
+            navigationController.modalTransitionStyle = .coverVertical
+        }
+        present(navigationController, animated: true, dismissible: UIDevice.current.isIpad)
     }
 
     private func showItemDetailView(_ itemContent: ItemContent) {
@@ -198,14 +208,14 @@ final class MyVaultsCoordinator: Coordinator {
                                                  itemRepository: itemRepository)
             baseItemDetailViewModel = viewModel
             let logInDetailView = LogInDetailView(viewModel: viewModel)
-            pushView(logInDetailView)
+            push(logInDetailView, animated: true, hidesBackButton: true)
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRepository: itemRepository)
             baseItemDetailViewModel = viewModel
             let noteDetailView = NoteDetailView(viewModel: viewModel)
-            pushView(noteDetailView)
+            push(noteDetailView, animated: true, hidesBackButton: true)
 
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
@@ -213,15 +223,11 @@ final class MyVaultsCoordinator: Coordinator {
                                                  aliasRepository: aliasRepository)
             baseItemDetailViewModel = viewModel
             let aliasDetailView = AliasDetailView(viewModel: viewModel)
-            pushView(aliasDetailView)
+            push(aliasDetailView, animated: true, hidesBackButton: true)
         }
 
         baseItemDetailViewModel.delegate = self
         currentItemDetailViewModel = baseItemDetailViewModel
-    }
-
-    private func showFullScreen(text: String) {
-        presentView(FullScreenView(text: text), dismissible: true)
     }
 
     private func handleCreatedItem(_ itemContentType: ItemContentType) {
@@ -243,9 +249,9 @@ final class MyVaultsCoordinator: Coordinator {
         }
     }
 
-    private func handleTrashedItem(_ itemContentType: ItemContentType) {
+    private func handleTrashedItem(_ item: ItemIdentifiable, type: ItemContentType) {
         let message: String
-        switch itemContentType {
+        switch type {
         case .alias:
             message = "Alias deleted"
         case .login:
@@ -257,9 +263,19 @@ final class MyVaultsCoordinator: Coordinator {
         if isAtRootViewController() {
             bannerManager?.displayBottomInfoMessage(message)
         } else {
-            popToRoot()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                self.bannerManager?.displayBottomInfoMessage(message)
+            dismissTopMostViewController(animated: true) { [unowned self] in
+                var placeholderViewController: UIViewController?
+                if UIDevice.current.isIpad,
+                   let currentItemDetailViewModel,
+                   currentItemDetailViewModel.itemContent.shareId == item.shareId,
+                   currentItemDetailViewModel.itemContent.itemId == item.itemId {
+                    let placeholderView = ItemDetailPlaceholderView { self.popTopViewController(animated: true) }
+                    placeholderViewController = UIHostingController(rootView: placeholderView)
+                }
+                self.popToRoot(animated: true, secondaryViewController: placeholderViewController)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [unowned self] in
+                    self.bannerManager?.displayBottomInfoMessage(message)
+                }
             }
         }
 
@@ -297,7 +313,7 @@ extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
     func createVaultViewModelDidCreateShare(_ share: Share) {
         // Set vaults to empty to trigger refresh
         self.vaultSelection.update(vaults: [])
-        self.dismissTopMostViewController()
+        self.dismissTopMostViewController(animated: true, completion: nil)
     }
 
     func createVaultViewModelDidFail(_ error: Error) {
@@ -323,6 +339,15 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         showSearchView()
     }
 
+    func vaultContentViewModelWantsToEnableAutoFill() {
+        let view = TurnOnAutoFillView(credentialManager: credentialManager)
+        let viewController = UIHostingController(rootView: view)
+        if !UIDevice.current.isIpad {
+            viewController.modalPresentationStyle = .fullScreen
+        }
+        present(viewController, animated: true, dismissible: false)
+    }
+
     func vaultContentViewModelWantsToCreateItem() {
         showCreateItemView()
     }
@@ -343,8 +368,8 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         bannerManager?.displayBottomInfoMessage(message)
     }
 
-    func vaultContentViewModelDidTrashItem(_ type: ItemContentType) {
-        handleTrashedItem(type)
+    func vaultContentViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
+        handleTrashedItem(item, type: type)
     }
 
     func vaultContentViewModelDidFail(_ error: Error) {
@@ -371,8 +396,8 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
         handleUpdatedItem(type)
     }
 
-    func createEditItemViewModelDidTrashItem(_ type: ItemContentType) {
-        handleTrashedItem(type)
+    func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
+        handleTrashedItem(item, type: type)
     }
 
     func createEditItemViewModelDidFail(_ error: Error) {
@@ -386,7 +411,7 @@ extension MyVaultsCoordinator: CreateEditAliasViewModelDelegate {
         let view = MailboxesView(mailboxSelection: mailboxSelection)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        presentViewController(viewController, dismissible: true)
+        present(viewController, animated: true, dismissible: true)
     }
 }
 
@@ -413,16 +438,16 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
 
 // MARK: - ItemDetailViewModelDelegate
 extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
+    func itemDetailViewModelWantsToGoBack() {
+        popTopViewController(animated: true)
+    }
+
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
         showEditItemView(itemContent)
     }
 
     func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel) {
         print("\(#function) not applicable")
-    }
-
-    func itemDetailViewModelDidTrashItem(_ type: ItemContentType) {
-        handleTrashedItem(type)
     }
 
     func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String) {
@@ -441,7 +466,7 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 // MARK: - GeneratePasswordViewModelDelegate
 extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
-        dismissTopMostViewController { [unowned self] in
+        dismissTopMostViewController(animated: true) { [unowned self] in
             UIPasteboard.general.string = password
             self.bannerManager?.displayBottomInfoMessage("Password copied")
         }
@@ -459,7 +484,7 @@ extension MyVaultsCoordinator: SearchViewModelDelegate {
     }
 
     func searchViewModelWantsToDismiss() {
-        dismissTopMostViewController()
+        dismissTopMostViewController(animated: true, completion: nil)
     }
 
     func searchViewModelWantsToShowItemDetail(_ item: Client.ItemContent) {
@@ -474,8 +499,8 @@ extension MyVaultsCoordinator: SearchViewModelDelegate {
         bannerManager?.displayBottomInfoMessage(message)
     }
 
-    func searchViewModelDidTrashItem(_ type: Client.ItemContentType) {
-        handleTrashedItem(type)
+    func searchViewModelDidTrashItem(_ item: ItemIdentifiable, type: Client.ItemContentType) {
+        handleTrashedItem(item, type: type)
     }
 
     func searchViewModelDidFail(_ error: Error) {

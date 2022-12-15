@@ -54,7 +54,8 @@ final class SettingsCoordinator: Coordinator {
         settingsViewModel.onDeleteAccount = { [unowned self] in
             onDeleteAccount?()
         }
-        start(with: SettingsView(viewModel: settingsViewModel))
+        start(with: SettingsView(viewModel: settingsViewModel),
+              secondaryView: ItemDetailPlaceholderView { self.popTopViewController(animated: true) })
     }
 }
 

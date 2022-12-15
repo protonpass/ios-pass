@@ -30,116 +30,180 @@ public protocol CoordinatorDelegate: AnyObject {
     func coordinatorWantsToAlertError(_ error: Error)
 }
 
-open class Coordinator {
-    private let navigationController: UINavigationController
-    public var rootViewController: UIViewController { navigationController }
-    public weak var coordinatorDelegate: CoordinatorDelegate?
-    private var topMostViewController: UIViewController {
-        navigationController.topMostViewController
+public protocol CoordinatorProtocol: AnyObject {
+    var rootViewController: UIViewController { get }
+    var coordinatorDelegate: CoordinatorDelegate? { get }
+
+    func start<PrimaryView: View, SecondaryView: View>(with view: PrimaryView,
+                                                       secondaryView: SecondaryView)
+    func start(with viewController: UIViewController, secondaryViewController: UIViewController?)
+    func push<V: View>(_ view: V, animated: Bool, hidesBackButton: Bool)
+    func push(_ viewController: UIViewController, animated: Bool, hidesBackButton: Bool)
+    func present<V: View>(_ view: V, animated: Bool, dismissible: Bool)
+    func present(_ viewController: UIViewController, animated: Bool, dismissible: Bool)
+    func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
+    func popTopViewController(animated: Bool)
+    func popToRoot(animated: Bool, secondaryViewController: UIViewController?)
+    func isAtRootViewController() -> Bool
+}
+
+public extension CoordinatorProtocol {
+    func start<PrimaryView: View, SecondaryView: View>(with view: PrimaryView,
+                                                       secondaryView: SecondaryView) {
+        start(with: UIHostingController(rootView: view),
+              secondaryViewController: UIHostingController(rootView: secondaryView))
     }
+
+    func push<V: View>(_ view: V, animated: Bool, hidesBackButton: Bool) {
+        push(UIHostingController(rootView: view), animated: animated, hidesBackButton: hidesBackButton)
+    }
+
+    func present<V: View>(_ view: V, animated: Bool, dismissible: Bool) {
+        present(UIHostingController(rootView: view), animated: animated, dismissible: dismissible)
+    }
+
+    func present(_ viewController: UIViewController, animated: Bool, dismissible: Bool) {
+        viewController.isModalInPresentation = !dismissible
+        rootViewController.topMostViewController.present(viewController, animated: animated)
+    }
+
+    func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?) {
+        rootViewController.topMostViewController.dismiss(animated: animated, completion: completion)
+    }
+}
+
+enum CoordinatorType {
+    case navigation(UINavigationController)
+    case split(UISplitViewController)
+
+    var controller: UIViewController {
+        switch self {
+        case .navigation(let navigationController):
+            return navigationController
+        case .split(let splitViewController):
+            return splitViewController
+        }
+    }
+}
+
+open class Coordinator: CoordinatorProtocol {
+    private let type: CoordinatorType
+
+    public var rootViewController: UIViewController { type.controller }
+    public weak var coordinatorDelegate: CoordinatorDelegate?
+    private var topMostViewController: UIViewController { rootViewController.topMostViewController }
 
     public init() {
-        self.navigationController = PPNavigationController()
+        if UIDevice.current.isIpad {
+            let splitViewController = PPSplitViewController(style: .doubleColumn)
+            splitViewController.maximumPrimaryColumnWidth = 450
+            splitViewController.minimumPrimaryColumnWidth = 400
+            splitViewController.preferredPrimaryColumnWidthFraction = 0.4
+            splitViewController.preferredDisplayMode = .oneBesideSecondary
+            splitViewController.displayModeButtonVisibility = .never
+            type = .split(splitViewController)
+        } else {
+            type = .navigation(PPNavigationController())
+        }
     }
 
-    public func start<V: View>(with view: V) {
-        start(with: UIHostingController(rootView: view))
+    public func start(with viewController: UIViewController, secondaryViewController: UIViewController?) {
+        switch type {
+        case .navigation(let navigationController):
+            navigationController.setViewControllers([viewController], animated: true)
+        case .split(let splitViewController):
+            splitViewController.setViewController(viewController, for: .primary)
+            if let secondaryViewController {
+                splitViewController.setViewController(secondaryViewController, for: .secondary)
+            }
+        }
     }
 
-    public func start(with viewController: UIViewController) {
-        navigationController.setViewControllers([viewController], animated: true)
-    }
-
-    public func pushView<V: View>(_ view: V,
-                                  animated: Bool = true,
-                                  hidesBackButton: Bool = true) {
-        let viewController = UIHostingController(rootView: view)
-        pushViewController(viewController, animated: animated, hidesBackButton: hidesBackButton)
-    }
-
-    public func pushViewController(_ viewController: UIViewController,
-                                   animated: Bool = true,
-                                   hidesBackButton: Bool = true) {
+    public func push(_ viewController: UIViewController, animated: Bool, hidesBackButton: Bool) {
         viewController.navigationItem.hidesBackButton = hidesBackButton
-        if let presentedNavigationController =
-            navigationController.presentedViewController as? UINavigationController {
-            presentedNavigationController.pushViewController(viewController, animated: animated)
+        if let topMostNavigationController = topMostViewController as? UINavigationController {
+            topMostNavigationController.pushViewController(viewController, animated: true)
         } else {
-            navigationController.pushViewController(viewController, animated: animated)
+            switch type {
+            case .navigation(let navigationController):
+                navigationController.pushViewController(viewController, animated: animated)
+            case .split(let splitViewController):
+                /// Embed in a `UINavigationController` so that `splitViewController` replaces the secondary view
+                /// instead of pushing it into the navigation stack of the current secondary view controller.
+                /// This is to reduce memory footprint.
+                let navigationController = UINavigationController(rootViewController: viewController)
+                splitViewController.setViewController(navigationController, for: .secondary)
+                splitViewController.show(.secondary)
+            }
         }
     }
 
-    public func presentView<V: View>(_ view: V,
-                                     animated: Bool = true,
-                                     dismissible: Bool = false) {
-        presentViewController(UIHostingController(rootView: view),
-                              animated: animated,
-                              dismissible: dismissible)
-    }
-
-    public func presentViewFullScreen<V: View>(_ view: V,
-                                               embedInNavigationController: Bool = false,
-                                               modalTransitionStyle: UIModalTransitionStyle = .coverVertical,
-                                               animated: Bool = true) {
-        let hostedViewController = UIHostingController(rootView: view)
-        let viewController: UIViewController
-        if embedInNavigationController {
-            viewController = UINavigationController(rootViewController: hostedViewController)
+    public func popTopViewController(animated: Bool) {
+        if let topMostNavigationController = topMostViewController as? UINavigationController {
+            topMostNavigationController.popViewController(animated: animated)
         } else {
-            viewController = hostedViewController
-        }
-        viewController.modalPresentationStyle = .fullScreen
-        viewController.modalTransitionStyle = modalTransitionStyle
-        presentViewController(viewController, animated: animated)
-    }
-
-    public func presentViewController(_ viewController: UIViewController,
-                                      animated: Bool = true,
-                                      dismissible: Bool = false) {
-        viewController.isModalInPresentation = !dismissible
-        topMostViewController.present(viewController, animated: animated)
-    }
-
-    public func presentViewControllerFullScreen(_ viewController: UIViewController,
-                                                animated: Bool = true) {
-        viewController.modalPresentationStyle = .fullScreen
-        if let presentedViewController = navigationController.presentedViewController {
-            presentedViewController.present(viewController, animated: animated)
-        } else {
-            navigationController.present(viewController, animated: animated)
+            switch type {
+            case .navigation(let navigationController):
+                navigationController.popViewController(animated: animated)
+            case .split(let splitViewController):
+                /// Show primary view controller if it's hidden
+                /// Hide primary view controller if it's visible
+                switch splitViewController.displayMode {
+                case .secondaryOnly:
+                    splitViewController.show(.primary)
+                case .oneBesideSecondary, .oneOverSecondary:
+                    if splitViewController.isCollapsed {
+                        splitViewController.show(.primary)
+                    } else {
+                        splitViewController.hide(.primary)
+                    }
+                default:
+                    break
+                }
+            }
         }
     }
 
-    public func dismissTopMostViewController(animated: Bool = true,
-                                             completion: (() -> Void)? = nil) {
-        topMostViewController.dismiss(animated: animated, completion: completion)
-    }
-
-    public func popToRoot(animated: Bool = true) {
+    public func popToRoot(animated: Bool, secondaryViewController: UIViewController?) {
         if let topMostNavigationController = topMostViewController as? UINavigationController {
             topMostNavigationController.popToRootViewController(animated: animated)
         } else {
-            navigationController.popToRootViewController(animated: animated)
+            switch type {
+            case .navigation(let navigationController):
+                navigationController.popToRootViewController(animated: animated)
+            case .split(let splitViewController):
+                splitViewController.show(.primary)
+                if let secondaryViewController {
+                    secondaryViewController.navigationItem.hidesBackButton = true
+                    let navigationController = UINavigationController(rootViewController: secondaryViewController)
+                    // Set to nil before setting to the real secondary view controller
+                    // otherwise in spit mode, secondary view is shown instead of primary one.
+                    splitViewController.setViewController(nil, for: .secondary)
+                    splitViewController.setViewController(navigationController, for: .secondary)
+                }
+            }
         }
     }
 
     public func isAtRootViewController() -> Bool {
-        if let presentedNavigationController =
-            navigationController.presentedViewController as? UINavigationController {
-            return presentedNavigationController.viewControllers.count == 1
-        } else {
-            return navigationController.viewControllers.count == 1
+        if topMostViewController == rootViewController {
+            switch type {
+            case .navigation(let navigationController):
+                return navigationController.viewControllers.count == 1
+            case .split:
+                return true
+            }
+        } else if let topMostNavigationController = topMostViewController as? UINavigationController {
+            return topMostNavigationController.viewControllers.count == 1
         }
+        return false
     }
 }
 
 public extension Coordinator {
     func toggleSidebar() { coordinatorDelegate?.coordinatorWantsToToggleSidebar() }
-
     func showLoadingHud() { coordinatorDelegate?.coordinatorWantsToShowLoadingHud() }
-
     func hideLoadingHud() { coordinatorDelegate?.coordinatorWantsToHideLoadingHud() }
-
     func alertError(_ error: Error) { coordinatorDelegate?.coordinatorWantsToAlertError(error) }
 }
 
@@ -151,5 +215,17 @@ private final class PPNavigationController: UINavigationController, UIGestureRec
 
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         viewControllers.count > 1
+    }
+}
+
+private final class PPSplitViewController: UISplitViewController {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        show(.primary)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        show(.primary)
     }
 }

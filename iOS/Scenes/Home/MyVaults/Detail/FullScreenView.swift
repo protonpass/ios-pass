@@ -70,6 +70,7 @@ struct FullScreenView: View {
                 UIScreen.main.brightness = originalBrightness
             }
         }
+        .navigationViewStyle(.stack)
     }
 
     @ToolbarContentBuilder

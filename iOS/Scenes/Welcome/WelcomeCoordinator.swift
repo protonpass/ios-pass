@@ -62,7 +62,7 @@ final class WelcomeCoordinator: DeinitPrintable {
         return WelcomeViewController(variant: welcomeScreenVariant,
                                      delegate: self,
                                      username: nil,
-                                     signupAvailable: false)
+                                     signupAvailable: true)
     }
 
     private func makeForceUpgradeDelegate() -> ForceUpgradeDelegate {
@@ -84,7 +84,7 @@ final class WelcomeCoordinator: DeinitPrintable {
                      forceUpgradeDelegate: forceUpgradeServiceDelegate,
                      minimumAccountType: .internal,
                      paymentsAvailability: .notAvailable,
-                     signupAvailability: .notAvailable)
+                     signupAvailability: .available(parameters: signUpParameters))
     }
 }
 

@@ -37,10 +37,6 @@ protocol HomeCoordinatorDelegate: AnyObject {
     func homeCoordinatorRequestsBiometricAuthentication()
 }
 
-// swiftlint:disable:next todo
-// TODO: Make width dynamic based on screen orientation
-private let kMenuWidth = UIScreen.main.bounds.width * 4 / 5
-
 final class HomeCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -62,6 +58,7 @@ final class HomeCoordinator: DeinitPrintable {
     }
 
     // Side menu
+    private lazy var sideMenuWidth = calculateSideMenuWidth()
     private lazy var sideMenuController = provideSideMenuController()
     private lazy var sidebarViewModel = provideSidebarViewModel()
     private lazy var sidebarViewController = provideSidebarViewController()
@@ -144,22 +141,23 @@ final class HomeCoordinator: DeinitPrintable {
         self.observeForegroundEntrance()
     }
 
-    func onboardIfNecessary() {
-        guard !preferences.onboarded else { return }
+    func onboardIfNecessary(force: Bool) {
+        if !force, preferences.onboarded { return }
         let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
                                                       preferences: preferences,
                                                       bannerManager: bannerManager)
         let onboardingView = OnboardingView(viewModel: onboardingViewModel)
         let onboardingViewController = UIHostingController(rootView: onboardingView)
-        onboardingViewController.modalPresentationStyle = .fullScreen
-        rootViewController.present(onboardingViewController, animated: true)
+        onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
+        onboardingViewController.isModalInPresentation = true
+        rootViewController.topMostViewController.present(onboardingViewController, animated: true)
     }
 }
 
 // MARK: - Initialization additional set ups
 private extension HomeCoordinator {
     private func setUpSideMenuPreferences() {
-        SideMenuController.preferences.basic.menuWidth = kMenuWidth
+        SideMenuController.preferences.basic.menuWidth = sideMenuWidth
         SideMenuController.preferences.basic.position = .sideBySide
         SideMenuController.preferences.basic.enablePanGesture = true
         SideMenuController.preferences.basic.enableRubberEffectWhenPanning = false
@@ -214,6 +212,16 @@ private extension HomeCoordinator {
 
 // MARK: - Lazy var providers
 private extension HomeCoordinator {
+    func calculateSideMenuWidth() -> CGFloat {
+        if UIDevice.current.isIpad {
+            return 327
+        } else {
+            let bounds = UIScreen.main.bounds
+            let minEdge = min(bounds.width, bounds.height)
+            return minEdge * 4 / 5
+        }
+    }
+
     func provideSideMenuController() -> SideMenuController {
         SideMenuController(contentViewController: myVaultsRootViewController,
                            menuViewController: sidebarViewController)
@@ -226,7 +234,7 @@ private extension HomeCoordinator {
     }
 
     func provideSidebarViewController() -> UIViewController {
-        let sidebarView = SidebarView(viewModel: self.sidebarViewModel, width: kMenuWidth)
+        let sidebarView = SidebarView(viewModel: self.sidebarViewModel, width: sideMenuWidth)
         return UIHostingController(rootView: sidebarView)
     }
 
@@ -295,9 +303,9 @@ extension HomeCoordinator {
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
         case .devPreviews:
-            let view = DevPreviewsView(credentialManager: credentialManager,
-                                       preferences: preferences,
-                                       bannerManager: bannerManager)
+            let viewModel = DevPreviewsViewModel()
+            viewModel.delegate = self
+            let view = DevPreviewsView(viewModel: viewModel)
             rootViewController.present(UIHostingController(rootView: view), animated: true)
         case .settings:
             sideMenuController.setContentViewController(to: settingsRootViewController,
@@ -517,6 +525,17 @@ extension HomeCoordinator: SettingsCoordinatorDelegate {
         myVaultsCoordinator.refreshItems()
         trashCoordinator.refreshTrashedItems()
         bannerManager.displayBottomInfoMessage("Fully synchronized")
+    }
+}
+
+// MARK: - DevPreviewsViewModelDelegate
+extension HomeCoordinator: DevPreviewsViewModelDelegate {
+    func devPreviewsViewModelWantsToOnboard() {
+        onboardIfNecessary(force: true)
+    }
+
+    func devPreviewsViewModelWantsToEnableAutoFill() {
+        myVaultsCoordinator.vaultContentViewModelWantsToEnableAutoFill()
     }
 }
 

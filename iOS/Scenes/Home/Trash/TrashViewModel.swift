@@ -29,7 +29,7 @@ protocol TrashViewModelDelegate: AnyObject {
     func trashViewModelWantsToShowLoadingHud()
     func trashViewModelWantsToHideLoadingHud()
     func trashViewModelWantsShowItemDetail(_ item: ItemContent)
-    func trashViewModelDidRestoreItem(_ type: ItemContentType)
+    func trashViewModelDidRestoreItem(_ item: ItemIdentifiable, type: ItemContentType)
     func trashViewModelDidRestoreAllItems(count: Int)
     func trashViewModelDidDeleteItem(_ type: ItemContentType)
     func trashViewModelDidEmptyTrash()
@@ -148,7 +148,7 @@ extension TrashViewModel {
                 delegate?.trashViewModelWantsToShowLoadingHud()
                 try await restoreItemTask(item).value
                 remove(item)
-                delegate?.trashViewModelDidRestoreItem(item.type)
+                delegate?.trashViewModelDidRestoreItem(item, type: item.type)
             } catch {
                 delegate?.trashViewModelDidFail(error)
             }

@@ -23,6 +23,7 @@ import Core
 import UIKit
 
 protocol ItemDetailViewModelDelegate: AnyObject {
+    func itemDetailViewModelWantsToGoBack()
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel)
     func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String)
@@ -57,6 +58,10 @@ class BaseItemDetailViewModel {
     func copyToClipboard(text: String, message: String) {
         UIPasteboard.general.string = text
         delegate?.itemDetailViewModelWantsToDisplayInformativeMessage(message)
+    }
+
+    func goBack() {
+        delegate?.itemDetailViewModelWantsToGoBack()
     }
 
     func edit() {
