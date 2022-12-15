@@ -113,7 +113,7 @@ open class Coordinator: CoordinatorProtocol {
             navigationController.setViewControllers([viewController], animated: true)
         case .split(let splitViewController):
             splitViewController.setViewController(viewController, for: .primary)
-            if let secondaryViewController {
+            if splitViewController.isCollapsed, let secondaryViewController {
                 splitViewController.setViewController(secondaryViewController, for: .secondary)
             }
         }
@@ -149,10 +149,16 @@ open class Coordinator: CoordinatorProtocol {
                 /// Show primary view controller if it's hidden
                 /// Hide primary view controller if it's visible
                 switch splitViewController.displayMode {
-                case .oneBesideSecondary:
-                    splitViewController.hide(.primary)
-                default:
+                case .secondaryOnly:
                     splitViewController.show(.primary)
+                case .oneBesideSecondary, .oneOverSecondary:
+                    if splitViewController.isCollapsed {
+                        splitViewController.show(.primary)
+                    } else {
+                        splitViewController.hide(.primary)
+                    }
+                default:
+                    break
                 }
             }
         }
