@@ -23,7 +23,6 @@ import SwiftUI
 import UIComponents
 
 struct NoteDetailView: View {
-    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: NoteDetailViewModel
 
     init(viewModel: NoteDetailViewModel) {
@@ -53,7 +52,7 @@ struct NoteDetailView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: dismiss.callAsFunction) {
+            Button(action: viewModel.goBack) {
                 Image(uiImage: IconProvider.chevronLeft)
                     .foregroundColor(.primary)
             }

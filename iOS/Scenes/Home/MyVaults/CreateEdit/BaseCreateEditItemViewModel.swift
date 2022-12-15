@@ -28,7 +28,7 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
-    func createEditItemViewModelDidTrashItem(_ type: ItemContentType)
+    func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType)
     func createEditItemViewModelDidFail(_ error: Error)
 }
 
@@ -65,7 +65,6 @@ enum ItemCreationType {
 
 class BaseCreateEditItemViewModel {
     @Published private(set) var isSaving = false
-    @Published private(set) var isTrashed = false
     @Published var isObsolete = false
 
     let shareId: String
@@ -135,8 +134,7 @@ class BaseCreateEditItemViewModel {
                 let item = try await getItemTask(shareId: itemContent.shareId,
                                                  itemId: itemContent.itemId).value
                 try await trashItemTask(item: item).value
-                isTrashed = true
-                delegate?.createEditItemViewModelDidTrashItem(itemContentType())
+                delegate?.createEditItemViewModelDidTrashItem(item, type: itemContentType())
             } catch {
                 delegate?.createEditItemViewModelDidFail(error)
             }

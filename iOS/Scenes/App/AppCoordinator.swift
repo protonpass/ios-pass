@@ -172,7 +172,7 @@ final class AppCoordinator {
             self.homeCoordinator = homeCoordinator
             self.welcomeCoordinator = nil
             animateUpdateRootViewController(homeCoordinator.rootViewController) {
-                homeCoordinator.onboardIfNecessary()
+                homeCoordinator.onboardIfNecessary(force: false)
             }
             if !manualLogIn {
                 self.requestBiometricAuthenticationIfNecessary()
