@@ -303,7 +303,7 @@ extension HomeCoordinator {
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
         case .devPreviews:
-            let viewModel = DevPreviewsViewModel()
+            let viewModel = DevPreviewsViewModel(itemRepository: itemRepository)
             viewModel.delegate = self
             let view = DevPreviewsView(viewModel: viewModel)
             rootViewController.present(UIHostingController(rootView: view), animated: true)
@@ -530,12 +530,30 @@ extension HomeCoordinator: SettingsCoordinatorDelegate {
 
 // MARK: - DevPreviewsViewModelDelegate
 extension HomeCoordinator: DevPreviewsViewModelDelegate {
+    func devPreviewsViewModelWantsToShowLoadingHud() {
+        showLoadingHud()
+    }
+
+    func devPreviewsViewModelWantsToHideLoadingHud() {
+        hideLoadingHud()
+    }
+
     func devPreviewsViewModelWantsToOnboard() {
         onboardIfNecessary(force: true)
     }
 
     func devPreviewsViewModelWantsToEnableAutoFill() {
         myVaultsCoordinator.vaultContentViewModelWantsToEnableAutoFill()
+    }
+
+    func devPreviewsViewModelDidTrashAllItems(count: Int) {
+        myVaultsCoordinator.refreshItems()
+        trashCoordinator.refreshTrashedItems()
+        bannerManager.displayBottomInfoMessage("\(count) item(s) sent to trash")
+    }
+
+    func devPreviewsViewModelDidFail(_ error: Error) {
+        alert(error: error)
     }
 }
 

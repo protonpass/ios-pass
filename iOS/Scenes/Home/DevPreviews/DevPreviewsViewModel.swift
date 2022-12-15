@@ -23,12 +23,20 @@ import Core
 import UIComponents
 
 protocol DevPreviewsViewModelDelegate: AnyObject {
+    func devPreviewsViewModelWantsToShowLoadingHud()
+    func devPreviewsViewModelWantsToHideLoadingHud()
     func devPreviewsViewModelWantsToOnboard()
     func devPreviewsViewModelWantsToEnableAutoFill()
+    func devPreviewsViewModelDidTrashAllItems(count: Int)
+    func devPreviewsViewModelDidFail(_ error: Error)
 }
 
 final class DevPreviewsViewModel {
-    init() {}
+    private let itemRepository: ItemRepositoryProtocol
+
+    init(itemRepository: ItemRepositoryProtocol) {
+        self.itemRepository = itemRepository
+    }
 
     weak var delegate: DevPreviewsViewModelDelegate?
 
@@ -38,5 +46,18 @@ final class DevPreviewsViewModel {
 
     func enableAutoFill() {
         delegate?.devPreviewsViewModelWantsToEnableAutoFill()
+    }
+
+    @MainActor
+    func trashAllItems() async {
+        defer { delegate?.devPreviewsViewModelWantsToHideLoadingHud() }
+        do {
+            delegate?.devPreviewsViewModelWantsToShowLoadingHud()
+            let items = try await itemRepository.getItems(forceRefresh: false, state: .active)
+            try await itemRepository.trashItems(items)
+            delegate?.devPreviewsViewModelDidTrashAllItems(count: items.count)
+        } catch {
+            delegate?.devPreviewsViewModelDidFail(error)
+        }
     }
 }
