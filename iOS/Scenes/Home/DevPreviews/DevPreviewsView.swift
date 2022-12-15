@@ -35,6 +35,7 @@ struct DevPreviewsView: View {
             Form {
                 OnboardingSection(viewModel: viewModel)
                 HapticFeedbacksSection()
+                TrashAllItemsSection(viewModel: viewModel)
             }
             .navigationTitle("Developer previews")
             .navigationBarTitleDisplayMode(.large)
@@ -65,20 +66,20 @@ private struct OnboardingSection: View {
                 Text("Trigger onboarding process")
             }
 
-            Button(action: viewModel.enableAutoFill) {
-                Text("Trigger turn on AutoFill page")
-            }
-
             if isShowingAutoFillBanner {
                 TurnOnAutoFillBanner(onAction: viewModel.enableAutoFill,
-                                     onCancel: hideAutoFillBanner)
+                                     onCancel: toggleAutoFillBanner)
+            } else {
+                Button(action: toggleAutoFillBanner) {
+                    Text("Show turn on AutoFill banner")
+                }
             }
         }, header: {
-            Text("Onboarding")
+            Text("👋 Onboarding")
         })
     }
 
-    private func hideAutoFillBanner() {
+    private func toggleAutoFillBanner() {
         withAnimation {
             isShowingAutoFillBanner.toggle()
         }
@@ -86,6 +87,7 @@ private struct OnboardingSection: View {
 }
 
 private struct HapticFeedbacksSection: View {
+    @State private var isShowingAllOptions = false
     var body: some View {
         Section(content: {
             Group {
@@ -106,54 +108,66 @@ private struct HapticFeedbacksSection: View {
                 }, label: {
                     Text("Error")
                 })
+
+                if !isShowingAllOptions {
+                    Button(action: {
+                        withAnimation {
+                            isShowingAllOptions.toggle()
+                        }
+                    }, label: {
+                        Text("Show more...")
+                    })
+                }
             }
 
-            Button(action: {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            }, label: {
-                Text("Light")
-            })
+            if isShowingAllOptions {
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }, label: {
+                    Text("Light")
+                })
 
-            Button(action: {
-                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-            }, label: {
-                Text("Medium")
-            })
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                }, label: {
+                    Text("Medium")
+                })
 
-            Button(action: {
-                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-            }, label: {
-                Text("Heavy")
-            })
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+                }, label: {
+                    Text("Heavy")
+                })
 
-            Button(action: {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-            }, label: {
-                Text("Soft")
-            })
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                }, label: {
+                    Text("Soft")
+                })
 
-            Button(action: {
-                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
-            }, label: {
-                Text("Rigid")
-            })
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+                }, label: {
+                    Text("Rigid")
+                })
 
-            Button(action: {
-                UISelectionFeedbackGenerator().selectionChanged()
-            }, label: {
-                Text("Selection")
-            })
+                Button(action: {
+                    UISelectionFeedbackGenerator().selectionChanged()
+                }, label: {
+                    Text("Selection")
+                })
 
-            Button(action: {
-                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            }, label: {
-                Text("Old school")
-            })
+                Button(action: {
+                    AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                }, label: {
+                    Text("Old school")
+                })
 
-            NavigationLink(destination: { FineTunedHapticFeedbackView() },
-                           label: { Text("Fine-tuned haptic feedbacks") })
+                NavigationLink(destination: { FineTunedHapticFeedbackView() },
+                               label: { Text("Fine-tuned haptic feedbacks") })
+            }
         }, header: {
-            Text("Haptic feedbacks")
+            Label("Haptic feedbacks", systemImage: "iphone.radiowaves.left.and.right")
         })
     }
 }
@@ -203,5 +217,30 @@ private struct FineTunedHapticFeedbackView: View {
             }
         }
         .navigationTitle("Fine-tuned haptic feedbacks")
+    }
+}
+
+private struct TrashAllItemsSection: View {
+    @State private var isShowingAlert = false
+    let viewModel: DevPreviewsViewModel
+
+    var body: some View {
+        Section(content: {
+            Button(role: .destructive,
+                   action: { isShowingAlert.toggle() },
+                   label: { Text("Send all items to trash") })
+        }, header: {
+            Text("🗑️")
+        })
+        .alert(
+            "All items will be trashed",
+            isPresented: $isShowingAlert,
+            actions: {
+                Button(role: .destructive,
+                       action: viewModel.trashAllItems,
+                       label: { Text("Trash 'em all") })
+                Button(role: .cancel, label: { Text("Cancel") })
+            },
+            message: { Text("Please confirm") })
     }
 }
