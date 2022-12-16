@@ -39,8 +39,7 @@ extension ItemEntity {
     @NSManaged var isLogInItem: Bool
     @NSManaged var itemID: String?
     @NSManaged var itemKeySignature: String?
-    /// Is a custom field. The time interval since 1970 of the moment the item is last used in auto filling context
-    @NSManaged var lastUsedTime: Int64
+    @NSManaged var lastUseTime: Int64
     @NSManaged var modifyTime: Int64
     @NSManaged var revision: Int16
     @NSManaged var revisionTime: Int64
@@ -99,17 +98,16 @@ extension ItemEntity {
                                         aliasEmail: aliasEmail,
                                         createTime: createTime,
                                         modifyTime: modifyTime,
+                                        lastUseTime: lastUseTime,
                                         revisionTime: revisionTime)
 
         return .init(shareId: shareID,
                      item: itemRevision,
                      encryptedContent: symmetricallyEncryptedContent,
-                     lastUsedTime: lastUsedTime,
                      isLogInItem: isLogInItem)
     }
 
-    func hydrate(from item: SymmetricallyEncryptedItem,
-                 lastUsedTime: Int64? = nil) {
+    func hydrate(from item: SymmetricallyEncryptedItem) {
         self.itemID = item.item.itemID
         self.revision = item.item.revision
         self.contentFormatVersion = item.item.contentFormatVersion
@@ -123,10 +121,9 @@ extension ItemEntity {
         self.aliasEmail = item.item.aliasEmail
         self.createTime = item.item.createTime
         self.modifyTime = item.item.modifyTime
+        self.lastUseTime = item.item.lastUseTime
+        self.revisionTime = item.item.revisionTime
         self.shareID = item.shareId
         self.isLogInItem = item.isLogInItem
-        if let lastUsedTime {
-            self.lastUsedTime = lastUsedTime
-        }
     }
 }

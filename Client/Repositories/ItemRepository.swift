@@ -87,8 +87,8 @@ public protocol ItemRepositoryProtocol {
     /// Get active log in items of all shares
     func getActiveLogInItems(forceRefresh: Bool) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Update locally the last used time of an item
-    func update(item: SymmetricallyEncryptedItem, lastUsedTime: TimeInterval) async throws
+    /// Update the last use time of an item. Only log in items are concerned.
+    func update(item: SymmetricallyEncryptedItem, lastUseTime: TimeInterval) async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -285,14 +285,18 @@ public extension ItemRepositoryProtocol {
         if case let .login(oldUsername, _, oldUrls) = decryptedOldItemContentData?.contentData,
            case let .login(newUsername, _, newUrls) = newItemContent.contentData {
             let ids = AutoFillCredential.IDs(shareId: shareId, itemId: itemId)
-            let deletedCredentials = oldUrls.map { AutoFillCredential(ids: ids,
-                                                                      username: oldUsername,
-                                                                      url: $0,
-                                                                      lastUsedTime: encryptedItem.lastUsedTime) }
-            let newCredentials = newUrls.map { AutoFillCredential(ids: ids,
-                                                                  username: newUsername,
-                                                                  url: $0,
-                                                                  lastUsedTime: encryptedItem.lastUsedTime) }
+            let deletedCredentials = oldUrls.map { oldUrl in
+                AutoFillCredential(ids: ids,
+                                   username: oldUsername,
+                                   url: oldUrl,
+                                   lastUseTime: encryptedItem.item.lastUseTime)
+            }
+            let newCredentials = newUrls.map { newUrl in
+                AutoFillCredential(ids: ids,
+                                   username: newUsername,
+                                   url: newUrl,
+                                   lastUseTime: encryptedItem.item.lastUseTime)
+            }
             delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
             delegate?.itemRepositoryHasNewCredentials(newCredentials)
             PPLogger.shared?.log("Delegated updated credential")
@@ -324,10 +328,16 @@ public extension ItemRepositoryProtocol {
         return allLogInItems
     }
 
-    func update(item: SymmetricallyEncryptedItem, lastUsedTime: TimeInterval) async throws {
-        PPLogger.shared?.log("Updating item's (\(item.item.itemID) lastUsedTime \(lastUsedTime)")
-        try await localItemDatasoure.update(item: item, lastUsedTime: lastUsedTime)
-        PPLogger.shared?.log("Updated item's (\(item.item.itemID) lastUsedTime \(lastUsedTime)")
+    func update(item: SymmetricallyEncryptedItem, lastUseTime: TimeInterval) async throws {
+        PPLogger.shared?.log("Updating item's (\(item.item.itemID) lastUsedTime \(lastUseTime)")
+        let updatedItem =
+        try await remoteItemRevisionDatasource.updateLastUseTime(shareId: item.shareId,
+                                                                 itemId: item.itemId,
+                                                                 lastUseTime: lastUseTime)
+        let encryptedUpdatedItem = try await symmetricallyEncrypt(itemRevision: updatedItem,
+                                                                  shareId: item.shareId)
+        try await localItemDatasoure.upsertItems([encryptedUpdatedItem])
+        PPLogger.shared?.log("Updated item's (\(item.item.itemID) lastUsedTime \(lastUseTime)")
     }
 }
 
@@ -384,7 +394,6 @@ private extension ItemRepositoryProtocol {
         return .init(shareId: shareId,
                      item: itemRevision,
                      encryptedContent: encryptedContent,
-                     lastUsedTime: 0,
                      isLogInItem: isLogInItem)
     }
 
@@ -400,7 +409,7 @@ private extension ItemRepositoryProtocol {
                                                         itemId: decryptedLogInItem.itemId),
                                              username: username,
                                              url: url,
-                                             lastUsedTime: encryptedLogInItem.lastUsedTime))
+                                             lastUseTime: encryptedLogInItem.item.lastUseTime))
                 }
             }
         }

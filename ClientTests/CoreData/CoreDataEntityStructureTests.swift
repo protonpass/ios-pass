@@ -123,7 +123,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "userSignature", on: sut, hasType: .string)
         verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
         verifyAttribute(named: "isLogInItem", on: sut, hasType: .boolean)
-        verifyAttribute(named: "lastUsedTime", on: sut, hasType: .integer64)
+        verifyAttribute(named: "lastUseTime", on: sut, hasType: .integer64)
     }
 
     func testShareEventIDEntity() {

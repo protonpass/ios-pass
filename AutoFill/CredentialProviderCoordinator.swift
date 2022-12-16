@@ -124,7 +124,8 @@ public final class CredentialProviderCoordinator {
                                                                             itemId: ids.itemId) {
                         let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
                         if case let .login(username, password, _) = decryptedItem.contentData {
-                            complete(credential: .init(user: username, password: password),
+                            complete(quickTypeBar: true,
+                                     credential: .init(user: username, password: password),
                                      encryptedItem: encryptedItem,
                                      itemRepository: itemRepository,
                                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
@@ -151,7 +152,8 @@ public final class CredentialProviderCoordinator {
                                                   credentialIdentity: credentialIdentity)
         viewModel.onFailure = handle(error:)
         viewModel.onSuccess = { [unowned self] credential, item in
-            complete(credential: credential,
+            complete(quickTypeBar: false,
+                     credential: credential,
                      encryptedItem: item,
                      itemRepository: itemRepository,
                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
@@ -175,7 +177,7 @@ public final class CredentialProviderCoordinator {
                 }
             }
         default:
-            cancel(errorCode: .failed)
+            alert(error: error)
         }
     }
 
@@ -257,7 +259,7 @@ extension CredentialProviderCoordinator: APIServiceDelegate {
                                           itemId: encryptedItem.item.itemID,
                                           username: email,
                                           url: $0.absoluteString,
-                                          lastUsedTime: Int64(Date().timeIntervalSince1970)) }
+                                          lastUseTime: Int64(Date().timeIntervalSince1970)) }
             try await credentialManager.insert(credentials: credentials)
         }
     }
@@ -270,20 +272,26 @@ extension CredentialProviderCoordinator {
         context.cancelRequest(withError: error)
     }
 
-    func complete(credential: ASPasswordCredential,
+    func complete(quickTypeBar: Bool,
+                  credential: ASPasswordCredential,
                   encryptedItem: SymmetricallyEncryptedItem,
                   itemRepository: ItemRepositoryProtocol,
                   serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        Task {
+        Task { @MainActor in
             do {
                 try await updateRank(encryptedItem: encryptedItem,
                                      symmetricKey: itemRepository.symmetricKey,
                                      serviceIdentifiers: serviceIdentifiers)
                 try await itemRepository.update(item: encryptedItem,
-                                                lastUsedTime: Date().timeIntervalSince1970)
+                                                lastUseTime: Date().timeIntervalSince1970)
                 context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
             } catch {
                 PPLogger.shared?.log(error)
+                if quickTypeBar {
+                    cancel(errorCode: .userInteractionRequired)
+                } else {
+                    alert(error: error)
+                }
             }
         }
     }
@@ -408,6 +416,17 @@ private extension CredentialProviderCoordinator {
         viewController.isModalInPresentation = !dismissible
         topMostViewController.present(viewController, animated: animated)
     }
+
+    func alert(error: Error) {
+        let alert = UIAlertController(title: "Error occured",
+                                      message: error.messageForTheUser,
+                                      preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [unowned self] _ in
+            self.cancel(errorCode: .failed)
+        }
+        alert.addAction(cancelAction)
+        rootViewController.present(alert, animated: true)
+    }
 }
 
 // MARK: - CredentialsViewModelDelegate
@@ -433,7 +452,8 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                                        item: Client.SymmetricallyEncryptedItem,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         guard let itemRepository else { return }
-        complete(credential: credential,
+        complete(quickTypeBar: false,
+                 credential: credential,
                  encryptedItem: item,
                  itemRepository: itemRepository,
                  serviceIdentifiers: serviceIdentifiers)
