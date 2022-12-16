@@ -107,8 +107,7 @@ extension ItemEntity {
                      isLogInItem: isLogInItem)
     }
 
-    func hydrate(from item: SymmetricallyEncryptedItem,
-                 lastUseTime: Int64? = nil) {
+    func hydrate(from item: SymmetricallyEncryptedItem) {
         self.itemID = item.item.itemID
         self.revision = item.item.revision
         self.contentFormatVersion = item.item.contentFormatVersion
@@ -122,13 +121,9 @@ extension ItemEntity {
         self.aliasEmail = item.item.aliasEmail
         self.createTime = item.item.createTime
         self.modifyTime = item.item.modifyTime
+        self.lastUseTime = item.item.lastUseTime
         self.revisionTime = item.item.revisionTime
         self.shareID = item.shareId
         self.isLogInItem = item.isLogInItem
-        if let lastUseTime {
-            self.lastUseTime = lastUseTime
-        } else {
-            self.lastUseTime = item.item.lastUseTime
-        }
     }
 }
