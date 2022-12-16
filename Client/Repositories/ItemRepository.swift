@@ -330,7 +330,13 @@ public extension ItemRepositoryProtocol {
 
     func update(item: SymmetricallyEncryptedItem, lastUseTime: TimeInterval) async throws {
         PPLogger.shared?.log("Updating item's (\(item.item.itemID) lastUsedTime \(lastUseTime)")
-        try await localItemDatasoure.update(item: item, lastUseTime: lastUseTime)
+        let updatedItem =
+        try await remoteItemRevisionDatasource.updateLastUseTime(shareId: item.shareId,
+                                                                 itemId: item.itemId,
+                                                                 lastUseTime: lastUseTime)
+        let encryptedUpdatedItem = try await symmetricallyEncrypt(itemRevision: updatedItem,
+                                                                  shareId: item.shareId)
+        try await localItemDatasoure.upsertItems([encryptedUpdatedItem])
         PPLogger.shared?.log("Updated item's (\(item.item.itemID) lastUsedTime \(lastUseTime)")
     }
 }
