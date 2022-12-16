@@ -30,7 +30,7 @@ public struct AutoFillCredential {
     let ids: IDs
     let username: String
     let url: String
-    let lastUsedTime: Int64
+    let lastUseTime: Int64
 }
 
 public extension AutoFillCredential {
@@ -38,10 +38,10 @@ public extension AutoFillCredential {
          itemId: String,
          username: String,
          url: String,
-         lastUsedTime: Int64) {
+         lastUseTime: Int64) {
         self.ids = .init(shareId: shareId, itemId: itemId)
         self.username = username
         self.url = url
-        self.lastUsedTime = lastUsedTime
+        self.lastUseTime = lastUseTime
     }
 }

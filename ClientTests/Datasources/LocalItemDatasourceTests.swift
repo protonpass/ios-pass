@@ -48,6 +48,8 @@ final class LocalItemDatasourceTests: XCTestCase {
         XCTAssertEqual(lhs.item.aliasEmail, rhs.item.aliasEmail)
         XCTAssertEqual(lhs.item.createTime, rhs.item.createTime)
         XCTAssertEqual(lhs.item.modifyTime, rhs.item.modifyTime)
+        XCTAssertEqual(lhs.item.revisionTime, rhs.item.revisionTime)
+        XCTAssertEqual(lhs.item.lastUseTime, rhs.item.lastUseTime)
         XCTAssertEqual(lhs.shareId, rhs.shareId)
         XCTAssertEqual(lhs.encryptedContent, rhs.encryptedContent)
     }
@@ -150,27 +152,6 @@ extension LocalItemDatasourceTests {
                                          itemId: givenItemId)
         let notNilItem = try XCTUnwrap(item)
         assertEqual(notNilItem, updatedItem)
-    }
-
-    func testUpdateLogInItemNotUpdatingLastUsedTime() async throws {
-        // Given
-        let givenItemId = String.random()
-        let givenShareId = String.random()
-        _ = try await sut.givenInsertedItem(itemId: givenItemId,
-                                            shareId: givenShareId,
-                                            isLogInItem: true)
-        let updatedItemRevision = ItemRevision.random(itemId: givenItemId)
-        let updatedItem = SymmetricallyEncryptedItem.random(shareId: givenShareId,
-                                                            item: updatedItemRevision,
-                                                            isLogInItem: true)
-        // When
-        try await sut.upsertItems([updatedItem])
-
-        // Then
-        let item = try await sut.getItem(shareId: givenShareId, itemId: givenItemId)
-        let notNilItem = try XCTUnwrap(item)
-        XCTAssertEqual(notNilItem.encryptedContent, updatedItem.encryptedContent)
-        XCTAssertNotEqual(notNilItem.lastUsedTime, updatedItem.lastUsedTime)
     }
 
     func testTrashItems() async throws {
@@ -374,7 +355,6 @@ extension LocalItemDatasource {
         let item = SymmetricallyEncryptedItem(shareId: shareId,
                                               item: itemRevision,
                                               encryptedContent: encryptedContent,
-                                              lastUsedTime: lastUsedItem,
                                               isLogInItem: isLogInItem)
         try await upsertItems([item])
         return item

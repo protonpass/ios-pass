@@ -257,7 +257,7 @@ extension CredentialProviderCoordinator: APIServiceDelegate {
                                           itemId: encryptedItem.item.itemID,
                                           username: email,
                                           url: $0.absoluteString,
-                                          lastUsedTime: Int64(Date().timeIntervalSince1970)) }
+                                          lastUseTime: Int64(Date().timeIntervalSince1970)) }
             try await credentialManager.insert(credentials: credentials)
         }
     }
@@ -280,7 +280,7 @@ extension CredentialProviderCoordinator {
                                      symmetricKey: itemRepository.symmetricKey,
                                      serviceIdentifiers: serviceIdentifiers)
                 try await itemRepository.update(item: encryptedItem,
-                                                lastUsedTime: Date().timeIntervalSince1970)
+                                                lastUseTime: Date().timeIntervalSince1970)
                 context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
             } catch {
                 PPLogger.shared?.log(error)
