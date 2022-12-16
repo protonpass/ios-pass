@@ -50,7 +50,7 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
 
     // MARK: - AutoFill related operations
     /// Update the last used time of an item. Item should be of type log in but we're not able to check.
-    func update(item: SymmetricallyEncryptedItem, lastUsedTime: TimeInterval) async throws
+    func update(item: SymmetricallyEncryptedItem, lastUseTime: TimeInterval) async throws
 
     /// Get all active log in items of a given share
     func getActiveLogInItems(shareId: String) async throws -> [SymmetricallyEncryptedItem]
@@ -122,11 +122,11 @@ public extension LocalItemDatasourceProtocol {
                                                 aliasEmail: item.item.aliasEmail,
                                                 createTime: item.item.createTime,
                                                 modifyTime: modifiedItem.modifyTime,
+                                                lastUseTime: item.item.lastUseTime,
                                                 revisionTime: modifiedItem.revisionTime)
                 try await upsertItems([.init(shareId: item.shareId,
                                              item: modifiedItem,
                                              encryptedContent: item.encryptedContent,
-                                             lastUsedTime: item.lastUsedTime,
                                              isLogInItem: item.isLogInItem)])
             }
         }
@@ -159,13 +159,13 @@ public extension LocalItemDatasourceProtocol {
                           context: taskContext)
     }
 
-    func update(item: SymmetricallyEncryptedItem, lastUsedTime: TimeInterval) async throws {
+    func update(item: SymmetricallyEncryptedItem, lastUseTime: TimeInterval) async throws {
         let taskContext = newTaskContext(type: .insert)
         let entity = ItemEntity.entity(context: taskContext)
         let batchInsertRequest = newBatchInsertRequest(entity: entity,
                                                        sourceItems: [item]) { managedObject, item in
             (managedObject as? ItemEntity)?.hydrate(from: item,
-                                                    lastUsedTime: Int64(lastUsedTime))
+                                                    lastUseTime: Int64(lastUseTime))
         }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }

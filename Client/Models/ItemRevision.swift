@@ -71,6 +71,9 @@ public struct ItemRevision: Decodable {
     /// Time of last update of the item
     public let modifyTime: Int64
 
+    /// Time when the item was last used
+    public let lastUseTime: Int64
+
     /// Creation time of this revision
     public let revisionTime: Int64
 
