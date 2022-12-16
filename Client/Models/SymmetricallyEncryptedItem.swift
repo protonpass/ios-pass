@@ -35,9 +35,6 @@ public struct SymmetricallyEncryptedItem {
     /// Symmetrically encrypted content in base 64 format
     public let encryptedContent: String
 
-    /// Time interval since 1970 of the moment when the item is last used
-    public let lastUsedTime: Int64
-
     /// Whether the item is type log in or not
     public let isLogInItem: Bool
 
@@ -77,7 +74,7 @@ public extension Array where Element == SymmetricallyEncryptedItem {
     func sorted() -> Self {
         let predicates: [AreInDecreasingOrder] =
         [
-            { $0.lastUsedTime > $1.lastUsedTime },
+            { $0.item.lastUseTime > $1.item.lastUseTime },
             { $0.item.modifyTime > $1.item.modifyTime }
         ]
         return sorted { lhs, rhs in

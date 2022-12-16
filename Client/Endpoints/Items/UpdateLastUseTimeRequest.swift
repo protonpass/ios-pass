@@ -1,6 +1,6 @@
 //
-// AutoFillCredential.swift
-// Proton Pass - Created on 28/09/2022.
+// UpdateLastUseTimeRequest.swift
+// Proton Pass - Created on 16/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,30 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
+public struct UpdateLastUseTimeRequest: Encodable {
+    public let lastUseTime: Int
 
-public struct AutoFillCredential {
-    // swiftlint:disable:next type_name
-    public struct IDs: CodableBase64 {
-        public let shareId: String
-        public let itemId: String
-    }
-
-    let ids: IDs
-    let username: String
-    let url: String
-    let lastUseTime: Int64
-}
-
-public extension AutoFillCredential {
-    init(shareId: String,
-         itemId: String,
-         username: String,
-         url: String,
-         lastUseTime: Int64) {
-        self.ids = .init(shareId: shareId, itemId: itemId)
-        self.username = username
-        self.url = url
-        self.lastUseTime = lastUseTime
+    enum CodingKeys: String, CodingKey {
+        case lastUseTime = "LastUseTime"
     }
 }

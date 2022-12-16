@@ -114,7 +114,7 @@ public extension CredentialManagerProtocol {
                                              itemId: decryptedItem.itemId,
                                              username: username,
                                              url: url,
-                                             lastUsedTime: encryptedItem.lastUsedTime))
+                                             lastUseTime: encryptedItem.item.lastUseTime))
                 }
             }
         }
@@ -170,6 +170,6 @@ private extension ASPasswordCredentialIdentity {
         self.init(serviceIdentifier: .init(identifier: credential.url, type: .URL),
                   user: credential.username,
                   recordIdentifier: try credential.ids.serializeBase64())
-        self.rank = Int(credential.lastUsedTime)
+        self.rank = Int(credential.lastUseTime)
     }
 }

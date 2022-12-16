@@ -26,23 +26,23 @@ final class ArrayPlusSymmetricallyEncryptedItemSortTests: XCTestCase {
     func testSort() {
         // Given
         let item1 = SymmetricallyEncryptedItem.random(item: .random(itemId: .random(),
-                                                                    modifyTime: 444),
-                                                      lastUsedTime: 777)
+                                                                    lastUseTime: 777,
+                                                                    modifyTime: 444))
         let item2 = SymmetricallyEncryptedItem.random(item: .random(itemId: .random(),
-                                                                    modifyTime: 111),
-                                                      lastUsedTime: 777)
+                                                                    lastUseTime: 777,
+                                                                    modifyTime: 111))
         let item3 = SymmetricallyEncryptedItem.random(item: .random(itemId: .random(),
-                                                                    modifyTime: 333),
-                                                      lastUsedTime: 777)
+                                                                    lastUseTime: 777,
+                                                                    modifyTime: 333))
         let item4 = SymmetricallyEncryptedItem.random(item: .random(itemId: .random(),
-                                                                    modifyTime: 222),
-                                                      lastUsedTime: 666)
+                                                                    lastUseTime: 666,
+                                                                    modifyTime: 222))
         let item5 = SymmetricallyEncryptedItem.random(item: .random(itemId: .random(),
-                                                                    modifyTime: 555),
-                                                      lastUsedTime: 666)
+                                                                    lastUseTime: 666,
+                                                                    modifyTime: 555))
         let item6 = SymmetricallyEncryptedItem.random(item: .random(itemId: .random(),
-                                                                    modifyTime: 666),
-                                                      lastUsedTime: 666)
+                                                                    lastUseTime: 666,
+                                                                    modifyTime: 666))
         let unsortedArray = [item1, item2, item3, item4, item5, item6]
 
         // When
