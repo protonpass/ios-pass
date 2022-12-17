@@ -44,7 +44,6 @@ public final class Preferences: ObservableObject {
         quickTypeBar = true
         failedAttemptCount = 0
         biometricAuthenticationEnabled = false
-        onboarded = false
         autoFillBannerDisplayed = false
     }
 }
