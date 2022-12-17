@@ -303,7 +303,8 @@ extension HomeCoordinator {
     func handleSidebarItem(_ sidebarItem: SidebarItem) {
         switch sidebarItem {
         case .devPreviews:
-            let viewModel = DevPreviewsViewModel(itemRepository: itemRepository)
+            let viewModel = DevPreviewsViewModel(itemRepository: itemRepository,
+                                                 preferences: preferences)
             viewModel.delegate = self
             let view = DevPreviewsView(viewModel: viewModel)
             rootViewController.present(UIHostingController(rootView: view), animated: true)
