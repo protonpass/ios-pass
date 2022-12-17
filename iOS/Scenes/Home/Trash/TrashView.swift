@@ -125,6 +125,11 @@ struct TrashView: View {
                     subtitleLineLimit: 1,
                     trailingView: { trailingView(for: item) })
                 .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
+                .swipeActions {
+                    Button(action: { viewModel.restore(item) },
+                           label: { Image(uiImage: IconProvider.clockRotateLeft) })
+                    .tint(.blue)
+                }
             }
             .listRowSeparator(.hidden)
         }

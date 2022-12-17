@@ -132,6 +132,11 @@ struct VaultContentView: View {
                                     subtitleLineLimit: 1,
                                     trailingView: { trailingView(for: item) })
                     .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
+                    .swipeActions {
+                        Button(action: { confirmTrash(item: item) },
+                               label: { Image(uiImage: IconProvider.trash) })
+                        .tint(.red)
+                    }
                 }
                 .listRowSeparator(.hidden)
             }, header: {
@@ -171,17 +176,18 @@ struct VaultContentView: View {
 
             Divider()
 
-            DestructiveButton(
-                title: "Move to Trash",
-                icon: IconProvider.trash,
-                action: {
-                    selectedItem = item
-                    isShowingTrashingAlert.toggle()
-                })
+            DestructiveButton(title: "Move to Trash",
+                              icon: IconProvider.trash,
+                              action: { confirmTrash(item: item) })
         }, label: {
             Image(uiImage: IconProvider.threeDotsHorizontal)
                 .foregroundColor(.secondary)
         })
+    }
+
+    private func confirmTrash(item: ItemListUiModel) {
+        selectedItem = item
+        isShowingTrashingAlert.toggle()
     }
 
     @ToolbarContentBuilder
