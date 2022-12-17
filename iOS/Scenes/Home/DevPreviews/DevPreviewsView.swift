@@ -28,7 +28,11 @@ import UIComponents
 /// Preview features under development
 struct DevPreviewsView: View {
     @Environment(\.dismiss) private var dismiss
-    let viewModel: DevPreviewsViewModel
+    @StateObject private var viewModel: DevPreviewsViewModel
+
+    init(viewModel: DevPreviewsViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
         NavigationView {
@@ -58,10 +62,14 @@ struct DevPreviewsView: View {
 
 private struct OnboardingSection: View {
     @State private var isShowingAutoFillBanner = true
-    let viewModel: DevPreviewsViewModel
+    @ObservedObject var viewModel: DevPreviewsViewModel
 
     var body: some View {
         Section(content: {
+            Toggle(isOn: $viewModel.onboarded) {
+                Text("Onboarded")
+            }
+
             Button(action: viewModel.onboard) {
                 Text("Trigger onboarding process")
             }

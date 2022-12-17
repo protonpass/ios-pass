@@ -31,11 +31,21 @@ protocol DevPreviewsViewModelDelegate: AnyObject {
     func devPreviewsViewModelDidFail(_ error: Error)
 }
 
-final class DevPreviewsViewModel {
+final class DevPreviewsViewModel: ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
+    private let preferences: Preferences
 
-    init(itemRepository: ItemRepositoryProtocol) {
+    @Published var onboarded: Bool {
+        didSet {
+            preferences.onboarded = onboarded
+        }
+    }
+
+    init(itemRepository: ItemRepositoryProtocol,
+         preferences: Preferences) {
         self.itemRepository = itemRepository
+        self.preferences = preferences
+        self.onboarded = preferences.onboarded
     }
 
     weak var delegate: DevPreviewsViewModelDelegate?
