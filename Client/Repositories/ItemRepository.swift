@@ -446,7 +446,7 @@ private extension ItemRepositoryProtocol {
                      vaultKeyPassphrase: vaultKeyPassphrase,
                      itemKey: latestItemKey,
                      itemKeyPassphrase: itemKeyPassphrase,
-                     addressKey: userData.getAddressKey())
+                     addressKey: try userData.getAddressKey())
     }
 }
 

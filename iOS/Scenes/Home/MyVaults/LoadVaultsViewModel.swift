@@ -63,7 +63,7 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
 
     private var createDefaultVaultTask: Task<Void, Error> {
         Task.detached(priority: .userInitiated) {
-            let addressKey = self.userData.getAddressKey()
+            let addressKey = try self.userData.getAddressKey()
             let createVaultRequest = try CreateVaultRequest(addressKey: addressKey,
                                                             name: "Personal",
                                                             description: "Personal vault")
