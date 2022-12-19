@@ -28,20 +28,36 @@ public struct AddressKey {
     public let keyPassphrase: String
 }
 
+public enum UserDataError: Error {
+    case noAddresses
+    case noAddressKeys
+    case noPassphrases
+    case noUserKeys
+}
+
 public extension UserData {
     // To be refactored: https://jira.protontech.ch/browse/PASSBE-201
-    func getAddressKey() -> AddressKey {
-        // swiftlint:disable force_unwrapping
-        // swiftlint:disable force_try
-        // swiftlint:disable line_length
-        let address = addresses.first!
-        let keyPassphrase = try! address.keys.first!.passphrase(userBinKeys: [user.keys.first!.privateKey.unArmor!],
-                                                                mailboxPassphrase: passphrases.first!.value)
+    func getAddressKey() throws -> AddressKey {
+        guard let address = addresses.first else {
+            throw UserDataError.noAddresses
+        }
+
+        guard let addressKey = address.keys.first else {
+            throw UserDataError.noAddressKeys
+        }
+
+        guard let userKeyData = user.keys.first?.privateKey.unArmor else {
+            throw UserDataError.noUserKeys
+        }
+
+        guard let passphrase = passphrases.first else {
+            throw UserDataError.noPassphrases
+        }
+
+        let keyPassphrase = try addressKey.passphrase(userBinKeys: [userKeyData],
+                                                      mailboxPassphrase: passphrase.value)
         return .init(addressId: address.addressID,
-                     key: address.keys.first!,
+                     key: addressKey,
                      keyPassphrase: keyPassphrase)
-        // swiftlint:enable force_unwrapping
-        // swiftlint:enable force_try
-        // swiftlint:enable line_length
     }
 }
