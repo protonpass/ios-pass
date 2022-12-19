@@ -54,7 +54,7 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
             defer { isCreating = false }
             do {
                 isCreating = true
-                let addressKey = userData.getAddressKey()
+                let addressKey = try userData.getAddressKey()
                 let createVaultRequest = try CreateVaultRequest(addressKey: addressKey,
                                                                 name: name,
                                                                 description: note)
