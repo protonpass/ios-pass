@@ -84,9 +84,9 @@ public final class BiometricAuthenticator: ObservableObject {
                 enabled = preferences.biometricAuthenticationEnabled
             }
             do {
-                let reason = enabled ?
-                "Please authenticate to enable local authentication" :
-                "Please authenticate to disable local authentication"
+                let reason = preferences.biometricAuthenticationEnabled ?
+                "Please authenticate to disable biometric authentication" :
+                "Please authenticate to enable biometric authentication"
                 let authenticated = try await authenticate(reason: reason)
                 if authenticated {
                     preferences.biometricAuthenticationEnabled.toggle()
