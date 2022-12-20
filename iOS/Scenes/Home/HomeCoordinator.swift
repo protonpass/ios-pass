@@ -60,7 +60,6 @@ final class HomeCoordinator: DeinitPrintable {
     // Side menu
     private lazy var sideMenuWidth = calculateSideMenuWidth()
     private lazy var sideMenuController = provideSideMenuController()
-    private lazy var sidebarViewModel = provideSidebarViewModel()
     private lazy var sidebarViewController = provideSidebarViewController()
 
     // Banner
@@ -227,14 +226,11 @@ private extension HomeCoordinator {
                            menuViewController: sidebarViewController)
     }
 
-    func provideSidebarViewModel() -> SideBarViewModel {
+    func provideSidebarViewController() -> UIViewController {
         let sideBarViewModel = SideBarViewModel(user: sessionData.userData.user)
         sideBarViewModel.delegate = self
-        return sideBarViewModel
-    }
-
-    func provideSidebarViewController() -> UIViewController {
-        let sidebarView = SidebarView(viewModel: self.sidebarViewModel, width: sideMenuWidth)
+        myVaultsCoordinator.itemCountDelegate = sideBarViewModel
+        let sidebarView = SidebarView(viewModel: sideBarViewModel, width: sideMenuWidth)
         return UIHostingController(rootView: sidebarView)
     }
 
@@ -256,7 +252,6 @@ private extension HomeCoordinator {
                                                       preferences: preferences)
         myVaultsCoordinator.coordinatorDelegate = self
         myVaultsCoordinator.delegate = self.trashCoordinator
-        myVaultsCoordinator.itemCountDelegate = sidebarViewModel
         return myVaultsCoordinator
     }
 
@@ -406,7 +401,6 @@ private extension HomeCoordinator {
 
     func signOut() {
         eventLoop.stop()
-        eventLoop.delegate = nil
         delegate?.homeCoordinatorDidSignOut()
     }
 }
