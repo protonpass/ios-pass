@@ -116,7 +116,11 @@ extension OnboardingViewModel {
     func secondaryAction() {
         switch state {
         case .autoFill, .autoFillEnabled:
-            state = .biometricAuthentication
+            if preferences.biometricAuthenticationEnabled {
+                state = .biometricAuthenticationEnabled
+            } else {
+                state = .biometricAuthentication
+            }
         case .biometricAuthentication, .biometricAuthenticationEnabled:
             state = .aliases
         case .aliases:
