@@ -93,7 +93,7 @@ extension OnboardingViewModel {
     func primaryAction() {
         switch state {
         case .autoFill:
-            UIApplication.shared.openSettings()
+            UIApplication.shared.openPasswordSettings()
 
         case .autoFillEnabled:
             if preferences.biometricAuthenticationEnabled {
