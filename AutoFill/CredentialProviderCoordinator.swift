@@ -513,8 +513,8 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
         showGeneratePasswordView(delegate: delegate)
     }
 
-    func createEditLoginViewModelDidRemoveAlias() {
-        bannerManager.displayBottomInfoMessage("Alias deleted")
+    func createEditLoginViewModelDidReceiveAliasCreationInfo() {
+        topMostViewController.dismiss(animated: true)
     }
 }
 
