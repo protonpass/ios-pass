@@ -79,7 +79,7 @@ private struct AutoFillSection: View {
                 VStack(alignment: .leading) {
                     // swiftlint:disable:next line_length
                     Text("You can enable AutoFill by going to Settings → Passwords → AutoFill Passwords -> Select Proton Pass")
-                    Button(action: UIApplication.shared.openSettings) {
+                    Button(action: UIApplication.shared.openPasswordSettings) {
                         Text("Open Settings")
                             .font(.caption)
                     }

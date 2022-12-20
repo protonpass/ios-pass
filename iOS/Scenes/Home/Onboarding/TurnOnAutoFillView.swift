@@ -69,7 +69,7 @@ struct TurnOnAutoFillView: View {
                         if viewModel.enabled {
                             dismiss()
                         } else {
-                            UIApplication.shared.openSettings()
+                            UIApplication.shared.openPasswordSettings()
                         }
                     }
                     .frame(height: 48)
