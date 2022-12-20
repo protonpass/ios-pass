@@ -158,13 +158,16 @@ struct OnboardingAutoFillEnabledView: View {
 private struct OnboardingBiometricAuthenticationView: View {
     let enabled: Bool
     var body: some View {
-        VStack {
-            Spacer()
-                .frame(height: 80)
+        ZStack {
+            Image(uiImage: PassIcon.onboardBiometricAuthenticationBackground)
+                .resizable()
+                .scaledToFit()
             Image(uiImage: enabled ?
                   PassIcon.onboardBiometricAuthenticationEnabled :
                     PassIcon.onboardBiometricAuthentication)
             .resizable()
+            .scaledToFit()
+            .frame(maxWidth: 180)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

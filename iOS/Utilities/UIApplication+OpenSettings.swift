@@ -21,8 +21,8 @@
 import UIKit
 
 extension UIApplication {
-    func openSettings() {
-        if let url = URL(string: UIApplication.openSettingsURLString), canOpenURL(url) {
+    func openPasswordSettings() {
+        if let url = URL(string: "App-prefs:PASSWORDS"), canOpenURL(url) {
             open(url)
         }
     }
