@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "OnboardBiometricAuthenticationEnabled.svg",
+      "filename" : "OnboardBiometricAuthenticationEnabled_light.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "OnboardBiometricAuthenticationEnabled_dark.svg",
       "idiom" : "universal"
     }
   ],
