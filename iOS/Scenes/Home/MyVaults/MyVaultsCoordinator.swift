@@ -429,10 +429,8 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
         showGeneratePasswordView(delegate: delegate, mode: .createLogin)
     }
 
-    func createEditLoginViewModelDidRemoveAlias() {
-        bannerManager?.displayBottomInfoMessage("Alias deleted")
-        vaultContentViewModel.fetchItems(forceRefresh: false)
-        delegate?.myVaultsCoordinatorWantsToRefreshTrash()
+    func createEditLoginViewModelDidReceiveAliasCreationInfo() {
+        dismissTopMostViewController(animated: true, completion: nil)
     }
 }
 

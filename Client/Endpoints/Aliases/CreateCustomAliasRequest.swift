@@ -19,14 +19,24 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public struct AliasCreationInfo {
+    public let title: String
     public let prefix: String
-    public let signedSuffix: String
+    public let suffix: Suffix
     public let mailboxIds: [Int]
+    public let note: String
 
-    public init(prefix: String, signedSuffix: String, mailboxIds: [Int]) {
+    public var aliasAddress: String { prefix + suffix.suffix }
+
+    public init(title: String,
+                prefix: String,
+                suffix: Suffix,
+                mailboxIds: [Int],
+                note: String) {
+        self.title = title
         self.prefix = prefix
-        self.signedSuffix = signedSuffix
+        self.suffix = suffix
         self.mailboxIds = mailboxIds
+        self.note = note
     }
 }
 
@@ -44,7 +54,7 @@ public struct CreateCustomAliasRequest {
 
     public init(info: AliasCreationInfo, item: CreateItemRequest) {
         self.prefix = info.prefix
-        self.signedSuffix = info.signedSuffix
+        self.signedSuffix = info.suffix.signedSuffix
         self.mailboxIDs = info.mailboxIds
         self.item = item
     }
