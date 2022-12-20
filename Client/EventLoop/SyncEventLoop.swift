@@ -64,7 +64,9 @@ public enum SyncEventLoopSkipReason {
 }
 
 /// A background event loop that keeps data up to date by synching after a given time interval
-public final class SyncEventLoop {
+public final class SyncEventLoop: DeinitPrintable {
+    deinit { print(deinitMessage) }
+
     // Self-intialized params
     private var reachability: Reachability?
     private var isReachable = true
