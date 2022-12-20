@@ -66,7 +66,7 @@ final class MailboxSelection: ObservableObject {
 }
 
 protocol AliasCreationDelegate: AnyObject {
-    func aliasCreationDidFinish(email: String)
+    func aliasCreationInfo(_ info: AliasCreationInfo)
 }
 
 protocol CreateEditAliasViewModelDelegate: AnyObject {
@@ -168,9 +168,11 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
         guard let selectedSuffix = suffixSelection?.selectedSuffix,
               let selectedMailboxes = mailboxSelection?.selectedMailboxes else { return nil }
-        return .init(prefix: prefix,
-                     signedSuffix: selectedSuffix.signedSuffix,
-                     mailboxIds: selectedMailboxes.map { $0.ID })
+        return .init(title: title,
+                     prefix: prefix,
+                     suffix: selectedSuffix,
+                     mailboxIds: selectedMailboxes.map { $0.ID },
+                     note: note)
     }
 
     override func additionalEdit() async throws {
@@ -186,9 +188,18 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     @MainActor
     override func save() async {
-        await super.save()
-        guard let selectedSuffix = suffixSelection?.selectedSuffix else { return }
-        aliasCreationDelegate?.aliasCreationDidFinish(email: prefix + selectedSuffix.suffix)
+        // When in create login item context, we don't create alias item
+        // but passing alias creation info upstream to create login page.
+        // Alias item will be created alongside with login item.
+        if case let .create(_, type) = mode,
+           case let .alias(delegate, _) = type,
+           let delegate {
+            if let info = generateAliasCreationInfo() {
+                delegate.aliasCreationInfo(info)
+            }
+        } else {
+            await super.save()
+        }
     }
 
     private func validatePrefix() {

@@ -26,20 +26,24 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
     func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
                                                       title: String)
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
-    func createEditLoginViewModelDidRemoveAlias()
+    func createEditLoginViewModelDidReceiveAliasCreationInfo()
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     @Published private(set) var isAlias = false // `Username` is an alias or a custom one
-    @Published private(set) var isRemovingAlias = false
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
     @Published var isPasswordSecure = true // Password in clear text or not
     @Published var urls: [String] = [""]
     @Published var note = ""
+
+    /// The original associated alias item
+    private var aliasItem: SymmetricallyEncryptedItem?
+    /// The info to create new alias.
+    private var aliasCreationInfo: AliasCreationInfo?
 
     weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
@@ -74,8 +78,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.note = itemContent.note
 
                 Task { @MainActor in
-                    let aliasItem = try await itemRepository.getAliasItem(email: username)
-                    self.isAlias = aliasItem != nil
+                    aliasItem = try await itemRepository.getAliasItem(email: username)
+                    isAlias = aliasItem != nil
                 }
             }
 
@@ -108,6 +112,24 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                    data: loginData)
     }
 
+    override func additionalCreate() async throws {
+        if let aliasCreationInfo {
+            let aliasContent = ItemContentProtobuf(name: aliasCreationInfo.title,
+                                                   note: aliasCreationInfo.note,
+                                                   data: .alias)
+            try await self.itemRepository.createAlias(info: aliasCreationInfo,
+                                                      itemContent: aliasContent,
+                                                      shareId: shareId)
+        }
+    }
+
+    override func additionalEdit() async throws {
+        // Remove alias item if necessary
+        if let aliasEmail = aliasItem?.item.aliasEmail, !isAlias {
+            try await itemRepository.deleteAlias(email: aliasEmail)
+        }
+    }
+
     func generateAlias() {
         createEditLoginViewModelDelegate?
             .createEditLoginViewModelWantsToGenerateAlias(self, title: title)
@@ -117,18 +139,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToGeneratePassword(self)
     }
 
-    @MainActor
-    func removeAlias() async {
-        defer { isRemovingAlias = false }
-        isRemovingAlias = true
-        do {
-            try await itemRepository.deleteAlias(email: username)
-            username = ""
-            isAlias = false
-            createEditLoginViewModelDelegate?.createEditLoginViewModelDidRemoveAlias()
-        } catch {
-            delegate?.createEditItemViewModelDidFail(error)
-        }
+    func removeAlias() {
+        aliasCreationInfo = nil
+        username = ""
+        isAlias = false
     }
 }
 
@@ -141,8 +155,10 @@ extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
 
 // MARK: - AliasCreationDelegate
 extension CreateEditLoginViewModel: AliasCreationDelegate {
-    func aliasCreationDidFinish(email: String) {
-        username = email
+    func aliasCreationInfo(_ info: AliasCreationInfo) {
+        aliasCreationInfo = info
+        username = info.aliasAddress
         isAlias = true
+        createEditLoginViewModelDelegate?.createEditLoginViewModelDidReceiveAliasCreationInfo()
     }
 }

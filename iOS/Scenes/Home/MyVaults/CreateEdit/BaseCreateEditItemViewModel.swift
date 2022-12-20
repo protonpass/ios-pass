@@ -106,6 +106,8 @@ class BaseCreateEditItemViewModel {
         fatalError("Must be overridden by subclasses")
     }
 
+    func additionalCreate() async throws {}
+
     func additionalEdit() async throws {}
 
     func generateAliasCreationInfo() -> AliasCreationInfo? { nil }
@@ -146,6 +148,7 @@ class BaseCreateEditItemViewModel {
         defer { isSaving = false }
         do {
             isSaving = true
+            try await additionalCreate()
             let item = try await createItemTask(shareId: shareId).value
             delegate?.createEditItemViewModelDidCreateItem(item, type: itemContentType())
         } catch {

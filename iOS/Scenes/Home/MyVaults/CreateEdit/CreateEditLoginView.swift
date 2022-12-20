@@ -142,28 +142,23 @@ struct CreateEditLoginView: View {
             },
             trailingView: {
                 if viewModel.isAlias {
-                    if viewModel.isRemovingAlias {
-                        ProgressView()
-                            .frame(width: 48, height: 48)
-                    } else {
-                        Menu(content: {
-                            Button(
-                                role: .destructive,
-                                action: { isShowingDeleteAliasAlert.toggle() },
-                                label: {
-                                    Label(title: {
-                                        Text("Delete")
-                                    }, icon: {
-                                        Image(uiImage: IconProvider.crossCircle)
-                                    })
+                    Menu(content: {
+                        Button(
+                            role: .destructive,
+                            action: { isShowingDeleteAliasAlert.toggle() },
+                            label: {
+                                Label(title: {
+                                    Text("Delete")
+                                }, icon: {
+                                    Image(uiImage: IconProvider.crossCircle)
                                 })
-                        }, label: {
-                            BorderedImageButton(image: IconProvider.threeDotsVertical) {}
-                                .frame(width: 48, height: 48)
-                                .opacityReduced(viewModel.isSaving)
-                        })
-                        .animation(.default, value: viewModel.isAlias)
-                    }
+                            })
+                    }, label: {
+                        BorderedImageButton(image: IconProvider.threeDotsVertical) {}
+                            .frame(width: 48, height: 48)
+                            .opacityReduced(viewModel.isSaving)
+                    })
+                    .animation(.default, value: viewModel.isAlias)
                 } else {
                     BorderedImageButton(image: IconProvider.alias,
                                         action: viewModel.generateAlias)
