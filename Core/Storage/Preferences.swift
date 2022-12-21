@@ -40,10 +40,14 @@ public final class Preferences: ObservableObject {
     @AppStorage("autoFillBannerDisplayed", store: kSharedUserDefaults)
     public var autoFillBannerDisplayed = false
 
+    @AppStorage("theme", store: kSharedUserDefaults)
+    public var theme = Theme.matchSystem
+
     public func reset() {
         quickTypeBar = true
         failedAttemptCount = 0
         biometricAuthenticationEnabled = false
         autoFillBannerDisplayed = false
+        theme = .matchSystem
     }
 }
