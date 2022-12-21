@@ -55,6 +55,12 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         }
     }
 
+    @Published var theme: Theme {
+        didSet {
+            preferences.theme = theme
+        }
+    }
+
     var onToggleSidebar: (() -> Void)?
     var onDeleteAccount: (() -> Void)?
 
@@ -68,6 +74,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         self.biometricAuthenticator = .init(preferences: preferences)
         self.preferences = preferences
         self.quickTypeBar = preferences.quickTypeBar
+        self.theme = preferences.theme
         self.refresh()
 
         NotificationCenter.default
