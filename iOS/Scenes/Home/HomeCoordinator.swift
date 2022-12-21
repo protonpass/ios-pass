@@ -138,6 +138,8 @@ final class HomeCoordinator: DeinitPrintable {
         self.setUpSideMenuPreferences()
         self.observeVaultSelection()
         self.observeForegroundEntrance()
+        self.observePreferences()
+        self.updateSideMenuUserInterfaceStyle()
     }
 
     func onboardIfNecessary(force: Bool) {
@@ -155,7 +157,7 @@ final class HomeCoordinator: DeinitPrintable {
 
 // MARK: - Initialization additional set ups
 private extension HomeCoordinator {
-    private func setUpSideMenuPreferences() {
+    func setUpSideMenuPreferences() {
         SideMenuController.preferences.basic.menuWidth = sideMenuWidth
         SideMenuController.preferences.basic.position = .sideBySide
         SideMenuController.preferences.basic.enablePanGesture = true
@@ -167,7 +169,7 @@ private extension HomeCoordinator {
         SideMenuController.preferences.animation.hideDuration = 0.25
     }
 
-    private func observeVaultSelection() {
+    func observeVaultSelection() {
         vaultSelection.$selectedVault
             .sink { [unowned self] _ in
                 self.showMyVaultsRootViewController(filterOption: .all)
@@ -175,7 +177,7 @@ private extension HomeCoordinator {
             .store(in: &cancellables)
     }
 
-    private func observeForegroundEntrance() {
+    func observeForegroundEntrance() {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [unowned self] _ in
@@ -206,6 +208,29 @@ private extension HomeCoordinator {
                 showCoverView()
             }
             .store(in: &cancellables)
+    }
+
+    func observePreferences() {
+        preferences.objectWillChange
+            .sink { [unowned self] _ in
+                self.updateSideMenuUserInterfaceStyle()
+            }
+            .store(in: &cancellables)
+    }
+
+    func updateSideMenuUserInterfaceStyle() {
+        UIView.transition(with: rootViewController.view.window ?? rootViewController.view,
+                          duration: 0.3,
+                          options: .transitionCrossDissolve) {
+            switch self.preferences.theme {
+            case .dark:
+                self.sideMenuController.overrideUserInterfaceStyle = .dark
+            case .light:
+                self.sideMenuController.overrideUserInterfaceStyle = .light
+            case .matchSystem:
+                self.sideMenuController.overrideUserInterfaceStyle = .unspecified
+            }
+        }
     }
 }
 

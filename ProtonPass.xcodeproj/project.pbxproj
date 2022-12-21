@@ -211,6 +211,7 @@
 		35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */; };
 		355A198D294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */; };
 		355A198F294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */; };
+		355A27B52953751200F32EA1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme.swift */; };
 		355E6DFC292FD56000C60796 /* Button+ConvenientInitializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */; };
 		355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */; };
 		355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */; };
@@ -678,6 +679,7 @@
 		35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDRepository.swift; sourceTree = "<group>"; };
 		355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeEndpoint.swift; sourceTree = "<group>"; };
 		355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeRequest.swift; sourceTree = "<group>"; };
+		355A27B42953751200F32EA1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+ConvenientInitializers.swift"; sourceTree = "<group>"; };
 		355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLabelKeyPacket.swift; sourceTree = "<group>"; };
 		355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemEndpoint.swift; sourceTree = "<group>"; };
@@ -1274,6 +1276,7 @@
 				356B21D92870F97F001220CB /* PPKeychain.swift */,
 				356043F828ED6B54003BDDDC /* Preferences.swift */,
 				356C2AB1287310D60020F577 /* KeychainStorage.swift */,
+				355A27B42953751200F32EA1 /* Theme.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -2726,6 +2729,7 @@
 				354513E728E4CE700020A93A /* CodableBase64.swift in Sources */,
 				35498F8628DC5D0500AF1D8F /* Collection+ParallelMap.swift in Sources */,
 				35283E4A292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift in Sources */,
+				355A27B52953751200F32EA1 /* Theme.swift in Sources */,
 				35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */,
 				35426B6628EF195700F89BB7 /* ParsedHost.swift in Sources */,
 				35E50702286FB39600A3F6EA /* AppState.swift in Sources */,
