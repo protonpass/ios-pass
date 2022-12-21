@@ -34,6 +34,7 @@ struct SettingsView: View {
         Form {
             AutoFillSection(viewModel: viewModel)
             BiometricAuthenticationSection(biometricAuthenticator: viewModel.biometricAuthenticator)
+            ThemeSection(viewModel: viewModel)
             FullSyncSection(viewModel: viewModel)
             DeleteAccountSection(onDelete: viewModel.deleteAccount)
         }
@@ -125,6 +126,33 @@ private struct BiometricAuthenticationSection: View {
             }
         } else {
             Text("Not supported")
+        }
+    }
+}
+
+private struct ThemeSection: View {
+    @ObservedObject var viewModel: SettingsViewModel
+
+    var body: some View {
+        Section {
+            Picker("Theme", selection: $viewModel.theme) {
+                ForEach(Theme.allCases, id: \.rawValue) { theme in
+                    HStack {
+                        Label(title: {
+                            Text(theme.description)
+                        }, icon: {
+                            Image(uiImage: theme.icon)
+                        })
+
+                        Spacer()
+
+                        if theme == viewModel.theme {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                    .tag(theme)
+                }
+            }
         }
     }
 }
