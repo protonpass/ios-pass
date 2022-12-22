@@ -143,12 +143,6 @@ private struct ThemeSection: View {
                         }, icon: {
                             Image(uiImage: theme.icon)
                         })
-
-                        Spacer()
-
-                        if theme == viewModel.theme {
-                            Image(systemName: "checkmark")
-                        }
                     }
                     .tag(theme)
                 }
@@ -169,8 +163,7 @@ private struct FullSyncSection: View {
         }, header: {
             Text("Full synchronization")
         }, footer: {
-            // swiftlint:disable:next line_length
-            Text("Your items should be synchronized automatically in an incremental manner or by doing a pull to refresh gesture. A full synchronization is helpful if you want to forcefully synchronize everything as if you were logged in for the first time.")
+            Text("Download all your items again to make sure you are in sync.")
         })
     }
 }
