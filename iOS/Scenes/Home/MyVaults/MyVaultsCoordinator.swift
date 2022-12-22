@@ -123,7 +123,7 @@ final class MyVaultsCoordinator: Coordinator {
         let createItemView = CreateItemView(viewModel: createItemViewModel)
         let createItemViewController = UIHostingController(rootView: createItemView)
         createItemViewController.sheetPresentationController?.detents = [.medium(), .large()]
-        present(createItemViewController, animated: true, dismissible: true)
+        present(createItemViewController)
     }
 
     private func showCreateVaultView() {
@@ -134,7 +134,7 @@ final class MyVaultsCoordinator: Coordinator {
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         let createVaultViewController = UIHostingController(rootView: createVaultView)
         createVaultViewController.sheetPresentationController?.detents = [.medium()]
-        present(createVaultViewController, animated: true, dismissible: true)
+        present(createVaultViewController)
     }
 
     private func showCreateEditLoginView(mode: ItemMode) {
@@ -143,7 +143,7 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
-        present(view, animated: true, dismissible: false)
+        present(view, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -154,7 +154,7 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
-        present(view, animated: true, dismissible: false)
+        present(view, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -163,7 +163,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                 itemRepository: itemRepository)
         viewModel.delegate = self
         let view = CreateEditNoteView(viewModel: viewModel)
-        present(view, animated: true, dismissible: false)
+        present(view, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -181,7 +181,7 @@ final class MyVaultsCoordinator: Coordinator {
         } else {
             generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
         }
-        present(generatePasswordViewController, animated: true, dismissible: true)
+        present(generatePasswordViewController)
     }
 
     private func showSearchView() {
@@ -197,7 +197,7 @@ final class MyVaultsCoordinator: Coordinator {
             navigationController.modalPresentationStyle = .fullScreen
             navigationController.modalTransitionStyle = .coverVertical
         }
-        present(navigationController, animated: true, dismissible: UIDevice.current.isIpad)
+        present(navigationController, dismissible: UIDevice.current.isIpad)
     }
 
     private func showItemDetailView(_ itemContent: ItemContent) {
@@ -208,14 +208,14 @@ final class MyVaultsCoordinator: Coordinator {
                                                  itemRepository: itemRepository)
             baseItemDetailViewModel = viewModel
             let logInDetailView = LogInDetailView(viewModel: viewModel)
-            push(logInDetailView, animated: true, hidesBackButton: true)
+            push(logInDetailView)
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRepository: itemRepository)
             baseItemDetailViewModel = viewModel
             let noteDetailView = NoteDetailView(viewModel: viewModel)
-            push(noteDetailView, animated: true, hidesBackButton: true)
+            push(noteDetailView)
 
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
@@ -223,7 +223,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                  aliasRepository: aliasRepository)
             baseItemDetailViewModel = viewModel
             let aliasDetailView = AliasDetailView(viewModel: viewModel)
-            push(aliasDetailView, animated: true, hidesBackButton: true)
+            push(aliasDetailView)
         }
 
         baseItemDetailViewModel.delegate = self
@@ -345,7 +345,7 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         if !UIDevice.current.isIpad {
             viewController.modalPresentationStyle = .fullScreen
         }
-        present(viewController, animated: true, dismissible: false)
+        present(viewController, dismissible: false)
     }
 
     func vaultContentViewModelWantsToCreateItem() {
@@ -453,7 +453,7 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
-        showFullScreen(text: text)
+        showFullScreen(text: text, userInterfaceStyle: rootViewController.parent?.overrideUserInterfaceStyle)
     }
 
     func itemDetailViewModelDidFail(_ error: Error) {

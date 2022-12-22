@@ -1,5 +1,5 @@
 //
-// ThemesView.swift
+// AutoFillSettingsView.swift
 // Proton Pass - Created on 22/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,39 +18,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
-@available(iOS, deprecated: 16.0, message: "No need after dropping iOS 15")
-struct ThemesView: View {
+struct AutoFillSettingsView: View {
     @ObservedObject var viewModel: SettingsViewModel
     let onGoBack: () -> Void
 
     var body: some View {
-        Form {
-            ForEach(Theme.allCases, id: \.rawValue) { theme in
-                HStack {
-                    Label(title: {
-                        Text(theme.description)
-                    }, icon: {
-                        Image(uiImage: theme.icon)
-                            .foregroundColor(.primary)
-                    })
-
-                    Spacer()
-
-                    if viewModel.theme == theme {
-                        Image(systemName: "checkmark")
-                            .foregroundColor(.interactionNorm)
-                    }
-                }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    viewModel.theme = theme
-                }
+        Group {
+            if viewModel.autoFillEnabled {
+                AutoFillEnabledView(viewModel: viewModel)
+            } else {
+                AutoFillDisabledView()
+                    .padding()
+                    .background(OnboardingGradientBackground())
+                    .edgesIgnoringSafeArea(.all)
             }
         }
+        .animation(.default, value: viewModel.autoFillEnabled)
         .tint(.interactionNorm)
         .navigationBarBackButtonHidden()
         .toolbar { toolbarContent }
@@ -66,7 +53,38 @@ struct ThemesView: View {
         }
 
         ToolbarItem(placement: .principal) {
-            Text("Themes")
+            Text("AutoFill")
+        }
+    }
+}
+
+private struct AutoFillDisabledView: View {
+    var body: some View {
+        VStack {
+            Spacer()
+            OnboardingAutoFillView()
+            ColoredRoundedButton(title: "Go to Settings",
+                                 action: UIApplication.shared.openPasswordSettings)
+            .padding(.top)
+            Spacer()
+        }
+    }
+}
+
+private struct AutoFillEnabledView: View {
+    @ObservedObject var viewModel: SettingsViewModel
+
+    var body: some View {
+        Form {
+            Section(content: {
+                Toggle(isOn: $viewModel.quickTypeBar) {
+                    Text("QuickType bar suggestions")
+                }
+                .tint(.interactionNorm)
+            }, footer: {
+                // swiftlint:disable:next line_length
+                Text("QuickType bar helps quickly select a matched credential without opening the AutoFill extension.")
+            })
         }
     }
 }

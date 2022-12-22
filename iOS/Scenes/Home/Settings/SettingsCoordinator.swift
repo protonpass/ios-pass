@@ -70,11 +70,18 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
         coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
     }
 
-    func settingsViewModelWantsToChangeTheme(viewModel: SettingsViewModel) {
+    func settingsViewModelWantsToUpdateAutoFill(viewModel: SettingsViewModel) {
+        let view = AutoFillSettingsView(viewModel: viewModel) { [unowned self] in
+            self.popTopViewController(animated: true)
+        }
+        push(view)
+    }
+
+    func settingsViewModelWantsToUpdateTheme(viewModel: SettingsViewModel) {
         let view = ThemesView(viewModel: viewModel) { [unowned self] in
             self.popTopViewController(animated: true)
         }
-        push(view, animated: true, hidesBackButton: true)
+        push(view)
     }
 
     func settingsViewModelDidFinishFullSync() {

@@ -154,6 +154,7 @@
 		354F769C28C90B4D00EB2383 /* MoveToTrashModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769B28C90B4D00EB2383 /* MoveToTrashModifier.swift */; };
 		354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */; };
 		355013F7295459E1004F837E /* ThemesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355013F6295459E1004F837E /* ThemesView.swift */; };
+		355013F929547C8C004F837E /* AutoFillSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355013F829547C8C004F837E /* AutoFillSettingsView.swift */; };
 		3552146229150FFC00BA6229 /* GenericItemSkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */; };
 		3552147E2915251C00BA6229 /* LoadingVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552147D2915251C00BA6229 /* LoadingVaultView.swift */; };
 		355214822915517E00BA6229 /* EditMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355214812915517E00BA6229 /* EditMenuButton.swift */; };
@@ -629,6 +630,7 @@
 		354F769B28C90B4D00EB2383 /* MoveToTrashModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToTrashModifier.swift; sourceTree = "<group>"; };
 		354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseItemDetailViewModel.swift; sourceTree = "<group>"; };
 		355013F6295459E1004F837E /* ThemesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesView.swift; sourceTree = "<group>"; };
+		355013F829547C8C004F837E /* AutoFillSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillSettingsView.swift; sourceTree = "<group>"; };
 		3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericItemSkeletonView.swift; sourceTree = "<group>"; };
 		3552147D2915251C00BA6229 /* LoadingVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingVaultView.swift; sourceTree = "<group>"; };
 		355214812915517E00BA6229 /* EditMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMenuButton.swift; sourceTree = "<group>"; };
@@ -1092,6 +1094,7 @@
 		354513C928E45F840020A93A /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				355013F829547C8C004F837E /* AutoFillSettingsView.swift */,
 				354513CE28E460FD0020A93A /* SettingsCoordinator.swift */,
 				354513CA28E45F960020A93A /* SettingsView.swift */,
 				354513CC28E45FB20020A93A /* SettingsViewModel.swift */,
@@ -2534,6 +2537,7 @@
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				358A508928AD2E8F00F5285C /* SideBarViewModel.swift in Sources */,
+				355013F929547C8C004F837E /* AutoFillSettingsView.swift in Sources */,
 				357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,

@@ -45,7 +45,7 @@ struct AliasDetailView: View {
                 .padding()
             }
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden()
         .toolbar { toolbarContent }
     }
 
