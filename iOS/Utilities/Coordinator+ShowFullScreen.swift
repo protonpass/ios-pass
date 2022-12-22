@@ -22,12 +22,15 @@ import Core
 import SwiftUI
 
 extension Coordinator {
-    func showFullScreen(text: String) {
+    func showFullScreen(text: String, userInterfaceStyle: UIUserInterfaceStyle?) {
         let view = FullScreenView(text: text)
         let viewController = UIHostingController(rootView: view)
         if UIDevice.current.isIpad {
             viewController.modalPresentationStyle = .fullScreen
         }
-        present(viewController, animated: true, dismissible: true)
+        present(viewController,
+                userInterfaceStyle: userInterfaceStyle,
+                animated: true,
+                dismissible: true)
     }
 }
