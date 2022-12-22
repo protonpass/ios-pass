@@ -70,6 +70,17 @@ private struct AutoFillSection: View {
                 Text("QuickType bar suggestions")
             }
             .opacityReduced(!viewModel.autoFillEnabled)
+
+            HStack {
+                Text("AutoFill")
+                Spacer()
+                Text(viewModel.autoFillEnabled ? "On" : "Off")
+                .foregroundColor(.secondary)
+                ChevronRight()
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: viewModel.updateAutoFill)
         }, header: {
             Text("AutoFill")
         }, footer: {
@@ -145,14 +156,11 @@ private struct ThemeSection: View {
                         Image(uiImage: viewModel.theme.icon)
                     })
                     .foregroundColor(.secondary)
-                    Image(systemName: "chevron.right")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 16)
-                        .foregroundColor(Color(.tertiaryLabel))
+                    ChevronRight()
                 }
                 .frame(maxWidth: .infinity)
-                .onTapGesture(perform: viewModel.changeTheme)
+                .contentShape(Rectangle())
+                .onTapGesture(perform: viewModel.updateTheme)
             } else {
                 Picker("Theme", selection: $viewModel.theme) {
                     ForEach(Theme.allCases, id: \.rawValue) { theme in
@@ -198,5 +206,15 @@ private struct DeleteAccountSection: View {
                     .foregroundColor(.red)
             }
         }
+    }
+}
+
+private struct ChevronRight: View {
+    var body: some View {
+        Image(systemName: "chevron.right")
+            .resizable()
+            .scaledToFit()
+            .frame(height: 16)
+            .foregroundColor(Color(.tertiaryLabel))
     }
 }

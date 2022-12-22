@@ -1,5 +1,5 @@
 //
-// ThemesView.swift
+// AutoFillSettingsView.swift
 // Proton Pass - Created on 22/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,39 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 
-@available(iOS, deprecated: 16.0, message: "No need after dropping iOS 15")
-struct ThemesView: View {
+struct AutoFillSettingsView: View {
     @ObservedObject var viewModel: SettingsViewModel
     let onGoBack: () -> Void
 
     var body: some View {
-        Form {
-            ForEach(Theme.allCases, id: \.rawValue) { theme in
-                HStack {
-                    Label(title: {
-                        Text(theme.description)
-                    }, icon: {
-                        Image(uiImage: theme.icon)
-                            .foregroundColor(.primary)
-                    })
-
-                    Spacer()
-
-                    if viewModel.theme == theme {
-                        Image(systemName: "checkmark")
-                            .foregroundColor(.interactionNorm)
-                    }
-                }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    viewModel.theme = theme
-                }
+        Group {
+            if viewModel.autoFillEnabled {
+                Text("Enabled")
+            } else {
+                Text("Disabled")
             }
         }
+        .animation(.default, value: viewModel.autoFillEnabled)
         .tint(.interactionNorm)
         .navigationBarBackButtonHidden()
         .toolbar { toolbarContent }
@@ -66,7 +49,7 @@ struct ThemesView: View {
         }
 
         ToolbarItem(placement: .principal) {
-            Text("Themes")
+            Text("AutoFill")
         }
     }
 }
