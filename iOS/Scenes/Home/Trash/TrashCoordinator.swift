@@ -190,7 +190,8 @@ extension TrashCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
-        showFullScreen(text: text)
+        showFullScreen(text: text,
+                       userInterfaceStyle: rootViewController.parent?.overrideUserInterfaceStyle)
     }
 
     func itemDetailViewModelDidFail(_ error: Error) {

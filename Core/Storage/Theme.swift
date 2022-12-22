@@ -46,4 +46,15 @@ public enum Theme: Int, CustomStringConvertible, CaseIterable {
             return IconProvider.cogWheel
         }
     }
+
+    public var userInterfaceStyle: UIUserInterfaceStyle {
+        switch self {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        case .matchSystem:
+            return .unspecified
+        }
+    }
 }

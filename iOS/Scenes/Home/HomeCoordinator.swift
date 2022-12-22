@@ -222,14 +222,7 @@ private extension HomeCoordinator {
         UIView.transition(with: rootViewController.view.window ?? rootViewController.view,
                           duration: 0.3,
                           options: .transitionCrossDissolve) {
-            switch self.preferences.theme {
-            case .dark:
-                self.sideMenuController.overrideUserInterfaceStyle = .dark
-            case .light:
-                self.sideMenuController.overrideUserInterfaceStyle = .light
-            case .matchSystem:
-                self.sideMenuController.overrideUserInterfaceStyle = .unspecified
-            }
+            self.sideMenuController.overrideUserInterfaceStyle = self.preferences.theme.userInterfaceStyle
         }
     }
 }

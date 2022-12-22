@@ -39,8 +39,14 @@ public protocol CoordinatorProtocol: AnyObject {
     func start(with viewController: UIViewController, secondaryViewController: UIViewController?)
     func push<V: View>(_ view: V, animated: Bool, hidesBackButton: Bool)
     func push(_ viewController: UIViewController, animated: Bool, hidesBackButton: Bool)
-    func present<V: View>(_ view: V, animated: Bool, dismissible: Bool)
-    func present(_ viewController: UIViewController, animated: Bool, dismissible: Bool)
+    func present<V: View>(_ view: V,
+                          userInterfaceStyle: UIUserInterfaceStyle?,
+                          animated: Bool,
+                          dismissible: Bool)
+    func present(_ viewController: UIViewController,
+                 userInterfaceStyle: UIUserInterfaceStyle?,
+                 animated: Bool,
+                 dismissible: Bool)
     func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
     func popTopViewController(animated: Bool)
     func popToRoot(animated: Bool, secondaryViewController: UIViewController?)
@@ -54,16 +60,26 @@ public extension CoordinatorProtocol {
               secondaryViewController: UIHostingController(rootView: secondaryView))
     }
 
-    func push<V: View>(_ view: V, animated: Bool, hidesBackButton: Bool) {
+    func push<V: View>(_ view: V, animated: Bool = true, hidesBackButton: Bool = true) {
         push(UIHostingController(rootView: view), animated: animated, hidesBackButton: hidesBackButton)
     }
 
-    func present<V: View>(_ view: V, animated: Bool, dismissible: Bool) {
-        present(UIHostingController(rootView: view), animated: animated, dismissible: dismissible)
+    func present<V: View>(_ view: V,
+                          userInterfaceStyle: UIUserInterfaceStyle? = nil,
+                          animated: Bool = true,
+                          dismissible: Bool = true) {
+        present(UIHostingController(rootView: view),
+                userInterfaceStyle: userInterfaceStyle,
+                animated: animated,
+                dismissible: dismissible)
     }
 
-    func present(_ viewController: UIViewController, animated: Bool, dismissible: Bool) {
+    func present(_ viewController: UIViewController,
+                 userInterfaceStyle: UIUserInterfaceStyle? = nil,
+                 animated: Bool = true,
+                 dismissible: Bool = true) {
         viewController.isModalInPresentation = !dismissible
+        viewController.overrideUserInterfaceStyle = userInterfaceStyle ?? .unspecified
         rootViewController.topMostViewController.present(viewController, animated: animated)
     }
 
