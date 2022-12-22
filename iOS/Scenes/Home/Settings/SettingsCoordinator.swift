@@ -21,6 +21,7 @@
 import Client
 import Core
 import CryptoKit
+import SwiftUI
 import UIComponents
 
 protocol SettingsCoordinatorDelegate: AnyObject {
@@ -67,6 +68,13 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelWantsToHideLoadingHud() {
         coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
+    }
+
+    func settingsViewModelWantsToChangeTheme(viewModel: SettingsViewModel) {
+        let view = ThemesView(viewModel: viewModel) { [unowned self] in
+            self.popTopViewController(animated: true)
+        }
+        push(view, animated: true, hidesBackButton: true)
     }
 
     func settingsViewModelDidFinishFullSync() {

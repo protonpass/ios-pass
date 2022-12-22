@@ -100,6 +100,7 @@ open class Coordinator: CoordinatorProtocol {
             splitViewController.minimumPrimaryColumnWidth = 400
             splitViewController.preferredPrimaryColumnWidthFraction = 0.4
             splitViewController.preferredDisplayMode = .oneBesideSecondary
+            splitViewController.preferredSplitBehavior = .tile
             splitViewController.displayModeButtonVisibility = .never
             type = .split(splitViewController)
         } else {
