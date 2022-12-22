@@ -28,7 +28,8 @@ import UIComponents
 protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToShowLoadingHud()
     func settingsViewModelWantsToHideLoadingHud()
-    func settingsViewModelWantsToChangeTheme(viewModel: SettingsViewModel)
+    func settingsViewModelWantsToUpdateAutoFill(viewModel: SettingsViewModel)
+    func settingsViewModelWantsToUpdateTheme(viewModel: SettingsViewModel)
     func settingsViewModelDidFinishFullSync()
     func settingsViewModelDidFail(_ error: Error)
 }
@@ -145,6 +146,10 @@ extension SettingsViewModel {
 
     func deleteAccount() { onDeleteAccount?() }
 
+    func updateAutoFill() {
+        delegate?.settingsViewModelWantsToUpdateAutoFill(viewModel: self)
+    }
+
     func fullSync() {
         Task { @MainActor in
             defer { delegate?.settingsViewModelWantsToHideLoadingHud() }
@@ -159,7 +164,7 @@ extension SettingsViewModel {
         }
     }
 
-    func changeTheme() {
-        delegate?.settingsViewModelWantsToChangeTheme(viewModel: self)
+    func updateTheme() {
+        delegate?.settingsViewModelWantsToUpdateTheme(viewModel: self)
     }
 }

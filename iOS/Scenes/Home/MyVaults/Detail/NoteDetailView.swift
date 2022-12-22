@@ -45,7 +45,7 @@ struct NoteDetailView: View {
             .padding(.horizontal, 32)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden()
         .toolbar { toolbarContent }
     }
 

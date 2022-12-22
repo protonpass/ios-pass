@@ -78,14 +78,14 @@ private extension TrashCoordinator {
                                                  itemRepository: itemRepository)
             baseItemDetailViewModel = viewModel
             let logInDetailView = LogInDetailView(viewModel: viewModel)
-            push(logInDetailView, animated: true, hidesBackButton: true)
+            push(logInDetailView)
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRepository: itemRepository)
             baseItemDetailViewModel = viewModel
             let noteDetailView = NoteDetailView(viewModel: viewModel)
-            push(noteDetailView, animated: true, hidesBackButton: true)
+            push(noteDetailView)
 
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
@@ -93,7 +93,7 @@ private extension TrashCoordinator {
                                                  aliasRepository: aliasRepository)
             baseItemDetailViewModel = viewModel
             let aliasDetailView = AliasDetailView(viewModel: viewModel)
-            push(aliasDetailView, animated: true, hidesBackButton: true)
+            push(aliasDetailView)
         }
 
         baseItemDetailViewModel.delegate = self
