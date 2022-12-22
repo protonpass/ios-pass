@@ -79,7 +79,7 @@ private struct AutoFillSection: View {
             } else {
                 VStack(alignment: .leading) {
                     // swiftlint:disable:next line_length
-                    Text("You can enable AutoFill by going to Settings → Passwords → AutoFill Passwords -> Select Proton Pass")
+                    Text("You can enable AutoFill by going to Settings → Passwords → AutoFill Passwords -> Select Proton Pass.")
                     Button(action: UIApplication.shared.openPasswordSettings) {
                         Text("Open Settings")
                             .font(.caption)
@@ -135,16 +135,36 @@ private struct ThemeSection: View {
 
     var body: some View {
         Section {
-            Picker("Theme", selection: $viewModel.theme) {
-                ForEach(Theme.allCases, id: \.rawValue) { theme in
-                    HStack {
-                        Label(title: {
-                            Text(theme.description)
-                        }, icon: {
-                            Image(uiImage: theme.icon)
-                        })
+            if #unavailable(iOS 16.0) {
+                HStack {
+                    Text("Theme")
+                    Spacer()
+                    Label(title: {
+                        Text(viewModel.theme.description)
+                    }, icon: {
+                        Image(uiImage: viewModel.theme.icon)
+                    })
+                    .foregroundColor(.secondary)
+                    Image(systemName: "chevron.right")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 16)
+                        .foregroundColor(Color(.tertiaryLabel))
+                }
+                .frame(maxWidth: .infinity)
+                .onTapGesture(perform: viewModel.changeTheme)
+            } else {
+                Picker("Theme", selection: $viewModel.theme) {
+                    ForEach(Theme.allCases, id: \.rawValue) { theme in
+                        HStack {
+                            Label(title: {
+                                Text(theme.description)
+                            }, icon: {
+                                Image(uiImage: theme.icon)
+                            })
+                        }
+                        .tag(theme)
                     }
-                    .tag(theme)
                 }
             }
         }

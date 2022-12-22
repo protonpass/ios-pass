@@ -28,6 +28,7 @@ import UIComponents
 protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToShowLoadingHud()
     func settingsViewModelWantsToHideLoadingHud()
+    func settingsViewModelWantsToChangeTheme(viewModel: SettingsViewModel)
     func settingsViewModelDidFinishFullSync()
     func settingsViewModelDidFail(_ error: Error)
 }
@@ -156,5 +157,9 @@ extension SettingsViewModel {
                 delegate?.settingsViewModelDidFail(error)
             }
         }
+    }
+
+    func changeTheme() {
+        delegate?.settingsViewModelWantsToChangeTheme(viewModel: self)
     }
 }
