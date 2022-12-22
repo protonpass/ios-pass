@@ -107,11 +107,16 @@ public enum CryptoUtils {
         guard let firstAddress = userData.addresses.first else {
             fatalError("Post MVP")
         }
-        return try firstAddress.keys.compactMap { key -> DecryptionKey? in
+        return firstAddress.keys.compactMap { key -> DecryptionKey? in
             let binKeys = userData.user.keys.map { $0.privateKey }.compactMap { $0.unArmor }
-            let passphrase = try key.passphrase(userBinKeys: binKeys,
-                                                mailboxPassphrase: userData.passphrases.first?.value ?? "")
-            return DecryptionKey(privateKey: .init(value: key.privateKey), passphrase: .init(value: passphrase))
+            for passphrase in userData.passphrases {
+                if let decryptionKeyPassphrase = try? key.passphrase(userBinKeys: binKeys,
+                                                                     mailboxPassphrase: passphrase.value) {
+                    return .init(privateKey: .init(value: key.privateKey),
+                                 passphrase: .init(value: decryptionKeyPassphrase))
+                }
+            }
+            return nil
         }
     }
 

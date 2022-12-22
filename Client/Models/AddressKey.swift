@@ -31,8 +31,7 @@ public struct AddressKey {
 public enum UserDataError: Error {
     case noAddresses
     case noAddressKeys
-    case noPassphrases
-    case noUserKeys
+    case failedToGetAddressKeyPassphrase
 }
 
 public extension UserData {
@@ -42,22 +41,22 @@ public extension UserData {
             throw UserDataError.noAddresses
         }
 
+        // First key is primary one
         guard let addressKey = address.keys.first else {
             throw UserDataError.noAddressKeys
         }
 
-        guard let userKeyData = user.keys.first?.privateKey.unArmor else {
-            throw UserDataError.noUserKeys
+        let userBinKeys = user.keys.map { $0.privateKey }.compactMap { $0.unArmor }
+
+        for passphrase in passphrases {
+            if let keyPassphrase = try? addressKey.passphrase(userBinKeys: userBinKeys,
+                                                              mailboxPassphrase: passphrase.value) {
+                return .init(addressId: address.addressID,
+                             key: addressKey,
+                             keyPassphrase: keyPassphrase)
+            }
         }
 
-        guard let passphrase = passphrases.first else {
-            throw UserDataError.noPassphrases
-        }
-
-        let keyPassphrase = try addressKey.passphrase(userBinKeys: [userKeyData],
-                                                      mailboxPassphrase: passphrase.value)
-        return .init(addressId: address.addressID,
-                     key: addressKey,
-                     keyPassphrase: keyPassphrase)
+        throw UserDataError.failedToGetAddressKeyPassphrase
     }
 }
