@@ -42,11 +42,10 @@ public struct Element {
             if shouldUseFirstMatch {
                 element = element.firstMatch
             }
-            
+
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
         }
-
 
         @discardableResult
         public static func forTextFieldWithIdentifier(_ identifier: String, shouldUseFirstMatch: Bool = true, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {

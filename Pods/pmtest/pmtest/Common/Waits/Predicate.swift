@@ -25,12 +25,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+import XCTest
+
 /**
  * Predicates that are used by Wait functions.
  */
-
-import XCTest
-
 internal struct Predicate {
 
     static let enabled = NSPredicate(format: "isEnabled == true")

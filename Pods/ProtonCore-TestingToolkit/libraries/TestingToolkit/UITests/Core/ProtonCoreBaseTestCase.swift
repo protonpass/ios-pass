@@ -88,6 +88,7 @@ public extension ProtonCoreBaseTestCase {
     }
         
     var randomEmail: String {
-        return "\(randomName)@test.me"
+        // max username length is 40 so let's shorten it
+        return "\(randomName.substring(to: String.Index(encodedOffset: 20)))@test.me"
     }
 }

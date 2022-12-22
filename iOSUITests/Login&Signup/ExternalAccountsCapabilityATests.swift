@@ -28,60 +28,72 @@ import XCTest
 
 final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()
-
+    
     // Sign-in with internal account works
     // Sign-in with external account works
     // Sign-in with username account works (account is converted to internal under the hood)
     func testSignInWithInternalAccountWorks() {
+        let doh = Environment.black.doh
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-
+        
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
         var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
         QuarkCommands.create(account: .freeWithAddressAndKeys(username: randomUsername, password: randomPassword),
                              currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl()) { result in
             quarkCommandResult = result
-            expectQuarkCommandToFinish.fulfill()
+            QuarkCommands.addPassScopeToUser(username: randomUsername,
+                                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
+                if case .failure(let error) = result {
+                    XCTFail("\(error)")
+                }
+                expectQuarkCommandToFinish.fulfill()
+            }
         }
-
         wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
         if case .failure(let error) = quarkCommandResult {
             XCTFail("Internal account creation failed: \(error.userFacingMessageInQuarkCommands)")
             return
         }
-
         welcomeRobot.logIn()
             .fillUsername(username: randomUsername)
             .fillpassword(password: randomPassword)
-            .signIn(robot: HomeRobot.self)
-            .verify.emptyVaultViewIsShown()
+            .signIn(robot: OnboardingRobot.self)
+            .verify.isOnboardingViewShown()
     }
-
+    
     func testSignInWithExternalAccountWorks() {
+        let doh = Environment.black.doh
         let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-
+        
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
         var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
         QuarkCommands.create(account: .external(email: randomEmail, password: randomPassword),
                              currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl()) { result in
             quarkCommandResult = result
-            expectQuarkCommandToFinish.fulfill()
+            QuarkCommands.addPassScopeToUser(username: randomEmail,
+                                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
+                if case .failure(let error) = result {
+                    XCTFail("\(error)")
+                }
+                expectQuarkCommandToFinish.fulfill()
+            }
         }
         wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
         if case .failure(let error) = quarkCommandResult {
             XCTFail("External account creation failed: \(error.userFacingMessageInQuarkCommands)")
             return
         }
-
         welcomeRobot.logIn()
             .fillUsername(username: randomEmail)
             .fillpassword(password: randomPassword)
-            .signIn(robot: ExternalAccountsNotSupportedDialogRobot.self)
-            .verify.externalAccountsNotSupportedDialog()
+            .signIn(robot: OnboardingRobot.self)
+            .verify.isOnboardingViewShown()
     }
 
     func testSignInWithUsernameAccountWorks() {
+        let doh = Environment.black.doh
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
@@ -89,30 +101,36 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
         QuarkCommands.create(account: .freeNoAddressNoKeys(username: randomUsername, password: randomPassword),
                              currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl()) { result in
             quarkCommandResult = result
-            expectQuarkCommandToFinish.fulfill()
+            QuarkCommands.addPassScopeToUser(username: randomUsername,
+                                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
+                if case .failure(let error) = result {
+                    XCTFail("\(error)")
+                }
+                expectQuarkCommandToFinish.fulfill()
+            }
         }
         wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
         if case .failure(let error) = quarkCommandResult {
             XCTFail("Username account creation failed: \(error.userFacingMessageInQuarkCommands)")
             return
         }
-
         welcomeRobot.logIn()
             .fillUsername(username: randomUsername)
             .fillpassword(password: randomPassword)
-            .signIn(robot: HomeRobot.self)
-            .verify.emptyVaultViewIsShown()
+            .signIn(robot: OnboardingRobot.self)
+            .verify.isOnboardingViewShown()
     }
-
+    
     // Sign-up with internal account works
     // The UI for sign-up with external account is not available
     // The UI for sign-up with username account is not available
-
+    
     func testSignUpWithInternalAccountWorks() {
+        let doh = Environment.black.doh
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
         let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
-        welcomeRobot.logIn()
+        let summaryBot = welcomeRobot.logIn()
             .switchToCreateAccount()
             .verify.domainsButtonIsShown()
             .verify.signupScreenIsShown()
@@ -128,16 +146,25 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
             .skipButtonTap(robot: SignupHumanVerificationV3Robot.self)
             .switchToEmailHVMethod()
             .performEmailVerificationV3(email: randomEmail, code: "666666", to: AccountSummaryRobot.self)
-            .startUsingAppTap(robot: HomeRobot.self)
-            .verify.emptyVaultViewIsShown()
+            .verify.startUsingPassButtonIsShown()
+        QuarkCommands.addPassScopeToUser(username: randomUsername,
+                                         currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
+            if case .failure(let error) = result {
+                XCTFail("\(error)")
+            }
+            _ = summaryBot
+                .startUsingAppTap(robot: AccountSummaryRobot.self)
+//                .verify.startUsingPassButtonIsShown()
+//                .verify.isOnboardingViewShown()
+        }
     }
-
+    
     func testSignUpWithExternalAccountIsNotAvailable() {
         welcomeRobot.logIn()
             .switchToCreateAccount()
             .verify.otherAccountExtButtonIsNotShown()
     }
-
+    
     func testSignUpWithUsernameAccountIsNotAvailable() {
         welcomeRobot.logIn()
             .switchToCreateAccount()

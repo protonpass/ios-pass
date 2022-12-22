@@ -29,4 +29,21 @@ import XCTest
 
 open class CoreTestCase: XCTestCase, ElementsProtocol {
     lazy var testRecorder = XCUITestCaseRecorder(testName: getTestMethodName())
+
+    open override func setUp() {
+        super.setUp()
+        testRecorder.resumeRecording()
+    }
+
+    open override func setUpWithError() throws {
+        try super.setUpWithError()
+    }
+
+    open override func tearDownWithError() throws {
+        let attachment = testRecorder.generateGifAttachment()
+        if (attachment != nil) {
+            attachment!.lifetime = .keepAlways
+            self.add(attachment!)
+        }
+    }
 }

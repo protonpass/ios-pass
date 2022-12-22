@@ -1,6 +1,6 @@
 //
-//  EndSessionEndpoint.swift
-//  ProtonCore-Authentication - Created on 05/05/2020.
+//  String+APIService.swift
+//  ProtonCore-Services - Created on 15/12/22.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,33 +20,11 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Networking
 
-extension AuthService {
-    public struct EndSessionResponse: APIDecodableResponse, Encodable, Equatable {
-        let code: Int
-    }
-    
-    struct EndSessionEndpoint: Request {
+// MARK: - Handling force upgrade
 
-        var path: String {
-            "/auth/v4"
-        }
-        
-        var method: HTTPMethod {
-            .delete
-        }
-        
-        var parameters: [String: Any]?
-      
-        var isAuth: Bool {
-            true
-        }
-        
-        var auth: AuthCredential?
-        
-        var authCredential: AuthCredential? {
-            auth
-        }
+extension String {
+    var isRefreshPath: Bool {
+        contains("/auth/v4/refresh")
     }
 }

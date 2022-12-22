@@ -83,7 +83,7 @@ final class WelcomeCoordinator: DeinitPrintable {
                      doh: doh,
                      apiServiceDelegate: apiServiceDelegate,
                      forceUpgradeDelegate: forceUpgradeServiceDelegate,
-                     minimumAccountType: .internal,
+                     minimumAccountType: .external,
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))
     }
