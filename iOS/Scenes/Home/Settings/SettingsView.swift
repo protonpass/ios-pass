@@ -59,18 +59,6 @@ private struct AutoFillSection: View {
 
     var body: some View {
         Section(content: {
-            if viewModel.autoFillEnabled {
-                Text("AutoFill is enabled")
-            } else {
-                Text("AutoFill is disabled")
-                    .foregroundColor(.secondary)
-            }
-
-            Toggle(isOn: $viewModel.quickTypeBar) {
-                Text("QuickType bar suggestions")
-            }
-            .opacityReduced(!viewModel.autoFillEnabled)
-
             HStack {
                 Text("AutoFill")
                 Spacer()
@@ -84,19 +72,8 @@ private struct AutoFillSection: View {
         }, header: {
             Text("AutoFill")
         }, footer: {
-            if viewModel.autoFillEnabled {
-                // swiftlint:disable:next line_length
-                Text("By allowing suggestions on QuickType bar, you can quickly select a matched credential if any without opening the AutoFill extension and manually select one.")
-            } else {
-                VStack(alignment: .leading) {
-                    // swiftlint:disable:next line_length
-                    Text("You can enable AutoFill by going to Settings → Passwords → AutoFill Passwords -> Select Proton Pass.")
-                    Button(action: UIApplication.shared.openPasswordSettings) {
-                        Text("Open Settings")
-                            .font(.caption)
-                    }
-                    .foregroundColor(.interactionNorm)
-                }
+            if !viewModel.autoFillEnabled {
+                Text("Set Proton Pass as AutoFill provider to automatically fill in your usernames and passwords.")
             }
         })
     }
@@ -185,11 +162,11 @@ private struct FullSyncSection: View {
     var body: some View {
         Section(content: {
             Button(action: viewModel.fullSync) {
-                Text("Trigger a full synchronization")
+                Text("Force synchronization")
             }
             .foregroundColor(.interactionNorm)
         }, header: {
-            Text("Full synchronization")
+            Text("Application")
         }, footer: {
             Text("Download all your items again to make sure you are in sync.")
         })
@@ -200,12 +177,15 @@ private struct DeleteAccountSection: View {
     let onDelete: (() -> Void)
 
     var body: some View {
-        Section {
+        Section(content: {
             Button(action: onDelete) {
                 Text("Delete account")
                     .foregroundColor(.red)
             }
-        }
+        }, footer: {
+            // swiftlint:disable:next line_length
+            Text("This will permanently delete your account and all of its data. You will not be able to reactivate this account.")
+        })
     }
 }
 
