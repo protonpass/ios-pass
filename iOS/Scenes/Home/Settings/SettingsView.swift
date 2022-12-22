@@ -59,33 +59,21 @@ private struct AutoFillSection: View {
 
     var body: some View {
         Section(content: {
-            if viewModel.autoFillEnabled {
-                Text("AutoFill is enabled")
-            } else {
-                Text("AutoFill is disabled")
-                    .foregroundColor(.secondary)
+            HStack {
+                Text("AutoFill")
+                Spacer()
+                Text(viewModel.autoFillEnabled ? "On" : "Off")
+                .foregroundColor(.secondary)
+                ChevronRight()
             }
-
-            Toggle(isOn: $viewModel.quickTypeBar) {
-                Text("QuickType bar suggestions")
-            }
-            .opacityReduced(!viewModel.autoFillEnabled)
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: viewModel.updateAutoFill)
         }, header: {
             Text("AutoFill")
         }, footer: {
-            if viewModel.autoFillEnabled {
-                // swiftlint:disable:next line_length
-                Text("By allowing suggestions on QuickType bar, you can quickly select a matched credential if any without opening the AutoFill extension and manually select one.")
-            } else {
-                VStack(alignment: .leading) {
-                    // swiftlint:disable:next line_length
-                    Text("You can enable AutoFill by going to Settings → Passwords → AutoFill Passwords -> Select Proton Pass.")
-                    Button(action: UIApplication.shared.openPasswordSettings) {
-                        Text("Open Settings")
-                            .font(.caption)
-                    }
-                    .foregroundColor(.interactionNorm)
-                }
+            if !viewModel.autoFillEnabled {
+                Text("Set Proton Pass as AutoFill provider to automatically fill in your usernames and passwords.")
             }
         })
     }
@@ -145,14 +133,11 @@ private struct ThemeSection: View {
                         Image(uiImage: viewModel.theme.icon)
                     })
                     .foregroundColor(.secondary)
-                    Image(systemName: "chevron.right")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 16)
-                        .foregroundColor(Color(.tertiaryLabel))
+                    ChevronRight()
                 }
                 .frame(maxWidth: .infinity)
-                .onTapGesture(perform: viewModel.changeTheme)
+                .contentShape(Rectangle())
+                .onTapGesture(perform: viewModel.updateTheme)
             } else {
                 Picker("Theme", selection: $viewModel.theme) {
                     ForEach(Theme.allCases, id: \.rawValue) { theme in
@@ -177,11 +162,11 @@ private struct FullSyncSection: View {
     var body: some View {
         Section(content: {
             Button(action: viewModel.fullSync) {
-                Text("Trigger a full synchronization")
+                Text("Force synchronization")
             }
             .foregroundColor(.interactionNorm)
         }, header: {
-            Text("Full synchronization")
+            Text("Application")
         }, footer: {
             Text("Download all your items again to make sure you are in sync.")
         })
@@ -192,11 +177,24 @@ private struct DeleteAccountSection: View {
     let onDelete: (() -> Void)
 
     var body: some View {
-        Section {
+        Section(content: {
             Button(action: onDelete) {
                 Text("Delete account")
                     .foregroundColor(.red)
             }
-        }
+        }, footer: {
+            // swiftlint:disable:next line_length
+            Text("This will permanently delete your account and all of its data. You will not be able to reactivate this account.")
+        })
+    }
+}
+
+private struct ChevronRight: View {
+    var body: some View {
+        Image(systemName: "chevron.right")
+            .resizable()
+            .scaledToFit()
+            .frame(height: 16)
+            .foregroundColor(Color(.tertiaryLabel))
     }
 }

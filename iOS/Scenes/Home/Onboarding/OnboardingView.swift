@@ -30,7 +30,10 @@ struct OnboardingView: View {
             VStack {
                 switch viewModel.state {
                 case .autoFill:
-                    OnboardingAutoFillView()
+                    VStack {
+                        Spacer()
+                        OnboardingAutoFillView()
+                    }
                 case .autoFillEnabled:
                     OnboardingAutoFillEnabledView()
                 case .biometricAuthentication:
@@ -88,50 +91,51 @@ struct OnboardingView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .background(
-            LinearGradient(colors: [.brandNorm.opacity(0.2), .clear],
-                           startPoint: .topLeading,
-                           endPoint: .bottomTrailing)
-        )
+        .background(OnboardingGradientBackground())
         .background(Color(.systemBackground))
         .edgesIgnoringSafeArea(.all)
         .onReceiveBoolean(viewModel.$finished, perform: dismiss.callAsFunction)
     }
 }
 
+struct OnboardingGradientBackground: View {
+    var body: some View {
+        LinearGradient(colors: [.brandNorm.opacity(0.2), .clear],
+                       startPoint: .topLeading,
+                       endPoint: .bottomTrailing)
+    }
+}
+
 struct OnboardingAutoFillView: View {
     var body: some View {
-        VStack {
-            Spacer()
-            HStack(spacing: 16) {
-                VStack(spacing: 24) {
-                    stepImage(PassIcon.onboardAutoFillStep1)
-                    stepImage(PassIcon.onboardAutoFillStep2)
-                    stepImage(PassIcon.onboardAutoFillStep3)
-                    stepImage(PassIcon.onboardAutoFillStep4)
-                    stepImage(PassIcon.onboardAutoFillStep5)
-                }
-                .background(
-                    Image(uiImage: PassIcon.onboardAutoFillGradient)
-                        .resizable()
-                        .frame(width: 2)
-                        .padding(.vertical, 36))
+        HStack(spacing: 16) {
+            VStack(spacing: 24) {
+                stepImage(PassIcon.onboardAutoFillStep1)
+                stepImage(PassIcon.onboardAutoFillStep2)
+                stepImage(PassIcon.onboardAutoFillStep3)
+                stepImage(PassIcon.onboardAutoFillStep4)
+                stepImage(PassIcon.onboardAutoFillStep5)
+            }
+            .background(
+                Image(uiImage: PassIcon.onboardAutoFillGradient)
+                    .resizable()
+                    .frame(width: 2)
+                    .padding(.vertical, 36))
 
-                VStack(alignment: .leading, spacing: 24) {
-                    Text("Open **Settings** app")
-                        .frame(height: 36)
-                    Text("Tap **Passwords**")
-                        .frame(height: 36)
-                    Text("Tap **Password Options**")
-                        .frame(height: 36)
-                    Text("Turn on **Autofill Passwords**")
-                        .frame(height: 36)
-                    Text("Select **Proton Pass**")
-                        .frame(height: 36)
-                }
+            VStack(alignment: .leading, spacing: 24) {
+                Text("Open **Settings** app")
+                    .frame(height: 36)
+                Text("Tap **Passwords**")
+                    .frame(height: 36)
+                Text("Tap **Password Options**")
+                    .frame(height: 36)
+                Text("Turn on **Autofill Passwords**")
+                    .frame(height: 36)
+                Text("Select **Proton Pass**")
+                    .frame(height: 36)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
     }
 
     private func stepImage(_ image: UIImage) -> some View {

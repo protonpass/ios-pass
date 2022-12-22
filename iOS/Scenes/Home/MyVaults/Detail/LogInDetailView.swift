@@ -43,7 +43,7 @@ struct LogInDetailView: View {
             }
             .padding()
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden()
         .toolbar { toolbarContent }
     }
 
