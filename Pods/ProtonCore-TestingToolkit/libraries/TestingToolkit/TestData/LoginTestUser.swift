@@ -37,7 +37,7 @@ public class LoginTestUser {
 
     public static let defaultUser = LoginTestUser(username: "username", password: ObfuscatedConstants.mockUserPassword)
 
-    public static let credential = Credential(UID: "", accessToken: "", refreshToken: "", expiration: Date(), userName: "", userID: "", scope: [])
+    public static let credential = Credential(UID: "", accessToken: "", refreshToken: "", userName: "", userID: "", scopes: [])
     public static var user: ProtonCore_DataModel.User {
         let json = "{\n        \"ID\": \"ID\",\n        \"Name\": null,\n        \"usedSpace\": 0,\n        \"currency\": \"EUR\",\n        \"credit\": 0,\n        \"maxSpace\": 104857600,\n        \"maxUpload\": 26214400,\n        \"subscribed\": 0,\n        \"services\": 1,\n        \"driveEarlyAccess\": 0,\n        \"role\": 0,\n        \"private\": 1,\n        \"delinquent\": 0,\n        \"keys\": [\n            {\n                \"ID\": \"ID\",\n                \"version\": 3,\n                \"primary\": 1,\n                \"privateKey\": \"\",\n                \"fingerprint\": \"fingerprint\"\n            }\n        ],\n        \"email\": \"email\",\n        \"displayName\": \"\"\n    }"
         return try! JSONDecoder().decode(ProtonCore_DataModel.User.self, from: json.data(using: .utf8)!)

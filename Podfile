@@ -3,7 +3,7 @@ def proton_core_path
 end
 
 def proton_core_version
-  '3.25.1'
+  '3.25.2'
 end
   
 def pmtest_path
@@ -29,7 +29,7 @@ def client_and_ios_pods
   pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-FeatureSwitch', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Login/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'release/1.0.3', :inhibit_warnings => true
+  pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :tag => '1.0.3', :inhibit_warnings => true
   pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
 end
 
