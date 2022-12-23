@@ -37,10 +37,9 @@ public enum PassKeyUtils {
         }
 
         let addressKeys = firstAddress.keys.compactMap { key -> ProtonCore_Crypto.DecryptionKey? in
-            guard let binKey = userData.user.keys.first?.privateKey.unArmor else { return nil }
             let binKeys = userData.user.keys.map { $0.privateKey }.compactMap { $0.unArmor }
             for passphrase in userData.passphrases {
-                if let decryptionKeyPassphrase = try? key.passphrase(userBinKeys: [binKey],
+                if let decryptionKeyPassphrase = try? key.passphrase(userBinKeys: binKeys,
                                                                      mailboxPassphrase: passphrase.value) {
                     return .init(privateKey: .init(value: key.privateKey),
                                  passphrase: .init(value: decryptionKeyPassphrase))
