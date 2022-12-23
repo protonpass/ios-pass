@@ -64,6 +64,17 @@
                ReferencedContainer = "container:ProtonPass.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "75283BD42946E1A8006658A6"
+               BuildableName = "iOSUITests.xctest"
+               BlueprintName = "iOSUITests"
+               ReferencedContainer = "container:ProtonPass.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

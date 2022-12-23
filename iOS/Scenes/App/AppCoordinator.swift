@@ -22,8 +22,8 @@ import Client
 import Combine
 import Core
 import CoreData
-import Crypto
 import CryptoKit
+import GoLibs
 import ProtonCore_Authentication
 import ProtonCore_Keymaker
 import ProtonCore_Login
@@ -81,6 +81,10 @@ final class AppCoordinator {
         self.apiService.serviceDelegate = self
 
         bindAppState()
+        // if ui test reset everything
+        if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
+            self.wipeAllData()
+        }
     }
 
     private func bindAppState() {

@@ -20,7 +20,7 @@
 
 import Client
 import Core
-import Crypto
+import GoLibs
 import ProtonCore_Doh
 import ProtonCore_ForceUpgrade
 import ProtonCore_Login
@@ -76,13 +76,14 @@ final class WelcomeCoordinator: DeinitPrintable {
             .custom(.init(image: PassIcon.passIcon,
                           startButtonText: "Start using Proton Pass")))
         let signUpParameters = SignupParameters(passwordRestrictions: .default,
-                                                summaryScreenVariant: summaryScreenVariant)
+                                                summaryScreenVariant: summaryScreenVariant,
+                                                signupMode: .internal)
         return .init(appName: "Proton Pass",
                      clientApp: .other(named: "pass"),
                      doh: doh,
                      apiServiceDelegate: apiServiceDelegate,
                      forceUpgradeDelegate: forceUpgradeServiceDelegate,
-                     minimumAccountType: .internal,
+                     minimumAccountType: .external,
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))
     }

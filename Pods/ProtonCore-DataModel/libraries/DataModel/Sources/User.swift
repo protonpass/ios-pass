@@ -106,6 +106,7 @@ public final class UserInfo: NSObject {
     public var notificationEmail: String
     public var notify: Int
     public var passwordMode: Int
+    public var referralProgram: ReferralProgram?
     public var role: Int
     public var sign: Int
     /// 0: free user, > 0: paid user
@@ -165,7 +166,8 @@ public final class UserInfo: NSObject {
         crashReports: Int?,
         conversationToolbarActions: ToolbarActions?,
         messageToolbarActions: ToolbarActions?,
-        listToolbarActions: ToolbarActions?)
+        listToolbarActions: ToolbarActions?,
+        referralProgram: ReferralProgram?)
     {
         self.maxSpace = maxSpace ?? DefaultValue.maxSpace
         self.usedSpace = usedSpace ?? DefaultValue.usedSpace
@@ -212,6 +214,7 @@ public final class UserInfo: NSObject {
         self.conversationToolbarActions = conversationToolbarActions ?? DefaultValue.conversationToolbarActions
         self.messageToolbarActions = messageToolbarActions ?? DefaultValue.messageToolbarActions
         self.listToolbarActions = listToolbarActions ?? DefaultValue.listToolbarActions
+        self.referralProgram = referralProgram
     }
 
     // init from api
@@ -311,14 +314,6 @@ extension UserInfo {
             }
         }
         return firstUserKey()?.privateKey
-    }
-
-    @available(*, deprecated, renamed: "isKeyV2")
-    internal var newSchema: Bool {
-        for key in addressKeys where key.newSchema {
-            return true
-        }
-        return false
     }
 
     public var isKeyV2: Bool {

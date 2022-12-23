@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-CoreTranslation",
-  "version": "3.23.0",
+  "version": "3.25.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": null,
-    "tag": "3.23.0"
+    "tag": "3.25.2"
   },
   "platforms": {
     "ios": "11.0",
@@ -34,5 +34,15 @@
       "libraries/CoreTranslation/Sources/**/*.{lproj,strings,stringsdict}"
     ]
   },
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "libraries/CoreTranslation/Tests/**/*",
+      "pod_target_xcconfig": {
+        "APPLICATION_EXTENSION_API_ONLY": "YES"
+      }
+    }
+  ],
   "swift_version": "5.6"
 }

@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ は利用可能です";
-
 /* Plan details storage */
 "%@ storage" = "%@ ストレージ";
 
@@ -38,6 +35,9 @@
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "エラーが発生しました";
 
+/* network troubleshot cell title */
+"Antivirus interference" = "ウイルス対策ソフトウェアの干渉";
+
 /* Error message */
 "Apple informed us they could not process the purchase." = "Appleが購入の手続きを進める事ができませんでした。";
 
@@ -54,8 +54,8 @@
  * Login 2FA */
 "Authenticate" = "認証";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "アドレスを作成をクリックすると、Proton の利用規約に同意したことになります。";
+/* top left back button */
+"Back" = "戻る";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "次へをクリックすると、Proton の利用規約に同意したことになります。";
@@ -75,6 +75,9 @@
 /* *
  * Login upgrade username-only account */
 "Change your password" = "パスワードを変更";
+
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Proton Status でシステム状況を確認してください。";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "閉じる";
@@ -106,21 +109,17 @@
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "support@protonvpn.com に連絡し、購入手続きを完了してください。";
 
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "サポートフォーム、メール (support@protonmail.zendesk.com)、または Twitter から直接、お問い合わせください。";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "現在のメールで Proton アカウントを作成";
 
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "代わりに安全な Proton Mail アドレスを作成";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "アドレスの作成";
-
 /* Create account button */
 "Create an account" = "アカウントを作成";
-
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Proton Mail アドレスを作成";
 
 /* Create user failed error */
 "Create user failed" = "ユーザーを作成できませんでした";
@@ -156,6 +155,9 @@
 /* Not receive code button */
 "Did not receive the code?" = "コードを受け取っていませんか?";
 
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "プロキシーやファイアウォールを無効にするか、ネットワーク管理者にお問い合わせください。";
+
 /* Cancellation for the credits applied popup */
 "Dismiss" = "却下";
 
@@ -164,6 +166,9 @@
 
 /* Title of domains bottom action sheet */
 "Domain" = "ドメイン";
+
+/* network troubleshot view title */
+"email" = "メール";
 
 /* Email field title
    Email label
@@ -186,7 +191,7 @@
 /* 2FA screen field info
    Email verification code description
    Verification code hint label */
-"Enter the 6-digit code." = "6 桁のコードを入力.";
+"Enter the 6-digit code." = "6 桁のコードを入力します。";
 
 /* Verification */
 "Enter the verification code that was sent to %@" = "%@ に送信された認証コードを入力してください";
@@ -203,6 +208,9 @@
 
 /* Error message */
 "Failed to get list of available products from App Store." = "App Store 上の利用可能製品の一覧の取得に失敗しました。";
+
+/* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
+"for %@" = "%@ 間";
 
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "セキュリティのため、入力したアドレスがあなたのアドレスであるか確認する必要があります。検証コードを %@ に送信しました。下記にコードを入力してください:";
@@ -255,7 +263,7 @@
 "Incorrect mailbox password" = "無効なメールボックスのパスワードです";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "インターネット サービス プロバイダー (ISP) の問題";
+"Internet Service Provider (ISP) problem" = "インターネットサービスプロバイダー (ISP) の問題";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "無効なハッシュ化されたパスワードです";
@@ -273,6 +281,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "あなたが購入したApp Storeの商品を、当社のサーバー上の製品に一致させることができませんでした。バグ報告に記入してくだされば、当社の顧客サポートチームからご連絡いたします。";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "より詳しく";
 
@@ -304,8 +313,7 @@
  * Networking */
 "Network connection error" = "ネットワーク接続エラー";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "次へ";
 
 /* network troubleshot cell title */
@@ -382,6 +390,10 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Privacy by default";
+
+/* *
+ * Login create address */
+"Proton address required" = "Proton アドレスが必要です";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -485,6 +497,9 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "申し訳ございませんがベータ版のiOSアプリからは課金ができません。\nパブリックベータにご参加頂きありがとうございます。";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "それでも問題が解決しない場合";
+
 /* *
  *  Login help */
 "Still need help? Contact us directly." = "問題が解決しませんか? 直接お問い合わせる.";
@@ -498,6 +513,9 @@
 /* Subscription title */
 "Subscription" = "サブスクリプション";
 
+/* network troubleshooting */
+"support form" = "サポートフォーム";
+
 /* *  Account Manager */
 "switch to" = "切り替え: ";
 
@@ -505,7 +523,6 @@
 "Temporarily disable or remove your antivirus software." = "ウイルス対策ソフトウェアを一時的に無効化または削除してください。";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "利用規約";
 
@@ -549,7 +566,7 @@
 "Two-factor authentication" = "2 要素認証";
 
 /* 2FA screen field title */
-"Two-factor code" = "2要素認証コード";
+"Two-factor code" = "2 要素認証コード";
 
 /* Mailbox unlock screen action button title */
 "Unlock" = "ロック解除";
@@ -575,7 +592,7 @@
 "Use recovery code" = "回復用コードを使用";
 
 /* 2FA screen 2FA button title */
-"Use two-factor code" = "2要素認証コードを使用";
+"Use two-factor code" = "2 要素認証コードを使用";
 
 /* Email address button */
 "Use your current email instead" = "代わりに現在のメールアドレスを使用";
@@ -632,10 +649,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "サインアウトされこのアカウントに関連付けられているすべてのデータがこのデバイスから削除されます。";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "このメールアドレスはすべての Proton サービスで使うことができます。";
-
 /* Complete view title */
 "Your account is being created" = "アカウントを作成しています…";
 
@@ -651,15 +664,12 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "%@ にプランは自動的に更新されます";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "あなたのアカウントは %@ に関連付けられています。%@ を使用するには、アドレスを作成してください。";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Proton アカウントは正常に作成されました。";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Proton Free アカウントは正常に作成されました。";
 
-/* Recovery address label title */
-"Your recovery email address:" = "回復用メールアドレス:";
+/* Session expired info */
+"Your session has expired. Please log in again." = "セッションの有効期限が切れました。再度ログインしてください。";
 
