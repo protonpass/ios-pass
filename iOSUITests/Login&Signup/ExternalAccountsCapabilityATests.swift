@@ -1,22 +1,23 @@
 //
-// ExternalAccountsCapabilityATests.swift
-// Proton Pass - Created on 12/09/22.
-// Copyright (c) 2022 Proton Technologies AG
+//  ExternalAccountsCapabilityATests.swift
+//  iOSUITests - Created on 12/23/22.
 //
-// This file is part of Proton Pass.
+//  Copyright (c) 2022 Proton Technologies AG
 //
-// Proton Pass is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-// Proton Pass is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
+//  ProtonCore is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-// You should have received a copy of the GNU General Public License
-// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//  ProtonCore is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
@@ -28,7 +29,7 @@ import XCTest
 
 final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()
-    
+
     // Sign-in with internal account works
     // Sign-in with external account works
     // Sign-in with username account works (account is converted to internal under the hood)
@@ -36,7 +37,6 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
         let doh = Environment.black.doh
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-        
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
         var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
         QuarkCommands.create(account: .freeWithAddressAndKeys(username: randomUsername, password: randomPassword),
@@ -61,12 +61,12 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
             .signIn(robot: OnboardingRobot.self)
             .verify.isOnboardingViewShown()
     }
-    
+
     func testSignInWithExternalAccountWorks() {
         let doh = Environment.black.doh
         let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-        
+
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
         var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
         QuarkCommands.create(account: .external(email: randomEmail, password: randomPassword),
@@ -120,11 +120,11 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
             .signIn(robot: OnboardingRobot.self)
             .verify.isOnboardingViewShown()
     }
-    
+
     // Sign-up with internal account works
     // The UI for sign-up with external account is not available
     // The UI for sign-up with username account is not available
-    
+
     func testSignUpWithInternalAccountWorks() {
         let doh = Environment.black.doh
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
@@ -158,13 +158,13 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
 //                .verify.isOnboardingViewShown()
         }
     }
-    
+
     func testSignUpWithExternalAccountIsNotAvailable() {
         welcomeRobot.logIn()
             .switchToCreateAccount()
             .verify.otherAccountExtButtonIsNotShown()
     }
-    
+
     func testSignUpWithUsernameAccountIsNotAvailable() {
         welcomeRobot.logIn()
             .switchToCreateAccount()

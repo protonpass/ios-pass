@@ -81,11 +81,10 @@ final class AppCoordinator {
         self.apiService.serviceDelegate = self
 
         bindAppState()
-        
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             self.wipeAllData()
-        }   
+        }
     }
 
     private func bindAppState() {
