@@ -113,8 +113,8 @@ public extension SyncEventLoop {
     func start() {
         delegate?.syncEventLoopDidStartLooping()
         timer = .scheduledTimer(withTimeInterval: kEventLoopIntervalInSeconds,
-                                repeats: true) { [unowned self] _ in
-            self.timerTask()
+                                repeats: true) { [weak self] _ in
+            self?.timerTask()
         }
         timer?.fire()
     }
