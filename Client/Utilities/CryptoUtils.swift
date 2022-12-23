@@ -103,8 +103,8 @@ public enum CryptoUtils {
         return sessionKey
     }
 
-    public static func unlockAddressKeys(userData: UserData) throws -> [ProtonCore_Crypto.DecryptionKey] {
-        guard let firstAddress = userData.addresses.first else {
+    public static func unlockAddressKeys(addressID: String, userData: UserData) throws -> [ProtonCore_Crypto.DecryptionKey] {
+        guard let firstAddress = userData.addresses.first(where: { $0.addressID == addressID }) else {
             fatalError("Post MVP")
         }
         return firstAddress.keys.compactMap { key -> DecryptionKey? in

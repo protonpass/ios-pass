@@ -31,7 +31,7 @@ public enum PassKeyUtils {
     public static func getVaultKeyPassphrase(userData: UserData,
                                              share: Share,
                                              vaultKey: VaultKey) throws -> String {
-        guard let firstAddress = userData.addresses.first else {
+        guard let firstAddress = userData.addresses.first(where: { $0.addressID == share.addressID }) else {
             assertionFailure("Address can not be nil")
             throw CryptoError.failedToEncrypt
         }
