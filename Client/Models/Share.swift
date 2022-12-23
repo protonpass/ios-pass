@@ -122,7 +122,7 @@ public struct PartialShare: Decodable {
 
 extension Share {
     public func getVault(userData: UserData, vaultKeys: [VaultKey]) throws -> VaultProtocol {
-        let addressKeys = try CryptoUtils.unlockAddressKeys(userData: userData)
+        let addressKeys = try CryptoUtils.unlockAddressKeys(addressID: addressID, userData: userData)
 
 //        let publicAddressKeys = firstAddress.keys.map { $0.publicKey }
 //        guard let publicKeyRing = try Decryptor.buildPublicKeyRing(armoredKeys: publicAddressKeys) else {
