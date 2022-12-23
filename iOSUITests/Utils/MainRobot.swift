@@ -61,12 +61,7 @@ public final class MainRobot: CoreElements {
         button(showLoginButtonLabelText).wait().tap()
         return LoginRobot()
     }
-
-//    public func showWelcomeScreen() -> WelcomeRobot {
-//        button(showLoginButtonLabelText).wait().tap()
-//        return WelcomeRobot()
-//    }
-//    
+    
     public func showSignup() -> SignupRobot {
         button(showSignupButtonLabelText).tap()
         return SignupRobot()

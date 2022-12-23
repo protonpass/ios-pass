@@ -1,6 +1,6 @@
 //
 //  OnboardingRobot.swift
-//  Proton Pass - Created on 12/22/2022
+//  iOSUITests - Created on 12/22/2022
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
