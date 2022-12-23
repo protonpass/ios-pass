@@ -19,11 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-#if canImport(Crypto_VPN)
-import Crypto_VPN
-#elseif canImport(Crypto)
-import Crypto
-#endif
+import GoLibs
 import Foundation
 import ProtonCore_APIClient
 import ProtonCore_DataModel
@@ -139,7 +135,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                 completion(.failure(.from(responseError)))
             case .success(let response):
                 var credential = context.credential
-                credential.updateScope(response.scope)
+                credential.scopes = response.scopes
                 completion(.success(.newCredential(credential, context.passwordMode)))
             }
         }

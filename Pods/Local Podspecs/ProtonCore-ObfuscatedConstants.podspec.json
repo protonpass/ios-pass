@@ -1,0 +1,47 @@
+{
+  "name": "ProtonCore-ObfuscatedConstants",
+  "version": "3.25.2",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": null,
+    "tag": "3.25.2"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.13"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "default_subspecs": [
+
+  ],
+  "dependencies": {
+    "TrustKit": [
+
+    ]
+  },
+  "preserve_paths": "libraries/ObfuscatedConstants/Scripts/*",
+  "source_files": "libraries/ObfuscatedConstants/Sources/ObfuscatedConstants.swift",
+  "script_phases": {
+    "name": "Create ObfuscatedConstants file",
+    "script": "${PODS_TARGET_SRCROOT}/libraries/ObfuscatedConstants/Scripts/create_obfuscated_constants.sh",
+    "execution_position": "before_compile",
+    "output_files": [
+      "${PODS_TARGET_SRCROOT}/libraries/ObfuscatedConstants/Sources/ObfuscatedConstants.swift"
+    ]
+  },
+  "swift_version": "5.6"
+}

@@ -70,6 +70,7 @@ extension ProtonHeader {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = image
         imageView.tintColor = ColorProvider.TextNorm
+        imageView.contentMode = .scaleAspectFit
         subtitleLabel.text = subtitle
     }
 }

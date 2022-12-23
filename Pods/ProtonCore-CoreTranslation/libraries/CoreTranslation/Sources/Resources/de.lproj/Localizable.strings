@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ und %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ ist verfügbar";
-
 /* Plan details storage */
 "%@ storage" = "%@ Speicherplatz";
 
@@ -14,7 +11,7 @@
 "A networking error has occured" = "Es ist ein Netzwerkfehler aufgetreten";
 
 /* Unfinished operation error dialog description */
-"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Der Kauf eines Proton-Paket-Tarifs wurde bereits angestoßen. Drücke auf „Weiter“, um die Zahlungsabwicklung abzuschließen und dein Konto zu erstellen.";
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Der Kauf eines Proton-Paket-Abonnements wurde bereits angestoßen. Drücke auf „Weiter“, um die Zahlungsabwicklung abzuschließen und dein Konto zu erstellen.";
 
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Eine Wiederherstellungsmethode hilft dir, auf dein Konto zuzugreifen, falls du dein Passwort vergessen hast oder aus deinem Konto ausgesperrt wurdest.";
@@ -62,9 +59,6 @@
 
 /* top left back button */
 "Back" = "Zurück";
-
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Indem du auf „E-Mail-Adresse erstellen” klickst, erklärst du dich mit den Allgemeinen Geschäftsbedingungen von Proton einverstanden.";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Indem du auf „Weiter” klickst, erklärst du dich mit den Allgemeinen Geschäftsbedingungen von Proton einverstanden.";
@@ -127,15 +121,8 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Erstelle stattdessen eine sichere Proton Mail-E-Mail-Adresse";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Neue E-Mail-Adresse";
-
 /* Create account button */
 "Create an account" = "Konto erstellen";
-
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Proton Mail-E-Mail-Adresse erstellen";
 
 /* Create user failed error */
 "Create user failed" = "Benutzer konnte nicht erstellt werden";
@@ -300,11 +287,12 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Es war nicht möglich, das von dir im App Store erworbene Produkt mit einem Produkt auf unserem Server abzugleichen. Bitte fülle den Fehlerbericht aus und unser Kunden-Support-Team wird sich mit dir in Verbindung setzen.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "Mehr erfahren";
 
 /* visit item message */
-"Learn more about human verification and why we ask for it." = "Erfahre mehr über die menschliche Prüfung und warum wir danach fragen.";
+"Learn more about human verification and why we ask for it." = "Erfahre mehr über die menschliche Verifizierung und warum wir danach fragen.";
 
 /* *
  * Splash */
@@ -326,7 +314,7 @@
 "Multi-user support" = "Unterstützung für mehrere Benutzer";
 
 /* Verification help */
-"Need help with human verification?" = "Benötigst du Hilfe bei der menschlichen Bestätigung?";
+"Need help with human verification?" = "Benötigst du Hilfe bei der menschlichen Verifizierung?";
 
 /* Help button */
 "Need help?" = "Benötigst du Hilfe?";
@@ -335,8 +323,7 @@
  * Networking */
 "Network connection error" = "Netzwerkverbindungsfehler";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Weiter";
 
 /* network troubleshot cell title */
@@ -363,7 +350,7 @@
 "Password" = "Passwort";
 
 /* Password empty error */
-"Password can not be empty.\nPlease try again." = "Bitte Passwort eingeben.\nVersuche es bitte erneut.";
+"Password can not be empty.\nPlease try again." = "Passwort kann nicht leer sein.\nVersuche es bitte erneut.";
 
 /* (No Comment) */
 "Password is too short. Should have at least %@ characters.\nPlease try again." = "Das Passwort ist zu kurz. Es muss mindestens %@ Zeichen enthalten.\nBitte versuche es erneut.";
@@ -425,6 +412,10 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Privatsphäre als Standard";
+
+/* *
+ * Login create address */
+"Proton address required" = "Proton-Adresse erforderlich";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -557,7 +548,6 @@
 "Temporarily disable or remove your antivirus software." = "Deaktiviere oder entferne vorübergehend deine Antiviren-Software.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Allgemeine Geschäftsbedingungen";
 
@@ -571,7 +561,7 @@
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Der In‑App-Kaufprozess wurde gestartet. Bitte folge den Anweisungen von Apple, um den Kauf entweder abzuschließen oder abzubrechen.";
 
 /* Message shown when we suspect that the Proton servers are blocked */
-"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Die Proton-Server sind unerreichbar. Das kann mehrere Gründe haben: Eine falsche Netzwerkkonfiguration, nicht funktionierende Proton-Server oder die Proton-Server sind blockiert.";
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Die Proton-Server sind nicht erreichbar. Das kann mehrere Gründe haben: Eine falsche Netzwerkkonfiguration, nicht funktionierende Proton-Server oder die Proton-Server werden blockiert.";
 
 /* Networking insecure connection error */
 "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Die TLS-Zertifikatsvalidierung ist beim Versuch, eine Verbindung zur Proton-API herzustellen, fehlgeschlagen. Deine aktuelle Internetverbindung könnte überwacht werden. Um die Sicherheit deiner Daten zu gewährleisten, wird verhindert, dass die App auf die Proton-API zugreifen kann.\nUm dich anzumelden oder auf dein Konto zuzugreifen, wechsle zu einem neuen Netzwerk und versuche erneut, eine Verbindung herzustellen.";
@@ -679,10 +669,10 @@
 "Would you like to receive a new verification code or use an alternate email address?" = "Möchtest du einen neuen Bestätigungscode erhalten oder eine alternative E-Mail-Adresse verwenden?";
 
 /* alert message */
-"Would you like to receive a new verification code or use an alternative verification method?" = "Möchtest du einen neuen Bestätigungsschlüssel erhalten oder eine alternative Bestätigungsmethode verwenden?";
+"Would you like to receive a new verification code or use an alternative verification method?" = "Möchtest du einen neuen Bestätigungscode erhalten oder eine alternative Bestätigungsmethode verwenden?";
 
 /* In App Purchase error */
-"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Ungültiger Status der Zahlungs-Token. Bitte starte die App neu. Sollte der Fehler weiterhin bestehen, kontaktiere bitte den Support.";
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Ungültiger Status des Zahlungs-Token. Bitte starte die App neu. Sollte der Fehler weiterhin bestehen, kontaktiere bitte den Support.";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Ja, aktivieren für ";
@@ -691,20 +681,16 @@
 "You cannot manage subscriptions inside the mobile application." = "Du kannst Abonnements nicht in der mobilen Anwendung verwalten.";
 
 /* Error applying credit after registration alert */
-"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Du hast dich erfolgreich registriert, aber deine Zahlung wurde nicht verarbeitet. Um deine Zahlungsinformationen erneut zu senden, klicke auf „Wiederholen“. Es erfolgt nur eine einmalige Belastung. Wenn das Problem weiterhin besteht, wende dich bitte an den Kundendienst.";
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Du hast dich erfolgreich registriert, aber deine Zahlung wurde nicht verarbeitet. Um deine Zahlungsinformationen erneut zu senden, klicke auf „Wiederholen“. Es erfolgt nur eine einmalige Belastung. Wenn das Problem weiterhin besteht, wende dich bitte an den Support.";
 
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Du wirst abgemeldet und alle mit diesem Konto verbundenen Daten werden von diesem Gerät entfernt.";
-
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Diese E-Mail-Adresse kann verwendet werden, um sich bei allen Proton-Diensten anzumelden.";
 
 /* Complete view title */
 "Your account is being created" = "Dein Konto wird erstellt…";
 
 /* Dialog text for missing keys error */
-"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Deinem Konto fehlen Schlüssel, bitte melde dich im Web an, um die erforderlichen Schlüssel automatisch zu generieren. Sobald du dich im Web angemeldet hast, kehre bitte zur App zurück und melde dich dort an.";
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Deinem Konto fehlen Schlüssel, bitte melde dich über einen Browser an, um die erforderlichen Schlüssel automatisch zu generieren. Sobald du dich im Browser angemeldet hast, kehre bitte zur App zurück und melde dich dort an.";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Dein Land sperrt möglicherweise den Zugang zu Proton. Versuche mit %1$@ (oder einem anderen VPN) oder %2$@ auf Proton zuzugreifen.";
@@ -721,17 +707,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Dein Abo wird automatisch am %@ verlängert";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Dein Proton-Konto ist mit „%@“ verbunden. Um „%@“ verwenden zu können, erstelle bitte eine E-Mail-Adresse.";
-
 /* Signup summary no plan description */
-"Your Proton account was successfully created." = "Dein kostenloses Proton-Konto wurde erfolgreich erstellt.";
+"Your Proton account was successfully created." = "Dein Proton-Konto wurde erfolgreich erstellt.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Dein kostenloses Proton-Konto wurde erfolgreich erstellt.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Deine Wiederherstellungs-E-Mail-Adresse:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.";

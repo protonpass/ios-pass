@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Crypto
+import GoLibs
 
 public struct CreateItemRequest {
     /// Encrypted ID of the VaultKey used to create this item
