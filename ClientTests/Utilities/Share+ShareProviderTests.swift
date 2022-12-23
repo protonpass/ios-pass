@@ -43,7 +43,7 @@ final class SharePlusShareProviderTests: XCTestCase {
         let createdShare =
         Share(shareID: .random(),
               vaultID: .random(),
-              addressID: .random(),
+              addressID: (try? testUser.getAddressKey().addressId) ?? "",
               targetType: 0,
               targetID: .random(),
               permission: 0,

@@ -36,6 +36,7 @@ public enum CryptoError: Error {
     case failedToVerifySignature
     case failedToGenerateSessionKey
     case failedToDecode
+    case addressNotFound(addressID: String)
 }
 
 public enum CryptoUtils {
@@ -103,9 +104,10 @@ public enum CryptoUtils {
         return sessionKey
     }
 
-    public static func unlockAddressKeys(userData: UserData) throws -> [ProtonCore_Crypto.DecryptionKey] {
-        guard let firstAddress = userData.addresses.first else {
-            fatalError("Post MVP")
+    public static func unlockAddressKeys(addressID: String,
+                                         userData: UserData) throws -> [ProtonCore_Crypto.DecryptionKey] {
+        guard let firstAddress = userData.addresses.first(where: { $0.addressID == addressID }) else {
+            throw CryptoError.addressNotFound(addressID: addressID)
         }
         return firstAddress.keys.compactMap { key -> DecryptionKey? in
             let binKeys = userData.user.keys.map { $0.privateKey }.compactMap { $0.unArmor }
