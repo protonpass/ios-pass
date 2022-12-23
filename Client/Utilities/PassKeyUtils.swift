@@ -36,12 +36,17 @@ public enum PassKeyUtils {
             throw CryptoError.failedToEncrypt
         }
 
-        let addressKeys = try firstAddress.keys.compactMap { key -> ProtonCore_Crypto.DecryptionKey? in
+        let addressKeys = firstAddress.keys.compactMap { key -> ProtonCore_Crypto.DecryptionKey? in
             guard let binKey = userData.user.keys.first?.privateKey.unArmor else { return nil }
-            let passphrase = try key.passphrase(userBinKeys: [binKey],
-                                                mailboxPassphrase: userData.passphrases.first?.value ?? "")
-            return ProtonCore_Crypto.DecryptionKey(privateKey: .init(value: key.privateKey),
-                                                   passphrase: .init(value: passphrase))
+            let binKeys = userData.user.keys.map { $0.privateKey }.compactMap { $0.unArmor }
+            for passphrase in userData.passphrases {
+                if let decryptionKeyPassphrase = try? key.passphrase(userBinKeys: [binKey],
+                                                                     mailboxPassphrase: passphrase.value) {
+                    return .init(privateKey: .init(value: key.privateKey),
+                                 passphrase: .init(value: decryptionKeyPassphrase))
+                }
+            }
+            return nil
         }
 
         let signingKeyValid = try validateSigningKey(userData: userData,
