@@ -160,6 +160,7 @@ struct LogInDetailView: View {
                         }, label: {
                             Text(url)
                                 .foregroundColor(.interactionNorm)
+                                .multilineTextAlignment(.leading)
                         })
                         .contextMenu {
                             Button(action: {

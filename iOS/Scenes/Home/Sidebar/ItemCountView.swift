@@ -97,6 +97,6 @@ private struct ItemContentTypeCountView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.sidebarItem)
-        .disabled(count == nil || count == 0) // swiftlint:disable:this empty_count
+        .disabled(count == nil)
     }
 }
