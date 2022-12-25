@@ -46,6 +46,7 @@ struct NoteDetailView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
+        .navigationTitle(viewModel.name)
         .toolbar { toolbarContent }
     }
 
@@ -56,11 +57,6 @@ struct NoteDetailView: View {
                 Image(uiImage: IconProvider.chevronLeft)
                     .foregroundColor(.primary)
             }
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text(viewModel.name)
-                .fontWeight(.bold)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
