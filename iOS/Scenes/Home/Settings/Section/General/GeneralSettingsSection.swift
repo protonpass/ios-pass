@@ -26,17 +26,8 @@ struct GeneralSettingsSection: View {
     var body: some View {
         Section(content: {
             Text("Security")
-            Text("Default browser")
-            HStack {
-                Text("AutoFill")
-                Spacer()
-                Text(viewModel.autoFillEnabled ? "On" : "Off")
-                    .foregroundColor(.secondary)
-                ChevronRight()
-            }
-            .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.updateAutoFill)
+            DefaultBrowserRow(viewModel: viewModel)
+            AutoFillRow(viewModel: viewModel)
         }, header: {
             Text("General")
         }, footer: {
@@ -44,5 +35,41 @@ struct GeneralSettingsSection: View {
                 Text("Set Proton Pass as AutoFill provider to automatically fill in your usernames and passwords.")
             }
         })
+    }
+}
+
+private struct DefaultBrowserRow: View {
+    @ObservedObject var viewModel: SettingsViewModel
+
+    var body: some View {
+        Button(action: viewModel.updateDefaultBrowser) {
+            HStack {
+                Text("Default browser")
+                Spacer()
+                Text(viewModel.browser.description)
+                    .foregroundColor(.secondary)
+                ChevronRight()
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct AutoFillRow: View {
+    @ObservedObject var viewModel: SettingsViewModel
+
+    var body: some View {
+        Button(action: viewModel.updateAutoFill) {
+            HStack {
+                Text("AutoFill")
+                Spacer()
+                Text(viewModel.autoFillEnabled ? "On" : "Off")
+                    .foregroundColor(.secondary)
+                ChevronRight()
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }

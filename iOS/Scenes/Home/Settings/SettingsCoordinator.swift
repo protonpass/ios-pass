@@ -86,6 +86,13 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
         push(view)
     }
 
+    func settingsViewModelWantsToUpdateDefaultBrowser(viewModel: SettingsViewModel) {
+        let view = BrowserSettingsView(viewModel: viewModel) { [unowned self] in
+            self.popTopViewController(animated: true)
+        }
+        push(view)
+    }
+
     func settingsViewModelDidFinishFullSync() {
         delegate?.settingsCoordinatorDidFinishFullSync()
     }
