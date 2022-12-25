@@ -43,5 +43,13 @@
 	<string>72e333d0-d159-45e3-ad41-39acb89134e8</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechrome</string>
+		<string>ddgQuickLink</string>
+		<string>firefox</string>
+		<string>brave</string>
+		<string>microsoft-edge</string>
+	</array>
 </dict>
 </plist>

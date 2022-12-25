@@ -51,7 +51,7 @@ final class UrlOpener {
             }
         default:
             if let appScheme = preferences.browser.appScheme {
-                let completeUrl = appScheme + urlString
+                let completeUrl = appScheme + (url.host ?? "") + url.path
                 if let newUrl = URL(string: completeUrl), UIApplication.shared.canOpenURL(newUrl) {
                     UIApplication.shared.open(newUrl)
                 } else {
