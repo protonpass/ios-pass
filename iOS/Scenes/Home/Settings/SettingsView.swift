@@ -151,6 +151,7 @@ private struct ThemeSection: View {
                         .tag(theme)
                     }
                 }
+                .frame(maxWidth: .infinity)
             }
         }
     }
