@@ -47,4 +47,21 @@ public enum Browser: Int, CustomStringConvertible, CaseIterable {
             return "Edge"
         }
     }
+
+    public var appScheme: String? {
+        switch self {
+        case .chrome:
+            return "googlechrome://"
+        case .duckDuckGo:
+            return "ddgQuickLink://"
+        case .firefox:
+            return "firefox://open-url?url="
+        case .brave:
+            return "brave://open-url?url="
+        case .edge:
+            return "microsoft-edge://"
+        default:
+            return nil
+        }
+    }
 }

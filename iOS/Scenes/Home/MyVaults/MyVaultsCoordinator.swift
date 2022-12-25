@@ -52,8 +52,8 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     weak var delegate: MyVaultsCoordinatorDelegate?
-
     weak var bannerManager: BannerManager?
+    weak var urlOpener: UrlOpener?
 
     init(symmetricKey: SymmetricKey,
          userData: UserData,
@@ -454,6 +454,10 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
         showFullScreen(text: text, userInterfaceStyle: rootViewController.parent?.overrideUserInterfaceStyle)
+    }
+
+    func itemDetailViewModelWantsToOpen(urlString: String) {
+        urlOpener?.open(urlString: urlString)
     }
 
     func itemDetailViewModelDidFail(_ error: Error) {

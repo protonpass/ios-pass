@@ -50,6 +50,7 @@ final class HomeCoordinator: DeinitPrintable {
     private let publicKeyRepository: PublicKeyRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let preferences: Preferences
+    private let urlOpener: UrlOpener
     private var detailCoordinator: Coordinator?
     weak var delegate: HomeCoordinatorDelegate?
 
@@ -122,6 +123,7 @@ final class HomeCoordinator: DeinitPrintable {
         self.credentialManager = credentialManager
         self.vaultSelection = .init(vaults: [])
         self.preferences = preferences
+        self.urlOpener = .init(preferences: preferences)
 
         let shareEventIDRepository = ShareEventIDRepository(container: container,
                                                             authCredential: authCredential,
@@ -244,6 +246,7 @@ private extension HomeCoordinator {
         let sideMenuController = SideMenuController(contentViewController: myVaultsRootViewController,
                                                     menuViewController: sidebarViewController)
         sideMenuController.delegate = self
+        urlOpener.rootViewController = sideMenuController
         return sideMenuController
     }
 
@@ -273,6 +276,7 @@ private extension HomeCoordinator {
                                                       preferences: preferences)
         myVaultsCoordinator.coordinatorDelegate = self
         myVaultsCoordinator.delegate = self.trashCoordinator
+        myVaultsCoordinator.urlOpener = self.urlOpener
         return myVaultsCoordinator
     }
 
@@ -294,6 +298,7 @@ private extension HomeCoordinator {
                                                 syncEventLoop: eventLoop)
         trashCoordinator.coordinatorDelegate = self
         trashCoordinator.delegate = self
+        trashCoordinator.urlOpener = urlOpener
         return trashCoordinator
     }
 }

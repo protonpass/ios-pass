@@ -28,6 +28,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel)
     func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String)
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
+    func itemDetailViewModelWantsToOpen(urlString: String)
     func itemDetailViewModelDidFail(_ error: Error)
 }
 
