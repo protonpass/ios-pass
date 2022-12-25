@@ -32,6 +32,7 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToDeleteAccount()
     func settingsViewModelWantsToUpdateAutoFill(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateTheme(viewModel: SettingsViewModel)
+    func settingsViewModelWantsToUpdateDefaultBrowser(viewModel: SettingsViewModel)
     func settingsViewModelDidFinishFullSync()
     func settingsViewModelDidFail(_ error: Error)
 }
@@ -65,6 +66,12 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         }
     }
 
+    @Published var browser: Browser {
+        didSet {
+            preferences.browser = browser
+        }
+    }
+
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
@@ -76,6 +83,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         self.preferences = preferences
         self.quickTypeBar = preferences.quickTypeBar
         self.theme = preferences.theme
+        self.browser = preferences.browser
         self.refresh()
 
         NotificationCenter.default
@@ -147,6 +155,10 @@ extension SettingsViewModel {
 
     func deleteAccount() {
         delegate?.settingsViewModelWantsToDeleteAccount()
+    }
+
+    func updateDefaultBrowser() {
+        delegate?.settingsViewModelWantsToUpdateDefaultBrowser(viewModel: self)
     }
 
     func updateAutoFill() {

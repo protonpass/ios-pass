@@ -18,12 +18,42 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
+import ProtonCore_UIFoundations
 import SwiftUI
 
 struct BrowserSettingsView: View {
+    @ObservedObject var viewModel: SettingsViewModel
+    let onGoBack: () -> Void
+
     var body: some View {
         Form {
-            Text("Default browser")
+            Section(content: {
+                ForEach(Browser.allCases, id: \.rawValue) { browser in
+                    HStack {
+                        Text(browser.description)
+                        Spacer()
+                        if viewModel.browser == browser {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.interactionNorm)
+                        }
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture { viewModel.browser = browser }
+                }
+            }, footer: {
+                Text("This preference will fallback to Safari if the browser of choice is uninstalled.")
+            })
+        }
+        .navigationBarBackButtonHidden()
+        .navigationTitle("Default browser")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: onGoBack) {
+                    Image(uiImage: IconProvider.chevronLeft)
+                        .foregroundColor(.primary)
+                }
+            }
         }
     }
 }

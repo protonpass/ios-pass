@@ -43,11 +43,15 @@ public final class Preferences: ObservableObject {
     @AppStorage("theme", store: kSharedUserDefaults)
     public var theme = Theme.matchSystem
 
+    @AppStorage("browser", store: kSharedUserDefaults)
+    public var browser = Browser.safari
+
     public func reset() {
         quickTypeBar = true
         failedAttemptCount = 0
         biometricAuthenticationEnabled = false
         autoFillBannerDisplayed = false
         theme = .matchSystem
+        browser = .safari
     }
 }
