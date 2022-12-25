@@ -32,50 +32,18 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            AutoFillSection(viewModel: viewModel)
+            GeneralSettingsSection(viewModel: viewModel)
             BiometricAuthenticationSection(biometricAuthenticator: viewModel.biometricAuthenticator)
             ThemeSection(viewModel: viewModel)
             FullSyncSection(viewModel: viewModel)
             DeleteAccountSection(onDelete: viewModel.deleteAccount)
         }
-        .toolbar { toolbarContent }
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            ToggleSidebarButton(action: viewModel.toggleSidebar)
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text("Settings")
-                .fontWeight(.bold)
-        }
-    }
-}
-
-private struct AutoFillSection: View {
-    @ObservedObject var viewModel: SettingsViewModel
-
-    var body: some View {
-        Section(content: {
-            HStack {
-                Text("AutoFill")
-                Spacer()
-                Text(viewModel.autoFillEnabled ? "On" : "Off")
-                .foregroundColor(.secondary)
-                ChevronRight()
+        .navigationTitle("Settings")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                ToggleSidebarButton(action: viewModel.toggleSidebar)
             }
-            .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.updateAutoFill)
-        }, header: {
-            Text("AutoFill")
-        }, footer: {
-            if !viewModel.autoFillEnabled {
-                Text("Set Proton Pass as AutoFill provider to automatically fill in your usernames and passwords.")
-            }
-        })
+        }
     }
 }
 
@@ -190,7 +158,7 @@ private struct DeleteAccountSection: View {
     }
 }
 
-private struct ChevronRight: View {
+struct ChevronRight: View {
     var body: some View {
         Image(systemName: "chevron.right")
             .resizable()

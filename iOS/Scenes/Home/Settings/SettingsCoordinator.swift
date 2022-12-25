@@ -25,6 +25,7 @@ import SwiftUI
 import UIComponents
 
 protocol SettingsCoordinatorDelegate: AnyObject {
+    func settingsCoordinatorWantsToDeleteAccount()
     func settingsCoordinatorDidFinishFullSync()
 }
 
@@ -33,7 +34,6 @@ final class SettingsCoordinator: Coordinator {
 
     weak var delegate: SettingsCoordinatorDelegate?
     weak var bannerManager: BannerManager?
-    var onDeleteAccount: (() -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
@@ -49,12 +49,6 @@ final class SettingsCoordinator: Coordinator {
     }
 
     private func start() {
-        settingsViewModel.onToggleSidebar = { [unowned self] in
-            toggleSidebar()
-        }
-        settingsViewModel.onDeleteAccount = { [unowned self] in
-            onDeleteAccount?()
-        }
         start(with: SettingsView(viewModel: settingsViewModel),
               secondaryView: ItemDetailPlaceholderView { self.popTopViewController(animated: true) })
     }
@@ -62,12 +56,20 @@ final class SettingsCoordinator: Coordinator {
 
 // MARK: - SettingsViewModelDelegate
 extension SettingsCoordinator: SettingsViewModelDelegate {
+    func settingsViewModelWantsToToggleSidebar() {
+        toggleSidebar()
+    }
+
     func settingsViewModelWantsToShowLoadingHud() {
         coordinatorDelegate?.coordinatorWantsToShowLoadingHud()
     }
 
     func settingsViewModelWantsToHideLoadingHud() {
         coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
+    }
+
+    func settingsViewModelWantsToDeleteAccount() {
+        delegate?.settingsCoordinatorWantsToDeleteAccount()
     }
 
     func settingsViewModelWantsToUpdateAutoFill(viewModel: SettingsViewModel) {

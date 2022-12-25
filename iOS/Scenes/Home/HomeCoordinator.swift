@@ -280,9 +280,6 @@ private extension HomeCoordinator {
                                                       preferences: preferences)
         settingsCoordinator.coordinatorDelegate = self
         settingsCoordinator.delegate = self
-        settingsCoordinator.onDeleteAccount = { [unowned self] in
-            self.beginAccountDeletionFlow()
-        }
         return settingsCoordinator
     }
 
@@ -534,6 +531,10 @@ extension HomeCoordinator: TrashCoordinatorDelegate {
 
 // MARK: - SettingsCoordinatorDelegate
 extension HomeCoordinator: SettingsCoordinatorDelegate {
+    func settingsCoordinatorWantsToDeleteAccount() {
+        beginAccountDeletionFlow()
+    }
+
     func settingsCoordinatorDidFinishFullSync() {
         myVaultsCoordinator.refreshItems()
         trashCoordinator.refreshTrashedItems()
