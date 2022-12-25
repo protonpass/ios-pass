@@ -41,5 +41,7 @@
 	<false/>
 	<key>ITSEncryptionExportComplianceCode</key>
 	<string>72e333d0-d159-45e3-ad41-39acb89134e8</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 </dict>
 </plist>
