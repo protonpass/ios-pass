@@ -26,8 +26,10 @@ import SwiftUI
 import UIComponents
 
 protocol SettingsViewModelDelegate: AnyObject {
+    func settingsViewModelWantsToToggleSidebar()
     func settingsViewModelWantsToShowLoadingHud()
     func settingsViewModelWantsToHideLoadingHud()
+    func settingsViewModelWantsToDeleteAccount()
     func settingsViewModelWantsToUpdateAutoFill(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateTheme(viewModel: SettingsViewModel)
     func settingsViewModelDidFinishFullSync()
@@ -62,9 +64,6 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
             preferences.theme = theme
         }
     }
-
-    var onToggleSidebar: (() -> Void)?
-    var onDeleteAccount: (() -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
@@ -142,9 +141,13 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
 
 // MARK: - Actions
 extension SettingsViewModel {
-    func toggleSidebar() { onToggleSidebar?() }
+    func toggleSidebar() {
+        delegate?.settingsViewModelWantsToToggleSidebar()
+    }
 
-    func deleteAccount() { onDeleteAccount?() }
+    func deleteAccount() {
+        delegate?.settingsViewModelWantsToDeleteAccount()
+    }
 
     func updateAutoFill() {
         delegate?.settingsViewModelWantsToUpdateAutoFill(viewModel: self)

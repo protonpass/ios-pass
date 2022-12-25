@@ -40,20 +40,14 @@ struct AutoFillSettingsView: View {
         .animation(.default, value: viewModel.autoFillEnabled)
         .tint(.interactionNorm)
         .navigationBarBackButtonHidden()
-        .toolbar { toolbarContent }
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: onGoBack) {
-                Image(uiImage: IconProvider.chevronLeft)
-                    .foregroundColor(.primary)
+        .navigationTitle("AutoFill")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: onGoBack) {
+                    Image(uiImage: IconProvider.chevronLeft)
+                        .foregroundColor(.primary)
+                }
             }
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text("AutoFill")
         }
     }
 }
