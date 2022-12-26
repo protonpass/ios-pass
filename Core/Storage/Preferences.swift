@@ -43,11 +43,23 @@ public final class Preferences: ObservableObject {
     @AppStorage("theme", store: kSharedUserDefaults)
     public var theme = Theme.matchSystem
 
+    @AppStorage("browser", store: kSharedUserDefaults)
+    public var browser = Browser.safari
+
+    @AppStorage("clipboardExpiration", store: kSharedUserDefaults)
+    public var clipboardExpiration = ClipboardExpiration.thirtySeconds
+
+    @AppStorage("shareClipboard", store: kSharedUserDefaults)
+    public var shareClipboard = false
+
     public func reset() {
         quickTypeBar = true
         failedAttemptCount = 0
         biometricAuthenticationEnabled = false
         autoFillBannerDisplayed = false
         theme = .matchSystem
+        browser = .safari
+        clipboardExpiration = .thirtySeconds
+        shareClipboard = false
     }
 }

@@ -1,0 +1,71 @@
+//
+// UrlOpener.swift
+// Proton Pass - Created on 25/12/2022.
+// Copyright (c) 2022 Proton Technologies AG
+//
+// This file is part of Proton Pass.
+//
+// Proton Pass is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Pass is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+
+import Core
+import SafariServices
+import UIKit
+
+final class UrlOpener {
+    private let preferences: Preferences
+    weak var rootViewController: UIViewController?
+
+    init(preferences: Preferences) {
+        self.preferences = preferences
+    }
+
+    func open(urlString: String) {
+        // Only open URLs with `http` &`https` scheme in browser.
+        // Let the system decide for other schemes.
+        guard let url = URL(string: urlString) else { return }
+
+        guard let scheme = url.scheme, ["http", "https"].contains(scheme) else {
+            fallback(url: url)
+            return
+        }
+
+        switch preferences.browser {
+        case .inAppSafari:
+            let safariViewController = SFSafariViewController(url: url, configuration: .init())
+            safariViewController.preferredControlTintColor = .interactionNorm
+            if let rootViewController {
+                rootViewController.present(safariViewController, animated: true)
+            } else {
+                fallback(url: url)
+            }
+        default:
+            if let appScheme = preferences.browser.appScheme {
+                let completeUrl = appScheme + (url.host ?? "") + url.path
+                if let newUrl = URL(string: completeUrl), UIApplication.shared.canOpenURL(newUrl) {
+                    UIApplication.shared.open(newUrl)
+                } else {
+                    fallback(url: url)
+                }
+            } else {
+                fallback(url: url)
+            }
+        }
+    }
+
+    private func fallback(url: URL) {
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+    }
+}

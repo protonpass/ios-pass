@@ -71,8 +71,9 @@ struct CreateEditAliasView: View {
                     }
                 }
             }
-            .toolbar { toolbarContent }
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(viewModel.navigationBarTitle())
+            .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
@@ -93,11 +94,6 @@ struct CreateEditAliasView: View {
                 Text("Cancel")
             })
             .foregroundColor(Color(.label))
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text(viewModel.navigationBarTitle())
-                .fontWeight(.bold)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {

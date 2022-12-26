@@ -64,6 +64,7 @@ struct VaultContentView: View {
                 viewModel.trashItem(selectedItem)
             }
         }
+        .navigationTitle(viewModel.filterOption.title)
         .toolbar { toolbarContent }
         .onAppear {
             if !didAppear {
@@ -194,11 +195,6 @@ struct VaultContentView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             ToggleSidebarButton(action: viewModel.toggleSidebar)
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text(viewModel.filterOption.title)
-                .fontWeight(.semibold)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {

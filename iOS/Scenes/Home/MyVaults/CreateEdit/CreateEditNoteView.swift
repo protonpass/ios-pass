@@ -56,6 +56,7 @@ struct CreateEditNoteView: View {
                 .padding()
             }
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(viewModel.navigationBarTitle())
             .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
@@ -99,11 +100,6 @@ struct CreateEditNoteView: View {
                 Text("Cancel")
             })
             .foregroundColor(Color(.label))
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text(viewModel.navigationBarTitle())
-                .fontWeight(.bold)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {

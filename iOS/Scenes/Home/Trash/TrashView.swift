@@ -57,6 +57,7 @@ struct TrashView: View {
                                    onRetry: { Task { await viewModel.forceSync() } })
             }
         }
+        .navigationTitle("Trash")
         .toolbar { toolbarContent }
         .alert(
             "Empty trash?",
@@ -87,11 +88,6 @@ struct TrashView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             ToggleSidebarButton(action: viewModel.toggleSidebar)
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text("Trash")
-                .fontWeight(.bold)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
