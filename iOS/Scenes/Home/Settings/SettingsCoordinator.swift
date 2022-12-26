@@ -79,6 +79,13 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
         push(view)
     }
 
+    func settingsViewModelWantsToUpdateClipboardExpiration(viewModel: SettingsViewModel) {
+        let view = ClipboardSettingsView(viewModel: viewModel) { [unowned self] in
+            self.popTopViewController(animated: true)
+        }
+        push(view)
+    }
+
     func settingsViewModelWantsToUpdateAutoFill(viewModel: SettingsViewModel) {
         let view = AutoFillSettingsView(viewModel: viewModel) { [unowned self] in
             self.popTopViewController(animated: true)

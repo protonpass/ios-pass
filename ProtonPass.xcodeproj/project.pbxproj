@@ -199,6 +199,8 @@
 		35570A802926321B00125727 /* View+OpacityReduced.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35570A7F2926321B00125727 /* View+OpacityReduced.swift */; };
 		35570A8229263F5900125727 /* SpinnerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35570A8129263F5900125727 /* SpinnerButton.swift */; };
 		35570A8429264C2800125727 /* BannerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35570A8329264C2800125727 /* BannerManager.swift */; };
+		355744172959F5E400EA4AF0 /* ClipboardSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355744162959F5E400EA4AF0 /* ClipboardSettingsView.swift */; };
+		355744192959F68500EA4AF0 /* ClipboardExpiration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355744182959F68500EA4AF0 /* ClipboardExpiration.swift */; };
 		355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F42907FB3200268116 /* LockedCredentialView.swift */; };
 		355751F62907FB9000268116 /* AppLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531B5422902DA890070D2EE /* AppLockedView.swift */; };
 		355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */; };
@@ -695,6 +697,8 @@
 		35570A7F2926321B00125727 /* View+OpacityReduced.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OpacityReduced.swift"; sourceTree = "<group>"; };
 		35570A8129263F5900125727 /* SpinnerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerButton.swift; sourceTree = "<group>"; };
 		35570A8329264C2800125727 /* BannerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerManager.swift; sourceTree = "<group>"; };
+		355744162959F5E400EA4AF0 /* ClipboardSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardSettingsView.swift; sourceTree = "<group>"; };
+		355744182959F68500EA4AF0 /* ClipboardExpiration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardExpiration.swift; sourceTree = "<group>"; };
 		355751F42907FB3200268116 /* LockedCredentialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialView.swift; sourceTree = "<group>"; };
 		355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialViewModel.swift; sourceTree = "<group>"; };
 		35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDEntity.swift; sourceTree = "<group>"; };
@@ -1333,6 +1337,7 @@
 			isa = PBXGroup;
 			children = (
 				35A5EEDF2958B60200A09623 /* Browser.swift */,
+				355744182959F68500EA4AF0 /* ClipboardExpiration.swift */,
 				356C2AAF28730EF00020F577 /* MainKeyProvider.swift */,
 				356B21D92870F97F001220CB /* PPKeychain.swift */,
 				356043F828ED6B54003BDDDC /* Preferences.swift */,
@@ -1415,6 +1420,7 @@
 				3586F3B0295884B000738245 /* GeneralSettingsSection.swift */,
 				355013F829547C8C004F837E /* AutoFillSettingsView.swift */,
 				3586F3B72958860800738245 /* BrowserSettingsView.swift */,
+				355744162959F5E400EA4AF0 /* ClipboardSettingsView.swift */,
 				3586F3B4295885BB00738245 /* SecuritySettingsView.swift */,
 			);
 			path = General;
@@ -2781,6 +2787,7 @@
 				354BB15528A2895F00F50040 /* SearchView.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
 				355635B7288947DD00F32353 /* VaultSelection.swift in Sources */,
+				355744172959F5E400EA4AF0 /* ClipboardSettingsView.swift in Sources */,
 				354513CD28E45FB20020A93A /* SettingsViewModel.swift in Sources */,
 				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */,
@@ -2967,6 +2974,7 @@
 				35426B6028EF187800F89BB7 /* DomainParserContant.swift in Sources */,
 				3529432928DAF54900E1F11B /* SearchUtils.swift in Sources */,
 				35426B6228EF18E600F89BB7 /* DomainParser.swift in Sources */,
+				355744192959F68500EA4AF0 /* ClipboardExpiration.swift in Sources */,
 				353547C32880CF470021C716 /* UserData+Codable.swift in Sources */,
 				354036E128F452F200F9E729 /* URLUtils+Sanitizer.swift in Sources */,
 			);

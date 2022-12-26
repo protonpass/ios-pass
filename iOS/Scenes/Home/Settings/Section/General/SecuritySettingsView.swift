@@ -30,6 +30,7 @@ struct SecuritySettingsView: View {
     var body: some View {
         Form {
             BiometricAuthenticationSection(biometricAuthenticator: viewModel.biometricAuthenticator)
+            ClipboardSection(viewModel: viewModel)
         }
         .navigationBarBackButtonHidden()
         .navigationTitle("Security")
@@ -78,5 +79,29 @@ private struct BiometricAuthenticationSection: View {
         } else {
             Text("Not supported")
         }
+    }
+}
+
+private struct ClipboardSection: View {
+    @ObservedObject var viewModel: SettingsViewModel
+
+    var body: some View {
+        Section(content: {
+            HStack {
+                Button(action: viewModel.updateClipboardExpiration) {
+                    HStack {
+                        Text("Clear clipboard")
+                        Spacer()
+                        Text(viewModel.clipboardExpiration.description)
+                            .foregroundColor(.secondary)
+                        ChevronRight()
+                    }
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+        }, header: {
+            Text("Clipboard")
+        })
     }
 }
