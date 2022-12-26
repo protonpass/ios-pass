@@ -26,7 +26,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToGoBack()
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel)
-    func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String)
+    func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
     func itemDetailViewModelWantsToOpen(urlString: String)
     func itemDetailViewModelDidFail(_ error: Error)
@@ -57,8 +57,7 @@ class BaseItemDetailViewModel {
     ///    - text: The text to be copied to clipboard.
     ///    - message: The message of the toast (e.g. "Note copied", "Alias copied")
     func copyToClipboard(text: String, message: String) {
-        UIPasteboard.general.string = text
-        delegate?.itemDetailViewModelWantsToDisplayInformativeMessage(message)
+        delegate?.itemDetailViewModelWantsToCopy(text: text, bannerMessage: message)
     }
 
     func goBack() {

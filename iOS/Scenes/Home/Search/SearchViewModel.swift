@@ -30,7 +30,7 @@ protocol SearchViewModelDelegate: AnyObject {
     func searchViewModelWantsToDismiss()
     func searchViewModelWantsToShowItemDetail(_ item: ItemContent)
     func searchViewModelWantsToEditItem(_ item: ItemContent)
-    func searchViewModelWantsToDisplayInformativeMessage(_ message: String)
+    func searchViewModelWantsToCopy(text: String, bannerMessage: String)
     func searchViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType)
     func searchViewModelDidFail(_ error: Error)
 }
@@ -195,8 +195,8 @@ extension SearchViewModel {
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 if case .note = itemContent.contentData {
-                    UIPasteboard.general.string = itemContent.note
-                    delegate?.searchViewModelWantsToDisplayInformativeMessage("Note copied")
+                    delegate?.searchViewModelWantsToCopy(text: itemContent.note,
+                                                         bannerMessage: "Note copied")
                 }
             } catch {
                 delegate?.searchViewModelDidFail(error)
@@ -210,8 +210,8 @@ extension SearchViewModel {
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 if case let .login(username, _, _) = itemContent.contentData {
-                    UIPasteboard.general.string = username
-                    delegate?.searchViewModelWantsToDisplayInformativeMessage("Username copied")
+                    delegate?.searchViewModelWantsToCopy(text: username,
+                                                         bannerMessage: "Username copied")
                 }
             } catch {
                 delegate?.searchViewModelDidFail(error)
@@ -225,8 +225,8 @@ extension SearchViewModel {
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 if case let .login(_, password, _) = itemContent.contentData {
-                    UIPasteboard.general.string = password
-                    delegate?.searchViewModelWantsToDisplayInformativeMessage("Password copied")
+                    delegate?.searchViewModelWantsToCopy(text: password,
+                                                         bannerMessage: "Password copied")
                 }
             } catch {
                 delegate?.searchViewModelDidFail(error)
@@ -240,8 +240,8 @@ extension SearchViewModel {
             do {
                 let item = try await getItem(shareId: item.shareId, itemId: item.itemId)
                 if let emailAddress = item.item.aliasEmail {
-                    UIPasteboard.general.string = emailAddress
-                    delegate?.searchViewModelWantsToDisplayInformativeMessage("Email address copied")
+                    delegate?.searchViewModelWantsToCopy(text: emailAddress,
+                                                         bannerMessage: "Email address copied")
                 }
             } catch {
                 delegate?.searchViewModelDidFail(error)

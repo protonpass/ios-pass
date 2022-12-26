@@ -53,6 +53,7 @@ final class MyVaultsCoordinator: Coordinator {
 
     weak var delegate: MyVaultsCoordinatorDelegate?
     weak var bannerManager: BannerManager?
+    weak var clipboardManager: ClipboardManager?
     weak var urlOpener: UrlOpener?
 
     init(symmetricKey: SymmetricKey,
@@ -364,8 +365,8 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         showEditItemView(item)
     }
 
-    func vaultContentViewModelWantsToDisplayInformativeMessage(_ message: String) {
-        bannerManager?.displayBottomInfoMessage(message)
+    func vaultContentViewModelWantsToCopy(text: String, bannerMessage: String) {
+        clipboardManager?.copy(text: text, bannerMessage: bannerMessage)
     }
 
     func vaultContentViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
@@ -448,8 +449,8 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
         print("\(#function) not applicable")
     }
 
-    func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String) {
-        bannerManager?.displayBottomInfoMessage(message)
+    func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String) {
+        clipboardManager?.copy(text: text, bannerMessage: bannerMessage)
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
@@ -469,8 +470,7 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         dismissTopMostViewController(animated: true) { [unowned self] in
-            UIPasteboard.general.string = password
-            self.bannerManager?.displayBottomInfoMessage("Password copied")
+            clipboardManager?.copy(text: password, bannerMessage: "Password copied")
         }
     }
 }
@@ -497,8 +497,8 @@ extension MyVaultsCoordinator: SearchViewModelDelegate {
         showEditItemView(item)
     }
 
-    func searchViewModelWantsToDisplayInformativeMessage(_ message: String) {
-        bannerManager?.displayBottomInfoMessage(message)
+    func searchViewModelWantsToCopy(text: String, bannerMessage: String) {
+        clipboardManager?.copy(text: text, bannerMessage: bannerMessage)
     }
 
     func searchViewModelDidTrashItem(_ item: ItemIdentifiable, type: Client.ItemContentType) {

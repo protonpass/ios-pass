@@ -22,14 +22,17 @@ import Foundation
 
 public enum ClipboardExpiration: Int, CustomStringConvertible, CaseIterable {
     case never = 0
-    case thirtySeconds = 1
-    case fortyFiveSeconds = 2
-    case sixtySeconds = 3
+    case fifteenSeconds = 1
+    case thirtySeconds = 2
+    case fortyFiveSeconds = 3
+    case sixtySeconds = 4
 
     public var description: String {
         switch self {
         case .never:
             return "Never"
+        case .fifteenSeconds:
+            return "15 seconds"
         case .thirtySeconds:
             return "30 seconds"
         case .fortyFiveSeconds:
@@ -43,6 +46,8 @@ public enum ClipboardExpiration: Int, CustomStringConvertible, CaseIterable {
         switch self {
         case .never:
             return nil
+        case .fifteenSeconds:
+            return Date().addingTimeInterval(15)
         case .thirtySeconds:
             return Date().addingTimeInterval(30)
         case .fortyFiveSeconds:
