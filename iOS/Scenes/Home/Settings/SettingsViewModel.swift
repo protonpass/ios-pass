@@ -26,10 +26,15 @@ import SwiftUI
 import UIComponents
 
 protocol SettingsViewModelDelegate: AnyObject {
+    func settingsViewModelWantsToToggleSidebar()
     func settingsViewModelWantsToShowLoadingHud()
     func settingsViewModelWantsToHideLoadingHud()
+    func settingsViewModelWantsToDeleteAccount()
+    func settingsViewModelWantsToOpenSecuritySettings(viewModel: SettingsViewModel)
+    func settingsViewModelWantsToUpdateClipboardExpiration(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateAutoFill(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateTheme(viewModel: SettingsViewModel)
+    func settingsViewModelWantsToUpdateDefaultBrowser(viewModel: SettingsViewModel)
     func settingsViewModelDidFinishFullSync()
     func settingsViewModelDidFail(_ error: Error)
 }
@@ -63,8 +68,23 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         }
     }
 
-    var onToggleSidebar: (() -> Void)?
-    var onDeleteAccount: (() -> Void)?
+    @Published var browser: Browser {
+        didSet {
+            preferences.browser = browser
+        }
+    }
+
+    @Published var clipboardExpiration: ClipboardExpiration {
+        didSet {
+            preferences.clipboardExpiration = clipboardExpiration
+        }
+    }
+
+    @Published var shareClipboard: Bool {
+        didSet {
+            preferences.shareClipboard = shareClipboard
+        }
+    }
 
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
@@ -77,6 +97,9 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         self.preferences = preferences
         self.quickTypeBar = preferences.quickTypeBar
         self.theme = preferences.theme
+        self.browser = preferences.browser
+        self.clipboardExpiration = preferences.clipboardExpiration
+        self.shareClipboard = preferences.shareClipboard
         self.refresh()
 
         NotificationCenter.default
@@ -142,9 +165,25 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
 
 // MARK: - Actions
 extension SettingsViewModel {
-    func toggleSidebar() { onToggleSidebar?() }
+    func toggleSidebar() {
+        delegate?.settingsViewModelWantsToToggleSidebar()
+    }
 
-    func deleteAccount() { onDeleteAccount?() }
+    func deleteAccount() {
+        delegate?.settingsViewModelWantsToDeleteAccount()
+    }
+
+    func openSecuritySettings() {
+        delegate?.settingsViewModelWantsToOpenSecuritySettings(viewModel: self)
+    }
+
+    func updateClipboardExpiration() {
+        delegate?.settingsViewModelWantsToUpdateClipboardExpiration(viewModel: self)
+    }
+
+    func updateDefaultBrowser() {
+        delegate?.settingsViewModelWantsToUpdateDefaultBrowser(viewModel: self)
+    }
 
     func updateAutoFill() {
         delegate?.settingsViewModelWantsToUpdateAutoFill(viewModel: self)

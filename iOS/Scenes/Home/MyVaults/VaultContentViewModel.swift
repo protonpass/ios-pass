@@ -56,7 +56,7 @@ protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToCreateVault()
     func vaultContentViewModelWantsToShowItemDetail(_ item: ItemContent)
     func vaultContentViewModelWantsToEditItem(_ item: ItemContent)
-    func vaultContentViewModelWantsToDisplayInformativeMessage(_ message: String)
+    func vaultContentViewModelWantsToCopy(text: String, bannerMessage: String)
     func vaultContentViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType)
     func vaultContentViewModelDidFail(_ error: Error)
 }
@@ -218,8 +218,8 @@ extension VaultContentViewModel {
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 if case .note = itemContent.contentData {
-                    UIPasteboard.general.string = itemContent.note
-                    delegate?.vaultContentViewModelWantsToDisplayInformativeMessage("Note copied")
+                    delegate?.vaultContentViewModelWantsToCopy(text: itemContent.note,
+                                                               bannerMessage: "Note copied")
                 }
             } catch {
                 delegate?.vaultContentViewModelDidFail(error)
@@ -233,8 +233,8 @@ extension VaultContentViewModel {
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 if case let .login(username, _, _) = itemContent.contentData {
-                    UIPasteboard.general.string = username
-                    delegate?.vaultContentViewModelWantsToDisplayInformativeMessage("Username copied")
+                    delegate?.vaultContentViewModelWantsToCopy(text: username,
+                                                               bannerMessage: "Username copied")
                 }
             } catch {
                 delegate?.vaultContentViewModelDidFail(error)
@@ -248,8 +248,8 @@ extension VaultContentViewModel {
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 if case let .login(_, password, _) = itemContent.contentData {
-                    UIPasteboard.general.string = password
-                    delegate?.vaultContentViewModelWantsToDisplayInformativeMessage("Password copied")
+                    delegate?.vaultContentViewModelWantsToCopy(text: password,
+                                                               bannerMessage: "Password copied")
                 }
             } catch {
                 delegate?.vaultContentViewModelDidFail(error)
@@ -263,8 +263,8 @@ extension VaultContentViewModel {
             do {
                 let item = try await getItem(shareId: item.shareId, itemId: item.itemId)
                 if let emailAddress = item.item.aliasEmail {
-                    UIPasteboard.general.string = emailAddress
-                    delegate?.vaultContentViewModelWantsToDisplayInformativeMessage("Email address copied")
+                    delegate?.vaultContentViewModelWantsToCopy(text: emailAddress,
+                                                               bannerMessage: "Email address copied")
                 }
             } catch {
                 delegate?.vaultContentViewModelDidFail(error)

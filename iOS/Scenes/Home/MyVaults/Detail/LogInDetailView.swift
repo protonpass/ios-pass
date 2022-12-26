@@ -44,6 +44,7 @@ struct LogInDetailView: View {
             .padding()
         }
         .navigationBarBackButtonHidden()
+        .navigationTitle(viewModel.name)
         .toolbar { toolbarContent }
     }
 
@@ -54,11 +55,6 @@ struct LogInDetailView: View {
                 Image(uiImage: IconProvider.chevronLeft)
                     .foregroundColor(.primary)
             }
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text(viewModel.name)
-                .fontWeight(.bold)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {

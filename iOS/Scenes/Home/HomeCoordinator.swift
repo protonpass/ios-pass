@@ -50,6 +50,9 @@ final class HomeCoordinator: DeinitPrintable {
     private let publicKeyRepository: PublicKeyRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let preferences: Preferences
+    private let urlOpener: UrlOpener
+    private let clipboardManager: ClipboardManager
+    private var detailCoordinator: Coordinator?
     weak var delegate: HomeCoordinatorDelegate?
 
     var rootViewController: UIViewController { sideMenuController }
@@ -121,6 +124,8 @@ final class HomeCoordinator: DeinitPrintable {
         self.credentialManager = credentialManager
         self.vaultSelection = .init(vaults: [])
         self.preferences = preferences
+        self.urlOpener = .init(preferences: preferences)
+        self.clipboardManager = .init(preferences: preferences)
 
         let shareEventIDRepository = ShareEventIDRepository(container: container,
                                                             authCredential: authCredential,
@@ -240,8 +245,11 @@ private extension HomeCoordinator {
     }
 
     func provideSideMenuController() -> SideMenuController {
-        SideMenuController(contentViewController: myVaultsRootViewController,
-                           menuViewController: sidebarViewController)
+        let sideMenuController = SideMenuController(contentViewController: myVaultsRootViewController,
+                                                    menuViewController: sidebarViewController)
+        sideMenuController.delegate = self
+        urlOpener.rootViewController = sideMenuController
+        return sideMenuController
     }
 
     func provideSidebarViewController() -> UIViewController {
@@ -253,7 +261,9 @@ private extension HomeCoordinator {
     }
 
     func provideBannerManager() -> BannerManager {
-        .init(container: sideMenuController)
+        let bannerManager = BannerManager(container: sideMenuController)
+        self.clipboardManager.bannerManager = bannerManager
+        return bannerManager
     }
 
     func provideMyVaultsCoordinator() -> MyVaultsCoordinator {
@@ -270,6 +280,8 @@ private extension HomeCoordinator {
                                                       preferences: preferences)
         myVaultsCoordinator.coordinatorDelegate = self
         myVaultsCoordinator.delegate = self.trashCoordinator
+        myVaultsCoordinator.urlOpener = self.urlOpener
+        myVaultsCoordinator.clipboardManager = self.clipboardManager
         return myVaultsCoordinator
     }
 
@@ -280,9 +292,6 @@ private extension HomeCoordinator {
                                                       preferences: preferences)
         settingsCoordinator.coordinatorDelegate = self
         settingsCoordinator.delegate = self
-        settingsCoordinator.onDeleteAccount = { [unowned self] in
-            self.beginAccountDeletionFlow()
-        }
         return settingsCoordinator
     }
 
@@ -294,6 +303,8 @@ private extension HomeCoordinator {
                                                 syncEventLoop: eventLoop)
         trashCoordinator.coordinatorDelegate = self
         trashCoordinator.delegate = self
+        trashCoordinator.urlOpener = urlOpener
+        trashCoordinator.clipboardManager = self.clipboardManager
         return trashCoordinator
     }
 }
@@ -308,6 +319,7 @@ extension HomeCoordinator {
         myVaultsCoordinator.updateFilterOption(filterOption)
         sideMenuController.setContentViewController(to: myVaultsRootViewController,
                                                     animated: true) { [unowned self] in
+            self.detailCoordinator = self.myVaultsCoordinator
             self.myVaultsCoordinator.bannerManager = self.bannerManager
             self.sideMenuController.hideMenu()
         }
@@ -324,12 +336,14 @@ extension HomeCoordinator {
         case .settings:
             sideMenuController.setContentViewController(to: settingsRootViewController,
                                                         animated: true) { [unowned self] in
+                self.detailCoordinator = self.settingsCoordinator
                 self.settingsCoordinator.bannerManager = self.bannerManager
                 self.sideMenuController.hideMenu()
             }
         case .trash:
             sideMenuController.setContentViewController(to: trashRootViewController,
                                                         animated: true) { [unowned self] in
+                self.detailCoordinator = self.trashCoordinator
                 self.trashCoordinator.bannerManager = self.bannerManager
                 self.sideMenuController.hideMenu()
             }
@@ -534,10 +548,25 @@ extension HomeCoordinator: TrashCoordinatorDelegate {
 
 // MARK: - SettingsCoordinatorDelegate
 extension HomeCoordinator: SettingsCoordinatorDelegate {
+    func settingsCoordinatorWantsToDeleteAccount() {
+        beginAccountDeletionFlow()
+    }
+
     func settingsCoordinatorDidFinishFullSync() {
         myVaultsCoordinator.refreshItems()
         trashCoordinator.refreshTrashedItems()
         bannerManager.displayBottomInfoMessage("Fully synchronized")
+    }
+}
+
+// MARK: - SideMenuControllerDelegate
+extension HomeCoordinator: SideMenuControllerDelegate {
+    func sideMenuControllerWillRevealMenu(_ sideMenuController: SideMenuController) {
+        self.detailCoordinator?.setStatusBarStyle(.lightContent)
+    }
+
+    func sideMenuControllerWillHideMenu(_ sideMenuController: SideMenuController) {
+        self.detailCoordinator?.setStatusBarStyle(.default)
     }
 }
 

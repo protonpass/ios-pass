@@ -51,6 +51,7 @@ public protocol CoordinatorProtocol: AnyObject {
     func popTopViewController(animated: Bool)
     func popToRoot(animated: Bool, secondaryViewController: UIViewController?)
     func isAtRootViewController() -> Bool
+    func setStatusBarStyle(_ style: UIStatusBarStyle)
 }
 
 public extension CoordinatorProtocol {
@@ -89,8 +90,8 @@ public extension CoordinatorProtocol {
 }
 
 enum CoordinatorType {
-    case navigation(UINavigationController)
-    case split(UISplitViewController)
+    case navigation(PPNavigationController)
+    case split(PPSplitViewController)
 
     var controller: UIViewController {
         switch self {
@@ -121,6 +122,15 @@ open class Coordinator: CoordinatorProtocol {
             type = .split(splitViewController)
         } else {
             type = .navigation(PPNavigationController())
+        }
+    }
+
+    public func setStatusBarStyle(_ style: UIStatusBarStyle) {
+        switch type {
+        case .navigation(let navigationController):
+            navigationController.setStatusBarStyle(style)
+        case .split(let splitViewController):
+            splitViewController.setStatusBarStyle(style)
         }
     }
 
@@ -224,25 +234,47 @@ public extension Coordinator {
     func alertError(_ error: Error) { coordinatorDelegate?.coordinatorWantsToAlertError(error) }
 }
 
-private final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
-    override func viewDidLoad() {
+public final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
+    private var statusBarStyle = UIStatusBarStyle.default
+
+    override public var preferredStatusBarStyle: UIStatusBarStyle {
+        statusBarStyle
+    }
+
+    override public func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
     }
 
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         viewControllers.count > 1
+    }
+
+    func setStatusBarStyle(_ style: UIStatusBarStyle) {
+        statusBarStyle = style
+        setNeedsStatusBarAppearanceUpdate()
     }
 }
 
-private final class PPSplitViewController: UISplitViewController {
-    override func viewDidAppear(_ animated: Bool) {
+public final class PPSplitViewController: UISplitViewController {
+    private var statusBarStyle = UIStatusBarStyle.default
+
+    override public var preferredStatusBarStyle: UIStatusBarStyle {
+        statusBarStyle
+    }
+
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         show(.primary)
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         show(.primary)
+    }
+
+    func setStatusBarStyle(_ style: UIStatusBarStyle) {
+        statusBarStyle = style
+        setNeedsStatusBarAppearanceUpdate()
     }
 }
