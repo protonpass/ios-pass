@@ -80,6 +80,12 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         }
     }
 
+    @Published var shareClipboard: Bool {
+        didSet {
+            preferences.shareClipboard = shareClipboard
+        }
+    }
+
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
@@ -93,6 +99,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         self.theme = preferences.theme
         self.browser = preferences.browser
         self.clipboardExpiration = preferences.clipboardExpiration
+        self.shareClipboard = preferences.shareClipboard
         self.refresh()
 
         NotificationCenter.default

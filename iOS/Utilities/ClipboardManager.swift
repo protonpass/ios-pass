@@ -32,7 +32,7 @@ final class ClipboardManager {
 
     func copy(text: String, bannerMessage: String) {
         UIPasteboard.general.setObjects([NSString(string: text)],
-                                        localOnly: true,
+                                        localOnly: !preferences.shareClipboard,
                                         expirationDate: preferences.clipboardExpiration.expirationDate)
         bannerManager?.displayBottomInfoMessage(bannerMessage)
     }

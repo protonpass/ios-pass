@@ -100,6 +100,10 @@ private struct ClipboardSection: View {
                 }
                 .buttonStyle(.plain)
             }
+
+            Toggle(isOn: $viewModel.shareClipboard) {
+                Text("Share clipboard between devices")
+            }
         }, header: {
             Text("Clipboard")
         })
