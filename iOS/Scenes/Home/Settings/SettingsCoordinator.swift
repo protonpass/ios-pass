@@ -72,6 +72,13 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
         delegate?.settingsCoordinatorWantsToDeleteAccount()
     }
 
+    func settingsViewModelWantsToOpenSecuritySettings(viewModel: SettingsViewModel) {
+        let view = SecuritySettingsView(viewModel: viewModel) { [unowned self] in
+            self.popTopViewController(animated: true)
+        }
+        push(view)
+    }
+
     func settingsViewModelWantsToUpdateAutoFill(viewModel: SettingsViewModel) {
         let view = AutoFillSettingsView(viewModel: viewModel) { [unowned self] in
             self.popTopViewController(animated: true)

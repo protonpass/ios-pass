@@ -25,7 +25,7 @@ struct GeneralSettingsSection: View {
 
     var body: some View {
         Section(content: {
-            Text("Security")
+            SecurityRow(viewModel: viewModel)
             DefaultBrowserRow(viewModel: viewModel)
             AutoFillRow(viewModel: viewModel)
         }, header: {
@@ -35,6 +35,22 @@ struct GeneralSettingsSection: View {
                 Text("Set Proton Pass as AutoFill provider to automatically fill in your usernames and passwords.")
             }
         })
+    }
+}
+
+private struct SecurityRow: View {
+    @ObservedObject var viewModel: SettingsViewModel
+
+    var body: some View {
+        Button(action: viewModel.openSecuritySettings) {
+            HStack {
+                Text("Security")
+                Spacer()
+                ChevronRight()
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }
 

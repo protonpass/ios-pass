@@ -30,6 +30,7 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToShowLoadingHud()
     func settingsViewModelWantsToHideLoadingHud()
     func settingsViewModelWantsToDeleteAccount()
+    func settingsViewModelWantsToOpenSecuritySettings(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateAutoFill(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateTheme(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateDefaultBrowser(viewModel: SettingsViewModel)
@@ -155,6 +156,10 @@ extension SettingsViewModel {
 
     func deleteAccount() {
         delegate?.settingsViewModelWantsToDeleteAccount()
+    }
+
+    func openSecuritySettings() {
+        delegate?.settingsViewModelWantsToOpenSecuritySettings(viewModel: self)
     }
 
     func updateDefaultBrowser() {
