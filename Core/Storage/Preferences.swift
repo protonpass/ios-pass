@@ -46,6 +46,9 @@ public final class Preferences: ObservableObject {
     @AppStorage("browser", store: kSharedUserDefaults)
     public var browser = Browser.safari
 
+    @AppStorage("clipboardExpiration", store: kSharedUserDefaults)
+    public var clipboardExpiration = ClipboardExpiration.thirtySeconds
+
     public func reset() {
         quickTypeBar = true
         failedAttemptCount = 0
@@ -53,5 +56,6 @@ public final class Preferences: ObservableObject {
         autoFillBannerDisplayed = false
         theme = .matchSystem
         browser = .safari
+        clipboardExpiration = .thirtySeconds
     }
 }

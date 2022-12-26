@@ -1,6 +1,6 @@
 //
-// BrowserSettingsView.swift
-// Proton Pass - Created on 25/12/2022.
+// ClipboardSettingsView.swift
+// Proton Pass - Created on 26/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -22,36 +22,36 @@ import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 
-struct BrowserSettingsView: View {
+struct ClipboardSettingsView: View {
     @ObservedObject var viewModel: SettingsViewModel
     let onGoBack: () -> Void
 
     var body: some View {
         Form {
             Section(content: {
-                ForEach(Browser.allCases, id: \.rawValue) { browser in
+                ForEach(ClipboardExpiration.allCases, id: \.rawValue) { expiration in
                     HStack {
-                        Text(browser.description)
+                        Text(expiration.description)
                         Spacer()
-                        if viewModel.browser == browser {
+                        if viewModel.clipboardExpiration == expiration {
                             Image(systemName: "checkmark")
                                 .foregroundColor(.interactionNorm)
                         }
                     }
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        viewModel.browser = browser
+                        viewModel.clipboardExpiration = expiration
                         if !UIDevice.current.isIpad {
                             onGoBack()
                         }
                     }
                 }
             }, footer: {
-                Text("This preference will fallback to Safari if the browser of choice is uninstalled.")
+                Text("Automatically clear copied content after the selected period of time.")
             })
         }
         .navigationBarBackButtonHidden()
-        .navigationTitle("Default browser")
+        .navigationTitle("Clear clipboard")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: onGoBack) {

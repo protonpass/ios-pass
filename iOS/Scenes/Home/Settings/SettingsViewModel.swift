@@ -31,6 +31,7 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToHideLoadingHud()
     func settingsViewModelWantsToDeleteAccount()
     func settingsViewModelWantsToOpenSecuritySettings(viewModel: SettingsViewModel)
+    func settingsViewModelWantsToUpdateClipboardExpiration(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateAutoFill(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateTheme(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateDefaultBrowser(viewModel: SettingsViewModel)
@@ -73,6 +74,12 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         }
     }
 
+    @Published var clipboardExpiration: ClipboardExpiration {
+        didSet {
+            preferences.clipboardExpiration = clipboardExpiration
+        }
+    }
+
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
@@ -85,6 +92,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         self.quickTypeBar = preferences.quickTypeBar
         self.theme = preferences.theme
         self.browser = preferences.browser
+        self.clipboardExpiration = preferences.clipboardExpiration
         self.refresh()
 
         NotificationCenter.default
@@ -160,6 +168,10 @@ extension SettingsViewModel {
 
     func openSecuritySettings() {
         delegate?.settingsViewModelWantsToOpenSecuritySettings(viewModel: self)
+    }
+
+    func updateClipboardExpiration() {
+        delegate?.settingsViewModelWantsToUpdateClipboardExpiration(viewModel: self)
     }
 
     func updateDefaultBrowser() {
