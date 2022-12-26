@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import LocalAuthentication
 import SwiftUI
 import UIComponents
 
@@ -33,7 +32,6 @@ struct SettingsView: View {
     var body: some View {
         Form {
             GeneralSettingsSection(viewModel: viewModel)
-            BiometricAuthenticationSection(biometricAuthenticator: viewModel.biometricAuthenticator)
             ThemeSection(viewModel: viewModel)
             FullSyncSection(viewModel: viewModel)
             DeleteAccountSection(onDelete: viewModel.deleteAccount)
@@ -43,45 +41,6 @@ struct SettingsView: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 ToggleSidebarButton(action: viewModel.toggleSidebar)
             }
-        }
-    }
-}
-
-private struct BiometricAuthenticationSection: View {
-    @ObservedObject var biometricAuthenticator: BiometricAuthenticator
-
-    var body: some View {
-        Section(content: {
-            switch biometricAuthenticator.biometryTypeState {
-            case .idle, .initializing:
-                ProgressView()
-            case .initialized(let biometryType):
-                view(for: biometryType)
-            case .error(let error):
-                Text(error.localizedDescription)
-            }
-        }, header: {
-            Text("Biometric authentication")
-        })
-    }
-
-    @ViewBuilder
-    private func view(for biometryType: LABiometryType) -> some View {
-        if let uiModel = biometryType.uiModel {
-            Toggle(isOn: $biometricAuthenticator.enabled) {
-                Label(title: {
-                    Text(uiModel.title)
-                }, icon: {
-                    if let icon = uiModel.icon {
-                        Image(systemName: icon)
-                            .foregroundColor(.blue)
-                    } else {
-                        EmptyView()
-                    }
-                })
-            }
-        } else {
-            Text("Not supported")
         }
     }
 }
