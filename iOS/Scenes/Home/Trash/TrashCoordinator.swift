@@ -40,6 +40,7 @@ final class TrashCoordinator: Coordinator {
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     weak var delegate: TrashCoordinatorDelegate?
     weak var bannerManager: BannerManager?
+    weak var clipboardManager: ClipboardManager?
     weak var urlOpener: UrlOpener?
 
     init(symmetricKey: SymmetricKey,
@@ -186,8 +187,8 @@ extension TrashCoordinator: ItemDetailViewModelDelegate {
         trashViewModel.restore(item)
     }
 
-    func itemDetailViewModelWantsToDisplayInformativeMessage(_ message: String) {
-        bannerManager?.displayBottomInfoMessage(message)
+    func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String) {
+        clipboardManager?.copy(text: text, bannerMessage: bannerMessage)
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
