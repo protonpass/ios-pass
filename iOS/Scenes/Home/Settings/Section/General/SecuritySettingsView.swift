@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import LocalAuthentication
 import ProtonCore_UIFoundations
 import SwiftUI
 
@@ -28,7 +29,7 @@ struct SecuritySettingsView: View {
 
     var body: some View {
         Form {
-            Text("Security")
+            BiometricAuthenticationSection(biometricAuthenticator: viewModel.biometricAuthenticator)
         }
         .navigationBarBackButtonHidden()
         .navigationTitle("Security")
@@ -39,6 +40,43 @@ struct SecuritySettingsView: View {
                         .foregroundColor(.primary)
                 }
             }
+        }
+    }
+}
+
+private struct BiometricAuthenticationSection: View {
+    @ObservedObject var biometricAuthenticator: BiometricAuthenticator
+
+    var body: some View {
+        Section {
+            switch biometricAuthenticator.biometryTypeState {
+            case .idle, .initializing:
+                ProgressView()
+            case .initialized(let biometryType):
+                view(for: biometryType)
+            case .error(let error):
+                Text(error.localizedDescription)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func view(for biometryType: LABiometryType) -> some View {
+        if let uiModel = biometryType.uiModel {
+            Toggle(isOn: $biometricAuthenticator.enabled) {
+                Label(title: {
+                    Text(uiModel.title)
+                }, icon: {
+                    if let icon = uiModel.icon {
+                        Image(systemName: icon)
+                            .foregroundColor(.blue)
+                    } else {
+                        EmptyView()
+                    }
+                })
+            }
+        } else {
+            Text("Not supported")
         }
     }
 }
