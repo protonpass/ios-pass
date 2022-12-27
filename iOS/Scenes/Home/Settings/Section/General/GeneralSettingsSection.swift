@@ -58,17 +58,27 @@ private struct DefaultBrowserRow: View {
     @ObservedObject var viewModel: SettingsViewModel
 
     var body: some View {
-        Button(action: viewModel.updateDefaultBrowser) {
-            HStack {
-                Text("Default browser")
-                Spacer()
-                Text(viewModel.browser.description)
-                    .foregroundColor(.secondary)
-                ChevronRight()
+        if #unavailable(iOS 16.0) {
+            Button(action: viewModel.updateDefaultBrowser) {
+                HStack {
+                    Text("Default browser")
+                    Spacer()
+                    Text(viewModel.browser.description)
+                        .foregroundColor(.secondary)
+                    ChevronRight()
+                }
+                .contentShape(Rectangle())
             }
-            .contentShape(Rectangle())
+            .buttonStyle(.plain)
+        } else {
+            Picker("Default browser", selection: $viewModel.browser) {
+                ForEach(viewModel.supportedBrowsers, id: \.rawValue) { browser in
+                    Text(browser.description)
+                        .tag(browser)
+                }
+            }
+            .frame(maxWidth: .infinity)
         }
-        .buttonStyle(.plain)
     }
 }
 
