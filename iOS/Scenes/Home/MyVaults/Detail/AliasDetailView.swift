@@ -32,17 +32,19 @@ struct AliasDetailView: View {
 
     var body: some View {
         ZStack {
-            switch viewModel.aliasState {
-            case .loading:
-                ProgressView()
-            case .loaded(let alias):
-                ConcreteAliasDetailView(viewModel: viewModel,
-                                        alias: alias,
-                                        note: viewModel.itemContent.note)
-            case .error(let error):
-                RetryableErrorView(errorMessage: error.messageForTheUser,
-                                   onRetry: viewModel.getAlias)
-                .padding()
+            if let error = viewModel.error {
+                RetryableErrorView(errorMessage: error.messageForTheUser, onRetry: viewModel.refresh)
+            } else {
+                ScrollView {
+                    VStack(spacing: 0) {
+                        aliasSection
+                        mailboxesSection
+                            .padding(.vertical)
+                        noteSection
+                        Spacer()
+                    }
+                    .padding()
+                }
             }
         }
         .navigationBarBackButtonHidden()
@@ -75,47 +77,28 @@ struct AliasDetailView: View {
             }
         }
     }
-}
-
-private struct ConcreteAliasDetailView: View {
-    @ObservedObject var viewModel: AliasDetailViewModel
-    let alias: Alias
-    let note: String
-
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                aliasSection
-                mailboxesSection
-                    .padding(.vertical)
-                noteSection
-                Spacer()
-            }
-            .padding()
-        }
-    }
 
     private var aliasSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Alias")
                 .sectionTitleText()
 
-            Text(alias.email)
+            Text(viewModel.aliasEmail)
                 .sectionContentText()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    viewModel.copyAliasEmail(alias.email)
+                    viewModel.copyAliasEmail(viewModel.aliasEmail)
                 }
                 .contextMenu {
                     Button(action: {
-                        viewModel.copyAliasEmail(alias.email)
+                        viewModel.copyAliasEmail(viewModel.aliasEmail)
                     }, label: {
                         Text("Copy")
                     })
 
                     Button(action: {
-                        viewModel.showLarge(alias.email)
+                        viewModel.showLarge(viewModel.aliasEmail)
                     }, label: {
                         Text("Show large")
                     })
@@ -131,29 +114,40 @@ private struct ConcreteAliasDetailView: View {
             Text("Mailboxes")
                 .sectionTitleText()
 
-            ForEach(alias.mailboxes, id: \.ID) { mailbox in
-                Text(mailbox.email)
-                    .sectionContentText()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(Rectangle())
-                    .contextMenu {
-                        Button(action: {
-                            viewModel.copyMailboxEmail(mailbox.email)
-                        }, label: {
-                            Text("Copy")
-                        })
+            if let mailboxes = viewModel.mailboxes {
+                ForEach(mailboxes, id: \.ID) { mailbox in
+                    Text(mailbox.email)
+                        .sectionContentText()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
+                        .contextMenu {
+                            Button(action: {
+                                viewModel.copyMailboxEmail(mailbox.email)
+                            }, label: {
+                                Text("Copy")
+                            })
 
-                        Button(action: {
-                            viewModel.showLarge(mailbox.email)
-                        }, label: {
-                            Text("Show large")
-                        })
+                            Button(action: {
+                                viewModel.showLarge(mailbox.email)
+                            }, label: {
+                                Text("Show large")
+                            })
+                        }
+
+                    if mailbox != mailboxes.last {
+                        Divider()
+                            .padding(.vertical, 2)
                     }
-
-                if mailbox != alias.mailboxes.last {
-                    Divider()
-                        .padding(.vertical, 2)
                 }
+            } else {
+                AnimatingGrayGradient()
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                Divider()
+                AnimatingGrayGradient()
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                Divider()
+                AnimatingGrayGradient()
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -167,15 +161,15 @@ private struct ConcreteAliasDetailView: View {
             Text("Note")
                 .sectionTitleText()
 
-            if note.isEmpty {
+            if viewModel.note.isEmpty {
                 Text("Empty note")
                     .placeholderText()
             } else {
-                Text(note)
+                Text(viewModel.note)
                     .sectionContentText()
                     .contextMenu {
                         Button(action: {
-                            viewModel.copyNote(note)
+                            viewModel.copyNote(viewModel.note)
                         }, label: {
                             Text("Copy")
                         })
