@@ -69,7 +69,6 @@
 		35426B6828EF196C00F89BB7 /* RulesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35426B6728EF196C00F89BB7 /* RulesParser.swift */; };
 		35426B6A28EF332D00F89BB7 /* public_suffix_list.dat in Resources */ = {isa = PBXBuildFile; fileRef = 35426B6928EF332D00F89BB7 /* public_suffix_list.dat */; };
 		35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35429B26288AB730000BA22F /* StaticFuncs.swift */; };
-		3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B8882883614D009C9A68 /* DummyApiService.swift */; };
 		3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */; };
 		3542E2B828D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */; };
 		3542E2BA28D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2B928D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift */; };
@@ -586,7 +585,6 @@
 		35426B6728EF196C00F89BB7 /* RulesParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesParser.swift; sourceTree = "<group>"; };
 		35426B6928EF332D00F89BB7 /* public_suffix_list.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = public_suffix_list.dat; sourceTree = "<group>"; };
 		35429B26288AB730000BA22F /* StaticFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticFuncs.swift; sourceTree = "<group>"; };
-		3542B8882883614D009C9A68 /* DummyApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyApiService.swift; sourceTree = "<group>"; };
 		3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthCredential+Preview.swift"; sourceTree = "<group>"; };
 		3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SymmetricKey+ChaChaPoly.swift"; sourceTree = "<group>"; };
 		3542E2B928D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SymmetricKey+ChaChaPolyTests.swift"; sourceTree = "<group>"; };
@@ -1446,7 +1444,6 @@
 				358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */,
 				3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */,
 				358BD35D287D4E8000802A91 /* CryptoUtils.swift */,
-				3542B8882883614D009C9A68 /* DummyApiService.swift */,
 				354F768928C72F1000EB2383 /* PassKeyUtils.swift */,
 				350A97D12885BF7E00A7168B /* Protobufable.swift */,
 				3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */,
@@ -2868,7 +2865,6 @@
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
 				356180F728EC4C0C00B1835A /* CredentialManager.swift in Sources */,
 				3542E2C328D9E16600194F24 /* LocalItemDatasource.swift in Sources */,
-				3542B8892883614D009C9A68 /* DummyApiService.swift in Sources */,
 				3593DCFD28A82FA700C235D3 /* ShareKeys.swift in Sources */,
 				354146D628D1F466007E45A6 /* RemoteAliasDatasource.swift in Sources */,
 				3529432E28DB455100E1F11B /* ItemSearchResult.swift in Sources */,
