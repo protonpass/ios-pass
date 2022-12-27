@@ -181,7 +181,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         if case let .edit(itemContent) = mode {
             let mailboxIds = mailboxSelection.selectedMailboxes.map { $0.ID }
             _ = try await changeMailboxesTask(shareId: shareId,
-                                              itemId: itemContent.itemId,
+                                              itemId: itemContent.item.itemID,
                                               mailboxIDs: mailboxIds).value
         }
     }
@@ -222,7 +222,7 @@ extension CreateEditAliasViewModel {
                 if case .edit(let itemContent) = mode {
                     let alias =
                     try await aliasRepository.getAliasDetailsTask(shareId: shareId,
-                                                                  itemId: itemContent.itemId).value
+                                                                  itemId: itemContent.item.itemID).value
                     self.aliasEmail = alias.email
                     self.alias = alias
                 }
