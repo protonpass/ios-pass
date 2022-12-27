@@ -43,6 +43,7 @@
 		353876D828F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */; };
 		353876DA28F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353876D928F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift */; };
 		3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */; };
+		353B7533295B274E0028CF87 /* AnimatingGrayGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353B7532295B274E0028CF87 /* AnimatingGrayGradient.swift */; };
 		353C2841291DC729008A5EBF /* SortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C2840291DC729008A5EBF /* SortType.swift */; };
 		353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C95E0289A9E8500E3CDCA /* Share+Test.swift */; };
 		353E10922881827C00E59474 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E10912881827C00E59474 /* UserProtocol.swift */; };
@@ -558,6 +559,7 @@
 		353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedItem.swift; sourceTree = "<group>"; };
 		353876D928F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SymmetricallyEncryptedItemSortTests.swift"; sourceTree = "<group>"; };
 		3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultViewModel.swift; sourceTree = "<group>"; };
+		353B7532295B274E0028CF87 /* AnimatingGrayGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatingGrayGradient.swift; sourceTree = "<group>"; };
 		353C2840291DC729008A5EBF /* SortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
 		353C95E0289A9E8500E3CDCA /* Share+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share+Test.swift"; sourceTree = "<group>"; };
 		353E10912881827C00E59474 /* UserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
@@ -1678,6 +1680,7 @@
 			isa = PBXGroup;
 			children = (
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
+				353B7532295B274E0028CF87 /* AnimatingGrayGradient.swift */,
 				35570A8329264C2800125727 /* BannerManager.swift */,
 				35613DCD292D27900095D5A1 /* BorderedImageButton.swift */,
 				355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */,
@@ -3006,6 +3009,7 @@
 				354E19F6293F90F500A3F853 /* ColoredRoundedButton.swift in Sources */,
 				3542E2CD28DA11FE00194F24 /* RetryableErrorView.swift in Sources */,
 				354F769C28C90B4D00EB2383 /* MoveToTrashModifier.swift in Sources */,
+				353B7533295B274E0028CF87 /* AnimatingGrayGradient.swift in Sources */,
 				356E88D02938FA1F00B27104 /* UIViewController+TopMostViewController.swift in Sources */,
 				356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */,
 				35570A8229263F5900125727 /* SpinnerButton.swift in Sources */,
