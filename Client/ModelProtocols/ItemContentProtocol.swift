@@ -161,22 +161,16 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
 
 public struct ItemContent: ItemContentProtocol {
     public let shareId: String
-    public let itemId: String
-    public let revision: Int16
-    public let state: ItemState
+    public let item: ItemRevision
     public let name: String
     public let note: String
     public let contentData: ItemContentData
 
     public init(shareId: String,
-                itemId: String,
-                revision: Int16,
-                state: ItemState,
+                item: ItemRevision,
                 contentProtobuf: ItemContentProtobuf) {
         self.shareId = shareId
-        self.itemId = itemId
-        self.revision = revision
-        self.state = state
+        self.item = item
         self.name = contentProtobuf.name
         self.note = contentProtobuf.note
         self.contentData = contentProtobuf.contentData
