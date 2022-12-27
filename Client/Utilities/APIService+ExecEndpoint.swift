@@ -32,7 +32,7 @@ public extension APIService {
         try await withCheckedThrowingContinuation { continuation in
             NetworkDebugger.printDebugInfo(endpoint: endpoint)
             let perfomRequest: () -> Void = {
-                exec(route: endpoint) { (task: URLSessionDataTask?, result: Result<E.Response, ResponseError>) in
+                perform(request: endpoint) { task, result in
                     NetworkDebugger.printDebugInfo(endpoint: endpoint,
                                                    task: task,
                                                    result: result)
