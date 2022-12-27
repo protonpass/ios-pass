@@ -67,7 +67,7 @@ extension SymmetricallyEncryptedItem {
             detail = .placeholder(notePlaceholder)
         }
 
-        return .init(itemId: encryptedItemContent.itemId,
+        return .init(itemId: encryptedItemContent.item.itemID,
                      shareId: encryptedItemContent.shareId,
                      type: encryptedItemContent.contentData.type,
                      title: name,

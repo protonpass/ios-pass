@@ -60,7 +60,7 @@ struct NoteDetailView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            switch viewModel.itemContent.state {
+            switch viewModel.itemContent.item.itemState {
             case .active:
                 Button(action: viewModel.edit) {
                     Text("Edit")

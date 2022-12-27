@@ -134,7 +134,7 @@ class BaseCreateEditItemViewModel {
             do {
                 delegate?.createEditItemViewModelWantsToShowLoadingHud()
                 let item = try await getItemTask(shareId: itemContent.shareId,
-                                                 itemId: itemContent.itemId).value
+                                                 itemId: itemContent.item.itemID).value
                 try await trashItemTask(item: item).value
                 delegate?.createEditItemViewModelDidTrashItem(item, type: itemContentType())
             } catch {
@@ -174,7 +174,7 @@ class BaseCreateEditItemViewModel {
         defer { isSaving = false }
         do {
             let shareId = oldItemContent.shareId
-            let itemId = oldItemContent.itemId
+            let itemId = oldItemContent.item.itemID
             isSaving = true
             try await additionalEdit()
             guard let oldItem = try await itemRepository.getItemTask(shareId: shareId,
@@ -244,10 +244,10 @@ extension BaseCreateEditItemViewModel {
         Task { @MainActor in
             guard let updatedItem =
                     try await itemRepository.getItem(shareId: itemContent.shareId,
-                                                     itemId: itemContent.itemId) else {
+                                                     itemId: itemContent.item.itemID) else {
                 return
             }
-            isObsolete = itemContent.revision != updatedItem.item.revision
+            isObsolete = itemContent.item.revision != updatedItem.item.revision
         }
     }
 }

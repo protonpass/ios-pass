@@ -111,7 +111,7 @@ public extension CredentialManagerProtocol {
             if case let .login(username, _, urls) = decryptedItem.contentData {
                 for url in urls {
                     credentials.append(.init(shareId: decryptedItem.shareId,
-                                             itemId: decryptedItem.itemId,
+                                             itemId: decryptedItem.item.itemID,
                                              username: username,
                                              url: url,
                                              lastUseTime: encryptedItem.item.lastUseTime))

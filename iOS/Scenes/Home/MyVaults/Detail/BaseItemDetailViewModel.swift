@@ -71,8 +71,9 @@ class BaseItemDetailViewModel {
     func restore() {
         Task { @MainActor in
             do {
-                if let encryptedItem = try await itemRepository.getItemTask(shareId: itemContent.shareId,
-                                                                            itemId: itemContent.itemId).value {
+                if let encryptedItem =
+                    try await itemRepository.getItemTask(shareId: itemContent.shareId,
+                                                         itemId: itemContent.item.itemID).value {
                     let symmetricKey = itemRepository.symmetricKey
                     let item = try await encryptedItem.toItemListUiModel(symmetricKey)
                     delegate?.itemDetailViewModelWantsToRestore(item)
@@ -87,7 +88,7 @@ class BaseItemDetailViewModel {
         Task { @MainActor in
             guard let updatedItemContent =
                     try await itemRepository.getDecryptedItemContent(shareId: itemContent.shareId,
-                                                                     itemId: itemContent.itemId) else {
+                                                                     itemId: itemContent.item.itemID) else {
                 return
             }
             itemContent = updatedItemContent

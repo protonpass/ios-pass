@@ -44,9 +44,7 @@ public struct SymmetricallyEncryptedItem {
         }
         let protobufItem = try ItemContentProtobuf(data: data)
         return .init(shareId: shareId,
-                     itemId: item.itemID,
-                     revision: item.revision,
-                     state: item.itemState,
+                     item: item,
                      contentProtobuf: protobufItem)
     }
 
@@ -57,9 +55,7 @@ public struct SymmetricallyEncryptedItem {
         let encryptedProtobufItem = try ItemContentProtobuf(data: data)
         let decryptedProtobufItem = try encryptedProtobufItem.symmetricallyDecrypted(symmetricKey)
         return .init(shareId: shareId,
-                     itemId: item.itemID,
-                     revision: item.revision,
-                     state: item.itemState,
+                     item: item,
                      contentProtobuf: decryptedProtobufItem)
     }
 }

@@ -1,6 +1,6 @@
 //
-// GenericItemSkeletonView.swift
-// Proton Pass - Created on 04/11/2022.
+// AnimatingGrayGradient.swift
+// Proton Pass - Created on 27/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,27 +20,24 @@
 
 import SwiftUI
 
-public struct GenericItemSkeletonView: View {
+public struct AnimatingGrayGradient: View {
+    @State private var animateGradient = false
+
     public init() {}
 
     public var body: some View {
-        HStack(spacing: 16) {
-            AnimatingGrayGradient()
-                .frame(width: 36, height: 36)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-
-            VStack(alignment: .leading) {
-                Spacer()
-                AnimatingGrayGradient()
-                    .frame(width: 170, height: 10)
-                    .clipShape(Capsule())
-                Spacer()
-                AnimatingGrayGradient()
-                    .frame(width: 200, height: 10)
-                    .clipShape(Capsule())
-                Spacer()
+        ZStack {
+            Color(.systemGray6)
+            LinearGradient(colors: [.clear, Color(.systemGray5), .clear],
+                           startPoint: .leading,
+                           endPoint: .trailing)
+            .offset(x: animateGradient ? 300 : -200)
+            .frame(width: 200)
+        }
+        .onAppear {
+            withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: false)) {
+                animateGradient.toggle()
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

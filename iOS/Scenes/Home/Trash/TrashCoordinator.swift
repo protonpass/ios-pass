@@ -140,7 +140,7 @@ extension TrashCoordinator: TrashViewModelDelegate {
         if UIDevice.current.isIpad,
            let currentItemDetailViewModel,
            currentItemDetailViewModel.itemContent.shareId == item.shareId,
-           currentItemDetailViewModel.itemContent.itemId == item.itemId {
+           currentItemDetailViewModel.itemContent.item.itemID == item.itemId {
             let placeholderView = ItemDetailPlaceholderView { self.popTopViewController(animated: true) }
             placeholderViewController = UIHostingController(rootView: placeholderView)
         }
