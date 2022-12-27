@@ -58,7 +58,7 @@ struct LogInDetailView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            switch viewModel.itemContent.state {
+            switch viewModel.itemContent.item.itemState {
             case .active:
                 Button(action: viewModel.edit) {
                     Text("Edit")
@@ -157,6 +157,7 @@ struct LogInDetailView: View {
                             Text(url)
                                 .foregroundColor(.interactionNorm)
                                 .multilineTextAlignment(.leading)
+                                .lineLimit(2)
                         })
                         .contextMenu {
                             Button(action: {

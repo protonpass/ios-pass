@@ -21,27 +21,14 @@
 import Client
 import Core
 
-enum AliasState {
-    case loading
-    case loaded(Alias)
-    case error(Error)
-
-    var isLoaded: Bool {
-        switch self {
-        case .loaded:
-            return true
-        default:
-            return false
-        }
-    }
-}
-
 final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
+    @Published private(set) var aliasEmail = ""
     @Published private(set) var name = ""
     @Published private(set) var note = ""
-    @Published private(set) var aliasState: AliasState = .loading
+    @Published private(set) var mailboxes: [Mailbox]?
+    @Published private(set) var error: Error?
 
     private let aliasRepository: AliasRepositoryProtocol
 
@@ -54,6 +41,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     }
 
     override func bindValues() {
+        aliasEmail = itemContent.item.aliasEmail ?? ""
         if case .alias = itemContent.contentData {
             self.name = itemContent.name
             self.note = itemContent.note
@@ -65,18 +53,20 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     func getAlias() {
         Task { @MainActor in
             do {
-                aliasState = .loading
                 let alias =
                 try await aliasRepository.getAliasDetailsTask(shareId: itemContent.shareId,
-                                                              itemId: itemContent.itemId).value
-                aliasState = .loaded(alias)
+                                                              itemId: itemContent.item.itemID).value
+                aliasEmail = alias.email
+                mailboxes = alias.mailboxes
             } catch {
-                aliasState = .error(error)
+                self.error = error
             }
         }
     }
 
     override func refresh() {
+        mailboxes = nil
+        error = nil
         getAlias()
         super.refresh()
     }

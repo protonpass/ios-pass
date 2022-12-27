@@ -406,7 +406,7 @@ private extension ItemRepositoryProtocol {
             if case let .login(username, _, urls) = decryptedLogInItem.contentData {
                 for url in urls {
                     credentials.append(.init(ids: .init(shareId: decryptedLogInItem.shareId,
-                                                        itemId: decryptedLogInItem.itemId),
+                                                        itemId: decryptedLogInItem.item.itemID),
                                              username: username,
                                              url: url,
                                              lastUseTime: encryptedLogInItem.item.lastUseTime))
