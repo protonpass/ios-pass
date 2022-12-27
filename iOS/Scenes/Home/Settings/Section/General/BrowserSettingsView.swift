@@ -22,6 +22,7 @@ import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 
+@available(iOS, deprecated: 16.0, message: "No need after dropping iOS 15")
 struct BrowserSettingsView: View {
     @ObservedObject var viewModel: SettingsViewModel
     let onGoBack: () -> Void
@@ -29,7 +30,7 @@ struct BrowserSettingsView: View {
     var body: some View {
         Form {
             Section(content: {
-                ForEach(Browser.allCases, id: \.rawValue) { browser in
+                ForEach(viewModel.supportedBrowsers, id: \.rawValue) { browser in
                     HStack {
                         Text(browser.description)
                         Spacer()
