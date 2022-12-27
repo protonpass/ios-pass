@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum Browser: Int, CustomStringConvertible, CaseIterable {
+public enum Browser: Int, CustomStringConvertible {
     case safari = 0
     case inAppSafari = 1
     case chrome = 2
@@ -28,6 +28,10 @@ public enum Browser: Int, CustomStringConvertible, CaseIterable {
     case firefox = 4
     case brave = 5
     case edge = 6
+
+    public static var thirdPartyBrowsers: [Browser] {
+        [.chrome, .duckDuckGo, .firefox, .brave, .edge]
+    }
 
     public var description: String {
         switch self {

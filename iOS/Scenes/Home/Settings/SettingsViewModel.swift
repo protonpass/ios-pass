@@ -68,6 +68,8 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         }
     }
 
+    @Published private(set) var supportedBrowsers: [Browser]
+
     @Published var browser: Browser {
         didSet {
             preferences.browser = browser
@@ -97,9 +99,23 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         self.preferences = preferences
         self.quickTypeBar = preferences.quickTypeBar
         self.theme = preferences.theme
-        self.browser = preferences.browser
         self.clipboardExpiration = preferences.clipboardExpiration
         self.shareClipboard = preferences.shareClipboard
+
+        let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
+            guard let appScheme = browser.appScheme,
+                  let testUrl = URL(string: appScheme + "proton.me") else {
+                return false
+            }
+            return UIApplication.shared.canOpenURL(testUrl)
+        }
+
+        // Double check selected browser here. If it's no more avaible (uninstalled).
+        // Fallback to Safari
+        self.browser = installedBrowsers.contains(preferences.browser) ?
+        preferences.browser : .safari
+        self.supportedBrowsers = [.safari, .inAppSafari] + installedBrowsers
+
         self.refresh()
 
         NotificationCenter.default
