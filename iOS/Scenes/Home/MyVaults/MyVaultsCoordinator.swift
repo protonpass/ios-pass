@@ -302,7 +302,7 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func refreshItems() {
-        vaultContentViewModel.fetchItems(forceRefresh: false)
+        vaultContentViewModel.fetchItems(forceRefresh: false, forceLoading: false)
         if let aliasDetailViewModel = currentItemDetailViewModel as? AliasDetailViewModel {
             aliasDetailViewModel.refresh()
         } else {
