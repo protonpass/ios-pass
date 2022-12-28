@@ -49,31 +49,16 @@ struct CreateEditAliasView: View {
                     .padding()
 
                 case .loaded:
-                    ScrollView {
-                        VStack(spacing: 20) {
-                            titleInputView
-                            if case .edit = viewModel.mode {
-                                aliasEmailView
-                            } else {
-                                aliasInputView
-                            }
-                            mailboxesInputView
-                            noteInputView
-
-                            if viewModel.mode.isEditMode {
-                                MoveToTrashButton {
-                                    isShowingTrashAlert.toggle()
-                                }
-                                .opacityReduced(viewModel.isSaving)
-                            }
-                        }
-                        .padding()
+                    if case .create = viewModel.mode, !viewModel.canCreateAlias {
+                        CanNotCreateAliasView(onClose: dismiss.callAsFunction)
+                    } else {
+                        content
+                            .navigationTitle(viewModel.navigationBarTitle())
+                            .toolbar { toolbarContent }
                     }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(viewModel.navigationBarTitle())
-            .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
@@ -101,6 +86,29 @@ struct CreateEditAliasView: View {
                           disabled: !viewModel.state.isLoaded || !viewModel.isSaveable,
                           spinning: viewModel.isSaving,
                           action: viewModel.save)
+        }
+    }
+
+    private var content: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+                titleInputView
+                if case .edit = viewModel.mode {
+                    aliasEmailView
+                } else {
+                    aliasInputView
+                }
+                mailboxesInputView
+                noteInputView
+
+                if viewModel.mode.isEditMode {
+                    MoveToTrashButton {
+                        isShowingTrashAlert.toggle()
+                    }
+                    .opacityReduced(viewModel.isSaving)
+                }
+            }
+            .padding()
         }
     }
 
@@ -260,5 +268,20 @@ struct MailboxesView: View {
             }
             .listStyle(.plain)
         }
+    }
+}
+
+private struct CanNotCreateAliasView: View {
+    let onClose: () -> Void
+
+    var body: some View {
+        VStack {
+            Text("You can not create more aliases.")
+            Button(action: onClose) {
+                Text("Close")
+            }
+            .foregroundColor(.interactionNorm)
+        }
+        .padding()
     }
 }
