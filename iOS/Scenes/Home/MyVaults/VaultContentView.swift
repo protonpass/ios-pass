@@ -64,7 +64,6 @@ struct VaultContentView: View {
                 viewModel.trashItem(selectedItem)
             }
         }
-        .navigationTitle(viewModel.filterOption.title)
         .toolbar { toolbarContent }
         .onAppear {
             if !didAppear {
@@ -197,6 +196,19 @@ struct VaultContentView: View {
             ToggleSidebarButton(action: viewModel.toggleSidebar)
         }
 
+        ToolbarItem(placement: .principal) {
+            VStack {
+                Text(viewModel.filterOption.title)
+                    .fontWeight(.semibold)
+                if let selectedVault = viewModel.vaultSelection.selectedVault {
+                    Text(selectedVault.name)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+            .onTapGesture(perform: viewModel.showVaultList)
+        }
+
         ToolbarItem(placement: .navigationBarTrailing) {
             HStack {
                 Button(action: viewModel.search) {
@@ -207,7 +219,7 @@ struct VaultContentView: View {
                     Image(uiImage: IconProvider.plus)
                 }
             }
-            .foregroundColor(Color(.label))
+            .foregroundColor(.primary)
             .opacityReduced(!viewModel.state.isLoaded, reducedOpacity: 0)
         }
     }

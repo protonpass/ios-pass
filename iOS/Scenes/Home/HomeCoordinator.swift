@@ -141,7 +141,6 @@ final class HomeCoordinator: DeinitPrintable {
         self.eventLoop.delegate = self
         self.eventLoop.start()
         self.setUpSideMenuPreferences()
-        self.observeVaultSelection()
         self.observeForegroundEntrance()
         self.observePreferences()
         self.updateSideMenuUserInterfaceStyle()
@@ -172,14 +171,6 @@ private extension HomeCoordinator {
         SideMenuController.preferences.animation.shadowAlpha = 0.52
         SideMenuController.preferences.animation.revealDuration = 0.25
         SideMenuController.preferences.animation.hideDuration = 0.25
-    }
-
-    func observeVaultSelection() {
-        vaultSelection.$selectedVault
-            .sink { [unowned self] _ in
-                self.showMyVaultsRootViewController(filterOption: .all)
-            }
-            .store(in: &cancellables)
     }
 
     func observeForegroundEntrance() {

@@ -44,7 +44,7 @@ final class SharePlusShareProviderTests: XCTestCase {
         Share(shareID: .random(),
               vaultID: .random(),
               addressID: (try? testUser.getAddressKey().addressId) ?? "",
-              targetType: 0,
+              targetType: ShareType.vault.rawValue,
               targetID: .random(),
               permission: 0,
               acceptanceSignature: request.acceptanceSignature,
@@ -72,9 +72,15 @@ final class SharePlusShareProviderTests: XCTestCase {
                                            keySignature: request.vaultKeySignature,
                                            createTime: 0)]
 
-        let vault = try createdShare.getVault(userData: testUser, vaultKeys: vaultKeys)
-
-        XCTAssertEqual(givenVault.name, vault.name)
-        XCTAssertEqual(givenVault.description, vault.description)
+        let shareContent = try createdShare.getShareContent(userData: testUser, vaultKeys: vaultKeys)
+        switch shareContent {
+        case .vault(let vault):
+            XCTAssertEqual(givenVault.name, vault.name)
+            XCTAssertEqual(givenVault.description, vault.description)
+        case .label:
+            XCTFail("Expect vault not label")
+        case .item:
+            XCTFail("Expect vault not item")
+        }
     }
 }

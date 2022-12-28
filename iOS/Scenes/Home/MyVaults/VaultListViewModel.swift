@@ -1,6 +1,6 @@
 //
-// MyVaultsViewModel.swift
-// Proton Pass - Created on 18/07/2022.
+// VaultListViewModel.swift
+// Proton Pass - Created on 28/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,23 +20,35 @@
 
 import Client
 import Combine
-import Core
 import SwiftUI
 
-final class MyVaultsViewModel: DeinitPrintable, ObservableObject {
-    deinit { print(deinitMessage) }
+protocol VaultListViewModelDelegate: AnyObject {
+    func vaultListViewModelWantsToCreateVault()
+}
+
+final class VaultListViewModel: ObservableObject {
+    var vaults: [VaultProtocol] { vaultSelection.vaults }
+    var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
 
     private let vaultSelection: VaultSelection
-    private var cancellables = Set<AnyCancellable>()
-
-    var vaults: [VaultProtocol] { vaultSelection.vaults }
+    private var cancellables: AnyCancellable?
+    weak var delegate: VaultListViewModelDelegate?
 
     init(vaultSelection: VaultSelection) {
         self.vaultSelection = vaultSelection
-        vaultSelection.objectWillChange
-            .sink { [unowned self] _ in
-                self.objectWillChange.send()
+        cancellables = vaultSelection.objectWillChange
+            .sink { [weak self] in
+                self?.objectWillChange.send()
             }
-            .store(in: &cancellables)
+    }
+}
+
+extension VaultListViewModel {
+    func createVault() {
+        delegate?.vaultListViewModelWantsToCreateVault()
+    }
+
+    func selectVault(_ vault: VaultProtocol) {
+        vaultSelection.update(selectedVault: vault)
     }
 }

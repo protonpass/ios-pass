@@ -76,12 +76,18 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
             let shares = try await self.shareRepository.getShares(forceRefresh: forceRefresh)
 
             var vaults: [VaultProtocol] = []
-            for share in shares {
+            for share in shares where share.shareType == .vault {
                 let vaultKeys =
                 try await self.vaultItemKeysRepository.getVaultKeys(shareId: share.shareID,
                                                                     forceRefresh: forceRefresh)
-                vaults.append(try share.getVault(userData: self.userData,
-                                                 vaultKeys: vaultKeys))
+                let shareContent = try share.getShareContent(userData: self.userData,
+                                                             vaultKeys: vaultKeys)
+                switch shareContent {
+                case .vault(let vault):
+                    vaults.append(vault)
+                default:
+                    break
+                }
             }
             return vaults
         }

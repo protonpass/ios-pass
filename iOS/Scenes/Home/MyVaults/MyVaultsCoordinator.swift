@@ -127,15 +127,22 @@ final class MyVaultsCoordinator: Coordinator {
         present(createItemViewController)
     }
 
+    private func showVaultListView() {
+        let viewModel = VaultListViewModel(vaultSelection: vaultSelection)
+        viewModel.delegate = self
+        let view = VaultListView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        present(viewController)
+    }
+
     private func showCreateVaultView() {
         let createVaultViewModel =
         CreateVaultViewModel(userData: userData,
                              shareRepository: shareRepository)
         createVaultViewModel.delegate = self
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
-        let createVaultViewController = UIHostingController(rootView: createVaultView)
-        createVaultViewController.sheetPresentationController?.detents = [.medium()]
-        present(createVaultViewController)
+        present(createVaultView, dismissible: false)
     }
 
     private func showCreateEditLoginView(mode: ItemMode) {
@@ -295,7 +302,7 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     func refreshItems() {
-        vaultContentViewModel.fetchItems(forceRefresh: false)
+        vaultContentViewModel.fetchItems(forceRefresh: false, forceLoading: false)
         if let aliasDetailViewModel = currentItemDetailViewModel as? AliasDetailViewModel {
             aliasDetailViewModel.refresh()
         } else {
@@ -349,12 +356,12 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         present(viewController, dismissible: false)
     }
 
-    func vaultContentViewModelWantsToCreateItem() {
-        showCreateItemView()
+    func vaultContentViewModelWantsToShowVaultList() {
+        showVaultListView()
     }
 
-    func vaultContentViewModelWantsToCreateVault() {
-        showCreateVaultView()
+    func vaultContentViewModelWantsToCreateItem() {
+        showCreateItemView()
     }
 
     func vaultContentViewModelWantsToShowItemDetail(_ item: ItemContent) {
@@ -507,5 +514,14 @@ extension MyVaultsCoordinator: SearchViewModelDelegate {
 
     func searchViewModelDidFail(_ error: Error) {
         bannerManager?.displayTopErrorMessage(error.messageForTheUser)
+    }
+}
+
+// MARK: - VaultListViewModelDelegate
+extension MyVaultsCoordinator: VaultListViewModelDelegate {
+    func vaultListViewModelWantsToCreateVault() {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.showCreateVaultView()
+        }
     }
 }
