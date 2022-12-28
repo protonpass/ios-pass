@@ -128,11 +128,9 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func showVaultListView() {
-        let view = VaultListView(vaultSelection: vaultSelection) { [unowned self] in
-            self.dismissTopMostViewController(animated: true) { [unowned self] in
-                self.showCreateVaultView()
-            }
-        }
+        let viewModel = VaultListViewModel(vaultSelection: vaultSelection)
+        viewModel.delegate = self
+        let view = VaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         present(viewController)
@@ -516,5 +514,18 @@ extension MyVaultsCoordinator: SearchViewModelDelegate {
 
     func searchViewModelDidFail(_ error: Error) {
         bannerManager?.displayTopErrorMessage(error.messageForTheUser)
+    }
+}
+
+// MARK: - VaultListViewModelDelegate
+extension MyVaultsCoordinator: VaultListViewModelDelegate {
+    func vaultListViewModelWantsToCreateVault() {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.showCreateVaultView()
+        }
+    }
+
+    func vaultListViewModelWantsToEdit(vault: VaultProtocol) {
+        print(#function)
     }
 }
