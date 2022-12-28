@@ -40,7 +40,3 @@ final class MyVaultsViewModel: DeinitPrintable, ObservableObject {
             .store(in: &cancellables)
     }
 }
-
-extension MyVaultsViewModel {
-    static var preview: MyVaultsViewModel { .init(vaultSelection: .preview) }
-}

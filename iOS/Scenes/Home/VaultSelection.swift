@@ -22,7 +22,7 @@ import Client
 import Combine
 import Core
 
-/// Holds current list of vaults and selected
+/// Holds current list of vaults and selected vault
 final class VaultSelection: ObservableObject {
     @Published private(set) var selectedVault: VaultProtocol?
     @Published private(set) var vaults: [VaultProtocol]
@@ -39,11 +39,5 @@ final class VaultSelection: ObservableObject {
 
     func update(selectedVault: VaultProtocol?) {
         self.selectedVault = selectedVault
-    }
-}
-
-extension VaultSelection {
-    static var preview: VaultSelection {
-        .init(vaults: [Vault].preview)
     }
 }
