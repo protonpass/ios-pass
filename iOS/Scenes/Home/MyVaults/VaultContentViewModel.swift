@@ -52,8 +52,8 @@ protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToHideLoadingHud()
     func vaultContentViewModelWantsToEnableAutoFill()
     func vaultContentViewModelWantsToSearch()
+    func vaultContentViewModelWantsToShowVaultList()
     func vaultContentViewModelWantsToCreateItem()
-    func vaultContentViewModelWantsToCreateVault()
     func vaultContentViewModelWantsToShowItemDetail(_ item: ItemContent)
     func vaultContentViewModelWantsToEditItem(_ item: ItemContent)
     func vaultContentViewModelWantsToCopy(text: String, bannerMessage: String)
@@ -89,11 +89,11 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
     @Published var sortType = SortType.modifyTime { didSet { filterAndSort() } }
     @Published var sortDirection = SortDirection.descending { didSet { filterAndSort() } }
 
-    private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let preferences: Preferences
     let credentialManager: CredentialManagerProtocol
+    let vaultSelection: VaultSelection
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -153,6 +153,10 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
 extension VaultContentViewModel {
     func toggleSidebar() {
         delegate?.vaultContentViewModelWantsToToggleSidebar()
+    }
+
+    func showVaultList() {
+        delegate?.vaultContentViewModelWantsToShowVaultList()
     }
 
     func createItem() {

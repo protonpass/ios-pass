@@ -197,6 +197,12 @@ struct VaultContentView: View {
             ToggleSidebarButton(action: viewModel.toggleSidebar)
         }
 
+        ToolbarItem(placement: .principal) {
+            Text(viewModel.filterOption.title)
+                .fontWeight(.semibold)
+                .onTapGesture(perform: viewModel.showVaultList)
+        }
+
         ToolbarItem(placement: .navigationBarTrailing) {
             HStack {
                 Button(action: viewModel.search) {
@@ -207,7 +213,7 @@ struct VaultContentView: View {
                     Image(uiImage: IconProvider.plus)
                 }
             }
-            .foregroundColor(Color(.label))
+            .foregroundColor(.primary)
             .opacityReduced(!viewModel.state.isLoaded, reducedOpacity: 0)
         }
     }
