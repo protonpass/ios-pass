@@ -29,38 +29,28 @@ struct VaultListView: View {
             Form {
                 ForEach(viewModel.vaults, id: \.id) { vault in
                     HStack {
-                        HStack {
-                            if vault.id == viewModel.selectedVault?.id {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(.interactionNorm)
-                            } else {
-                                Image(systemName: "circle")
-                                    .foregroundColor(.secondary)
-                            }
-
-                            VStack(alignment: .leading) {
-                                Text(vault.name)
-                                Text(vault.description)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-
-                            Spacer()
-                        }
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            if vault.id != viewModel.selectedVault?.id {
-                                viewModel.selectVault(vault)
-                            }
-                        }
-
-                        Button(action: {
-                            viewModel.editVault(vault)
-                        }, label: {
-                            Image(uiImage: IconProvider.penSquare)
+                        if vault.id == viewModel.selectedVault?.id {
+                            Image(systemName: "checkmark.circle.fill")
                                 .foregroundColor(.interactionNorm)
-                        })
-                        .buttonStyle(.plain)
+                        } else {
+                            Image(systemName: "circle")
+                                .foregroundColor(.secondary)
+                        }
+
+                        VStack(alignment: .leading) {
+                            Text(vault.name)
+                            Text(vault.description)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+
+                        Spacer()
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if vault.id != viewModel.selectedVault?.id {
+                            viewModel.selectVault(vault)
+                        }
                     }
                 }
             }

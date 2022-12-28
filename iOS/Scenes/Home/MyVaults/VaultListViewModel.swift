@@ -24,7 +24,6 @@ import SwiftUI
 
 protocol VaultListViewModelDelegate: AnyObject {
     func vaultListViewModelWantsToCreateVault()
-    func vaultListViewModelWantsToEdit(vault: VaultProtocol)
 }
 
 final class VaultListViewModel: ObservableObject {
@@ -47,10 +46,6 @@ final class VaultListViewModel: ObservableObject {
 extension VaultListViewModel {
     func createVault() {
         delegate?.vaultListViewModelWantsToCreateVault()
-    }
-
-    func editVault(_ vault: VaultProtocol) {
-        delegate?.vaultListViewModelWantsToEdit(vault: vault)
     }
 
     func selectVault(_ vault: VaultProtocol) {
