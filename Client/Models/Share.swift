@@ -33,6 +33,16 @@ public enum ShareType: Int16 {
     case item = 3
 }
 
+public enum ShareError: Error {
+    case unknownShareType
+}
+
+public enum ShareContent {
+    case vault(VaultProtocol)
+    case label // Not handled yet
+    case item // Not handled yet
+}
+
 public struct Share: Decodable {
     /// ID of the share
     public let shareID: String
@@ -132,7 +142,7 @@ public struct PartialShare: Decodable {
 }
 
 extension Share {
-    public func getVault(userData: UserData, vaultKeys: [VaultKey]) throws -> VaultProtocol {
+    public func getShareContent(userData: UserData, vaultKeys: [VaultKey]) throws -> ShareContent {
         let addressKeys = try CryptoUtils.unlockAddressKeys(addressID: addressID, userData: userData)
 
 //        let publicAddressKeys = firstAddress.keys.map { $0.publicKey }
@@ -151,17 +161,28 @@ extension Share {
                                                                 vaultKeys: vaultKeys,
                                                                 addressKeys: addressKeys)
 
-        let plainContent = try decryptVaultContent(vaultKeys: vaultKeys,
-                                                   vaultPassphrase: vaultPassphrase,
-                                                   addressKeys: addressKeys)
-        let vaultContent = try VaultProtobuf(data: plainContent)
-        return Vault(id: vaultID,
-                     shareId: shareID,
-                     name: vaultContent.name,
-                     description: vaultContent.description_p)
+        let content = try decryptShareContent(vaultKeys: vaultKeys,
+                                              vaultPassphrase: vaultPassphrase,
+                                              addressKeys: addressKeys)
+
+        switch shareType {
+        case .unknown:
+            throw ShareError.unknownShareType
+        case .vault:
+            let vaultContent = try VaultProtobuf(data: content)
+            let vault = Vault(id: vaultID,
+                              shareId: shareID,
+                              name: vaultContent.name,
+                              description: vaultContent.description_p)
+            return .vault(vault)
+        case .label:
+            return .label
+        case .item:
+            return .item
+        }
     }
 
-    private func decryptVaultContent(vaultKeys: [VaultKey],
+    private func decryptShareContent(vaultKeys: [VaultKey],
                                      vaultPassphrase: String,
                                      addressKeys: [DecryptionKey]) throws -> Data {
         guard let vaultKey = vaultKeys.first else {
