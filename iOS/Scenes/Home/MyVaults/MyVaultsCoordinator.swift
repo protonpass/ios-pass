@@ -127,15 +127,24 @@ final class MyVaultsCoordinator: Coordinator {
         present(createItemViewController)
     }
 
+    private func showVaultListView() {
+        let view = VaultListView(vaultSelection: vaultSelection) { [unowned self] in
+            self.dismissTopMostViewController(animated: true) { [unowned self] in
+                self.showCreateVaultView()
+            }
+        }
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        present(viewController)
+    }
+
     private func showCreateVaultView() {
         let createVaultViewModel =
         CreateVaultViewModel(userData: userData,
                              shareRepository: shareRepository)
         createVaultViewModel.delegate = self
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
-        let createVaultViewController = UIHostingController(rootView: createVaultView)
-        createVaultViewController.sheetPresentationController?.detents = [.medium()]
-        present(createVaultViewController)
+        present(createVaultView, dismissible: false)
     }
 
     private func showCreateEditLoginView(mode: ItemMode) {
@@ -349,12 +358,12 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         present(viewController, dismissible: false)
     }
 
-    func vaultContentViewModelWantsToCreateItem() {
-        showCreateItemView()
+    func vaultContentViewModelWantsToShowVaultList() {
+        showVaultListView()
     }
 
-    func vaultContentViewModelWantsToCreateVault() {
-        showCreateVaultView()
+    func vaultContentViewModelWantsToCreateItem() {
+        showCreateItemView()
     }
 
     func vaultContentViewModelWantsToShowItemDetail(_ item: ItemContent) {
