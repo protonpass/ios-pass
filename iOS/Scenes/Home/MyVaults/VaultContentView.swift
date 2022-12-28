@@ -64,7 +64,6 @@ struct VaultContentView: View {
                 viewModel.trashItem(selectedItem)
             }
         }
-        .navigationTitle(viewModel.filterOption.title)
         .toolbar { toolbarContent }
         .onAppear {
             if !didAppear {
@@ -198,9 +197,16 @@ struct VaultContentView: View {
         }
 
         ToolbarItem(placement: .principal) {
-            Text(viewModel.filterOption.title)
-                .fontWeight(.semibold)
-                .onTapGesture(perform: viewModel.showVaultList)
+            VStack {
+                Text(viewModel.filterOption.title)
+                    .fontWeight(.semibold)
+                if let selectedVault = viewModel.vaultSelection.selectedVault {
+                    Text(selectedVault.name)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+            .onTapGesture(perform: viewModel.showVaultList)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
