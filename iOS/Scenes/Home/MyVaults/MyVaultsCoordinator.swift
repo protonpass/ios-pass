@@ -524,8 +524,4 @@ extension MyVaultsCoordinator: VaultListViewModelDelegate {
             self.showCreateVaultView()
         }
     }
-
-    func vaultListViewModelWantsToEdit(vault: VaultProtocol) {
-        print(#function)
-    }
 }
