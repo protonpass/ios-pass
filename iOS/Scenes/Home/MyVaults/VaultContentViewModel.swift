@@ -36,12 +36,13 @@ extension VaultContentViewModel {
         case error(Error)
 
         var isLoaded: Bool {
-            switch self {
-            case .loaded:
-                return true
-            default:
-                return false
-            }
+            if case .loaded = self { return true }
+            return false
+        }
+
+        var isError: Bool {
+            if case .error = self { return true }
+            return false
         }
     }
 }
@@ -122,9 +123,9 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
         self.preferences = preferences
         showAutoFillBannerIfNecessary()
 
-        vaultSelection.objectWillChange
+        vaultSelection.$selectedVault
             .sink { [unowned self] _ in
-                self.objectWillChange.send()
+                self.fetchItems(forceRefresh: false, forceLoading: true)
             }
             .store(in: &cancellables)
     }
@@ -177,9 +178,9 @@ extension VaultContentViewModel {
         preferences.autoFillBannerDisplayed = true
     }
 
-    func fetchItems(forceRefresh: Bool) {
+    func fetchItems(forceRefresh: Bool, forceLoading: Bool = false) {
         Task { @MainActor in
-            if case .error = state {
+            if state.isError || forceLoading {
                 state = .loading
             }
 
