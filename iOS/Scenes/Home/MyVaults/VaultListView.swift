@@ -22,27 +22,45 @@ import ProtonCore_UIFoundations
 import SwiftUI
 
 struct VaultListView: View {
-    @ObservedObject var vaultSelection: VaultSelection
-    let onCreateVault: () -> Void
+    @ObservedObject var viewModel: VaultListViewModel
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(vaultSelection.vaults, id: \.id) { vault in
+            Form {
+                ForEach(viewModel.vaults, id: \.id) { vault in
                     HStack {
-                        VStack(alignment: .leading) {
-                            Text(vault.name)
-                            Text(vault.description)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+                        HStack {
+                            if vault.id == viewModel.selectedVault?.id {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.interactionNorm)
+                            } else {
+                                Image(systemName: "circle")
+                                    .foregroundColor(.secondary)
+                            }
+
+                            VStack(alignment: .leading) {
+                                Text(vault.name)
+                                Text(vault.description)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+
+                            Spacer()
+                        }
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            if vault.id != viewModel.selectedVault?.id {
+                                viewModel.selectVault(vault)
+                            }
                         }
 
-                        Spacer()
-
-                        if vault.id == vaultSelection.selectedVault?.id {
-                            Image(systemName: "checkmark")
+                        Button(action: {
+                            viewModel.editVault(vault)
+                        }, label: {
+                            Image(uiImage: IconProvider.penSquare)
                                 .foregroundColor(.interactionNorm)
-                        }
+                        })
+                        .buttonStyle(.plain)
                     }
                 }
             }
@@ -55,7 +73,7 @@ struct VaultListView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: onCreateVault) {
+            Button(action: viewModel.createVault) {
                 Image(uiImage: IconProvider.plus)
             }
             .foregroundColor(.primary)
