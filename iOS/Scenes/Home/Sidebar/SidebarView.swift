@@ -107,25 +107,3 @@ private struct SidebarItemView: View {
         .buttonStyle(.sidebarItem)
     }
 }
-
-/*
-struct SidebarView_Previews: PreviewProvider {
-    static var previews: some View {
-        SidebarView(viewModel: .preview,
-                    width: 300)
-    }
-}
- */
-
-extension Array where Element == Vault {
-    static var preview: [Vault] = [
-        Vault(id: UUID().uuidString,
-              shareId: UUID().uuidString,
-              name: "Private",
-              description: "Private vault"),
-        Vault(id: UUID().uuidString,
-              shareId: UUID().uuidString,
-              name: "Business",
-              description: "Business vault")
-    ]
-}

@@ -26,6 +26,13 @@ import ProtonCore_KeyManager
 import ProtonCore_Login
 import ProtonCore_Utilities
 
+public enum ShareType: Int16 {
+    case unknown = 0
+    case vault = 1
+    case label = 2
+    case item = 3
+}
+
 public struct Share: Decodable {
     /// ID of the share
     public let shareID: String
@@ -86,6 +93,10 @@ public struct Share: Decodable {
 
     /// Time of creation of this share
     public let createTime: Int64
+
+    public var shareType: ShareType {
+        .init(rawValue: targetType) ?? .unknown
+    }
 }
 
 public struct PartialShare: Decodable {
