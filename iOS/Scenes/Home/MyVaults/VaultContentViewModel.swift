@@ -36,12 +36,13 @@ extension VaultContentViewModel {
         case error(Error)
 
         var isLoaded: Bool {
-            switch self {
-            case .loaded:
-                return true
-            default:
-                return false
-            }
+            if case .loaded = self { return true }
+            return false
+        }
+
+        var isError: Bool {
+            if case .error = self { return true }
+            return false
         }
     }
 }
@@ -52,8 +53,8 @@ protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToHideLoadingHud()
     func vaultContentViewModelWantsToEnableAutoFill()
     func vaultContentViewModelWantsToSearch()
+    func vaultContentViewModelWantsToShowVaultList()
     func vaultContentViewModelWantsToCreateItem()
-    func vaultContentViewModelWantsToCreateVault()
     func vaultContentViewModelWantsToShowItemDetail(_ item: ItemContent)
     func vaultContentViewModelWantsToEditItem(_ item: ItemContent)
     func vaultContentViewModelWantsToCopy(text: String, bannerMessage: String)
@@ -89,11 +90,11 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
     @Published var sortType = SortType.modifyTime { didSet { filterAndSort() } }
     @Published var sortDirection = SortDirection.descending { didSet { filterAndSort() } }
 
-    private let vaultSelection: VaultSelection
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let preferences: Preferences
     let credentialManager: CredentialManagerProtocol
+    let vaultSelection: VaultSelection
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -122,9 +123,9 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
         self.preferences = preferences
         showAutoFillBannerIfNecessary()
 
-        vaultSelection.objectWillChange
+        vaultSelection.$selectedVault
             .sink { [unowned self] _ in
-                self.objectWillChange.send()
+                self.fetchItems(forceRefresh: false, forceLoading: true)
             }
             .store(in: &cancellables)
     }
@@ -155,6 +156,10 @@ extension VaultContentViewModel {
         delegate?.vaultContentViewModelWantsToToggleSidebar()
     }
 
+    func showVaultList() {
+        delegate?.vaultContentViewModelWantsToShowVaultList()
+    }
+
     func createItem() {
         delegate?.vaultContentViewModelWantsToCreateItem()
     }
@@ -173,9 +178,9 @@ extension VaultContentViewModel {
         preferences.autoFillBannerDisplayed = true
     }
 
-    func fetchItems(forceRefresh: Bool) {
+    func fetchItems(forceRefresh: Bool, forceLoading: Bool = false) {
         Task { @MainActor in
-            if case .error = state {
+            if state.isError || forceLoading {
                 state = .loading
             }
 

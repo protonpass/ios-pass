@@ -40,6 +40,7 @@ struct CreateVaultView: View {
                 Spacer()
             }
             .padding()
+            .navigationTitle("New vault")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbarContent }
         }
@@ -70,23 +71,16 @@ struct CreateVaultView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: dismiss.callAsFunction) {
-                Image(uiImage: IconProvider.chevronLeft)
-                    .foregroundColor(.primary)
+                Text("Cancel")
             }
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text("Create new vault")
-                .fontWeight(.bold)
+            .foregroundColor(.primary)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.createVault) {
-                Text("Save")
-                    .fontWeight(.bold)
-                    .foregroundColor(.interactionNorm)
-            }
-            .opacityReduced(!viewModel.isSaveable)
+            SpinnerButton(title: "Save",
+                          disabled: !viewModel.isSaveable,
+                          spinning: viewModel.isCreating,
+                          action: viewModel.createVault)
         }
     }
 }
