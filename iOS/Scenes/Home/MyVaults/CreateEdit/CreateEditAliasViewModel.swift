@@ -86,6 +86,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var aliasEmail = ""
     @Published private(set) var state: State = .loading
     @Published private(set) var prefixError: AliasPrefixError?
+    @Published private(set) var canCreateAlias = false
 
     private let prefixCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
 
@@ -249,6 +250,7 @@ extension CreateEditAliasViewModel {
                     .store(in: &cancellables)
                 mailboxSelection?.selectDefaultMailboxes(alias?.mailboxes.map { $0.email } ?? [])
 
+                canCreateAlias = aliasOptions.canCreateAlias
                 state = .loaded
             } catch {
                 state = .error(error)
