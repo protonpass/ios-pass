@@ -49,16 +49,12 @@ struct CreateEditAliasView: View {
                     .padding()
 
                 case .loaded:
-                    if case .create = viewModel.mode, !viewModel.canCreateAlias {
-                        CanNotCreateAliasView(onClose: dismiss.callAsFunction)
-                    } else {
-                        content
-                            .navigationTitle(viewModel.navigationBarTitle())
-                            .toolbar { toolbarContent }
-                    }
+                    content
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(viewModel.navigationBarTitle())
+            .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
@@ -268,20 +264,5 @@ struct MailboxesView: View {
             }
             .listStyle(.plain)
         }
-    }
-}
-
-private struct CanNotCreateAliasView: View {
-    let onClose: () -> Void
-
-    var body: some View {
-        VStack {
-            Text("You can not create more aliases.")
-            Button(action: onClose) {
-                Text("Close")
-            }
-            .foregroundColor(.interactionNorm)
-        }
-        .padding()
     }
 }

@@ -31,6 +31,7 @@ enum CredentialsViewModelError: Error {
 }
 
 struct CredentialsFetchResult {
+    let vaults: [VaultProtocol]
     let searchableItems: [SearchableItem]
     let matchedItems: [ItemListUiModel]
     let notMatchedItems: [ItemListUiModel]
@@ -62,7 +63,7 @@ enum CredentialsViewLoadedState: Equatable {
     case idle
     case searching
     case noSearchResults
-    case searchResults([ItemSearchResult])
+    case searchResults([String: [ItemSearchResult]]) // Grouped by vault name
 
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
@@ -84,6 +85,7 @@ final class CredentialsViewModel: ObservableObject {
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
+    private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
@@ -91,9 +93,11 @@ final class CredentialsViewModel: ObservableObject {
 
     weak var delegate: CredentialsViewModelDelegate?
 
-    init(itemRepository: ItemRepositoryProtocol,
+    init(shareRepository: ShareRepositoryProtocol,
+         itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey,
          serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
@@ -126,7 +130,8 @@ final class CredentialsViewModel: ObservableObject {
                 if searchResults.isEmpty {
                     state = .loaded(fetchResult, .noSearchResults)
                 } else {
-                    state = .loaded(fetchResult, .searchResults(searchResults))
+                    let resultDictionary = Dictionary(grouping: searchResults, by: { $0.vaultName })
+                    state = .loaded(fetchResult, .searchResults(resultDictionary))
                 }
             } catch {
                 state = .error(error)
@@ -205,6 +210,7 @@ extension CredentialsViewModel {
     }
 
     #warning("Ask users to choose a vault")
+    // https://jira.protontech.ch/browse/IDTEAM-595
     func showCreateLoginView() {
         guard case let .loaded(fetchResult, _) = state,
         let shareId = fetchResult.searchableItems.first?.shareId else { return }
@@ -228,6 +234,12 @@ private extension CredentialsViewModel {
 
     func fetchCredentialsTask() -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) {
+            let vaults = try await self.shareRepository.getVaults(forceRefresh: false)
+            let getVaultName: (String) -> String = { shareId in
+                let vault = vaults.first { $0.shareId == shareId }
+                return vault?.name ?? ""
+            }
+
             let matcher = URLUtils.Matcher.default
             let encryptedItems = try await self.itemRepository.getItems(forceRefresh: false,
                                                                         state: .active)
@@ -240,7 +252,8 @@ private extension CredentialsViewModel {
                 try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
                 if case let .login(_, _, itemUrlStrings) = decryptedItemContent.contentData {
-                    searchableItems.append(try SearchableItem(symmetricallyEncryptedItem: encryptedItem))
+                    searchableItems.append(try SearchableItem(symmetricallyEncryptedItem: encryptedItem,
+                                                              vaultName: getVaultName(encryptedItem.shareId)))
 
                     let itemUrls = itemUrlStrings.compactMap { URL(string: $0) }
                     let matchedUrls = self.urls.filter { url in
@@ -262,7 +275,8 @@ private extension CredentialsViewModel {
             let notMatchedItems = try await notMatchedEncryptedItems.sorted()
                 .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
 
-            return .init(searchableItems: searchableItems,
+            return .init(vaults: vaults,
+                         searchableItems: searchableItems,
                          matchedItems: matchedItems,
                          notMatchedItems: notMatchedItems)
         }

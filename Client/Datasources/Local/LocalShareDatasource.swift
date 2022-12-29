@@ -47,6 +47,7 @@ public extension LocalShareDatasourceProtocol {
 
         let fetchRequest = ShareEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
+        fetchRequest.sortDescriptors = [.init(key: "createTime", ascending: false)]
         let shareEntities = try await execute(fetchRequest: fetchRequest,
                                               context: taskContext)
         return try shareEntities.map { try $0.toShare() }
