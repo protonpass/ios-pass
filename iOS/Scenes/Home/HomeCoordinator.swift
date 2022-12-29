@@ -144,6 +144,7 @@ final class HomeCoordinator: DeinitPrintable {
         self.observeForegroundEntrance()
         self.observePreferences()
         self.updateSideMenuUserInterfaceStyle()
+        self.myVaultsCoordinator.bannerManager = bannerManager
     }
 
     func onboardIfNecessary(force: Bool) {

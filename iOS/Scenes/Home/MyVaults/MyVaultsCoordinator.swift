@@ -421,6 +421,12 @@ extension MyVaultsCoordinator: CreateEditAliasViewModelDelegate {
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         present(viewController, animated: true, dismissible: true)
     }
+
+    func createEditAliasViewModelCanNotCreateMoreAliases() {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager?.displayTopErrorMessage("You can not create more aliases.")
+        }
+    }
 }
 
 // MARK: - CreateEditLoginViewModelDelegate

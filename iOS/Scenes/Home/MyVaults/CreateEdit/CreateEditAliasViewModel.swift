@@ -71,6 +71,7 @@ protocol AliasCreationDelegate: AnyObject {
 
 protocol CreateEditAliasViewModelDelegate: AnyObject {
     func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection)
+    func createEditAliasViewModelCanNotCreateMoreAliases()
 }
 
 // MARK: - Initialization
@@ -250,8 +251,11 @@ extension CreateEditAliasViewModel {
                     .store(in: &cancellables)
                 mailboxSelection?.selectDefaultMailboxes(alias?.mailboxes.map { $0.email } ?? [])
 
-                canCreateAlias = aliasOptions.canCreateAlias
-                state = .loaded
+                if !aliasOptions.canCreateAlias {
+                    createEditAliasViewModelDelegate?.createEditAliasViewModelCanNotCreateMoreAliases()
+                } else {
+                    state = .loaded
+                }
             } catch {
                 state = .error(error)
             }

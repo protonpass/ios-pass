@@ -526,4 +526,10 @@ extension CredentialProviderCoordinator: CreateEditAliasViewModelDelegate {
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         presentViewController(viewController, dismissible: true)
     }
+
+    func createEditAliasViewModelCanNotCreateMoreAliases() {
+        topMostViewController.dismiss(animated: true) { [unowned self] in
+            self.bannerManager.displayTopErrorMessage("You can not create more aliases.")
+        }
+    }
 }
