@@ -31,6 +31,7 @@ enum CredentialsViewModelError: Error {
 }
 
 struct CredentialsFetchResult {
+    let vaults: [VaultProtocol]
     let searchableItems: [SearchableItem]
     let matchedItems: [ItemListUiModel]
     let notMatchedItems: [ItemListUiModel]
@@ -84,6 +85,7 @@ final class CredentialsViewModel: ObservableObject {
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
+    private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
@@ -91,9 +93,11 @@ final class CredentialsViewModel: ObservableObject {
 
     weak var delegate: CredentialsViewModelDelegate?
 
-    init(itemRepository: ItemRepositoryProtocol,
+    init(shareRepository: ShareRepositoryProtocol,
+         itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey,
          serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
@@ -264,7 +268,8 @@ private extension CredentialsViewModel {
             let notMatchedItems = try await notMatchedEncryptedItems.sorted()
                 .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
 
-            return .init(searchableItems: searchableItems,
+            return .init(vaults: [],
+                         searchableItems: searchableItems,
                          matchedItems: matchedItems,
                          notMatchedItems: notMatchedItems)
         }
