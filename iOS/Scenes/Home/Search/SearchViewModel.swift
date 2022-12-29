@@ -41,6 +41,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     // Injected properties
     private let symmetricKey: SymmetricKey
     private let itemRepository: ItemRepositoryProtocol
+    private let vaultSelection: VaultSelection
 
     // Self-initialized properties
     private let searchTermSubject = PassthroughSubject<String, Never>()
@@ -50,6 +51,11 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     private var lastSearchTerm = ""
     @Published private(set) var state = State.clean
     @Published private(set) var results = [ItemSearchResult]()
+
+    /// Grouped by vault name
+    var groupedResults: [String: [ItemSearchResult]] {
+        Dictionary(grouping: results, by: { $0.vaultName })
+    }
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -79,9 +85,11 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     }
 
     init(symmetricKey: SymmetricKey,
-         itemRepository: ItemRepositoryProtocol) {
+         itemRepository: ItemRepositoryProtocol,
+         vaultSelection: VaultSelection) {
         self.symmetricKey = symmetricKey
         self.itemRepository = itemRepository
+        self.vaultSelection = vaultSelection
 
         Task {
             await loadItems()
@@ -106,7 +114,12 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
             state = .initializing
             print("Initializing SearchViewModel")
             let items = try await itemRepository.getItems(forceRefresh: false, state: .active)
-            self.items = try items.map { try SearchableItem(symmetricallyEncryptedItem: $0) }
+            let getVaultName: (String) -> String = { shareId in
+                let vault = self.vaultSelection.vaults.first { $0.shareId == shareId }
+                return vault?.name ?? ""
+            }
+            self.items = try items.map { try SearchableItem(symmetricallyEncryptedItem: $0,
+                                                            vaultName: getVaultName($0.shareId)) }
             state = .clean
             print("Initialized SearchViewModel")
         } catch {

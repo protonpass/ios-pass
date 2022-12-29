@@ -111,15 +111,17 @@ final class HomeCoordinator: DeinitPrintable {
         self.aliasRepository = AliasRepository(authCredential: authCredential, apiService: apiService)
         self.publicKeyRepository = PublicKeyRepository(container: container,
                                                        apiService: apiService)
-        let shareRepository = ShareRepository(userId: userId,
-                                              container: container,
-                                              authCredential: authCredential,
-                                              apiService: apiService)
-        self.shareRepository = shareRepository
         let vaultItemKeysRepository = VaultItemKeysRepository(container: container,
                                                               authCredential: authCredential,
                                                               apiService: apiService)
         self.vaultItemKeysRepository = vaultItemKeysRepository
+        let shareRepository = ShareRepository(
+            userData: sessionData.userData,
+            localShareDatasource: LocalShareDatasource(container: container),
+            remoteShareDatasouce: RemoteShareDatasource(authCredential: authCredential,
+                                                        apiService: apiService),
+            vaultItemKeysRepository: vaultItemKeysRepository)
+        self.shareRepository = shareRepository
         itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
         self.credentialManager = credentialManager
         self.vaultSelection = .init(vaults: [])
@@ -144,6 +146,7 @@ final class HomeCoordinator: DeinitPrintable {
         self.observeForegroundEntrance()
         self.observePreferences()
         self.updateSideMenuUserInterfaceStyle()
+        self.myVaultsCoordinator.bannerManager = bannerManager
     }
 
     func onboardIfNecessary(force: Bool) {
@@ -262,7 +265,6 @@ private extension HomeCoordinator {
                                                       userData: sessionData.userData,
                                                       vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
-                                                      vaultItemKeysRepository: vaultItemKeysRepository,
                                                       itemRepository: itemRepository,
                                                       aliasRepository: aliasRepository,
                                                       publicKeyRepository: publicKeyRepository,

@@ -59,6 +59,7 @@ public final class CredentialProviderCoordinator {
     /// Derived properties
     private var lastChildViewController: UIViewController?
     private var symmetricKey: SymmetricKey?
+    private var shareRepository: ShareRepositoryProtocol?
     private var itemRepository: ItemRepositoryProtocol?
     private var aliasRepository: AliasRepositoryProtocol?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
@@ -197,6 +198,10 @@ public final class CredentialProviderCoordinator {
         let aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
 
         self.symmetricKey = symmetricKey
+        self.shareRepository = ShareRepository(userData: sessionData.userData,
+                                               container: container,
+                                               authCredential: credential,
+                                               apiService: apiService)
         self.itemRepository = itemRepository
         self.aliasRepository = aliasRepository
     }
@@ -323,8 +328,9 @@ private extension CredentialProviderCoordinator {
     func showCredentialsView(userData: UserData,
                              symmetricKey: SymmetricKey,
                              serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard let itemRepository else { return }
-        let viewModel = CredentialsViewModel(itemRepository: itemRepository,
+        guard let shareRepository, let itemRepository else { return }
+        let viewModel = CredentialsViewModel(shareRepository: shareRepository,
+                                             itemRepository: itemRepository,
                                              symmetricKey: symmetricKey,
                                              serviceIdentifiers: serviceIdentifiers)
         viewModel.delegate = self
@@ -525,5 +531,11 @@ extension CredentialProviderCoordinator: CreateEditAliasViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         presentViewController(viewController, dismissible: true)
+    }
+
+    func createEditAliasViewModelCanNotCreateMoreAliases() {
+        topMostViewController.dismiss(animated: true) { [unowned self] in
+            self.bannerManager.displayTopErrorMessage("You can not create more aliases.")
+        }
     }
 }

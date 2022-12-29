@@ -210,14 +210,23 @@ struct CredentialsView: View {
             .font(.callout)
     }
 
-    private func searchResultsList(_ results: [ItemSearchResult]) -> some View {
+    private func searchResultsList(_ resultDictionary: [String: [ItemSearchResult]]) -> some View {
         List {
-            ForEach(results) { result in
-                ItemSearchResultView(result: result,
-                                     action: { viewModel.select(item: result) })
+            ForEach(Array(resultDictionary.keys), id: \.self) { vaultName in
+                if let results = resultDictionary[vaultName] {
+                    Section(content: {
+                        ForEach(results) { result in
+                            ItemSearchResultView(result: result,
+                                                 action: { viewModel.select(item: result) })
+                        }
+                        .listRowSeparator(.hidden)
+                    }, header: {
+                        Text(vaultName)
+                    })
+                }
             }
         }
         .listStyle(.plain)
-        .animation(.default, value: results.count)
+        .animation(.default, value: resultDictionary.keys)
     }
 }

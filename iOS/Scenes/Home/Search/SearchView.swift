@@ -81,11 +81,20 @@ struct SearchView: View {
 
     private var resultsList: some View {
         List {
-            ForEach(viewModel.results) { result in
-                ItemSearchResultView(result: result,
-                                     action: { viewModel.selectItem(result) },
-                                     trailingView: { trailingView(for: result) })
+            ForEach(Array(viewModel.groupedResults.keys), id: \.self) { vaultName in
+                if let results = viewModel.groupedResults[vaultName] {
+                    Section(content: {
+                        ForEach(results) { result in
+                            ItemSearchResultView(result: result,
+                                                 action: { viewModel.selectItem(result) },
+                                                 trailingView: { trailingView(for: result) })
+                        }
+                    }, header: {
+                        Text(vaultName)
+                    })
+                }
             }
+            .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
         .animation(.default, value: viewModel.results.count)

@@ -30,18 +30,15 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     private let userData: UserData
     private let vaultSelection: VaultSelection
     private let shareRepository: ShareRepositoryProtocol
-    private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
 
     var onToggleSidebar: (() -> Void)?
 
     init(userData: UserData,
          vaultSelection: VaultSelection,
-         shareRepository: ShareRepositoryProtocol,
-         vaultItemKeysRepository: VaultItemKeysRepositoryProtocol) {
+         shareRepository: ShareRepositoryProtocol) {
         self.userData = userData
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
-        self.vaultItemKeysRepository = vaultItemKeysRepository
     }
 
     func fetchVaults(forceRefresh: Bool) {
@@ -73,23 +70,7 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
 
     private func fetchVaultsTask(forceRefresh: Bool) -> Task<[VaultProtocol], Error> {
         Task.detached(priority: .userInitiated) {
-            let shares = try await self.shareRepository.getShares(forceRefresh: forceRefresh)
-
-            var vaults: [VaultProtocol] = []
-            for share in shares where share.shareType == .vault {
-                let vaultKeys =
-                try await self.vaultItemKeysRepository.getVaultKeys(shareId: share.shareID,
-                                                                    forceRefresh: forceRefresh)
-                let shareContent = try share.getShareContent(userData: self.userData,
-                                                             vaultKeys: vaultKeys)
-                switch shareContent {
-                case .vault(let vault):
-                    vaults.append(vault)
-                default:
-                    break
-                }
-            }
-            return vaults
+            try await self.shareRepository.getVaults(forceRefresh: forceRefresh)
         }
     }
 }
