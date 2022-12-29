@@ -205,6 +205,7 @@ extension CredentialsViewModel {
     }
 
     #warning("Ask users to choose a vault")
+    // https://jira.protontech.ch/browse/IDTEAM-595
     func showCreateLoginView() {
         guard case let .loaded(fetchResult, _) = state,
         let shareId = fetchResult.searchableItems.first?.shareId else { return }
@@ -240,7 +241,8 @@ private extension CredentialsViewModel {
                 try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
                 if case let .login(_, _, itemUrlStrings) = decryptedItemContent.contentData {
-                    searchableItems.append(try SearchableItem(symmetricallyEncryptedItem: encryptedItem))
+                    searchableItems.append(try SearchableItem(symmetricallyEncryptedItem: encryptedItem,
+                                                              vaultName: "Vault name"))
 
                     let itemUrls = itemUrlStrings.compactMap { URL(string: $0) }
                     let matchedUrls = self.urls.filter { url in
