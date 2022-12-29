@@ -35,7 +35,6 @@ final class MyVaultsCoordinator: Coordinator {
     private let vaultSelection: VaultSelection
     private let vaultContentViewModel: VaultContentViewModel
     private let shareRepository: ShareRepositoryProtocol
-    private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let aliasRepository: AliasRepositoryProtocol
@@ -60,7 +59,6 @@ final class MyVaultsCoordinator: Coordinator {
          userData: UserData,
          vaultSelection: VaultSelection,
          shareRepository: ShareRepositoryProtocol,
-         vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          publicKeyRepository: PublicKeyRepositoryProtocol,
@@ -73,7 +71,6 @@ final class MyVaultsCoordinator: Coordinator {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
-        self.vaultItemKeysRepository = vaultItemKeysRepository
         self.aliasRepository = aliasRepository
         self.vaultContentViewModel = .init(vaultSelection: vaultSelection,
                                            itemRepository: itemRepository,
@@ -90,8 +87,7 @@ final class MyVaultsCoordinator: Coordinator {
     private func start() {
         let loadVaultsViewModel = LoadVaultsViewModel(userData: userData,
                                                       vaultSelection: vaultSelection,
-                                                      shareRepository: shareRepository,
-                                                      vaultItemKeysRepository: vaultItemKeysRepository)
+                                                      shareRepository: shareRepository)
         loadVaultsViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
                                       loadVaultsViewModel: loadVaultsViewModel,
