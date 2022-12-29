@@ -194,7 +194,8 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showSearchView() {
         let viewModel = SearchViewModel(symmetricKey: symmetricKey,
-                                        itemRepository: itemRepository)
+                                        itemRepository: itemRepository,
+                                        vaultSelection: vaultSelection)
         viewModel.delegate = self
         searchViewModel = viewModel
         let viewController = UIHostingController(rootView: SearchView(viewModel: viewModel))

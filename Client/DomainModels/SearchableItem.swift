@@ -28,11 +28,12 @@ public struct SearchableItem {
     public let encryptedItemContent: ItemContent
     public let vaultName: String
 
-    public init(symmetricallyEncryptedItem: SymmetricallyEncryptedItem) throws {
+    public init(symmetricallyEncryptedItem: SymmetricallyEncryptedItem,
+                vaultName: String) throws {
         self.shareId = symmetricallyEncryptedItem.shareId
         self.itemId = symmetricallyEncryptedItem.item.itemID
         self.encryptedItemContent = try symmetricallyEncryptedItem.getEncryptedItemContent()
-        self.vaultName = "Vault name"
+        self.vaultName = vaultName
     }
 }
 
