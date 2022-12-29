@@ -94,6 +94,7 @@ struct SearchView: View {
                     })
                 }
             }
+            .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
         .animation(.default, value: viewModel.results.count)
