@@ -114,20 +114,28 @@ struct TrashView: View {
 
     private var itemList: some View {
         List {
-            ForEach(viewModel.items, id: \.itemId) { item in
-                GenericItemView(
-                    item: item,
-                    action: { viewModel.selectItem(item) },
-                    subtitleLineLimit: 1,
-                    trailingView: { trailingView(for: item) })
-                .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
-                .swipeActions {
-                    Button(action: { viewModel.restore(item) },
-                           label: { Image(uiImage: IconProvider.clockRotateLeft) })
-                    .tint(.blue)
+            ForEach(Array(viewModel.itemsDictionary.keys).sorted(), id: \.self) { vaultName in
+                if let items = viewModel.itemsDictionary[vaultName] {
+                    Section(content: {
+                        ForEach(items, id: \.itemId) { item in
+                            GenericItemView(
+                                item: item,
+                                action: { viewModel.selectItem(item) },
+                                subtitleLineLimit: 1,
+                                trailingView: { trailingView(for: item) })
+                            .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
+                            .swipeActions {
+                                Button(action: { viewModel.restore(item) },
+                                       label: { Image(uiImage: IconProvider.clockRotateLeft) })
+                                .tint(.blue)
+                            }
+                        }
+                        .listRowSeparator(.hidden)
+                    }, header: {
+                        Text(vaultName)
+                    })
                 }
             }
-            .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
         .animation(.default, value: viewModel.items.count)

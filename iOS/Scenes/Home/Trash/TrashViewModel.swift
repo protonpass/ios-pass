@@ -44,9 +44,17 @@ final class TrashViewModel: DeinitPrintable, PullToRefreshable, ObservableObject
     @Published private(set) var state = State.loading
     @Published private(set) var items = [ItemListUiModel]()
 
+    var itemsDictionary: [String: [ItemListUiModel]] {
+        Dictionary(grouping: items, by: { item in
+            let vault = vaultSelection.vaults.first { $0.shareId == item.shareId }
+            return vault?.name ?? ""
+        })
+    }
+
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
+    private let vaultSelection: VaultSelection
 
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
@@ -63,7 +71,7 @@ final class TrashViewModel: DeinitPrintable, PullToRefreshable, ObservableObject
     var isEmpty: Bool {
         switch state {
         case .loaded:
-            return items.isEmpty
+            return itemsDictionary.isEmpty
         default:
             return true
         }
@@ -72,10 +80,12 @@ final class TrashViewModel: DeinitPrintable, PullToRefreshable, ObservableObject
     init(symmetricKey: SymmetricKey,
          shareRepository: ShareRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
+         vaultSelection: VaultSelection,
          syncEventLoop: SyncEventLoop) {
         self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
+        self.vaultSelection = vaultSelection
         self.syncEventLoop = syncEventLoop
         fetchAllTrashedItems()
     }
