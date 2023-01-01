@@ -293,6 +293,7 @@ private extension HomeCoordinator {
                                                 shareRepository: shareRepository,
                                                 itemRepository: itemRepository,
                                                 aliasRepository: aliasRepository,
+                                                vaultSelection: vaultSelection,
                                                 syncEventLoop: eventLoop)
         trashCoordinator.coordinatorDelegate = self
         trashCoordinator.delegate = self
