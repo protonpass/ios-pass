@@ -81,7 +81,7 @@ struct SearchView: View {
 
     private var resultsList: some View {
         List {
-            ForEach(Array(viewModel.groupedResults.keys), id: \.self) { vaultName in
+            ForEach(Array(viewModel.groupedResults.keys).sorted(), id: \.self) { vaultName in
                 if let results = viewModel.groupedResults[vaultName] {
                     Section(content: {
                         ForEach(results) { result in

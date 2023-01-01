@@ -47,6 +47,7 @@ final class TrashCoordinator: Coordinator {
          shareRepository: ShareRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
+         vaultSelection: VaultSelection,
          syncEventLoop: SyncEventLoop) {
         self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
@@ -55,6 +56,7 @@ final class TrashCoordinator: Coordinator {
         self.trashViewModel = TrashViewModel(symmetricKey: symmetricKey,
                                              shareRepository: shareRepository,
                                              itemRepository: itemRepository,
+                                             vaultSelection: vaultSelection,
                                              syncEventLoop: syncEventLoop)
         super.init()
         self.start()
