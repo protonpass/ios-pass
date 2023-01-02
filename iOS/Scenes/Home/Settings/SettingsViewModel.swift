@@ -30,6 +30,7 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToShowLoadingHud()
     func settingsViewModelWantsToHideLoadingHud()
     func settingsViewModelWantsToDeleteAccount()
+    func settingsViewModelWantsToViewLogs()
     func settingsViewModelWantsToOpenSecuritySettings(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateClipboardExpiration(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateAutoFill(viewModel: SettingsViewModel)
@@ -203,6 +204,10 @@ extension SettingsViewModel {
 
     func updateAutoFill() {
         delegate?.settingsViewModelWantsToUpdateAutoFill(viewModel: self)
+    }
+
+    func viewLogs() {
+        delegate?.settingsViewModelWantsToViewLogs()
     }
 
     func fullSync() {

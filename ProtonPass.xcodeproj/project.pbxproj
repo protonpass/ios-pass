@@ -206,6 +206,8 @@
 		355751F62907FB9000268116 /* AppLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531B5422902DA890070D2EE /* AppLockedView.swift */; };
 		355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */; };
 		355751FA2908745B00268116 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
+		355783662962EB15008A4992 /* DeviceLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355783652962EB15008A4992 /* DeviceLogsView.swift */; };
+		355783682962EC0B008A4992 /* DeviceLogsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355783672962EC0B008A4992 /* DeviceLogsViewModel.swift */; };
 		35581806290A7DBF00DD94DB /* ShareEventIDEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */; };
 		3558180A290A7FA600DD94DB /* LocalShareEventIDDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */; };
 		3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */; };
@@ -705,6 +707,8 @@
 		3557441A295A064F00EA4AF0 /* ClipboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardManager.swift; sourceTree = "<group>"; };
 		355751F42907FB3200268116 /* LockedCredentialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialView.swift; sourceTree = "<group>"; };
 		355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialViewModel.swift; sourceTree = "<group>"; };
+		355783652962EB15008A4992 /* DeviceLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLogsView.swift; sourceTree = "<group>"; };
+		355783672962EC0B008A4992 /* DeviceLogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLogsViewModel.swift; sourceTree = "<group>"; };
 		35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDEntity.swift; sourceTree = "<group>"; };
 		35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasource.swift; sourceTree = "<group>"; };
 		3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasourceTests.swift; sourceTree = "<group>"; };
@@ -1160,6 +1164,8 @@
 			isa = PBXGroup;
 			children = (
 				3586F3AF2958841F00738245 /* Section */,
+				355783652962EB15008A4992 /* DeviceLogsView.swift */,
+				355783672962EC0B008A4992 /* DeviceLogsViewModel.swift */,
 				354513CE28E460FD0020A93A /* SettingsCoordinator.swift */,
 				354513CA28E45F960020A93A /* SettingsView.swift */,
 				354513CC28E45FB20020A93A /* SettingsViewModel.swift */,
@@ -2734,6 +2740,7 @@
 				3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */,
+				355783682962EC0B008A4992 /* DeviceLogsViewModel.swift in Sources */,
 				3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */,
 				356AD3FB29409C7600EBE4E9 /* DevPreviewsView.swift in Sources */,
 				355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */,
@@ -2742,6 +2749,7 @@
 				354BB14F28A27FF500F50040 /* SearchViewModel.swift in Sources */,
 				353E8B6E2876163F00A2C5E3 /* SidebarView.swift in Sources */,
 				3542E2D028DA4E7400194F24 /* ItemListUiModel.swift in Sources */,
+				355783662962EB15008A4992 /* DeviceLogsView.swift in Sources */,
 				354513CF28E460FD0020A93A /* SettingsCoordinator.swift in Sources */,
 				355013F7295459E1004F837E /* ThemesView.swift in Sources */,
 				3547ABDE28774D1100EE85E1 /* MyVaultsCoordinator.swift in Sources */,
