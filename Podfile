@@ -66,6 +66,7 @@ target 'Core' do
   pod "ProtonCore-LoginUI-V5/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Settings-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'Logging', '~> 1.4'
 
   target 'CoreTests' do
     pod "ProtonCore-GoLibs/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
@@ -104,7 +105,6 @@ target 'iOS' do
   pod 'SideMenuSwift', '2.0.9'
   pod 'MBProgressHUD'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.29.0'
-  pod 'Logging', '~> 1.4'
 
   target 'AutoFill' do
     inherit! :search_paths
