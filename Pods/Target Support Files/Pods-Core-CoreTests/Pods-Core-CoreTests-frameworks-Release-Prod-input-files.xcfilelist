@@ -22,6 +22,7 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.frame
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework
 ${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework
 ${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework
+${BUILT_PRODUCTS_DIR}/Logging/Logging.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Challenge/ProtonCore_Challenge.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification-V5/ProtonCore_HumanVerification.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-LoginUI-V5/ProtonCore_LoginUI.framework
