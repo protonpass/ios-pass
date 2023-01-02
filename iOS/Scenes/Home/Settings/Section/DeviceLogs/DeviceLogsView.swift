@@ -39,7 +39,7 @@ struct DeviceLogsView: View {
                                        onRetry: viewModel.loadLogs)
                 }
             }
-            .navigationTitle("Device logs")
+            .navigationTitle(viewModel.type.title)
         }
     }
 
@@ -50,6 +50,13 @@ struct DeviceLogsView: View {
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: dismiss.callAsFunction) {
+                Image(uiImage: IconProvider.cross)
+            }
+            .foregroundColor(.primary)
+        }
+
         ToolbarItem(placement: .navigationBarTrailing) {
             Button(action: viewModel.shareLogs) {
                 Image(uiImage: IconProvider.arrowUpFromSquare)

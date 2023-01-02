@@ -208,6 +208,7 @@
 		355751FA2908745B00268116 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
 		355783662962EB15008A4992 /* DeviceLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355783652962EB15008A4992 /* DeviceLogsView.swift */; };
 		355783682962EC0B008A4992 /* DeviceLogsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355783672962EC0B008A4992 /* DeviceLogsViewModel.swift */; };
+		3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557836A296309D0008A4992 /* DeviceLogTypesView.swift */; };
 		35581806290A7DBF00DD94DB /* ShareEventIDEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */; };
 		3558180A290A7FA600DD94DB /* LocalShareEventIDDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */; };
 		3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */; };
@@ -709,6 +710,7 @@
 		355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialViewModel.swift; sourceTree = "<group>"; };
 		355783652962EB15008A4992 /* DeviceLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLogsView.swift; sourceTree = "<group>"; };
 		355783672962EC0B008A4992 /* DeviceLogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLogsViewModel.swift; sourceTree = "<group>"; };
+		3557836A296309D0008A4992 /* DeviceLogTypesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLogTypesView.swift; sourceTree = "<group>"; };
 		35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDEntity.swift; sourceTree = "<group>"; };
 		35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasource.swift; sourceTree = "<group>"; };
 		3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasourceTests.swift; sourceTree = "<group>"; };
@@ -1164,8 +1166,6 @@
 			isa = PBXGroup;
 			children = (
 				3586F3AF2958841F00738245 /* Section */,
-				355783652962EB15008A4992 /* DeviceLogsView.swift */,
-				355783672962EC0B008A4992 /* DeviceLogsViewModel.swift */,
 				354513CE28E460FD0020A93A /* SettingsCoordinator.swift */,
 				354513CA28E45F960020A93A /* SettingsView.swift */,
 				354513CC28E45FB20020A93A /* SettingsViewModel.swift */,
@@ -1289,6 +1289,16 @@
 				3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */,
 			);
 			path = BuildConfigs;
+			sourceTree = "<group>";
+		};
+		35578369296309B0008A4992 /* DeviceLogs */ = {
+			isa = PBXGroup;
+			children = (
+				3557836A296309D0008A4992 /* DeviceLogTypesView.swift */,
+				355783652962EB15008A4992 /* DeviceLogsView.swift */,
+				355783672962EC0B008A4992 /* DeviceLogsViewModel.swift */,
+			);
+			path = DeviceLogs;
 			sourceTree = "<group>";
 		};
 		3558180D290A8BE200DD94DB /* Events */ = {
@@ -1424,6 +1434,7 @@
 		3586F3AF2958841F00738245 /* Section */ = {
 			isa = PBXGroup;
 			children = (
+				35578369296309B0008A4992 /* DeviceLogs */,
 				3586F3B22958852B00738245 /* General */,
 			);
 			path = Section;
@@ -2786,6 +2797,7 @@
 				356B697E294A31F400868771 /* DevPreviewsViewModel.swift in Sources */,
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
 				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
+				3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */,
 				3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */,
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
 				357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */,

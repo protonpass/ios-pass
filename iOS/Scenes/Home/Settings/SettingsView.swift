@@ -89,10 +89,14 @@ private struct ApplicationSection: View {
 
     var body: some View {
         Section(content: {
-            Button(action: viewModel.viewLogs) {
+            HStack {
                 Text("View logs")
+                Spacer()
+                ChevronRight()
             }
-            .foregroundColor(.interactionNorm)
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: viewModel.viewLogs)
 
             Button(action: viewModel.fullSync) {
                 Text("Force synchronization")
