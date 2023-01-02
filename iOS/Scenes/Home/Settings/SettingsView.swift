@@ -33,7 +33,7 @@ struct SettingsView: View {
         Form {
             GeneralSettingsSection(viewModel: viewModel)
             ThemeSection(viewModel: viewModel)
-            FullSyncSection(viewModel: viewModel)
+            ApplicationSection(viewModel: viewModel)
             DeleteAccountSection(onDelete: viewModel.deleteAccount)
         }
         .navigationTitle("Settings")
@@ -84,11 +84,16 @@ private struct ThemeSection: View {
     }
 }
 
-private struct FullSyncSection: View {
+private struct ApplicationSection: View {
     @ObservedObject var viewModel: SettingsViewModel
 
     var body: some View {
         Section(content: {
+            Button(action: viewModel.viewLogs) {
+                Text("View logs")
+            }
+            .foregroundColor(.interactionNorm)
+
             Button(action: viewModel.fullSync) {
                 Text("Force synchronization")
             }

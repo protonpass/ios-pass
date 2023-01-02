@@ -72,6 +72,13 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
         delegate?.settingsCoordinatorWantsToDeleteAccount()
     }
 
+    func settingsViewModelWantsToViewLogs() {
+        let viewModel = DeviceLogsViewModel()
+        viewModel.delegate = self
+        let view = DeviceLogsView(viewModel: viewModel)
+        present(view)
+    }
+
     func settingsViewModelWantsToOpenSecuritySettings(viewModel: SettingsViewModel) {
         let view = SecuritySettingsView(viewModel: viewModel) { [unowned self] in
             self.popTopViewController(animated: true)
@@ -113,5 +120,12 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelDidFail(_ error: Error) {
         bannerManager?.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - DeviceLogsViewModelDelegate
+extension SettingsCoordinator: DeviceLogsViewModelDelegate {
+    func deviceLogsViewModelWantsToShareLogs() {
+        print(#function)
     }
 }
