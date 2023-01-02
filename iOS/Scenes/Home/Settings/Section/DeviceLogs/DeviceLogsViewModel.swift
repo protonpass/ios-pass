@@ -22,10 +22,17 @@ import ProtonCore_Log
 import SwiftUI
 
 protocol DeviceLogsViewModelDelegate: AnyObject {
-    func deviceLogsViewModelWantsToShareLogs()
+    func deviceLogsViewModelWantsToShareLogs(_ url: URL)
+    func deviceLogsViewModelDidFail(error: Error)
 }
 
 final class DeviceLogsViewModel: ObservableObject {
+    deinit {
+        if let fileToDelete {
+            try? FileManager.default.removeItem(at: fileToDelete)
+        }
+    }
+
     enum State {
         case loading
         case loaded(String)
@@ -33,18 +40,29 @@ final class DeviceLogsViewModel: ObservableObject {
     }
 
     @Published private(set) var state = State.loading
+    private var fileToDelete: URL?
 
+    let type: DeviceLogType
     weak var delegate: DeviceLogsViewModelDelegate?
 
-    init() {
+    init(type: DeviceLogType) {
+        self.type = type
         self.loadLogs()
     }
 
     func loadLogs() {
-        state = .loaded("Test logs")
+        state = .loaded("Test logs - \(type.title)")
     }
 
     func shareLogs() {
-        delegate?.deviceLogsViewModelWantsToShareLogs()
+        guard case .loaded(let logs) = state else { return }
+        do {
+            let file = FileManager.default.temporaryDirectory.appendingPathComponent(type.fileName)
+            try logs.write(to: file, atomically: true, encoding: .utf8)
+            fileToDelete = file
+            delegate?.deviceLogsViewModelWantsToShareLogs(file)
+        } catch {
+            delegate?.deviceLogsViewModelDidFail(error: error)
+        }
     }
 }

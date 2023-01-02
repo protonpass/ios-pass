@@ -52,6 +52,13 @@ final class SettingsCoordinator: Coordinator {
         start(with: SettingsView(viewModel: settingsViewModel),
               secondaryView: ItemDetailPlaceholderView { self.popTopViewController(animated: true) })
     }
+
+    private func showDeviceLogs(for type: DeviceLogType) {
+        let viewModel = DeviceLogsViewModel(type: type)
+        viewModel.delegate = self
+        let view = DeviceLogsView(viewModel: viewModel)
+        present(view)
+    }
 }
 
 // MARK: - SettingsViewModelDelegate
@@ -73,10 +80,9 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToViewLogs() {
-        let viewModel = DeviceLogsViewModel()
-        viewModel.delegate = self
-        let view = DeviceLogsView(viewModel: viewModel)
-        present(view)
+        let view = DeviceLogTypesView(onGoBack: { self.popTopViewController(animated: true) },
+                                      onSelect: showDeviceLogs)
+        push(view)
     }
 
     func settingsViewModelWantsToOpenSecuritySettings(viewModel: SettingsViewModel) {
@@ -125,7 +131,12 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
 
 // MARK: - DeviceLogsViewModelDelegate
 extension SettingsCoordinator: DeviceLogsViewModelDelegate {
-    func deviceLogsViewModelWantsToShareLogs() {
-        print(#function)
+    func deviceLogsViewModelWantsToShareLogs(_ url: URL) {
+        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        present(activityViewController)
+    }
+
+    func deviceLogsViewModelDidFail(error: Error) {
+        alertError(error)
     }
 }
