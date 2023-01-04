@@ -184,6 +184,10 @@ extension VaultContentViewModel {
     }
 
     func fetchItems(forceRefresh: Bool, forceLoading: Bool = false) {
+        guard selectedVault != nil else {
+            logger.trace("No selected vault. Skipped fetching items forceRefresh \(forceRefresh)")
+            return
+        }
         Task { @MainActor in
             logger.trace("Fetching items forceRefresh \(forceRefresh)")
             if state.isError || forceLoading {

@@ -330,7 +330,7 @@ public extension ItemRepositoryProtocol {
     }
 
     func update(item: SymmetricallyEncryptedItem, lastUseTime: TimeInterval) async throws {
-        logger.trace("Updating item's (\(item.item.itemID) lastUsedTime \(lastUseTime)")
+        logger.trace("Updating lastUsedTime \(item.debugInformation)")
         let updatedItem =
         try await remoteItemRevisionDatasource.updateLastUseTime(shareId: item.shareId,
                                                                  itemId: item.itemId,
@@ -338,7 +338,7 @@ public extension ItemRepositoryProtocol {
         let encryptedUpdatedItem = try await symmetricallyEncrypt(itemRevision: updatedItem,
                                                                   shareId: item.shareId)
         try await localItemDatasoure.upsertItems([encryptedUpdatedItem])
-        logger.trace("Updated item's (\(item.item.itemID) lastUsedTime \(lastUseTime)")
+        logger.trace("Updated lastUsedTime \(item.debugInformation)")
     }
 }
 

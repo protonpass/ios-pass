@@ -35,9 +35,23 @@ struct DeviceLogsView: View {
                     RetryableErrorView(errorMessage: error.messageForTheUser,
                                        onRetry: viewModel.loadLogs)
                 } else if viewModel.entries.isEmpty {
-                    Text("No logs")
-                        .font(.body.italic())
-                        .foregroundColor(.secondary)
+                    VStack {
+                        Image(systemName: "doc")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 80)
+                            .foregroundColor(.secondary.opacity(0.5))
+                        Text("No logs")
+                            .foregroundColor(.secondary)
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button(action: dismiss.callAsFunction) {
+                                Image(uiImage: IconProvider.cross)
+                            }
+                            .foregroundColor(.primary)
+                        }
+                    }
                 } else {
                     logs
                 }
@@ -53,6 +67,7 @@ struct DeviceLogsView: View {
             List {
                 ForEach(viewModel.formattedEntries, id: \.self) { entry in
                     Text(entry)
+                        .font(.caption)
                         .id(entry)
                 }
             }
