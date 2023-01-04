@@ -21,6 +21,7 @@
 @testable import Core
 import XCTest
 
+// swiftlint:disable line_length
 final class LogFormatterTests: XCTestCase {
     func testDefaultFormatterWithFatalEntry() {
         let formatter = LogFormatter.default
@@ -119,8 +120,8 @@ final class LogFormatterTests: XCTestCase {
     }
 
     func testStandardHtmlFormatter() {
-        let style = LogFormatStyle(subsystemColors: ["me.proton.mail" : "#FF6F00"],
-                                   categoryColors: ["mail_composer" : "#AEEA00"])
+        let style = LogFormatStyle(subsystemColors: ["me.proton.mail": "#FF6F00"],
+                                   categoryColors: ["mail_composer": "#AEEA00"])
         let formatter = LogFormatter(format: .html(style), options: .standard)
         let entry = LogEntry(timestamp: 1_672_732_899,
                              subsystem: "me.proton.mail",
@@ -137,8 +138,8 @@ final class LogFormatterTests: XCTestCase {
     }
 
     func testVerboseHtmlFormatter() {
-        let style = LogFormatStyle(subsystemColors: ["me.proton.mail" : "#FF6F00"],
-                                   categoryColors: ["mail_composer" : "#AEEA00"])
+        let style = LogFormatStyle(subsystemColors: ["me.proton.mail": "#FF6F00"],
+                                   categoryColors: ["mail_composer": "#AEEA00"])
         let formatter = LogFormatter(format: .html(style))
         let entry = LogEntry(timestamp: 1_672_732_899,
                              subsystem: "me.proton.mail",

@@ -69,7 +69,7 @@ public struct LogFormatOptions: OptionSet {
     public static let standard: LogFormatOptions = [.subsystem, .category]
 }
 
-public let defaultLogDateFormatter: DateFormatter = {
+public let kDefaultLogDateFormatter: DateFormatter = {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
     return dateFormatter
@@ -81,7 +81,7 @@ public final class LogFormatter {
     let options: LogFormatOptions
 
     public init(format: LogFormat,
-                dateFormatter: DateFormatter = defaultLogDateFormatter,
+                dateFormatter: DateFormatter = kDefaultLogDateFormatter,
                 options: LogFormatOptions = .verbose) {
         self.format = format
         self.dateFormatter = dateFormatter
@@ -90,7 +90,7 @@ public final class LogFormatter {
 
     /// `txt`  format, `yyyy-MM-dd'T'HH:mm:ssZ` as date format & `verbose` options
     public static var `default`: LogFormatter {
-        return .init(format: .txt)
+        .init(format: .txt)
     }
 }
 
@@ -132,19 +132,19 @@ extension LogFormatter {
         }
 
         // Subsystem
-        var subsystemString: String? = nil
+        var subsystemString: String?
         if options.contains(.subsystem) {
             subsystemString = entry.subsystem
         }
 
         // Category
-        var categoryString: String? = nil
+        var categoryString: String?
         if options.contains(.category) {
             categoryString = entry.category
         }
 
         // File, function, line & column
-        var fileFunctionLineColumnString: String? = nil
+        var fileFunctionLineColumnString: String?
         if options.contains(.fileFunctionLineColumn) {
             fileFunctionLineColumnString = "\(entry.file).\(entry.function):\(entry.line):\(entry.column)"
         }
@@ -175,7 +175,7 @@ extension LogFormatter {
         }
 
         // Subsystem
-        var subsystemString: String? = nil
+        var subsystemString: String?
         if options.contains(.subsystem) {
             if let color = style.subsystemColors[entry.subsystem] {
                 subsystemString = "<span style=\"color:\(color)\">\(entry.subsystem)</span>"
@@ -185,7 +185,7 @@ extension LogFormatter {
         }
 
         // Category
-        var categoryString: String? = nil
+        var categoryString: String?
         if options.contains(.category) {
             if let color = style.categoryColors[entry.category] {
                 categoryString = "<span style=\"color:\(color)\">\(entry.category)</span>"
@@ -195,7 +195,7 @@ extension LogFormatter {
         }
 
         // File, function, line & column
-        var fileFunctionLineColumnString: String? = nil
+        var fileFunctionLineColumnString: String?
         if options.contains(.fileFunctionLineColumn) {
             fileFunctionLineColumnString = "\(entry.file).\(entry.function):\(entry.line):\(entry.column)"
         }
