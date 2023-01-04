@@ -52,6 +52,8 @@ final class HomeCoordinator: DeinitPrintable {
     private let preferences: Preferences
     private let urlOpener: UrlOpener
     private let clipboardManager: ClipboardManager
+    private let logManager: LogManager
+    private let logger: LoggerV2
     private var detailCoordinator: Coordinator?
     weak var delegate: HomeCoordinatorDelegate?
 
@@ -95,7 +97,8 @@ final class HomeCoordinator: DeinitPrintable {
          symmetricKey: SymmetricKey,
          container: NSPersistentContainer,
          credentialManager: CredentialManagerProtocol,
-         preferences: Preferences) {
+         preferences: Preferences,
+         logManager: LogManager) {
         self.sessionData = sessionData
         self.apiService = apiService
         self.symmetricKey = symmetricKey
@@ -126,6 +129,10 @@ final class HomeCoordinator: DeinitPrintable {
         self.credentialManager = credentialManager
         self.vaultSelection = .init(vaults: [])
         self.preferences = preferences
+        self.logManager = logManager
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
         self.urlOpener = .init(preferences: preferences)
         self.clipboardManager = .init(preferences: preferences)
 
@@ -188,7 +195,7 @@ private extension HomeCoordinator {
                                                                          symmetricKey: symmetricKey,
                                                                          forceRemoval: false)
                     } catch {
-                        PPLogger.shared?.log(error)
+                        logger.error(error)
                     }
                 }
             }
@@ -282,7 +289,8 @@ private extension HomeCoordinator {
         let settingsCoordinator = SettingsCoordinator(itemRepository: itemRepository,
                                                       credentialManager: credentialManager,
                                                       symmetricKey: symmetricKey,
-                                                      preferences: preferences)
+                                                      preferences: preferences,
+                                                      logManager: logManager)
         settingsCoordinator.coordinatorDelegate = self
         settingsCoordinator.delegate = self
         return settingsCoordinator
@@ -472,34 +480,34 @@ extension HomeCoordinator: CoordinatorDelegate {
 // MARK: - SyncEventLoopDelegate
 extension HomeCoordinator: SyncEventLoopDelegate {
     func syncEventLoopDidStartLooping() {
-        PPLogger.shared?.log("Started looping")
+        logger.info("Started looping")
     }
 
     func syncEventLoopDidStopLooping() {
-        PPLogger.shared?.log("Stopped looping")
+        logger.info("Stopped looping")
     }
 
     func syncEventLoopDidBeginNewLoop() {
-        PPLogger.shared?.log("Began new sync loop")
+        logger.info("Began new sync loop")
     }
 
     #warning("Handle no connection reason")
     func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
-        PPLogger.shared?.log("Skipped sync loop \(reason)")
+        logger.info("Skipped sync loop \(reason)")
     }
 
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
         if hasNewEvents {
-            PPLogger.shared?.log("Has new events. Refreshing items")
+            logger.info("Has new events. Refreshing items")
             myVaultsCoordinator.refreshItems()
             trashCoordinator.refreshTrashedItems()
         } else {
-            PPLogger.shared?.log("Has no new events. Do nothing.")
+            logger.info("Has no new events. Do nothing.")
         }
     }
 
     func syncEventLoopDidFailLoop(error: Error) {
-        PPLogger.shared?.log(error)
+        logger.error(error)
         bannerManager.displayTopErrorMessage(error)
     }
 }

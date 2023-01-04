@@ -31,6 +31,7 @@ protocol SettingsCoordinatorDelegate: AnyObject {
 
 final class SettingsCoordinator: Coordinator {
     private let settingsViewModel: SettingsViewModel
+    private let logManager: LogManager
 
     weak var delegate: SettingsCoordinatorDelegate?
     weak var bannerManager: BannerManager?
@@ -38,11 +39,13 @@ final class SettingsCoordinator: Coordinator {
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
-         preferences: Preferences) {
+         preferences: Preferences,
+         logManager: LogManager) {
         self.settingsViewModel = .init(itemRepository: itemRepository,
                                        credentialManager: credentialManager,
                                        symmetricKey: symmetricKey,
                                        preferences: preferences)
+        self.logManager = logManager
         super.init()
         self.settingsViewModel.delegate = self
         start()
@@ -54,7 +57,7 @@ final class SettingsCoordinator: Coordinator {
     }
 
     private func showDeviceLogs(for type: DeviceLogType) {
-        let viewModel = DeviceLogsViewModel(type: type)
+        let viewModel = DeviceLogsViewModel(type: type, logManager: logManager)
         viewModel.delegate = self
         let view = DeviceLogsView(viewModel: viewModel)
         present(view)

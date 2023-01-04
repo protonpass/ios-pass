@@ -95,8 +95,8 @@ public final class LogFormatter {
     }
 }
 
-// MARK: - Internal APIs
-extension LogFormatter {
+// MARK: - Public APIs
+public extension LogFormatter {
     func format(entries: [LogEntry]) async -> String {
         await Task.detached(priority: .userInitiated) {
             let formattedEntries = entries.map(self.format(entry:))
@@ -109,7 +109,10 @@ extension LogFormatter {
             }
         }.value
     }
+}
 
+// MARK: - Internal APIs
+extension LogFormatter {
     func format(entry: LogEntry) -> String {
         switch format {
         case .txt:

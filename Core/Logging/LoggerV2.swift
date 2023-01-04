@@ -71,6 +71,21 @@ public extension LoggerV2 {
     }
 
     @discardableResult
+    func error(_ error: Error,
+               timestamp: TimeInterval = Date().timeIntervalSince1970,
+               file: String = #file,
+               function: String = #function,
+               line: UInt = #line,
+               column: UInt = #column) -> LogEntry {
+        self.error(String(describing: error),
+                   timestamp: timestamp,
+                   file: file,
+                   function: function,
+                   line: line,
+                   column: column)
+    }
+
+    @discardableResult
     func warning(_ message: String,
                  timestamp: TimeInterval = Date().timeIntervalSince1970,
                  file: String = #file,
