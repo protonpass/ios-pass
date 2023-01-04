@@ -41,11 +41,15 @@ struct DeviceLogsView: View {
             }
             .navigationTitle(viewModel.type.title)
         }
+        .navigationViewStyle(.stack)
     }
 
     private func contentView(_ logs: String) -> some View {
-        Text(logs)
-            .toolbar { toolbarContent }
+        ScrollView {
+            Text(logs)
+                .padding()
+        }
+        .toolbar { toolbarContent }
     }
 
     @ToolbarContentBuilder

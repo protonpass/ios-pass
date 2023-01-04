@@ -183,6 +183,8 @@
 		3553C223296570710087518A /* LoggerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C222296570710087518A /* LoggerV2.swift */; };
 		3553C226296570CB0087518A /* LogFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C225296570CB0087518A /* LogFormatterTests.swift */; };
 		3553C228296571440087518A /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C227296571440087518A /* LoggerTests.swift */; };
+		3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */; };
+		3553C22D296575560087518A /* LoggerManager+Initializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */; };
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
@@ -697,6 +699,7 @@
 		3553C222296570710087518A /* LoggerV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerV2.swift; sourceTree = "<group>"; };
 		3553C225296570CB0087518A /* LogFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogFormatterTests.swift; sourceTree = "<group>"; };
 		3553C227296571440087518A /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
+		3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoggerManager+Initializer.swift"; sourceTree = "<group>"; };
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
@@ -1259,6 +1262,14 @@
 			path = Logging;
 			sourceTree = "<group>";
 		};
+		3553C2292965752C0087518A /* iOS & Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */,
+			);
+			path = "iOS & Extensions";
+			sourceTree = "<group>";
+		};
 		355443FA287CA7150017FCAD /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
@@ -1603,6 +1614,7 @@
 			isa = PBXGroup;
 			children = (
 				35E50652286F826000A3F6EA /* iOS */,
+				3553C2292965752C0087518A /* iOS & Extensions */,
 				354A803D28D8B8D8003F49CF /* iOSTests */,
 				35E50633286F819F00A3F6EA /* iOS & macOS */,
 				35E50642286F819F00A3F6EA /* macOS */,
@@ -2755,6 +2767,7 @@
 				35492E3D293E06C900BDE231 /* CreateEditLoginViewModel.swift in Sources */,
 				35492E3E293E06CC00BDE231 /* CreateEditAliasView.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
+				3553C22D296575560087518A /* LoggerManager+Initializer.swift in Sources */,
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
 				3520F36928E32DCF0053A606 /* ProtonPass.xcdatamodeld in Sources */,
@@ -2805,6 +2818,7 @@
 				354361592941DA0C000CAE12 /* OnboardingViewState.swift in Sources */,
 				355635B928895B8E00F32353 /* VaultContentView.swift in Sources */,
 				355635C1288968B000F32353 /* VaultContentViewModel.swift in Sources */,
+				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				358A508928AD2E8F00F5285C /* SideBarViewModel.swift in Sources */,

@@ -43,6 +43,8 @@ final class AppCoordinator {
     private let appStateObserver: AppStateObserver
     private let keymaker: Keymaker
     private let apiService: PMAPIService
+    private let logManager: LogManager
+    private let logger: LoggerV2
     private var container: NSPersistentContainer
     private let credentialManager: CredentialManagerProtocol
     private var preferences: Preferences
@@ -73,6 +75,10 @@ final class AppCoordinator {
         self._symmetricKey.setMainKeyProvider(keymaker)
         self.keymaker = keymaker
         self.apiService = PMAPIService(doh: PPDoH(bundle: .main))
+        self.logManager = .init()
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: self.logManager)
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager()
@@ -103,7 +109,7 @@ final class AppCoordinator {
                     self.showHomeScene(sessionData: sessionData, manualLogIn: manualLogIn)
 
                 case .undefined:
-                    PPLogger.shared?.log("Undefined app state. Don't know what to do...")
+                    self.logger.warning("Undefined app state. Don't know what to do...")
                 }
             }
             .store(in: &cancellables)
@@ -171,7 +177,8 @@ final class AppCoordinator {
                                                   symmetricKey: symmetricKey,
                                                   container: container,
                                                   credentialManager: credentialManager,
-                                                  preferences: preferences)
+                                                  preferences: preferences,
+                                                  logManager: logManager)
             homeCoordinator.delegate = self
             self.homeCoordinator = homeCoordinator
             self.welcomeCoordinator = nil
@@ -182,7 +189,7 @@ final class AppCoordinator {
                 self.requestBiometricAuthenticationIfNecessary()
             }
         } catch {
-            PPLogger.shared?.log(error)
+            logger.error(error)
             wipeAllData()
             appStateObserver.updateAppState(.loggedOut(.failedToGenerateSymmetricKey))
         }
@@ -207,7 +214,7 @@ final class AppCoordinator {
             do {
                 try await credentialManager.removeAllCredentials()
             } catch {
-                PPLogger.shared?.log(error)
+                logger.error(error)
             }
 
             do {
@@ -221,9 +228,9 @@ final class AppCoordinator {
 
                 // Re-create persistent container
                 container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
-                PPLogger.shared?.log("Nuked local data")
+                logger.info("Nuked local data")
             } catch {
-                PPLogger.shared?.log(error)
+                logger.error(error)
             }
         }
     }
@@ -316,29 +323,29 @@ extension AppCoordinator: AuthDelegate {
                    service: APIService,
                    complete: @escaping AuthRefreshResultCompletion) {
         guard let sessionData else {
-            PPLogger.shared?.log("Access token expired but found no sessionData in keychain. Logging out...")
+            logger.info("Access token expired but found no sessionData in keychain. Logging out...")
             appStateObserver.updateAppState(.loggedOut(.noSessionData))
             return
         }
-        PPLogger.shared?.log("Refreshing expired access token")
+        logger.info("Refreshing expired access token")
         let authenticator = Authenticator(api: apiService)
         let userData = sessionData.userData
         authenticator.refreshCredential(.init(userData.credential)) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(.updatedCredential(let credential)), .success(.newCredential(let credential, _)):
-                PPLogger.shared?.log("Refreshed expired access token")
+                self.logger.info("Refreshed expired access token")
                 self.updateSessionData(sessionData, credential: credential)
                 complete(.success(.init(.init(credential))))
 
             case .failure(let error):
                 // When falling into this case, it's very likely that refresh token is expired
                 // Can't do much here => logging out & displaying an alert
-                PPLogger.shared?.log("Error refreshing expired access token: \(error.messageForTheUser)")
+                self.logger.error("Error refreshing expired access token: \(error.messageForTheUser)")
                 complete(.failure(error)) // Will trigger onLogout(auth:)
 
             default:
-                PPLogger.shared?.log("Error refreshing expired access token: unexpected response")
+                self.logger.error("Error refreshing expired access token: unexpected response")
                 complete(.failure(.emptyAuthResponse))  // Will trigger onLogout(auth:)
             }
         }

@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_Log
 import SwiftUI
 
@@ -42,16 +43,31 @@ final class DeviceLogsViewModel: ObservableObject {
     @Published private(set) var state = State.loading
     private var fileToDelete: URL?
 
+    private let logManager: LogManager
+    private let logFormatter: LogFormatter
     let type: DeviceLogType
+
     weak var delegate: DeviceLogsViewModelDelegate?
 
-    init(type: DeviceLogType) {
+    init(type: DeviceLogType,
+         logManager: LogManager) {
         self.type = type
+        self.logManager = logManager
+        self.logFormatter = .default
         self.loadLogs()
     }
 
     func loadLogs() {
-        state = .loaded("Test logs - \(type.title)")
+        Task { @MainActor in
+            do {
+                state = .loading
+                let entries = try await logManager.getLogEntries()
+                let logs = await logFormatter.format(entries: entries)
+                state = .loaded(logs)
+            } catch {
+                state = .error(error)
+            }
+        }
     }
 
     func shareLogs() {
