@@ -26,10 +26,12 @@ enum LogManagerError: Error {
 
 public final class LogManager {
     let url: URL
+    let maxLogLines: UInt
     let queue = DispatchQueue(label: "me.proton.core.log-manager")
 
-    public init(url: URL) {
+    public init(url: URL, maxLogLines: UInt) {
         self.url = url.appendingPathComponent("proton.log", isDirectory: false)
+        self.maxLogLines = maxLogLines
     }
 }
 
@@ -80,11 +82,10 @@ extension LogManager {
     }
 
     func pruneLogs() throws {
-        let maxLogLines = 2_000
         let logContents = try String(contentsOf: url, encoding: .utf8)
         let lines = logContents.components(separatedBy: .newlines)
         if lines.count > maxLogLines {
-            let prunedLines = Array(lines.dropFirst(lines.count - maxLogLines))
+            let prunedLines = Array(lines.dropFirst(lines.count - Int(maxLogLines)))
             let replacementText = prunedLines.joined(separator: "\n")
             try replacementText.data(using: .utf8)?.write(to: url)
         }

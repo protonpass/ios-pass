@@ -45,11 +45,9 @@ struct DeviceLogsView: View {
     }
 
     private func contentView(_ logs: String) -> some View {
-        ScrollView {
-            Text(logs)
-                .padding()
-        }
-        .toolbar { toolbarContent }
+        SwiftUITextView(text: .constant(logs))
+            .toolbar { toolbarContent }
+            .edgesIgnoringSafeArea(.bottom)
     }
 
     @ToolbarContentBuilder

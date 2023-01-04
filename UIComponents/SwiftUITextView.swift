@@ -20,41 +20,50 @@
 
 import SwiftUI
 
-struct SwiftUITextView: UIViewRepresentable {
+public struct SwiftUITextView: UIViewRepresentable {
     @Binding var text: String
     var backgroundColor: UIColor = .clear
-    let onEditingChange: (Bool) -> Void
+    let onEditingChange: ((Bool) -> Void)?
 
-    func makeUIView(context: Context) -> UITextView {
+    public init(text: Binding<String>,
+                backgroundColor: UIColor = .clear,
+                onEditingChange: ((Bool) -> Void)? = nil) {
+        self._text = text
+        self.backgroundColor = backgroundColor
+        self.onEditingChange = onEditingChange
+    }
+
+    public func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
         textView.backgroundColor = backgroundColor
         textView.font = .preferredFont(forTextStyle: .body)
         textView.delegate = context.coordinator
+        textView.isEditable = onEditingChange != nil
         return textView
     }
 
-    func updateUIView(_ textView: UITextView, context: Context) {
+    public func updateUIView(_ textView: UITextView, context: Context) {
         textView.text = text
     }
 
-    func makeCoordinator() -> Coordinator { .init(self) }
+    public func makeCoordinator() -> Coordinator { .init(self) }
 
-    final class Coordinator: NSObject, UITextViewDelegate {
+    public final class Coordinator: NSObject, UITextViewDelegate {
         let parent: SwiftUITextView
 
         init(_ parent: SwiftUITextView) {
             self.parent = parent
         }
 
-        func textViewDidBeginEditing(_ textView: UITextView) {
-            parent.onEditingChange(true)
+        public func textViewDidBeginEditing(_ textView: UITextView) {
+            parent.onEditingChange?(true)
         }
 
-        func textViewDidEndEditing(_ textView: UITextView) {
-            parent.onEditingChange(false)
+        public func textViewDidEndEditing(_ textView: UITextView) {
+            parent.onEditingChange?(false)
         }
 
-        func textViewDidChange(_ textView: UITextView) {
+        public func textViewDidChange(_ textView: UITextView) {
             parent.text = textView.text
         }
     }
