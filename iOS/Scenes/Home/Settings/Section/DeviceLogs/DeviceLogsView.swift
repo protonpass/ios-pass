@@ -29,14 +29,17 @@ struct DeviceLogsView: View {
     var body: some View {
         NavigationView {
             Group {
-                switch viewModel.state {
-                case .loading:
+                if viewModel.isLoading {
                     ProgressView()
-                case .loaded(let logs):
-                    contentView(logs)
-                case .error(let error):
+                } else if let error = viewModel.error {
                     RetryableErrorView(errorMessage: error.messageForTheUser,
                                        onRetry: viewModel.loadLogs)
+                } else if viewModel.entries.isEmpty {
+                    Text("No logs")
+                        .font(.body.italic())
+                        .foregroundColor(.secondary)
+                } else {
+                    logs
                 }
             }
             .navigationTitle(viewModel.type.title)
@@ -45,27 +48,40 @@ struct DeviceLogsView: View {
         .navigationViewStyle(.stack)
     }
 
-    private func contentView(_ logs: String) -> some View {
-        SwiftUITextView(text: .constant(logs),
-                        textContainerInset: .init(top: 0, left: 12, bottom: 12, right: 12))
-            .toolbar { toolbarContent }
-            .edgesIgnoringSafeArea(.all)
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: dismiss.callAsFunction) {
-                Image(uiImage: IconProvider.cross)
+    private var logs: some View {
+        ScrollViewReader { value in
+            List {
+                ForEach(viewModel.formattedEntries, id: \.self) { entry in
+                    Text(entry)
+                        .id(entry)
+                }
             }
-            .foregroundColor(.primary)
-        }
+            .listStyle(.plain)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: dismiss.callAsFunction) {
+                        Image(uiImage: IconProvider.cross)
+                    }
+                    .foregroundColor(.primary)
+                }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.shareLogs) {
-                Image(uiImage: IconProvider.arrowUpFromSquare)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    HStack {
+                        Button(action: {
+                            withAnimation {
+                                value.scrollTo(viewModel.formattedEntries.last ?? "")
+                            }
+                        }, label: {
+                            Image(systemName: "arrow.down.doc")
+                        })
+
+                        Button(action: viewModel.shareLogs) {
+                            Image(uiImage: IconProvider.arrowUpFromSquare)
+                        }
+                    }
+                    .foregroundColor(.primary)
+                }
             }
-            .foregroundColor(.primary)
         }
     }
 }

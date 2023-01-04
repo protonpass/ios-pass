@@ -127,10 +127,7 @@ public extension LogFormatter {
             }
         }.value
     }
-}
 
-// MARK: - Internal APIs
-extension LogFormatter {
     func format(entry: LogEntry) -> String {
         switch format {
         case .txt:
@@ -139,7 +136,10 @@ extension LogFormatter {
             return htmlFormat(entry: entry, style: style)
         }
     }
+}
 
+// MARK: - Internal APIs
+extension LogFormatter {
     func txtFormat(entry: LogEntry) -> String {
         // Always include date
         let date = Date(timeIntervalSince1970: entry.timestamp)

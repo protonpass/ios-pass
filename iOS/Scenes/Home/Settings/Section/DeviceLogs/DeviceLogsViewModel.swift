@@ -23,6 +23,8 @@ import ProtonCore_Log
 import SwiftUI
 
 protocol DeviceLogsViewModelDelegate: AnyObject {
+    func deviceLogsViewModelWantsToShowLoadingHud()
+    func deviceLogsViewModelWantsToHideLoadingHud()
     func deviceLogsViewModelWantsToShareLogs(_ url: URL)
     func deviceLogsViewModelDidFail(error: Error)
 }
@@ -35,13 +37,12 @@ final class DeviceLogsViewModel: DeinitPrintable, ObservableObject {
         }
     }
 
-    enum State {
-        case loading
-        case loaded(String)
-        case error(Error)
-    }
+    @Published private(set) var isLoading = true
+    @Published private(set) var entries = [LogEntry]()
+    @Published private(set) var error: Error?
 
-    @Published private(set) var state = State.loading
+    var formattedEntries: [String] { entries.map(logFormatter.format(entry:)) }
+
     private var fileToDelete: URL?
 
     private let logManager: LogManager
@@ -60,26 +61,30 @@ final class DeviceLogsViewModel: DeinitPrintable, ObservableObject {
 
     func loadLogs() {
         Task { @MainActor in
+            defer { isLoading = false }
             do {
-                state = .loading
-                let entries = try await logManager.getLogEntries().filter { $0.subsystem == type.subsystem }
-                let logs = await logFormatter.format(entries: entries)
-                state = .loaded(logs)
+                isLoading = true
+                entries = try await logManager.getLogEntries().filter { $0.subsystem == type.subsystem }
+                isLoading = false
             } catch {
-                state = .error(error)
+                self.error = error
             }
         }
     }
 
     func shareLogs() {
-        guard case .loaded(let logs) = state else { return }
-        do {
-            let file = FileManager.default.temporaryDirectory.appendingPathComponent("Proton_Pass.log")
-            try logs.write(to: file, atomically: true, encoding: .utf8)
-            fileToDelete = file
-            delegate?.deviceLogsViewModelWantsToShareLogs(file)
-        } catch {
-            delegate?.deviceLogsViewModelDidFail(error: error)
+        Task { @MainActor in
+            defer { delegate?.deviceLogsViewModelWantsToHideLoadingHud() }
+            do {
+                delegate?.deviceLogsViewModelWantsToShowLoadingHud()
+                let file = FileManager.default.temporaryDirectory.appendingPathComponent("Proton_Pass.log")
+                let log = await logFormatter.format(entries: entries)
+                try log.write(to: file, atomically: true, encoding: .utf8)
+                fileToDelete = file
+                delegate?.deviceLogsViewModelWantsToShareLogs(file)
+            } catch {
+                delegate?.deviceLogsViewModelDidFail(error: error)
+            }
         }
     }
 }

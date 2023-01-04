@@ -135,7 +135,16 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
 
 // MARK: - DeviceLogsViewModelDelegate
 extension SettingsCoordinator: DeviceLogsViewModelDelegate {
+    func deviceLogsViewModelWantsToShowLoadingHud() {
+        showLoadingHud()
+    }
+
+    func deviceLogsViewModelWantsToHideLoadingHud() {
+        hideLoadingHud()
+    }
+
     func deviceLogsViewModelWantsToShareLogs(_ url: URL) {
+        hideLoadingHud()
         let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         present(activityViewController)
     }
