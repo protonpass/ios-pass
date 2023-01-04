@@ -27,6 +27,6 @@ extension LogManager {
                 FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
             fatalError("Shared file container could not be created.")
         }
-        self.init(url: fileContainer)
+        self.init(url: fileContainer, maxLogLines: 5_000)
     }
 }

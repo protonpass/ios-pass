@@ -100,12 +100,30 @@ public extension LogFormatter {
     func format(entries: [LogEntry]) async -> String {
         await Task.detached(priority: .userInitiated) {
             let formattedEntries = entries.map(self.format(entry:))
-            let concatenatedFormattedEntries = formattedEntries.joined(separator: "\n")
             switch self.format {
             case .txt:
-                return concatenatedFormattedEntries
+                return formattedEntries.joined(separator: "\n")
             case .html:
-                return "<html>\n\(concatenatedFormattedEntries)\n</html>"
+                return """
+<!doctype html>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<html>
+    <head>
+        <style>
+            body {
+                padding-left: 12px;
+                padding-right: 12px;
+                font-family: -apple-system;
+                font-size: 17px;
+            }
+        </style>
+    </head>
+    <body>
+\(formattedEntries.joined(separator: "<br/>"))
+    </body>
+</html>
+"""
             }
         }.value
     }

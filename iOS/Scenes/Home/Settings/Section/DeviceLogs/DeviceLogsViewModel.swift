@@ -27,8 +27,9 @@ protocol DeviceLogsViewModelDelegate: AnyObject {
     func deviceLogsViewModelDidFail(error: Error)
 }
 
-final class DeviceLogsViewModel: ObservableObject {
+final class DeviceLogsViewModel: DeinitPrintable, ObservableObject {
     deinit {
+        print(deinitMessage)
         if let fileToDelete {
             try? FileManager.default.removeItem(at: fileToDelete)
         }
@@ -74,7 +75,7 @@ final class DeviceLogsViewModel: ObservableObject {
     func shareLogs() {
         guard case .loaded(let logs) = state else { return }
         do {
-            let file = FileManager.default.temporaryDirectory.appendingPathComponent("log")
+            let file = FileManager.default.temporaryDirectory.appendingPathComponent("Proton_Pass.log")
             try logs.write(to: file, atomically: true, encoding: .utf8)
             fileToDelete = file
             delegate?.deviceLogsViewModelWantsToShareLogs(file)
