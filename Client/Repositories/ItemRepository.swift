@@ -512,7 +512,8 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.shareRepository = ShareRepository(userData: userData,
                                                container: container,
                                                authCredential: authCredential,
-                                               apiService: apiService)
+                                               apiService: apiService,
+                                               logManager: logManager)
         self.shareEventIDRepository = ShareEventIDRepository(container: container,
                                                              authCredential: authCredential,
                                                              apiService: apiService)

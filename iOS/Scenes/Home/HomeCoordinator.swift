@@ -125,7 +125,8 @@ final class HomeCoordinator: DeinitPrintable {
             localShareDatasource: LocalShareDatasource(container: container),
             remoteShareDatasouce: RemoteShareDatasource(authCredential: authCredential,
                                                         apiService: apiService),
-            vaultItemKeysRepository: vaultItemKeysRepository)
+            vaultItemKeysRepository: vaultItemKeysRepository,
+            logManager: logManager)
         self.shareRepository = shareRepository
         itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
         self.credentialManager = credentialManager
