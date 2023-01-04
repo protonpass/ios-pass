@@ -24,7 +24,6 @@ import CryptoKit
 
 public protocol CredentialManagerProtocol {
     var store: ASCredentialIdentityStore { get }
-    var logManager: LogManager { get }
     var logger: LoggerV2 { get }
 
     /// Whether users had choosen Proton Pass as AutoFill Provider
@@ -139,13 +138,11 @@ public extension CredentialManagerProtocol {
 
 public final class CredentialManager: CredentialManagerProtocol {
     public var store: ASCredentialIdentityStore
-    public var logManager: LogManager
     public var logger: LoggerV2
 
     public init(logManager: LogManager,
                 store: ASCredentialIdentityStore = .shared) {
         self.store = store
-        self.logManager = logManager
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)

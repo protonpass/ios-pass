@@ -199,7 +199,8 @@ public final class CredentialProviderCoordinator {
         let itemRepository = ItemRepository(userData: sessionData.userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
-                                            apiService: apiService)
+                                            apiService: apiService,
+                                            logManager: logManager)
 
         let credential = sessionData.userData.credential
         let remoteAliasDatasource = RemoteAliasDatasource(authCredential: credential,

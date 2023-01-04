@@ -109,7 +109,8 @@ final class HomeCoordinator: DeinitPrintable {
         let itemRepository = ItemRepository(userData: sessionData.userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
-                                            apiService: apiService)
+                                            apiService: apiService,
+                                            logManager: logManager)
         self.itemRepository = itemRepository
         self.aliasRepository = AliasRepository(authCredential: authCredential, apiService: apiService)
         self.publicKeyRepository = PublicKeyRepository(container: container,
