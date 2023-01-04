@@ -33,7 +33,7 @@ final class LoggerTests: XCTestCase {
         let url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!
         sut = .init(subsystem: Self.subsystem,
                     category: Self.category,
-                    manager: .init(url: url))
+                    manager: .init(url: url, maxLogLines: 2_000))
     }
 
     override func tearDown() {
