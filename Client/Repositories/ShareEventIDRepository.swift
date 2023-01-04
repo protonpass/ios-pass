@@ -26,6 +26,7 @@ import ProtonCore_Services
 public protocol ShareEventIDRepositoryProtocol {
     var localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol { get }
     var remoteShareEventIDDatasource: RemoteShareEventIDDatasourceProtocol { get }
+    var logger: LoggerV2 { get }
 
     /// Get local last event ID if any. If not fetch from remote and save to local database and return.
     @discardableResult
@@ -36,14 +37,14 @@ public protocol ShareEventIDRepositoryProtocol {
 public extension ShareEventIDRepositoryProtocol {
     func getLastEventId(forceRefresh: Bool, userId: String, shareId: String) async throws -> String {
         if forceRefresh {
-            PPLogger.shared?.log("Force refreshing last event id of share \(shareId) of user \(userId)")
+            logger.info("Force refreshing last event id of share \(shareId) of user \(userId)")
             return try await fetchLastEventIdFromRemoteAndSaveToLocal(userId: userId, shareId: shareId)
         }
-        PPLogger.shared?.log("Getting last event id of share \(shareId) of user \(userId)")
+        logger.info("Getting last event id of share \(shareId) of user \(userId)")
         if let localLastEventId =
             try await localShareEventIDDatasource.getLastEventId(userId: userId,
                                                                  shareId: shareId) {
-            PPLogger.shared?.log("Found local last event id of share \(shareId) of user \(userId)")
+            logger.info("Found local last event id of share \(shareId) of user \(userId)")
             return localLastEventId
         }
         return try await fetchLastEventIdFromRemoteAndSaveToLocal(userId: userId, shareId: shareId)
@@ -58,10 +59,10 @@ public extension ShareEventIDRepositoryProtocol {
 
 extension ShareEventIDRepositoryProtocol {
     func fetchLastEventIdFromRemoteAndSaveToLocal(userId: String, shareId: String) async throws -> String {
-        PPLogger.shared?.log("Getting remote last event id of share \(shareId) of user \(userId)")
+        logger.info("Getting remote last event id of share \(shareId) of user \(userId)")
         let newLastEventId =
         try await remoteShareEventIDDatasource.getLastEventId(shareId: shareId)
-        PPLogger.shared?.log("Upserting remote last event id of share \(shareId) of user \(userId)")
+        logger.info("Upserting remote last event id of share \(shareId) of user \(userId)")
         try await localShareEventIDDatasource.upsertLastEventId(userId: userId,
                                                                 shareId: shareId,
                                                                 lastEventId: newLastEventId)
@@ -72,18 +73,27 @@ extension ShareEventIDRepositoryProtocol {
 public final class ShareEventIDRepository: ShareEventIDRepositoryProtocol {
     public let localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol
     public let remoteShareEventIDDatasource: RemoteShareEventIDDatasourceProtocol
+    public let logger: LoggerV2
 
     public init(localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol,
-                remoteShareEventIDDatasource: RemoteShareEventIDDatasourceProtocol) {
+                remoteShareEventIDDatasource: RemoteShareEventIDDatasourceProtocol,
+                logManager: LogManager) {
         self.localShareEventIDDatasource = localShareEventIDDatasource
         self.remoteShareEventIDDatasource = remoteShareEventIDDatasource
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 
     public init(container: NSPersistentContainer,
                 authCredential: AuthCredential,
-                apiService: APIService) {
+                apiService: APIService,
+                logManager: LogManager) {
         self.localShareEventIDDatasource = LocalShareEventIDDatasource(container: container)
         self.remoteShareEventIDDatasource = RemoteShareEventIDDatasource(authCredential: authCredential,
                                                                          apiService: apiService)
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 }
