@@ -53,7 +53,7 @@ final class HomeCoordinator: DeinitPrintable {
     private let urlOpener: UrlOpener
     private let clipboardManager: ClipboardManager
     private let logManager: LogManager
-    private let logger: LoggerV2
+    private let logger: Logger
     private var detailCoordinator: Coordinator?
     weak var delegate: HomeCoordinatorDelegate?
 

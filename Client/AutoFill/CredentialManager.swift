@@ -24,7 +24,7 @@ import CryptoKit
 
 public protocol CredentialManagerProtocol {
     var store: ASCredentialIdentityStore { get }
-    var logger: LoggerV2 { get }
+    var logger: Logger { get }
 
     /// Whether users had choosen Proton Pass as AutoFill Provider
     func isAutoFillEnabled() async -> Bool
@@ -138,7 +138,7 @@ public extension CredentialManagerProtocol {
 
 public final class CredentialManager: CredentialManagerProtocol {
     public var store: ASCredentialIdentityStore
-    public var logger: LoggerV2
+    public var logger: Logger
 
     public init(logManager: LogManager,
                 store: ASCredentialIdentityStore = .shared) {

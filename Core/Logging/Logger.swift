@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct LoggerV2 {
+public struct Logger {
     let subsystem: String
     let category: String
     let manager: LogManager
@@ -33,7 +33,7 @@ public struct LoggerV2 {
 }
 
 // MARK: - Public APIs
-public extension LoggerV2 {
+public extension Logger {
     @discardableResult
     func fatal(_ message: String,
                timestamp: TimeInterval = Date().timeIntervalSince1970,
@@ -159,7 +159,7 @@ public extension LoggerV2 {
 }
 
 // MARK: - Private APIs
-private extension LoggerV2 {
+private extension Logger {
     // swiftlint:disable function_parameter_count
     func generateEntry(message: String,
                        timestamp: TimeInterval,

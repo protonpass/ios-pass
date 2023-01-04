@@ -39,7 +39,7 @@ public protocol ItemRepositoryProtocol {
     var shareRepository: ShareRepositoryProtocol { get }
     var shareEventIDRepository: ShareEventIDRepositoryProtocol { get }
     var vaultItemKeysRepository: VaultItemKeysRepositoryProtocol { get }
-    var logger: LoggerV2 { get }
+    var logger: Logger { get }
     var delegate: ItemRepositoryDelegate? { get }
 
     /// Get a specific Item
@@ -470,7 +470,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
     public let shareRepository: ShareRepositoryProtocol
     public let shareEventIDRepository: ShareEventIDRepositoryProtocol
     public let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
-    public let logger: LoggerV2
+    public let logger: Logger
     public weak var delegate: ItemRepositoryDelegate?
 
     public init(userData: UserData,

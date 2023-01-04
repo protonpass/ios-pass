@@ -25,7 +25,7 @@ import ProtonCore_Keymaker
 public final class KeychainStorage<T: Codable> {
     private weak var mainKeyProvider: MainKeyProvider?
     private weak var keychain: Keychain?
-    private var logger: LoggerV2?
+    private var logger: Logger?
     private let key: Key
     private let defaultValue: T?
 

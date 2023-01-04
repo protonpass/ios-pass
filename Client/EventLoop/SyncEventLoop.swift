@@ -80,7 +80,7 @@ public final class SyncEventLoop: DeinitPrintable {
     private let remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
-    private let logger: LoggerV2
+    private let logger: Logger
 
     public weak var delegate: SyncEventLoopDelegate?
     public weak var pullToRefreshDelegate: SyncEventLoopPullToRefreshDelegate?

@@ -44,7 +44,7 @@ final class AppCoordinator {
     private let keymaker: Keymaker
     private let apiService: PMAPIService
     private let logManager: LogManager
-    private let logger: LoggerV2
+    private let logger: Logger
     private var container: NSPersistentContainer
     private let credentialManager: CredentialManagerProtocol
     private var preferences: Preferences

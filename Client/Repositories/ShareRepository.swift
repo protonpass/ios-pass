@@ -29,7 +29,7 @@ public protocol ShareRepositoryProtocol {
     var localShareDatasource: LocalShareDatasourceProtocol { get }
     var remoteShareDatasouce: RemoteShareDatasourceProtocol { get }
     var vaultItemKeysRepository: VaultItemKeysRepositoryProtocol { get }
-    var logger: LoggerV2 { get }
+    var logger: Logger { get }
 
     func getShares(forceRefresh: Bool) async throws -> [Share]
     func getShare(shareId: String) async throws -> Share
@@ -108,7 +108,7 @@ public struct ShareRepository: ShareRepositoryProtocol {
     public let localShareDatasource: LocalShareDatasourceProtocol
     public let remoteShareDatasouce: RemoteShareDatasourceProtocol
     public let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
-    public let logger: LoggerV2
+    public let logger: Logger
 
     public init(userData: UserData,
                 localShareDatasource: LocalShareDatasourceProtocol,
