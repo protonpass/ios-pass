@@ -49,59 +49,59 @@ public extension CredentialManagerProtocol {
     }
 
     func insert(credentials: [AutoFillCredential]) async throws {
-        logger.info("Trying to insert \(credentials.count) credentials.")
+        logger.trace("Trying to insert \(credentials.count) credentials.")
         let state = await store.state()
         guard state.isEnabled else {
-            logger.info("AutoFill is not enabled. Skipped inserting \(credentials.count) credentials.")
+            logger.trace("AutoFill is not enabled. Skipped inserting \(credentials.count) credentials.")
             return
         }
 
         let domainCredentials = try credentials.map { try ASPasswordCredentialIdentity($0) }
 
         if state.supportsIncrementalUpdates {
-            logger.info("Empty credential store. Inserting \(credentials.count) credentials.")
+            logger.trace("Empty credential store. Inserting \(credentials.count) credentials.")
             try await store.saveCredentialIdentities(domainCredentials)
         } else {
-            logger.info("Non empty credential store. Inserting \(credentials.count) credentials.")
+            logger.trace("Non empty credential store. Inserting \(credentials.count) credentials.")
             try await store.replaceCredentialIdentities(with: domainCredentials)
         }
-        logger.info("Inserted \(credentials.count) credentials.")
+        logger.trace("Inserted \(credentials.count) credentials.")
     }
 
     func remove(credentials: [AutoFillCredential]) async throws {
-        logger.info("Trying to remove \(credentials.count) credentials.")
+        logger.trace("Trying to remove \(credentials.count) credentials.")
         let state = await store.state()
         guard state.isEnabled else {
-            logger.info("AutoFill is not enabled. Skipped removing \(credentials.count) credentials.")
+            logger.trace("AutoFill is not enabled. Skipped removing \(credentials.count) credentials.")
             return
         }
 
         let domainCredentials = try credentials.map { try ASPasswordCredentialIdentity($0) }
 
         if state.supportsIncrementalUpdates {
-            logger.info("Removing \(credentials.count) credentials.")
+            logger.trace("Removing \(credentials.count) credentials.")
             try await store.removeCredentialIdentities(domainCredentials)
-            logger.info("Removed \(credentials.count) credentials.")
+            logger.trace("Removed \(credentials.count) credentials.")
         } else {
-            logger.info("Empty store. Skipped removing \(credentials.count) credentials.")
+            logger.trace("Empty store. Skipped removing \(credentials.count) credentials.")
         }
     }
 
     func insertAllCredentials(from itemRepository: ItemRepositoryProtocol,
                               symmetricKey: SymmetricKey,
                               forceRemoval: Bool) async throws {
-        logger.info("Trying to insert all credentials from ItemRepository")
+        logger.trace("Trying to insert all credentials from ItemRepository")
         let state = await store.state()
         guard state.isEnabled else {
-            logger.info("AutoFill is not enabled. Skipped inserting all credentials from ItemRepository")
+            logger.trace("AutoFill is not enabled. Skipped inserting all credentials from ItemRepository")
             return
         }
 
         if forceRemoval {
-            logger.info("Force removing all credentials before inserting new ones")
+            logger.trace("Force removing all credentials before inserting new ones")
             try await removeAllCredentials()
         } else if state.supportsIncrementalUpdates {
-            logger.info("Credentials exist. Skipped inserting all credentials.")
+            logger.trace("Credentials exist. Skipped inserting all credentials.")
             return
         }
 
@@ -126,12 +126,12 @@ public extension CredentialManagerProtocol {
         logger.trace("Removing all credentials.")
         let state = await store.state()
         guard state.isEnabled else {
-            logger.info("AutoFill is not enabled. Skipped removing all credentials.")
+            logger.trace("AutoFill is not enabled. Skipped removing all credentials.")
             return
         }
 
         try await store.removeAllCredentialIdentities()
-        logger.info("Removed all credentials.")
+        logger.trace("Removed all credentials.")
     }
 }
 

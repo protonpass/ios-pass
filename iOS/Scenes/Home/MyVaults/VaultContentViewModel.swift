@@ -185,7 +185,7 @@ extension VaultContentViewModel {
 
     func fetchItems(forceRefresh: Bool, forceLoading: Bool = false) {
         Task { @MainActor in
-            logger.info("Fetching items forceRefresh \(forceRefresh)")
+            logger.trace("Fetching items forceRefresh \(forceRefresh)")
             if state.isError || forceLoading {
                 state = .loading
             }
