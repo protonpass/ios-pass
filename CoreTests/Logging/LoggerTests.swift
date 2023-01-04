@@ -25,7 +25,7 @@ final class LoggerTests: XCTestCase {
     private static let fileName = "LoggerTests"
     private static let subsystem = "me.proton.logger"
     private static let category = "logger_tests"
-    var sut: LoggerV2!
+    var sut: Logger!
 
     override func setUp() {
         super.setUp()

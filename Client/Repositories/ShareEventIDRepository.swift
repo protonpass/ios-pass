@@ -26,7 +26,7 @@ import ProtonCore_Services
 public protocol ShareEventIDRepositoryProtocol {
     var localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol { get }
     var remoteShareEventIDDatasource: RemoteShareEventIDDatasourceProtocol { get }
-    var logger: LoggerV2 { get }
+    var logger: Logger { get }
 
     /// Get local last event ID if any. If not fetch from remote and save to local database and return.
     @discardableResult
@@ -73,7 +73,7 @@ extension ShareEventIDRepositoryProtocol {
 public final class ShareEventIDRepository: ShareEventIDRepositoryProtocol {
     public let localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol
     public let remoteShareEventIDDatasource: RemoteShareEventIDDatasourceProtocol
-    public let logger: LoggerV2
+    public let logger: Logger
 
     public init(localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol,
                 remoteShareEventIDDatasource: RemoteShareEventIDDatasourceProtocol,

@@ -56,7 +56,7 @@ public final class CredentialProviderCoordinator {
     private let rootViewController: UIViewController
     private let bannerManager: BannerManager
     private let logManager: LogManager
-    private let logger: LoggerV2
+    private let logger: Logger
 
     /// Derived properties
     private var lastChildViewController: UIViewController?

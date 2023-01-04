@@ -23,7 +23,7 @@ import CoreData
 import ProtonCore_Services
 
 public protocol PublicKeyRepositoryProtocol {
-    var logger: LoggerV2 { get }
+    var logger: Logger { get }
 
     func getPublicKeys(email: String) async throws -> [PublicKey]
 }
@@ -31,7 +31,7 @@ public protocol PublicKeyRepositoryProtocol {
 public struct PublicKeyRepository: PublicKeyRepositoryProtocol {
     public let localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol
     public let remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol
-    public let logger: LoggerV2
+    public let logger: Logger
 
     init(localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol,
          remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol,

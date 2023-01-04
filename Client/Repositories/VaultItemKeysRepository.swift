@@ -32,7 +32,7 @@ public protocol VaultItemKeysRepositoryProtocol {
     var localItemKeyDatasource: LocalItemKeyDatasourceProtocol { get }
     var localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol { get }
     var remoteVaultItemKeysDatasource: RemoteVaultItemKeysDatasourceProtocol { get }
-    var logger: LoggerV2 { get }
+    var logger: Logger { get }
 
     /// Get the pair of vaul key & item key that have latest `rotation`
     func getLatestVaultItemKeys(shareId: String, forceRefresh: Bool) async throws -> VaultItemKeys
@@ -120,7 +120,7 @@ public final class VaultItemKeysRepository: VaultItemKeysRepositoryProtocol {
     public let localItemKeyDatasource: LocalItemKeyDatasourceProtocol
     public let localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol
     public let remoteVaultItemKeysDatasource: RemoteVaultItemKeysDatasourceProtocol
-    public let logger: LoggerV2
+    public let logger: Logger
 
     public init(localItemKeyDatasource: LocalItemKeyDatasourceProtocol,
                 localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol,
