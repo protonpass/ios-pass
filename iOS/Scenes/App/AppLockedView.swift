@@ -36,10 +36,12 @@ struct AppLockedView: View {
     private var remainingAttempts: Int { kMaxAttemptCount - preferences.failedAttemptCount }
 
     init(preferences: Preferences,
+         logManager: LogManager,
          delayed: Bool,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        self._authenticator = .init(wrappedValue: .init(preferences: preferences))
+        self._authenticator = .init(wrappedValue: .init(preferences: preferences,
+                                                        logManager: logManager))
         self._preferences = .init(wrappedValue: preferences)
         self.delayed = delayed
         self.onSuccess = onSuccess

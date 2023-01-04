@@ -93,6 +93,7 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let preferences: Preferences
+    private let logger: Logger
     let credentialManager: CredentialManagerProtocol
     let vaultSelection: VaultSelection
 
@@ -114,13 +115,17 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
          syncEventLoop: SyncEventLoop,
-         preferences: Preferences) {
+         preferences: Preferences,
+         logManager: LogManager) {
         self.vaultSelection = vaultSelection
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.symmetricKey = symmetricKey
         self.syncEventLoop = syncEventLoop
         self.preferences = preferences
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
         showAutoFillBannerIfNecessary()
 
         vaultSelection.$selectedVault
@@ -190,6 +195,7 @@ extension VaultContentViewModel {
                 filterAndSort()
                 state = .loaded
             } catch {
+                logger.error(error)
                 state = .error(error)
             }
         }
@@ -201,6 +207,7 @@ extension VaultContentViewModel {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 delegate?.vaultContentViewModelWantsToShowItemDetail(itemContent)
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }
@@ -212,6 +219,7 @@ extension VaultContentViewModel {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 delegate?.vaultContentViewModelWantsToEditItem(itemContent)
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }
@@ -227,6 +235,7 @@ extension VaultContentViewModel {
                                                                bannerMessage: "Note copied")
                 }
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }
@@ -242,6 +251,7 @@ extension VaultContentViewModel {
                                                                bannerMessage: "Username copied")
                 }
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }
@@ -257,6 +267,7 @@ extension VaultContentViewModel {
                                                                bannerMessage: "Password copied")
                 }
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }
@@ -272,6 +283,7 @@ extension VaultContentViewModel {
                                                                bannerMessage: "Email address copied")
                 }
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }
@@ -286,6 +298,7 @@ extension VaultContentViewModel {
                 fetchItems(forceRefresh: false)
                 delegate?.vaultContentViewModelDidTrashItem(item, type: item.type)
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }

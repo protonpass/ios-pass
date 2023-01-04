@@ -44,7 +44,8 @@ final class SettingsCoordinator: Coordinator {
         self.settingsViewModel = .init(itemRepository: itemRepository,
                                        credentialManager: credentialManager,
                                        symmetricKey: symmetricKey,
-                                       preferences: preferences)
+                                       preferences: preferences,
+                                       logManager: logManager)
         self.logManager = logManager
         super.init()
         self.settingsViewModel.delegate = self

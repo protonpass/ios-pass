@@ -89,6 +89,8 @@ final class CredentialsViewModel: ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
+    private let logger: Logger
+    let logManager: LogManager
     let urls: [URL]
 
     weak var delegate: CredentialsViewModelDelegate?
@@ -96,12 +98,17 @@ final class CredentialsViewModel: ObservableObject {
     init(shareRepository: ShareRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey,
-         serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+         serviceIdentifiers: [ASCredentialServiceIdentifier],
+         logManager: LogManager) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
         self.urls = serviceIdentifiers.map { $0.identifier }.compactMap { URL(string: $0) }
+        self.logManager = logManager
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
 
         fetchItems()
         searchTermSubject
@@ -134,6 +141,7 @@ final class CredentialsViewModel: ObservableObject {
                     state = .loaded(fetchResult, .searchResults(resultDictionary))
                 }
             } catch {
+                logger.error(error)
                 state = .error(error)
             }
         }
@@ -156,6 +164,7 @@ extension CredentialsViewModel {
                 let result = try await fetchCredentialsTask().value
                 state = .loaded(result, .idle)
             } catch {
+                logger.error(error)
                 state = .error(error)
             }
         }
@@ -183,6 +192,7 @@ extension CredentialsViewModel {
                                                     shareId: encryptedItem.shareId)
                 select(item: item)
             } catch {
+                logger.error(error)
                 state = .error(error)
             }
         }
@@ -196,6 +206,7 @@ extension CredentialsViewModel {
                                                         item: item,
                                                         serviceIdentifiers: serviceIdentifiers)
             } catch {
+                logger.error(error)
                 state = .error(error)
             }
         }

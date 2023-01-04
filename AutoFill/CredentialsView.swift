@@ -49,6 +49,7 @@ struct CredentialsView: View {
             ZStack {
                 if isLocked {
                     AppLockedView(preferences: preferences,
+                                  logManager: viewModel.logManager,
                                   delayed: true,
                                   onSuccess: { isLocked = false },
                                   onFailure: viewModel.handleAuthenticationFailure)

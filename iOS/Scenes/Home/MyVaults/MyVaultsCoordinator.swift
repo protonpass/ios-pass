@@ -39,6 +39,7 @@ final class MyVaultsCoordinator: Coordinator {
     private let credentialManager: CredentialManagerProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
+    private let logManager: LogManager
 
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
@@ -64,7 +65,8 @@ final class MyVaultsCoordinator: Coordinator {
          publicKeyRepository: PublicKeyRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          syncEventLoop: SyncEventLoop,
-         preferences: Preferences) {
+         preferences: Preferences,
+         logManager: LogManager) {
         self.symmetricKey = symmetricKey
         self.userData = userData
         self.vaultSelection = vaultSelection
@@ -77,8 +79,10 @@ final class MyVaultsCoordinator: Coordinator {
                                            credentialManager: credentialManager,
                                            symmetricKey: symmetricKey,
                                            syncEventLoop: syncEventLoop,
-                                           preferences: preferences)
+                                           preferences: preferences,
+                                           logManager: logManager)
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
+        self.logManager = logManager
         super.init()
         vaultContentViewModel.delegate = self
         start()
@@ -87,7 +91,8 @@ final class MyVaultsCoordinator: Coordinator {
     private func start() {
         let loadVaultsViewModel = LoadVaultsViewModel(userData: userData,
                                                       vaultSelection: vaultSelection,
-                                                      shareRepository: shareRepository)
+                                                      shareRepository: shareRepository,
+                                                      logManager: logManager)
         loadVaultsViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
                                       loadVaultsViewModel: loadVaultsViewModel,
@@ -135,7 +140,8 @@ final class MyVaultsCoordinator: Coordinator {
     private func showCreateVaultView() {
         let createVaultViewModel =
         CreateVaultViewModel(userData: userData,
-                             shareRepository: shareRepository)
+                             shareRepository: shareRepository,
+                             logManager: logManager)
         createVaultViewModel.delegate = self
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
         present(createVaultView, dismissible: false)
@@ -143,7 +149,8 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateEditLoginView(mode: ItemMode) {
         let viewModel = CreateEditLoginViewModel(mode: mode,
-                                                 itemRepository: itemRepository)
+                                                 itemRepository: itemRepository,
+                                                 logManager: logManager)
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
@@ -154,7 +161,8 @@ final class MyVaultsCoordinator: Coordinator {
     private func showCreateEditAliasView(mode: ItemMode) {
         let viewModel = CreateEditAliasViewModel(mode: mode,
                                                  itemRepository: itemRepository,
-                                                 aliasRepository: aliasRepository)
+                                                 aliasRepository: aliasRepository,
+                                                 logManager: logManager)
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
@@ -164,7 +172,8 @@ final class MyVaultsCoordinator: Coordinator {
 
     private func showCreateEditNoteView(mode: ItemMode) {
         let viewModel = CreateEditNoteViewModel(mode: mode,
-                                                itemRepository: itemRepository)
+                                                itemRepository: itemRepository,
+                                                logManager: logManager)
         viewModel.delegate = self
         let view = CreateEditNoteView(viewModel: viewModel)
         present(view, dismissible: false)
@@ -191,7 +200,8 @@ final class MyVaultsCoordinator: Coordinator {
     private func showSearchView() {
         let viewModel = SearchViewModel(symmetricKey: symmetricKey,
                                         itemRepository: itemRepository,
-                                        vaultSelection: vaultSelection)
+                                        vaultSelection: vaultSelection,
+                                        logManager: logManager)
         viewModel.delegate = self
         searchViewModel = viewModel
         let viewController = UIHostingController(rootView: SearchView(viewModel: viewModel))
@@ -210,14 +220,16 @@ final class MyVaultsCoordinator: Coordinator {
         switch itemContent.contentData {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
-                                                 itemRepository: itemRepository)
+                                                 itemRepository: itemRepository,
+                                                 logManager: logManager)
             baseItemDetailViewModel = viewModel
             let logInDetailView = LogInDetailView(viewModel: viewModel)
             push(logInDetailView)
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
-                                                itemRepository: itemRepository)
+                                                itemRepository: itemRepository,
+                                                logManager: logManager)
             baseItemDetailViewModel = viewModel
             let noteDetailView = NoteDetailView(viewModel: viewModel)
             push(noteDetailView)
@@ -225,7 +237,8 @@ final class MyVaultsCoordinator: Coordinator {
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
                                                  itemRepository: itemRepository,
-                                                 aliasRepository: aliasRepository)
+                                                 aliasRepository: aliasRepository,
+                                                 logManager: logManager)
             baseItemDetailViewModel = viewModel
             let aliasDetailView = AliasDetailView(viewModel: viewModel)
             push(aliasDetailView)

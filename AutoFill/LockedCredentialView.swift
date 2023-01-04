@@ -34,6 +34,7 @@ struct LockedCredentialView: View {
     var body: some View {
         NavigationView {
             AppLockedView(preferences: preferences,
+                          logManager: viewModel.logManager,
                           delayed: true,
                           onSuccess: viewModel.getAndReturnCredential,
                           onFailure: viewModel.handleAuthenticationFailure)

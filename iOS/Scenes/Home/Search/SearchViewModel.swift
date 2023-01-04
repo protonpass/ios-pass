@@ -42,6 +42,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     private let symmetricKey: SymmetricKey
     private let itemRepository: ItemRepositoryProtocol
     private let vaultSelection: VaultSelection
+    private let logger: Logger
 
     // Self-initialized properties
     private let searchTermSubject = PassthroughSubject<String, Never>()
@@ -86,10 +87,14 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
 
     init(symmetricKey: SymmetricKey,
          itemRepository: ItemRepositoryProtocol,
-         vaultSelection: VaultSelection) {
+         vaultSelection: VaultSelection,
+         logManager: LogManager) {
         self.symmetricKey = symmetricKey
         self.itemRepository = itemRepository
         self.vaultSelection = vaultSelection
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
 
         Task {
             await loadItems()
@@ -123,6 +128,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
             state = .clean
             print("Initialized SearchViewModel")
         } catch {
+            logger.error(error)
             state = .error(error)
         }
     }
@@ -139,6 +145,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
                 results = try items.result(for: term, symmetricKey: symmetricKey)
                 state = .results
             } catch {
+                logger.error(error)
                 state = .error(error)
             }
         }
@@ -186,6 +193,7 @@ extension SearchViewModel {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 delegate?.searchViewModelWantsToShowItemDetail(itemContent)
             } catch {
+                logger.error(error)
                 delegate?.searchViewModelDidFail(error)
             }
         }
@@ -197,6 +205,7 @@ extension SearchViewModel {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 delegate?.searchViewModelWantsToEditItem(itemContent)
             } catch {
+                logger.error(error)
                 delegate?.searchViewModelDidFail(error)
             }
         }
@@ -212,6 +221,7 @@ extension SearchViewModel {
                                                          bannerMessage: "Note copied")
                 }
             } catch {
+                logger.error(error)
                 delegate?.searchViewModelDidFail(error)
             }
         }
@@ -227,6 +237,7 @@ extension SearchViewModel {
                                                          bannerMessage: "Username copied")
                 }
             } catch {
+                logger.error(error)
                 delegate?.searchViewModelDidFail(error)
             }
         }
@@ -242,6 +253,7 @@ extension SearchViewModel {
                                                          bannerMessage: "Password copied")
                 }
             } catch {
+                logger.error(error)
                 delegate?.searchViewModelDidFail(error)
             }
         }
@@ -257,6 +269,7 @@ extension SearchViewModel {
                                                          bannerMessage: "Email address copied")
                 }
             } catch {
+                logger.error(error)
                 delegate?.searchViewModelDidFail(error)
             }
         }
@@ -271,6 +284,7 @@ extension SearchViewModel {
                 await refreshResults()
                 delegate?.searchViewModelDidTrashItem(item, type: item.type)
             } catch {
+                logger.error(error)
                 delegate?.searchViewModelDidFail(error)
             }
         }

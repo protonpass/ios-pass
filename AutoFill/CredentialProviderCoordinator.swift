@@ -144,6 +144,7 @@ public final class CredentialProviderCoordinator {
                         cancel(errorCode: .failed)
                     }
                 } catch {
+                    logger.error(error)
                     cancel(errorCode: .failed)
                 }
             }
@@ -159,7 +160,8 @@ public final class CredentialProviderCoordinator {
 
         let viewModel = LockedCredentialViewModel(itemRepository: itemRepository,
                                                   symmetricKey: symmetricKey,
-                                                  credentialIdentity: credentialIdentity)
+                                                  credentialIdentity: credentialIdentity,
+                                                  logManager: logManager)
         viewModel.onFailure = handle(error:)
         viewModel.onSuccess = { [unowned self] credential, item in
             complete(quickTypeBar: false,
@@ -300,7 +302,7 @@ extension CredentialProviderCoordinator {
                                      serviceIdentifiers: serviceIdentifiers)
                 try await itemRepository.update(item: encryptedItem,
                                                 lastUseTime: Date().timeIntervalSince1970)
-                logger.info("Autofilled successfully")
+                logger.info("Autofilled from QuickType bar \(quickTypeBar). \(encryptedItem.debugInformation)")
                 context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
             } catch {
                 logger.error(error)
@@ -344,7 +346,8 @@ private extension CredentialProviderCoordinator {
         let viewModel = CredentialsViewModel(shareRepository: shareRepository,
                                              itemRepository: itemRepository,
                                              symmetricKey: symmetricKey,
-                                             serviceIdentifiers: serviceIdentifiers)
+                                             serviceIdentifiers: serviceIdentifiers,
+                                             logManager: logManager)
         viewModel.delegate = self
         credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel, preferences: preferences))
@@ -367,7 +370,8 @@ private extension CredentialProviderCoordinator {
                                                   autofill: true)
         let viewModel = CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                type: creationType),
-                                                 itemRepository: itemRepository)
+                                                 itemRepository: itemRepository,
+                                                 logManager: logManager)
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
@@ -384,7 +388,8 @@ private extension CredentialProviderCoordinator {
                                                                type: .alias(delegate: delegate,
                                                                             title: title)),
                                                  itemRepository: itemRepository,
-                                                 aliasRepository: aliasRepository)
+                                                 aliasRepository: aliasRepository,
+                                                 logManager: logManager)
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)

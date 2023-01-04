@@ -166,7 +166,8 @@ final class HomeCoordinator: DeinitPrintable {
         if !force, preferences.onboarded { return }
         let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
                                                       preferences: preferences,
-                                                      bannerManager: bannerManager)
+                                                      bannerManager: bannerManager,
+                                                      logManager: logManager)
         let onboardingView = OnboardingView(viewModel: onboardingViewModel)
         let onboardingViewController = UIHostingController(rootView: onboardingView)
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
@@ -283,7 +284,8 @@ private extension HomeCoordinator {
                                                       publicKeyRepository: publicKeyRepository,
                                                       credentialManager: credentialManager,
                                                       syncEventLoop: eventLoop,
-                                                      preferences: preferences)
+                                                      preferences: preferences,
+                                                      logManager: logManager)
         myVaultsCoordinator.coordinatorDelegate = self
         myVaultsCoordinator.delegate = self.trashCoordinator
         myVaultsCoordinator.urlOpener = self.urlOpener
@@ -308,7 +310,8 @@ private extension HomeCoordinator {
                                                 itemRepository: itemRepository,
                                                 aliasRepository: aliasRepository,
                                                 vaultSelection: vaultSelection,
-                                                syncEventLoop: eventLoop)
+                                                syncEventLoop: eventLoop,
+                                                logManager: logManager)
         trashCoordinator.coordinatorDelegate = self
         trashCoordinator.delegate = self
         trashCoordinator.urlOpener = urlOpener

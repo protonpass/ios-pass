@@ -162,6 +162,7 @@ private extension SyncEventLoop {
         do {
             try makeReachabilityIfNecessary()
         } catch {
+            logger.error(error)
             pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
             delegate?.syncEventLoopDidFailLoop(error: error)
         }
@@ -187,6 +188,7 @@ private extension SyncEventLoop {
                     try await sync(hasNewEvents: &hasNewEvents)
                     delegate?.syncEventLoopDidFinishLoop(hasNewEvents: hasNewEvents)
                 } catch {
+                    logger.error(error)
                     delegate?.syncEventLoopDidFailLoop(error: error)
                 }
             }

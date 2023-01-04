@@ -44,6 +44,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let symmetricKey: SymmetricKey
+    private let logger: Logger
     let biometricAuthenticator: BiometricAuthenticator
     let preferences: Preferences
 
@@ -92,16 +93,20 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
-         preferences: Preferences) {
+         preferences: Preferences,
+         logManager: LogManager) {
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.symmetricKey = symmetricKey
-        self.biometricAuthenticator = .init(preferences: preferences)
+        self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.preferences = preferences
         self.quickTypeBar = preferences.quickTypeBar
         self.theme = preferences.theme
         self.clipboardExpiration = preferences.clipboardExpiration
         self.shareClipboard = preferences.shareClipboard
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
 
         let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
             guard let appScheme = browser.appScheme,
@@ -173,6 +178,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
                 }
                 preferences.quickTypeBar = quickTypeBar
             } catch {
+                logger.error(error)
                 quickTypeBar.toggle() // rollback to previous value
                 delegate?.settingsViewModelDidFail(error)
             }
@@ -219,6 +225,7 @@ extension SettingsViewModel {
                 _ = try await itemRepository.getItems(forceRefresh: true, state: .active)
                 delegate?.settingsViewModelDidFinishFullSync()
             } catch {
+                logger.error(error)
                 delegate?.settingsViewModelDidFail(error)
             }
         }

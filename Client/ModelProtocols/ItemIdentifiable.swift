@@ -26,3 +26,9 @@ public protocol ItemIdentifiable {
     var shareId: String { get }
     var itemId: String { get }
 }
+
+public extension ItemIdentifiable {
+    var debugInformation: String {
+        "Item ID (\(itemId)) - Share ID (\(shareId))"
+    }
+}
