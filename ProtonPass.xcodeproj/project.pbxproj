@@ -176,6 +176,13 @@
 		3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */; };
 		3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */; };
 		3552F49428D37CFF00547146 /* ChangeMailboxesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */; };
+		3553C21B296570090087518A /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C21A296570090087518A /* LogEntry.swift */; };
+		3553C21D296570260087518A /* LogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C21C296570260087518A /* LogLevel.swift */; };
+		3553C21F2965703D0087518A /* LogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C21E2965703D0087518A /* LogFormatter.swift */; };
+		3553C2212965705C0087518A /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C2202965705C0087518A /* LogManager.swift */; };
+		3553C223296570710087518A /* LoggerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C222296570710087518A /* LoggerV2.swift */; };
+		3553C226296570CB0087518A /* LogFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C225296570CB0087518A /* LogFormatterTests.swift */; };
+		3553C228296571440087518A /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C227296571440087518A /* LoggerTests.swift */; };
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
@@ -683,6 +690,13 @@
 		3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDetailViewModel.swift; sourceTree = "<group>"; };
 		3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesRequest.swift; sourceTree = "<group>"; };
 		3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesEndpoint.swift; sourceTree = "<group>"; };
+		3553C21A296570090087518A /* LogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
+		3553C21C296570260087518A /* LogLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogLevel.swift; sourceTree = "<group>"; };
+		3553C21E2965703D0087518A /* LogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogFormatter.swift; sourceTree = "<group>"; };
+		3553C2202965705C0087518A /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
+		3553C222296570710087518A /* LoggerV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerV2.swift; sourceTree = "<group>"; };
+		3553C225296570CB0087518A /* LogFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogFormatterTests.swift; sourceTree = "<group>"; };
+		3553C227296571440087518A /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
@@ -1236,6 +1250,15 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		3553C224296570B80087518A /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				3553C225296570CB0087518A /* LogFormatterTests.swift */,
+				3553C227296571440087518A /* LoggerTests.swift */,
+			);
+			path = Logging;
+			sourceTree = "<group>";
+		};
 		355443FA287CA7150017FCAD /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
@@ -1304,6 +1327,11 @@
 		3557836E29632445008A4992 /* Logging */ = {
 			isa = PBXGroup;
 			children = (
+				3553C21A296570090087518A /* LogEntry.swift */,
+				3553C21E2965703D0087518A /* LogFormatter.swift */,
+				3553C21C296570260087518A /* LogLevel.swift */,
+				3553C2202965705C0087518A /* LogManager.swift */,
+				3553C222296570710087518A /* LoggerV2.swift */,
 			);
 			path = Logging;
 			sourceTree = "<group>";
@@ -1694,6 +1722,7 @@
 		35E50691286F87A700A3F6EA /* CoreTests */ = {
 			isa = PBXGroup;
 			children = (
+				3553C224296570B80087518A /* Logging */,
 				3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */,
 				354513E828E4D2650020A93A /* CodableBase64Tests.swift */,
 				3529432A28DAF6CA00E1F11B /* SearchUtilsTests.swift */,
@@ -2981,6 +3010,7 @@
 				35E506FC286FB37300A3F6EA /* Coordinator.swift in Sources */,
 				35426B5C28EF17F100F89BB7 /* Rule.swift in Sources */,
 				354036DF28F4522000F9E729 /* URLUtils+Matcher.swift in Sources */,
+				3553C21D296570260087518A /* LogLevel.swift in Sources */,
 				355751FA2908745B00268116 /* Preferences.swift in Sources */,
 				35426B5E28EF183900F89BB7 /* RuleLabel.swift in Sources */,
 				35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */,
@@ -2992,14 +3022,17 @@
 				35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */,
 				35426B6628EF195700F89BB7 /* ParsedHost.swift in Sources */,
 				35E50702286FB39600A3F6EA /* AppState.swift in Sources */,
+				3553C223296570710087518A /* LoggerV2.swift in Sources */,
 				354036DD28F451AE00F9E729 /* URLUtils.swift in Sources */,
 				356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */,
 				356B21D72870F8F1001220CB /* Constants.swift in Sources */,
 				3573CD23292C139900A9EF82 /* AliasPrefixValidator.swift in Sources */,
 				350A97DE2886032000A7168B /* DeinitPrintable.swift in Sources */,
 				356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */,
+				3553C21F2965703D0087518A /* LogFormatter.swift in Sources */,
 				353E10922881827C00E59474 /* UserProtocol.swift in Sources */,
 				35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */,
+				3553C2212965705C0087518A /* LogManager.swift in Sources */,
 				3531B5412902A9DD0070D2EE /* BiometricAuthenticator.swift in Sources */,
 				353C2841291DC729008A5EBF /* SortType.swift in Sources */,
 				35E50707286FB3A600A3F6EA /* Logger.swift in Sources */,
@@ -3013,6 +3046,7 @@
 				35426B6028EF187800F89BB7 /* DomainParserContant.swift in Sources */,
 				3529432928DAF54900E1F11B /* SearchUtils.swift in Sources */,
 				35426B6228EF18E600F89BB7 /* DomainParser.swift in Sources */,
+				3553C21B296570090087518A /* LogEntry.swift in Sources */,
 				355744192959F68500EA4AF0 /* ClipboardExpiration.swift in Sources */,
 				353547C32880CF470021C716 /* UserData+Codable.swift in Sources */,
 				354036E128F452F200F9E729 /* URLUtils+Sanitizer.swift in Sources */,
@@ -3023,12 +3057,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3553C226296570CB0087518A /* LogFormatterTests.swift in Sources */,
 				35283E4C29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift in Sources */,
 				3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */,
 				354513E928E4D2650020A93A /* CodableBase64Tests.swift in Sources */,
 				3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */,
 				3555800728F01A46009C3B88 /* URLUtils+MatcherTests.swift in Sources */,
 				3529432B28DAF6CA00E1F11B /* SearchUtilsTests.swift in Sources */,
+				3553C228296571440087518A /* LoggerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
