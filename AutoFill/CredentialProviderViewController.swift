@@ -25,12 +25,15 @@ import ProtonCore_Keymaker
 import ProtonCore_Services
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
+    private let logManager = LogManager()
+
     private lazy var coordinator: CredentialProviderCoordinator = {
         .init(apiService: PMAPIService(doh: PPDoH(bundle: .main)),
               container: .Builder.build(name: kProtonPassContainerName, inMemory: false),
               context: extensionContext,
               preferences: .init(),
-              credentialManager: CredentialManager(store: .shared),
+              logManager: logManager,
+              credentialManager: CredentialManager(logManager: logManager),
               rootViewController: self)
     }()
 

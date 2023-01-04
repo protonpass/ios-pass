@@ -34,12 +34,12 @@ enum DeviceLogType: CaseIterable {
         }
     }
 
-    var fileName: String {
+    var subsystem: String {
         switch self {
         case .hostApplication:
-            return "host_application.log"
+            return "me.proton.pass.ios"
         case .autoFillExtension:
-            return "autofill_extension.log"
+            return "me.proton.pass.ios.autofill"
         }
     }
 }
