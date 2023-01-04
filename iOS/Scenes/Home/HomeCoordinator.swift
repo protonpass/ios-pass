@@ -52,6 +52,8 @@ final class HomeCoordinator: DeinitPrintable {
     private let preferences: Preferences
     private let urlOpener: UrlOpener
     private let clipboardManager: ClipboardManager
+    private let logManager: LogManager
+    private let logger: Logger
     private var detailCoordinator: Coordinator?
     weak var delegate: HomeCoordinatorDelegate?
 
@@ -95,7 +97,8 @@ final class HomeCoordinator: DeinitPrintable {
          symmetricKey: SymmetricKey,
          container: NSPersistentContainer,
          credentialManager: CredentialManagerProtocol,
-         preferences: Preferences) {
+         preferences: Preferences,
+         logManager: LogManager) {
         self.sessionData = sessionData
         self.apiService = apiService
         self.symmetricKey = symmetricKey
@@ -106,32 +109,41 @@ final class HomeCoordinator: DeinitPrintable {
         let itemRepository = ItemRepository(userData: sessionData.userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
-                                            apiService: apiService)
+                                            apiService: apiService,
+                                            logManager: logManager)
         self.itemRepository = itemRepository
         self.aliasRepository = AliasRepository(authCredential: authCredential, apiService: apiService)
         self.publicKeyRepository = PublicKeyRepository(container: container,
-                                                       apiService: apiService)
+                                                       apiService: apiService,
+                                                       logManager: logManager)
         let vaultItemKeysRepository = VaultItemKeysRepository(container: container,
                                                               authCredential: authCredential,
-                                                              apiService: apiService)
+                                                              apiService: apiService,
+                                                              logManager: logManager)
         self.vaultItemKeysRepository = vaultItemKeysRepository
         let shareRepository = ShareRepository(
             userData: sessionData.userData,
             localShareDatasource: LocalShareDatasource(container: container),
             remoteShareDatasouce: RemoteShareDatasource(authCredential: authCredential,
                                                         apiService: apiService),
-            vaultItemKeysRepository: vaultItemKeysRepository)
+            vaultItemKeysRepository: vaultItemKeysRepository,
+            logManager: logManager)
         self.shareRepository = shareRepository
         itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
         self.credentialManager = credentialManager
         self.vaultSelection = .init(vaults: [])
         self.preferences = preferences
+        self.logManager = logManager
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
         self.urlOpener = .init(preferences: preferences)
         self.clipboardManager = .init(preferences: preferences)
 
         let shareEventIDRepository = ShareEventIDRepository(container: container,
                                                             authCredential: authCredential,
-                                                            apiService: apiService)
+                                                            apiService: apiService,
+                                                            logManager: logManager)
         let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(authCredential: authCredential,
                                                                     apiService: apiService)
         self.eventLoop = .init(userId: userId,
@@ -139,7 +151,8 @@ final class HomeCoordinator: DeinitPrintable {
                                shareEventIDRepository: shareEventIDRepository,
                                remoteSyncEventsDatasource: remoteSyncEventsDatasource,
                                itemRepository: itemRepository,
-                               vaultItemKeysRepository: vaultItemKeysRepository)
+                               vaultItemKeysRepository: vaultItemKeysRepository,
+                               logManager: logManager)
         self.eventLoop.delegate = self
         self.eventLoop.start()
         self.setUpSideMenuPreferences()
@@ -153,7 +166,8 @@ final class HomeCoordinator: DeinitPrintable {
         if !force, preferences.onboarded { return }
         let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
                                                       preferences: preferences,
-                                                      bannerManager: bannerManager)
+                                                      bannerManager: bannerManager,
+                                                      logManager: logManager)
         let onboardingView = OnboardingView(viewModel: onboardingViewModel)
         let onboardingViewController = UIHostingController(rootView: onboardingView)
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
@@ -187,8 +201,9 @@ private extension HomeCoordinator {
                         try await credentialManager.insertAllCredentials(from: itemRepository,
                                                                          symmetricKey: symmetricKey,
                                                                          forceRemoval: false)
+                        logger.info("App goes back to foreground. Inserted all credentials.")
                     } catch {
-                        PPLogger.shared?.log(error)
+                        logger.error(error)
                     }
                 }
             }
@@ -270,7 +285,8 @@ private extension HomeCoordinator {
                                                       publicKeyRepository: publicKeyRepository,
                                                       credentialManager: credentialManager,
                                                       syncEventLoop: eventLoop,
-                                                      preferences: preferences)
+                                                      preferences: preferences,
+                                                      logManager: logManager)
         myVaultsCoordinator.coordinatorDelegate = self
         myVaultsCoordinator.delegate = self.trashCoordinator
         myVaultsCoordinator.urlOpener = self.urlOpener
@@ -282,7 +298,8 @@ private extension HomeCoordinator {
         let settingsCoordinator = SettingsCoordinator(itemRepository: itemRepository,
                                                       credentialManager: credentialManager,
                                                       symmetricKey: symmetricKey,
-                                                      preferences: preferences)
+                                                      preferences: preferences,
+                                                      logManager: logManager)
         settingsCoordinator.coordinatorDelegate = self
         settingsCoordinator.delegate = self
         return settingsCoordinator
@@ -294,7 +311,8 @@ private extension HomeCoordinator {
                                                 itemRepository: itemRepository,
                                                 aliasRepository: aliasRepository,
                                                 vaultSelection: vaultSelection,
-                                                syncEventLoop: eventLoop)
+                                                syncEventLoop: eventLoop,
+                                                logManager: logManager)
         trashCoordinator.coordinatorDelegate = self
         trashCoordinator.delegate = self
         trashCoordinator.urlOpener = urlOpener
@@ -472,34 +490,34 @@ extension HomeCoordinator: CoordinatorDelegate {
 // MARK: - SyncEventLoopDelegate
 extension HomeCoordinator: SyncEventLoopDelegate {
     func syncEventLoopDidStartLooping() {
-        PPLogger.shared?.log("Started looping")
+        logger.info("Started looping")
     }
 
     func syncEventLoopDidStopLooping() {
-        PPLogger.shared?.log("Stopped looping")
+        logger.info("Stopped looping")
     }
 
     func syncEventLoopDidBeginNewLoop() {
-        PPLogger.shared?.log("Began new sync loop")
+        logger.info("Began new sync loop")
     }
 
     #warning("Handle no connection reason")
     func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
-        PPLogger.shared?.log("Skipped sync loop \(reason)")
+        logger.info("Skipped sync loop \(reason)")
     }
 
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
         if hasNewEvents {
-            PPLogger.shared?.log("Has new events. Refreshing items")
+            logger.info("Has new events. Refreshing items")
             myVaultsCoordinator.refreshItems()
             trashCoordinator.refreshTrashedItems()
         } else {
-            PPLogger.shared?.log("Has no new events. Do nothing.")
+            logger.info("Has no new events. Do nothing.")
         }
     }
 
     func syncEventLoopDidFailLoop(error: Error) {
-        PPLogger.shared?.log(error)
+        logger.error(error)
         bannerManager.displayTopErrorMessage(error)
     }
 }

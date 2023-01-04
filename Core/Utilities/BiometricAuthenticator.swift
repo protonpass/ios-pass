@@ -52,10 +52,14 @@ public final class BiometricAuthenticator: ObservableObject {
     private let preferences: Preferences
     private let context = LAContext()
     private let policy = LAPolicy.deviceOwnerAuthentication // Both biometry & passcode
+    private let logger: Logger
 
-    public init(preferences: Preferences) {
+    public init(preferences: Preferences, logManager: LogManager) {
         self.preferences = preferences
         self.enabled = preferences.biometricAuthenticationEnabled
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 
     public func initializeBiometryType() {
@@ -92,6 +96,7 @@ public final class BiometricAuthenticator: ObservableObject {
                     preferences.biometricAuthenticationEnabled.toggle()
                 }
             } catch {
+                logger.error(error)
                 authenticationState = .error(error)
             }
         }

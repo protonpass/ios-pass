@@ -177,6 +177,10 @@ public struct ItemContent: ItemContentProtocol {
     }
 }
 
+extension ItemContent: ItemIdentifiable {
+    public var itemId: String { item.itemID }
+}
+
 extension ItemContentData: SymmetricallyEncryptable {
     public func symmetricallyEncrypted(_ symmetricKey: SymmetricKey) throws -> ItemContentData {
         switch self {

@@ -34,9 +34,12 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 
     init(itemContent: ItemContent,
          itemRepository: ItemRepositoryProtocol,
-         aliasRepository: AliasRepositoryProtocol) {
+         aliasRepository: AliasRepositoryProtocol,
+         logManager: LogManager) {
         self.aliasRepository = aliasRepository
-        super.init(itemContent: itemContent, itemRepository: itemRepository)
+        super.init(itemContent: itemContent,
+                   itemRepository: itemRepository,
+                   logManager: logManager)
         getAlias()
     }
 
@@ -58,7 +61,9 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
                                                               itemId: itemContent.item.itemID).value
                 aliasEmail = alias.email
                 mailboxes = alias.mailboxes
+                logger.info("Get alias detail successfully \(itemContent.debugInformation)")
             } catch {
+                logger.error(error)
                 self.error = error
             }
         }

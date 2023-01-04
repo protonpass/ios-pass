@@ -93,6 +93,7 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let preferences: Preferences
+    private let logger: Logger
     let credentialManager: CredentialManagerProtocol
     let vaultSelection: VaultSelection
 
@@ -114,13 +115,17 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
          syncEventLoop: SyncEventLoop,
-         preferences: Preferences) {
+         preferences: Preferences,
+         logManager: LogManager) {
         self.vaultSelection = vaultSelection
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.symmetricKey = symmetricKey
         self.syncEventLoop = syncEventLoop
         self.preferences = preferences
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
         showAutoFillBannerIfNecessary()
 
         vaultSelection.$selectedVault
@@ -179,7 +184,12 @@ extension VaultContentViewModel {
     }
 
     func fetchItems(forceRefresh: Bool, forceLoading: Bool = false) {
+        guard selectedVault != nil else {
+            logger.trace("No selected vault. Skipped fetching items forceRefresh \(forceRefresh)")
+            return
+        }
         Task { @MainActor in
+            logger.trace("Fetching items forceRefresh \(forceRefresh)")
             if state.isError || forceLoading {
                 state = .loading
             }
@@ -189,7 +199,9 @@ extension VaultContentViewModel {
                 updateItemCount()
                 filterAndSort()
                 state = .loaded
+                logger.info("Fetched items forceRefresh \(forceRefresh)")
             } catch {
+                logger.error(error)
                 state = .error(error)
             }
         }
@@ -200,7 +212,9 @@ extension VaultContentViewModel {
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 delegate?.vaultContentViewModelWantsToShowItemDetail(itemContent)
+                logger.info("Want to view detail \(item.debugInformation)")
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }
@@ -211,7 +225,9 @@ extension VaultContentViewModel {
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 delegate?.vaultContentViewModelWantsToEditItem(itemContent)
+                logger.info("Want to edit \(item.debugInformation)")
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }
@@ -225,8 +241,10 @@ extension VaultContentViewModel {
                 if case .note = itemContent.contentData {
                     delegate?.vaultContentViewModelWantsToCopy(text: itemContent.note,
                                                                bannerMessage: "Note copied")
+                    logger.info("Want to copy note \(item.debugInformation)")
                 }
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }
@@ -240,8 +258,10 @@ extension VaultContentViewModel {
                 if case let .login(username, _, _) = itemContent.contentData {
                     delegate?.vaultContentViewModelWantsToCopy(text: username,
                                                                bannerMessage: "Username copied")
+                    logger.info("Want to copy username \(item.debugInformation)")
                 }
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }
@@ -255,8 +275,10 @@ extension VaultContentViewModel {
                 if case let .login(_, password, _) = itemContent.contentData {
                     delegate?.vaultContentViewModelWantsToCopy(text: password,
                                                                bannerMessage: "Password copied")
+                    logger.info("Want to copy password \(item.debugInformation)")
                 }
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }
@@ -270,8 +292,10 @@ extension VaultContentViewModel {
                 if let emailAddress = item.item.aliasEmail {
                     delegate?.vaultContentViewModelWantsToCopy(text: emailAddress,
                                                                bannerMessage: "Email address copied")
+                    logger.info("Want to copy email address \(item.debugInformation)")
                 }
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }
@@ -285,7 +309,9 @@ extension VaultContentViewModel {
                 try await trashItemTask(for: item).value
                 fetchItems(forceRefresh: false)
                 delegate?.vaultContentViewModelDidTrashItem(item, type: item.type)
+                logger.info("Trashed \(item.debugInformation)")
             } catch {
+                logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
             }
         }

@@ -30,6 +30,7 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToShowLoadingHud()
     func settingsViewModelWantsToHideLoadingHud()
     func settingsViewModelWantsToDeleteAccount()
+    func settingsViewModelWantsToViewLogs()
     func settingsViewModelWantsToOpenSecuritySettings(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateClipboardExpiration(viewModel: SettingsViewModel)
     func settingsViewModelWantsToUpdateAutoFill(viewModel: SettingsViewModel)
@@ -43,6 +44,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let symmetricKey: SymmetricKey
+    private let logger: Logger
     let biometricAuthenticator: BiometricAuthenticator
     let preferences: Preferences
 
@@ -91,16 +93,20 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
-         preferences: Preferences) {
+         preferences: Preferences,
+         logManager: LogManager) {
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.symmetricKey = symmetricKey
-        self.biometricAuthenticator = .init(preferences: preferences)
+        self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.preferences = preferences
         self.quickTypeBar = preferences.quickTypeBar
         self.theme = preferences.theme
         self.clipboardExpiration = preferences.clipboardExpiration
         self.shareClipboard = preferences.shareClipboard
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
 
         let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
             guard let appScheme = browser.appScheme,
@@ -162,16 +168,20 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         Task { @MainActor in
             defer { delegate?.settingsViewModelWantsToHideLoadingHud() }
             do {
+                logger.trace("Updating credential database QuickTypeBar \(quickTypeBar)")
                 delegate?.settingsViewModelWantsToShowLoadingHud()
                 if quickTypeBar {
                     try await credentialManager.insertAllCredentials(from: itemRepository,
                                                                      symmetricKey: symmetricKey,
                                                                      forceRemoval: true)
+                    logger.info("Populated credential database QuickTypeBar \(quickTypeBar)")
                 } else {
                     try await credentialManager.removeAllCredentials()
+                    logger.info("Nuked credential database QuickTypeBar \(quickTypeBar)")
                 }
                 preferences.quickTypeBar = quickTypeBar
             } catch {
+                logger.error(error)
                 quickTypeBar.toggle() // rollback to previous value
                 delegate?.settingsViewModelDidFail(error)
             }
@@ -205,15 +215,21 @@ extension SettingsViewModel {
         delegate?.settingsViewModelWantsToUpdateAutoFill(viewModel: self)
     }
 
+    func viewLogs() {
+        delegate?.settingsViewModelWantsToViewLogs()
+    }
+
     func fullSync() {
         Task { @MainActor in
             defer { delegate?.settingsViewModelWantsToHideLoadingHud() }
             do {
+                logger.info("Began full sync")
                 delegate?.settingsViewModelWantsToShowLoadingHud()
                 /// Does not matter getting `active` or `trashed` items. We only want to force refresh.
                 _ = try await itemRepository.getItems(forceRefresh: true, state: .active)
                 delegate?.settingsViewModelDidFinishFullSync()
             } catch {
+                logger.error(error)
                 delegate?.settingsViewModelDidFail(error)
             }
         }

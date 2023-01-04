@@ -200,13 +200,14 @@ struct VaultContentView: View {
             VStack {
                 Text(viewModel.filterOption.title)
                     .fontWeight(.semibold)
-                if let selectedVault = viewModel.vaultSelection.selectedVault {
+                if viewModel.vaultSelection.vaults.count > 1,
+                   let selectedVault = viewModel.vaultSelection.selectedVault {
                     Text(selectedVault.name)
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
             }
-            .onTapGesture(perform: viewModel.showVaultList)
+            .onTapGesture(count: 7, perform: viewModel.showVaultList)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {

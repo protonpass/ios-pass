@@ -12337,8 +12337,8 @@
 		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1300;
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 13.0";
@@ -17101,6 +17101,7 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Settings-V5";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Settings;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Settings-V5/ResourceBundle-Resources-Settings-ProtonCore-Settings-V5-Info.plist";
@@ -18952,7 +18953,6 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-CoreTranslation-V5";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_CoreTranslation_V5;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-CoreTranslation-V5/ResourceBundle-Resources-CoreTranslation-V5-ProtonCore-CoreTranslation-V5-Info.plist";
@@ -20069,7 +20069,6 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-CoreTranslation-V5";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_CoreTranslation_V5;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-CoreTranslation-V5/ResourceBundle-Resources-CoreTranslation-V5-ProtonCore-CoreTranslation-V5-Info.plist";
@@ -27458,7 +27457,6 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-CoreTranslation-V5";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_CoreTranslation_V5;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-CoreTranslation-V5/ResourceBundle-Resources-CoreTranslation-V5-ProtonCore-CoreTranslation-V5-Info.plist";
@@ -28956,7 +28954,6 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-CoreTranslation-V5";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_CoreTranslation_V5;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-CoreTranslation-V5/ResourceBundle-Resources-CoreTranslation-V5-ProtonCore-CoreTranslation-V5-Info.plist";
@@ -29878,6 +29875,7 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Settings-V5";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Settings;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Settings-V5/ResourceBundle-Resources-Settings-ProtonCore-Settings-V5-Info.plist";

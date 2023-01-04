@@ -55,6 +55,8 @@ public final class CredentialProviderCoordinator {
     private let credentialManager: CredentialManagerProtocol
     private let rootViewController: UIViewController
     private let bannerManager: BannerManager
+    private let logManager: LogManager
+    private let logger: Logger
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -74,6 +76,7 @@ public final class CredentialProviderCoordinator {
          container: NSPersistentContainer,
          context: ASCredentialProviderExtensionContext,
          preferences: Preferences,
+         logManager: LogManager,
          credentialManager: CredentialManagerProtocol,
          rootViewController: UIViewController) {
         let keychain = PPKeychain()
@@ -82,12 +85,18 @@ public final class CredentialProviderCoordinator {
                               keychain: keychain)
         self._sessionData.setKeychain(keychain)
         self._sessionData.setMainKeyProvider(keymaker)
+        self._sessionData.setLogManager(logManager)
         self._symmetricKeyString.setKeychain(keychain)
         self._symmetricKeyString.setMainKeyProvider(keymaker)
+        self._symmetricKeyString.setLogManager(logManager)
         self.apiService = apiService
         self.container = container
         self.context = context
         self.preferences = preferences
+        self.logManager = logManager
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
         self.bannerManager = .init(container: rootViewController)
         self.credentialManager = credentialManager
         self.rootViewController = rootViewController
@@ -120,6 +129,7 @@ public final class CredentialProviderCoordinator {
         } else {
             Task {
                 do {
+                    logger.trace("Autofilling from QuickType bar")
                     let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
                     if let encryptedItem = try await itemRepository.getItem(shareId: ids.shareId,
                                                                             itemId: ids.itemId) {
@@ -130,11 +140,15 @@ public final class CredentialProviderCoordinator {
                                      encryptedItem: encryptedItem,
                                      itemRepository: itemRepository,
                                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
+                        } else {
+                            logger.error("Failed to autofill. Not log in item.")
                         }
                     } else {
+                        logger.warning("Failed to autofill. Item not found.")
                         cancel(errorCode: .failed)
                     }
                 } catch {
+                    logger.error(error)
                     cancel(errorCode: .failed)
                 }
             }
@@ -150,7 +164,8 @@ public final class CredentialProviderCoordinator {
 
         let viewModel = LockedCredentialViewModel(itemRepository: itemRepository,
                                                   symmetricKey: symmetricKey,
-                                                  credentialIdentity: credentialIdentity)
+                                                  credentialIdentity: credentialIdentity,
+                                                  logManager: logManager)
         viewModel.onFailure = handle(error:)
         viewModel.onSuccess = { [unowned self] credential, item in
             complete(quickTypeBar: false,
@@ -171,13 +186,16 @@ public final class CredentialProviderCoordinator {
             Task {
                 defer { cancel(errorCode: .failed) }
                 do {
+                    logger.trace("Authenticaion failed. Removing all credentials")
                     sessionData = nil
                     try await credentialManager.removeAllCredentials()
+                    logger.info("Removed all credentials after authentication failure")
                 } catch {
-                    PPLogger.shared?.log(error)
+                    logger.error(error)
                 }
             }
         default:
+            logger.error(error)
             alert(error: error)
         }
     }
@@ -190,7 +208,8 @@ public final class CredentialProviderCoordinator {
         let itemRepository = ItemRepository(userData: sessionData.userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
-                                            apiService: apiService)
+                                            apiService: apiService,
+                                            logManager: logManager)
 
         let credential = sessionData.userData.credential
         let remoteAliasDatasource = RemoteAliasDatasource(authCredential: credential,
@@ -201,7 +220,8 @@ public final class CredentialProviderCoordinator {
         self.shareRepository = ShareRepository(userData: sessionData.userData,
                                                container: container,
                                                authCredential: credential,
-                                               apiService: apiService)
+                                               apiService: apiService,
+                                               logManager: logManager)
         self.itemRepository = itemRepository
         self.aliasRepository = aliasRepository
     }
@@ -289,9 +309,10 @@ extension CredentialProviderCoordinator {
                                      serviceIdentifiers: serviceIdentifiers)
                 try await itemRepository.update(item: encryptedItem,
                                                 lastUseTime: Date().timeIntervalSince1970)
+                logger.info("Autofilled from QuickType bar \(quickTypeBar). \(encryptedItem.debugInformation)")
                 context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
             } catch {
-                PPLogger.shared?.log(error)
+                logger.error(error)
                 if quickTypeBar {
                     cancel(errorCode: .userInteractionRequired)
                 } else {
@@ -332,7 +353,8 @@ private extension CredentialProviderCoordinator {
         let viewModel = CredentialsViewModel(shareRepository: shareRepository,
                                              itemRepository: itemRepository,
                                              symmetricKey: symmetricKey,
-                                             serviceIdentifiers: serviceIdentifiers)
+                                             serviceIdentifiers: serviceIdentifiers,
+                                             logManager: logManager)
         viewModel.delegate = self
         credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel, preferences: preferences))
@@ -355,7 +377,8 @@ private extension CredentialProviderCoordinator {
                                                   autofill: true)
         let viewModel = CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                type: creationType),
-                                                 itemRepository: itemRepository)
+                                                 itemRepository: itemRepository,
+                                                 logManager: logManager)
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
@@ -372,7 +395,8 @@ private extension CredentialProviderCoordinator {
                                                                type: .alias(delegate: delegate,
                                                                             title: title)),
                                                  itemRepository: itemRepository,
-                                                 aliasRepository: aliasRepository)
+                                                 aliasRepository: aliasRepository,
+                                                 logManager: logManager)
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)

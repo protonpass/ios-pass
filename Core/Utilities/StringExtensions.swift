@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import CryptoKit
 import Foundation
 
 public enum AllowedCharacter: String {
@@ -38,4 +39,8 @@ public extension String {
     }
 
     func base64Decode() throws -> Data? { Data(base64Encoded: self) }
+
+    func sha256Hashed() -> String {
+        SHA256.hash(data: Data(self.utf8)).description
+    }
 }

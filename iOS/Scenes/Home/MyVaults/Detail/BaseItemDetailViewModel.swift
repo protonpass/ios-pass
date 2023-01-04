@@ -39,13 +39,18 @@ enum ItemDetailViewModelError: Error {
 class BaseItemDetailViewModel {
     private let itemRepository: ItemRepositoryProtocol
     private(set) var itemContent: ItemContent
+    let logger: Logger
 
     weak var delegate: ItemDetailViewModelDelegate?
 
     init(itemContent: ItemContent,
-         itemRepository: ItemRepositoryProtocol) {
+         itemRepository: ItemRepositoryProtocol,
+         logManager: LogManager) {
         self.itemContent = itemContent
         self.itemRepository = itemRepository
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
         self.bindValues()
     }
 
@@ -77,8 +82,10 @@ class BaseItemDetailViewModel {
                     let symmetricKey = itemRepository.symmetricKey
                     let item = try await encryptedItem.toItemListUiModel(symmetricKey)
                     delegate?.itemDetailViewModelWantsToRestore(item)
+                    logger.info("Restored \(item.debugInformation)")
                 }
             } catch {
+                logger.error(error)
                 delegate?.itemDetailViewModelDidFail(error)
             }
         }

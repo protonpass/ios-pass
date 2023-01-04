@@ -39,6 +39,7 @@ public protocol ItemRepositoryProtocol {
     var shareRepository: ShareRepositoryProtocol { get }
     var shareEventIDRepository: ShareEventIDRepositoryProtocol { get }
     var vaultItemKeysRepository: VaultItemKeysRepositoryProtocol { get }
+    var logger: Logger { get }
     var delegate: ItemRepositoryDelegate? { get }
 
     /// Get a specific Item
@@ -110,23 +111,23 @@ public extension ItemRepositoryProtocol {
         case .trashed: stateDescription = "trashed"
         }
 
-        PPLogger.shared?.log("Getting \(stateDescription) item revisions")
+        logger.trace("Getting \(stateDescription) item revisions")
         if forceRefresh {
-            PPLogger.shared?.log("Force refresh item revisions")
+            logger.trace("Force refresh item revisions")
             try await refreshItems(shareId: shareId)
         }
 
         let localItemCount = try await localItemDatasoure.getItemCount(shareId: shareId)
 
         if localItemCount == 0 {
-            PPLogger.shared?.log("No item in local database => Fetch from remote")
+            logger.trace("No item in local database => Fetch from remote")
             try await refreshItems(shareId: shareId)
         }
 
         let localItems = try await localItemDatasoure.getItems(shareId: shareId, state: state)
 
         let count = localItems.count
-        PPLogger.shared?.log("Found \(count) \(stateDescription) items in local database")
+        logger.trace("Found \(count) \(stateDescription) items in local database")
         return localItems
     }
 
@@ -148,18 +149,18 @@ public extension ItemRepositoryProtocol {
 
     func createItem(itemContent: ProtobufableItemContentProtocol,
                     shareId: String) async throws -> SymmetricallyEncryptedItem {
-        PPLogger.shared?.log("Creating item for share \(shareId)")
+        logger.trace("Creating item for share \(shareId)")
         let request = try await createItemRequest(itemContent: itemContent, shareId: shareId)
         let createdItemRevision = try await remoteItemRevisionDatasource.createItem(shareId: shareId,
                                                                                     request: request)
-        PPLogger.shared?.log("Saving newly created item \(createdItemRevision.itemID) to local database")
+        logger.trace("Saving newly created item \(createdItemRevision.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision, shareId: shareId)
         try await localItemDatasoure.upsertItems([encryptedItem])
-        PPLogger.shared?.log("Saved item \(createdItemRevision.itemID) to local database")
+        logger.trace("Saved item \(createdItemRevision.itemID) to local database")
 
         let newCredentials = try getCredentials(from: [encryptedItem], state: .active)
         delegate?.itemRepositoryHasNewCredentials(newCredentials)
-        PPLogger.shared?.log("Delegated \(newCredentials.count) new credentials")
+        logger.trace("Delegated \(newCredentials.count) new credentials")
 
         return encryptedItem
     }
@@ -167,23 +168,23 @@ public extension ItemRepositoryProtocol {
     func createAlias(info: AliasCreationInfo,
                      itemContent: ProtobufableItemContentProtocol,
                      shareId: String) async throws -> SymmetricallyEncryptedItem {
-        PPLogger.shared?.log("Creating alias item")
+        logger.trace("Creating alias item")
         let createItemRequest = try await createItemRequest(itemContent: itemContent, shareId: shareId)
         let createAliasRequest = CreateCustomAliasRequest(info: info,
                                                           item: createItemRequest)
         let createdItemRevision =
         try await remoteItemRevisionDatasource.createAlias(shareId: shareId,
                                                            request: createAliasRequest)
-        PPLogger.shared?.log("Saving newly created alias \(createdItemRevision.itemID) to local database")
+        logger.trace("Saving newly created alias \(createdItemRevision.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision, shareId: shareId)
         try await localItemDatasoure.upsertItems([encryptedItem])
-        PPLogger.shared?.log("Saved alias \(createdItemRevision.itemID) to local database")
+        logger.trace("Saved alias \(createdItemRevision.itemID) to local database")
         return encryptedItem
     }
 
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws {
         let count = items.count
-        PPLogger.shared?.log("Trashing \(count) items")
+        logger.trace("Trashing \(count) items")
 
         let itemsByShareId = Dictionary(grouping: items, by: { $0.shareId })
         for shareId in itemsByShareId.keys {
@@ -192,22 +193,22 @@ public extension ItemRepositoryProtocol {
             let modifiedItems =
             try await remoteItemRevisionDatasource.trashItemRevisions(items,
                                                                       shareId: shareId)
-            PPLogger.shared?.log("Finished trashing remotely \(items.count) items for share \(shareId)")
+            logger.trace("Finished trashing remotely \(items.count) items for share \(shareId)")
             try await localItemDatasoure.upsertItems(encryptedItems,
                                                      modifiedItems: modifiedItems)
-            PPLogger.shared?.log("Finished trashing locallly \(items.count) items for share \(shareId)")
+            logger.trace("Finished trashing locallly \(items.count) items for share \(shareId)")
         }
 
-        PPLogger.shared?.log("Extracting deleted credentials from \(items.count) deleted items")
+        logger.trace("Extracting deleted credentials from \(items.count) deleted items")
         let deletedCredentials = try getCredentials(from: items, state: .active)
         delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
-        PPLogger.shared?.log("Delegated \(deletedCredentials.count) deleted credentials")
+        logger.trace("Delegated \(deletedCredentials.count) deleted credentials")
     }
 
     func deleteAlias(email: String) async throws {
-        PPLogger.shared?.log("Deleting alias item \(email)")
+        logger.trace("Deleting alias item \(email)")
         guard let item = try await localItemDatasoure.getAliasItem(email: email) else {
-            PPLogger.shared?.log("Failed to delete alias item. No alias item found for \(email)")
+            logger.trace("Failed to delete alias item. No alias item found for \(email)")
             return
         }
         try await deleteItems([item], skipTrash: true)
@@ -215,7 +216,7 @@ public extension ItemRepositoryProtocol {
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws {
         let count = items.count
-        PPLogger.shared?.log("Untrashing \(count) items")
+        logger.trace("Untrashing \(count) items")
 
         let itemsByShareId = Dictionary(grouping: items, by: { $0.shareId })
         for shareId in itemsByShareId.keys {
@@ -224,21 +225,21 @@ public extension ItemRepositoryProtocol {
             let modifiedItems =
             try await remoteItemRevisionDatasource.untrashItemRevisions(items,
                                                                         shareId: shareId)
-            PPLogger.shared?.log("Finished untrashing remotely \(items.count) items for share \(shareId)")
+            logger.trace("Finished untrashing remotely \(items.count) items for share \(shareId)")
             try await localItemDatasoure.upsertItems(encryptedItems,
                                                      modifiedItems: modifiedItems)
-            PPLogger.shared?.log("Finished untrashing locallly \(items.count) items for share \(shareId)")
+            logger.trace("Finished untrashing locallly \(items.count) items for share \(shareId)")
         }
 
-        PPLogger.shared?.log("Extracting new credentials from \(items.count) untrashed items")
+        logger.trace("Extracting new credentials from \(items.count) untrashed items")
         let newCredentials = try getCredentials(from: items, state: .trashed)
         delegate?.itemRepositoryHasNewCredentials(newCredentials)
-        PPLogger.shared?.log("Delegated \(newCredentials.count) new credentials")
+        logger.trace("Delegated \(newCredentials.count) new credentials")
     }
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem], skipTrash: Bool) async throws {
         let count = items.count
-        PPLogger.shared?.log("Deleting \(count) items")
+        logger.trace("Deleting \(count) items")
 
         let itemsByShareId = Dictionary(grouping: items, by: { $0.shareId })
         for shareId in itemsByShareId.keys {
@@ -247,9 +248,9 @@ public extension ItemRepositoryProtocol {
             try await remoteItemRevisionDatasource.deleteItemRevisions(items,
                                                                        shareId: shareId,
                                                                        skipTrash: skipTrash)
-            PPLogger.shared?.log("Finished deleting remotely \(items.count) items for share \(shareId)")
+            logger.trace("Finished deleting remotely \(items.count) items for share \(shareId)")
             try await localItemDatasoure.deleteItems(encryptedItems)
-            PPLogger.shared?.log("Finished deleting locallly \(items.count) items for share \(shareId)")
+            logger.trace("Finished deleting locallly \(items.count) items for share \(shareId)")
         }
     }
 
@@ -261,7 +262,7 @@ public extension ItemRepositoryProtocol {
                     newItemContent: ProtobufableItemContentProtocol,
                     shareId: String) async throws {
         let itemId = oldItem.itemID
-        PPLogger.shared?.log("Updating item \(itemId) for share \(shareId)")
+        logger.trace("Updating item \(itemId) for share \(shareId)")
         let encryptedOldItemContentData = try await localItemDatasoure.getItem(shareId: shareId, itemId: itemId)
         let decryptedOldItemContentData =
         try encryptedOldItemContentData?.getDecryptedItemContent(symmetricKey: symmetricKey)
@@ -277,10 +278,10 @@ public extension ItemRepositoryProtocol {
         try await remoteItemRevisionDatasource.updateItem(shareId: shareId,
                                                           itemId: itemId,
                                                           request: request)
-        PPLogger.shared?.log("Finished updating remotely item \(itemId) for share \(shareId)")
+        logger.trace("Finished updating remotely item \(itemId) for share \(shareId)")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision, shareId: shareId)
         try await localItemDatasoure.upsertItems([encryptedItem])
-        PPLogger.shared?.log("Finished updating locally item \(itemId) for share \(shareId)")
+        logger.trace("Finished updating locally item \(itemId) for share \(shareId)")
 
         if case let .login(oldUsername, _, oldUrls) = decryptedOldItemContentData?.contentData,
            case let .login(newUsername, _, newUrls) = newItemContent.contentData {
@@ -299,7 +300,7 @@ public extension ItemRepositoryProtocol {
             }
             delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
             delegate?.itemRepositoryHasNewCredentials(newCredentials)
-            PPLogger.shared?.log("Delegated updated credential")
+            logger.trace("Delegated updated credential")
         }
     }
 
@@ -311,25 +312,25 @@ public extension ItemRepositoryProtocol {
     }
 
     func getActiveLogInItems(forceRefresh: Bool) async throws -> [SymmetricallyEncryptedItem] {
-        PPLogger.shared?.log("Getting active log in items for all shares")
+        logger.trace("Getting active log in items for all shares")
         let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
         var allLogInItems = [SymmetricallyEncryptedItem]()
         for share in shares {
             if forceRefresh {
-                PPLogger.shared?.log("Forcing refresh items for share \(share.shareID)")
+                logger.trace("Forcing refresh items for share \(share.shareID)")
                 _ = try await remoteItemRevisionDatasource.getItemRevisions(shareId: share.shareID)
             }
-            PPLogger.shared?.log("Getting active log in items for share \(share.shareID)")
+            logger.trace("Getting active log in items for share \(share.shareID)")
             let logInItems = try await localItemDatasoure.getActiveLogInItems(shareId: share.shareID)
-            PPLogger.shared?.log("Found \(logInItems.count) active log in items for share \(share.shareID)")
+            logger.trace("Found \(logInItems.count) active log in items for share \(share.shareID)")
             allLogInItems.append(contentsOf: logInItems)
         }
-        PPLogger.shared?.log("Found \(allLogInItems.count) active log in items for all shares")
+        logger.trace("Found \(allLogInItems.count) active log in items for all shares")
         return allLogInItems
     }
 
     func update(item: SymmetricallyEncryptedItem, lastUseTime: TimeInterval) async throws {
-        PPLogger.shared?.log("Updating item's (\(item.item.itemID) lastUsedTime \(lastUseTime)")
+        logger.trace("Updating lastUsedTime \(item.debugInformation)")
         let updatedItem =
         try await remoteItemRevisionDatasource.updateLastUseTime(shareId: item.shareId,
                                                                  itemId: item.itemId,
@@ -337,36 +338,36 @@ public extension ItemRepositoryProtocol {
         let encryptedUpdatedItem = try await symmetricallyEncrypt(itemRevision: updatedItem,
                                                                   shareId: item.shareId)
         try await localItemDatasoure.upsertItems([encryptedUpdatedItem])
-        PPLogger.shared?.log("Updated item's (\(item.item.itemID) lastUsedTime \(lastUseTime)")
+        logger.trace("Updated lastUsedTime \(item.debugInformation)")
     }
 }
 
 // MARK: - Private util functions
 private extension ItemRepositoryProtocol {
     func refreshItems(shareId: String) async throws {
-        PPLogger.shared?.log("Getting items from remote")
+        logger.trace("Getting items from remote")
         let itemRevisions = try await remoteItemRevisionDatasource.getItemRevisions(shareId: shareId)
-        PPLogger.shared?.log("Get \(itemRevisions.count) items from remote")
+        logger.trace("Get \(itemRevisions.count) items from remote")
 
-        PPLogger.shared?.log("Saving \(itemRevisions.count) remote item revisions to local database")
+        logger.trace("Saving \(itemRevisions.count) remote item revisions to local database")
         var encryptedItems = [SymmetricallyEncryptedItem]()
         for itemRevision in itemRevisions {
             let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision, shareId: shareId)
             encryptedItems.append(encrypedItem)
         }
         try await localItemDatasoure.upsertItems(encryptedItems)
-        PPLogger.shared?.log("Saved \(encryptedItems.count) remote item revisions to local database")
+        logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
 
-        PPLogger.shared?.log("Refreshing last event ID for share \(shareId)")
+        logger.trace("Refreshing last event ID for share \(shareId)")
         try await shareEventIDRepository.getLastEventId(forceRefresh: true,
                                                         userId: userData.user.ID,
                                                         shareId: shareId)
-        PPLogger.shared?.log("Refreshed last event ID for share \(shareId)")
+        logger.trace("Refreshed last event ID for share \(shareId)")
 
-        PPLogger.shared?.log("Extracting new credentials from \(encryptedItems.count) remote items")
+        logger.trace("Extracting new credentials from \(encryptedItems.count) remote items")
         let newCredentials = try getCredentials(from: encryptedItems, state: .active)
         delegate?.itemRepositoryHasNewCredentials(newCredentials)
-        PPLogger.shared?.log("Delegated \(newCredentials.count) new credentials")
+        logger.trace("Delegated \(newCredentials.count) new credentials")
     }
 
     func symmetricallyEncrypt(itemRevision: ItemRevision,
@@ -469,6 +470,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
     public let shareRepository: ShareRepositoryProtocol
     public let shareEventIDRepository: ShareEventIDRepositoryProtocol
     public let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
+    public let logger: Logger
     public weak var delegate: ItemRepositoryDelegate?
 
     public init(userData: UserData,
@@ -478,7 +480,8 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 publicKeyRepository: PublicKeyRepositoryProtocol,
                 shareRepository: ShareRepositoryProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
-                vaultItemKeysRepository: VaultItemKeysRepositoryProtocol) {
+                vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
+                logManager: LogManager) {
         self.userData = userData
         self.symmetricKey = symmetricKey
         self.localItemDatasoure = localItemDatasoure
@@ -487,29 +490,41 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.shareRepository = shareRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.vaultItemKeysRepository = vaultItemKeysRepository
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 
     public init(userData: UserData,
                 symmetricKey: SymmetricKey,
                 container: NSPersistentContainer,
-                apiService: APIService) {
+                apiService: APIService,
+                logManager: LogManager) {
         self.userData = userData
         self.symmetricKey = symmetricKey
         let authCredential = userData.credential
         self.localItemDatasoure = LocalItemDatasource(container: container)
         self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(authCredential: authCredential,
                                                                          apiService: apiService)
-        self.publicKeyRepository = PublicKeyRepository(container: container, apiService: apiService)
+        self.publicKeyRepository = PublicKeyRepository(container: container,
+                                                       apiService: apiService,
+                                                       logManager: logManager)
         self.shareRepository = ShareRepository(userData: userData,
                                                container: container,
                                                authCredential: authCredential,
-                                               apiService: apiService)
+                                               apiService: apiService,
+                                               logManager: logManager)
         self.shareEventIDRepository = ShareEventIDRepository(container: container,
                                                              authCredential: authCredential,
-                                                             apiService: apiService)
+                                                             apiService: apiService,
+                                                             logManager: logManager)
         self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
                                                                authCredential: authCredential,
-                                                               apiService: apiService)
+                                                               apiService: apiService,
+                                                               logManager: logManager)
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 }
 

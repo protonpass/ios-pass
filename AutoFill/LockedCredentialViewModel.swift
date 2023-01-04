@@ -28,16 +28,23 @@ final class LockedCredentialViewModel: ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let credentialIdentity: ASPasswordCredentialIdentity
+    private let logger: Logger
+    let logManager: LogManager
 
     var onFailure: ((Error) -> Void)?
     var onSuccess: ((ASPasswordCredential, SymmetricallyEncryptedItem) -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey,
-         credentialIdentity: ASPasswordCredentialIdentity) {
+         credentialIdentity: ASPasswordCredentialIdentity,
+         logManager: LogManager) {
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
         self.credentialIdentity = credentialIdentity
+        self.logManager = logManager
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 
     func getAndReturnCredential() {
@@ -47,6 +54,7 @@ final class LockedCredentialViewModel: ObservableObject {
                     throw CredentialProviderError.emptyRecordIdentifier
                 }
                 let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
+                logger.trace("Loading credential \(ids.debugInformation)")
                 guard let item = try await self.itemRepository.getItem(shareId: ids.shareId,
                                                                        itemId: ids.itemId) else {
                     throw CredentialsViewModelError.itemNotFound(shareId: ids.shareId,
@@ -58,10 +66,12 @@ final class LockedCredentialViewModel: ObservableObject {
                 case let .login(username, password, _):
                     let credential = ASPasswordCredential(user: username, password: password)
                     onSuccess?(credential, item)
+                    logger.info("Loaded and returned credential \(ids.debugInformation)")
                 default:
                     throw CredentialsViewModelError.notLogInItem
                 }
             } catch {
+                logger.error(error)
                 onFailure?(error)
             }
         }
