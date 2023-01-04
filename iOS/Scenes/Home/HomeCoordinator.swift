@@ -141,7 +141,8 @@ final class HomeCoordinator: DeinitPrintable {
 
         let shareEventIDRepository = ShareEventIDRepository(container: container,
                                                             authCredential: authCredential,
-                                                            apiService: apiService)
+                                                            apiService: apiService,
+                                                            logManager: logManager)
         let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(authCredential: authCredential,
                                                                     apiService: apiService)
         self.eventLoop = .init(userId: userId,
