@@ -66,6 +66,7 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
                 let createdShare =
                 try await shareRepository.createVault(request: createVaultRequest)
                 delegate?.createVaultViewModelDidCreateShare(createdShare)
+                logger.info("Created vault \(createdShare.vaultID) with share ID \(createdShare.shareID)")
             } catch {
                 logger.error(error)
                 delegate?.createVaultViewModelDidFail(error)

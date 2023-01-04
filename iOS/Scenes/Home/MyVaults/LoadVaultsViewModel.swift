@@ -49,11 +49,13 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     func fetchVaults(forceRefresh: Bool) {
         Task { @MainActor in
             do {
+                logger.info("Fetching vaults forceRefresh \(forceRefresh)")
                 error = nil
                 let vaults = try await self.fetchVaultsTask(forceRefresh: forceRefresh).value
                 if vaults.isEmpty {
                     try await createDefaultVaultTask.value
                     fetchVaults(forceRefresh: false)
+                    logger.info("No local vaults found. Created default vault.")
                 } else {
                     vaultSelection.update(vaults: vaults)
                 }

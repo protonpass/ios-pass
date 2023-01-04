@@ -168,13 +168,16 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         Task { @MainActor in
             defer { delegate?.settingsViewModelWantsToHideLoadingHud() }
             do {
+                logger.trace("Updating credential database QuickTypeBar \(quickTypeBar)")
                 delegate?.settingsViewModelWantsToShowLoadingHud()
                 if quickTypeBar {
                     try await credentialManager.insertAllCredentials(from: itemRepository,
                                                                      symmetricKey: symmetricKey,
                                                                      forceRemoval: true)
+                    logger.info("Populated credential database QuickTypeBar \(quickTypeBar)")
                 } else {
                     try await credentialManager.removeAllCredentials()
+                    logger.info("Nuked credential database QuickTypeBar \(quickTypeBar)")
                 }
                 preferences.quickTypeBar = quickTypeBar
             } catch {
@@ -220,6 +223,7 @@ extension SettingsViewModel {
         Task { @MainActor in
             defer { delegate?.settingsViewModelWantsToHideLoadingHud() }
             do {
+                logger.info("Began full sync")
                 delegate?.settingsViewModelWantsToShowLoadingHud()
                 /// Does not matter getting `active` or `trashed` items. We only want to force refresh.
                 _ = try await itemRepository.getItems(forceRefresh: true, state: .active)

@@ -98,12 +98,14 @@ final class TrashViewModel: DeinitPrintable, PullToRefreshable, ObservableObject
     func fetchAllTrashedItems() {
         Task { @MainActor in
             do {
+                logger.trace("Loading all trashed items")
                 if case .error = state {
                     state = .loading
                 }
 
                 items = try await getTrashedItemsTask().value
                 state = .loaded
+                logger.info("Loaded \(items.count) trashed items")
             } catch {
                 logger.error(error)
                 state = .error(error)
@@ -122,10 +124,12 @@ extension TrashViewModel {
         Task { @MainActor in
             defer { delegate?.trashViewModelWantsToHideLoadingHud() }
             do {
+                logger.trace("Restoring all trashed items")
                 delegate?.trashViewModelWantsToShowLoadingHud()
                 let count = try await restoreAllTask().value
                 items.removeAll()
                 delegate?.trashViewModelDidRestoreAllItems(count: count)
+                logger.info("Restored all trashed items")
             } catch {
                 logger.error(error)
                 delegate?.trashViewModelDidFail(error)
@@ -137,10 +141,12 @@ extension TrashViewModel {
         Task { @MainActor in
             defer { delegate?.trashViewModelWantsToHideLoadingHud() }
             do {
+                logger.trace("Emptying trash")
                 delegate?.trashViewModelWantsToShowLoadingHud()
                 try await deleteAllTask().value
                 items.removeAll()
                 delegate?.trashViewModelDidEmptyTrash()
+                logger.info("Emptied trash")
             } catch {
                 logger.error(error)
                 delegate?.trashViewModelDidFail(error)
@@ -153,6 +159,7 @@ extension TrashViewModel {
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 delegate?.trashViewModelWantsShowItemDetail(itemContent)
+                logger.info("Want to view detail \(item.debugInformation)")
             } catch {
                 logger.error(error)
                 delegate?.trashViewModelDidFail(error)
@@ -164,10 +171,12 @@ extension TrashViewModel {
         Task { @MainActor in
             defer { delegate?.trashViewModelWantsToHideLoadingHud() }
             do {
+                logger.trace("Restoring \(item.debugInformation)")
                 delegate?.trashViewModelWantsToShowLoadingHud()
                 try await restoreItemTask(item).value
                 remove(item)
                 delegate?.trashViewModelDidRestoreItem(item, type: item.type)
+                logger.info("Restored \(item.debugInformation)")
             } catch {
                 logger.error(error)
                 delegate?.trashViewModelDidFail(error)
@@ -179,10 +188,12 @@ extension TrashViewModel {
         Task { @MainActor in
             defer { delegate?.trashViewModelWantsToHideLoadingHud() }
             do {
+                logger.trace("Deleting \(item.debugInformation)")
                 delegate?.trashViewModelWantsToShowLoadingHud()
                 try await deleteItemTask(item).value
                 remove(item)
                 delegate?.trashViewModelDidDeleteItem(item.type)
+                logger.info("Deleted \(item.debugInformation)")
             } catch {
                 logger.error(error)
                 delegate?.trashViewModelDidFail(error)

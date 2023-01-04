@@ -129,6 +129,7 @@ public final class CredentialProviderCoordinator {
         } else {
             Task {
                 do {
+                    logger.trace("Autofilling from QuickType bar")
                     let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
                     if let encryptedItem = try await itemRepository.getItem(shareId: ids.shareId,
                                                                             itemId: ids.itemId) {
@@ -139,8 +140,11 @@ public final class CredentialProviderCoordinator {
                                      encryptedItem: encryptedItem,
                                      itemRepository: itemRepository,
                                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
+                        } else {
+                            logger.error("Failed to autofill. Not log in item.")
                         }
                     } else {
+                        logger.warning("Failed to autofill. Item not found.")
                         cancel(errorCode: .failed)
                     }
                 } catch {
@@ -182,13 +186,16 @@ public final class CredentialProviderCoordinator {
             Task {
                 defer { cancel(errorCode: .failed) }
                 do {
+                    logger.trace("Authenticaion failed. Removing all credentials")
                     sessionData = nil
                     try await credentialManager.removeAllCredentials()
+                    logger.info("Removed all credentials after authentication failure")
                 } catch {
                     logger.error(error)
                 }
             }
         default:
+            logger.error(error)
             alert(error: error)
         }
     }

@@ -100,7 +100,7 @@ final class LogFormatterTests: XCTestCase {
                              column: 1)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry, "2023-01-03T08:01:39+0000 | 🟣 TRACE | me.proton.mail | mail_composer | ComposerViewController.composeEmail():45:1 - Automatically saved email")
+        XCTAssertEqual(formattedEntry, "2023-01-03T08:01:39+0000 | ⚫ TRACE | me.proton.mail | mail_composer | ComposerViewController.composeEmail():45:1 - Automatically saved email")
     }
 
     func testDefaultFormatterWithDebugEntry() {
@@ -116,7 +116,7 @@ final class LogFormatterTests: XCTestCase {
                              column: 190)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry, "2023-01-03T08:01:39+0000 | ⚫ DEBUG | me.proton.mail | mail_composer | ComposerViewController.composeEmail():56:190 - Email content")
+        XCTAssertEqual(formattedEntry, "2023-01-03T08:01:39+0000 | 🟣 DEBUG | me.proton.mail | mail_composer | ComposerViewController.composeEmail():56:190 - Email content")
     }
 
     func testStandardHtmlFormatter() {

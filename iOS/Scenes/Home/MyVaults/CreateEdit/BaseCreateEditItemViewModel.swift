@@ -142,6 +142,7 @@ class BaseCreateEditItemViewModel {
                                                  itemId: itemContent.item.itemID).value
                 try await trashItemTask(item: item).value
                 delegate?.createEditItemViewModelDidTrashItem(item, type: itemContentType())
+                logger.info("Trashed \(item.debugInformation)")
             } catch {
                 logger.error(error)
                 delegate?.createEditItemViewModelDidFail(error)
@@ -157,6 +158,7 @@ class BaseCreateEditItemViewModel {
             try await additionalCreate()
             let item = try await createItemTask(shareId: shareId).value
             delegate?.createEditItemViewModelDidCreateItem(item, type: itemContentType())
+            logger.info("Created \(item.debugInformation)")
         } catch {
             logger.error(error)
             delegate?.createEditItemViewModelDidFail(error)
@@ -171,6 +173,7 @@ class BaseCreateEditItemViewModel {
             isSaving = true
             let item = try await createAliasItemTask(shareId: shareId, info: info).value
             delegate?.createEditItemViewModelDidCreateItem(item, type: itemContentType())
+            logger.info("Created alias item \(item.debugInformation)")
         } catch {
             logger.error(error)
             delegate?.createEditItemViewModelDidFail(error)
@@ -194,6 +197,7 @@ class BaseCreateEditItemViewModel {
                                      newItemContent: newItemContentProtobuf,
                                      shareId: shareId).value
             delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
+            logger.info("Edited \(oldItem.debugInformation)")
         } catch {
             logger.error(error)
             delegate?.createEditItemViewModelDidFail(error)

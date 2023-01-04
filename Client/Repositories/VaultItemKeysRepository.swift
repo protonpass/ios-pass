@@ -46,21 +46,21 @@ public protocol VaultItemKeysRepositoryProtocol {
 
 public extension VaultItemKeysRepositoryProtocol {
     func getLatestVaultItemKeys(shareId: String, forceRefresh: Bool) async throws -> VaultItemKeys {
-        logger.info("Getting vault & item keys for share \(shareId)")
+        logger.trace("Getting vault & item keys for share \(shareId)")
         if forceRefresh {
-            logger.info("Force refresh vault & item keys for share \(shareId)")
+            logger.trace("Force refresh vault & item keys for share \(shareId)")
             try await refreshVaultItemKeys(shareId: shareId)
         }
 
         let vaultKeys = try await localVaultKeyDatasource.getVaultKeys(shareId: shareId)
         if vaultKeys.isEmpty {
-            logger.info("No vault key in local database for share \(shareId) => Fetch from remote")
+            logger.trace("No vault key in local database for share \(shareId) => Fetch from remote")
             try await refreshVaultItemKeys(shareId: shareId)
         }
 
         let itemKeys = try await localItemKeyDatasource.getItemKeys(shareId: shareId)
         if itemKeys.isEmpty {
-            logger.info("No item key in local database for share \(shareId) => Fetch from remote")
+            logger.trace("No item key in local database for share \(shareId) => Fetch from remote")
             try await refreshVaultItemKeys(shareId: shareId)
         }
 
@@ -102,17 +102,17 @@ public extension VaultItemKeysRepositoryProtocol {
     }
 
     private func refreshVaultItemKeys(shareId: String) async throws {
-        logger.info("Getting vault & item keys from remote")
+        logger.trace("Getting vault & item keys from remote")
         let (vaultKeys, itemKeys) = try await remoteVaultItemKeysDatasource.getVaultItemKeys(shareId: shareId)
-        logger.info("Got \(vaultKeys.count) vault keys & \(itemKeys.count) item keys from remote")
+        logger.trace("Got \(vaultKeys.count) vault keys & \(itemKeys.count) item keys from remote")
 
-        logger.info("Saving \(vaultKeys.count) vault keys local database")
+        logger.trace("Saving \(vaultKeys.count) vault keys local database")
         try await localVaultKeyDatasource.upsertVaultKeys(vaultKeys, shareId: shareId)
-        logger.info("Saved \(vaultKeys.count) vault keys to local database")
+        logger.trace("Saved \(vaultKeys.count) vault keys to local database")
 
-        logger.info("Saving \(itemKeys.count) item keys local database")
+        logger.trace("Saving \(itemKeys.count) item keys local database")
         try await localItemKeyDatasource.upsertItemKeys(itemKeys, shareId: shareId)
-        logger.info("Saved \(itemKeys.count) item keys to local database")
+        logger.trace("Saved \(itemKeys.count) item keys to local database")
     }
 }
 

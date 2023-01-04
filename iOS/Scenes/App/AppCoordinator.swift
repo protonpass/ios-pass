@@ -207,6 +207,7 @@ final class AppCoordinator {
     }
 
     private func wipeAllData() {
+        logger.info("Wiping all data")
         keymaker.wipeMainKey()
         sessionData = nil
         preferences.reset()
@@ -215,6 +216,7 @@ final class AppCoordinator {
             // because we don't want a failed operation prevents others from running
             do {
                 try await credentialManager.removeAllCredentials()
+                logger.info("Removed all credentials")
             } catch {
                 logger.error(error)
             }

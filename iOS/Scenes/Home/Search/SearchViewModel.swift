@@ -116,8 +116,8 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     @MainActor
     private func loadItems() async {
         do {
+            logger.trace("Loading items for search")
             state = .initializing
-            print("Initializing SearchViewModel")
             let items = try await itemRepository.getItems(forceRefresh: false, state: .active)
             let getVaultName: (String) -> String = { shareId in
                 let vault = self.vaultSelection.vaults.first { $0.shareId == shareId }
@@ -126,7 +126,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
             self.items = try items.map { try SearchableItem(symmetricallyEncryptedItem: $0,
                                                             vaultName: getVaultName($0.shareId)) }
             state = .clean
-            print("Initialized SearchViewModel")
+            logger.info("Loaded items for search")
         } catch {
             logger.error(error)
             state = .error(error)
@@ -141,9 +141,12 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
         lastTask?.cancel()
         lastTask = Task { @MainActor in
             do {
+                let hashedTerm = term.sha256Hashed()
+                logger.trace("Searching for \"\(hashedTerm)\"")
                 state = .searching
                 results = try items.result(for: term, symmetricKey: symmetricKey)
                 state = .results
+                logger.trace("Get \(results.count) result(s) for \"\(hashedTerm)\"")
             } catch {
                 logger.error(error)
                 state = .error(error)
@@ -192,6 +195,7 @@ extension SearchViewModel {
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 delegate?.searchViewModelWantsToShowItemDetail(itemContent)
+                logger.info("Want to view detail \(itemContent.debugInformation)")
             } catch {
                 logger.error(error)
                 delegate?.searchViewModelDidFail(error)
@@ -204,6 +208,7 @@ extension SearchViewModel {
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 delegate?.searchViewModelWantsToEditItem(itemContent)
+                logger.info("Want to edit \(itemContent.debugInformation)")
             } catch {
                 logger.error(error)
                 delegate?.searchViewModelDidFail(error)
@@ -219,6 +224,7 @@ extension SearchViewModel {
                 if case .note = itemContent.contentData {
                     delegate?.searchViewModelWantsToCopy(text: itemContent.note,
                                                          bannerMessage: "Note copied")
+                    logger.info("Want to copy note \(itemContent.debugInformation)")
                 }
             } catch {
                 logger.error(error)
@@ -235,6 +241,7 @@ extension SearchViewModel {
                 if case let .login(username, _, _) = itemContent.contentData {
                     delegate?.searchViewModelWantsToCopy(text: username,
                                                          bannerMessage: "Username copied")
+                    logger.info("Want to copy username \(itemContent.debugInformation)")
                 }
             } catch {
                 logger.error(error)
@@ -251,6 +258,7 @@ extension SearchViewModel {
                 if case let .login(_, password, _) = itemContent.contentData {
                     delegate?.searchViewModelWantsToCopy(text: password,
                                                          bannerMessage: "Password copied")
+                    logger.info("Want to copy password \(itemContent.debugInformation)")
                 }
             } catch {
                 logger.error(error)
@@ -267,6 +275,7 @@ extension SearchViewModel {
                 if let emailAddress = item.item.aliasEmail {
                     delegate?.searchViewModelWantsToCopy(text: emailAddress,
                                                          bannerMessage: "Email address copied")
+                    logger.info("Want to copy email address \(item.debugInformation)")
                 }
             } catch {
                 logger.error(error)
@@ -283,6 +292,7 @@ extension SearchViewModel {
                 try await trashItemTask(for: item).value
                 await refreshResults()
                 delegate?.searchViewModelDidTrashItem(item, type: item.type)
+                logger.info("Trashed \(item.debugInformation)")
             } catch {
                 logger.error(error)
                 delegate?.searchViewModelDidFail(error)

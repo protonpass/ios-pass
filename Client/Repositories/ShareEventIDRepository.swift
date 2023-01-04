@@ -37,14 +37,14 @@ public protocol ShareEventIDRepositoryProtocol {
 public extension ShareEventIDRepositoryProtocol {
     func getLastEventId(forceRefresh: Bool, userId: String, shareId: String) async throws -> String {
         if forceRefresh {
-            logger.info("Force refreshing last event id of share \(shareId) of user \(userId)")
+            logger.trace("Force refreshing last event id of share \(shareId) of user \(userId)")
             return try await fetchLastEventIdFromRemoteAndSaveToLocal(userId: userId, shareId: shareId)
         }
-        logger.info("Getting last event id of share \(shareId) of user \(userId)")
+        logger.trace("Getting last event id of share \(shareId) of user \(userId)")
         if let localLastEventId =
             try await localShareEventIDDatasource.getLastEventId(userId: userId,
                                                                  shareId: shareId) {
-            logger.info("Found local last event id of share \(shareId) of user \(userId)")
+            logger.trace("Found local last event id of share \(shareId) of user \(userId)")
             return localLastEventId
         }
         return try await fetchLastEventIdFromRemoteAndSaveToLocal(userId: userId, shareId: shareId)
@@ -59,10 +59,10 @@ public extension ShareEventIDRepositoryProtocol {
 
 extension ShareEventIDRepositoryProtocol {
     func fetchLastEventIdFromRemoteAndSaveToLocal(userId: String, shareId: String) async throws -> String {
-        logger.info("Getting remote last event id of share \(shareId) of user \(userId)")
+        logger.trace("Getting remote last event id of share \(shareId) of user \(userId)")
         let newLastEventId =
         try await remoteShareEventIDDatasource.getLastEventId(shareId: shareId)
-        logger.info("Upserting remote last event id of share \(shareId) of user \(userId)")
+        logger.trace("Upserting remote last event id of share \(shareId) of user \(userId)")
         try await localShareEventIDDatasource.upsertLastEventId(userId: userId,
                                                                 shareId: shareId,
                                                                 lastEventId: newLastEventId)

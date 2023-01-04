@@ -61,6 +61,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
                                                               itemId: itemContent.item.itemID).value
                 aliasEmail = alias.email
                 mailboxes = alias.mailboxes
+                logger.info("Get alias detail successfully \(itemContent.debugInformation)")
             } catch {
                 logger.error(error)
                 self.error = error

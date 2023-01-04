@@ -131,14 +131,18 @@ final class CredentialsViewModel: ObservableObject {
         lastTask?.cancel()
         lastTask = Task { @MainActor in
             do {
+                let hashedTerm = term.sha256Hashed()
+                logger.trace("Searching for term \(hashedTerm)")
                 state = .loaded(fetchResult, .searching)
                 let searchResults = try fetchResult.searchableItems.result(for: term,
                                                                            symmetricKey: symmetricKey)
                 if searchResults.isEmpty {
                     state = .loaded(fetchResult, .noSearchResults)
+                    logger.trace("No results for term \(hashedTerm)")
                 } else {
                     let resultDictionary = Dictionary(grouping: searchResults, by: { $0.vaultName })
                     state = .loaded(fetchResult, .searchResults(resultDictionary))
+                    logger.trace("Found results for term \(hashedTerm)")
                 }
             } catch {
                 logger.error(error)
@@ -157,12 +161,14 @@ extension CredentialsViewModel {
     func fetchItems() {
         Task { @MainActor in
             do {
+                logger.trace("Loading log in items")
                 if case .error = state {
                     state = .loading
                 }
 
                 let result = try await fetchCredentialsTask().value
                 state = .loaded(result, .idle)
+                logger.info("Loaded log in items")
             } catch {
                 logger.error(error)
                 state = .error(error)
@@ -175,6 +181,7 @@ extension CredentialsViewModel {
             defer { delegate?.credentialsViewModelWantsToHideLoadingHud() }
             delegate?.credentialsViewModelWantsToShowLoadingHud()
             do {
+                logger.trace("Associate and autofilling \(item.debugInformation)")
                 let encryptedItem = try await getItemTask(item: item).value
                 let oldContent = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
                 guard case let .login(oldUsername, oldPassword, oldUrls) = oldContent.contentData,
@@ -191,6 +198,7 @@ extension CredentialsViewModel {
                                                     newItemContent: newContent,
                                                     shareId: encryptedItem.shareId)
                 select(item: item)
+                logger.info("Associate and autofill successfully \(item.debugInformation)")
             } catch {
                 logger.error(error)
                 state = .error(error)
@@ -201,10 +209,12 @@ extension CredentialsViewModel {
     func select(item: ItemIdentifiable) {
         Task { @MainActor in
             do {
+                logger.trace("Selecting \(item.debugInformation)")
                 let (credential, item) = try await getCredentialTask(for: item).value
                 delegate?.credentialsViewModelDidSelect(credential: credential,
                                                         item: item,
                                                         serviceIdentifiers: serviceIdentifiers)
+                logger.info("Selected \(item.debugInformation)")
             } catch {
                 logger.error(error)
                 state = .error(error)

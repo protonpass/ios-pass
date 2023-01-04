@@ -123,14 +123,13 @@ public extension CredentialManagerProtocol {
     }
 
     func removeAllCredentials() async throws {
-        logger.info("Trying to remove all credentials.")
+        logger.trace("Removing all credentials.")
         let state = await store.state()
         guard state.isEnabled else {
             logger.info("AutoFill is not enabled. Skipped removing all credentials.")
             return
         }
 
-        logger.info("Removing all credentials.")
         try await store.removeAllCredentialIdentities()
         logger.info("Removed all credentials.")
     }
@@ -153,7 +152,9 @@ extension CredentialManager: ItemRepositoryDelegate {
     public func itemRepositoryHasNewCredentials(_ credentials: [AutoFillCredential]) {
         Task {
             do {
+                logger.trace("Inserting \(credentials.count) new credentials")
                 try await insert(credentials: credentials)
+                logger.trace("Inserted \(credentials.count) new credentials")
             } catch {
                 logger.error(error)
             }
@@ -163,7 +164,9 @@ extension CredentialManager: ItemRepositoryDelegate {
     public func itemRepositoryDeletedCredentials(_ credentials: [AutoFillCredential]) {
         Task {
             do {
+                logger.trace("Removing \(credentials.count) deleted credentials")
                 try await remove(credentials: credentials)
+                logger.info("Removed \(credentials.count) deleted credentials")
             } catch {
                 logger.error(error)
             }

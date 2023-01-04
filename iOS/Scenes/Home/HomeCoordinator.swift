@@ -201,6 +201,7 @@ private extension HomeCoordinator {
                         try await credentialManager.insertAllCredentials(from: itemRepository,
                                                                          symmetricKey: symmetricKey,
                                                                          forceRemoval: false)
+                        logger.info("App goes back to foreground. Inserted all credentials.")
                     } catch {
                         logger.error(error)
                     }

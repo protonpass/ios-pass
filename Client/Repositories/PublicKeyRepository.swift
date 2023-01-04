@@ -54,24 +54,24 @@ public struct PublicKeyRepository: PublicKeyRepositoryProtocol {
     }
 
     public func getPublicKeys(email: String) async throws -> [PublicKey] {
-        logger.info("Getting public keys for email \(email)")
+        logger.trace("Getting public keys for email \(email)")
         let localPublicKeys = try await localPublicKeyDatasource.getPublicKeys(email: email)
 
         if localPublicKeys.isEmpty {
-            logger.info("No public keys in local for email \(email)")
-            logger.info("Fetching public keys from remote for email \(email)")
+            logger.trace("No public keys in local for email \(email)")
+            logger.trace("Fetching public keys from remote for email \(email)")
             let remotePublicKeys =
             try await remotePublicKeyDatasource.getPublicKeys(email: email)
 
             let count = remotePublicKeys.count
-            logger.info("Fetched \(count) public keys from remote for email \(email)")
+            logger.trace("Fetched \(count) public keys from remote for email \(email)")
             try await localPublicKeyDatasource.insertPublicKeys(remotePublicKeys,
                                                                 email: email)
-            logger.info("Inserted \(count) remote public keys to local for email \(email)")
+            logger.trace("Inserted \(count) remote public keys to local for email \(email)")
             return remotePublicKeys
         }
 
-        logger.info("Found \(localPublicKeys.count) public keys in local for email \(email)")
+        logger.trace("Found \(localPublicKeys.count) public keys in local for email \(email)")
         return localPublicKeys
     }
 }
