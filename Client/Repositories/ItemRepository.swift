@@ -506,7 +506,9 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.localItemDatasoure = LocalItemDatasource(container: container)
         self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(authCredential: authCredential,
                                                                          apiService: apiService)
-        self.publicKeyRepository = PublicKeyRepository(container: container, apiService: apiService)
+        self.publicKeyRepository = PublicKeyRepository(container: container,
+                                                       apiService: apiService,
+                                                       logManager: logManager)
         self.shareRepository = ShareRepository(userData: userData,
                                                container: container,
                                                authCredential: authCredential,

@@ -84,7 +84,7 @@ public final class KeychainStorage<T: Codable> {
                 return try JSONDecoder().decode(T.self, from: unlockedData)
             } catch {
                 // Consider that the cypherdata is lost => remove it
-                PPLogger.shared?.log(error)
+                logger?.error(error)
                 wipeValue()
                 return defaultValue
             }
@@ -114,7 +114,7 @@ public final class KeychainStorage<T: Codable> {
                     let cypherdata = lockedData.encryptedValue
                     keychain.set(cypherdata, forKey: keyRawValue)
                 } catch {
-                    PPLogger.shared?.log(error)
+                    logger?.error(error)
                 }
             } else {
                 keychain.remove(forKey: keyRawValue)

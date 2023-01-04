@@ -114,7 +114,8 @@ final class HomeCoordinator: DeinitPrintable {
         self.itemRepository = itemRepository
         self.aliasRepository = AliasRepository(authCredential: authCredential, apiService: apiService)
         self.publicKeyRepository = PublicKeyRepository(container: container,
-                                                       apiService: apiService)
+                                                       apiService: apiService,
+                                                       logManager: logManager)
         let vaultItemKeysRepository = VaultItemKeysRepository(container: container,
                                                               authCredential: authCredential,
                                                               apiService: apiService)
