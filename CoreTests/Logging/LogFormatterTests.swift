@@ -152,6 +152,6 @@ final class LogFormatterTests: XCTestCase {
                              column: 190)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry, "2023-01-03T08:01:39+0000 | ⚫ DEBUG | <span style=\"color:#FF6F00\">me.proton.mail</span> | <span style=\"color:#AEEA00\">mail_composer</span> | ComposerViewController.composeEmail():56:190 - Email content")
+        XCTAssertEqual(formattedEntry, "2023-01-03T08:01:39+0000 | 🟣 DEBUG | <span style=\"color:#FF6F00\">me.proton.mail</span> | <span style=\"color:#AEEA00\">mail_composer</span> | ComposerViewController.composeEmail():56:190 - Email content")
     }
 }

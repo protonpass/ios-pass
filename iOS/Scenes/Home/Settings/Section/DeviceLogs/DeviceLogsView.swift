@@ -40,14 +40,16 @@ struct DeviceLogsView: View {
                 }
             }
             .navigationTitle(viewModel.type.title)
+            .navigationBarTitleDisplayMode(.inline)
         }
         .navigationViewStyle(.stack)
     }
 
     private func contentView(_ logs: String) -> some View {
-        SwiftUITextView(text: .constant(logs))
+        SwiftUITextView(text: .constant(logs),
+                        textContainerInset: .init(top: 0, left: 12, bottom: 12, right: 12))
             .toolbar { toolbarContent }
-            .edgesIgnoringSafeArea(.bottom)
+            .edgesIgnoringSafeArea(.all)
     }
 
     @ToolbarContentBuilder

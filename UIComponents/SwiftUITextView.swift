@@ -22,19 +22,23 @@ import SwiftUI
 
 public struct SwiftUITextView: UIViewRepresentable {
     @Binding var text: String
-    var backgroundColor: UIColor = .clear
+    let textContainerInset: UIEdgeInsets
+    let backgroundColor: UIColor
     let onEditingChange: ((Bool) -> Void)?
 
     public init(text: Binding<String>,
+                textContainerInset: UIEdgeInsets = .zero,
                 backgroundColor: UIColor = .clear,
                 onEditingChange: ((Bool) -> Void)? = nil) {
         self._text = text
+        self.textContainerInset = textContainerInset
         self.backgroundColor = backgroundColor
         self.onEditingChange = onEditingChange
     }
 
     public func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
+        textView.textContainerInset = textContainerInset
         textView.backgroundColor = backgroundColor
         textView.font = .preferredFont(forTextStyle: .body)
         textView.delegate = context.coordinator
