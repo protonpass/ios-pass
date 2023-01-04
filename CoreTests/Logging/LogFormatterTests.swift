@@ -36,7 +36,7 @@ final class LogFormatterTests: XCTestCase {
                              column: 456)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry, "2023-01-03T10:16:35+0100 | 🔴 FATAL | me.proton.pass.ios | host_application | AppDelegate.logIn():123:456 - Fatal error occurred")
+        XCTAssertEqual(formattedEntry, "2023-01-03T09:16:35+0000 | 🔴 FATAL | me.proton.pass.ios | host_application | AppDelegate.logIn():123:456 - Fatal error occurred")
     }
 
     func testDefaultFormatterWithErrorEntry() {
@@ -52,7 +52,7 @@ final class LogFormatterTests: XCTestCase {
                              column: 39)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry, "2023-01-03T12:27:54+0100 | 🔴 ERROR | me.proton.pass.ios | host_application | SignUpViewController.signUp():82:39 - Failed to sign up")
+        XCTAssertEqual(formattedEntry, "2023-01-03T11:27:54+0000 | 🔴 ERROR | me.proton.pass.ios | host_application | SignUpViewController.signUp():82:39 - Failed to sign up")
     }
 
     func testDefaultFormatterWithWarningEntry() {
@@ -68,7 +68,7 @@ final class LogFormatterTests: XCTestCase {
                              column: 20)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry, "2023-01-03T09:01:39+0100 | 🟡 WARNING | me.proton.pass.ios.autofill | autofill_extension | CredentialsViewController.fetchCredentials():189:20 - No credentials found")
+        XCTAssertEqual(formattedEntry, "2023-01-03T08:01:39+0000 | 🟡 WARNING | me.proton.pass.ios.autofill | autofill_extension | CredentialsViewController.fetchCredentials():189:20 - No credentials found")
     }
 
     func testDefaultFormatterWithInfoEntry() {
@@ -84,7 +84,7 @@ final class LogFormatterTests: XCTestCase {
                              column: 1)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry, "2023-01-03T09:01:39+0100 | 🔵 INFO | me.proton.pass.ios.autofill | autofill_extension | CredentialsViewController.autoFill():45:1 - Autofilled successfully")
+        XCTAssertEqual(formattedEntry, "2023-01-03T08:01:39+0000 | 🔵 INFO | me.proton.pass.ios.autofill | autofill_extension | CredentialsViewController.autoFill():45:1 - Autofilled successfully")
     }
 
     func testDefaultFormatterWithTraceEntry() {
@@ -100,7 +100,7 @@ final class LogFormatterTests: XCTestCase {
                              column: 1)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry, "2023-01-03T09:01:39+0100 | 🟣 TRACE | me.proton.mail | mail_composer | ComposerViewController.composeEmail():45:1 - Automatically saved email")
+        XCTAssertEqual(formattedEntry, "2023-01-03T08:01:39+0000 | 🟣 TRACE | me.proton.mail | mail_composer | ComposerViewController.composeEmail():45:1 - Automatically saved email")
     }
 
     func testDefaultFormatterWithDebugEntry() {
@@ -116,7 +116,7 @@ final class LogFormatterTests: XCTestCase {
                              column: 190)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry, "2023-01-03T09:01:39+0100 | ⚫ DEBUG | me.proton.mail | mail_composer | ComposerViewController.composeEmail():56:190 - Email content")
+        XCTAssertEqual(formattedEntry, "2023-01-03T08:01:39+0000 | ⚫ DEBUG | me.proton.mail | mail_composer | ComposerViewController.composeEmail():56:190 - Email content")
     }
 
     func testStandardHtmlFormatter() {
@@ -134,7 +134,7 @@ final class LogFormatterTests: XCTestCase {
                              column: 190)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry, "2023-01-03T09:01:39+0100 | DEBUG | <span style=\"color:#FF6F00\">me.proton.mail</span> | <span style=\"color:#AEEA00\">mail_composer</span> - Email content")
+        XCTAssertEqual(formattedEntry, "2023-01-03T08:01:39+0000 | DEBUG | <span style=\"color:#FF6F00\">me.proton.mail</span> | <span style=\"color:#AEEA00\">mail_composer</span> - Email content")
     }
 
     func testVerboseHtmlFormatter() {
@@ -152,6 +152,6 @@ final class LogFormatterTests: XCTestCase {
                              column: 190)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry, "2023-01-03T09:01:39+0100 | ⚫ DEBUG | <span style=\"color:#FF6F00\">me.proton.mail</span> | <span style=\"color:#AEEA00\">mail_composer</span> | ComposerViewController.composeEmail():56:190 - Email content")
+        XCTAssertEqual(formattedEntry, "2023-01-03T08:01:39+0000 | ⚫ DEBUG | <span style=\"color:#FF6F00\">me.proton.mail</span> | <span style=\"color:#AEEA00\">mail_composer</span> | ComposerViewController.composeEmail():56:190 - Email content")
     }
 }
