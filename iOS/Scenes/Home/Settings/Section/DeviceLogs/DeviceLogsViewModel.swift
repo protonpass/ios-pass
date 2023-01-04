@@ -62,9 +62,8 @@ final class DeviceLogsViewModel: DeinitPrintable, ObservableObject {
         Task { @MainActor in
             do {
                 state = .loading
-                let entries = try await logManager.getLogEntries()
-                    .filter { $0.subsystem == type.subsystem }
-                let logs = await logFormatter.format(entries: entries.reversed())
+                let entries = try await logManager.getLogEntries().filter { $0.subsystem == type.subsystem }
+                let logs = await logFormatter.format(entries: entries)
                 state = .loaded(logs)
             } catch {
                 state = .error(error)
