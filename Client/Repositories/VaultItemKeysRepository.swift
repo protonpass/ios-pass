@@ -32,6 +32,7 @@ public protocol VaultItemKeysRepositoryProtocol {
     var localItemKeyDatasource: LocalItemKeyDatasourceProtocol { get }
     var localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol { get }
     var remoteVaultItemKeysDatasource: RemoteVaultItemKeysDatasourceProtocol { get }
+    var logger: LoggerV2 { get }
 
     /// Get the pair of vaul key & item key that have latest `rotation`
     func getLatestVaultItemKeys(shareId: String, forceRefresh: Bool) async throws -> VaultItemKeys
@@ -45,21 +46,21 @@ public protocol VaultItemKeysRepositoryProtocol {
 
 public extension VaultItemKeysRepositoryProtocol {
     func getLatestVaultItemKeys(shareId: String, forceRefresh: Bool) async throws -> VaultItemKeys {
-        PPLogger.shared?.log("Getting vault & item keys for share \(shareId)")
+        logger.info("Getting vault & item keys for share \(shareId)")
         if forceRefresh {
-            PPLogger.shared?.log("Force refresh vault & item keys for share \(shareId)")
+            logger.info("Force refresh vault & item keys for share \(shareId)")
             try await refreshVaultItemKeys(shareId: shareId)
         }
 
         let vaultKeys = try await localVaultKeyDatasource.getVaultKeys(shareId: shareId)
         if vaultKeys.isEmpty {
-            PPLogger.shared?.log("No vault key in local database for share \(shareId) => Fetch from remote")
+            logger.info("No vault key in local database for share \(shareId) => Fetch from remote")
             try await refreshVaultItemKeys(shareId: shareId)
         }
 
         let itemKeys = try await localItemKeyDatasource.getItemKeys(shareId: shareId)
         if itemKeys.isEmpty {
-            PPLogger.shared?.log("No item key in local database for share \(shareId) => Fetch from remote")
+            logger.info("No item key in local database for share \(shareId) => Fetch from remote")
             try await refreshVaultItemKeys(shareId: shareId)
         }
 
@@ -101,17 +102,17 @@ public extension VaultItemKeysRepositoryProtocol {
     }
 
     private func refreshVaultItemKeys(shareId: String) async throws {
-        PPLogger.shared?.log("Getting vault & item keys from remote")
+        logger.info("Getting vault & item keys from remote")
         let (vaultKeys, itemKeys) = try await remoteVaultItemKeysDatasource.getVaultItemKeys(shareId: shareId)
-        PPLogger.shared?.log("Got \(vaultKeys.count) vault keys & \(itemKeys.count) item keys from remote")
+        logger.info("Got \(vaultKeys.count) vault keys & \(itemKeys.count) item keys from remote")
 
-        PPLogger.shared?.log("Saving \(vaultKeys.count) vault keys local database")
+        logger.info("Saving \(vaultKeys.count) vault keys local database")
         try await localVaultKeyDatasource.upsertVaultKeys(vaultKeys, shareId: shareId)
-        PPLogger.shared?.log("Saved \(vaultKeys.count) vault keys to local database")
+        logger.info("Saved \(vaultKeys.count) vault keys to local database")
 
-        PPLogger.shared?.log("Saving \(itemKeys.count) item keys local database")
+        logger.info("Saving \(itemKeys.count) item keys local database")
         try await localItemKeyDatasource.upsertItemKeys(itemKeys, shareId: shareId)
-        PPLogger.shared?.log("Saved \(itemKeys.count) item keys to local database")
+        logger.info("Saved \(itemKeys.count) item keys to local database")
     }
 }
 
@@ -119,21 +120,30 @@ public final class VaultItemKeysRepository: VaultItemKeysRepositoryProtocol {
     public let localItemKeyDatasource: LocalItemKeyDatasourceProtocol
     public let localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol
     public let remoteVaultItemKeysDatasource: RemoteVaultItemKeysDatasourceProtocol
+    public let logger: LoggerV2
 
     public init(localItemKeyDatasource: LocalItemKeyDatasourceProtocol,
                 localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol,
-                remoteVaultItemKeysDatasource: RemoteVaultItemKeysDatasourceProtocol) {
+                remoteVaultItemKeysDatasource: RemoteVaultItemKeysDatasourceProtocol,
+                logManager: LogManager) {
         self.localItemKeyDatasource = localItemKeyDatasource
         self.localVaultKeyDatasource = localVaultKeyDatasource
         self.remoteVaultItemKeysDatasource = remoteVaultItemKeysDatasource
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 
     public init(container: NSPersistentContainer,
                 authCredential: AuthCredential,
-                apiService: APIService) {
+                apiService: APIService,
+                logManager: LogManager) {
         self.localItemKeyDatasource = LocalItemKeyDatasource(container: container)
         self.localVaultKeyDatasource = LocalVaultKeyDatasource(container: container)
         self.remoteVaultItemKeysDatasource = RemoteVaultItemKeysDatasource(authCredential: authCredential,
                                                                            apiService: apiService)
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 }

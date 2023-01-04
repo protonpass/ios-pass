@@ -118,7 +118,8 @@ final class HomeCoordinator: DeinitPrintable {
                                                        logManager: logManager)
         let vaultItemKeysRepository = VaultItemKeysRepository(container: container,
                                                               authCredential: authCredential,
-                                                              apiService: apiService)
+                                                              apiService: apiService,
+                                                              logManager: logManager)
         self.vaultItemKeysRepository = vaultItemKeysRepository
         let shareRepository = ShareRepository(
             userData: sessionData.userData,
