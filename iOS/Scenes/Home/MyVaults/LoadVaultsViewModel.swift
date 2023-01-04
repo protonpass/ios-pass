@@ -49,9 +49,10 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     func fetchVaults(forceRefresh: Bool) {
         Task { @MainActor in
             do {
-                logger.info("Fetching vaults forceRefresh \(forceRefresh)")
+                logger.trace("Fetching vaults forceRefresh \(forceRefresh)")
                 error = nil
                 let vaults = try await self.fetchVaultsTask(forceRefresh: forceRefresh).value
+                logger.trace("Fetched vaults forceRefresh \(forceRefresh)")
                 if vaults.isEmpty {
                     try await createDefaultVaultTask.value
                     fetchVaults(forceRefresh: false)

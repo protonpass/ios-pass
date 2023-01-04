@@ -71,6 +71,12 @@ public extension LogManager {
             return entries
         }.value
     }
+
+    func removeAllLogs() {
+        if FileManager.default.fileExists(atPath: url.path) {
+            try? FileManager.default.removeItem(atPath: url.path)
+        }
+    }
 }
 
 // MARK: - Private APIs

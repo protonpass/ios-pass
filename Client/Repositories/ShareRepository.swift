@@ -40,7 +40,7 @@ public protocol ShareRepositoryProtocol {
 
 public extension ShareRepositoryProtocol {
     func getShares(forceRefresh: Bool = false) async throws -> [Share] {
-        logger.trace("Getting shares")
+        logger.trace("Getting shares forceRefresh \(forceRefresh)")
         if forceRefresh {
             logger.trace("Force refresh shares")
             return try await getSharesFromRemoteAndSaveToLocal()

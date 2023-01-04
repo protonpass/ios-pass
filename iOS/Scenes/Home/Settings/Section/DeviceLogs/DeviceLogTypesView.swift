@@ -47,16 +47,25 @@ enum DeviceLogType: CaseIterable {
 struct DeviceLogTypesView: View {
     var onGoBack: () -> Void
     var onSelect: (DeviceLogType) -> Void
+    var onClearLogs: () -> Void
 
     var body: some View {
         Form {
-            ForEach(DeviceLogType.allCases, id: \.hashValue) { type in
-                Button(action: {
-                    onSelect(type)
-                }, label: {
-                    Text(type.title)
-                })
-                .foregroundColor(.interactionNorm)
+            Section {
+                ForEach(DeviceLogType.allCases, id: \.hashValue) { type in
+                    Button(action: {
+                        onSelect(type)
+                    }, label: {
+                        Text(type.title)
+                    })
+                    .foregroundColor(.interactionNorm)
+                }
+            }
+
+            Section {
+                Button(role: .destructive, action: onClearLogs) {
+                    Text("Clear all logs")
+                }
             }
         }
         .navigationTitle("Device logs")

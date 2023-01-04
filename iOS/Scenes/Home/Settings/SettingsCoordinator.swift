@@ -63,6 +63,11 @@ final class SettingsCoordinator: Coordinator {
         let view = DeviceLogsView(viewModel: viewModel)
         present(view)
     }
+
+    private func clearLogs() {
+        logManager.removeAllLogs()
+        bannerManager?.displayBottomInfoMessage("Cleared all logs")
+    }
 }
 
 // MARK: - SettingsViewModelDelegate
@@ -85,7 +90,8 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelWantsToViewLogs() {
         let view = DeviceLogTypesView(onGoBack: { self.popTopViewController(animated: true) },
-                                      onSelect: showDeviceLogs)
+                                      onSelect: showDeviceLogs,
+                                      onClearLogs: clearLogs)
         push(view)
     }
 
