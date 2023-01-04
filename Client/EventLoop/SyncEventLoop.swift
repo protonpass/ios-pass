@@ -80,6 +80,7 @@ public final class SyncEventLoop: DeinitPrintable {
     private let remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
+    private let logger: LoggerV2
 
     public weak var delegate: SyncEventLoopDelegate?
     public weak var pullToRefreshDelegate: SyncEventLoopPullToRefreshDelegate?
@@ -89,13 +90,17 @@ public final class SyncEventLoop: DeinitPrintable {
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
                 itemRepository: ItemRepositoryProtocol,
-                vaultItemKeysRepository: VaultItemKeysRepositoryProtocol) {
+                vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
+                logManager: LogManager) {
         self.userId = userId
         self.shareRepository = shareRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.remoteSyncEventsDatasource = remoteSyncEventsDatasource
         self.itemRepository = itemRepository
         self.vaultItemKeysRepository = vaultItemKeysRepository
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 
     func makeReachabilityIfNecessary() throws {
@@ -209,7 +214,7 @@ private extension SyncEventLoop {
     /// Sync a single share. Can be a recursion if share has many events
     func sync(share: Share, hasNewEvents: inout Bool) async throws {
         let shareId = share.shareID
-        PPLogger.shared?.log("Syncing share \(shareId)")
+        logger.info("Syncing share \(shareId)")
         let lastEventId = try await shareEventIDRepository.getLastEventId(forceRefresh: false,
                                                                           userId: userId,
                                                                           shareId: shareId)
@@ -220,26 +225,26 @@ private extension SyncEventLoop {
                                                            lastEventId: events.latestEventID)
         if !events.updatedItems.isEmpty {
             hasNewEvents = true
-            PPLogger.shared?.log("Found \(events.updatedItems.count) updated items for share \(shareId)")
+            logger.info("Found \(events.updatedItems.count) updated items for share \(shareId)")
             try await itemRepository.upsertItems(events.updatedItems, shareId: shareId)
         }
 
         if !events.deletedItemIDs.isEmpty {
             hasNewEvents = true
-            PPLogger.shared?.log("Found \(events.deletedItemIDs.count) deleted items for share \(shareId)")
+            logger.info("Found \(events.deletedItemIDs.count) deleted items for share \(shareId)")
             try await itemRepository.deleteItemsLocally(itemIds: events.deletedItemIDs,
                                                         shareId: shareId)
         }
 
         if events.newRotationID?.isEmpty == false {
             hasNewEvents = true
-            PPLogger.shared?.log("Had new rotation ID for share \(shareId)")
+            logger.info("Had new rotation ID for share \(shareId)")
             _ = try await vaultItemKeysRepository.getLatestVaultItemKeys(shareId: shareId,
                                                                          forceRefresh: true)
         }
 
         if events.eventsPending {
-            PPLogger.shared?.log("Still have more events for share \(shareId)")
+            logger.info("Still have more events for share \(shareId)")
             try await sync(share: share, hasNewEvents: &hasNewEvents)
         }
     }

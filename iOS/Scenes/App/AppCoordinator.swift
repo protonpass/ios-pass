@@ -67,18 +67,20 @@ final class AppCoordinator {
     init(window: UIWindow) {
         self.window = window
         self.appStateObserver = .init()
-        let keychain = PPKeychain()
-        let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
-        self._sessionData.setKeychain(keychain)
-        self._sessionData.setMainKeyProvider(keymaker)
-        self._symmetricKey.setKeychain(keychain)
-        self._symmetricKey.setMainKeyProvider(keymaker)
-        self.keymaker = keymaker
         self.apiService = PMAPIService(doh: PPDoH(bundle: .main))
         self.logManager = .init()
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: self.logManager)
+        let keychain = PPKeychain()
+        let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
+        self._sessionData.setKeychain(keychain)
+        self._sessionData.setMainKeyProvider(keymaker)
+        self._sessionData.setLogManager(self.logManager)
+        self._symmetricKey.setKeychain(keychain)
+        self._symmetricKey.setMainKeyProvider(keymaker)
+        self._symmetricKey.setLogManager(self.logManager)
+        self.keymaker = keymaker
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)

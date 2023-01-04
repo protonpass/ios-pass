@@ -85,8 +85,10 @@ public final class CredentialProviderCoordinator {
                               keychain: keychain)
         self._sessionData.setKeychain(keychain)
         self._sessionData.setMainKeyProvider(keymaker)
+        self._sessionData.setLogManager(logManager)
         self._symmetricKeyString.setKeychain(keychain)
         self._symmetricKeyString.setMainKeyProvider(keymaker)
+        self._symmetricKeyString.setLogManager(logManager)
         self.apiService = apiService
         self.container = container
         self.context = context

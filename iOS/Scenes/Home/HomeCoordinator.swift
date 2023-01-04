@@ -146,7 +146,8 @@ final class HomeCoordinator: DeinitPrintable {
                                shareEventIDRepository: shareEventIDRepository,
                                remoteSyncEventsDatasource: remoteSyncEventsDatasource,
                                itemRepository: itemRepository,
-                               vaultItemKeysRepository: vaultItemKeysRepository)
+                               vaultItemKeysRepository: vaultItemKeysRepository,
+                               logManager: logManager)
         self.eventLoop.delegate = self
         self.eventLoop.start()
         self.setUpSideMenuPreferences()
