@@ -81,7 +81,7 @@ final class AppCoordinator {
                             manager: self.logManager)
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
-        self.credentialManager = CredentialManager()
+        self.credentialManager = CredentialManager(logManager: logManager)
         self.preferences = .init()
         self.apiService.authDelegate = self
         self.apiService.serviceDelegate = self

@@ -62,6 +62,7 @@ final class DeviceLogsViewModel: ObservableObject {
             do {
                 state = .loading
                 let entries = try await logManager.getLogEntries()
+                    .filter { $0.subsystem == type.subsystem }
                 let logs = await logFormatter.format(entries: entries)
                 state = .loaded(logs)
             } catch {
@@ -73,7 +74,7 @@ final class DeviceLogsViewModel: ObservableObject {
     func shareLogs() {
         guard case .loaded(let logs) = state else { return }
         do {
-            let file = FileManager.default.temporaryDirectory.appendingPathComponent(type.fileName)
+            let file = FileManager.default.temporaryDirectory.appendingPathComponent("log")
             try logs.write(to: file, atomically: true, encoding: .utf8)
             fileToDelete = file
             delegate?.deviceLogsViewModelWantsToShareLogs(file)

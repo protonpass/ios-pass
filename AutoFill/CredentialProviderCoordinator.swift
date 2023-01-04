@@ -55,6 +55,8 @@ public final class CredentialProviderCoordinator {
     private let credentialManager: CredentialManagerProtocol
     private let rootViewController: UIViewController
     private let bannerManager: BannerManager
+    private let logManager: LogManager
+    private let logger: LoggerV2
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -74,6 +76,7 @@ public final class CredentialProviderCoordinator {
          container: NSPersistentContainer,
          context: ASCredentialProviderExtensionContext,
          preferences: Preferences,
+         logManager: LogManager,
          credentialManager: CredentialManagerProtocol,
          rootViewController: UIViewController) {
         let keychain = PPKeychain()
@@ -88,6 +91,10 @@ public final class CredentialProviderCoordinator {
         self.container = container
         self.context = context
         self.preferences = preferences
+        self.logManager = logManager
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
         self.bannerManager = .init(container: rootViewController)
         self.credentialManager = credentialManager
         self.rootViewController = rootViewController
@@ -174,7 +181,7 @@ public final class CredentialProviderCoordinator {
                     sessionData = nil
                     try await credentialManager.removeAllCredentials()
                 } catch {
-                    PPLogger.shared?.log(error)
+                    logger.error(error)
                 }
             }
         default:
@@ -289,9 +296,10 @@ extension CredentialProviderCoordinator {
                                      serviceIdentifiers: serviceIdentifiers)
                 try await itemRepository.update(item: encryptedItem,
                                                 lastUseTime: Date().timeIntervalSince1970)
+                logger.info("Autofilled successfully")
                 context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
             } catch {
-                PPLogger.shared?.log(error)
+                logger.error(error)
                 if quickTypeBar {
                     cancel(errorCode: .userInteractionRequired)
                 } else {
