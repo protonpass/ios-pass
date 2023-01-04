@@ -82,6 +82,7 @@ class BaseItemDetailViewModel {
                     let symmetricKey = itemRepository.symmetricKey
                     let item = try await encryptedItem.toItemListUiModel(symmetricKey)
                     delegate?.itemDetailViewModelWantsToRestore(item)
+                    logger.info("Restored \(item.debugInformation)")
                 }
             } catch {
                 logger.error(error)

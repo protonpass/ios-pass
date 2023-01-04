@@ -37,9 +37,9 @@ public enum LogLevel: String, Codable {
         case .info:
             return "🔵"
         case .trace:
-            return "🟣"
-        case .debug:
             return "⚫"
+        case .debug:
+            return "🟣"
         }
     }
 

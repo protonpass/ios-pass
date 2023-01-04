@@ -22,7 +22,7 @@ import Core
 
 public struct AutoFillCredential {
     // swiftlint:disable:next type_name
-    public struct IDs: CodableBase64 {
+    public struct IDs: CodableBase64, ItemIdentifiable {
         public let shareId: String
         public let itemId: String
     }

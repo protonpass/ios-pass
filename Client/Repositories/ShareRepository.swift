@@ -40,26 +40,26 @@ public protocol ShareRepositoryProtocol {
 
 public extension ShareRepositoryProtocol {
     func getShares(forceRefresh: Bool = false) async throws -> [Share] {
-        logger.info("Getting shares")
+        logger.trace("Getting shares")
         if forceRefresh {
-            logger.info("Force refresh shares")
+            logger.trace("Force refresh shares")
             return try await getSharesFromRemoteAndSaveToLocal()
         }
 
         let localShares = try await localShareDatasource.getAllShares(userId: userData.user.ID)
         if localShares.isEmpty {
-            logger.info("No shares in local => Fetching from remote...")
+            logger.trace("No shares in local => Fetching from remote...")
             return try await getSharesFromRemoteAndSaveToLocal()
         }
 
-        logger.info("Found \(localShares.count) shares in local")
+        logger.trace("Found \(localShares.count) shares in local")
         return localShares
     }
 
     private func getSharesFromRemoteAndSaveToLocal() async throws -> [Share] {
-        logger.info("Getting shares from remote")
+        logger.trace("Getting shares from remote")
         let remoteShares = try await remoteShareDatasouce.getShares()
-        logger.info("Saving remote shares to local")
+        logger.trace("Saving remote shares to local")
         try await localShareDatasource.upsertShares(remoteShares, userId: userData.user.ID)
         return remoteShares
     }
@@ -73,7 +73,7 @@ public extension ShareRepositoryProtocol {
     }
 
     func getVaults(forceRefresh: Bool) async throws -> [VaultProtocol] {
-        logger.info("Getting vaults")
+        logger.trace("Getting vaults")
         let shares = try await getShares(forceRefresh: forceRefresh)
 
         var vaults: [VaultProtocol] = []
@@ -94,11 +94,11 @@ public extension ShareRepositoryProtocol {
     }
 
     func createVault(request: CreateVaultRequest) async throws -> Share {
-        logger.info("Creating vault")
+        logger.trace("Creating vault")
         let createdVault = try await remoteShareDatasouce.createVault(request: request)
-        logger.info("Saving newly create vault to local")
+        logger.trace("Saving newly create vault to local")
         try await localShareDatasource.upsertShares([createdVault], userId: userData.user.ID)
-        logger.info("Vault creation finished with success")
+        logger.trace("Vault creation finished with success")
         return createdVault
     }
 }

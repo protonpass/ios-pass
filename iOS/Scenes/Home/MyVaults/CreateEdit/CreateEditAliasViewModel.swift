@@ -229,6 +229,7 @@ extension CreateEditAliasViewModel {
                                                                   itemId: itemContent.item.itemID).value
                     self.aliasEmail = alias.email
                     self.alias = alias
+                    logger.info("Get alias successfully \(itemContent.debugInformation)")
                 }
 
                 let aliasOptions = try await getAliasOptionsTask(shareId: shareId).value
@@ -258,6 +259,7 @@ extension CreateEditAliasViewModel {
                 } else {
                     state = .loaded
                 }
+                logger.info("Get alias options successfully")
             } catch {
                 logger.error(error)
                 state = .error(error)
