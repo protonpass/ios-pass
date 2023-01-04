@@ -36,10 +36,11 @@ final class OnboardingViewModel: ObservableObject {
 
     init(credentialManager: CredentialManagerProtocol,
          preferences: Preferences,
-         bannerManager: BannerManager) {
+         bannerManager: BannerManager,
+         logManager: LogManager) {
         self.credentialManager = credentialManager
         self.preferences = preferences
-        self.biometricAuthenticator = .init(preferences: preferences)
+        self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.bannerManager = bannerManager
 
         biometricAuthenticator.initializeBiometryType()

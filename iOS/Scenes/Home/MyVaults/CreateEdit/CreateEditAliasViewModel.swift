@@ -131,10 +131,12 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
-         aliasRepository: AliasRepositoryProtocol) {
+         aliasRepository: AliasRepositoryProtocol,
+         logManager: LogManager) {
         self.aliasRepository = aliasRepository
         super.init(mode: mode,
-                   itemRepository: itemRepository)
+                   itemRepository: itemRepository,
+                   logManager: logManager)
 
         if case let .edit(itemContent) = mode {
             self.title = itemContent.name
@@ -227,6 +229,7 @@ extension CreateEditAliasViewModel {
                                                                   itemId: itemContent.item.itemID).value
                     self.aliasEmail = alias.email
                     self.alias = alias
+                    logger.info("Get alias successfully \(itemContent.debugInformation)")
                 }
 
                 let aliasOptions = try await getAliasOptionsTask(shareId: shareId).value
@@ -256,7 +259,9 @@ extension CreateEditAliasViewModel {
                 } else {
                     state = .loaded
                 }
+                logger.info("Get alias options successfully")
             } catch {
+                logger.error(error)
                 state = .error(error)
             }
         }

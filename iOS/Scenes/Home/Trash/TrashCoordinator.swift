@@ -36,6 +36,7 @@ final class TrashCoordinator: Coordinator {
     private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let trashViewModel: TrashViewModel
+    private let logManager: LogManager
 
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     weak var delegate: TrashCoordinatorDelegate?
@@ -48,16 +49,19 @@ final class TrashCoordinator: Coordinator {
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          vaultSelection: VaultSelection,
-         syncEventLoop: SyncEventLoop) {
+         syncEventLoop: SyncEventLoop,
+         logManager: LogManager) {
         self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.aliasRepository = aliasRepository
+        self.logManager = logManager
         self.trashViewModel = TrashViewModel(symmetricKey: symmetricKey,
                                              shareRepository: shareRepository,
                                              itemRepository: itemRepository,
                                              vaultSelection: vaultSelection,
-                                             syncEventLoop: syncEventLoop)
+                                             syncEventLoop: syncEventLoop,
+                                             logManager: logManager)
         super.init()
         self.start()
     }
@@ -79,14 +83,16 @@ private extension TrashCoordinator {
         switch itemContent.contentData {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
-                                                 itemRepository: itemRepository)
+                                                 itemRepository: itemRepository,
+                                                 logManager: logManager)
             baseItemDetailViewModel = viewModel
             let logInDetailView = LogInDetailView(viewModel: viewModel)
             push(logInDetailView)
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
-                                                itemRepository: itemRepository)
+                                                itemRepository: itemRepository,
+                                                logManager: logManager)
             baseItemDetailViewModel = viewModel
             let noteDetailView = NoteDetailView(viewModel: viewModel)
             push(noteDetailView)
@@ -94,7 +100,8 @@ private extension TrashCoordinator {
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
                                                  itemRepository: itemRepository,
-                                                 aliasRepository: aliasRepository)
+                                                 aliasRepository: aliasRepository,
+                                                 logManager: logManager)
             baseItemDetailViewModel = viewModel
             let aliasDetailView = AliasDetailView(viewModel: viewModel)
             push(aliasDetailView)

@@ -23,43 +23,55 @@ import CoreData
 import ProtonCore_Services
 
 public protocol PublicKeyRepositoryProtocol {
+    var logger: Logger { get }
+
     func getPublicKeys(email: String) async throws -> [PublicKey]
 }
 
 public struct PublicKeyRepository: PublicKeyRepositoryProtocol {
-    let localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol
-    let remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol
+    public let localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol
+    public let remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol
+    public let logger: Logger
 
     init(localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol,
-         remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol) {
+         remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol,
+         logManager: LogManager) {
         self.localPublicKeyDatasource = localPublicKeyDatasource
         self.remotePublicKeyDatasource = remotePublicKeyDatasource
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 
-    public init(container: NSPersistentContainer, apiService: APIService) {
+    public init(container: NSPersistentContainer,
+                apiService: APIService,
+                logManager: LogManager) {
         self.localPublicKeyDatasource = LocalPublicKeyDatasource(container: container)
         self.remotePublicKeyDatasource = RemotePublicKeyDatasource(apiService: apiService)
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 
     public func getPublicKeys(email: String) async throws -> [PublicKey] {
-        PPLogger.shared?.log("Getting public keys for email \(email)")
+        logger.trace("Getting public keys for email \(email)")
         let localPublicKeys = try await localPublicKeyDatasource.getPublicKeys(email: email)
 
         if localPublicKeys.isEmpty {
-            PPLogger.shared?.log("No public keys in local for email \(email)")
-            PPLogger.shared?.log("Fetching public keys from remote for email \(email)")
+            logger.trace("No public keys in local for email \(email)")
+            logger.trace("Fetching public keys from remote for email \(email)")
             let remotePublicKeys =
             try await remotePublicKeyDatasource.getPublicKeys(email: email)
 
             let count = remotePublicKeys.count
-            PPLogger.shared?.log("Fetched \(count) public keys from remote for email \(email)")
+            logger.trace("Fetched \(count) public keys from remote for email \(email)")
             try await localPublicKeyDatasource.insertPublicKeys(remotePublicKeys,
                                                                 email: email)
-            PPLogger.shared?.log("Inserted \(count) remote public keys to local for email \(email)")
+            logger.trace("Inserted \(count) remote public keys to local for email \(email)")
             return remotePublicKeys
         }
 
-        PPLogger.shared?.log("Found \(localPublicKeys.count) public keys in local for email \(email)")
+        logger.trace("Found \(localPublicKeys.count) public keys in local for email \(email)")
         return localPublicKeys
     }
 }

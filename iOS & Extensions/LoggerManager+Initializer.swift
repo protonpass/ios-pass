@@ -1,7 +1,7 @@
 //
-// ItemIdentifiable.swift
-// Proton Pass - Created on 05/12/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// LoggerManager+Initializer.swift
+// Proton Pass - Created on 04/01/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,17 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Core
 
-/// Should be conformed by structs that represent items differently.
-/// E.g: for different purposes like listing & searching
-public protocol ItemIdentifiable {
-    var shareId: String { get }
-    var itemId: String { get }
-}
-
-public extension ItemIdentifiable {
-    var debugInformation: String {
-        "Item ID (\(itemId)) - Share ID (\(shareId))"
+extension LogManager {
+    /// Convenience initialize for iOS & extensions which creates a log file in shared container.
+    convenience init() {
+        guard let fileContainer =
+                FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
+            fatalError("Shared file container could not be created.")
+        }
+        self.init(url: fileContainer, maxLogLines: 5_000)
     }
 }

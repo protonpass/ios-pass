@@ -31,6 +31,7 @@ protocol SettingsCoordinatorDelegate: AnyObject {
 
 final class SettingsCoordinator: Coordinator {
     private let settingsViewModel: SettingsViewModel
+    private let logManager: LogManager
 
     weak var delegate: SettingsCoordinatorDelegate?
     weak var bannerManager: BannerManager?
@@ -38,11 +39,14 @@ final class SettingsCoordinator: Coordinator {
     init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
-         preferences: Preferences) {
+         preferences: Preferences,
+         logManager: LogManager) {
         self.settingsViewModel = .init(itemRepository: itemRepository,
                                        credentialManager: credentialManager,
                                        symmetricKey: symmetricKey,
-                                       preferences: preferences)
+                                       preferences: preferences,
+                                       logManager: logManager)
+        self.logManager = logManager
         super.init()
         self.settingsViewModel.delegate = self
         start()
@@ -51,6 +55,18 @@ final class SettingsCoordinator: Coordinator {
     private func start() {
         start(with: SettingsView(viewModel: settingsViewModel),
               secondaryView: ItemDetailPlaceholderView { self.popTopViewController(animated: true) })
+    }
+
+    private func showDeviceLogs(for type: DeviceLogType) {
+        let viewModel = DeviceLogsViewModel(type: type, logManager: logManager)
+        viewModel.delegate = self
+        let view = DeviceLogsView(viewModel: viewModel)
+        present(view)
+    }
+
+    private func clearLogs() {
+        logManager.removeAllLogs()
+        bannerManager?.displayBottomInfoMessage("Cleared all logs")
     }
 }
 
@@ -70,6 +86,13 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelWantsToDeleteAccount() {
         delegate?.settingsCoordinatorWantsToDeleteAccount()
+    }
+
+    func settingsViewModelWantsToViewLogs() {
+        let view = DeviceLogTypesView(onGoBack: { self.popTopViewController(animated: true) },
+                                      onSelect: showDeviceLogs,
+                                      onClearLogs: clearLogs)
+        push(view)
     }
 
     func settingsViewModelWantsToOpenSecuritySettings(viewModel: SettingsViewModel) {
@@ -113,5 +136,26 @@ extension SettingsCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelDidFail(_ error: Error) {
         bannerManager?.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - DeviceLogsViewModelDelegate
+extension SettingsCoordinator: DeviceLogsViewModelDelegate {
+    func deviceLogsViewModelWantsToShowLoadingHud() {
+        showLoadingHud()
+    }
+
+    func deviceLogsViewModelWantsToHideLoadingHud() {
+        hideLoadingHud()
+    }
+
+    func deviceLogsViewModelWantsToShareLogs(_ url: URL) {
+        hideLoadingHud()
+        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        present(activityViewController)
+    }
+
+    func deviceLogsViewModelDidFail(error: Error) {
+        alertError(error)
     }
 }

@@ -1,7 +1,7 @@
 //
-// ItemIdentifiable.swift
-// Proton Pass - Created on 05/12/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// LogLevel.swift
+// Proton Pass - Created on 04/01/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,15 +20,30 @@
 
 import Foundation
 
-/// Should be conformed by structs that represent items differently.
-/// E.g: for different purposes like listing & searching
-public protocol ItemIdentifiable {
-    var shareId: String { get }
-    var itemId: String { get }
-}
+public enum LogLevel: String, Codable {
+    case fatal   = "FATAL"
+    case error   = "ERROR"
+    case warning = "WARNING"
+    case info    = "INFO"
+    case debug   = "DEBUG"
+    case trace   = "TRACE"
 
-public extension ItemIdentifiable {
-    var debugInformation: String {
-        "Item ID (\(itemId)) - Share ID (\(shareId))"
+    private var emoji: String {
+        switch self {
+        case .fatal, .error:
+            return "🔴"
+        case .warning:
+            return "🟡"
+        case .info:
+            return "🔵"
+        case .trace:
+            return "⚫"
+        case .debug:
+            return "🟣"
+        }
+    }
+
+    var descriptionWithEmoji: String {
+        "\(emoji) \(rawValue)"
     }
 }

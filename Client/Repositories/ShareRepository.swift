@@ -29,6 +29,7 @@ public protocol ShareRepositoryProtocol {
     var localShareDatasource: LocalShareDatasourceProtocol { get }
     var remoteShareDatasouce: RemoteShareDatasourceProtocol { get }
     var vaultItemKeysRepository: VaultItemKeysRepositoryProtocol { get }
+    var logger: Logger { get }
 
     func getShares(forceRefresh: Bool) async throws -> [Share]
     func getShare(shareId: String) async throws -> Share
@@ -39,26 +40,26 @@ public protocol ShareRepositoryProtocol {
 
 public extension ShareRepositoryProtocol {
     func getShares(forceRefresh: Bool = false) async throws -> [Share] {
-        PPLogger.shared?.log("Getting shares")
+        logger.trace("Getting shares forceRefresh \(forceRefresh)")
         if forceRefresh {
-            PPLogger.shared?.log("Force refresh shares")
+            logger.trace("Force refresh shares")
             return try await getSharesFromRemoteAndSaveToLocal()
         }
 
         let localShares = try await localShareDatasource.getAllShares(userId: userData.user.ID)
         if localShares.isEmpty {
-            PPLogger.shared?.log("No shares in local => Fetching from remote...")
+            logger.trace("No shares in local => Fetching from remote...")
             return try await getSharesFromRemoteAndSaveToLocal()
         }
 
-        PPLogger.shared?.log("Found \(localShares.count) shares in local")
+        logger.trace("Found \(localShares.count) shares in local")
         return localShares
     }
 
     private func getSharesFromRemoteAndSaveToLocal() async throws -> [Share] {
-        PPLogger.shared?.log("Getting shares from remote")
+        logger.trace("Getting shares from remote")
         let remoteShares = try await remoteShareDatasouce.getShares()
-        PPLogger.shared?.log("Saving remote shares to local")
+        logger.trace("Saving remote shares to local")
         try await localShareDatasource.upsertShares(remoteShares, userId: userData.user.ID)
         return remoteShares
     }
@@ -72,7 +73,7 @@ public extension ShareRepositoryProtocol {
     }
 
     func getVaults(forceRefresh: Bool) async throws -> [VaultProtocol] {
-        PPLogger.shared?.log("Getting vaults")
+        logger.trace("Getting vaults")
         let shares = try await getShares(forceRefresh: forceRefresh)
 
         var vaults: [VaultProtocol] = []
@@ -93,11 +94,11 @@ public extension ShareRepositoryProtocol {
     }
 
     func createVault(request: CreateVaultRequest) async throws -> Share {
-        PPLogger.shared?.log("Creating vault")
+        logger.trace("Creating vault")
         let createdVault = try await remoteShareDatasouce.createVault(request: request)
-        PPLogger.shared?.log("Saving newly create vault to local")
+        logger.trace("Saving newly create vault to local")
         try await localShareDatasource.upsertShares([createdVault], userId: userData.user.ID)
-        PPLogger.shared?.log("Vault creation finished with success")
+        logger.trace("Vault creation finished with success")
         return createdVault
     }
 }
@@ -107,27 +108,37 @@ public struct ShareRepository: ShareRepositoryProtocol {
     public let localShareDatasource: LocalShareDatasourceProtocol
     public let remoteShareDatasouce: RemoteShareDatasourceProtocol
     public let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
+    public let logger: Logger
 
     public init(userData: UserData,
                 localShareDatasource: LocalShareDatasourceProtocol,
                 remoteShareDatasouce: RemoteShareDatasourceProtocol,
-                vaultItemKeysRepository: VaultItemKeysRepositoryProtocol) {
+                vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
+                logManager: LogManager) {
         self.userData = userData
         self.localShareDatasource = localShareDatasource
         self.remoteShareDatasouce = remoteShareDatasouce
         self.vaultItemKeysRepository = vaultItemKeysRepository
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 
     public init(userData: UserData,
                 container: NSPersistentContainer,
                 authCredential: AuthCredential,
-                apiService: APIService) {
+                apiService: APIService,
+                logManager: LogManager) {
         self.userData = userData
         self.localShareDatasource = LocalShareDatasource(container: container)
         self.remoteShareDatasouce = RemoteShareDatasource(authCredential: authCredential,
                                                           apiService: apiService)
         self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
                                                                authCredential: authCredential,
-                                                               apiService: apiService)
+                                                               apiService: apiService,
+                                                               logManager: logManager)
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 }

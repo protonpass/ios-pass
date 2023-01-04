@@ -176,6 +176,15 @@
 		3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */; };
 		3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */; };
 		3552F49428D37CFF00547146 /* ChangeMailboxesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */; };
+		3553C21B296570090087518A /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C21A296570090087518A /* LogEntry.swift */; };
+		3553C21D296570260087518A /* LogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C21C296570260087518A /* LogLevel.swift */; };
+		3553C21F2965703D0087518A /* LogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C21E2965703D0087518A /* LogFormatter.swift */; };
+		3553C2212965705C0087518A /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C2202965705C0087518A /* LogManager.swift */; };
+		3553C223296570710087518A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C222296570710087518A /* Logger.swift */; };
+		3553C226296570CB0087518A /* LogFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C225296570CB0087518A /* LogFormatterTests.swift */; };
+		3553C228296571440087518A /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C227296571440087518A /* LoggerTests.swift */; };
+		3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */; };
+		3553C22D296575560087518A /* LoggerManager+Initializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */; };
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
@@ -206,6 +215,9 @@
 		355751F62907FB9000268116 /* AppLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531B5422902DA890070D2EE /* AppLockedView.swift */; };
 		355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */; };
 		355751FA2908745B00268116 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
+		355783662962EB15008A4992 /* DeviceLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355783652962EB15008A4992 /* DeviceLogsView.swift */; };
+		355783682962EC0B008A4992 /* DeviceLogsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355783672962EC0B008A4992 /* DeviceLogsViewModel.swift */; };
+		3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557836A296309D0008A4992 /* DeviceLogTypesView.swift */; };
 		35581806290A7DBF00DD94DB /* ShareEventIDEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */; };
 		3558180A290A7FA600DD94DB /* LocalShareEventIDDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */; };
 		3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */; };
@@ -333,7 +345,6 @@
 		35E506DE286FB1D300A3F6EA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 35E506DD286FB1D300A3F6EA /* Info.plist */; };
 		35E506FC286FB37300A3F6EA /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E506F9286FB37300A3F6EA /* Coordinator.swift */; };
 		35E50702286FB39600A3F6EA /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50700286FB39600A3F6EA /* AppState.swift */; };
-		35E50707286FB3A600A3F6EA /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50705286FB3A600A3F6EA /* Logger.swift */; };
 		35E50708286FB3A600A3F6EA /* Publisher+Unwrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */; };
 		35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50709286FB44800A3F6EA /* PPDoH.swift */; };
 		35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */; };
@@ -680,6 +691,14 @@
 		3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDetailViewModel.swift; sourceTree = "<group>"; };
 		3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesRequest.swift; sourceTree = "<group>"; };
 		3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesEndpoint.swift; sourceTree = "<group>"; };
+		3553C21A296570090087518A /* LogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
+		3553C21C296570260087518A /* LogLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogLevel.swift; sourceTree = "<group>"; };
+		3553C21E2965703D0087518A /* LogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogFormatter.swift; sourceTree = "<group>"; };
+		3553C2202965705C0087518A /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
+		3553C222296570710087518A /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		3553C225296570CB0087518A /* LogFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogFormatterTests.swift; sourceTree = "<group>"; };
+		3553C227296571440087518A /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
+		3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoggerManager+Initializer.swift"; sourceTree = "<group>"; };
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
@@ -705,6 +724,9 @@
 		3557441A295A064F00EA4AF0 /* ClipboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardManager.swift; sourceTree = "<group>"; };
 		355751F42907FB3200268116 /* LockedCredentialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialView.swift; sourceTree = "<group>"; };
 		355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialViewModel.swift; sourceTree = "<group>"; };
+		355783652962EB15008A4992 /* DeviceLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLogsView.swift; sourceTree = "<group>"; };
+		355783672962EC0B008A4992 /* DeviceLogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLogsViewModel.swift; sourceTree = "<group>"; };
+		3557836A296309D0008A4992 /* DeviceLogTypesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLogTypesView.swift; sourceTree = "<group>"; };
 		35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDEntity.swift; sourceTree = "<group>"; };
 		35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasource.swift; sourceTree = "<group>"; };
 		3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasourceTests.swift; sourceTree = "<group>"; };
@@ -837,7 +859,6 @@
 		35E506DD286FB1D300A3F6EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35E506F9286FB37300A3F6EA /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		35E50700286FB39600A3F6EA /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		35E50705286FB3A600A3F6EA /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publisher+Unwrap.swift"; sourceTree = "<group>"; };
 		35E50709286FB44800A3F6EA /* PPDoH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPDoH.swift; sourceTree = "<group>"; };
 		35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -1230,6 +1251,23 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		3553C224296570B80087518A /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				3553C225296570CB0087518A /* LogFormatterTests.swift */,
+				3553C227296571440087518A /* LoggerTests.swift */,
+			);
+			path = Logging;
+			sourceTree = "<group>";
+		};
+		3553C2292965752C0087518A /* iOS & Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */,
+			);
+			path = "iOS & Extensions";
+			sourceTree = "<group>";
+		};
 		355443FA287CA7150017FCAD /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
@@ -1283,6 +1321,28 @@
 				3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */,
 			);
 			path = BuildConfigs;
+			sourceTree = "<group>";
+		};
+		35578369296309B0008A4992 /* DeviceLogs */ = {
+			isa = PBXGroup;
+			children = (
+				3557836A296309D0008A4992 /* DeviceLogTypesView.swift */,
+				355783652962EB15008A4992 /* DeviceLogsView.swift */,
+				355783672962EC0B008A4992 /* DeviceLogsViewModel.swift */,
+			);
+			path = DeviceLogs;
+			sourceTree = "<group>";
+		};
+		3557836E29632445008A4992 /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				3553C21A296570090087518A /* LogEntry.swift */,
+				3553C21E2965703D0087518A /* LogFormatter.swift */,
+				3553C21C296570260087518A /* LogLevel.swift */,
+				3553C2202965705C0087518A /* LogManager.swift */,
+				3553C222296570710087518A /* Logger.swift */,
+			);
+			path = Logging;
 			sourceTree = "<group>";
 		};
 		3558180D290A8BE200DD94DB /* Events */ = {
@@ -1418,6 +1478,7 @@
 		3586F3AF2958841F00738245 /* Section */ = {
 			isa = PBXGroup;
 			children = (
+				35578369296309B0008A4992 /* DeviceLogs */,
 				3586F3B22958852B00738245 /* General */,
 			);
 			path = Section;
@@ -1551,6 +1612,7 @@
 			isa = PBXGroup;
 			children = (
 				35E50652286F826000A3F6EA /* iOS */,
+				3553C2292965752C0087518A /* iOS & Extensions */,
 				354A803D28D8B8D8003F49CF /* iOSTests */,
 				35E50633286F819F00A3F6EA /* iOS & macOS */,
 				35E50642286F819F00A3F6EA /* macOS */,
@@ -1660,6 +1722,7 @@
 				35E506F8286FB36000A3F6EA /* Coordinator */,
 				35E506FF286FB38400A3F6EA /* DomainModels */,
 				35426B5628EF171000F89BB7 /* DomainParser */,
+				3557836E29632445008A4992 /* Logging */,
 				356B21D82870F95B001220CB /* Storage */,
 				35E50704286FB39800A3F6EA /* Utilities */,
 			);
@@ -1669,6 +1732,7 @@
 		35E50691286F87A700A3F6EA /* CoreTests */ = {
 			isa = PBXGroup;
 			children = (
+				3553C224296570B80087518A /* Logging */,
 				3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */,
 				354513E828E4D2650020A93A /* CodableBase64Tests.swift */,
 				3529432A28DAF6CA00E1F11B /* SearchUtilsTests.swift */,
@@ -1775,7 +1839,6 @@
 				356B21D62870F8F1001220CB /* Constants.swift */,
 				350A97DD2886032000A7168B /* DeinitPrintable.swift */,
 				3531B5402902A9DD0070D2EE /* BiometricAuthenticator.swift */,
-				35E50705286FB3A600A3F6EA /* Logger.swift */,
 				35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */,
 				3529432828DAF54900E1F11B /* SearchUtils.swift */,
 				35429B26288AB730000BA22F /* StaticFuncs.swift */,
@@ -2701,6 +2764,7 @@
 				35492E3D293E06C900BDE231 /* CreateEditLoginViewModel.swift in Sources */,
 				35492E3E293E06CC00BDE231 /* CreateEditAliasView.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
+				3553C22D296575560087518A /* LoggerManager+Initializer.swift in Sources */,
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
 				3520F36928E32DCF0053A606 /* ProtonPass.xcdatamodeld in Sources */,
@@ -2734,6 +2798,7 @@
 				3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */,
+				355783682962EC0B008A4992 /* DeviceLogsViewModel.swift in Sources */,
 				3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */,
 				356AD3FB29409C7600EBE4E9 /* DevPreviewsView.swift in Sources */,
 				355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */,
@@ -2742,6 +2807,7 @@
 				354BB14F28A27FF500F50040 /* SearchViewModel.swift in Sources */,
 				353E8B6E2876163F00A2C5E3 /* SidebarView.swift in Sources */,
 				3542E2D028DA4E7400194F24 /* ItemListUiModel.swift in Sources */,
+				355783662962EB15008A4992 /* DeviceLogsView.swift in Sources */,
 				354513CF28E460FD0020A93A /* SettingsCoordinator.swift in Sources */,
 				355013F7295459E1004F837E /* ThemesView.swift in Sources */,
 				3547ABDE28774D1100EE85E1 /* MyVaultsCoordinator.swift in Sources */,
@@ -2749,6 +2815,7 @@
 				354361592941DA0C000CAE12 /* OnboardingViewState.swift in Sources */,
 				355635B928895B8E00F32353 /* VaultContentView.swift in Sources */,
 				355635C1288968B000F32353 /* VaultContentViewModel.swift in Sources */,
+				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				358A508928AD2E8F00F5285C /* SideBarViewModel.swift in Sources */,
@@ -2778,6 +2845,7 @@
 				356B697E294A31F400868771 /* DevPreviewsViewModel.swift in Sources */,
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
 				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
+				3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */,
 				3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */,
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
 				357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */,
@@ -2953,6 +3021,7 @@
 				35E506FC286FB37300A3F6EA /* Coordinator.swift in Sources */,
 				35426B5C28EF17F100F89BB7 /* Rule.swift in Sources */,
 				354036DF28F4522000F9E729 /* URLUtils+Matcher.swift in Sources */,
+				3553C21D296570260087518A /* LogLevel.swift in Sources */,
 				355751FA2908745B00268116 /* Preferences.swift in Sources */,
 				35426B5E28EF183900F89BB7 /* RuleLabel.swift in Sources */,
 				35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */,
@@ -2964,17 +3033,19 @@
 				35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */,
 				35426B6628EF195700F89BB7 /* ParsedHost.swift in Sources */,
 				35E50702286FB39600A3F6EA /* AppState.swift in Sources */,
+				3553C223296570710087518A /* Logger.swift in Sources */,
 				354036DD28F451AE00F9E729 /* URLUtils.swift in Sources */,
 				356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */,
 				356B21D72870F8F1001220CB /* Constants.swift in Sources */,
 				3573CD23292C139900A9EF82 /* AliasPrefixValidator.swift in Sources */,
 				350A97DE2886032000A7168B /* DeinitPrintable.swift in Sources */,
 				356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */,
+				3553C21F2965703D0087518A /* LogFormatter.swift in Sources */,
 				353E10922881827C00E59474 /* UserProtocol.swift in Sources */,
 				35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */,
+				3553C2212965705C0087518A /* LogManager.swift in Sources */,
 				3531B5412902A9DD0070D2EE /* BiometricAuthenticator.swift in Sources */,
 				353C2841291DC729008A5EBF /* SortType.swift in Sources */,
-				35E50707286FB3A600A3F6EA /* Logger.swift in Sources */,
 				35426B6428EF193800F89BB7 /* BasicRuleParser.swift in Sources */,
 				35E50708286FB3A600A3F6EA /* Publisher+Unwrap.swift in Sources */,
 				3510A2FC287841AD0003BE79 /* StringExtensions.swift in Sources */,
@@ -2985,6 +3056,7 @@
 				35426B6028EF187800F89BB7 /* DomainParserContant.swift in Sources */,
 				3529432928DAF54900E1F11B /* SearchUtils.swift in Sources */,
 				35426B6228EF18E600F89BB7 /* DomainParser.swift in Sources */,
+				3553C21B296570090087518A /* LogEntry.swift in Sources */,
 				355744192959F68500EA4AF0 /* ClipboardExpiration.swift in Sources */,
 				353547C32880CF470021C716 /* UserData+Codable.swift in Sources */,
 				354036E128F452F200F9E729 /* URLUtils+Sanitizer.swift in Sources */,
@@ -2995,12 +3067,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3553C226296570CB0087518A /* LogFormatterTests.swift in Sources */,
 				35283E4C29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift in Sources */,
 				3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */,
 				354513E928E4D2650020A93A /* CodableBase64Tests.swift in Sources */,
 				3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */,
 				3555800728F01A46009C3B88 /* URLUtils+MatcherTests.swift in Sources */,
 				3529432B28DAF6CA00E1F11B /* SearchUtilsTests.swift in Sources */,
+				3553C228296571440087518A /* LoggerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
