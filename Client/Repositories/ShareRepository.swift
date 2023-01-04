@@ -135,7 +135,8 @@ public struct ShareRepository: ShareRepositoryProtocol {
                                                           apiService: apiService)
         self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
                                                                authCredential: authCredential,
-                                                               apiService: apiService)
+                                                               apiService: apiService,
+                                                               logManager: logManager)
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
