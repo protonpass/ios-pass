@@ -211,7 +211,8 @@ public final class CredentialProviderCoordinator {
         self.shareRepository = ShareRepository(userData: sessionData.userData,
                                                container: container,
                                                authCredential: credential,
-                                               apiService: apiService)
+                                               apiService: apiService,
+                                               logManager: logManager)
         self.itemRepository = itemRepository
         self.aliasRepository = aliasRepository
     }
