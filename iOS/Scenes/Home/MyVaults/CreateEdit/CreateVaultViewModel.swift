@@ -38,15 +38,20 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
 
     private let userData: UserData
     private let shareRepository: ShareRepositoryProtocol
+    private let logger: Logger
 
     weak var delegate: CreateVaultViewModelDelegate?
 
     var isSaveable: Bool { !name.isEmpty }
 
     init(userData: UserData,
-         shareRepository: ShareRepositoryProtocol) {
+         shareRepository: ShareRepositoryProtocol,
+         logManager: LogManager) {
         self.userData = userData
         self.shareRepository = shareRepository
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 
     func createVault() {
@@ -62,6 +67,7 @@ final class CreateVaultViewModel: DeinitPrintable, ObservableObject {
                 try await shareRepository.createVault(request: createVaultRequest)
                 delegate?.createVaultViewModelDidCreateShare(createdShare)
             } catch {
+                logger.error(error)
                 delegate?.createVaultViewModelDidFail(error)
             }
         }

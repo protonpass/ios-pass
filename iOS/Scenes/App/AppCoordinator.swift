@@ -379,6 +379,7 @@ private extension AppCoordinator {
     func makeAppLockedViewController() -> UIViewController {
         let view = AppLockedView(
             preferences: preferences,
+            logManager: logManager,
             delayed: false,
             onSuccess: { [unowned self] in
                 self.dismissAppLockedViewController()

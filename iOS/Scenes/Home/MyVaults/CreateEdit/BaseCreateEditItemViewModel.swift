@@ -70,11 +70,13 @@ class BaseCreateEditItemViewModel {
     let shareId: String
     let mode: ItemMode
     let itemRepository: ItemRepositoryProtocol
+    let logger: Logger
 
     weak var delegate: CreateEditItemViewModelDelegate?
 
     init(mode: ItemMode,
-         itemRepository: ItemRepositoryProtocol) {
+         itemRepository: ItemRepositoryProtocol,
+         logManager: LogManager) {
         switch mode {
         case .create(let shareId, _):
             self.shareId = shareId
@@ -83,6 +85,9 @@ class BaseCreateEditItemViewModel {
         }
         self.mode = mode
         self.itemRepository = itemRepository
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
         self.bindValues()
     }
 
@@ -138,6 +143,7 @@ class BaseCreateEditItemViewModel {
                 try await trashItemTask(item: item).value
                 delegate?.createEditItemViewModelDidTrashItem(item, type: itemContentType())
             } catch {
+                logger.error(error)
                 delegate?.createEditItemViewModelDidFail(error)
             }
         }
@@ -152,6 +158,7 @@ class BaseCreateEditItemViewModel {
             let item = try await createItemTask(shareId: shareId).value
             delegate?.createEditItemViewModelDidCreateItem(item, type: itemContentType())
         } catch {
+            logger.error(error)
             delegate?.createEditItemViewModelDidFail(error)
         }
     }
@@ -165,6 +172,7 @@ class BaseCreateEditItemViewModel {
             let item = try await createAliasItemTask(shareId: shareId, info: info).value
             delegate?.createEditItemViewModelDidCreateItem(item, type: itemContentType())
         } catch {
+            logger.error(error)
             delegate?.createEditItemViewModelDidFail(error)
         }
     }
@@ -187,6 +195,7 @@ class BaseCreateEditItemViewModel {
                                      shareId: shareId).value
             delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
         } catch {
+            logger.error(error)
             delegate?.createEditItemViewModelDidFail(error)
         }
     }

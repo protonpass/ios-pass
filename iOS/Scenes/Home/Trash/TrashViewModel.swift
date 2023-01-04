@@ -55,6 +55,7 @@ final class TrashViewModel: DeinitPrintable, PullToRefreshable, ObservableObject
     private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let vaultSelection: VaultSelection
+    private let logger: Logger
 
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
@@ -81,12 +82,16 @@ final class TrashViewModel: DeinitPrintable, PullToRefreshable, ObservableObject
          shareRepository: ShareRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          vaultSelection: VaultSelection,
-         syncEventLoop: SyncEventLoop) {
+         syncEventLoop: SyncEventLoop,
+         logManager: LogManager) {
         self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.vaultSelection = vaultSelection
         self.syncEventLoop = syncEventLoop
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
         fetchAllTrashedItems()
     }
 
@@ -100,6 +105,7 @@ final class TrashViewModel: DeinitPrintable, PullToRefreshable, ObservableObject
                 items = try await getTrashedItemsTask().value
                 state = .loaded
             } catch {
+                logger.error(error)
                 state = .error(error)
             }
         }
@@ -121,6 +127,7 @@ extension TrashViewModel {
                 items.removeAll()
                 delegate?.trashViewModelDidRestoreAllItems(count: count)
             } catch {
+                logger.error(error)
                 delegate?.trashViewModelDidFail(error)
             }
         }
@@ -135,6 +142,7 @@ extension TrashViewModel {
                 items.removeAll()
                 delegate?.trashViewModelDidEmptyTrash()
             } catch {
+                logger.error(error)
                 delegate?.trashViewModelDidFail(error)
             }
         }
@@ -146,6 +154,7 @@ extension TrashViewModel {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 delegate?.trashViewModelWantsShowItemDetail(itemContent)
             } catch {
+                logger.error(error)
                 delegate?.trashViewModelDidFail(error)
             }
         }
@@ -160,6 +169,7 @@ extension TrashViewModel {
                 remove(item)
                 delegate?.trashViewModelDidRestoreItem(item, type: item.type)
             } catch {
+                logger.error(error)
                 delegate?.trashViewModelDidFail(error)
             }
         }
@@ -174,6 +184,7 @@ extension TrashViewModel {
                 remove(item)
                 delegate?.trashViewModelDidDeleteItem(item.type)
             } catch {
+                logger.error(error)
                 delegate?.trashViewModelDidFail(error)
             }
         }

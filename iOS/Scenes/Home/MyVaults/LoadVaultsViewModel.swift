@@ -30,22 +30,27 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     private let userData: UserData
     private let vaultSelection: VaultSelection
     private let shareRepository: ShareRepositoryProtocol
+    private let logger: Logger
 
     var onToggleSidebar: (() -> Void)?
 
     init(userData: UserData,
          vaultSelection: VaultSelection,
-         shareRepository: ShareRepositoryProtocol) {
+         shareRepository: ShareRepositoryProtocol,
+         logManager: LogManager) {
         self.userData = userData
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 
     func fetchVaults(forceRefresh: Bool) {
         Task { @MainActor in
             do {
                 error = nil
-                let vaults = try await fetchVaultsTask(forceRefresh: forceRefresh).value
+                let vaults = try await self.fetchVaultsTask(forceRefresh: forceRefresh).value
                 if vaults.isEmpty {
                     try await createDefaultVaultTask.value
                     fetchVaults(forceRefresh: false)
@@ -53,6 +58,7 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
                     vaultSelection.update(vaults: vaults)
                 }
             } catch {
+                logger.error(error)
                 self.error = error
             }
         }

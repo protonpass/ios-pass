@@ -28,16 +28,23 @@ final class LockedCredentialViewModel: ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let credentialIdentity: ASPasswordCredentialIdentity
+    private let logger: Logger
+    let logManager: LogManager
 
     var onFailure: ((Error) -> Void)?
     var onSuccess: ((ASPasswordCredential, SymmetricallyEncryptedItem) -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey,
-         credentialIdentity: ASPasswordCredentialIdentity) {
+         credentialIdentity: ASPasswordCredentialIdentity,
+         logManager: LogManager) {
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
         self.credentialIdentity = credentialIdentity
+        self.logManager = logManager
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
     }
 
     func getAndReturnCredential() {
@@ -62,6 +69,7 @@ final class LockedCredentialViewModel: ObservableObject {
                     throw CredentialsViewModelError.notLogInItem
                 }
             } catch {
+                logger.error(error)
                 onFailure?(error)
             }
         }
