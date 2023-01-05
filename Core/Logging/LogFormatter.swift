@@ -76,7 +76,7 @@ public let kDefaultLogDateFormatter: DateFormatter = {
     return dateFormatter
 }()
 
-public final class LogFormatter {
+public struct LogFormatter {
     let format: LogFormat
     let dateFormatter: DateFormatter
     let options: LogFormatOptions
