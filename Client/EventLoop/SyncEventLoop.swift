@@ -23,8 +23,6 @@ import Core
 import Foundation
 import Reachability
 
-private let kEventLoopIntervalInSeconds: TimeInterval = 30
-
 public protocol SyncEventLoopPullToRefreshDelegate: AnyObject {
     /// Do not care if the loop is finished with error or skipped.
     func pullToRefreshShouldStopRefreshing()
@@ -63,7 +61,9 @@ public enum SyncEventLoopSkipReason {
     case previousLoopNotFinished
 }
 
-/// A background event loop that keeps data up to date by synching after a given time interval
+private let kThresholdRange = 5...15
+
+/// A background event loop that keeps data up to date by synching after a random number of seconds
 public final class SyncEventLoop: DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -71,6 +71,8 @@ public final class SyncEventLoop: DeinitPrintable {
     private var reachability: Reachability?
     private var isReachable = true
     private var timer: Timer?
+    private var secondCount = 0
+    private var threshold = kThresholdRange.randomElement() ?? 5
     private var ongoingTask: Task<Void, Error>?
 
     // Injected params
@@ -117,9 +119,15 @@ public extension SyncEventLoop {
     /// Start looping
     func start() {
         delegate?.syncEventLoopDidStartLooping()
-        timer = .scheduledTimer(withTimeInterval: kEventLoopIntervalInSeconds,
+        timer = .scheduledTimer(withTimeInterval: 1,
                                 repeats: true) { [weak self] _ in
-            self?.timerTask()
+            guard let self else { return }
+            self.secondCount += 1
+            if self.secondCount >= self.threshold {
+                self.secondCount = 0
+                self.threshold = kThresholdRange.randomElement() ?? 5
+                self.timerTask()
+            }
         }
         timer?.fire()
     }
