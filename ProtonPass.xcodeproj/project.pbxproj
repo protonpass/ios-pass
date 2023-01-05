@@ -188,6 +188,7 @@
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
+		3554D42D2967854000DF0CBE /* DeveloperModeStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554D42C2967854000DF0CBE /* DeveloperModeStateManager.swift */; };
 		3554DAB5293A8F7D00595FC7 /* NoSearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554DAB4293A8F7D00595FC7 /* NoSearchResultsView.swift */; };
 		3554DAB6293A8F9500595FC7 /* NoSearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554DAB4293A8F7D00595FC7 /* NoSearchResultsView.swift */; };
 		3554DAB7293A910700595FC7 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
@@ -702,6 +703,7 @@
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
+		3554D42C2967854000DF0CBE /* DeveloperModeStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperModeStateManager.swift; sourceTree = "<group>"; };
 		3554DAB4293A8F7D00595FC7 /* NoSearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSearchResultsView.swift; sourceTree = "<group>"; };
 		3555800628F01A46009C3B88 /* URLUtils+MatcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+MatcherTests.swift"; sourceTree = "<group>"; };
 		3555800D28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Debug-Black.xcconfig"; sourceTree = "<group>"; };
@@ -1150,6 +1152,7 @@
 			isa = PBXGroup;
 			children = (
 				356FBD472949246A0063978C /* Coordinator+ShowFullScreen.swift */,
+				3554D42C2967854000DF0CBE /* DeveloperModeStateManager.swift */,
 				3543615B2941E1A8000CAE12 /* UIApplication+OpenSettings.swift */,
 				35A5EEE12958CDBC00A09623 /* UrlOpener.swift */,
 				3557441A295A064F00EA4AF0 /* ClipboardManager.swift */,
@@ -2865,6 +2868,7 @@
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
 				354BB15528A2895F00F50040 /* SearchView.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
+				3554D42D2967854000DF0CBE /* DeveloperModeStateManager.swift in Sources */,
 				355635B7288947DD00F32353 /* VaultSelection.swift in Sources */,
 				355744172959F5E400EA4AF0 /* ClipboardSettingsView.swift in Sources */,
 				354513CD28E45FB20020A93A /* SettingsViewModel.swift in Sources */,

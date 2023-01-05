@@ -130,8 +130,12 @@ struct SearchView: View {
                 title: "Move to Trash",
                 icon: IconProvider.trash,
                 action: {
-                    selectedItem = item
-                    isShowingTrashingAlert.toggle()
+                    if viewModel.preferences.askBeforeTrashing {
+                        selectedItem = item
+                        isShowingTrashingAlert.toggle()
+                    } else {
+                        viewModel.trashItem(item)
+                    }
                 })
         }, label: {
             Image(uiImage: IconProvider.threeDotsHorizontal)
