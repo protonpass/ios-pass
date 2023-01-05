@@ -29,12 +29,18 @@ protocol SideBarViewModelDelegate: AnyObject {
 }
 
 final class SideBarViewModel: ObservableObject {
+    @Published var isShowingDevPreviewsOption: Bool {
+        didSet {
+            DeveloperModeStateManager.shared.isOn = isShowingDevPreviewsOption
+        }
+    }
     @Published private(set) var itemCount: ItemCount?
     let user: UserProtocol
     weak var delegate: SideBarViewModelDelegate?
 
     init(user: UserProtocol) {
         self.user = user
+        self.isShowingDevPreviewsOption = DeveloperModeStateManager.shared.isOn
     }
 
     func userSwitcherAction() {
