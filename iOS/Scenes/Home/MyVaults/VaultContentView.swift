@@ -133,7 +133,7 @@ struct VaultContentView: View {
                                     trailingView: { trailingView(for: item) })
                     .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
                     .swipeActions {
-                        Button(action: { confirmTrash(item: item) },
+                        Button(action: { askForConfirmationOrTrashDirectly(item: item) },
                                label: { Image(uiImage: IconProvider.trash) })
                         .tint(.red)
                     }
@@ -178,16 +178,20 @@ struct VaultContentView: View {
 
             DestructiveButton(title: "Move to Trash",
                               icon: IconProvider.trash,
-                              action: { confirmTrash(item: item) })
+                              action: { askForConfirmationOrTrashDirectly(item: item) })
         }, label: {
             Image(uiImage: IconProvider.threeDotsHorizontal)
                 .foregroundColor(.secondary)
         })
     }
 
-    private func confirmTrash(item: ItemListUiModel) {
-        selectedItem = item
-        isShowingTrashingAlert.toggle()
+    private func askForConfirmationOrTrashDirectly(item: ItemListUiModel) {
+        if viewModel.preferences.askBeforeTrashing {
+            selectedItem = item
+            isShowingTrashingAlert.toggle()
+        } else {
+            viewModel.trashItem(item)
+        }
     }
 
     @ToolbarContentBuilder

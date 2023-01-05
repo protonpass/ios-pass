@@ -45,10 +45,8 @@ struct CreateEditNoteView: View {
                         .padding(.bottom, 56)
 
                     if viewModel.mode.isEditMode {
-                        MoveToTrashButton {
-                            isShowingTrashAlert.toggle()
-                        }
-                        .opacityReduced(viewModel.isSaving)
+                        MoveToTrashButton(action: askForConfirmationOrTrashDirectly)
+                            .opacityReduced(viewModel.isSaving)
                     }
 
                     Spacer()
@@ -107,6 +105,14 @@ struct CreateEditNoteView: View {
                           disabled: !viewModel.isSaveable,
                           spinning: viewModel.isSaving,
                           action: viewModel.save)
+        }
+    }
+
+    private func askForConfirmationOrTrashDirectly() {
+        if viewModel.preferences.askBeforeTrashing {
+            isShowingTrashAlert.toggle()
+        } else {
+            viewModel.trash()
         }
     }
 }

@@ -50,10 +50,8 @@ struct CreateEditLoginView: View {
                     urlsInputView
                     noteInputView
                     if viewModel.mode.isEditMode {
-                        MoveToTrashButton {
-                            isShowingTrashAlert.toggle()
-                        }
-                        .opacityReduced(viewModel.isSaving)
+                        MoveToTrashButton(action: askForConfirmationOrTrashDirectly)
+                            .opacityReduced(viewModel.isSaving)
                     }
                     Spacer()
                 }
@@ -201,6 +199,14 @@ struct CreateEditLoginView: View {
                 text: $viewModel.note,
                 isFocused: $isFocusedOnNote)
             .opacityReduced(viewModel.isSaving)
+        }
+    }
+
+    private func askForConfirmationOrTrashDirectly() {
+        if viewModel.preferences.askBeforeTrashing {
+            isShowingTrashAlert.toggle()
+        } else {
+            viewModel.trash()
         }
     }
 

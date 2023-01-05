@@ -92,8 +92,8 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
 
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
-    private let preferences: Preferences
     private let logger: Logger
+    let preferences: Preferences
     let credentialManager: CredentialManagerProtocol
     let vaultSelection: VaultSelection
 
