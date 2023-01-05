@@ -28,9 +28,9 @@ enum DeviceLogType: CaseIterable {
     var title: String {
         switch self {
         case .hostApplication:
-            return "Host application logs"
+            return "Host Application Logs"
         case .autoFillExtension:
-            return "AutoFill extension logs"
+            return "AutoFill Extension Logs"
         }
     }
 
@@ -64,11 +64,11 @@ struct DeviceLogTypesView: View {
 
             Section {
                 Button(role: .destructive, action: onClearLogs) {
-                    Text("Clear all logs")
+                    Text("Clear All Logs")
                 }
             }
         }
-        .navigationTitle("Device logs")
+        .navigationTitle("Device Logs")
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {

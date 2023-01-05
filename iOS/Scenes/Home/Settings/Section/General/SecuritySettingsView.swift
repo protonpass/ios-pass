@@ -76,6 +76,7 @@ private struct BiometricAuthenticationSection: View {
                     }
                 })
             }
+            .tint(.interactionNorm)
         } else {
             Text("Not supported")
         }
@@ -90,7 +91,7 @@ private struct ClipboardSection: View {
             HStack {
                 Button(action: viewModel.updateClipboardExpiration) {
                     HStack {
-                        Text("Clear clipboard")
+                        Text("Clear Clipboard")
                         Spacer()
                         Text(viewModel.clipboardExpiration.description)
                             .foregroundColor(.secondary)
@@ -102,8 +103,9 @@ private struct ClipboardSection: View {
             }
 
             Toggle(isOn: $viewModel.shareClipboard) {
-                Text("Share clipboard between devices")
+                Text("Share Clipboard Between Devices")
             }
+            .tint(.interactionNorm)
         }, header: {
             Text("Clipboard")
         })

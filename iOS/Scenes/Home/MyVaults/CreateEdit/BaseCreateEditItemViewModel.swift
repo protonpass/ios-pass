@@ -70,12 +70,14 @@ class BaseCreateEditItemViewModel {
     let shareId: String
     let mode: ItemMode
     let itemRepository: ItemRepositoryProtocol
+    let preferences: Preferences
     let logger: Logger
 
     weak var delegate: CreateEditItemViewModelDelegate?
 
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
+         preferences: Preferences,
          logManager: LogManager) {
         switch mode {
         case .create(let shareId, _):
@@ -85,6 +87,7 @@ class BaseCreateEditItemViewModel {
         }
         self.mode = mode
         self.itemRepository = itemRepository
+        self.preferences = preferences
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)

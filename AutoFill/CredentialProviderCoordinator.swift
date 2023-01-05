@@ -378,6 +378,7 @@ private extension CredentialProviderCoordinator {
         let viewModel = CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                type: creationType),
                                                  itemRepository: itemRepository,
+                                                 preferences: preferences,
                                                  logManager: logManager)
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
@@ -396,6 +397,7 @@ private extension CredentialProviderCoordinator {
                                                                             title: title)),
                                                  itemRepository: itemRepository,
                                                  aliasRepository: aliasRepository,
+                                                 preferences: preferences,
                                                  logManager: logManager)
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
