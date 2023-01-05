@@ -52,6 +52,9 @@ public final class Preferences: ObservableObject {
     @AppStorage("shareClipboard", store: kSharedUserDefaults)
     public var shareClipboard = false
 
+    @AppStorage("askBeforeTrashing", store: kSharedUserDefaults)
+    public var askBeforeTrashing = true
+
     public func reset() {
         quickTypeBar = true
         failedAttemptCount = 0
@@ -61,5 +64,6 @@ public final class Preferences: ObservableObject {
         browser = .safari
         clipboardExpiration = .thirtySeconds
         shareClipboard = false
+        askBeforeTrashing = true
     }
 }

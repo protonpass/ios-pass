@@ -61,7 +61,7 @@ private struct DefaultBrowserRow: View {
         if #unavailable(iOS 16.0) {
             Button(action: viewModel.updateDefaultBrowser) {
                 HStack {
-                    Text("Default browser")
+                    Text("Default Browser")
                     Spacer()
                     Text(viewModel.browser.description)
                         .foregroundColor(.secondary)
@@ -71,7 +71,7 @@ private struct DefaultBrowserRow: View {
             }
             .buttonStyle(.plain)
         } else {
-            Picker("Default browser", selection: $viewModel.browser) {
+            Picker("Default Browser", selection: $viewModel.browser) {
                 ForEach(viewModel.supportedBrowsers, id: \.rawValue) { browser in
                     Text(browser.description)
                         .tag(browser)
