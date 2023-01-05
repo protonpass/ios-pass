@@ -64,6 +64,12 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         }
     }
 
+    @Published var askBeforeTrashing: Bool {
+        didSet {
+            preferences.askBeforeTrashing = askBeforeTrashing
+        }
+    }
+
     @Published var theme: Theme {
         didSet {
             preferences.theme = theme
@@ -101,6 +107,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.preferences = preferences
         self.quickTypeBar = preferences.quickTypeBar
+        self.askBeforeTrashing = preferences.askBeforeTrashing
         self.theme = preferences.theme
         self.clipboardExpiration = preferences.clipboardExpiration
         self.shareClipboard = preferences.shareClipboard
