@@ -132,10 +132,12 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
+         preferences: Preferences,
          logManager: LogManager) {
         self.aliasRepository = aliasRepository
         super.init(mode: mode,
                    itemRepository: itemRepository,
+                   preferences: preferences,
                    logManager: logManager)
 
         if case let .edit(itemContent) = mode {

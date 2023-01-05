@@ -98,10 +98,8 @@ struct CreateEditAliasView: View {
                 noteInputView
 
                 if viewModel.mode.isEditMode {
-                    MoveToTrashButton {
-                        isShowingTrashAlert.toggle()
-                    }
-                    .opacityReduced(viewModel.isSaving)
+                    MoveToTrashButton(action: askForConfirmationOrTrashDirectly)
+                        .opacityReduced(viewModel.isSaving)
                 }
             }
             .padding()
@@ -228,6 +226,14 @@ struct CreateEditAliasView: View {
                 text: $viewModel.note,
                 isFocused: $isFocusedOnNote)
             .opacityReduced(viewModel.isSaving)
+        }
+    }
+
+    private func askForConfirmationOrTrashDirectly() {
+        if viewModel.preferences.askBeforeTrashing {
+            isShowingTrashAlert.toggle()
+        } else {
+            viewModel.trash()
         }
     }
 }

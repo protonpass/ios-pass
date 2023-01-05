@@ -32,7 +32,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             GeneralSettingsSection(viewModel: viewModel)
-            ThemeSection(viewModel: viewModel)
+            SecondSection(viewModel: viewModel)
             ApplicationSection(viewModel: viewModel)
             DeleteAccountSection(onDelete: viewModel.deleteAccount)
         }
@@ -45,41 +45,54 @@ struct SettingsView: View {
     }
 }
 
-private struct ThemeSection: View {
+private struct SecondSection: View {
     @ObservedObject var viewModel: SettingsViewModel
 
     var body: some View {
         Section {
-            if #unavailable(iOS 16.0) {
-                HStack {
-                    Text("Theme")
-                    Spacer()
-                    Label(title: {
-                        Text(viewModel.theme.description)
-                    }, icon: {
-                        Image(uiImage: viewModel.theme.icon)
-                    })
-                    .foregroundColor(.secondary)
-                    ChevronRight()
-                }
-                .frame(maxWidth: .infinity)
-                .contentShape(Rectangle())
-                .onTapGesture(perform: viewModel.updateTheme)
-            } else {
-                Picker("Theme", selection: $viewModel.theme) {
-                    ForEach(Theme.allCases, id: \.rawValue) { theme in
-                        HStack {
-                            Label(title: {
-                                Text(theme.description)
-                            }, icon: {
-                                Image(uiImage: theme.icon)
-                            })
-                        }
-                        .tag(theme)
-                    }
-                }
-                .frame(maxWidth: .infinity)
+            askBeforeTrashingOption
+            themeOption
+        }
+    }
+
+    private var askBeforeTrashingOption: some View {
+        Toggle(isOn: $viewModel.askBeforeTrashing) {
+            Text("Ask Before Trashing")
+        }
+        .tint(.interactionNorm)
+    }
+
+    @ViewBuilder
+    private var themeOption: some View {
+        if #unavailable(iOS 16.0) {
+            HStack {
+                Text("Theme")
+                Spacer()
+                Label(title: {
+                    Text(viewModel.theme.description)
+                }, icon: {
+                    Image(uiImage: viewModel.theme.icon)
+                })
+                .foregroundColor(.secondary)
+                ChevronRight()
             }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: viewModel.updateTheme)
+        } else {
+            Picker("Theme", selection: $viewModel.theme) {
+                ForEach(Theme.allCases, id: \.rawValue) { theme in
+                    HStack {
+                        Label(title: {
+                            Text(theme.description)
+                        }, icon: {
+                            Image(uiImage: theme.icon)
+                        })
+                    }
+                    .tag(theme)
+                }
+            }
+            .frame(maxWidth: .infinity)
         }
     }
 }
@@ -90,7 +103,7 @@ private struct ApplicationSection: View {
     var body: some View {
         Section(content: {
             HStack {
-                Text("View logs")
+                Text("View Logs")
                 Spacer()
                 ChevronRight()
             }
@@ -99,7 +112,7 @@ private struct ApplicationSection: View {
             .onTapGesture(perform: viewModel.viewLogs)
 
             Button(action: viewModel.fullSync) {
-                Text("Force synchronization")
+                Text("Force Synchronization")
             }
             .foregroundColor(.interactionNorm)
         }, header: {
@@ -116,7 +129,7 @@ private struct DeleteAccountSection: View {
     var body: some View {
         Section(content: {
             Button(action: onDelete) {
-                Text("Delete account")
+                Text("Delete Account")
                     .foregroundColor(.red)
             }
         }, footer: {

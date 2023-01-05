@@ -51,7 +51,7 @@ struct ClipboardSettingsView: View {
             })
         }
         .navigationBarBackButtonHidden()
-        .navigationTitle("Clear clipboard")
+        .navigationTitle("Clear Clipboard")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: onGoBack) {
