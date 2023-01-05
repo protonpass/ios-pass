@@ -20,15 +20,29 @@
 
 import Foundation
 
+public enum LoggerConsolePrintOption {
+    /// Never print to console
+    case never
+    /// Print when in DEBUG mode
+    case debug
+    /// Print when value of boolean is `true`
+    case conditioned(Bool)
+}
+
 public struct Logger {
     let subsystem: String
     let category: String
     let manager: LogManager
+    let consolePrintOption: LoggerConsolePrintOption
 
-    public init(subsystem: String, category: String, manager: LogManager) {
+    public init(subsystem: String,
+                category: String,
+                manager: LogManager,
+                consolePrintOption: LoggerConsolePrintOption = .debug) {
         self.subsystem = subsystem
         self.category = category
         self.manager = manager
+        self.consolePrintOption = consolePrintOption
     }
 }
 
@@ -183,5 +197,24 @@ private extension Logger {
 
     func log(entry: LogEntry) {
         manager.log(entry: entry)
+        printToConsoleIfNecessary(entry: entry)
+    }
+
+    func printToConsoleIfNecessary(entry: LogEntry) {
+        let printToConsole: () -> Void = {
+            print(LogFormatter.default.format(entry: entry))
+        }
+        switch consolePrintOption {
+        case .never:
+            return
+        case .debug:
+            #if DEBUG
+            printToConsole()
+            #endif
+        case .conditioned(let condition):
+            if condition {
+                printToConsole()
+            }
+        }
     }
 }
