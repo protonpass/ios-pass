@@ -39,6 +39,7 @@ final class MyVaultsCoordinator: Coordinator {
     private let credentialManager: CredentialManagerProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
+    private let preferences: Preferences
     private let logManager: LogManager
 
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
@@ -82,6 +83,7 @@ final class MyVaultsCoordinator: Coordinator {
                                            preferences: preferences,
                                            logManager: logManager)
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
+        self.preferences = preferences
         self.logManager = logManager
         super.init()
         vaultContentViewModel.delegate = self
@@ -150,6 +152,7 @@ final class MyVaultsCoordinator: Coordinator {
     private func showCreateEditLoginView(mode: ItemMode) {
         let viewModel = CreateEditLoginViewModel(mode: mode,
                                                  itemRepository: itemRepository,
+                                                 preferences: preferences,
                                                  logManager: logManager)
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
@@ -162,6 +165,7 @@ final class MyVaultsCoordinator: Coordinator {
         let viewModel = CreateEditAliasViewModel(mode: mode,
                                                  itemRepository: itemRepository,
                                                  aliasRepository: aliasRepository,
+                                                 preferences: preferences,
                                                  logManager: logManager)
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
@@ -173,6 +177,7 @@ final class MyVaultsCoordinator: Coordinator {
     private func showCreateEditNoteView(mode: ItemMode) {
         let viewModel = CreateEditNoteViewModel(mode: mode,
                                                 itemRepository: itemRepository,
+                                                preferences: preferences,
                                                 logManager: logManager)
         viewModel.delegate = self
         let view = CreateEditNoteView(viewModel: viewModel)
