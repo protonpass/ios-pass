@@ -43,6 +43,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let vaultSelection: VaultSelection
     private let logger: Logger
+    let preferences: Preferences
 
     // Self-initialized properties
     private let searchTermSubject = PassthroughSubject<String, Never>()
@@ -88,10 +89,12 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     init(symmetricKey: SymmetricKey,
          itemRepository: ItemRepositoryProtocol,
          vaultSelection: VaultSelection,
+         preferences: Preferences,
          logManager: LogManager) {
         self.symmetricKey = symmetricKey
         self.itemRepository = itemRepository
         self.vaultSelection = vaultSelection
+        self.preferences = preferences
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)

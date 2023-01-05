@@ -206,6 +206,7 @@ final class MyVaultsCoordinator: Coordinator {
         let viewModel = SearchViewModel(symmetricKey: symmetricKey,
                                         itemRepository: itemRepository,
                                         vaultSelection: vaultSelection,
+                                        preferences: preferences,
                                         logManager: logManager)
         viewModel.delegate = self
         searchViewModel = viewModel
