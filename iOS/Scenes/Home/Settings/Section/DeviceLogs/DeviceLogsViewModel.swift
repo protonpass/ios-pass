@@ -47,14 +47,13 @@ final class DeviceLogsViewModel: DeinitPrintable, ObservableObject {
 
     private let logManager: LogManager
     private let logFormatter: LogFormatter
-    let type: DeviceLogType
+    let module: PassLogModule
 
     weak var delegate: DeviceLogsViewModelDelegate?
 
-    init(type: DeviceLogType,
-         logManager: LogManager) {
-        self.type = type
-        self.logManager = logManager
+    init(module: PassLogModule) {
+        self.module = module
+        self.logManager = .init(module: module)
         self.logFormatter = .default
         self.loadLogs()
     }
@@ -64,7 +63,7 @@ final class DeviceLogsViewModel: DeinitPrintable, ObservableObject {
             defer { isLoading = false }
             do {
                 isLoading = true
-                entries = try await logManager.getLogEntries().filter { $0.subsystem == type.subsystem }
+                entries = try await logManager.getLogEntries()
                 isLoading = false
             } catch {
                 self.error = error
@@ -77,7 +76,7 @@ final class DeviceLogsViewModel: DeinitPrintable, ObservableObject {
             defer { delegate?.deviceLogsViewModelWantsToHideLoadingHud() }
             do {
                 delegate?.deviceLogsViewModelWantsToShowLoadingHud()
-                let file = FileManager.default.temporaryDirectory.appendingPathComponent("Proton_Pass.log")
+                let file = FileManager.default.temporaryDirectory.appendingPathComponent(module.logFileName)
                 let log = await logFormatter.format(entries: entries)
                 try log.write(to: file, atomically: true, encoding: .utf8)
                 fileToDelete = file
