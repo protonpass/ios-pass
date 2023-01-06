@@ -265,13 +265,22 @@ extension CredentialProviderCoordinator: APIServiceDelegate {
 
     private func updateRank(encryptedItem: SymmetricallyEncryptedItem,
                             symmetricKey: SymmetricKey,
-                            serviceIdentifiers: [ASCredentialServiceIdentifier]) async throws {
-        logger.trace("Updating rank \(encryptedItem.debugInformation)")
+                            serviceIdentifiers: [ASCredentialServiceIdentifier],
+                            lastUseTime: TimeInterval) async throws {
         let matcher = URLUtils.Matcher.default
         let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
         if case let .login(email, _, urls) = decryptedItem.contentData {
             let serviceUrls = serviceIdentifiers
-                .map { $0.identifier }
+                .map { serviceIdentifier in
+                    switch serviceIdentifier.type {
+                    case .URL:
+                        return serviceIdentifier.identifier
+                    case .domain:
+                        return "https://\(serviceIdentifier.identifier)"
+                    @unknown default:
+                        return serviceIdentifier.identifier
+                    }
+                }
                 .compactMap { URL(string: $0) }
             let itemUrls = urls.compactMap { URL(string: $0) }
             let matchedUrls = itemUrls.filter { itemUrl in
@@ -285,11 +294,10 @@ extension CredentialProviderCoordinator: APIServiceDelegate {
                                           itemId: encryptedItem.item.itemID,
                                           username: email,
                                           url: $0.absoluteString,
-                                          lastUseTime: Int64(Date().timeIntervalSince1970)) }
+                                          lastUseTime: Int64(lastUseTime)) }
             try await credentialManager.insert(credentials: credentials)
-            logger.info("Updated rank \(encryptedItem.debugInformation)")
         } else {
-            logger.fatal("Not log in item")
+            throw CredentialsViewModelError.notLogInItem
         }
     }
 }
@@ -308,14 +316,21 @@ extension CredentialProviderCoordinator {
                   serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         Task { @MainActor in
             do {
-                logger.trace("Autofilling from QuickType bar \(quickTypeBar). \(encryptedItem.debugInformation)")
+                context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
+                logger.info("Autofilled from QuickType bar \(quickTypeBar). \(encryptedItem.debugInformation)")
+
+                let lastUseTime = Date().timeIntervalSince1970
+                logger.trace("Updating rank \(encryptedItem.debugInformation)")
                 try await updateRank(encryptedItem: encryptedItem,
                                      symmetricKey: itemRepository.symmetricKey,
-                                     serviceIdentifiers: serviceIdentifiers)
+                                     serviceIdentifiers: serviceIdentifiers,
+                                     lastUseTime: lastUseTime)
+                logger.info("Updated rank \(encryptedItem.debugInformation)")
+
+                logger.trace("Updating lastUseTime \(encryptedItem.debugInformation)")
                 try await itemRepository.update(item: encryptedItem,
-                                                lastUseTime: Date().timeIntervalSince1970)
-                logger.info("Autofilled from QuickType bar \(quickTypeBar). \(encryptedItem.debugInformation)")
-                context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
+                                                lastUseTime: lastUseTime)
+                logger.info("Updated lastUseTime \(encryptedItem.debugInformation)")
             } catch {
                 logger.error(error)
                 if quickTypeBar {
