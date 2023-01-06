@@ -27,6 +27,7 @@ import SwiftUI
 
 enum CredentialsViewModelError: Error {
     case itemNotFound(shareId: String, itemId: String)
+    case invalidUrl
     case notLogInItem
 }
 
@@ -184,9 +185,11 @@ extension CredentialsViewModel {
                 logger.trace("Associate and autofilling \(item.debugInformation)")
                 let encryptedItem = try await getItemTask(item: item).value
                 let oldContent = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-                guard case let .login(oldUsername, oldPassword, oldUrls) = oldContent.contentData,
-                      let newUrl = urls.first?.schemeAndHost else {
+                guard case let .login(oldUsername, oldPassword, oldUrls) = oldContent.contentData else {
                     throw CredentialsViewModelError.notLogInItem
+                }
+                guard let newUrl = urls.first?.schemeAndHost, !newUrl.isEmpty else {
+                    throw CredentialsViewModelError.invalidUrl
                 }
                 let newLoginData = ItemContentData.login(username: oldUsername,
                                                          password: oldPassword,

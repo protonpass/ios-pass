@@ -21,42 +21,19 @@
 import ProtonCore_UIFoundations
 import SwiftUI
 
-enum DeviceLogType: CaseIterable {
-    case hostApplication
-    case autoFillExtension
-
-    var title: String {
-        switch self {
-        case .hostApplication:
-            return "Host Application Logs"
-        case .autoFillExtension:
-            return "AutoFill Extension Logs"
-        }
-    }
-
-    var subsystem: String {
-        switch self {
-        case .hostApplication:
-            return "me.proton.pass.ios"
-        case .autoFillExtension:
-            return "me.proton.pass.ios.autofill"
-        }
-    }
-}
-
 struct DeviceLogTypesView: View {
     var onGoBack: () -> Void
-    var onSelect: (DeviceLogType) -> Void
+    var onSelect: (PassLogModule) -> Void
     var onClearLogs: () -> Void
 
     var body: some View {
         Form {
             Section {
-                ForEach(DeviceLogType.allCases, id: \.hashValue) { type in
+                ForEach(PassLogModule.allCases, id: \.hashValue) { module in
                     Button(action: {
-                        onSelect(type)
+                        onSelect(module)
                     }, label: {
-                        Text(type.title)
+                        Text(module.title)
                     })
                     .foregroundColor(.interactionNorm)
                 }

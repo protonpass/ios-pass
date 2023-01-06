@@ -57,15 +57,16 @@ final class SettingsCoordinator: Coordinator {
               secondaryView: ItemDetailPlaceholderView { self.popTopViewController(animated: true) })
     }
 
-    private func showDeviceLogs(for type: DeviceLogType) {
-        let viewModel = DeviceLogsViewModel(type: type, logManager: logManager)
+    private func showDeviceLogs(for module: PassLogModule) {
+        let viewModel = DeviceLogsViewModel(module: module)
         viewModel.delegate = self
         let view = DeviceLogsView(viewModel: viewModel)
         present(view)
     }
 
     private func clearLogs() {
-        logManager.removeAllLogs()
+        let modules = PassLogModule.allCases.map(LogManager.init)
+        modules.forEach { $0.removeAllLogs() }
         bannerManager?.displayBottomInfoMessage("Cleared all logs")
     }
 }

@@ -56,7 +56,7 @@ struct DeviceLogsView: View {
                     logs
                 }
             }
-            .navigationTitle(viewModel.type.title)
+            .navigationTitle(viewModel.module.title)
             .navigationBarTitleDisplayMode(.inline)
         }
         .navigationViewStyle(.stack)
