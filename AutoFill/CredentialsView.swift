@@ -27,7 +27,7 @@ import UIComponents
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
     @State private var isLocked: Bool
-    @State private var selectedNotMatchedItem: ItemListUiModel?
+    @State private var selectedNotMatchedItem: TitledItemIdentifiable?
     private let preferences: Preferences
 
     init(viewModel: CredentialsViewModel, preferences: Preferences) {
@@ -126,7 +126,7 @@ struct CredentialsView: View {
                 if let selectedNotMatchedItem,
                    let schemeAndHost = viewModel.urls.first?.schemeAndHost {
                     // swiftlint:disable:next line_length
-                    Text("Would you want to associate \"\(schemeAndHost)\" with \"\(selectedNotMatchedItem.title)\"?")
+                    Text("Would you want to associate \"\(schemeAndHost)\" with \"\(selectedNotMatchedItem.itemTitle)\"?")
                 }
             })
     }
@@ -183,14 +183,7 @@ struct CredentialsView: View {
                 } else {
                     ForEach(notMatchedItems) { item in
                         view(for: item) {
-                            // Check URL validity (e.g app has associated domains or not)
-                            // before asking if user wants to "associate & autofill".
-                            if let schemeAndHost = viewModel.urls.first?.schemeAndHost,
-                               !schemeAndHost.isEmpty {
-                                selectedNotMatchedItem = item
-                            } else {
-                                viewModel.select(item: item)
-                            }
+                            select(item: item)
                         }
                     }
                     .listRowSeparator(.hidden)
@@ -226,7 +219,7 @@ struct CredentialsView: View {
                     Section(content: {
                         ForEach(results) { result in
                             ItemSearchResultView(result: result,
-                                                 action: { viewModel.select(item: result) })
+                                                 action: { select(item: result) })
                         }
                         .listRowSeparator(.hidden)
                     }, header: {
@@ -237,5 +230,23 @@ struct CredentialsView: View {
         }
         .listStyle(.plain)
         .animation(.default, value: resultDictionary.keys)
+    }
+
+    private func select(item: TitledItemIdentifiable) {
+        guard case .loaded(let credentialsFetchResult, _) = viewModel.state else { return }
+        let isMatched = credentialsFetchResult.matchedItems
+            .contains { $0.itemId == item.itemId && $0.shareId == item.shareId }
+        if isMatched {
+            viewModel.select(item: item)
+        } else {
+            // Check URL validity (e.g app has associated domains or not)
+            // before asking if user wants to "associate & autofill".
+            if let schemeAndHost = viewModel.urls.first?.schemeAndHost,
+               !schemeAndHost.isEmpty {
+                selectedNotMatchedItem = item
+            } else {
+                viewModel.select(item: item)
+            }
+        }
     }
 }

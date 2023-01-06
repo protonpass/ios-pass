@@ -337,3 +337,15 @@ private extension CredentialsViewModel {
         }
     }
 }
+
+protocol TitledItemIdentifiable: ItemIdentifiable {
+    var itemTitle: String { get }
+}
+
+extension ItemListUiModel: TitledItemIdentifiable {
+    var itemTitle: String { title }
+}
+
+extension ItemSearchResult: TitledItemIdentifiable {
+    var itemTitle: String { title.fullText }
+}
