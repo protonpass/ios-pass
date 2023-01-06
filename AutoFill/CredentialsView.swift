@@ -97,7 +97,9 @@ struct CredentialsView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbarContent }
+            .edgesIgnoringSafeArea(.bottom)
         }
+        .navigationViewStyle(.stack)
         .alert(
             "Associate URL?",
             isPresented: isShowingConfirmationAlert,
@@ -181,7 +183,14 @@ struct CredentialsView: View {
                 } else {
                     ForEach(notMatchedItems) { item in
                         view(for: item) {
-                            selectedNotMatchedItem = item
+                            // Check URL validity (e.g app has associated domains or not)
+                            // before asking if user wants to "associate & autofill".
+                            if let schemeAndHost = viewModel.urls.first?.schemeAndHost,
+                               !schemeAndHost.isEmpty {
+                                selectedNotMatchedItem = item
+                            } else {
+                                viewModel.select(item: item)
+                            }
                         }
                     }
                     .listRowSeparator(.hidden)
@@ -192,7 +201,6 @@ struct CredentialsView: View {
         }
         .listStyle(.plain)
         .animation(.default, value: matchedItems.count + notMatchedItems.count)
-        .padding(.bottom, 44) // Otherwise content goes below the visible area. SwiftUI bug?
     }
 
     private func view(for item: ItemListUiModel, action: @escaping () -> Void) -> some View {
