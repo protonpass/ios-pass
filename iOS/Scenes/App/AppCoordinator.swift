@@ -68,7 +68,7 @@ final class AppCoordinator {
         self.window = window
         self.appStateObserver = .init()
         self.apiService = PMAPIService(doh: PPDoH(bundle: .main))
-        self.logManager = .init()
+        self.logManager = .init(module: .hostApp)
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: self.logManager)

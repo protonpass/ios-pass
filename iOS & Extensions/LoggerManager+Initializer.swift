@@ -20,13 +20,33 @@
 
 import Core
 
+enum PassLogModule: CaseIterable {
+    case hostApp, autoFillExtension
+
+    var title: String {
+        switch self {
+        case .hostApp:
+            return "Host Application Logs"
+        case .autoFillExtension:
+            return "AutoFill Extension Logs"
+        }
+    }
+
+    var logFileName: String {
+        switch self {
+        case .hostApp: return "pass_host_application.log"
+        case .autoFillExtension: return "pass_autofill_extension.log"
+        }
+    }
+}
+
 extension LogManager {
     /// Convenience initialize for iOS & extensions which creates a log file in shared container.
-    convenience init() {
+    convenience init(module: PassLogModule) {
         guard let fileContainer =
                 FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
             fatalError("Shared file container could not be created.")
         }
-        self.init(url: fileContainer, maxLogLines: 5_000)
+        self.init(url: fileContainer, fileName: module.logFileName, maxLogLines: 2_000)
     }
 }

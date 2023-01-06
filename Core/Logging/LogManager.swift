@@ -29,8 +29,13 @@ public final class LogManager {
     let maxLogLines: UInt
     let queue = DispatchQueue(label: "me.proton.core.log-manager")
 
-    public init(url: URL, maxLogLines: UInt) {
-        self.url = url.appendingPathComponent("proton.log", isDirectory: false)
+    /// Manage (read/write) the log file on disk
+    /// - Parameters:
+    ///    - url: The URL of the folder that contains the log file
+    ///    - fileName: The name of the log file. E.g "proton.log"
+    ///    - maxLogLines: Maximum number of log entries
+    public init(url: URL, fileName: String, maxLogLines: UInt) {
+        self.url = url.appendingPathComponent(fileName, isDirectory: false)
         self.maxLogLines = maxLogLines
     }
 }
