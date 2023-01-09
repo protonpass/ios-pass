@@ -517,8 +517,8 @@ extension HomeCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopDidFailLoop(error: Error) {
+        // Silently fail & not show error to users
         logger.error(error)
-        bannerManager.displayTopErrorMessage(error)
     }
 }
 
