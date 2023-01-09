@@ -105,7 +105,18 @@ final class CredentialsViewModel: ObservableObject {
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
-        self.urls = serviceIdentifiers.map { $0.identifier }.compactMap { URL(string: $0) }
+        self.urls = serviceIdentifiers.map { serviceIdentifier in
+            switch serviceIdentifier.type {
+            case .URL:
+                // Web context
+                return serviceIdentifier.identifier
+            case .domain:
+                // App context
+                return "https://\(serviceIdentifier.identifier)"
+            @unknown default:
+                return serviceIdentifier.identifier
+            }
+        }.compactMap { URL(string: $0) }
         self.logManager = logManager
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
@@ -325,4 +336,16 @@ private extension CredentialsViewModel {
             }
         }
     }
+}
+
+protocol TitledItemIdentifiable: ItemIdentifiable {
+    var itemTitle: String { get }
+}
+
+extension ItemListUiModel: TitledItemIdentifiable {
+    var itemTitle: String { title }
+}
+
+extension ItemSearchResult: TitledItemIdentifiable {
+    var itemTitle: String { title.fullText }
 }
