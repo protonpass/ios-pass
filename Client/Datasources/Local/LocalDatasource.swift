@@ -104,6 +104,7 @@ extension LocalDatasourceProtocol {
     func execute(batchInsertRequest request: NSBatchInsertRequest,
                  context: NSManagedObjectContext) async throws {
         try await context.perform {
+            guard context.hasPersistentStore else { return }
 #if DEBUG
             if Thread.isMainThread {
                 throw LocalDatasourceError.databaseOperationsOnMainThread
@@ -122,6 +123,7 @@ extension LocalDatasourceProtocol {
     func execute(batchDeleteRequest request: NSBatchDeleteRequest,
                  context: NSManagedObjectContext) async throws {
         try await context.perform {
+            guard context.hasPersistentStore else { return }
 #if DEBUG
             if Thread.isMainThread {
                 throw LocalDatasourceError.databaseOperationsOnMainThread
@@ -141,6 +143,7 @@ extension LocalDatasourceProtocol {
     func execute<T>(fetchRequest request: NSFetchRequest<T>,
                     context: NSManagedObjectContext) async throws -> [T] {
         try await context.perform {
+            guard context.hasPersistentStore else { return [] }
 #if DEBUG
             if Thread.isMainThread {
                 throw LocalDatasourceError.databaseOperationsOnMainThread
@@ -153,6 +156,7 @@ extension LocalDatasourceProtocol {
     func count<T>(fetchRequest request: NSFetchRequest<T>,
                   context: NSManagedObjectContext) async throws -> Int {
         try await context.perform {
+            guard context.hasPersistentStore else { return 0 }
 #if DEBUG
             if Thread.isMainThread {
                 throw LocalDatasourceError.databaseOperationsOnMainThread
@@ -174,5 +178,11 @@ extension NSManagedObject {
     class func entity(context: NSManagedObjectContext) -> NSEntityDescription {
         // swiftlint:disable:next force_unwrapping
         .entity(forEntityName: "\(Self.self)", in: context)!
+    }
+}
+
+extension NSManagedObjectContext {
+    var hasPersistentStore: Bool {
+        persistentStoreCoordinator?.persistentStores.isEmpty == false
     }
 }
