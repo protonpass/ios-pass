@@ -345,16 +345,20 @@ public extension ItemRepositoryProtocol {
 // MARK: - Private util functions
 private extension ItemRepositoryProtocol {
     func refreshItems(shareId: String) async throws {
-        logger.trace("Getting items from remote")
+        logger.trace("Refreshing share \(shareId)")
         let itemRevisions = try await remoteItemRevisionDatasource.getItemRevisions(shareId: shareId)
-        logger.trace("Get \(itemRevisions.count) items from remote")
+        logger.trace("Got \(itemRevisions.count) items from remote for share \(shareId)")
 
-        logger.trace("Saving \(itemRevisions.count) remote item revisions to local database")
+        logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
         var encryptedItems = [SymmetricallyEncryptedItem]()
         for itemRevision in itemRevisions {
             let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision, shareId: shareId)
             encryptedItems.append(encrypedItem)
         }
+        logger.trace("Removing old items for share \(shareId) before replacing with new ones")
+        try await localItemDatasoure.removeAllItems(shareId: shareId)
+        logger.trace("Removed old items for share \(shareId)")
+        logger.trace("Saving \(itemRevisions.count) remote item revisions to local database")
         try await localItemDatasoure.upsertItems(encryptedItems)
         logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
 
