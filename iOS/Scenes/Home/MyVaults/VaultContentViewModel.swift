@@ -130,7 +130,7 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
 
         vaultSelection.$selectedVault
             .sink { [unowned self] _ in
-                self.fetchItems(forceRefresh: false, forceLoading: true)
+                self.fetchItems(showLoadingIndicator: true)
             }
             .store(in: &cancellables)
     }
@@ -183,23 +183,23 @@ extension VaultContentViewModel {
         preferences.autoFillBannerDisplayed = true
     }
 
-    func fetchItems(forceRefresh: Bool, forceLoading: Bool = false) {
+    func fetchItems(showLoadingIndicator: Bool = false) {
         guard selectedVault != nil else {
-            logger.trace("No selected vault. Skipped fetching items forceRefresh \(forceRefresh)")
+            logger.fatal("No selected vault. Skipped fetching items")
             return
         }
         Task { @MainActor in
-            logger.trace("Fetching items forceRefresh \(forceRefresh)")
-            if state.isError || forceLoading {
+            logger.trace("Fetching items")
+            if state.isError || showLoadingIndicator {
                 state = .loading
             }
 
             do {
-                allItems = try await getItemsTask(forceRefresh: forceRefresh).value
+                allItems = try await getItemsTask().value
                 updateItemCount()
                 filterAndSort()
                 state = .loaded
-                logger.info("Fetched items forceRefresh \(forceRefresh)")
+                logger.info("Fetched \(allItems.count) items")
             } catch {
                 logger.error(error)
                 state = .error(error)
@@ -306,8 +306,9 @@ extension VaultContentViewModel {
             defer { delegate?.vaultContentViewModelWantsToHideLoadingHud() }
             delegate?.vaultContentViewModelWantsToShowLoadingHud()
             do {
+                logger.trace("Trashing \(item.debugInformation)")
                 try await trashItemTask(for: item).value
-                fetchItems(forceRefresh: false)
+                fetchItems()
                 delegate?.vaultContentViewModelDidTrashItem(item, type: item.type)
                 logger.info("Trashed \(item.debugInformation)")
             } catch {
@@ -320,13 +321,12 @@ extension VaultContentViewModel {
 
 // MARK: - Private supporting tasks
 private extension VaultContentViewModel {
-    func getItemsTask(forceRefresh: Bool) -> Task<[ItemListUiModel], Error> {
+    func getItemsTask() -> Task<[ItemListUiModel], Error> {
         Task.detached(priority: .userInitiated) {
             guard let shareId = self.vaultSelection.selectedVault?.shareId else {
                 throw VaultContentViewModelError.noSelectedVault
             }
-            let encryptedItems = try await self.itemRepository.getItems(forceRefresh: forceRefresh,
-                                                                        shareId: shareId,
+            let encryptedItems = try await self.itemRepository.getItems(shareId: shareId,
                                                                         state: .active)
             return try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
         }

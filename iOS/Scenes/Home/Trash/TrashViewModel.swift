@@ -210,7 +210,7 @@ extension TrashViewModel {
 private extension TrashViewModel {
     func getTrashedItemsTask() -> Task<[ItemListUiModel], Error> {
         Task.detached(priority: .userInitiated) {
-            let items = try await self.itemRepository.getItems(forceRefresh: false, state: .trashed)
+            let items = try await self.itemRepository.getItems(state: .trashed)
             return try await items.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
         }
     }
@@ -224,7 +224,7 @@ private extension TrashViewModel {
 
     func restoreAllTask() -> Task<Int, Error> {
         Task.detached(priority: .userInitiated) {
-            let items = try await self.itemRepository.getItems(forceRefresh: false, state: .trashed)
+            let items = try await self.itemRepository.getItems(state: .trashed)
             try await self.itemRepository.untrashItems(items)
             return items.count
         }
@@ -232,7 +232,7 @@ private extension TrashViewModel {
 
     func deleteAllTask() -> Task<Void, Error> {
         Task.detached(priority: .userInitiated) {
-            let items = try await self.itemRepository.getItems(forceRefresh: false, state: .trashed)
+            let items = try await self.itemRepository.getItems(state: .trashed)
             try await self.itemRepository.deleteItems(items, skipTrash: false)
         }
     }

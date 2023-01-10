@@ -121,7 +121,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
         do {
             logger.trace("Loading items for search")
             state = .initializing
-            let items = try await itemRepository.getItems(forceRefresh: false, state: .active)
+            let items = try await itemRepository.getItems(state: .active)
             let getVaultName: (String) -> String = { shareId in
                 let vault = self.vaultSelection.vaults.first { $0.shareId == shareId }
                 return vault?.name ?? ""

@@ -55,7 +55,7 @@ struct VaultContentView: View {
 
             case .error(let error):
                 RetryableErrorView(errorMessage: error.messageForTheUser,
-                                   onRetry: { viewModel.fetchItems(forceRefresh: true) })
+                                   onRetry: { viewModel.fetchItems(showLoadingIndicator: true) })
                 .padding()
             }
         }
@@ -67,7 +67,7 @@ struct VaultContentView: View {
         .toolbar { toolbarContent }
         .onAppear {
             if !didAppear {
-                viewModel.fetchItems(forceRefresh: false)
+                viewModel.fetchItems()
                 didAppear = true
             }
         }

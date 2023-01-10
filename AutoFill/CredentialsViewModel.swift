@@ -269,15 +269,14 @@ private extension CredentialsViewModel {
 
     func fetchCredentialsTask() -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) {
-            let vaults = try await self.shareRepository.getVaults(forceRefresh: false)
+            let vaults = try await self.shareRepository.getVaults()
             let getVaultName: (String) -> String = { shareId in
                 let vault = vaults.first { $0.shareId == shareId }
                 return vault?.name ?? ""
             }
 
             let matcher = URLUtils.Matcher.default
-            let encryptedItems = try await self.itemRepository.getItems(forceRefresh: false,
-                                                                        state: .active)
+            let encryptedItems = try await self.itemRepository.getItems(state: .active)
 
             var searchableItems = [SearchableItem]()
             var matchedEncryptedItems = [SymmetricallyEncryptedItem]()
