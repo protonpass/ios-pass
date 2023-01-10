@@ -63,7 +63,7 @@ final class DevPreviewsViewModel: ObservableObject {
         defer { delegate?.devPreviewsViewModelWantsToHideLoadingHud() }
         do {
             delegate?.devPreviewsViewModelWantsToShowLoadingHud()
-            let items = try await itemRepository.getItems(forceRefresh: false, state: .active)
+            let items = try await itemRepository.getItems(state: .active)
             try await itemRepository.trashItems(items)
             delegate?.devPreviewsViewModelDidTrashAllItems(count: items.count)
         } catch {

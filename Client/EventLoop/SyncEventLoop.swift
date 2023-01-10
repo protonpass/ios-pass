@@ -204,8 +204,8 @@ private extension SyncEventLoop {
     }
 
     func sync(hasNewEvents: inout Bool) async throws {
-        let localShares = try await shareRepository.getShares(forceRefresh: false)
-        let remoteShares = try await shareRepository.getShares(forceRefresh: true)
+        let localShares = try await shareRepository.getShares()
+        let remoteShares = try await shareRepository.getRemoteShares()
 
         for remoteShare in remoteShares {
             if localShares.contains(where: { $0.shareID == remoteShare.shareID }) {
@@ -214,8 +214,7 @@ private extension SyncEventLoop {
             } else {
                 // New share
                 let shareId = remoteShare.shareID
-                _ = try await vaultItemKeysRepository.getLatestVaultItemKeys(shareId: shareId,
-                                                                             forceRefresh: true)
+                _ = try await vaultItemKeysRepository.refreshVaultItemKeys(shareId: shareId)
                 try await sync(share: remoteShare, hasNewEvents: &hasNewEvents)
             }
         }
@@ -249,8 +248,7 @@ private extension SyncEventLoop {
         if events.newRotationID?.isEmpty == false {
             hasNewEvents = true
             logger.trace("Had new rotation ID for share \(shareId)")
-            _ = try await vaultItemKeysRepository.getLatestVaultItemKeys(shareId: shareId,
-                                                                         forceRefresh: true)
+            _ = try await vaultItemKeysRepository.refreshVaultItemKeys(shareId: shareId)
         }
 
         if events.eventsPending {
