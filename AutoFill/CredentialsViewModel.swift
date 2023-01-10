@@ -278,6 +278,7 @@ private extension CredentialsViewModel {
             let matcher = URLUtils.Matcher.default
             let encryptedItems = try await self.itemRepository.getItems(state: .active)
 
+            self.logger.debug("Mapping \(encryptedItems.count) encrypted items")
             var searchableItems = [SearchableItem]()
             var matchedEncryptedItems = [SymmetricallyEncryptedItem]()
             var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
@@ -309,6 +310,9 @@ private extension CredentialsViewModel {
             let notMatchedItems = try await notMatchedEncryptedItems.sorted()
                 .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
 
+            self.logger.debug("Mapped \(encryptedItems.count) encrypted items.")
+            self.logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
+            self.logger.debug("\(matchedItems.count) matched items, \(notMatchedItems.count) not matched items")
             return .init(vaults: vaults,
                          searchableItems: searchableItems,
                          matchedItems: matchedItems,
