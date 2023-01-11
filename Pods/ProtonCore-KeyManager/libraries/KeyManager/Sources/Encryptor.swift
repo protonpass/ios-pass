@@ -223,7 +223,7 @@ public enum Encryptor {
 
         let plainMessage: CryptoPlainMessage?
         switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText.trimTrailingSpaces())
         case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
         }
 
@@ -258,7 +258,7 @@ extension Encryptor {
     private static func signDetached(input: Either<String, Data>, keyRing: CryptoKeyRing) throws -> ArmoredSignature {
         let plainMessage: CryptoPlainMessage?
         switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText.trimTrailingSpaces())
         case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
         }
         let pgpSignature = try keyRing.signDetached(plainMessage)
@@ -287,7 +287,7 @@ extension Encryptor {
                                 signerKeyRing: CryptoKeyRing?) throws -> (key: String, data: String) {
         let plainMessage: CryptoPlainMessage?
         switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText.trimTrailingSpaces())
         case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
         }
 

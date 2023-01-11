@@ -166,7 +166,7 @@ public class PMAPIService: APIService {
     )
     
     /// by default will create a non auth api service. after calling the auth function, it will set the session. then use the delation to fetch the auth data  for this session.
-    @available(*, deprecated, message: "this will be removed. use initializer with doh: DoHInterface type")
+    @available(*, deprecated, message: "This will be removed, use createAPIService, or createAPIServiceWithoutSession methods instead.")
     public required init(doh: DoH & ServerConfig,
                          sessionUID: String = "",
                          sessionFactory: SessionFactoryInterface = SessionFactory.instance,
@@ -184,6 +184,7 @@ public class PMAPIService: APIService {
         doh.setUpCookieSynchronization(storage: self.session.sessionConfiguration.httpCookieStorage)
     }
     
+    @available(*, deprecated, message: "This will be removed, use createAPIService, or createAPIServiceWithoutSession methods instead.")
     public required convenience init(doh: DoHInterface,
                                      sessionUID: String = "",
                                      sessionFactory: SessionFactoryInterface = SessionFactory.instance,
@@ -197,6 +198,7 @@ public class PMAPIService: APIService {
                   trustKitProvider: trustKitProvider)
     }
 
+    @available(*, deprecated, message: "This will be removed, use createAPIService, or createAPIServiceWithoutSession methods instead.")
     public convenience init(environment: ProtonCore_Environment.Environment,
                             sessionUID: String = "",
                             sessionFactory: SessionFactoryInterface = SessionFactory.instance,
@@ -205,6 +207,78 @@ public class PMAPIService: APIService {
         self.init(doh: environment.doh, sessionUID: sessionUID,
                   sessionFactory: sessionFactory, cacheToClear: cacheToClear,
                   trustKitProvider: trustKitProvider)
+    }
+    
+    /**
+     `createAPIService` creates `PMAPIService` with `doh` and `sessionID`
+     It should be used when user is loged in and there is a `sessionUID` in cached `Credentials`
+
+     - Parameter doh: required doh parameter conforming to the `DoHInterface` to encrypt domain name
+     - Parameter sessionUID: required sessionUID parameter taken from cached `Credentials`
+     - Parameter sessionFactory: sessionFactory parameter conforming to the `SessionFactoryInterface`, Default parameter creates `SessionFactory` instance that uses `Alamofire` session and request
+     - Parameter cacheToClear: cacheToClear parameter conforming to the `URLCacheInterface`. Default parameter creates `URLCache` shared instance
+     - Parameter trustKitProvider: trustKitProvider parameter conforming to the `TrustKitProvider`. Default parameter creates `PMAPIServiceTrustKitProviderWrapper` instance which allows or not to use the TrustKit
+     - Returns:`PMAPIService` instance
+     */
+    public static func createAPIService(doh: DoHInterface,
+                                        sessionUID: String,
+                                        sessionFactory: SessionFactoryInterface = SessionFactory.instance,
+                                        cacheToClear: URLCacheInterface = URLCache.shared,
+                                        trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) -> PMAPIService {
+        .init(doh: doh, sessionUID: sessionUID, sessionFactory: sessionFactory, cacheToClear: cacheToClear, trustKitProvider: trustKitProvider)
+    }
+
+    /**
+     `createAPIServiceWithoutSession` creates `PMAPIService` with `doh` and without `sessionID`
+     It should be used when user has logged out or never logged in
+
+     - Parameter doh: required doh parameter conforming to the `DoHInterface` to encrypt domain name
+     - Parameter sessionFactory: sessionFactory parameter conforming to the `SessionFactoryInterface`, Default parameter creates `SessionFactory` instance that uses `Alamofire` session and request
+     - Parameter cacheToClear: cacheToClear parameter conforming to the `URLCacheInterface`. Default parameter creates `URLCache` shared instance
+     - Parameter trustKitProvider: trustKitProvider parameter conforming to the `TrustKitProvider`. Default parameter creates `PMAPIServiceTrustKitProviderWrapper` instance which allows or not to use the TrustKit
+     - Returns:`PMAPIService` instance
+     */
+    public static func createAPIServiceWithoutSession(doh: DoHInterface,
+                                                      sessionFactory: SessionFactoryInterface = SessionFactory.instance,
+                                                      cacheToClear: URLCacheInterface = URLCache.shared,
+                                                      trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) -> PMAPIService {
+        .init(doh: doh, sessionUID: "", sessionFactory: sessionFactory, cacheToClear: cacheToClear, trustKitProvider: trustKitProvider)
+    }
+
+    /**
+     `createAPIService` creates `PMAPIService` with `environment` and `sessionID`
+     It should be used when user is loged in and there is a `sessionUID` in cached `Credentials`
+
+     - Parameter environment: required environment parameter which contains `doh` needed  to encrypt domain name
+     - Parameter sessionUID: required sessionUID parameter taken from cached `Credentials`
+     - Parameter sessionFactory: sessionFactory parameter conforming to the `SessionFactoryInterface`, Default parameter creates `SessionFactory` instance that uses `Alamofire` session and request
+     - Parameter cacheToClear: cacheToClear parameter conforming to the `URLCacheInterface`. Default parameter creates `URLCache` shared instance
+     - Parameter trustKitProvider: trustKitProvider parameter conforming to the `TrustKitProvider`. Default parameter creates `PMAPIServiceTrustKitProviderWrapper` instance which allows or not to use the TrustKit
+     - Returns:`PMAPIService` instance
+     */
+    public static func createAPIService(environment: ProtonCore_Environment.Environment,
+                                        sessionUID: String,
+                                        sessionFactory: SessionFactoryInterface = SessionFactory.instance,
+                                        cacheToClear: URLCacheInterface = URLCache.shared,
+                                        trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) -> PMAPIService {
+        .init(doh: environment.doh, sessionUID: sessionUID, sessionFactory: sessionFactory, cacheToClear: cacheToClear, trustKitProvider: trustKitProvider)
+    }
+    
+    /**
+     `createAPIServiceWithoutSession` creates `PMAPIService` with `environment` and without `sessionID`
+     It should be used when user has logged out or never logged in
+
+     - Parameter environment: required environment parameter which contains `doh` needed  to encrypt domain name
+     - Parameter sessionFactory: sessionFactory parameter conforming to the `SessionFactoryInterface`, Default parameter creates `SessionFactory` instance that uses `Alamofire` session and request
+     - Parameter cacheToClear: cacheToClear parameter conforming to the `URLCacheInterface`. Default parameter creates `URLCache` shared instance
+     - Parameter trustKitProvider: trustKitProvider parameter conforming to the `TrustKitProvider`. Default parameter creates `PMAPIServiceTrustKitProviderWrapper` instance which allows or not to use the TrustKit
+     - Returns:`PMAPIService` instance
+     */
+    public static func createAPIServiceWithoutSession(environment: ProtonCore_Environment.Environment,
+                                                      sessionFactory: SessionFactoryInterface = SessionFactory.instance,
+                                                      cacheToClear: URLCacheInterface = URLCache.shared,
+                                                      trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) -> PMAPIService {
+        .init(doh: environment.doh, sessionUID: "", sessionFactory: sessionFactory, cacheToClear: cacheToClear, trustKitProvider: trustKitProvider)
     }
     
     public func getSession() -> Session? {
