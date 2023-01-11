@@ -9,7 +9,11 @@
     "file": "LICENSE"
   },
   "authors": {
-    "zhj4478": "feng@pm.me"
+    "zhj4478": "feng@pm.me",
+    "magohamote": "cedric.rolland@proton.ch",
+    "siejkowski": "krzysztof.siejkowski@proton.ch",
+    "gbiegaj": "grzegorz.biegaj@proton.ch",
+    "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
     "git": null,
@@ -39,16 +43,10 @@
     {
       "name": "TestData",
       "dependencies": {
-        "SwiftOTP": [
-          "~> 2.0"
-        ],
         "CryptoSwift": [
           "1.3.1"
         ],
         "ProtonCore-DataModel": [
-          "3.25.2"
-        ],
-        "ProtonCore-ObfuscatedConstants": [
           "3.25.2"
         ],
         "ProtonCore-Networking": [
@@ -81,9 +79,9 @@
           },
           "subspecs": [
             {
-              "name": "Crypto-Go1.15.15",
+              "name": "Crypto-Go1.18.8",
               "dependencies": {
-                "ProtonCore-AccountDeletion/Crypto-Go1.15.15": [
+                "ProtonCore-AccountDeletion/Crypto-Go1.18.8": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Networking": [
@@ -93,9 +91,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.17.9",
+              "name": "Crypto-Go1.19.4",
               "dependencies": {
-                "ProtonCore-AccountDeletion/Crypto-Go1.17.9": [
+                "ProtonCore-AccountDeletion/Crypto-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Networking": [
@@ -105,33 +103,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.18.3",
+              "name": "Crypto-patched-Go1.19.4",
               "dependencies": {
-                "ProtonCore-AccountDeletion/Crypto-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Networking": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
-            },
-            {
-              "name": "Crypto-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-AccountDeletion/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Networking": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
-            },
-            {
-              "name": "Crypto-patched-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-AccountDeletion/Crypto-patched-Go1.19.2": [
+                "ProtonCore-AccountDeletion/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Networking": [
@@ -153,33 +127,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
             },
             {
-              "name": "Crypto+VPN-Go1.17.9",
+              "name": "Crypto+VPN-Go1.19.4",
               "dependencies": {
-                "ProtonCore-AccountDeletion/Crypto+VPN-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Networking": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-AccountDeletion/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Networking": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-AccountDeletion/Crypto+VPN-Go1.19.2": [
+                "ProtonCore-AccountDeletion/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Networking": [
@@ -201,33 +151,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
             },
             {
-              "name": "Crypto+Search-Go1.17.9",
+              "name": "Crypto+Search-Go1.19.4",
               "dependencies": {
-                "ProtonCore-AccountDeletion/Crypto+Search-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Networking": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-AccountDeletion/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Networking": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-AccountDeletion/Crypto+Search-Go1.19.2": [
+                "ProtonCore-AccountDeletion/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Networking": [
@@ -239,7 +165,7 @@
           ]
         },
         {
-          "name": "AccountDeletion-V5",
+          "name": "AccountDeletion",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Core": [
               "3.25.2"
@@ -247,9 +173,9 @@
           },
           "subspecs": [
             {
-              "name": "Crypto-Go1.15.15",
+              "name": "Crypto-Go1.18.8",
               "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto-Go1.15.15": [
+                "ProtonCore-AccountDeletion/Crypto-Go1.18.8": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Networking": [
@@ -259,9 +185,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.17.9",
+              "name": "Crypto-Go1.19.4",
               "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto-Go1.17.9": [
+                "ProtonCore-AccountDeletion/Crypto-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Networking": [
@@ -271,33 +197,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.18.3",
+              "name": "Crypto-patched-Go1.19.4",
               "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Networking": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
-            },
-            {
-              "name": "Crypto-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Networking": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
-            },
-            {
-              "name": "Crypto-patched-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto-patched-Go1.19.2": [
+                "ProtonCore-AccountDeletion/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Networking": [
@@ -309,7 +211,7 @@
             {
               "name": "Crypto+VPN-Go1.15.15",
               "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto+VPN-Go1.15.15": [
+                "ProtonCore-AccountDeletion/Crypto+VPN-Go1.15.15": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Networking": [
@@ -319,33 +221,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
             },
             {
-              "name": "Crypto+VPN-Go1.17.9",
+              "name": "Crypto+VPN-Go1.19.4",
               "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto+VPN-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Networking": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Networking": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto+VPN-Go1.19.2": [
+                "ProtonCore-AccountDeletion/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Networking": [
@@ -357,7 +235,7 @@
             {
               "name": "Crypto+Search-Go1.15.15",
               "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto+Search-Go1.15.15": [
+                "ProtonCore-AccountDeletion/Crypto+Search-Go1.15.15": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Networking": [
@@ -367,33 +245,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
             },
             {
-              "name": "Crypto+Search-Go1.17.9",
+              "name": "Crypto+Search-Go1.19.4",
               "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto+Search-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Networking": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Networking": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-AccountDeletion-V5/Crypto+Search-Go1.19.2": [
+                "ProtonCore-AccountDeletion/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Networking": [
@@ -413,9 +267,9 @@
           },
           "subspecs": [
             {
-              "name": "Crypto-Go1.15.15",
+              "name": "Crypto-Go1.18.8",
               "dependencies": {
-                "ProtonCore-Authentication/Crypto-Go1.15.15": [
+                "ProtonCore-Authentication/Crypto-Go1.18.8": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -425,9 +279,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Authentication/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.17.9",
+              "name": "Crypto-Go1.19.4",
               "dependencies": {
-                "ProtonCore-Authentication/Crypto-Go1.17.9": [
+                "ProtonCore-Authentication/Crypto-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -437,33 +291,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Authentication/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.18.3",
+              "name": "Crypto-patched-Go1.19.4",
               "dependencies": {
-                "ProtonCore-Authentication/Crypto-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Authentication/**/*.swift"
-            },
-            {
-              "name": "Crypto-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-Authentication/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Authentication/**/*.swift"
-            },
-            {
-              "name": "Crypto-patched-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-Authentication/Crypto-patched-Go1.19.2": [
+                "ProtonCore-Authentication/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -485,33 +315,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Authentication/**/*.swift"
             },
             {
-              "name": "Crypto+VPN-Go1.17.9",
+              "name": "Crypto+VPN-Go1.19.4",
               "dependencies": {
-                "ProtonCore-Authentication/Crypto+VPN-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Authentication/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-Authentication/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Authentication/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-Authentication/Crypto+VPN-Go1.19.2": [
+                "ProtonCore-Authentication/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -533,33 +339,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Authentication/**/*.swift"
             },
             {
-              "name": "Crypto+Search-Go1.17.9",
+              "name": "Crypto+Search-Go1.19.4",
               "dependencies": {
-                "ProtonCore-Authentication/Crypto+Search-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Authentication/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-Authentication/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Authentication/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-Authentication/Crypto+Search-Go1.19.2": [
+                "ProtonCore-Authentication/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -579,9 +361,9 @@
           },
           "subspecs": [
             {
-              "name": "Crypto-Go1.15.15",
+              "name": "Crypto-Go1.18.8",
               "dependencies": {
-                "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.15.15": [
+                "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.18.8": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -591,9 +373,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Authentication-KeyGeneration/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.17.9",
+              "name": "Crypto-Go1.19.4",
               "dependencies": {
-                "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.17.9": [
+                "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -603,33 +385,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Authentication-KeyGeneration/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.18.3",
+              "name": "Crypto-patched-Go1.19.4",
               "dependencies": {
-                "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Authentication-KeyGeneration/**/*.swift"
-            },
-            {
-              "name": "Crypto-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Authentication-KeyGeneration/**/*.swift"
-            },
-            {
-              "name": "Crypto-patched-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-Authentication-KeyGeneration/Crypto-patched-Go1.19.2": [
+                "ProtonCore-Authentication-KeyGeneration/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -651,33 +409,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Authentication-KeyGeneration/**/*.swift"
             },
             {
-              "name": "Crypto+VPN-Go1.17.9",
+              "name": "Crypto+VPN-Go1.19.4",
               "dependencies": {
-                "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Authentication-KeyGeneration/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Authentication-KeyGeneration/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.19.2": [
+                "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -699,33 +433,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Authentication-KeyGeneration/**/*.swift"
             },
             {
-              "name": "Crypto+Search-Go1.17.9",
+              "name": "Crypto+Search-Go1.19.4",
               "dependencies": {
-                "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Authentication-KeyGeneration/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Authentication-KeyGeneration/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.19.2": [
+                "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -784,12 +494,12 @@
           }
         },
         {
-          "name": "HumanVerification-V5",
+          "name": "HumanVerification",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Core": [
               "3.25.2"
             ],
-            "ProtonCore-HumanVerification-V5": [
+            "ProtonCore-HumanVerification": [
               "3.25.2"
             ]
           }
@@ -806,12 +516,12 @@
           },
           "subspecs": [
             {
-              "name": "Crypto-Go1.15.15",
+              "name": "Crypto-Go1.18.8",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.15.15": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.18.8": [
                   "3.25.2"
                 ],
-                "ProtonCore-Login/Crypto-Go1.15.15": [
+                "ProtonCore-Login/Crypto-Go1.18.8": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -821,12 +531,12 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Login/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.17.9",
+              "name": "Crypto-Go1.19.4",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.17.9": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-Login/Crypto-Go1.17.9": [
+                "ProtonCore-Login/Crypto-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -836,42 +546,12 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Login/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.18.3",
+              "name": "Crypto-patched-Go1.19.4",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.18.3": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-Login/Crypto-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Login/**/*.swift"
-            },
-            {
-              "name": "Crypto-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-Login/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Login/**/*.swift"
-            },
-            {
-              "name": "Crypto-patched-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-patched-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-Login/Crypto-patched-Go1.19.2": [
+                "ProtonCore-Login/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -896,42 +576,12 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Login/**/*.swift"
             },
             {
-              "name": "Crypto+VPN-Go1.17.9",
+              "name": "Crypto+VPN-Go1.19.4",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.17.9": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-Login/Crypto+VPN-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Login/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-Login/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Login/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-Login/Crypto+VPN-Go1.19.2": [
+                "ProtonCore-Login/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -956,42 +606,12 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Login/**/*.swift"
             },
             {
-              "name": "Crypto+Search-Go1.17.9",
+              "name": "Crypto+Search-Go1.19.4",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.17.9": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-Login/Crypto+Search-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Login/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-Login/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Login/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-Login/Crypto+Search-Go1.19.2": [
+                "ProtonCore-Login/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -1014,18 +634,18 @@
           },
           "subspecs": [
             {
-              "name": "Crypto-Go1.15.15",
+              "name": "Crypto-Go1.18.8",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.15.15": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.18.8": [
                   "3.25.2"
                 ],
-                "ProtonCore-LoginUI/Crypto-Go1.15.15": [
+                "ProtonCore-LoginUI/Crypto-Go1.18.8": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.15.15": [
+                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.18.8": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -1035,18 +655,18 @@
               "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.17.9",
+              "name": "Crypto-Go1.19.4",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.17.9": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-LoginUI/Crypto-Go1.17.9": [
+                "ProtonCore-LoginUI/Crypto-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.17.9": [
+                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -1056,60 +676,18 @@
               "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.18.3",
+              "name": "Crypto-patched-Go1.19.4",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.18.3": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-LoginUI/Crypto-Go1.18.3": [
+                "ProtonCore-LoginUI/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
-            },
-            {
-              "name": "Crypto-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-LoginUI/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
-            },
-            {
-              "name": "Crypto-patched-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-patched-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-LoginUI/Crypto-patched-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-patched-Go1.19.2": [
+                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -1140,60 +718,18 @@
               "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
             },
             {
-              "name": "Crypto+VPN-Go1.17.9",
+              "name": "Crypto+VPN-Go1.19.4",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.17.9": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-LoginUI/Crypto+VPN-Go1.17.9": [
+                "ProtonCore-LoginUI/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+VPN-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-LoginUI/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-LoginUI/Crypto+VPN-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+VPN-Go1.19.2": [
+                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -1224,60 +760,18 @@
               "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
             },
             {
-              "name": "Crypto+Search-Go1.17.9",
+              "name": "Crypto+Search-Go1.19.4",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.17.9": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-LoginUI/Crypto+Search-Go1.17.9": [
+                "ProtonCore-LoginUI/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+Search-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-LoginUI/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-LoginUI/Crypto+Search-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+Search-Go1.19.2": [
+                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -1289,7 +783,7 @@
           ]
         },
         {
-          "name": "LoginUI-V5",
+          "name": "LoginUI",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Core": [
               "3.25.2"
@@ -1300,18 +794,18 @@
           },
           "subspecs": [
             {
-              "name": "Crypto-Go1.15.15",
+              "name": "Crypto-Go1.18.8",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.15.15": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.18.8": [
                   "3.25.2"
                 ],
-                "ProtonCore-LoginUI-V5/Crypto-Go1.15.15": [
+                "ProtonCore-LoginUI/Crypto-Go1.18.8": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
+                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.15.15": [
+                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.18.8": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -1321,18 +815,18 @@
               "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.17.9",
+              "name": "Crypto-Go1.19.4",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.17.9": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-LoginUI-V5/Crypto-Go1.17.9": [
+                "ProtonCore-LoginUI/Crypto-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
+                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.17.9": [
+                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -1342,60 +836,18 @@
               "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.18.3",
+              "name": "Crypto-patched-Go1.19.4",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.18.3": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-LoginUI-V5/Crypto-Go1.18.3": [
+                "ProtonCore-LoginUI/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
+                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
-            },
-            {
-              "name": "Crypto-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-LoginUI-V5/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
-            },
-            {
-              "name": "Crypto-patched-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-patched-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-LoginUI-V5/Crypto-patched-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-patched-Go1.19.2": [
+                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -1410,10 +862,10 @@
                 "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.15.15": [
                   "3.25.2"
                 ],
-                "ProtonCore-LoginUI-V5/Crypto+VPN-Go1.15.15": [
+                "ProtonCore-LoginUI/Crypto+VPN-Go1.15.15": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
+                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+VPN-Go1.15.15": [
@@ -1426,60 +878,18 @@
               "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
             },
             {
-              "name": "Crypto+VPN-Go1.17.9",
+              "name": "Crypto+VPN-Go1.19.4",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.17.9": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-LoginUI-V5/Crypto+VPN-Go1.17.9": [
+                "ProtonCore-LoginUI/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
+                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+VPN-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-LoginUI-V5/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-LoginUI-V5/Crypto+VPN-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+VPN-Go1.19.2": [
+                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -1494,10 +904,10 @@
                 "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.15.15": [
                   "3.25.2"
                 ],
-                "ProtonCore-LoginUI-V5/Crypto+Search-Go1.15.15": [
+                "ProtonCore-LoginUI/Crypto+Search-Go1.15.15": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
+                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+Search-Go1.15.15": [
@@ -1510,60 +920,18 @@
               "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
             },
             {
-              "name": "Crypto+Search-Go1.17.9",
+              "name": "Crypto+Search-Go1.19.4",
               "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.17.9": [
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-LoginUI-V5/Crypto+Search-Go1.17.9": [
+                "ProtonCore-LoginUI/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
+                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
                   "3.25.2"
                 ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+Search-Go1.17.9": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-LoginUI-V5/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Services": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-LoginUI-V5/Crypto+Search-Go1.19.2": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
-                  "3.25.2"
-                ],
-                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+Search-Go1.19.2": [
+                "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ],
                 "ProtonCore-TestingToolkit/UnitTests/Services": [
@@ -1622,45 +990,27 @@
           },
           "subspecs": [
             {
-              "name": "Crypto-Go1.15.15",
+              "name": "Crypto-Go1.18.8",
               "dependencies": {
-                "ProtonCore-Payments/Crypto-Go1.15.15": [
+                "ProtonCore-Payments/Crypto-Go1.18.8": [
                   "3.25.2"
                 ]
               },
               "source_files": "libraries/TestingToolkit/UnitTests/Payments/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.17.9",
+              "name": "Crypto-Go1.19.4",
               "dependencies": {
-                "ProtonCore-Payments/Crypto-Go1.17.9": [
+                "ProtonCore-Payments/Crypto-Go1.19.4": [
                   "3.25.2"
                 ]
               },
               "source_files": "libraries/TestingToolkit/UnitTests/Payments/**/*.swift"
             },
             {
-              "name": "Crypto-Go1.18.3",
+              "name": "Crypto-patched-Go1.19.4",
               "dependencies": {
-                "ProtonCore-Payments/Crypto-Go1.18.3": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Payments/**/*.swift"
-            },
-            {
-              "name": "Crypto-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-Payments/Crypto-Go1.19.2": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Payments/**/*.swift"
-            },
-            {
-              "name": "Crypto-patched-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-Payments/Crypto-patched-Go1.19.2": [
+                "ProtonCore-Payments/Crypto-patched-Go1.19.4": [
                   "3.25.2"
                 ]
               },
@@ -1676,27 +1026,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Payments/**/*.swift"
             },
             {
-              "name": "Crypto+VPN-Go1.17.9",
+              "name": "Crypto+VPN-Go1.19.4",
               "dependencies": {
-                "ProtonCore-Payments/Crypto+VPN-Go1.17.9": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Payments/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-Payments/Crypto+VPN-Go1.18.3": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Payments/**/*.swift"
-            },
-            {
-              "name": "Crypto+VPN-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-Payments/Crypto+VPN-Go1.19.2": [
+                "ProtonCore-Payments/Crypto+VPN-Go1.19.4": [
                   "3.25.2"
                 ]
               },
@@ -1712,27 +1044,9 @@
               "source_files": "libraries/TestingToolkit/UnitTests/Payments/**/*.swift"
             },
             {
-              "name": "Crypto+Search-Go1.17.9",
+              "name": "Crypto+Search-Go1.19.4",
               "dependencies": {
-                "ProtonCore-Payments/Crypto+Search-Go1.17.9": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Payments/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.18.3",
-              "dependencies": {
-                "ProtonCore-Payments/Crypto+Search-Go1.18.3": [
-                  "3.25.2"
-                ]
-              },
-              "source_files": "libraries/TestingToolkit/UnitTests/Payments/**/*.swift"
-            },
-            {
-              "name": "Crypto+Search-Go1.19.2",
-              "dependencies": {
-                "ProtonCore-Payments/Crypto+Search-Go1.19.2": [
+                "ProtonCore-Payments/Crypto+Search-Go1.19.4": [
                   "3.25.2"
                 ]
               },
