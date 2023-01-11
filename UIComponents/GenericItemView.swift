@@ -28,6 +28,17 @@ public enum GenericItemDetail {
     case placeholder(String?)
 }
 
+extension GenericItemDetail: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        switch self {
+        case .value(let value):
+            hasher.combine(value)
+        case .placeholder(let value):
+            hasher.combine(value)
+        }
+    }
+}
+
 public protocol GenericItemProtocol {
     var icon: UIImage { get }
     var iconTintColor: UIColor { get }
