@@ -79,7 +79,7 @@ enum CredentialsViewLoadedState: Equatable {
     }
 }
 
-final class CredentialsViewModel: ObservableObject {
+final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @Published private(set) var state = CredentialsViewState.loading
 
     private let searchTermSubject = PassthroughSubject<String, Never>()
@@ -96,8 +96,16 @@ final class CredentialsViewModel: ObservableObject {
 
     weak var delegate: CredentialsViewModelDelegate?
 
-    init(shareRepository: ShareRepositoryProtocol,
+    /// `PullToRefreshable` conformance
+    var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
+    let syncEventLoop: SyncEventLoop
+
+    init(userId: String,
+         shareRepository: ShareRepositoryProtocol,
+         shareEventIDRepository: ShareEventIDRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
+         vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
+         remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
          symmetricKey: SymmetricKey,
          serviceIdentifiers: [ASCredentialServiceIdentifier],
          logManager: LogManager) {
@@ -117,11 +125,22 @@ final class CredentialsViewModel: ObservableObject {
                 return serviceIdentifier.identifier
             }
         }.compactMap { URL(string: $0) }
+
+        self.syncEventLoop = .init(userId: userId,
+                                   shareRepository: shareRepository,
+                                   shareEventIDRepository: shareEventIDRepository,
+                                   remoteSyncEventsDatasource: remoteSyncEventsDatasource,
+                                   itemRepository: itemRepository,
+                                   vaultItemKeysRepository: vaultItemKeysRepository,
+                                   logManager: logManager)
+
         self.logManager = logManager
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
 
+        self.syncEventLoop.delegate = self
+        syncEventLoop.start()
         fetchItems()
         searchTermSubject
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
@@ -338,6 +357,46 @@ private extension CredentialsViewModel {
                 throw CredentialsViewModelError.notLogInItem
             }
         }
+    }
+}
+
+// MARK: - SyncEventLoopPullToRefreshDelegate
+extension CredentialsViewModel: SyncEventLoopPullToRefreshDelegate {
+    func pullToRefreshShouldStopRefreshing() {
+        stopRefreshing()
+    }
+}
+
+extension CredentialsViewModel: SyncEventLoopDelegate {
+    func syncEventLoopDidStartLooping() {
+        logger.info("Started looping")
+    }
+
+    func syncEventLoopDidStopLooping() {
+        logger.info("Stopped looping")
+    }
+
+    func syncEventLoopDidBeginNewLoop() {
+        logger.info("Began new sync loop")
+    }
+
+    #warning("Handle no connection reason")
+    func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
+        logger.info("Skipped sync loop \(reason)")
+    }
+
+    func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
+        if hasNewEvents {
+            logger.info("Has new events. Refreshing items")
+            fetchItems()
+        } else {
+            logger.info("Has no new events. Do nothing.")
+        }
+    }
+
+    func syncEventLoopDidFailLoop(error: Error) {
+        // Silently fail & not show error to users
+        logger.error(error)
     }
 }
 
