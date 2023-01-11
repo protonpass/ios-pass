@@ -30,6 +30,8 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     private let userData: UserData
     private let vaultSelection: VaultSelection
     private let shareRepository: ShareRepositoryProtocol
+    private let itemRepository: ItemRepositoryProtocol
+    private let manualLogIn: Bool
     private let logger: Logger
 
     var onToggleSidebar: (() -> Void)?
@@ -37,27 +39,38 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     init(userData: UserData,
          vaultSelection: VaultSelection,
          shareRepository: ShareRepositoryProtocol,
+         itemRepository: ItemRepositoryProtocol,
+         manualLogIn: Bool,
          logManager: LogManager) {
         self.userData = userData
         self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
+        self.itemRepository = itemRepository
+        self.manualLogIn = manualLogIn
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
     }
 
-    func fetchVaults(forceRefresh: Bool) {
+    func getVaults() {
         Task { @MainActor in
             do {
-                logger.trace("Fetching vaults forceRefresh \(forceRefresh)")
                 error = nil
-                let vaults = try await self.fetchVaultsTask(forceRefresh: forceRefresh).value
-                logger.trace("Fetched vaults forceRefresh \(forceRefresh)")
-                if vaults.isEmpty {
-                    try await createDefaultVaultTask.value
-                    fetchVaults(forceRefresh: false)
-                    logger.info("No local vaults found. Created default vault.")
+                if manualLogIn {
+                    try await itemRepository.refreshItems()
+                    let vaults = try await self.shareRepository.getVaults()
+                    if vaults.isEmpty {
+                        let userId = userData.user.ID
+                        logger.trace("Creating default vault for user \(userId)")
+                        try await createDefaultVaultTask.value
+                        logger.trace("Created default vault for user \(userId)")
+                        let vaults = try await self.shareRepository.getVaults()
+                        vaultSelection.update(vaults: vaults)
+                    } else {
+                        vaultSelection.update(vaults: vaults)
+                    }
                 } else {
+                    let vaults = try await self.shareRepository.getVaults()
                     vaultSelection.update(vaults: vaults)
                 }
             } catch {
@@ -74,12 +87,6 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
                                                             name: "Personal",
                                                             description: "Personal vault")
             try await self.shareRepository.createVault(request: createVaultRequest)
-        }
-    }
-
-    private func fetchVaultsTask(forceRefresh: Bool) -> Task<[VaultProtocol], Error> {
-        Task.detached(priority: .userInitiated) {
-            try await self.shareRepository.getVaults(forceRefresh: forceRefresh)
         }
     }
 }

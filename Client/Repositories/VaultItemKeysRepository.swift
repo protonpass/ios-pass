@@ -28,91 +28,99 @@ public enum VaultItemKeysRepositoryError: Error {
     case noItemKey(shareId: String, rotationId: String)
 }
 
+/// This repository is not offline first because without keys, the app is not functional.
 public protocol VaultItemKeysRepositoryProtocol {
     var localItemKeyDatasource: LocalItemKeyDatasourceProtocol { get }
     var localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol { get }
     var remoteVaultItemKeysDatasource: RemoteVaultItemKeysDatasourceProtocol { get }
     var logger: Logger { get }
 
-    /// Get the pair of vaul key & item key that have latest `rotation`
-    func getLatestVaultItemKeys(shareId: String, forceRefresh: Bool) async throws -> VaultItemKeys
+    /// Get the pair of vaul key & item key that have latest `rotation`. Not offline first.
+    func getLatestVaultItemKeys(shareId: String) async throws -> VaultItemKeys
 
-    /// Get vault keys of a share
-    func getVaultKeys(shareId: String, forceRefresh: Bool) async throws -> [VaultKey]
+    /// Get vault keys of a share with `shareId`. Not offline first.
+    func getVaultKeys(shareId: String) async throws -> [VaultKey]
 
-    /// Get item keys of a share
-    func getItemKeys(shareId: String, forceRefresh: Bool) async throws -> [ItemKey]
+    /// Get item keys of a share with `shareId`. Not offline first.
+    func getItemKeys(shareId: String) async throws -> [ItemKey]
+
+    /// Refresh vault & item keys of a share with `shareId`
+    @discardableResult
+    func refreshVaultItemKeys(shareId: String) async throws -> ([VaultKey], [ItemKey])
 }
 
 public extension VaultItemKeysRepositoryProtocol {
-    func getLatestVaultItemKeys(shareId: String, forceRefresh: Bool) async throws -> VaultItemKeys {
+    func getLatestVaultItemKeys(shareId: String) async throws -> VaultItemKeys {
         logger.trace("Getting vault & item keys for share \(shareId)")
-        if forceRefresh {
-            logger.trace("Force refresh vault & item keys for share \(shareId)")
-            try await refreshVaultItemKeys(shareId: shareId)
-        }
 
         let vaultKeys = try await localVaultKeyDatasource.getVaultKeys(shareId: shareId)
         if vaultKeys.isEmpty {
-            logger.trace("No vault key in local database for share \(shareId) => Fetch from remote")
+            logger.trace("No local vault keys for share \(shareId). Fetching from remote.")
             try await refreshVaultItemKeys(shareId: shareId)
         }
 
         let itemKeys = try await localItemKeyDatasource.getItemKeys(shareId: shareId)
         if itemKeys.isEmpty {
-            logger.trace("No item key in local database for share \(shareId) => Fetch from remote")
+            logger.trace("No local item keys for share \(shareId). Fetching from remote.")
             try await refreshVaultItemKeys(shareId: shareId)
         }
 
         guard let latestVaultKey = vaultKeys.max(by: { $0.rotation < $1.rotation }) else {
+            logger.fatal("No vault keys for share \(shareId)")
             throw VaultItemKeysRepositoryError.noVaultKey(shareId: shareId)
         }
 
         guard let latestItemKey = itemKeys.first(where: { $0.rotationID == latestVaultKey.rotationID }) else {
+            logger.fatal("No item keys with roration \(latestVaultKey.rotationID) of share \(shareId)")
             throw VaultItemKeysRepositoryError.noItemKey(shareId: shareId, rotationId: latestVaultKey.rotationID)
         }
 
+        logger.trace("Got vault & item keys for share \(shareId)")
         return try .init(vaultKey: latestVaultKey, itemKey: latestItemKey)
     }
 
-    func getVaultKeys(shareId: String, forceRefresh: Bool) async throws -> [VaultKey] {
-        if forceRefresh {
-            try await refreshVaultItemKeys(shareId: shareId)
-        }
-
+    func getVaultKeys(shareId: String) async throws -> [VaultKey] {
+        logger.trace("Getting vault keys for share \(shareId)")
         let vaultKeys = try await localVaultKeyDatasource.getVaultKeys(shareId: shareId)
         if vaultKeys.isEmpty {
-            try await refreshVaultItemKeys(shareId: shareId)
+            logger.trace("No local vault keys for share \(shareId). Fetching from remote.")
+            let (vaultKeys, _) = try await refreshVaultItemKeys(shareId: shareId)
+            logger.trace("Got vault keys for share \(shareId) after refreshing.")
+            return vaultKeys
         }
 
-        return try await localVaultKeyDatasource.getVaultKeys(shareId: shareId)
+        logger.trace("Got local vault keys for share \(shareId)")
+        return vaultKeys
     }
 
-    func getItemKeys(shareId: String, forceRefresh: Bool) async throws -> [ItemKey] {
-        if forceRefresh {
-            try await refreshVaultItemKeys(shareId: shareId)
-        }
-
+    func getItemKeys(shareId: String) async throws -> [ItemKey] {
+        logger.trace("Getting item keys for share \(shareId)")
         let itemKeys = try await localItemKeyDatasource.getItemKeys(shareId: shareId)
         if itemKeys.isEmpty {
-            try await refreshVaultItemKeys(shareId: shareId)
+            logger.trace("No local item keys for share \(shareId). Fetching from remote.")
+            let (_, itemKeys) = try await refreshVaultItemKeys(shareId: shareId)
+            logger.trace("Got item keys for share \(shareId) after refreshing.")
+            return itemKeys
         }
 
-        return try await localItemKeyDatasource.getItemKeys(shareId: shareId)
+        logger.trace("Got local item keys for share \(shareId)")
+        return itemKeys
     }
 
-    private func refreshVaultItemKeys(shareId: String) async throws {
-        logger.trace("Getting vault & item keys from remote")
+    func refreshVaultItemKeys(shareId: String) async throws -> ([VaultKey], [ItemKey]) {
+        logger.trace("Refreshing vault & item keys for share \(shareId)")
         let (vaultKeys, itemKeys) = try await remoteVaultItemKeysDatasource.getVaultItemKeys(shareId: shareId)
-        logger.trace("Got \(vaultKeys.count) vault keys & \(itemKeys.count) item keys from remote")
+        logger.trace("Got from remote \(vaultKeys.count) vault keys, \(itemKeys.count) item keys share \(shareId)")
 
-        logger.trace("Saving \(vaultKeys.count) vault keys local database")
+        logger.trace("Saving \(vaultKeys.count) vault keys to local database for share \(shareId)")
         try await localVaultKeyDatasource.upsertVaultKeys(vaultKeys, shareId: shareId)
-        logger.trace("Saved \(vaultKeys.count) vault keys to local database")
+        logger.trace("Saved \(vaultKeys.count) vault keys to local database for share \(shareId)")
 
-        logger.trace("Saving \(itemKeys.count) item keys local database")
+        logger.trace("Saving \(itemKeys.count) item keys to local database for share \(shareId)")
         try await localItemKeyDatasource.upsertItemKeys(itemKeys, shareId: shareId)
-        logger.trace("Saved \(itemKeys.count) item keys to local database")
+        logger.trace("Saved \(itemKeys.count) item keys to local database for share \(shareId)")
+        logger.trace("Refreshed vault & item keys for share \(shareId)")
+        return (vaultKeys, itemKeys)
     }
 }
 

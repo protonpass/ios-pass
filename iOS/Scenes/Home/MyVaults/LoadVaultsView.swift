@@ -34,7 +34,7 @@ struct LoadVaultsView: View {
         ZStack {
             if let error = viewModel.error {
                 RetryableErrorView(errorMessage: error.messageForTheUser,
-                                   onRetry: { viewModel.fetchVaults(forceRefresh: true) })
+                                   onRetry: viewModel.getVaults)
                 .padding()
             } else {
                 LoadingVaultView()
@@ -44,7 +44,7 @@ struct LoadVaultsView: View {
         .toolbar { toolbarContent }
         .onAppear {
             if !didAppear {
-                viewModel.fetchVaults(forceRefresh: false)
+                viewModel.getVaults()
                 didAppear = true
             }
         }
