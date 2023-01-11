@@ -145,7 +145,7 @@ struct VaultContentView: View {
         }
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 0)
-        .animation(.default, value: viewModel.filteredItems.count)
+        .animation(.default, value: viewModel.filteredItems.hashValue)
         .animation(.default, value: viewModel.shouldShowAutoFillBanner)
         .refreshable { await viewModel.forceSync() }
     }

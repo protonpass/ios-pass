@@ -222,11 +222,14 @@ public final class CredentialProviderCoordinator {
                                                              authCredential: credential,
                                                              apiService: apiService,
                                                              logManager: logManager)
-        self.itemRepository = ItemRepository(userData: sessionData.userData,
-                                             symmetricKey: symmetricKey,
-                                             container: container,
-                                             apiService: apiService,
-                                             logManager: logManager)
+
+        let itemRepository = ItemRepository(userData: sessionData.userData,
+                                            symmetricKey: symmetricKey,
+                                            container: container,
+                                            apiService: apiService,
+                                            logManager: logManager)
+        itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
+        self.itemRepository = itemRepository
         self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
                                                                authCredential: credential,
                                                                apiService: apiService,
