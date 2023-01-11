@@ -3,7 +3,7 @@ def proton_core_path
 end
 
 def proton_core_version
-  '3.25.2'
+  '3.26.0'
 end
   
 def pmtest_path
@@ -15,7 +15,7 @@ def pmtest_commit
 end
 
 def crypto_variant
-  "Crypto-Go1.19.2"
+  "Crypto-Go1.19.4"
 end
 
 def client_and_ios_pods
@@ -30,13 +30,13 @@ def client_and_ios_pods
   pod 'ProtonCore-FeatureSwitch', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Login/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :tag => '1.0.3', :inhibit_warnings => true
-  pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :tag => proton_core_version
 end
 
 def ios_and_uicomponents
   pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-CoreTranslation-V5', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :tag => proton_core_version
 end
 
 target 'Client' do
@@ -63,9 +63,9 @@ target 'Core' do
   pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Keymaker/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Networking', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-LoginUI-V5/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-LoginUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Settings-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Settings', :git => proton_core_path, :tag => proton_core_version
 
   target 'CoreTests' do
     pod "ProtonCore-GoLibs/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
@@ -91,16 +91,16 @@ target 'iOS' do
   pod "ProtonCore-Authentication/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Authentication-KeyGeneration/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Payments/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-PaymentsUI-V5/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-HumanVerification-V5', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-ForceUpgrade-V5', :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-PaymentsUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-HumanVerification', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-APIClient', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Services', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Networking', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-LoginUI-V5/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-LoginUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-AccountDeletion-V5/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-AccountDeletion/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'SideMenuSwift', '2.0.9'
   pod 'MBProgressHUD'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.29.0'

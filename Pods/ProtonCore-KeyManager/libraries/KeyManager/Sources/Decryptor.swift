@@ -470,7 +470,7 @@ extension Decryptor {
 
         let plainMessage: CryptoPlainMessage?
         switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText.trimTrailingSpaces())
         case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
         }
 

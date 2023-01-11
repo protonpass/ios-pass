@@ -75,7 +75,8 @@ final class WelcomeCoordinator: DeinitPrintable {
         let summaryScreenVariant = SummaryScreenVariant.screenVariant(
             .custom(.init(image: PassIcon.passIcon,
                           startButtonText: "Start using Proton Pass")))
-        let signUpParameters = SignupParameters(passwordRestrictions: .default,
+        let signUpParameters = SignupParameters(separateDomainsButton: true,
+                                                passwordRestrictions: .default,
                                                 summaryScreenVariant: summaryScreenVariant,
                                                 signupMode: .internal)
         return .init(appName: "Proton Pass",
