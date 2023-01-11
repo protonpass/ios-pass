@@ -10,7 +10,11 @@
     "file": "LICENSE"
   },
   "authors": {
-    "zhj4478": "feng@pm.me"
+    "zhj4478": "feng@pm.me",
+    "magohamote": "cedric.rolland@proton.ch",
+    "siejkowski": "krzysztof.siejkowski@proton.ch",
+    "gbiegaj": "grzegorz.biegaj@proton.ch",
+    "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
     "git": null,
