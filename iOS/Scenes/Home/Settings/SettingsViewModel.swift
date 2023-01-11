@@ -230,10 +230,10 @@ extension SettingsViewModel {
         Task { @MainActor in
             defer { delegate?.settingsViewModelWantsToHideLoadingHud() }
             do {
-                logger.info("Began full sync")
+                logger.info("Doing full sync")
                 delegate?.settingsViewModelWantsToShowLoadingHud()
-                /// Does not matter getting `active` or `trashed` items. We only want to force refresh.
-                _ = try await itemRepository.getItems(forceRefresh: true, state: .active)
+                try await itemRepository.refreshItems()
+                logger.info("Done full sync")
                 delegate?.settingsViewModelDidFinishFullSync()
             } catch {
                 logger.error(error)

@@ -24,6 +24,10 @@ import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
 
+public enum ShareRepositoryError: Error {
+    case noLocalShare(String)
+}
+
 public protocol ShareRepositoryProtocol {
     var userData: UserData { get }
     var localShareDatasource: LocalShareDatasourceProtocol { get }
@@ -31,56 +35,74 @@ public protocol ShareRepositoryProtocol {
     var vaultItemKeysRepository: VaultItemKeysRepositoryProtocol { get }
     var logger: Logger { get }
 
-    func getShares(forceRefresh: Bool) async throws -> [Share]
+    /// Get all local shares
+    func getShares() async throws -> [Share]
+
+    /// Get all remote shares
+    func getRemoteShares() async throws -> [Share]
+
+    /// Get local share with `shareId`
     func getShare(shareId: String) async throws -> Share
-    func getVaults(forceRefresh: Bool) async throws -> [VaultProtocol]
+
+    /// Get all local vaults
+    func getVaults() async throws -> [VaultProtocol]
+
+    /// Delete all local shares
+    func deleteAllShares() async throws
+
+    func upsertShares(_ shares: [Share]) async throws
+
     @discardableResult
     func createVault(request: CreateVaultRequest) async throws -> Share
 }
 
+private extension ShareRepositoryProtocol {
+    var userId: String { userData.user.ID }
+}
+
 public extension ShareRepositoryProtocol {
-    func getShares(forceRefresh: Bool = false) async throws -> [Share] {
-        logger.trace("Getting shares forceRefresh \(forceRefresh)")
-        if forceRefresh {
-            logger.trace("Force refresh shares")
-            return try await getSharesFromRemoteAndSaveToLocal()
+    func getShares() async throws -> [Share] {
+        logger.trace("Getting all local shares for user \(userId)")
+        do {
+            let shares = try await localShareDatasource.getAllShares(userId: userId)
+            logger.trace("Got \(shares.count) local shares for user \(userId)")
+            return shares
+        } catch {
+            logger.debug("Failed to get local shares for user \(userId). \(String(describing: error))")
+            throw error
         }
-
-        let localShares = try await localShareDatasource.getAllShares(userId: userData.user.ID)
-        if localShares.isEmpty {
-            logger.trace("No shares in local => Fetching from remote...")
-            return try await getSharesFromRemoteAndSaveToLocal()
-        }
-
-        logger.trace("Found \(localShares.count) shares in local")
-        return localShares
     }
 
-    private func getSharesFromRemoteAndSaveToLocal() async throws -> [Share] {
-        logger.trace("Getting shares from remote")
-        let remoteShares = try await remoteShareDatasouce.getShares()
-        logger.trace("Saving remote shares to local")
-        try await localShareDatasource.upsertShares(remoteShares, userId: userData.user.ID)
-        return remoteShares
+    func getRemoteShares() async throws -> [Share] {
+        logger.trace("Getting all remote shares for user \(userId)")
+        do {
+            let shares = try await remoteShareDatasouce.getShares()
+            logger.trace("Got \(shares.count) remote shares for user \(userId)")
+            return shares
+        } catch {
+            logger.debug("Failed to get remote shares for user \(userId). \(String(describing: error))")
+            throw error
+        }
     }
 
     func getShare(shareId: String) async throws -> Share {
-        if let localShare = try await localShareDatasource.getShare(userId: userData.user.ID,
-                                                                    shareId: shareId) {
-            return localShare
+        logger.trace("Getting local share \(shareId) of user \(userId)")
+        if let share = try await localShareDatasource.getShare(userId: userId, shareId: shareId) {
+            logger.trace("Got local share \(shareId) of user \(userId)")
+            return share
         }
-        return try await remoteShareDatasouce.getShare(shareId: shareId)
+        logger.debug("No local share found \(shareId) of user \(userId)")
+        throw ShareRepositoryError.noLocalShare(shareId)
     }
 
-    func getVaults(forceRefresh: Bool) async throws -> [VaultProtocol] {
-        logger.trace("Getting vaults")
-        let shares = try await getShares(forceRefresh: forceRefresh)
+    func getVaults() async throws -> [VaultProtocol] {
+        logger.trace("Getting local vaults for user \(userId)")
+        let shares = try await getShares()
 
         var vaults: [VaultProtocol] = []
         for share in shares where share.shareType == .vault {
             let vaultKeys =
-            try await self.vaultItemKeysRepository.getVaultKeys(shareId: share.shareID,
-                                                                forceRefresh: forceRefresh)
+            try await self.vaultItemKeysRepository.getVaultKeys(shareId: share.shareID)
             let shareContent = try share.getShareContent(userData: userData,
                                                          vaultKeys: vaultKeys)
             switch shareContent {
@@ -90,15 +112,28 @@ public extension ShareRepositoryProtocol {
                 break
             }
         }
+        logger.trace("Got \(vaults.count) local vaults for user \(userId)")
         return vaults
     }
 
+    func deleteAllShares() async throws {
+        logger.trace("Deleting all local shares for user \(userId)")
+        try await localShareDatasource.removeAllShares(userId: userId)
+        logger.trace("Deleted all local shares for user \(userId)")
+    }
+
+    func upsertShares(_ shares: [Share]) async throws {
+        logger.trace("Upserting \(shares.count) shares for user \(userId)")
+        try await localShareDatasource.upsertShares(shares, userId: userId)
+        logger.trace("Upserted \(shares.count) shares for user \(userId)")
+    }
+
     func createVault(request: CreateVaultRequest) async throws -> Share {
-        logger.trace("Creating vault")
+        logger.trace("Creating vault for user \(userId)")
         let createdVault = try await remoteShareDatasouce.createVault(request: request)
-        logger.trace("Saving newly create vault to local")
-        try await localShareDatasource.upsertShares([createdVault], userId: userData.user.ID)
-        logger.trace("Vault creation finished with success")
+        logger.trace("Saving newly created vault to local for user \(userId)")
+        try await localShareDatasource.upsertShares([createdVault], userId: userId)
+        logger.trace("Created vault for user \(userId)")
         return createdVault
     }
 }

@@ -105,7 +105,7 @@ public extension CredentialManagerProtocol {
             return
         }
 
-        let encryptedItems = try await itemRepository.getItems(forceRefresh: false, state: .active)
+        let encryptedItems = try await itemRepository.getActiveLogInItems()
         var credentials = [AutoFillCredential]()
         for encryptedItem in encryptedItems {
             let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)

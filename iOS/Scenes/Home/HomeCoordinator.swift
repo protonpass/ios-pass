@@ -50,6 +50,7 @@ final class HomeCoordinator: DeinitPrintable {
     private let publicKeyRepository: PublicKeyRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let preferences: Preferences
+    private let manualLogIn: Bool
     private let urlOpener: UrlOpener
     private let clipboardManager: ClipboardManager
     private let logManager: LogManager
@@ -97,6 +98,7 @@ final class HomeCoordinator: DeinitPrintable {
          symmetricKey: SymmetricKey,
          container: NSPersistentContainer,
          credentialManager: CredentialManagerProtocol,
+         manualLogIn: Bool,
          preferences: Preferences,
          logManager: LogManager) {
         self.sessionData = sessionData
@@ -132,6 +134,7 @@ final class HomeCoordinator: DeinitPrintable {
         itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
         self.credentialManager = credentialManager
         self.vaultSelection = .init(vaults: [])
+        self.manualLogIn = manualLogIn
         self.preferences = preferences
         self.logManager = logManager
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
@@ -154,10 +157,9 @@ final class HomeCoordinator: DeinitPrintable {
                                vaultItemKeysRepository: vaultItemKeysRepository,
                                logManager: logManager)
         self.eventLoop.delegate = self
-        self.eventLoop.start()
         self.setUpSideMenuPreferences()
         self.observeForegroundEntrance()
-        self.observePreferences()
+        self.observePreferencesAndVaultSelection()
         self.updateSideMenuUserInterfaceStyle()
         self.myVaultsCoordinator.bannerManager = bannerManager
     }
@@ -224,7 +226,13 @@ private extension HomeCoordinator {
             .store(in: &cancellables)
     }
 
-    func observePreferences() {
+    func observePreferencesAndVaultSelection() {
+        vaultSelection.objectWillChange
+            .sink { [unowned self] _ in
+                self.eventLoop.start()
+            }
+            .store(in: &cancellables)
+
         preferences.objectWillChange
             .sink { [unowned self] _ in
                 self.updateSideMenuUserInterfaceStyle()
@@ -286,6 +294,7 @@ private extension HomeCoordinator {
                                                       credentialManager: credentialManager,
                                                       syncEventLoop: eventLoop,
                                                       preferences: preferences,
+                                                      manualLogIn: manualLogIn,
                                                       logManager: logManager)
         myVaultsCoordinator.coordinatorDelegate = self
         myVaultsCoordinator.delegate = self.trashCoordinator

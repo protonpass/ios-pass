@@ -40,6 +40,7 @@ final class MyVaultsCoordinator: Coordinator {
     private let aliasRepository: AliasRepositoryProtocol
     private let myVaultsViewModel: MyVaultsViewModel
     private let preferences: Preferences
+    private let manualLogIn: Bool
     private let logManager: LogManager
 
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
@@ -67,6 +68,7 @@ final class MyVaultsCoordinator: Coordinator {
          credentialManager: CredentialManagerProtocol,
          syncEventLoop: SyncEventLoop,
          preferences: Preferences,
+         manualLogIn: Bool,
          logManager: LogManager) {
         self.symmetricKey = symmetricKey
         self.userData = userData
@@ -84,6 +86,7 @@ final class MyVaultsCoordinator: Coordinator {
                                            logManager: logManager)
         self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
         self.preferences = preferences
+        self.manualLogIn = manualLogIn
         self.logManager = logManager
         super.init()
         vaultContentViewModel.delegate = self
@@ -94,6 +97,8 @@ final class MyVaultsCoordinator: Coordinator {
         let loadVaultsViewModel = LoadVaultsViewModel(userData: userData,
                                                       vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
+                                                      itemRepository: itemRepository,
+                                                      manualLogIn: manualLogIn,
                                                       logManager: logManager)
         loadVaultsViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
         self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
@@ -257,7 +262,7 @@ final class MyVaultsCoordinator: Coordinator {
     private func handleCreatedItem(_ itemContentType: ItemContentType) {
         dismissTopMostViewController(animated: true) { [unowned self] in
             bannerManager?.displayBottomSuccessMessage(itemContentType.creationMessage)
-            vaultContentViewModel.fetchItems(forceRefresh: false)
+            vaultContentViewModel.fetchItems()
         }
     }
 
@@ -303,7 +308,7 @@ final class MyVaultsCoordinator: Coordinator {
             }
         }
 
-        vaultContentViewModel.fetchItems(forceRefresh: false)
+        vaultContentViewModel.fetchItems()
         delegate?.myVaultsCoordinatorWantsToRefreshTrash()
         Task { await searchViewModel?.refreshResults() }
     }
@@ -312,13 +317,13 @@ final class MyVaultsCoordinator: Coordinator {
         dismissTopMostViewController(animated: true) { [unowned self] in
             currentItemDetailViewModel?.refresh()
             bannerManager?.displayBottomSuccessMessage("Changes saved")
-            vaultContentViewModel.fetchItems(forceRefresh: false)
+            vaultContentViewModel.fetchItems()
             Task { await searchViewModel?.refreshResults() }
         }
     }
 
     func refreshItems() {
-        vaultContentViewModel.fetchItems(forceRefresh: false, forceLoading: false)
+        vaultContentViewModel.fetchItems()
         if let aliasDetailViewModel = currentItemDetailViewModel as? AliasDetailViewModel {
             aliasDetailViewModel.refresh()
         } else {

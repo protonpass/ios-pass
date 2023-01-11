@@ -179,6 +179,7 @@ final class AppCoordinator {
                                                   symmetricKey: symmetricKey,
                                                   container: container,
                                                   credentialManager: credentialManager,
+                                                  manualLogIn: manualLogIn,
                                                   preferences: preferences,
                                                   logManager: logManager)
             homeCoordinator.delegate = self

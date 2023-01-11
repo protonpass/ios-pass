@@ -50,13 +50,15 @@ public protocol ItemRepositoryProtocol {
 
     func getDecryptedItemContent(shareId: String, itemId: String) async throws -> ItemContent?
 
-    /// Get items of all shares by state
-    func getItems(forceRefresh: Bool, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
+    /// Get all local items of all shares by state
+    func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get item of a share by state
-    func getItems(forceRefresh: Bool,
-                  shareId: String,
-                  state: ItemState) async throws -> [SymmetricallyEncryptedItem]
+    /// Get all local items of a share by state
+    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
+
+    /// Get all items from remote, delete all local ones and replace with remote ones.
+    /// Should be only used after logging in & full sync.
+    func refreshItems() async throws
 
     @discardableResult
     func createItem(itemContent: ProtobufableItemContentProtocol,
@@ -86,10 +88,14 @@ public protocol ItemRepositoryProtocol {
 
     // MARK: - AutoFill operations
     /// Get active log in items of all shares
-    func getActiveLogInItems(forceRefresh: Bool) async throws -> [SymmetricallyEncryptedItem]
+    func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
 
     /// Update the last use time of an item. Only log in items are concerned.
     func update(item: SymmetricallyEncryptedItem, lastUseTime: TimeInterval) async throws
+}
+
+private extension ItemRepositoryProtocol {
+    var userId: String { userData.user.ID }
 }
 
 public extension ItemRepositoryProtocol {
@@ -102,49 +108,38 @@ public extension ItemRepositoryProtocol {
         return try encryptedItem?.getDecryptedItemContent(symmetricKey: symmetricKey)
     }
 
-    func getItems(forceRefresh: Bool,
-                  shareId: String,
-                  state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        let stateDescription: String
-        switch state {
-        case .active: stateDescription = "active"
-        case .trashed: stateDescription = "trashed"
-        }
-
-        logger.trace("Getting \(stateDescription) item revisions")
-        if forceRefresh {
-            logger.trace("Force refresh item revisions")
-            try await refreshItems(shareId: shareId)
-        }
-
-        let localItemCount = try await localItemDatasoure.getItemCount(shareId: shareId)
-
-        if localItemCount == 0 {
-            logger.trace("No item in local database => Fetch from remote")
-            try await refreshItems(shareId: shareId)
-        }
-
-        let localItems = try await localItemDatasoure.getItems(shareId: shareId, state: state)
-
-        let count = localItems.count
-        logger.trace("Found \(count) \(stateDescription) items in local database")
-        return localItems
+    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+        logger.trace("Getting all local \(state.description) items for share \(shareId)")
+        let items = try await localItemDatasoure.getItems(shareId: shareId, state: state)
+        logger.trace("Got \(items.count) local \(state.description) items for share \(shareId)")
+        return items
     }
 
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
         try await localItemDatasoure.getAliasItem(email: email)
     }
 
-    func getItems(forceRefresh: Bool, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
+    func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+        logger.trace("Getting all local \(state.description) items")
+        let shares = try await shareRepository.getShares()
         var allItems = [SymmetricallyEncryptedItem]()
         for share in shares {
-            let items = try await getItems(forceRefresh: forceRefresh,
-                                           shareId: share.shareID,
-                                           state: state)
+            let items = try await getItems(shareId: share.shareID, state: state)
             allItems.append(contentsOf: items)
         }
+        logger.trace("Got \(allItems.count) local \(state.description) items")
         return allItems
+    }
+
+    func refreshItems() async throws {
+        logger.trace("Refreshing items for user \(userId)")
+        try await shareRepository.deleteAllShares()
+        let remoteShares = try await shareRepository.getRemoteShares()
+        for share in remoteShares {
+            try await shareRepository.upsertShares([share])
+            try await refreshItems(shareId: share.shareID)
+        }
+        logger.trace("Refreshed items for user \(userId)")
     }
 
     func createItem(itemContent: ProtobufableItemContentProtocol,
@@ -311,21 +306,17 @@ public extension ItemRepositoryProtocol {
         try await localItemDatasoure.upsertItems(encryptedItems)
     }
 
-    func getActiveLogInItems(forceRefresh: Bool) async throws -> [SymmetricallyEncryptedItem] {
-        logger.trace("Getting active log in items for all shares")
-        let shares = try await shareRepository.getShares(forceRefresh: forceRefresh)
+    func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem] {
+        logger.trace("Getting local active log in items for all shares")
+        let shares = try await shareRepository.getShares()
         var allLogInItems = [SymmetricallyEncryptedItem]()
         for share in shares {
-            if forceRefresh {
-                logger.trace("Forcing refresh items for share \(share.shareID)")
-                _ = try await remoteItemRevisionDatasource.getItemRevisions(shareId: share.shareID)
-            }
-            logger.trace("Getting active log in items for share \(share.shareID)")
+            logger.trace("Getting local active log in items for share \(share.shareID)")
             let logInItems = try await localItemDatasoure.getActiveLogInItems(shareId: share.shareID)
-            logger.trace("Found \(logInItems.count) active log in items for share \(share.shareID)")
+            logger.trace("Got \(logInItems.count) active log in items for share \(share.shareID)")
             allLogInItems.append(contentsOf: logInItems)
         }
-        logger.trace("Found \(allLogInItems.count) active log in items for all shares")
+        logger.trace("Got \(allLogInItems.count) active log in items for all shares")
         return allLogInItems
     }
 
@@ -345,16 +336,22 @@ public extension ItemRepositoryProtocol {
 // MARK: - Private util functions
 private extension ItemRepositoryProtocol {
     func refreshItems(shareId: String) async throws {
-        logger.trace("Getting items from remote")
+        logger.trace("Refreshing share \(shareId)")
+        let share = try await shareRepository.getShare(shareId: shareId)
+        let (vaultKeys, itemKeys) = try await vaultItemKeysRepository.refreshVaultItemKeys(shareId: shareId)
         let itemRevisions = try await remoteItemRevisionDatasource.getItemRevisions(shareId: shareId)
-        logger.trace("Get \(itemRevisions.count) items from remote")
+        logger.trace("Got \(itemRevisions.count) items from remote for share \(shareId)")
 
-        logger.trace("Saving \(itemRevisions.count) remote item revisions to local database")
+        logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
         var encryptedItems = [SymmetricallyEncryptedItem]()
         for itemRevision in itemRevisions {
-            let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision, shareId: shareId)
+            let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
+                                                              share: share,
+                                                              vaultKeys: vaultKeys,
+                                                              itemKeys: itemKeys)
             encryptedItems.append(encrypedItem)
         }
+        logger.trace("Saving \(itemRevisions.count) remote item revisions to local database")
         try await localItemDatasoure.upsertItems(encryptedItems)
         logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
 
@@ -373,8 +370,18 @@ private extension ItemRepositoryProtocol {
     func symmetricallyEncrypt(itemRevision: ItemRevision,
                               shareId: String) async throws -> SymmetricallyEncryptedItem {
         let share = try await shareRepository.getShare(shareId: shareId)
-        let vaultKeys = try await vaultItemKeysRepository.getVaultKeys(shareId: shareId, forceRefresh: false)
-        let itemKeys = try await vaultItemKeysRepository.getItemKeys(shareId: shareId, forceRefresh: false)
+        let vaultKeys = try await vaultItemKeysRepository.getVaultKeys(shareId: shareId)
+        let itemKeys = try await vaultItemKeysRepository.getItemKeys(shareId: shareId)
+        return try await symmetricallyEncrypt(itemRevision: itemRevision,
+                                              share: share,
+                                              vaultKeys: vaultKeys,
+                                              itemKeys: itemKeys)
+    }
+
+    func symmetricallyEncrypt(itemRevision: ItemRevision,
+                              share: Share,
+                              vaultKeys: [VaultKey],
+                              itemKeys: [ItemKey]) async throws -> SymmetricallyEncryptedItem {
         let publicKeys = try await publicKeyRepository.getPublicKeys(email: itemRevision.signatureEmail)
         let verifyKeys = publicKeys.map { $0.value }
         let contentProtobuf = try itemRevision.getContentProtobuf(userData: userData,
@@ -392,7 +399,7 @@ private extension ItemRepositoryProtocol {
             isLogInItem = false
         }
 
-        return .init(shareId: shareId,
+        return .init(shareId: share.shareID,
                      item: itemRevision,
                      encryptedContent: encryptedContent,
                      isLogInItem: isLogInItem)
@@ -429,8 +436,7 @@ private extension ItemRepositoryProtocol {
     }
 
     func getKeysAndPassphrases(shareId: String) async throws -> KeysAndPassphrases {
-        let latestVaultItemKeys = try await vaultItemKeysRepository.getLatestVaultItemKeys(shareId: shareId,
-                                                                                           forceRefresh: false)
+        let latestVaultItemKeys = try await vaultItemKeysRepository.getLatestVaultItemKeys(shareId: shareId)
         let latestVaultKey = latestVaultItemKeys.vaultKey
         let latestItemKey = latestVaultItemKeys.itemKey
         let share = try await shareRepository.getShare(shareId: shareId)

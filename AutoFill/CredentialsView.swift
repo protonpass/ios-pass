@@ -193,7 +193,9 @@ struct CredentialsView: View {
             })
         }
         .listStyle(.plain)
-        .animation(.default, value: matchedItems.count + notMatchedItems.count)
+        .refreshable { await viewModel.forceSync() }
+        .animation(.default, value: matchedItems.hashValue)
+        .animation(.default, value: notMatchedItems.hashValue)
     }
 
     private func view(for item: ItemListUiModel, action: @escaping () -> Void) -> some View {
