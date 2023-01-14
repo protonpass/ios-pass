@@ -60,6 +60,17 @@ public struct SymmetricallyEncryptedItem {
     }
 }
 
+/// Item with associated match score. Used in autofill context
+public struct ScoredSymmetricallyEncryptedItem {
+    public let item: SymmetricallyEncryptedItem
+    public let matchScore: Int
+
+    public init(item: SymmetricallyEncryptedItem, matchScore: Int) {
+        self.item = item
+        self.matchScore = matchScore
+    }
+}
+
 // https://sarunw.com/posts/how-to-sort-by-multiple-properties-in-swift/
 private typealias AreInDecreasingOrder = (SymmetricallyEncryptedItem,
                                           SymmetricallyEncryptedItem) -> Bool
@@ -88,4 +99,30 @@ public extension Array where Element == SymmetricallyEncryptedItem {
 
 extension SymmetricallyEncryptedItem: ItemIdentifiable {
     public var itemId: String { item.itemID }
+}
+
+private typealias ScoredAreInDecreasingOrder = (ScoredSymmetricallyEncryptedItem,
+                                                ScoredSymmetricallyEncryptedItem) -> Bool
+
+public extension Array where Element == ScoredSymmetricallyEncryptedItem {
+    // swiftlint:disable opening_brace
+    /// Sort by `lastUseTime` & `modifyTime` in decreasing order
+    func sorted() -> Self {
+        let predicates: [ScoredAreInDecreasingOrder] =
+        [
+            { $0.matchScore > $1.matchScore },
+            { $0.item.item.lastUseTime > $1.item.item.lastUseTime },
+            { $0.item.item.modifyTime > $1.item.item.modifyTime }
+        ]
+        return sorted { lhs, rhs in
+            for predicate in predicates {
+                if !predicate(lhs, rhs) && !predicate(rhs, lhs) {
+                    continue
+                }
+
+                return predicate(lhs, rhs)
+            }
+            return false
+        }
+    }
 }
