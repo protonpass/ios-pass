@@ -29,6 +29,13 @@ public extension URLUtils {
         public enum MatchResult {
             case matched(Int)
             case notMatched
+
+            public var score: Int {
+                if case .matched(let score) = self {
+                    return score
+                }
+                return 0
+            }
         }
         /// Compare if 2 URLs are matched and if they are matched, also indicate match score.
         /// match score starts from `1000` and decreases gradually.
@@ -56,16 +63,8 @@ public extension URLUtils {
                         return .notMatched
                     }
 
-                    var leftSubdomains = leftHost
-                        .replacingOccurrences(of: leftDomain, with: "")
-                        .components(separatedBy: ".")
-                    var rightSubdomains = rightHost
-                        .replacingOccurrences(of: rightDomain, with: "")
-                        .components(separatedBy: ".")
-
-                    guard leftSubdomains.last == rightSubdomains.last else {
-                        return .notMatched
-                    }
+                    var leftSubdomains = leftHost.components(separatedBy: ".")
+                    var rightSubdomains = rightHost.components(separatedBy: ".")
 
                     var matchScore = 1_000
                     while let lastLeftSubdomain = leftSubdomains.popLast() {
@@ -74,6 +73,7 @@ public extension URLUtils {
                             matchScore -= 1
                         }
                     }
+                    matchScore -= rightSubdomains.count
 
                     return .matched(matchScore)
                 }
