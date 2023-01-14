@@ -23,70 +23,70 @@ import XCTest
 
 final class URLUtilsPlusMatcherTests: XCTestCase {
     func testMatchResult() {
-        XCTAssertEqual(URLUtils.MatcherV2.MatchResult.notMatched,
-                       URLUtils.MatcherV2.MatchResult.notMatched)
-        XCTAssertEqual(URLUtils.MatcherV2.MatchResult.matched(1_000),
-                       URLUtils.MatcherV2.MatchResult.matched(1_000))
-        XCTAssertNotEqual(URLUtils.MatcherV2.MatchResult.notMatched,
-                          URLUtils.MatcherV2.MatchResult.matched(1_000))
-        XCTAssertNotEqual(URLUtils.MatcherV2.MatchResult.matched(1_000),
-                          URLUtils.MatcherV2.MatchResult.matched(500))
+        XCTAssertEqual(URLUtils.Matcher.MatchResult.notMatched,
+                       URLUtils.Matcher.MatchResult.notMatched)
+        XCTAssertEqual(URLUtils.Matcher.MatchResult.matched(1_000),
+                       URLUtils.Matcher.MatchResult.matched(1_000))
+        XCTAssertNotEqual(URLUtils.Matcher.MatchResult.notMatched,
+                          URLUtils.Matcher.MatchResult.matched(1_000))
+        XCTAssertNotEqual(URLUtils.Matcher.MatchResult.matched(1_000),
+                          URLUtils.Matcher.MatchResult.matched(500))
     }
 
     func testNoSchemesShouldNotMatched() throws {
-        XCTAssertEqual(URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "example.com")),
-                                                  try XCTUnwrap(URL(string: "example.com"))),
+        XCTAssertEqual(URLUtils.Matcher.compare(try XCTUnwrap(URL(string: "example.com")),
+                                                try XCTUnwrap(URL(string: "example.com"))),
                        .notMatched)
 
-        XCTAssertEqual(URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "example.com")),
-                                                  try XCTUnwrap(URL(string: "https:/example.com"))),
+        XCTAssertEqual(URLUtils.Matcher.compare(try XCTUnwrap(URL(string: "example.com")),
+                                                try XCTUnwrap(URL(string: "https:/example.com"))),
                        .notMatched)
 
-        XCTAssertEqual(URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "ssh://example.com")),
-                                                  try XCTUnwrap(URL(string: "https:/example.com"))),
+        XCTAssertEqual(URLUtils.Matcher.compare(try XCTUnwrap(URL(string: "ssh://example.com")),
+                                                try XCTUnwrap(URL(string: "https:/example.com"))),
                        .notMatched)
     }
 
     func testSchemeHttpOrHttps() throws {
         // `https` against `http` always not match
         XCTAssertEqual(
-            URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "https://example.com")),
-                                       try XCTUnwrap(URL(string: "http://example.com"))),
+            URLUtils.Matcher.compare(try XCTUnwrap(URL(string: "https://example.com")),
+                                     try XCTUnwrap(URL(string: "http://example.com"))),
             .notMatched)
 
         XCTAssertEqual(
-            URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "https://example.co.uk/dsjdh?sajjs")),
-                                       try XCTUnwrap(URL(string: "https://example.co.uk"))),
+            URLUtils.Matcher.compare(try XCTUnwrap(URL(string: "https://example.co.uk/dsjdh?sajjs")),
+                                     try XCTUnwrap(URL(string: "https://example.co.uk"))),
             .matched(1_000))
 
         XCTAssertEqual(
-            URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "http://a.b.c.example.com")),
-                                       try XCTUnwrap(URL(string: "http://a.b.c.example.com"))),
+            URLUtils.Matcher.compare(try XCTUnwrap(URL(string: "http://a.b.c.example.com")),
+                                     try XCTUnwrap(URL(string: "http://a.b.c.example.com"))),
             .matched(1_000))
 
         XCTAssertEqual(
-            URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "http://a.b.c.example.com")),
-                                       try XCTUnwrap(URL(string: "http://b.c.example.com"))),
+            URLUtils.Matcher.compare(try XCTUnwrap(URL(string: "http://a.b.c.example.com")),
+                                     try XCTUnwrap(URL(string: "http://b.c.example.com"))),
             .matched(999))
 
         XCTAssertEqual(
-            URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "http://a.b.c.example.com")),
-                                       try XCTUnwrap(URL(string: "https://c.example.com"))),
+            URLUtils.Matcher.compare(try XCTUnwrap(URL(string: "http://a.b.c.example.com")),
+                                     try XCTUnwrap(URL(string: "https://c.example.com"))),
             .matched(998))
 
         XCTAssertEqual(
-            URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "https://a.b.c.example.com")),
-                                       try XCTUnwrap(URL(string: "https://example.com"))),
+            URLUtils.Matcher.compare(try XCTUnwrap(URL(string: "https://a.b.c.example.com")),
+                                     try XCTUnwrap(URL(string: "https://example.com"))),
             .matched(997))
     }
 
     func testCustomSchemes() throws {
-        XCTAssertEqual(URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "ssh://example.com")),
-                                                  try XCTUnwrap(URL(string: "ftp://example.com"))),
+        XCTAssertEqual(URLUtils.Matcher.compare(try XCTUnwrap(URL(string: "ssh://example.com")),
+                                                try XCTUnwrap(URL(string: "ftp://example.com"))),
                        .notMatched)
 
-        XCTAssertEqual(URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "ssh://example.com")),
-                                                  try XCTUnwrap(URL(string: "ssh://example.com/path?query="))),
+        XCTAssertEqual(URLUtils.Matcher.compare(try XCTUnwrap(URL(string: "ssh://example.com")),
+                                                try XCTUnwrap(URL(string: "ssh://example.com/path?query="))),
                        .matched(1_000))
     }
 }
