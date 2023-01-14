@@ -22,51 +22,71 @@
 import XCTest
 
 final class URLUtilsPlusMatcherTests: XCTestCase {
-    func testNoSchemesShouldNotMatched() throws {
-        let sut = URLUtils.Matcher.default
-        XCTAssertFalse(sut.isMatched(try XCTUnwrap(URL(string: "example.com")),
-                                     try XCTUnwrap(URL(string: "example.com"))))
+    func testMatchResult() {
+        XCTAssertEqual(URLUtils.MatcherV2.MatchResult.notMatched,
+                       URLUtils.MatcherV2.MatchResult.notMatched)
+        XCTAssertEqual(URLUtils.MatcherV2.MatchResult.matched(1_000),
+                       URLUtils.MatcherV2.MatchResult.matched(1_000))
+        XCTAssertNotEqual(URLUtils.MatcherV2.MatchResult.notMatched,
+                          URLUtils.MatcherV2.MatchResult.matched(1_000))
+        XCTAssertNotEqual(URLUtils.MatcherV2.MatchResult.matched(1_000),
+                          URLUtils.MatcherV2.MatchResult.matched(500))
+    }
 
-        XCTAssertFalse(sut.isMatched(try XCTUnwrap(URL(string: "example.com")),
-                                     try XCTUnwrap(URL(string: "https://example.com"))))
+    func testNoSchemesShouldNotMatched() throws {
+        XCTAssertEqual(URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "example.com")),
+                                                  try XCTUnwrap(URL(string: "example.com"))),
+                       .notMatched)
+
+        XCTAssertEqual(URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "example.com")),
+                                                  try XCTUnwrap(URL(string: "https:/example.com"))),
+                       .notMatched)
+
+        XCTAssertEqual(URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "ssh://example.com")),
+                                                  try XCTUnwrap(URL(string: "https:/example.com"))),
+                       .notMatched)
     }
 
     func testSchemeHttpOrHttps() throws {
-        let sut = URLUtils.Matcher.default
-        XCTAssertFalse(sut.isMatched(try XCTUnwrap(URL(string: "example.com")),
-                                     try XCTUnwrap(URL(string: "example.com"))))
+        // `https` against `http` always not match
+        XCTAssertEqual(
+            URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "https://example.com")),
+                                       try XCTUnwrap(URL(string: "http://example.com"))),
+            .notMatched)
 
-        XCTAssertFalse(sut.isMatched(try XCTUnwrap(URL(string: "ssh://example.com")),
-                                     try XCTUnwrap(URL(string: "ssh://example.com"))))
+        XCTAssertEqual(
+            URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "https://example.co.uk/dsjdh?sajjs")),
+                                       try XCTUnwrap(URL(string: "https://example.co.uk"))),
+            .matched(1_000))
 
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://example.co.uk/dsjdh?sajjs")),
-                                    try XCTUnwrap(URL(string: "http://example.co.uk"))))
+        XCTAssertEqual(
+            URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "http://a.b.c.example.com")),
+                                       try XCTUnwrap(URL(string: "http://a.b.c.example.com"))),
+            .matched(1_000))
 
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://a.b.c.example.dni.us")),
-                                    try XCTUnwrap(URL(string: "http://d.example.dni.us"))))
+        XCTAssertEqual(
+            URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "http://a.b.c.example.com")),
+                                       try XCTUnwrap(URL(string: "http://b.c.example.com"))),
+            .matched(999))
 
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "https://example.com")),
-                                    try XCTUnwrap(URL(string: "https://example.com"))))
+        XCTAssertEqual(
+            URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "http://a.b.c.example.com")),
+                                       try XCTUnwrap(URL(string: "https://c.example.com"))),
+            .matched(998))
 
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "https://a.b.c.example.com")),
-                                    try XCTUnwrap(URL(string: "https://d.example.com"))))
-
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://example.com")),
-                                    try XCTUnwrap(URL(string: "https://example.com"))))
-
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "http://a.b.c.example.com")),
-                                    try XCTUnwrap(URL(string: "https://d.example.com"))))
+        XCTAssertEqual(
+            URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "https://a.b.c.example.com")),
+                                       try XCTUnwrap(URL(string: "https://example.com"))),
+            .matched(997))
     }
 
     func testCustomSchemes() throws {
-        let sut = URLUtils.Matcher(allowedSchemes: ["ssh", "ftp"])
-        XCTAssertTrue(sut.isMatched(try XCTUnwrap(URL(string: "ssh://example.com")),
-                                    try XCTUnwrap(URL(string: "ssh://example.com"))))
+        XCTAssertEqual(URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "ssh://example.com")),
+                                                  try XCTUnwrap(URL(string: "ftp://example.com"))),
+                       .notMatched)
 
-        XCTAssertFalse(sut.isMatched(try XCTUnwrap(URL(string: "ssh://example.com")),
-                                     try XCTUnwrap(URL(string: "ftp://example.com"))))
-
-        XCTAssertFalse(sut.isMatched(try XCTUnwrap(URL(string: "ssh://example.com")),
-                                     try XCTUnwrap(URL(string: "ssh://subdomain.example.com"))))
+        XCTAssertEqual(URLUtils.MatcherV2.compare(try XCTUnwrap(URL(string: "ssh://example.com")),
+                                                  try XCTUnwrap(URL(string: "ssh://example.com/path?query="))),
+                       .matched(1_000))
     }
 }
