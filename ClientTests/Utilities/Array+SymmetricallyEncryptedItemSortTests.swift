@@ -56,4 +56,30 @@ final class ArrayPlusSymmetricallyEncryptedItemSortTests: XCTestCase {
         XCTAssertEqual(sortedArray[4].item.itemID, item5.item.itemID)
         XCTAssertEqual(sortedArray[5].item.itemID, item4.item.itemID)
     }
+
+    func testSortScoredItem() {
+        // Given
+
+        let item1 = ScoredSymmetricallyEncryptedItem(item: .random(item: .random(itemId: .random(),
+                                                                                 lastUseTime: 777,
+                                                                                 modifyTime: 444)),
+                                                     matchScore: 995)
+        let item2 = ScoredSymmetricallyEncryptedItem(item: .random(item: .random(itemId: .random(),
+                                                                                 lastUseTime: 777,
+                                                                                 modifyTime: 111)),
+                                                     matchScore: 995)
+        let item3 = ScoredSymmetricallyEncryptedItem(item: .random(item: .random(itemId: .random(),
+                                                                                 lastUseTime: 777,
+                                                                                 modifyTime: 333)),
+                                                     matchScore: 1_000)
+        let unsortedArray = [item1, item2, item3]
+
+        // When
+        let sortedArray = unsortedArray.sorted()
+
+        // Then
+        XCTAssertEqual(sortedArray[0].item.item.itemID, item3.item.item.itemID)
+        XCTAssertEqual(sortedArray[1].item.item.itemID, item1.item.item.itemID)
+        XCTAssertEqual(sortedArray[2].item.item.itemID, item2.item.item.itemID)
+    }
 }
