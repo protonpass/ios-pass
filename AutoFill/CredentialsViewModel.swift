@@ -286,6 +286,7 @@ private extension CredentialsViewModel {
         }
     }
 
+    // swiftlint:disable:next function_body_length
     func fetchCredentialsTask() -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) {
             let vaults = try await self.shareRepository.getVaults()
@@ -294,12 +295,11 @@ private extension CredentialsViewModel {
                 return vault?.name ?? ""
             }
 
-            let matcher = URLUtils.Matcher.default
             let encryptedItems = try await self.itemRepository.getItems(state: .active)
-
             self.logger.debug("Mapping \(encryptedItems.count) encrypted items")
+
             var searchableItems = [SearchableItem]()
-            var matchedEncryptedItems = [SymmetricallyEncryptedItem]()
+            var matchedEncryptedItems = [ScoredSymmetricallyEncryptedItem]()
             var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
             for encryptedItem in encryptedItems {
                 let decryptedItemContent =
@@ -310,22 +310,30 @@ private extension CredentialsViewModel {
                                                               vaultName: getVaultName(encryptedItem.shareId)))
 
                     let itemUrls = itemUrlStrings.compactMap { URL(string: $0) }
-                    let matchedUrls = self.urls.filter { url in
-                        itemUrls.contains { itemUrl in
-                            matcher.isMatched(itemUrl, url)
+                    var matchResults = [URLUtils.Matcher.MatchResult]()
+                    for itemUrl in itemUrls {
+                        for url in self.urls {
+                            let result = URLUtils.Matcher.compare(itemUrl, url)
+                            if case .matched = result {
+                                matchResults.append(result)
+                            }
                         }
                     }
 
-                    if matchedUrls.isEmpty {
+                    if matchResults.isEmpty {
                         notMatchedEncryptedItems.append(encryptedItem)
                     } else {
-                        matchedEncryptedItems.append(encryptedItem)
+                        let totalScore = matchResults.reduce(into: 0) { partialResult, next in
+                            partialResult += next.score
+                        }
+                        matchedEncryptedItems.append(.init(item: encryptedItem,
+                                                           matchScore: totalScore))
                     }
                 }
             }
 
             let matchedItems = try await matchedEncryptedItems.sorted()
-                .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+                .parallelMap { try await $0.item.toItemListUiModel(self.symmetricKey) }
             let notMatchedItems = try await notMatchedEncryptedItems.sorted()
                 .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
 
