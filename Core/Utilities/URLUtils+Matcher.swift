@@ -24,6 +24,71 @@ private let kHttpHttpsSet: Set<String> = ["http", "https"]
 
 public extension URLUtils {
     /// Compare 2 URLs given a set of allowed schemes (protocols)
+    enum MatcherV2 {
+        /// `matched` case associates an `Int` as match score
+        public enum MatchResult {
+            case matched(Int)
+            case notMatched
+        }
+        /// Compare if 2 URLs are matched and if they are matched, also indicate match score.
+        /// match score starts from `1000` and decreases gradually.
+        public static func compare(_ leftUrl: URL, _ rightUrl: URL) -> MatchResult {
+            guard let leftScheme = leftUrl.scheme,
+                  let rightScheme = rightUrl.scheme,
+                  let leftHost = leftUrl.host,
+                  let rightHost = rightUrl.host else { return .notMatched }
+
+            let httpHttps = ["http", "https"]
+            if httpHttps.contains(leftScheme), httpHttps.contains(rightScheme) {
+                if leftScheme == "https", rightScheme == "http" {
+                    return .notMatched
+                } else {
+                    guard let domainParser = try? DomainParser(),
+                          let parsedLeftHost = domainParser.parse(host: leftHost),
+                          let parsedRightHost = domainParser.parse(host: rightHost),
+                          parsedLeftHost.publicSuffix == parsedRightHost.publicSuffix else {
+                        return .notMatched
+                    }
+
+                    guard let leftDomain = parsedLeftHost.domain,
+                          let rightDomain = parsedRightHost.domain,
+                          leftDomain == rightDomain else {
+                        return .notMatched
+                    }
+
+                    var leftSubdomains = leftHost
+                        .replacingOccurrences(of: leftDomain, with: "")
+                        .components(separatedBy: ".")
+                    var rightSubdomains = rightHost
+                        .replacingOccurrences(of: rightDomain, with: "")
+                        .components(separatedBy: ".")
+
+                    guard leftSubdomains.last == rightSubdomains.last else {
+                        return .notMatched
+                    }
+
+                    var matchScore = 1_000
+                    while let lastLeftSubdomain = leftSubdomains.popLast() {
+                        let lastRightSubdomain = rightSubdomains.popLast()
+                        if lastLeftSubdomain != lastRightSubdomain {
+                            matchScore -= 1
+                        }
+                    }
+
+                    return .matched(matchScore)
+                }
+            } else {
+                // Other schemes like `ssh` or `ftp`...
+                if leftScheme == rightScheme, leftHost == rightHost {
+                    return .matched(1_000)
+                } else {
+                    return .notMatched
+                }
+            }
+        }
+    }
+
+    /// Compare 2 URLs given a set of allowed schemes (protocols)
     struct Matcher {
         /// A set of allowed schemes (protocols) e.g `https`, `ftp`, `ssh`.
         /// Use this to ignore schemes that we do not want to support.
@@ -99,6 +164,19 @@ public extension URLUtils {
                       let rightHost = rightUrl.host else { return false }
                 return leftHost == rightHost
             }
+        }
+    }
+}
+
+extension URLUtils.MatcherV2.MatchResult: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case let (.matched(lScore), .matched(rScore)):
+            return lScore == rScore
+        case (.notMatched, .notMatched):
+            return true
+        default:
+            return false
         }
     }
 }
