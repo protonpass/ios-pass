@@ -280,7 +280,6 @@ extension CredentialProviderCoordinator: APIServiceDelegate {
                             symmetricKey: SymmetricKey,
                             serviceIdentifiers: [ASCredentialServiceIdentifier],
                             lastUseTime: TimeInterval) async throws {
-        let matcher = URLUtils.Matcher.default
         let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
         if case let .login(email, _, urls) = decryptedItem.contentData {
             let serviceUrls = serviceIdentifiers
@@ -298,7 +297,10 @@ extension CredentialProviderCoordinator: APIServiceDelegate {
             let itemUrls = urls.compactMap { URL(string: $0) }
             let matchedUrls = itemUrls.filter { itemUrl in
                 serviceUrls.contains { serviceUrl in
-                    matcher.isMatched(itemUrl, serviceUrl)
+                    if case .matched = URLUtils.Matcher.compare(itemUrl, serviceUrl) {
+                        return true
+                    }
+                    return false
                 }
             }
 

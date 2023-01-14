@@ -24,7 +24,7 @@ private let kHttpHttpsSet: Set<String> = ["http", "https"]
 
 public extension URLUtils {
     /// Compare 2 URLs given a set of allowed schemes (protocols)
-    enum MatcherV2 {
+    enum Matcher {
         /// `matched` case associates an `Int` as match score
         public enum MatchResult {
             case matched(Int)
@@ -87,88 +87,9 @@ public extension URLUtils {
             }
         }
     }
-
-    /// Compare 2 URLs given a set of allowed schemes (protocols)
-    struct Matcher {
-        /// A set of allowed schemes (protocols) e.g `https`, `ftp`, `ssh`.
-        /// Use this to ignore schemes that we do not want to support.
-        let allowedSchemes: Set<String>
-
-        /// Default `URLMatcher` that supports only `https` & `https` schemes
-        public static var `default` = Self(allowedSchemes: kHttpHttpsSet)
-
-        public init(allowedSchemes: Set<String>) {
-            self.allowedSchemes = allowedSchemes
-        }
-
-        /// Compare if 2 URLs are matched.
-        ///
-        /// If URLs have `http` or `https` as protocol,
-        /// will use `DomainParser` to define if they share the same top level domain (TLD)
-        /// and then only the compare the top most subdomain after the TLD.
-        /// `http` & `https` are interchangeable.
-        /// E.g:
-        /// https://example.com matches https://subdomain.example.com
-        /// http://example.com matches https://subdomain.example.com
-        /// https://example.net does not match https://example.com
-        ///
-        ///
-        /// If URLs do not have `http` or `https` as protocol, will compare the whole host
-        /// E.g:
-        /// ssh://example.com does not match ssh://subdomain.example.com
-        ///
-        /// - Parameters:
-        ///   - leftUrl: Left hand `URL`
-        ///   - rightUrl: Right hand `URL`
-        ///  - Returns: `true` if matched, `false` if not matched
-        public func isMatched(_ leftUrl: URL, _ rightUrl: URL) -> Bool {
-            guard let leftScheme = leftUrl.scheme,
-                  let rightScheme = rightUrl.scheme,
-                  let leftHost = leftUrl.host,
-                  let rightHost = rightUrl.host else { return false }
-
-            if allowedSchemes == kHttpHttpsSet {
-                // `https` & `https`
-                guard allowedSchemes.contains(leftScheme),
-                      allowedSchemes.contains(rightScheme) else { return false }
-
-                guard let domainParser = try? DomainParser(),
-                      let parsedLeftHost = domainParser.parse(host: leftHost),
-                      let parsedRightHost = domainParser.parse(host: rightHost),
-                      parsedLeftHost.publicSuffix == parsedRightHost.publicSuffix else {
-                    return leftUrl.absoluteString == rightUrl.absoluteString
-                }
-
-                guard let leftDomain = parsedLeftHost.domain,
-                      let rightDomain = parsedRightHost.domain else {
-                    return false
-                }
-
-                let leftDomainWithoutTld = leftDomain
-                    .replacingOccurrences(of: ".\(parsedLeftHost.publicSuffix)", with: "")
-
-                let rightDomainWithoutTld = rightDomain
-                    .replacingOccurrences(of: ".\(parsedRightHost.publicSuffix)", with: "")
-
-                guard let leftTopSubdomain = leftDomainWithoutTld.components(separatedBy: ".").last,
-                      let rightTopSubdomain = rightDomainWithoutTld.components(separatedBy: ".").last else {
-                    return false
-                }
-
-                return leftTopSubdomain == rightTopSubdomain
-            } else {
-                // Other schemes e.g `ssh`, `ftp`..
-                guard leftScheme == rightScheme else { return false }
-
-                guard let leftHost = leftUrl.host,
-                      let rightHost = rightUrl.host else { return false }
-                return leftHost == rightHost
-            }
-        }
-    }
 }
 
-extension URLUtils.MatcherV2.MatchResult: Equatable {
+extension URLUtils.Matcher.MatchResult: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case let (.matched(lScore), .matched(rScore)):
