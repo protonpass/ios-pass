@@ -310,10 +310,10 @@ private extension CredentialsViewModel {
                                                               vaultName: getVaultName(encryptedItem.shareId)))
 
                     let itemUrls = itemUrlStrings.compactMap { URL(string: $0) }
-                    var matchResults = [URLUtils.MatcherV2.MatchResult]()
+                    var matchResults = [URLUtils.Matcher.MatchResult]()
                     for itemUrl in itemUrls {
                         for url in self.urls {
-                            let result = URLUtils.MatcherV2.compare(itemUrl, url)
+                            let result = URLUtils.Matcher.compare(itemUrl, url)
                             if case .matched = result {
                                 matchResults.append(result)
                             }
