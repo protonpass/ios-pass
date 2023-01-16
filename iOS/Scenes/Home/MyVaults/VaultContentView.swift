@@ -176,6 +176,24 @@ struct VaultContentView: View {
 
             Divider()
 
+            Menu(content: {
+                ForEach(viewModel.otherVaults, id: \.id) { vault in
+                    Button(action: {
+                        print(vault.name)
+                    }, label: {
+                        Text(vault.name)
+                    })
+                }
+            }, label: {
+                Label(title: {
+                    Text("Move")
+                }, icon: {
+                    Image(uiImage: IconProvider.folderArrowIn)
+                })
+            })
+
+            Divider()
+
             DestructiveButton(title: "Move to Trash",
                               icon: IconProvider.trash,
                               action: { askForConfirmationOrTrashDirectly(item: item) })

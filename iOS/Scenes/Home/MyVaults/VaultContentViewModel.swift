@@ -107,6 +107,9 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
 
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
+    var otherVaults: [VaultProtocol] {
+        vaultSelection.vaults.filter { $0.id != vaultSelection.selectedVault?.id }
+    }
 
     weak var delegate: VaultContentViewModelDelegate?
 
