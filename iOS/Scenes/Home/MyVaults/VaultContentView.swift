@@ -179,7 +179,7 @@ struct VaultContentView: View {
             Menu(content: {
                 ForEach(viewModel.otherVaults, id: \.id) { vault in
                     Button(action: {
-                        print(vault.name)
+                        viewModel.moveItem(item, to: vault)
                     }, label: {
                         Text(vault.name)
                     })

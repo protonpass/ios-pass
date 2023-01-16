@@ -175,6 +175,10 @@ public struct ItemContent: ItemContentProtocol {
         self.note = contentProtobuf.note
         self.contentData = contentProtobuf.contentData
     }
+
+    public var protobuf: ItemContentProtobuf {
+        .init(name: name, note: note, data: contentData)
+    }
 }
 
 extension ItemContent: ItemIdentifiable {
