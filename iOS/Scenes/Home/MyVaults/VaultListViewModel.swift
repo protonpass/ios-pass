@@ -27,22 +27,31 @@ protocol VaultListViewModelDelegate: AnyObject {
     func vaultListViewModelWantsShowLoadingHud()
     func vaultListViewModelWantsHideLoadingHud()
     func vaultListViewModelWantsToCreateVault()
+    func vaultListViewModelDidDelete(vault: VaultProtocol)
     func vaultListViewModelDidFail(error: Error)
+}
+
+enum VaultListViewModelError: Error {
+    case canNotDeleteLastVault
+    case vaultNotEmpty(String)
 }
 
 final class VaultListViewModel: ObservableObject {
     var vaults: [VaultProtocol] { vaultSelection.vaults }
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
 
+    private let itemRepository: ItemRepositoryProtocol
     private let shareRespository: ShareRepositoryProtocol
     private let vaultSelection: VaultSelection
     private var cancellables: AnyCancellable?
     private let logger: Logger
     weak var delegate: VaultListViewModelDelegate?
 
-    init(shareRespository: ShareRepositoryProtocol,
+    init(itemRepository: ItemRepositoryProtocol,
+         shareRespository: ShareRepositoryProtocol,
          vaultSelection: VaultSelection,
          logManager: LogManager) {
+        self.itemRepository = itemRepository
         self.shareRespository = shareRespository
         self.vaultSelection = vaultSelection
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
@@ -71,7 +80,18 @@ extension VaultListViewModel {
             do {
                 logger.trace("Deleting vault \(vault.shareId)")
                 delegate?.vaultListViewModelWantsShowLoadingHud()
+
+                guard vaults.count > 1 else {
+                    throw VaultListViewModelError.canNotDeleteLastVault
+                }
+
+                let itemCount = try await itemRepository.getItemCount(shareId: vault.shareId)
+                guard itemCount == 0 else {
+                    throw VaultListViewModelError.vaultNotEmpty(vault.shareId)
+                }
+
                 try await shareRespository.deleteVault(shareId: vault.shareId)
+                delegate?.vaultListViewModelDidDelete(vault: vault)
                 logger.info("Deleted vault \(vault.shareId)")
             } catch {
                 logger.error(error)

@@ -136,7 +136,8 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func showVaultListView() {
-        let viewModel = VaultListViewModel(shareRespository: shareRepository,
+        let viewModel = VaultListViewModel(itemRepository: itemRepository,
+                                           shareRespository: shareRepository,
                                            vaultSelection: vaultSelection,
                                            logManager: logManager)
         viewModel.delegate = self
@@ -579,6 +580,13 @@ extension MyVaultsCoordinator: VaultListViewModelDelegate {
     func vaultListViewModelWantsToCreateVault() {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.showCreateVaultView()
+        }
+    }
+
+    func vaultListViewModelDidDelete(vault: VaultProtocol) {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager?.displayBottomInfoMessage("Vault \"\(vault.name)\" deleted")
+            self.vaultSelection.remove(vault: vault)
         }
     }
 
