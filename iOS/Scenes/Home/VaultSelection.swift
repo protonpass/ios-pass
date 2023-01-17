@@ -40,4 +40,11 @@ final class VaultSelection: ObservableObject {
     func update(selectedVault: VaultProtocol?) {
         self.selectedVault = selectedVault
     }
+
+    func remove(vault: VaultProtocol) {
+        vaults.removeAll(where: { $0.shareId == vault.shareId })
+        if selectedVault?.shareId == vault.shareId {
+            selectedVault = vaults.first
+        }
+    }
 }
