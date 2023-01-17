@@ -47,6 +47,14 @@ struct VaultListView: View {
                         Spacer()
                     }
                     .contentShape(Rectangle())
+                    .swipeActions {
+                        Button(action: {
+                            viewModel.deleteVault(vault)
+                        }, label: {
+                            Text("Delete")
+                        })
+                        .tint(.red)
+                    }
                     .onTapGesture {
                         if vault.id != viewModel.selectedVault?.id {
                             viewModel.selectVault(vault)

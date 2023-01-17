@@ -136,7 +136,9 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func showVaultListView() {
-        let viewModel = VaultListViewModel(vaultSelection: vaultSelection)
+        let viewModel = VaultListViewModel(shareRespository: shareRepository,
+                                           vaultSelection: vaultSelection,
+                                           logManager: logManager)
         viewModel.delegate = self
         let view = VaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -560,15 +562,27 @@ extension MyVaultsCoordinator: SearchViewModelDelegate {
     }
 
     func searchViewModelDidFail(_ error: Error) {
-        bannerManager?.displayTopErrorMessage(error.messageForTheUser)
+        bannerManager?.displayTopErrorMessage(error)
     }
 }
 
 // MARK: - VaultListViewModelDelegate
 extension MyVaultsCoordinator: VaultListViewModelDelegate {
+    func vaultListViewModelWantsShowLoadingHud() {
+        showLoadingHud()
+    }
+
+    func vaultListViewModelWantsHideLoadingHud() {
+        hideLoadingHud()
+    }
+
     func vaultListViewModelWantsToCreateVault() {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.showCreateVaultView()
         }
+    }
+
+    func vaultListViewModelDidFail(error: Error) {
+        bannerManager?.displayTopErrorMessage(error)
     }
 }
