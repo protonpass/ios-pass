@@ -24,6 +24,7 @@ public protocol LocalShareDatasourceProtocol: LocalDatasourceProtocol {
     func getShare(userId: String, shareId: String) async throws -> Share?
     func getAllShares(userId: String) async throws -> [Share]
     func upsertShares(_ shares: [Share], userId: String) async throws
+    func removeShare(shareId: String, userId: String) async throws
     func removeAllShares(userId: String) async throws
 }
 
@@ -65,9 +66,20 @@ public extension LocalShareDatasourceProtocol {
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
+    func removeShare(shareId: String, userId: String) async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ShareEntity")
+        fetchRequest.predicate = NSCompoundPredicate(
+            andPredicateWithSubpredicates: [
+                .init(format: "userID = %@", userId),
+                .init(format: "shareID = %@", shareId)
+            ])
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
+
     func removeAllShares(userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
-
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ShareEntity")
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
