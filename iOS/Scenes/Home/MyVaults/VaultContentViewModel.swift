@@ -59,6 +59,7 @@ protocol VaultContentViewModelDelegate: AnyObject {
     func vaultContentViewModelWantsToEditItem(_ item: ItemContent)
     func vaultContentViewModelWantsToCopy(text: String, bannerMessage: String)
     func vaultContentViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType)
+    func vaultContentViewModelDidMoveItem(_ item: ItemIdentifiable, type: ItemContentType)
     func vaultContentViewModelDidFail(_ error: Error)
 }
 
@@ -107,6 +108,9 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
 
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
     var vaults: [VaultProtocol] { vaultSelection.vaults }
+    var otherVaults: [VaultProtocol] {
+        vaultSelection.vaults.filter { $0.id != vaultSelection.selectedVault?.id }
+    }
 
     weak var delegate: VaultContentViewModelDelegate?
 
@@ -213,6 +217,40 @@ extension VaultContentViewModel {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
                 delegate?.vaultContentViewModelWantsToShowItemDetail(itemContent)
                 logger.info("Want to view detail \(item.debugInformation)")
+            } catch {
+                logger.error(error)
+                delegate?.vaultContentViewModelDidFail(error)
+            }
+        }
+    }
+
+    func moveItem(_ item: ItemListUiModel, to vault: VaultProtocol) {
+        Task { @MainActor in
+            defer { delegate?.vaultContentViewModelWantsToHideLoadingHud() }
+            do {
+                delegate?.vaultContentViewModelWantsToShowLoadingHud()
+
+                logger.trace("Moving \(item.debugInformation) to share \(vault.shareId)")
+                let shareId = item.shareId
+                let itemId = item.itemId
+                guard let symmetricallyEncryptedItem =
+                        try await itemRepository.getItem(shareId: shareId, itemId: itemId) else {
+                    throw VaultContentViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
+                }
+
+                // Copy and create item in the other vault
+                let decryptedItemContent =
+                try symmetricallyEncryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+
+                _ = try await createItemTask(shareId: vault.shareId,
+                                             itemContent: decryptedItemContent.protobuf).value
+                logger.trace("Copied \(item.debugInformation) to share \(vault.shareId)")
+
+                // Remove item in current vault
+                try await deleteItemSkippingTrashTask(for: symmetricallyEncryptedItem).value
+                logger.info("Moved \(item.debugInformation) to share \(vault.shareId)")
+
+                delegate?.vaultContentViewModelDidMoveItem(item, type: item.type)
             } catch {
                 logger.error(error)
                 delegate?.vaultContentViewModelDidFail(error)
@@ -346,12 +384,26 @@ private extension VaultContentViewModel {
         }
     }
 
+    func deleteItemSkippingTrashTask(for item: SymmetricallyEncryptedItem) -> Task<Void, Error> {
+        Task.detached(priority: .userInitiated) {
+            try await self.itemRepository.deleteItems([item], skipTrash: true)
+        }
+    }
+
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
         guard let item = try await itemRepository.getItem(shareId: shareId,
                                                           itemId: itemId) else {
             throw VaultContentViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
         }
         return item
+    }
+
+    func createItemTask(shareId: String,
+                        itemContent: ItemContentProtobuf) -> Task<SymmetricallyEncryptedItem, Error> {
+        Task.detached(priority: .userInitiated) {
+            try await self.itemRepository.createItem(itemContent: itemContent,
+                                                     shareId: shareId)
+        }
     }
 }
 

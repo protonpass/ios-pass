@@ -313,6 +313,22 @@ final class MyVaultsCoordinator: Coordinator {
         Task { await searchViewModel?.refreshResults() }
     }
 
+    private func handleMovedItem(_ item: ItemIdentifiable, type: ItemContentType) {
+        let message: String
+        switch type {
+        case .alias:
+            message = "Alias moved"
+        case .login:
+            message = "Login moved"
+        case .note:
+            message = "Note moved"
+        }
+        bannerManager?.displayBottomInfoMessage(message)
+        vaultContentViewModel.fetchItems()
+        delegate?.myVaultsCoordinatorWantsToRefreshTrash()
+        Task { await searchViewModel?.refreshResults() }
+    }
+
     private func handleUpdatedItem(_ itemContentType: ItemContentType) {
         dismissTopMostViewController(animated: true) { [unowned self] in
             currentItemDetailViewModel?.refresh()
@@ -399,6 +415,10 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
 
     func vaultContentViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
         handleTrashedItem(item, type: type)
+    }
+
+    func vaultContentViewModelDidMoveItem(_ item: Client.ItemIdentifiable, type: ItemContentType) {
+        handleMovedItem(item, type: type)
     }
 
     func vaultContentViewModelDidFail(_ error: Error) {
