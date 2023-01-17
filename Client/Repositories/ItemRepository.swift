@@ -56,6 +56,9 @@ public protocol ItemRepositoryProtocol {
     /// Get all local items of a share by state
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
+    /// Get item count for a share (both active & trashed items)
+    func getItemCount(shareId: String) async throws -> Int
+
     /// Get all items from remote, delete all local ones and replace with remote ones.
     /// Should be only used after logging in & full sync.
     func refreshItems() async throws
@@ -113,6 +116,10 @@ public extension ItemRepositoryProtocol {
         let items = try await localItemDatasoure.getItems(shareId: shareId, state: state)
         logger.trace("Got \(items.count) local \(state.description) items for share \(shareId)")
         return items
+    }
+
+    func getItemCount(shareId: String) async throws -> Int {
+        try await localItemDatasoure.getItemCount(shareId: shareId)
     }
 
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
