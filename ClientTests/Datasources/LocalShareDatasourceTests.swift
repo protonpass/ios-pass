@@ -142,6 +142,24 @@ extension LocalShareDatasourceTests {
         assertEqual(share, updatedShare)
     }
 
+    func testRemoveShare() async throws {
+        // Given
+        let userId = String.random()
+        let firstShare = Share.random()
+        let secondShare = Share.random()
+        let thirdShare = Share.random()
+
+        // When
+        try await sut.upsertShares([firstShare, secondShare, thirdShare], userId: userId)
+        try await sut.removeShare(shareId: secondShare.shareID, userId: userId)
+
+        // Then
+        let shares = try await sut.getAllShares(userId: userId)
+        XCTAssertEqual(shares.count, 2)
+        XCTAssertTrue(shares.contains(where: { $0.shareID == firstShare.shareID }))
+        XCTAssertTrue(shares.contains(where: { $0.shareID == thirdShare.shareID }))
+    }
+
     func testRemoveAllShares() async throws {
         // Given
         let givenFirstUserId = String.random()
