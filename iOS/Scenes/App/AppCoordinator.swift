@@ -217,7 +217,7 @@ final class AppCoordinator {
         UIView.transition(with: window,
                           duration: 0.35,
                           options: .transitionCrossDissolve,
-                           animations: nil) { _ in completion?() }
+                          animations: nil) { _ in completion?() }
     }
 
     private func wipeAllData() {
