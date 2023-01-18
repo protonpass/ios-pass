@@ -210,6 +210,13 @@ final class MyVaultsCoordinator: Coordinator {
         present(generatePasswordViewController)
     }
 
+    private func showScanQrCodeView(delegate: ScannerViewModelDelegate) {
+        let viewModel = ScannerViewModel()
+        viewModel.delegate = delegate
+        let view = ScannerView(viewModel: viewModel)
+        present(view)
+    }
+
     private func showSearchView() {
         let viewModel = SearchViewModel(symmetricKey: symmetricKey,
                                         itemRepository: itemRepository,
@@ -485,6 +492,10 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate, mode: .createLogin)
+    }
+
+    func createEditLoginViewModelWantsToScanQrCode(_ delegate: ScannerViewModelDelegate) {
+        showScanQrCodeView(delegate: delegate)
     }
 
     func createEditLoginViewModelDidReceiveAliasCreationInfo() {

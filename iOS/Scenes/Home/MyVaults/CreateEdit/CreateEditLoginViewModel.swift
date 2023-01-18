@@ -26,6 +26,7 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
     func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
                                                       title: String)
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
+    func createEditLoginViewModelWantsToScanQrCode(_ delegate: ScannerViewModelDelegate)
     func createEditLoginViewModelDidReceiveAliasCreationInfo()
 }
 
@@ -37,6 +38,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var username = ""
     @Published var password = ""
     @Published var isPasswordSecure = true // Password in clear text or not
+    @Published var otpUrl = ""
     @Published var urls: [String] = [""]
     @Published var note = ""
 
@@ -139,6 +141,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToGeneratePassword(self)
     }
 
+    func scanQrCode() {
+        createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToScanQrCode(self)
+    }
+
     func removeAlias() {
         aliasCreationInfo = nil
         username = ""
@@ -162,3 +168,6 @@ extension CreateEditLoginViewModel: AliasCreationDelegate {
         createEditLoginViewModelDelegate?.createEditLoginViewModelDidReceiveAliasCreationInfo()
     }
 }
+
+// MARK: - ScannerViewModelDelegate
+extension CreateEditLoginViewModel: ScannerViewModelDelegate {}
