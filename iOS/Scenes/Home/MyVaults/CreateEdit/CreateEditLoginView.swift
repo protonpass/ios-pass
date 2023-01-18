@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import CodeScanner
 import Core
 import ProtonCore_UIFoundations
 import SwiftUI
@@ -29,6 +30,7 @@ struct CreateEditLoginView: View {
     @State private var isShowingDiscardAlert = false
     @State private var isShowingTrashAlert = false
     @State private var isShowingDeleteAliasAlert = false
+    @State private var isShowingScanner = false
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnUsername = false
     @State private var isFocusedOnPassword = false
@@ -199,10 +201,19 @@ struct CreateEditLoginView: View {
             trailingView: {
                 let image = UIImage(systemName: "qrcode.viewfinder")?.withRenderingMode(.alwaysTemplate)
                 BorderedImageButton(image: image ?? .add,
-                                    action: viewModel.generatePassword)
+                                    action: { isShowingScanner.toggle() })
                 .frame(width: 48, height: 48)
                 .opacityReduced(viewModel.isSaving)
             })
+        .sheet(isPresented: $isShowingScanner) {
+            CodeScannerView(
+                codeTypes: [.qr],
+                simulatedData: "otpauth://totp/john.doe%40example.com?secret=somesecret&issuer=ProtonMail",
+                completion: { result in
+                    isShowingScanner = false
+                    viewModel.handleScanResult(result)
+                })
+        }
     }
 
     private var urlsInputView: some View {

@@ -258,6 +258,8 @@
 		356A34BB2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */; };
 		356A34BD2977C6ED00969BA2 /* URLExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34BC2977C6ED00969BA2 /* URLExtensionTests.swift */; };
 		356A34BF2977DFD300969BA2 /* OTPCircularTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34BE2977DFD300969BA2 /* OTPCircularTimer.swift */; };
+		356A34C82978630100969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C72978630100969BA2 /* CodeScanner */; };
+		356A34CA2978642800969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C92978642800969BA2 /* CodeScanner */; };
 		356AD3FB29409C7600EBE4E9 /* DevPreviewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356AD3FA29409C7600EBE4E9 /* DevPreviewsView.swift */; };
 		356B21D72870F8F1001220CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D62870F8F1001220CB /* Constants.swift */; };
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
@@ -932,6 +934,7 @@
 			files = (
 				3544F5E128E2341900834CA4 /* AuthenticationServices.framework in Frameworks */,
 				354513D228E4C70B0020A93A /* Core.framework in Frameworks */,
+				356A34CA2978642800969BA2 /* CodeScanner in Frameworks */,
 				F53DC9E901354CB27344B8B0 /* Pods_AutoFill.framework in Frameworks */,
 				354513D728E4C70E0020A93A /* Client.framework in Frameworks */,
 				354513DB28E4C71F0020A93A /* UIComponents.framework in Frameworks */,
@@ -951,6 +954,7 @@
 			files = (
 				CCE7E1B680E6647D25927D82 /* Pods_iOS.framework in Frameworks */,
 				3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */,
+				356A34C82978630100969BA2 /* CodeScanner in Frameworks */,
 				3544BCB928E1E42B00EFE130 /* Client.framework in Frameworks */,
 				3544BCBC28E1E42C00EFE130 /* Core.framework in Frameworks */,
 				35D56D562942354A00C2D0E2 /* UIComponents.framework in Frameworks */,
@@ -2069,6 +2073,9 @@
 				354513DE28E4C71F0020A93A /* PBXTargetDependency */,
 			);
 			name = AutoFill;
+			packageProductDependencies = (
+				356A34C92978642800969BA2 /* CodeScanner */,
+			);
 			productName = AutoFill;
 			productReference = 3544F5E028E2341800834CA4 /* AutoFill.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -2113,6 +2120,9 @@
 				35D56D592942354A00C2D0E2 /* PBXTargetDependency */,
 			);
 			name = iOS;
+			packageProductDependencies = (
+				356A34C72978630100969BA2 /* CodeScanner */,
+			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
 			productType = "com.apple.product-type.application";
@@ -2323,6 +2333,9 @@
 				Base,
 			);
 			mainGroup = 35E5062E286F819F00A3F6EA;
+			packageReferences = (
+				356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */,
+			);
 			productRefGroup = 35E5063C286F819F00A3F6EA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -5467,6 +5480,30 @@
 			defaultConfigurationName = "Release-Prod";
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		356A34C72978630100969BA2 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
+		356A34C92978642800969BA2 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */ = {
