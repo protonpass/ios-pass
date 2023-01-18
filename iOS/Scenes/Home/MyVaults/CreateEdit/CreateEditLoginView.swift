@@ -199,7 +199,7 @@ struct CreateEditLoginView: View {
             trailingView: {
                 let image = UIImage(systemName: "qrcode.viewfinder")?.withRenderingMode(.alwaysTemplate)
                 BorderedImageButton(image: image ?? .add,
-                                    action: viewModel.scanQrCode)
+                                    action: viewModel.generatePassword)
                 .frame(width: 48, height: 48)
                 .opacityReduced(viewModel.isSaving)
             })

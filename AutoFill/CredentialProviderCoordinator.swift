@@ -588,10 +588,6 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
         showGeneratePasswordView(delegate: delegate)
     }
 
-    func createEditLoginViewModelWantsToScanQrCode(_ delegate: ScannerViewModelDelegate) {
-        print(#function)
-    }
-
     func createEditLoginViewModelDidReceiveAliasCreationInfo() {
         topMostViewController.dismiss(animated: true)
     }
