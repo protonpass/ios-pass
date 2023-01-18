@@ -28,7 +28,8 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     private let logManager = LogManager(module: .autoFillExtension)
 
     private lazy var coordinator: CredentialProviderCoordinator = {
-        .init(apiService: PMAPIService(doh: PPDoH(bundle: .main)),
+        .init(apiService:
+              PMAPIService.createAPIService(doh: PPDoH(bundle: .main), sessionUID: ""),
               container: .Builder.build(name: kProtonPassContainerName, inMemory: false),
               context: extensionContext,
               preferences: .init(),
