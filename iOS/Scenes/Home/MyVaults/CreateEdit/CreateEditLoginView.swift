@@ -32,6 +32,7 @@ struct CreateEditLoginView: View {
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnUsername = false
     @State private var isFocusedOnPassword = false
+    @State private var isFocusedOnOtp = false
     @State private var isFocusedOnURLs = false
     @State private var isFocusedOnNote = false
     @State private var invalidUrls = [String]()
@@ -47,6 +48,7 @@ struct CreateEditLoginView: View {
                     loginInputView
                     usernameInputView
                     passwordInputView
+                    otpInputView
                     urlsInputView
                     noteInputView
                     if viewModel.mode.isEditMode {
@@ -177,6 +179,27 @@ struct CreateEditLoginView: View {
             trailingView: {
                 BorderedImageButton(image: IconProvider.arrowsRotate,
                                     action: viewModel.generatePassword)
+                .frame(width: 48, height: 48)
+                .opacityReduced(viewModel.isSaving)
+            })
+    }
+
+    private var otpInputView: some View {
+        UserInputContainerView(
+            title: "One-time password",
+            isFocused: isFocusedOnOtp,
+            content: {
+                UserInputContentSingleLineWithClearButton(
+                    text: $viewModel.otpUrl,
+                    isFocused: $isFocusedOnOtp,
+                    placeholder: "",
+                    onClear: { viewModel.otpUrl = "" })
+                .opacityReduced(viewModel.isSaving)
+            },
+            trailingView: {
+                let image = UIImage(systemName: "qrcode.viewfinder")?.withRenderingMode(.alwaysTemplate)
+                BorderedImageButton(image: image ?? .add,
+                                    action: viewModel.scanQrCode)
                 .frame(width: 48, height: 48)
                 .opacityReduced(viewModel.isSaving)
             })
