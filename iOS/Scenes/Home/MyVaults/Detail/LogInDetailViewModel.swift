@@ -20,16 +20,28 @@
 
 import Client
 import Core
+import SwiftOTP
+import UIComponents
 import UIKit
 
 final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
-    deinit { print(deinitMessage) }
+    deinit {
+        timer?.invalidate()
+        print(deinitMessage)
+    }
 
     @Published private(set) var name = ""
     @Published private(set) var username = ""
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
     @Published private(set) var note = ""
+    @Published private(set) var totpCode: String?
+    @Published private(set) var timerData: OTPCircularTimerData?
+    private var timer: Timer?
+    private let totp = TOTP(secret: "somesecret".data(using: .utf8) ?? Data(),
+                            digits: 6,
+                            timeInterval: 30,
+                            algorithm: .sha1)
 
     override func bindValues() {
         if case let .login(username, password, urls) = itemContent.contentData {
@@ -38,11 +50,29 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
             self.urls = urls
             self.password = password
             self.note = itemContent.note
+            if let totp {
+                beginCaculating(totp: totp)
+            }
         } else {
             fatalError("Expecting login type")
         }
     }
+}
 
+// MARK: - Private operations
+private extension LogInDetailViewModel {
+    func beginCaculating(totp: TOTP) {
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            let timeInterval = Int(Date().timeIntervalSince1970)
+            let remainingSeconds = totp.timeInterval - (timeInterval % totp.timeInterval)
+            self.totpCode = totp.generate(secondsPast1970: timeInterval)
+            self.timerData = .init(total: totp.timeInterval, remaining: remainingSeconds)
+        }
+    }
+}
+
+// MARK: - Public actions
+extension LogInDetailViewModel {
     func copyUsername() {
         copyToClipboard(text: username, message: "Username copied")
     }
