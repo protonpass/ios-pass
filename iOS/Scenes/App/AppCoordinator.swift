@@ -29,6 +29,7 @@ import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
+import ProtonCore_Utilities
 import SwiftUI
 import UIComponents
 import UIKit
@@ -44,6 +45,7 @@ final class AppCoordinator {
     private let keymaker: Keymaker
     private let apiService: PMAPIService
     private let logManager: LogManager
+    private var authHelper: AuthHelper
     private let logger: Logger
     private var container: NSPersistentContainer
     private let credentialManager: CredentialManagerProtocol
@@ -67,7 +69,9 @@ final class AppCoordinator {
     init(window: UIWindow) {
         self.window = window
         self.appStateObserver = .init()
-        self.apiService = PMAPIService(doh: PPDoH(bundle: .main))
+        // The sessionUID will be used in the short future. It is empty by default.
+        // we will have another migration to cache session and pass it to this initial
+        self.apiService = PMAPIService.createAPIService(doh: PPDoH(bundle: .main), sessionUID: "")
         self.logManager = .init(module: .hostApp)
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
@@ -85,9 +89,11 @@ final class AppCoordinator {
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)
         self.preferences = .init()
-        self.apiService.authDelegate = self
-        self.apiService.serviceDelegate = self
+        self.authHelper = AuthHelper()
+        authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
+        self.apiService.authDelegate = authHelper
 
+        self.apiService.serviceDelegate = self
         bindAppState()
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
@@ -108,6 +114,13 @@ final class AppCoordinator {
 
                 case let .loggedIn(sessionData, manualLogIn):
                     self.sessionData = sessionData
+                    // AuthHelper need to expose the setter to update authCredential.
+                    // Then we don't need to initial AuthHelper again. Temporary
+                    self.apiService.setSessionUID(uid: sessionData.userData.credential.sessionID)
+                    self.authHelper = AuthHelper(authCredential: sessionData.userData.credential)
+                    self.authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
+                    self.apiService.authDelegate = self.authHelper
+
                     self.showHomeScene(sessionData: sessionData, manualLogIn: manualLogIn)
 
                 case .undefined:
@@ -204,7 +217,7 @@ final class AppCoordinator {
         UIView.transition(with: window,
                           duration: 0.35,
                           options: .transitionCrossDissolve,
-                          animations: nil) { _ in completion?() }
+                           animations: nil) { _ in completion?() }
     }
 
     private func wipeAllData() {
@@ -250,9 +263,9 @@ final class AppCoordinator {
 
     // Create a new instance of SessionData with everything copied except credential
     private func updateSessionData(_ sessionData: SessionData,
-                                   credential: Credential) {
+                                   authCredential: AuthCredential) {
         let currentUserData = sessionData.userData
-        let updatedUserData = UserData(credential: .init(credential),
+        let updatedUserData = UserData(credential: authCredential,
                                        user: currentUserData.user,
                                        salts: currentUserData.salts,
                                        passphrases: currentUserData.passphrases,
@@ -300,60 +313,21 @@ extension AppCoordinator: HomeCoordinatorDelegate {
     }
 }
 
-// MARK: - AuthDelegate
-extension AppCoordinator: AuthDelegate {
-    func authCredential(sessionUID: String) -> AuthCredential? {
-        sessionData?.userData.credential
-    }
-
-    func credential(sessionUID: String) -> Credential? {
-        nil
-    }
-
-    func getToken(bySessionUID uid: String) -> AuthCredential? { sessionData?.userData.credential }
-
-    func onLogout(sessionUID uid: String) {
-        appStateObserver.updateAppState(.loggedOut(.expiredRefreshToken))
-    }
-
-    func onUpdate(credential auth: Credential, sessionUID: String) {
-        if let sessionData {
-            updateSessionData(sessionData, credential: auth)
-        } else {
-            appStateObserver.updateAppState(.loggedOut(.noSessionData))
-        }
-    }
-
-    func onRefresh(sessionUID: String,
-                   service: APIService,
-                   complete: @escaping AuthRefreshResultCompletion) {
+// MARK: - AuthHelperDelegate
+extension AppCoordinator: AuthHelperDelegate {
+    func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
         guard let sessionData else {
-            logger.info("Access token expired but found no sessionData in keychain. Logging out...")
+            logger.info("Refreshed expired access token but found no sessionData in keychain. Logging out...")
             appStateObserver.updateAppState(.loggedOut(.noSessionData))
             return
         }
-        logger.info("Refreshing expired access token")
-        let authenticator = Authenticator(api: apiService)
-        let userData = sessionData.userData
-        authenticator.refreshCredential(.init(userData.credential)) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case .success(.updatedCredential(let credential)), .success(.newCredential(let credential, _)):
-                self.logger.info("Refreshed expired access token")
-                self.updateSessionData(sessionData, credential: credential)
-                complete(.success(.init(.init(credential))))
+        self.logger.info("Refreshed expired access token")
+        self.updateSessionData(sessionData, authCredential: authCredential)
+    }
 
-            case .failure(let error):
-                // When falling into this case, it's very likely that refresh token is expired
-                // Can't do much here => logging out & displaying an alert
-                self.logger.error("Error refreshing expired access token: \(error.messageForTheUser)")
-                complete(.failure(error)) // Will trigger onLogout(auth:)
-
-            default:
-                self.logger.error("Error refreshing expired access token: unexpected response")
-                complete(.failure(.emptyAuthResponse))  // Will trigger onLogout(auth:)
-            }
-        }
+    func sessionWasInvalidated(for sessionUID: String) {
+        logger.info("Access token expired but found no sessionData in keychain. Logging out...")
+        appStateObserver.updateAppState(.loggedOut(.noSessionData))
     }
 }
 
