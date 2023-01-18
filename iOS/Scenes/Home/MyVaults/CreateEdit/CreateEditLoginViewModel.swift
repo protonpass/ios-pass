@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import CodeScanner
 import Core
 import SwiftUI
 
@@ -144,6 +145,15 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         aliasCreationInfo = nil
         username = ""
         isAlias = false
+    }
+
+    func handleScanResult(_ result: Result<ScanResult, ScanError>) {
+        switch result {
+        case .success(let successResult):
+            otpUrl = successResult.string
+        case .failure(let error):
+            delegate?.createEditItemViewModelDidFail(error)
+        }
     }
 }
 
