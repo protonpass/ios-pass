@@ -265,6 +265,7 @@ DEPENDENCIES:
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.29.0`)
   - SideMenuSwift (= 2.0.9)
   - "swift-snapshot-testing (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.26.0`)"
+  - SwiftOTP
   - SwiftProtobuf
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, tag `1.0.3`)
 
@@ -546,6 +547,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: b02b5075dcf60c9f5f403000b3b0c202a11b6ae1
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
 
-PODFILE CHECKSUM: 29186957ccce9ca88eb2a974b1c8a5d68e7fb406
+PODFILE CHECKSUM: 25a6d967b5dad09f8eb937e1bdbdf0def89db2f1
 
 COCOAPODS: 1.11.3
