@@ -35,6 +35,7 @@ struct LogInDetailView: View {
             VStack(spacing: 0) {
                 usernameSection
                 passwordSection
+                totpSection
                     .padding(.vertical)
                 urlsSection
                 noteSection
@@ -134,6 +135,27 @@ struct LogInDetailView: View {
             }
             .transaction { transaction in
                 transaction.animation = .default
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .roundedDetail()
+    }
+
+    private var totpSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("One-time password")
+                .sectionTitleText()
+
+            HStack {
+                if let code = viewModel.totpCode {
+                    Text(code)
+                }
+                Spacer()
+                if let data = viewModel.timerData {
+                    OTPCircularTimer(data: data)
+                        .frame(width: 22, height: 22)
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
