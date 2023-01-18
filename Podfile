@@ -104,6 +104,7 @@ target 'iOS' do
   pod 'SideMenuSwift', '2.0.9'
   pod 'MBProgressHUD'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.29.0'
+  pod 'SwiftOTP'
 
   target 'AutoFill' do
     inherit! :search_paths
