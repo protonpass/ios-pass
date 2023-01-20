@@ -50,6 +50,7 @@ final class AppCoordinator {
     private var container: NSPersistentContainer
     private let credentialManager: CredentialManagerProtocol
     private var preferences: Preferences
+    private var isUITest: Bool
 
     @KeychainStorage(key: .sessionData)
     private var sessionData: SessionData?
@@ -89,15 +90,16 @@ final class AppCoordinator {
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)
         self.preferences = .init()
+        self.isUITest = false
         self.authHelper = AuthHelper()
         authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
         self.apiService.authDelegate = authHelper
-
         self.apiService.serviceDelegate = self
         bindAppState()
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
-            self.wipeAllData(isUITest: true)
+            self.isUITest = true
+            self.wipeAllData()
         }
     }
 
@@ -220,11 +222,11 @@ final class AppCoordinator {
                           animations: nil) { _ in completion?() }
     }
 
-    private func wipeAllData(isUITest: Bool = false) {
+    private func wipeAllData() {
         logger.info("Wiping all data")
         keymaker.wipeMainKey()
         sessionData = nil
-        preferences.reset(isUITests: isUITest)
+        preferences.reset(isUITests: self.isUITest)
         Task {
             // Do things independently in different `do catch` blocks
             // because we don't want a failed operation prevents others from running

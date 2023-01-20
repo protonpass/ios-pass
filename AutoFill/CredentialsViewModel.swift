@@ -287,8 +287,6 @@ private extension CredentialsViewModel {
         }
     }
 
-    // swiftlint:disable superfluous_disable_command
-    // swiftlint:disable:next function_body_length
     func fetchCredentialsTask() -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) {
             let vaults = try await self.shareRepository.getVaults()

@@ -50,6 +50,9 @@ target 'Client' do
 
   target 'ClientTests' do
   end
+  
+  target 'iOSTests' do
+  end
 
 end
 
