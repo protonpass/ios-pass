@@ -97,7 +97,7 @@ final class AppCoordinator {
         bindAppState()
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
-            self.wipeAllData()
+            self.wipeAllData(isUITest: true)
         }
     }
 
@@ -220,11 +220,11 @@ final class AppCoordinator {
                           animations: nil) { _ in completion?() }
     }
 
-    private func wipeAllData() {
+    private func wipeAllData(isUITest: Bool = false) {
         logger.info("Wiping all data")
         keymaker.wipeMainKey()
         sessionData = nil
-        preferences.reset()
+        preferences.reset(isUITests: isUITest)
         Task {
             // Do things independently in different `do catch` blocks
             // because we don't want a failed operation prevents others from running
