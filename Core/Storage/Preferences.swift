@@ -55,7 +55,7 @@ public final class Preferences: ObservableObject {
     @AppStorage("askBeforeTrashing", store: kSharedUserDefaults)
     public var askBeforeTrashing = true
 
-    public func reset() {
+    public func reset(isUITests: Bool = false) {
         quickTypeBar = true
         failedAttemptCount = 0
         biometricAuthenticationEnabled = false
@@ -65,5 +65,8 @@ public final class Preferences: ObservableObject {
         clipboardExpiration = .thirtySeconds
         shareClipboard = false
         askBeforeTrashing = true
+        if isUITests {
+            onboarded = false
+        }
     }
 }
