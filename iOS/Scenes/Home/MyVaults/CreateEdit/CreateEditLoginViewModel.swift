@@ -72,10 +72,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func bindValues() {
         switch mode {
         case .edit(let itemContent):
-            if case let .login(username, password, urls) = itemContent.contentData {
+            if case .login(let data) = itemContent.contentData {
                 self.title = itemContent.name
-                self.username = username
-                self.password = password
+                self.username = data.username
+                self.password = data.password
                 if !urls.isEmpty { self.urls = urls }
                 self.note = itemContent.note
 
@@ -106,12 +106,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override func generateItemContent() -> ItemContentProtobuf {
         let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0) }
-        let loginData = ItemContentData.login(username: username,
-                                              password: password,
-                                              urls: sanitizedUrls)
+        let logInData = ItemContentData.login(.init(username: username,
+                                                    password: password,
+                                                    totpUri: otpUrl,
+                                                    urls: sanitizedUrls))
         return ItemContentProtobuf(name: title,
                                    note: note,
-                                   data: loginData)
+                                   data: logInData)
     }
 
     override func additionalCreate() async throws {

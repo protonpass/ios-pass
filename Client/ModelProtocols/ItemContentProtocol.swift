@@ -85,7 +85,7 @@ public enum ItemContentType: Int, CaseIterable {
 
 public enum ItemContentData {
     case alias
-    case login(username: String, password: String, urls: [String])
+    case login(LogInItemData)
     case note
 
     public var type: ItemContentType {
@@ -97,6 +97,20 @@ public enum ItemContentData {
         case .note:
             return .note
         }
+    }
+}
+
+public struct LogInItemData {
+    public let username: String
+    public let password: String
+    public let totpUri: String
+    public let urls: [String]
+
+    public init(username: String, password: String, totpUri: String, urls: [String]) {
+        self.username = username
+        self.password = password
+        self.totpUri = totpUri
+        self.urls = urls
     }
 }
 
@@ -122,10 +136,11 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
             return .alias
         case .note:
             return .note
-        case .login(let login):
-            return .login(username: login.username,
-                          password: login.password,
-                          urls: login.urls)
+        case .login(let data):
+            return .login(.init(username: data.username,
+                                password: data.password,
+                                totpUri: data.totpUri,
+                                urls: data.urls))
         case .none:
             return .note
         }
@@ -147,11 +162,12 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         case .alias:
             content.alias = .init()
 
-        case let .login(username, password, urls):
+        case .login(let logInData):
             content.login = .init()
-            content.login.username = username
-            content.login.password = password
-            content.login.urls = urls
+            content.login.username = logInData.username
+            content.login.password = logInData.password
+            content.login.totpUri = logInData.totpUri
+            content.login.urls = logInData.urls
 
         case .note:
             content.note = .init()
@@ -190,13 +206,15 @@ extension ItemContentData: SymmetricallyEncryptable {
         switch self {
         case .alias, .note:
             return self
-        case let .login(username, password, urls):
-            let encryptedUsername = try symmetricKey.encrypt(username)
-            let encryptedPassword = try symmetricKey.encrypt(password)
-            let encryptedUrls = try urls.map { try symmetricKey.encrypt($0) }
-            return .login(username: encryptedUsername,
-                          password: encryptedPassword,
-                          urls: encryptedUrls)
+        case .login(let data):
+            let encryptedUsername = try symmetricKey.encrypt(data.username)
+            let encryptedPassword = try symmetricKey.encrypt(data.password)
+            let encryptedTotpUri = try symmetricKey.encrypt(data.totpUri)
+            let encryptedUrls = try data.urls.map { try symmetricKey.encrypt($0) }
+            return .login(.init(username: encryptedUsername,
+                                password: encryptedPassword,
+                                totpUri: encryptedTotpUri,
+                                urls: encryptedUrls))
         }
     }
 
@@ -204,13 +222,15 @@ extension ItemContentData: SymmetricallyEncryptable {
         switch self {
         case .alias, .note:
             return self
-        case let .login(username, password, urls):
-            let decryptedUsername = try symmetricKey.decrypt(username)
-            let decryptedPassword = try symmetricKey.decrypt(password)
-            let decryptedUrls = try urls.map { try symmetricKey.decrypt($0) }
-            return .login(username: decryptedUsername,
-                          password: decryptedPassword,
-                          urls: decryptedUrls)
+        case .login(let data):
+            let decryptedUsername = try symmetricKey.decrypt(data.username)
+            let decryptedPassword = try symmetricKey.decrypt(data.password)
+            let decryptedTotpUri = try symmetricKey.decrypt(data.totpUri)
+            let decryptedUrls = try data.urls.map { try symmetricKey.decrypt($0) }
+            return .login(.init(username: decryptedUsername,
+                                password: decryptedPassword,
+                                totpUri: decryptedTotpUri,
+                                urls: decryptedUrls))
         }
     }
 }
