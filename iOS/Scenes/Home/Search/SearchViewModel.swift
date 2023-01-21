@@ -241,8 +241,8 @@ extension SearchViewModel {
         Task { @MainActor in
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
-                if case let .login(username, _, _) = itemContent.contentData {
-                    delegate?.searchViewModelWantsToCopy(text: username,
+                if case .login(let data) = itemContent.contentData {
+                    delegate?.searchViewModelWantsToCopy(text: data.username,
                                                          bannerMessage: "Username copied")
                     logger.info("Want to copy username \(itemContent.debugInformation)")
                 }
@@ -258,8 +258,8 @@ extension SearchViewModel {
         Task { @MainActor in
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
-                if case let .login(_, password, _) = itemContent.contentData {
-                    delegate?.searchViewModelWantsToCopy(text: password,
+                if case .login(let data) = itemContent.contentData {
+                    delegate?.searchViewModelWantsToCopy(text: data.password,
                                                          bannerMessage: "Password copied")
                     logger.info("Want to copy password \(itemContent.debugInformation)")
                 }

@@ -55,15 +55,15 @@ extension SearchableItem {
             detail.append(.notMatched(decryptedNote))
         }
 
-        if case let .login(username, _, urls) = encryptedItemContent.contentData {
-            let decryptedUsername = try symmetricKey.decrypt(username)
+        if case .login(let data) = encryptedItemContent.contentData {
+            let decryptedUsername = try symmetricKey.decrypt(data.username)
             if let result = SearchUtils.search(query: term, in: decryptedUsername) {
                 detail.append(.matched(result))
             } else {
                 detail.append(.notMatched(decryptedUsername))
             }
 
-            let decryptedUrls = try urls.map { try symmetricKey.decrypt($0) }
+            let decryptedUrls = try data.urls.map { try symmetricKey.decrypt($0) }
             for decryptedUrl in decryptedUrls {
                 if let result = SearchUtils.search(query: term, in: decryptedUrl) {
                     detail.append(.matched(result))

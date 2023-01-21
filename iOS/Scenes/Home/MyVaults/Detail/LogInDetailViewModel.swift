@@ -44,11 +44,11 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
                             algorithm: .sha1)
 
     override func bindValues() {
-        if case let .login(username, password, urls) = itemContent.contentData {
+        if case .login(let data) = itemContent.contentData {
             self.name = itemContent.name
-            self.username = username
-            self.urls = urls
-            self.password = password
+            self.username = data.username
+            self.urls = data.urls
+            self.password = data.password
             self.note = itemContent.note
             if let totp {
                 beginCaculating(totp: totp)
