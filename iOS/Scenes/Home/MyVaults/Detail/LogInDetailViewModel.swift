@@ -24,6 +24,17 @@ import SwiftOTP
 import UIComponents
 import UIKit
 
+enum TotpState: Equatable {
+    case empty
+    case valid(TotpData)
+    case invalid
+}
+
+struct TotpData: Equatable {
+    let code: String
+    let timerData: OTPCircularTimerData
+}
+
 final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
     deinit {
         timer?.invalidate()
@@ -35,26 +46,66 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
     @Published private(set) var note = ""
-    @Published private(set) var totpCode: String?
-    @Published private(set) var timerData: OTPCircularTimerData?
+    @Published private(set) var totpState = TotpState.empty
     private var timer: Timer?
-    private let totp = TOTP(secret: "somesecret".data(using: .utf8) ?? Data(),
-                            digits: 6,
-                            timeInterval: 30,
-                            algorithm: .sha1)
 
     override func bindValues() {
+        timer?.invalidate()
         if case .login(let data) = itemContent.contentData {
             self.name = itemContent.name
-            self.username = data.username
-            self.urls = data.urls
-            self.password = data.password
             self.note = itemContent.note
-            if let totp {
-                beginCaculating(totp: totp)
-            }
+            self.username = data.username
+            self.password = data.password
+            self.urls = data.urls
+            bindTotpUri(data.totpUri)
         } else {
             fatalError("Expecting login type")
+        }
+    }
+
+    private func bindTotpUri(_ uri: String) {
+        guard !uri.isEmpty else {
+            totpState = .empty
+            return
+        }
+
+        guard let url = URL(string: uri) else {
+            totpState = .invalid
+            return
+        }
+
+        do {
+            let otpComponents = try URLUtils.OTPParser.parse(url: url)
+            guard otpComponents.type == .totp else {
+                totpState = .invalid
+                return
+            }
+            let secretData = otpComponents.secret.data(using: .utf8)
+
+            guard let totp = TOTP(secret: secretData ?? .init(),
+                                  digits: Int(otpComponents.digits),
+                                  timeInterval: Int(otpComponents.period),
+                                  algorithm: otpComponents.algorithm.otpAlgorithm) else {
+                totpState = .invalid
+                return
+            }
+            beginCaculating(totp: totp)
+        } catch {
+            logger.error(error)
+            totpState = .invalid
+        }
+    }
+}
+
+private extension OTPComponents.Algorithm {
+    var otpAlgorithm: OTPAlgorithm {
+        switch self {
+        case .sha1:
+            return .sha1
+        case .sha256:
+            return .sha256
+        case .sha512:
+            return .sha512
         }
     }
 }
@@ -65,8 +116,10 @@ private extension LogInDetailViewModel {
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             let timeInterval = Int(Date().timeIntervalSince1970)
             let remainingSeconds = totp.timeInterval - (timeInterval % totp.timeInterval)
-            self.totpCode = totp.generate(secondsPast1970: timeInterval)
-            self.timerData = .init(total: totp.timeInterval, remaining: remainingSeconds)
+            let code = totp.generate(secondsPast1970: timeInterval) ?? ""
+            let timerData = OTPCircularTimerData(total: totp.timeInterval,
+                                                 remaining: remainingSeconds)
+            self.totpState = .valid(.init(code: code, timerData: timerData))
         }
     }
 }
@@ -79,6 +132,12 @@ extension LogInDetailViewModel {
 
     func copyPassword() {
         copyToClipboard(text: password, message: "Password copied")
+    }
+
+    func copyTotpCode() {
+        if case .valid(let data) = totpState {
+            copyToClipboard(text: data.code, message: "One-time password copied")
+        }
     }
 
     func showLargePassword() {

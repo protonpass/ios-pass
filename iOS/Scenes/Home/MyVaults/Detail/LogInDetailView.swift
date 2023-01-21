@@ -32,16 +32,15 @@ struct LogInDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 0) {
+            VStack(spacing: 20) {
                 usernameSection
                 passwordSection
                 totpSection
-                    .padding(.vertical)
                 urlsSection
                 noteSection
-                    .padding(.vertical)
                 Spacer()
             }
+            .animation(.default, value: viewModel.totpState)
             .padding()
         }
         .navigationBarBackButtonHidden()
@@ -142,25 +141,36 @@ struct LogInDetailView: View {
         .roundedDetail()
     }
 
+    @ViewBuilder
     private var totpSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("One-time password")
-                .sectionTitleText()
+        if case .empty = viewModel.totpState {
+            EmptyView()
+        } else {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("One-time password")
+                    .sectionTitleText()
 
-            HStack {
-                if let code = viewModel.totpCode {
-                    Text(code)
-                }
-                Spacer()
-                if let data = viewModel.timerData {
-                    OTPCircularTimer(data: data)
-                        .frame(width: 22, height: 22)
+                switch viewModel.totpState {
+                case .empty:
+                    EmptyView()
+                case .valid(let data):
+                    HStack {
+                        Text(data.code)
+                        Spacer()
+                        OTPCircularTimer(data: data.timerData)
+                            .frame(width: 22, height: 22)
+                    }
+                case .invalid:
+                    Text("Invalid one-time password URI.")
+                        .sectionContentText()
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .contentShape(Rectangle())
+            .onTapGesture(perform: viewModel.copyTotpCode)
+            .roundedDetail()
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .roundedDetail()
     }
 
     private var urlsSection: some View {
