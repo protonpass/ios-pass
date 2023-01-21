@@ -192,10 +192,10 @@ struct CreateEditLoginView: View {
             isFocused: isFocusedOnOtp,
             content: {
                 UserInputContentSingleLineWithClearButton(
-                    text: $viewModel.otpUrl,
+                    text: $viewModel.totpUri,
                     isFocused: $isFocusedOnOtp,
                     placeholder: "",
-                    onClear: { viewModel.otpUrl = "" })
+                    onClear: { viewModel.totpUri = "" })
                 .opacityReduced(viewModel.isSaving)
             },
             trailingView: {

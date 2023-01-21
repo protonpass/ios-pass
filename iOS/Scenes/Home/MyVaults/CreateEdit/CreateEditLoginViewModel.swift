@@ -38,7 +38,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var username = ""
     @Published var password = ""
     @Published var isPasswordSecure = true // Password in clear text or not
-    @Published var otpUrl = ""
+    @Published var totpUri = ""
     @Published var urls: [String] = [""]
     @Published var note = ""
 
@@ -76,6 +76,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.title = itemContent.name
                 self.username = data.username
                 self.password = data.password
+                self.totpUri = data.totpUri
                 if !urls.isEmpty { self.urls = urls }
                 self.note = itemContent.note
 
@@ -108,7 +109,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0) }
         let logInData = ItemContentData.login(.init(username: username,
                                                     password: password,
-                                                    totpUri: otpUrl,
+                                                    totpUri: totpUri,
                                                     urls: sanitizedUrls))
         return ItemContentProtobuf(name: title,
                                    note: note,
@@ -151,7 +152,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     func handleScanResult(_ result: Result<ScanResult, ScanError>) {
         switch result {
         case .success(let successResult):
-            otpUrl = successResult.string
+            totpUri = successResult.string
         case .failure(let error):
             delegate?.createEditItemViewModelDidFail(error)
         }
