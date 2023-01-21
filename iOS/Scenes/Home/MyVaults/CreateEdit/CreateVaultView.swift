@@ -34,12 +34,14 @@ struct CreateVaultView: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
-                nameInputView
-                noteInputView
-                Spacer()
+            ScrollView {
+                VStack(spacing: 20) {
+                    nameInputView
+                    noteInputView
+                    Spacer()
+                }
+                .padding()
             }
-            .padding()
             .navigationTitle("New vault")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbarContent }
