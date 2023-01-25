@@ -19,7 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
+import SwiftOTP
+import UIComponents
 import UIKit
 
 final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
@@ -30,25 +33,52 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
     @Published private(set) var note = ""
+    @Published private(set) var totpManager: TotpManager
+
+    private var cancellables = Set<AnyCancellable>()
+
+    override init(itemContent: ItemContent,
+                  itemRepository: ItemRepositoryProtocol,
+                  logManager: LogManager) {
+        self.totpManager = .init(logManager: logManager)
+        super.init(itemContent: itemContent,
+                   itemRepository: itemRepository,
+                   logManager: logManager)
+        self.totpManager.objectWillChange
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
+            .store(in: &cancellables)
+    }
 
     override func bindValues() {
-        if case let .login(username, password, urls) = itemContent.contentData {
+        if case .login(let data) = itemContent.contentData {
             self.name = itemContent.name
-            self.username = username
-            self.urls = urls
-            self.password = password
             self.note = itemContent.note
+            self.username = data.username
+            self.password = data.password
+            self.urls = data.urls
+            totpManager.bind(uri: data.totpUri)
         } else {
             fatalError("Expecting login type")
         }
     }
+}
 
+// MARK: - Public actions
+extension LogInDetailViewModel {
     func copyUsername() {
         copyToClipboard(text: username, message: "Username copied")
     }
 
     func copyPassword() {
         copyToClipboard(text: password, message: "Password copied")
+    }
+
+    func copyTotpCode() {
+        if let code = totpManager.getCurrentCode() {
+            copyToClipboard(text: code, message: "Two Factor Authentication code copied")
+        }
     }
 
     func showLargePassword() {

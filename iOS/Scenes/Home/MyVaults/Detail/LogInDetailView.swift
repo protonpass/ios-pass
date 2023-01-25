@@ -32,15 +32,15 @@ struct LogInDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 0) {
+            VStack(spacing: 20) {
                 usernameSection
                 passwordSection
-                    .padding(.vertical)
+                totpSection
                 urlsSection
                 noteSection
-                    .padding(.vertical)
                 Spacer()
             }
+            .animation(.default, value: viewModel.totpManager.state)
             .padding()
         }
         .navigationBarBackButtonHidden()
@@ -139,6 +139,38 @@ struct LogInDetailView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .roundedDetail()
+    }
+
+    @ViewBuilder
+    private var totpSection: some View {
+        if case .empty = viewModel.totpManager.state {
+            EmptyView()
+        } else {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Two Factor Authentication")
+                    .sectionTitleText()
+
+                switch viewModel.totpManager.state {
+                case .empty:
+                    EmptyView()
+                case .valid(let data):
+                    HStack {
+                        Text(data.code)
+                        Spacer()
+                        OTPCircularTimer(data: data.timerData)
+                            .frame(width: 22, height: 22)
+                    }
+                case .invalid:
+                    Text("Invalid Two Factor Authentication URI.")
+                        .sectionContentText()
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .contentShape(Rectangle())
+            .onTapGesture(perform: viewModel.copyTotpCode)
+            .roundedDetail()
+        }
     }
 
     private var urlsSection: some View {

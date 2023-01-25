@@ -215,15 +215,16 @@ extension CredentialsViewModel {
                 logger.trace("Associate and autofilling \(item.debugInformation)")
                 let encryptedItem = try await getItemTask(item: item).value
                 let oldContent = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-                guard case let .login(oldUsername, oldPassword, oldUrls) = oldContent.contentData else {
+                guard case .login(let oldData) = oldContent.contentData else {
                     throw CredentialsViewModelError.notLogInItem
                 }
                 guard let newUrl = urls.first?.schemeAndHost, !newUrl.isEmpty else {
                     throw CredentialsViewModelError.invalidUrl
                 }
-                let newLoginData = ItemContentData.login(username: oldUsername,
-                                                         password: oldPassword,
-                                                         urls: oldUrls + [newUrl])
+                let newLoginData = ItemContentData.login(.init(username: oldData.username,
+                                                               password: oldData.password,
+                                                               totpUri: oldData.totpUri,
+                                                               urls: oldData.urls + [newUrl]))
                 let newContent = ItemContentProtobuf(name: oldContent.name,
                                                      note: oldContent.note,
                                                      data: newLoginData)
@@ -305,11 +306,11 @@ private extension CredentialsViewModel {
                 let decryptedItemContent =
                 try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
-                if case let .login(_, _, itemUrlStrings) = decryptedItemContent.contentData {
+                if case .login(let data) = decryptedItemContent.contentData {
                     searchableItems.append(try SearchableItem(symmetricallyEncryptedItem: encryptedItem,
                                                               vaultName: getVaultName(encryptedItem.shareId)))
 
-                    let itemUrls = itemUrlStrings.compactMap { URL(string: $0) }
+                    let itemUrls = data.urls.compactMap { URL(string: $0) }
                     var matchResults = [URLUtils.Matcher.MatchResult]()
                     for itemUrl in itemUrls {
                         for url in self.urls {
@@ -358,8 +359,8 @@ private extension CredentialsViewModel {
             let itemContent = try item.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
             switch itemContent.contentData {
-            case let .login(username, password, _):
-                let credential = ASPasswordCredential(user: username, password: password)
+            case .login(let data):
+                let credential = ASPasswordCredential(user: data.username, password: data.password)
                 return (credential, item)
             default:
                 throw CredentialsViewModelError.notLogInItem

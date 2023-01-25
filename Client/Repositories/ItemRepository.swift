@@ -285,18 +285,18 @@ public extension ItemRepositoryProtocol {
         try await localItemDatasoure.upsertItems([encryptedItem])
         logger.trace("Finished updating locally item \(itemId) for share \(shareId)")
 
-        if case let .login(oldUsername, _, oldUrls) = decryptedOldItemContentData?.contentData,
-           case let .login(newUsername, _, newUrls) = newItemContent.contentData {
+        if case .login(let oldData) = decryptedOldItemContentData?.contentData,
+           case .login(let newData) = newItemContent.contentData {
             let ids = AutoFillCredential.IDs(shareId: shareId, itemId: itemId)
-            let deletedCredentials = oldUrls.map { oldUrl in
+            let deletedCredentials = oldData.urls.map { oldUrl in
                 AutoFillCredential(ids: ids,
-                                   username: oldUsername,
+                                   username: oldData.username,
                                    url: oldUrl,
                                    lastUseTime: encryptedItem.item.lastUseTime)
             }
-            let newCredentials = newUrls.map { newUrl in
+            let newCredentials = newData.urls.map { newUrl in
                 AutoFillCredential(ids: ids,
-                                   username: newUsername,
+                                   username: newData.username,
                                    url: newUrl,
                                    lastUseTime: encryptedItem.item.lastUseTime)
             }
@@ -418,11 +418,11 @@ private extension ItemRepositoryProtocol {
         var credentials = [AutoFillCredential]()
         for encryptedLogInItem in encryptedLogInItems {
             let decryptedLogInItem = try encryptedLogInItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-            if case let .login(username, _, urls) = decryptedLogInItem.contentData {
-                for url in urls {
+            if case .login(let data) = decryptedLogInItem.contentData {
+                for url in data.urls {
                     credentials.append(.init(ids: .init(shareId: decryptedLogInItem.shareId,
                                                         itemId: decryptedLogInItem.item.itemID),
-                                             username: username,
+                                             username: data.username,
                                              url: url,
                                              lastUseTime: encryptedLogInItem.item.lastUseTime))
                 }

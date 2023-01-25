@@ -1,7 +1,7 @@
 //
-// URL+SchemeAndHost.swift
-// Proton Pass - Created on 06/12/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// URLExtensionTests.swift
+// Proton Pass - Created on 18/01/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,18 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+@testable import Core
+import XCTest
 
-public extension URL {
-    /// String that contains only `scheme` & `host` of an `URL`
-    /// E.g:`https://www.example.com/path/to/sth` -> `https://www.example.com`
-    var schemeAndHost: String {
-        if #available(iOS 16.0, *) {
-            guard let scheme, let host = host() else { return "" }
-            return "\(scheme)://\(host)"
-        } else {
-            guard let scheme, let host else { return "" }
-            return "\(scheme)://\(host)"
-        }
+final class URLExtensionTests: XCTestCase {
+    func testParamSubcript() throws {
+        let url = try XCTUnwrap(URL(string: "https://example.com?param1=123&param2=abc"))
+        XCTAssertEqual(url["param1"], "123")
+        XCTAssertEqual(url["param2"], "abc")
+        XCTAssertNil(url["param3"])
     }
 }

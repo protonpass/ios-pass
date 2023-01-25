@@ -50,7 +50,7 @@ final class LockedCredentialViewModel: ObservableObject {
     func getAndReturnCredential() {
         Task {
             do {
-                guard let recordIdentifier = credentialIdentity.recordIdentifier else {
+                guard let recordIdentifier = self.credentialIdentity.recordIdentifier else {
                     throw CredentialProviderError.emptyRecordIdentifier
                 }
                 let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
@@ -63,8 +63,9 @@ final class LockedCredentialViewModel: ObservableObject {
                 let itemContent = try item.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
                 switch itemContent.contentData {
-                case let .login(username, password, _):
-                    let credential = ASPasswordCredential(user: username, password: password)
+                case .login(let data):
+                    let credential = ASPasswordCredential(user: data.username,
+                                                          password: data.password)
                     onSuccess?(credential, item)
                     logger.info("Loaded and returned credential \(ids.debugInformation)")
                 default:
