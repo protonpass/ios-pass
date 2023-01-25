@@ -201,26 +201,26 @@ struct CreateEditLoginView: View {
                         onClear: { viewModel.totpUri = "" })
                     .opacityReduced(viewModel.isSaving)
                 case .valid(let data):
-                    VStack(alignment: .leading) {
-                        if let issuer = data.issuer {
-                            Text(data.username)
-                                .font(.callout) +
-                            Text(" • ")
-                                .font(.callout)
-                                .foregroundColor(.secondary) +
-                            Text(issuer)
-                                .font(.callout)
-                        } else {
-                            Text(data.username)
-                                .font(.callout)
-                        }
+                    HStack {
+                        VStack(alignment: .leading) {
+                            if let issuer = data.issuer {
+                                Text(data.username)
+                                    .font(.callout) +
+                                Text(" • ")
+                                    .font(.callout)
+                                    .foregroundColor(.secondary) +
+                                Text(issuer)
+                                    .font(.callout)
+                            } else {
+                                Text(data.username)
+                                    .font(.callout)
+                            }
 
-                        HStack {
                             Text(data.code)
-                            Spacer()
-                            OTPCircularTimer(data: data.timerData)
-                                .frame(width: 22, height: 22)
                         }
+                        Spacer()
+                        OTPCircularTimer(data: data.timerData)
+                            .frame(width: 22, height: 22)
                     }
                     .contentShape(Rectangle())
                     .onTapGesture(perform: viewModel.copyTotpCode)
@@ -317,6 +317,7 @@ private struct WrappedCodeScannerView: View {
                 simulatedData: "otpauth://totp/SimpleLogin:john.doe%40example.com?secret=CKTQQJVWT5IXTGDB&amp;issuer=SimpleLogin",
                 isGalleryPresented: $isGaleryPresented,
                 completion: completion)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: dismiss.callAsFunction) {
