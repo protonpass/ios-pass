@@ -40,7 +40,7 @@ struct LogInDetailView: View {
                 noteSection
                 Spacer()
             }
-            .animation(.default, value: viewModel.totpState)
+            .animation(.default, value: viewModel.totpManager.state)
             .padding()
         }
         .navigationBarBackButtonHidden()
@@ -143,14 +143,14 @@ struct LogInDetailView: View {
 
     @ViewBuilder
     private var totpSection: some View {
-        if case .empty = viewModel.totpState {
+        if case .empty = viewModel.totpManager.state {
             EmptyView()
         } else {
             VStack(alignment: .leading, spacing: 8) {
-                Text("One-time password")
+                Text("Two Factor Authentication")
                     .sectionTitleText()
 
-                switch viewModel.totpState {
+                switch viewModel.totpManager.state {
                 case .empty:
                     EmptyView()
                 case .valid(let data):
@@ -161,7 +161,7 @@ struct LogInDetailView: View {
                             .frame(width: 22, height: 22)
                     }
                 case .invalid:
-                    Text("Invalid one-time password URI.")
+                    Text("Invalid Two Factor Authentication URI.")
                         .sectionContentText()
                 }
             }
