@@ -202,22 +202,7 @@ struct CreateEditLoginView: View {
                     .opacityReduced(viewModel.isSaving)
                 case .valid(let data):
                     HStack {
-                        VStack(alignment: .leading) {
-                            if let issuer = data.issuer {
-                                Text(data.username)
-                                    .font(.callout) +
-                                Text(" • ")
-                                    .font(.callout)
-                                    .foregroundColor(.secondary) +
-                                Text(issuer)
-                                    .font(.callout)
-                            } else {
-                                Text(data.username)
-                                    .font(.callout)
-                            }
-
-                            Text(data.code)
-                        }
+                        Text(data.code)
                         Spacer()
                         OTPCircularTimer(data: data.timerData)
                             .frame(width: 22, height: 22)
