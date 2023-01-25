@@ -186,34 +186,82 @@ struct CreateEditLoginView: View {
             })
     }
 
+    @ViewBuilder
     private var otpInputView: some View {
         UserInputContainerView(
-            title: "One-time password",
+            title: "Two Factor Authentication",
             isFocused: isFocusedOnOtp,
             content: {
-                UserInputContentSingleLineWithClearButton(
-                    text: $viewModel.totpUri,
-                    isFocused: $isFocusedOnOtp,
-                    placeholder: "",
-                    onClear: { viewModel.totpUri = "" })
-                .opacityReduced(viewModel.isSaving)
+                switch viewModel.totpManager.state {
+                case .empty:
+                    UserInputContentSingleLineWithClearButton(
+                        text: $viewModel.totpUri,
+                        isFocused: $isFocusedOnOtp,
+                        placeholder: "",
+                        onClear: { viewModel.totpUri = "" })
+                    .opacityReduced(viewModel.isSaving)
+                case .valid(let data):
+                    VStack(alignment: .leading) {
+                        if let issuer = data.issuer {
+                            Text(data.username)
+                                .font(.callout) +
+                            Text(" • ")
+                                .font(.callout)
+                                .foregroundColor(.secondary) +
+                            Text(issuer)
+                                .font(.callout)
+                        } else {
+                            Text(data.username)
+                                .font(.callout)
+                        }
+
+                        HStack {
+                            Text(data.code)
+                            Spacer()
+                            OTPCircularTimer(data: data.timerData)
+                                .frame(width: 22, height: 22)
+                        }
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture(perform: viewModel.copyTotpCode)
+                case .invalid:
+                    Text("Invalid Two Factor Authentication URI.")
+                        .sectionContentText()
+                }
             },
             trailingView: {
-                let image = UIImage(systemName: "qrcode.viewfinder")?.withRenderingMode(.alwaysTemplate)
-                BorderedImageButton(image: image ?? .add,
-                                    action: { isShowingScanner.toggle() })
-                .frame(width: 48, height: 48)
-                .opacityReduced(viewModel.isSaving)
+                switch viewModel.totpManager.state {
+                case .valid:
+                    Menu(content: {
+                        Button(
+                            role: .destructive,
+                            action: { viewModel.totpUri = "" },
+                            label: {
+                                Label(title: {
+                                    Text("Delete")
+                                }, icon: {
+                                    Image(uiImage: IconProvider.crossCircle)
+                                })
+                            })
+                    }, label: {
+                        BorderedImageButton(image: IconProvider.threeDotsVertical) {}
+                            .frame(width: 48, height: 48)
+                            .opacityReduced(viewModel.isSaving)
+                    })
+                    .animation(.default, value: viewModel.totpManager.state)
+                case .empty, .invalid:
+                    let image = UIImage(systemName: "qrcode.viewfinder")?.withRenderingMode(.alwaysTemplate)
+                    BorderedImageButton(image: image ?? .add,
+                                        action: { isShowingScanner.toggle() })
+                    .frame(width: 48, height: 48)
+                    .opacityReduced(viewModel.isSaving)
+                }
             })
         .sheet(isPresented: $isShowingScanner) {
-            CodeScannerView(
-                codeTypes: [.qr],
-                // swiftlint:disable:next line_length
-                simulatedData: "otpauth://totp/SimpleLogin:john.doe%40example.com?secret=CKTQQJVWT5IXTGDB&amp;issuer=SimpleLogin",
-                completion: { result in
-                    isShowingScanner = false
-                    viewModel.handleScanResult(result)
-                })
+            WrappedCodeScannerView { result in
+                isShowingScanner = false
+                viewModel.handleScanResult(result)
+            }
         }
     }
 
@@ -252,6 +300,40 @@ struct CreateEditLoginView: View {
                 return url
             }
             return nil
+        }
+    }
+}
+
+private struct WrappedCodeScannerView: View {
+    @Environment(\.dismiss) private var dismiss
+    @State private var isGaleryPresented = false
+    let completion: (Result<ScanResult, ScanError>) -> Void
+
+    var body: some View {
+        NavigationView {
+            CodeScannerView(
+                codeTypes: [.qr],
+                // swiftlint:disable:next line_length
+                simulatedData: "otpauth://totp/SimpleLogin:john.doe%40example.com?secret=CKTQQJVWT5IXTGDB&amp;issuer=SimpleLogin",
+                isGalleryPresented: $isGaleryPresented,
+                completion: completion)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: dismiss.callAsFunction) {
+                        Text("Cancel")
+                    }
+                    .foregroundColor(Color(.label))
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        isGaleryPresented.toggle()
+                    }, label: {
+                        Image(systemName: "photo.on.rectangle.angled")
+                            .foregroundColor(Color(.label))
+                    })
+                }
+            }
         }
     }
 }

@@ -490,6 +490,10 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelDidReceiveAliasCreationInfo() {
         dismissTopMostViewController(animated: true, completion: nil)
     }
+
+    func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String) {
+        clipboardManager?.copy(text: text, bannerMessage: bannerMessage)
+    }
 }
 
 // MARK: - ItemDetailViewModelDelegate

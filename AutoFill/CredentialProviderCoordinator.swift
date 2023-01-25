@@ -55,6 +55,7 @@ public final class CredentialProviderCoordinator {
     private let credentialManager: CredentialManagerProtocol
     private let rootViewController: UIViewController
     private let bannerManager: BannerManager
+    private let clipboardManager: ClipboardManager
     private let logManager: LogManager
     private let logger: Logger
 
@@ -100,11 +101,14 @@ public final class CredentialProviderCoordinator {
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
-        self.bannerManager = .init(container: rootViewController)
+        let bannerManager = BannerManager(container: rootViewController)
+        self.bannerManager = bannerManager
+        self.clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
         self.rootViewController = rootViewController
         self.apiService.authDelegate = self
         self.apiService.serviceDelegate = self
+        self.clipboardManager.bannerManager = bannerManager
         makeSymmetricKeyAndRepositories()
     }
 
@@ -590,6 +594,10 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
     func createEditLoginViewModelDidReceiveAliasCreationInfo() {
         topMostViewController.dismiss(animated: true)
+    }
+
+    func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String) {
+        clipboardManager.copy(text: text, bannerMessage: bannerMessage)
     }
 }
 
