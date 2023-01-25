@@ -61,8 +61,8 @@ extension SymmetricallyEncryptedItem {
         let note: String?
         let notePlaceholder: String?
         switch encryptedItemContent.contentData {
-        case .login(let username, _, _):
-            note = try symmetricKey.decrypt(username)
+        case .login(let data):
+            note = try symmetricKey.decrypt(data.username)
             notePlaceholder = "No username"
         case .alias:
             note = item.aliasEmail

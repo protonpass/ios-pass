@@ -51,5 +51,7 @@
 		<string>brave</string>
 		<string>microsoft-edge</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Scan for QR codes</string>
 </dict>
 </plist>

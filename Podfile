@@ -44,7 +44,7 @@ target 'Client' do
   use_frameworks!
 
   client_and_ios_pods
-  pod 'SwiftProtobuf'
+  pod 'SwiftProtobuf', '1.20.3'
   pod "ProtonCore-KeyManager/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ReachabilitySwift'
 
@@ -104,6 +104,7 @@ target 'iOS' do
   pod 'SideMenuSwift', '2.0.9'
   pod 'MBProgressHUD'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.29.0'
+  pod 'SwiftOTP'
 
   target 'AutoFill' do
     inherit! :search_paths

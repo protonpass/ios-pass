@@ -55,6 +55,7 @@ public final class CredentialProviderCoordinator {
     private let credentialManager: CredentialManagerProtocol
     private let rootViewController: UIViewController
     private let bannerManager: BannerManager
+    private let clipboardManager: ClipboardManager
     private let logManager: LogManager
     private let logger: Logger
 
@@ -100,11 +101,14 @@ public final class CredentialProviderCoordinator {
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
-        self.bannerManager = .init(container: rootViewController)
+        let bannerManager = BannerManager(container: rootViewController)
+        self.bannerManager = bannerManager
+        self.clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
         self.rootViewController = rootViewController
         self.apiService.authDelegate = self
         self.apiService.serviceDelegate = self
+        self.clipboardManager.bannerManager = bannerManager
         makeSymmetricKeyAndRepositories()
     }
 
@@ -137,9 +141,9 @@ public final class CredentialProviderCoordinator {
                     if let encryptedItem = try await itemRepository.getItem(shareId: ids.shareId,
                                                                             itemId: ids.itemId) {
                         let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-                        if case let .login(username, password, _) = decryptedItem.contentData {
+                        if case .login(let data) = decryptedItem.contentData {
                             complete(quickTypeBar: true,
-                                     credential: .init(user: username, password: password),
+                                     credential: .init(user: data.username, password: data.password),
                                      encryptedItem: encryptedItem,
                                      itemRepository: itemRepository,
                                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
@@ -281,7 +285,7 @@ extension CredentialProviderCoordinator: APIServiceDelegate {
                             serviceIdentifiers: [ASCredentialServiceIdentifier],
                             lastUseTime: TimeInterval) async throws {
         let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-        if case let .login(email, _, urls) = decryptedItem.contentData {
+        if case .login(let data) = decryptedItem.contentData {
             let serviceUrls = serviceIdentifiers
                 .map { serviceIdentifier in
                     switch serviceIdentifier.type {
@@ -294,7 +298,7 @@ extension CredentialProviderCoordinator: APIServiceDelegate {
                     }
                 }
                 .compactMap { URL(string: $0) }
-            let itemUrls = urls.compactMap { URL(string: $0) }
+            let itemUrls = data.urls.compactMap { URL(string: $0) }
             let matchedUrls = itemUrls.filter { itemUrl in
                 serviceUrls.contains { serviceUrl in
                     if case .matched = URLUtils.Matcher.compare(itemUrl, serviceUrl) {
@@ -307,7 +311,7 @@ extension CredentialProviderCoordinator: APIServiceDelegate {
             let credentials = matchedUrls
                 .map { AutoFillCredential(shareId: encryptedItem.shareId,
                                           itemId: encryptedItem.item.itemID,
-                                          username: email,
+                                          username: data.username,
                                           url: $0.absoluteString,
                                           lastUseTime: Int64(lastUseTime)) }
             try await credentialManager.insert(credentials: credentials)
@@ -590,6 +594,10 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
     func createEditLoginViewModelDidReceiveAliasCreationInfo() {
         topMostViewController.dismiss(animated: true)
+    }
+
+    func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String) {
+        clipboardManager.copy(text: text, bannerMessage: bannerMessage)
     }
 }
 

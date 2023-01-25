@@ -19,7 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import CodeScanner
+import Combine
 import Core
+import SwiftOTP
 import SwiftUI
 
 protocol CreateEditLoginViewModelDelegate: AnyObject {
@@ -27,6 +30,7 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
                                                       title: String)
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
     func createEditLoginViewModelDidReceiveAliasCreationInfo()
+    func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String)
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
@@ -37,13 +41,21 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var username = ""
     @Published var password = ""
     @Published var isPasswordSecure = true // Password in clear text or not
+    @Published var totpUri = "" {
+        didSet {
+            totpManager.bind(uri: totpUri)
+        }
+    }
     @Published var urls: [String] = [""]
     @Published var note = ""
+    @Published private(set) var totpManager: TotpManager
 
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
     /// The info to create new alias.
     private var aliasCreationInfo: AliasCreationInfo?
+
+    private var cancellables = Set<AnyCancellable>()
 
     weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
@@ -67,13 +79,30 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         !title.isEmpty && !password.isEmpty
     }
 
+    override init(mode: ItemMode,
+                  itemRepository: ItemRepositoryProtocol,
+                  preferences: Preferences,
+                  logManager: LogManager) {
+        self.totpManager = .init(logManager: logManager)
+        super.init(mode: mode,
+                   itemRepository: itemRepository,
+                   preferences: preferences,
+                   logManager: logManager)
+        self.totpManager.objectWillChange
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
+            .store(in: &cancellables)
+    }
+
     override func bindValues() {
         switch mode {
         case .edit(let itemContent):
-            if case let .login(username, password, urls) = itemContent.contentData {
+            if case .login(let data) = itemContent.contentData {
                 self.title = itemContent.name
-                self.username = username
-                self.password = password
+                self.username = data.username
+                self.password = data.password
+                self.totpUri = data.totpUri
                 if !urls.isEmpty { self.urls = urls }
                 self.note = itemContent.note
 
@@ -104,12 +133,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override func generateItemContent() -> ItemContentProtobuf {
         let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0) }
-        let loginData = ItemContentData.login(username: username,
-                                              password: password,
-                                              urls: sanitizedUrls)
+        let logInData = ItemContentData.login(.init(username: username,
+                                                    password: password,
+                                                    totpUri: totpUri,
+                                                    urls: sanitizedUrls))
         return ItemContentProtobuf(name: title,
                                    note: note,
-                                   data: loginData)
+                                   data: logInData)
     }
 
     override func additionalCreate() async throws {
@@ -143,6 +173,24 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         aliasCreationInfo = nil
         username = ""
         isAlias = false
+    }
+
+    func copyTotpCode() {
+        if let code = totpManager.getCurrentCode() {
+            let message = "Two Factor Authentication code copied"
+            createEditLoginViewModelDelegate?
+                .createEditLoginViewModelWantsToCopy(text: code,
+                                                     bannerMessage: message)
+        }
+    }
+
+    func handleScanResult(_ result: Result<ScanResult, ScanError>) {
+        switch result {
+        case .success(let successResult):
+            totpUri = successResult.string
+        case .failure(let error):
+            delegate?.createEditItemViewModelDidFail(error)
+        }
     }
 }
 

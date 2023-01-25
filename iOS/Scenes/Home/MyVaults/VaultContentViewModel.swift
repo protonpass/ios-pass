@@ -293,8 +293,8 @@ extension VaultContentViewModel {
         Task { @MainActor in
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
-                if case let .login(username, _, _) = itemContent.contentData {
-                    delegate?.vaultContentViewModelWantsToCopy(text: username,
+                if case .login(let data) = itemContent.contentData {
+                    delegate?.vaultContentViewModelWantsToCopy(text: data.username,
                                                                bannerMessage: "Username copied")
                     logger.info("Want to copy username \(item.debugInformation)")
                 }
@@ -310,8 +310,8 @@ extension VaultContentViewModel {
         Task { @MainActor in
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
-                if case let .login(_, password, _) = itemContent.contentData {
-                    delegate?.vaultContentViewModelWantsToCopy(text: password,
+                if case .login(let data) = itemContent.contentData {
+                    delegate?.vaultContentViewModelWantsToCopy(text: data.password,
                                                                bannerMessage: "Password copied")
                     logger.info("Want to copy password \(item.debugInformation)")
                 }

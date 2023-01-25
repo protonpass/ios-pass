@@ -109,11 +109,11 @@ public extension CredentialManagerProtocol {
         var credentials = [AutoFillCredential]()
         for encryptedItem in encryptedItems {
             let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-            if case let .login(username, _, urls) = decryptedItem.contentData {
-                for url in urls {
+            if case .login(let data) = decryptedItem.contentData {
+                for url in data.urls {
                     credentials.append(.init(shareId: decryptedItem.shareId,
                                              itemId: decryptedItem.item.itemID,
-                                             username: username,
+                                             username: data.username,
                                              url: url,
                                              lastUseTime: encryptedItem.item.lastUseTime))
                 }
