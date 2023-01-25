@@ -255,6 +255,8 @@
 		35690C152923EA8400F60C20 /* Color+ProtonColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C142923EA8400F60C20 /* Color+ProtonColors.swift */; };
 		35699B93298103F1006CB225 /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35699B92298103F1006CB225 /* String+HTML.swift */; };
 		35699B9529810C21006CB225 /* TotpManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35699B9429810C21006CB225 /* TotpManager.swift */; };
+		35699B96298121AE006CB225 /* TotpManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35699B9429810C21006CB225 /* TotpManager.swift */; };
+		35699B97298125FA006CB225 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557441A295A064F00EA4AF0 /* ClipboardManager.swift */; };
 		356A34B72977B18000969BA2 /* URLUtils+OTPParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34B62977B18000969BA2 /* URLUtils+OTPParser.swift */; };
 		356A34B92977B46300969BA2 /* OTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34B82977B46300969BA2 /* OTP.swift */; };
 		356A34BB2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */; };
@@ -2803,6 +2805,8 @@
 				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
 				35492E3D293E06C900BDE231 /* CreateEditLoginViewModel.swift in Sources */,
 				35492E3E293E06CC00BDE231 /* CreateEditAliasView.swift in Sources */,
+				35699B96298121AE006CB225 /* TotpManager.swift in Sources */,
+				35699B97298125FA006CB225 /* ClipboardManager.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
 				3553C22D296575560087518A /* LoggerManager+Initializer.swift in Sources */,
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
