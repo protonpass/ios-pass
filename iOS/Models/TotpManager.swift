@@ -30,6 +30,8 @@ enum TotpState: Equatable {
 }
 
 struct TotpData: Equatable {
+    let username: String
+    let issuer: String?
     let code: String
     let timerData: OTPCircularTimerData
 }
@@ -89,7 +91,9 @@ final class TotpManager: DeinitPrintable, ObservableObject {
                 state = .invalid
                 return
             }
-            beginCaculating(totp: totp)
+            beginCaculating(totp: totp,
+                            username: otpComponents.label,
+                            issuer: otpComponents.issuer)
         } catch {
             logger.error(error)
             state = .invalid
@@ -107,14 +111,17 @@ final class TotpManager: DeinitPrintable, ObservableObject {
 }
 
 private extension TotpManager {
-    func beginCaculating(totp: TOTP) {
+    func beginCaculating(totp: TOTP, username: String, issuer: String?) {
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             let timeInterval = Int(Date().timeIntervalSince1970)
             let remainingSeconds = totp.timeInterval - (timeInterval % totp.timeInterval)
             let code = totp.generate(secondsPast1970: timeInterval) ?? ""
             let timerData = OTPCircularTimerData(total: totp.timeInterval,
                                                  remaining: remainingSeconds)
-            self?.state = .valid(.init(code: code, timerData: timerData))
+            self?.state = .valid(.init(username: username,
+                                       issuer: issuer,
+                                       code: code,
+                                       timerData: timerData))
         }
     }
 }
