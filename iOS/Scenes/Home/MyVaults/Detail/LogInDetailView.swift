@@ -154,6 +154,19 @@ struct LogInDetailView: View {
                 case .empty:
                     EmptyView()
                 case .valid(let data):
+                    if let issuer = data.issuer {
+                        Text(data.username)
+                            .font(.callout) +
+                        Text(" • ")
+                            .font(.callout)
+                            .foregroundColor(.secondary) +
+                        Text(issuer)
+                            .font(.callout)
+                    } else {
+                        Text(data.username)
+                            .font(.callout)
+                    }
+
                     HStack {
                         Text(data.code)
                         Spacer()
