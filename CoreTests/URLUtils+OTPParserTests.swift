@@ -123,4 +123,13 @@ final class URLUtilsPlusOTPParserTests: XCTestCase {
         XCTAssertEqual(components.digits, 8)
         XCTAssertEqual(components.period, 45)
     }
+
+    func testParseExplicitUrlString() throws {
+        let urlString = "otpauth://totp/SimpleLogin:john.doe%40gmail.com?secret=ABCDEF&amp;issuer=SimpleLogin"
+        let components = try URLUtils.OTPParser.parse(urlString: urlString)
+        XCTAssertEqual(components.type, .totp)
+        XCTAssertEqual(components.label, "SimpleLogin:john.doe@gmail.com")
+        XCTAssertEqual(components.secret, "ABCDEF")
+        XCTAssertEqual(components.issuer, "SimpleLogin")
+    }
 }

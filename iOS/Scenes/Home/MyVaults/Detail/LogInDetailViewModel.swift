@@ -69,20 +69,18 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
             return
         }
 
-        guard let url = URL(string: uri) else {
-            totpState = .invalid
-            return
-        }
-
         do {
-            let otpComponents = try URLUtils.OTPParser.parse(url: url)
+            let otpComponents = try URLUtils.OTPParser.parse(urlString: uri)
             guard otpComponents.type == .totp else {
                 totpState = .invalid
                 return
             }
-            let secretData = otpComponents.secret.data(using: .utf8)
+            guard let secretData = base32DecodeToData(otpComponents.secret) else {
+                totpState = .invalid
+                return
+            }
 
-            guard let totp = TOTP(secret: secretData ?? .init(),
+            guard let totp = TOTP(secret: secretData,
                                   digits: Int(otpComponents.digits),
                                   timeInterval: Int(otpComponents.period),
                                   algorithm: otpComponents.algorithm.otpAlgorithm) else {

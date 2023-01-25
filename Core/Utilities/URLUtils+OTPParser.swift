@@ -26,6 +26,7 @@ public extension URLUtils {
 
 public extension URLUtils.OTPParser {
     enum Error: Swift.Error, Equatable {
+        case invalidUrl(String)
         case invalidScheme(String?)
         case invalidHost(String?)
         case tooManyPaths
@@ -85,5 +86,12 @@ public extension URLUtils.OTPParser {
                      algorithm: algorithm,
                      digits: digits,
                      period: period)
+    }
+
+    static func parse(urlString: String) throws -> OTPComponents {
+        guard let url = URL(string: urlString.stringByDecodingHTMLEntities) else {
+            throw Error.invalidUrl(urlString)
+        }
+        return try parse(url: url)
     }
 }
