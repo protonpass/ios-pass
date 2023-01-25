@@ -208,7 +208,8 @@ struct CreateEditLoginView: View {
         .sheet(isPresented: $isShowingScanner) {
             CodeScannerView(
                 codeTypes: [.qr],
-                simulatedData: "otpauth://totp/john.doe%40example.com?secret=somesecret&issuer=ProtonMail",
+                // swiftlint:disable:next line_length
+                simulatedData: "otpauth://totp/SimpleLogin:ntnhon.cs%40gmail.com?secret=PP2Q2G3FVT56QAUH&amp;issuer=SimpleLogin",
                 completion: { result in
                     isShowingScanner = false
                     viewModel.handleScanResult(result)
