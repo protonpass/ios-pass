@@ -136,6 +136,11 @@
 		35498F8828DC769300AF1D8F /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35498F8728DC769300AF1D8F /* HighlightText.swift */; };
 		35498F8A28DC805400AF1D8F /* ItemSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */; };
 		3549AC9B2982F27900BA5CD6 /* ProtonPass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */; };
+		3549AC9D2982F90B00BA5CD6 /* TotpLogInItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3549AC9C2982F90B00BA5CD6 /* TotpLogInItem.swift */; };
+		3549AC9F298306E800BA5CD6 /* TotpLogInItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3549AC9E298306E800BA5CD6 /* TotpLogInItemDetailView.swift */; };
+		3549ACA1298306FC00BA5CD6 /* TotpLogInItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3549ACA0298306FC00BA5CD6 /* TotpLogInItemDetailViewModel.swift */; };
+		3549ACA22983072D00BA5CD6 /* TotpManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35699B9429810C21006CB225 /* TotpManager.swift */; };
+		3549ACA329830E8400BA5CD6 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557441A295A064F00EA4AF0 /* ClipboardManager.swift */; };
 		354A804828D8B90B003F49CF /* AppCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354A804728D8B90B003F49CF /* AppCoordinatorTests.swift */; };
 		354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354AD95F28CB5934000E645B /* EmptyTrashView.swift */; };
 		354B7A7428C9FF1B00459AED /* TrashItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B7A7328C9FF1B00459AED /* TrashItemsEndpoint.swift */; };
@@ -705,6 +710,9 @@
 		35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+ParallelMap.swift"; sourceTree = "<group>"; };
 		35498F8728DC769300AF1D8F /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSearchResultView.swift; sourceTree = "<group>"; };
+		3549AC9C2982F90B00BA5CD6 /* TotpLogInItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotpLogInItem.swift; sourceTree = "<group>"; };
+		3549AC9E298306E800BA5CD6 /* TotpLogInItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotpLogInItemDetailView.swift; sourceTree = "<group>"; };
+		3549ACA0298306FC00BA5CD6 /* TotpLogInItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotpLogInItemDetailViewModel.swift; sourceTree = "<group>"; };
 		354A803C28D8B8D8003F49CF /* iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		354A804728D8B90B003F49CF /* AppCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorTests.swift; sourceTree = "<group>"; };
 		354AD95F28CB5934000E645B /* EmptyTrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTrashView.swift; sourceTree = "<group>"; };
@@ -1499,6 +1507,9 @@
 				3561250D2982538900EDA991 /* KeyboardCoordinator.swift */,
 				3561250F2982544400EDA991 /* KeyboardNotLoggedInView.swift */,
 				356125022982438300EDA991 /* KeyboardViewController.swift */,
+				3549AC9C2982F90B00BA5CD6 /* TotpLogInItem.swift */,
+				3549AC9E298306E800BA5CD6 /* TotpLogInItemDetailView.swift */,
+				3549ACA0298306FC00BA5CD6 /* TotpLogInItemDetailViewModel.swift */,
 				356125042982438300EDA991 /* Info.plist */,
 			);
 			path = Keyboard;
@@ -3033,9 +3044,14 @@
 				356125102982544400EDA991 /* KeyboardNotLoggedInView.swift in Sources */,
 				3549AC9B2982F27900BA5CD6 /* ProtonPass.xcdatamodeld in Sources */,
 				356125032982438300EDA991 /* KeyboardViewController.swift in Sources */,
+				3549ACA329830E8400BA5CD6 /* ClipboardManager.swift in Sources */,
+				3549ACA22983072D00BA5CD6 /* TotpManager.swift in Sources */,
 				3561250E2982538900EDA991 /* KeyboardCoordinator.swift in Sources */,
+				3549AC9D2982F90B00BA5CD6 /* TotpLogInItem.swift in Sources */,
 				356125122982548A00EDA991 /* KeyboardContentView.swift in Sources */,
 				3561251B298271B600EDA991 /* KeyboardContentViewModel.swift in Sources */,
+				3549AC9F298306E800BA5CD6 /* TotpLogInItemDetailView.swift in Sources */,
+				3549ACA1298306FC00BA5CD6 /* TotpLogInItemDetailViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

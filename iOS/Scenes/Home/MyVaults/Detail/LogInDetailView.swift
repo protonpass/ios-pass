@@ -151,7 +151,7 @@ struct LogInDetailView: View {
                     .sectionTitleText()
 
                 switch viewModel.totpManager.state {
-                case .empty:
+                case .empty, .loading:
                     EmptyView()
                 case .valid(let data):
                     HStack {
