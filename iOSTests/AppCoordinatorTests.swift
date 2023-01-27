@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Proton_Pass
+import ProtonCore_Authentication
+import ProtonCore_Networking
 import XCTest
 
 final class AppCoordinatorTests: XCTestCase {
