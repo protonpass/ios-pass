@@ -25,6 +25,7 @@ import CoreData
 import CryptoKit
 import GoLibs
 import MBProgressHUD
+import ProtonCore_Authentication
 import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
@@ -49,6 +50,7 @@ public final class CredentialProviderCoordinator {
     private let keychain: Keychain
     private let keymaker: Keymaker
     private var apiService: APIService
+    private var authHelper: AuthHelper
     private let container: NSPersistentContainer
     private let context: ASCredentialProviderExtensionContext
     private let preferences: Preferences
@@ -106,7 +108,9 @@ public final class CredentialProviderCoordinator {
         self.clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
         self.rootViewController = rootViewController
-        self.apiService.authDelegate = self
+        self.authHelper = AuthHelper()
+        authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
+        self.apiService.authDelegate = authHelper
         self.apiService.serviceDelegate = self
         self.clipboardManager.bannerManager = bannerManager
         makeSymmetricKeyAndRepositories()
@@ -117,6 +121,13 @@ public final class CredentialProviderCoordinator {
             showNoLoggedInView()
             return
         }
+
+        // AuthHelper need to expose the setter to update authCredential.
+        // Then we don't need to initial AuthHelper again. Temporary
+        self.apiService.setSessionUID(uid: sessionData.userData.credential.sessionID)
+        self.authHelper = AuthHelper(authCredential: sessionData.userData.credential)
+        self.authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
+        self.apiService.authDelegate = self.authHelper
 
         showCredentialsView(userData: sessionData.userData,
                             symmetricKey: symmetricKey,
@@ -242,23 +253,38 @@ public final class CredentialProviderCoordinator {
         self.remoteSyncEventsDatasource = RemoteSyncEventsDatasource(authCredential: credential,
                                                                      apiService: apiService)
     }
+
+    // Create a new instance of SessionData with everything copied except credential
+    private func updateSessionData(_ sessionData: SessionData,
+                                   authCredential: AuthCredential) {
+        let currentUserData = sessionData.userData
+        let updatedUserData = UserData(credential: authCredential,
+                                       user: currentUserData.user,
+                                       salts: currentUserData.salts,
+                                       passphrases: currentUserData.passphrases,
+                                       addresses: currentUserData.addresses,
+                                       scopes: currentUserData.scopes)
+        self.sessionData = .init(userData: updatedUserData)
+    }
 }
 
-// MARK: - AuthDelegate
-extension CredentialProviderCoordinator: AuthDelegate {
-    public func onUpdate(credential: Credential, sessionUID: String) {}
-
-    public func onRefresh(sessionUID: String,
-                          service: APIService,
-                          complete: @escaping AuthRefreshResultCompletion) {}
-
-    public func authCredential(sessionUID: String) -> AuthCredential? {
-        sessionData?.userData.credential
+// MARK: - AuthHelperDelegate
+extension CredentialProviderCoordinator: AuthHelperDelegate {
+    public func credentialsWereUpdated(authCredential: AuthCredential,
+                                       credential: Credential,
+                                       for sessionUID: String) {
+        guard let sessionData else {
+            logger.info("Refreshed expired access token but found no sessionData in keychain. Logging out...")
+            // Action when session expired
+            return
+        }
+        self.logger.info("Refreshed expired access token")
+        self.updateSessionData(sessionData, authCredential: authCredential)
     }
-
-    public func credential(sessionUID: String) -> Credential? { nil }
-
-    public func onLogout(sessionUID: String) {}
+    public func sessionWasInvalidated(for sessionUID: String) {
+        logger.info("Access token expired but found no sessionData in keychain. Logging out...")
+        // Action when session expired
+    }
 }
 
 // MARK: - APIServiceDelegate
