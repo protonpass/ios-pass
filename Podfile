@@ -113,6 +113,10 @@ target 'iOS' do
     inherit! :search_paths
   end
 
+  target 'Keyboard' do
+    inherit! :search_paths
+  end
+
 end
 
 target "iOSUITests" do

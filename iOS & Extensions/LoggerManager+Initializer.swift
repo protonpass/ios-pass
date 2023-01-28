@@ -21,7 +21,7 @@
 import Core
 
 enum PassLogModule: CaseIterable {
-    case hostApp, autoFillExtension
+    case hostApp, autoFillExtension, keyboardExtension
 
     var title: String {
         switch self {
@@ -29,6 +29,8 @@ enum PassLogModule: CaseIterable {
             return "Host Application Logs"
         case .autoFillExtension:
             return "AutoFill Extension Logs"
+        case .keyboardExtension:
+            return "Keyboard Extension Logs"
         }
     }
 
@@ -36,6 +38,7 @@ enum PassLogModule: CaseIterable {
         switch self {
         case .hostApp: return "pass_host_application.log"
         case .autoFillExtension: return "pass_autofill_extension.log"
+        case .keyboardExtension: return "pass_keyboard_extension.log"
         }
     }
 }

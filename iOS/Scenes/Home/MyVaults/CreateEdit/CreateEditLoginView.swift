@@ -193,7 +193,7 @@ struct CreateEditLoginView: View {
             isFocused: isFocusedOnOtp,
             content: {
                 switch viewModel.totpManager.state {
-                case .empty:
+                case .empty, .loading:
                     UserInputContentSingleLineWithClearButton(
                         text: $viewModel.totpUri,
                         isFocused: $isFocusedOnOtp,
@@ -216,6 +216,8 @@ struct CreateEditLoginView: View {
             },
             trailingView: {
                 switch viewModel.totpManager.state {
+                case .loading:
+                    EmptyView()
                 case .valid:
                     Menu(content: {
                         Button(

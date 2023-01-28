@@ -24,6 +24,7 @@ import SwiftUI
 import UIComponents
 
 enum TotpState: Equatable {
+    case loading
     case empty
     case valid(TotpData)
     case invalid
@@ -68,6 +69,7 @@ final class TotpManager: DeinitPrintable, ObservableObject {
 
     func bind(uri: String) {
         timer?.invalidate()
+        state = .loading
         guard !uri.isEmpty else {
             state = .empty
             return
