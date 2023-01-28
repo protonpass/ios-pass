@@ -295,6 +295,8 @@
 		3573CD23292C139900A9EF82 /* AliasPrefixValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */; };
 		3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */; };
 		3573D707297642F400F68DF7 /* DeleteVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */; };
+		35758BE02985695700AF2683 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
+		35758BE12985695700AF2683 /* Client.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		357D7BC329435C4800AAC594 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC229435C4800AAC594 /* Color+Hex.swift */; };
 		357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */; };
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
@@ -465,6 +467,13 @@
 			remoteGlobalIDString = 35E50683286F87A600A3F6EA;
 			remoteInfo = Core;
 		};
+		35758BE22985695800AF2683 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35E5062F286F819F00A3F6EA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 35E50660286F870500A3F6EA;
+			remoteInfo = Client;
+		};
 		358BD370287D539F00802A91 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 35E5062F286F819F00A3F6EA /* Project object */;
@@ -563,6 +572,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				356125142982587000EDA991 /* Core.framework in Embed Frameworks */,
+				35758BE12985695700AF2683 /* Client.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1027,6 +1037,7 @@
 			files = (
 				356125132982587000EDA991 /* Core.framework in Frameworks */,
 				F3B112DC463B4355E9979BEA /* Pods_Keyboard.framework in Frameworks */,
+				35758BE02985695700AF2683 /* Client.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2228,6 +2239,7 @@
 			);
 			dependencies = (
 				356125162982587000EDA991 /* PBXTargetDependency */,
+				35758BE32985695800AF2683 /* PBXTargetDependency */,
 			);
 			name = Keyboard;
 			productName = Keyboard;
@@ -3458,6 +3470,11 @@
 			isa = PBXTargetDependency;
 			target = 35E50683286F87A600A3F6EA /* Core */;
 			targetProxy = 356125152982587000EDA991 /* PBXContainerItemProxy */;
+		};
+		35758BE32985695800AF2683 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 35E50660286F870500A3F6EA /* Client */;
+			targetProxy = 35758BE22985695800AF2683 /* PBXContainerItemProxy */;
 		};
 		358BD371287D539F00802A91 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
