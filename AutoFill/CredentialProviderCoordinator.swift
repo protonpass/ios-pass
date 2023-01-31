@@ -416,7 +416,8 @@ private extension CredentialProviderCoordinator {
         let content = UNMutableNotificationContent()
         content.title = "Two Factor Authentication code copied"
         content.subtitle = totpData.username
-        content.body = "\"\(totpData.code)\" is copied to clipboard"
+        // swiftlint:disable:next line_length
+        content.body = "\"\(totpData.code)\" is copied to clipboard. Expiring in \(totpData.timerData.remaining) seconds"
         let request = UNNotificationRequest(identifier: UUID().uuidString,
                                             content: content,
                                             trigger: nil) // Deliver immediately
