@@ -103,7 +103,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.username = data.username
                 self.password = data.password
                 self.totpUri = data.totpUri
-                if !urls.isEmpty { self.urls = urls }
+                self.urls = data.urls
                 self.note = itemContent.note
 
                 Task { @MainActor in
