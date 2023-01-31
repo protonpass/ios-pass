@@ -57,6 +57,12 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         }
     }
 
+    @Published var automaticallyCopyTotpCode = true {
+        didSet {
+            preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
+        }
+    }
+
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
     @Published private(set) var autoFillEnabled = false {
         didSet {
@@ -107,6 +113,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.preferences = preferences
         self.quickTypeBar = preferences.quickTypeBar
+        self.automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
         self.askBeforeTrashing = preferences.askBeforeTrashing
         self.theme = preferences.theme
         self.clipboardExpiration = preferences.clipboardExpiration

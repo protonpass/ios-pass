@@ -28,6 +28,9 @@ public final class Preferences: ObservableObject {
     @AppStorage("quickTypeBar", store: kSharedUserDefaults)
     public var quickTypeBar = true
 
+    @AppStorage("automaticallyCopyTotpCode", store: kSharedUserDefaults)
+    public var automaticallyCopyTotpCode = false
+
     @AppStorage("failedAttemptCount", store: kSharedUserDefaults)
     public var failedAttemptCount = 0
 
@@ -57,6 +60,7 @@ public final class Preferences: ObservableObject {
 
     public func reset(isUITests: Bool = false) {
         quickTypeBar = true
+        automaticallyCopyTotpCode = false
         failedAttemptCount = 0
         biometricAuthenticationEnabled = false
         autoFillBannerDisplayed = false
