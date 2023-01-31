@@ -76,7 +76,7 @@ extension LogInDetailViewModel {
     }
 
     func copyTotpCode() {
-        if let code = totpManager.getCurrentCode() {
+        if let code = totpManager.totpData?.code {
             copyToClipboard(text: code, message: "Two Factor Authentication code copied")
         }
     }
