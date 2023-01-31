@@ -157,7 +157,7 @@ struct LogInDetailView: View {
                     HStack {
                         Text(data.code)
                         Spacer()
-                        OTPCircularTimer(data: data.timerData)
+                        TOTPCircularTimer(data: data.timerData)
                             .frame(width: 22, height: 22)
                     }
                 case .invalid:
