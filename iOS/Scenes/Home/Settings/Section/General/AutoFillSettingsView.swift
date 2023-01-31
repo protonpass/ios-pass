@@ -79,6 +79,15 @@ private struct AutoFillEnabledView: View {
                 // swiftlint:disable:next line_length
                 Text("QuickType bar helps quickly select a matched credential without opening the AutoFill extension.")
             })
+
+            Section(content: {
+                Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
+                    Text("Automatically copy TOTP code")
+                }
+                .tint(.interactionNorm)
+            }, footer: {
+                Text("When autofilling, you will be warned if TOTP code expires in less than 10 seconds.")
+            })
         }
     }
 }
