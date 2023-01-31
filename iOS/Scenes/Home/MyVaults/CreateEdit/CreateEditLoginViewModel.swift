@@ -176,7 +176,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func copyTotpCode() {
-        if let code = totpManager.getCurrentCode() {
+        if let code = totpManager.totpData?.code {
             let message = "Two Factor Authentication code copied"
             createEditLoginViewModelDelegate?
                 .createEditLoginViewModelWantsToCopy(text: code,

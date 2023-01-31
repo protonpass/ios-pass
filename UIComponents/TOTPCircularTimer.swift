@@ -21,8 +21,8 @@
 import SwiftUI
 
 public struct TOTPTimerData: Hashable {
-    let total: Int
-    let remaining: Int
+    public let total: Int
+    public let remaining: Int
 
     public init(total: Int, remaining: Int) {
         self.total = total

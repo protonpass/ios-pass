@@ -32,7 +32,9 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import SwiftUI
 import UIComponents
+import UserNotifications
 
+// swiftlint:disable file_length
 enum CredentialProviderError: Error {
     case emptyRecordIdentifier
     case failedToAuthenticate
@@ -361,6 +363,28 @@ private extension CredentialProviderCoordinator {
                   serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         Task { @MainActor in
             do {
+                let getTotpData: () -> TOTPData? = {
+                    do {
+                        return try encryptedItem.totpData(symmetricKey: itemRepository.symmetricKey)
+                    } catch {
+                        self.logger.error(error)
+                        return nil
+                    }
+                }
+
+                if let totpData = getTotpData(), preferences.automaticallyCopyTotpCode {
+                    if quickTypeBar {
+                        copyAndNotify(totpData: totpData)
+                    } else {
+                        if totpData.timerData.remaining <= 10 {
+                            alertExpiringSoonTotpCode()
+                            return // Early exit, stop AutoFill process
+                        } else {
+                            copyAndNotify(totpData: totpData)
+                        }
+                    }
+                }
+
                 context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
                 logger.info("Autofilled from QuickType bar \(quickTypeBar). \(encryptedItem.debugInformation)")
 
@@ -385,6 +409,28 @@ private extension CredentialProviderCoordinator {
                 }
             }
         }
+    }
+
+    func copyAndNotify(totpData: TOTPData) {
+        clipboardManager.copy(text: totpData.code, bannerMessage: "")
+        let content = UNMutableNotificationContent()
+        content.title = "Two Factor Authentication code copied"
+        content.subtitle = totpData.username
+        content.body = "\"\(totpData.code)\" is copied to clipboard"
+        let request = UNNotificationRequest(identifier: UUID().uuidString,
+                                            content: content,
+                                            trigger: nil) // Deliver immediately
+        UNUserNotificationCenter.current().add(request)
+    }
+
+    func alertExpiringSoonTotpCode() {
+        let alert = UIAlertController(title: "Expiring soon Two Factor Authentication code",
+                                      // swiftlint:disable:next line_length
+                                      message: "Two Factor Authentication code for this log in item will expire in less than 10 seconds. Please try again in a few seconds.",
+                                      preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(cancelAction)
+        rootViewController.present(alert, animated: true)
     }
 }
 
@@ -639,6 +685,19 @@ extension CredentialProviderCoordinator: CreateEditAliasViewModelDelegate {
     func createEditAliasViewModelCanNotCreateMoreAliases() {
         topMostViewController.dismiss(animated: true) { [unowned self] in
             self.bannerManager.displayTopErrorMessage("You can not create more aliases.")
+        }
+    }
+}
+
+extension SymmetricallyEncryptedItem {
+    /// Get `TOTPData` of the current moment
+    func totpData(symmetricKey: SymmetricKey) throws -> TOTPData? {
+        let decryptedItemContent = try getDecryptedItemContent(symmetricKey: symmetricKey)
+        if case .login(let logInData) = decryptedItemContent.contentData,
+           !logInData.totpUri.isEmpty {
+            return try .init(uri: logInData.totpUri)
+        } else {
+            return nil
         }
     }
 }
