@@ -23,18 +23,18 @@ import SwiftOTP
 import SwiftUI
 import UIComponents
 
-enum TotpState: Equatable {
+enum TOTPState: Equatable {
     case loading
     case empty
-    case valid(TotpData)
+    case valid(TOTPData)
     case invalid
 }
 
-struct TotpData: Equatable {
+struct TOTPData: Equatable {
     let username: String
     let issuer: String?
     let code: String
-    let timerData: OTPCircularTimerData
+    let timerData: TOTPTimerData
 }
 
 extension OTPComponents.Algorithm {
@@ -50,7 +50,7 @@ extension OTPComponents.Algorithm {
     }
 }
 
-final class TotpManager: DeinitPrintable, ObservableObject {
+final class TOTPManager: DeinitPrintable, ObservableObject {
     deinit {
         timer?.invalidate()
         print(deinitMessage)
@@ -59,7 +59,7 @@ final class TotpManager: DeinitPrintable, ObservableObject {
     private var timer: Timer?
     private let logger: Logger
 
-    @Published private(set) var state = TotpState.empty
+    @Published private(set) var state = TOTPState.empty
 
     init(logManager: LogManager) {
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
@@ -112,14 +112,14 @@ final class TotpManager: DeinitPrintable, ObservableObject {
     }
 }
 
-private extension TotpManager {
+private extension TOTPManager {
     func beginCaculating(totp: TOTP, username: String, issuer: String?) {
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             let timeInterval = Int(Date().timeIntervalSince1970)
             let remainingSeconds = totp.timeInterval - (timeInterval % totp.timeInterval)
             let code = totp.generate(secondsPast1970: timeInterval) ?? ""
-            let timerData = OTPCircularTimerData(total: totp.timeInterval,
-                                                 remaining: remainingSeconds)
+            let timerData = TOTPTimerData(total: totp.timeInterval,
+                                          remaining: remainingSeconds)
             self?.state = .valid(.init(username: username,
                                        issuer: issuer,
                                        code: code,

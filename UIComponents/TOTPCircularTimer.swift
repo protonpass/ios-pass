@@ -1,5 +1,5 @@
 //
-// OTPCircularTimer.swift
+// TOTPCircularTimer.swift
 // Proton Pass - Created on 18/01/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-public struct OTPCircularTimerData {
+public struct TOTPTimerData: Hashable {
     let total: Int
     let remaining: Int
 
@@ -30,18 +30,11 @@ public struct OTPCircularTimerData {
     }
 }
 
-extension OTPCircularTimerData: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(total)
-        hasher.combine(remaining)
-    }
-}
-
-public struct OTPCircularTimer: View {
+public struct TOTPCircularTimer: View {
     let percentage: CGFloat
-    let data: OTPCircularTimerData
+    let data: TOTPTimerData
 
-    public init(data: OTPCircularTimerData) {
+    public init(data: TOTPTimerData) {
         self.data = data
         self.percentage = CGFloat(data.remaining) / CGFloat(data.total)
     }

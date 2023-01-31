@@ -48,7 +48,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
     @Published var urls: [String] = [""]
     @Published var note = ""
-    @Published private(set) var totpManager: TotpManager
+    @Published private(set) var totpManager: TOTPManager
 
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
