@@ -372,7 +372,7 @@ private extension CredentialProviderCoordinator {
                     }
                 }
 
-                if let totpData = getTotpData(), preferences.automaticallyCopyTotpCode {
+                if preferences.automaticallyCopyTotpCode, let totpData = getTotpData() {
                     if quickTypeBar {
                         copyAndNotify(totpData: totpData)
                     } else {
