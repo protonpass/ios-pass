@@ -348,7 +348,7 @@ extension CredentialProviderCoordinator: APIServiceDelegate {
 }
 
 // MARK: - Context actions
-extension CredentialProviderCoordinator {
+private extension CredentialProviderCoordinator {
     func cancel(errorCode: ASExtensionError.Code) {
         let error = NSError(domain: ASExtensionErrorDomain, code: errorCode.rawValue)
         context.cancelRequest(withError: error)
@@ -554,7 +554,7 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
-                                       item: Client.SymmetricallyEncryptedItem,
+                                       item: SymmetricallyEncryptedItem,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         guard let itemRepository else { return }
         complete(quickTypeBar: false,
@@ -580,7 +580,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
-                                              type: Client.ItemContentType) {
+                                              type: ItemContentType) {
         switch type {
         case .login:
             credentialsViewModel?.select(item: item)
@@ -589,7 +589,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         }
     }
 
-    func createEditItemViewModelDidUpdateItem(_ type: Client.ItemContentType) {
+    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
         print("\(#function) not applicable")
     }
 
