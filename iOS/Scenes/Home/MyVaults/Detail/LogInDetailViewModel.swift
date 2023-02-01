@@ -33,7 +33,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
     @Published private(set) var note = ""
-    @Published private(set) var totpManager: TotpManager
+    @Published private(set) var totpManager: TOTPManager
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -76,7 +76,7 @@ extension LogInDetailViewModel {
     }
 
     func copyTotpCode() {
-        if let code = totpManager.getCurrentCode() {
+        if let code = totpManager.totpData?.code {
             copyToClipboard(text: code, message: "Two Factor Authentication code copied")
         }
     }

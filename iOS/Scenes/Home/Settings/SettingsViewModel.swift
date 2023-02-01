@@ -24,6 +24,7 @@ import Core
 import CryptoKit
 import SwiftUI
 import UIComponents
+import UserNotifications
 
 protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToToggleSidebar()
@@ -54,6 +55,15 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
     @Published var quickTypeBar = true {
         didSet {
             populateOrRemoveCredentials()
+        }
+    }
+
+    @Published var automaticallyCopyTotpCode = true {
+        didSet {
+            if automaticallyCopyTotpCode {
+                requestNotificationPermission()
+            }
+            preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
         }
     }
 
@@ -107,6 +117,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.preferences = preferences
         self.quickTypeBar = preferences.quickTypeBar
+        self.automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
         self.askBeforeTrashing = preferences.askBeforeTrashing
         self.theme = preferences.theme
         self.clipboardExpiration = preferences.clipboardExpiration
@@ -153,20 +164,23 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
             }
             .store(in: &cancellables)
     }
+}
 
-    private func refresh() {
+// MARK: - Private APIs
+private extension SettingsViewModel {
+    func refresh() {
         updateAutoFillAvalability()
         biometricAuthenticator.initializeBiometryType()
         biometricAuthenticator.enabled = preferences.biometricAuthenticationEnabled
     }
 
-    private func updateAutoFillAvalability() {
+    func updateAutoFillAvalability() {
         Task { @MainActor in
             self.autoFillEnabled = await credentialManager.isAutoFillEnabled()
         }
     }
 
-    private func populateOrRemoveCredentials() {
+    func populateOrRemoveCredentials() {
         // When not enabled, iOS already deleted the credential database.
         // Atempting to populate this database will throw an error anyway so early exit here
         guard autoFillEnabled else { return }
@@ -194,9 +208,13 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
             }
         }
     }
+
+    func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
+    }
 }
 
-// MARK: - Actions
+// MARK: - Public APIs
 extension SettingsViewModel {
     func toggleSidebar() {
         delegate?.settingsViewModelWantsToToggleSidebar()
