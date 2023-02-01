@@ -48,7 +48,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
     @Published var urls: [String] = [""]
     @Published var note = ""
-    @Published private(set) var totpManager: TotpManager
+    @Published private(set) var totpManager: TOTPManager
 
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
@@ -176,7 +176,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func copyTotpCode() {
-        if let code = totpManager.getCurrentCode() {
+        if let code = totpManager.totpData?.code {
             let message = "Two Factor Authentication code copied"
             createEditLoginViewModelDelegate?
                 .createEditLoginViewModelWantsToCopy(text: code,
