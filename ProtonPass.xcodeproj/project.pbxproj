@@ -349,6 +349,8 @@
 		35AABE2128B0288B00CEDDE6 /* UpdateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
 		35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B2F5A32906C76D00F74108 /* AppContentCoverView.swift */; };
+		35C14399298BF16800F91161 /* ItemDetailFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C14398298BF16800F91161 /* ItemDetailFooterView.swift */; };
+		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
 		35D56D562942354A00C2D0E2 /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		35D56D572942354A00C2D0E2 /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E00615288BE5FE00FAAD65 /* SessionData.swift */; };
@@ -905,6 +907,8 @@
 		35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateItemEndpoint.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
 		35B2F5A32906C76D00F74108 /* AppContentCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContentCoverView.swift; sourceTree = "<group>"; };
+		35C14398298BF16800F91161 /* ItemDetailFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailFooterView.swift; sourceTree = "<group>"; };
+		35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailTitleView.swift; sourceTree = "<group>"; };
 		35E00615288BE5FE00FAAD65 /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		35E50636286F819F00A3F6EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35E5063B286F819F00A3F6EA /* Proton Pass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Pass.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1543,6 +1547,8 @@
 				3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */,
 				35283E4F2927B55D002F5B84 /* FullScreenView.swift */,
 				356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */,
+				35C14398298BF16800F91161 /* ItemDetailFooterView.swift */,
+				35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */,
 				354F769128C8678100EB2383 /* LogInDetailView.swift */,
 				354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */,
 				354F769528C879AA00EB2383 /* NoteDetailView.swift */,
@@ -3080,6 +3086,7 @@
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				358A508928AD2E8F00F5285C /* SideBarViewModel.swift in Sources */,
+				35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */,
 				355013F929547C8C004F837E /* AutoFillSettingsView.swift in Sources */,
 				357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
@@ -3109,6 +3116,7 @@
 				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
 				3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */,
 				3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */,
+				35C14399298BF16800F91161 /* ItemDetailFooterView.swift in Sources */,
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
 				357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */,
 				35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */,
