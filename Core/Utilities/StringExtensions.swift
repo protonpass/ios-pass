@@ -43,4 +43,12 @@ public extension String {
     func sha256Hashed() -> String {
         SHA256.hash(data: Data(self.utf8)).description
     }
+
+    func capitalizingFirstLetter() -> String {
+        prefix(1).capitalized + dropFirst()
+    }
+
+    mutating func capitalizeFirstLetter() {
+        self = self.capitalizingFirstLetter()
+    }
 }

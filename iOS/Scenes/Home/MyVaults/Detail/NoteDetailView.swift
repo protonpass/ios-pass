@@ -24,6 +24,7 @@ import UIComponents
 
 struct NoteDetailView: View {
     @StateObject private var viewModel: NoteDetailViewModel
+    private let tintColor = UIColor.systemYellow
 
     init(viewModel: NoteDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -31,22 +32,28 @@ struct NoteDetailView: View {
 
     var body: some View {
         ScrollView {
-            Group {
+            VStack(spacing: 24) {
+                ItemDetailTitleView(color: tintColor,
+                                    icon: .image(IconProvider.note),
+                                    title: viewModel.name)
                 if viewModel.note.isEmpty {
                     Text("Empty note")
                         .placeholderText()
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
                     Text(viewModel.note)
                         .sectionContentText()
-                        .onTapGesture(perform: viewModel.copyNote)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
+
+                ItemDetailFooterView(createTime: viewModel.createTime,
+                                     modifyTime: viewModel.modifyTime)
             }
-            .padding(.vertical, 28)
-            .padding(.horizontal, 32)
+            .padding()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
-        .navigationTitle(viewModel.name)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbarContent }
     }
 
