@@ -267,6 +267,7 @@
 		3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD45298CF4FA00E2A0EE /* CircleButton.swift */; };
 		3565FD49298CF90E00E2A0EE /* CapsuleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD48298CF90E00E2A0EE /* CapsuleButton.swift */; };
 		3565FD4B298D0CA400E2A0EE /* CapsuleTitledButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD4A298D0CA400E2A0EE /* CapsuleTitledButton.swift */; };
+		3565FD4F298D319500E2A0EE /* ItemDetailSectionIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD4E298D319500E2A0EE /* ItemDetailSectionIcon.swift */; };
 		35690C112923846E00F60C20 /* ItemTypeFilterOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C102923846E00F60C20 /* ItemTypeFilterOption.swift */; };
 		35690C132923D5DA00F60C20 /* NotchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C122923D5DA00F60C20 /* NotchView.swift */; };
 		35690C152923EA8400F60C20 /* Color+ProtonColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C142923EA8400F60C20 /* Color+ProtonColors.swift */; };
@@ -835,6 +836,7 @@
 		3565FD45298CF4FA00E2A0EE /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		3565FD48298CF90E00E2A0EE /* CapsuleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleButton.swift; sourceTree = "<group>"; };
 		3565FD4A298D0CA400E2A0EE /* CapsuleTitledButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleTitledButton.swift; sourceTree = "<group>"; };
+		3565FD4E298D319500E2A0EE /* ItemDetailSectionIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailSectionIcon.swift; sourceTree = "<group>"; };
 		35690C102923846E00F60C20 /* ItemTypeFilterOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilterOption.swift; sourceTree = "<group>"; };
 		35690C122923D5DA00F60C20 /* NotchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchView.swift; sourceTree = "<group>"; };
 		35690C142923EA8400F60C20 /* Color+ProtonColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProtonColors.swift"; sourceTree = "<group>"; };
@@ -1574,6 +1576,7 @@
 				356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */,
 				35C14398298BF16800F91161 /* ItemDetailFooterView.swift */,
 				35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */,
+				3565FD4E298D319500E2A0EE /* ItemDetailSectionIcon.swift */,
 				354F769128C8678100EB2383 /* LogInDetailView.swift */,
 				354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */,
 				354F769528C879AA00EB2383 /* NoteDetailView.swift */,
@@ -1900,8 +1903,8 @@
 		35E506AB286F920300A3F6EA /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
-				3565FD47298CF8BB00E2A0EE /* Buttons */,
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
+				3565FD47298CF8BB00E2A0EE /* Buttons */,
 				353B7532295B274E0028CF87 /* AnimatingGrayGradient.swift */,
 				35570A8329264C2800125727 /* BannerManager.swift */,
 				357D7BC229435C4800AAC594 /* Color+Hex.swift */,
@@ -3155,6 +3158,7 @@
 				3554D42D2967854000DF0CBE /* DeveloperModeStateManager.swift in Sources */,
 				355635B7288947DD00F32353 /* VaultSelection.swift in Sources */,
 				355744172959F5E400EA4AF0 /* ClipboardSettingsView.swift in Sources */,
+				3565FD4F298D319500E2A0EE /* ItemDetailSectionIcon.swift in Sources */,
 				354513CD28E45FB20020A93A /* SettingsViewModel.swift in Sources */,
 				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */,

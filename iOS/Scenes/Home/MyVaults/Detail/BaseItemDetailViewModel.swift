@@ -22,6 +22,8 @@ import Client
 import Core
 import UIKit
 
+let kItemDetailSectionPadding: CGFloat = 16
+
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToGoBack()
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
