@@ -266,6 +266,7 @@
 		356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */; };
 		3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD45298CF4FA00E2A0EE /* CircleButton.swift */; };
 		3565FD49298CF90E00E2A0EE /* CapsuleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD48298CF90E00E2A0EE /* CapsuleButton.swift */; };
+		3565FD4B298D0CA400E2A0EE /* CapsuleTitledButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD4A298D0CA400E2A0EE /* CapsuleTitledButton.swift */; };
 		35690C112923846E00F60C20 /* ItemTypeFilterOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C102923846E00F60C20 /* ItemTypeFilterOption.swift */; };
 		35690C132923D5DA00F60C20 /* NotchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C122923D5DA00F60C20 /* NotchView.swift */; };
 		35690C152923EA8400F60C20 /* Color+ProtonColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C142923EA8400F60C20 /* Color+ProtonColors.swift */; };
@@ -833,6 +834,7 @@
 		356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnReceiveBoolean.swift"; sourceTree = "<group>"; };
 		3565FD45298CF4FA00E2A0EE /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		3565FD48298CF90E00E2A0EE /* CapsuleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleButton.swift; sourceTree = "<group>"; };
+		3565FD4A298D0CA400E2A0EE /* CapsuleTitledButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleTitledButton.swift; sourceTree = "<group>"; };
 		35690C102923846E00F60C20 /* ItemTypeFilterOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilterOption.swift; sourceTree = "<group>"; };
 		35690C122923D5DA00F60C20 /* NotchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchView.swift; sourceTree = "<group>"; };
 		35690C142923EA8400F60C20 /* Color+ProtonColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProtonColors.swift"; sourceTree = "<group>"; };
@@ -1535,6 +1537,7 @@
 				35613DCD292D27900095D5A1 /* BorderedImageButton.swift */,
 				355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */,
 				3565FD48298CF90E00E2A0EE /* CapsuleButton.swift */,
+				3565FD4A298D0CA400E2A0EE /* CapsuleTitledButton.swift */,
 				3565FD45298CF4FA00E2A0EE /* CircleButton.swift */,
 				355214832915524D00BA6229 /* CopyMenuButton.swift */,
 				354E19F5293F90F500A3F853 /* ColoredRoundedButton.swift */,
@@ -3389,6 +3392,7 @@
 				353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */,
 				355214822915517E00BA6229 /* EditMenuButton.swift in Sources */,
 				356423412925184100D2B7E3 /* OutlinedRoundedButton.swift in Sources */,
+				3565FD4B298D0CA400E2A0EE /* CapsuleTitledButton.swift in Sources */,
 				354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */,
 				35526B5D28D116350017BB53 /* PassIcon.swift in Sources */,
 				357D7BC329435C4800AAC594 /* Color+Hex.swift in Sources */,

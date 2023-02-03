@@ -24,16 +24,16 @@ import SwiftUI
 public struct CircleButton: View {
     let icon: UIImage
     let color: UIColor
-    let width: CGFloat
+    let height: CGFloat
     let action: () -> Void
 
     public init(icon: UIImage,
                 color: UIColor,
-                width: CGFloat = 40,
+                height: CGFloat = 40,
                 action: @escaping () -> Void) {
         self.icon = icon
         self.color = color
-        self.width = width
+        self.height = height
         self.action = action
     }
 
@@ -47,9 +47,9 @@ public struct CircleButton: View {
                     .renderingMode(.template)
                     .scaledToFit()
                     .foregroundColor(Color(uiColor: color))
-                    .padding(.vertical, width / 3)
+                    .padding(.vertical, height / 3)
             }
-            .frame(width: width, height: width)
+            .frame(width: height, height: height)
         }
     }
 }

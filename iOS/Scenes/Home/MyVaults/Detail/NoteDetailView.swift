@@ -68,11 +68,11 @@ struct NoteDetailView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             switch viewModel.itemContent.item.itemState {
             case .active:
-                HStack {
-                    Button(action: viewModel.edit) {
-                        Text("Edit")
-                            .foregroundColor(.interactionNorm)
-                    }
+                HStack(spacing: 0) {
+                    CapsuleTitledButton(icon: IconProvider.pencil,
+                                        title: "Edit",
+                                        color: tintColor,
+                                        action: viewModel.edit)
 
                     CapsuleButton(icon: IconProvider.threeDotsVertical,
                                   color: tintColor,
