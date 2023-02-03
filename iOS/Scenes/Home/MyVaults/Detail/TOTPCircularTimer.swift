@@ -1,6 +1,6 @@
 //
 // TOTPCircularTimer.swift
-// Proton Pass - Created on 18/01/2023.
+// Proton Pass - Created on 03/02/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-public struct TOTPTimerData: Hashable {
+struct TOTPTimerData: Hashable {
     public let total: Int
     public let remaining: Int
 
@@ -30,39 +30,42 @@ public struct TOTPTimerData: Hashable {
     }
 }
 
-public struct TOTPCircularTimer: View {
+struct TOTPCircularTimer: View {
     let percentage: CGFloat
     let data: TOTPTimerData
 
-    public init(data: TOTPTimerData) {
+    init(data: TOTPTimerData) {
         self.data = data
         self.percentage = CGFloat(data.remaining) / CGFloat(data.total)
     }
 
-    public var body: some View {
+    var body: some View {
         ZStack {
             Circle()
+                .stroke(.gray, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+
+            Circle()
                 .trim(from: 0, to: percentage)
-                .stroke(color,
-                        style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                .stroke(color, style: StrokeStyle(lineWidth: 3, lineCap: .round))
                 .rotation3DEffect(.degrees(180), axis: (x: 1, y: 0, z: 0))
                 .rotationEffect(.degrees(270))
                 .animation(.default, value: data)
 
             Text("\(data.remaining)")
-                .font(.caption)
-                .fontWeight(.medium)
+                .font(.caption2)
+                .fontWeight(.bold)
+                .transaction { transaction in
+                    transaction.animation = nil
+                }
         }
     }
 
     private var color: Color {
-        switch percentage {
-        case 0.25...0.49:
-            return .blue
-        case 0.5...:
-            return .green
-        default:
+        switch data.remaining {
+        case 0...10:
             return .red
+        default:
+            return .green
         }
     }
 }
