@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -103,6 +104,14 @@ struct LogInDetailView: View {
             usernameRow
             Divider()
             passwordRow
+
+            switch viewModel.totpManager.state {
+            case .empty:
+                EmptyView()
+            default:
+                Divider()
+                totpRow
+            }
         }
         .padding(.vertical, kItemDetailSectionPadding)
         .roundedDetail()
@@ -191,34 +200,41 @@ struct LogInDetailView: View {
     }
 
     @ViewBuilder
-    private var totpSection: some View {
+    private var totpRow: some View {
         if case .empty = viewModel.totpManager.state {
             EmptyView()
         } else {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Two Factor Authentication")
-                    .sectionTitleText()
+            HStack(spacing: kItemDetailSectionPadding) {
+                ItemDetailSectionIcon(icon: IconProvider.locks,
+                                      color: tintColor.withAlphaComponent(0.5))
 
-                switch viewModel.totpManager.state {
-                case .empty, .loading:
-                    EmptyView()
-                case .valid(let data):
-                    HStack {
-                        Text(data.code)
-                        Spacer()
-                        TOTPCircularTimer(data: data.timerData)
-                            .frame(width: 22, height: 22)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Two Factor Authentication")
+                        .sectionTitleText()
+
+                    switch viewModel.totpManager.state {
+                    case .empty:
+                        EmptyView()
+                    case .loading:
+                        ProgressView()
+                    case .valid(let data):
+                        HStack {
+                            TOTPText(code: data.code)
+                            TOTPCircularTimer(data: data.timerData)
+                                .frame(width: 22, height: 22)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    case .invalid:
+                        Text("Invalid Two Factor Authentication URI")
+                            .sectionContentText()
+                            .font(.callout.italic())
                     }
-                case .invalid:
-                    Text("Invalid Two Factor Authentication URI.")
-                        .sectionContentText()
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .onTapGesture(perform: viewModel.copyTotpCode)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
-            .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.copyTotpCode)
-            .roundedDetail()
+            .padding(.horizontal, kItemDetailSectionPadding)
+            .animation(.default, value: viewModel.totpManager.state)
         }
     }
 
