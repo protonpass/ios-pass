@@ -60,7 +60,7 @@ struct NoteDetailView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: IconProvider.chevronDown,
+            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
                          color: tintColor,
                          action: viewModel.goBack)
         }
@@ -74,9 +74,25 @@ struct NoteDetailView: View {
                                         color: tintColor,
                                         action: viewModel.edit)
 
-                    CapsuleButton(icon: IconProvider.threeDotsVertical,
-                                  color: tintColor,
-                                  action: {})
+                    Menu(content: {
+                        Button(action: {
+                            print("Pin")
+                        }, label: {
+                            Label(title: {
+                                Text("Pin")
+                            }, icon: {
+                                Image(uiImage: IconProvider.bookmark)
+                            })
+                        })
+
+                        DestructiveButton(title: "Move to trash",
+                                          icon: IconProvider.trash,
+                                          action: { print("Trash") })
+                    }, label: {
+                        CapsuleButton(icon: IconProvider.threeDotsVertical,
+                                      color: tintColor,
+                                      action: {})
+                    })
                 }
 
             case .trashed:
