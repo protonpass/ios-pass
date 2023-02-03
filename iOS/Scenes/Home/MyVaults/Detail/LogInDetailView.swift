@@ -179,9 +179,9 @@ struct LogInDetailView: View {
 
             Spacer()
 
-            CapsuleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
-                          color: tintColor,
-                          action: { isShowingPassword.toggle() })
+            CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
+                         color: tintColor,
+                         action: { isShowingPassword.toggle() })
             .fixedSize(horizontal: true, vertical: true)
         }
         .padding(.horizontal, kItemDetailSectionPadding)
