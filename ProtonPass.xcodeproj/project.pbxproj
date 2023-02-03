@@ -264,6 +264,8 @@
 		3561A1822922DA6E0097078B /* ItemCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561A1812922DA6E0097078B /* ItemCountView.swift */; };
 		356423412925184100D2B7E3 /* OutlinedRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423402925184100D2B7E3 /* OutlinedRoundedButton.swift */; };
 		356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */; };
+		3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD45298CF4FA00E2A0EE /* CircleButton.swift */; };
+		3565FD49298CF90E00E2A0EE /* CapsuleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD48298CF90E00E2A0EE /* CapsuleButton.swift */; };
 		35690C112923846E00F60C20 /* ItemTypeFilterOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C102923846E00F60C20 /* ItemTypeFilterOption.swift */; };
 		35690C132923D5DA00F60C20 /* NotchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C122923D5DA00F60C20 /* NotchView.swift */; };
 		35690C152923EA8400F60C20 /* Color+ProtonColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C142923EA8400F60C20 /* Color+ProtonColors.swift */; };
@@ -829,6 +831,8 @@
 		3561A1812922DA6E0097078B /* ItemCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountView.swift; sourceTree = "<group>"; };
 		356423402925184100D2B7E3 /* OutlinedRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlinedRoundedButton.swift; sourceTree = "<group>"; };
 		356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnReceiveBoolean.swift"; sourceTree = "<group>"; };
+		3565FD45298CF4FA00E2A0EE /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
+		3565FD48298CF90E00E2A0EE /* CapsuleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleButton.swift; sourceTree = "<group>"; };
 		35690C102923846E00F60C20 /* ItemTypeFilterOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilterOption.swift; sourceTree = "<group>"; };
 		35690C122923D5DA00F60C20 /* NotchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchView.swift; sourceTree = "<group>"; };
 		35690C142923EA8400F60C20 /* Color+ProtonColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProtonColors.swift"; sourceTree = "<group>"; };
@@ -1525,6 +1529,24 @@
 			path = AutoFill;
 			sourceTree = "<group>";
 		};
+		3565FD47298CF8BB00E2A0EE /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				35613DCD292D27900095D5A1 /* BorderedImageButton.swift */,
+				355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */,
+				3565FD48298CF90E00E2A0EE /* CapsuleButton.swift */,
+				3565FD45298CF4FA00E2A0EE /* CircleButton.swift */,
+				355214832915524D00BA6229 /* CopyMenuButton.swift */,
+				354E19F5293F90F500A3F853 /* ColoredRoundedButton.swift */,
+				354F768F28C861FF00EB2383 /* DestructiveButton.swift */,
+				355214812915517E00BA6229 /* EditMenuButton.swift */,
+				353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */,
+				35570A8129263F5900125727 /* SpinnerButton.swift */,
+				3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
 		356B21D82870F95B001220CB /* Storage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1875,18 +1897,13 @@
 		35E506AB286F920300A3F6EA /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				3565FD47298CF8BB00E2A0EE /* Buttons */,
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
 				353B7532295B274E0028CF87 /* AnimatingGrayGradient.swift */,
 				35570A8329264C2800125727 /* BannerManager.swift */,
-				35613DCD292D27900095D5A1 /* BorderedImageButton.swift */,
-				355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */,
-				355214832915524D00BA6229 /* CopyMenuButton.swift */,
 				357D7BC229435C4800AAC594 /* Color+Hex.swift */,
 				35690C142923EA8400F60C20 /* Color+ProtonColors.swift */,
-				354E19F5293F90F500A3F853 /* ColoredRoundedButton.swift */,
-				354F768F28C861FF00EB2383 /* DestructiveButton.swift */,
 				358C42A728D48DFB00ADE305 /* DiscardChangesAlertModifier.swift */,
-				355214812915517E00BA6229 /* EditMenuButton.swift */,
 				35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */,
 				3547ABE92877684D00EE85E1 /* GenericItemView.swift */,
 				3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */,
@@ -1898,12 +1915,9 @@
 				35526B5C28D116350017BB53 /* PassIcon.swift */,
 				3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */,
 				3542E2CC28DA11FE00194F24 /* RetryableErrorView.swift */,
-				353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */,
-				35570A8129263F5900125727 /* SpinnerButton.swift */,
 				354BB15228A2886500F50040 /* SwiftUISearchBar.swift */,
 				3552618628A1372500A68477 /* SwiftUITextView.swift */,
 				354BB13C28A240E000F50040 /* TextExtensions.swift */,
-				3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */,
 				356A34BE2977DFD300969BA2 /* TOTPCircularTimer.swift */,
 				3552618C28A1511000A68477 /* UserInputContentView.swift */,
 				3552618A28A14EB600A68477 /* UserInputContainerView.swift */,
@@ -3380,12 +3394,14 @@
 				357D7BC329435C4800AAC594 /* Color+Hex.swift in Sources */,
 				3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */,
 				35690C132923D5DA00F60C20 /* NotchView.swift in Sources */,
+				3565FD49298CF90E00E2A0EE /* CapsuleButton.swift in Sources */,
 				3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */,
 				356A34BF2977DFD300969BA2 /* TOTPCircularTimer.swift in Sources */,
 				355E6DFC292FD56000C60796 /* Button+ConvenientInitializers.swift in Sources */,
 				3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */,
 				3547ABEA2877684D00EE85E1 /* GenericItemView.swift in Sources */,
 				354F769028C861FF00EB2383 /* DestructiveButton.swift in Sources */,
+				3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */,
 				354DCCF9291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift in Sources */,
 				3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */,
 				35690C152923EA8400F60C20 /* Color+ProtonColors.swift in Sources */,
