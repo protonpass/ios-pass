@@ -60,18 +60,23 @@ struct NoteDetailView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: viewModel.goBack) {
-                Image(uiImage: IconProvider.chevronLeft)
-                    .foregroundColor(.primary)
-            }
+            CircleButton(icon: IconProvider.chevronDown,
+                         color: tintColor,
+                         action: viewModel.goBack)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
             switch viewModel.itemContent.item.itemState {
             case .active:
-                Button(action: viewModel.edit) {
-                    Text("Edit")
-                        .foregroundColor(.interactionNorm)
+                HStack {
+                    Button(action: viewModel.edit) {
+                        Text("Edit")
+                            .foregroundColor(.interactionNorm)
+                    }
+
+                    CapsuleButton(icon: IconProvider.threeDotsVertical,
+                                  color: tintColor,
+                                  action: {})
                 }
 
             case .trashed:
