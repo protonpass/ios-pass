@@ -54,6 +54,8 @@ struct ItemDetailTitleView: View {
                 .font(.title)
                 .fontWeight(.bold)
                 .textSelection(.enabled)
+                .lineLimit(2)
+                .minimumScaleFactor(0.75)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
