@@ -299,6 +299,7 @@ private extension CredentialsViewModel {
             let encryptedItems = try await self.itemRepository.getItems(state: .active)
             self.logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
+            let domainParser = try DomainParser()
             var searchableItems = [SearchableItem]()
             var matchedEncryptedItems = [ScoredSymmetricallyEncryptedItem]()
             var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
@@ -314,7 +315,7 @@ private extension CredentialsViewModel {
                     var matchResults = [URLUtils.Matcher.MatchResult]()
                     for itemUrl in itemUrls {
                         for url in self.urls {
-                            let result = URLUtils.Matcher.compare(itemUrl, url)
+                            let result = URLUtils.Matcher.compare(itemUrl, url, domainParser: domainParser)
                             if case .matched = result {
                                 matchResults.append(result)
                             }
