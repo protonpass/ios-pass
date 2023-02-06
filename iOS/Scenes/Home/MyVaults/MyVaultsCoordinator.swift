@@ -263,7 +263,7 @@ final class MyVaultsCoordinator: Coordinator {
         if UIDevice.current.isIpad {
             push(itemDetailView)
         } else {
-            present(NavigationView { AnyView(itemDetailView) })
+            present(NavigationView { AnyView(itemDetailView) }.navigationViewStyle(.stack))
         }
     }
 
