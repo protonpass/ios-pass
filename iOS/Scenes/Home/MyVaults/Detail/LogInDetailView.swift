@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -25,6 +26,7 @@ import UIComponents
 struct LogInDetailView: View {
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
+    private let tintColor = UIColor.brandNorm
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -32,37 +34,65 @@ struct LogInDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                usernameSection
-                passwordSection
-                totpSection
+            VStack(spacing: 0) {
+                ItemDetailTitleView(color: tintColor,
+                                    icon: .initials(String(viewModel.name.prefix(2))),
+                                    title: viewModel.name)
+                .padding(.bottom, 24)
+
+                usernamePassword2FaSection
                 urlsSection
-                noteSection
-                Spacer()
+                    .padding(.vertical, 8)
+                NoteSection(note: viewModel.note, tintColor: tintColor)
+
+                ItemDetailFooterView(createTime: viewModel.createTime,
+                                     modifyTime: viewModel.modifyTime)
+                .padding(.top, 24)
             }
-            .animation(.default, value: viewModel.totpManager.state)
             .padding()
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
-        .navigationTitle(viewModel.name)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbarContent }
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: viewModel.goBack) {
-                Image(uiImage: IconProvider.chevronLeft)
-                    .foregroundColor(.primary)
-            }
+            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
+                         color: tintColor,
+                         action: viewModel.goBack)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
             switch viewModel.itemContent.item.itemState {
             case .active:
-                Button(action: viewModel.edit) {
-                    Text("Edit")
-                        .foregroundColor(.interactionNorm)
+                HStack(spacing: 0) {
+                    CapsuleTitledButton(icon: IconProvider.pencil,
+                                        title: "Edit",
+                                        color: tintColor,
+                                        action: viewModel.edit)
+
+                    Menu(content: {
+                        Button(action: {
+                            print("Pin")
+                        }, label: {
+                            Label(title: {
+                                Text("Pin")
+                            }, icon: {
+                                Image(uiImage: IconProvider.bookmark)
+                            })
+                        })
+
+                        DestructiveButton(title: "Move to trash",
+                                          icon: IconProvider.trash,
+                                          action: { print("Trash") })
+                    }, label: {
+                        CapsuleButton(icon: IconProvider.threeDotsVertical,
+                                      color: tintColor,
+                                      action: {})
+                    })
                 }
 
             case .trashed:
@@ -74,157 +104,195 @@ struct LogInDetailView: View {
         }
     }
 
-    private var usernameSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Username")
-                .sectionTitleText()
+    private var usernamePassword2FaSection: some View {
+        VStack(spacing: kItemDetailSectionPadding) {
+            usernameRow
+            Divider()
+            passwordRow
 
-            if viewModel.username.isEmpty {
-                Text("No username")
-                    .placeholderText()
-            } else {
-                Text(viewModel.username)
-                    .sectionContentText()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(Rectangle())
-                    .onTapGesture(perform: viewModel.copyUsername)
-                    .contextMenu {
-                        Button(action: viewModel.copyUsername) {
-                            Text("Copy")
-                        }
-
-                        Button(action: {
-                            viewModel.showLarge(viewModel.username)
-                        }, label: {
-                            Text("Show large")
-                        })
-                    }
+            switch viewModel.totpManager.state {
+            case .empty:
+                EmptyView()
+            default:
+                Divider()
+                totpRow
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
+        .padding(.vertical, kItemDetailSectionPadding)
         .roundedDetail()
     }
 
-    private var passwordSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Password")
-                .sectionTitleText()
+    private var usernameRow: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.user,
+                                  color: tintColor.withAlphaComponent(0.5))
 
-            Text(isShowingPassword ?
-                 viewModel.password : String(repeating: "•", count: viewModel.password.count))
-            .sectionContentText()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.copyPassword)
-            .contextMenu {
-                Button(action: {
-                    isShowingPassword.toggle()
-                }, label: {
-                    Text(isShowingPassword ? "Conceal" : "Reveal")
-                })
-
-                Button(action: viewModel.copyPassword) {
-                    Text("Copy")
-                }
-
-                Button(action: viewModel.showLargePassword) {
-                    Text("Show large")
-                }
-            }
-            .transaction { transaction in
-                transaction.animation = .default
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .roundedDetail()
-    }
-
-    @ViewBuilder
-    private var totpSection: some View {
-        if case .empty = viewModel.totpManager.state {
-            EmptyView()
-        } else {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Two Factor Authentication")
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Username")
                     .sectionTitleText()
 
-                switch viewModel.totpManager.state {
-                case .empty, .loading:
-                    EmptyView()
-                case .valid(let data):
-                    HStack {
-                        Text(data.code)
-                        Spacer()
-                        TOTPCircularTimer(data: data.timerData)
-                            .frame(width: 22, height: 22)
-                    }
-                case .invalid:
-                    Text("Invalid Two Factor Authentication URI.")
+                if viewModel.username.isEmpty {
+                    Text("No username")
+                        .placeholderText()
+                } else {
+                    Text(viewModel.username)
                         .sectionContentText()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
             .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.copyTotpCode)
-            .roundedDetail()
+            .onTapGesture(perform: viewModel.copyUsername)
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .contextMenu {
+            Button(action: viewModel.copyUsername) {
+                Text("Copy")
+            }
+
+            Button(action: {
+                viewModel.showLarge(viewModel.username)
+            }, label: {
+                Text("Show large")
+            })
+        }
+    }
+
+    private var passwordRow: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.keySkeleton,
+                                  color: tintColor.withAlphaComponent(0.5))
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Password")
+                    .sectionTitleText()
+
+                Text(isShowingPassword ? viewModel.password : String(repeating: "•", count: 20))
+                    .sectionContentText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .transaction { transaction in
+                        transaction.animation = .default
+                    }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: viewModel.copyPassword)
+
+            Spacer()
+
+            CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
+                         color: tintColor,
+                         action: { isShowingPassword.toggle() })
+            .fixedSize(horizontal: true, vertical: true)
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: isShowingPassword)
+        .contextMenu {
+            Button(action: {
+                isShowingPassword.toggle()
+            }, label: {
+                Text(isShowingPassword ? "Conceal" : "Reveal")
+            })
+
+            Button(action: viewModel.copyPassword) {
+                Text("Copy")
+            }
+
+            Button(action: viewModel.showLargePassword) {
+                Text("Show large")
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var totpRow: some View {
+        if case .empty = viewModel.totpManager.state {
+            EmptyView()
+        } else {
+            HStack(spacing: kItemDetailSectionPadding) {
+                ItemDetailSectionIcon(icon: IconProvider.lock,
+                                      color: tintColor.withAlphaComponent(0.5))
+
+                VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                    Text("Two Factor Authentication")
+                        .sectionTitleText()
+
+                    switch viewModel.totpManager.state {
+                    case .empty:
+                        EmptyView()
+                    case .loading:
+                        ProgressView()
+                    case .valid(let data):
+                        TOTPText(code: data.code)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    case .invalid:
+                        Text("Invalid Two Factor Authentication URI")
+                            .placeholderText()
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+                .onTapGesture(perform: viewModel.copyTotpCode)
+
+                switch viewModel.totpManager.state {
+                case .valid(let data):
+                    TOTPCircularTimer(data: data.timerData)
+                        .frame(width: 28, height: 28)
+                default:
+                    EmptyView()
+                }
+            }
+            .padding(.horizontal, kItemDetailSectionPadding)
+            .animation(.default, value: viewModel.totpManager.state)
         }
     }
 
     private var urlsSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Websites")
+        HStack(spacing: kItemDetailSectionPadding) {
+            VStack {
+                ItemDetailSectionIcon(icon: IconProvider.earth,
+                                      color: tintColor.withAlphaComponent(0.5))
+                Spacer()
+            }
 
-            if viewModel.urls.isEmpty {
-                Text("No websites")
-                    .placeholderText()
-            } else {
-                VStack(alignment: .leading, spacing: 12) {
-                    ForEach(viewModel.urls, id: \.self) { url in
-                        Button(action: {
-                            viewModel.openUrl(url)
-                        }, label: {
-                            Text(url)
-                                .foregroundColor(.interactionNorm)
-                                .multilineTextAlignment(.leading)
-                                .lineLimit(2)
-                        })
-                        .contextMenu {
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Website")
+                    .sectionTitleText()
+
+                if viewModel.urls.isEmpty {
+                    Text("No websites")
+                        .placeholderText()
+                } else {
+                    VStack(alignment: .leading, spacing: 12) {
+                        ForEach(viewModel.urls, id: \.self) { url in
                             Button(action: {
                                 viewModel.openUrl(url)
                             }, label: {
-                                Text("Open")
+                                Text(url)
+                                    .foregroundColor(.interactionNorm)
+                                    .multilineTextAlignment(.leading)
+                                    .lineLimit(2)
                             })
+                            .contextMenu {
+                                Button(action: {
+                                    viewModel.openUrl(url)
+                                }, label: {
+                                    Text("Open")
+                                })
 
-                            Button(action: {
-                                viewModel.copyToClipboard(text: url, message: "Website copied")
-                            }, label: {
-                                Text("Copy")
-                            })
+                                Button(action: {
+                                    viewModel.copyToClipboard(text: url, message: "Website copied")
+                                }, label: {
+                                    Text("Copy")
+                                })
+                            }
                         }
                     }
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .animation(.default, value: viewModel.urls)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.default, value: viewModel.urls)
-        .padding(.horizontal)
-    }
-
-    private var noteSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Note")
-            if viewModel.note.isEmpty {
-                Text("Empty note")
-                    .placeholderText()
-            } else {
-                Text(viewModel.note)
-                    .sectionContentText()
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal)
+        .padding(kItemDetailSectionPadding)
+        .roundedDetail()
     }
 }

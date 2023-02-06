@@ -230,6 +230,7 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func showItemDetailView(_ itemContent: ItemContent) {
+        let itemDetailView: any View
         let baseItemDetailViewModel: BaseItemDetailViewModel
         switch itemContent.contentData {
         case .login:
@@ -237,16 +238,14 @@ final class MyVaultsCoordinator: Coordinator {
                                                  itemRepository: itemRepository,
                                                  logManager: logManager)
             baseItemDetailViewModel = viewModel
-            let logInDetailView = LogInDetailView(viewModel: viewModel)
-            push(logInDetailView)
+            itemDetailView = LogInDetailView(viewModel: viewModel)
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRepository: itemRepository,
                                                 logManager: logManager)
             baseItemDetailViewModel = viewModel
-            let noteDetailView = NoteDetailView(viewModel: viewModel)
-            push(noteDetailView)
+            itemDetailView = NoteDetailView(viewModel: viewModel)
 
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
@@ -254,12 +253,18 @@ final class MyVaultsCoordinator: Coordinator {
                                                  aliasRepository: aliasRepository,
                                                  logManager: logManager)
             baseItemDetailViewModel = viewModel
-            let aliasDetailView = AliasDetailView(viewModel: viewModel)
-            push(aliasDetailView)
+            itemDetailView = AliasDetailView(viewModel: viewModel)
         }
 
         baseItemDetailViewModel.delegate = self
         currentItemDetailViewModel = baseItemDetailViewModel
+
+        // Push on iPad, sheets on iPhone
+        if UIDevice.current.isIpad {
+            push(itemDetailView)
+        } else {
+            present(NavigationView { AnyView(itemDetailView) }.navigationViewStyle(.stack))
+        }
     }
 
     private func handleCreatedItem(_ itemContentType: ItemContentType) {
@@ -499,7 +504,13 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
 // MARK: - ItemDetailViewModelDelegate
 extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
     func itemDetailViewModelWantsToGoBack() {
-        popTopViewController(animated: true)
+        // Dismiss differently because show differently
+        // (push on iPad, sheets on iPhone)
+        if UIDevice.current.isIpad {
+            popTopViewController(animated: true)
+        } else {
+            dismissTopMostViewController(animated: true, completion: nil)
+        }
     }
 
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
