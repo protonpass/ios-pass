@@ -43,6 +43,7 @@ struct NoteDetailView: View {
                 } else {
                     Text(viewModel.note)
                         .sectionContentText()
+                        .textSelection(.enabled)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
