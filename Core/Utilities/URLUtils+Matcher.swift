@@ -39,7 +39,14 @@ public extension URLUtils {
         }
         /// Compare if 2 URLs are matched and if they are matched, also indicate match score.
         /// match score starts from `1000` and decreases gradually.
-        public static func compare(_ leftUrl: URL, _ rightUrl: URL) -> MatchResult {
+        /// - Parameters:
+        ///    - leftUrl: Left hand `URL`
+        ///    - rightUrl: Right hand `URL`
+        ///    - domainParser: `DomainParser` object that makes use of TLD list to compare URLs.
+        /// Is `nil` by default and should be injected if heavily used in order to avoid expensive initialization.
+        public static func compare(_ leftUrl: URL,
+                                   _ rightUrl: URL,
+                                   domainParser: DomainParser? = nil) -> MatchResult {
             guard let leftScheme = leftUrl.scheme,
                   let rightScheme = rightUrl.scheme,
                   let leftHost = leftUrl.host,
@@ -50,7 +57,7 @@ public extension URLUtils {
                 if leftScheme == "https", rightScheme == "http" {
                     return .notMatched
                 } else {
-                    guard let domainParser = try? DomainParser(),
+                    guard let domainParser = domainParser ?? (try? DomainParser()),
                           let parsedLeftHost = domainParser.parse(host: leftHost),
                           let parsedRightHost = domainParser.parse(host: rightHost),
                           parsedLeftHost.publicSuffix == parsedRightHost.publicSuffix else {
