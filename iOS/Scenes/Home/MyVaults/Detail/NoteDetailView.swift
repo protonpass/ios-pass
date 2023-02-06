@@ -24,6 +24,7 @@ import UIComponents
 
 struct NoteDetailView: View {
     @StateObject private var viewModel: NoteDetailViewModel
+    private let tintColor = UIColor.systemYellow
 
     init(viewModel: NoteDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -31,40 +32,68 @@ struct NoteDetailView: View {
 
     var body: some View {
         ScrollView {
-            Group {
+            VStack(spacing: 24) {
+                ItemDetailTitleView(color: tintColor,
+                                    icon: .image(IconProvider.note),
+                                    title: viewModel.name)
                 if viewModel.note.isEmpty {
                     Text("Empty note")
                         .placeholderText()
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
                     Text(viewModel.note)
                         .sectionContentText()
-                        .onTapGesture(perform: viewModel.copyNote)
+                        .textSelection(.enabled)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
+
+                ItemDetailFooterView(createTime: viewModel.createTime,
+                                     modifyTime: viewModel.modifyTime)
             }
-            .padding(.vertical, 28)
-            .padding(.horizontal, 32)
+            .padding()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
-        .navigationTitle(viewModel.name)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbarContent }
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: viewModel.goBack) {
-                Image(uiImage: IconProvider.chevronLeft)
-                    .foregroundColor(.primary)
-            }
+            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
+                         color: tintColor,
+                         action: viewModel.goBack)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
             switch viewModel.itemContent.item.itemState {
             case .active:
-                Button(action: viewModel.edit) {
-                    Text("Edit")
-                        .foregroundColor(.interactionNorm)
+                HStack(spacing: 0) {
+                    CapsuleTitledButton(icon: IconProvider.pencil,
+                                        title: "Edit",
+                                        color: tintColor,
+                                        action: viewModel.edit)
+
+                    Menu(content: {
+                        Button(action: {
+                            print("Pin")
+                        }, label: {
+                            Label(title: {
+                                Text("Pin")
+                            }, icon: {
+                                Image(uiImage: IconProvider.bookmark)
+                            })
+                        })
+
+                        DestructiveButton(title: "Move to trash",
+                                          icon: IconProvider.trash,
+                                          action: { print("Trash") })
+                    }, label: {
+                        CapsuleButton(icon: IconProvider.threeDotsVertical,
+                                      color: tintColor,
+                                      action: {})
+                    })
                 }
 
             case .trashed:

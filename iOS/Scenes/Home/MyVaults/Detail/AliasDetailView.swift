@@ -25,48 +25,73 @@ import UIComponents
 
 struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
+    private let tintColor = UIColor.notificationSuccess
 
     init(viewModel: AliasDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
-        ZStack {
-            if let error = viewModel.error {
-                RetryableErrorView(errorMessage: error.messageForTheUser, onRetry: viewModel.refresh)
-            } else {
-                ScrollView {
-                    VStack(spacing: 0) {
-                        aliasSection
-                        mailboxesSection
-                            .padding(.vertical)
-                        noteSection
-                        Spacer()
-                    }
-                    .padding()
-                }
+        ScrollView {
+            VStack(spacing: 0) {
+                ItemDetailTitleView(color: tintColor,
+                                    icon: .image(IconProvider.alias),
+                                    title: viewModel.name)
+                .padding(.bottom, 24)
+
+                aliasMailboxesSection
+                    .padding(.bottom, 8)
+
+                NoteSection(note: viewModel.note, tintColor: tintColor)
+
+                ItemDetailFooterView(createTime: viewModel.createTime,
+                                     modifyTime: viewModel.modifyTime)
+                .padding(.top, 24)
             }
+            .padding()
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
-        .navigationTitle(viewModel.name)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbarContent }
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: viewModel.goBack) {
-                Image(uiImage: IconProvider.chevronLeft)
-                    .foregroundColor(.primary)
-            }
+            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
+                         color: tintColor,
+                         action: viewModel.goBack)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
             switch viewModel.itemContent.item.itemState {
             case .active:
-                Button(action: viewModel.edit) {
-                    Text("Edit")
-                        .foregroundColor(.interactionNorm)
+                HStack(spacing: 0) {
+                    CapsuleTitledButton(icon: IconProvider.pencil,
+                                        title: "Edit",
+                                        color: tintColor,
+                                        action: viewModel.edit)
+
+                    Menu(content: {
+                        Button(action: {
+                            print("Pin")
+                        }, label: {
+                            Label(title: {
+                                Text("Pin")
+                            }, icon: {
+                                Image(uiImage: IconProvider.bookmark)
+                            })
+                        })
+
+                        DestructiveButton(title: "Move to trash",
+                                          icon: IconProvider.trash,
+                                          action: { print("Trash") })
+                    }, label: {
+                        CapsuleButton(icon: IconProvider.threeDotsVertical,
+                                      color: tintColor,
+                                      action: {})
+                    })
                 }
 
             case .trashed:
@@ -78,105 +103,96 @@ struct AliasDetailView: View {
         }
     }
 
-    private var aliasSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Alias")
-                .sectionTitleText()
-
-            Text(viewModel.aliasEmail)
-                .sectionContentText()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    viewModel.copyAliasEmail(viewModel.aliasEmail)
-                }
-                .contextMenu {
-                    Button(action: {
-                        viewModel.copyAliasEmail(viewModel.aliasEmail)
-                    }, label: {
-                        Text("Copy")
-                    })
-
-                    Button(action: {
-                        viewModel.showLarge(viewModel.aliasEmail)
-                    }, label: {
-                        Text("Show large")
-                    })
-                }
+    private var aliasMailboxesSection: some View {
+        VStack(spacing: kItemDetailSectionPadding) {
+            aliasRow
+            Divider()
+            mailboxesRow
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
+        .padding(.vertical, kItemDetailSectionPadding)
         .roundedDetail()
+        .animation(.default, value: viewModel.mailboxes)
     }
 
-    private var mailboxesSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Mailboxes")
-                .sectionTitleText()
+    private var aliasRow: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.user,
+                                  color: tintColor.withAlphaComponent(0.5))
 
-            if let mailboxes = viewModel.mailboxes {
-                ForEach(mailboxes, id: \.ID) { mailbox in
-                    Text(mailbox.email)
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Username")
+                    .sectionTitleText()
+
+                if viewModel.aliasEmail.isEmpty {
+                    Text("No username")
+                        .placeholderText()
+                } else {
+                    Text(viewModel.aliasEmail)
                         .sectionContentText()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .contentShape(Rectangle())
-                        .contextMenu {
-                            Button(action: {
-                                viewModel.copyMailboxEmail(mailbox.email)
-                            }, label: {
-                                Text("Copy")
-                            })
-
-                            Button(action: {
-                                viewModel.showLarge(mailbox.email)
-                            }, label: {
-                                Text("Show large")
-                            })
-                        }
-
-                    if mailbox != mailboxes.last {
-                        Divider()
-                            .padding(.vertical, 2)
-                    }
                 }
-            } else {
-                AnimatingGrayGradient()
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                Divider()
-                AnimatingGrayGradient()
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                Divider()
-                AnimatingGrayGradient()
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: viewModel.copyAliasEmail)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .contentShape(Rectangle())
-        .roundedDetail()
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .contextMenu {
+            Button(action: viewModel.copyAliasEmail) {
+                Text("Copy")
+            }
+
+            Button(action: {
+                viewModel.showLarge(viewModel.aliasEmail)
+            }, label: {
+                Text("Show large")
+            })
+        }
     }
 
-    private var noteSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Note")
-                .sectionTitleText()
-
-            if viewModel.note.isEmpty {
-                Text("Empty note")
-                    .placeholderText()
-            } else {
-                Text(viewModel.note)
-                    .sectionContentText()
-                    .contextMenu {
-                        Button(action: {
-                            viewModel.copyNote(viewModel.note)
-                        }, label: {
-                            Text("Copy")
-                        })
-                    }
+    private var mailboxesRow: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            VStack {
+                ItemDetailSectionIcon(icon: IconProvider.forward,
+                                      color: tintColor.withAlphaComponent(0.5))
+                Spacer()
             }
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Forwarded to")
+                    .sectionTitleText()
+
+                if let mailboxes = viewModel.mailboxes {
+                    ForEach(mailboxes, id: \.ID) { mailbox in
+                        Text(mailbox.email)
+                            .sectionContentText()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(Rectangle())
+                            .contextMenu {
+                                Button(action: {
+                                    viewModel.copyMailboxEmail(mailbox.email)
+                                }, label: {
+                                    Text("Copy")
+                                })
+
+                                Button(action: {
+                                    viewModel.showLarge(mailbox.email)
+                                }, label: {
+                                    Text("Show large")
+                                })
+                            }
+                    }
+                } else {
+                    AnimatingGrayGradient()
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    AnimatingGrayGradient()
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    AnimatingGrayGradient()
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal)
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: viewModel.mailboxes)
     }
 }

@@ -33,13 +33,12 @@ public extension Text {
     func sectionTitleText() -> Text {
         self
             .font(.callout)
-            .foregroundColor(.textNorm)
-            .fontWeight(.semibold)
+            .foregroundColor(.textWeak)
     }
 
     func sectionContentText() -> Text {
         self
-            .foregroundColor(.textWeak)
+            .foregroundColor(.textNorm)
     }
 
     /// Used for placeholder `Text`s like `Empty notes`, `No items`...
