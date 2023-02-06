@@ -33,9 +33,12 @@ struct NoteDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                ItemDetailTitleView(color: tintColor,
-                                    icon: .image(IconProvider.note),
-                                    title: viewModel.name)
+                Text(viewModel.name)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .textSelection(.enabled)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
                 if viewModel.note.isEmpty {
                     Text("Empty note")
                         .placeholderText()
