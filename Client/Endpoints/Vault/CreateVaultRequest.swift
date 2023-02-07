@@ -125,7 +125,7 @@ extension CreateVaultRequest {
                                                   addressPassphrase: signingKeyPassphrase)
 
         guard let keyRing = CryptoKeyRing(.init(fromArmored: vaultKey.publicKey)) else {
-            throw CryptoError.failedToGenerateKeyRing
+            throw PPClientError.crypto(.failedToGenerateKeyRing)
         }
 
         let signedVaultKeyPassphraseKeyPacket = try Encryptor.sign(list: vaultKeyPassphraseKeyPacket,
@@ -134,31 +134,31 @@ extension CreateVaultRequest {
 
         let vaultData = try vault.data()
         guard let encryptedVaultData = try keyRing.encrypt(.init(vaultData), privateKey: nil).data else {
-            throw CryptoError.failedToEncrypt
+            throw PPClientError.crypto(.failedToEncrypt)
         }
 
         guard let nameVaultKeySignature = try Encryptor.sign(list: vaultData,
                                                              addressKey: vaultKey,
                                                              addressPassphrase: vaultKeyPassphrase).unArmor else {
-            throw CryptoError.failedToUnarmor("nameVaultKeySignature")
+            throw PPClientError.crypto(.failedToUnarmor("nameVaultKeySignature"))
         }
 
         guard let nameAddressSignature =
                 try Encryptor.sign(list: vaultData,
                                    addressKey: addressKey.key.privateKey,
                                    addressPassphrase: addressKey.keyPassphrase).unArmor else {
-            throw CryptoError.failedToUnarmor("nameAddressSignature")
+            throw PPClientError.crypto(.failedToUnarmor("nameAddressSignature"))
         }
 
         guard let encryptedNameAddressSignature = try keyRing.encrypt(.init(nameAddressSignature),
                                                                       privateKey: nil).data else {
-            throw CryptoError.failedToEncrypt
+            throw PPClientError.crypto(.failedToEncrypt)
         }
 
         guard let encryptedNameVaultKeySignature =
                 try keyRing.encrypt(.init(nameVaultKeySignature),
                                     privateKey: nil).data else {
-            throw CryptoError.failedToEncrypt
+            throw PPClientError.crypto(.failedToEncrypt)
         }
 
         self = .init(addressID: addressKey.addressId,
