@@ -183,6 +183,7 @@
 		3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */; };
 		3552F49428D37CFF00547146 /* ChangeMailboxesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */; };
 		3553424529928762003E3A47 /* PPClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553424429928762003E3A47 /* PPClientError.swift */; };
+		355342472992A685003E3A47 /* PPCoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355342462992A685003E3A47 /* PPCoreError.swift */; };
 		3553C21B296570090087518A /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C21A296570090087518A /* LogEntry.swift */; };
 		3553C21D296570260087518A /* LogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C21C296570260087518A /* LogLevel.swift */; };
 		3553C21F2965703D0087518A /* LogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C21E2965703D0087518A /* LogFormatter.swift */; };
@@ -764,6 +765,7 @@
 		3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesRequest.swift; sourceTree = "<group>"; };
 		3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesEndpoint.swift; sourceTree = "<group>"; };
 		3553424429928762003E3A47 /* PPClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPClientError.swift; sourceTree = "<group>"; };
+		355342462992A685003E3A47 /* PPCoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPCoreError.swift; sourceTree = "<group>"; };
 		3553C21A296570090087518A /* LogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
 		3553C21C296570260087518A /* LogLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogLevel.swift; sourceTree = "<group>"; };
 		3553C21E2965703D0087518A /* LogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogFormatter.swift; sourceTree = "<group>"; };
@@ -1887,6 +1889,7 @@
 			isa = PBXGroup;
 			children = (
 				35E50686286F87A600A3F6EA /* Core.h */,
+				355342462992A685003E3A47 /* PPCoreError.swift */,
 				35E506F8286FB36000A3F6EA /* Coordinator */,
 				35E506FF286FB38400A3F6EA /* DomainModels */,
 				35426B5628EF171000F89BB7 /* DomainParser */,
@@ -3366,6 +3369,7 @@
 				35E50708286FB3A600A3F6EA /* Publisher+Unwrap.swift in Sources */,
 				356A34B92977B46300969BA2 /* OTP.swift in Sources */,
 				3510A2FC287841AD0003BE79 /* StringExtensions.swift in Sources */,
+				355342472992A685003E3A47 /* PPCoreError.swift in Sources */,
 				356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */,
 				35426B6828EF196C00F89BB7 /* RulesParser.swift in Sources */,
 				353E8B74287622F300A2C5E3 /* BundleExtensions.swift in Sources */,
