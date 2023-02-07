@@ -155,11 +155,8 @@ struct AliasDetailView: View {
 
     private var mailboxesRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            VStack {
-                ItemDetailSectionIcon(icon: IconProvider.forward,
-                                      color: tintColor.withAlphaComponent(0.5))
-                Spacer()
-            }
+            ItemDetailSectionIcon(icon: IconProvider.forward,
+                                  color: tintColor.withAlphaComponent(0.5))
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("Forwarded to")

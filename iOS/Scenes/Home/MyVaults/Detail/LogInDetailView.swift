@@ -252,11 +252,8 @@ struct LogInDetailView: View {
 
     private var urlsSection: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            VStack {
-                ItemDetailSectionIcon(icon: IconProvider.earth,
-                                      color: tintColor.withAlphaComponent(0.5))
-                Spacer()
-            }
+            ItemDetailSectionIcon(icon: IconProvider.earth,
+                                  color: tintColor.withAlphaComponent(0.5))
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Website")
