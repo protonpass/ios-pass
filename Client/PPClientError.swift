@@ -25,6 +25,7 @@ import Foundation
 public enum PPClientError: Error, CustomDebugStringConvertible {
     case coreData(CoreDataFailureReason)
     case corruptedUserData(UserDataCorruptionReason)
+    case unknownShareType
 
     public var debugDescription: String {
         switch self {
@@ -32,6 +33,8 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
             return reason.debugDescription
         case .corruptedUserData(let reason):
             return reason.debugDescription
+        case .unknownShareType:
+            return "Unknown share type"
         }
     }
 }
