@@ -26,6 +26,7 @@ import UIComponents
 struct LogInDetailView: View {
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
+    @State private var bottomId = UUID().uuidString
     private let tintColor = UIColor.brandNorm
 
     init(viewModel: LogInDetailViewModel) {
@@ -33,23 +34,26 @@ struct LogInDetailView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                ItemDetailTitleView(color: tintColor,
-                                    icon: .initials(String(viewModel.name.prefix(2))),
-                                    title: viewModel.name)
-                .padding(.bottom, 24)
+        ScrollViewReader { value in
+            ScrollView {
+                VStack(spacing: 0) {
+                    ItemDetailTitleView(color: tintColor,
+                                        icon: .initials(String(viewModel.name.prefix(2))),
+                                        title: viewModel.name)
+                    .padding(.bottom, 24)
 
-                usernamePassword2FaSection
-                urlsSection
-                    .padding(.vertical, 8)
-                NoteSection(note: viewModel.note, tintColor: tintColor)
+                    usernamePassword2FaSection
+                    urlsSection
+                        .padding(.vertical, 8)
+                    NoteSection(note: viewModel.note, tintColor: tintColor)
 
-                ItemDetailFooterView(createTime: viewModel.createTime,
-                                     modifyTime: viewModel.modifyTime)
-                .padding(.top, 24)
+                    ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
+                                              onExpand: { withAnimation { value.scrollTo(bottomId) } })
+                    .padding(.top, 24)
+                    .id(bottomId)
+                }
+                .padding()
             }
-            .padding()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
@@ -248,11 +252,8 @@ struct LogInDetailView: View {
 
     private var urlsSection: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            VStack {
-                ItemDetailSectionIcon(icon: IconProvider.earth,
-                                      color: tintColor.withAlphaComponent(0.5))
-                Spacer()
-            }
+            ItemDetailSectionIcon(icon: IconProvider.earth,
+                                  color: tintColor.withAlphaComponent(0.5))
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Website")

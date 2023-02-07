@@ -28,8 +28,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     @Published private(set) var name = ""
     @Published private(set) var note = ""
     @Published private(set) var mailboxes: [Mailbox]?
-    @Published private(set) var createTime = 0
-    @Published private(set) var modifyTime = 0
     @Published private(set) var error: Error?
 
     private let aliasRepository: AliasRepositoryProtocol
@@ -47,8 +45,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 
     override func bindValues() {
         aliasEmail = itemContent.item.aliasEmail ?? ""
-        createTime = Int(itemContent.item.createTime)
-        modifyTime = Int(itemContent.item.modifyTime)
         if case .alias = itemContent.contentData {
             self.name = itemContent.name
             self.note = itemContent.note

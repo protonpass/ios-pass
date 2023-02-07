@@ -24,6 +24,7 @@ import UIComponents
 
 struct NoteDetailView: View {
     @StateObject private var viewModel: NoteDetailViewModel
+    @State private var bottomId = UUID().uuidString
     private let tintColor = UIColor.systemYellow
 
     init(viewModel: NoteDetailViewModel) {
@@ -31,26 +32,33 @@ struct NoteDetailView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                ItemDetailTitleView(color: tintColor,
-                                    icon: .image(IconProvider.note),
-                                    title: viewModel.name)
-                if viewModel.note.isEmpty {
-                    Text("Empty note")
-                        .placeholderText()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                } else {
-                    Text(viewModel.note)
-                        .sectionContentText()
+        ScrollViewReader { value in
+            ScrollView {
+                VStack(spacing: 24) {
+                    Text(viewModel.name)
+                        .font(.title)
+                        .fontWeight(.bold)
                         .textSelection(.enabled)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                }
 
-                ItemDetailFooterView(createTime: viewModel.createTime,
-                                     modifyTime: viewModel.modifyTime)
+                    if viewModel.note.isEmpty {
+                        Text("Empty note")
+                            .placeholderText()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    } else {
+                        Text(viewModel.note)
+                            .sectionContentText()
+                            .textSelection(.enabled)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+
+                    ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
+                                              onExpand: { withAnimation { value.scrollTo(bottomId) } })
+                    .padding(.top, 24)
+                    .id(bottomId)
+                }
+                .padding()
             }
-            .padding()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()

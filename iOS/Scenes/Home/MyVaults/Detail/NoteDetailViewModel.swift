@@ -26,12 +26,8 @@ final class NoteDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obser
 
     @Published private(set) var name = ""
     @Published private(set) var note = ""
-    @Published private(set) var createTime = 0
-    @Published private(set) var modifyTime = 0
 
     override func bindValues() {
-        self.createTime = Int(itemContent.item.createTime)
-        self.modifyTime = Int(itemContent.item.modifyTime)
         if case .note = itemContent.contentData {
             self.name = itemContent.name
             self.note = itemContent.note
