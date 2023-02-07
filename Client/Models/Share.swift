@@ -33,10 +33,6 @@ public enum ShareType: Int16 {
     case item = 3
 }
 
-public enum ShareError: Error {
-    case unknownShareType
-}
-
 public enum ShareContent {
     case vault(VaultProtocol)
     case label // Not handled yet
@@ -167,7 +163,7 @@ extension Share {
 
         switch shareType {
         case .unknown:
-            throw ShareError.unknownShareType
+            throw PPClientError.unknownShareType
         case .vault:
             let vaultContent = try VaultProtobuf(data: content)
             let vault = Vault(id: vaultID,
