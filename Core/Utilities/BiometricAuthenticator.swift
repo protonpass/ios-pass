@@ -37,10 +37,6 @@ public extension BiometricAuthenticator {
     }
 }
 
-public enum BiometricAuthenticatorError: Error {
-    case biometryTypeNotInitialized
-}
-
 public final class BiometricAuthenticator: ObservableObject {
     @Published public private(set) var biometryTypeState: BiometryTypeState = .idle
     @Published public private(set) var authenticationState: AuthenticationState = .idle
@@ -75,7 +71,7 @@ public final class BiometricAuthenticator: ObservableObject {
 
     public func authenticate(reason: String) async throws -> Bool {
         guard case .initialized = biometryTypeState else {
-            throw BiometricAuthenticatorError.biometryTypeNotInitialized
+            throw PPCoreError.biometryTypeNotInitialized
         }
 
         return try await context.evaluatePolicy(policy, localizedReason: reason)
