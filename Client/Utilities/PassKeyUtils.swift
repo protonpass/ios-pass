@@ -33,7 +33,7 @@ public enum PassKeyUtils {
                                              vaultKey: VaultKey) throws -> String {
         guard let firstAddress = userData.addresses.first(where: { $0.addressID == share.addressID }) else {
             assertionFailure("Address can not be nil")
-            throw CryptoError.failedToEncrypt
+            throw PPClientError.crypto(.failedToEncrypt)
         }
 
         let addressKeys = firstAddress.keys.compactMap { key -> ProtonCore_Crypto.DecryptionKey? in
@@ -52,7 +52,7 @@ public enum PassKeyUtils {
                                                      share: share,
                                                      addressKeys: addressKeys)
 
-        guard signingKeyValid else { throw CryptoError.failedToVerifyVault }
+        guard signingKeyValid else { throw PPClientError.crypto(.failedToVerifyVault) }
 
         return try validateVaultKey(userData: userData,
                                     share: share,
@@ -64,7 +64,7 @@ public enum PassKeyUtils {
                                    share: Share,
                                    addressKeys: [ProtonCore_Crypto.DecryptionKey]) throws -> Bool {
         guard let signingKeyPassphraseData = try share.signingKeyPassphrase?.base64Decode() else {
-            throw CryptoError.failedToDecode
+            throw PPClientError.crypto(.failedToDecode)
         }
         let armoredSigningKeyPassphrase = try CryptoUtils.armorMessage(signingKeyPassphraseData)
         let decryptedSigningKeyPassphrase: String =
@@ -74,7 +74,7 @@ public enum PassKeyUtils {
         // Here we have decrypted signing key but it's not used yet
         let signingKeyFingerprint = try CryptoUtils.getFingerprint(key: share.signingKey)
         guard let decodedAcceptanceSignature = try share.acceptanceSignature.base64Decode() else {
-            throw CryptoError.failedToDecode
+            throw PPClientError.crypto(.failedToDecode)
         }
         let armoredDecodedAcceptanceSignature = try CryptoUtils.armorSignature(decodedAcceptanceSignature)
 
@@ -96,7 +96,7 @@ public enum PassKeyUtils {
         }
         let vaultKeyFingerprint = try CryptoUtils.getFingerprint(key: vaultKey.key)
         guard let decodedVaultKeySignature = try vaultKey.keySignature.base64Decode() else {
-            throw CryptoError.failedToDecode
+            throw PPClientError.crypto(.failedToDecode)
         }
         let armoredDecodedVaultKeySignature = try CryptoUtils.armorSignature(decodedVaultKeySignature)
 
@@ -105,10 +105,10 @@ public enum PassKeyUtils {
             plainText: vaultKeyFingerprint,
             verifierKey: .init(value: share.signingKey.publicKey))
 
-        guard vaultKeyValid else { throw CryptoError.failedToVerifyVault }
+        guard vaultKeyValid else { throw PPClientError.crypto(.failedToVerifyVault) }
 
         guard let vaultKeyPassphraseData = try vaultKey.keyPassphrase?.base64Decode() else {
-            throw CryptoError.failedToDecode
+            throw PPClientError.crypto(.failedToDecode)
         }
         let armoredVaultKeyPassphrase = try CryptoUtils.armorMessage(vaultKeyPassphraseData)
         return try ProtonCore_Crypto.Decryptor.decrypt(decryptionKeys: addressKeys,

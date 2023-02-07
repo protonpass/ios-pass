@@ -53,7 +53,7 @@ public extension UpdateItemRequest {
         let itemContentData = try itemContent.data()
 
         guard let contentData = try oldRevision.content.base64Decode() else {
-            throw CryptoError.failedToDecode
+            throw PPClientError.crypto(.failedToDecode)
         }
 
         let content = try CryptoUtils.armorMessage(contentData)
@@ -71,12 +71,12 @@ public extension UpdateItemRequest {
                                                   addressPassphrase: itemKeyPassphrase)
 
         guard let unarmoredUserSignature = userSignature.unArmor else {
-            throw CryptoError.failedToUnarmor("UserSignature")
+            throw PPClientError.crypto(.failedToUnarmor("UserSignature"))
         }
         let encryptedUserSignature = try sessionKey.encrypt(.init(unarmoredUserSignature))
 
         guard let unarmoredItemKeySignature = itemKeySignature.unArmor else {
-            throw CryptoError.failedToUnarmor("ItemKeySignature")
+            throw PPClientError.crypto(.failedToUnarmor("ItemKeySignature"))
         }
         let encryptedItemSignature = try sessionKey.encrypt(.init(unarmoredItemKeySignature))
 

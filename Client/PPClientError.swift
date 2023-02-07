@@ -26,6 +26,7 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
     case coreData(CoreDataFailureReason)
     case corruptedEncryptedContent
     case corruptedUserData(UserDataCorruptionReason)
+    case crypto(CryptoFailureReason)
     case keys(KeysFailureReason)
     case networkOperationsOnMainThread
     case shareNotFoundInLocalDB(shareID: String)
@@ -39,6 +40,8 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
         case .corruptedEncryptedContent:
             return "Corrupted encrypted content"
         case .corruptedUserData(let reason):
+            return reason.debugDescription
+        case .crypto(let reason):
             return reason.debugDescription
         case .keys(let reason):
             return reason.debugDescription
@@ -91,6 +94,7 @@ public extension PPClientError {
     }
 }
 
+// MARK: - KeysFailureReason
 public extension PPClientError {
     enum KeysFailureReason: CustomDebugStringConvertible {
         case vaultKeyNotFound(shareID: String)
@@ -102,6 +106,52 @@ public extension PPClientError {
                 return "Vault key not found for share \"\(shareID)\""
             case let .itemKeyNotFound(shareID, rotationID):
                 return "Item key not found for share \"\(shareID)\" rotation ID \"\(rotationID)\""
+            }
+        }
+    }
+}
+
+public extension PPClientError {
+    enum CryptoFailureReason: CustomDebugStringConvertible {
+        case failedToSplitPGPMessage
+        case failedToUnarmor(String)
+        case failedToArmor(String)
+        case failedToGetFingerprint
+        case failedToGenerateKeyRing
+        case failedToEncrypt
+        case failedToVerifyVault
+        case failedToDecryptContent
+        case failedToVerifySignature
+        case failedToGenerateSessionKey
+        case failedToDecode
+        case addressNotFound(addressID: String)
+
+        public var debugDescription: String {
+            switch self {
+            case .failedToSplitPGPMessage:
+                return "Failed to split PGP message"
+            case .failedToUnarmor(let string):
+                return "Failed to unarmor \(string)"
+            case .failedToArmor(let string):
+                return "Failed to armor \(string)"
+            case .failedToGetFingerprint:
+                return "Failed to get fingerprint"
+            case .failedToGenerateKeyRing:
+                return "Failed to generate key ring"
+            case .failedToEncrypt:
+                return "Failed to encrypt"
+            case .failedToVerifyVault:
+                return "Failed to verify vault"
+            case .failedToDecryptContent:
+                return "Failed to decrypt content"
+            case .failedToVerifySignature:
+                return "Failed to verify signature"
+            case .failedToGenerateSessionKey:
+                return "Failed to generate session key"
+            case .failedToDecode:
+                return "Failed to decode"
+            case .addressNotFound(let addressID):
+                return "Address not found \"\(addressID)\""
             }
         }
     }
