@@ -24,15 +24,19 @@ import Foundation
 /// Proton Pass client module related errors.
 public enum PPClientError: Error, CustomDebugStringConvertible {
     case coreData(CoreDataFailureReason)
+    case corruptedUserData(UserDataCorruptionReason)
 
     public var debugDescription: String {
         switch self {
         case .coreData(let reason):
             return reason.debugDescription
+        case .corruptedUserData(let reason):
+            return reason.debugDescription
         }
     }
 }
 
+// MARK: - CoreDataFailureReason
 public extension PPClientError {
     enum CoreDataFailureReason: CustomDebugStringConvertible {
         case corrupted(object: NSManagedObject, property: String)
@@ -44,6 +48,26 @@ public extension PPClientError {
                 return "Corrupted \(type(of: object)): missing value for \(property)"
             case .corruptedShareKeys(let shareId):
                 return "ItemKeys & VaultKeys are not synced for share with ID \(shareId)"
+            }
+        }
+    }
+}
+
+// MARK: - UserDataCorruptionReason
+public extension PPClientError {
+    enum UserDataCorruptionReason: CustomDebugStringConvertible {
+        case noAddresses
+        case noAddressKeys
+        case failedToGetAddressKeyPassphrase
+
+        public var debugDescription: String {
+            switch self {
+            case .noAddresses:
+                return "No addresses"
+            case .noAddressKeys:
+                return "No address keys"
+            case .failedToGetAddressKeyPassphrase:
+                return "Failed to get address key passphrase"
             }
         }
     }
