@@ -28,22 +28,16 @@ public struct AddressKey {
     public let keyPassphrase: String
 }
 
-public enum UserDataError: Error {
-    case noAddresses
-    case noAddressKeys
-    case failedToGetAddressKeyPassphrase
-}
-
 public extension UserData {
     // To be refactored: https://jira.protontech.ch/browse/PASSBE-201
     func getAddressKey() throws -> AddressKey {
         guard let address = addresses.first else {
-            throw UserDataError.noAddresses
+            throw PPClientError.corruptedUserData(.noAddresses)
         }
 
         // First key is primary one
         guard let addressKey = address.keys.first else {
-            throw UserDataError.noAddressKeys
+            throw PPClientError.corruptedUserData(.noAddressKeys)
         }
 
         let userBinKeys = user.keys.map { $0.privateKey }.compactMap { $0.unArmor }
@@ -57,6 +51,6 @@ public extension UserData {
             }
         }
 
-        throw UserDataError.failedToGetAddressKeyPassphrase
+        throw PPClientError.corruptedUserData(.failedToGetAddressKeyPassphrase)
     }
 }
