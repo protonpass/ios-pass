@@ -33,8 +33,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
     @Published private(set) var note = ""
-    @Published private(set) var createTime = 0
-    @Published private(set) var modifyTime = 0
     @Published private(set) var totpManager: TOTPManager
 
     private var cancellables = Set<AnyCancellable>()
@@ -54,8 +52,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     }
 
     override func bindValues() {
-        self.createTime = Int(itemContent.item.createTime)
-        self.modifyTime = Int(itemContent.item.modifyTime)
         if case .login(let data) = itemContent.contentData {
             self.name = itemContent.name
             self.note = itemContent.note

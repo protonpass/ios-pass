@@ -25,6 +25,7 @@ import UIComponents
 
 struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
+    @State private var bottomId = UUID().uuidString
     private let tintColor = UIColor.notificationSuccess
 
     init(viewModel: AliasDetailViewModel) {
@@ -32,23 +33,26 @@ struct AliasDetailView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                ItemDetailTitleView(color: tintColor,
-                                    icon: .image(IconProvider.alias),
-                                    title: viewModel.name)
-                .padding(.bottom, 24)
+        ScrollViewReader { value in
+            ScrollView {
+                VStack(spacing: 0) {
+                    ItemDetailTitleView(color: tintColor,
+                                        icon: .image(IconProvider.alias),
+                                        title: viewModel.name)
+                    .padding(.bottom, 24)
 
-                aliasMailboxesSection
-                    .padding(.bottom, 8)
+                    aliasMailboxesSection
+                        .padding(.bottom, 8)
 
-                NoteSection(note: viewModel.note, tintColor: tintColor)
+                    NoteSection(note: viewModel.note, tintColor: tintColor)
 
-                ItemDetailFooterView(createTime: viewModel.createTime,
-                                     modifyTime: viewModel.modifyTime)
-                .padding(.top, 24)
+                    ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
+                                              onExpand: { withAnimation { value.scrollTo(bottomId) } })
+                    .padding(.top, 24)
+                    .id(bottomId)
+                }
+                .padding()
             }
-            .padding()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
