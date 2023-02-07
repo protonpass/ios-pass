@@ -33,53 +33,79 @@ struct ItemDetailMoreInfoSection: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Divider()
-            if isExpanded {
-                if let lastAutoFilledDate = uiModel.lastAutoFilledDate {
-                    Label(title: {
-                        Text("Last auto-filled: ")
-                            .fontWeight(.bold) +
-                        Text(lastAutoFilledDate)
-                    }, icon: {
-                        icon(from: IconProvider.penSquare)
-                    })
-                    .font(.caption)
-                    .foregroundColor(.textWeak)
-                }
-
-                Label(title: {
-                    Text(uiModel.modificationCount)
-                        .fontWeight(.bold)
-                }, icon: {
-                    icon(from: IconProvider.penSquare)
-                })
-                .font(.caption)
-                .foregroundColor(.textWeak)
-
-                Label(title: {
-                    Text("Modified: ")
-                        .fontWeight(.bold) +
-                    Text(uiModel.modificationDate)
-                }, icon: {
-                    icon(from: IconProvider.clock)
-                })
-                .font(.caption)
-                .foregroundColor(.textWeak)
-
-                Label(title: {
-                    Text("Created: ")
-                        .fontWeight(.bold) +
-                    Text(uiModel.creationDate)
-                }, icon: {
-                    icon(from: IconProvider.calendarToday)
-                })
-                .font(.caption)
-                .foregroundColor(.textWeak)
-            } else {
-                moreInfoRow
+        VStack(alignment: .leading, spacing: 8) {
+            if !isExpanded {
+                Divider()
             }
-            Divider()
+
+            HStack {
+                HStack {
+                    Label(title: {
+                        Text("More info")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.textWeak)
+                    }, icon: {
+                        icon(from: IconProvider.infoCircle)
+                    })
+
+                    Spacer()
+
+                    if !isExpanded {
+                        Image(uiImage: IconProvider.chevronDown)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16)
+                            .foregroundColor(.textWeak)
+                    }
+                }
+            }
+            .padding(.bottom, 8)
+
+            if isExpanded {
+                Group {
+                    let sectionTitleWidth: CGFloat = 100
+
+                    if let lastAutoFilledDate = uiModel.lastAutoFilledDate {
+                        HStack(spacing: 20) {
+                            Text("Auto-filled:")
+                                .fontWeight(.semibold)
+                                .frame(width: sectionTitleWidth, alignment: .trailing)
+                            Text(lastAutoFilledDate)
+                                .fontWeight(.semibold)
+                        }
+                    }
+
+                    HStack(spacing: 20) {
+                        VStack {
+                            Text("Modified:")
+                                .fontWeight(.semibold)
+                                .frame(width: sectionTitleWidth, alignment: .trailing)
+                            Spacer()
+                        }
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(uiModel.modificationCount)
+                                .fontWeight(.semibold)
+                            Text(uiModel.modificationDate)
+                        }
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("Created:")
+                            .fontWeight(.semibold)
+                            .frame(width: sectionTitleWidth, alignment: .trailing)
+                        Text(uiModel.creationDate)
+                            .fontWeight(.semibold)
+                    }
+                }
+                .font(.caption)
+                .foregroundColor(.textWeak)
+            }
+
+            if !isExpanded {
+                Divider()
+            }
         }
         .contentShape(Rectangle())
         .onTapGesture {
@@ -144,13 +170,13 @@ final class ItemDetailMoreInfoSectionUIModel {
         let item = itemContent.item
 
         if case .login = itemContent.contentData.type {
-            lastAutoFilledDate = fullDateString(item.lastUseTime)
+            lastAutoFilledDate = fullDateString(item.lastUseTime).capitalizingFirstLetter()
         } else {
             lastAutoFilledDate = nil
         }
 
-        modificationCount = "Modified \(item.revision) time(s)"
-        modificationDate = fullDateString(item.modifyTime)
-        creationDate = fullDateString(item.createTime)
+        modificationCount = "\(item.revision) time(s)"
+        modificationDate = "Last time, \(fullDateString(item.modifyTime))"
+        creationDate = fullDateString(item.createTime).capitalizingFirstLetter()
     }
 }
