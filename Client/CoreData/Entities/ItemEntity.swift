@@ -55,35 +55,36 @@ extension ItemEntity {
 extension ItemEntity {
     func toEncryptedItem() throws -> SymmetricallyEncryptedItem {
         guard let shareID else {
-            throw CoreDataError.corrupted(object: self, property: "shareID")
+            throw PPClientError.coreData(.corrupted(object: self, property: "shareID"))
         }
 
         guard let itemID else {
-            throw CoreDataError.corrupted(object: self, property: "itemID")
+            throw PPClientError.coreData(.corrupted(object: self, property: "itemID"))
         }
 
         guard let rotationID else {
-            throw CoreDataError.corrupted(object: self, property: "rotationID")
+            throw PPClientError.coreData(.corrupted(object: self, property: "rotationID"))
         }
 
         guard let symmetricallyEncryptedContent else {
-            throw CoreDataError.corrupted(object: self, property: "symmetricallyEncryptedContent")
+            throw PPClientError.coreData(.corrupted(object: self,
+                                                    property: "symmetricallyEncryptedContent"))
         }
 
         guard let content else {
-            throw CoreDataError.corrupted(object: self, property: "content")
+            throw PPClientError.coreData(.corrupted(object: self, property: "content"))
         }
 
         guard let userSignature else {
-            throw CoreDataError.corrupted(object: self, property: "userSignature")
+            throw PPClientError.coreData(.corrupted(object: self, property: "userSignature"))
         }
 
         guard let itemKeySignature else {
-            throw CoreDataError.corrupted(object: self, property: "itemKeySignature")
+            throw PPClientError.coreData(.corrupted(object: self, property: "itemKeySignature"))
         }
 
         guard let signatureEmail else {
-            throw CoreDataError.corrupted(object: self, property: "signatureEmail")
+            throw PPClientError.coreData(.corrupted(object: self, property: "signatureEmail"))
         }
 
         let itemRevision = ItemRevision(itemID: itemID,

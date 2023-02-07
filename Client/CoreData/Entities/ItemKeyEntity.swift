@@ -44,15 +44,15 @@ extension ItemKeyEntity {
 extension ItemKeyEntity {
     func toItemKey() throws -> ItemKey {
         guard let rotationID else {
-            throw CoreDataError.corrupted(object: self, property: "rotationID")
+            throw PPClientError.coreData(.corrupted(object: self, property: "rotationID"))
         }
 
         guard let key else {
-            throw CoreDataError.corrupted(object: self, property: "key")
+            throw PPClientError.coreData(.corrupted(object: self, property: "key"))
         }
 
         guard let keySignature else {
-            throw CoreDataError.corrupted(object: self, property: "keySignature")
+            throw PPClientError.coreData(.corrupted(object: self, property: "keySignature"))
         }
 
         return .init(rotationID: rotationID,
