@@ -24,6 +24,7 @@ import Foundation
 /// Proton Pass client module related errors.
 public enum PPClientError: Error, CustomDebugStringConvertible {
     case coreData(CoreDataFailureReason)
+    case corruptedEncryptedContent
     case corruptedUserData(UserDataCorruptionReason)
     case unknownShareType
     case unmatchedRotationID(leftID: String, rightID: String)
@@ -32,6 +33,8 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
         switch self {
         case .coreData(let reason):
             return reason.debugDescription
+        case .corruptedEncryptedContent:
+            return "Corrupted encrypted content"
         case .corruptedUserData(let reason):
             return reason.debugDescription
         case .unknownShareType:
