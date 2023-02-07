@@ -26,6 +26,7 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
     case coreData(CoreDataFailureReason)
     case corruptedUserData(UserDataCorruptionReason)
     case unknownShareType
+    case unmatchedRotationID(leftID: String, rightID: String)
 
     public var debugDescription: String {
         switch self {
@@ -35,6 +36,8 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
             return reason.debugDescription
         case .unknownShareType:
             return "Unknown share type"
+        case let .unmatchedRotationID(leftID, rightID):
+            return "Unmatched rotation IDs \"\(leftID)\" & \"\(rightID)\""
         }
     }
 }
