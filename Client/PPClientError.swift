@@ -30,6 +30,7 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
     case keys(KeysFailureReason)
     case networkOperationsOnMainThread
     case shareNotFoundInLocalDB(shareID: String)
+    case symmetricEncryption(SymmetricEncryptionFailureReason)
     case unknownShareType
     case unmatchedRotationID(leftID: String, rightID: String)
 
@@ -49,6 +50,8 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
             return "Network operations shouldn't be called on main thread"
         case .shareNotFoundInLocalDB(let shareID):
             return "Share not found in local DB \"\(shareID)\""
+        case .symmetricEncryption(let reason):
+            return reason.debugDescription
         case .unknownShareType:
             return "Unknown share type"
         case let .unmatchedRotationID(leftID, rightID):
@@ -111,6 +114,7 @@ public extension PPClientError {
     }
 }
 
+// MARK: - CryptoFailureReason
 public extension PPClientError {
     enum CryptoFailureReason: CustomDebugStringConvertible {
         case failedToSplitPGPMessage
@@ -152,6 +156,25 @@ public extension PPClientError {
                 return "Failed to decode"
             case .addressNotFound(let addressID):
                 return "Address not found \"\(addressID)\""
+            }
+        }
+    }
+}
+
+public extension PPClientError {
+    enum SymmetricEncryptionFailureReason: CustomDebugStringConvertible {
+        case failedToUtf8ConvertToData(String)
+        case failedToBase64Decode(String)
+        case failedToUtf8Decode
+
+        public var debugDescription: String {
+            switch self {
+            case .failedToUtf8ConvertToData(let string):
+                return "Failed to UTF8 convert to data \"\(string)\""
+            case .failedToBase64Decode(let string):
+                return "Failed to base 64 decode \"\(string)\""
+            case .failedToUtf8Decode:
+                return "Failed to UTF8 decode"
             }
         }
     }
