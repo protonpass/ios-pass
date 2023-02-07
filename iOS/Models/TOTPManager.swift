@@ -133,27 +133,30 @@ final class TOTPManager: DeinitPrintable, ObservableObject {
                 state = .invalid
                 return
             }
-            beginCaculating(totp: totp,
-                            username: otpComponents.label,
-                            issuer: otpComponents.issuer)
+
+            calculate(totp: totp,
+                      username: otpComponents.label,
+                      issuer: otpComponents.issuer)
+
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+                self?.calculate(totp: totp,
+                                username: otpComponents.label,
+                                issuer: otpComponents.issuer)
+            }
         } catch {
             logger.error(error)
             state = .invalid
         }
     }
-}
 
-private extension TOTPManager {
-    func beginCaculating(totp: TOTP, username: String, issuer: String?) {
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            let secondsPast1970 = Int(Date().timeIntervalSince1970)
-            let code = totp.generate(secondsPast1970: secondsPast1970) ?? ""
-            let timerData = totp.timerData(secondsPast1970: secondsPast1970)
-            self?.state = .valid(.init(username: username,
-                                       issuer: issuer,
-                                       code: code,
-                                       timerData: timerData))
-        }
+    private func calculate(totp: TOTP, username: String, issuer: String?) {
+        let secondsPast1970 = Int(Date().timeIntervalSince1970)
+        let code = totp.generate(secondsPast1970: secondsPast1970) ?? ""
+        let timerData = totp.timerData(secondsPast1970: secondsPast1970)
+        state = .valid(.init(username: username,
+                             issuer: issuer,
+                             code: code,
+                             timerData: timerData))
     }
 }
 
