@@ -27,6 +27,7 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
     case corruptedEncryptedContent
     case corruptedUserData(UserDataCorruptionReason)
     case keys(KeysFailureReason)
+    case networkOperationsOnMainThread
     case shareNotFoundInLocalDB(shareID: String)
     case unknownShareType
     case unmatchedRotationID(leftID: String, rightID: String)
@@ -41,6 +42,8 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
             return reason.debugDescription
         case .keys(let reason):
             return reason.debugDescription
+        case .networkOperationsOnMainThread:
+            return "Network operations shouldn't be called on main thread"
         case .shareNotFoundInLocalDB(let shareID):
             return "Share not found in local DB \"\(shareID)\""
         case .unknownShareType:
