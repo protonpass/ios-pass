@@ -26,6 +26,7 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
     case coreData(CoreDataFailureReason)
     case corruptedEncryptedContent
     case corruptedUserData(UserDataCorruptionReason)
+    case shareNotFoundInLocalDB(shareID: String)
     case unknownShareType
     case unmatchedRotationID(leftID: String, rightID: String)
 
@@ -37,6 +38,8 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
             return "Corrupted encrypted content"
         case .corruptedUserData(let reason):
             return reason.debugDescription
+        case .shareNotFoundInLocalDB(let shareID):
+            return "Share not found in local DB \"\(shareID)\""
         case .unknownShareType:
             return "Unknown share type"
         case let .unmatchedRotationID(leftID, rightID):
