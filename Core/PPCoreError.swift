@@ -24,6 +24,7 @@ import Foundation
 public enum PPCoreError: Error, CustomDebugStringConvertible {
     case biometryTypeNotInitialized
     case failedToConvertBase64StringToData(String)
+    case totp(TOTPDataCurruptionReason)
 
     public var debugDescription: String {
         switch self {
@@ -31,6 +32,27 @@ public enum PPCoreError: Error, CustomDebugStringConvertible {
             return "Biometry type not initialized"
         case .failedToConvertBase64StringToData(let string):
             return "Failed to convert base 64 string to data \"\(string)\""
+        case .totp(let reason):
+            return reason.debugDescription
+        }
+    }
+}
+
+public extension PPCoreError {
+    enum TOTPDataCurruptionReason: CustomDebugStringConvertible {
+        case unsupportedOTP
+        case failedToDecodeSecret
+        case failedToInitializeTOTPObject
+
+        public var debugDescription: String {
+            switch self {
+            case .unsupportedOTP:
+                return "Unsupported OTP type (not TOTP)"
+            case .failedToDecodeSecret:
+                return "Failed to decode secret"
+            case .failedToInitializeTOTPObject:
+                return "Failed to initialize TOTP object"
+            }
         }
     }
 }
