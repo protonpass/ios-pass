@@ -348,7 +348,7 @@ extension CredentialProviderCoordinator: APIServiceDelegate {
                                           lastUseTime: Int64(lastUseTime)) }
             try await credentialManager.insert(credentials: credentials)
         } else {
-            throw CredentialsViewModelError.notLogInItem
+            throw PPError.credentialProvider(.notLogInItem)
         }
     }
 }

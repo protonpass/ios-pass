@@ -65,16 +65,22 @@ extension PPError {
 // MARK: - CredentialProviderFailureReason
 extension PPError {
     enum CredentialProviderFailureReason: CustomDebugStringConvertible {
-        case missingRecordIdentifier
         case failedToAuthenticate
+        case invalidURL(URL?)
+        case missingRecordIdentifier
+        case notLogInItem
         case userCancelled
 
         var debugDescription: String {
             switch self {
-            case .missingRecordIdentifier:
-                return "ASPasswordCredentialIdentity object missing record identifier"
             case .failedToAuthenticate:
                 return "Failed to authenticate"
+            case .invalidURL(let url):
+                return "Invalid URL \"\(url?.absoluteString)\""
+            case .missingRecordIdentifier:
+                return "ASPasswordCredentialIdentity object missing record identifier"
+            case .notLogInItem:
+                return "Not log in item"
             case .userCancelled:
                 return "User cancelled"
             }
