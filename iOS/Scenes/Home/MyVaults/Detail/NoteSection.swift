@@ -23,6 +23,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+/// Note section of item detail pages
 struct NoteSection: View {
     @State private var isShowingFullNote = false
     let itemContent: ItemContent
@@ -42,12 +43,51 @@ struct NoteSection: View {
                 } else {
                     Text(itemContent.note)
                         .sectionContentText()
+                        .lineLimit(10)
                         .textSelection(.enabled)
+                        .onTapGesture {
+                            // Pure heuristic
+                            if itemContent.note.count > 400 {
+                                isShowingFullNote.toggle()
+                            }
+                        }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(kItemDetailSectionPadding)
         .roundedDetail()
+        .sheet(isPresented: $isShowingFullNote) {
+            FullNoteView(itemContent: itemContent)
+        }
+    }
+}
+
+private struct FullNoteView: View {
+    @Environment(\.dismiss) private var dismiss
+    let itemContent: ItemContent
+
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading) {
+                    ItemDetailTitleView(itemContent: itemContent)
+                        .padding(.bottom)
+                    Text("Note")
+                        .font(.callout)
+                        .foregroundColor(.textWeak)
+                    Text(itemContent.note)
+                        .textSelection(.enabled)
+                }
+                .padding()
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    CircleButton(icon: IconProvider.chevronDown,
+                                 color: itemContent.tintColor,
+                                 action: dismiss.callAsFunction)
+                }
+            }
+        }
     }
 }
