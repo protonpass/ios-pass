@@ -357,7 +357,7 @@ private extension VaultContentViewModel {
     func getItemsTask() -> Task<[ItemListUiModel], Error> {
         Task.detached(priority: .userInitiated) {
             guard let shareId = self.vaultSelection.selectedVault?.shareId else {
-                throw PPError.noSelectedVault
+                throw PPError.vault(.noSelectedVault)
             }
             let encryptedItems = try await self.itemRepository.getItems(shareId: shareId,
                                                                         state: .active)

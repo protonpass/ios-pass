@@ -24,7 +24,7 @@ import Foundation
 enum PPError: Error, CustomDebugStringConvertible {
     case failedToGetOrCreateSymmetricKey
     case itemNotFound(shareID: String, itemID: String)
-    case noSelectedVault
+    case vault(VaultFailureReason)
 
     var debugDescription: String {
         switch self {
@@ -32,8 +32,27 @@ enum PPError: Error, CustomDebugStringConvertible {
             return "Failed to get or create symmetric key"
         case let .itemNotFound(shareID, itemID):
             return "Item not found \"\(itemID)\" - Share ID \"\(shareID)\""
-        case .noSelectedVault:
-            return "No selected vault"
+        case .vault(let reason):
+            return reason.debugDescription
+        }
+    }
+}
+
+extension PPError {
+    enum VaultFailureReason: CustomDebugStringConvertible {
+        case canNotDeleteLastVault
+        case noSelectedVault
+        case vaultNotEmpty(String)
+
+        var debugDescription: String {
+            switch self {
+            case .canNotDeleteLastVault:
+                return "Can not delete last vault"
+            case .noSelectedVault:
+                return "No selected vault"
+            case .vaultNotEmpty(let id):
+                return "Vault not empty \"\(id)\""
+            }
         }
     }
 }
