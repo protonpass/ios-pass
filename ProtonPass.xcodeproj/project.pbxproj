@@ -1588,22 +1588,14 @@
 		356B69762949DB9100868771 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				3572E5262994043C00775FAC /* Supporting Views */,
 				354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */,
 				3552F48D28D3467100547146 /* AliasDetailView.swift */,
 				3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */,
-				35283E4F2927B55D002F5B84 /* FullScreenView.swift */,
-				355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */,
-				356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */,
-				35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */,
-				3572E5242993D7BF00775FAC /* ItemDetailToolbar.swift */,
-				3565FD4E298D319500E2A0EE /* ItemDetailSectionIcon.swift */,
 				354F769128C8678100EB2383 /* LogInDetailView.swift */,
 				354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */,
 				354F769528C879AA00EB2383 /* NoteDetailView.swift */,
 				354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */,
-				3565FD5C298D49B300E2A0EE /* NoteSection.swift */,
-				3565FD54298D3E5700E2A0EE /* TOTPCircularTimer.swift */,
-				3565FD56298D3E9400E2A0EE /* TOTPText.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -1644,6 +1636,22 @@
 				3572E51829938A3C00775FAC /* TOTPManager.swift */,
 			);
 			path = OTP;
+			sourceTree = "<group>";
+		};
+		3572E5262994043C00775FAC /* Supporting Views */ = {
+			isa = PBXGroup;
+			children = (
+				35283E4F2927B55D002F5B84 /* FullScreenView.swift */,
+				355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */,
+				356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */,
+				35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */,
+				3572E5242993D7BF00775FAC /* ItemDetailToolbar.swift */,
+				3565FD4E298D319500E2A0EE /* ItemDetailSectionIcon.swift */,
+				3565FD5C298D49B300E2A0EE /* NoteSection.swift */,
+				3565FD54298D3E5700E2A0EE /* TOTPCircularTimer.swift */,
+				3565FD56298D3E9400E2A0EE /* TOTPText.swift */,
+			);
+			path = "Supporting Views";
 			sourceTree = "<group>";
 		};
 		357D9FCE28A9815500F012BB /* Datasources */ = {
