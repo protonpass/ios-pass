@@ -18,17 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import SwiftUI
-
-struct TOTPTimerData: Hashable {
-    public let total: Int
-    public let remaining: Int
-
-    public init(total: Int, remaining: Int) {
-        self.total = total
-        self.remaining = remaining
-    }
-}
 
 struct TOTPCircularTimer: View {
     let percentage: CGFloat
