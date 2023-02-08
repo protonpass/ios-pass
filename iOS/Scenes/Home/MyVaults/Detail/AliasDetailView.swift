@@ -26,7 +26,6 @@ import UIComponents
 struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @State private var bottomId = UUID().uuidString
-    private let tintColor = UIColor.notificationSuccess
 
     init(viewModel: AliasDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -36,15 +35,13 @@ struct AliasDetailView: View {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
-                    ItemDetailTitleView(color: tintColor,
-                                        icon: .image(IconProvider.alias),
-                                        title: viewModel.name)
-                    .padding(.bottom, 24)
+                    ItemDetailTitleView(itemContent: viewModel.itemContent)
+                        .padding(.bottom, 24)
 
                     aliasMailboxesSection
                         .padding(.bottom, 8)
 
-                    NoteSection(itemContent: viewModel.itemContent, tintColor: tintColor)
+                    NoteSection(itemContent: viewModel.itemContent)
 
                     ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
                                               onExpand: { withAnimation { value.scrollTo(bottomId) } })
@@ -79,7 +76,7 @@ struct AliasDetailView: View {
     private var aliasRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user,
-                                  color: tintColor.withAlphaComponent(0.5))
+                                  color: viewModel.itemContent.tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -114,7 +111,7 @@ struct AliasDetailView: View {
     private var mailboxesRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.forward,
-                                  color: tintColor.withAlphaComponent(0.5))
+                                  color: viewModel.itemContent.tintColor)
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("Forwarded to")

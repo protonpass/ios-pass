@@ -26,12 +26,11 @@ import UIComponents
 struct NoteSection: View {
     @State private var isShowingFullNote = false
     let itemContent: ItemContent
-    let tintColor: UIColor
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.note,
-                                  color: tintColor.withAlphaComponent(0.5))
+                                  color: itemContent.tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Note")
