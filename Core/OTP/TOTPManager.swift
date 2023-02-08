@@ -29,12 +29,6 @@ public enum TOTPState: Equatable {
     case invalid
 }
 
-public enum TOTPDataError: Error {
-    case unsupportedOTP
-    case failToDecodeSecret
-    case failToGenerateTOTP
-}
-
 public struct TOTPTimerData: Hashable {
     public let total: Int
     public let remaining: Int
@@ -58,18 +52,18 @@ public extension TOTPData {
     init(uri: String) throws {
         let otpComponents = try URLUtils.OTPParser.parse(urlString: uri)
         guard otpComponents.type == .totp else {
-            throw TOTPDataError.unsupportedOTP
+            throw PPCoreError.totp(.unsupportedOTP)
         }
 
         guard let secretData = base32DecodeToData(otpComponents.secret) else {
-            throw TOTPDataError.failToDecodeSecret
+            throw PPCoreError.totp(.failedToDecodeSecret)
         }
 
         guard let totp = TOTP(secret: secretData,
                               digits: Int(otpComponents.digits),
                               timeInterval: Int(otpComponents.period),
                               algorithm: otpComponents.algorithm.otpAlgorithm) else {
-            throw TOTPDataError.failToGenerateTOTP
+            throw PPCoreError.totp(.failedToInitializeTOTPObject)
         }
         self.username = otpComponents.label
         self.issuer = otpComponents.issuer
