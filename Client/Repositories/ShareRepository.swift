@@ -24,10 +24,6 @@ import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public enum ShareRepositoryError: Error {
-    case noLocalShare(String)
-}
-
 public protocol ShareRepositoryProtocol {
     var userData: UserData { get }
     var localShareDatasource: LocalShareDatasourceProtocol { get }
@@ -95,7 +91,7 @@ public extension ShareRepositoryProtocol {
             return share
         }
         logger.debug("No local share found \(shareId) of user \(userId)")
-        throw ShareRepositoryError.noLocalShare(shareId)
+        throw PPClientError.shareNotFoundInLocalDB(shareID: shareId)
     }
 
     func getVaults() async throws -> [VaultProtocol] {

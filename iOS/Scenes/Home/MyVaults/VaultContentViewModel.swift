@@ -24,11 +24,6 @@ import Core
 import CryptoKit
 import SwiftUI
 
-enum VaultContentViewModelError: Error {
-    case itemNotFound(shareId: String, itemId: String)
-    case noSelectedVault
-}
-
 extension VaultContentViewModel {
     enum State {
         case loading
@@ -235,7 +230,7 @@ extension VaultContentViewModel {
                 let itemId = item.itemId
                 guard let symmetricallyEncryptedItem =
                         try await itemRepository.getItem(shareId: shareId, itemId: itemId) else {
-                    throw VaultContentViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
+                    throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
                 }
 
                 // Copy and create item in the other vault
@@ -362,7 +357,7 @@ private extension VaultContentViewModel {
     func getItemsTask() -> Task<[ItemListUiModel], Error> {
         Task.detached(priority: .userInitiated) {
             guard let shareId = self.vaultSelection.selectedVault?.shareId else {
-                throw VaultContentViewModelError.noSelectedVault
+                throw PPError.vault(.noSelectedVault)
             }
             let encryptedItems = try await self.itemRepository.getItems(shareId: shareId,
                                                                         state: .active)
@@ -393,7 +388,7 @@ private extension VaultContentViewModel {
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
         guard let item = try await itemRepository.getItem(shareId: shareId,
                                                           itemId: itemId) else {
-            throw VaultContentViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
+            throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
         }
         return item
     }

@@ -33,10 +33,9 @@ struct ItemDetailMoreInfoSection: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            if !isExpanded {
-                Divider()
-            }
+        VStack(alignment: .leading, spacing: 16) {
+            Divider()
+                .opacity(isExpanded ? 0 : 1)
 
             HStack {
                 HStack {
@@ -52,38 +51,24 @@ struct ItemDetailMoreInfoSection: View {
                     Spacer()
 
                     if !isExpanded {
-                        Image(uiImage: IconProvider.chevronDown)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 16)
-                            .foregroundColor(.textWeak)
+                        icon(from: IconProvider.chevronDown)
                     }
                 }
             }
-            .padding(.bottom, 8)
 
             if isExpanded {
-                Group {
-                    let sectionTitleWidth: CGFloat = 100
-
+                VStack(alignment: .leading) {
                     if let lastAutoFilledDate = uiModel.lastAutoFilledDate {
-                        HStack(spacing: 20) {
-                            Text("Auto-filled:")
-                                .fontWeight(.semibold)
-                                .frame(width: sectionTitleWidth, alignment: .trailing)
+                        HStack {
+                            title("Auto-filled:")
                             Text(lastAutoFilledDate)
                                 .fontWeight(.semibold)
+                                .frame(maxWidth: .infinity, alignment: .topLeading)
                         }
                     }
 
-                    HStack(spacing: 20) {
-                        VStack {
-                            Text("Modified:")
-                                .fontWeight(.semibold)
-                                .frame(width: sectionTitleWidth, alignment: .trailing)
-                            Spacer()
-                        }
-
+                    HStack {
+                        title("Modified:")
                         VStack(alignment: .leading, spacing: 4) {
                             Text(uiModel.modificationCount)
                                 .fontWeight(.semibold)
@@ -91,12 +76,11 @@ struct ItemDetailMoreInfoSection: View {
                         }
                     }
 
-                    HStack(spacing: 20) {
-                        Text("Created:")
-                            .fontWeight(.semibold)
-                            .frame(width: sectionTitleWidth, alignment: .trailing)
+                    HStack {
+                        title("Created:")
                         Text(uiModel.creationDate)
                             .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, alignment: .topLeading)
                     }
                 }
                 .font(.caption)
@@ -117,29 +101,19 @@ struct ItemDetailMoreInfoSection: View {
         .animation(.default, value: isExpanded)
     }
 
-    private var moreInfoRow: some View {
-        HStack {
-            Label(title: {
-                Text("More info")
-                    .font(.caption)
-                    .fontWeight(.bold)
-                    .foregroundColor(.textWeak)
-            }, icon: {
-                icon(from: IconProvider.infoCircle)
-            })
-
-            Spacer()
-
-            icon(from: IconProvider.chevronDown)
-        }
-    }
-
     private func icon(from image: UIImage) -> some View {
         Image(uiImage: image)
             .resizable()
             .scaledToFit()
             .frame(width: 16)
             .foregroundColor(.textWeak)
+    }
+
+    private func title(_ text: String) -> some View {
+        Text(text)
+            .fontWeight(.semibold)
+            .frame(width: 100, alignment: .trailing)
+            .frame(maxHeight: .infinity, alignment: .topTrailing)
     }
 }
 
@@ -169,7 +143,8 @@ final class ItemDetailMoreInfoSectionUIModel {
 
         let item = itemContent.item
 
-        if case .login = itemContent.contentData.type {
+        if case .login = itemContent.contentData.type,
+           item.lastUseTime != item.createTime {
             lastAutoFilledDate = fullDateString(item.lastUseTime).capitalizingFirstLetter()
         } else {
             lastAutoFilledDate = nil

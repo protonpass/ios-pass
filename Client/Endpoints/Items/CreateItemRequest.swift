@@ -80,7 +80,7 @@ public extension CreateItemRequest {
                                                addressPassphrase: addressKey.keyPassphrase)
 
         guard let decodedVaultKeyPacket = try vaultKeyPacket.base64Decode() else {
-            throw CryptoError.failedToDecode
+            throw PPClientError.crypto(.failedToDecode)
         }
 
         let vaultKeyPacketSignature = try Encryptor.sign(list: decodedVaultKeyPacket,
@@ -92,17 +92,17 @@ public extension CreateItemRequest {
                                                   addressPassphrase: itemKeyPassphrase)
 
         guard let unarmoredUserSignature = userSignature.unArmor else {
-            throw CryptoError.failedToUnarmor("UserSignature")
+            throw PPClientError.crypto(.failedToUnarmor("UserSignature"))
         }
         let encryptedUserSignature = try sessionKey.encrypt(.init(unarmoredUserSignature))
 
         guard let unarmoredItemKeySignature = itemKeySignature.unArmor else {
-            throw CryptoError.failedToUnarmor("ItemKeySignature")
+            throw PPClientError.crypto(.failedToUnarmor("ItemKeySignature"))
         }
         let encryptedItemSignature = try sessionKey.encrypt(.init(unarmoredItemKeySignature))
 
         guard let unarmoredVaultKeyPacketSignature = vaultKeyPacketSignature.unArmor else {
-            throw CryptoError.failedToUnarmor("VaultKeyPacketSignature")
+            throw PPClientError.crypto(.failedToUnarmor("VaultKeyPacketSignature"))
         }
 
         self.init(rotationID: vaultKey.rotationID,

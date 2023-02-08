@@ -38,11 +38,6 @@ public struct ShareKeys: Decodable {
     }
 }
 
-public enum VaultItemKeysError: Error {
-    /// `VaultKey` & `ItemKey` must share the same `rotationID`
-    case differentRotationId
-}
-
 /// A pair of `VaultKey` & `ItemKey` that share the same `rotationID`
 public struct VaultItemKeys {
     public let vaultKey: VaultKey
@@ -50,7 +45,8 @@ public struct VaultItemKeys {
 
     init(vaultKey: VaultKey, itemKey: ItemKey) throws {
         guard vaultKey.rotationID == itemKey.rotationID else {
-            throw VaultItemKeysError.differentRotationId
+            throw PPClientError.unmatchedRotationID(leftID: vaultKey.rotationID,
+                                                    rightID: itemKey.rotationID)
         }
         self.vaultKey = vaultKey
         self.itemKey = itemKey

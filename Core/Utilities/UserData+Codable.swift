@@ -22,10 +22,6 @@ import ProtonCore_DataModel
 import ProtonCore_Login
 import ProtonCore_Networking
 
-public enum UserDataError: Error {
-    case failedToDecode(String)
-}
-
 extension UserData: Codable {
     // swiftlint:disable explicit_enum_raw_value
     private enum CodingKeys: String, CodingKey {

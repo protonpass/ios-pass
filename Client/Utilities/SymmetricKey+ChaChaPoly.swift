@@ -20,17 +20,11 @@
 
 import CryptoKit
 
-public enum SymmetricEncryptionError: Error {
-    case failedToUtf8ConvertToData(String)
-    case failedToBase64Decode(String)
-    case failedToUtf8Decode(Data)
-}
-
 public extension SymmetricKey {
     /// Encrypt a string into base64 format
     func encrypt(_ clearText: String) throws -> String {
         guard let data = clearText.data(using: .utf8) else {
-            throw SymmetricEncryptionError.failedToUtf8ConvertToData(clearText)
+            throw PPClientError.symmetricEncryption(.failedToUtf8ConvertToData(clearText))
         }
         let cypherData = try ChaChaPoly.seal(data, using: self).combined
         return cypherData.base64EncodedString()
@@ -39,13 +33,13 @@ public extension SymmetricKey {
     /// Decrypt an encrypted base64 string
     func decrypt(_ cypherText: String) throws -> String {
         guard let data = Data(base64Encoded: cypherText) else {
-            throw SymmetricEncryptionError.failedToBase64Decode(cypherText)
+            throw PPClientError.symmetricEncryption(.failedToBase64Decode(cypherText))
         }
         let sealedBox = try ChaChaPoly.SealedBox(combined: data)
         let decryptedData = try ChaChaPoly.open(sealedBox, using: self)
 
         guard let clearText = String(data: decryptedData, encoding: .utf8) else {
-            throw SymmetricEncryptionError.failedToUtf8Decode(decryptedData)
+            throw PPClientError.symmetricEncryption(.failedToUtf8Decode)
         }
         return clearText
     }

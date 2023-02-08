@@ -39,7 +39,7 @@ extension PublicKeyEntity {
 extension PublicKeyEntity {
     func toPublicKey() throws -> PublicKey {
         guard let value else {
-            throw CoreDataError.corrupted(object: self, property: "value")
+            throw PPClientError.coreData(.corrupted(object: self, property: "value"))
         }
         return .init(value: value)
     }

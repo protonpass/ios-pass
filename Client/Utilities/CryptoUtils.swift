@@ -24,21 +24,6 @@ import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Login
 
-public enum CryptoError: Error {
-    case failedToSplitPGPMessage
-    case failedToUnarmor(String)
-    case failedToArmor(String)
-    case failedToGetFingerprint
-    case failedToGenerateKeyRing
-    case failedToEncrypt
-    case failedToVerifyVault
-    case failedToDecryptContent
-    case failedToVerifySignature
-    case failedToGenerateSessionKey
-    case failedToDecode
-    case addressNotFound(addressID: String)
-}
-
 public enum CryptoUtils {
     public static func generateKey(name: String, email: String) throws -> (String, String) {
         let keyPassphrase = String.random(length: 32)
@@ -58,11 +43,11 @@ public enum CryptoUtils {
             HelperGetJsonSHA256Fingerprints(key, &error)
         }
         guard let data else {
-            throw CryptoError.failedToGetFingerprint
+            throw PPClientError.crypto(.failedToGetFingerprint)
         }
         let array = try JSONDecoder().decode([String].self, from: data)
         guard let fingerprint = array.first else {
-            throw CryptoError.failedToGetFingerprint
+            throw PPClientError.crypto(.failedToGetFingerprint)
         }
         return fingerprint
     }
@@ -71,14 +56,14 @@ public enum CryptoUtils {
         let splitMessage = try unwrap { CryptoPGPSplitMessage(fromArmored: message) }
         guard let keyPacket = splitMessage.keyPacket,
               let dataPacket = splitMessage.dataPacket else {
-            throw CryptoError.failedToSplitPGPMessage
+            throw PPClientError.crypto(.failedToSplitPGPMessage)
         }
         return (keyPacket, dataPacket)
     }
 
     public static func unarmorAndBase64(data: String, name: String) throws -> String {
         guard let unarmoredData = data.unArmor else {
-            throw CryptoError.failedToUnarmor(name)
+            throw PPClientError.crypto(.failedToUnarmor(name))
         }
         return unarmoredData.base64EncodedString()
     }
@@ -98,7 +83,7 @@ public enum CryptoUtils {
     public static func generateSessionKey() throws -> CryptoSessionKey {
         var error: NSError?
         guard let sessionKey = CryptoGenerateSessionKey(&error) else {
-            throw CryptoError.failedToGenerateSessionKey
+            throw PPClientError.crypto(.failedToGenerateSessionKey)
         }
         if let error { throw error }
         return sessionKey
@@ -107,7 +92,7 @@ public enum CryptoUtils {
     public static func unlockAddressKeys(addressID: String,
                                          userData: UserData) throws -> [ProtonCore_Crypto.DecryptionKey] {
         guard let firstAddress = userData.addresses.first(where: { $0.addressID == addressID }) else {
-            throw CryptoError.addressNotFound(addressID: addressID)
+            throw PPClientError.crypto(.addressNotFound(addressID: addressID))
         }
         return firstAddress.keys.compactMap { key -> DecryptionKey? in
             let binKeys = userData.user.keys.map { $0.privateKey }.compactMap { $0.unArmor }

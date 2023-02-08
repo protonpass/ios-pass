@@ -34,11 +34,6 @@ import SwiftUI
 import UIComponents
 import UIKit
 
-enum AppCoordinatorError: Error {
-    case noSessionData
-    case failedToGetOrCreateSymmetricKey
-}
-
 final class AppCoordinator {
     private let window: UIWindow
     private let appStateObserver: AppStateObserver
@@ -163,7 +158,7 @@ final class AppCoordinator {
         guard let symmetricKey,
               let symmetricKeyData = symmetricKey.data(using: .utf8) else {
             // Something really nasty is going on 💥
-            throw AppCoordinatorError.failedToGetOrCreateSymmetricKey
+            throw PPError.failedToGetOrCreateSymmetricKey
         }
 
         return .init(data: symmetricKeyData)

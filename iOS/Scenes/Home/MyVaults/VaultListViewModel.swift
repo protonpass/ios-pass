@@ -31,11 +31,6 @@ protocol VaultListViewModelDelegate: AnyObject {
     func vaultListViewModelDidFail(error: Error)
 }
 
-enum VaultListViewModelError: Error {
-    case canNotDeleteLastVault
-    case vaultNotEmpty(String)
-}
-
 final class VaultListViewModel: ObservableObject {
     var vaults: [VaultProtocol] { vaultSelection.vaults }
     var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
@@ -82,12 +77,12 @@ extension VaultListViewModel {
                 delegate?.vaultListViewModelWantsShowLoadingHud()
 
                 guard vaults.count > 1 else {
-                    throw VaultListViewModelError.canNotDeleteLastVault
+                    throw PPError.vault(.canNotDeleteLastVault)
                 }
 
                 let itemCount = try await itemRepository.getItemCount(shareId: vault.shareId)
                 guard itemCount == 0 else {
-                    throw VaultListViewModelError.vaultNotEmpty(vault.shareId)
+                    throw PPError.vault(.vaultNotEmpty(vault.shareId))
                 }
 
                 try await shareRespository.deleteVault(shareId: vault.shareId)

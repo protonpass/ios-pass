@@ -33,10 +33,6 @@ public enum ShareType: Int16 {
     case item = 3
 }
 
-public enum ShareError: Error {
-    case unknownShareType
-}
-
 public enum ShareContent {
     case vault(VaultProtocol)
     case label // Not handled yet
@@ -154,7 +150,7 @@ extension Share {
                                                                   share: self,
                                                                   addressKeys: addressKeys)
 
-        guard signingKeyValid else { throw CryptoError.failedToVerifyVault }
+        guard signingKeyValid else { throw PPClientError.crypto(.failedToVerifyVault) }
 
         let vaultPassphrase = try PassKeyUtils.validateVaultKey(userData: userData,
                                                                 share: self,
@@ -167,7 +163,7 @@ extension Share {
 
         switch shareType {
         case .unknown:
-            throw ShareError.unknownShareType
+            throw PPClientError.unknownShareType
         case .vault:
             let vaultContent = try VaultProtobuf(data: content)
             let vault = Vault(id: vaultID,
@@ -190,13 +186,13 @@ extension Share {
         }
 
         guard let contentData = try content?.base64Decode() else {
-            throw CryptoError.failedToDecryptContent
+            throw PPClientError.crypto(.failedToDecryptContent)
         }
 
         let armoredEncryptedContent = try CryptoUtils.armorMessage(contentData)
 
         guard let contentEncryptedAddressSignatureData = try contentEncryptedAddressSignature.base64Decode() else {
-            throw CryptoError.failedToDecryptContent
+            throw PPClientError.crypto(.failedToDecryptContent)
         }
 
         let unlockedVaultKeys = try vaultKeys.map { try CryptoUtils.unlockKey($0.key,
@@ -220,7 +216,7 @@ extension Share {
 //                                                  plainData: plainContent,
 //                                                  verifierKey: addressKeys)
         guard let contentEncryptedVaultSignatureData = try contentEncryptedVaultSignature.base64Decode() else {
-            throw CryptoError.failedToDecryptContent
+            throw PPClientError.crypto(.failedToDecryptContent)
         }
 
         let armoredEncryptedVaultSignature = try CryptoUtils.armorMessage(contentEncryptedVaultSignatureData)
@@ -236,7 +232,7 @@ extension Share {
                                                   plainData: plainContent,
                                                   verifierKey: .init(value: vaultKey.key))
 
-        guard validVaultSignature else { throw CryptoError.failedToVerifyVault }
+        guard validVaultSignature else { throw PPClientError.crypto(.failedToVerifyVault) }
         return plainContent
     }
 }
