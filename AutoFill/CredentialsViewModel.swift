@@ -25,12 +25,6 @@ import Core
 import CryptoKit
 import SwiftUI
 
-enum CredentialsViewModelError: Error {
-    case itemNotFound(shareId: String, itemId: String)
-    case invalidUrl
-    case notLogInItem
-}
-
 struct CredentialsFetchResult {
     let vaults: [VaultProtocol]
     let searchableItems: [SearchableItem]
@@ -216,10 +210,10 @@ extension CredentialsViewModel {
                 let encryptedItem = try await getItemTask(item: item).value
                 let oldContent = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
                 guard case .login(let oldData) = oldContent.contentData else {
-                    throw CredentialsViewModelError.notLogInItem
+                    throw PPError.credentialProvider(.notLogInItem)
                 }
                 guard let newUrl = urls.first?.schemeAndHost, !newUrl.isEmpty else {
-                    throw CredentialsViewModelError.invalidUrl
+                    throw PPError.credentialProvider(.invalidURL(urls.first))
                 }
                 let newLoginData = ItemContentData.login(.init(username: oldData.username,
                                                                password: oldData.password,
@@ -280,8 +274,7 @@ private extension CredentialsViewModel {
             guard let encryptedItem =
                     try await self.itemRepository.getItem(shareId: item.shareId,
                                                           itemId: item.itemId) else {
-                throw CredentialsViewModelError.itemNotFound(shareId: item.shareId,
-                                                             itemId: item.itemId)
+                throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
             return encryptedItem
         }
@@ -354,8 +347,7 @@ private extension CredentialsViewModel {
         Task.detached(priority: .userInitiated) {
             guard let item = try await self.itemRepository.getItem(shareId: item.shareId,
                                                                    itemId: item.itemId) else {
-                throw CredentialsViewModelError.itemNotFound(shareId: item.shareId,
-                                                             itemId: item.itemId)
+                throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
             let itemContent = try item.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
@@ -364,7 +356,7 @@ private extension CredentialsViewModel {
                 let credential = ASPasswordCredential(user: data.username, password: data.password)
                 return (credential, item)
             default:
-                throw CredentialsViewModelError.notLogInItem
+                throw PPError.credentialProvider(.notLogInItem)
             }
         }
     }

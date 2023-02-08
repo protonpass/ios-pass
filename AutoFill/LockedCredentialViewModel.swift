@@ -57,8 +57,7 @@ final class LockedCredentialViewModel: ObservableObject {
                 logger.trace("Loading credential \(ids.debugInformation)")
                 guard let item = try await self.itemRepository.getItem(shareId: ids.shareId,
                                                                        itemId: ids.itemId) else {
-                    throw CredentialsViewModelError.itemNotFound(shareId: ids.shareId,
-                                                                 itemId: ids.itemId)
+                    throw PPError.itemNotFound(shareID: ids.shareId, itemID: ids.itemId)
                 }
                 let itemContent = try item.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
@@ -69,7 +68,7 @@ final class LockedCredentialViewModel: ObservableObject {
                     onSuccess?(credential, item)
                     logger.info("Loaded and returned credential \(ids.debugInformation)")
                 default:
-                    throw CredentialsViewModelError.notLogInItem
+                    throw PPError.credentialProvider(.notLogInItem)
                 }
             } catch {
                 logger.error(error)
