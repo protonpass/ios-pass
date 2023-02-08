@@ -177,7 +177,7 @@ private extension SearchViewModel {
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
         guard let item = try await itemRepository.getItem(shareId: shareId,
                                                           itemId: itemId) else {
-            throw VaultContentViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
+            throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
         }
         return item
     }
