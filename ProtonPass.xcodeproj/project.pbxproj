@@ -1389,8 +1389,8 @@
 		3553C2292965752C0087518A /* iOS & Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				3572E51A299399AD00775FAC /* PPError.swift */,
 				3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */,
+				3572E51A299399AD00775FAC /* PPError.swift */,
 			);
 			path = "iOS & Extensions";
 			sourceTree = "<group>";
