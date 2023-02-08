@@ -129,7 +129,7 @@ extension ItemRevision {
 
     private func decryptField(decryptionKeys: [DecryptionKey], field: String) throws -> Data {
         guard let decoded = try field.base64Decode() else {
-            throw CryptoError.failedToDecode
+            throw PPClientError.crypto(.failedToDecode)
         }
         let armoredDecoded = try CryptoUtils.armorMessage(decoded)
         return try ProtonCore_Crypto.Decryptor.decrypt(decryptionKeys: decryptionKeys,
@@ -144,7 +144,7 @@ extension ItemRevision {
                                                     verifyTime: 0)
             if valid { return }
         }
-        throw CryptoError.failedToVerifySignature
+        throw PPClientError.crypto(.failedToVerifySignature)
     }
 
     private func verifyItemSignature(signature: Data, itemKey: ItemKey, content: Data) throws {
@@ -152,6 +152,6 @@ extension ItemRevision {
                                                 plainData: content,
                                                 publicKey: itemKey.key.publicKey,
                                                 verifyTime: Int64(Date().timeIntervalSince1970))
-        if !valid { throw CryptoError.failedToVerifySignature }
+        if !valid { throw PPClientError.crypto(.failedToVerifySignature) }
     }
 }

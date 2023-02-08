@@ -61,51 +61,54 @@ extension ShareEntity {
     // swiftlint:disable function_body_length
     func toShare() throws -> Share {
         guard let shareID else {
-            throw CoreDataError.corrupted(object: self, property: "shareID")
+            throw PPClientError.coreData(.corrupted(object: self, property: "shareID"))
         }
 
         guard let addressID else {
-            throw CoreDataError.corrupted(object: self, property: "addressID")
+            throw PPClientError.coreData(.corrupted(object: self, property: "addressID"))
         }
 
         guard let vaultID else {
-            throw CoreDataError.corrupted(object: self, property: "vaultID")
+            throw PPClientError.coreData(.corrupted(object: self, property: "vaultID"))
         }
 
         guard let targetID else {
-            throw CoreDataError.corrupted(object: self, property: "targetID")
+            throw PPClientError.coreData(.corrupted(object: self, property: "targetID"))
         }
 
         guard let acceptanceSignature else {
-            throw CoreDataError.corrupted(object: self, property: "acceptanceSignature")
+            throw PPClientError.coreData(.corrupted(object: self, property: "acceptanceSignature"))
         }
 
         guard let inviterEmail else {
-            throw CoreDataError.corrupted(object: self, property: "inviterEmail")
+            throw PPClientError.coreData(.corrupted(object: self, property: "inviterEmail"))
         }
 
         guard let inviterAcceptanceSignature else {
-            throw CoreDataError.corrupted(object: self, property: "inviterAcceptanceSignature")
+            throw PPClientError.coreData(.corrupted(object: self,
+                                                    property: "inviterAcceptanceSignature"))
         }
 
         guard let signingKey else {
-            throw CoreDataError.corrupted(object: self, property: "signingKey")
+            throw PPClientError.coreData(.corrupted(object: self, property: "signingKey"))
         }
 
         guard let contentRotationID else {
-            throw CoreDataError.corrupted(object: self, property: "contentRotationID")
+            throw PPClientError.coreData(.corrupted(object: self, property: "contentRotationID"))
         }
 
         guard let contentEncryptedAddressSignature else {
-            throw CoreDataError.corrupted(object: self, property: "contentEncryptedAddressSignature")
+            throw PPClientError.coreData(.corrupted(object: self,
+                                                    property: "contentEncryptedAddressSignature"))
         }
 
         guard let contentEncryptedVaultSignature else {
-            throw CoreDataError.corrupted(object: self, property: "contentEncryptedVaultSignature")
+            throw PPClientError.coreData(.corrupted(object: self,
+                                                    property: "contentEncryptedVaultSignature"))
         }
 
         guard let contentSignatureEmail else {
-            throw CoreDataError.corrupted(object: self, property: "contentSignatureEmail")
+            throw PPClientError.coreData(.corrupted(object: self, property: "contentSignatureEmail"))
         }
 
         return .init(shareID: shareID,

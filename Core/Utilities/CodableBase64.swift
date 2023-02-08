@@ -18,10 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public enum CodableBase64Error: Error {
-    case failedToConvertBase64StringToData(String)
-}
-
 /// Protocol that helps serializing and deserialzing a `Codable` object
 public protocol CodableBase64: Codable {
     /// Serialize a `Codable` object into a JSON string and then base 64 encode that JSON string
@@ -39,7 +35,7 @@ public extension CodableBase64 {
 
     static func deserializeBase64(_ base64String: String) throws -> Self {
         guard let data = Data(base64Encoded: base64String) else {
-            throw CodableBase64Error.failedToConvertBase64StringToData(base64String)
+            throw PPCoreError.failedToConvertBase64StringToData(base64String)
         }
         return try JSONDecoder().decode(Self.self, from: data)
     }

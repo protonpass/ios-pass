@@ -23,11 +23,6 @@ import CoreData
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public enum VaultItemKeysRepositoryError: Error {
-    case noVaultKey(shareId: String)
-    case noItemKey(shareId: String, rotationId: String)
-}
-
 /// This repository is not offline first because without keys, the app is not functional.
 public protocol VaultItemKeysRepositoryProtocol {
     var localItemKeyDatasource: LocalItemKeyDatasourceProtocol { get }
@@ -67,12 +62,13 @@ public extension VaultItemKeysRepositoryProtocol {
 
         guard let latestVaultKey = vaultKeys.max(by: { $0.rotation < $1.rotation }) else {
             logger.fatal("No vault keys for share \(shareId)")
-            throw VaultItemKeysRepositoryError.noVaultKey(shareId: shareId)
+            throw PPClientError.keys(.vaultKeyNotFound(shareID: shareId))
         }
 
         guard let latestItemKey = itemKeys.first(where: { $0.rotationID == latestVaultKey.rotationID }) else {
             logger.fatal("No item keys with roration \(latestVaultKey.rotationID) of share \(shareId)")
-            throw VaultItemKeysRepositoryError.noItemKey(shareId: shareId, rotationId: latestVaultKey.rotationID)
+            throw PPClientError.keys(.itemKeyNotFound(shareID: shareId,
+                                                      rotationID: latestVaultKey.rotationID))
         }
 
         logger.trace("Got vault & item keys for share \(shareId)")

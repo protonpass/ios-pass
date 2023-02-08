@@ -22,10 +22,6 @@ import Combine
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public enum APIServiceError: Error {
-    case networkOperationsOnMainThread
-}
-
 public extension APIService {
     /// Async variant that can take an `Endpoint`
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
@@ -41,7 +37,7 @@ public extension APIService {
             }
 #if DEBUG
             if Thread.isMainThread {
-                continuation.resume(throwing: APIServiceError.networkOperationsOnMainThread)
+                continuation.resume(throwing: PPClientError.networkOperationsOnMainThread)
             } else {
                 perfomRequest()
             }

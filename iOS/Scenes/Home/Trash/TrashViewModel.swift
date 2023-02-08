@@ -36,10 +36,6 @@ protocol TrashViewModelDelegate: AnyObject {
     func trashViewModelDidFail(_ error: Error)
 }
 
-enum TrashViewModelError: Error {
-    case itemNotFound(shareId: String, itemId: String)
-}
-
 final class TrashViewModel: DeinitPrintable, PullToRefreshable, ObservableObject {
     @Published private(set) var state = State.loading
     @Published private(set) var items = [ItemListUiModel]()
@@ -247,7 +243,7 @@ private extension TrashViewModel {
     func getItem(_ item: ItemListUiModel) async throws -> SymmetricallyEncryptedItem {
         guard let item = try await itemRepository.getItem(shareId: item.shareId,
                                                           itemId: item.itemId) else {
-            throw TrashViewModelError.itemNotFound(shareId: item.shareId, itemId: item.itemId)
+            throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
         }
         return item
     }

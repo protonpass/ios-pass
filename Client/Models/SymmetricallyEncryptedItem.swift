@@ -20,10 +20,6 @@
 
 import CryptoKit
 
-public enum SymmetricallyEncryptedItemError: Error {
-    case corruptedEncryptedContent
-}
-
 /// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
 public struct SymmetricallyEncryptedItem {
     /// ID of the share that the item belongs to
@@ -40,7 +36,7 @@ public struct SymmetricallyEncryptedItem {
 
     public func getEncryptedItemContent() throws -> ItemContent {
         guard let data = try encryptedContent.base64Decode() else {
-            throw SymmetricallyEncryptedItemError.corruptedEncryptedContent
+            throw PPClientError.corruptedEncryptedContent
         }
         let protobufItem = try ItemContentProtobuf(data: data)
         return .init(shareId: shareId,
@@ -50,7 +46,7 @@ public struct SymmetricallyEncryptedItem {
 
     public func getDecryptedItemContent(symmetricKey: SymmetricKey) throws -> ItemContent {
         guard let data = try encryptedContent.base64Decode() else {
-            throw SymmetricallyEncryptedItemError.corruptedEncryptedContent
+            throw PPClientError.corruptedEncryptedContent
         }
         let encryptedProtobufItem = try ItemContentProtobuf(data: data)
         let decryptedProtobufItem = try encryptedProtobufItem.symmetricallyDecrypted(symmetricKey)
