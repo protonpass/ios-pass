@@ -23,11 +23,14 @@ import Foundation
 /// Proton Pass iOS app errors
 enum PPError: Error, CustomDebugStringConvertible {
     case failedToGetOrCreateSymmetricKey
+    case itemNotFound(shareID: String, itemID: String)
 
     var debugDescription: String {
         switch self {
         case .failedToGetOrCreateSymmetricKey:
             return "Failed to get or create symmetric key"
+        case let .itemNotFound(shareID, itemID):
+            return "Item not found \"\(itemID)\" - Share ID \"\(shareID)\""
         }
     }
 }

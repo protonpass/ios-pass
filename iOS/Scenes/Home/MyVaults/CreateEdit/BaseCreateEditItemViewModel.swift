@@ -239,7 +239,7 @@ private extension BaseCreateEditItemViewModel {
         Task.detached(priority: .userInitiated) {
             guard let item = try await self.itemRepository.getItem(shareId: shareId,
                                                                    itemId: itemId) else {
-                throw ItemDetailViewModelError.itemNotFound(shareId: shareId, itemId: itemId)
+                throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
             }
             return item
         }
