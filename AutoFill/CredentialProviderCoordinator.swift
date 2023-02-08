@@ -35,12 +35,6 @@ import UIComponents
 import UserNotifications
 
 // swiftlint:disable file_length
-enum CredentialProviderError: Error {
-    case emptyRecordIdentifier
-    case failedToAuthenticate
-    case userCancelled
-}
-
 public final class CredentialProviderCoordinator {
     @KeychainStorage(key: .sessionData)
     private var sessionData: SessionData?
@@ -198,7 +192,18 @@ public final class CredentialProviderCoordinator {
     }
 
     private func handle(error: Error) {
-        switch error as? CredentialProviderError {
+        let defaultHandler: (Error) -> Void = { [unowned self] error in
+            self.logger.error(error)
+            self.alert(error: error)
+        }
+
+        guard let error = error as? PPError,
+              case .credentialProvider(let reason) = error else {
+            defaultHandler(error)
+            return
+        }
+
+        switch reason {
         case .userCancelled:
             cancel(errorCode: .userCanceled)
             return
@@ -215,8 +220,7 @@ public final class CredentialProviderCoordinator {
                 }
             }
         default:
-            logger.error(error)
-            alert(error: error)
+            defaultHandler(error)
         }
     }
 

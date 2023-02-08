@@ -261,7 +261,7 @@ extension CredentialsViewModel {
     }
 
     func handleAuthenticationFailure() {
-        delegate?.credentialsViewModelDidFail(CredentialProviderError.failedToAuthenticate)
+        delegate?.credentialsViewModelDidFail(PPError.credentialProvider(.failedToAuthenticate))
     }
 
     #warning("Ask users to choose a vault")
