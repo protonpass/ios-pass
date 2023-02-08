@@ -47,7 +47,7 @@ public struct CircleButton: View {
                     .renderingMode(.template)
                     .scaledToFit()
                     .foregroundColor(Color(uiColor: color))
-                    .padding(.vertical, height / 3)
+                    .padding(.vertical, height / 4)
             }
             .frame(width: height, height: height)
         }
