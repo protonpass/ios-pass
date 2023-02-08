@@ -34,10 +34,6 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelDidFail(_ error: Error)
 }
 
-enum ItemDetailViewModelError: Error {
-    case itemNotFound(shareId: String, itemId: String)
-}
-
 class BaseItemDetailViewModel {
     private let itemRepository: ItemRepositoryProtocol
     private(set) var itemContent: ItemContent
