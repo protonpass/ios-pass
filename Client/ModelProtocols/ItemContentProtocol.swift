@@ -22,6 +22,7 @@ import CryptoKit
 import ProtonCore_UIFoundations
 import UIKit
 
+#warning("Remove ProtonCore_UIFoundations dependency")
 public enum ItemContentType: Int, CaseIterable {
     case login = 0
     case alias = 1
@@ -60,6 +61,7 @@ public enum ItemContentType: Int, CaseIterable {
         }
     }
 
+    @available(*, deprecated, message: "Should be removed once updated to new UI")
     public var icon: UIImage {
         switch self {
         case .login:
@@ -71,6 +73,7 @@ public enum ItemContentType: Int, CaseIterable {
         }
     }
 
+    @available(*, deprecated, message: "Should be removed once updated to new UI")
     public var iconTintColor: UIColor {
         switch self {
         case .alias:

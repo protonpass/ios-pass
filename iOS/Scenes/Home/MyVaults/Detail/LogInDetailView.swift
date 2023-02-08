@@ -45,7 +45,7 @@ struct LogInDetailView: View {
                     usernamePassword2FaSection
                     urlsSection
                         .padding(.vertical, 8)
-                    NoteSection(note: viewModel.note, tintColor: tintColor)
+                    NoteSection(itemContent: viewModel.itemContent, tintColor: tintColor)
 
                     ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
                                               onExpand: { withAnimation { value.scrollTo(bottomId) } })
