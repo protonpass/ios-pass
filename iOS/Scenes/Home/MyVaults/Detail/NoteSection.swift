@@ -18,31 +18,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct NoteSection: View {
-    let note: String
+    @State private var isShowingFullNote = false
+    let itemContent: ItemContent
     let tintColor: UIColor
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            VStack {
-                ItemDetailSectionIcon(icon: IconProvider.note,
-                                      color: tintColor.withAlphaComponent(0.5))
-                Spacer()
-            }
+            ItemDetailSectionIcon(icon: IconProvider.note,
+                                  color: tintColor.withAlphaComponent(0.5))
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Note")
                     .sectionTitleText()
 
-                if note.isEmpty {
+                if itemContent.note.isEmpty {
                     Text("Empty note")
                         .placeholderText()
                 } else {
-                    Text(note)
+                    Text(itemContent.note)
                         .sectionContentText()
                         .textSelection(.enabled)
                 }
