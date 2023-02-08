@@ -51,7 +51,7 @@ final class LockedCredentialViewModel: ObservableObject {
         Task {
             do {
                 guard let recordIdentifier = self.credentialIdentity.recordIdentifier else {
-                    throw CredentialProviderError.emptyRecordIdentifier
+                    throw PPError.credentialProvider(.missingRecordIdentifier)
                 }
                 let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
                 logger.trace("Loading credential \(ids.debugInformation)")
@@ -79,10 +79,10 @@ final class LockedCredentialViewModel: ObservableObject {
     }
 
     func handleAuthenticationFailure() {
-        onFailure?(CredentialProviderError.failedToAuthenticate)
+        onFailure?(PPError.credentialProvider(.failedToAuthenticate))
     }
 
     func handleCancellation() {
-        onFailure?(CredentialProviderError.userCancelled)
+        onFailure?(PPError.credentialProvider(.userCancelled))
     }
 }

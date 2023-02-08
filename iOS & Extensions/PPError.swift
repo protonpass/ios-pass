@@ -22,12 +22,16 @@ import Foundation
 
 /// Proton Pass iOS app errors
 enum PPError: Error, CustomDebugStringConvertible {
+    /// AutoFill extension
+    case credentialProvider(CredentialProviderFailureReason)
     case failedToGetOrCreateSymmetricKey
     case itemNotFound(shareID: String, itemID: String)
     case vault(VaultFailureReason)
 
     var debugDescription: String {
         switch self {
+        case .credentialProvider(let reason):
+            return reason.debugDescription
         case .failedToGetOrCreateSymmetricKey:
             return "Failed to get or create symmetric key"
         case let .itemNotFound(shareID, itemID):
@@ -38,6 +42,7 @@ enum PPError: Error, CustomDebugStringConvertible {
     }
 }
 
+// MARK: - VaultFailureReason
 extension PPError {
     enum VaultFailureReason: CustomDebugStringConvertible {
         case canNotDeleteLastVault
@@ -52,6 +57,26 @@ extension PPError {
                 return "No selected vault"
             case .vaultNotEmpty(let id):
                 return "Vault not empty \"\(id)\""
+            }
+        }
+    }
+}
+
+// MARK: - CredentialProviderFailureReason
+extension PPError {
+    enum CredentialProviderFailureReason: CustomDebugStringConvertible {
+        case missingRecordIdentifier
+        case failedToAuthenticate
+        case userCancelled
+
+        var debugDescription: String {
+            switch self {
+            case .missingRecordIdentifier:
+                return "ASPasswordCredentialIdentity object missing record identifier"
+            case .failedToAuthenticate:
+                return "Failed to authenticate"
+            case .userCancelled:
+                return "User cancelled"
             }
         }
     }
