@@ -40,7 +40,7 @@ public struct CircleButton: View {
     public var body: some View {
         Button(action: action) {
             ZStack {
-                Color(uiColor: color.withAlphaComponent(0.2))
+                Color(uiColor: color.withAlphaComponent(0.08))
                     .clipShape(Circle())
                 Image(uiImage: icon)
                     .resizable()

@@ -306,6 +306,8 @@
 		3572E51B299399AD00775FAC /* PPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E51A299399AD00775FAC /* PPError.swift */; };
 		3572E51C2993AC1700775FAC /* PPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E51A299399AD00775FAC /* PPError.swift */; };
 		3572E51D2993AC1700775FAC /* PPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E51A299399AD00775FAC /* PPError.swift */; };
+		3572E5232993D68800775FAC /* ItemContent+UIRelatedProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */; };
+		3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E5242993D7BF00775FAC /* ItemDetailToolbar.swift */; };
 		3573CD23292C139900A9EF82 /* AliasPrefixValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */; };
 		3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */; };
 		3573D707297642F400F68DF7 /* DeleteVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */; };
@@ -876,6 +878,8 @@
 		356FBD472949246A0063978C /* Coordinator+ShowFullScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinator+ShowFullScreen.swift"; sourceTree = "<group>"; };
 		3572E51829938A3C00775FAC /* TOTPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPManager.swift; sourceTree = "<group>"; };
 		3572E51A299399AD00775FAC /* PPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPError.swift; sourceTree = "<group>"; };
+		3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemContent+UIRelatedProperties.swift"; sourceTree = "<group>"; };
+		3572E5242993D7BF00775FAC /* ItemDetailToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailToolbar.swift; sourceTree = "<group>"; };
 		3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidator.swift; sourceTree = "<group>"; };
 		3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidatorTests.swift; sourceTree = "<group>"; };
 		3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultEndpoint.swift; sourceTree = "<group>"; };
@@ -1389,6 +1393,7 @@
 		3553C2292965752C0087518A /* iOS & Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */,
 				3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */,
 				3572E51A299399AD00775FAC /* PPError.swift */,
 			);
@@ -1590,6 +1595,7 @@
 				355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */,
 				356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */,
 				35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */,
+				3572E5242993D7BF00775FAC /* ItemDetailToolbar.swift */,
 				3565FD4E298D319500E2A0EE /* ItemDetailSectionIcon.swift */,
 				354F769128C8678100EB2383 /* LogInDetailView.swift */,
 				354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */,
@@ -3157,6 +3163,7 @@
 				355903D1295C96D600F6ABFD /* VaultListViewModel.swift in Sources */,
 				3561A1822922DA6E0097078B /* ItemCountView.swift in Sources */,
 				3543615C2941E1A8000CAE12 /* UIApplication+OpenSettings.swift in Sources */,
+				3572E5232993D68800775FAC /* ItemContent+UIRelatedProperties.swift in Sources */,
 				3565FD57298D3E9400E2A0EE /* TOTPText.swift in Sources */,
 				35E50714286FB60500A3F6EA /* HomeCoordinator.swift in Sources */,
 				354361552941D251000CAE12 /* OnboardingView.swift in Sources */,
@@ -3199,6 +3206,7 @@
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
+				3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */,
 				3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */,
 				355903CF295C8FEC00F6ABFD /* VaultListView.swift in Sources */,
 			);
