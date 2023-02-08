@@ -43,7 +43,7 @@ public struct CapsuleTitledButton: View {
     public var body: some View {
         Button(action: action) {
             ZStack {
-                Color(uiColor: color.withAlphaComponent(0.4))
+                Color(uiColor: color)
                     .clipShape(Capsule())
                 // Can not use `Label` here because SwiftUI will not render title
                 // when in navigation bar context
@@ -58,7 +58,7 @@ public struct CapsuleTitledButton: View {
                         .fontWeight(.light)
                 }
                 .padding(.horizontal)
-                .foregroundColor(Color(uiColor: color))
+                .foregroundColor(Color(uiColor: .systemBackground))
                 .frame(maxWidth: .infinity)
             }
             .frame(height: height)
