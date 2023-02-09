@@ -32,7 +32,7 @@ struct CreateEditItemToolbar: ToolbarContent {
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: IconProvider.chevronDown,
+            CircleButton(icon: IconProvider.cross,
                          color: itemContentType.tintColor,
                          action: onGoBack)
         }
