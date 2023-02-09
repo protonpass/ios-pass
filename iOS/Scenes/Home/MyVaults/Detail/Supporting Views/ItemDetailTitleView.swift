@@ -18,17 +18,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import ProtonCore_UIFoundations
 import SwiftUI
 
 enum ItemDetailTitleIcon {
     case image(UIImage)
     case initials(String)
+    case notApplicable
 }
 
 struct ItemDetailTitleView: View {
+    let title: String
     let color: UIColor
     let icon: ItemDetailTitleIcon
-    let title: String
+
+    init(itemContent: ItemContent) {
+        self.title = itemContent.name
+        self.color = itemContent.tintColor
+        switch itemContent.contentData.type {
+        case .alias:
+            self.icon = .image(IconProvider.alias)
+        case .login:
+            self.icon = .initials(String(itemContent.name.prefix(2)).uppercased())
+        case .note:
+            self.icon = .notApplicable
+        }
+    }
 
     var body: some View {
         HStack {
@@ -45,7 +61,10 @@ struct ItemDetailTitleView: View {
                         .foregroundColor(.black)
                 case .initials(let initials):
                     Text(initials.uppercased())
-                        .foregroundColor(.white)
+                        .fontWeight(.medium)
+                        .foregroundColor(Color(.systemBackground))
+                case .notApplicable:
+                    EmptyView()
                 }
             }
             .frame(width: 60, height: 60)
