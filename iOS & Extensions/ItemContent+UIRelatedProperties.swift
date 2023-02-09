@@ -22,8 +22,12 @@ import Client
 import UIKit
 
 extension ItemContent {
+    var tintColor: UIColor { contentData.type.tintColor }
+}
+
+extension ItemContentType {
     var tintColor: UIColor {
-        switch contentData.type {
+        switch self {
         case .alias:
             return .init(red: 106, green: 189, blue: 179)
         case .login:
