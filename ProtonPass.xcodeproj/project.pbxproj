@@ -266,6 +266,9 @@
 		3561A1822922DA6E0097078B /* ItemCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561A1812922DA6E0097078B /* ItemCountView.swift */; };
 		3562BC2D2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BC2C2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift */; };
 		3562BC2F29950680003FCB13 /* View+OnFirstAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BC2E29950680003FCB13 /* View+OnFirstAppear.swift */; };
+		3562BC30299542D6003FCB13 /* ItemContent+UIRelatedProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */; };
+		3562BC31299542D7003FCB13 /* ItemContent+UIRelatedProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */; };
+		3562BC3229954334003FCB13 /* ItemDetailSectionIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD4E298D319500E2A0EE /* ItemDetailSectionIcon.swift */; };
 		356423412925184100D2B7E3 /* OutlinedRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423402925184100D2B7E3 /* OutlinedRoundedButton.swift */; };
 		356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */; };
 		3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD45298CF4FA00E2A0EE /* CircleButton.swift */; };
@@ -3085,11 +3088,13 @@
 			files = (
 				3554DAB6293A8F9500595FC7 /* NoSearchResultsView.swift in Sources */,
 				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
+				3562BC3229954334003FCB13 /* ItemDetailSectionIcon.swift in Sources */,
 				3572E51C2993AC1700775FAC /* PPError.swift in Sources */,
 				35492E3D293E06C900BDE231 /* CreateEditLoginViewModel.swift in Sources */,
 				3565FD59298D423A00E2A0EE /* TOTPText.swift in Sources */,
 				35492E3E293E06CC00BDE231 /* CreateEditAliasView.swift in Sources */,
 				35699B97298125FA006CB225 /* ClipboardManager.swift in Sources */,
+				3562BC30299542D6003FCB13 /* ItemContent+UIRelatedProperties.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
 				3553C22D296575560087518A /* LoggerManager+Initializer.swift in Sources */,
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
@@ -3136,6 +3141,7 @@
 				3561251B298271B600EDA991 /* KeyboardContentViewModel.swift in Sources */,
 				3549AC9F298306E800BA5CD6 /* TOTPLogInItemDetailView.swift in Sources */,
 				3549ACA1298306FC00BA5CD6 /* TOTPLogInItemDetailViewModel.swift in Sources */,
+				3562BC31299542D7003FCB13 /* ItemContent+UIRelatedProperties.swift in Sources */,
 				3565FD5A298D427500E2A0EE /* TOTPCircularTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
