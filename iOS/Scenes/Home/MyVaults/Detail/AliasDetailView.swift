@@ -26,7 +26,6 @@ import UIComponents
 struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @State private var bottomId = UUID().uuidString
-    private let tintColor = UIColor.notificationSuccess
 
     init(viewModel: AliasDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -36,15 +35,13 @@ struct AliasDetailView: View {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
-                    ItemDetailTitleView(color: tintColor,
-                                        icon: .image(IconProvider.alias),
-                                        title: viewModel.name)
-                    .padding(.bottom, 24)
+                    ItemDetailTitleView(itemContent: viewModel.itemContent)
+                        .padding(.bottom, 24)
 
                     aliasMailboxesSection
                         .padding(.bottom, 8)
 
-                    NoteSection(note: viewModel.note, tintColor: tintColor)
+                    NoteSection(itemContent: viewModel.itemContent)
 
                     ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
                                               onExpand: { withAnimation { value.scrollTo(bottomId) } })
@@ -57,53 +54,11 @@ struct AliasDetailView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar { toolbarContent }
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
-                         color: tintColor,
-                         action: viewModel.goBack)
-        }
-
-        ToolbarItem(placement: .navigationBarTrailing) {
-            switch viewModel.itemContent.item.itemState {
-            case .active:
-                HStack(spacing: 0) {
-                    CapsuleTitledButton(icon: IconProvider.pencil,
-                                        title: "Edit",
-                                        color: tintColor,
-                                        action: viewModel.edit)
-
-                    Menu(content: {
-                        Button(action: {
-                            print("Pin")
-                        }, label: {
-                            Label(title: {
-                                Text("Pin")
-                            }, icon: {
-                                Image(uiImage: IconProvider.bookmark)
-                            })
-                        })
-
-                        DestructiveButton(title: "Move to trash",
-                                          icon: IconProvider.trash,
-                                          action: { print("Trash") })
-                    }, label: {
-                        CapsuleButton(icon: IconProvider.threeDotsVertical,
-                                      color: tintColor,
-                                      action: {})
-                    })
-                }
-
-            case .trashed:
-                Button(action: viewModel.restore) {
-                    Text("Restore")
-                        .foregroundColor(.interactionNorm)
-                }
-            }
+        .toolbar {
+            ItemDetailToolbar(itemContent: viewModel.itemContent,
+                              onGoBack: viewModel.goBack,
+                              onEdit: viewModel.edit,
+                              onRevealMoreOptions: {})
         }
     }
 
@@ -121,7 +76,7 @@ struct AliasDetailView: View {
     private var aliasRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user,
-                                  color: tintColor.withAlphaComponent(0.5))
+                                  color: viewModel.itemContent.tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -156,7 +111,7 @@ struct AliasDetailView: View {
     private var mailboxesRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.forward,
-                                  color: tintColor.withAlphaComponent(0.5))
+                                  color: viewModel.itemContent.tintColor)
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("Forwarded to")

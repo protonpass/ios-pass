@@ -40,14 +40,14 @@ public struct CircleButton: View {
     public var body: some View {
         Button(action: action) {
             ZStack {
-                Color(uiColor: color.withAlphaComponent(0.2))
+                Color(uiColor: color.withAlphaComponent(0.08))
                     .clipShape(Circle())
                 Image(uiImage: icon)
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()
                     .foregroundColor(Color(uiColor: color))
-                    .padding(.vertical, height / 3)
+                    .padding(.vertical, height / 4)
             }
             .frame(width: height, height: height)
         }

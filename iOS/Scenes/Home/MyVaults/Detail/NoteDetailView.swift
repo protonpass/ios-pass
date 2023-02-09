@@ -63,53 +63,11 @@ struct NoteDetailView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar { toolbarContent }
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
-                         color: tintColor,
-                         action: viewModel.goBack)
-        }
-
-        ToolbarItem(placement: .navigationBarTrailing) {
-            switch viewModel.itemContent.item.itemState {
-            case .active:
-                HStack(spacing: 0) {
-                    CapsuleTitledButton(icon: IconProvider.pencil,
-                                        title: "Edit",
-                                        color: tintColor,
-                                        action: viewModel.edit)
-
-                    Menu(content: {
-                        Button(action: {
-                            print("Pin")
-                        }, label: {
-                            Label(title: {
-                                Text("Pin")
-                            }, icon: {
-                                Image(uiImage: IconProvider.bookmark)
-                            })
-                        })
-
-                        DestructiveButton(title: "Move to trash",
-                                          icon: IconProvider.trash,
-                                          action: { print("Trash") })
-                    }, label: {
-                        CapsuleButton(icon: IconProvider.threeDotsVertical,
-                                      color: tintColor,
-                                      action: {})
-                    })
-                }
-
-            case .trashed:
-                Button(action: viewModel.restore) {
-                    Text("Restore")
-                        .foregroundColor(.interactionNorm)
-                }
-            }
+        .toolbar {
+            ItemDetailToolbar(itemContent: viewModel.itemContent,
+                              onGoBack: viewModel.goBack,
+                              onEdit: viewModel.edit,
+                              onRevealMoreOptions: {})
         }
     }
 }

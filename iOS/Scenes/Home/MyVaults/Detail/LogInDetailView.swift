@@ -27,7 +27,6 @@ struct LogInDetailView: View {
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
     @State private var bottomId = UUID().uuidString
-    private let tintColor = UIColor.brandNorm
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -37,15 +36,13 @@ struct LogInDetailView: View {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
-                    ItemDetailTitleView(color: tintColor,
-                                        icon: .initials(String(viewModel.name.prefix(2))),
-                                        title: viewModel.name)
-                    .padding(.bottom, 24)
+                    ItemDetailTitleView(itemContent: viewModel.itemContent)
+                        .padding(.bottom, 24)
 
                     usernamePassword2FaSection
                     urlsSection
                         .padding(.vertical, 8)
-                    NoteSection(note: viewModel.note, tintColor: tintColor)
+                    NoteSection(itemContent: viewModel.itemContent)
 
                     ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
                                               onExpand: { withAnimation { value.scrollTo(bottomId) } })
@@ -58,53 +55,11 @@ struct LogInDetailView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar { toolbarContent }
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
-                         color: tintColor,
-                         action: viewModel.goBack)
-        }
-
-        ToolbarItem(placement: .navigationBarTrailing) {
-            switch viewModel.itemContent.item.itemState {
-            case .active:
-                HStack(spacing: 0) {
-                    CapsuleTitledButton(icon: IconProvider.pencil,
-                                        title: "Edit",
-                                        color: tintColor,
-                                        action: viewModel.edit)
-
-                    Menu(content: {
-                        Button(action: {
-                            print("Pin")
-                        }, label: {
-                            Label(title: {
-                                Text("Pin")
-                            }, icon: {
-                                Image(uiImage: IconProvider.bookmark)
-                            })
-                        })
-
-                        DestructiveButton(title: "Move to trash",
-                                          icon: IconProvider.trash,
-                                          action: { print("Trash") })
-                    }, label: {
-                        CapsuleButton(icon: IconProvider.threeDotsVertical,
-                                      color: tintColor,
-                                      action: {})
-                    })
-                }
-
-            case .trashed:
-                Button(action: viewModel.restore) {
-                    Text("Restore")
-                        .foregroundColor(.interactionNorm)
-                }
-            }
+        .toolbar {
+            ItemDetailToolbar(itemContent: viewModel.itemContent,
+                              onGoBack: viewModel.goBack,
+                              onEdit: viewModel.edit,
+                              onRevealMoreOptions: {})
         }
     }
 
@@ -129,7 +84,7 @@ struct LogInDetailView: View {
     private var usernameRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user,
-                                  color: tintColor.withAlphaComponent(0.5))
+                                  color: viewModel.itemContent.tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -163,8 +118,8 @@ struct LogInDetailView: View {
 
     private var passwordRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.keySkeleton,
-                                  color: tintColor.withAlphaComponent(0.5))
+            ItemDetailSectionIcon(icon: IconProvider.key,
+                                  color: viewModel.itemContent.tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Password")
@@ -184,7 +139,7 @@ struct LogInDetailView: View {
             Spacer()
 
             CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
-                         color: tintColor,
+                         color: viewModel.itemContent.tintColor,
                          action: { isShowingPassword.toggle() })
             .fixedSize(horizontal: true, vertical: true)
         }
@@ -214,7 +169,7 @@ struct LogInDetailView: View {
         } else {
             HStack(spacing: kItemDetailSectionPadding) {
                 ItemDetailSectionIcon(icon: IconProvider.lock,
-                                      color: tintColor.withAlphaComponent(0.5))
+                                      color: viewModel.itemContent.tintColor)
 
                 VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                     Text("Two Factor Authentication")
@@ -253,7 +208,7 @@ struct LogInDetailView: View {
     private var urlsSection: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.earth,
-                                  color: tintColor.withAlphaComponent(0.5))
+                                  color: viewModel.itemContent.tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Website")
