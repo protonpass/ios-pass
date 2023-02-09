@@ -26,6 +26,7 @@ struct CreateEditNoteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditNoteViewModel
     @FocusState private var isFocusedOnTitle: Bool
+    @FocusState private var isFocusedOnContent: Bool
     @State private var isShowingDiscardAlert = false
 
     init(viewModel: CreateEditNoteViewModel) {
@@ -37,11 +38,21 @@ struct CreateEditNoteView: View {
             ScrollView {
                 VStack {
                     TextEditorWithPlaceholder(text: $viewModel.name,
+                                              isFocused: _isFocusedOnTitle,
                                               placeholder: "Untitled")
                     .font(.title.weight(.bold))
                     .focused($isFocusedOnTitle)
+                    .submitLabel(.next)
+                    .onChange(of: viewModel.name) { name in
+                        // When users press enter, move the cursor to content
+                        if name.last == "\n" {
+                            viewModel.name.removeLast()
+                            isFocusedOnContent = true
+                        }
+                    }
 
                     TextEditorWithPlaceholder(text: $viewModel.note,
+                                              isFocused: _isFocusedOnContent,
                                               placeholder: "Tap here to continue")
                 }
                 .padding()

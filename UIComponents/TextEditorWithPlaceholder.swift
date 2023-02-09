@@ -21,34 +21,37 @@
 import SwiftUI
 
 public struct TextEditorWithPlaceholder: View {
-    @FocusState private var isFocusedOnTextEditor: Bool
     @State private var isShowingPlaceholder: Bool
+    @FocusState var isFocused: Bool
     @Binding var text: String
     let placeholder: String
 
-    public init(text: Binding<String>, placeholder: String) {
-        self._text = text
+    public init(text: Binding<String>,
+                isFocused: FocusState<Bool>,
+                placeholder: String) {
         self._isShowingPlaceholder = .init(initialValue: text.wrappedValue.isEmpty)
+        self._text = text
+        self._isFocused = isFocused
         self.placeholder = placeholder
     }
 
     public var body: some View {
         ZStack {
             TextEditor(text: $text)
-                .focused($isFocusedOnTextEditor)
+                .focused($isFocused)
 
             if isShowingPlaceholder {
                 TextField(placeholder, text: .constant("")) { changed in
                     if changed {
                         isShowingPlaceholder = false
-                        isFocusedOnTextEditor = true
+                        isFocused = true
                     }
                 }
             }
         }
         .animation(.default, value: isShowingPlaceholder)
-        .onChange(of: isFocusedOnTextEditor) { isFocusedOnTextEditor in
-            isShowingPlaceholder = !isFocusedOnTextEditor && text.isEmpty
+        .onChange(of: isFocused) { isFocused in
+            isShowingPlaceholder = !isFocused && text.isEmpty
         }
     }
 }
