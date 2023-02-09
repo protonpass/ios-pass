@@ -25,6 +25,7 @@ import UIComponents
 struct CreateEditNoteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditNoteViewModel
+    @FocusState private var isFocusedOnTitle: Bool
     @State private var isShowingDiscardAlert = false
 
     init(viewModel: CreateEditNoteViewModel) {
@@ -33,18 +34,40 @@ struct CreateEditNoteView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {}
+            ScrollView {
+                VStack {
+                    TextEditorWithPlaceholder(text: $viewModel.name,
+                                              placeholder: "Untitled")
+                    .font(.title.weight(.bold))
+                    .focused($isFocusedOnTitle)
+
+                    TextEditorWithPlaceholder(text: $viewModel.note,
+                                              placeholder: "Tap here to continue")
+                }
+                .padding()
+            }
+            .accentColor(Color(uiColor: viewModel.itemContentType().tintColor))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                CreateEditItemToolbar(isSaveable: viewModel.isSaveable,
-                                      isSaving: viewModel.isSaving,
-                                      itemContentType: viewModel.itemContentType(),
-                                      onGoBack: dismiss.callAsFunction,
-                                      onSave: viewModel.save)
+                CreateEditItemToolbar(
+                    isSaveable: viewModel.isSaveable,
+                    isSaving: viewModel.isSaving,
+                    itemContentType: viewModel.itemContentType(),
+                    onGoBack: {
+                        if viewModel.isEmpty {
+                            dismiss()
+                        } else {
+                            isShowingDiscardAlert.toggle()
+                        }
+                    },
+                    onSave: viewModel.save)
             }
         }
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
+        .onFirstAppear {
+            isFocusedOnTitle = true
+        }
     }
 }

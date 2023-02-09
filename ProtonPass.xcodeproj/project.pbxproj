@@ -264,6 +264,8 @@
 		356180F728EC4C0C00B1835A /* CredentialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356180F628EC4C0C00B1835A /* CredentialManager.swift */; };
 		3561A1802922D1700097078B /* ItemCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561A17F2922D1700097078B /* ItemCount.swift */; };
 		3561A1822922DA6E0097078B /* ItemCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561A1812922DA6E0097078B /* ItemCountView.swift */; };
+		3562BC2D2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BC2C2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift */; };
+		3562BC2F29950680003FCB13 /* View+OnFirstAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BC2E29950680003FCB13 /* View+OnFirstAppear.swift */; };
 		356423412925184100D2B7E3 /* OutlinedRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423402925184100D2B7E3 /* OutlinedRoundedButton.swift */; };
 		356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */; };
 		3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD45298CF4FA00E2A0EE /* CircleButton.swift */; };
@@ -846,6 +848,8 @@
 		356180F628EC4C0C00B1835A /* CredentialManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialManager.swift; sourceTree = "<group>"; };
 		3561A17F2922D1700097078B /* ItemCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCount.swift; sourceTree = "<group>"; };
 		3561A1812922DA6E0097078B /* ItemCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountView.swift; sourceTree = "<group>"; };
+		3562BC2C2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorWithPlaceholder.swift; sourceTree = "<group>"; };
+		3562BC2E29950680003FCB13 /* View+OnFirstAppear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnFirstAppear.swift"; sourceTree = "<group>"; };
 		356423402925184100D2B7E3 /* OutlinedRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlinedRoundedButton.swift; sourceTree = "<group>"; };
 		356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnReceiveBoolean.swift"; sourceTree = "<group>"; };
 		3565FD45298CF4FA00E2A0EE /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
@@ -1976,10 +1980,12 @@
 				3542E2CC28DA11FE00194F24 /* RetryableErrorView.swift */,
 				354BB15228A2886500F50040 /* SwiftUISearchBar.swift */,
 				3552618628A1372500A68477 /* SwiftUITextView.swift */,
+				3562BC2C2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift */,
 				354BB13C28A240E000F50040 /* TextExtensions.swift */,
 				3552618C28A1511000A68477 /* UserInputContentView.swift */,
 				3552618A28A14EB600A68477 /* UserInputContainerView.swift */,
 				354DCCF8291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift */,
+				3562BC2E29950680003FCB13 /* View+OnFirstAppear.swift */,
 				356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */,
 				35570A7F2926321B00125727 /* View+OpacityReduced.swift */,
 				35283E4D2927A9A9002F5B84 /* View+ItemDetailModifiers.swift */,
@@ -3472,6 +3478,7 @@
 				355E6DFC292FD56000C60796 /* Button+ConvenientInitializers.swift in Sources */,
 				3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */,
 				3547ABEA2877684D00EE85E1 /* GenericItemView.swift in Sources */,
+				3562BC2D2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift in Sources */,
 				354F769028C861FF00EB2383 /* DestructiveButton.swift in Sources */,
 				3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */,
 				354DCCF9291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift in Sources */,
@@ -3483,6 +3490,7 @@
 				355214842915524D00BA6229 /* CopyMenuButton.swift in Sources */,
 				358C42A828D48DFB00ADE305 /* DiscardChangesAlertModifier.swift in Sources */,
 				35498F8828DC769300AF1D8F /* HighlightText.swift in Sources */,
+				3562BC2F29950680003FCB13 /* View+OnFirstAppear.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
