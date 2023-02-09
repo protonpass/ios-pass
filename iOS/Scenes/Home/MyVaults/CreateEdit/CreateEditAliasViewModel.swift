@@ -152,7 +152,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case .create:
             return "New alias"
         case .edit:
-            return "Edit"
+            return "Edit alias"
         }
     }
 
