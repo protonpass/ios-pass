@@ -308,6 +308,7 @@
 		3572E51D2993AC1700775FAC /* PPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E51A299399AD00775FAC /* PPError.swift */; };
 		3572E5232993D68800775FAC /* ItemContent+UIRelatedProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */; };
 		3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E5242993D7BF00775FAC /* ItemDetailToolbar.swift */; };
+		3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */; };
 		3573CD23292C139900A9EF82 /* AliasPrefixValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */; };
 		3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */; };
 		3573D707297642F400F68DF7 /* DeleteVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */; };
@@ -880,6 +881,7 @@
 		3572E51A299399AD00775FAC /* PPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPError.swift; sourceTree = "<group>"; };
 		3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemContent+UIRelatedProperties.swift"; sourceTree = "<group>"; };
 		3572E5242993D7BF00775FAC /* ItemDetailToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailToolbar.swift; sourceTree = "<group>"; };
+		3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditItemToolbar.swift; sourceTree = "<group>"; };
 		3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidator.swift; sourceTree = "<group>"; };
 		3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidatorTests.swift; sourceTree = "<group>"; };
 		3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultEndpoint.swift; sourceTree = "<group>"; };
@@ -1603,6 +1605,7 @@
 		356B69772949DBC600868771 /* CreateEdit */ = {
 			isa = PBXGroup;
 			children = (
+				3572E52729940C0300775FAC /* Supporting Views */,
 				35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */,
 				3547ABDF287750F100EE85E1 /* CreateItemView.swift */,
 				35476973289D82FE00581E2E /* CreateItemViewModel.swift */,
@@ -1650,6 +1653,14 @@
 				3565FD5C298D49B300E2A0EE /* NoteSection.swift */,
 				3565FD54298D3E5700E2A0EE /* TOTPCircularTimer.swift */,
 				3565FD56298D3E9400E2A0EE /* TOTPText.swift */,
+			);
+			path = "Supporting Views";
+			sourceTree = "<group>";
+		};
+		3572E52729940C0300775FAC /* Supporting Views */ = {
+			isa = PBXGroup;
+			children = (
+				3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */,
 			);
 			path = "Supporting Views";
 			sourceTree = "<group>";
@@ -3128,6 +3139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */,
+				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */,
 				355783682962EC0B008A4992 /* DeviceLogsViewModel.swift in Sources */,

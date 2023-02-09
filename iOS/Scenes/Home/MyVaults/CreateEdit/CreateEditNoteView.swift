@@ -25,10 +25,7 @@ import UIComponents
 struct CreateEditNoteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditNoteViewModel
-    @State private var isShowingTrashAlert = false
     @State private var isShowingDiscardAlert = false
-    @State private var isFocusedOnTitle = false
-    @State private var isFocusedOnNote = false
 
     init(viewModel: CreateEditNoteViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -36,83 +33,18 @@ struct CreateEditNoteView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack {
-                    nameInputView
-                        .padding(.bottom, 20)
-
-                    noteInputView
-                        .padding(.bottom, 56)
-
-                    if viewModel.mode.isEditMode {
-                        MoveToTrashButton(action: askForConfirmationOrTrashDirectly)
-                            .opacityReduced(viewModel.isSaving)
-                    }
-
-                    Spacer()
-                }
-                .padding()
-            }
+            ScrollView {}
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(viewModel.navigationBarTitle())
-            .toolbar { toolbarContent }
+            .toolbar {
+                CreateEditItemToolbar(isSaveable: viewModel.isSaveable,
+                                      isSaving: viewModel.isSaving,
+                                      itemContentType: viewModel.itemContentType(),
+                                      onGoBack: dismiss.callAsFunction,
+                                      onSave: viewModel.save)
+            }
         }
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
-        .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
-    }
-
-    private var nameInputView: some View {
-        UserInputContainerView(title: "Title",
-                               isFocused: isFocusedOnTitle) {
-            UserInputContentSingleLineWithClearButton(
-                text: $viewModel.name,
-                isFocused: $isFocusedOnTitle,
-                placeholder: "Title",
-                onClear: { viewModel.name = "" })
-            .opacityReduced(viewModel.isSaving)
-        }
-    }
-
-    private var noteInputView: some View {
-        UserInputContainerView(title: "Note",
-                               isFocused: isFocusedOnNote) {
-            UserInputContentMultilineView(
-                text: $viewModel.note,
-                isFocused: $isFocusedOnNote)
-            .opacityReduced(viewModel.isSaving)
-        }
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                if viewModel.isEmpty {
-                    dismiss()
-                } else {
-                    isShowingDiscardAlert.toggle()
-                }
-            }, label: {
-                Text("Cancel")
-            })
-            .foregroundColor(Color(.label))
-        }
-
-        ToolbarItem(placement: .navigationBarTrailing) {
-            SpinnerButton(title: "Save",
-                          disabled: !viewModel.isSaveable,
-                          spinning: viewModel.isSaving,
-                          action: viewModel.save)
-        }
-    }
-
-    private func askForConfirmationOrTrashDirectly() {
-        if viewModel.preferences.askBeforeTrashing {
-            isShowingTrashAlert.toggle()
-        } else {
-            viewModel.trash()
-        }
     }
 }
