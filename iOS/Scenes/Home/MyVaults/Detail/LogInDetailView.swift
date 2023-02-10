@@ -42,7 +42,7 @@ struct LogInDetailView: View {
                     usernamePassword2FaSection
                     urlsSection
                         .padding(.vertical, 8)
-                    NoteSection(itemContent: viewModel.itemContent)
+                    NoteDetailSection(itemContent: viewModel.itemContent)
 
                     ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
                                               onExpand: { withAnimation { value.scrollTo(bottomId) } })
