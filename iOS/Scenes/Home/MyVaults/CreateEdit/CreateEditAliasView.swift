@@ -32,6 +32,8 @@ struct CreateEditAliasView: View {
     @State private var isFocusedOnNote = false
     @State private var isShowingDiscardAlert = false
 
+    private var tintColor: UIColor { viewModel.itemContentType().tintColor }
+
     init(viewModel: CreateEditAliasViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
@@ -65,7 +67,7 @@ struct CreateEditAliasView: View {
     private var closeButtonToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         color: viewModel.itemContentType().tintColor,
+                         color: tintColor,
                          action: dismiss.callAsFunction)
         }
     }
@@ -77,6 +79,7 @@ struct CreateEditAliasView: View {
                 if case .edit = viewModel.mode {
                     aliasReadonlySection
                 } else {
+                    aliasPreviewSection
                     aliasInputView
                 }
                 mailboxesSection
@@ -85,7 +88,7 @@ struct CreateEditAliasView: View {
             }
             .padding()
         }
-        .tint(Color(uiColor: viewModel.itemContentType().tintColor))
+        .tint(Color(uiColor: tintColor))
         .toolbar {
             CreateEditItemToolbar(
                 title: viewModel.navigationBarTitle(),
@@ -136,6 +139,39 @@ struct CreateEditAliasView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .padding(kItemDetailSectionPadding)
+        .roundedDetailSection()
+    }
+
+    private var aliasPreviewSection: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.alias,
+                                  color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Alias preview")
+                    .sectionTitleText()
+
+                if let prefixError = viewModel.prefixError {
+                    Text(prefixError.localizedDescription)
+                        .font(.caption)
+                        .foregroundColor(.red)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    if viewModel.prefix.isEmpty {
+                        Text("prefix")
+                            .foregroundColor(.textWeak) +
+                        Text(viewModel.suffix)
+                            .foregroundColor(Color(uiColor: tintColor))
+                    } else {
+                        Text(viewModel.prefix + viewModel.suffix)
+                            .foregroundColor(Color(uiColor: tintColor))
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .animation(.default, value: viewModel.prefixError)
         .padding(kItemDetailSectionPadding)
         .roundedDetailSection()
     }
