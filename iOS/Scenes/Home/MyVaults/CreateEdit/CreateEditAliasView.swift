@@ -80,7 +80,7 @@ struct CreateEditAliasView: View {
                     aliasReadonlySection
                 } else {
                     aliasPreviewSection
-                    aliasInputView
+                    prefixSuffixSection
                 }
                 mailboxesSection
 
@@ -176,82 +176,66 @@ struct CreateEditAliasView: View {
         .roundedDetailSection()
     }
 
-    private var aliasInputView: some View {
-        VStack {
-            UserInputContainerView(title: "Alias",
-                                   isFocused: isFocusedOnPrefix) {
-                UserInputContentSingleLineWithClearButton(
-                    text: $viewModel.prefix,
-                    isFocused: $isFocusedOnPrefix,
-                    placeholder: "Custom prefix",
-                    onClear: { viewModel.prefix = "" },
-                    textAutocapitalizationType: .none,
-                    autocorrectionDisabled: true)
-                .opacityReduced(viewModel.isSaving)
-            }
-
-            UserInputContainerView(title: nil, isFocused: false) {
-                if let suffixes = viewModel.suffixSelection?.suffixes {
-                    Menu(content: {
-                        ForEach(suffixes, id: \.suffix) { suffix in
-                            Button(action: {
-                                viewModel.suffixSelection?.selectedSuffix = suffix
-                            }, label: {
-                                Label(title: {
-                                    Text(suffix.suffix)
-                                }, icon: {
-                                    if suffix.suffix == viewModel.suffix {
-                                        Image(systemName: "checkmark")
-                                    }
-                                })
-                            })
-                        }
-                    }, label: {
-                        UserInputStaticContentView(text: viewModel.suffix) {
-                            Image(uiImage: IconProvider.chevronDown)
-                                .foregroundColor(.textNorm)
-                        }
-                        .transaction { transaction in
-                            transaction.animation = nil
-                        }
-                    })
-                } else {
-                    EmptyView()
-                }
-            }
-            .buttonStyle(.plain)
-            .opacityReduced(viewModel.isSaving)
-
-            if !viewModel.prefix.isEmpty {
-                if let prefixError = viewModel.prefixError {
-                    Text(prefixError.localizedDescription)
-                        .font(.caption)
-                        .foregroundColor(.red)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .animation(.default, value: viewModel.prefixError)
-                } else {
-                    fullAlias
-                        .animation(.default, value: viewModel.prefixError)
-                }
-            }
+    private var prefixSuffixSection: some View {
+        VStack(alignment: .leading, spacing: kItemDetailSectionPadding) {
+            prefixRow
+            Divider()
+            suffixRow
         }
+        .padding(.vertical, kItemDetailSectionPadding)
+        .roundedDetailSection()
     }
 
-    private var fullAlias: some View {
-        HStack {
-            Group {
-                Text("You're about to create alias ")
-                    .foregroundColor(.secondary) +
-                Text(viewModel.prefix + viewModel.suffix)
-                    .foregroundColor(.interactionNorm)
-            }
-            .font(.caption)
-            .transaction { transaction in
-                transaction.animation = nil
-            }
+    private var prefixRow: some View {
+        VStack(alignment: .leading) {
+            Text("Prefix")
+                .sectionTitleText()
+            TextField("Add a prefix", text: $viewModel.prefix)
+                .keyboardType(.emailAddress)
+                .textInputAutocapitalization(.never)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .transition(AnyTransition.opacity.animation(.linear(duration: 0.2)))
+        .padding(.horizontal, kItemDetailSectionPadding)
+    }
+
+    @ViewBuilder
+    private var suffixRow: some View {
+        if let suffixes = viewModel.suffixSelection?.suffixes {
+            Menu(content: {
+                ForEach(suffixes, id: \.suffix) { suffix in
+                    Button(action: {
+                        viewModel.suffixSelection?.selectedSuffix = suffix
+                    }, label: {
+                        Label(title: {
+                            Text(suffix.suffix)
+                        }, icon: {
+                            if suffix.suffix == viewModel.suffix {
+                                Image(systemName: "checkmark")
+                            }
+                        })
+                    })
+                }
+            }, label: {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("Suffix")
+                            .sectionTitleText()
+                        Text(viewModel.suffix)
+                            .sectionContentText()
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    Spacer()
+                    ItemDetailSectionIcon(icon: IconProvider.chevronDown,
+                                          color: .textWeak)
+                }
+                .padding(.horizontal, kItemDetailSectionPadding)
+                .transaction { transaction in
+                    transaction.animation = nil
+                }
+            })
+        } else {
+            EmptyView()
+        }
     }
 
     private var mailboxesSection: some View {
