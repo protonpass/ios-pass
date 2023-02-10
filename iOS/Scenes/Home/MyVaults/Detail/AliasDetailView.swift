@@ -69,7 +69,7 @@ struct AliasDetailView: View {
             mailboxesRow
         }
         .padding(.vertical, kItemDetailSectionPadding)
-        .roundedDetail()
+        .roundedDetailSection()
         .animation(.default, value: viewModel.mailboxes)
     }
 

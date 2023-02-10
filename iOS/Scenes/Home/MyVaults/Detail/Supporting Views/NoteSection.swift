@@ -56,7 +56,7 @@ struct NoteSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(kItemDetailSectionPadding)
-        .roundedDetail()
+        .roundedDetailSection()
         .sheet(isPresented: $isShowingFullNote) {
             FullNoteView(itemContent: itemContent)
         }

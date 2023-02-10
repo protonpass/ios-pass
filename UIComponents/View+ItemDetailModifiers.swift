@@ -21,11 +21,19 @@
 import SwiftUI
 
 public extension View {
-    func roundedDetail() -> some View {
+    func roundedDetailSection() -> some View {
         overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.interactionWeak, lineWidth: 1)
         )
+    }
+
+    func roundedEditableSection() -> some View {
+        background(Color.white.opacity(0.04))
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.interactionWeak, lineWidth: 1)
+            )
     }
 }
 
