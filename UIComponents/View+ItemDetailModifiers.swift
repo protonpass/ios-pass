@@ -29,7 +29,8 @@ public extension View {
     }
 
     func roundedEditableSection() -> some View {
-        background(Color.white.opacity(0.04))
+        self.background(Color.white.opacity(0.04))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(Color.interactionWeak, lineWidth: 1)
@@ -40,7 +41,7 @@ public extension View {
 public extension Text {
     func sectionTitleText() -> Text {
         self
-            .font(.callout)
+            .font(.footnote)
             .foregroundColor(.textWeak)
     }
 

@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import ProtonCore_UIFoundations
 import SwiftUI
@@ -29,7 +30,6 @@ struct CreateEditAliasView: View {
     @State private var isFocusedOnTitle = false
     @State private var isFocusedOnPrefix = false
     @State private var isFocusedOnNote = false
-    @State private var isShowingTrashAlert = false
     @State private var isShowingDiscardAlert = false
 
     init(viewModel: CreateEditAliasViewModel) {
@@ -59,7 +59,6 @@ struct CreateEditAliasView: View {
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
-        .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
     }
 
     @ToolbarContentBuilder
@@ -87,20 +86,15 @@ struct CreateEditAliasView: View {
 
     private var content: some View {
         ScrollView {
-            VStack(spacing: 20) {
+            VStack(spacing: 8) {
                 titleSection
                 if case .edit = viewModel.mode {
-                    aliasEmailView
+                    aliasReadonlySection
                 } else {
                     aliasInputView
                 }
-                mailboxesInputView
+                mailboxesSection
                 noteInputView
-
-                if viewModel.mode.isEditMode {
-                    MoveToTrashButton(action: askForConfirmationOrTrashDirectly)
-                        .opacityReduced(viewModel.isSaving)
-                }
             }
             .padding()
         }
@@ -109,7 +103,7 @@ struct CreateEditAliasView: View {
 
     private var titleSection: some View {
         HStack {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Title")
                     .sectionTitleText()
                 TextField("Untitled", text: $viewModel.title)
@@ -127,25 +121,21 @@ struct CreateEditAliasView: View {
         .roundedEditableSection()
     }
 
-    private var titleInputView: some View {
-        UserInputContainerView(title: "Title",
-                               isFocused: isFocusedOnTitle) {
-            UserInputContentSingleLineWithClearButton(
-                text: $viewModel.title,
-                isFocused: $isFocusedOnTitle,
-                placeholder: "Alias title",
-                onClear: { viewModel.title = "" })
-            .opacityReduced(viewModel.isSaving)
-        }
-    }
+    private var aliasReadonlySection: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.alias,
+                                  color: .textWeak)
 
-    private var aliasEmailView: some View {
-        UserInputContainerView(title: "Alias",
-                               isFocused: false,
-                               isEditable: false) {
-            Text(viewModel.aliasEmail)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Alias address")
+                    .sectionTitleText()
+                Text(viewModel.aliasEmail)
+                    .foregroundColor(.textWeak)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .padding(kItemDetailSectionPadding)
+        .roundedDetailSection()
     }
 
     private var aliasInputView: some View {
@@ -226,18 +216,28 @@ struct CreateEditAliasView: View {
         .transition(AnyTransition.opacity.animation(.linear(duration: 0.2)))
     }
 
-    private var mailboxesInputView: some View {
-        UserInputContainerView(title: "Mailboxes", isFocused: false) {
-            UserInputStaticContentView(text: viewModel.mailboxes) {
-                Image(uiImage: IconProvider.chevronDown)
-                    .foregroundColor(.textNorm)
+    private var mailboxesSection: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.forward,
+                                  color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Forwarded to")
+                    .sectionTitleText()
+                Text(viewModel.mailboxes)
+                    .sectionContentText()
             }
-            .contentShape(Rectangle())
-            .onTapGesture {
-                viewModel.showMailboxSelection()
-            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            ItemDetailSectionIcon(icon: IconProvider.chevronDown,
+                                  color: .textWeak)
         }
-        .opacityReduced(viewModel.isSaving)
+        .padding(kItemDetailSectionPadding)
+        .roundedEditableSection()
+        .contentShape(Rectangle())
+        .onTapGesture {
+            viewModel.showMailboxSelection()
+        }
     }
 
     private var noteInputView: some View {
@@ -249,47 +249,41 @@ struct CreateEditAliasView: View {
             .opacityReduced(viewModel.isSaving)
         }
     }
-
-    private func askForConfirmationOrTrashDirectly() {
-        if viewModel.preferences.askBeforeTrashing {
-            isShowingTrashAlert.toggle()
-        } else {
-            viewModel.trash()
-        }
-    }
 }
 
 struct MailboxesView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var mailboxSelection: MailboxSelection
+    let tintColor = Color(uiColor: ItemContentType.alias.tintColor)
 
     var body: some View {
-        VStack {
-            NotchView()
-                .padding(.top, 5)
-                .padding(.bottom, 7)
-
-            Text("Destination mailboxes")
-                .fontWeight(.bold)
-
+        NavigationView {
             List {
                 ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
                     HStack {
                         Text(mailbox.email)
-                            .foregroundColor(.textNorm)
+                            .foregroundColor(isSelected(mailbox) ? tintColor : .textNorm)
                         Spacer()
-                        if mailboxSelection.selectedMailboxes.contains(mailbox) {
+
+                        if isSelected(mailbox) {
                             Image(uiImage: IconProvider.checkmark)
-                                .foregroundColor(.brandNorm)
+                                .foregroundColor(tintColor)
                         }
                     }
                     .contentShape(Rectangle())
+                    .listRowSeparator(.hidden)
                     .onTapGesture {
                         mailboxSelection.selectOrDeselect(mailbox: mailbox)
                     }
                 }
             }
             .listStyle(.plain)
+            .navigationTitle("Forwarded to")
+            .navigationBarTitleDisplayMode(.inline)
         }
+    }
+
+    private func isSelected(_ mailbox: Mailbox) -> Bool {
+        mailboxSelection.selectedMailboxes.contains(mailbox)
     }
 }
