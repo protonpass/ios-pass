@@ -51,7 +51,7 @@ struct CreateEditItemToolbar: ToolbarContent {
                                     title: "Save",
                                     color: itemContentType.tintColor,
                                     action: { Task { await onSave() } })
-                .disabled(!isSaveable)
+                .opacityReduced(!isSaveable)
             }
         }
     }

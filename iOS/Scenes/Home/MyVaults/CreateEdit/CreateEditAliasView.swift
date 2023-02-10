@@ -42,11 +42,13 @@ struct CreateEditAliasView: View {
                 switch viewModel.state {
                 case .loading:
                     ProgressView()
+                        .toolbar { closeButtonToolbar }
 
                 case .error(let error):
                     RetryableErrorView(errorMessage: error.messageForTheUser,
                                        onRetry: viewModel.getAliasAndAliasOptions)
                     .padding()
+                    .toolbar { closeButtonToolbar }
 
                 case .loaded:
                     content
@@ -54,33 +56,17 @@ struct CreateEditAliasView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(viewModel.navigationBarTitle())
-            .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
     }
 
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
+    private var closeButtonToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                if viewModel.isEmpty {
-                    dismiss()
-                } else {
-                    isShowingDiscardAlert.toggle()
-                }
-            }, label: {
-                Text("Cancel")
-            })
-            .foregroundColor(Color(.label))
-        }
-
-        ToolbarItem(placement: .navigationBarTrailing) {
-            SpinnerButton(title: "Save",
-                          disabled: !viewModel.state.isLoaded || !viewModel.isSaveable,
-                          spinning: viewModel.isSaving,
-                          action: viewModel.save)
+            CircleButton(icon: IconProvider.cross,
+                         color: viewModel.itemContentType().tintColor,
+                         action: dismiss.callAsFunction)
         }
     }
 
@@ -100,6 +86,21 @@ struct CreateEditAliasView: View {
             .padding()
         }
         .tint(Color(uiColor: viewModel.itemContentType().tintColor))
+        .toolbar {
+            CreateEditItemToolbar(
+                title: viewModel.navigationBarTitle(),
+                isSaveable: viewModel.isSaveable,
+                isSaving: viewModel.isSaving,
+                itemContentType: viewModel.itemContentType(),
+                onGoBack: {
+                    if viewModel.isEmpty {
+                        dismiss()
+                    } else {
+                        isShowingDiscardAlert.toggle()
+                    }
+                },
+                onSave: viewModel.save)
+        }
     }
 
     private var titleSection: some View {
