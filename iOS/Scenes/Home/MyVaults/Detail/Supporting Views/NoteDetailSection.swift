@@ -1,5 +1,5 @@
 //
-// NoteSection.swift
+// NoteDetailSection.swift
 // Proton Pass - Created on 03/02/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -24,7 +24,7 @@ import SwiftUI
 import UIComponents
 
 /// Note section of item detail pages
-struct NoteSection: View {
+struct NoteDetailSection: View {
     @State private var isShowingFullNote = false
     let itemContent: ItemContent
 
