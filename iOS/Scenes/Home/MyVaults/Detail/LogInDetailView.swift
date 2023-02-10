@@ -78,7 +78,7 @@ struct LogInDetailView: View {
             }
         }
         .padding(.vertical, kItemDetailSectionPadding)
-        .roundedDetail()
+        .roundedDetailSection()
     }
 
     private var usernameRow: some View {
@@ -249,6 +249,6 @@ struct LogInDetailView: View {
             .animation(.default, value: viewModel.urls)
         }
         .padding(kItemDetailSectionPadding)
-        .roundedDetail()
+        .roundedDetailSection()
     }
 }

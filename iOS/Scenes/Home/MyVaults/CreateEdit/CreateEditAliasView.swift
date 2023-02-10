@@ -88,7 +88,7 @@ struct CreateEditAliasView: View {
     private var content: some View {
         ScrollView {
             VStack(spacing: 20) {
-                titleInputView
+                titleSection
                 if case .edit = viewModel.mode {
                     aliasEmailView
                 } else {
@@ -104,6 +104,27 @@ struct CreateEditAliasView: View {
             }
             .padding()
         }
+        .tint(Color(uiColor: viewModel.itemContentType().tintColor))
+    }
+
+    private var titleSection: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text("Title")
+                    .sectionTitleText()
+                TextField("Untitled", text: $viewModel.title)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Button(action: {
+                viewModel.title = ""
+            }, label: {
+                ItemDetailSectionIcon(icon: IconProvider.cross,
+                                      color: .textWeak)
+            })
+        }
+        .padding(kItemDetailSectionPadding)
+        .roundedEditableSection()
     }
 
     private var titleInputView: some View {
