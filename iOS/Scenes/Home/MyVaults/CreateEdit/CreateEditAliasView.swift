@@ -94,7 +94,8 @@ struct CreateEditAliasView: View {
                     aliasInputView
                 }
                 mailboxesSection
-                noteInputView
+
+                NoteEditSection(note: $viewModel.note)
             }
             .padding()
         }
@@ -237,16 +238,6 @@ struct CreateEditAliasView: View {
         .contentShape(Rectangle())
         .onTapGesture {
             viewModel.showMailboxSelection()
-        }
-    }
-
-    private var noteInputView: some View {
-        UserInputContainerView(title: "Note",
-                               isFocused: isFocusedOnNote) {
-            UserInputContentMultilineView(
-                text: $viewModel.note,
-                isFocused: $isFocusedOnNote)
-            .opacityReduced(viewModel.isSaving)
         }
     }
 }
