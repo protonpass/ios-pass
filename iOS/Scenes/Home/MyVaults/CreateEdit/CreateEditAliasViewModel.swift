@@ -79,7 +79,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     deinit { print(deinitMessage) }
 
     @Published var title = ""
-    @Published var prefix = "" { didSet { validatePrefix() } }
+    @Published var prefix = ""
     @Published var suffix = ""
     @Published var mailboxes = ""
     @Published var note = ""
@@ -145,6 +145,17 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             self.note = itemContent.note
         }
         getAliasAndAliasOptions()
+
+        // We don't want false-positive when users first focus on prefix TextField
+        // So we drop the first 3 events because when TextField is focused,
+        // it make empty changes 3 times. Don't ask why.
+        _prefix
+            .projectedValue
+            .dropFirst(3)
+            .sink { [unowned self] _ in
+                self.validatePrefix()
+            }
+            .store(in: &cancellables)
     }
 
     override func navigationBarTitle() -> String {
