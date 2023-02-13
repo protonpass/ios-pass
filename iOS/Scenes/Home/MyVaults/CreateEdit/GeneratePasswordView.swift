@@ -31,93 +31,76 @@ struct GeneratePasswordView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            NotchView()
-                .padding(.top, 5)
-                .padding(.bottom, 7)
-
-            titleView
-
-            Text(viewModel.texts)
-                .font(.title3)
-                .fontWeight(.bold)
-                .minimumScaleFactor(0.5)
-                .frame(maxHeight: .infinity, alignment: .center)
-                .padding(.horizontal)
-                .transaction { transaction in
-                    transaction.animation = nil
-                }
-
-            Divider()
-                .padding(.vertical, 24)
-
-            HStack {
-                Text("\(Int(viewModel.length)) characters")
-                    .frame(minWidth: 120, alignment: .leading)
+        NavigationView {
+            VStack {
+                Text(viewModel.texts)
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .minimumScaleFactor(0.5)
+                    .frame(maxHeight: .infinity, alignment: .center)
+                    .padding(.horizontal)
                     .transaction { transaction in
                         transaction.animation = nil
                     }
-                Slider(value: $viewModel.length,
-                       in: 4...64,
-                       step: 1)
-                .accentColor(.interactionNorm)
+
+                Divider()
+
+                HStack {
+                    Text("\(Int(viewModel.length)) characters")
+                        .frame(minWidth: 120, alignment: .leading)
+                        .transaction { transaction in
+                            transaction.animation = nil
+                        }
+                    Slider(value: $viewModel.length,
+                           in: 4...64,
+                           step: 1)
+                    .accentColor(.interactionNorm)
+                }
+                .padding(.horizontal)
+
+                Divider()
+
+                Toggle(isOn: $viewModel.hasSpecialCharacters) {
+                    Text("Special characters")
+                }
+                .toggleStyle(SwitchToggleStyle.proton)
+                .padding(.horizontal, 16)
+
+                Divider()
+
+                HStack {
+                    Button(action: dismiss.callAsFunction) {
+                        Text("Cancel")
+                            .foregroundColor(.textWeak)
+                            .frame(maxWidth: .infinity)
+                            .contentShape(Rectangle())
+                    }
+                    .padding()
+                    .background(Color.white.opacity(0.04))
+                    .clipShape(Capsule())
+
+                    Button(action: {
+                        viewModel.confirm()
+                        if case .createLogin = viewModel.mode {
+                            dismiss()
+                        }
+                    }, label: {
+                        Text(viewModel.mode.confirmTitle)
+                            .foregroundColor(.textNorm)
+                            .frame(maxWidth: .infinity)
+                            .contentShape(Rectangle())
+                    })
+                    .padding()
+                    .background(Color.interactionNorm)
+                    .clipShape(Capsule())
+                }
+                .padding(.vertical)
             }
             .padding(.horizontal)
-            .padding(.vertical, 12)
-
-            Toggle(isOn: $viewModel.hasSpecialCharacters) {
-                Text("Special characters")
-            }
-            .toggleStyle(SwitchToggleStyle.proton)
-            .padding(.horizontal, 16)
-
-            Spacer()
-
-            Button(action: {
-                viewModel.confirm()
-                if case .createLogin = viewModel.mode {
-                    dismiss()
-                }
-            }, label: {
-                Text(viewModel.mode.confirmTitle)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .contentShape(Rectangle())
-            })
-            .padding()
-            .background(Color.interactionNorm)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .padding()
+            .animation(.default, value: viewModel.password)
+            .navigationBarTitle("Generate password")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .animation(.default, value: viewModel.password)
-    }
-
-    private var titleView: some View {
-        ZStack {
-            Text("Generate password")
-                .fontWeight(.bold)
-            HStack {
-                Spacer()
-                Button(action: dismiss.callAsFunction) {
-                    ZStack {
-                        Color.secondary.opacity(0.5)
-                        Image(uiImage: IconProvider.cross)
-                            .foregroundColor(.secondary)
-                            .frame(width: 12, height: 12)
-                    }
-                    .clipShape(Circle())
-                    .frame(width: 30, height: 30)
-                }
-                .padding(.trailing)
-            }
-        }
+        .navigationViewStyle(.stack)
     }
 }
-
-/*
-struct GeneratePasswordView_Previews: PreviewProvider {
-    static var previews: some View {
-        GeneratePasswordView(viewModel: .init(mode: .random))
-    }
-}
-*/
