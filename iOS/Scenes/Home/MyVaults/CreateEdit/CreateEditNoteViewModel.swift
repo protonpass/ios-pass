@@ -45,7 +45,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
         case .create:
             return "New note"
         case .edit:
-            return "Edit"
+            return "Edit note"
         }
     }
 
