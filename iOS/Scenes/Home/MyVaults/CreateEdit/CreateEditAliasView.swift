@@ -75,7 +75,8 @@ struct CreateEditAliasView: View {
     private var content: some View {
         ScrollView {
             VStack(spacing: 8) {
-                titleSection
+                CreateEditItemTitleSection(title: $viewModel.title)
+
                 if case .edit = viewModel.mode {
                     aliasReadonlySection
                 } else {
@@ -104,26 +105,6 @@ struct CreateEditAliasView: View {
                 },
                 onSave: viewModel.save)
         }
-    }
-
-    private var titleSection: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Title")
-                    .sectionTitleText()
-                TextField("Untitled", text: $viewModel.title)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            Button(action: {
-                viewModel.title = ""
-            }, label: {
-                ItemDetailSectionIcon(icon: IconProvider.cross,
-                                      color: .textWeak)
-            })
-        }
-        .padding(kItemDetailSectionPadding)
-        .roundedEditableSection()
     }
 
     private var aliasReadonlySection: some View {
