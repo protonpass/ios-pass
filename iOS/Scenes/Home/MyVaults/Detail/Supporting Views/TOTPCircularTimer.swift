@@ -20,6 +20,7 @@
 
 import Core
 import SwiftUI
+import UIComponents
 
 struct TOTPCircularTimer: View {
     let percentage: CGFloat
@@ -33,30 +34,38 @@ struct TOTPCircularTimer: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(.gray, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                .stroke(.gray, style: StrokeStyle(lineWidth: 3))
 
             Circle()
                 .trim(from: 0, to: percentage)
-                .stroke(color, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                .stroke(color, style: StrokeStyle(lineWidth: 3))
                 .rotation3DEffect(.degrees(180), axis: (x: 1, y: 0, z: 0))
                 .rotationEffect(.degrees(270))
+                .transaction { transaction in
+                    // Do not animate when closing the ring and start a new loop
+                    if data.remaining == data.total {
+                        transaction.animation = nil
+                    }
+                }
                 .animation(.default, value: data)
 
             Text("\(data.remaining)")
-                .font(.caption2)
-                .fontWeight(.bold)
+                .font(.caption)
+                .fontWeight(.light)
+                .foregroundColor(.textWeak)
                 .transaction { transaction in
                     transaction.animation = nil
                 }
         }
+        .frame(width: 32, height: 32)
     }
 
     private var color: Color {
         switch data.remaining {
         case 0...10:
-            return .red
+            return .notificationError
         default:
-            return .green
+            return .notificationSuccess
         }
     }
 }

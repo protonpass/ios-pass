@@ -195,7 +195,6 @@ struct LogInDetailView: View {
                 switch viewModel.totpManager.state {
                 case .valid(let data):
                     TOTPCircularTimer(data: data.timerData)
-                        .frame(width: 28, height: 28)
                 default:
                     EmptyView()
                 }

@@ -205,7 +205,6 @@ struct CreateEditLoginView: View {
                         Text(data.code)
                         Spacer()
                         TOTPCircularTimer(data: data.timerData)
-                            .frame(width: 22, height: 22)
                     }
                     .contentShape(Rectangle())
                     .onTapGesture(perform: viewModel.copyTotpCode)
