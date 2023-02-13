@@ -30,7 +30,7 @@ struct CreateEditLoginView: View {
     @State private var isShowingDiscardAlert = false
     @State private var isShowingDeleteAliasAlert = false
     @State private var isShowingScanner = false
-    @State private var isFocusedOnTitle = false
+    @FocusState private var isFocusedOnTitle: Bool
     @State private var isFocusedOnUsername = false
     @State private var isFocusedOnPassword = false
     @State private var isFocusedOnOtp = false
@@ -46,7 +46,7 @@ struct CreateEditLoginView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
-                    CreateEditItemTitleSection(title: $viewModel.title)
+                    CreateEditItemTitleSection(isFocused: _isFocusedOnTitle, title: $viewModel.title)
                     usernameInputView
                     passwordInputView
                     otpInputView
@@ -58,6 +58,11 @@ struct CreateEditLoginView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(viewModel.navigationBarTitle())
+            .onFirstAppear {
+                if case .create = viewModel.mode {
+                    isFocusedOnTitle.toggle()
+                }
+            }
             .toolbar {
                 CreateEditItemToolbar(
                     title: viewModel.isAutoFilling ? "Save & AutoFill" : "Save",
@@ -96,18 +101,6 @@ struct CreateEditLoginView: View {
             message: {
                 Text("The alias will be deleted permanently.")
             })
-    }
-
-    private var loginInputView: some View {
-        UserInputContainerView(title: "Title",
-                               isFocused: isFocusedOnTitle) {
-            UserInputContentSingleLineWithClearButton(
-                text: $viewModel.title,
-                isFocused: $isFocusedOnTitle,
-                placeholder: "Login title",
-                onClear: { viewModel.title = "" })
-            .opacityReduced(viewModel.isSaving)
-        }
     }
 
     private var usernameInputView: some View {

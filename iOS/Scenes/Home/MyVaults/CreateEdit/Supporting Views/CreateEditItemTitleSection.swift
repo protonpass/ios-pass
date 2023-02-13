@@ -23,7 +23,9 @@ import SwiftUI
 import UIComponents
 
 struct CreateEditItemTitleSection: View {
+    @FocusState var isFocused: Bool
     @Binding var title: String
+    var onSubmit: (() -> Void)?
 
     var body: some View {
         HStack {
@@ -32,6 +34,9 @@ struct CreateEditItemTitleSection: View {
                     .sectionTitleText()
                 TextField("Untitled", text: $title)
                     .font(.title.weight(.bold))
+                    .focused($isFocused)
+                    .submitLabel(.next)
+                    .onSubmit { onSubmit?() }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 

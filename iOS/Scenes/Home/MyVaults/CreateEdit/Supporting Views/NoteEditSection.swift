@@ -27,7 +27,9 @@ struct NoteEditSection: View {
     @State private var isShowingTextEditor: Bool
     @Binding var note: String
 
-    init(note: Binding<String>) {
+    init(isFocused: FocusState<Bool>,
+         note: Binding<String>) {
+        _isFocused = isFocused
         _note = note
         _isShowingTextEditor = .init(initialValue: !note.wrappedValue.isEmpty)
     }
