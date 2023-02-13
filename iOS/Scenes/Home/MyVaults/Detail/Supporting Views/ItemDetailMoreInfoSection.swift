@@ -34,9 +34,6 @@ struct ItemDetailMoreInfoSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Divider()
-                .opacity(isExpanded ? 0 : 1)
-
             HStack {
                 HStack {
                     Label(title: {
@@ -85,10 +82,6 @@ struct ItemDetailMoreInfoSection: View {
                 }
                 .font(.caption)
                 .foregroundColor(.textWeak)
-            }
-
-            if !isExpanded {
-                Divider()
             }
         }
         .contentShape(Rectangle())
