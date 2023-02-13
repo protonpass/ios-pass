@@ -27,9 +27,9 @@ import UIComponents
 struct CreateEditAliasView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditAliasViewModel
-    @State private var isFocusedOnTitle = false
-    @State private var isFocusedOnPrefix = false
-    @State private var isFocusedOnNote = false
+    @FocusState private var isFocusedOnTitle: Bool
+    @FocusState private var isFocusedOnPrefix: Bool
+    @FocusState private var isFocusedOnNote: Bool
     @State private var isShowingDiscardAlert = false
 
     private var tintColor: UIColor { viewModel.itemContentType().tintColor }
@@ -75,7 +75,14 @@ struct CreateEditAliasView: View {
     private var content: some View {
         ScrollView {
             VStack(spacing: 8) {
-                CreateEditItemTitleSection(title: $viewModel.title)
+                CreateEditItemTitleSection(isFocused: _isFocusedOnTitle,
+                                           title: $viewModel.title) {
+                    if case .create = viewModel.mode {
+                        isFocusedOnPrefix.toggle()
+                    } else {
+                        isFocusedOnNote.toggle()
+                    }
+                }
 
                 if case .edit = viewModel.mode {
                     aliasReadonlySection
@@ -85,11 +92,16 @@ struct CreateEditAliasView: View {
                 }
                 mailboxesSection
 
-                NoteEditSection(note: $viewModel.note)
+                NoteEditSection(isFocused: _isFocusedOnNote, note: $viewModel.note)
             }
             .padding()
         }
         .tint(Color(uiColor: tintColor))
+        .onFirstAppear {
+            if case .create = viewModel.mode {
+                isFocusedOnTitle.toggle()
+            }
+        }
         .toolbar {
             CreateEditItemToolbar(
                 title: viewModel.navigationBarTitle(),
@@ -174,6 +186,9 @@ struct CreateEditAliasView: View {
             TextField("Add a prefix", text: $viewModel.prefix)
                 .keyboardType(.emailAddress)
                 .textInputAutocapitalization(.never)
+                .focused($isFocusedOnPrefix)
+                .submitLabel(.done)
+                .onSubmit { isFocusedOnNote.toggle() }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, kItemDetailSectionPadding)
