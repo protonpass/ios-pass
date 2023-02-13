@@ -127,7 +127,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case .create:
             return "New login"
         case .edit:
-            return "Edit"
+            return "Edit login"
         }
     }
 

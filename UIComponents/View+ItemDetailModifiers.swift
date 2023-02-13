@@ -21,18 +21,27 @@
 import SwiftUI
 
 public extension View {
-    func roundedDetail() -> some View {
+    func roundedDetailSection() -> some View {
         overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.interactionWeak, lineWidth: 1)
         )
+    }
+
+    func roundedEditableSection() -> some View {
+        self.background(Color.white.opacity(0.04))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.interactionWeak, lineWidth: 1)
+            )
     }
 }
 
 public extension Text {
     func sectionTitleText() -> Text {
         self
-            .font(.callout)
+            .font(.footnote)
             .foregroundColor(.textWeak)
     }
 

@@ -61,6 +61,7 @@ struct CreateEditNoteView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 CreateEditItemToolbar(
+                    title: viewModel.navigationBarTitle(),
                     isSaveable: viewModel.isSaveable,
                     isSaving: viewModel.isSaving,
                     itemContentType: viewModel.itemContentType(),

@@ -24,6 +24,7 @@ import SwiftUI
 import UIComponents
 
 struct CreateEditItemToolbar: ToolbarContent {
+    let title: String
     let isSaveable: Bool
     let isSaving: Bool
     let itemContentType: ItemContentType
@@ -37,6 +38,11 @@ struct CreateEditItemToolbar: ToolbarContent {
                          action: onGoBack)
         }
 
+        ToolbarItem(placement: .principal) {
+            Text(title)
+                .fontWeight(.semibold)
+        }
+
         ToolbarItem(placement: .navigationBarTrailing) {
             if isSaving {
                 ProgressView()
@@ -45,7 +51,7 @@ struct CreateEditItemToolbar: ToolbarContent {
                                     title: "Save",
                                     color: itemContentType.tintColor,
                                     action: { Task { await onSave() } })
-                .disabled(!isSaveable)
+                .opacityReduced(!isSaveable)
             }
         }
     }
