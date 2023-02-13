@@ -28,7 +28,6 @@ struct CreateEditLoginView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
     @State private var isShowingDiscardAlert = false
-    @State private var isShowingTrashAlert = false
     @State private var isShowingDeleteAliasAlert = false
     @State private var isShowingScanner = false
     @State private var isFocusedOnTitle = false
@@ -47,28 +46,43 @@ struct CreateEditLoginView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
-                    loginInputView
+                    CreateEditItemTitleSection(title: $viewModel.title)
                     usernameInputView
                     passwordInputView
                     otpInputView
                     urlsInputView
                     noteInputView
-                    if viewModel.mode.isEditMode {
-                        MoveToTrashButton(action: askForConfirmationOrTrashDirectly)
-                            .opacityReduced(viewModel.isSaving)
-                    }
                     Spacer()
                 }
                 .padding()
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(viewModel.navigationBarTitle())
-            .toolbar { toolbarContent }
+            .toolbar {
+                CreateEditItemToolbar(
+                    title: viewModel.isAutoFilling ? "Save & AutoFill" : "Save",
+                    isSaveable: viewModel.isSaveable,
+                    isSaving: viewModel.isSaving,
+                    itemContentType: viewModel.itemContentType(),
+                    onGoBack: {
+                        if viewModel.isEmpty {
+                            dismiss()
+                        } else {
+                            isShowingDiscardAlert.toggle()
+                        }
+                    },
+                    onSave: {
+                        validateUrls()
+                        if invalidUrls.isEmpty {
+                            await viewModel.save()
+                        }
+                    })
+            }
         }
+        .tint(Color(uiColor: viewModel.itemContentType().tintColor))
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
-        .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
         .alert(
             "Delete alias?",
             isPresented: $isShowingDeleteAliasAlert,
@@ -82,33 +96,6 @@ struct CreateEditLoginView: View {
             message: {
                 Text("The alias will be deleted permanently.")
             })
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                if viewModel.isEmpty {
-                    dismiss()
-                } else {
-                    isShowingDiscardAlert.toggle()
-                }
-            }, label: {
-                Text("Cancel")
-            })
-            .foregroundColor(Color(.label))
-        }
-
-        ToolbarItem(placement: .navigationBarTrailing) {
-            SpinnerButton(title: viewModel.isAutoFilling ? "Save & AutoFill" : "Save",
-                          disabled: !viewModel.isSaveable,
-                          spinning: viewModel.isSaving) {
-                validateUrls()
-                if invalidUrls.isEmpty {
-                    await viewModel.save()
-                }
-            }
-        }
     }
 
     private var loginInputView: some View {
@@ -268,14 +255,6 @@ struct CreateEditLoginView: View {
                 text: $viewModel.note,
                 isFocused: $isFocusedOnNote)
             .opacityReduced(viewModel.isSaving)
-        }
-    }
-
-    private func askForConfirmationOrTrashDirectly() {
-        if viewModel.preferences.askBeforeTrashing {
-            isShowingTrashAlert.toggle()
-        } else {
-            viewModel.trash()
         }
     }
 

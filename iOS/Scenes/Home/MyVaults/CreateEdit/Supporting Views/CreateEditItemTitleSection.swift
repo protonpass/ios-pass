@@ -31,7 +31,7 @@ struct CreateEditItemTitleSection: View {
                 Text("Title")
                     .sectionTitleText()
                 TextField("Untitled", text: $title)
-                    .font(.title)
+                    .font(.title.weight(.bold))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
