@@ -47,8 +47,7 @@ struct CreateEditLoginView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     CreateEditItemTitleSection(isFocused: _isFocusedOnTitle, title: $viewModel.title)
-                    usernameInputView
-                    passwordInputView
+                    usernamePasswordTOTPSection
                     otpInputView
                     urlsInputView
                     noteInputView
@@ -65,7 +64,8 @@ struct CreateEditLoginView: View {
             }
             .toolbar {
                 CreateEditItemToolbar(
-                    title: viewModel.isAutoFilling ? "Save & AutoFill" : "Save",
+                    title: viewModel.navigationBarTitle(),
+                    saveButtonTitle: viewModel.isAutoFilling ? "Save & AutoFill" : "Save",
                     isSaveable: viewModel.isSaveable,
                     isSaving: viewModel.isSaving,
                     itemContentType: viewModel.itemContentType(),
@@ -103,67 +103,58 @@ struct CreateEditLoginView: View {
             })
     }
 
-    private var usernameInputView: some View {
-        UserInputContainerView(
-            title: "Username",
-            isFocused: isFocusedOnUsername,
-            content: {
-                UserInputContentSingleLineWithClearButton(
-                    text: $viewModel.username,
-                    isFocused: $isFocusedOnUsername,
-                    placeholder: "Add username",
-                    onClear: { viewModel.username = "" },
-                    keyboardType: .emailAddress,
-                    textAutocapitalizationType: .none,
-                    autocorrectionDisabled: true)
-                .opacityReduced(viewModel.isSaving || viewModel.isAlias)
-            },
-            trailingView: {
-                if viewModel.isAlias {
-                    Menu(content: {
-                        Button(
-                            role: .destructive,
-                            action: { isShowingDeleteAliasAlert.toggle() },
-                            label: {
-                                Label(title: {
-                                    Text("Delete")
-                                }, icon: {
-                                    Image(uiImage: IconProvider.crossCircle)
-                                })
-                            })
-                    }, label: {
-                        BorderedImageButton(image: IconProvider.threeDotsVertical) {}
-                            .frame(width: 48, height: 48)
-                            .opacityReduced(viewModel.isSaving)
-                    })
-                    .animation(.default, value: viewModel.isAlias)
-                } else {
-                    BorderedImageButton(image: IconProvider.alias,
-                                        action: viewModel.generateAlias)
-                    .frame(width: 48, height: 48)
-                    .opacityReduced(viewModel.isSaving)
-                    .animation(.default, value: viewModel.isAlias)
-                }
-            })
+    private var usernamePasswordTOTPSection: some View {
+        VStack(spacing: kItemDetailSectionPadding) {
+            usernameRow
+            Divider()
+            passwordRow
+        }
+        .padding(.vertical, kItemDetailSectionPadding)
+        .roundedEditableSection()
     }
 
-    private var passwordInputView: some View {
-        UserInputContainerView(
-            title: "Password",
-            isFocused: isFocusedOnPassword,
-            content: {
-                UserInputContentPasswordView(
-                    text: $viewModel.password,
-                    isFocused: $isFocusedOnPassword,
-                    isSecure: $viewModel.isPasswordSecure)
-                .opacityReduced(viewModel.isSaving)
-            },
-            trailingView: {
-                BorderedImageButton(image: IconProvider.arrowsRotate,
-                                    action: viewModel.generatePassword)
-                .frame(width: 48, height: 48)
-                .opacityReduced(viewModel.isSaving)
+    private var usernameRow: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.user, color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Username")
+                    .sectionTitleText()
+                TextField("Add username", text: $viewModel.username)
+                    .textContentType(.username)
+                    .textInputAutocapitalization(.never)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Button(action: {
+                viewModel.username = ""
+            }, label: {
+                ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
             })
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+    }
+
+    private var passwordRow: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.key, color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Password")
+                    .sectionTitleText()
+                TextField("Add password", text: $viewModel.password)
+                    .textContentType(.password)
+                    .textInputAutocapitalization(.never)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Button(action: {
+                viewModel.password = ""
+            }, label: {
+                ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+            })
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
     }
 
     @ViewBuilder
