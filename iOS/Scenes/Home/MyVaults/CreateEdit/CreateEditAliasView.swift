@@ -30,6 +30,7 @@ struct CreateEditAliasView: View {
     @FocusState private var isFocusedOnTitle: Bool
     @FocusState private var isFocusedOnPrefix: Bool
     @FocusState private var isFocusedOnNote: Bool
+    @State private var noteSectionId = UUID().uuidString
     @State private var isShowingDiscardAlert = false
 
     private var tintColor: UIColor { viewModel.itemContentType().tintColor }
@@ -72,28 +73,40 @@ struct CreateEditAliasView: View {
     }
 
     private var content: some View {
-        ScrollView {
-            VStack(spacing: 8) {
-                CreateEditItemTitleSection(isFocused: _isFocusedOnTitle,
-                                           title: $viewModel.title) {
-                    if case .create = viewModel.mode {
-                        isFocusedOnPrefix.toggle()
-                    } else {
-                        isFocusedOnNote.toggle()
+        ScrollViewReader { value in
+            ScrollView {
+                VStack(spacing: 8) {
+                    CreateEditItemTitleSection(isFocused: _isFocusedOnTitle,
+                                               title: $viewModel.title) {
+                        if case .create = viewModel.mode {
+                            isFocusedOnPrefix.toggle()
+                        } else {
+                            isFocusedOnNote.toggle()
+                        }
                     }
-                }
 
-                if case .edit = viewModel.mode {
-                    aliasReadonlySection
-                } else {
-                    aliasPreviewSection
-                    prefixSuffixSection
-                }
-                mailboxesSection
+                    if case .edit = viewModel.mode {
+                        aliasReadonlySection
+                    } else {
+                        aliasPreviewSection
+                        prefixSuffixSection
+                    }
+                    mailboxesSection
 
-                NoteEditSection(isFocused: _isFocusedOnNote, note: $viewModel.note)
+                    NoteEditSection(
+                        isFocused: _isFocusedOnNote,
+                        note: $viewModel.note,
+                        onBeginEditing: {
+                            isFocusedOnTitle = false
+                            isFocusedOnPrefix = false
+                        })
+                    .id(noteSectionId)
+                }
+                .padding()
             }
-            .padding()
+            .onChange(of: viewModel.note) { _ in
+                value.scrollTo(noteSectionId, anchor: .bottom)
+            }
         }
         .tint(Color(uiColor: tintColor))
         .onFirstAppear {

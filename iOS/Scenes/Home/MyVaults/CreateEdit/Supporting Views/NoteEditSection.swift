@@ -26,12 +26,15 @@ struct NoteEditSection: View {
     @FocusState private var isFocused: Bool
     @State private var isShowingTextEditor: Bool
     @Binding var note: String
+    let onBeginEditing: () -> Void
 
     init(isFocused: FocusState<Bool>,
-         note: Binding<String>) {
-        _isFocused = isFocused
-        _note = note
-        _isShowingTextEditor = .init(initialValue: !note.wrappedValue.isEmpty)
+         note: Binding<String>,
+         onBeginEditing: @escaping () -> Void) {
+        self._isFocused = isFocused
+        self._note = note
+        self._isShowingTextEditor = .init(initialValue: !note.wrappedValue.isEmpty)
+        self.onBeginEditing = onBeginEditing
     }
 
     var body: some View {
@@ -60,6 +63,7 @@ struct NoteEditSection: View {
                     .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)
                 } else {
                     Button(action: {
+                        onBeginEditing()
                         isShowingTextEditor.toggle()
                         isFocused = true
                     }, label: {
