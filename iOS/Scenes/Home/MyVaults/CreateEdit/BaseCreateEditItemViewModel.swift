@@ -100,11 +100,6 @@ class BaseCreateEditItemViewModel {
     func bindValues() {}
 
     // swiftlint:disable:next unavailable_function
-    func navigationBarTitle() -> String {
-        fatalError("Must be overridden by subclasses")
-    }
-
-    // swiftlint:disable:next unavailable_function
     func itemContentType() -> ItemContentType {
         fatalError("Must be overridden by subclasses")
     }

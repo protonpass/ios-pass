@@ -57,7 +57,6 @@ struct CreateEditAliasView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(viewModel.navigationBarTitle())
         }
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
@@ -104,7 +103,6 @@ struct CreateEditAliasView: View {
         }
         .toolbar {
             CreateEditItemToolbar(
-                title: viewModel.navigationBarTitle(),
                 isSaveable: viewModel.isSaveable,
                 isSaving: viewModel.isSaving,
                 itemContentType: viewModel.itemContentType(),

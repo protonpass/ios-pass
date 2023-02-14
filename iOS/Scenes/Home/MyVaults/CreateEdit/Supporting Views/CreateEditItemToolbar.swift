@@ -24,7 +24,6 @@ import SwiftUI
 import UIComponents
 
 struct CreateEditItemToolbar: ToolbarContent {
-    let title: String
     var saveButtonTitle: String = "Save"
     let isSaveable: Bool
     let isSaving: Bool
@@ -37,11 +36,6 @@ struct CreateEditItemToolbar: ToolbarContent {
             CircleButton(icon: IconProvider.cross,
                          color: itemContentType.tintColor,
                          action: onGoBack)
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text(title)
-                .fontWeight(.semibold)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
