@@ -31,8 +31,8 @@ struct CreateEditLoginView: View {
     @State private var isShowingDeleteAliasAlert = false
     @State private var isShowingScanner = false
     @FocusState private var isFocusedOnTitle: Bool
-    @State private var isFocusedOnUsername = false
-    @State private var isFocusedOnPassword = false
+    @FocusState private var isFocusedOnUsername: Bool
+    @FocusState private var isFocusedOnPassword: Bool
     @State private var isFocusedOnOtp = false
     @State private var isFocusedOnURLs = false
     @State private var isFocusedOnNote = false
@@ -46,7 +46,9 @@ struct CreateEditLoginView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
-                    CreateEditItemTitleSection(isFocused: _isFocusedOnTitle, title: $viewModel.title)
+                    CreateEditItemTitleSection(isFocused: _isFocusedOnTitle,
+                                               title: $viewModel.title,
+                                               onSubmit: { isFocusedOnUsername.toggle() })
                     usernamePasswordTOTPSection
                     otpInputView
                     urlsInputView
@@ -81,6 +83,7 @@ struct CreateEditLoginView: View {
                         }
                     })
             }
+            .toolbar { keyboardToolbar }
         }
         .tint(Color(uiColor: viewModel.itemContentType().tintColor))
         .navigationViewStyle(.stack)
@@ -99,6 +102,37 @@ struct CreateEditLoginView: View {
             message: {
                 Text("The alias will be deleted permanently.")
             })
+    }
+
+    @ToolbarContentBuilder
+    private var keyboardToolbar: some ToolbarContent {
+        ToolbarItemGroup(placement: .keyboard) {
+            if isFocusedOnUsername {
+                Button(action: viewModel.generateAlias) {
+                    HStack {
+                        Image(uiImage: IconProvider.alias)
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                        Text("Hide my email")
+                    }
+                }
+                .transaction { transaction in
+                    transaction.animation = nil
+                }
+            } else if isFocusedOnPassword {
+                Button(action: viewModel.generatePassword) {
+                    HStack {
+                        Image(uiImage: IconProvider.arrowsRotate)
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                        Text("Generate password")
+                    }
+                }
+                .transaction { transaction in
+                    transaction.animation = nil
+                }
+            }
+        }
     }
 
     private var usernamePasswordTOTPSection: some View {
@@ -121,6 +155,9 @@ struct CreateEditLoginView: View {
                 TextField("Add username", text: $viewModel.username)
                     .textContentType(.username)
                     .textInputAutocapitalization(.never)
+                    .focused($isFocusedOnUsername)
+                    .submitLabel(.next)
+                    .onSubmit { isFocusedOnPassword.toggle() }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -143,6 +180,8 @@ struct CreateEditLoginView: View {
                 TextField("Add password", text: $viewModel.password)
                     .textContentType(.password)
                     .textInputAutocapitalization(.never)
+                    .focused($isFocusedOnPassword)
+                    .submitLabel(.done)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
