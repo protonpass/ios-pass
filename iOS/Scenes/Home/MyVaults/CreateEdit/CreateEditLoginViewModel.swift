@@ -30,8 +30,6 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
                                                       title: String)
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
     func createEditLoginViewModelDidReceiveAliasCreationInfo()
-    func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String)
-    func createEditLoginViewModelWantsToDisplay(bannerMessage: String)
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
@@ -42,16 +40,14 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var username = ""
     @Published var password = ""
     @Published var isPasswordSecure = true // Password in clear text or not
+    @Published var totpUri = ""
     @Published var urls: [String] = [""]
     @Published var note = ""
-    @Published private(set) var totpManager: TOTPManager
 
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
     /// The info to create new alias.
     private var aliasCreationInfo: AliasCreationInfo?
-
-    private var cancellables = Set<AnyCancellable>()
 
     weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
@@ -75,22 +71,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         !title.isEmpty && !password.isEmpty
     }
 
-    override init(mode: ItemMode,
-                  itemRepository: ItemRepositoryProtocol,
-                  preferences: Preferences,
-                  logManager: LogManager) {
-        self.totpManager = .init(logManager: logManager)
-        super.init(mode: mode,
-                   itemRepository: itemRepository,
-                   preferences: preferences,
-                   logManager: logManager)
-        self.totpManager.objectWillChange
-            .sink { [weak self] _ in
-                self?.objectWillChange.send()
-            }
-            .store(in: &cancellables)
-    }
-
     override func bindValues() {
         switch mode {
         case .edit(let itemContent):
@@ -98,7 +78,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.title = itemContent.name
                 self.username = data.username
                 self.password = data.password
-                self.totpManager.bind(uri: data.totpUri)
+                self.totpUri = data.totpUri
                 if !data.urls.isEmpty {
                     self.urls = data.urls
                 }
@@ -124,7 +104,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0) }
         let logInData = ItemContentData.login(.init(username: username,
                                                     password: password,
-                                                    totpUri: totpManager.uri,
+                                                    totpUri: totpUri,
                                                     urls: sanitizedUrls))
         return ItemContentProtobuf(name: title,
                                    note: note,
@@ -159,12 +139,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func pasteTotpUriFromClipboard() {
-        guard let uri = UIPasteboard.general.string else {
-            let message = "Clipboard is empty"
-            createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToDisplay(bannerMessage: message)
-            return
-        }
-        totpManager.bind(uri: uri)
+        totpUri = UIPasteboard.general.string ?? ""
     }
 
     func removeAlias() {
@@ -173,19 +148,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         isAlias = false
     }
 
-    func copyTotpCode() {
-        if let code = totpManager.totpData?.code {
-            let message = "Two Factor Authentication code copied"
-            createEditLoginViewModelDelegate?
-                .createEditLoginViewModelWantsToCopy(text: code,
-                                                     bannerMessage: message)
-        }
-    }
-
     func handleScanResult(_ result: Result<ScanResult, ScanError>) {
         switch result {
         case .success(let successResult):
-            totpManager.bind(uri: successResult.string)
+            totpUri = successResult.string
         case .failure(let error):
             delegate?.createEditItemViewModelDidFail(error)
         }
