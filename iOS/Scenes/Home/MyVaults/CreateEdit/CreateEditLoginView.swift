@@ -33,9 +33,8 @@ struct CreateEditLoginView: View {
     @FocusState private var isFocusedOnTitle: Bool
     @FocusState private var isFocusedOnUsername: Bool
     @FocusState private var isFocusedOnPassword: Bool
-    @State private var isFocusedOnOtp = false
-    @State private var isFocusedOnURLs = false
-    @State private var isFocusedOnNote = false
+    @FocusState private var isFocusedOnNote: Bool
+    @State private var noteSectionId = UUID().uuidString
     @State private var invalidUrls = [String]()
 
     init(viewModel: CreateEditLoginViewModel) {
@@ -44,17 +43,29 @@ struct CreateEditLoginView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    CreateEditItemTitleSection(isFocused: _isFocusedOnTitle,
-                                               title: $viewModel.title,
-                                               onSubmit: { isFocusedOnUsername.toggle() })
-                    usernamePasswordTOTPSection
-                    urlsInputView
-                    noteInputView
-                    Spacer()
+            ScrollViewReader { value in
+                ScrollView {
+                    VStack(spacing: 20) {
+                        CreateEditItemTitleSection(isFocused: _isFocusedOnTitle,
+                                                   title: $viewModel.title,
+                                                   onSubmit: { isFocusedOnUsername.toggle() })
+                        usernamePasswordTOTPSection
+                        NoteEditSection(
+                            isFocused: _isFocusedOnNote,
+                            note: $viewModel.note,
+                            onBeginEditing: {
+                                isFocusedOnTitle = false
+                                isFocusedOnUsername = false
+                                isFocusedOnPassword = false
+                            })
+                        .id(noteSectionId)
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .padding()
+                .onChange(of: viewModel.note) { _ in
+                    value.scrollTo(noteSectionId, anchor: .bottom)
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
             .onFirstAppear {
@@ -248,26 +259,6 @@ struct CreateEditLoginView: View {
                 isShowingScanner = false
                 viewModel.handleScanResult(result)
             }
-        }
-    }
-
-    private var urlsInputView: some View {
-        UserInputContainerView(title: "Website address",
-                               isFocused: isFocusedOnURLs) {
-            UserInputContentURLsView(urls: $viewModel.urls,
-                                     isFocused: $isFocusedOnURLs,
-                                     invalidUrls: $invalidUrls)
-            .opacityReduced(viewModel.isSaving)
-        }
-    }
-
-    private var noteInputView: some View {
-        UserInputContainerView(title: "Note",
-                               isFocused: isFocusedOnNote) {
-            UserInputContentMultilineView(
-                text: $viewModel.note,
-                isFocused: $isFocusedOnNote)
-            .opacityReduced(viewModel.isSaving)
         }
     }
 
