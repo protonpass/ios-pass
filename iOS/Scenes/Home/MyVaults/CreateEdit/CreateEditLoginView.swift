@@ -56,7 +56,6 @@ struct CreateEditLoginView: View {
                 .padding()
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(viewModel.navigationBarTitle())
             .onFirstAppear {
                 if case .create = viewModel.mode {
                     isFocusedOnTitle.toggle()
@@ -64,7 +63,6 @@ struct CreateEditLoginView: View {
             }
             .toolbar {
                 CreateEditItemToolbar(
-                    title: viewModel.navigationBarTitle(),
                     saveButtonTitle: viewModel.isAutoFilling ? "Save & AutoFill" : "Save",
                     isSaveable: viewModel.isSaveable,
                     isSaving: viewModel.isSaving,

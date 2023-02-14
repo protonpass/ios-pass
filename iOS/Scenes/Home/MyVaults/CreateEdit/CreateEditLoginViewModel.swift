@@ -122,15 +122,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
-    override func navigationBarTitle() -> String {
-        switch mode {
-        case .create:
-            return "New login"
-        case .edit:
-            return "Edit login"
-        }
-    }
-
     override func itemContentType() -> ItemContentType { .login }
 
     override func generateItemContent() -> ItemContentProtobuf {
