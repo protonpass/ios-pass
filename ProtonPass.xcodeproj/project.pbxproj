@@ -170,8 +170,6 @@
 		355214842915524D00BA6229 /* CopyMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355214832915524D00BA6229 /* CopyMenuButton.swift */; };
 		355222ED293F67A600786F64 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355222EC293F67A600786F64 /* URLExtensions.swift */; };
 		3552618728A1372500A68477 /* SwiftUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618628A1372500A68477 /* SwiftUITextView.swift */; };
-		3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618A28A14EB600A68477 /* UserInputContainerView.swift */; };
-		3552618D28A1511000A68477 /* UserInputContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552618C28A1511000A68477 /* UserInputContentView.swift */; };
 		35526B5B28D115340017BB53 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
 		35526B5D28D116350017BB53 /* PassIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35526B5C28D116350017BB53 /* PassIcon.swift */; };
 		35526B5E28D117820017BB53 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
@@ -766,8 +764,6 @@
 		355214832915524D00BA6229 /* CopyMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyMenuButton.swift; sourceTree = "<group>"; };
 		355222EC293F67A600786F64 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		3552618628A1372500A68477 /* SwiftUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUITextView.swift; sourceTree = "<group>"; };
-		3552618A28A14EB600A68477 /* UserInputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputContainerView.swift; sourceTree = "<group>"; };
-		3552618C28A1511000A68477 /* UserInputContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputContentView.swift; sourceTree = "<group>"; };
 		35526B5A28D115340017BB53 /* Pass.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Pass.xcassets; sourceTree = "<group>"; };
 		35526B5C28D116350017BB53 /* PassIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassIcon.swift; sourceTree = "<group>"; };
 		35526B6528D11E0C0017BB53 /* ModifyItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyItemRequest.swift; sourceTree = "<group>"; };
@@ -1994,8 +1990,6 @@
 				3552618628A1372500A68477 /* SwiftUITextView.swift */,
 				3562BC2C2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift */,
 				354BB13C28A240E000F50040 /* TextExtensions.swift */,
-				3552618C28A1511000A68477 /* UserInputContentView.swift */,
-				3552618A28A14EB600A68477 /* UserInputContainerView.swift */,
 				354DCCF8291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift */,
 				3562BC2E29950680003FCB13 /* View+OnFirstAppear.swift */,
 				356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */,
@@ -3472,7 +3466,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				35613DCE292D27900095D5A1 /* BorderedImageButton.swift in Sources */,
-				3552618D28A1511000A68477 /* UserInputContentView.swift in Sources */,
 				354E19F6293F90F500A3F853 /* ColoredRoundedButton.swift in Sources */,
 				3542E2CD28DA11FE00194F24 /* RetryableErrorView.swift in Sources */,
 				354F769C28C90B4D00EB2383 /* MoveToTrashModifier.swift in Sources */,
@@ -3496,7 +3489,6 @@
 				3565FD49298CF90E00E2A0EE /* CapsuleButton.swift in Sources */,
 				3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */,
 				355E6DFC292FD56000C60796 /* Button+ConvenientInitializers.swift in Sources */,
-				3552618B28A14EB600A68477 /* UserInputContainerView.swift in Sources */,
 				3547ABEA2877684D00EE85E1 /* GenericItemView.swift in Sources */,
 				3562BC2D2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift in Sources */,
 				354F769028C861FF00EB2383 /* DestructiveButton.swift in Sources */,
