@@ -41,7 +41,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var password = ""
     @Published var isPasswordSecure = true // Password in clear text or not
     @Published var totpUri = ""
-    @Published var urls: [String] = [""]
+    @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
+    @Published var invalidURLs = [String]()
     @Published var note = ""
 
     /// The original associated alias item
@@ -52,7 +53,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
     private var hasNoUrls: Bool {
-        urls.isEmpty || (urls.count == 1 && urls[0].isEmpty)
+        urls.isEmpty || (urls.count == 1 && urls[0].value.isEmpty)
     }
 
     var isEmpty: Bool {
@@ -80,7 +81,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.password = data.password
                 self.totpUri = data.totpUri
                 if !data.urls.isEmpty {
-                    self.urls = data.urls
+                    self.urls = data.urls.map { .init(value: $0) }
                 }
                 self.note = itemContent.note
 
@@ -93,7 +94,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case let .create(_, type):
             if case let .login(title, url, _) = type {
                 self.title = title ?? ""
-                self.urls = [url ?? ""]
+                self.urls = [url ?? ""].map { .init(value: $0) }
             }
         }
     }
@@ -101,7 +102,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func itemContentType() -> ItemContentType { .login }
 
     override func generateItemContent() -> ItemContentProtobuf {
-        let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0) }
+        let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
         let logInData = ItemContentData.login(.init(username: username,
                                                     password: password,
                                                     totpUri: totpUri,
@@ -155,6 +156,17 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case .failure(let error):
             delegate?.createEditItemViewModelDidFail(error)
         }
+    }
+
+    func validateURLs() -> Bool {
+        invalidURLs = urls.map { $0.value }.compactMap { url in
+            if url.isEmpty { return nil }
+            if URLUtils.Sanitizer.sanitize(url) == nil {
+                return url
+            }
+            return nil
+        }
+        return invalidURLs.isEmpty
     }
 }
 

@@ -27,15 +27,14 @@ import UIComponents
 struct CreateEditLoginView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
-    @State private var isShowingDiscardAlert = false
-    @State private var isShowingDeleteAliasAlert = false
-    @State private var isShowingScanner = false
     @FocusState private var isFocusedOnTitle: Bool
     @FocusState private var isFocusedOnUsername: Bool
     @FocusState private var isFocusedOnPassword: Bool
     @FocusState private var isFocusedOnNote: Bool
+    @State private var isShowingDiscardAlert = false
+    @State private var isShowingDeleteAliasAlert = false
+    @State private var isShowingScanner = false
     @State private var noteSectionId = UUID().uuidString
-    @State private var invalidUrls = [String]()
 
     init(viewModel: CreateEditLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -50,6 +49,7 @@ struct CreateEditLoginView: View {
                                                    title: $viewModel.title,
                                                    onSubmit: { isFocusedOnUsername.toggle() })
                         usernamePasswordTOTPSection
+                        WebsiteSection(viewModel: viewModel)
                         NoteEditSection(
                             isFocused: _isFocusedOnNote,
                             note: $viewModel.note,
@@ -87,8 +87,7 @@ struct CreateEditLoginView: View {
                         }
                     },
                     onSave: {
-                        validateUrls()
-                        if invalidUrls.isEmpty {
+                        if viewModel.validateURLs() {
                             await viewModel.save()
                         }
                     })
@@ -240,7 +239,8 @@ struct CreateEditLoginView: View {
                 } else {
                     Text(viewModel.totpUri)
                         .sectionContentText()
-                        .lineLimit(2)
+                        .lineLimit(4)
+                        .minimumScaleFactor(0.8)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -261,18 +261,9 @@ struct CreateEditLoginView: View {
             }
         }
     }
-
-    private func validateUrls() {
-        invalidUrls = viewModel.urls.compactMap { url in
-            if url.isEmpty { return nil }
-            if URLUtils.Sanitizer.sanitize(url) == nil {
-                return url
-            }
-            return nil
-        }
-    }
 }
 
+// MARK: - WrappedCodeScannerView
 private struct WrappedCodeScannerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isGaleryPresented = false
@@ -304,6 +295,82 @@ private struct WrappedCodeScannerView: View {
                     })
                 }
             }
+        }
+    }
+}
+
+// MARK: - WebsiteSection
+private struct WebsiteSection: View {
+    @ObservedObject var viewModel: CreateEditLoginViewModel
+
+    var body: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.earth, color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Website")
+                    .sectionTitleText()
+                VStack(alignment: .leading) {
+                    ForEach($viewModel.urls) { $url in
+                        HStack {
+                            TextField("https://", text: $url.value)
+                                .onChange(of: viewModel.urls) { _ in
+                                    viewModel.invalidURLs.removeAll()
+                                }
+                                .keyboardType(.URL)
+                                .textInputAutocapitalization(.never)
+                                .disableAutocorrection(true)
+                                .foregroundColor(isValid(url) ? .primary : .red)
+
+                            if !url.value.isEmpty {
+                                Button(action: {
+                                    withAnimation {
+                                        if viewModel.urls.count == 1 {
+                                            url.value = ""
+                                        } else {
+                                            viewModel.urls.removeAll { $0.id == url.id }
+                                        }
+                                    }
+                                }, label: {
+                                    Image(uiImage: IconProvider.cross)
+                                })
+                                .foregroundColor(.textWeak)
+                            }
+                        }
+
+                        if viewModel.urls.count > 1 || viewModel.urls.first?.value.isEmpty == false {
+                            Divider()
+                        }
+                    }
+
+                    addUrlButton
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .animation(.default, value: viewModel.urls)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(kItemDetailSectionPadding)
+        .roundedEditableSection()
+        .contentShape(Rectangle())
+    }
+
+    private func isValid(_ url: IdentifiableObject<String>) -> Bool {
+        !viewModel.invalidURLs.contains { $0 == url.value }
+    }
+
+    @ViewBuilder
+    private var addUrlButton: some View {
+        if viewModel.urls.first?.value.isEmpty == false {
+            Button(action: {
+                if viewModel.urls.last?.value.isEmpty == false {
+                    // Only add new URL when last URL has value to avoid adding blank URLs
+                    viewModel.urls.append(.init(value: ""))
+                }
+            }, label: {
+                Label("Add another website", systemImage: "plus")
+            })
+            .opacityReduced(viewModel.urls.last?.value.isEmpty == true)
         }
     }
 }
