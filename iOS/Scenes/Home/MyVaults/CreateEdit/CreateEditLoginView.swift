@@ -202,11 +202,9 @@ struct CreateEditLoginView: View {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Two Factor Authentication")
                     .sectionTitleText()
-                switch viewModel.totpManager.state {
-                case .empty:
+                if viewModel.totpUri.isEmpty {
                     Menu(content: {
                         Button(action: {
-                            unfocusAllTextFields()
                             viewModel.pasteTotpUriFromClipboard()
                         }, label: {
                             Label(title: {
@@ -228,43 +226,23 @@ struct CreateEditLoginView: View {
                     }, label: {
                         Label("Add", systemImage: "plus")
                     })
-
-                case .loading:
-                    ProgressView()
-
-                case .valid(let data):
-                    HStack {
-                        TOTPText(code: data.code)
-                        Spacer()
-                        TOTPCircularTimer(data: data.timerData)
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture(perform: viewModel.copyTotpCode)
-
-                case .invalid:
-                    VStack(alignment: .leading) {
-                        Text(viewModel.totpManager.uri)
-                            .foregroundColor(.textWeak)
-                            .lineLimit(2)
-                        Text("Invalid Two Factor Authentication URI.")
-                            .foregroundColor(.notificationError)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    Text(viewModel.totpUri)
+                        .sectionContentText()
+                        .lineLimit(2)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            switch viewModel.totpManager.state {
-            case .empty, .loading:
-                EmptyView()
-            case .valid, .invalid:
-                Button(action: viewModel.totpManager.reset) {
+            if !viewModel.totpUri.isEmpty {
+                Button(action: {
+                    viewModel.totpUri = ""
+                }, label: {
                     ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
-                }
+                })
             }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
-        .animation(.default, value: viewModel.totpManager.state)
         .sheet(isPresented: $isShowingScanner) {
             WrappedCodeScannerView(tintColor: viewModel.itemContentType().tintColor) { result in
                 isShowingScanner = false
@@ -301,12 +279,6 @@ struct CreateEditLoginView: View {
             }
             return nil
         }
-    }
-
-    private func unfocusAllTextFields() {
-        isFocusedOnTitle = false
-        isFocusedOnUsername = false
-        isFocusedOnPassword = false
     }
 }
 

@@ -499,10 +499,6 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String) {
         clipboardManager?.copy(text: text, bannerMessage: bannerMessage)
     }
-
-    func createEditLoginViewModelWantsToDisplay(bannerMessage: String) {
-        bannerManager?.displayBottomInfoMessage(bannerMessage)
-    }
 }
 
 // MARK: - ItemDetailViewModelDelegate

@@ -174,7 +174,7 @@ struct CreateEditAliasView: View {
             suffixRow
         }
         .padding(.vertical, kItemDetailSectionPadding)
-        .roundedDetailSection()
+        .roundedEditableSection()
     }
 
     private var prefixRow: some View {
