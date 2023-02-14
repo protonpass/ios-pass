@@ -31,6 +31,7 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
     func createEditLoginViewModelDidReceiveAliasCreationInfo()
     func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String)
+    func createEditLoginViewModelWantsToDisplay(bannerMessage: String)
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
@@ -41,11 +42,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var username = ""
     @Published var password = ""
     @Published var isPasswordSecure = true // Password in clear text or not
-    @Published var totpUri = "" {
-        didSet {
-            totpManager.bind(uri: totpUri)
-        }
-    }
     @Published var urls: [String] = [""]
     @Published var note = ""
     @Published private(set) var totpManager: TOTPManager
@@ -102,7 +98,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.title = itemContent.name
                 self.username = data.username
                 self.password = data.password
-                self.totpUri = data.totpUri
+                self.totpManager.bind(uri: data.totpUri)
                 if !data.urls.isEmpty {
                     self.urls = data.urls
                 }
@@ -128,7 +124,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0) }
         let logInData = ItemContentData.login(.init(username: username,
                                                     password: password,
-                                                    totpUri: totpUri,
+                                                    totpUri: totpManager.uri,
                                                     urls: sanitizedUrls))
         return ItemContentProtobuf(name: title,
                                    note: note,
@@ -162,6 +158,15 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToGeneratePassword(self)
     }
 
+    func pasteTotpUriFromClipboard() {
+        guard let uri = UIPasteboard.general.string else {
+            let message = "Clipboard is empty"
+            createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToDisplay(bannerMessage: message)
+            return
+        }
+        totpManager.bind(uri: uri)
+    }
+
     func removeAlias() {
         aliasCreationInfo = nil
         username = ""
@@ -180,7 +185,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     func handleScanResult(_ result: Result<ScanResult, ScanError>) {
         switch result {
         case .success(let successResult):
-            totpUri = successResult.string
+            totpManager.bind(uri: successResult.string)
         case .failure(let error):
             delegate?.createEditItemViewModelDidFail(error)
         }
