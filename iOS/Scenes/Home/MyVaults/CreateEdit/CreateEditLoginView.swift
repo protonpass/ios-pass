@@ -30,6 +30,7 @@ struct CreateEditLoginView: View {
     @FocusState private var isFocusedOnTitle: Bool
     @FocusState private var isFocusedOnUsername: Bool
     @FocusState private var isFocusedOnPassword: Bool
+    @FocusState private var isFocusedOnTOTP: Bool
     @FocusState private var isFocusedOnNote: Bool
     @State private var isShowingDiscardAlert = false
     @State private var isShowingDeleteAliasAlert = false
@@ -118,18 +119,10 @@ struct CreateEditLoginView: View {
         ToolbarItemGroup(placement: .keyboard) {
             if isFocusedOnUsername {
                 usernameTextFieldToolbar
+            } else if isFocusedOnTOTP {
+                totpTextFieldToolbar
             } else if isFocusedOnPassword {
-                Button(action: viewModel.generatePassword) {
-                    HStack {
-                        Image(uiImage: IconProvider.arrowsRotate)
-                            .resizable()
-                            .frame(width: 24, height: 24)
-                        Text("Generate password")
-                    }
-                }
-                .transaction { transaction in
-                    transaction.animation = nil
-                }
+                passwordTextFieldToolbar
             }
         }
     }
@@ -138,9 +131,7 @@ struct CreateEditLoginView: View {
         HStack {
             Button(action: viewModel.generateAlias) {
                 HStack {
-                    Image(uiImage: IconProvider.alias)
-                        .resizable()
-                        .frame(width: 24, height: 24)
+                    toolbarIcon(uiImage: IconProvider.alias)
                     Text("Hide my email")
                 }
             }
@@ -162,6 +153,52 @@ struct CreateEditLoginView: View {
             // Disable animation when switching between toolbars
             transaction.animation = nil
         }
+    }
+
+    private var totpTextFieldToolbar: some View {
+        HStack {
+            Button(action: viewModel.pasteTotpUriFromClipboard) {
+                HStack {
+                    toolbarIcon(uiImage: IconProvider.squares)
+                    Text("Paste from clipboard")
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+
+            Divider()
+
+            Button(action: {
+                isShowingScanner.toggle()
+            }, label: {
+                HStack {
+                    toolbarIcon(uiImage: IconProvider.camera)
+                    Text("Open camera")
+                }
+            })
+            .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .transaction { transaction in
+            // Disable animation when switching between toolbars
+            transaction.animation = nil
+        }
+    }
+
+    private var passwordTextFieldToolbar: some View {
+        Button(action: viewModel.generatePassword) {
+            HStack {
+                toolbarIcon(uiImage: IconProvider.arrowsRotate)
+                Text("Generate password")
+            }
+        }
+        .transaction { transaction in
+            transaction.animation = nil
+        }
+    }
+
+    private func toolbarIcon(uiImage: UIImage) -> some View {
+        Image(uiImage: uiImage)
+            .resizable()
+            .frame(width: 18, height: 18)
     }
 
     private var usernamePasswordTOTPSection: some View {
@@ -232,36 +269,10 @@ struct CreateEditLoginView: View {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Two Factor Authentication")
                     .sectionTitleText()
-                if viewModel.totpUri.isEmpty {
-                    Menu(content: {
-                        Button(action: {
-                            viewModel.pasteTotpUriFromClipboard()
-                        }, label: {
-                            Label(title: {
-                                Text("Paste from clipboard")
-                            }, icon: {
-                                Image(uiImage: IconProvider.squares)
-                            })
-                        })
-
-                        Button(action: {
-                            isShowingScanner.toggle()
-                        }, label: {
-                            Label(title: {
-                                Text("Open camera")
-                            }, icon: {
-                                Image(uiImage: IconProvider.camera)
-                            })
-                        })
-                    }, label: {
-                        Label("Add", systemImage: "plus")
-                    })
-                } else {
-                    Text(viewModel.totpUri)
-                        .sectionContentText()
-                        .lineLimit(4)
-                        .minimumScaleFactor(0.8)
-                }
+                TextField("otpauth://", text: $viewModel.totpUri)
+                    .keyboardType(.URL)
+                    .textInputAutocapitalization(.never)
+                    .focused($isFocusedOnTOTP)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
