@@ -158,10 +158,12 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func showCreateEditLoginView(mode: ItemMode) {
+        let emailAddress = userData.addresses.first?.email ?? ""
         let viewModel = CreateEditLoginViewModel(mode: mode,
                                                  itemRepository: itemRepository,
                                                  preferences: preferences,
-                                                 logManager: logManager)
+                                                 logManager: logManager,
+                                                 emailAddress: emailAddress)
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
