@@ -45,8 +45,6 @@ public struct CapsuleTitledButton: View {
             ZStack {
                 Color(uiColor: color)
                     .clipShape(Capsule())
-                // Can not use `Label` here because SwiftUI will not render title
-                // when in navigation bar context
                 HStack {
                     Image(uiImage: icon)
                         .resizable()
