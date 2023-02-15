@@ -117,17 +117,7 @@ struct CreateEditLoginView: View {
     private var keyboardToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
             if isFocusedOnUsername {
-                Button(action: viewModel.generateAlias) {
-                    HStack {
-                        Image(uiImage: IconProvider.alias)
-                            .resizable()
-                            .frame(width: 24, height: 24)
-                        Text("Hide my email")
-                    }
-                }
-                .transaction { transaction in
-                    transaction.animation = nil
-                }
+                usernameTextFieldToolbar
             } else if isFocusedOnPassword {
                 Button(action: viewModel.generatePassword) {
                     HStack {
@@ -141,6 +131,36 @@ struct CreateEditLoginView: View {
                     transaction.animation = nil
                 }
             }
+        }
+    }
+
+    private var usernameTextFieldToolbar: some View {
+        HStack {
+            Button(action: viewModel.generateAlias) {
+                HStack {
+                    Image(uiImage: IconProvider.alias)
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                    Text("Hide my email")
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+
+            Divider()
+
+            Button(action: viewModel.useRealEmailAddress) {
+                VStack {
+                    Text("Use my email address")
+                        .font(.callout)
+                    Text(viewModel.emailAddress)
+                        .font(.caption)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .transaction { transaction in
+            // Disable animation when switching between toolbars
+            transaction.animation = nil
         }
     }
 

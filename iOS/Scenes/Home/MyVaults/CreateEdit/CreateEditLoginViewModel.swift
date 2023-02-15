@@ -45,6 +45,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var invalidURLs = [String]()
     @Published var note = ""
 
+    /// Proton account email address
+    let emailAddress: String
+
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
     /// The info to create new alias.
@@ -70,6 +73,18 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override var isSaveable: Bool {
         !title.isEmpty && !password.isEmpty
+    }
+
+    init(mode: ItemMode,
+         itemRepository: ItemRepositoryProtocol,
+         preferences: Preferences,
+         logManager: LogManager,
+         emailAddress: String) {
+        self.emailAddress = emailAddress
+        super.init(mode: mode,
+                   itemRepository: itemRepository,
+                   preferences: preferences,
+                   logManager: logManager)
     }
 
     override func bindValues() {
@@ -133,6 +148,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     func generateAlias() {
         createEditLoginViewModelDelegate?
             .createEditLoginViewModelWantsToGenerateAlias(self, title: title)
+    }
+
+    func useRealEmailAddress() {
+        username = emailAddress
     }
 
     func generatePassword() {
