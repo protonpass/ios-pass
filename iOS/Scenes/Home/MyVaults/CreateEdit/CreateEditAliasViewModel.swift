@@ -25,42 +25,25 @@ import ProtonCore_Login
 import SwiftUI
 
 final class SuffixSelection: ObservableObject {
-    let suffixes: [Suffix]
     @Published var selectedSuffix: Suffix?
+    let suffixes: [Suffix]
 
     init(suffixes: [Suffix]) {
         self.suffixes = suffixes
-    }
-
-    func selectDefaultSuffix() {
-        selectedSuffix = suffixes.first
+        self.selectedSuffix = suffixes.first
     }
 }
 
 final class MailboxSelection: ObservableObject {
-    @Published var selectedMailboxes: [Mailbox] = []
+    @Published var selectedMailboxes: [Mailbox]
     let mailboxes: [Mailbox]
 
     init(mailboxes: [Mailbox]) {
         self.mailboxes = mailboxes
-    }
-
-    func selectOrDeselect(mailbox: Mailbox) {
-        if selectedMailboxes.contains(mailbox) {
-            if selectedMailboxes.count == 1 { return }
-            selectedMailboxes.removeAll(where: { $0 == mailbox })
+        if let defaultMailbox = mailboxes.first {
+            self.selectedMailboxes = [defaultMailbox]
         } else {
-            selectedMailboxes.append(mailbox)
-        }
-    }
-
-    func selectDefaultMailboxes(_ mailboxes: [String]) {
-        selectedMailboxes = self.mailboxes.filter { mailbox in
-            mailboxes.contains(where: { $0 == mailbox.email })
-        }
-
-        if selectedMailboxes.isEmpty, let firstMailbox = self.mailboxes.first {
-            selectedMailboxes = [firstMailbox]
+            self.selectedMailboxes = []
         }
     }
 }
@@ -80,9 +63,15 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     @Published var title = ""
     @Published var prefix = ""
-    @Published var suffix = ""
-    @Published var mailboxes = ""
     @Published var note = ""
+
+    var suffix: String {
+        suffixSelection?.selectedSuffix?.suffix ?? ""
+    }
+
+    var mailboxes: String {
+        mailboxSelection?.selectedMailboxes.compactMap { $0.email }.joined(separator: "\n") ?? ""
+    }
 
     @Published private(set) var aliasEmail = ""
     @Published private(set) var state: State = .loading
@@ -237,26 +226,10 @@ extension CreateEditAliasViewModel {
                 }
 
                 let aliasOptions = try await getAliasOptionsTask(shareId: shareId).value
-
-                // Initialize SuffixSelection
                 suffixSelection = .init(suffixes: aliasOptions.suffixes)
-                suffixSelection?.$selectedSuffix
-                    .sink { [weak self] selectedSuffix in
-                        guard let self else { return }
-                        self.suffix = selectedSuffix?.suffix ?? ""
-                    }
-                    .store(in: &cancellables)
-                suffixSelection?.selectDefaultSuffix()
-
-                // Initialize MailboxSelection
+                suffixSelection?.attach(to: self, storeIn: &cancellables)
                 mailboxSelection = .init(mailboxes: aliasOptions.mailboxes)
-                mailboxSelection?.$selectedMailboxes
-                    .sink { [weak self] selectedMailboxes in
-                        guard let self else { return }
-                        self.mailboxes = selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
-                    }
-                    .store(in: &cancellables)
-                mailboxSelection?.selectDefaultMailboxes(alias?.mailboxes.map { $0.email } ?? [])
+                mailboxSelection?.attach(to: self, storeIn: &cancellables)
 
                 if !aliasOptions.canCreateAlias {
                     createEditAliasViewModelDelegate?.createEditAliasViewModelCanNotCreateMoreAliases()
