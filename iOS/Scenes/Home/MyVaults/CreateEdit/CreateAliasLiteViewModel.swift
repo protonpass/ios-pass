@@ -20,6 +20,7 @@
 
 import Client
 import Combine
+import Core
 import SwiftUI
 
 protocol AliasCreationLiteInfoDelegate: AnyObject {
@@ -34,14 +35,28 @@ struct AliasCreationLiteInfo {
     var aliasAddress: String { prefix + suffix.suffix }
 }
 
+protocol CreateAliasLiteViewModelDelegate: AnyObject {
+    func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection)
+}
+
 final class CreateAliasLiteViewModel: ObservableObject {
     @Published var prefix = ""
+    @Published private(set) var prefixError: AliasPrefixError?
     private var cancellables = Set<AnyCancellable>()
 
     let suffixSelection: SuffixSelection
     let mailboxSelection: MailboxSelection
 
-    weak var delegate: AliasCreationLiteInfoDelegate?
+    weak var aliasCreationDelegate: AliasCreationLiteInfoDelegate?
+    weak var delegate: CreateAliasLiteViewModelDelegate?
+
+    var suffix: String {
+        suffixSelection.selectedSuffix?.suffix ?? ""
+    }
+
+    var mailboxes: String {
+        mailboxSelection.selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
+    }
 
     init(options: AliasOptions, creationInfo: AliasCreationLiteInfo) {
         suffixSelection = .init(suffixes: options.suffixes)
@@ -52,12 +67,40 @@ final class CreateAliasLiteViewModel: ObservableObject {
         suffixSelection.attach(to: self, storeIn: &cancellables)
         mailboxSelection.selectedMailboxes = creationInfo.mailboxes
         suffixSelection.attach(to: self, storeIn: &cancellables)
-    }
 
+        _prefix
+            .projectedValue
+            .dropFirst(3)
+            .sink { [unowned self] _ in
+                self.validatePrefix()
+            }
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: - Private APIs
+private extension CreateAliasLiteViewModel {
+    func validatePrefix() {
+        do {
+            try AliasPrefixValidator.validate(prefix: prefix)
+            self.prefixError = nil
+        } catch {
+            self.prefixError = error as? AliasPrefixError
+        }
+    }
+}
+
+// MARK: - Public APIs
+extension CreateAliasLiteViewModel {
     func confirm() {
         guard let suffix = suffixSelection.selectedSuffix else { return }
-        delegate?.aliasLiteCreationInfo(.init(prefix: prefix,
-                                              suffix: suffix,
-                                              mailboxes: mailboxSelection.selectedMailboxes))
+        let info = AliasCreationLiteInfo(prefix: prefix,
+                                         suffix: suffix,
+                                         mailboxes: mailboxSelection.selectedMailboxes)
+        aliasCreationDelegate?.aliasLiteCreationInfo(info)
+    }
+
+    func showMailboxSelection() {
+        delegate?.createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
     }
 }

@@ -18,12 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct CreateAliasLiteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateAliasLiteViewModel
+    let tintColor = ItemContentType.login.tintColor
 
     init(viewModel: CreateAliasLiteViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -31,9 +34,15 @@ struct CreateAliasLiteView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 8) {
                 ScrollView {
-                    VStack {}
+                    VStack {
+                        aliasAddressSection
+                        prefixSuffixSection
+                        mailboxesSection
+                        Spacer()
+                    }
+                    .animation(.default, value: viewModel.prefixError)
                 }
 
                 HStack {
@@ -45,14 +54,121 @@ struct CreateAliasLiteView: View {
 
                     CapsuleTextButton(title: "Confirm",
                                       titleColor: .systemBackground,
-                                      backgroundColor: .brandNorm,
+                                      backgroundColor: tintColor,
                                       height: 44,
-                                      action: viewModel.confirm)
+                                      action: { dismiss(); viewModel.confirm() })
+                    .opacityReduced(viewModel.prefixError != nil)
                 }
-                .padding(.horizontal)
+                .padding(.bottom)
             }
-            .navigationTitle("You are about to create")
+            .padding(.horizontal)
+            .tint(Color(uiColor: tintColor))
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    VStack {
+                        NotchView()
+                        Text("You are about to create:")
+                            .navigationTitleText()
+                    }
+                }
+            }
         }
+        .navigationViewStyle(.stack)
+    }
+
+    @ViewBuilder
+    private var aliasAddressSection: some View {
+        if let prefixError = viewModel.prefixError {
+            Text(prefixError.localizedDescription)
+                .foregroundColor(.red)
+                .multilineTextAlignment(.center)
+        } else {
+            Text(viewModel.prefix)
+                .font(.title2)
+                .fontWeight(.medium) +
+            Text(viewModel.suffixSelection.selectedSuffix?.suffix ?? "")
+                .font(.title2)
+                .fontWeight(.medium)
+                .foregroundColor(Color(uiColor: tintColor))
+        }
+    }
+
+    private var prefixSuffixSection: some View {
+        VStack(alignment: .leading, spacing: kItemDetailSectionPadding) {
+            prefixRow
+            Divider()
+            suffixRow
+        }
+        .padding(.vertical, kItemDetailSectionPadding)
+        .roundedEditableSection()
+    }
+
+    private var prefixRow: some View {
+        VStack(alignment: .leading) {
+            Text("Prefix")
+                .sectionTitleText()
+            TextField("Add a prefix", text: $viewModel.prefix)
+                .keyboardType(.emailAddress)
+                .textInputAutocapitalization(.never)
+                .submitLabel(.done)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, kItemDetailSectionPadding)
+    }
+
+    private var suffixRow: some View {
+        Menu(content: {
+            ForEach(viewModel.suffixSelection.suffixes, id: \.suffix) { suffix in
+                Button(action: {
+                    viewModel.suffixSelection.selectedSuffix = suffix
+                }, label: {
+                    Label(title: {
+                        Text(suffix.suffix)
+                    }, icon: {
+                        if suffix.suffix == viewModel.suffixSelection.selectedSuffix?.suffix {
+                            Image(systemName: "checkmark")
+                        }
+                    })
+                })
+            }
+        }, label: {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("Suffix")
+                        .sectionTitleText()
+                    Text(viewModel.suffixSelection.selectedSuffix?.suffix ?? "")
+                        .sectionContentText()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                Spacer()
+                ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: .textWeak)
+            }
+            .padding(.horizontal, kItemDetailSectionPadding)
+            .transaction { transaction in
+                transaction.animation = nil
+            }
+        })
+    }
+
+    private var mailboxesSection: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.forward, color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Forwarded to")
+                    .sectionTitleText()
+                Text(viewModel.mailboxes)
+                    .sectionContentText()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            ItemDetailSectionIcon(icon: IconProvider.chevronDown,
+                                  color: .textWeak)
+        }
+        .padding(kItemDetailSectionPadding)
+        .roundedEditableSection()
+        .contentShape(Rectangle())
+        .onTapGesture(perform: viewModel.showMailboxSelection)
     }
 }

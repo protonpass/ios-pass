@@ -247,8 +247,7 @@ struct CreateEditAliasView: View {
 
     private var mailboxesSection: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.forward,
-                                  color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.forward, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Forwarded to")
@@ -258,22 +257,33 @@ struct CreateEditAliasView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            ItemDetailSectionIcon(icon: IconProvider.chevronDown,
-                                  color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: .textWeak)
         }
         .padding(kItemDetailSectionPadding)
         .roundedEditableSection()
         .contentShape(Rectangle())
-        .onTapGesture {
-            viewModel.showMailboxSelection()
-        }
+        .onTapGesture(perform: viewModel.showMailboxSelection)
     }
 }
 
 struct MailboxesView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var mailboxSelection: MailboxSelection
-    let tintColor = Color(uiColor: ItemContentType.alias.tintColor)
+    let mode: Mode
+
+    enum Mode {
+        case createEditAlias
+        case createAliasLite
+
+        var tintColor: Color {
+            switch self {
+            case .createEditAlias:
+                return Color(uiColor: ItemContentType.alias.tintColor)
+            case .createAliasLite:
+                return Color(uiColor: ItemContentType.login.tintColor)
+            }
+        }
+    }
 
     var body: some View {
         NavigationView {
@@ -281,12 +291,12 @@ struct MailboxesView: View {
                 ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
                     HStack {
                         Text(mailbox.email)
-                            .foregroundColor(isSelected(mailbox) ? tintColor : .textNorm)
+                            .foregroundColor(isSelected(mailbox) ? mode.tintColor : .textNorm)
                         Spacer()
 
                         if isSelected(mailbox) {
                             Image(uiImage: IconProvider.checkmark)
-                                .foregroundColor(tintColor)
+                                .foregroundColor(mode.tintColor)
                         }
                     }
                     .contentShape(Rectangle())
@@ -297,8 +307,16 @@ struct MailboxesView: View {
                 }
             }
             .listStyle(.plain)
-            .navigationTitle("Forwarded to")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    VStack {
+                        NotchView()
+                        Text("Forward to")
+                            .navigationTitleText()
+                    }
+                }
+            }
         }
     }
 
