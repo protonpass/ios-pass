@@ -188,11 +188,19 @@ final class MyVaultsCoordinator: Coordinator {
                                          delegate: AliasCreationLiteInfoDelegate) {
         let viewModel = CreateAliasLiteViewModel(options: options,
                                                  creationInfo: creationInfo)
-        viewModel.delegate = delegate
+        viewModel.aliasCreationDelegate = delegate
+        viewModel.delegate = self
         let view = CreateAliasLiteView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium()]
         present(viewController)
+    }
+
+    private func showMailboxesView(mailboxSelection: MailboxSelection, mode: MailboxesView.Mode) {
+        let view = MailboxesView(mailboxSelection: mailboxSelection, mode: mode)
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        present(viewController, animated: true, dismissible: true)
     }
 
     private func showCreateEditNoteView(mode: ItemMode) {
@@ -478,10 +486,7 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
 // MARK: - CreateEditAliasViewModelDelegate
 extension MyVaultsCoordinator: CreateEditAliasViewModelDelegate {
     func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        let view = MailboxesView(mailboxSelection: mailboxSelection)
-        let viewController = UIHostingController(rootView: view)
-        viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        present(viewController, animated: true, dismissible: true)
+        showMailboxesView(mailboxSelection: mailboxSelection, mode: .createEditAlias)
     }
 
     func createEditAliasViewModelCanNotCreateMoreAliases() {
@@ -618,5 +623,12 @@ extension MyVaultsCoordinator: VaultListViewModelDelegate {
 
     func vaultListViewModelDidFail(error: Error) {
         bannerManager?.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - CreateAliasLiteViewModelDelegate
+extension MyVaultsCoordinator: CreateAliasLiteViewModelDelegate {
+    func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
+        showMailboxesView(mailboxSelection: mailboxSelection, mode: .createAliasLite)
     }
 }
