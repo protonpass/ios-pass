@@ -242,6 +242,8 @@
 		355A198F294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */; };
 		355A27B52953751200F32EA1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme.swift */; };
 		355BDEC8299E1506009FDBB1 /* CapsuleTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */; };
+		355BDECE299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */; };
+		355BDED0299E3807009FDBB1 /* Array+InsertOrRemove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */; };
 		355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */; };
 		355E6DFC292FD56000C60796 /* Button+ConvenientInitializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */; };
 		355E803828A2FC9200BE7C9B /* ItemLabelKeyPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */; };
@@ -831,6 +833,8 @@
 		355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeRequest.swift; sourceTree = "<group>"; };
 		355A27B42953751200F32EA1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleTextButton.swift; sourceTree = "<group>"; };
+		355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableObject+AttachToAnother.swift"; sourceTree = "<group>"; };
+		355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+InsertOrRemove.swift"; sourceTree = "<group>"; };
 		355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailMoreInfoSection.swift; sourceTree = "<group>"; };
 		355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+ConvenientInitializers.swift"; sourceTree = "<group>"; };
 		355E803728A2FC9200BE7C9B /* ItemLabelKeyPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLabelKeyPacket.swift; sourceTree = "<group>"; };
@@ -2051,8 +2055,9 @@
 		35E50704286FB39800A3F6EA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				3565FD52298D3D6500E2A0EE /* Array+Chunked.swift */,
 				3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */,
+				3565FD52298D3D6500E2A0EE /* Array+Chunked.swift */,
+				355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */,
 				3531B5402902A9DD0070D2EE /* BiometricAuthenticator.swift */,
 				353E8B73287622F300A2C5E3 /* BundleExtensions.swift */,
 				354513E628E4CE700020A93A /* CodableBase64.swift */,
@@ -2060,6 +2065,7 @@
 				356B21D62870F8F1001220CB /* Constants.swift */,
 				350A97DD2886032000A7168B /* DeinitPrintable.swift */,
 				35635175299C10040059A97A /* IdentifiableObject.swift */,
+				355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */,
 				35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */,
 				3529432828DAF54900E1F11B /* SearchUtils.swift */,
 				35429B26288AB730000BA22F /* StaticFuncs.swift */,
@@ -3423,9 +3429,11 @@
 				356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */,
 				356B21D72870F8F1001220CB /* Constants.swift in Sources */,
 				3573CD23292C139900A9EF82 /* AliasPrefixValidator.swift in Sources */,
+				355BDECE299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift in Sources */,
 				350A97DE2886032000A7168B /* DeinitPrintable.swift in Sources */,
 				356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */,
 				3553C21F2965703D0087518A /* LogFormatter.swift in Sources */,
+				355BDED0299E3807009FDBB1 /* Array+InsertOrRemove.swift in Sources */,
 				353E10922881827C00E59474 /* UserProtocol.swift in Sources */,
 				35E00616288BE5FE00FAAD65 /* SessionData.swift in Sources */,
 				356A34B72977B18000969BA2 /* URLUtils+OTPParser.swift in Sources */,

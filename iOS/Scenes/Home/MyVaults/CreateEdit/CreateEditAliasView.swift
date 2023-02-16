@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -217,7 +216,7 @@ struct CreateEditAliasView: View {
                         Label(title: {
                             Text(suffix.suffix)
                         }, icon: {
-                            if suffix.suffix == viewModel.suffix {
+                            if suffix == viewModel.suffixSelection?.selectedSuffix {
                                 Image(systemName: "checkmark")
                             }
                         })
@@ -293,7 +292,7 @@ struct MailboxesView: View {
                     .contentShape(Rectangle())
                     .listRowSeparator(.hidden)
                     .onTapGesture {
-                        mailboxSelection.selectOrDeselect(mailbox: mailbox)
+                        mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
                     }
                 }
             }
