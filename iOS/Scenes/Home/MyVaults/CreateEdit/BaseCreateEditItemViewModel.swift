@@ -109,6 +109,15 @@ class BaseCreateEditItemViewModel {
         fatalError("Must be overridden by subclasses")
     }
 
+    func saveButtonTitle() -> String {
+        switch mode {
+        case .create:
+            return "Create"
+        case .edit:
+            return "Save"
+        }
+    }
+
     func additionalCreate() async throws {}
 
     func additionalEdit() async throws {}

@@ -76,7 +76,7 @@ struct CreateEditLoginView: View {
             }
             .toolbar {
                 CreateEditItemToolbar(
-                    saveButtonTitle: viewModel.isAutoFilling ? "Save & AutoFill" : "Save",
+                    saveButtonTitle: viewModel.saveButtonTitle(),
                     isSaveable: viewModel.isSaveable,
                     isSaving: viewModel.isSaving,
                     itemContentType: viewModel.itemContentType(),

@@ -116,6 +116,15 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override func itemContentType() -> ItemContentType { .login }
 
+    override func saveButtonTitle() -> String {
+        guard case let .create(_, type) = mode,
+              case let .login(_, _, autofill) = type,
+              autofill else {
+            return super.saveButtonTitle()
+        }
+        return "Create & AutoFill"
+    }
+
     override func generateItemContent() -> ItemContentProtobuf {
         let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
         let logInData = ItemContentData.login(.init(username: username,
