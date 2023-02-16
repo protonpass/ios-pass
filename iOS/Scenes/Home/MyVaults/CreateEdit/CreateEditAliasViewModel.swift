@@ -48,10 +48,6 @@ final class MailboxSelection: ObservableObject {
     }
 }
 
-protocol AliasCreationDelegate: AnyObject {
-    func aliasCreationInfo(_ info: AliasCreationInfo)
-}
-
 protocol CreateEditAliasViewModelDelegate: AnyObject {
     func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection)
     func createEditAliasViewModelCanNotCreateMoreAliases()
@@ -102,7 +98,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var mailboxSelection: MailboxSelection?
     let aliasRepository: AliasRepositoryProtocol
 
-    private weak var aliasCreationDelegate: AliasCreationDelegate?
     weak var createEditAliasViewModelDelegate: CreateEditAliasViewModelDelegate?
 
     var isEmpty: Bool {
@@ -147,15 +142,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .store(in: &cancellables)
     }
 
-    override func bindValues() {
-        super.bindValues()
-        if case let .create(_, type) = mode,
-           case let .alias(delegate, title) = type {
-            self.aliasCreationDelegate = delegate
-            self.title = title
-        }
-    }
-
     override func itemContentType() -> ItemContentType { .alias }
 
     override func generateItemContent() -> ItemContentProtobuf {
@@ -165,11 +151,9 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
         guard let selectedSuffix = suffixSelection?.selectedSuffix,
               let selectedMailboxes = mailboxSelection?.selectedMailboxes else { return nil }
-        return .init(title: title,
-                     prefix: prefix,
+        return .init(prefix: prefix,
                      suffix: selectedSuffix,
-                     mailboxIds: selectedMailboxes.map { $0.ID },
-                     note: note)
+                     mailboxIds: selectedMailboxes.map { $0.ID })
     }
 
     override func additionalEdit() async throws {
@@ -180,22 +164,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             _ = try await changeMailboxesTask(shareId: shareId,
                                               itemId: itemContent.item.itemID,
                                               mailboxIDs: mailboxIds).value
-        }
-    }
-
-    @MainActor
-    override func save() async {
-        // When in create login item context, we don't create alias item
-        // but passing alias creation info upstream to create login page.
-        // Alias item will be created alongside with login item.
-        if case let .create(_, type) = mode,
-           case let .alias(delegate, _) = type,
-           let delegate {
-            if let info = generateAliasCreationInfo() {
-                delegate.aliasCreationInfo(info)
-            }
-        } else {
-            await super.save()
         }
     }
 

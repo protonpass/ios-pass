@@ -23,30 +23,32 @@ import SwiftUI
 /// A capsule button with a text as title
 public struct CapsuleTextButton: View {
     let title: String
-    let color: UIColor
+    let titleColor: UIColor
+    let backgroundColor: UIColor
     let height: CGFloat
     let action: () -> Void
 
     public init(title: String,
-                color: UIColor,
+                titleColor: UIColor,
+                backgroundColor: UIColor,
                 height: CGFloat = 40,
                 action: @escaping () -> Void) {
         self.title = title
-        self.color = color
+        self.titleColor = titleColor
+        self.backgroundColor = backgroundColor
         self.height = height
         self.action = action
     }
 
     public var body: some View {
         Button(action: action) {
-            ZStack {
-                Color(uiColor: color)
-                    .clipShape(Capsule())
-                Text(title)
-                    .padding(.horizontal)
-                    .foregroundColor(Color(uiColor: .systemBackground))
-            }
-            .frame(height: height)
+            Text(title)
+                .foregroundColor(Color(uiColor: titleColor))
+                .frame(height: height)
+                .padding(.horizontal)
+                .frame(maxWidth: .infinity)
+                .background(Color(uiColor: backgroundColor))
+                .clipShape(Capsule())
         }
     }
 }

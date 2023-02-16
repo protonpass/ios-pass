@@ -216,7 +216,7 @@ struct CreateEditAliasView: View {
                         Label(title: {
                             Text(suffix.suffix)
                         }, icon: {
-                            if suffix == viewModel.suffixSelection?.selectedSuffix {
+                            if suffix.suffix == viewModel.suffixSelection?.selectedSuffix?.suffix {
                                 Image(systemName: "checkmark")
                             }
                         })

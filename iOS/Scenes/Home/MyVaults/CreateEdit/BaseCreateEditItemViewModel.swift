@@ -49,7 +49,7 @@ enum ItemMode {
 }
 
 enum ItemCreationType {
-    case alias(delegate: AliasCreationDelegate?, title: String)
+    case alias
     case login(title: String?, url: String?, autofill: Bool)
     case other
 
