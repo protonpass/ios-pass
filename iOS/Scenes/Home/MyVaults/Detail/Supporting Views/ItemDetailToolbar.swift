@@ -40,14 +40,14 @@ struct ItemDetailToolbar: ToolbarContent {
             switch itemContent.item.itemState {
             case .active:
                 HStack(spacing: 0) {
-                    CapsuleTitledButton(icon: IconProvider.pencil,
-                                        title: "Edit",
-                                        color: itemContent.tintColor,
-                                        action: onEdit)
+                    CapsuleLabelButton(icon: IconProvider.pencil,
+                                       title: "Edit",
+                                       color: itemContent.tintColor,
+                                       action: onEdit)
 
-                    CapsuleButton(icon: IconProvider.threeDotsVertical,
-                                  color: itemContent.tintColor,
-                                  action: onRevealMoreOptions)
+                    CapsuleIconButton(icon: IconProvider.threeDotsVertical,
+                                      color: itemContent.tintColor,
+                                      action: onRevealMoreOptions)
                 }
 
             case .trashed:

@@ -24,7 +24,7 @@ import SwiftUI
 import UIComponents
 
 struct CreateEditItemToolbar: ToolbarContent {
-    var saveButtonTitle: String = "Save"
+    let saveButtonTitle: String
     let isSaveable: Bool
     let isSaving: Bool
     let itemContentType: ItemContentType
@@ -42,10 +42,9 @@ struct CreateEditItemToolbar: ToolbarContent {
             if isSaving {
                 ProgressView()
             } else {
-                CapsuleTitledButton(icon: IconProvider.fileArrowInUp,
-                                    title: saveButtonTitle,
-                                    color: itemContentType.tintColor,
-                                    action: { Task { await onSave() } })
+                CapsuleTextButton(title: saveButtonTitle,
+                                  color: itemContentType.tintColor,
+                                  action: { Task { await onSave() } })
                 .opacityReduced(!isSaveable)
             }
         }

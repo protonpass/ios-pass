@@ -1,5 +1,5 @@
 //
-// CapsuleButton.swift
+// CapsuleLabelButton.swift
 // Proton Pass - Created on 03/02/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -20,18 +20,21 @@
 
 import SwiftUI
 
-/// A capsule button with an icon inside.
-public struct CapsuleButton: View {
+/// A capsule button with an icon on the left & title on the right.
+public struct CapsuleLabelButton: View {
     let icon: UIImage
+    let title: String
     let color: UIColor
     let height: CGFloat
     let action: () -> Void
 
     public init(icon: UIImage,
+                title: String,
                 color: UIColor,
                 height: CGFloat = 40,
                 action: @escaping () -> Void) {
         self.icon = icon
+        self.title = title
         self.color = color
         self.height = height
         self.action = action
@@ -40,17 +43,22 @@ public struct CapsuleButton: View {
     public var body: some View {
         Button(action: action) {
             ZStack {
-                Color(uiColor: color.withAlphaComponent(0.2))
+                Color(uiColor: color)
                     .clipShape(Capsule())
-                Image(uiImage: icon)
-                    .resizable()
-                    .renderingMode(.template)
-                    .scaledToFit()
-                    .foregroundColor(Color(uiColor: color))
-                    .padding(.vertical, height / 3)
-                    .padding(.horizontal)
+                HStack {
+                    Image(uiImage: icon)
+                        .resizable()
+                        .renderingMode(.template)
+                        .scaledToFit()
+                        .padding(.vertical, height / 3)
+                    Text(title)
+                }
+                .padding(.horizontal)
+                .foregroundColor(Color(uiColor: .systemBackground))
+                .frame(maxWidth: .infinity)
             }
             .frame(height: height)
+            .frame(maxWidth: .infinity)
         }
     }
 }

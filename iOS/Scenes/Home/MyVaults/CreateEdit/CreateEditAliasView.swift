@@ -116,6 +116,7 @@ struct CreateEditAliasView: View {
         }
         .toolbar {
             CreateEditItemToolbar(
+                saveButtonTitle: viewModel.saveButtonTitle(),
                 isSaveable: viewModel.isSaveable,
                 isSaving: viewModel.isSaving,
                 itemContentType: viewModel.itemContentType(),
