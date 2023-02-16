@@ -26,10 +26,12 @@ import SwiftOTP
 import SwiftUI
 
 protocol CreateEditLoginViewModelDelegate: AnyObject {
-    func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
-                                                      title: String)
+    func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
+                                                      creationInfo: AliasCreationLiteInfo,
+                                                      delegate: AliasCreationLiteInfoDelegate)
+
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
-    func createEditLoginViewModelDidReceiveAliasCreationInfo()
+    func createEditLoginViewModelCanNotCreateMoreAlias()
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
@@ -48,10 +50,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     /// Proton account email address
     let emailAddress: String
 
+    private let aliasRepository: AliasRepositoryProtocol
+
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
-    /// The info to create new alias.
-    private var aliasCreationInfo: AliasCreationInfo?
+
+    private var aliasOptions: AliasOptions?
+    private var aliasCreationLiteInfo: AliasCreationLiteInfo?
 
     weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
@@ -77,10 +82,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
+         aliasRepository: AliasRepositoryProtocol,
          preferences: Preferences,
          logManager: LogManager,
          emailAddress: String) {
         self.emailAddress = emailAddress
+        self.aliasRepository = aliasRepository
         super.init(mode: mode,
                    itemRepository: itemRepository,
                    preferences: preferences,
@@ -137,10 +144,16 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func additionalCreate() async throws {
-        if let aliasCreationInfo {
-            let aliasContent = ItemContentProtobuf(name: aliasCreationInfo.title,
-                                                   note: aliasCreationInfo.note,
+        if let aliasCreationLiteInfo {
+            let aliasContent = ItemContentProtobuf(name: title,
+                                                   note: "Alias of log in item \"\(title)\"",
                                                    data: .alias)
+
+            let aliasCreationInfo = AliasCreationInfo(
+                prefix: aliasCreationLiteInfo.prefix,
+                suffix: aliasCreationLiteInfo.suffix,
+                mailboxIds: aliasCreationLiteInfo.mailboxes.map { $0.ID })
+
             try await self.itemRepository.createAlias(info: aliasCreationInfo,
                                                       itemContent: aliasContent,
                                                       shareId: shareId)
@@ -155,8 +168,40 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func generateAlias() {
-        createEditLoginViewModelDelegate?
-            .createEditLoginViewModelWantsToGenerateAlias(self, title: title)
+        if let aliasOptions, let aliasCreationLiteInfo {
+            createEditLoginViewModelDelegate?
+                .createEditLoginViewModelWantsToGenerateAlias(options: aliasOptions,
+                                                              creationInfo: aliasCreationLiteInfo,
+                                                              delegate: self)
+        } else {
+            Task { @MainActor in
+                do {
+                    delegate?.createEditItemViewModelWantsToShowLoadingHud()
+                    let aliasOptions = try await aliasRepository.getAliasOptions(shareId: shareId)
+                    delegate?.createEditItemViewModelWantsToHideLoadingHud()
+                    if aliasOptions.canCreateAlias == false {
+                        createEditLoginViewModelDelegate?.createEditLoginViewModelCanNotCreateMoreAlias()
+                    } else {
+                        if let firstSuffix = aliasOptions.suffixes.first,
+                           let firstMailbox = aliasOptions.mailboxes.first {
+                            var prefix = title.prefix(10).replacingOccurrences(of: " ", with: "").lowercased()
+                            if prefix.isEmpty {
+                                prefix = String.random(allowedCharacters: [.lowercase, .digit], length: 5)
+                            }
+
+                            self.aliasOptions = aliasOptions
+                            self.aliasCreationLiteInfo = .init(prefix: prefix,
+                                                               suffix: firstSuffix,
+                                                               mailboxes: [firstMailbox])
+                            generateAlias()
+                        }
+                    }
+                } catch {
+                    delegate?.createEditItemViewModelWantsToHideLoadingHud()
+                    delegate?.createEditItemViewModelDidFail(error)
+                }
+            }
+        }
     }
 
     func useRealEmailAddress() {
@@ -172,7 +217,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func removeAlias() {
-        aliasCreationInfo = nil
+        aliasCreationLiteInfo = nil
         username = ""
         isAlias = false
     }
@@ -205,12 +250,11 @@ extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
     }
 }
 
-// MARK: - AliasCreationDelegate
-extension CreateEditLoginViewModel: AliasCreationDelegate {
-    func aliasCreationInfo(_ info: AliasCreationInfo) {
-        aliasCreationInfo = info
+// MARK: - AliasCreationLiteInfoDelegate
+extension CreateEditLoginViewModel: AliasCreationLiteInfoDelegate {
+    func aliasLiteCreationInfo(_ info: AliasCreationLiteInfo) {
+        aliasCreationLiteInfo = info
         username = info.aliasAddress
         isAlias = true
-        createEditLoginViewModelDelegate?.createEditLoginViewModelDidReceiveAliasCreationInfo()
     }
 }

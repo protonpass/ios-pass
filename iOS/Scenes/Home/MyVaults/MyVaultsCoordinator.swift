@@ -119,11 +119,9 @@ final class MyVaultsCoordinator: Coordinator {
                                                                        url: nil,
                                                                        autofill: false)))
                 case .alias:
-                    showCreateEditAliasView(mode: .create(shareId: shareId,
-                                                          type: .alias(delegate: nil, title: "")))
+                    showCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
                 case .note:
-                    showCreateEditNoteView(mode: .create(shareId: shareId,
-                                                         type: .other))
+                    showCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
                 case .password:
                     showGeneratePasswordView(delegate: self, mode: .random)
                 }
@@ -161,6 +159,7 @@ final class MyVaultsCoordinator: Coordinator {
         let emailAddress = userData.addresses.first?.email ?? ""
         let viewModel = CreateEditLoginViewModel(mode: mode,
                                                  itemRepository: itemRepository,
+                                                 aliasRepository: aliasRepository,
                                                  preferences: preferences,
                                                  logManager: logManager,
                                                  emailAddress: emailAddress)
@@ -182,6 +181,18 @@ final class MyVaultsCoordinator: Coordinator {
         let view = CreateEditAliasView(viewModel: viewModel)
         present(view, dismissible: false)
         currentCreateEditItemViewModel = viewModel
+    }
+
+    private func showCreateAliasLiteView(options: AliasOptions,
+                                         creationInfo: AliasCreationLiteInfo,
+                                         delegate: AliasCreationLiteInfoDelegate) {
+        let viewModel = CreateAliasLiteViewModel(options: options,
+                                                 creationInfo: creationInfo)
+        viewModel.delegate = delegate
+        let view = CreateAliasLiteView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium()]
+        present(viewController)
     }
 
     private func showCreateEditNoteView(mode: ItemMode) {
@@ -482,24 +493,22 @@ extension MyVaultsCoordinator: CreateEditAliasViewModelDelegate {
 
 // MARK: - CreateEditLoginViewModelDelegate
 extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
-    func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
-                                                      title: String) {
-        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        showCreateEditAliasView(mode: .create(shareId: shareId,
-                                              type: .alias(delegate: delegate,
-                                                           title: title)))
+    func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
+                                                      creationInfo: AliasCreationLiteInfo,
+                                                      delegate: AliasCreationLiteInfoDelegate) {
+        showCreateAliasLiteView(options: options, creationInfo: creationInfo, delegate: delegate)
     }
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate, mode: .createLogin)
     }
 
-    func createEditLoginViewModelDidReceiveAliasCreationInfo() {
-        dismissTopMostViewController(animated: true, completion: nil)
-    }
-
     func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String) {
         clipboardManager?.copy(text: text, bannerMessage: bannerMessage)
+    }
+
+    func createEditLoginViewModelCanNotCreateMoreAlias() {
+        bannerManager?.displayTopErrorMessage("You can not create more aliases.")
     }
 }
 

@@ -69,30 +69,23 @@ struct GeneratePasswordView: View {
                 Divider()
 
                 HStack {
-                    Button(action: dismiss.callAsFunction) {
-                        Text("Cancel")
-                            .foregroundColor(.textWeak)
-                            .frame(maxWidth: .infinity)
-                            .contentShape(Rectangle())
-                    }
-                    .padding()
-                    .background(Color.white.opacity(0.04))
-                    .clipShape(Capsule())
+                    CapsuleTextButton(title: "Cancel",
+                                      titleColor: .textWeak,
+                                      backgroundColor: .white.withAlphaComponent(0.08),
+                                      height: 44,
+                                      action: dismiss.callAsFunction)
 
-                    Button(action: {
-                        viewModel.confirm()
-                        if case .createLogin = viewModel.mode {
-                            dismiss()
-                        }
-                    }, label: {
-                        Text(viewModel.mode.confirmTitle)
-                            .foregroundColor(.textNorm)
-                            .frame(maxWidth: .infinity)
-                            .contentShape(Rectangle())
-                    })
-                    .padding()
-                    .background(Color.interactionNorm)
-                    .clipShape(Capsule())
+                    CapsuleTextButton(
+                        title: viewModel.mode.confirmTitle,
+                        titleColor: .systemBackground,
+                        backgroundColor: .brandNorm,
+                        height: 44,
+                        action: {
+                            viewModel.confirm()
+                            if case .createLogin = viewModel.mode {
+                                dismiss()
+                            }
+                        })
                 }
                 .padding(.vertical)
             }
