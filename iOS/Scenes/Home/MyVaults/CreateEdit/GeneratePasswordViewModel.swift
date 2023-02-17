@@ -56,6 +56,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     weak var delegate: GeneratePasswordViewModelDelegate?
+    var onDismiss: (() -> Void)?
 
     init(mode: GeneratePasswordViewMode) {
         self.mode = mode
