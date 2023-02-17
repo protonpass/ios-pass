@@ -192,8 +192,9 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = self
         let view = CreateAliasLiteView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        viewController.sheetPresentationController?.detents = [.medium()]
-        present(viewController)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.sheetPresentationController?.detents = [.medium()]
+        present(navigationController)
     }
 
     private func showMailboxSelectionView(_ mailboxSelection: MailboxSelection,
@@ -219,17 +220,18 @@ final class MyVaultsCoordinator: Coordinator {
                                           mode: GeneratePasswordViewMode) {
         let viewModel = GeneratePasswordViewModel(mode: mode)
         viewModel.delegate = delegate
-        let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
-        let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
+        let view = GeneratePasswordView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        let navigationController = UINavigationController(rootViewController: viewController)
         if #available(iOS 16, *) {
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 344
             }
-            generatePasswordViewController.sheetPresentationController?.detents = [customDetent]
+            navigationController.sheetPresentationController?.detents = [customDetent]
         } else {
-            generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
+            navigationController.sheetPresentationController?.detents = [.medium()]
         }
-        present(generatePasswordViewController)
+        present(navigationController)
     }
 
     private func showSearchView() {

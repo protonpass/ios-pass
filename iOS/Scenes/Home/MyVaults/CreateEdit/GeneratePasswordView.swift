@@ -31,79 +31,76 @@ struct GeneratePasswordView: View {
     }
 
     var body: some View {
-        NavigationView {
-            VStack {
-                Text(viewModel.texts)
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .minimumScaleFactor(0.5)
-                    .frame(maxHeight: .infinity, alignment: .center)
-                    .padding(.horizontal)
+        VStack {
+            Text(viewModel.texts)
+                .font(.title3)
+                .fontWeight(.bold)
+                .minimumScaleFactor(0.5)
+                .frame(maxHeight: .infinity, alignment: .center)
+                .padding(.horizontal)
+                .transaction { transaction in
+                    transaction.animation = nil
+                }
+
+            Divider()
+
+            HStack {
+                Text("\(Int(viewModel.length)) characters")
+                    .frame(minWidth: 120, alignment: .leading)
                     .transaction { transaction in
                         transaction.animation = nil
                     }
-
-                Divider()
-
-                HStack {
-                    Text("\(Int(viewModel.length)) characters")
-                        .frame(minWidth: 120, alignment: .leading)
-                        .transaction { transaction in
-                            transaction.animation = nil
-                        }
-                    Slider(value: $viewModel.length,
-                           in: 4...64,
-                           step: 1)
-                    .accentColor(.interactionNorm)
-                }
-                .padding(.horizontal)
-
-                Divider()
-
-                Toggle(isOn: $viewModel.hasSpecialCharacters) {
-                    Text("Special characters")
-                }
-                .toggleStyle(SwitchToggleStyle.proton)
-                .padding(.horizontal, 16)
-
-                Divider()
-
-                HStack {
-                    CapsuleTextButton(title: "Cancel",
-                                      titleColor: .textWeak,
-                                      backgroundColor: .white.withAlphaComponent(0.08),
-                                      disabled: false,
-                                      height: 44,
-                                      action: dismiss.callAsFunction)
-
-                    CapsuleTextButton(
-                        title: viewModel.mode.confirmTitle,
-                        titleColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light)),
-                        backgroundColor: .brandNorm,
-                        disabled: false,
-                        height: 44,
-                        action: {
-                            viewModel.confirm()
-                            if case .createLogin = viewModel.mode {
-                                dismiss()
-                            }
-                        })
-                }
-                .padding(.vertical)
+                Slider(value: $viewModel.length,
+                       in: 4...64,
+                       step: 1)
+                .accentColor(.interactionNorm)
             }
             .padding(.horizontal)
-            .animation(.default, value: viewModel.password)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    VStack {
-                        NotchView()
-                        Text("Generate password")
-                            .navigationTitleText()
-                    }
+
+            Divider()
+
+            Toggle(isOn: $viewModel.hasSpecialCharacters) {
+                Text("Special characters")
+            }
+            .toggleStyle(SwitchToggleStyle.proton)
+            .padding(.horizontal, 16)
+
+            Divider()
+
+            HStack {
+                CapsuleTextButton(title: "Cancel",
+                                  titleColor: .textWeak,
+                                  backgroundColor: .white.withAlphaComponent(0.08),
+                                  disabled: false,
+                                  height: 44,
+                                  action: dismiss.callAsFunction)
+
+                CapsuleTextButton(
+                    title: viewModel.mode.confirmTitle,
+                    titleColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light)),
+                    backgroundColor: .brandNorm,
+                    disabled: false,
+                    height: 44,
+                    action: {
+                        viewModel.confirm()
+                        if case .createLogin = viewModel.mode {
+                            dismiss()
+                        }
+                    })
+            }
+            .padding(.vertical)
+        }
+        .padding(.horizontal)
+        .animation(.default, value: viewModel.password)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                VStack {
+                    NotchView()
+                    Text("Generate password")
+                        .navigationTitleText()
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }
