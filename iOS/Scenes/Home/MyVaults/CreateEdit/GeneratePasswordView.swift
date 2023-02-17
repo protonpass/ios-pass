@@ -23,7 +23,6 @@ import SwiftUI
 import UIComponents
 
 struct GeneratePasswordView: View {
-    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: GeneratePasswordViewModel
 
     init(viewModel: GeneratePasswordViewModel) {
@@ -73,7 +72,7 @@ struct GeneratePasswordView: View {
                                   backgroundColor: .white.withAlphaComponent(0.08),
                                   disabled: false,
                                   height: 44,
-                                  action: dismiss.callAsFunction)
+                                  action: { viewModel.onDismiss?() })
 
                 CapsuleTextButton(
                     title: viewModel.mode.confirmTitle,
@@ -84,7 +83,7 @@ struct GeneratePasswordView: View {
                     action: {
                         viewModel.confirm()
                         if case .createLogin = viewModel.mode {
-                            dismiss()
+                            viewModel.onDismiss?()
                         }
                     })
             }

@@ -231,6 +231,7 @@ final class MyVaultsCoordinator: Coordinator {
         } else {
             navigationController.sheetPresentationController?.detents = [.medium()]
         }
+        viewModel.onDismiss = { navigationController.dismiss(animated: true) }
         present(navigationController)
     }
 
@@ -528,7 +529,7 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
         if UIDevice.current.isIpad {
             popTopViewController(animated: true)
         } else {
-            dismissTopMostViewController(animated: true, completion: nil)
+            dismissTopMostViewController()
         }
     }
 
@@ -577,7 +578,7 @@ extension MyVaultsCoordinator: SearchViewModelDelegate {
     }
 
     func searchViewModelWantsToDismiss() {
-        dismissTopMostViewController(animated: true, completion: nil)
+        dismissTopMostViewController()
     }
 
     func searchViewModelWantsToShowItemDetail(_ item: Client.ItemContent) {
