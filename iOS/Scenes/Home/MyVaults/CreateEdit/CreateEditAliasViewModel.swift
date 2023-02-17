@@ -28,6 +28,8 @@ final class SuffixSelection: ObservableObject {
     @Published var selectedSuffix: Suffix?
     let suffixes: [Suffix]
 
+    var selectedSuffixString: String { selectedSuffix?.suffix ?? "" }
+
     init(suffixes: [Suffix]) {
         self.suffixes = suffixes
         self.selectedSuffix = suffixes.first
@@ -37,6 +39,10 @@ final class SuffixSelection: ObservableObject {
 final class MailboxSelection: ObservableObject {
     @Published var selectedMailboxes: [Mailbox]
     let mailboxes: [Mailbox]
+
+    var selectedMailboxesString: String {
+        selectedMailboxes.map { $0.email }.joined(separator: "\n")
+    }
 
     init(mailboxes: [Mailbox]) {
         self.mailboxes = mailboxes
@@ -61,13 +67,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var prefix = ""
     @Published var note = ""
 
-    var suffix: String {
-        suffixSelection?.selectedSuffix?.suffix ?? ""
-    }
-
-    var mailboxes: String {
-        mailboxSelection?.selectedMailboxes.compactMap { $0.email }.joined(separator: "\n") ?? ""
-    }
+    var suffix: String { suffixSelection?.selectedSuffixString ?? "" }
+    var mailboxes: String { mailboxSelection?.selectedMailboxesString ?? "" }
 
     @Published private(set) var aliasEmail = ""
     @Published private(set) var state: State = .loading
