@@ -24,41 +24,45 @@ import SwiftUI
 public struct CapsuleLabelButton: View {
     let icon: UIImage
     let title: String
-    let color: UIColor
+    let backgroundColor: UIColor
+    let disabled: Bool
     let height: CGFloat
     let action: () -> Void
 
     public init(icon: UIImage,
                 title: String,
-                color: UIColor,
+                backgroundColor: UIColor,
+                disabled: Bool,
                 height: CGFloat = 40,
                 action: @escaping () -> Void) {
         self.icon = icon
         self.title = title
-        self.color = color
+        self.backgroundColor = backgroundColor
+        self.disabled = disabled
         self.height = height
         self.action = action
     }
 
     public var body: some View {
         Button(action: action) {
-            ZStack {
-                Color(uiColor: color)
-                    .clipShape(Capsule())
-                HStack {
-                    Image(uiImage: icon)
-                        .resizable()
-                        .renderingMode(.template)
-                        .scaledToFit()
-                        .padding(.vertical, height / 3)
-                    Text(title)
-                }
-                .padding(.horizontal)
-                .foregroundColor(Color(uiColor: .systemBackground))
-                .frame(maxWidth: .infinity)
+            HStack {
+                Image(uiImage: icon)
+                    .resizable()
+                    .renderingMode(.template)
+                    .scaledToFit()
+                    .frame(maxHeight: height / 2)
+                Text(title)
             }
+            .padding(.horizontal)
+            .foregroundColor(
+                Color(uiColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light))))
             .frame(height: height)
             .frame(maxWidth: .infinity)
+            .foregroundColor(disabled ? .textDisabled : .textNorm)
+            .frame(height: height)
+            .frame(maxWidth: .infinity)
+            .background(Color(uiColor: backgroundColor).opacity(disabled ? 0.08 : 1))
+            .clipShape(Capsule())
         }
     }
 }

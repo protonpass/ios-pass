@@ -373,6 +373,7 @@
 		3593DD1328A8415300C235D3 /* PersistentContainerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD1228A8415300C235D3 /* PersistentContainerBuilder.swift */; };
 		3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */; };
 		3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */; };
+		35992151299F7C3800FEFA32 /* CapsuleLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD4A298D0CA400E2A0EE /* CapsuleLabelButton.swift */; };
 		359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A800C29096A2200EEBC51 /* SyncEventLoop.swift */; };
 		35A5EEE02958B60200A09623 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEDF2958B60200A09623 /* Browser.swift */; };
 		35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEE12958CDBC00A09623 /* UrlOpener.swift */; };
@@ -3455,6 +3456,7 @@
 				356A34B92977B46300969BA2 /* OTP.swift in Sources */,
 				3510A2FC287841AD0003BE79 /* StringExtensions.swift in Sources */,
 				355342472992A685003E3A47 /* PPCoreError.swift in Sources */,
+				35992151299F7C3800FEFA32 /* CapsuleLabelButton.swift in Sources */,
 				356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */,
 				35426B6828EF196C00F89BB7 /* RulesParser.swift in Sources */,
 				353E8B74287622F300A2C5E3 /* BundleExtensions.swift in Sources */,

@@ -72,13 +72,15 @@ struct GeneratePasswordView: View {
                     CapsuleTextButton(title: "Cancel",
                                       titleColor: .textWeak,
                                       backgroundColor: .white.withAlphaComponent(0.08),
+                                      disabled: false,
                                       height: 44,
                                       action: dismiss.callAsFunction)
 
                     CapsuleTextButton(
                         title: viewModel.mode.confirmTitle,
-                        titleColor: .systemBackground,
+                        titleColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light)),
                         backgroundColor: .brandNorm,
+                        disabled: false,
                         height: 44,
                         action: {
                             viewModel.confirm()
@@ -91,8 +93,16 @@ struct GeneratePasswordView: View {
             }
             .padding(.horizontal)
             .animation(.default, value: viewModel.password)
-            .navigationBarTitle("Generate password")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    VStack {
+                        NotchView()
+                        Text("Generate password")
+                            .navigationTitleText()
+                    }
+                }
+            }
         }
         .navigationViewStyle(.stack)
     }
