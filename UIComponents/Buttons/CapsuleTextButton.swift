@@ -25,17 +25,20 @@ public struct CapsuleTextButton: View {
     let title: String
     let titleColor: UIColor
     let backgroundColor: UIColor
+    let disabled: Bool
     let height: CGFloat
     let action: () -> Void
 
     public init(title: String,
                 titleColor: UIColor,
                 backgroundColor: UIColor,
+                disabled: Bool,
                 height: CGFloat = 40,
                 action: @escaping () -> Void) {
         self.title = title
         self.titleColor = titleColor
         self.backgroundColor = backgroundColor
+        self.disabled = disabled
         self.height = height
         self.action = action
     }
@@ -43,11 +46,11 @@ public struct CapsuleTextButton: View {
     public var body: some View {
         Button(action: action) {
             Text(title)
-                .foregroundColor(Color(uiColor: titleColor))
+                .foregroundColor(disabled ? .textDisabled : Color(uiColor: titleColor))
                 .frame(height: height)
                 .padding(.horizontal)
                 .frame(maxWidth: .infinity)
-                .background(Color(uiColor: backgroundColor))
+                .background(Color(uiColor: backgroundColor).opacity(disabled ? 0.08 : 1))
                 .clipShape(Capsule())
         }
     }

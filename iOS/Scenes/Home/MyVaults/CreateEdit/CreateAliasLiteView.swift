@@ -38,6 +38,7 @@ struct CreateAliasLiteView: View {
                 ScrollView {
                     VStack {
                         aliasAddressSection
+                            .padding(.vertical)
                         prefixSuffixSection
                         mailboxesSection
                         Spacer()
@@ -49,15 +50,17 @@ struct CreateAliasLiteView: View {
                     CapsuleTextButton(title: "Cancel",
                                       titleColor: .textWeak,
                                       backgroundColor: .white.withAlphaComponent(0.08),
+                                      disabled: false,
                                       height: 44,
                                       action: dismiss.callAsFunction)
 
-                    CapsuleTextButton(title: "Confirm",
-                                      titleColor: .systemBackground,
-                                      backgroundColor: tintColor,
-                                      height: 44,
-                                      action: { dismiss(); viewModel.confirm() })
-                    .opacityReduced(viewModel.prefixError != nil)
+                    CapsuleTextButton(
+                        title: "Confirm",
+                        titleColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light)),
+                        backgroundColor: tintColor,
+                        disabled: viewModel.prefixError != nil,
+                        height: 44,
+                        action: { dismiss(); viewModel.confirm() })
                 }
                 .padding(.bottom)
             }

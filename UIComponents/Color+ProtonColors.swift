@@ -94,6 +94,10 @@ public extension UIColor {
         ColorProvider.SidebarTextWeak
     }
 
+    static var textDisabled: UIColor {
+        ColorProvider.TextDisabled
+    }
+
     static var textNorm: UIColor {
         ColorProvider.TextNorm
     }
@@ -174,6 +178,10 @@ public extension Color {
 
     static var sidebarTextWeak: Color {
         .init(uiColor: .sidebarTextWeak)
+    }
+
+    static var textDisabled: Color {
+        .init(uiColor: .textDisabled)
     }
 
     static var textNorm: Color {
