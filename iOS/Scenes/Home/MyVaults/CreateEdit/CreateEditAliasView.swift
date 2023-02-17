@@ -88,7 +88,8 @@ struct CreateEditAliasView: View {
                         aliasReadonlySection
                     } else {
                         aliasPreviewSection
-                        prefixSuffixSection
+                        PrefixSuffixSection(prefix: $viewModel.prefix,
+                                            suffixSelection: viewModel.suffixSelection)
                     }
                     mailboxesSection
 
@@ -173,84 +174,6 @@ struct CreateEditAliasView: View {
         .animation(.default, value: viewModel.prefixError)
         .padding(kItemDetailSectionPadding)
         .roundedDetailSection()
-    }
-
-    private var prefixSuffixSection: some View {
-        VStack(alignment: .leading, spacing: kItemDetailSectionPadding) {
-            prefixRow
-            Divider()
-            suffixRow
-        }
-        .padding(.vertical, kItemDetailSectionPadding)
-        .roundedEditableSection()
-    }
-
-    private var prefixRow: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Prefix")
-                        .sectionTitleText()
-                    TextField("Add a prefix", text: $viewModel.prefix)
-                        .keyboardType(.emailAddress)
-                        .textInputAutocapitalization(.never)
-                        .focused($isFocusedOnPrefix)
-                        .submitLabel(.done)
-                        .onSubmit { isFocusedOnNote.toggle() }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                if !viewModel.prefix.isEmpty {
-                    Button(action: {
-                        viewModel.prefix = ""
-                    }, label: {
-                        ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
-                    })
-                }
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, kItemDetailSectionPadding)
-        .animation(.default, value: viewModel.prefix.isEmpty)
-    }
-
-    @ViewBuilder
-    private var suffixRow: some View {
-        if let suffixes = viewModel.suffixSelection?.suffixes {
-            Menu(content: {
-                ForEach(suffixes, id: \.suffix) { suffix in
-                    Button(action: {
-                        viewModel.suffixSelection?.selectedSuffix = suffix
-                    }, label: {
-                        Label(title: {
-                            Text(suffix.suffix)
-                        }, icon: {
-                            if suffix.suffix == viewModel.suffixSelection?.selectedSuffix?.suffix {
-                                Image(systemName: "checkmark")
-                            }
-                        })
-                    })
-                }
-            }, label: {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("Suffix")
-                            .sectionTitleText()
-                        Text(viewModel.suffix)
-                            .sectionContentText()
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    Spacer()
-                    ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: .textWeak)
-                }
-                .padding(.horizontal, kItemDetailSectionPadding)
-                .transaction { transaction in
-                    transaction.animation = nil
-                }
-            })
-        } else {
-            EmptyView()
-        }
     }
 
     private var mailboxesSection: some View {
