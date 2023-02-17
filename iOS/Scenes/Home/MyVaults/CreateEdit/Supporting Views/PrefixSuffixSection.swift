@@ -85,7 +85,7 @@ struct PrefixSuffixSection: View {
             }
         }, label: {
             HStack {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                     Text("Suffix")
                         .sectionTitleText()
                     Text(suffixSelection.selectedSuffixString)

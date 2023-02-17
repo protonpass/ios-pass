@@ -39,7 +39,7 @@ struct NoteEditSection: View {
                     Text(note)
                         .hidden()
                     TextEditorWithPlaceholder(text: $note,
-                                              isFocused: _isFocused,
+                                              isFocused: $isFocused,
                                               placeholder: "Add note")
                 }
                 .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)

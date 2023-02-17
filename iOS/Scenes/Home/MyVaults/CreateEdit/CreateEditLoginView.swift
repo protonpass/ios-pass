@@ -46,7 +46,7 @@ struct CreateEditLoginView: View {
             ScrollViewReader { value in
                 ScrollView {
                     VStack(spacing: 20) {
-                        CreateEditItemTitleSection(isFocused: _isFocusedOnTitle,
+                        CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
                                                    title: $viewModel.title,
                                                    onSubmit: { isFocusedOnUsername.toggle() })
                         usernamePasswordTOTPSection
@@ -88,6 +88,7 @@ struct CreateEditLoginView: View {
             }
             .toolbar { keyboardToolbar }
         }
+        .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
         .tint(Color(uiColor: viewModel.itemContentType().tintColor))
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
@@ -116,6 +117,10 @@ struct CreateEditLoginView: View {
                 totpTextFieldToolbar
             } else if isFocusedOnPassword {
                 passwordTextFieldToolbar
+            } else {
+                if #unavailable(iOS 15) {
+                    Button("") {}
+                }
             }
         }
     }
