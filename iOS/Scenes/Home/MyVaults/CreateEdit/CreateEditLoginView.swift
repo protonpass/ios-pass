@@ -51,15 +51,8 @@ struct CreateEditLoginView: View {
                                                    onSubmit: { isFocusedOnUsername.toggle() })
                         usernamePasswordTOTPSection
                         WebsiteSection(viewModel: viewModel)
-                        NoteEditSection(
-                            isFocused: _isFocusedOnNote,
-                            note: $viewModel.note,
-                            onBeginEditing: {
-                                isFocusedOnTitle = false
-                                isFocusedOnUsername = false
-                                isFocusedOnPassword = false
-                            })
-                        .id(noteSectionId)
+                        NoteEditSection(isFocused: _isFocusedOnNote, note: $viewModel.note)
+                            .id(noteSectionId)
                         Spacer()
                     }
                     .padding()
@@ -229,13 +222,16 @@ struct CreateEditLoginView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Button(action: {
-                viewModel.username = ""
-            }, label: {
-                ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
-            })
+            if !viewModel.username.isEmpty {
+                Button(action: {
+                    viewModel.username = ""
+                }, label: {
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                })
+            }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: viewModel.username.isEmpty)
     }
 
     private var passwordRow: some View {
@@ -253,13 +249,16 @@ struct CreateEditLoginView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Button(action: {
-                viewModel.password = ""
-            }, label: {
-                ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
-            })
+            if !viewModel.password.isEmpty {
+                Button(action: {
+                    viewModel.password = ""
+                }, label: {
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                })
+            }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: viewModel.password.isEmpty)
     }
 
     private var totpRow: some View {

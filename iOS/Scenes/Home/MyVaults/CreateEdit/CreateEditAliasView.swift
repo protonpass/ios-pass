@@ -92,14 +92,8 @@ struct CreateEditAliasView: View {
                     }
                     mailboxesSection
 
-                    NoteEditSection(
-                        isFocused: _isFocusedOnNote,
-                        note: $viewModel.note,
-                        onBeginEditing: {
-                            isFocusedOnTitle = false
-                            isFocusedOnPrefix = false
-                        })
-                    .id(noteSectionId)
+                    NoteEditSection(isFocused: _isFocusedOnNote, note: $viewModel.note)
+                        .id(noteSectionId)
                 }
                 .padding()
             }
@@ -158,7 +152,7 @@ struct CreateEditAliasView: View {
 
                 if let prefixError = viewModel.prefixError {
                     Text(prefixError.localizedDescription)
-                        .font(.caption)
+                        .font(.callout)
                         .foregroundColor(.red)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
@@ -168,7 +162,8 @@ struct CreateEditAliasView: View {
                         Text(viewModel.suffix)
                             .foregroundColor(Color(uiColor: tintColor))
                     } else {
-                        Text(viewModel.prefix + viewModel.suffix)
+                        Text(viewModel.prefix) +
+                        Text(viewModel.suffix)
                             .foregroundColor(Color(uiColor: tintColor))
                     }
                 }
@@ -192,17 +187,31 @@ struct CreateEditAliasView: View {
 
     private var prefixRow: some View {
         VStack(alignment: .leading) {
-            Text("Prefix")
-                .sectionTitleText()
-            TextField("Add a prefix", text: $viewModel.prefix)
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-                .focused($isFocusedOnPrefix)
-                .submitLabel(.done)
-                .onSubmit { isFocusedOnNote.toggle() }
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("Prefix")
+                        .sectionTitleText()
+                    TextField("Add a prefix", text: $viewModel.prefix)
+                        .keyboardType(.emailAddress)
+                        .textInputAutocapitalization(.never)
+                        .focused($isFocusedOnPrefix)
+                        .submitLabel(.done)
+                        .onSubmit { isFocusedOnNote.toggle() }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                if !viewModel.prefix.isEmpty {
+                    Button(action: {
+                        viewModel.prefix = ""
+                    }, label: {
+                        ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    })
+                }
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: viewModel.prefix.isEmpty)
     }
 
     @ViewBuilder
@@ -232,8 +241,7 @@ struct CreateEditAliasView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
-                    ItemDetailSectionIcon(icon: IconProvider.chevronDown,
-                                          color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: .textWeak)
                 }
                 .padding(.horizontal, kItemDetailSectionPadding)
                 .transaction { transaction in
