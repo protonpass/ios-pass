@@ -375,6 +375,11 @@
 		3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */; };
 		35992151299F7C3800FEFA32 /* CapsuleLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD4A298D0CA400E2A0EE /* CapsuleLabelButton.swift */; };
 		35992153299F8C3F00FEFA32 /* PrefixSuffixSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */; };
+		35992155299F910500FEFA32 /* MailboxSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992154299F910500FEFA32 /* MailboxSection.swift */; };
+		35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */; };
+		35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992154299F910500FEFA32 /* MailboxSection.swift */; };
+		35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */; };
+		3599215A299FA90C00FEFA32 /* PrefixSuffixSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */; };
 		359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A800C29096A2200EEBC51 /* SyncEventLoop.swift */; };
 		35A5EEE02958B60200A09623 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEDF2958B60200A09623 /* Browser.swift */; };
 		35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEE12958CDBC00A09623 /* UrlOpener.swift */; };
@@ -954,6 +959,8 @@
 		3593DD1228A8415300C235D3 /* PersistentContainerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainerBuilder.swift; sourceTree = "<group>"; };
 		3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasource.swift; sourceTree = "<group>"; };
 		35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefixSuffixSection.swift; sourceTree = "<group>"; };
+		35992154299F910500FEFA32 /* MailboxSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSection.swift; sourceTree = "<group>"; };
+		35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSelectionView.swift; sourceTree = "<group>"; };
 		359A800C29096A2200EEBC51 /* SyncEventLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEventLoop.swift; sourceTree = "<group>"; };
 		35A5EEDF2958B60200A09623 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
 		35A5EEE12958CDBC00A09623 /* UrlOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlOpener.swift; sourceTree = "<group>"; };
@@ -1691,6 +1698,8 @@
 			children = (
 				3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */,
 				3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */,
+				35992154299F910500FEFA32 /* MailboxSection.swift */,
+				35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */,
 				350AF86D299683940045B7B6 /* NoteEditSection.swift */,
 				35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */,
 			);
@@ -3120,6 +3129,7 @@
 				3572E51C2993AC1700775FAC /* PPError.swift in Sources */,
 				355BDED8299E6F9C009FDBB1 /* CreateAliasLiteView.swift in Sources */,
 				35492E3D293E06C900BDE231 /* CreateEditLoginViewModel.swift in Sources */,
+				3599215A299FA90C00FEFA32 /* PrefixSuffixSection.swift in Sources */,
 				3565FD59298D423A00E2A0EE /* TOTPText.swift in Sources */,
 				35699B97298125FA006CB225 /* ClipboardManager.swift in Sources */,
 				3562BC30299542D6003FCB13 /* ItemContent+UIRelatedProperties.swift in Sources */,
@@ -3128,6 +3138,7 @@
 				3553C22D296575560087518A /* LoggerManager+Initializer.swift in Sources */,
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
+				35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */,
 				3520F36928E32DCF0053A606 /* ProtonPass.xcdatamodeld in Sources */,
 				355BDED7299E6EE4009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
@@ -3141,6 +3152,7 @@
 				3520F36828E327420053A606 /* ItemListUiModel.swift in Sources */,
 				355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */,
 				355751F62907FB9000268116 /* AppLockedView.swift in Sources */,
+				35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
 				3565FD58298D423800E2A0EE /* TOTPCircularTimer.swift in Sources */,
 			);
@@ -3238,11 +3250,13 @@
 				356B697E294A31F400868771 /* DevPreviewsViewModel.swift in Sources */,
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
 				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
+				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
 				3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */,
 				3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */,
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
 				357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */,
 				355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */,
+				35992155299F910500FEFA32 /* MailboxSection.swift in Sources */,
 				35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */,
 				355BDED6299E6515009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */,

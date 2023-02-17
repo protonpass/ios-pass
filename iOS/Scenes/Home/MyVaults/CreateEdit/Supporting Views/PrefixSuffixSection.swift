@@ -25,7 +25,7 @@ import UIComponents
 struct PrefixSuffixSection: View {
     @Binding var prefix: String
     @FocusState var isFocusedOnPrefix: Bool
-    let suffixSelection: SuffixSelection?
+    let suffixSelection: SuffixSelection
     var onSubmit: ((() -> Void))?
 
     var body: some View {
@@ -69,40 +69,36 @@ struct PrefixSuffixSection: View {
 
     @ViewBuilder
     private var suffixRow: some View {
-        if let suffixes = suffixSelection?.suffixes {
-            Menu(content: {
-                ForEach(suffixes, id: \.suffix) { suffix in
-                    Button(action: {
-                        suffixSelection?.selectedSuffix = suffix
-                    }, label: {
-                        Label(title: {
-                            Text(suffix.suffix)
-                        }, icon: {
-                            if suffix.suffix == suffixSelection?.selectedSuffix?.suffix {
-                                Image(systemName: "checkmark")
-                            }
-                        })
+        Menu(content: {
+            ForEach(suffixSelection.suffixes, id: \.suffix) { suffix in
+                Button(action: {
+                    suffixSelection.selectedSuffix = suffix
+                }, label: {
+                    Label(title: {
+                        Text(suffix.suffix)
+                    }, icon: {
+                        if suffix.suffix == suffixSelection.selectedSuffix?.suffix {
+                            Image(systemName: "checkmark")
+                        }
                     })
+                })
+            }
+        }, label: {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("Suffix")
+                        .sectionTitleText()
+                    Text(suffixSelection.selectedSuffixString)
+                        .sectionContentText()
                 }
-            }, label: {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("Suffix")
-                            .sectionTitleText()
-                        Text(suffixSelection?.selectedSuffix?.suffix ?? "")
-                            .sectionContentText()
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    Spacer()
-                    ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: .textWeak)
-                }
-                .padding(.horizontal, kItemDetailSectionPadding)
-                .transaction { transaction in
-                    transaction.animation = nil
-                }
-            })
-        } else {
-            EmptyView()
-        }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                Spacer()
+                ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: .textWeak)
+            }
+            .padding(.horizontal, kItemDetailSectionPadding)
+            .transaction { transaction in
+                transaction.animation = nil
+            }
+        })
     }
 }

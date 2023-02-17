@@ -88,10 +88,16 @@ struct CreateEditAliasView: View {
                         aliasReadonlySection
                     } else {
                         aliasPreviewSection
-                        PrefixSuffixSection(prefix: $viewModel.prefix,
-                                            suffixSelection: viewModel.suffixSelection)
+                        if let suffixSelection = viewModel.suffixSelection {
+                            PrefixSuffixSection(prefix: $viewModel.prefix,
+                                                suffixSelection: suffixSelection)
+                        }
                     }
-                    mailboxesSection
+
+                    if let mailboxSelection = viewModel.mailboxSelection {
+                        MailboxSection(mailboxSelection: mailboxSelection)
+                            .onTapGesture(perform: viewModel.showMailboxSelection)
+                    }
 
                     NoteEditSection(isFocused: _isFocusedOnNote, note: $viewModel.note)
                         .id(noteSectionId)
@@ -174,84 +180,5 @@ struct CreateEditAliasView: View {
         .animation(.default, value: viewModel.prefixError)
         .padding(kItemDetailSectionPadding)
         .roundedDetailSection()
-    }
-
-    private var mailboxesSection: some View {
-        HStack {
-            ItemDetailSectionIcon(icon: IconProvider.forward, color: .textWeak)
-
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Forwarded to")
-                    .sectionTitleText()
-                Text(viewModel.mailboxes)
-                    .sectionContentText()
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: .textWeak)
-        }
-        .padding(kItemDetailSectionPadding)
-        .roundedEditableSection()
-        .contentShape(Rectangle())
-        .onTapGesture(perform: viewModel.showMailboxSelection)
-    }
-}
-
-struct MailboxesView: View {
-    @Environment(\.dismiss) private var dismiss
-    @ObservedObject var mailboxSelection: MailboxSelection
-    let mode: Mode
-
-    enum Mode {
-        case createEditAlias
-        case createAliasLite
-
-        var tintColor: Color {
-            switch self {
-            case .createEditAlias:
-                return Color(uiColor: ItemContentType.alias.tintColor)
-            case .createAliasLite:
-                return Color(uiColor: ItemContentType.login.tintColor)
-            }
-        }
-    }
-
-    var body: some View {
-        NavigationView {
-            List {
-                ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
-                    HStack {
-                        Text(mailbox.email)
-                            .foregroundColor(isSelected(mailbox) ? mode.tintColor : .textNorm)
-                        Spacer()
-
-                        if isSelected(mailbox) {
-                            Image(uiImage: IconProvider.checkmark)
-                                .foregroundColor(mode.tintColor)
-                        }
-                    }
-                    .contentShape(Rectangle())
-                    .listRowSeparator(.hidden)
-                    .onTapGesture {
-                        mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
-                    }
-                }
-            }
-            .listStyle(.plain)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    VStack {
-                        NotchView()
-                        Text("Forward to")
-                            .navigationTitleText()
-                    }
-                }
-            }
-        }
-    }
-
-    private func isSelected(_ mailbox: Mailbox) -> Bool {
-        mailboxSelection.selectedMailboxes.contains(mailbox)
     }
 }

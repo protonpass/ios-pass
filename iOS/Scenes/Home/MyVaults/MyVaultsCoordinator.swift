@@ -196,8 +196,9 @@ final class MyVaultsCoordinator: Coordinator {
         present(viewController)
     }
 
-    private func showMailboxesView(mailboxSelection: MailboxSelection, mode: MailboxesView.Mode) {
-        let view = MailboxesView(mailboxSelection: mailboxSelection, mode: mode)
+    private func showMailboxSelectionView(_ mailboxSelection: MailboxSelection,
+                                          mode: MailboxSelectionView.Mode) {
+        let view = MailboxSelectionView(mailboxSelection: mailboxSelection, mode: mode)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         present(viewController, animated: true, dismissible: true)
@@ -486,7 +487,7 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
 // MARK: - CreateEditAliasViewModelDelegate
 extension MyVaultsCoordinator: CreateEditAliasViewModelDelegate {
     func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        showMailboxesView(mailboxSelection: mailboxSelection, mode: .createEditAlias)
+        showMailboxSelectionView(mailboxSelection, mode: .createEditAlias)
     }
 
     func createEditAliasViewModelCanNotCreateMoreAliases() {
@@ -629,6 +630,6 @@ extension MyVaultsCoordinator: VaultListViewModelDelegate {
 // MARK: - CreateAliasLiteViewModelDelegate
 extension MyVaultsCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        showMailboxesView(mailboxSelection: mailboxSelection, mode: .createAliasLite)
+        showMailboxSelectionView(mailboxSelection, mode: .createAliasLite)
     }
 }

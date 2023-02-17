@@ -42,10 +42,12 @@ struct CreateAliasLiteView: View {
                             .padding(.vertical, 30)
 
                         if isShowingAdvancedOptions {
-                            prefixSuffixSection
+                            PrefixSuffixSection(prefix: $viewModel.prefix,
+                                                suffixSelection: viewModel.suffixSelection)
                         }
 
-                        mailboxesSection
+                        MailboxSection(mailboxSelection: viewModel.mailboxSelection)
+                            .onTapGesture(perform: viewModel.showMailboxSelection)
 
                         if !isShowingAdvancedOptions {
                             advancedOptionsSection
@@ -125,83 +127,5 @@ struct CreateAliasLiteView: View {
             .foregroundColor(.textWeak)
             .frame(maxWidth: .infinity, alignment: .trailing)
         })
-    }
-
-    private var prefixSuffixSection: some View {
-        VStack(alignment: .leading, spacing: kItemDetailSectionPadding) {
-            prefixRow
-            Divider()
-            suffixRow
-        }
-        .padding(.vertical, kItemDetailSectionPadding)
-        .roundedEditableSection()
-    }
-
-    private var prefixRow: some View {
-        VStack(alignment: .leading) {
-            Text("Prefix")
-                .sectionTitleText()
-            TextField("Add a prefix", text: $viewModel.prefix)
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-                .submitLabel(.done)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, kItemDetailSectionPadding)
-    }
-
-    private var suffixRow: some View {
-        Menu(content: {
-            ForEach(viewModel.suffixSelection.suffixes, id: \.suffix) { suffix in
-                Button(action: {
-                    viewModel.suffixSelection.selectedSuffix = suffix
-                }, label: {
-                    Label(title: {
-                        Text(suffix.suffix)
-                    }, icon: {
-                        if suffix.suffix == viewModel.suffixSelection.selectedSuffix?.suffix {
-                            Image(systemName: "checkmark")
-                        }
-                    })
-                })
-            }
-        }, label: {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Suffix")
-                        .sectionTitleText()
-                    Text(viewModel.suffixSelection.selectedSuffix?.suffix ?? "")
-                        .sectionContentText()
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                Spacer()
-                ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: .textWeak)
-            }
-            .padding(.horizontal, kItemDetailSectionPadding)
-            .transaction { transaction in
-                transaction.animation = nil
-            }
-        })
-    }
-
-    private var mailboxesSection: some View {
-        HStack {
-            ItemDetailSectionIcon(icon: IconProvider.forward, color: .textWeak)
-
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Forwarded to")
-                    .sectionTitleText()
-                Text(viewModel.mailboxes)
-                    .sectionContentText()
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            ItemDetailSectionIcon(icon: IconProvider.chevronDown,
-                                  color: .textWeak)
-        }
-        .padding(kItemDetailSectionPadding)
-        .roundedEditableSection()
-        .contentShape(Rectangle())
-        .onTapGesture(perform: viewModel.showMailboxSelection)
     }
 }
