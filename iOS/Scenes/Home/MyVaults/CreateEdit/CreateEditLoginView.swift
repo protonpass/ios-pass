@@ -111,15 +111,27 @@ struct CreateEditLoginView: View {
     @ToolbarContentBuilder
     private var keyboardToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
-            if isFocusedOnUsername {
-                usernameTextFieldToolbar
-            } else if isFocusedOnTOTP {
-                totpTextFieldToolbar
-            } else if isFocusedOnPassword {
-                passwordTextFieldToolbar
+            if #available(iOS 16, *) {
+                if isFocusedOnUsername {
+                    usernameTextFieldToolbar
+                } else if isFocusedOnTOTP {
+                    totpTextFieldToolbar
+                } else if isFocusedOnPassword {
+                    passwordTextFieldToolbar
+                }
             } else {
-                if #unavailable(iOS 15) {
-                    Button("") {}
+                // Embed in a ZStack otherwise toolbars are rendered
+                // randomly in iOS 15
+                ZStack {
+                    if isFocusedOnUsername {
+                        usernameTextFieldToolbar
+                    } else if isFocusedOnTOTP {
+                        totpTextFieldToolbar
+                    } else if isFocusedOnPassword {
+                        passwordTextFieldToolbar
+                    } else {
+                        Button("") {}
+                    }
                 }
             }
         }
