@@ -23,68 +23,39 @@ import SwiftUI
 import UIComponents
 
 struct NoteEditSection: View {
-    @FocusState private var isFocused: Bool
-    @State private var isShowingTextEditor: Bool
+    @FocusState var isFocused: Bool
     @Binding var note: String
-    let onBeginEditing: () -> Void
-
-    init(isFocused: FocusState<Bool>,
-         note: Binding<String>,
-         onBeginEditing: @escaping () -> Void) {
-        self._isFocused = isFocused
-        self._note = note
-        self._isShowingTextEditor = .init(initialValue: !note.wrappedValue.isEmpty)
-        self.onBeginEditing = onBeginEditing
-    }
 
     var body: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.note,
-                                  color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.note, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Note")
                     .sectionTitleText()
 
-                if isShowingTextEditor {
-                    ZStack(alignment: .topLeading) {
-                        // Hacky way to make TextEditor grows in height gradually
-                        Text(note)
-                            .hidden()
-                        if #available(iOS 16.0, *) {
-                            TextEditor(text: $note)
-                                .focused($isFocused)
-                                .scrollContentBackground(.hidden)
-                        } else {
-                            TextEditor(text: $note)
-                                .focused($isFocused)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)
-                } else {
-                    Button(action: {
-                        onBeginEditing()
-                        isShowingTextEditor.toggle()
-                        isFocused = true
-                    }, label: {
-                        Label("Add", systemImage: "plus")
-                    })
+                ZStack(alignment: .topLeading) {
+                    // Hacky way to make TextEditor grows in height gradually
+                    Text(note)
+                        .hidden()
+                    TextEditorWithPlaceholder(text: $note,
+                                              isFocused: _isFocused,
+                                              placeholder: "Add note")
                 }
+                .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if isShowingTextEditor {
+            if !note.isEmpty {
                 Button(action: {
                     note = ""
-                    isShowingTextEditor.toggle()
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross,
-                                          color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
                 })
             }
         }
         .padding(kItemDetailSectionPadding)
         .roundedEditableSection()
-        .animation(.default, value: isShowingTextEditor)
+        .animation(.default, value: note.isEmpty)
     }
 }

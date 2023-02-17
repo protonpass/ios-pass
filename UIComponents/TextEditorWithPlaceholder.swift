@@ -37,8 +37,16 @@ public struct TextEditorWithPlaceholder: View {
 
     public var body: some View {
         ZStack {
-            TextEditor(text: $text)
-                .focused($isFocused)
+            if #available(iOS 16.0, *) {
+                TextEditor(text: $text)
+                    .focused($isFocused)
+                    .scrollContentBackground(.hidden)
+                    .offset(x: -4)
+            } else {
+                TextEditor(text: $text)
+                    .focused($isFocused)
+                    .offset(x: -4)
+            }
 
             if isShowingPlaceholder {
                 TextField(placeholder, text: .constant("")) { changed in
@@ -49,9 +57,11 @@ public struct TextEditorWithPlaceholder: View {
                 }
             }
         }
-        .animation(.default, value: isShowingPlaceholder)
-        .onChange(of: isFocused) { isFocused in
-            isShowingPlaceholder = !isFocused && text.isEmpty
+        .onChange(of: isFocused) { _ in
+            isShowingPlaceholder = text.isEmpty
+        }
+        .onChange(of: text) { text in
+            isShowingPlaceholder = text.isEmpty
         }
     }
 }

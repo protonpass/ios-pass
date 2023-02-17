@@ -53,5 +53,6 @@ public struct CapsuleTextButton: View {
                 .background(Color(uiColor: backgroundColor).opacity(disabled ? 0.08 : 1))
                 .clipShape(Capsule())
         }
+        .animation(.default, value: disabled)
     }
 }

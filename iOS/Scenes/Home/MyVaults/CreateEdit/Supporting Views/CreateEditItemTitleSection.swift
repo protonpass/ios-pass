@@ -40,14 +40,16 @@ struct CreateEditItemTitleSection: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Button(action: {
-                title = ""
-            }, label: {
-                ItemDetailSectionIcon(icon: IconProvider.cross,
-                                      color: .textWeak)
-            })
+            if !title.isEmpty {
+                Button(action: {
+                    title = ""
+                }, label: {
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                })
+            }
         }
         .padding(kItemDetailSectionPadding)
         .roundedEditableSection()
+        .animation(.default, value: title.isEmpty)
     }
 }
