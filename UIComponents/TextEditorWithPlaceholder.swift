@@ -22,29 +22,29 @@ import SwiftUI
 
 public struct TextEditorWithPlaceholder: View {
     @State private var isShowingPlaceholder: Bool
-    @FocusState var isFocused: Bool
+    var isFocused: FocusState<Bool>.Binding
     @Binding var text: String
     let placeholder: String
 
     public init(text: Binding<String>,
-                isFocused: FocusState<Bool>,
+                isFocused: FocusState<Bool>.Binding,
                 placeholder: String) {
         self._isShowingPlaceholder = .init(initialValue: text.wrappedValue.isEmpty)
         self._text = text
-        self._isFocused = isFocused
+        self.isFocused = isFocused
         self.placeholder = placeholder
     }
 
     public var body: some View {
-        ZStack {
+        ZStack(alignment: .topLeading) {
             if #available(iOS 16.0, *) {
                 TextEditor(text: $text)
-                    .focused($isFocused)
+                    .focused(isFocused)
                     .scrollContentBackground(.hidden)
                     .offset(x: -4)
             } else {
                 TextEditor(text: $text)
-                    .focused($isFocused)
+                    .focused(isFocused)
                     .offset(x: -4)
             }
 
@@ -52,12 +52,12 @@ public struct TextEditorWithPlaceholder: View {
                 TextField(placeholder, text: .constant("")) { changed in
                     if changed {
                         isShowingPlaceholder = false
-                        isFocused = true
+                        isFocused.wrappedValue = true
                     }
                 }
             }
         }
-        .onChange(of: isFocused) { _ in
+        .onChange(of: isFocused.wrappedValue) { _ in
             isShowingPlaceholder = text.isEmpty
         }
         .onChange(of: text) { text in

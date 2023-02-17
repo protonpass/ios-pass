@@ -23,7 +23,7 @@ import SwiftUI
 import UIComponents
 
 struct CreateEditItemTitleSection: View {
-    @FocusState var isFocused: Bool
+    var isFocused: FocusState<Bool>.Binding
     @Binding var title: String
     var onSubmit: (() -> Void)?
 
@@ -34,7 +34,7 @@ struct CreateEditItemTitleSection: View {
                     .sectionTitleText()
                 TextField("Untitled", text: $title)
                     .font(.title.weight(.bold))
-                    .focused($isFocused)
+                    .focused(isFocused)
                     .submitLabel(.next)
                     .onSubmit { onSubmit?() }
             }

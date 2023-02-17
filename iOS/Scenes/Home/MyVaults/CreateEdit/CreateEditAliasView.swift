@@ -75,7 +75,7 @@ struct CreateEditAliasView: View {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 8) {
-                    CreateEditItemTitleSection(isFocused: _isFocusedOnTitle,
+                    CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
                                                title: $viewModel.title) {
                         if case .create = viewModel.mode {
                             isFocusedOnPrefix.toggle()
@@ -108,6 +108,7 @@ struct CreateEditAliasView: View {
                 value.scrollTo(noteSectionId, anchor: .bottom)
             }
         }
+        .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
         .tint(Color(uiColor: tintColor))
         .onFirstAppear {
             if case .create = viewModel.mode {

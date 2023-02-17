@@ -36,7 +36,7 @@ struct CreateAliasLiteView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 8) {
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     VStack(spacing: 8) {
                         aliasAddressSection
                             .padding(.vertical, 30)
@@ -60,7 +60,7 @@ struct CreateAliasLiteView: View {
                     .animation(.default, value: isShowingAdvancedOptions)
                 }
 
-                HStack {
+                HStack(spacing: 16) {
                     CapsuleTextButton(title: "Cancel",
                                       titleColor: .textWeak,
                                       backgroundColor: .white.withAlphaComponent(0.08),
@@ -76,11 +76,12 @@ struct CreateAliasLiteView: View {
                         height: 44,
                         action: { dismiss(); viewModel.confirm() })
                 }
-                .padding(.bottom)
+                .padding([.horizontal, .bottom])
             }
             .padding(.horizontal)
             .tint(Color(uiColor: tintColor))
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarHidden(false)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     VStack {

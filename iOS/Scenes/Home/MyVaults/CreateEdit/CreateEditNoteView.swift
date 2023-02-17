@@ -27,6 +27,7 @@ struct CreateEditNoteView: View {
     @StateObject private var viewModel: CreateEditNoteViewModel
     @FocusState private var isFocusedOnTitle: Bool
     @FocusState private var isFocusedOnContent: Bool
+    @State private var noteId = UUID().uuidString
     @State private var isShowingDiscardAlert = false
 
     init(viewModel: CreateEditNoteViewModel) {
@@ -38,7 +39,7 @@ struct CreateEditNoteView: View {
             ScrollView {
                 VStack {
                     TextEditorWithPlaceholder(text: $viewModel.name,
-                                              isFocused: _isFocusedOnTitle,
+                                              isFocused: $isFocusedOnTitle,
                                               placeholder: "Untitled")
                     .font(.title.weight(.bold))
                     .focused($isFocusedOnTitle)
@@ -52,12 +53,17 @@ struct CreateEditNoteView: View {
                     }
 
                     TextEditorWithPlaceholder(text: $viewModel.note,
-                                              isFocused: _isFocusedOnContent,
+                                              isFocused: $isFocusedOnContent,
                                               placeholder: "Tap here to continue")
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxHeight: .infinity)
+                    .id(noteId)
                 }
+                .frame(maxHeight: .infinity)
                 .padding()
             }
-            .accentColor(Color(uiColor: viewModel.itemContentType().tintColor))
+            .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
+            .tint(Color(uiColor: viewModel.itemContentType().tintColor))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 CreateEditItemToolbar(
