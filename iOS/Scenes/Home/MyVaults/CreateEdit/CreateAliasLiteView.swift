@@ -24,7 +24,6 @@ import SwiftUI
 import UIComponents
 
 struct CreateAliasLiteView: View {
-    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateAliasLiteViewModel
     @State private var isShowingAdvancedOptions = false
     let tintColor = ItemContentType.login.tintColor
@@ -65,7 +64,7 @@ struct CreateAliasLiteView: View {
                                   backgroundColor: .white.withAlphaComponent(0.08),
                                   disabled: false,
                                   height: 44,
-                                  action: dismiss.callAsFunction)
+                                  action: { viewModel.onDismiss?() })
 
                 CapsuleTextButton(
                     title: "Confirm",
@@ -73,7 +72,7 @@ struct CreateAliasLiteView: View {
                     backgroundColor: tintColor,
                     disabled: viewModel.prefixError != nil,
                     height: 44,
-                    action: { dismiss(); viewModel.confirm() })
+                    action: { viewModel.confirm(); viewModel.onDismiss?() })
             }
             .padding([.horizontal, .bottom])
         }

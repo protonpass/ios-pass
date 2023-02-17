@@ -194,6 +194,7 @@ final class MyVaultsCoordinator: Coordinator {
         let viewController = UIHostingController(rootView: view)
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.sheetPresentationController?.detents = [.medium()]
+        viewModel.onDismiss = { navigationController.dismiss(animated: true) }
         present(navigationController)
     }
 
