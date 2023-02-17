@@ -26,6 +26,7 @@ import UIComponents
 struct CreateAliasLiteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateAliasLiteViewModel
+    @State private var isShowingAdvancedOptions = false
     let tintColor = ItemContentType.login.tintColor
 
     init(viewModel: CreateAliasLiteViewModel) {
@@ -36,14 +37,25 @@ struct CreateAliasLiteView: View {
         NavigationView {
             VStack(spacing: 8) {
                 ScrollView {
-                    VStack {
+                    VStack(spacing: 8) {
                         aliasAddressSection
-                            .padding(.vertical)
-                        prefixSuffixSection
+                            .padding(.vertical, 30)
+
+                        if isShowingAdvancedOptions {
+                            prefixSuffixSection
+                        }
+
                         mailboxesSection
+
+                        if !isShowingAdvancedOptions {
+                            advancedOptionsSection
+                                .padding(.vertical)
+                        }
+
                         Spacer()
                     }
                     .animation(.default, value: viewModel.prefixError)
+                    .animation(.default, value: isShowingAdvancedOptions)
                 }
 
                 HStack {
@@ -95,6 +107,24 @@ struct CreateAliasLiteView: View {
                 .fontWeight(.medium)
                 .foregroundColor(Color(uiColor: tintColor))
         }
+    }
+
+    private var advancedOptionsSection: some View {
+        Button(action: {
+            isShowingAdvancedOptions.toggle()
+        }, label: {
+            Label(title: {
+                Text("Show advanced options")
+                    .font(.callout)
+            }, icon: {
+                Image(uiImage: IconProvider.cogWheel)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 16)
+            })
+            .foregroundColor(.textWeak)
+            .frame(maxWidth: .infinity, alignment: .trailing)
+        })
     }
 
     private var prefixSuffixSection: some View {
