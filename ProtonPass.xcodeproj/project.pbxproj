@@ -374,6 +374,7 @@
 		3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */; };
 		3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */; };
 		35992151299F7C3800FEFA32 /* CapsuleLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD4A298D0CA400E2A0EE /* CapsuleLabelButton.swift */; };
+		35992153299F8C3F00FEFA32 /* PrefixSuffixSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */; };
 		359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A800C29096A2200EEBC51 /* SyncEventLoop.swift */; };
 		35A5EEE02958B60200A09623 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEDF2958B60200A09623 /* Browser.swift */; };
 		35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEE12958CDBC00A09623 /* UrlOpener.swift */; };
@@ -952,6 +953,7 @@
 		3593DD0F28A83F7A00C235D3 /* ProtonPass.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProtonPass.xcdatamodel; sourceTree = "<group>"; };
 		3593DD1228A8415300C235D3 /* PersistentContainerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainerBuilder.swift; sourceTree = "<group>"; };
 		3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasource.swift; sourceTree = "<group>"; };
+		35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefixSuffixSection.swift; sourceTree = "<group>"; };
 		359A800C29096A2200EEBC51 /* SyncEventLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEventLoop.swift; sourceTree = "<group>"; };
 		35A5EEDF2958B60200A09623 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
 		35A5EEE12958CDBC00A09623 /* UrlOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlOpener.swift; sourceTree = "<group>"; };
@@ -1690,6 +1692,7 @@
 				3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */,
 				3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */,
 				350AF86D299683940045B7B6 /* NoteEditSection.swift */,
+				35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */,
 			);
 			path = "Supporting Views";
 			sourceTree = "<group>";
@@ -3253,6 +3256,7 @@
 				3554DAB5293A8F7D00595FC7 /* NoSearchResultsView.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
+				35992153299F8C3F00FEFA32 /* PrefixSuffixSection.swift in Sources */,
 				3565FD5D298D49B300E2A0EE /* NoteDetailSection.swift in Sources */,
 				3586F3B1295884B000738245 /* GeneralSettingsSection.swift in Sources */,
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
