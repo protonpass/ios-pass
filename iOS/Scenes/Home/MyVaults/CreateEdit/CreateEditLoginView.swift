@@ -108,19 +108,6 @@ struct CreateEditLoginView: View {
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
-        .alert(
-            "Delete alias?",
-            isPresented: $isShowingDeleteAliasAlert,
-            actions: {
-                Button(role: .destructive,
-                       action: viewModel.removeAlias,
-                       label: { Text("Yes, delete alias") })
-
-                Button(role: .cancel, label: { Text("Cancel") })
-            },
-            message: {
-                Text("The alias will be deleted permanently.")
-            })
     }
 
     @ToolbarContentBuilder
@@ -228,7 +215,11 @@ struct CreateEditLoginView: View {
 
     private var usernamePasswordTOTPSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
-            usernameRow
+            if viewModel.isAlias {
+                createdAliasRow
+            } else {
+                usernameRow
+            }
             Divider()
             passwordRow
             Divider()
@@ -264,6 +255,47 @@ struct CreateEditLoginView: View {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .animation(.default, value: viewModel.username.isEmpty)
+    }
+
+    private var createdAliasRow: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.alias, color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Username")
+                    .sectionTitleText()
+                Text(viewModel.username)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Menu(content: {
+                Button(
+                    role: .destructive,
+                    action: { isShowingDeleteAliasAlert.toggle() },
+                    label: {
+                        Label(title: { Text("Delete alias") }, icon: { Image(uiImage: IconProvider.trash) })
+                    })
+            }, label: {
+                CircleButton(icon: IconProvider.threeDotsVertical,
+                             color: viewModel.itemContentType().tintColor,
+                             action: {})
+            })
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: viewModel.username.isEmpty)
+        .alert(
+            "Delete alias?",
+            isPresented: $isShowingDeleteAliasAlert,
+            actions: {
+                Button(role: .destructive,
+                       action: viewModel.removeAlias,
+                       label: { Text("Yes, delete alias") })
+
+                Button(role: .cancel, label: { Text("Cancel") })
+            },
+            message: {
+                Text("The alias will be deleted permanently.")
+            })
     }
 
     private var passwordRow: some View {
