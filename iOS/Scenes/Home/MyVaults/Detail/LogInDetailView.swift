@@ -125,12 +125,13 @@ struct LogInDetailView: View {
                 Text("Password")
                     .sectionTitleText()
 
-                Text(isShowingPassword ? viewModel.password : String(repeating: "•", count: 20))
-                    .sectionContentText()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .transaction { transaction in
-                        transaction.animation = .default
-                    }
+                if isShowingPassword {
+                    Text(viewModel.password)
+                        .sectionContentText()
+                } else {
+                    Text(String(repeating: "•", count: 20))
+                        .sectionContentText()
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -147,7 +148,9 @@ struct LogInDetailView: View {
         .animation(.default, value: isShowingPassword)
         .contextMenu {
             Button(action: {
-                isShowingPassword.toggle()
+                withAnimation {
+                    isShowingPassword.toggle()
+                }
             }, label: {
                 Text(isShowingPassword ? "Conceal" : "Reveal")
             })
