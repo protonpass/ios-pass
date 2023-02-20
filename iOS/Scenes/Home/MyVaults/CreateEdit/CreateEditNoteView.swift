@@ -41,11 +41,11 @@ struct CreateEditNoteView: View {
                     LazyVStack {
                         TextEditorWithPlaceholder(text: $viewModel.name,
                                                   isFocused: $isFocusedOnTitle,
-                                                  placeholder: "Untitled")
+                                                  placeholder: "Untitled",
+                                                  submitLabel: .next)
                         .font(.title.weight(.bold))
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                         .fixedSize(horizontal: false, vertical: true)
-                        .submitLabel(.next)
 
                         TextEditorWithPlaceholder(text: $viewModel.note,
                                                   isFocused: $isFocusedOnContent,
@@ -97,7 +97,16 @@ struct CreateEditNoteView: View {
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .onFirstAppear {
-            isFocusedOnTitle = true
+            if #available(iOS 16, *) {
+                isFocusedOnTitle = true
+            } else {
+                // 0.5 second delay is purely heuristic.
+                // Values lower than 0.5 simply don't work.
+                // Can be removed once iOS 15 is dropped
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    isFocusedOnTitle = true
+                }
+            }
         }
     }
 }

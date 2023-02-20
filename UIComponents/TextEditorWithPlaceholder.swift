@@ -24,22 +24,35 @@ public struct TextEditorWithPlaceholder: View {
     @Binding var text: String
     var isFocused: FocusState<Bool>.Binding
     let placeholder: String
+    let submitLabel: SubmitLabel
 
     public init(text: Binding<String>,
                 isFocused: FocusState<Bool>.Binding,
-                placeholder: String) {
+                placeholder: String,
+                submitLabel: SubmitLabel = .return) {
         self._text = text
         self.isFocused = isFocused
         self.placeholder = placeholder
+        self.submitLabel = submitLabel
     }
 
     public var body: some View {
         if #available(iOS 16.0, *) {
             TextField(placeholder, text: $text, axis: .vertical)
                 .focused(isFocused)
+                .scrollContentBackground(.hidden)
+                .submitLabel(submitLabel)
         } else {
-            TextEditor(text: $text)
-                .focused(isFocused)
+            ZStack {
+                if text.isEmpty {
+                    TextField(placeholder, text: .constant(""))
+                }
+
+                TextEditor(text: $text)
+                    .focused(isFocused)
+                    .submitLabel(submitLabel)
+            }
+            .animation(.default, value: text.isEmpty)
         }
     }
 }
