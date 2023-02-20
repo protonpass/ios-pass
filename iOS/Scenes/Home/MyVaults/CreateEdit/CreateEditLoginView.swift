@@ -35,7 +35,7 @@ struct CreateEditLoginView: View {
     @State private var isShowingDiscardAlert = false
     @State private var isShowingDeleteAliasAlert = false
     @State private var isShowingScanner = false
-    @State private var noteSectionId = UUID().uuidString
+    @Namespace private var noteID
 
     init(viewModel: CreateEditLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -45,26 +45,41 @@ struct CreateEditLoginView: View {
         NavigationView {
             ScrollViewReader { value in
                 ScrollView {
-                    VStack(spacing: 20) {
+                    LazyVStack(spacing: 20) {
                         CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
                                                    title: $viewModel.title,
                                                    onSubmit: { isFocusedOnUsername.toggle() })
                         usernamePasswordTOTPSection
                         WebsiteSection(viewModel: viewModel)
-                        NoteEditSection(isFocused: _isFocusedOnNote, note: $viewModel.note)
-                            .id(noteSectionId)
+                        NoteEditSection(note: $viewModel.note, isFocused: $isFocusedOnNote)
+                            .id(noteID)
                         Spacer()
                     }
                     .padding()
                 }
+                .onChange(of: isFocusedOnNote) { isFocusedOnNote in
+                    if isFocusedOnNote {
+                        withAnimation {
+                            value.scrollTo(noteID, anchor: .bottom)
+                        }
+                    }
+                }
                 .onChange(of: viewModel.note) { _ in
-                    value.scrollTo(noteSectionId, anchor: .bottom)
+                    withAnimation {
+                        value.scrollTo(noteID, anchor: .bottom)
+                    }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
             .onFirstAppear {
                 if case .create = viewModel.mode {
-                    isFocusedOnTitle.toggle()
+                    if #available(iOS 16, *) {
+                        isFocusedOnTitle.toggle()
+                    } else {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                            isFocusedOnTitle.toggle()
+                        }
+                    }
                 }
             }
             .toolbar {

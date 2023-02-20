@@ -51,8 +51,11 @@ public struct TextEditorWithPlaceholder: View {
                 TextEditor(text: $text)
                     .focused(isFocused)
                     .submitLabel(submitLabel)
+                    .offset(x: -4)
             }
-            .animation(.default, value: text.isEmpty)
+            .transaction { transaction in
+                transaction.animation = nil
+            }
         }
     }
 }

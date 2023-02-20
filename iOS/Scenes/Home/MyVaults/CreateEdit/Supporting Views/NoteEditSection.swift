@@ -23,8 +23,8 @@ import SwiftUI
 import UIComponents
 
 struct NoteEditSection: View {
-    @FocusState var isFocused: Bool
     @Binding var note: String
+    let isFocused: FocusState<Bool>.Binding
 
     var body: some View {
         HStack {
@@ -34,14 +34,9 @@ struct NoteEditSection: View {
                 Text("Note")
                     .sectionTitleText()
 
-                ZStack(alignment: .topLeading) {
-                    // Hacky way to make TextEditor grows in height gradually
-                    Text(note)
-                        .hidden()
-                    TextEditorWithPlaceholder(text: $note,
-                                              isFocused: $isFocused,
-                                              placeholder: "Add note")
-                }
+                TextEditorWithPlaceholder(text: $note,
+                                          isFocused: isFocused,
+                                          placeholder: "Add note")
                 .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
