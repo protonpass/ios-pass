@@ -29,7 +29,7 @@ struct CreateEditAliasView: View {
     @FocusState private var isFocusedOnTitle: Bool
     @FocusState private var isFocusedOnPrefix: Bool
     @FocusState private var isFocusedOnNote: Bool
-    @State private var noteSectionId = UUID().uuidString
+    @Namespace private var noteID
     @State private var isShowingDiscardAlert = false
 
     private var tintColor: UIColor { viewModel.itemContentType().tintColor }
@@ -74,7 +74,7 @@ struct CreateEditAliasView: View {
     private var content: some View {
         ScrollViewReader { value in
             ScrollView {
-                VStack(spacing: 8) {
+                LazyVStack(spacing: 8) {
                     CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
                                                title: $viewModel.title) {
                         if case .create = viewModel.mode {
@@ -99,20 +99,35 @@ struct CreateEditAliasView: View {
                             .onTapGesture(perform: viewModel.showMailboxSelection)
                     }
 
-                    NoteEditSection(isFocused: _isFocusedOnNote, note: $viewModel.note)
-                        .id(noteSectionId)
+                    NoteEditSection(note: $viewModel.note, isFocused: $isFocusedOnNote)
+                        .id(noteID)
                 }
                 .padding()
             }
+            .onChange(of: isFocusedOnNote) { isFocusedOnNote in
+                if isFocusedOnNote {
+                    withAnimation {
+                        value.scrollTo(noteID, anchor: .bottom)
+                    }
+                }
+            }
             .onChange(of: viewModel.note) { _ in
-                value.scrollTo(noteSectionId, anchor: .bottom)
+                withAnimation {
+                    value.scrollTo(noteID, anchor: .bottom)
+                }
             }
         }
         .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
         .tint(Color(uiColor: tintColor))
         .onFirstAppear {
             if case .create = viewModel.mode {
-                isFocusedOnTitle.toggle()
+                if #available(iOS 16, *) {
+                    isFocusedOnTitle.toggle()
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                        isFocusedOnTitle.toggle()
+                    }
+                }
             }
         }
         .toolbar {
