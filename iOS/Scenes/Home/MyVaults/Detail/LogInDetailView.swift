@@ -26,7 +26,7 @@ import UIComponents
 struct LogInDetailView: View {
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
-    @State private var bottomId = UUID().uuidString
+    @Namespace private var bottomID
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -44,10 +44,11 @@ struct LogInDetailView: View {
                         .padding(.vertical, 8)
                     NoteDetailSection(itemContent: viewModel.itemContent)
 
-                    ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
-                                              onExpand: { withAnimation { value.scrollTo(bottomId) } })
+                    ItemDetailMoreInfoSection(
+                        itemContent: viewModel.itemContent,
+                        onExpand: { withAnimation { value.scrollTo(bottomID, anchor: .bottom) } })
                     .padding(.top, 24)
-                    .id(bottomId)
+                    .id(bottomID)
                 }
                 .padding()
             }
