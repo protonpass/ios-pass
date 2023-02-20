@@ -27,7 +27,7 @@ struct CreateEditNoteView: View {
     @StateObject private var viewModel: CreateEditNoteViewModel
     @FocusState private var isFocusedOnTitle: Bool
     @FocusState private var isFocusedOnContent: Bool
-    @State private var noteId = UUID().uuidString
+    @Namespace private var contentID
     @State private var isShowingDiscardAlert = false
 
     init(viewModel: CreateEditNoteViewModel) {
@@ -36,31 +36,43 @@ struct CreateEditNoteView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack {
-                    TextEditorWithPlaceholder(text: $viewModel.name,
-                                              isFocused: $isFocusedOnTitle,
-                                              placeholder: "Untitled")
-                    .font(.title.weight(.bold))
-                    .focused($isFocusedOnTitle)
-                    .submitLabel(.next)
-                    .onChange(of: viewModel.name) { name in
-                        // When users press enter, move the cursor to content
-                        if name.last == "\n" {
-                            viewModel.name.removeLast()
-                            isFocusedOnContent = true
-                        }
-                    }
+            ScrollViewReader { value in
+                ScrollView {
+                    LazyVStack {
+                        TextEditorWithPlaceholder(text: $viewModel.name,
+                                                  isFocused: $isFocusedOnTitle,
+                                                  placeholder: "Untitled")
+                        .font(.title.weight(.bold))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .submitLabel(.next)
 
-                    TextEditorWithPlaceholder(text: $viewModel.note,
-                                              isFocused: $isFocusedOnContent,
-                                              placeholder: "Tap here to continue")
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxHeight: .infinity)
-                    .id(noteId)
+                        TextEditorWithPlaceholder(text: $viewModel.note,
+                                                  isFocused: $isFocusedOnContent,
+                                                  placeholder: "Tap here to continue")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .id(contentID)
+
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .frame(maxHeight: .infinity)
-                .padding()
+                .onChange(of: viewModel.name) { name in
+                    // When users press enter, move the cursor to content
+                    if name.last == "\n" {
+                        viewModel.name.removeLast()
+                        isFocusedOnContent = true
+                    }
+                    withAnimation {
+                        value.scrollTo(contentID, anchor: .bottom)
+                    }
+                }
+                .onChange(of: viewModel.note) { _ in
+                    withAnimation {
+                        value.scrollTo(contentID, anchor: .bottom)
+                    }
+                }
             }
             .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
             .tint(Color(uiColor: viewModel.itemContentType().tintColor))

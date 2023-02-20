@@ -21,47 +21,25 @@
 import SwiftUI
 
 public struct TextEditorWithPlaceholder: View {
-    @State private var isShowingPlaceholder: Bool
-    var isFocused: FocusState<Bool>.Binding
     @Binding var text: String
+    var isFocused: FocusState<Bool>.Binding
     let placeholder: String
 
     public init(text: Binding<String>,
                 isFocused: FocusState<Bool>.Binding,
                 placeholder: String) {
-        self._isShowingPlaceholder = .init(initialValue: text.wrappedValue.isEmpty)
         self._text = text
         self.isFocused = isFocused
         self.placeholder = placeholder
     }
 
     public var body: some View {
-        ZStack(alignment: .topLeading) {
-            if #available(iOS 16.0, *) {
-                TextEditor(text: $text)
-                    .focused(isFocused)
-                    .scrollContentBackground(.hidden)
-                    .offset(x: -4)
-            } else {
-                TextEditor(text: $text)
-                    .focused(isFocused)
-                    .offset(x: -4)
-            }
-
-            if isShowingPlaceholder {
-                TextField(placeholder, text: .constant("")) { changed in
-                    if changed {
-                        isShowingPlaceholder = false
-                        isFocused.wrappedValue = true
-                    }
-                }
-            }
-        }
-        .onChange(of: isFocused.wrappedValue) { _ in
-            isShowingPlaceholder = text.isEmpty
-        }
-        .onChange(of: text) { text in
-            isShowingPlaceholder = text.isEmpty
+        if #available(iOS 16.0, *) {
+            TextField(placeholder, text: $text, axis: .vertical)
+                .focused(isFocused)
+        } else {
+            TextEditor(text: $text)
+                .focused(isFocused)
         }
     }
 }
