@@ -56,7 +56,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private var aliasItem: SymmetricallyEncryptedItem?
 
     private var aliasOptions: AliasOptions?
-    private var aliasCreationLiteInfo: AliasCreationLiteInfo?
+    private(set) var aliasCreationLiteInfo: AliasCreationLiteInfo?
 
     weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
