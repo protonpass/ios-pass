@@ -216,7 +216,11 @@ struct CreateEditLoginView: View {
     private var usernamePasswordTOTPSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
             if viewModel.isAlias {
-                createdAliasRow
+                if viewModel.aliasCreationLiteInfo != nil {
+                    pendingAliasRow
+                } else {
+                    createdAliasRow
+                }
             } else {
                 usernameRow
             }
@@ -296,6 +300,38 @@ struct CreateEditLoginView: View {
             message: {
                 Text("The alias will be deleted permanently.")
             })
+    }
+
+    private var pendingAliasRow: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.alias, color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Username")
+                    .sectionTitleText()
+                Text(viewModel.username)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Menu(content: {
+                Button(action: viewModel.generateAlias) {
+                    Label(title: { Text("Edit alias") }, icon: { Image(uiImage: IconProvider.penSquare) })
+                }
+
+                Button(
+                    role: .destructive,
+                    action: viewModel.removeAlias,
+                    label: {
+                        Label(title: { Text("Remove alias") }, icon: { Image(uiImage: IconProvider.trash) })
+                    })
+            }, label: {
+                CircleButton(icon: IconProvider.threeDotsVertical,
+                             color: viewModel.itemContentType().tintColor,
+                             action: {})
+            })
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: viewModel.username.isEmpty)
     }
 
     private var passwordRow: some View {
