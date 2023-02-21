@@ -151,14 +151,21 @@ struct CreateEditLoginView: View {
 
             Divider()
 
-            Button(action: viewModel.useRealEmailAddress) {
+            Button(action: {
+                viewModel.useRealEmailAddress()
+                if viewModel.password.isEmpty {
+                    isFocusedOnPassword = true
+                } else {
+                    isFocusedOnUsername = false
+                }
+            }, label: {
                 VStack {
                     Text("Use my email address")
                         .font(.callout)
                     Text(viewModel.emailAddress)
                         .font(.caption)
                 }
-            }
+            })
             .frame(maxWidth: .infinity, alignment: .center)
         }
         .transaction { transaction in
