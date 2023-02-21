@@ -263,6 +263,7 @@ final class MyVaultsCoordinator: Coordinator {
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
                                                  itemRepository: itemRepository,
                                                  logManager: logManager)
+            viewModel.logInDetailViewModelDelegate = self
             baseItemDetailViewModel = viewModel
             itemDetailView = LogInDetailView(viewModel: viewModel)
 
@@ -635,5 +636,12 @@ extension MyVaultsCoordinator: VaultListViewModelDelegate {
 extension MyVaultsCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
         showMailboxSelectionView(mailboxSelection, mode: .createAliasLite)
+    }
+}
+
+// MARK: - LogInDetailViewModelDelegate
+extension MyVaultsCoordinator: LogInDetailViewModelDelegate {
+    func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
+        showItemDetailView(itemContent)
     }
 }

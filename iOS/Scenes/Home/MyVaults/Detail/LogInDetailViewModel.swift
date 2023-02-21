@@ -25,6 +25,10 @@ import SwiftOTP
 import UIComponents
 import UIKit
 
+protocol LogInDetailViewModelDelegate: AnyObject {
+    func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent)
+}
+
 final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
@@ -34,8 +38,12 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     @Published private(set) var password = ""
     @Published private(set) var note = ""
     @Published private(set) var totpManager: TOTPManager
+    @Published private var aliasItem: SymmetricallyEncryptedItem?
+
+    var isAlias: Bool { aliasItem != nil }
 
     private var cancellables = Set<AnyCancellable>()
+    weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
 
     override init(itemContent: ItemContent,
                   itemRepository: ItemRepositoryProtocol,
@@ -44,11 +52,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
         super.init(itemContent: itemContent,
                    itemRepository: itemRepository,
                    logManager: logManager)
-        self.totpManager.objectWillChange
-            .sink { [weak self] _ in
-                self?.objectWillChange.send()
-            }
-            .store(in: &cancellables)
+        self.totpManager.attach(to: self, storeIn: &cancellables)
     }
 
     override func bindValues() {
@@ -59,6 +63,9 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
             self.password = data.password
             self.urls = data.urls
             totpManager.bind(uri: data.totpUri)
+            Task { @MainActor in
+                self.aliasItem = try await itemRepository.getAliasItem(email: data.username)
+            }
         } else {
             fatalError("Expecting login type")
         }
@@ -83,6 +90,17 @@ extension LogInDetailViewModel {
 
     func showLargePassword() {
         showLarge(password)
+    }
+
+    func showAliasDetail() {
+        guard let aliasItem else { return }
+        do {
+            let symmetricKey = itemRepository.symmetricKey
+            let itemContent = try aliasItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+            logInDetailViewModelDelegate?.logInDetailViewModelWantsToShowAliasDetail(itemContent)
+        } catch {
+            delegate?.itemDetailViewModelDidFail(error)
+        }
     }
 
     func openUrl(_ urlString: String) {
