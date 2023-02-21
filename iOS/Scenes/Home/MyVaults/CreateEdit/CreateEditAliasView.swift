@@ -30,6 +30,7 @@ struct CreateEditAliasView: View {
     @FocusState private var isFocusedOnPrefix: Bool
     @FocusState private var isFocusedOnNote: Bool
     @Namespace private var noteID
+    @State private var isShowingAdvancedOptions = false
     @State private var isShowingDiscardAlert = false
 
     private var tintColor: UIColor { viewModel.itemContentType().tintColor }
@@ -88,9 +89,11 @@ struct CreateEditAliasView: View {
                         aliasReadonlySection
                     } else {
                         aliasPreviewSection
-                        if let suffixSelection = viewModel.suffixSelection {
-                            PrefixSuffixSection(prefix: $viewModel.prefix,
-                                                suffixSelection: suffixSelection)
+                        if isShowingAdvancedOptions, let suffixSelection = viewModel.suffixSelection {
+                            PrefixSuffixSection(prefix: $viewModel.prefix, suffixSelection: suffixSelection)
+                        } else {
+                            AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
+                                .padding(.vertical)
                         }
                     }
 
@@ -103,6 +106,7 @@ struct CreateEditAliasView: View {
                         .id(noteID)
                 }
                 .padding()
+                .animation(.default, value: isShowingAdvancedOptions)
             }
             .onChange(of: isFocusedOnNote) { isFocusedOnNote in
                 if isFocusedOnNote {
@@ -166,8 +170,7 @@ struct CreateEditAliasView: View {
 
     private var aliasPreviewSection: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.alias,
-                                  color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.alias, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Alias preview")
@@ -179,16 +182,9 @@ struct CreateEditAliasView: View {
                         .foregroundColor(.red)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
-                    if viewModel.prefix.isEmpty {
-                        Text("prefix")
-                            .foregroundColor(.textWeak) +
-                        Text(viewModel.suffix)
-                            .foregroundColor(Color(uiColor: tintColor))
-                    } else {
-                        Text(viewModel.prefix) +
-                        Text(viewModel.suffix)
-                            .foregroundColor(Color(uiColor: tintColor))
-                    }
+                    Text(viewModel.prefix) +
+                    Text(viewModel.suffix)
+                        .foregroundColor(Color(uiColor: tintColor))
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
