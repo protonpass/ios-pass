@@ -1,6 +1,6 @@
 //
-// NoteEditSection.swift
-// Proton Pass - Created on 10/02/2023.
+// CreateEditItemTitleSection.swift
+// Proton Pass - Created on 13/02/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -22,28 +22,27 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct NoteEditSection: View {
-    @Binding var note: String
-    let isFocused: FocusState<Bool>.Binding
+struct CreateEditItemTitleSection: View {
+    var isFocused: FocusState<Bool>.Binding
+    @Binding var title: String
+    var onSubmit: (() -> Void)?
 
     var body: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.note, color: .textWeak)
-
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Note")
+                Text("Title")
                     .sectionTitleText()
-
-                TextEditorWithPlaceholder(text: $note,
-                                          isFocused: isFocused,
-                                          placeholder: "Add note")
-                .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)
+                TextField("Untitled", text: $title)
+                    .font(.title.weight(.bold))
+                    .focused(isFocused)
+                    .submitLabel(.next)
+                    .onSubmit { onSubmit?() }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !note.isEmpty {
+            if !title.isEmpty {
                 Button(action: {
-                    note = ""
+                    title = ""
                 }, label: {
                     ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
                 })
@@ -51,6 +50,6 @@ struct NoteEditSection: View {
         }
         .padding(kItemDetailSectionPadding)
         .roundedEditableSection()
-        .animation(.default, value: note.isEmpty)
+        .animation(.default, value: title.isEmpty)
     }
 }

@@ -25,48 +25,33 @@ import ProtonCore_Login
 import SwiftUI
 
 final class SuffixSelection: ObservableObject {
-    let suffixes: [Suffix]
     @Published var selectedSuffix: Suffix?
+    let suffixes: [Suffix]
+
+    var selectedSuffixString: String { selectedSuffix?.suffix ?? "" }
 
     init(suffixes: [Suffix]) {
         self.suffixes = suffixes
-    }
-
-    func selectDefaultSuffix() {
-        selectedSuffix = suffixes.first
+        self.selectedSuffix = suffixes.first
     }
 }
 
 final class MailboxSelection: ObservableObject {
-    @Published var selectedMailboxes: [Mailbox] = []
+    @Published var selectedMailboxes: [Mailbox]
     let mailboxes: [Mailbox]
+
+    var selectedMailboxesString: String {
+        selectedMailboxes.map { $0.email }.joined(separator: "\n")
+    }
 
     init(mailboxes: [Mailbox]) {
         self.mailboxes = mailboxes
-    }
-
-    func selectOrDeselect(mailbox: Mailbox) {
-        if selectedMailboxes.contains(mailbox) {
-            if selectedMailboxes.count == 1 { return }
-            selectedMailboxes.removeAll(where: { $0 == mailbox })
+        if let defaultMailbox = mailboxes.first {
+            self.selectedMailboxes = [defaultMailbox]
         } else {
-            selectedMailboxes.append(mailbox)
+            self.selectedMailboxes = []
         }
     }
-
-    func selectDefaultMailboxes(_ mailboxes: [String]) {
-        selectedMailboxes = self.mailboxes.filter { mailbox in
-            mailboxes.contains(where: { $0 == mailbox.email })
-        }
-
-        if selectedMailboxes.isEmpty, let firstMailbox = self.mailboxes.first {
-            selectedMailboxes = [firstMailbox]
-        }
-    }
-}
-
-protocol AliasCreationDelegate: AnyObject {
-    func aliasCreationInfo(_ info: AliasCreationInfo)
 }
 
 protocol CreateEditAliasViewModelDelegate: AnyObject {
@@ -79,10 +64,11 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     deinit { print(deinitMessage) }
 
     @Published var title = ""
-    @Published var prefix = ""
-    @Published var suffix = ""
-    @Published var mailboxes = ""
+    @Published var prefix = String.random(allowedCharacters: [.digit, .lowercase], length: 5)
     @Published var note = ""
+
+    var suffix: String { suffixSelection?.selectedSuffixString ?? "" }
+    var mailboxes: String { mailboxSelection?.selectedMailboxesString ?? "" }
 
     @Published private(set) var aliasEmail = ""
     @Published private(set) var state: State = .loading
@@ -113,7 +99,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var mailboxSelection: MailboxSelection?
     let aliasRepository: AliasRepositoryProtocol
 
-    private weak var aliasCreationDelegate: AliasCreationDelegate?
     weak var createEditAliasViewModelDelegate: CreateEditAliasViewModelDelegate?
 
     var isEmpty: Bool {
@@ -146,34 +131,12 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
         getAliasAndAliasOptions()
 
-        // We don't want false-positive when users first focus on prefix TextField
-        // So we drop the first 3 events because when TextField is focused,
-        // it make empty changes 3 times. Don't ask why.
         _prefix
             .projectedValue
-            .dropFirst(3)
             .sink { [unowned self] _ in
                 self.validatePrefix()
             }
             .store(in: &cancellables)
-    }
-
-    override func navigationBarTitle() -> String {
-        switch mode {
-        case .create:
-            return "New alias"
-        case .edit:
-            return "Edit alias"
-        }
-    }
-
-    override func bindValues() {
-        super.bindValues()
-        if case let .create(_, type) = mode,
-           case let .alias(delegate, title) = type {
-            self.aliasCreationDelegate = delegate
-            self.title = title
-        }
     }
 
     override func itemContentType() -> ItemContentType { .alias }
@@ -185,11 +148,9 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
         guard let selectedSuffix = suffixSelection?.selectedSuffix,
               let selectedMailboxes = mailboxSelection?.selectedMailboxes else { return nil }
-        return .init(title: title,
-                     prefix: prefix,
+        return .init(prefix: prefix,
                      suffix: selectedSuffix,
-                     mailboxIds: selectedMailboxes.map { $0.ID },
-                     note: note)
+                     mailboxIds: selectedMailboxes.map { $0.ID })
     }
 
     override func additionalEdit() async throws {
@@ -200,22 +161,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             _ = try await changeMailboxesTask(shareId: shareId,
                                               itemId: itemContent.item.itemID,
                                               mailboxIDs: mailboxIds).value
-        }
-    }
-
-    @MainActor
-    override func save() async {
-        // When in create login item context, we don't create alias item
-        // but passing alias creation info upstream to create login page.
-        // Alias item will be created alongside with login item.
-        if case let .create(_, type) = mode,
-           case let .alias(delegate, _) = type,
-           let delegate {
-            if let info = generateAliasCreationInfo() {
-                delegate.aliasCreationInfo(info)
-            }
-        } else {
-            await super.save()
         }
     }
 
@@ -246,26 +191,10 @@ extension CreateEditAliasViewModel {
                 }
 
                 let aliasOptions = try await getAliasOptionsTask(shareId: shareId).value
-
-                // Initialize SuffixSelection
                 suffixSelection = .init(suffixes: aliasOptions.suffixes)
-                suffixSelection?.$selectedSuffix
-                    .sink { [weak self] selectedSuffix in
-                        guard let self else { return }
-                        self.suffix = selectedSuffix?.suffix ?? ""
-                    }
-                    .store(in: &cancellables)
-                suffixSelection?.selectDefaultSuffix()
-
-                // Initialize MailboxSelection
+                suffixSelection?.attach(to: self, storeIn: &cancellables)
                 mailboxSelection = .init(mailboxes: aliasOptions.mailboxes)
-                mailboxSelection?.$selectedMailboxes
-                    .sink { [weak self] selectedMailboxes in
-                        guard let self else { return }
-                        self.mailboxes = selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
-                    }
-                    .store(in: &cancellables)
-                mailboxSelection?.selectDefaultMailboxes(alias?.mailboxes.map { $0.email } ?? [])
+                mailboxSelection?.attach(to: self, storeIn: &cancellables)
 
                 if !aliasOptions.canCreateAlias {
                     createEditAliasViewModelDelegate?.createEditAliasViewModelCanNotCreateMoreAliases()

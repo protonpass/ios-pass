@@ -56,6 +56,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     weak var delegate: GeneratePasswordViewModelDelegate?
+    var onDismiss: (() -> Void)?
 
     init(mode: GeneratePasswordViewMode) {
         self.mode = mode
@@ -66,10 +67,9 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
                 texts.removeAll()
                 newPassword.forEach { char in
                     var color = Color.primary
-                    if AllowedCharacter.digit.rawValue.contains(char) {
-                        color = .notificationError
-                    } else if AllowedCharacter.special.rawValue.contains(char) {
-                        color = .notificationSuccess
+                    if AllowedCharacter.digit.rawValue.contains(char) ||
+                        AllowedCharacter.special.rawValue.contains(char) {
+                        color = .brandNorm
                     }
                     texts.append(Text(String(char)).foregroundColor(color))
                 }

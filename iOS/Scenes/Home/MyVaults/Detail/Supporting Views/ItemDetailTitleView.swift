@@ -49,7 +49,7 @@ struct ItemDetailTitleView: View {
     var body: some View {
         HStack {
             ZStack {
-                Color(uiColor: color)
+                Color(uiColor: color.withAlphaComponent(0.24))
                     .clipShape(Circle())
 
                 switch icon {
@@ -58,11 +58,11 @@ struct ItemDetailTitleView: View {
                         .resizable()
                         .scaledToFit()
                         .padding()
-                        .foregroundColor(.black)
+                        .foregroundColor(Color(uiColor: color))
                 case .initials(let initials):
                     Text(initials.uppercased())
                         .fontWeight(.medium)
-                        .foregroundColor(Color(.systemBackground))
+                        .foregroundColor(Color(uiColor: color))
                 case .notApplicable:
                     EmptyView()
                 }

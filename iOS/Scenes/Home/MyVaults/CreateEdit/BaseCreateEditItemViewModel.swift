@@ -49,7 +49,7 @@ enum ItemMode {
 }
 
 enum ItemCreationType {
-    case alias(delegate: AliasCreationDelegate?, title: String)
+    case alias
     case login(title: String?, url: String?, autofill: Bool)
     case other
 
@@ -100,11 +100,6 @@ class BaseCreateEditItemViewModel {
     func bindValues() {}
 
     // swiftlint:disable:next unavailable_function
-    func navigationBarTitle() -> String {
-        fatalError("Must be overridden by subclasses")
-    }
-
-    // swiftlint:disable:next unavailable_function
     func itemContentType() -> ItemContentType {
         fatalError("Must be overridden by subclasses")
     }
@@ -112,6 +107,15 @@ class BaseCreateEditItemViewModel {
     // swiftlint:disable:next unavailable_function
     func generateItemContent() -> ItemContentProtobuf {
         fatalError("Must be overridden by subclasses")
+    }
+
+    func saveButtonTitle() -> String {
+        switch mode {
+        case .create:
+            return "Create"
+        case .edit:
+            return "Save"
+        }
     }
 
     func additionalCreate() async throws {}

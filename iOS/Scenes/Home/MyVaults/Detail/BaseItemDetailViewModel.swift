@@ -35,7 +35,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 }
 
 class BaseItemDetailViewModel {
-    private let itemRepository: ItemRepositoryProtocol
+    let itemRepository: ItemRepositoryProtocol
     private(set) var itemContent: ItemContent
     let logger: Logger
 

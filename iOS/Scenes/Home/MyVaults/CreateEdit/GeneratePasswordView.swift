@@ -23,7 +23,6 @@ import SwiftUI
 import UIComponents
 
 struct GeneratePasswordView: View {
-    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: GeneratePasswordViewModel
 
     init(viewModel: GeneratePasswordViewModel) {
@@ -31,13 +30,7 @@ struct GeneratePasswordView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            NotchView()
-                .padding(.top, 5)
-                .padding(.bottom, 7)
-
-            titleView
-
+        VStack {
             Text(viewModel.texts)
                 .font(.title3)
                 .fontWeight(.bold)
@@ -49,7 +42,6 @@ struct GeneratePasswordView: View {
                 }
 
             Divider()
-                .padding(.vertical, 24)
 
             HStack {
                 Text("\(Int(viewModel.length)) characters")
@@ -63,7 +55,8 @@ struct GeneratePasswordView: View {
                 .accentColor(.interactionNorm)
             }
             .padding(.horizontal)
-            .padding(.vertical, 12)
+
+            Divider()
 
             Toggle(isOn: $viewModel.hasSpecialCharacters) {
                 Text("Special characters")
@@ -71,53 +64,42 @@ struct GeneratePasswordView: View {
             .toggleStyle(SwitchToggleStyle.proton)
             .padding(.horizontal, 16)
 
-            Spacer()
+            Divider()
 
-            Button(action: {
-                viewModel.confirm()
-                if case .createLogin = viewModel.mode {
-                    dismiss()
-                }
-            }, label: {
-                Text(viewModel.mode.confirmTitle)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .contentShape(Rectangle())
-            })
-            .padding()
-            .background(Color.interactionNorm)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .padding()
-        }
-        .animation(.default, value: viewModel.password)
-    }
-
-    private var titleView: some View {
-        ZStack {
-            Text("Generate password")
-                .fontWeight(.bold)
             HStack {
-                Spacer()
-                Button(action: dismiss.callAsFunction) {
-                    ZStack {
-                        Color.secondary.opacity(0.5)
-                        Image(uiImage: IconProvider.cross)
-                            .foregroundColor(.secondary)
-                            .frame(width: 12, height: 12)
-                    }
-                    .clipShape(Circle())
-                    .frame(width: 30, height: 30)
+                CapsuleTextButton(title: "Cancel",
+                                  titleColor: .textWeak,
+                                  backgroundColor: .white.withAlphaComponent(0.08),
+                                  disabled: false,
+                                  height: 44,
+                                  action: { viewModel.onDismiss?() })
+
+                CapsuleTextButton(
+                    title: viewModel.mode.confirmTitle,
+                    titleColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light)),
+                    backgroundColor: .brandNorm,
+                    disabled: false,
+                    height: 44,
+                    action: {
+                        viewModel.confirm()
+                        if case .createLogin = viewModel.mode {
+                            viewModel.onDismiss?()
+                        }
+                    })
+            }
+            .padding(.vertical)
+        }
+        .padding(.horizontal)
+        .animation(.default, value: viewModel.password)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                VStack {
+                    NotchView()
+                    Text("Generate password")
+                        .navigationTitleText()
                 }
-                .padding(.trailing)
             }
         }
     }
 }
-
-/*
-struct GeneratePasswordView_Previews: PreviewProvider {
-    static var previews: some View {
-        GeneratePasswordView(viewModel: .init(mode: .random))
-    }
-}
-*/

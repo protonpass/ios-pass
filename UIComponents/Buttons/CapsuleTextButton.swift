@@ -1,6 +1,6 @@
 //
-// CapsuleTitledButton.swift
-// Proton Pass - Created on 03/02/2023.
+// CapsuleTextButton.swift
+// Proton Pass - Created on 16/02/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,49 +20,39 @@
 
 import SwiftUI
 
-/// A capsule button with an icon on the left & title on the right.
-public struct CapsuleTitledButton: View {
-    let icon: UIImage
+/// A capsule button with a text as title
+public struct CapsuleTextButton: View {
     let title: String
-    let color: UIColor
+    let titleColor: UIColor
+    let backgroundColor: UIColor
+    let disabled: Bool
     let height: CGFloat
     let action: () -> Void
 
-    public init(icon: UIImage,
-                title: String,
-                color: UIColor,
+    public init(title: String,
+                titleColor: UIColor,
+                backgroundColor: UIColor,
+                disabled: Bool,
                 height: CGFloat = 40,
                 action: @escaping () -> Void) {
-        self.icon = icon
         self.title = title
-        self.color = color
+        self.titleColor = titleColor
+        self.backgroundColor = backgroundColor
+        self.disabled = disabled
         self.height = height
         self.action = action
     }
 
     public var body: some View {
         Button(action: action) {
-            ZStack {
-                Color(uiColor: color)
-                    .clipShape(Capsule())
-                // Can not use `Label` here because SwiftUI will not render title
-                // when in navigation bar context
-                HStack {
-                    Image(uiImage: icon)
-                        .resizable()
-                        .renderingMode(.template)
-                        .scaledToFit()
-                        .padding(.vertical, height / 3)
-                    Text(title)
-                        .font(.callout)
-                        .fontWeight(.light)
-                }
+            Text(title)
+                .foregroundColor(disabled ? .textDisabled : Color(uiColor: titleColor))
+                .frame(height: height)
                 .padding(.horizontal)
-                .foregroundColor(Color(uiColor: .systemBackground))
                 .frame(maxWidth: .infinity)
-            }
-            .frame(height: height)
-            .frame(maxWidth: .infinity)
+                .background(Color(uiColor: backgroundColor).opacity(disabled ? 0.08 : 1))
+                .clipShape(Capsule())
         }
+        .animation(.default, value: disabled)
     }
 }

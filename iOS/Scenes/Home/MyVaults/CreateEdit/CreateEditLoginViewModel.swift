@@ -26,11 +26,12 @@ import SwiftOTP
 import SwiftUI
 
 protocol CreateEditLoginViewModelDelegate: AnyObject {
-    func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
-                                                      title: String)
+    func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
+                                                      creationInfo: AliasCreationLiteInfo,
+                                                      delegate: AliasCreationLiteInfoDelegate)
+
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
-    func createEditLoginViewModelDidReceiveAliasCreationInfo()
-    func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String)
+    func createEditLoginViewModelCanNotCreateMoreAlias()
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
@@ -40,27 +41,27 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
-    @Published var isPasswordSecure = true // Password in clear text or not
-    @Published var totpUri = "" {
-        didSet {
-            totpManager.bind(uri: totpUri)
-        }
-    }
-    @Published var urls: [String] = [""]
+    @Published var isPasswordSecure = false // Password in clear text or not
+    @Published var totpUri = ""
+    @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
+    @Published var invalidURLs = [String]()
     @Published var note = ""
-    @Published private(set) var totpManager: TOTPManager
+
+    /// Proton account email address
+    let emailAddress: String
+
+    private let aliasRepository: AliasRepositoryProtocol
 
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
-    /// The info to create new alias.
-    private var aliasCreationInfo: AliasCreationInfo?
 
-    private var cancellables = Set<AnyCancellable>()
+    private var aliasOptions: AliasOptions?
+    private(set) var aliasCreationLiteInfo: AliasCreationLiteInfo?
 
     weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
     private var hasNoUrls: Bool {
-        urls.isEmpty || (urls.count == 1 && urls[0].isEmpty)
+        urls.isEmpty || (urls.count == 1 && urls[0].value.isEmpty)
     }
 
     var isEmpty: Bool {
@@ -79,20 +80,18 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         !title.isEmpty && !password.isEmpty
     }
 
-    override init(mode: ItemMode,
-                  itemRepository: ItemRepositoryProtocol,
-                  preferences: Preferences,
-                  logManager: LogManager) {
-        self.totpManager = .init(logManager: logManager)
+    init(mode: ItemMode,
+         itemRepository: ItemRepositoryProtocol,
+         aliasRepository: AliasRepositoryProtocol,
+         preferences: Preferences,
+         logManager: LogManager,
+         emailAddress: String) {
+        self.emailAddress = emailAddress
+        self.aliasRepository = aliasRepository
         super.init(mode: mode,
                    itemRepository: itemRepository,
                    preferences: preferences,
                    logManager: logManager)
-        self.totpManager.objectWillChange
-            .sink { [weak self] _ in
-                self?.objectWillChange.send()
-            }
-            .store(in: &cancellables)
     }
 
     override func bindValues() {
@@ -102,9 +101,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.title = itemContent.name
                 self.username = data.username
                 self.password = data.password
+                self.isPasswordSecure = true
                 self.totpUri = data.totpUri
                 if !data.urls.isEmpty {
-                    self.urls = data.urls
+                    self.urls = data.urls.map { .init(value: $0) }
                 }
                 self.note = itemContent.note
 
@@ -115,26 +115,27 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             }
 
         case let .create(_, type):
+            self.isPasswordSecure = false
             if case let .login(title, url, _) = type {
                 self.title = title ?? ""
-                self.urls = [url ?? ""]
+                self.urls = [url ?? ""].map { .init(value: $0) }
             }
-        }
-    }
-
-    override func navigationBarTitle() -> String {
-        switch mode {
-        case .create:
-            return "New login"
-        case .edit:
-            return "Edit login"
         }
     }
 
     override func itemContentType() -> ItemContentType { .login }
 
+    override func saveButtonTitle() -> String {
+        guard case let .create(_, type) = mode,
+              case let .login(_, _, autofill) = type,
+              autofill else {
+            return super.saveButtonTitle()
+        }
+        return "Create & AutoFill"
+    }
+
     override func generateItemContent() -> ItemContentProtobuf {
-        let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0) }
+        let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
         let logInData = ItemContentData.login(.init(username: username,
                                                     password: password,
                                                     totpUri: totpUri,
@@ -145,10 +146,16 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func additionalCreate() async throws {
-        if let aliasCreationInfo {
-            let aliasContent = ItemContentProtobuf(name: aliasCreationInfo.title,
-                                                   note: aliasCreationInfo.note,
+        if let aliasCreationLiteInfo {
+            let aliasContent = ItemContentProtobuf(name: title,
+                                                   note: "Alias of log in item \"\(title)\"",
                                                    data: .alias)
+
+            let aliasCreationInfo = AliasCreationInfo(
+                prefix: aliasCreationLiteInfo.prefix,
+                suffix: aliasCreationLiteInfo.suffix,
+                mailboxIds: aliasCreationLiteInfo.mailboxes.map { $0.ID })
+
             try await self.itemRepository.createAlias(info: aliasCreationInfo,
                                                       itemContent: aliasContent,
                                                       shareId: shareId)
@@ -163,27 +170,58 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func generateAlias() {
-        createEditLoginViewModelDelegate?
-            .createEditLoginViewModelWantsToGenerateAlias(self, title: title)
+        if let aliasOptions, let aliasCreationLiteInfo {
+            createEditLoginViewModelDelegate?
+                .createEditLoginViewModelWantsToGenerateAlias(options: aliasOptions,
+                                                              creationInfo: aliasCreationLiteInfo,
+                                                              delegate: self)
+        } else {
+            Task { @MainActor in
+                do {
+                    delegate?.createEditItemViewModelWantsToShowLoadingHud()
+                    let aliasOptions = try await aliasRepository.getAliasOptions(shareId: shareId)
+                    delegate?.createEditItemViewModelWantsToHideLoadingHud()
+                    if aliasOptions.canCreateAlias == false {
+                        createEditLoginViewModelDelegate?.createEditLoginViewModelCanNotCreateMoreAlias()
+                    } else {
+                        if let firstSuffix = aliasOptions.suffixes.first,
+                           let firstMailbox = aliasOptions.mailboxes.first {
+                            var prefix = title.prefix(10).replacingOccurrences(of: " ", with: "").lowercased()
+                            if prefix.isEmpty {
+                                prefix = String.random(allowedCharacters: [.lowercase, .digit], length: 5)
+                            }
+
+                            self.aliasOptions = aliasOptions
+                            self.aliasCreationLiteInfo = .init(prefix: prefix,
+                                                               suffix: firstSuffix,
+                                                               mailboxes: [firstMailbox])
+                            generateAlias()
+                        }
+                    }
+                } catch {
+                    delegate?.createEditItemViewModelWantsToHideLoadingHud()
+                    delegate?.createEditItemViewModelDidFail(error)
+                }
+            }
+        }
+    }
+
+    func useRealEmailAddress() {
+        username = emailAddress
     }
 
     func generatePassword() {
         createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToGeneratePassword(self)
     }
 
-    func removeAlias() {
-        aliasCreationInfo = nil
-        username = ""
-        isAlias = false
+    func pasteTotpUriFromClipboard() {
+        totpUri = UIPasteboard.general.string ?? ""
     }
 
-    func copyTotpCode() {
-        if let code = totpManager.totpData?.code {
-            let message = "Two Factor Authentication code copied"
-            createEditLoginViewModelDelegate?
-                .createEditLoginViewModelWantsToCopy(text: code,
-                                                     bannerMessage: message)
-        }
+    func removeAlias() {
+        aliasCreationLiteInfo = nil
+        username = ""
+        isAlias = false
     }
 
     func handleScanResult(_ result: Result<ScanResult, ScanError>) {
@@ -194,6 +232,17 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             delegate?.createEditItemViewModelDidFail(error)
         }
     }
+
+    func validateURLs() -> Bool {
+        invalidURLs = urls.map { $0.value }.compactMap { url in
+            if url.isEmpty { return nil }
+            if URLUtils.Sanitizer.sanitize(url) == nil {
+                return url
+            }
+            return nil
+        }
+        return invalidURLs.isEmpty
+    }
 }
 
 // MARK: - GeneratePasswordViewModelDelegate
@@ -203,12 +252,11 @@ extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
     }
 }
 
-// MARK: - AliasCreationDelegate
-extension CreateEditLoginViewModel: AliasCreationDelegate {
-    func aliasCreationInfo(_ info: AliasCreationInfo) {
-        aliasCreationInfo = info
+// MARK: - AliasCreationLiteInfoDelegate
+extension CreateEditLoginViewModel: AliasCreationLiteInfoDelegate {
+    func aliasLiteCreationInfo(_ info: AliasCreationLiteInfo) {
+        aliasCreationLiteInfo = info
         username = info.aliasAddress
         isAlias = true
-        createEditLoginViewModelDelegate?.createEditLoginViewModelDidReceiveAliasCreationInfo()
     }
 }

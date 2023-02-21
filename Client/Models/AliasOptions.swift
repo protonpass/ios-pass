@@ -49,18 +49,8 @@ extension Suffix: Equatable {
     }
 }
 
-public struct Mailbox: Decodable, Hashable {
+public struct Mailbox: Decodable, Hashable, Equatable {
     // Should not rename to "id" otherwise decode process breaks
     public let ID: Int
     public let email: String
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(ID)
-    }
-}
-
-extension Mailbox: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.ID == rhs.ID && lhs.email == rhs.email
-    }
 }

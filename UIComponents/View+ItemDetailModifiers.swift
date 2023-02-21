@@ -39,21 +39,20 @@ public extension View {
 }
 
 public extension Text {
+    func navigationTitleText() -> Text {
+        self.font(.callout).fontWeight(.medium)
+    }
+
     func sectionTitleText() -> Text {
-        self
-            .font(.footnote)
-            .foregroundColor(.textWeak)
+        self.font(.footnote).foregroundColor(.textWeak)
     }
 
     func sectionContentText() -> Text {
-        self
-            .foregroundColor(.textNorm)
+        self.foregroundColor(.textNorm)
     }
 
     /// Used for placeholder `Text`s like `Empty notes`, `No items`...
     func placeholderText() -> Text {
-        self
-            .font(.body.italic())
-            .foregroundColor(.textWeak)
+        self.font(.body.italic()).foregroundColor(.textWeak)
     }
 }

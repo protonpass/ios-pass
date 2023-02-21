@@ -119,11 +119,9 @@ final class MyVaultsCoordinator: Coordinator {
                                                                        url: nil,
                                                                        autofill: false)))
                 case .alias:
-                    showCreateEditAliasView(mode: .create(shareId: shareId,
-                                                          type: .alias(delegate: nil, title: "")))
+                    showCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
                 case .note:
-                    showCreateEditNoteView(mode: .create(shareId: shareId,
-                                                         type: .other))
+                    showCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
                 case .password:
                     showGeneratePasswordView(delegate: self, mode: .random)
                 }
@@ -158,10 +156,13 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func showCreateEditLoginView(mode: ItemMode) {
+        let emailAddress = userData.addresses.first?.email ?? ""
         let viewModel = CreateEditLoginViewModel(mode: mode,
                                                  itemRepository: itemRepository,
+                                                 aliasRepository: aliasRepository,
                                                  preferences: preferences,
-                                                 logManager: logManager)
+                                                 logManager: logManager,
+                                                 emailAddress: emailAddress)
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
@@ -182,6 +183,29 @@ final class MyVaultsCoordinator: Coordinator {
         currentCreateEditItemViewModel = viewModel
     }
 
+    private func showCreateAliasLiteView(options: AliasOptions,
+                                         creationInfo: AliasCreationLiteInfo,
+                                         delegate: AliasCreationLiteInfoDelegate) {
+        let viewModel = CreateAliasLiteViewModel(options: options,
+                                                 creationInfo: creationInfo)
+        viewModel.aliasCreationDelegate = delegate
+        viewModel.delegate = self
+        let view = CreateAliasLiteView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.sheetPresentationController?.detents = [.medium()]
+        viewModel.onDismiss = { navigationController.dismiss(animated: true) }
+        present(navigationController)
+    }
+
+    private func showMailboxSelectionView(_ mailboxSelection: MailboxSelection,
+                                          mode: MailboxSelectionView.Mode) {
+        let view = MailboxSelectionView(mailboxSelection: mailboxSelection, mode: mode)
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        present(viewController, animated: true, dismissible: true)
+    }
+
     private func showCreateEditNoteView(mode: ItemMode) {
         let viewModel = CreateEditNoteViewModel(mode: mode,
                                                 itemRepository: itemRepository,
@@ -197,17 +221,19 @@ final class MyVaultsCoordinator: Coordinator {
                                           mode: GeneratePasswordViewMode) {
         let viewModel = GeneratePasswordViewModel(mode: mode)
         viewModel.delegate = delegate
-        let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
-        let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
+        let view = GeneratePasswordView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        let navigationController = UINavigationController(rootViewController: viewController)
         if #available(iOS 16, *) {
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 344
             }
-            generatePasswordViewController.sheetPresentationController?.detents = [customDetent]
+            navigationController.sheetPresentationController?.detents = [customDetent]
         } else {
-            generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
+            navigationController.sheetPresentationController?.detents = [.medium()]
         }
-        present(generatePasswordViewController)
+        viewModel.onDismiss = { navigationController.dismiss(animated: true) }
+        present(navigationController)
     }
 
     private func showSearchView() {
@@ -237,6 +263,7 @@ final class MyVaultsCoordinator: Coordinator {
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
                                                  itemRepository: itemRepository,
                                                  logManager: logManager)
+            viewModel.logInDetailViewModelDelegate = self
             baseItemDetailViewModel = viewModel
             itemDetailView = LogInDetailView(viewModel: viewModel)
 
@@ -465,10 +492,7 @@ extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
 // MARK: - CreateEditAliasViewModelDelegate
 extension MyVaultsCoordinator: CreateEditAliasViewModelDelegate {
     func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        let view = MailboxesView(mailboxSelection: mailboxSelection)
-        let viewController = UIHostingController(rootView: view)
-        viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        present(viewController, animated: true, dismissible: true)
+        showMailboxSelectionView(mailboxSelection, mode: .createEditAlias)
     }
 
     func createEditAliasViewModelCanNotCreateMoreAliases() {
@@ -480,24 +504,22 @@ extension MyVaultsCoordinator: CreateEditAliasViewModelDelegate {
 
 // MARK: - CreateEditLoginViewModelDelegate
 extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
-    func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
-                                                      title: String) {
-        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        showCreateEditAliasView(mode: .create(shareId: shareId,
-                                              type: .alias(delegate: delegate,
-                                                           title: title)))
+    func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
+                                                      creationInfo: AliasCreationLiteInfo,
+                                                      delegate: AliasCreationLiteInfoDelegate) {
+        showCreateAliasLiteView(options: options, creationInfo: creationInfo, delegate: delegate)
     }
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate, mode: .createLogin)
     }
 
-    func createEditLoginViewModelDidReceiveAliasCreationInfo() {
-        dismissTopMostViewController(animated: true, completion: nil)
-    }
-
     func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String) {
         clipboardManager?.copy(text: text, bannerMessage: bannerMessage)
+    }
+
+    func createEditLoginViewModelCanNotCreateMoreAlias() {
+        bannerManager?.displayTopErrorMessage("You can not create more aliases.")
     }
 }
 
@@ -509,7 +531,7 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
         if UIDevice.current.isIpad {
             popTopViewController(animated: true)
         } else {
-            dismissTopMostViewController(animated: true, completion: nil)
+            dismissTopMostViewController()
         }
     }
 
@@ -558,7 +580,7 @@ extension MyVaultsCoordinator: SearchViewModelDelegate {
     }
 
     func searchViewModelWantsToDismiss() {
-        dismissTopMostViewController(animated: true, completion: nil)
+        dismissTopMostViewController()
     }
 
     func searchViewModelWantsToShowItemDetail(_ item: Client.ItemContent) {
@@ -607,5 +629,19 @@ extension MyVaultsCoordinator: VaultListViewModelDelegate {
 
     func vaultListViewModelDidFail(error: Error) {
         bannerManager?.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - CreateAliasLiteViewModelDelegate
+extension MyVaultsCoordinator: CreateAliasLiteViewModelDelegate {
+    func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
+        showMailboxSelectionView(mailboxSelection, mode: .createAliasLite)
+    }
+}
+
+// MARK: - LogInDetailViewModelDelegate
+extension MyVaultsCoordinator: LogInDetailViewModelDelegate {
+    func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
+        showItemDetailView(itemContent)
     }
 }

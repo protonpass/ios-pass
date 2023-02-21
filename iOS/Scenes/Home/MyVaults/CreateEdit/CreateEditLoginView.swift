@@ -27,17 +27,15 @@ import UIComponents
 struct CreateEditLoginView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
+    @FocusState private var isFocusedOnTitle: Bool
+    @FocusState private var isFocusedOnUsername: Bool
+    @FocusState private var isFocusedOnPassword: Bool
+    @FocusState private var isFocusedOnTOTP: Bool
+    @FocusState private var isFocusedOnNote: Bool
     @State private var isShowingDiscardAlert = false
-    @State private var isShowingTrashAlert = false
     @State private var isShowingDeleteAliasAlert = false
     @State private var isShowingScanner = false
-    @State private var isFocusedOnTitle = false
-    @State private var isFocusedOnUsername = false
-    @State private var isFocusedOnPassword = false
-    @State private var isFocusedOnOtp = false
-    @State private var isFocusedOnURLs = false
-    @State private var isFocusedOnNote = false
-    @State private var invalidUrls = [String]()
+    @Namespace private var noteID
 
     init(viewModel: CreateEditLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -45,30 +43,253 @@ struct CreateEditLoginView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    loginInputView
-                    usernameInputView
-                    passwordInputView
-                    otpInputView
-                    urlsInputView
-                    noteInputView
-                    if viewModel.mode.isEditMode {
-                        MoveToTrashButton(action: askForConfirmationOrTrashDirectly)
-                            .opacityReduced(viewModel.isSaving)
+            ScrollViewReader { value in
+                ScrollView {
+                    LazyVStack(spacing: 20) {
+                        CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
+                                                   title: $viewModel.title,
+                                                   onSubmit: { isFocusedOnUsername.toggle() })
+                        usernamePasswordTOTPSection
+                        WebsiteSection(viewModel: viewModel)
+                        NoteEditSection(note: $viewModel.note, isFocused: $isFocusedOnNote)
+                            .id(noteID)
+                        Spacer()
                     }
-                    Spacer()
+                    .padding()
                 }
-                .padding()
+                .onChange(of: isFocusedOnNote) { isFocusedOnNote in
+                    if isFocusedOnNote {
+                        withAnimation {
+                            value.scrollTo(noteID, anchor: .bottom)
+                        }
+                    }
+                }
+                .onChange(of: viewModel.note) { _ in
+                    withAnimation {
+                        value.scrollTo(noteID, anchor: .bottom)
+                    }
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(viewModel.navigationBarTitle())
-            .toolbar { toolbarContent }
+            .onFirstAppear {
+                if case .create = viewModel.mode {
+                    if #available(iOS 16, *) {
+                        isFocusedOnTitle.toggle()
+                    } else {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                            isFocusedOnTitle.toggle()
+                        }
+                    }
+                }
+            }
+            .toolbar {
+                CreateEditItemToolbar(
+                    saveButtonTitle: viewModel.saveButtonTitle(),
+                    isSaveable: viewModel.isSaveable,
+                    isSaving: viewModel.isSaving,
+                    itemContentType: viewModel.itemContentType(),
+                    onGoBack: {
+                        if viewModel.isEmpty {
+                            dismiss()
+                        } else {
+                            isShowingDiscardAlert.toggle()
+                        }
+                    },
+                    onSave: {
+                        if viewModel.validateURLs() {
+                            await viewModel.save()
+                        }
+                    })
+            }
+            .toolbar { keyboardToolbar }
         }
+        .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
+        .tint(Color(uiColor: viewModel.itemContentType().tintColor))
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
-        .moveToTrashAlert(isPresented: $isShowingTrashAlert, onTrash: viewModel.trash)
+    }
+
+    @ToolbarContentBuilder
+    private var keyboardToolbar: some ToolbarContent {
+        ToolbarItemGroup(placement: .keyboard) {
+            if #available(iOS 16, *) {
+                if isFocusedOnUsername {
+                    usernameTextFieldToolbar
+                } else if isFocusedOnTOTP {
+                    totpTextFieldToolbar
+                } else if isFocusedOnPassword {
+                    passwordTextFieldToolbar
+                }
+            } else {
+                // Embed in a ZStack otherwise toolbars are rendered
+                // randomly in iOS 15
+                ZStack {
+                    if isFocusedOnUsername {
+                        usernameTextFieldToolbar
+                    } else if isFocusedOnTOTP {
+                        totpTextFieldToolbar
+                    } else if isFocusedOnPassword {
+                        passwordTextFieldToolbar
+                    } else {
+                        Button("") {}
+                    }
+                }
+            }
+        }
+    }
+
+    private var usernameTextFieldToolbar: some View {
+        HStack {
+            Button(action: viewModel.generateAlias) {
+                HStack {
+                    toolbarIcon(uiImage: IconProvider.alias)
+                    Text("Hide my email")
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+
+            Divider()
+
+            Button(action: {
+                viewModel.useRealEmailAddress()
+                if viewModel.password.isEmpty {
+                    isFocusedOnPassword = true
+                } else {
+                    isFocusedOnUsername = false
+                }
+            }, label: {
+                Text("Use \(viewModel.emailAddress)")
+                    .minimumScaleFactor(0.5)
+            })
+            .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .transaction { transaction in
+            // Disable animation when switching between toolbars
+            transaction.animation = nil
+        }
+    }
+
+    private var totpTextFieldToolbar: some View {
+        HStack {
+            Button(action: viewModel.pasteTotpUriFromClipboard) {
+                HStack {
+                    toolbarIcon(uiImage: IconProvider.squares)
+                    Text("Paste from clipboard")
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+
+            Divider()
+
+            Button(action: {
+                isShowingScanner.toggle()
+            }, label: {
+                HStack {
+                    toolbarIcon(uiImage: IconProvider.camera)
+                    Text("Open camera")
+                }
+            })
+            .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .transaction { transaction in
+            // Disable animation when switching between toolbars
+            transaction.animation = nil
+        }
+    }
+
+    private var passwordTextFieldToolbar: some View {
+        Button(action: viewModel.generatePassword) {
+            HStack {
+                toolbarIcon(uiImage: IconProvider.arrowsRotate)
+                Text("Generate password")
+            }
+        }
+        .transaction { transaction in
+            transaction.animation = nil
+        }
+    }
+
+    private func toolbarIcon(uiImage: UIImage) -> some View {
+        Image(uiImage: uiImage)
+            .resizable()
+            .frame(width: 18, height: 18)
+    }
+
+    private var usernamePasswordTOTPSection: some View {
+        VStack(spacing: kItemDetailSectionPadding) {
+            if viewModel.isAlias {
+                if viewModel.aliasCreationLiteInfo != nil {
+                    pendingAliasRow
+                } else {
+                    createdAliasRow
+                }
+            } else {
+                usernameRow
+            }
+            Divider()
+            passwordRow
+            Divider()
+            totpRow
+        }
+        .padding(.vertical, kItemDetailSectionPadding)
+        .roundedEditableSection()
+    }
+
+    private var usernameRow: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.user, color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Username")
+                    .sectionTitleText()
+                TextField("Add username", text: $viewModel.username)
+                    .textContentType(.username)
+                    .textInputAutocapitalization(.never)
+                    .focused($isFocusedOnUsername)
+                    .submitLabel(.next)
+                    .onSubmit { isFocusedOnPassword.toggle() }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if !viewModel.username.isEmpty {
+                Button(action: {
+                    viewModel.username = ""
+                }, label: {
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                })
+            }
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: viewModel.username.isEmpty)
+    }
+
+    private var createdAliasRow: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.alias, color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Username")
+                    .sectionTitleText()
+                Text(viewModel.username)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Menu(content: {
+                Button(
+                    role: .destructive,
+                    action: { isShowingDeleteAliasAlert.toggle() },
+                    label: {
+                        Label(title: { Text("Delete alias") }, icon: { Image(uiImage: IconProvider.trash) })
+                    })
+            }, label: {
+                CircleButton(icon: IconProvider.threeDotsVertical,
+                             color: viewModel.itemContentType().tintColor,
+                             action: {})
+            })
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: viewModel.username.isEmpty)
         .alert(
             "Delete alias?",
             isPresented: $isShowingDeleteAliasAlert,
@@ -84,216 +305,115 @@ struct CreateEditLoginView: View {
             })
     }
 
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-                if viewModel.isEmpty {
-                    dismiss()
-                } else {
-                    isShowingDiscardAlert.toggle()
-                }
-            }, label: {
-                Text("Cancel")
-            })
-            .foregroundColor(Color(.label))
-        }
+    private var pendingAliasRow: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.alias, color: .textWeak)
 
-        ToolbarItem(placement: .navigationBarTrailing) {
-            SpinnerButton(title: viewModel.isAutoFilling ? "Save & AutoFill" : "Save",
-                          disabled: !viewModel.isSaveable,
-                          spinning: viewModel.isSaving) {
-                validateUrls()
-                if invalidUrls.isEmpty {
-                    await viewModel.save()
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Username")
+                    .sectionTitleText()
+                Text(viewModel.username)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Menu(content: {
+                Button(action: viewModel.generateAlias) {
+                    Label(title: { Text("Edit alias") }, icon: { Image(uiImage: IconProvider.penSquare) })
+                }
+
+                Button(
+                    role: .destructive,
+                    action: viewModel.removeAlias,
+                    label: {
+                        Label(title: { Text("Remove alias") }, icon: { Image(uiImage: IconProvider.trash) })
+                    })
+            }, label: {
+                CircleButton(icon: IconProvider.threeDotsVertical,
+                             color: viewModel.itemContentType().tintColor,
+                             action: {})
+            })
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: viewModel.username.isEmpty)
+    }
+
+    private var passwordRow: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.key, color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Password")
+                    .sectionTitleText()
+                if viewModel.isPasswordSecure {
+                    Text(String(repeating: "•", count: 20))
+                        .sectionContentText()
+                } else {
+                    TextField("Add password", text: $viewModel.password)
+                        .textContentType(.password)
+                        .textInputAutocapitalization(.never)
+                        .focused($isFocusedOnPassword)
+                        .submitLabel(.done)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .animation(.default, value: viewModel.isPasswordSecure)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                viewModel.isPasswordSecure = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    isFocusedOnPassword = true
+                }
+            }
+
+            if !viewModel.password.isEmpty {
+                Button(action: {
+                    viewModel.password = ""
+                }, label: {
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                })
+            }
         }
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: viewModel.password.isEmpty)
     }
 
-    private var loginInputView: some View {
-        UserInputContainerView(title: "Title",
-                               isFocused: isFocusedOnTitle) {
-            UserInputContentSingleLineWithClearButton(
-                text: $viewModel.title,
-                isFocused: $isFocusedOnTitle,
-                placeholder: "Login title",
-                onClear: { viewModel.title = "" })
-            .opacityReduced(viewModel.isSaving)
+    private var totpRow: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.lock, color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Two Factor Authentication")
+                    .sectionTitleText()
+                TextField("otpauth://", text: $viewModel.totpUri)
+                    .keyboardType(.URL)
+                    .textInputAutocapitalization(.never)
+                    .focused($isFocusedOnTOTP)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if !viewModel.totpUri.isEmpty {
+                Button(action: {
+                    viewModel.totpUri = ""
+                }, label: {
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                })
+            }
         }
-    }
-
-    private var usernameInputView: some View {
-        UserInputContainerView(
-            title: "Username",
-            isFocused: isFocusedOnUsername,
-            content: {
-                UserInputContentSingleLineWithClearButton(
-                    text: $viewModel.username,
-                    isFocused: $isFocusedOnUsername,
-                    placeholder: "Add username",
-                    onClear: { viewModel.username = "" },
-                    keyboardType: .emailAddress,
-                    textAutocapitalizationType: .none,
-                    autocorrectionDisabled: true)
-                .opacityReduced(viewModel.isSaving || viewModel.isAlias)
-            },
-            trailingView: {
-                if viewModel.isAlias {
-                    Menu(content: {
-                        Button(
-                            role: .destructive,
-                            action: { isShowingDeleteAliasAlert.toggle() },
-                            label: {
-                                Label(title: {
-                                    Text("Delete")
-                                }, icon: {
-                                    Image(uiImage: IconProvider.crossCircle)
-                                })
-                            })
-                    }, label: {
-                        BorderedImageButton(image: IconProvider.threeDotsVertical) {}
-                            .frame(width: 48, height: 48)
-                            .opacityReduced(viewModel.isSaving)
-                    })
-                    .animation(.default, value: viewModel.isAlias)
-                } else {
-                    BorderedImageButton(image: IconProvider.alias,
-                                        action: viewModel.generateAlias)
-                    .frame(width: 48, height: 48)
-                    .opacityReduced(viewModel.isSaving)
-                    .animation(.default, value: viewModel.isAlias)
-                }
-            })
-    }
-
-    private var passwordInputView: some View {
-        UserInputContainerView(
-            title: "Password",
-            isFocused: isFocusedOnPassword,
-            content: {
-                UserInputContentPasswordView(
-                    text: $viewModel.password,
-                    isFocused: $isFocusedOnPassword,
-                    isSecure: $viewModel.isPasswordSecure)
-                .opacityReduced(viewModel.isSaving)
-            },
-            trailingView: {
-                BorderedImageButton(image: IconProvider.arrowsRotate,
-                                    action: viewModel.generatePassword)
-                .frame(width: 48, height: 48)
-                .opacityReduced(viewModel.isSaving)
-            })
-    }
-
-    @ViewBuilder
-    private var otpInputView: some View {
-        UserInputContainerView(
-            title: "Two Factor Authentication",
-            isFocused: isFocusedOnOtp,
-            content: {
-                switch viewModel.totpManager.state {
-                case .empty, .loading:
-                    UserInputContentSingleLineWithClearButton(
-                        text: $viewModel.totpUri,
-                        isFocused: $isFocusedOnOtp,
-                        placeholder: "",
-                        onClear: { viewModel.totpUri = "" })
-                    .opacityReduced(viewModel.isSaving)
-                case .valid(let data):
-                    HStack {
-                        Text(data.code)
-                        Spacer()
-                        TOTPCircularTimer(data: data.timerData)
-                            .frame(width: 22, height: 22)
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture(perform: viewModel.copyTotpCode)
-                case .invalid:
-                    Text("Invalid Two Factor Authentication URI.")
-                        .sectionContentText()
-                }
-            },
-            trailingView: {
-                switch viewModel.totpManager.state {
-                case .loading:
-                    EmptyView()
-                case .valid:
-                    Menu(content: {
-                        Button(
-                            role: .destructive,
-                            action: { viewModel.totpUri = "" },
-                            label: {
-                                Label(title: {
-                                    Text("Delete")
-                                }, icon: {
-                                    Image(uiImage: IconProvider.crossCircle)
-                                })
-                            })
-                    }, label: {
-                        BorderedImageButton(image: IconProvider.threeDotsVertical) {}
-                            .frame(width: 48, height: 48)
-                            .opacityReduced(viewModel.isSaving)
-                    })
-                    .animation(.default, value: viewModel.totpManager.state)
-                case .empty, .invalid:
-                    let image = UIImage(systemName: "qrcode.viewfinder")?.withRenderingMode(.alwaysTemplate)
-                    BorderedImageButton(image: image ?? .add,
-                                        action: { isShowingScanner.toggle() })
-                    .frame(width: 48, height: 48)
-                    .opacityReduced(viewModel.isSaving)
-                }
-            })
+        .padding(.horizontal, kItemDetailSectionPadding)
         .sheet(isPresented: $isShowingScanner) {
-            WrappedCodeScannerView { result in
+            WrappedCodeScannerView(tintColor: viewModel.itemContentType().tintColor) { result in
                 isShowingScanner = false
                 viewModel.handleScanResult(result)
             }
         }
     }
-
-    private var urlsInputView: some View {
-        UserInputContainerView(title: "Website address",
-                               isFocused: isFocusedOnURLs) {
-            UserInputContentURLsView(urls: $viewModel.urls,
-                                     isFocused: $isFocusedOnURLs,
-                                     invalidUrls: $invalidUrls)
-            .opacityReduced(viewModel.isSaving)
-        }
-    }
-
-    private var noteInputView: some View {
-        UserInputContainerView(title: "Note",
-                               isFocused: isFocusedOnNote) {
-            UserInputContentMultilineView(
-                text: $viewModel.note,
-                isFocused: $isFocusedOnNote)
-            .opacityReduced(viewModel.isSaving)
-        }
-    }
-
-    private func askForConfirmationOrTrashDirectly() {
-        if viewModel.preferences.askBeforeTrashing {
-            isShowingTrashAlert.toggle()
-        } else {
-            viewModel.trash()
-        }
-    }
-
-    private func validateUrls() {
-        invalidUrls = viewModel.urls.compactMap { url in
-            if url.isEmpty { return nil }
-            if URLUtils.Sanitizer.sanitize(url) == nil {
-                return url
-            }
-            return nil
-        }
-    }
 }
 
+// MARK: - WrappedCodeScannerView
 private struct WrappedCodeScannerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isGaleryPresented = false
+    let tintColor: UIColor
     let completion: (Result<ScanResult, ScanError>) -> Void
 
     var body: some View {
@@ -307,10 +427,9 @@ private struct WrappedCodeScannerView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: dismiss.callAsFunction) {
-                        Text("Cancel")
-                    }
-                    .foregroundColor(Color(.label))
+                    CircleButton(icon: IconProvider.cross,
+                                 color: tintColor,
+                                 action: dismiss.callAsFunction)
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -318,10 +437,86 @@ private struct WrappedCodeScannerView: View {
                         isGaleryPresented.toggle()
                     }, label: {
                         Image(systemName: "photo.on.rectangle.angled")
-                            .foregroundColor(Color(.label))
+                            .foregroundColor(Color(uiColor: tintColor))
                     })
                 }
             }
+        }
+    }
+}
+
+// MARK: - WebsiteSection
+private struct WebsiteSection: View {
+    @ObservedObject var viewModel: CreateEditLoginViewModel
+
+    var body: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.earth, color: .textWeak)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Website")
+                    .sectionTitleText()
+                VStack(alignment: .leading) {
+                    ForEach($viewModel.urls) { $url in
+                        HStack {
+                            TextField("https://", text: $url.value)
+                                .onChange(of: viewModel.urls) { _ in
+                                    viewModel.invalidURLs.removeAll()
+                                }
+                                .keyboardType(.URL)
+                                .textInputAutocapitalization(.never)
+                                .disableAutocorrection(true)
+                                .foregroundColor(isValid(url) ? .primary : .red)
+
+                            if !url.value.isEmpty {
+                                Button(action: {
+                                    withAnimation {
+                                        if viewModel.urls.count == 1 {
+                                            url.value = ""
+                                        } else {
+                                            viewModel.urls.removeAll { $0.id == url.id }
+                                        }
+                                    }
+                                }, label: {
+                                    Image(uiImage: IconProvider.cross)
+                                })
+                                .foregroundColor(.textWeak)
+                            }
+                        }
+
+                        if viewModel.urls.count > 1 || viewModel.urls.first?.value.isEmpty == false {
+                            Divider()
+                        }
+                    }
+
+                    addUrlButton
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .animation(.default, value: viewModel.urls)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(kItemDetailSectionPadding)
+        .roundedEditableSection()
+        .contentShape(Rectangle())
+    }
+
+    private func isValid(_ url: IdentifiableObject<String>) -> Bool {
+        !viewModel.invalidURLs.contains { $0 == url.value }
+    }
+
+    @ViewBuilder
+    private var addUrlButton: some View {
+        if viewModel.urls.first?.value.isEmpty == false {
+            Button(action: {
+                if viewModel.urls.last?.value.isEmpty == false {
+                    // Only add new URL when last URL has value to avoid adding blank URLs
+                    viewModel.urls.append(.init(value: ""))
+                }
+            }, label: {
+                Label("Add another website", systemImage: "plus")
+            })
+            .opacityReduced(viewModel.urls.last?.value.isEmpty == true)
         }
     }
 }

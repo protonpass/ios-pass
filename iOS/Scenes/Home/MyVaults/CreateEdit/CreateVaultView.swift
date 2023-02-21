@@ -25,8 +25,6 @@ import UIComponents
 struct CreateVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateVaultViewModel
-    @State private var isFocusedOnName = false
-    @State private var isFocusedOnNote = false
 
     init(viewModel: CreateVaultViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -36,8 +34,8 @@ struct CreateVaultView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
-                    nameInputView
-                    noteInputView
+                    TextField("", text: $viewModel.name)
+                    TextField("", text: $viewModel.note)
                     Spacer()
                 }
                 .padding()
@@ -45,27 +43,6 @@ struct CreateVaultView: View {
             .navigationTitle("New vault")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbarContent }
-        }
-    }
-
-    private var nameInputView: some View {
-        UserInputContainerView(title: "Name",
-                               isFocused: isFocusedOnName) {
-            UserInputContentSingleLineView(
-                text: $viewModel.name,
-                isFocused: $isFocusedOnName,
-                placeholder: "Vault name")
-            .opacityReduced(viewModel.isCreating)
-        }
-    }
-
-    private var noteInputView: some View {
-        UserInputContainerView(title: "Note",
-                               isFocused: isFocusedOnNote) {
-            UserInputContentMultilineView(
-                text: $viewModel.note,
-                isFocused: $isFocusedOnNote)
-            .opacityReduced(viewModel.isCreating)
         }
     }
 
