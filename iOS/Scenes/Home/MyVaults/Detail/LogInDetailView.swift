@@ -28,6 +28,8 @@ struct LogInDetailView: View {
     @State private var isShowingPassword = false
     @Namespace private var bottomID
 
+    private var tintColor: UIColor { viewModel.itemContent.tintColor }
+
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
@@ -84,8 +86,8 @@ struct LogInDetailView: View {
 
     private var usernameRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.user,
-                                  color: viewModel.itemContent.tintColor)
+            ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.user,
+                                  color: tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -97,6 +99,21 @@ struct LogInDetailView: View {
                 } else {
                     Text(viewModel.username)
                         .sectionContentText()
+
+                    if viewModel.isAlias {
+                        Button(action: viewModel.showAliasDetail) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("View Alias")
+                                    .font(.callout)
+                                    .foregroundColor(Color(uiColor: tintColor))
+                                Color(uiColor: tintColor)
+                                    .frame(height: 1)
+                                    .opacity(0.24)
+                            }
+                            .fixedSize(horizontal: true, vertical: true)
+                            .padding(.top, 8)
+                        }
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -116,11 +133,9 @@ struct LogInDetailView: View {
             })
         }
     }
-
     private var passwordRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.key,
-                                  color: viewModel.itemContent.tintColor)
+            ItemDetailSectionIcon(icon: IconProvider.key, color: tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Password")
@@ -141,7 +156,7 @@ struct LogInDetailView: View {
             Spacer()
 
             CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
-                         color: viewModel.itemContent.tintColor,
+                         color: tintColor,
                          action: { isShowingPassword.toggle() })
             .fixedSize(horizontal: true, vertical: true)
         }
@@ -172,8 +187,7 @@ struct LogInDetailView: View {
             EmptyView()
         } else {
             HStack(spacing: kItemDetailSectionPadding) {
-                ItemDetailSectionIcon(icon: IconProvider.lock,
-                                      color: viewModel.itemContent.tintColor)
+                ItemDetailSectionIcon(icon: IconProvider.lock, color: tintColor)
 
                 VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                     Text("Two Factor Authentication")
@@ -189,7 +203,8 @@ struct LogInDetailView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     case .invalid:
                         Text("Invalid Two Factor Authentication URI")
-                            .placeholderText()
+                            .font(.caption)
+                            .foregroundColor(Color(uiColor: .notificationError))
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -210,8 +225,7 @@ struct LogInDetailView: View {
 
     private var urlsSection: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.earth,
-                                  color: viewModel.itemContent.tintColor)
+            ItemDetailSectionIcon(icon: IconProvider.earth, color: tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Website")
