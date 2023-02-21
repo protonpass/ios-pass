@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -27,9 +26,11 @@ import UIComponents
 struct CreateEditAliasView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditAliasViewModel
-    @State private var isFocusedOnTitle = false
-    @State private var isFocusedOnPrefix = false
-    @State private var isFocusedOnNote = false
+    @FocusState private var isFocusedOnTitle: Bool
+    @FocusState private var isFocusedOnPrefix: Bool
+    @FocusState private var isFocusedOnNote: Bool
+    @Namespace private var noteID
+    @State private var isShowingAdvancedOptions = false
     @State private var isShowingDiscardAlert = false
 
     private var tintColor: UIColor { viewModel.itemContentType().tintColor }
@@ -57,7 +58,6 @@ struct CreateEditAliasView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(viewModel.navigationBarTitle())
         }
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
@@ -73,25 +73,70 @@ struct CreateEditAliasView: View {
     }
 
     private var content: some View {
-        ScrollView {
-            VStack(spacing: 8) {
-                titleSection
-                if case .edit = viewModel.mode {
-                    aliasReadonlySection
-                } else {
-                    aliasPreviewSection
-                    prefixSuffixSection
-                }
-                mailboxesSection
+        ScrollViewReader { value in
+            ScrollView {
+                LazyVStack(spacing: 8) {
+                    CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
+                                               title: $viewModel.title) {
+                        if case .create = viewModel.mode {
+                            isFocusedOnPrefix.toggle()
+                        } else {
+                            isFocusedOnNote.toggle()
+                        }
+                    }
 
-                NoteEditSection(note: $viewModel.note)
+                    if case .edit = viewModel.mode {
+                        aliasReadonlySection
+                    } else {
+                        aliasPreviewSection
+                        if isShowingAdvancedOptions, let suffixSelection = viewModel.suffixSelection {
+                            PrefixSuffixSection(prefix: $viewModel.prefix, suffixSelection: suffixSelection)
+                        } else {
+                            AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
+                                .padding(.vertical)
+                        }
+                    }
+
+                    if let mailboxSelection = viewModel.mailboxSelection {
+                        MailboxSection(mailboxSelection: mailboxSelection)
+                            .onTapGesture(perform: viewModel.showMailboxSelection)
+                    }
+
+                    NoteEditSection(note: $viewModel.note, isFocused: $isFocusedOnNote)
+                        .id(noteID)
+                }
+                .padding()
+                .animation(.default, value: isShowingAdvancedOptions)
             }
-            .padding()
+            .onChange(of: isFocusedOnNote) { isFocusedOnNote in
+                if isFocusedOnNote {
+                    withAnimation {
+                        value.scrollTo(noteID, anchor: .bottom)
+                    }
+                }
+            }
+            .onChange(of: viewModel.note) { _ in
+                withAnimation {
+                    value.scrollTo(noteID, anchor: .bottom)
+                }
+            }
         }
+        .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
         .tint(Color(uiColor: tintColor))
+        .onFirstAppear {
+            if case .create = viewModel.mode {
+                if #available(iOS 16, *) {
+                    isFocusedOnTitle.toggle()
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                        isFocusedOnTitle.toggle()
+                    }
+                }
+            }
+        }
         .toolbar {
             CreateEditItemToolbar(
-                title: viewModel.navigationBarTitle(),
+                saveButtonTitle: viewModel.saveButtonTitle(),
                 isSaveable: viewModel.isSaveable,
                 isSaving: viewModel.isSaving,
                 itemContentType: viewModel.itemContentType(),
@@ -104,26 +149,6 @@ struct CreateEditAliasView: View {
                 },
                 onSave: viewModel.save)
         }
-    }
-
-    private var titleSection: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Title")
-                    .sectionTitleText()
-                TextField("Untitled", text: $viewModel.title)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            Button(action: {
-                viewModel.title = ""
-            }, label: {
-                ItemDetailSectionIcon(icon: IconProvider.cross,
-                                      color: .textWeak)
-            })
-        }
-        .padding(kItemDetailSectionPadding)
-        .roundedEditableSection()
     }
 
     private var aliasReadonlySection: some View {
@@ -145,8 +170,7 @@ struct CreateEditAliasView: View {
 
     private var aliasPreviewSection: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.alias,
-                                  color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.alias, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Alias preview")
@@ -154,19 +178,13 @@ struct CreateEditAliasView: View {
 
                 if let prefixError = viewModel.prefixError {
                     Text(prefixError.localizedDescription)
-                        .font(.caption)
+                        .font(.callout)
                         .foregroundColor(.red)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
-                    if viewModel.prefix.isEmpty {
-                        Text("prefix")
-                            .foregroundColor(.textWeak) +
-                        Text(viewModel.suffix)
-                            .foregroundColor(Color(uiColor: tintColor))
-                    } else {
-                        Text(viewModel.prefix + viewModel.suffix)
-                            .foregroundColor(Color(uiColor: tintColor))
-                    }
+                    Text(viewModel.prefix) +
+                    Text(viewModel.suffix)
+                        .foregroundColor(Color(uiColor: tintColor))
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -174,128 +192,5 @@ struct CreateEditAliasView: View {
         .animation(.default, value: viewModel.prefixError)
         .padding(kItemDetailSectionPadding)
         .roundedDetailSection()
-    }
-
-    private var prefixSuffixSection: some View {
-        VStack(alignment: .leading, spacing: kItemDetailSectionPadding) {
-            prefixRow
-            Divider()
-            suffixRow
-        }
-        .padding(.vertical, kItemDetailSectionPadding)
-        .roundedDetailSection()
-    }
-
-    private var prefixRow: some View {
-        VStack(alignment: .leading) {
-            Text("Prefix")
-                .sectionTitleText()
-            TextField("Add a prefix", text: $viewModel.prefix)
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, kItemDetailSectionPadding)
-    }
-
-    @ViewBuilder
-    private var suffixRow: some View {
-        if let suffixes = viewModel.suffixSelection?.suffixes {
-            Menu(content: {
-                ForEach(suffixes, id: \.suffix) { suffix in
-                    Button(action: {
-                        viewModel.suffixSelection?.selectedSuffix = suffix
-                    }, label: {
-                        Label(title: {
-                            Text(suffix.suffix)
-                        }, icon: {
-                            if suffix.suffix == viewModel.suffix {
-                                Image(systemName: "checkmark")
-                            }
-                        })
-                    })
-                }
-            }, label: {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("Suffix")
-                            .sectionTitleText()
-                        Text(viewModel.suffix)
-                            .sectionContentText()
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    Spacer()
-                    ItemDetailSectionIcon(icon: IconProvider.chevronDown,
-                                          color: .textWeak)
-                }
-                .padding(.horizontal, kItemDetailSectionPadding)
-                .transaction { transaction in
-                    transaction.animation = nil
-                }
-            })
-        } else {
-            EmptyView()
-        }
-    }
-
-    private var mailboxesSection: some View {
-        HStack {
-            ItemDetailSectionIcon(icon: IconProvider.forward,
-                                  color: .textWeak)
-
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Forwarded to")
-                    .sectionTitleText()
-                Text(viewModel.mailboxes)
-                    .sectionContentText()
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            ItemDetailSectionIcon(icon: IconProvider.chevronDown,
-                                  color: .textWeak)
-        }
-        .padding(kItemDetailSectionPadding)
-        .roundedEditableSection()
-        .contentShape(Rectangle())
-        .onTapGesture {
-            viewModel.showMailboxSelection()
-        }
-    }
-}
-
-struct MailboxesView: View {
-    @Environment(\.dismiss) private var dismiss
-    @ObservedObject var mailboxSelection: MailboxSelection
-    let tintColor = Color(uiColor: ItemContentType.alias.tintColor)
-
-    var body: some View {
-        NavigationView {
-            List {
-                ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
-                    HStack {
-                        Text(mailbox.email)
-                            .foregroundColor(isSelected(mailbox) ? tintColor : .textNorm)
-                        Spacer()
-
-                        if isSelected(mailbox) {
-                            Image(uiImage: IconProvider.checkmark)
-                                .foregroundColor(tintColor)
-                        }
-                    }
-                    .contentShape(Rectangle())
-                    .listRowSeparator(.hidden)
-                    .onTapGesture {
-                        mailboxSelection.selectOrDeselect(mailbox: mailbox)
-                    }
-                }
-            }
-            .listStyle(.plain)
-            .navigationTitle("Forwarded to")
-            .navigationBarTitleDisplayMode(.inline)
-        }
-    }
-
-    private func isSelected(_ mailbox: Mailbox) -> Bool {
-        mailboxSelection.selectedMailboxes.contains(mailbox)
     }
 }

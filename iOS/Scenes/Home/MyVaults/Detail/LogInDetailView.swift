@@ -26,7 +26,9 @@ import UIComponents
 struct LogInDetailView: View {
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
-    @State private var bottomId = UUID().uuidString
+    @Namespace private var bottomID
+
+    private var tintColor: UIColor { viewModel.itemContent.tintColor }
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -44,10 +46,11 @@ struct LogInDetailView: View {
                         .padding(.vertical, 8)
                     NoteDetailSection(itemContent: viewModel.itemContent)
 
-                    ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
-                                              onExpand: { withAnimation { value.scrollTo(bottomId) } })
+                    ItemDetailMoreInfoSection(
+                        itemContent: viewModel.itemContent,
+                        onExpand: { withAnimation { value.scrollTo(bottomID, anchor: .bottom) } })
                     .padding(.top, 24)
-                    .id(bottomId)
+                    .id(bottomID)
                 }
                 .padding()
             }
@@ -83,8 +86,8 @@ struct LogInDetailView: View {
 
     private var usernameRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.user,
-                                  color: viewModel.itemContent.tintColor)
+            ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.user,
+                                  color: tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -96,6 +99,21 @@ struct LogInDetailView: View {
                 } else {
                     Text(viewModel.username)
                         .sectionContentText()
+
+                    if viewModel.isAlias {
+                        Button(action: viewModel.showAliasDetail) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("View Alias")
+                                    .font(.callout)
+                                    .foregroundColor(Color(uiColor: tintColor))
+                                Color(uiColor: tintColor)
+                                    .frame(height: 1)
+                                    .opacity(0.24)
+                            }
+                            .fixedSize(horizontal: true, vertical: true)
+                            .padding(.top, 8)
+                        }
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -115,22 +133,21 @@ struct LogInDetailView: View {
             })
         }
     }
-
     private var passwordRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.key,
-                                  color: viewModel.itemContent.tintColor)
+            ItemDetailSectionIcon(icon: IconProvider.key, color: tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Password")
                     .sectionTitleText()
 
-                Text(isShowingPassword ? viewModel.password : String(repeating: "•", count: 20))
-                    .sectionContentText()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .transaction { transaction in
-                        transaction.animation = .default
-                    }
+                if isShowingPassword {
+                    Text(viewModel.password)
+                        .sectionContentText()
+                } else {
+                    Text(String(repeating: "•", count: 20))
+                        .sectionContentText()
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -139,7 +156,7 @@ struct LogInDetailView: View {
             Spacer()
 
             CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
-                         color: viewModel.itemContent.tintColor,
+                         color: tintColor,
                          action: { isShowingPassword.toggle() })
             .fixedSize(horizontal: true, vertical: true)
         }
@@ -147,7 +164,9 @@ struct LogInDetailView: View {
         .animation(.default, value: isShowingPassword)
         .contextMenu {
             Button(action: {
-                isShowingPassword.toggle()
+                withAnimation {
+                    isShowingPassword.toggle()
+                }
             }, label: {
                 Text(isShowingPassword ? "Conceal" : "Reveal")
             })
@@ -168,8 +187,7 @@ struct LogInDetailView: View {
             EmptyView()
         } else {
             HStack(spacing: kItemDetailSectionPadding) {
-                ItemDetailSectionIcon(icon: IconProvider.lock,
-                                      color: viewModel.itemContent.tintColor)
+                ItemDetailSectionIcon(icon: IconProvider.lock, color: tintColor)
 
                 VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                     Text("Two Factor Authentication")
@@ -185,7 +203,8 @@ struct LogInDetailView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     case .invalid:
                         Text("Invalid Two Factor Authentication URI")
-                            .placeholderText()
+                            .font(.caption)
+                            .foregroundColor(Color(uiColor: .notificationError))
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -195,7 +214,6 @@ struct LogInDetailView: View {
                 switch viewModel.totpManager.state {
                 case .valid(let data):
                     TOTPCircularTimer(data: data.timerData)
-                        .frame(width: 28, height: 28)
                 default:
                     EmptyView()
                 }
@@ -207,8 +225,7 @@ struct LogInDetailView: View {
 
     private var urlsSection: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.earth,
-                                  color: viewModel.itemContent.tintColor)
+            ItemDetailSectionIcon(icon: IconProvider.earth, color: tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Website")

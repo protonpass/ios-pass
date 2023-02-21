@@ -76,7 +76,7 @@ extension PPError {
             case .failedToAuthenticate:
                 return "Failed to authenticate"
             case .invalidURL(let url):
-                return "Invalid URL \"\(url?.absoluteString)\""
+                return "Invalid URL \"\(String(describing: url?.absoluteString))\""
             case .missingRecordIdentifier:
                 return "ASPasswordCredentialIdentity object missing record identifier"
             case .notLogInItem:

@@ -27,6 +27,7 @@ struct CreateEditNoteView: View {
     @StateObject private var viewModel: CreateEditNoteViewModel
     @FocusState private var isFocusedOnTitle: Bool
     @FocusState private var isFocusedOnContent: Bool
+    @Namespace private var contentID
     @State private var isShowingDiscardAlert = false
 
     init(viewModel: CreateEditNoteViewModel) {
@@ -35,33 +36,50 @@ struct CreateEditNoteView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack {
-                    TextEditorWithPlaceholder(text: $viewModel.name,
-                                              isFocused: _isFocusedOnTitle,
-                                              placeholder: "Untitled")
-                    .font(.title.weight(.bold))
-                    .focused($isFocusedOnTitle)
-                    .submitLabel(.next)
-                    .onChange(of: viewModel.name) { name in
-                        // When users press enter, move the cursor to content
-                        if name.last == "\n" {
-                            viewModel.name.removeLast()
-                            isFocusedOnContent = true
-                        }
-                    }
+            ScrollViewReader { value in
+                ScrollView {
+                    LazyVStack {
+                        TextEditorWithPlaceholder(text: $viewModel.name,
+                                                  isFocused: $isFocusedOnTitle,
+                                                  placeholder: "Untitled",
+                                                  submitLabel: .next)
+                        .font(.title.weight(.bold))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                        .fixedSize(horizontal: false, vertical: true)
 
-                    TextEditorWithPlaceholder(text: $viewModel.note,
-                                              isFocused: _isFocusedOnContent,
-                                              placeholder: "Tap here to continue")
+                        TextEditorWithPlaceholder(text: $viewModel.note,
+                                                  isFocused: $isFocusedOnContent,
+                                                  placeholder: "Tap here to continue")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .id(contentID)
+
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .padding()
+                .onChange(of: viewModel.name) { name in
+                    // When users press enter, move the cursor to content
+                    if name.last == "\n" {
+                        viewModel.name.removeLast()
+                        isFocusedOnContent = true
+                    }
+                    withAnimation {
+                        value.scrollTo(contentID, anchor: .bottom)
+                    }
+                }
+                .onChange(of: viewModel.note) { _ in
+                    withAnimation {
+                        value.scrollTo(contentID, anchor: .bottom)
+                    }
+                }
             }
-            .accentColor(Color(uiColor: viewModel.itemContentType().tintColor))
+            .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
+            .tint(Color(uiColor: viewModel.itemContentType().tintColor))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 CreateEditItemToolbar(
-                    title: viewModel.navigationBarTitle(),
+                    saveButtonTitle: viewModel.saveButtonTitle(),
                     isSaveable: viewModel.isSaveable,
                     isSaving: viewModel.isSaving,
                     itemContentType: viewModel.itemContentType(),
@@ -79,7 +97,16 @@ struct CreateEditNoteView: View {
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .onFirstAppear {
-            isFocusedOnTitle = true
+            if #available(iOS 16, *) {
+                isFocusedOnTitle = true
+            } else {
+                // 0.5 second delay is purely heuristic.
+                // Values lower than 0.5 simply don't work.
+                // Can be removed once iOS 15 is dropped
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    isFocusedOnTitle = true
+                }
+            }
         }
     }
 }

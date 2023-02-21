@@ -1,6 +1,6 @@
 //
-// NoteEditSection.swift
-// Proton Pass - Created on 10/02/2023.
+// MailboxSection.swift
+// Proton Pass - Created on 17/02/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -22,35 +22,25 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct NoteEditSection: View {
-    @Binding var note: String
-    let isFocused: FocusState<Bool>.Binding
+struct MailboxSection: View {
+    @ObservedObject var mailboxSelection: MailboxSelection
 
     var body: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.note, color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.forward, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Note")
+                Text("Forwarded to")
                     .sectionTitleText()
-
-                TextEditorWithPlaceholder(text: $note,
-                                          isFocused: isFocused,
-                                          placeholder: "Add note")
-                .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)
+                Text(mailboxSelection.selectedMailboxesString)
+                    .sectionContentText()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !note.isEmpty {
-                Button(action: {
-                    note = ""
-                }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
-                })
-            }
+            ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: .textWeak)
         }
         .padding(kItemDetailSectionPadding)
         .roundedEditableSection()
-        .animation(.default, value: note.isEmpty)
+        .contentShape(Rectangle())
     }
 }

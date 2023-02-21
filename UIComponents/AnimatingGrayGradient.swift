@@ -34,7 +34,7 @@ public struct AnimatingGrayGradient: View {
             .offset(x: animateGradient ? 300 : -200)
             .frame(width: 200)
         }
-        .onAppear {
+        .onFirstAppear {
             withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: false)) {
                 animateGradient.toggle()
             }

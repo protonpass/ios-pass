@@ -25,7 +25,7 @@ import UIComponents
 
 struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
-    @State private var bottomId = UUID().uuidString
+    @Namespace private var bottomID
 
     init(viewModel: AliasDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -43,10 +43,11 @@ struct AliasDetailView: View {
 
                     NoteDetailSection(itemContent: viewModel.itemContent)
 
-                    ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
-                                              onExpand: { withAnimation { value.scrollTo(bottomId) } })
+                    ItemDetailMoreInfoSection(
+                        itemContent: viewModel.itemContent,
+                        onExpand: { withAnimation { value.scrollTo(bottomID, anchor: .bottom) } })
                     .padding(.top, 24)
-                    .id(bottomId)
+                    .id(bottomID)
                 }
                 .padding()
             }
@@ -138,12 +139,12 @@ struct AliasDetailView: View {
                             }
                     }
                 } else {
-                    AnimatingGrayGradient()
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                    AnimatingGrayGradient()
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                    AnimatingGrayGradient()
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    Group {
+                        AnimatingGrayGradient()
+                        AnimatingGrayGradient()
+                        AnimatingGrayGradient()
+                    }
+                    .clipShape(Capsule())
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

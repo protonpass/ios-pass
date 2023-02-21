@@ -34,7 +34,6 @@ import SwiftUI
 import UIComponents
 import UserNotifications
 
-// swiftlint:disable file_length
 public final class CredentialProviderCoordinator {
     @KeychainStorage(key: .sessionData)
     private var sessionData: SessionData?
@@ -493,17 +492,21 @@ private extension CredentialProviderCoordinator {
 
     func showCreateLoginView(shareId: String,
                              itemRepository: ItemRepositoryProtocol,
+                             aliasRepository: AliasRepositoryProtocol,
                              url: URL?) {
         currentShareId = shareId
 
         let creationType = ItemCreationType.login(title: url?.host,
                                                   url: url?.schemeAndHost,
                                                   autofill: true)
+        let emailAddress = sessionData?.userData.addresses.first?.email ?? ""
         let viewModel = CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                type: creationType),
                                                  itemRepository: itemRepository,
+                                                 aliasRepository: aliasRepository,
                                                  preferences: preferences,
-                                                 logManager: logManager)
+                                                 logManager: logManager,
+                                                 emailAddress: emailAddress)
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
@@ -511,38 +514,22 @@ private extension CredentialProviderCoordinator {
         currentCreateEditItemViewModel = viewModel
     }
 
-    func showCreateEditAliasView(shareId: String,
-                                 title: String,
-                                 delegate: AliasCreationDelegate,
-                                 itemRepository: ItemRepositoryProtocol,
-                                 aliasRepository: AliasRepositoryProtocol) {
-        let viewModel = CreateEditAliasViewModel(mode: .create(shareId: shareId,
-                                                               type: .alias(delegate: delegate,
-                                                                            title: title)),
-                                                 itemRepository: itemRepository,
-                                                 aliasRepository: aliasRepository,
-                                                 preferences: preferences,
-                                                 logManager: logManager)
-        viewModel.delegate = self
-        viewModel.createEditAliasViewModelDelegate = self
-        let view = CreateEditAliasView(viewModel: viewModel)
-        presentView(view)
-    }
-
     func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate) {
         let viewModel = GeneratePasswordViewModel(mode: .createLogin)
         viewModel.delegate = delegate
-        let generatePasswordView = GeneratePasswordView(viewModel: viewModel)
-        let generatePasswordViewController = UIHostingController(rootView: generatePasswordView)
+        let view = GeneratePasswordView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        let navigationController = UINavigationController(rootViewController: viewController)
         if #available(iOS 16, *) {
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 344
             }
-            generatePasswordViewController.sheetPresentationController?.detents = [customDetent]
+            navigationController.sheetPresentationController?.detents = [customDetent]
         } else {
-            generatePasswordViewController.sheetPresentationController?.detents = [.medium()]
+            navigationController.sheetPresentationController?.detents = [.medium()]
         }
-        presentViewController(generatePasswordViewController, dismissible: true)
+        viewModel.onDismiss = { navigationController.dismiss(animated: true) }
+        presentViewController(navigationController, dismissible: true)
     }
 
     func showLoadingHud() {
@@ -600,8 +587,11 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?) {
-        guard let itemRepository else { return }
-        showCreateLoginView(shareId: shareId, itemRepository: itemRepository, url: url)
+        guard let itemRepository, let aliasRepository else { return }
+        showCreateLoginView(shareId: shareId,
+                            itemRepository: itemRepository,
+                            aliasRepository: aliasRepository,
+                            url: url)
     }
 
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
@@ -655,42 +645,20 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
 // MARK: - CreateEditLoginViewModelDelegate
 extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
-    func createEditLoginViewModelWantsToGenerateAlias(_ delegate: AliasCreationDelegate,
-                                                      title: String) {
-        guard let currentShareId, let itemRepository, let aliasRepository else { return }
-        showCreateEditAliasView(shareId: currentShareId,
-                                title: title,
-                                delegate: delegate,
-                                itemRepository: itemRepository,
-                                aliasRepository: aliasRepository)
-    }
+    func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
+                                                      creationInfo: AliasCreationLiteInfo,
+                                                      delegate: AliasCreationLiteInfoDelegate) {}
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate)
     }
 
-    func createEditLoginViewModelDidReceiveAliasCreationInfo() {
-        topMostViewController.dismiss(animated: true)
-    }
-
     func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String) {
         clipboardManager.copy(text: text, bannerMessage: bannerMessage)
     }
-}
 
-// MARK: - CreateEditAliasViewModelDelegate
-extension CredentialProviderCoordinator: CreateEditAliasViewModelDelegate {
-    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        let view = MailboxesView(mailboxSelection: mailboxSelection)
-        let viewController = UIHostingController(rootView: view)
-        viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        presentViewController(viewController, dismissible: true)
-    }
-
-    func createEditAliasViewModelCanNotCreateMoreAliases() {
-        topMostViewController.dismiss(animated: true) { [unowned self] in
-            self.bannerManager.displayTopErrorMessage("You can not create more aliases.")
-        }
+    func createEditLoginViewModelCanNotCreateMoreAlias() {
+        bannerManager.displayTopErrorMessage("You can not create more aliases.")
     }
 }
 

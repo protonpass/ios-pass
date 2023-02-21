@@ -24,7 +24,7 @@ import UIComponents
 
 struct NoteDetailView: View {
     @StateObject private var viewModel: NoteDetailViewModel
-    @State private var bottomId = UUID().uuidString
+    @Namespace private var bottomID
     private let tintColor = UIColor.systemYellow
 
     init(viewModel: NoteDetailViewModel) {
@@ -52,10 +52,11 @@ struct NoteDetailView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
 
-                    ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
-                                              onExpand: { withAnimation { value.scrollTo(bottomId) } })
+                    ItemDetailMoreInfoSection(
+                        itemContent: viewModel.itemContent,
+                        onExpand: { withAnimation { value.scrollTo(bottomID, anchor: .bottom) } })
                     .padding(.top, 24)
-                    .id(bottomId)
+                    .id(bottomID)
                 }
                 .padding()
             }

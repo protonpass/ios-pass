@@ -97,6 +97,9 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
 
     @Published public private(set) var state = TOTPState.empty
 
+    /// The current `URI` whether it's valid or not
+    public private(set) var uri = ""
+
     public init(logManager: LogManager) {
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
@@ -110,7 +113,14 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
         return nil
     }
 
+    public func reset() {
+        timer?.invalidate()
+        uri = ""
+        state = .empty
+    }
+
     public func bind(uri: String) {
+        self.uri = uri
         timer?.invalidate()
         state = .loading
         guard !uri.isEmpty else {

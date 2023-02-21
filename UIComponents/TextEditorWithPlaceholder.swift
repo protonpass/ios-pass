@@ -21,37 +21,41 @@
 import SwiftUI
 
 public struct TextEditorWithPlaceholder: View {
-    @State private var isShowingPlaceholder: Bool
-    @FocusState var isFocused: Bool
     @Binding var text: String
+    var isFocused: FocusState<Bool>.Binding
     let placeholder: String
+    let submitLabel: SubmitLabel
 
     public init(text: Binding<String>,
-                isFocused: FocusState<Bool>,
-                placeholder: String) {
-        self._isShowingPlaceholder = .init(initialValue: text.wrappedValue.isEmpty)
+                isFocused: FocusState<Bool>.Binding,
+                placeholder: String,
+                submitLabel: SubmitLabel = .return) {
         self._text = text
-        self._isFocused = isFocused
+        self.isFocused = isFocused
         self.placeholder = placeholder
+        self.submitLabel = submitLabel
     }
 
     public var body: some View {
-        ZStack {
-            TextEditor(text: $text)
-                .focused($isFocused)
-
-            if isShowingPlaceholder {
-                TextField(placeholder, text: .constant("")) { changed in
-                    if changed {
-                        isShowingPlaceholder = false
-                        isFocused = true
-                    }
+        if #available(iOS 16.0, *) {
+            TextField(placeholder, text: $text, axis: .vertical)
+                .focused(isFocused)
+                .scrollContentBackground(.hidden)
+                .submitLabel(submitLabel)
+        } else {
+            ZStack {
+                if text.isEmpty {
+                    TextField(placeholder, text: .constant(""))
                 }
+
+                TextEditor(text: $text)
+                    .focused(isFocused)
+                    .submitLabel(submitLabel)
+                    .offset(x: -4)
             }
-        }
-        .animation(.default, value: isShowingPlaceholder)
-        .onChange(of: isFocused) { isFocused in
-            isShowingPlaceholder = !isFocused && text.isEmpty
+            .transaction { transaction in
+                transaction.animation = nil
+            }
         }
     }
 }

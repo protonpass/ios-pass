@@ -1,5 +1,5 @@
 //
-// CapsuleButton.swift
+// CapsuleIconButton.swift
 // Proton Pass - Created on 03/02/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -20,8 +20,8 @@
 
 import SwiftUI
 
-/// A capsule button with an icon inside.
-public struct CapsuleButton: View {
+/// A capsule button with an icon as title.
+public struct CapsuleIconButton: View {
     let icon: UIImage
     let color: UIColor
     let height: CGFloat
