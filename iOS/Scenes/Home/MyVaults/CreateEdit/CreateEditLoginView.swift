@@ -159,12 +159,8 @@ struct CreateEditLoginView: View {
                     isFocusedOnUsername = false
                 }
             }, label: {
-                VStack {
-                    Text("Use my email address")
-                        .font(.callout)
-                    Text(viewModel.emailAddress)
-                        .font(.caption)
-                }
+                Text("Use \(viewModel.emailAddress)")
+                    .minimumScaleFactor(0.5)
             })
             .frame(maxWidth: .infinity, alignment: .center)
         }
@@ -348,13 +344,26 @@ struct CreateEditLoginView: View {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Password")
                     .sectionTitleText()
-                TextField("Add password", text: $viewModel.password)
-                    .textContentType(.password)
-                    .textInputAutocapitalization(.never)
-                    .focused($isFocusedOnPassword)
-                    .submitLabel(.done)
+                if viewModel.isPasswordSecure {
+                    Text(String(repeating: "•", count: 20))
+                        .sectionContentText()
+                } else {
+                    TextField("Add password", text: $viewModel.password)
+                        .textContentType(.password)
+                        .textInputAutocapitalization(.never)
+                        .focused($isFocusedOnPassword)
+                        .submitLabel(.done)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .animation(.default, value: viewModel.isPasswordSecure)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                viewModel.isPasswordSecure = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    isFocusedOnPassword = true
+                }
+            }
 
             if !viewModel.password.isEmpty {
                 Button(action: {
