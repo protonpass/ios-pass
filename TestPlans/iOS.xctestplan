@@ -25,22 +25,6 @@
   },
   "testTargets" : [
     {
-      "enabled" : false,
-      "target" : {
-        "containerPath" : "container:ProtonPass.xcodeproj",
-        "identifier" : "35E5068A286F87A700A3F6EA",
-        "name" : "CoreTests"
-      }
-    },
-    {
-      "enabled" : false,
-      "target" : {
-        "containerPath" : "container:ProtonPass.xcodeproj",
-        "identifier" : "35E50667286F870500A3F6EA",
-        "name" : "ClientTests"
-      }
-    },
-    {
       "target" : {
         "containerPath" : "container:ProtonPass.xcodeproj",
         "identifier" : "354A803B28D8B8D8003F49CF",
