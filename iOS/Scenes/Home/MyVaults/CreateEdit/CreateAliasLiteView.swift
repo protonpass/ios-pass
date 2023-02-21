@@ -48,7 +48,7 @@ struct CreateAliasLiteView: View {
                         .onTapGesture(perform: viewModel.showMailboxSelection)
 
                     if !isShowingAdvancedOptions {
-                        advancedOptionsSection
+                        AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
                             .padding(.vertical)
                     }
 
@@ -106,23 +106,5 @@ struct CreateAliasLiteView: View {
                 .fontWeight(.medium)
                 .foregroundColor(Color(uiColor: tintColor))
         }
-    }
-
-    private var advancedOptionsSection: some View {
-        Button(action: {
-            isShowingAdvancedOptions.toggle()
-        }, label: {
-            Label(title: {
-                Text("Show advanced options")
-                    .font(.callout)
-            }, icon: {
-                Image(uiImage: IconProvider.cogWheel)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 16)
-            })
-            .foregroundColor(.textWeak)
-            .frame(maxWidth: .infinity, alignment: .trailing)
-        })
     }
 }
