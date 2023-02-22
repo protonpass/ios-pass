@@ -425,6 +425,9 @@
 		6EA5015186914BB62E54DBE6 /* Pods_Client_ClientTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D35678054D43CDE3733E788 /* Pods_Client_ClientTests.framework */; };
 		706849B55C70CEEC0D81FBF3 /* Pods_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 302E54D07ED836B91BE0C248 /* Pods_macOS.framework */; };
 		714F1CEDA69DC0FE2052953C /* Pods_UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8E8D5E563338181886BC10D /* Pods_UIComponents.framework */; };
+		7513C54529A5E89B006F7160 /* AutoFillRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7513C54429A5E89B006F7160 /* AutoFillRobot.swift */; };
+		7513C54729A5F963006F7160 /* FaceIDRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7513C54629A5F963006F7160 /* FaceIDRobot.swift */; };
+		7513C54929A5F9F9006F7160 /* GetStartedRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7513C54829A5F9F9006F7160 /* GetStartedRobot.swift */; };
 		75283BF42946E21D006658A6 /* AppMainRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75283BE22946E21C006658A6 /* AppMainRobot.swift */; };
 		75283BF52946E21D006658A6 /* MainRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75283BE42946E21C006658A6 /* MainRobot.swift */; };
 		75283BF82946E21D006658A6 /* LoginSignupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75283BE82946E21C006658A6 /* LoginSignupTests.swift */; };
@@ -1015,6 +1018,9 @@
 		516CDE61530718391B5F970B /* Pods-Client-iOSTests.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.release-prod.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.release-prod.xcconfig"; sourceTree = "<group>"; };
 		56B3CF30248112360ECC618C /* Pods-iOSUITests.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.debug-prod.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		70B9DCC580A1534DBDA4F437 /* Pods-iOS.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release-black.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release-black.xcconfig"; sourceTree = "<group>"; };
+		7513C54429A5E89B006F7160 /* AutoFillRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoFillRobot.swift; sourceTree = "<group>"; };
+		7513C54629A5F963006F7160 /* FaceIDRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceIDRobot.swift; sourceTree = "<group>"; };
+		7513C54829A5F9F9006F7160 /* GetStartedRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetStartedRobot.swift; sourceTree = "<group>"; };
 		75283BD52946E1A8006658A6 /* iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		75283BE22946E21C006658A6 /* AppMainRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMainRobot.swift; sourceTree = "<group>"; };
 		75283BE42946E21C006658A6 /* MainRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainRobot.swift; sourceTree = "<group>"; };
@@ -2194,6 +2200,9 @@
 		75283BF22946E21D006658A6 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				7513C54829A5F9F9006F7160 /* GetStartedRobot.swift */,
+				7513C54629A5F963006F7160 /* FaceIDRobot.swift */,
+				7513C54429A5E89B006F7160 /* AutoFillRobot.swift */,
 				752A68E62954945900DCC65E /* OnboardingRobot.swift */,
 				75283BF32946E21D006658A6 /* HomeRobot.swift */,
 			);
@@ -3567,9 +3576,12 @@
 				75283BF82946E21D006658A6 /* LoginSignupTests.swift in Sources */,
 				75283BFA2946E21D006658A6 /* LoginBaseTestCase.swift in Sources */,
 				752A68E72954945900DCC65E /* OnboardingRobot.swift in Sources */,
+				7513C54729A5F963006F7160 /* FaceIDRobot.swift in Sources */,
 				75283BF42946E21D006658A6 /* AppMainRobot.swift in Sources */,
 				75F7578F297928C2008A43D7 /* TokenRefreshTests.swift in Sources */,
 				75283BFF2946E21D006658A6 /* SettingsTests.swift in Sources */,
+				7513C54529A5E89B006F7160 /* AutoFillRobot.swift in Sources */,
+				7513C54929A5F9F9006F7160 /* GetStartedRobot.swift in Sources */,
 				75283C012946E21D006658A6 /* HomeRobot.swift in Sources */,
 				75283C032946E49A006658A6 /* ExternalAccountsCapabilityATests.swift in Sources */,
 				75283C002946E21D006658A6 /* SettingsRobot.swift in Sources */,
