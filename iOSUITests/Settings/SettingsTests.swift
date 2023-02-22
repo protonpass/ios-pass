@@ -28,7 +28,6 @@ class SettingsTests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()
     let homeRobot = HomeRobot()
 
-    
     /// settings and telemetry haven't build yet. enable when ready
     func testTelemetrySettings() {
         welcomeRobot.logIn()
