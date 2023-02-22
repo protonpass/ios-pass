@@ -28,11 +28,16 @@ class SettingsTests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()
     let homeRobot = HomeRobot()
 
+    
+    /// settings and telemetry haven't build yet. enable when ready
     func testTelemetrySettings() {
         welcomeRobot.logIn()
             .fillUsername(username: ObfuscatedConstants.passTestUsername)
             .fillpassword(password: ObfuscatedConstants.passTestPassword)
-            .signIn(robot: HomeRobot.self)
+            .signIn(robot: AutoFillRobot.self)
+            .notNowTap(robot: FaceIDRobot.self)
+            .noThanks(robot: GetStartedRobot.self)
+            .getStartedTap(robot: HomeRobot.self)
             .tapBurgerMenuButton(robot: SettingsRobot.self)
             .tapSettingsButton()
             .verify.telemetryItemIsDisplayed()

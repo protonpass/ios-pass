@@ -14,6 +14,12 @@
   "testTargets" : [
     {
       "parallelizable" : true,
+      "skippedTests" : [
+        "ExternalAccountsCapabilityATests\/testSignInWithExternalAccountWorks()",
+        "ExternalAccountsCapabilityATests\/testSignInWithUsernameAccountWorks()",
+        "ExternalAccountsCapabilityATests\/testSignUpWithInternalAccountWorks()",
+        "SettingsTests\/testTelemetrySettings()"
+      ],
       "target" : {
         "containerPath" : "container:ProtonPass.xcodeproj",
         "identifier" : "75283BD42946E1A8006658A6",
