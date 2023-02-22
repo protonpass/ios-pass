@@ -349,7 +349,6 @@ struct CreateEditLoginView: View {
                         .sectionContentText()
                 } else {
                     TextField("Add password", text: $viewModel.password)
-                        .textContentType(.password)
                         .textInputAutocapitalization(.never)
                         .focused($isFocusedOnPassword)
                         .submitLabel(.done)
