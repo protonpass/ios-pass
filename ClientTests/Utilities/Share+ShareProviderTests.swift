@@ -41,31 +41,21 @@ final class SharePlusShareProviderTests: XCTestCase {
 
         let signingKeyPassphrase = signingKeyPassphraseKeyPacketData + signingKeyPassphraseData
 
-        let createdShare =
-        Share(shareID: .random(),
-              vaultID: .random(),
-              addressID: (try? testUser.getAddressKey().addressId) ?? "",
-              targetType: ShareType.vault.rawValue,
-              targetID: .random(),
-              permission: 0,
-              content: request.content,
-              contentKeyRotation: 0,
-              contentFormatVersion: 1,
-              expireTime: nil,
-              createTime: 0)
+        let createdShare = Share(shareID: .random(),
+                                 vaultID: .random(),
+                                 addressID: (try? testUser.getAddressKey().addressId) ?? "",
+                                 targetType: ShareType.vault.rawValue,
+                                 targetID: .random(),
+                                 permission: 0,
+                                 content: request.content,
+                                 contentKeyRotation: 0,
+                                 contentFormatVersion: 1,
+                                 expireTime: nil,
+                                 createTime: 0)
 
-        let vaultKeyPassphraseKeyPacketData = try XCTUnwrap(request.keyPacket.base64Decode())
-        let vaultKeyPassphraseData = try XCTUnwrap(request.vaultKeyPassphrase.base64Decode())
-        let vaultKeyPassphrase = vaultKeyPassphraseKeyPacketData + vaultKeyPassphraseData
+        let shareKeys: [ShareKey] = [.init(key: .random(), keyRotation: 0, createTime: 0)]
 
-        let vaultKeys: [VaultKey] = [.init(rotationID: .random(),
-                                           rotation: 0,
-                                           key: request.vaultKey,
-                                           keyPassphrase: vaultKeyPassphrase.base64EncodedString(),
-                                           keySignature: request.vaultKeySignature,
-                                           createTime: 0)]
-
-        let shareContent = try createdShare.getShareContent(userData: testUser, vaultKeys: vaultKeys)
+        let shareContent = try createdShare.getShareContent(userData: testUser, shareKeys: shareKeys)
         switch shareContent {
         case .vault(let vault):
             XCTAssertEqual(givenVault.name, vault.name)

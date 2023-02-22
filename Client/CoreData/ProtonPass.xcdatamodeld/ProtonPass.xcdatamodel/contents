@@ -25,20 +25,6 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="ItemKeyEntity" representedClassName="ItemKeyEntity" syncable="YES">
-        <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="key" attributeType="String"/>
-        <attribute name="keyPassphrase" optional="YES" attributeType="String"/>
-        <attribute name="keySignature" attributeType="String"/>
-        <attribute name="rotationID" attributeType="String"/>
-        <attribute name="shareID" attributeType="String"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="shareID"/>
-                <constraint value="rotationID"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
-    </entity>
     <entity name="PublicKeyEntity" representedClassName="PublicKeyEntity" syncable="YES">
         <attribute name="email" attributeType="String"/>
         <attribute name="value" attributeType="String"/>
@@ -73,18 +59,15 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="VaultKeyEntity" representedClassName="VaultKeyEntity" syncable="YES">
+    <entity name="ShareKeyEntity" representedClassName="ShareKeyEntity" syncable="YES">
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="key" attributeType="String"/>
-        <attribute name="keyPassphrase" optional="YES" attributeType="String"/>
-        <attribute name="keySignature" attributeType="String"/>
-        <attribute name="rotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="rotationID" attributeType="String"/>
-        <attribute name="shareID" optional="YES" attributeType="String"/>
+        <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="shareID" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="shareID"/>
-                <constraint value="rotationID"/>
+                <constraint value="keyRotation"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

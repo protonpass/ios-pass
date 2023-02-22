@@ -24,9 +24,9 @@
 SLASH=/
 ACCOUNT_HOST = https:$(SLASH)/account.proton.black
 API_HOST = dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz
-CAPTCHA_HOST = https:$(SLASH)/api.proton.black'
+CAPTCHA_HOST = https:$(SLASH)/api.proton.black
 DEFAULT_PATH = /api
-DEFAULT_HOST = https:$(SLASH)/proton.black
+DEFAULT_HOST = https:$(SLASH)/banks.proton.black
 HUMAN_VERIFICATION_V3_HOST = https:$(SLASH)/verify.proton.black
 SIGNUP_DOMAIN = proton.black
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) BLACK

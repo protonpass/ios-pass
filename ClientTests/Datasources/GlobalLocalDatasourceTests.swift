@@ -53,13 +53,8 @@ extension GlobalLocalDatasourceTests {
         XCTAssertEqual(firstSharesFirstGet.count, firstShareIds.count)
 
         for shareId in firstShareIds {
-            let itemKeys =
-            try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
-            XCTAssertFalse(itemKeys.isEmpty)
-
-            let vaultKeys =
-            try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
-            XCTAssertFalse(vaultKeys.isEmpty)
+            let keys = try await sut.localShareKeyDatasource.getKeys(shareId: shareId)
+            XCTAssertFalse(keys.isEmpty)
 
             let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
             XCTAssertEqual(itemCount, firstItemCount)
@@ -78,13 +73,8 @@ extension GlobalLocalDatasourceTests {
         XCTAssertEqual(secondSharesFirstGet.count, secondShareIds.count)
 
         for shareId in secondShareIds {
-            let itemKeys =
-            try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
-            XCTAssertFalse(itemKeys.isEmpty)
-
-            let vaultKeys =
-            try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
-            XCTAssertFalse(vaultKeys.isEmpty)
+            let keys = try await sut.localShareKeyDatasource.getKeys(shareId: shareId)
+            XCTAssertFalse(keys.isEmpty)
 
             let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
             XCTAssertEqual(itemCount, secondItemCount)
@@ -101,13 +91,8 @@ extension GlobalLocalDatasourceTests {
         XCTAssertTrue(firstSharesSecondGet.isEmpty)
 
         for shareId in firstShareIds {
-            let itemKeys =
-            try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
-            XCTAssertTrue(itemKeys.isEmpty)
-
-            let vaultKeys =
-            try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
-            XCTAssertTrue(vaultKeys.isEmpty)
+            let keys = try await sut.localShareKeyDatasource.getKeys(shareId: shareId)
+            XCTAssertTrue(keys.isEmpty)
 
             let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
             XCTAssertEqual(itemCount, 0)
@@ -119,13 +104,8 @@ extension GlobalLocalDatasourceTests {
         XCTAssertEqual(secondSharesSecondGet.count, secondShareIds.count)
 
         for shareId in secondShareIds {
-            let itemKeys =
-            try await sut.localItemKeyDatasource.getItemKeys(shareId: shareId)
-            XCTAssertFalse(itemKeys.isEmpty)
-
-            let vaultKeys =
-            try await sut.localVaultKeyDatasource.getVaultKeys(shareId: shareId)
-            XCTAssertFalse(vaultKeys.isEmpty)
+            let keys = try await sut.localShareKeyDatasource.getKeys(shareId: shareId)
+            XCTAssertFalse(keys.isEmpty)
 
             let itemCount = try await sut.localItemDatasource.getItemCount(shareId: shareId)
             XCTAssertEqual(itemCount, secondItemCount)
@@ -139,11 +119,8 @@ extension GlobalLocalDatasourceTests {
             let share = Share.random(shareId: shareId)
             try await sut.localShareDatasource.upsertShares([share], userId: userId)
 
-            let itemKeys = [ItemKey].random(randomElement: .random())
-            try await sut.localItemKeyDatasource.upsertItemKeys(itemKeys, shareId: shareId)
-
-            let vaultKeys = [VaultKey].random(randomElement: .random())
-            try await sut.localVaultKeyDatasource.upsertVaultKeys(vaultKeys, shareId: shareId)
+            let keys = [ShareKey].random(randomElement: .random())
+            try await sut.localShareKeyDatasource.upsertKeys(keys, shareId: shareId)
 
             let itemRevisions = [ItemRevision].random(count: itemCount, randomElement: .random())
             try await sut.localItemDatasource.upsertItems(
