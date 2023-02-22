@@ -58,8 +58,8 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
         welcomeRobot.logIn()
             .fillUsername(username: randomUsername)
             .fillpassword(password: randomPassword)
-            .signIn(robot: OnboardingRobot.self)
-            .verify.isOnboardingViewShown()
+            .signIn(robot: AutoFillRobot.self)
+            .verify.isAutoFillSetupShown()
     }
 
     func testSignInWithExternalAccountWorks() {
@@ -88,8 +88,8 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
         welcomeRobot.logIn()
             .fillUsername(username: randomEmail)
             .fillpassword(password: randomPassword)
-            .signIn(robot: OnboardingRobot.self)
-            .verify.isOnboardingViewShown()
+            .signIn(robot: AutoFillRobot.self)
+            .verify.isAutoFillSetupShown()
     }
 
     func testSignInWithUsernameAccountWorks() {
@@ -117,8 +117,8 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
         welcomeRobot.logIn()
             .fillUsername(username: randomUsername)
             .fillpassword(password: randomPassword)
-            .signIn(robot: OnboardingRobot.self)
-            .verify.isOnboardingViewShown()
+            .signIn(robot: AutoFillRobot.self)
+            .verify.isAutoFillSetupShown()
     }
 
     // Sign-up with internal account works
