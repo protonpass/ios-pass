@@ -32,27 +32,34 @@ final class TokenRefreshTests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()
 
     func testSignInWithInternalAccountWorks() {
-        let doh = Environment.black.doh
-        let faceIDRobot = welcomeRobot.logIn()
+        let hostUrl = Environment.black.doh.getCurrentlyUsedHostUrl()
+        let expectUnbanQuarkCommandToFinish = expectation(description: "Unban quark command should finish")
+        QuarkCommands.unban(currentlyUsedHostUrl: hostUrl) { result in
+            switch result {
+            case .failure(let error):
+                XCTFail(String(describing: error))
+            case .success:
+                expectUnbanQuarkCommandToFinish.fulfill()
+            }
+        }
+        wait(for: [expectUnbanQuarkCommandToFinish], timeout: 5.0)
+
+        _ = welcomeRobot.logIn()
             .fillUsername(username: ObfuscatedConstants.passTestUsername)
             .fillpassword(password: ObfuscatedConstants.passTestPassword)
             .signIn(robot: AutoFillRobot.self)
             .notNowTap(robot: FaceIDRobot.self)
         let expectExpireSessionQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        QuarkCommands.expireSession(currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl(),
+        QuarkCommands.expireSession(currentlyUsedHostUrl: hostUrl,
                                     username: ObfuscatedConstants.passTestUsername,
-                                    expireRefreshToken: true) {result in
+                                    expireRefreshToken: true) { result in
             if case .failure(let error) = result {
                 XCTFail("\(error)")
-            }
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5.0) {
+            } else {
                 expectExpireSessionQuarkCommandToFinish.fulfill()
             }
         }
-        faceIDRobot
-            .noThanks(robot: GetStartedRobot.self)
-            .getStartedTap(robot: HomeRobot.self)
-        wait(for: [expectExpireSessionQuarkCommandToFinish], timeout: 15.0)
+        wait(for: [expectExpireSessionQuarkCommandToFinish], timeout: 5.0)
         WelcomeRobot().verify.loginButtonExists()
     }
 }
