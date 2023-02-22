@@ -23,6 +23,7 @@ import Foundation
 
 import pmtest
 import ProtonCore_Environment
+import ProtonCore_ObfuscatedConstants
 import ProtonCore_QuarkCommands
 import ProtonCore_TestingToolkit
 import XCTest
@@ -31,44 +32,34 @@ final class TokenRefreshTests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()
 
     func testSignInWithInternalAccountWorks() {
-        let doh = Environment.black.doh
-        let randomUsername = StringUtils.randomAlphanumericString(length: 8)
-        let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-        let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
-        QuarkCommands.create(account: .freeWithAddressAndKeys(username: randomUsername, password: randomPassword),
-                             currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl()) { result in
-            quarkCommandResult = result
-            QuarkCommands.addPassScopeToUser(username: randomUsername,
-                                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
-                if case .failure(let error) = result {
-                    XCTFail("\(error)")
-                }
-                expectQuarkCommandToFinish.fulfill()
+        let hostUrl = Environment.black.doh.getCurrentlyUsedHostUrl()
+        let expectUnbanQuarkCommandToFinish = expectation(description: "Unban quark command should finish")
+        QuarkCommands.unban(currentlyUsedHostUrl: hostUrl) { result in
+            switch result {
+            case .failure(let error):
+                XCTFail(String(describing: error))
+            case .success:
+                expectUnbanQuarkCommandToFinish.fulfill()
             }
         }
-        wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
-        if case .failure(let error) = quarkCommandResult {
-            XCTFail("Internal account creation failed: \(error.userFacingMessageInQuarkCommands)")
-            return
-        }
-        welcomeRobot.logIn()
-            .fillUsername(username: randomUsername)
-            .fillpassword(password: randomPassword)
-            .signIn(robot: OnboardingRobot.self)
-            .verify.isOnboardingViewShown()
+        wait(for: [expectUnbanQuarkCommandToFinish], timeout: 5.0)
+
+        _ = welcomeRobot.logIn()
+            .fillUsername(username: ObfuscatedConstants.passTestUsername)
+            .fillpassword(password: ObfuscatedConstants.passTestPassword)
+            .signIn(robot: AutoFillRobot.self)
+            .notNowTap(robot: FaceIDRobot.self)
         let expectExpireSessionQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        QuarkCommands.expireSession(currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl(),
-                                    username: randomUsername,
-                                    expireRefreshToken: true) {result in
+        QuarkCommands.expireSession(currentlyUsedHostUrl: hostUrl,
+                                    username: ObfuscatedConstants.passTestUsername,
+                                    expireRefreshToken: true) { result in
             if case .failure(let error) = result {
                 XCTFail("\(error)")
-            }
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 10.0) {
+            } else {
                 expectExpireSessionQuarkCommandToFinish.fulfill()
             }
         }
-        wait(for: [expectExpireSessionQuarkCommandToFinish], timeout: 15.0)
+        wait(for: [expectExpireSessionQuarkCommandToFinish], timeout: 5.0)
         WelcomeRobot().verify.loginButtonExists()
     }
 }

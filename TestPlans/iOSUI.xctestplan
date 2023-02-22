@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "2405B7C6-8629-444E-9BD2-3B0301AF3AD4",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "skippedTests" : [
+        "ExternalAccountsCapabilityATests\/testSignInWithExternalAccountWorks()",
+        "ExternalAccountsCapabilityATests\/testSignInWithUsernameAccountWorks()",
+        "ExternalAccountsCapabilityATests\/testSignUpWithInternalAccountWorks()",
+        "SettingsTests\/testTelemetrySettings()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonPass.xcodeproj",
+        "identifier" : "75283BD42946E1A8006658A6",
+        "name" : "iOSUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

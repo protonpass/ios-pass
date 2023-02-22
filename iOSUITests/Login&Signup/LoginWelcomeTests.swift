@@ -33,12 +33,9 @@ final class LoginWelcomeTests: LoginBaseTestCase {
     func testMailWelcomeScreenIsShown() {
         welcomeRobot
             .verify.welcomeScreenVariantIsNotShown(variant: .mail)
-    }
-
-    // pass right now use .drive temperaly
-    func testDriveWelcomeScreenIsShown() {
-        welcomeRobot
-            .verify.welcomeScreenVariantIsShown(variant: .drive)
+            .verify.welcomeScreenVariantIsNotShown(variant: .vpn)
+            .verify.welcomeScreenVariantIsNotShown(variant: .drive)
+            .verify.welcomeScreenVariantIsNotShown(variant: .calendar)
     }
 
     func testSignUpButtonIsPresentedOnWelcomeScreenWhenItShouldBe() {
