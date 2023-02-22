@@ -48,17 +48,9 @@ final class SharePlusShareProviderTests: XCTestCase {
               targetType: ShareType.vault.rawValue,
               targetID: .random(),
               permission: 0,
-              acceptanceSignature: request.acceptanceSignature,
-              inviterEmail: testUser.user.email ?? "",
-              inviterAcceptanceSignature: request.acceptanceSignature,
-              signingKey: request.signingKey,
-              signingKeyPassphrase: signingKeyPassphrase.base64EncodedString(),
               content: request.content,
-              contentRotationID: .random(),
-              contentEncryptedAddressSignature: request.contentEncryptedAddressSignature,
-              contentEncryptedVaultSignature: request.contentEncryptedVaultSignature,
-              contentSignatureEmail: testUser.user.email ?? "",
-              contentFormatVersion: 0,
+              contentKeyRotation: 0,
+              contentFormatVersion: 1,
               expireTime: nil,
               createTime: 0)
 
@@ -78,8 +70,6 @@ final class SharePlusShareProviderTests: XCTestCase {
         case .vault(let vault):
             XCTAssertEqual(givenVault.name, vault.name)
             XCTAssertEqual(givenVault.description, vault.description)
-        case .label:
-            XCTFail("Expect vault not label")
         case .item:
             XCTFail("Expect vault not item")
         }

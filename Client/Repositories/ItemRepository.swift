@@ -443,24 +443,20 @@ private extension ItemRepositoryProtocol {
     }
 
     func getKeysAndPassphrases(shareId: String) async throws -> KeysAndPassphrases {
-        let latestVaultItemKeys = try await vaultItemKeysRepository.getLatestVaultItemKeys(shareId: shareId)
-        let latestVaultKey = latestVaultItemKeys.vaultKey
-        let latestItemKey = latestVaultItemKeys.itemKey
-        let share = try await shareRepository.getShare(shareId: shareId)
-        let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
-                                                                        share: share,
-                                                                        vaultKey: latestVaultKey)
-        guard let itemKeyPassphrase =
-                try PassKeyUtils.getItemKeyPassphrase(vaultKey: latestVaultKey,
-                                                      vaultKeyPassphrase: vaultKeyPassphrase,
-                                                      itemKey: latestItemKey) else {
-            fatalError("Post MVP")
-        }
-        return .init(vaultKey: latestVaultKey,
-                     vaultKeyPassphrase: vaultKeyPassphrase,
-                     itemKey: latestItemKey,
-                     itemKeyPassphrase: itemKeyPassphrase,
-                     addressKey: try userData.getAddressKey())
+        .init(vaultKey: .init(rotationID: "",
+                              rotation: 0,
+                              key: "",
+                              keyPassphrase: nil,
+                              keySignature: "",
+                              createTime: 0),
+              vaultKeyPassphrase: "",
+              itemKey: .init(rotationID: "",
+                             key: "",
+                             keyPassphrase: nil,
+                             keySignature: "",
+                             createTime: 0),
+              itemKeyPassphrase: "",
+              addressKey: .init(addressId: "", key: .init(keyID: "", privateKey: nil), keyPassphrase: ""))
     }
 }
 
