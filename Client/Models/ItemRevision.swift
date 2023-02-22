@@ -96,35 +96,7 @@ extension ItemRevision {
                                    vaultKeys: [VaultKey],
                                    itemKeys: [ItemKey],
                                    verifyKeys: [String]) throws -> ItemContentProtobuf {
-        guard let vaultKey = vaultKeys.first(where: { $0.rotationID == rotationID }),
-              let itemKey = itemKeys.first(where: { $0.rotationID == rotationID }) else {
-            throw DataError.keyNotFound(rotationId: rotationID)
-        }
-
-        let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
-                                                                        share: share,
-                                                                        vaultKey: vaultKey)
-        let vaultDecryptionKey = DecryptionKey(privateKey: .init(value: vaultKey.key),
-                                               passphrase: .init(value: vaultKeyPassphrase))
-
-        let decryptedContent = try decryptField(decryptionKeys: [vaultDecryptionKey],
-                                                field: content)
-
-        let decryptedItemSignature = try decryptField(decryptionKeys: [vaultDecryptionKey],
-                                                      field: itemKeySignature)
-        try verifyItemSignature(signature: decryptedItemSignature,
-                                itemKey: itemKey,
-                                content: decryptedContent)
-
-        let decryptedUserSignature = try decryptField(decryptionKeys: [vaultDecryptionKey],
-                                                      field: userSignature)
-        // swiftlint:disable:next todo
-        // TODO:
-        //        try verifyUserSignature(signature: decryptedUserSignature,
-        //                                verifyKeys: verifyKeys,
-        //                                content: decryptedContent)
-
-        return try ItemContentProtobuf(data: decryptedContent)
+        try ItemContentProtobuf(data: Data())
     }
 
     private func decryptField(decryptionKeys: [DecryptionKey], field: String) throws -> Data {

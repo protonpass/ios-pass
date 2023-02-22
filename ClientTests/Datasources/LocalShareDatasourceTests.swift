@@ -42,23 +42,13 @@ final class LocalShareDatasourceTests: XCTestCase {
         // If it's the case nothing to worry, otherwise further investigation is needed
         XCTAssertEqual(lhs.shareID, rhs.shareID)
         XCTAssertEqual(lhs.vaultID, rhs.vaultID)
-//        XCTAssertEqual(lhs.targetType, rhs.targetType)
+        XCTAssertEqual(lhs.addressID, rhs.addressID)
+        XCTAssertEqual(lhs.targetType, rhs.targetType)
         XCTAssertEqual(lhs.targetID, rhs.targetID)
-//        XCTAssertEqual(lhs.permission, rhs.permission)
-        XCTAssertEqual(lhs.acceptanceSignature, rhs.acceptanceSignature)
-        XCTAssertEqual(lhs.inviterEmail, rhs.inviterEmail)
-        XCTAssertEqual(lhs.inviterAcceptanceSignature, rhs.inviterAcceptanceSignature)
-        XCTAssertEqual(lhs.signingKey, rhs.signingKey)
-        XCTAssertEqual(lhs.signingKeyPassphrase, rhs.signingKeyPassphrase)
+        XCTAssertEqual(lhs.permission, rhs.permission)
         XCTAssertEqual(lhs.content, rhs.content)
-        XCTAssertEqual(lhs.contentRotationID, rhs.contentRotationID)
-        XCTAssertEqual(lhs.contentEncryptedAddressSignature,
-                       rhs.contentEncryptedAddressSignature)
-        XCTAssertEqual(lhs.contentEncryptedVaultSignature,
-                       rhs.contentEncryptedVaultSignature)
-        XCTAssertEqual(lhs.contentEncryptedAddressSignature,
-                       rhs.contentEncryptedAddressSignature)
-//        XCTAssertEqual(lhs.contentFormatVersion, rhs.contentFormatVersion)
+        XCTAssertEqual(lhs.contentKeyRotation, rhs.contentKeyRotation)
+        XCTAssertEqual(lhs.contentFormatVersion, rhs.contentFormatVersion)
         XCTAssertEqual(lhs.expireTime, rhs.expireTime)
         XCTAssertEqual(lhs.createTime, rhs.createTime)
     }
