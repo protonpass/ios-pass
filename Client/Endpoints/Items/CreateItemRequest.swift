@@ -22,96 +22,31 @@ import GoLibs
 
 public struct CreateItemRequest {
     /// Encrypted ID of the VaultKey used to create this item
-    public let rotationID: String
-
-    /// Pairs of labelId:labelKeyPacket
-    public let labels: [ItemLabelKeyPacket]
-
-    /// VaultKeyPacket encoded in Base64
-    public let vaultKeyPacket: String
-
-    /// Base64 encoded signature for the vault keypacket
-    public let vaultKeyPacketSignature: String
+    /// Must be >= 1
+    public let keyRotation: String
 
     /// Version of the content format used to create the item
+    /// Must be >= 1
     public let contentFormatVersion: Int16
 
     /// Encrypted item content encoded in Base64
     public let content: String
 
-    /// Contents signature by the user address key encrypted with the same session key
-    /// as the contents encoded in base64
-    public let userSignature: String
-
-    /// Contents signature by the item key encrypted with the same session key
-    /// as the contents encoded in base64
-    public let itemKeySignature: String
+    /// Item key encrypted with the VaultKey, contents encoded in base64
+    public let itemKey: String
 }
 
 extension CreateItemRequest: Encodable {
     enum CodingKeys: String, CodingKey {
-        case rotationID = "RotationID"
-        case labels = "Labels"
-        case vaultKeyPacket = "VaultKeyPacket"
-        case vaultKeyPacketSignature = "VaultKeyPacketSignature"
+        case keyRotation = "KeyRotation"
         case contentFormatVersion = "ContentFormatVersion"
         case content = "Content"
-        case userSignature = "UserSignature"
-        case itemKeySignature = "ItemKeySignature"
+        case itemKey = "ItemKey"
     }
 }
 
 public extension CreateItemRequest {
-    init(vaultKey: VaultKey,
-         vaultKeyPassphrase: String,
-         itemKey: ItemKey,
-         itemKeyPassphrase: String,
-         addressKey: AddressKey,
-         itemContent: ProtobufableItemContentProtocol) throws {
-        let itemContentData = try itemContent.data()
-
-        let sessionKey = try CryptoUtils.generateSessionKey()
-        let dataPacket = try sessionKey.encrypt(.init(itemContentData))
-        let vaultKeyPacket = try Encryptor.encryptSessionKey(sessionKey,
-                                                             withKey: vaultKey.key.publicKey)
-
-        let userSignature = try Encryptor.sign(list: itemContentData,
-                                               addressKey: addressKey.key.privateKey,
-                                               addressPassphrase: addressKey.keyPassphrase)
-
-        guard let decodedVaultKeyPacket = try vaultKeyPacket.base64Decode() else {
-            throw PPClientError.crypto(.failedToDecode)
-        }
-
-        let vaultKeyPacketSignature = try Encryptor.sign(list: decodedVaultKeyPacket,
-                                                         addressKey: itemKey.key,
-                                                         addressPassphrase: itemKeyPassphrase)
-
-        let itemKeySignature = try Encryptor.sign(list: itemContentData,
-                                                  addressKey: itemKey.key,
-                                                  addressPassphrase: itemKeyPassphrase)
-
-        guard let unarmoredUserSignature = userSignature.unArmor else {
-            throw PPClientError.crypto(.failedToUnarmor("UserSignature"))
-        }
-        let encryptedUserSignature = try sessionKey.encrypt(.init(unarmoredUserSignature))
-
-        guard let unarmoredItemKeySignature = itemKeySignature.unArmor else {
-            throw PPClientError.crypto(.failedToUnarmor("ItemKeySignature"))
-        }
-        let encryptedItemSignature = try sessionKey.encrypt(.init(unarmoredItemKeySignature))
-
-        guard let unarmoredVaultKeyPacketSignature = vaultKeyPacketSignature.unArmor else {
-            throw PPClientError.crypto(.failedToUnarmor("VaultKeyPacketSignature"))
-        }
-
-        self.init(rotationID: vaultKey.rotationID,
-                  labels: [],
-                  vaultKeyPacket: vaultKeyPacket,
-                  vaultKeyPacketSignature: unarmoredVaultKeyPacketSignature.base64EncodedString(),
-                  contentFormatVersion: 1,
-                  content: dataPacket.base64EncodedString(),
-                  userSignature: encryptedUserSignature.base64EncodedString(),
-                  itemKeySignature: encryptedItemSignature.base64EncodedString())
+    init(shareKeys: [ShareKey], itemContent: ProtobufableItemContentProtocol) throws {
+        self.init(keyRotation: "", contentFormatVersion: 0, content: "", itemKey: "")
     }
 }

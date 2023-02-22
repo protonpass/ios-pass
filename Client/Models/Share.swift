@@ -76,7 +76,7 @@ public struct Share: Decodable {
 }
 
 public extension Share {
-    func getShareContent(userData: UserData, vaultKeys: [VaultKey]) throws -> ShareContent {
+    func getShareContent(userData: UserData, shareKeys: [ShareKey]) throws -> ShareContent {
         switch shareType {
         case .unknown:
             throw PPClientError.unknownShareType

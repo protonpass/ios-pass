@@ -98,7 +98,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          shareRepository: ShareRepositoryProtocol,
          shareEventIDRepository: ShareEventIDRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
-         vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
+         shareKeyRepository: ShareKeyRepositoryProtocol,
          remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
          symmetricKey: SymmetricKey,
          serviceIdentifiers: [ASCredentialServiceIdentifier],
@@ -125,7 +125,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
                                    shareEventIDRepository: shareEventIDRepository,
                                    remoteSyncEventsDatasource: remoteSyncEventsDatasource,
                                    itemRepository: itemRepository,
-                                   vaultItemKeysRepository: vaultItemKeysRepository,
+                                   shareKeyRepository: shareKeyRepository,
                                    logManager: logManager)
 
         self.logManager = logManager

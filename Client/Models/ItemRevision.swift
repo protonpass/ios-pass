@@ -93,9 +93,7 @@ public struct ItemRevision: Decodable {
 extension ItemRevision {
     public func getContentProtobuf(userData: UserData,
                                    share: Share,
-                                   vaultKeys: [VaultKey],
-                                   itemKeys: [ItemKey],
-                                   verifyKeys: [String]) throws -> ItemContentProtobuf {
+                                   shareKeys: [ShareKey]) throws -> ItemContentProtobuf {
         try ItemContentProtobuf(data: Data())
     }
 
@@ -106,24 +104,5 @@ extension ItemRevision {
         let armoredDecoded = try CryptoUtils.armorMessage(decoded)
         return try ProtonCore_Crypto.Decryptor.decrypt(decryptionKeys: decryptionKeys,
                                                        encrypted: .init(value: armoredDecoded))
-    }
-
-    private func verifyUserSignature(signature: Data, verifyKeys: [String], content: Data) throws {
-        for key in verifyKeys {
-            let valid = try Crypto().verifyDetached(signature: CryptoUtils.armorSignature(signature),
-                                                    plainData: content,
-                                                    publicKey: key,
-                                                    verifyTime: 0)
-            if valid { return }
-        }
-        throw PPClientError.crypto(.failedToVerifySignature)
-    }
-
-    private func verifyItemSignature(signature: Data, itemKey: ItemKey, content: Data) throws {
-        let valid = try Crypto().verifyDetached(signature: CryptoUtils.armorSignature(signature),
-                                                plainData: content,
-                                                publicKey: itemKey.key.publicKey,
-                                                verifyTime: Int64(Date().timeIntervalSince1970))
-        if !valid { throw PPClientError.crypto(.failedToVerifySignature) }
     }
 }

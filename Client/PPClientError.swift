@@ -27,7 +27,7 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
     case corruptedEncryptedContent
     case corruptedUserData(UserDataCorruptionReason)
     case crypto(CryptoFailureReason)
-    case keys(KeysFailureReason)
+    case keysNotFound(shareID: String)
     case networkOperationsOnMainThread
     case shareNotFoundInLocalDB(shareID: String)
     case symmetricEncryption(SymmetricEncryptionFailureReason)
@@ -44,8 +44,8 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
             return reason.debugDescription
         case .crypto(let reason):
             return reason.debugDescription
-        case .keys(let reason):
-            return reason.debugDescription
+        case .keysNotFound(let shareID):
+            return "Keys not found for share \"\(shareID)\""
         case .networkOperationsOnMainThread:
             return "Network operations shouldn't be called on main thread"
         case .shareNotFoundInLocalDB(let shareID):
@@ -92,23 +92,6 @@ public extension PPClientError {
                 return "No address keys"
             case .failedToGetAddressKeyPassphrase:
                 return "Failed to get address key passphrase"
-            }
-        }
-    }
-}
-
-// MARK: - KeysFailureReason
-public extension PPClientError {
-    enum KeysFailureReason: CustomDebugStringConvertible {
-        case vaultKeyNotFound(shareID: String)
-        case itemKeyNotFound(shareID: String, rotationID: String)
-
-        public var debugDescription: String {
-            switch self {
-            case .vaultKeyNotFound(let shareID):
-                return "Vault key not found for share \"\(shareID)\""
-            case let .itemKeyNotFound(shareID, rotationID):
-                return "Item key not found for share \"\(shareID)\" rotation ID \"\(rotationID)\""
             }
         }
     }

@@ -44,7 +44,7 @@ final class HomeCoordinator: DeinitPrintable {
     private let apiService: APIService
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
-    private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
+    private let shareKeyRepository: ShareKeyRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let publicKeyRepository: PublicKeyRepositoryProtocol
@@ -118,17 +118,17 @@ final class HomeCoordinator: DeinitPrintable {
         self.publicKeyRepository = PublicKeyRepository(container: container,
                                                        apiService: apiService,
                                                        logManager: logManager)
-        let vaultItemKeysRepository = VaultItemKeysRepository(container: container,
-                                                              authCredential: authCredential,
-                                                              apiService: apiService,
-                                                              logManager: logManager)
-        self.vaultItemKeysRepository = vaultItemKeysRepository
+        let shareKeyRepository = ShareKeyRepository(container: container,
+                                                    authCredential: authCredential,
+                                                    apiService: apiService,
+                                                    logManager: logManager)
+        self.shareKeyRepository = shareKeyRepository
         let shareRepository = ShareRepository(
             userData: sessionData.userData,
             localShareDatasource: LocalShareDatasource(container: container),
             remoteShareDatasouce: RemoteShareDatasource(authCredential: authCredential,
                                                         apiService: apiService),
-            vaultItemKeysRepository: vaultItemKeysRepository,
+            shareKeyRepository: shareKeyRepository,
             logManager: logManager)
         self.shareRepository = shareRepository
         itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
@@ -154,7 +154,7 @@ final class HomeCoordinator: DeinitPrintable {
                                shareEventIDRepository: shareEventIDRepository,
                                remoteSyncEventsDatasource: remoteSyncEventsDatasource,
                                itemRepository: itemRepository,
-                               vaultItemKeysRepository: vaultItemKeysRepository,
+                               shareKeyRepository: shareKeyRepository,
                                logManager: logManager)
         self.eventLoop.delegate = self
         self.setUpSideMenuPreferences()

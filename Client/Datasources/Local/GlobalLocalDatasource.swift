@@ -23,8 +23,7 @@ import CoreData
 public protocol GlobalLocalDatasourceProtocol {
     var localShareDatasource: LocalShareDatasourceProtocol { get }
     var localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol { get }
-    var localItemKeyDatasource: LocalItemKeyDatasourceProtocol { get }
-    var localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol { get }
+    var localShareKeyDatasource: LocalShareKeyDatasourceProtocol { get }
     var localItemDatasource: LocalItemDatasourceProtocol { get }
 
     func removeAllData(userId: String) async throws
@@ -37,8 +36,7 @@ public extension GlobalLocalDatasourceProtocol {
         for share in shares {
             let shareId = share.shareID
             try await localItemDatasource.removeAllItems(shareId: shareId)
-            try await localVaultKeyDatasource.removeAllVaultKeys(shareId: shareId)
-            try await localItemKeyDatasource.removeAllItemKeys(shareId: shareId)
+            try await localShareKeyDatasource.removeAllKeys(shareId: shareId)
         }
 
         try await localShareDatasource.removeAllShares(userId: userId)
@@ -54,15 +52,13 @@ public extension GlobalLocalDatasourceProtocol {
 struct GlobalLocalDatasource: GlobalLocalDatasourceProtocol {
     let localShareDatasource: LocalShareDatasourceProtocol
     let localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol
-    let localItemKeyDatasource: LocalItemKeyDatasourceProtocol
-    let localVaultKeyDatasource: LocalVaultKeyDatasourceProtocol
+    let localShareKeyDatasource: LocalShareKeyDatasourceProtocol
     let localItemDatasource: LocalItemDatasourceProtocol
 
     init(container: NSPersistentContainer) {
         self.localShareDatasource = LocalShareDatasource(container: container)
         self.localShareEventIDDatasource = LocalShareEventIDDatasource(container: container)
-        self.localItemKeyDatasource = LocalItemKeyDatasource(container: container)
-        self.localVaultKeyDatasource = LocalVaultKeyDatasource(container: container)
+        self.localShareKeyDatasource = LocalShareKeyDatasource(container: container)
         self.localItemDatasource = LocalItemDatasource(container: container)
     }
 }

@@ -1,5 +1,5 @@
 //
-// RemoteVaultItemKeysDatasource.swift
+// RemoteShareKeyDatasource.swift
 // Proton Pass - Created on 24/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,14 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public protocol RemoteVaultItemKeysDatasourceProtocol: RemoteDatasourceProtocol {
-    func getVaultItemKeys(shareId: String) async throws -> ([VaultKey], [ItemKey])
+public protocol RemoteShareKeyDatasourceProtocol: RemoteDatasourceProtocol {
+    func getKeys(shareId: String) async throws -> [ShareKey]
 }
 
-public extension RemoteVaultItemKeysDatasourceProtocol {
-    func getVaultItemKeys(shareId: String) async throws -> ([VaultKey], [ItemKey]) {
-        var vaultKeys = [VaultKey]()
-        var itemKeys = [ItemKey]()
+public extension RemoteShareKeyDatasourceProtocol {
+    func getKeys(shareId: String) async throws -> [ShareKey] {
+        var keys = [ShareKey]()
         var page = 0
         while true {
             let endpoint = GetShareKeysEndpoint(credential: authCredential,
@@ -34,16 +33,15 @@ public extension RemoteVaultItemKeysDatasourceProtocol {
                                                 pageSize: kDefaultPageSize)
             let response = try await apiService.exec(endpoint: endpoint)
 
-            vaultKeys += response.keys.vaultKeys
-            itemKeys += response.keys.itemKeys
-            if response.keys.total < kDefaultPageSize {
+            keys += response.shareKeys.keys
+            if response.shareKeys.total < kDefaultPageSize {
                 break
             } else {
                 page += 1
             }
         }
-        return (vaultKeys, itemKeys)
+        return keys
     }
 }
 
-public final class RemoteVaultItemKeysDatasource: RemoteDatasource, RemoteVaultItemKeysDatasourceProtocol {}
+public final class RemoteShareKeyDatasource: RemoteDatasource, RemoteShareKeyDatasourceProtocol {}

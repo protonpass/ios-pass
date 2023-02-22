@@ -21,9 +21,14 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
+public struct ShareKeys: Decodable {
+    let total: Int
+    let keys: [ShareKey]
+}
+
 public struct GetShareKeysResponse: Decodable {
     let code: Int
-    let keys: ShareKeys
+    let shareKeys: ShareKeys
 }
 
 public struct GetShareKeysEndpoint: Endpoint {
@@ -42,7 +47,7 @@ public struct GetShareKeysEndpoint: Endpoint {
                 pageSize: Int) {
         self.debugDescription = "Get keys for share"
         self.authCredential = credential
-        self.path = "/pass/v1/share/\(shareId)/key/vault"
+        self.path = "/pass/v1/share/\(shareId)/key"
         self.method = .get
         self.queries = .paginationQuery(page: page, pageSize: pageSize)
     }

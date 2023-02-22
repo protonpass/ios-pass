@@ -61,16 +61,6 @@ final class CoreDataEntityStructureTests: XCTestCase {
         return entity
     }
 
-    func testItemKeyEntity() {
-        let sut = entity(byName: "ItemKeyEntity")
-        verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
-        verifyAttribute(named: "key", on: sut, hasType: .string)
-        verifyAttribute(named: "keyPassphrase", on: sut, hasType: .string)
-        verifyAttribute(named: "keySignature", on: sut, hasType: .string)
-        verifyAttribute(named: "rotationID", on: sut, hasType: .string)
-        verifyAttribute(named: "shareID", on: sut, hasType: .string)
-    }
-
     func testShareEntity() {
         let sut = entity(byName: "ShareEntity")
         verifyAttribute(named: "content", on: sut, hasType: .string)
@@ -86,14 +76,11 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "addressID", on: sut, hasType: .string)
     }
 
-    func testVaultKeyEntity() {
-        let sut = entity(byName: "VaultKeyEntity")
+    func testShareKeyEntity() {
+        let sut = entity(byName: "ShareKeyEntity")
         verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "key", on: sut, hasType: .string)
-        verifyAttribute(named: "keyPassphrase", on: sut, hasType: .string)
-        verifyAttribute(named: "keySignature", on: sut, hasType: .string)
-        verifyAttribute(named: "rotation", on: sut, hasType: .integer64)
-        verifyAttribute(named: "rotationID", on: sut, hasType: .string)
+        verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
     }
 
