@@ -1,10 +1,7 @@
 #!/bin/sh
 
-declare -a proto_file_names=(
-                            "item_v1.proto"
-                            "label_v1.proto"
-                            "vault_v1.proto"
-                            )
+declare -a proto_file_names=("item_v1.proto"
+                            "vault_v1.proto")
 script_path=$(dirname $0)
 proto_files_dir="${script_path}/../contents-proto-definition/protos"
 output_dir="${script_path}/../Protobuf Objects"
