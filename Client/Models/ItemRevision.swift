@@ -40,8 +40,9 @@ public enum ItemState: Int16, CaseIterable {
     }
 }
 
-public struct ItemRevisionList: Decodable {
+public struct ItemRevisionsPaginated: Decodable {
     public let total: Int
+    public let lastToken: String?
     public let revisionsData: [ItemRevision]
 }
 
@@ -68,7 +69,7 @@ public struct ItemRevision: Decodable, Equatable {
     public let modifyTime: Int64
 
     /// Time when the item was last used
-    public let lastUseTime: Int64
+    public let lastUseTime: Int64?
 
     /// Creation time of this revision
     public let revisionTime: Int64
@@ -77,19 +78,53 @@ public struct ItemRevision: Decodable, Equatable {
     public var itemState: ItemState { .init(rawValue: state) ?? .active }
 }
 
-extension ItemRevision {
-    public func getContentProtobuf(userData: UserData,
-                                   share: Share,
-                                   shareKeys: [ShareKey]) throws -> ItemContentProtobuf {
-        try ItemContentProtobuf(data: Data())
-    }
-
-    private func decryptField(decryptionKeys: [DecryptionKey], field: String) throws -> Data {
-        guard let decoded = try field.base64Decode() else {
-            throw PPClientError.crypto(.failedToDecode)
+public extension ItemRevision {
+    func getContentProtobuf(userData: UserData,
+                            share: Share,
+                            shareKeys: [ShareKey]) throws -> ItemContentProtobuf {
+        #warning("Handle this")
+        guard let itemKey else {
+            throw PPClientError.crypto(.failedToDecryptContent)
         }
-        let armoredDecoded = try CryptoUtils.armorMessage(decoded)
-        return try ProtonCore_Crypto.Decryptor.decrypt(decryptionKeys: decryptionKeys,
-                                                       encrypted: .init(value: armoredDecoded))
+
+        guard let key = shareKeys.first(where: { $0.keyRotation == keyRotation }),
+              let keyData = try key.key.base64Decode() else {
+            throw PPClientError.crypto(.missingShareKeys)
+        }
+
+        let decryptionKeys = userData.user.keys.map {
+            DecryptionKey(privateKey: .init(value: $0.privateKey),
+                          passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
+        }
+
+        let verificationKeys = userData.user.keys.map { $0.publicKey }.map { ArmoredKey(value: $0) }
+        let armoredEncryptedLatestKeyContent = try CryptoUtils.armorMessage(keyData)
+        let vaultKey: VerifiedData = try Decryptor.decryptAndVerify(
+            decryptionKeys: decryptionKeys,
+            value: .init(value: armoredEncryptedLatestKeyContent),
+            verificationKeys: verificationKeys)
+
+        guard let itemKeyData = try itemKey.base64Decode() else {
+            throw PPClientError.crypto(.failedToBase64Decode)
+        }
+
+        let itemKeyTagData = "itemkey".data(using: .utf8) ?? .init()
+        let itemKeySealedBox = try AES.GCM.SealedBox(combined: itemKeyData)
+
+        let decryptedItemKeyData = try AES.GCM.open(itemKeySealedBox,
+                                                    using: .init(data: vaultKey.content),
+                                                    authenticating: itemKeyTagData)
+
+        guard let contentData = try content.base64Decode() else {
+            throw PPClientError.crypto(.failedToBase64Decode)
+        }
+
+        let contentTagData = "itemcontent".data(using: .utf8) ?? .init()
+        let contentSealedBox = try AES.GCM.SealedBox(combined: contentData)
+        let decryptedContentData = try AES.GCM.open(contentSealedBox,
+                                                    using: .init(data: decryptedItemKeyData),
+                                                    authenticating: contentTagData)
+
+        return try ItemContentProtobuf(data: decryptedContentData)
     }
 }
