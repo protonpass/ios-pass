@@ -56,7 +56,7 @@ public struct Share: Decodable {
     /// Base64 encoded encrypted content of the share. Can be null for item shares
     public let content: String?
 
-    public let contentKeyRotation: Int16?
+    public let contentKeyRotation: Int64?
 
     /// Version of the content's format
     public let contentFormatVersion: Int16?
@@ -75,7 +75,7 @@ public struct Share: Decodable {
 public extension Share {
     func getShareContent(userData: UserData, shareKeys: [ShareKey]) throws -> ShareContent {
         #warning("Handle multiple keys")
-        guard let shareKeyContentData = try shareKeys.first?.key.base64Decode() else {
+        guard let shareKeyContentData = try shareKeys.latestKey().key.base64Decode() else {
             throw PPClientError.crypto(.failedToBase64Decode)
         }
 

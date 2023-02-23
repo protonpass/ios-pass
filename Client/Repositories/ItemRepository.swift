@@ -383,6 +383,8 @@ private extension ItemRepositoryProtocol {
     func symmetricallyEncrypt(itemRevision: ItemRevision,
                               share: Share,
                               shareKeys: [ShareKey]) async throws -> SymmetricallyEncryptedItem {
+        .init(shareId: share.shareID, item: itemRevision, encryptedContent: "", isLogInItem: false)
+        /*
         let publicKeys = try await publicKeyRepository.getPublicKeys(email: itemRevision.signatureEmail)
         let verifyKeys = publicKeys.map { $0.value }
         let contentProtobuf = try itemRevision.getContentProtobuf(userData: userData,
@@ -402,6 +404,7 @@ private extension ItemRepositoryProtocol {
                      item: itemRevision,
                      encryptedContent: encryptedContent,
                      isLogInItem: isLogInItem)
+         */
     }
 
     func getCredentials(from encryptedItems: [SymmetricallyEncryptedItem],
@@ -426,7 +429,7 @@ private extension ItemRepositoryProtocol {
     func createItemRequest(itemContent: ProtobufableItemContentProtocol,
                            shareId: String) async throws -> CreateItemRequest {
         let keys = try await shareKeyRepository.getKeys(shareId: shareId)
-        return try CreateItemRequest(shareKeys: keys, itemContent: itemContent)
+        return try CreateItemRequest(userData: userData, shareKeys: keys, itemContent: itemContent)
     }
 }
 

@@ -7,17 +7,15 @@
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="isLogInItem" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="itemID" attributeType="String"/>
-        <attribute name="itemKeySignature" attributeType="String"/>
+        <attribute name="itemKey" optional="YES" attributeType="String"/>
+        <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="lastUseTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="modifyTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="revision" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="revision" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="revisionTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="rotationID" attributeType="String"/>
         <attribute name="shareID" attributeType="String"/>
-        <attribute name="signatureEmail" attributeType="String"/>
         <attribute name="state" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="symmetricallyEncryptedContent" attributeType="String"/>
-        <attribute name="userSignature" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="itemID"/>
@@ -33,7 +31,7 @@
         <attribute name="addressID" attributeType="String"/>
         <attribute name="content" optional="YES" attributeType="String"/>
         <attribute name="contentFormatVersion" attributeType="Integer 16" defaultValueString="-1" usesScalarValueType="YES"/>
-        <attribute name="contentKeyRotation" attributeType="Integer 16" defaultValueString="-1" usesScalarValueType="YES"/>
+        <attribute name="contentKeyRotation" attributeType="Integer 64" defaultValueString="-1" usesScalarValueType="YES"/>
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="expireTime" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="permission" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
