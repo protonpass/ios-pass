@@ -96,7 +96,7 @@ extension ItemEntity {
         self.itemID = item.itemID
         self.itemKey = item.itemKey
         self.keyRotation = item.keyRotation
-        self.lastUseTime = item.lastUseTime
+        self.lastUseTime = item.lastUseTime ?? 0
         self.modifyTime = item.modifyTime
         self.revision = item.revision
         self.revisionTime = item.revisionTime

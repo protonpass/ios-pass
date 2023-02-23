@@ -36,18 +36,20 @@ public extension RemoteItemRevisionDatasourceProtocol {
     func getItemRevisions(shareId: String) async throws -> [ItemRevision] {
         var itemRevisions = [ItemRevision]()
         var page = 0
+        var sinceToken: String?
         while true {
             let endpoint = GetItemsEndpoint(credential: authCredential,
                                             shareId: shareId,
-                                            page: page,
+                                            sinceToken: sinceToken,
                                             pageSize: kDefaultPageSize)
             let response = try await apiService.exec(endpoint: endpoint)
 
             itemRevisions += response.items.revisionsData
-            if response.items.revisionsData.count < kDefaultPageSize {
+            if itemRevisions.count >= response.items.total {
                 break
             } else {
                 page += 1
+                sinceToken = response.items.lastToken
             }
         }
         return itemRevisions

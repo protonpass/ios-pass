@@ -287,13 +287,13 @@ public extension ItemRepositoryProtocol {
                 AutoFillCredential(ids: ids,
                                    username: oldData.username,
                                    url: oldUrl,
-                                   lastUseTime: encryptedItem.item.lastUseTime)
+                                   lastUseTime: encryptedItem.item.lastUseTime ?? 0)
             }
             let newCredentials = newData.urls.map { newUrl in
                 AutoFillCredential(ids: ids,
                                    username: newData.username,
                                    url: newUrl,
-                                   lastUseTime: encryptedItem.item.lastUseTime)
+                                   lastUseTime: encryptedItem.item.lastUseTime ?? 0)
             }
             delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
             delegate?.itemRepositoryHasNewCredentials(newCredentials)
@@ -338,10 +338,9 @@ public extension ItemRepositoryProtocol {
 // MARK: - Private util functions
 private extension ItemRepositoryProtocol {
     func refreshItems(shareId: String) async throws {
-        /*
         logger.trace("Refreshing share \(shareId)")
         let share = try await shareRepository.getShare(shareId: shareId)
-        let (vaultKeys, itemKeys) = try await vaultItemKeysRepository.refreshVaultItemKeys(shareId: shareId)
+        let shareKeys = try await shareKeyRepository.getKeys(shareId: shareId)
         let itemRevisions = try await remoteItemRevisionDatasource.getItemRevisions(shareId: shareId)
         logger.trace("Got \(itemRevisions.count) items from remote for share \(shareId)")
 
@@ -350,8 +349,7 @@ private extension ItemRepositoryProtocol {
         for itemRevision in itemRevisions {
             let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
                                                               share: share,
-                                                              vaultKeys: vaultKeys,
-                                                              itemKeys: itemKeys)
+                                                              shareKeys: shareKeys)
             encryptedItems.append(encrypedItem)
         }
         logger.trace("Saving \(itemRevisions.count) remote item revisions to local database")
@@ -368,7 +366,6 @@ private extension ItemRepositoryProtocol {
         let newCredentials = try getCredentials(from: encryptedItems, state: .active)
         delegate?.itemRepositoryHasNewCredentials(newCredentials)
         logger.trace("Delegated \(newCredentials.count) new credentials")
-         */
     }
 
     func symmetricallyEncrypt(itemRevision: ItemRevision,
@@ -383,10 +380,6 @@ private extension ItemRepositoryProtocol {
     func symmetricallyEncrypt(itemRevision: ItemRevision,
                               share: Share,
                               shareKeys: [ShareKey]) async throws -> SymmetricallyEncryptedItem {
-        .init(shareId: share.shareID, item: itemRevision, encryptedContent: "", isLogInItem: false)
-        /*
-        let publicKeys = try await publicKeyRepository.getPublicKeys(email: itemRevision.signatureEmail)
-        let verifyKeys = publicKeys.map { $0.value }
         let contentProtobuf = try itemRevision.getContentProtobuf(userData: userData,
                                                                   share: share,
                                                                   shareKeys: shareKeys)
@@ -404,7 +397,6 @@ private extension ItemRepositoryProtocol {
                      item: itemRevision,
                      encryptedContent: encryptedContent,
                      isLogInItem: isLogInItem)
-         */
     }
 
     func getCredentials(from encryptedItems: [SymmetricallyEncryptedItem],
@@ -419,7 +411,7 @@ private extension ItemRepositoryProtocol {
                                                         itemId: decryptedLogInItem.item.itemID),
                                              username: data.username,
                                              url: url,
-                                             lastUseTime: encryptedLogInItem.item.lastUseTime))
+                                             lastUseTime: encryptedLogInItem.item.lastUseTime ?? 0))
                 }
             }
         }
