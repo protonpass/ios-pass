@@ -19,12 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import GoLibs
+import CryptoKit
 import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_KeyManager
 import ProtonCore_Login
-import ProtonCore_Utilities
 
 public enum ShareType: Int16 {
     case unknown = 0
@@ -77,11 +74,43 @@ public struct Share: Decodable {
 
 public extension Share {
     func getShareContent(userData: UserData, shareKeys: [ShareKey]) throws -> ShareContent {
+        #warning("Handle multiple keys")
+        guard let shareKeyContentData = try shareKeys.first?.key.base64Decode() else {
+            throw PPClientError.crypto(.failedToBase64Decode)
+        }
+
+        let armoredEncryptedShareKeyContent = try CryptoUtils.armorMessage(shareKeyContentData)
+        let decryptionKeys = userData.user.keys.map {
+            DecryptionKey(privateKey: .init(value: $0.privateKey),
+                          passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
+        }
+
+        let verificationKeys = userData.user.keys.map { $0.publicKey }.map { ArmoredKey(value: $0) }
+        let vaultKey: VerifiedData = try Decryptor.decryptAndVerify(
+            decryptionKeys: decryptionKeys,
+            value: .init(value: armoredEncryptedShareKeyContent),
+            verificationKeys: verificationKeys)
+
+        guard let contentData = try content?.base64Decode() else {
+            throw PPClientError.crypto(.failedToBase64Decode)
+        }
+
+        guard contentData.count > 12 else {
+            throw PPClientError.crypto(.corruptedShareContent(shareID: shareID))
+        }
+
+        let tagData = "vaultcontent".data(using: .utf8) ?? .init()
+        let sealedbox = try AES.GCM.SealedBox(combined: contentData)
+
+        let decryptedContent = try AES.GCM.open(sealedbox,
+                                                using: .init(data: vaultKey.content),
+                                                authenticating: tagData)
+
         switch shareType {
         case .unknown:
             throw PPClientError.unknownShareType
         case .vault:
-            let vaultContent = try VaultProtobuf(data: Data())
+            let vaultContent = try VaultProtobuf(data: decryptedContent)
             let vault = Vault(id: vaultID,
                               shareId: shareID,
                               name: vaultContent.name,

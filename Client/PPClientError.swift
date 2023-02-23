@@ -103,6 +103,7 @@ public extension PPClientError {
         case failedToSplitPGPMessage
         case failedToUnarmor(String)
         case failedToArmor(String)
+        case failedToBase64Decode
         case failedToGetFingerprint
         case failedToGenerateKeyRing
         case failedToEncrypt
@@ -112,6 +113,7 @@ public extension PPClientError {
         case failedToGenerateSessionKey
         case failedToDecode
         case addressNotFound(addressID: String)
+        case corruptedShareContent(shareID: String)
 
         public var debugDescription: String {
             switch self {
@@ -121,6 +123,8 @@ public extension PPClientError {
                 return "Failed to unarmor \(string)"
             case .failedToArmor(let string):
                 return "Failed to armor \(string)"
+            case .failedToBase64Decode:
+                return "Failed to base 64 decode"
             case .failedToGetFingerprint:
                 return "Failed to get fingerprint"
             case .failedToGenerateKeyRing:
@@ -139,6 +143,8 @@ public extension PPClientError {
                 return "Failed to decode"
             case .addressNotFound(let addressID):
                 return "Address not found \"\(addressID)\""
+            case .corruptedShareContent(let shareID):
+                return "Corrupted share content shareID \"\(shareID)\""
             }
         }
     }
