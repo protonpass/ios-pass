@@ -18,172 +18,67 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import CryptoKit
 import GoLibs
-import ProtonCore_DataModel
+import ProtonCore_Crypto
+import ProtonCore_Login
 
 public struct CreateVaultRequest {
-    /// Encrypted ID of the address that created the vault
+    /// AddressID that should be displayed as the owner
     let addressID: String
 
-    /// Content of the vault information encrypted with the Vault public key encoded in Base64
+    /// Vault content protocol buffer data encrypted with the vault key
+    /// >= 28 characters
     let content: String
 
     /// Version of the format of the vault content
     let contentFormatVersion: Int
 
-    /// Base64 encoded content signature with the user's address key
-    let contentEncryptedAddressSignature: String
-
-    /// Base64 encoded content signature with the vault key
-    let contentEncryptedVaultSignature: String
-
-    /// Armored vault key locked with the passphrase contained in the VaultKeyPassphrase
-    let vaultKey: String
-
-    /// Encrypted passphrase to decrypt the vault key
-    let vaultKeyPassphrase: String
-
-    /// Base64 encoded signature of the vault key sha256 primary fingerprint.
-    /// Signed with the vault signing key
-    let vaultKeySignature: String
-
-    /// SessionKey for the passphrase encrypted with the key of the addressID. Encoded in Base64
-    let keyPacket: String
-
-    /// Base64 encoded signature of the unencoded key packet signed by the vault key
-    let keyPacketSignature: String
-
-    /// Armored signing key locked with the passphrase contained in the SigningKeyPassphrase
-    let signingKey: String
-
-    /// Base64 encoded encrypted passphrase for the signing key
-    let signingKeyPassphrase: String
-
-    /// Base64 encoded SessionKey for the encrypted signing key passphrase encrypted with the key of the addressID
-    let signingKeyPassphraseKeyPacket: String
-
-    /// Base64 encoded signature of the signing key sha256 primary fingerprint.
-    /// Signed with the private key of the addressID
-    let acceptanceSignature: String
-
-    /// Armored item key locked with the passphrase contained in the ItemKeyPassphrase
-    let itemKey: String
-
-    /// Base64 encoded encrypted passphrase for the item key
-    let itemKeyPassphrase: String
-
-    /// Base64 encoded SessionKey for the encrypted item key passphrase encrypted with the vault key
-    let itemKeyPassphraseKeyPacket: String
-
-    /// Base64 encoded signature of the item key sha256 primary fingerprint, signed with the vault signing key
-    let itemKeySignature: String
+    /// Vault key encrypted and signed with the primary user key
+    /// >= 28 characters
+    let encryptedVaultKey: String
 }
 
-extension CreateVaultRequest {
-    public init(addressKey: AddressKey, name: String, description: String) throws {
+public extension CreateVaultRequest {
+    init(userData: UserData, name: String, description: String) throws {
+        contentFormatVersion = 1
+        addressID = userData.addresses.first?.addressID ?? ""
+
         let vault = VaultProtobuf(name: name, description: description)
-        try self.init(addressKey: addressKey, vault: vault)
-    }
 
-    // swiftlint:disable:next function_body_length
-    private init(addressKey: AddressKey, vault: ProtobufableVaultProtocol) throws {
-        // Generate signing key
-        let (signingKey, signingKeyPassphrase) = try CryptoUtils.generateKey(name: "VaultSigningKey",
-                                                                             email: "vault_signing@proton")
-        let encryptedSigningKeyPassphrase = try Encryptor.encrypt(signingKeyPassphrase,
-                                                                  key: addressKey.key.publicKey)
-        let (signingKeyPassphraseKeyPacket, signingKeyPassphraseDataPacket) =
-        try CryptoUtils.splitPGPMessage(encryptedSigningKeyPassphrase)
-
-        let signingKeyFingerprint = try CryptoUtils.getFingerprint(key: signingKey)
-        let signingKeySignature = try Encryptor.sign(list: Data(signingKeyFingerprint.utf8),
-                                                     addressKey: addressKey.key.privateKey,
-                                                     addressPassphrase: addressKey.keyPassphrase)
-        // Generate vault key
-        let (vaultKey, vaultKeyPassphrase) = try CryptoUtils.generateKey(name: "VaultKey",
-                                                                         email: "vault@proton")
-        let encryptedVaultKeyPassphrase = try Encryptor.encrypt(vaultKeyPassphrase,
-                                                                key: addressKey.key.publicKey)
-        let (vaultKeyPassphraseKeyPacket, vaultKeyPassphraseDataPacket) =
-        try CryptoUtils.splitPGPMessage(encryptedVaultKeyPassphrase)
-
-        let vaultKeyFingerprint = try CryptoUtils.getFingerprint(key: vaultKey)
-        let vaultKeySignature = try Encryptor.sign(list: Data(vaultKeyFingerprint.utf8),
-                                                   addressKey: signingKey,
-                                                   addressPassphrase: signingKeyPassphrase)
-
-        // Generate item key
-        let (itemKey, itemKeyPassphrase) = try CryptoUtils.generateKey(name: "ItemKey",
-                                                                       email: "item@proton")
-        let encryptedItemKeyPassphrase = try Encryptor.encrypt(itemKeyPassphrase, key: vaultKey)
-        let (itemKeyPassphraseKeyPacket, itemKeyPassphraseDataPacket) =
-        try CryptoUtils.splitPGPMessage(encryptedItemKeyPassphrase)
-
-        let itemKeyFingerprint = try CryptoUtils.getFingerprint(key: itemKey)
-        let itemKeySignature = try Encryptor.sign(list: Data(itemKeyFingerprint.utf8),
-                                                  addressKey: signingKey,
-                                                  addressPassphrase: signingKeyPassphrase)
-
-        guard let keyRing = CryptoKeyRing(.init(fromArmored: vaultKey.publicKey)) else {
-            throw PPClientError.crypto(.failedToGenerateKeyRing)
+        var vaultKey = Data(count: 32)
+        _ = vaultKey.withUnsafeMutableBytes {
+            // swiftlint:disable:next force_unwrapping
+            SecRandomCopyBytes(kSecRandomDefault, 32, $0.baseAddress!)
         }
 
-        let signedVaultKeyPassphraseKeyPacket = try Encryptor.sign(list: vaultKeyPassphraseKeyPacket,
-                                                                   addressKey: vaultKey,
-                                                                   addressPassphrase: vaultKeyPassphrase)
-
-        let vaultData = try vault.data()
-        guard let encryptedVaultData = try keyRing.encrypt(.init(vaultData), privateKey: nil).data else {
-            throw PPClientError.crypto(.failedToEncrypt)
+        guard let userKey = userData.user.keys.first else {
+            throw PPClientError.crypto(.missingUserKey(userID: userData.user.ID))
         }
 
-        guard let nameVaultKeySignature = try Encryptor.sign(list: vaultData,
-                                                             addressKey: vaultKey,
-                                                             addressPassphrase: vaultKeyPassphrase).unArmor else {
-            throw PPClientError.crypto(.failedToUnarmor("nameVaultKeySignature"))
+        guard let passphrase = userData.passphrases[userKey.keyID] else {
+            throw PPClientError.crypto(.missingPassphrase(keyID: userKey.keyID))
         }
 
-        guard let nameAddressSignature =
-                try Encryptor.sign(list: vaultData,
-                                   addressKey: addressKey.key.privateKey,
-                                   addressPassphrase: addressKey.keyPassphrase).unArmor else {
-            throw PPClientError.crypto(.failedToUnarmor("nameAddressSignature"))
-        }
+        let publicKey = ArmoredKey(value: userKey.publicKey)
+        let privateKey = ArmoredKey(value: userKey.privateKey)
+        let signerKey = SigningKey(privateKey: privateKey,
+                                   passphrase: .init(value: passphrase))
 
-        guard let encryptedNameAddressSignature = try keyRing.encrypt(.init(nameAddressSignature),
-                                                                      privateKey: nil).data else {
-            throw PPClientError.crypto(.failedToEncrypt)
-        }
+        let encryptedVaultKeyData = try Encryptor.encrypt(publicKey: publicKey,
+                                                          clearData: vaultKey,
+                                                          signerKey: signerKey)
+        encryptedVaultKey = try encryptedVaultKeyData.unArmor().value.base64EncodedString()
 
-        guard let encryptedNameVaultKeySignature =
-                try keyRing.encrypt(.init(nameVaultKeySignature),
-                                    privateKey: nil).data else {
-            throw PPClientError.crypto(.failedToEncrypt)
-        }
+        let authenticatedData = "vaultcontent".data(using: .utf8) ?? .init()
+        let encryptedContent = try AES.GCM.seal(vault.data(),
+                                                using: .init(data: vaultKey),
+                                                authenticating: authenticatedData)
 
-        self = .init(addressID: addressKey.addressId,
-                     content: encryptedVaultData.base64EncodedString(),
-                     contentFormatVersion: 1,
-                     contentEncryptedAddressSignature: encryptedNameAddressSignature.base64EncodedString(),
-                     contentEncryptedVaultSignature: encryptedNameVaultKeySignature.base64EncodedString(),
-                     vaultKey: vaultKey,
-                     vaultKeyPassphrase: vaultKeyPassphraseDataPacket.base64EncodedString(),
-                     vaultKeySignature: try CryptoUtils.unarmorAndBase64(data: vaultKeySignature,
-                                                                         name: "vaultKeySignature"),
-                     keyPacket: vaultKeyPassphraseKeyPacket.base64EncodedString(),
-                     keyPacketSignature:
-                        try CryptoUtils.unarmorAndBase64(data: signedVaultKeyPassphraseKeyPacket,
-                                                         name: "signedVaultKeyPassphraseKeyPacket"),
-                     signingKey: signingKey,
-                     signingKeyPassphrase: signingKeyPassphraseDataPacket.base64EncodedString(),
-                     signingKeyPassphraseKeyPacket: signingKeyPassphraseKeyPacket.base64EncodedString(),
-                     acceptanceSignature: try CryptoUtils.unarmorAndBase64(data: signingKeySignature,
-                                                                           name: "signingKeySignature"),
-                     itemKey: itemKey,
-                     itemKeyPassphrase: itemKeyPassphraseDataPacket.base64EncodedString(),
-                     itemKeyPassphraseKeyPacket: itemKeyPassphraseKeyPacket.base64EncodedString(),
-                     itemKeySignature: try CryptoUtils.unarmorAndBase64(data: itemKeySignature,
-                                                                        name: "itemKeySignature"))
+        guard let content = encryptedContent.combined?.base64EncodedString(), content.count >= 28 else {
+            throw PPClientError.crypto(.failedToAESEncrypt)
+        }
+        self.content = content
     }
 }
 
@@ -192,20 +87,6 @@ extension CreateVaultRequest: Encodable {
         case addressID = "AddressID"
         case content = "Content"
         case contentFormatVersion = "ContentFormatVersion"
-        case contentEncryptedAddressSignature = "ContentEncryptedAddressSignature"
-        case contentEncryptedVaultSignature = "ContentEncryptedVaultSignature"
-        case vaultKey = "VaultKey"
-        case vaultKeyPassphrase = "VaultKeyPassphrase"
-        case vaultKeySignature = "VaultKeySignature"
-        case keyPacket = "KeyPacket"
-        case keyPacketSignature = "KeyPacketSignature"
-        case signingKey = "SigningKey"
-        case signingKeyPassphrase = "SigningKeyPassphrase"
-        case signingKeyPassphraseKeyPacket = "SigningKeyPassphraseKeyPacket"
-        case acceptanceSignature = "AcceptanceSignature"
-        case itemKey = "ItemKey"
-        case itemKeyPassphrase = "ItemKeyPassphrase"
-        case itemKeyPassphraseKeyPacket = "ItemKeyPassphraseKeyPacket"
-        case itemKeySignature = "ItemKeySignature"
+        case encryptedVaultKey = "EncryptedVaultKey"
     }
 }

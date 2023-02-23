@@ -22,8 +22,6 @@ import Foundation
 import ProtonCore_KeyManager
 import ProtonCore_Networking
 
-typealias Encryptor = ProtonCore_KeyManager.Encryptor
-
 /// For endpoints that have no body like GET ones
 public struct EmptyRequest: Encodable {}
 

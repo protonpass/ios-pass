@@ -112,8 +112,11 @@ public extension PPClientError {
         case failedToVerifySignature
         case failedToGenerateSessionKey
         case failedToDecode
+        case failedToAESEncrypt
         case addressNotFound(addressID: String)
         case corruptedShareContent(shareID: String)
+        case missingUserKey(userID: String)
+        case missingPassphrase(keyID: String)
 
         public var debugDescription: String {
             switch self {
@@ -141,10 +144,16 @@ public extension PPClientError {
                 return "Failed to generate session key"
             case .failedToDecode:
                 return "Failed to decode"
+            case .failedToAESEncrypt:
+                return "Failed to AES encrypt"
             case .addressNotFound(let addressID):
                 return "Address not found \"\(addressID)\""
             case .corruptedShareContent(let shareID):
                 return "Corrupted share content shareID \"\(shareID)\""
+            case .missingUserKey(let userID):
+                return "Missing user key \"\(userID)\""
+            case .missingPassphrase(let keyID):
+                return "Missing passphrase \"\(keyID)\""
             }
         }
     }
