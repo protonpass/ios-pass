@@ -26,6 +26,7 @@ import ProtonCore_KeyManager
 import ProtonCore_Login
 
 typealias DecryptionKey = ProtonCore_Crypto.DecryptionKey
+typealias Encryptor = ProtonCore_Crypto.Encryptor
 
 public enum PassKeyUtils {}
 

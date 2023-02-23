@@ -29,6 +29,7 @@ public struct AddressKey {
 }
 
 public extension UserData {
+    #warning("Delete this")
     // To be refactored: https://jira.protontech.ch/browse/PASSBE-201
     func getAddressKey() throws -> AddressKey {
         guard let address = addresses.first else {
