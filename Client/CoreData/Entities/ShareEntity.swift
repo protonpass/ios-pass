@@ -35,7 +35,7 @@ extension ShareEntity {
     @NSManaged var addressID: String?
     @NSManaged var content: String?
     @NSManaged var contentFormatVersion: Int16
-    @NSManaged var contentKeyRotation: Int16
+    @NSManaged var contentKeyRotation: Int64
     @NSManaged var createTime: Int64
     @NSManaged var expireTime: Int64
     @NSManaged var permission: Int16

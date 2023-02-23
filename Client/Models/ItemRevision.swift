@@ -45,34 +45,21 @@ public struct ItemRevisionList: Decodable {
     public let revisionsData: [ItemRevision]
 }
 
-public struct ItemRevision: Decodable {
+public struct ItemRevision: Decodable, Equatable {
     public let itemID: String
-    public let revision: Int16
+    public let revision: Int64
     public let contentFormatVersion: Int16
-
-    /// Parent key ID to whom the key packet belongs
-    public let rotationID: String
-
-    /// Base64 encoded item contents including the key packet
+    public let keyRotation: Int64
     public let content: String
 
-    /// Base64 encoded item contents encrypted signature made with the user's address key
-    public let userSignature: String
+    /// Base64 encoded item key. Only for vault shares.
+    public let itemKey: String?
 
-    /// Base64 encoded item contents encrypted signature made with the vault's item key
-    public let itemKeySignature: String
-
-    /// Revision state
+    /// Revision state. Values: 1 = Active, 2 = Trashed
     public let state: Int16
-
-    /// Email address of the signer
-    public let signatureEmail: String
 
     /// In case this item contains an alias, this is the email address for the alias
     public let aliasEmail: String?
-
-    // Post MVP
-    //    public let labels: [String]
 
     /// Creation time of the item
     public let createTime: Int64

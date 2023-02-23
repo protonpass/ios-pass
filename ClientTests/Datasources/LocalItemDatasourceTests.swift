@@ -34,25 +34,6 @@ final class LocalItemDatasourceTests: XCTestCase {
         sut = nil
         super.tearDown()
     }
-
-    func assertEqual(_ lhs: SymmetricallyEncryptedItem, _ rhs: SymmetricallyEncryptedItem) {
-        XCTAssertEqual(lhs.item.itemID, rhs.item.itemID)
-        XCTAssertEqual(lhs.item.revision, rhs.item.revision)
-        XCTAssertEqual(lhs.item.contentFormatVersion, rhs.item.contentFormatVersion)
-        XCTAssertEqual(lhs.item.rotationID, rhs.item.rotationID)
-        XCTAssertEqual(lhs.item.content, rhs.item.content)
-        XCTAssertEqual(lhs.item.userSignature, rhs.item.userSignature)
-        XCTAssertEqual(lhs.item.itemKeySignature, rhs.item.itemKeySignature)
-        XCTAssertEqual(lhs.item.state, rhs.item.state)
-        XCTAssertEqual(lhs.item.signatureEmail, rhs.item.signatureEmail)
-        XCTAssertEqual(lhs.item.aliasEmail, rhs.item.aliasEmail)
-        XCTAssertEqual(lhs.item.createTime, rhs.item.createTime)
-        XCTAssertEqual(lhs.item.modifyTime, rhs.item.modifyTime)
-        XCTAssertEqual(lhs.item.revisionTime, rhs.item.revisionTime)
-        XCTAssertEqual(lhs.item.lastUseTime, rhs.item.lastUseTime)
-        XCTAssertEqual(lhs.shareId, rhs.shareId)
-        XCTAssertEqual(lhs.encryptedContent, rhs.encryptedContent)
-    }
 }
 
 extension LocalItemDatasourceTests {
@@ -71,7 +52,7 @@ extension LocalItemDatasourceTests {
         // Then
         let item = try await sut.getItem(shareId: givenShareId, itemId: givenItemId)
         let nonNilItem = try XCTUnwrap(item)
-        assertEqual(nonNilItem, givenInsertedItem)
+        XCTAssertEqual(nonNilItem, givenInsertedItem)
     }
 
     func testGetAliasItem() async throws {
@@ -91,7 +72,7 @@ extension LocalItemDatasourceTests {
         // Then
         let item = try await sut.getAliasItem(email: givenAliasEmail)
         let nonNilItem = try XCTUnwrap(item)
-        assertEqual(nonNilItem, givenInsertedItem)
+        XCTAssertEqual(nonNilItem, givenInsertedItem)
     }
 
     func testInsertItems() async throws {
@@ -151,7 +132,7 @@ extension LocalItemDatasourceTests {
         let item = try await sut.getItem(shareId: givenShareId,
                                          itemId: givenItemId)
         let notNilItem = try XCTUnwrap(item)
-        assertEqual(notNilItem, updatedItem)
+        XCTAssertEqual(notNilItem, updatedItem)
     }
 
     func testTrashItems() async throws {

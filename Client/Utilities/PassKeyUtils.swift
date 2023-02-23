@@ -28,10 +28,13 @@ import ProtonCore_Login
 typealias DecryptionKey = ProtonCore_Crypto.DecryptionKey
 typealias Encryptor = ProtonCore_Crypto.Encryptor
 
-public enum PassKeyUtils {}
-
-extension Array where Element == ProtonCore_Crypto.DecryptionKey {
-    func toPublicArmored() -> [ArmoredKey] {
-        map { .init(value: $0.privateKey.armoredPublicKey) }
+public enum PassKeyUtils {
+    static func randomKey() -> Data {
+        var key = Data(count: 32)
+        _ = key.withUnsafeMutableBytes {
+            // swiftlint:disable:next force_unwrapping
+            SecRandomCopyBytes(kSecRandomDefault, 32, $0.baseAddress!)
+        }
+        return key
     }
 }

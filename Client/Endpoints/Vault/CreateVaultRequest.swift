@@ -46,12 +46,6 @@ public extension CreateVaultRequest {
 
         let vault = VaultProtobuf(name: name, description: description)
 
-        var vaultKey = Data(count: 32)
-        _ = vaultKey.withUnsafeMutableBytes {
-            // swiftlint:disable:next force_unwrapping
-            SecRandomCopyBytes(kSecRandomDefault, 32, $0.baseAddress!)
-        }
-
         guard let userKey = userData.user.keys.first else {
             throw PPClientError.crypto(.missingUserKey(userID: userData.user.ID))
         }
@@ -65,6 +59,7 @@ public extension CreateVaultRequest {
         let signerKey = SigningKey(privateKey: privateKey,
                                    passphrase: .init(value: passphrase))
 
+        let vaultKey = PassKeyUtils.randomKey()
         let encryptedVaultKeyData = try Encryptor.encrypt(publicKey: publicKey,
                                                           clearData: vaultKey,
                                                           signerKey: signerKey)
