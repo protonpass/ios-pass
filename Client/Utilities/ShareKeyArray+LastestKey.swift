@@ -1,7 +1,7 @@
 //
-// CreateVaultRequestTests.swift
-// Proton Pass - Created on 12/07/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// ShareKeyArray+LastestKey.swift
+// Proton Pass - Created on 23/02/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,15 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Client
-import Core
-import GoLibs
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import XCTest
+import Foundation
 
-final class CreateVaultRequestTests: XCTestCase {
-    func testCreateVaultSuccess() throws {
-        XCTFail("Fix this")
+public extension Array where Element == ShareKey {
+    func latestKey() throws -> ShareKey {
+        guard !isEmpty else {
+            throw PPClientError.crypto(.missingShareKeys)
+        }
+
+        guard let latestKey = sorted(by: { $0.keyRotation < $1.keyRotation }).last else {
+            throw PPClientError.crypto(.missingShareKeys)
+        }
+        return latestKey
     }
 }
