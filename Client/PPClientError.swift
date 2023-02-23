@@ -117,6 +117,7 @@ public extension PPClientError {
         case corruptedShareContent(shareID: String)
         case missingUserKey(userID: String)
         case missingPassphrase(keyID: String)
+        case missingShareKeys
 
         public var debugDescription: String {
             switch self {
@@ -154,6 +155,8 @@ public extension PPClientError {
                 return "Missing user key \"\(userID)\""
             case .missingPassphrase(let keyID):
                 return "Missing passphrase \"\(keyID)\""
+            case .missingShareKeys:
+                return "Missing share keys"
             }
         }
     }

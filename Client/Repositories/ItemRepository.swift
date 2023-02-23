@@ -425,7 +425,8 @@ private extension ItemRepositoryProtocol {
 
     func createItemRequest(itemContent: ProtobufableItemContentProtocol,
                            shareId: String) async throws -> CreateItemRequest {
-        try CreateItemRequest(shareKeys: [], itemContent: itemContent)
+        let keys = try await shareKeyRepository.getKeys(shareId: shareId)
+        return try CreateItemRequest(shareKeys: keys, itemContent: itemContent)
     }
 }
 

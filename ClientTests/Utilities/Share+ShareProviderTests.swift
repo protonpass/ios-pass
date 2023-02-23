@@ -29,17 +29,9 @@ final class SharePlusShareProviderTests: XCTestCase {
     func testGetVaultSuccess() throws {
         let givenVault = VaultProtobuf(name: .random(), description: .random())
         let testUser = UserData.test
-        let request = try CreateVaultRequest(addressKey: testUser.getAddressKey(),
+        let request = try CreateVaultRequest(userData: testUser,
                                              name: givenVault.name,
                                              description: givenVault.description)
-
-        let signingKeyPassphraseKeyPacketData =
-        try XCTUnwrap(request.signingKeyPassphraseKeyPacket.base64Decode())
-
-        let signingKeyPassphraseData =
-        try XCTUnwrap(request.signingKeyPassphrase.base64Decode())
-
-        let signingKeyPassphrase = signingKeyPassphraseKeyPacketData + signingKeyPassphraseData
 
         let createdShare = Share(shareID: .random(),
                                  vaultID: .random(),
