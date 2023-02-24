@@ -94,17 +94,18 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func start() {
-        let loadVaultsViewModel = LoadVaultsViewModel(userData: userData,
-                                                      vaultSelection: vaultSelection,
-                                                      shareRepository: shareRepository,
-                                                      itemRepository: itemRepository,
-                                                      manualLogIn: manualLogIn,
-                                                      logManager: logManager)
-        loadVaultsViewModel.onToggleSidebar = { [unowned self] in toggleSidebar() }
-        self.start(with: MyVaultsView(myVaultsViewModel: myVaultsViewModel,
-                                      loadVaultsViewModel: loadVaultsViewModel,
-                                      vaultContentViewModel: vaultContentViewModel),
-                   secondaryView: ItemDetailPlaceholderView { self.popTopViewController(animated: true) })
+        let viewModel = LoadVaultsViewModel(userData: userData,
+                                            vaultSelection: vaultSelection,
+                                            shareRepository: shareRepository,
+                                            itemRepository: itemRepository,
+                                            manualLogIn: manualLogIn,
+                                            logManager: logManager)
+        viewModel.delegate = self
+        let view = MyVaultsView(myVaultsViewModel: myVaultsViewModel,
+                                loadVaultsViewModel: viewModel,
+                                vaultContentViewModel: vaultContentViewModel)
+        let secondaryView = ItemDetailPlaceholderView(onGoBack: { self.popTopViewController() })
+        self.start(with: view, secondaryView: secondaryView)
     }
 
     private func showCreateItemView() {
@@ -643,5 +644,16 @@ extension MyVaultsCoordinator: CreateAliasLiteViewModelDelegate {
 extension MyVaultsCoordinator: LogInDetailViewModelDelegate {
     func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
         showItemDetailView(itemContent)
+    }
+}
+
+// MARK: - LoadVaultsViewModelDelegate
+extension MyVaultsCoordinator: LoadVaultsViewModelDelegate {
+    func loadVaultsViewModelWantsToToggleSidebar() {
+        toggleSidebar()
+    }
+
+    func loadVaultsViewModelDidLoadAllItems() {
+        delegate?.myVaultsCoordinatorWantsToRefreshTrash()
     }
 }

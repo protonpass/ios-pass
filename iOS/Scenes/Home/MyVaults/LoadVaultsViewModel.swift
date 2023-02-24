@@ -22,6 +22,11 @@ import Client
 import Core
 import ProtonCore_Login
 
+protocol LoadVaultsViewModelDelegate: AnyObject {
+    func loadVaultsViewModelWantsToToggleSidebar()
+    func loadVaultsViewModelDidLoadAllItems()
+}
+
 final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
@@ -34,7 +39,7 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
     private let manualLogIn: Bool
     private let logger: Logger
 
-    var onToggleSidebar: (() -> Void)?
+    weak var delegate: LoadVaultsViewModelDelegate?
 
     init(userData: UserData,
          vaultSelection: VaultSelection,
@@ -50,6 +55,10 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
+    }
+
+    func toggleSidebar() {
+        delegate?.loadVaultsViewModelWantsToToggleSidebar()
     }
 
     func getVaults() {
@@ -69,6 +78,7 @@ final class LoadVaultsViewModel: DeinitPrintable, ObservableObject {
                     } else {
                         vaultSelection.update(vaults: vaults)
                     }
+                    delegate?.loadVaultsViewModelDidLoadAllItems()
                 } else {
                     let vaults = try await self.shareRepository.getVaults()
                     vaultSelection.update(vaults: vaults)
