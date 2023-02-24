@@ -20,8 +20,7 @@
 
 import Foundation
 
-public struct ShareKey: Decodable, Hashable {
+public struct ShareKey: Decodable, Hashable, Equatable {
     public let key: String
     public let keyRotation: Int64
-    public let createTime: Int64
 }

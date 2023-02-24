@@ -24,9 +24,9 @@ import XCTest
 final class ShareKeyArrayPlusLatestKeyTests: XCTestCase {
     func testGetLatestKey() throws {
         // Given
-        let key1 = ShareKey(key: .random(), keyRotation: 13, createTime: .random(in: 1...100))
-        let key2 = ShareKey(key: .random(), keyRotation: 578, createTime: .random(in: 1...100))
-        let key3 = ShareKey(key: .random(), keyRotation: 182, createTime: .random(in: 1...100))
+        let key1 = ShareKey(key: .random(), keyRotation: 13)
+        let key2 = ShareKey(key: .random(), keyRotation: 578)
+        let key3 = ShareKey(key: .random(), keyRotation: 182)
 
         // When
         let latestKey = try [key1, key2, key3].latestKey()

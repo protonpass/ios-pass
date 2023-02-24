@@ -27,6 +27,7 @@ import XCTest
 
 final class SharePlusShareProviderTests: XCTestCase {
     func testGetVaultSuccess() throws {
+        XCTFail("Fix this")
         let givenVault = VaultProtobuf(name: .random(), description: .random())
         let testUser = UserData.test
         let request = try CreateVaultRequest(userData: testUser,
@@ -45,7 +46,7 @@ final class SharePlusShareProviderTests: XCTestCase {
                                  expireTime: nil,
                                  createTime: 0)
 
-        let shareKeys: [ShareKey] = [.init(key: .random(), keyRotation: 0, createTime: 0)]
+        let shareKeys: [ShareKey] = [.init(key: .random(), keyRotation: 0)]
 
         let shareContent = try createdShare.getShareContent(userData: testUser, shareKeys: shareKeys)
         switch shareContent {
