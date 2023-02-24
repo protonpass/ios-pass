@@ -165,7 +165,7 @@ open class Coordinator: CoordinatorProtocol {
         }
     }
 
-    public func popTopViewController(animated: Bool) {
+    public func popTopViewController(animated: Bool = true) {
         if let topMostNavigationController = topMostViewController as? UINavigationController {
             topMostNavigationController.popViewController(animated: animated)
         } else {

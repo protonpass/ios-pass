@@ -53,9 +53,7 @@ struct LoadVaultsView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            ToggleSidebarButton {
-                viewModel.onToggleSidebar?()
-            }
+            ToggleSidebarButton(action: viewModel.toggleSidebar)
         }
     }
 }
