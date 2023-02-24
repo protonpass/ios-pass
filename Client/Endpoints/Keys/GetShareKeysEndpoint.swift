@@ -21,14 +21,9 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public struct ShareKeys: Decodable {
-    let total: Int
-    let keys: [ShareKey]
-}
-
 public struct GetShareKeysResponse: Decodable {
     let code: Int
-    let shareKeys: ShareKeys
+    let shareKeys: PassKeys
 }
 
 public struct GetShareKeysEndpoint: Endpoint {

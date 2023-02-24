@@ -73,7 +73,7 @@ public struct Share: Decodable {
 }
 
 public extension Share {
-    func getShareContent(userData: UserData, shareKeys: [ShareKey]) throws -> ShareContent {
+    func getShareContent(userData: UserData, shareKeys: [PassKey]) throws -> ShareContent {
         #warning("Handle multiple keys")
         guard let shareKeyContentData = try shareKeys.latestKey().key.base64Decode() else {
             throw PPClientError.crypto(.failedToBase64Decode)

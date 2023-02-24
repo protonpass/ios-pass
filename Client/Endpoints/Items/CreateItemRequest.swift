@@ -49,7 +49,7 @@ extension CreateItemRequest: Encodable {
 }
 
 public extension CreateItemRequest {
-    init(userData: UserData, shareKeys: [ShareKey], itemContent: ProtobufableItemContentProtocol) throws {
+    init(userData: UserData, shareKeys: [PassKey], itemContent: ProtobufableItemContentProtocol) throws {
         let latestKey = try shareKeys.latestKey()
         guard let latestKeyData = try shareKeys.latestKey().key.base64Decode() else {
             throw PPClientError.crypto(.failedToBase64Decode)

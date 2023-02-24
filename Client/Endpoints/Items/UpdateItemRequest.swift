@@ -36,7 +36,7 @@ public struct UpdateItemRequest {
 
 public extension UpdateItemRequest {
     init(oldRevision: ItemRevision,
-         shareKeys: [ShareKey],
+         shareKeys: [PassKey],
          itemContent: ProtobufableItemContentProtocol) throws {
         self.init(keyRotation: 0,
                   lastRevision: 0,

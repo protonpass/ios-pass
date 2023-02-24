@@ -40,7 +40,7 @@ extension LocalShareKeyDatasourceTests {
     func testGetKeys() async throws {
         // Given
         let givenShareId = String.random()
-        let givenKeys = [ShareKey].random(randomElement: .random())
+        let givenKeys = [PassKey].random(randomElement: .random())
 
         // When
         try await sut.upsertKeys(givenKeys, shareId: givenShareId)
@@ -53,9 +53,9 @@ extension LocalShareKeyDatasourceTests {
 
     func testInsertKeys() async throws {
         // Given
-        let firstKeys = [ShareKey].random(randomElement: .random())
-        let secondKeys = [ShareKey].random(randomElement: .random())
-        let thirdKeys = [ShareKey].random(randomElement: .random())
+        let firstKeys = [PassKey].random(randomElement: .random())
+        let secondKeys = [PassKey].random(randomElement: .random())
+        let thirdKeys = [PassKey].random(randomElement: .random())
         let givenKeys = firstKeys + secondKeys + thirdKeys
         let givenShareId = String.random()
 
@@ -73,10 +73,10 @@ extension LocalShareKeyDatasourceTests {
     func testRemoveAllKeys() async throws {
         // Given
         let givenFirstShareId = String.random()
-        let givenFirstShareKeys = [ShareKey].random(randomElement: .random())
+        let givenFirstShareKeys = [PassKey].random(randomElement: .random())
 
         let givenSecondShareId = String.random()
-        let givenSecondShareKeys = [ShareKey].random(randomElement: .random())
+        let givenSecondShareKeys = [PassKey].random(randomElement: .random())
 
         // When
         try await sut.upsertKeys(givenFirstShareKeys, shareId: givenFirstShareId)
@@ -102,8 +102,8 @@ extension LocalShareKeyDatasourceTests {
 }
 
 extension LocalShareKeyDatasource {
-    func givenInsertedKey(shareId: String?, keyRotation: Int64?) async throws -> ShareKey {
-        let key = ShareKey.random(keyRotation: keyRotation)
+    func givenInsertedKey(shareId: String?, keyRotation: Int64?) async throws -> PassKey {
+        let key = PassKey.random(keyRotation: keyRotation)
         try await upsertKeys([key], shareId: shareId ?? .random())
         return key
     }

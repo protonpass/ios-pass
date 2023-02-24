@@ -1,6 +1,6 @@
 //
-// ShareKey+Test.swift
-// Proton Pass - Created on 03/08/2022.
+// PassKey.swift
+// Proton Pass - Created on 19/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,10 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Client
+import Foundation
 
-extension ShareKey {
-    static func random(keyRotation: Int64? = nil) -> ShareKey {
-        .init(key: .random(), keyRotation: .random(in: 1...1_000_000))
-    }
+/// Key used in Pass context
+public struct PassKey: Decodable, Hashable, Equatable {
+    public let key: String
+    public let keyRotation: Int64
+}
+
+/// A set of keys, only used in `GET` keys endpoints (get keys for a share, get keys for an item)
+public struct PassKeys: Decodable {
+    let total: Int
+    let keys: [PassKey]
 }

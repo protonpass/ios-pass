@@ -30,18 +30,18 @@ public protocol ShareKeyRepositoryProtocol {
     var logger: Logger { get }
 
     /// Get the share key with latest `rotation`. Not offline first.
-    func getLatestKey(shareId: String) async throws -> ShareKey
+    func getLatestKey(shareId: String) async throws -> PassKey
 
     /// Get share keys of a share with `shareId`. Not offline first.
-    func getKeys(shareId: String) async throws -> [ShareKey]
+    func getKeys(shareId: String) async throws -> [PassKey]
 
     /// Refresh share keys of a share with `shareId`
     @discardableResult
-    func refreshKeys(shareId: String) async throws -> [ShareKey]
+    func refreshKeys(shareId: String) async throws -> [PassKey]
 }
 
 public extension ShareKeyRepositoryProtocol {
-    func getLatestKey(shareId: String) async throws -> ShareKey {
+    func getLatestKey(shareId: String) async throws -> PassKey {
         logger.trace("Getting latest key for share \(shareId)")
 
         let keys = try await localShareKeyDatasource.getKeys(shareId: shareId)
@@ -59,7 +59,7 @@ public extension ShareKeyRepositoryProtocol {
         return latestKey
     }
 
-    func getKeys(shareId: String) async throws -> [ShareKey] {
+    func getKeys(shareId: String) async throws -> [PassKey] {
         logger.trace("Getting keys for share \(shareId)")
         let keys = try await localShareKeyDatasource.getKeys(shareId: shareId)
         if keys.isEmpty {
@@ -73,7 +73,7 @@ public extension ShareKeyRepositoryProtocol {
         return keys
     }
 
-    func refreshKeys(shareId: String) async throws -> [ShareKey] {
+    func refreshKeys(shareId: String) async throws -> [PassKey] {
         logger.trace("Refreshing keys for share \(shareId)")
         let keys = try await remoteShareKeyDatasource.getKeys(shareId: shareId)
         logger.trace("Got \(keys.count) keys from remote for share \(shareId)")
