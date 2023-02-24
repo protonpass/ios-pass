@@ -34,12 +34,6 @@ final class LocalShareKeyDatasourceTests: XCTestCase {
         sut = nil
         super.tearDown()
     }
-
-    func assertEqual(_ lhs: ShareKey, _ rhs: ShareKey) {
-        XCTAssertEqual(lhs.keyRotation, rhs.keyRotation)
-        XCTAssertEqual(lhs.key, rhs.key)
-        XCTAssertEqual(lhs.createTime, rhs.createTime)
-    }
 }
 
 extension LocalShareKeyDatasourceTests {

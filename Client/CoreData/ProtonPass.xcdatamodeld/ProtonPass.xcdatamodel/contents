@@ -58,7 +58,6 @@
         </uniquenessConstraints>
     </entity>
     <entity name="ShareKeyEntity" representedClassName="ShareKeyEntity" syncable="YES">
-        <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="key" attributeType="String"/>
         <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="shareID" attributeType="String"/>

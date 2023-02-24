@@ -22,8 +22,6 @@
 
 extension ShareKey {
     static func random(keyRotation: Int64? = nil) -> ShareKey {
-        .init(key: .random(),
-              keyRotation: .random(in: 1...1_000_000),
-              createTime: .random(in: 1...1_000_000))
+        .init(key: .random(), keyRotation: .random(in: 1...1_000_000))
     }
 }

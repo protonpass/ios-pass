@@ -32,7 +32,6 @@ extension ShareKeyEntity {
         NSFetchRequest<ShareKeyEntity>(entityName: "ShareKeyEntity")
     }
 
-    @NSManaged var createTime: Int64
     @NSManaged var key: String?
     @NSManaged var keyRotation: Int64
     @NSManaged var shareID: String?
@@ -44,11 +43,10 @@ extension ShareKeyEntity {
             throw PPClientError.coreData(.corrupted(object: self, property: "key"))
         }
 
-        return .init(key: key, keyRotation: keyRotation, createTime: createTime)
+        return .init(key: key, keyRotation: keyRotation)
     }
 
     func hydrate(from shareKey: ShareKey, shareId: String) {
-        createTime = shareKey.createTime
         key = shareKey.key
         keyRotation = shareKey.keyRotation
         shareID = shareId
@@ -56,7 +54,7 @@ extension ShareKeyEntity {
 }
 
 extension ShareKeyEntity {
-    class func allVaultKeysFetchRequest(shareId: String) -> NSFetchRequest<ShareKeyEntity> {
+    class func allKeysFetchRequest(shareId: String) -> NSFetchRequest<ShareKeyEntity> {
         let fetchRequest = fetchRequest()
         fetchRequest.predicate = .init(format: "shareID = %s", shareId)
         return fetchRequest
