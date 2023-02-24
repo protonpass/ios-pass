@@ -23,8 +23,6 @@ import ProtonCore_DataModel
 import ProtonCore_Login
 import XCTest
 
-// swiftlint:disable function_body_length
-
 final class SharePlusShareProviderTests: XCTestCase {
     func testGetVaultSuccess() throws {
         XCTFail("Fix this")
