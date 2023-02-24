@@ -38,7 +38,7 @@ extension ShareKeyEntity {
 }
 
 extension ShareKeyEntity {
-    func toShareKey() throws -> ShareKey {
+    func toKey() throws -> PassKey {
         guard let key else {
             throw PPClientError.coreData(.corrupted(object: self, property: "key"))
         }
@@ -46,10 +46,10 @@ extension ShareKeyEntity {
         return .init(key: key, keyRotation: keyRotation)
     }
 
-    func hydrate(from shareKey: ShareKey, shareId: String) {
-        key = shareKey.key
-        keyRotation = shareKey.keyRotation
-        shareID = shareId
+    func hydrate(from key: PassKey, shareId: String) {
+        self.key = key.key
+        self.keyRotation = key.keyRotation
+        self.shareID = shareId
     }
 }
 

@@ -28,33 +28,5 @@ import XCTest
 final class SharePlusShareProviderTests: XCTestCase {
     func testGetVaultSuccess() throws {
         XCTFail("Fix this")
-        let givenVault = VaultProtobuf(name: .random(), description: .random())
-        let testUser = UserData.test
-        let request = try CreateVaultRequest(userData: testUser,
-                                             name: givenVault.name,
-                                             description: givenVault.description)
-
-        let createdShare = Share(shareID: .random(),
-                                 vaultID: .random(),
-                                 addressID: (try? testUser.getAddressKey().addressId) ?? "",
-                                 targetType: ShareType.vault.rawValue,
-                                 targetID: .random(),
-                                 permission: 0,
-                                 content: request.content,
-                                 contentKeyRotation: 0,
-                                 contentFormatVersion: 1,
-                                 expireTime: nil,
-                                 createTime: 0)
-
-        let shareKeys: [ShareKey] = [.init(key: .random(), keyRotation: 0)]
-
-        let shareContent = try createdShare.getShareContent(userData: testUser, shareKeys: shareKeys)
-        switch shareContent {
-        case .vault(let vault):
-            XCTAssertEqual(givenVault.name, vault.name)
-            XCTAssertEqual(givenVault.description, vault.description)
-        case .item:
-            XCTFail("Expect vault not item")
-        }
     }
 }

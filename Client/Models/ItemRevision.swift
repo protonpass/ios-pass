@@ -81,7 +81,7 @@ public struct ItemRevision: Decodable, Equatable {
 public extension ItemRevision {
     func getContentProtobuf(userData: UserData,
                             share: Share,
-                            shareKeys: [ShareKey]) throws -> ItemContentProtobuf {
+                            shareKeys: [PassKey]) throws -> ItemContentProtobuf {
         #warning("Handle this")
         guard let itemKey else {
             throw PPClientError.crypto(.failedToDecryptContent)
@@ -89,7 +89,7 @@ public extension ItemRevision {
 
         guard let key = shareKeys.first(where: { $0.keyRotation == keyRotation }),
               let keyData = try key.key.base64Decode() else {
-            throw PPClientError.crypto(.missingShareKeys)
+            throw PPClientError.crypto(.missingKeys)
         }
 
         let decryptionKeys = userData.user.keys.map {

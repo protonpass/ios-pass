@@ -379,7 +379,7 @@ private extension ItemRepositoryProtocol {
 
     func symmetricallyEncrypt(itemRevision: ItemRevision,
                               share: Share,
-                              shareKeys: [ShareKey]) async throws -> SymmetricallyEncryptedItem {
+                              shareKeys: [PassKey]) async throws -> SymmetricallyEncryptedItem {
         let contentProtobuf = try itemRevision.getContentProtobuf(userData: userData,
                                                                   share: share,
                                                                   shareKeys: shareKeys)

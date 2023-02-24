@@ -1,7 +1,7 @@
 //
-// ShareKey.swift
-// Proton Pass - Created on 19/07/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// PassKeyArray+LastestKey.swift
+// Proton Pass - Created on 23/02/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,7 +20,15 @@
 
 import Foundation
 
-public struct ShareKey: Decodable, Hashable, Equatable {
-    public let key: String
-    public let keyRotation: Int64
+public extension Array where Element == PassKey {
+    func latestKey() throws -> PassKey {
+        guard !isEmpty else {
+            throw PPClientError.crypto(.missingKeys)
+        }
+
+        guard let latestKey = sorted(by: { $0.keyRotation < $1.keyRotation }).last else {
+            throw PPClientError.crypto(.missingKeys)
+        }
+        return latestKey
+    }
 }

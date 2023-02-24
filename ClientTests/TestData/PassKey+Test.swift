@@ -1,7 +1,7 @@
 //
-// ShareKeyArray+LatestKeyTests.swift
-// Proton Pass - Created on 23/02/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// PassKey+Test.swift
+// Proton Pass - Created on 03/08/2022.
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,19 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
-import XCTest
 
-final class ShareKeyArrayPlusLatestKeyTests: XCTestCase {
-    func testGetLatestKey() throws {
-        // Given
-        let key1 = ShareKey(key: .random(), keyRotation: 13)
-        let key2 = ShareKey(key: .random(), keyRotation: 578)
-        let key3 = ShareKey(key: .random(), keyRotation: 182)
-
-        // When
-        let latestKey = try [key1, key2, key3].latestKey()
-
-        // Then
-        XCTAssertEqual(latestKey, key2)
+extension PassKey {
+    static func random(keyRotation: Int64? = nil) -> PassKey {
+        .init(key: .random(), keyRotation: .random(in: 1...1_000_000))
     }
 }
