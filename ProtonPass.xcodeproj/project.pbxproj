@@ -196,6 +196,7 @@
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
 		3554747C29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554747B29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift */; };
 		3554747E29A8E71F0060B555 /* RemoteItemKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554747D29A8E71F0060B555 /* RemoteItemKeyDatasource.swift */; };
+		3554748029A8E8460060B555 /* PassKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554747F29A8E8460060B555 /* PassKeyManager.swift */; };
 		3554D42D2967854000DF0CBE /* DeveloperModeStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554D42C2967854000DF0CBE /* DeveloperModeStateManager.swift */; };
 		3554DAB5293A8F7D00595FC7 /* NoSearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554DAB4293A8F7D00595FC7 /* NoSearchResultsView.swift */; };
 		3554DAB6293A8F9500595FC7 /* NoSearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554DAB4293A8F7D00595FC7 /* NoSearchResultsView.swift */; };
@@ -809,6 +810,7 @@
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
 		3554747B29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLatestItemKeyEndpoint.swift; sourceTree = "<group>"; };
 		3554747D29A8E71F0060B555 /* RemoteItemKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteItemKeyDatasource.swift; sourceTree = "<group>"; };
+		3554747F29A8E8460060B555 /* PassKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKeyManager.swift; sourceTree = "<group>"; };
 		3554D42C2967854000DF0CBE /* DeveloperModeStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperModeStateManager.swift; sourceTree = "<group>"; };
 		3554DAB4293A8F7D00595FC7 /* NoSearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSearchResultsView.swift; sourceTree = "<group>"; };
 		3555800628F01A46009C3B88 /* URLUtils+MatcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+MatcherTests.swift"; sourceTree = "<group>"; };
@@ -1765,8 +1767,9 @@
 				358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */,
 				3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */,
 				358BD35D287D4E8000802A91 /* CryptoUtils.swift */,
-				354F768928C72F1000EB2383 /* PassKeyUtils.swift */,
 				35CAD69F29A789A300CF3993 /* PassKeyArray+LastestKey.swift */,
+				3554747F29A8E8460060B555 /* PassKeyManager.swift */,
+				354F768928C72F1000EB2383 /* PassKeyUtils.swift */,
 				350A97D12885BF7E00A7168B /* Protobufable.swift */,
 				3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */,
 			);
@@ -3410,6 +3413,7 @@
 				354513EB28E4D5310020A93A /* AutoFillCredential.swift in Sources */,
 				355443FD287CA77C0017FCAD /* Share.swift in Sources */,
 				354146DA28D1F585007E45A6 /* AliasRepository.swift in Sources */,
+				3554748029A8E8460060B555 /* PassKeyManager.swift in Sources */,
 				355A198F294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift in Sources */,
 				358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */,
 				350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */,

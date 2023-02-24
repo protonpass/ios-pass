@@ -29,9 +29,6 @@ public protocol ShareKeyRepositoryProtocol {
     var remoteShareKeyDatasource: RemoteShareKeyDatasourceProtocol { get }
     var logger: Logger { get }
 
-    /// Get the share key with latest `rotation`. Not offline first.
-    func getLatestKey(shareId: String) async throws -> PassKey
-
     /// Get share keys of a share with `shareId`. Not offline first.
     func getKeys(shareId: String) async throws -> [PassKey]
 
@@ -41,24 +38,6 @@ public protocol ShareKeyRepositoryProtocol {
 }
 
 public extension ShareKeyRepositoryProtocol {
-    func getLatestKey(shareId: String) async throws -> PassKey {
-        logger.trace("Getting latest key for share \(shareId)")
-
-        let keys = try await localShareKeyDatasource.getKeys(shareId: shareId)
-        if keys.isEmpty {
-            logger.trace("No local keys for share \(shareId). Fetching from remote.")
-            try await refreshKeys(shareId: shareId)
-        }
-
-        guard let latestKey = keys.max(by: { $0.keyRotation < $1.keyRotation }) else {
-            logger.fatal("No keys for share \(shareId)")
-            throw PPClientError.keysNotFound(shareID: shareId)
-        }
-
-        logger.trace("Got latest key for share \(shareId)")
-        return latestKey
-    }
-
     func getKeys(shareId: String) async throws -> [PassKey] {
         logger.trace("Getting keys for share \(shareId)")
         let keys = try await localShareKeyDatasource.getKeys(shareId: shareId)
