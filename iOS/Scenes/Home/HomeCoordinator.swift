@@ -123,12 +123,19 @@ final class HomeCoordinator: DeinitPrintable {
                                                     apiService: apiService,
                                                     logManager: logManager)
         self.shareKeyRepository = shareKeyRepository
+
+        let itemKeyDatasource = RemoteItemKeyDatasource(authCredential: authCredential,
+                                                        apiService: apiService)
+        let passKeyManager = PassKeyManager(userData: sessionData.userData,
+                                            shareKeyRepository: shareKeyRepository,
+                                            itemKeyDatasource: itemKeyDatasource,
+                                            logManager: logManager)
         let shareRepository = ShareRepository(
             userData: sessionData.userData,
             localShareDatasource: LocalShareDatasource(container: container),
             remoteShareDatasouce: RemoteShareDatasource(authCredential: authCredential,
                                                         apiService: apiService),
-            shareKeyRepository: shareKeyRepository,
+            passKeyManager: passKeyManager,
             logManager: logManager)
         self.shareRepository = shareRepository
         itemRepository.delegate = credentialManager as? ItemRepositoryDelegate

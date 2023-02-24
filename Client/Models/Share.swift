@@ -73,24 +73,7 @@ public struct Share: Decodable {
 }
 
 public extension Share {
-    func getShareContent(userData: UserData, shareKeys: [PassKey]) throws -> ShareContent {
-        #warning("Handle multiple keys")
-        guard let shareKeyContentData = try shareKeys.latestKey().key.base64Decode() else {
-            throw PPClientError.crypto(.failedToBase64Decode)
-        }
-
-        let armoredEncryptedShareKeyContent = try CryptoUtils.armorMessage(shareKeyContentData)
-        let decryptionKeys = userData.user.keys.map {
-            DecryptionKey(privateKey: .init(value: $0.privateKey),
-                          passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
-        }
-
-        let verificationKeys = userData.user.keys.map { $0.publicKey }.map { ArmoredKey(value: $0) }
-        let vaultKey: VerifiedData = try Decryptor.decryptAndVerify(
-            decryptionKeys: decryptionKeys,
-            value: .init(value: armoredEncryptedShareKeyContent),
-            verificationKeys: verificationKeys)
-
+    func getShareContent(key: Data) throws -> ShareContent {
         guard let contentData = try content?.base64Decode() else {
             throw PPClientError.crypto(.failedToBase64Decode)
         }
@@ -103,7 +86,7 @@ public extension Share {
         let sealedbox = try AES.GCM.SealedBox(combined: contentData)
 
         let decryptedContent = try AES.GCM.open(sealedbox,
-                                                using: .init(data: vaultKey.content),
+                                                using: .init(data: key),
                                                 authenticating: tagData)
 
         switch shareType {

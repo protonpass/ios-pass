@@ -33,3 +33,5 @@ public extension RemoteItemKeyDatasourceProtocol {
         return response.key
     }
 }
+
+public final class RemoteItemKeyDatasource: RemoteDatasource, RemoteItemKeyDatasourceProtocol {}
