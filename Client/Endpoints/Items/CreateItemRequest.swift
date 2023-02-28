@@ -51,23 +51,22 @@ extension CreateItemRequest: Encodable {
 public extension CreateItemRequest {
     init(vaultKey: DecryptedShareKey, itemContent: ProtobufableItemContentProtocol) throws {
         let itemKey = PassKeyUtils.randomKey()
-        let tagData = "itemcontent".data(using: .utf8) ?? .init()
         let encryptedContent = try AES.GCM.seal(itemContent.data(),
-                                                using: .init(data: itemKey),
-                                                authenticating: tagData)
+                                                key: itemKey,
+                                                associatedData: .itemContent)
 
         guard let content = encryptedContent.combined?.base64EncodedString() else {
             throw PPClientError.crypto(.failedToAESEncrypt)
         }
 
-        let itemKeyTag = "itemkey".data(using: .utf8) ?? .init()
         let encryptedItemKey = try AES.GCM.seal(itemKey,
-                                                using: .init(data: vaultKey.keyData),
-                                                authenticating: itemKeyTag).combined ?? .init()
+                                                key: vaultKey.keyData,
+                                                associatedData: .itemKey)
+        let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
 
         self.init(keyRotation: vaultKey.keyRotation,
                   contentFormatVersion: 1,
                   content: content,
-                  itemKey: encryptedItemKey.base64EncodedString())
+                  itemKey: encryptedItemKeyData.base64EncodedString())
     }
 }
