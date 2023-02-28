@@ -65,10 +65,9 @@ public extension CreateVaultRequest {
                                                           signerKey: signerKey)
         encryptedVaultKey = try encryptedVaultKeyData.unArmor().value.base64EncodedString()
 
-        let authenticatedData = "vaultcontent".data(using: .utf8) ?? .init()
         let encryptedContent = try AES.GCM.seal(vault.data(),
-                                                using: .init(data: vaultKey),
-                                                authenticating: authenticatedData)
+                                                key: vaultKey,
+                                                associatedData: .vaultcontent)
 
         guard let content = encryptedContent.combined?.base64EncodedString(), content.count >= 28 else {
             throw PPClientError.crypto(.failedToAESEncrypt)

@@ -94,22 +94,17 @@ public extension ItemRevision {
             throw PPClientError.crypto(.failedToBase64Decode)
         }
 
-        let itemKeyTagData = "itemkey".data(using: .utf8) ?? .init()
-        let itemKeySealedBox = try AES.GCM.SealedBox(combined: itemKeyData)
-
-        let decryptedItemKeyData = try AES.GCM.open(itemKeySealedBox,
-                                                    using: .init(data: vaultKey.keyData),
-                                                    authenticating: itemKeyTagData)
+        let decryptedItemKeyData = try AES.GCM.open(itemKeyData,
+                                                    key: vaultKey.keyData,
+                                                    associatedData: .itemKey)
 
         guard let contentData = try content.base64Decode() else {
             throw PPClientError.crypto(.failedToBase64Decode)
         }
 
-        let contentTagData = "itemcontent".data(using: .utf8) ?? .init()
-        let contentSealedBox = try AES.GCM.SealedBox(combined: contentData)
-        let decryptedContentData = try AES.GCM.open(contentSealedBox,
-                                                    using: .init(data: decryptedItemKeyData),
-                                                    authenticating: contentTagData)
+        let decryptedContentData = try AES.GCM.open(contentData,
+                                                    key: decryptedItemKeyData,
+                                                    associatedData: .itemContent)
 
         return try ItemContentProtobuf(data: decryptedContentData)
     }
