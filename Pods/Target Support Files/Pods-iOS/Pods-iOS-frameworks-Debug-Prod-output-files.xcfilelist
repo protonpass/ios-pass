@@ -15,6 +15,7 @@ ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Keymaker.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Log.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Login.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Networking.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Observability.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Services.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_UIFoundations.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Utilities.framework

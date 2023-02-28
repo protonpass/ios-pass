@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Challenge",
-  "version": "3.25.2",
+  "version": "3.28.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,10 +17,11 @@
   },
   "source": {
     "git": null,
-    "tag": "3.25.2"
+    "tag": "3.28.2"
   },
   "platforms": {
-    "ios": "11.0"
+    "ios": "11.0",
+    "osx": "10.13"
   },
   "swift_versions": [
     "5.6"
@@ -30,17 +31,21 @@
   },
   "dependencies": {
     "ProtonCore-Foundations": [
-      "3.25.2"
+      "3.28.2"
     ],
     "ProtonCore-UIFoundations": [
-      "3.25.2"
+      "3.28.2"
+    ],
+    "ProtonCore-DataModel": [
+      "3.28.2"
     ]
   },
-  "frameworks": "UIKit",
   "default_subspecs": [
 
   ],
-  "source_files": "libraries/Challenge/Sources/**/*.{h,m,swift}",
+  "ios": {
+    "source_files": "libraries/Challenge/Sources/**/*.{h,m,swift}"
+  },
   "testspecs": [
     {
       "name": "Tests",

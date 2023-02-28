@@ -108,8 +108,8 @@ public class FeatureFactory {
             }
         }
         
-        if let first = self.currentFeatures.first(where: { item in item.name == feature.name }) {
-            return first.isEnable
+        if self.currentFeatures.contains(where: { item in item.name == feature.name }) {
+            return true
         }
         
         return isEnabled

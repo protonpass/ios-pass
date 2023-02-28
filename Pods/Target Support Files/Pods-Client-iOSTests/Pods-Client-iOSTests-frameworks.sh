@@ -194,12 +194,14 @@ if [[ "$CONFIGURATION" == "Debug-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Observability/ProtonCore_Observability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCore_UIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Debug-Prod" ]]; then
@@ -221,12 +223,14 @@ if [[ "$CONFIGURATION" == "Debug-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Observability/ProtonCore_Observability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCore_UIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Release-Black" ]]; then
@@ -248,12 +252,14 @@ if [[ "$CONFIGURATION" == "Release-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Observability/ProtonCore_Observability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCore_UIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Release-Prod" ]]; then
@@ -275,12 +281,14 @@ if [[ "$CONFIGURATION" == "Release-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Observability/ProtonCore_Observability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCore_UIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

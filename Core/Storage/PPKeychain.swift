@@ -20,6 +20,21 @@
 
 import ProtonCore_Keymaker
 
+public protocol KeychainProtocol: AnyObject {
+    // getters
+    func data(forKey key: String) -> Data?
+    func string(forKey key: String) -> String?
+
+    // setters
+    func set(_ data: Data, forKey key: String)
+    func set(_ string: String, forKey key: String)
+
+    // cleaners
+    func remove(forKey key: String)
+}
+
+extension Keychain: KeychainProtocol {}
+
 public final class PPKeychain: Keychain {
     public init() {
         super.init(service: "ch.protonmail", accessGroup: Constants.keychainGroup)
