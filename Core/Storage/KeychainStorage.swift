@@ -24,7 +24,7 @@ import ProtonCore_Keymaker
 @propertyWrapper
 public final class KeychainStorage<T: Codable> {
     private weak var mainKeyProvider: MainKeyProvider?
-    private weak var keychain: Keychain?
+    private weak var keychain: KeychainProtocol?
     private var logger: Logger?
     private let key: Key
     private let defaultValue: T?
@@ -41,7 +41,7 @@ public final class KeychainStorage<T: Codable> {
         return keychain.data(forKey: key.rawValue) != nil
     }
 
-    public func setKeychain(_ keychain: Keychain) {
+    public func setKeychain(_ keychain: KeychainProtocol) {
         self.keychain = keychain
     }
 
@@ -131,7 +131,8 @@ public final class KeychainStorage<T: Codable> {
 // swiftlint:disable explicit_enum_raw_value
 public extension KeychainStorage {
     enum Key: String {
-        case sessionData
+        case unauthSessionCredentials
+        case authSessionData
         case symmetricKey
     }
 }

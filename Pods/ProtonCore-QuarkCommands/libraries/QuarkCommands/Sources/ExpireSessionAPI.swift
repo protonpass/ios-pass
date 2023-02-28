@@ -38,6 +38,7 @@ extension QuarkCommands {
         if expireRefreshToken {
             urlString += "&--refresh=null"
         }
+        
         let completion: (Result<Void, ExpireSessionError>) -> Void = { result in
             callCompletionBlockOn.async { completion(result) }
         }

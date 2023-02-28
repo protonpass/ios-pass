@@ -88,9 +88,9 @@ extension LoginErrorCapable {
             showBanner(message: message, button: CoreString._net_api_might_be_blocked_button) { [weak self] in
                 self?.onDohTroubleshooting()
             }
-        case .externalAccountsNotSupported(let message, _):
-            let alert = UIAlertController(title: CoreString._ls_external_eccounts_not_supported_popup_title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: CoreString._ls_external_eccounts_not_supported_popup_action_button, style: .default) { [weak self] _ in
+        case .externalAccountsNotSupported(let message, let title, _):
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: CoreString._ls_external_accounts_not_supported_popup_action_button, style: .default) { [weak self] _ in
                 self?.onLearnMoreAboutExternalAccountsNotSupported()
             })
             alert.addAction(UIAlertAction(title: CoreString._hv_cancel_button, style: .default, handler: nil))

@@ -25,6 +25,7 @@ import CoreData
 import CryptoKit
 import GoLibs
 import ProtonCore_Authentication
+import ProtonCore_FeatureSwitch
 import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
@@ -38,17 +39,20 @@ final class AppCoordinator {
     private let window: UIWindow
     private let appStateObserver: AppStateObserver
     private let keymaker: Keymaker
-    private let apiService: PMAPIService
+    private let apiManager: APIManager
     private let logManager: LogManager
-    private var authHelper: AuthHelper
     private let logger: Logger
     private var container: NSPersistentContainer
     private let credentialManager: CredentialManagerProtocol
     private var preferences: Preferences
     private var isUITest: Bool
+    private let appVersion = "ios-pass@\(Bundle.main.fullAppVersionName())"
 
-    @KeychainStorage(key: .sessionData)
+    @KeychainStorage(key: .authSessionData)
     private var sessionData: SessionData?
+
+    @KeychainStorage(key: .unauthSessionCredentials)
+    private var unauthSessionCredentials: AuthCredential?
 
     @KeychainStorage(key: .symmetricKey)
     private var symmetricKey: String?
@@ -65,9 +69,6 @@ final class AppCoordinator {
     init(window: UIWindow) {
         self.window = window
         self.appStateObserver = .init()
-        // The sessionUID will be used in the short future. It is empty by default.
-        // we will have another migration to cache session and pass it to this initial
-        self.apiService = PMAPIService.createAPIService(doh: PPDoH(bundle: .main), sessionUID: "")
         self.logManager = .init(module: .hostApp)
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
@@ -77,25 +78,29 @@ final class AppCoordinator {
         self._sessionData.setKeychain(keychain)
         self._sessionData.setMainKeyProvider(keymaker)
         self._sessionData.setLogManager(self.logManager)
+        self._unauthSessionCredentials.setKeychain(keychain)
+        self._unauthSessionCredentials.setMainKeyProvider(keymaker)
+        self._unauthSessionCredentials.setLogManager(self.logManager)
         self._symmetricKey.setKeychain(keychain)
         self._symmetricKey.setMainKeyProvider(keymaker)
         self._symmetricKey.setLogManager(self.logManager)
         self.keymaker = keymaker
+        self.apiManager = APIManager(keychain: keychain,
+                                     mainKeyProvider: keymaker,
+                                     logManager: logManager,
+                                     appVer: appVersion)
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)
         self.preferences = .init()
         self.isUITest = false
-        self.authHelper = AuthHelper()
-        authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
-        self.apiService.authDelegate = authHelper
-        self.apiService.serviceDelegate = self
         bindAppState()
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             self.isUITest = true
-            self.wipeAllData()
+            self.wipeAllData(includingUnauthSession: true)
         }
+        self.apiManager.delegate = self
     }
 
     private func bindAppState() {
@@ -106,18 +111,14 @@ final class AppCoordinator {
                 guard let self else { return }
                 switch appState {
                 case .loggedOut(let reason):
-                    self.wipeAllData()
+                    let shouldWipeUnauthSession = reason != .noAuthSessionButUnauthSessionAvailable
+                    self.wipeAllData(includingUnauthSession: shouldWipeUnauthSession)
                     self.showWelcomeScene(reason: reason)
 
                 case let .loggedIn(sessionData, manualLogIn):
                     self.sessionData = sessionData
-                    // AuthHelper need to expose the setter to update authCredential.
-                    // Then we don't need to initial AuthHelper again. Temporary
-                    self.apiService.setSessionUID(uid: sessionData.userData.credential.sessionID)
-                    self.authHelper = AuthHelper(authCredential: sessionData.userData.credential)
-                    self.authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
-                    self.apiService.authDelegate = self.authHelper
-
+                    self.apiManager.sessionIsAvailable(authCredential: sessionData.userData.credential,
+                                                       scopes: sessionData.userData.scopes)
                     self.showHomeScene(sessionData: sessionData, manualLogIn: manualLogIn)
 
                 case .undefined:
@@ -145,8 +146,10 @@ final class AppCoordinator {
     func start() {
         if let sessionData {
             appStateObserver.updateAppState(.loggedIn(data: sessionData, manualLogIn: false))
+        } else if unauthSessionCredentials != nil {
+            appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
-            appStateObserver.updateAppState(.loggedOut(.noSessionData))
+            appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
         }
     }
 
@@ -165,7 +168,7 @@ final class AppCoordinator {
     }
 
     private func showWelcomeScene(reason: LogOutReason) {
-        let welcomeCoordinator = WelcomeCoordinator(apiServiceDelegate: self)
+        let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.apiService)
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
         self.homeCoordinator = nil
@@ -185,7 +188,7 @@ final class AppCoordinator {
         do {
             let symmetricKey = try getOrCreateSymmetricKey()
             let homeCoordinator = HomeCoordinator(sessionData: sessionData,
-                                                  apiService: apiService,
+                                                  apiService: apiManager.apiService,
                                                   symmetricKey: symmetricKey,
                                                   container: container,
                                                   credentialManager: credentialManager,
@@ -203,7 +206,7 @@ final class AppCoordinator {
             }
         } catch {
             logger.error(error)
-            wipeAllData()
+            wipeAllData(includingUnauthSession: true)
             appStateObserver.updateAppState(.loggedOut(.failedToGenerateSymmetricKey))
         }
     }
@@ -217,10 +220,13 @@ final class AppCoordinator {
                           animations: nil) { _ in completion?() }
     }
 
-    private func wipeAllData() {
-        logger.info("Wiping all data")
-        keymaker.wipeMainKey()
+    private func wipeAllData(includingUnauthSession: Bool) {
+        logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
         sessionData = nil
+        if includingUnauthSession {
+            apiManager.clearCredentials()
+            keymaker.wipeMainKey()
+        }
         preferences.reset(isUITests: self.isUITest)
         Task {
             // Do things independently in different `do catch` blocks
@@ -257,35 +263,19 @@ final class AppCoordinator {
         alert.addAction(.init(title: "OK", style: .default))
         rootViewController?.present(alert, animated: true)
     }
-
-    // Create a new instance of SessionData with everything copied except credential
-    private func updateSessionData(_ sessionData: SessionData,
-                                   authCredential: AuthCredential) {
-        let currentUserData = sessionData.userData
-        let updatedUserData = UserData(credential: authCredential,
-                                       user: currentUserData.user,
-                                       salts: currentUserData.salts,
-                                       passphrases: currentUserData.passphrases,
-                                       addresses: currentUserData.addresses,
-                                       scopes: currentUserData.scopes)
-        self.sessionData = .init(userData: updatedUserData)
-    }
 }
 
 // MARK: - WelcomeCoordinatorDelegate
 extension AppCoordinator: WelcomeCoordinatorDelegate {
-    func welcomeCoordinator(didFinishWith loginData: LoginData) {
-        switch loginData {
-        case .credential:
-            fatalError("Impossible case. Make sure minimumAccountType is set as internal in LoginAndSignUp")
-        case .userData(let userData):
-            guard userData.scopes.contains("pass") else {
-                alertNoPassScope()
-                return
-            }
-            let sessionData = SessionData(userData: userData)
-            appStateObserver.updateAppState(.loggedIn(data: sessionData, manualLogIn: true))
+    func welcomeCoordinator(didFinishWith userData: LoginData) {
+        guard userData.scopes.contains("pass") else {
+            sessionData = nil
+            apiManager.clearCredentials()
+            alertNoPassScope()
+            return
         }
+        let sessionData = SessionData(userData: userData)
+        appStateObserver.updateAppState(.loggedIn(data: sessionData, manualLogIn: true))
     }
 
     private func alertNoPassScope() {
@@ -310,41 +300,10 @@ extension AppCoordinator: HomeCoordinatorDelegate {
     }
 }
 
-// MARK: - AuthHelperDelegate
-extension AppCoordinator: AuthHelperDelegate {
-    func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
-        guard let sessionData else {
-            logger.info("Refreshed expired access token but found no sessionData in keychain. Logging out...")
-            appStateObserver.updateAppState(.loggedOut(.noSessionData))
-            return
-        }
-        self.logger.info("Refreshed expired access token")
-        self.updateSessionData(sessionData, authCredential: authCredential)
-    }
-
-    func sessionWasInvalidated(for sessionUID: String) {
-        logger.info("Access token expired but found no sessionData in keychain. Logging out...")
-        appStateObserver.updateAppState(.loggedOut(.noSessionData))
-    }
-}
-
-// MARK: - APIServiceDelegate
-extension AppCoordinator: APIServiceDelegate {
-    var appVersion: String { "ios-pass@\(Bundle.main.fullAppVersionName())" }
-    var userAgent: String? { UserAgent.default.ua }
-    var locale: String { Locale.autoupdatingCurrent.identifier }
-    var additionalHeaders: [String: String]? { nil }
-
-    func onDohTroubleshot() {}
-
-    func onUpdate(serverTime: Int64) {
-        CryptoUpdateTime(serverTime)
-    }
-
-    func isReachable() -> Bool {
-        // swiftlint:disable:next todo
-        // TODO: Handle this
-        return true
+// MARK: - APIManagerDelegate
+extension AppCoordinator: APIManagerDelegate {
+    func appLoggedOut() {
+        appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
     }
 }
 

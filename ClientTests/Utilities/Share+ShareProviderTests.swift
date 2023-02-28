@@ -18,12 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable function_body_length
-
 @testable import Client
 import ProtonCore_DataModel
 import ProtonCore_Login
 import XCTest
+
+// swiftlint:disable function_body_length
 
 final class SharePlusShareProviderTests: XCTestCase {
     func testGetVaultSuccess() throws {

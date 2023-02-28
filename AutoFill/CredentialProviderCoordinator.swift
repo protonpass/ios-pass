@@ -35,7 +35,7 @@ import UIComponents
 import UserNotifications
 
 public final class CredentialProviderCoordinator {
-    @KeychainStorage(key: .sessionData)
+    @KeychainStorage(key: .authSessionData)
     private var sessionData: SessionData?
 
     @KeychainStorage(key: .symmetricKey)
@@ -44,8 +44,7 @@ public final class CredentialProviderCoordinator {
     /// Self-initialized properties
     private let keychain: Keychain
     private let keymaker: Keymaker
-    private var apiService: APIService
-    private var authHelper: AuthHelper
+    private var apiManager: APIManager
     private let container: NSPersistentContainer
     private let context: ASCredentialProviderExtensionContext
     private let preferences: Preferences
@@ -73,7 +72,7 @@ public final class CredentialProviderCoordinator {
         rootViewController.topMostViewController
     }
 
-    init(apiService: APIService,
+    init(apiManager: APIManager,
          container: NSPersistentContainer,
          context: ASCredentialProviderExtensionContext,
          preferences: Preferences,
@@ -90,7 +89,7 @@ public final class CredentialProviderCoordinator {
         self._symmetricKeyString.setKeychain(keychain)
         self._symmetricKeyString.setMainKeyProvider(keymaker)
         self._symmetricKeyString.setLogManager(logManager)
-        self.apiService = apiService
+        self.apiManager = apiManager
         self.container = container
         self.context = context
         self.preferences = preferences
@@ -103,10 +102,6 @@ public final class CredentialProviderCoordinator {
         self.clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
         self.rootViewController = rootViewController
-        self.authHelper = AuthHelper()
-        authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
-        self.apiService.authDelegate = authHelper
-        self.apiService.serviceDelegate = self
         self.clipboardManager.bannerManager = bannerManager
         makeSymmetricKeyAndRepositories()
     }
@@ -116,14 +111,8 @@ public final class CredentialProviderCoordinator {
             showNoLoggedInView()
             return
         }
-
-        // AuthHelper need to expose the setter to update authCredential.
-        // Then we don't need to initial AuthHelper again. Temporary
-        self.apiService.setSessionUID(uid: sessionData.userData.credential.sessionID)
-        self.authHelper = AuthHelper(authCredential: sessionData.userData.credential)
-        self.authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
-        self.apiService.authDelegate = self.authHelper
-
+        apiManager.sessionIsAvailable(authCredential: sessionData.userData.credential,
+                                      scopes: sessionData.userData.scopes)
         showCredentialsView(userData: sessionData.userData,
                             symmetricKey: symmetricKey,
                             serviceIdentifiers: serviceIdentifiers)
@@ -230,87 +219,37 @@ public final class CredentialProviderCoordinator {
         let symmetricKey = SymmetricKey(data: symmetricKeyData)
         let credential = sessionData.userData.credential
         let remoteAliasDatasource = RemoteAliasDatasource(authCredential: credential,
-                                                          apiService: apiService)
+                                                          apiService: apiManager.apiService)
 
         self.symmetricKey = symmetricKey
         self.shareRepository = ShareRepository(userData: sessionData.userData,
                                                container: container,
                                                authCredential: credential,
-                                               apiService: apiService,
+                                               apiService: apiManager.apiService,
                                                logManager: logManager)
         self.shareEventIDRepository = ShareEventIDRepository(container: container,
                                                              authCredential: credential,
-                                                             apiService: apiService,
+                                                             apiService: apiManager.apiService,
                                                              logManager: logManager)
 
         let itemRepository = ItemRepository(userData: sessionData.userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
-                                            apiService: apiService,
+                                            apiService: apiManager.apiService,
                                             logManager: logManager)
         itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
         self.itemRepository = itemRepository
         self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
                                                                authCredential: credential,
-                                                               apiService: apiService,
+                                                               apiService: apiManager.apiService,
                                                                logManager: logManager)
         self.aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
         self.remoteSyncEventsDatasource = RemoteSyncEventsDatasource(authCredential: credential,
-                                                                     apiService: apiService)
-    }
-
-    // Create a new instance of SessionData with everything copied except credential
-    private func updateSessionData(_ sessionData: SessionData,
-                                   authCredential: AuthCredential) {
-        let currentUserData = sessionData.userData
-        let updatedUserData = UserData(credential: authCredential,
-                                       user: currentUserData.user,
-                                       salts: currentUserData.salts,
-                                       passphrases: currentUserData.passphrases,
-                                       addresses: currentUserData.addresses,
-                                       scopes: currentUserData.scopes)
-        self.sessionData = .init(userData: updatedUserData)
+                                                                     apiService: apiManager.apiService)
     }
 }
 
-// MARK: - AuthHelperDelegate
-extension CredentialProviderCoordinator: AuthHelperDelegate {
-    public func credentialsWereUpdated(authCredential: AuthCredential,
-                                       credential: Credential,
-                                       for sessionUID: String) {
-        guard let sessionData else {
-            logger.info("Refreshed expired access token but found no sessionData in keychain. Logging out...")
-            // Action when session expired
-            return
-        }
-        self.logger.info("Refreshed expired access token")
-        self.updateSessionData(sessionData, authCredential: authCredential)
-    }
-    public func sessionWasInvalidated(for sessionUID: String) {
-        logger.info("Access token expired but found no sessionData in keychain. Logging out...")
-        // Action when session expired
-    }
-}
-
-// MARK: - APIServiceDelegate
-extension CredentialProviderCoordinator: APIServiceDelegate {
-    public var appVersion: String { "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName())" }
-    public var userAgent: String? { UserAgent.default.ua }
-    public var locale: String { Locale.autoupdatingCurrent.identifier }
-    public var additionalHeaders: [String: String]? { nil }
-
-    public func onDohTroubleshot() {}
-
-    public func onUpdate(serverTime: Int64) {
-        CryptoUpdateTime(serverTime)
-    }
-
-    public func isReachable() -> Bool {
-        // swiftlint:disable:next todo
-        // TODO: Handle this
-        return true
-    }
-
+extension CredentialProviderCoordinator {
     private func updateRank(encryptedItem: SymmetricallyEncryptedItem,
                             symmetricKey: SymmetricKey,
                             serviceIdentifiers: [ASCredentialServiceIdentifier],

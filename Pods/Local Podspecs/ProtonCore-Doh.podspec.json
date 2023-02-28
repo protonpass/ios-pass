@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Doh",
-  "version": "3.25.2",
+  "version": "3.28.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": null,
-    "tag": "3.25.2"
+    "tag": "3.28.2"
   },
   "platforms": {
     "ios": "11.0",
@@ -31,10 +31,13 @@
   },
   "dependencies": {
     "ProtonCore-Log": [
-      "3.25.2"
+      "3.28.2"
     ],
     "ProtonCore-Utilities": [
-      "3.25.2"
+      "3.28.2"
+    ],
+    "ProtonCore-FeatureSwitch": [
+      "3.28.2"
     ]
   },
   "default_subspecs": [
@@ -43,20 +46,42 @@
   "source_files": "libraries/Doh/Sources/*.swift",
   "testspecs": [
     {
-      "name": "Tests",
+      "name": "UnitTests",
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "3.25.2"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.25.2"
+          "3.28.2"
         ],
         "OHHTTPStubs/Swift": [
 
         ]
       },
-      "source_files": "libraries/Doh/Tests/*.swift",
+      "source_files": "libraries/Doh/Tests/Unit/*.swift",
+      "pod_target_xcconfig": {
+        "APPLICATION_EXTENSION_API_ONLY": "NO"
+      }
+    },
+    {
+      "name": "IntegrationTests",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
+          "3.28.2"
+        ],
+        "ProtonCore-Environment": [
+          "3.28.2"
+        ],
+        "ProtonCore-Authentication": [
+          "3.28.2"
+        ],
+        "ProtonCore-Services": [
+          "3.28.2"
+        ]
+      },
+      "source_files": "libraries/Doh/Tests/Integration/*.swift",
       "pod_target_xcconfig": {
         "APPLICATION_EXTENSION_API_ONLY": "NO"
       }

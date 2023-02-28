@@ -22,13 +22,13 @@
 import Foundation
 import ProtonCore_Doh
 import ProtonCore_Log
+import ProtonCore_Foundations
 import ProtonCore_Networking
 import ProtonCore_Utilities
 import ProtonCore_Environment
 
 #if canImport(TrustKit)
 import TrustKit
-import SwiftUI
 #endif
 
 // MARK: - Public API types
@@ -145,10 +145,12 @@ public class PMAPIService: APIService {
     public var sessionUID: String = ""
     
     @available(*, deprecated, message: "This will be changed to DoHInterface type")
-    public var doh: DoH & ServerConfig
+    public var doh: DoH & ServerConfig { get { dohInterface as! DoH & ServerConfig } set { dohInterface = newValue } }
+
+    public var dohInterface: DoHInterface
     
     public var signUpDomain: String {
-        return self.doh.getSignUpString()
+        return self.dohInterface.getSignUpString()
     }
     
     let jsonDecoder: JSONDecoder = .decapitalisingFirstLetter
@@ -164,49 +166,11 @@ public class PMAPIService: APIService {
     let fetchAuthCredentialCompletionBlockBackgroundQueue = DispatchQueue(
         label: "ch.proton.api.refresh_completion", qos: .userInitiated, attributes: [.concurrent]
     )
-    
-    /// by default will create a non auth api service. after calling the auth function, it will set the session. then use the delation to fetch the auth data  for this session.
-    @available(*, deprecated, message: "This will be removed, use createAPIService, or createAPIServiceWithoutSession methods instead.")
-    public required init(doh: DoH & ServerConfig,
-                         sessionUID: String = "",
-                         sessionFactory: SessionFactoryInterface = SessionFactory.instance,
-                         cacheToClear: URLCacheInterface = URLCache.shared,
-                         trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) {
-        self.doh = doh
-        self.sessionUID = sessionUID
-        cacheToClear.removeAllCachedResponses()
-        
-        let apiHostUrl = self.doh.getCurrentlyUsedHostUrl()
-        self.session = sessionFactory.createSessionInstance(url: apiHostUrl)
-        
-        self.session.setChallenge(noTrustKit: trustKitProvider.noTrustKit, trustKit: trustKitProvider.trustKit)
-        
-        doh.setUpCookieSynchronization(storage: self.session.sessionConfiguration.httpCookieStorage)
-    }
-    
-    @available(*, deprecated, message: "This will be removed, use createAPIService, or createAPIServiceWithoutSession methods instead.")
-    public required convenience init(doh: DoHInterface,
-                                     sessionUID: String = "",
-                                     sessionFactory: SessionFactoryInterface = SessionFactory.instance,
-                                     cacheToClear: URLCacheInterface = URLCache.shared,
-                                     trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) {
-        guard let dohI = doh as? (DoH & ServerConfig) else {
-            fatalError("DoH doesn't conform to DoH & ServerConfig")
-        }
-        self.init(doh: dohI, sessionUID: sessionUID,
-                  sessionFactory: sessionFactory, cacheToClear: cacheToClear,
-                  trustKitProvider: trustKitProvider)
-    }
 
-    @available(*, deprecated, message: "This will be removed, use createAPIService, or createAPIServiceWithoutSession methods instead.")
-    public convenience init(environment: ProtonCore_Environment.Environment,
-                            sessionUID: String = "",
-                            sessionFactory: SessionFactoryInterface = SessionFactory.instance,
-                            cacheToClear: URLCacheInterface = URLCache.shared,
-                            trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) {
-        self.init(doh: environment.doh, sessionUID: sessionUID,
-                  sessionFactory: sessionFactory, cacheToClear: cacheToClear,
-                  trustKitProvider: trustKitProvider)
+    public var challengeParametersProvider: ChallengeParametersProvider
+    var deviceFingerprints: ChallengeProperties {
+        ChallengeProperties(challenges: challengeParametersProvider.provideParametersForSessionFetching(),
+                            productPrefix: challengeParametersProvider.prefix)
     }
     
     /**
@@ -224,8 +188,14 @@ public class PMAPIService: APIService {
                                         sessionUID: String,
                                         sessionFactory: SessionFactoryInterface = SessionFactory.instance,
                                         cacheToClear: URLCacheInterface = URLCache.shared,
-                                        trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) -> PMAPIService {
-        .init(doh: doh, sessionUID: sessionUID, sessionFactory: sessionFactory, cacheToClear: cacheToClear, trustKitProvider: trustKitProvider)
+                                        trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance,
+                                        challengeParametersProvider: ChallengeParametersProvider) -> PMAPIService {
+        .init(dohInterface: doh,
+              sessionUID: sessionUID,
+              sessionFactory: sessionFactory,
+              cacheToClear: cacheToClear,
+              trustKitProvider: trustKitProvider,
+              challengeParametersProvider: challengeParametersProvider)
     }
 
     /**
@@ -241,8 +211,14 @@ public class PMAPIService: APIService {
     public static func createAPIServiceWithoutSession(doh: DoHInterface,
                                                       sessionFactory: SessionFactoryInterface = SessionFactory.instance,
                                                       cacheToClear: URLCacheInterface = URLCache.shared,
-                                                      trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) -> PMAPIService {
-        .init(doh: doh, sessionUID: "", sessionFactory: sessionFactory, cacheToClear: cacheToClear, trustKitProvider: trustKitProvider)
+                                                      trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance,
+                                                      challengeParametersProvider: ChallengeParametersProvider) -> PMAPIService {
+        .init(dohInterface: doh,
+              sessionUID: nil,
+              sessionFactory: sessionFactory,
+              cacheToClear: cacheToClear,
+              trustKitProvider: trustKitProvider,
+              challengeParametersProvider: challengeParametersProvider)
     }
 
     /**
@@ -260,8 +236,14 @@ public class PMAPIService: APIService {
                                         sessionUID: String,
                                         sessionFactory: SessionFactoryInterface = SessionFactory.instance,
                                         cacheToClear: URLCacheInterface = URLCache.shared,
-                                        trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) -> PMAPIService {
-        .init(doh: environment.doh, sessionUID: sessionUID, sessionFactory: sessionFactory, cacheToClear: cacheToClear, trustKitProvider: trustKitProvider)
+                                        trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance,
+                                        challengeParametersProvider: ChallengeParametersProvider) -> PMAPIService {
+        .init(dohInterface: environment.doh,
+              sessionUID: sessionUID,
+              sessionFactory: sessionFactory,
+              cacheToClear: cacheToClear,
+              trustKitProvider: trustKitProvider,
+              challengeParametersProvider: challengeParametersProvider)
     }
     
     /**
@@ -277,8 +259,59 @@ public class PMAPIService: APIService {
     public static func createAPIServiceWithoutSession(environment: ProtonCore_Environment.Environment,
                                                       sessionFactory: SessionFactoryInterface = SessionFactory.instance,
                                                       cacheToClear: URLCacheInterface = URLCache.shared,
-                                                      trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) -> PMAPIService {
-        .init(doh: environment.doh, sessionUID: "", sessionFactory: sessionFactory, cacheToClear: cacheToClear, trustKitProvider: trustKitProvider)
+                                                      trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance,
+                                                      challengeParametersProvider: ChallengeParametersProvider) -> PMAPIService {
+        .init(dohInterface: environment.doh,
+              sessionUID: nil,
+              sessionFactory: sessionFactory,
+              cacheToClear: cacheToClear,
+              trustKitProvider: trustKitProvider,
+              challengeParametersProvider: challengeParametersProvider)
+    }
+
+    public func acquireSessionIfNeeded(completion: @escaping (Result<SessionAcquiringResult, APIError>) -> Void) {
+        fetchExistingCredentialsOrAcquireNewUnauthCredentials(deviceFingerprints: deviceFingerprints) { result in
+            switch result {
+            case .foundExisting:
+                completion(.success(.sessionAlreadyPresent))
+            case .triedAcquiringNew(.wrongConfigurationNoDelegate):
+                completion(.success(.sessionUnavailableAndNotFetched))
+            case .triedAcquiringNew(.acquired):
+                completion(.success(.sessionFetchedAndAvailable))
+            case .triedAcquiringNew(.acquiringError(let error)):
+                // no http code means the request failed because the servers are not reachable — we need to return the error
+                if error.httpCode == nil {
+                    completion(.failure(error.underlyingError ?? error as NSError))
+
+                // http code means the request failed because of the server error — we just fail silently then
+                } else {
+                    completion(.success(.sessionUnavailableAndNotFetched))
+                }
+            }
+        }
+    }
+
+    private init(dohInterface: DoHInterface,
+                 sessionUID: String?,
+                 sessionFactory: SessionFactoryInterface,
+                 cacheToClear: URLCacheInterface,
+                 trustKitProvider: TrustKitProvider,
+                 challengeParametersProvider: ChallengeParametersProvider) {
+        // TODO: remove this check once we drop doh property
+        guard dohInterface is (DoH & ServerConfig) else {
+            fatalError("DoH doesn't conform to DoH & ServerConfig")
+        }
+        self.dohInterface = dohInterface
+        self.sessionUID = sessionUID ?? ""
+        self.challengeParametersProvider = challengeParametersProvider
+        cacheToClear.removeAllCachedResponses()
+
+        let apiHostUrl = self.dohInterface.getCurrentlyUsedHostUrl()
+        self.session = sessionFactory.createSessionInstance(url: apiHostUrl)
+
+        self.session.setChallenge(noTrustKit: trustKitProvider.noTrustKit, trustKit: trustKitProvider.trustKit)
+
+        dohInterface.setUpCookieSynchronization(storage: self.session.sessionConfiguration.httpCookieStorage)
     }
     
     public func getSession() -> Session? {
@@ -316,5 +349,50 @@ public class PMAPIService: APIService {
                 }
             }
         }
+    }
+}
+
+// MARK: - Deprecated API
+
+extension PMAPIService {
+
+    /// by default will create a non auth api service. after calling the auth function, it will set the session. then use the delation to fetch the auth data  for this session.
+    @available(*, deprecated, message: "This will be removed, use createAPIService, or createAPIServiceWithoutSession methods instead.")
+    public convenience init(doh: DoH & ServerConfig,
+                            sessionUID: String = "",
+                            sessionFactory: SessionFactoryInterface = SessionFactory.instance,
+                            cacheToClear: URLCacheInterface = URLCache.shared,
+                            trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance,
+                            challengeParametersProvider: ChallengeParametersProvider) {
+        self.init(dohInterface: doh, sessionUID: sessionUID,
+                  sessionFactory: sessionFactory, cacheToClear: cacheToClear,
+                  trustKitProvider: trustKitProvider,
+                  challengeParametersProvider: challengeParametersProvider)
+    }
+
+    @available(*, deprecated, message: "This will be removed, use createAPIService, or createAPIServiceWithoutSession methods instead.")
+    public convenience init(doh: DoHInterface,
+                            sessionUID: String = "",
+                            sessionFactory: SessionFactoryInterface = SessionFactory.instance,
+                            cacheToClear: URLCacheInterface = URLCache.shared,
+                            trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance,
+                            challengeParametersProvider: ChallengeParametersProvider) {
+        self.init(dohInterface: doh, sessionUID: sessionUID,
+                  sessionFactory: sessionFactory, cacheToClear: cacheToClear,
+                  trustKitProvider: trustKitProvider,
+                  challengeParametersProvider: challengeParametersProvider)
+    }
+
+    @available(*, deprecated, message: "This will be removed, use createAPIService, or createAPIServiceWithoutSession methods instead.")
+    public convenience init(environment: ProtonCore_Environment.Environment,
+                            sessionUID: String = "",
+                            sessionFactory: SessionFactoryInterface = SessionFactory.instance,
+                            cacheToClear: URLCacheInterface = URLCache.shared,
+                            trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance,
+                            challengeParametersProvider: ChallengeParametersProvider) {
+        self.init(dohInterface: environment.doh, sessionUID: sessionUID,
+                  sessionFactory: sessionFactory, cacheToClear: cacheToClear,
+                  trustKitProvider: trustKitProvider,
+                  challengeParametersProvider: challengeParametersProvider)
     }
 }

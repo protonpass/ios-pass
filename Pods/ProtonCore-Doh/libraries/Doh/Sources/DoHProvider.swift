@@ -21,6 +21,7 @@
 
 import Foundation
 import ProtonCore_Log
+import ProtonCore_FeatureSwitch
 
 enum DoHProvider {
     case google
@@ -59,7 +60,9 @@ protocol DoHProviderInternal: DoHProviderPublic {
 }
 
 extension DoHProviderInternal {
-    public static var defaultRecordType: DNSRecordType { .a }
+    public static var defaultRecordType: DNSRecordType {
+        FeatureFactory.shared.isEnabled(.dohARecordQueries) ? .a : .txt
+    }
     public static var defaultTimeout: TimeInterval { 5 }
 
     func query(host: String, type: DNSRecordType, sessionId: String?) -> String {
