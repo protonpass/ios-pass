@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Services",
-  "version": "3.25.2",
+  "version": "3.28.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": null,
-    "tag": "3.25.2"
+    "tag": "3.28.2"
   },
   "platforms": {
     "ios": "11.0",
@@ -34,44 +34,66 @@
 
     ],
     "ProtonCore-DataModel": [
-      "3.25.2"
+      "3.28.2"
     ],
     "ProtonCore-Doh": [
-      "3.25.2"
+      "3.28.2"
     ],
     "ProtonCore-Log": [
-      "3.25.2"
+      "3.28.2"
     ],
     "ProtonCore-Networking": [
-      "3.25.2"
+      "3.28.2"
     ],
     "ProtonCore-Utilities": [
-      "3.25.2"
+      "3.28.2"
     ],
     "ProtonCore-Environment": [
-      "3.25.2"
+      "3.28.2"
     ],
     "ProtonCore-FeatureSwitch": [
-      "3.25.2"
+      "3.28.2"
     ]
   },
   "default_subspecs": [
 
   ],
-  "source_files": "libraries/Services/Sources/*.swift",
+  "source_files": [
+    "libraries/Services/Sources/*.swift",
+    "libraries/Services/Sources/**/*.swift"
+  ],
   "testspecs": [
     {
-      "name": "Tests",
+      "name": "UnitTests",
       "test_type": "unit",
-      "source_files": "libraries/Services/Tests/*.swift",
+      "source_files": "libraries/Services/Tests/Unit/*.swift",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Networking": [
-          "3.25.2"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Services": [
-          "3.25.2"
+          "3.28.2"
         ]
       }
+    },
+    {
+      "name": "IntegrationTests",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
+          "3.28.2"
+        ],
+        "ProtonCore-Challenge": [
+          "3.28.2"
+        ],
+        "ProtonCore-Authentication": [
+          "3.28.2"
+        ],
+        "ProtonCore-Login": [
+          "3.28.2"
+        ]
+      },
+      "source_files": "libraries/Services/Tests/Integration/*.swift"
     }
   ],
   "swift_version": "5.6"

@@ -209,14 +209,17 @@ public enum LocalizedStringAccessors: CaseIterable {
     case __ls_error_invalid_mailbox_password
     public var _ls_error_invalid_mailbox_password: LocalizedStringAccessors { .__ls_error_invalid_mailbox_password }
 
-    case __ls_external_eccounts_not_supported_popup_title
-    public var _ls_external_eccounts_not_supported_popup_title: LocalizedStringAccessors { .__ls_external_eccounts_not_supported_popup_title }
+    case __ls_external_accounts_address_required_popup_title
+    public var _ls_external_accounts_address_required_popup_title: LocalizedStringAccessors { .__ls_external_accounts_address_required_popup_title }
+    
+    case __ls_external_accounts_update_required_popup_title
+    public var _ls_external_accounts_update_required_popup_title: LocalizedStringAccessors { .__ls_external_accounts_update_required_popup_title }
 
-    case __ls_external_eccounts_not_supported_popup_local_desc
-    public var _ls_external_eccounts_not_supported_popup_local_desc: LocalizedStringAccessors { .__ls_external_eccounts_not_supported_popup_local_desc }
+    case __ls_external_accounts_not_supported_popup_local_desc
+    public var _ls_external_accounts_not_supported_popup_local_desc: LocalizedStringAccessors { .__ls_external_accounts_not_supported_popup_local_desc }
 
-    case __ls_external_eccounts_not_supported_popup_action_button
-    public var _ls_external_eccounts_not_supported_popup_action_button: LocalizedStringAccessors { .__ls_external_eccounts_not_supported_popup_action_button }
+    case __ls_external_accounts_not_supported_popup_action_button
+    public var _ls_external_accounts_not_supported_popup_action_button: LocalizedStringAccessors { .__ls_external_accounts_not_supported_popup_action_button }
 
     case __ls_info_session_expired
     public var _ls_info_session_expired: LocalizedStringAccessors { .__ls_info_session_expired }
@@ -969,9 +972,10 @@ public enum LocalizedStringAccessors: CaseIterable {
         case .__ls_error_missing_keys_text: return localizedStringInstance._ls_error_missing_keys_text
         case .__ls_error_missing_keys_title: return localizedStringInstance._ls_error_missing_keys_title
         case .__ls_error_invalid_mailbox_password: return localizedStringInstance._ls_error_invalid_mailbox_password
-        case .__ls_external_eccounts_not_supported_popup_title: return localizedStringInstance._ls_external_eccounts_not_supported_popup_title
-        case .__ls_external_eccounts_not_supported_popup_local_desc: return localizedStringInstance._ls_external_eccounts_not_supported_popup_local_desc
-        case .__ls_external_eccounts_not_supported_popup_action_button: return localizedStringInstance._ls_external_eccounts_not_supported_popup_action_button
+        case .__ls_external_accounts_address_required_popup_title: return localizedStringInstance._ls_external_accounts_address_required_popup_title
+        case .__ls_external_accounts_update_required_popup_title: return localizedStringInstance._ls_external_accounts_update_required_popup_title
+        case .__ls_external_accounts_not_supported_popup_local_desc: return localizedStringInstance._ls_external_accounts_not_supported_popup_local_desc
+        case .__ls_external_accounts_not_supported_popup_action_button: return localizedStringInstance._ls_external_accounts_not_supported_popup_action_button
         case .__ls_info_session_expired: return localizedStringInstance._ls_info_session_expired
         case .__ls_error_generic: return localizedStringInstance._ls_error_generic
         case .__ls_create_address_screen_title: return localizedStringInstance._ls_create_address_screen_title
@@ -1341,7 +1345,7 @@ public class LocalizedString {
     public lazy var _ls_screen_subtitle = NSLocalizedString("Enter your Proton Account details.", bundle: Common.bundle, comment: "Login screen subtitle")
 
     /// Username field title
-    public lazy var _ls_username_title = NSLocalizedString("Email or username", bundle: Common.bundle, comment: "Username field title")
+    public lazy var _ls_username_title = NSLocalizedString("Proton email or username", bundle: Common.bundle, comment: "Username field title")
 
     /// Password field title
     public lazy var _ls_password_title = NSLocalizedString("Password", bundle: Common.bundle, comment: "Password field title")
@@ -1397,14 +1401,17 @@ public class LocalizedString {
     /// Incorrect mailbox password error
     public lazy var _ls_error_invalid_mailbox_password = NSLocalizedString("Incorrect mailbox password", bundle: Common.bundle, comment: "Incorrect mailbox password error")
     
-    /// External accounts not supported popup title
-    public lazy var _ls_external_eccounts_not_supported_popup_title = NSLocalizedString("Proton address required", bundle: Common.bundle, comment: "External accounts not supported popup title")
+    /// External accounts address required popup title
+    public lazy var _ls_external_accounts_address_required_popup_title = NSLocalizedString("Proton address required", bundle: Common.bundle, comment: "External accounts address required popup title")
+    
+    /// External accounts update required popup title
+    public lazy var _ls_external_accounts_update_required_popup_title = NSLocalizedString("Update required", bundle: Common.bundle, comment: "External accounts update required popup title")
     
     /// External accounts not supported popup title
-    public lazy var _ls_external_eccounts_not_supported_popup_local_desc = NSLocalizedString("Get a Proton Mail address linked to this account in your Proton web settings.", bundle: Common.bundle, comment: "External accounts not supported popup local desc")
+    public lazy var _ls_external_accounts_not_supported_popup_local_desc = NSLocalizedString("Get a Proton Mail address linked to this account in your Proton web settings.", bundle: Common.bundle, comment: "External accounts not supported popup local desc")
     
     /// External accounts not supported popup learn more button
-    public lazy var _ls_external_eccounts_not_supported_popup_action_button = NSLocalizedString("Learn more", bundle: Common.bundle, comment: "External accounts not supported popup learn more button")
+    public lazy var _ls_external_accounts_not_supported_popup_action_button = NSLocalizedString("Learn more", bundle: Common.bundle, comment: "External accounts not supported popup learn more button")
     
     /// Session expired info
     public lazy var _ls_info_session_expired = NSLocalizedString("Your session has expired. Please log in again.", bundle: Common.bundle, comment: "Session expired info")
