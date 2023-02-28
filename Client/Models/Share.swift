@@ -73,7 +73,7 @@ public struct Share: Decodable {
 }
 
 public extension Share {
-    func getShareContent(key: Data) throws -> ShareContent {
+    func getShareContent(key: DecryptedShareKey) throws -> ShareContent {
         guard let contentData = try content?.base64Decode() else {
             throw PPClientError.crypto(.failedToBase64Decode)
         }
@@ -86,7 +86,7 @@ public extension Share {
         let sealedbox = try AES.GCM.SealedBox(combined: contentData)
 
         let decryptedContent = try AES.GCM.open(sealedbox,
-                                                using: .init(data: key),
+                                                using: .init(data: key.keyData),
                                                 authenticating: tagData)
 
         switch shareType {

@@ -118,6 +118,7 @@ public extension PPClientError {
         case missingUserKey(userID: String)
         case missingPassphrase(keyID: String)
         case missingKeys
+        case unmatchedKeyRotation(lhsKey: Int64, rhsKey: Int64)
 
         public var debugDescription: String {
             switch self {
@@ -157,6 +158,8 @@ public extension PPClientError {
                 return "Missing passphrase \"\(keyID)\""
             case .missingKeys:
                 return "Missing keys"
+            case let .unmatchedKeyRotation(lhsKey, rhsKey):
+                return "Unmatch key rotation \(lhsKey) - \(rhsKey)"
             }
         }
     }
