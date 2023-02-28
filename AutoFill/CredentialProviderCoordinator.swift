@@ -61,7 +61,7 @@ public final class CredentialProviderCoordinator {
     private var shareRepository: ShareRepositoryProtocol?
     private var shareEventIDRepository: ShareEventIDRepositoryProtocol?
     private var itemRepository: ItemRepositoryProtocol?
-    private var vaultItemKeysRepository: VaultItemKeysRepositoryProtocol?
+    private var shareKeyRepository: ShareKeyRepositoryProtocol?
     private var aliasRepository: AliasRepositoryProtocol?
     private var remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
@@ -239,10 +239,10 @@ public final class CredentialProviderCoordinator {
                                             logManager: logManager)
         itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
         self.itemRepository = itemRepository
-        self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
-                                                               authCredential: credential,
-                                                               apiService: apiManager.apiService,
-                                                               logManager: logManager)
+        self.shareKeyRepository = ShareKeyRepository(container: container,
+                                                     authCredential: sessionData.userData.credential,
+                                                     apiService: apiManager.apiService,
+                                                     logManager: logManager)
         self.aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
         self.remoteSyncEventsDatasource = RemoteSyncEventsDatasource(authCredential: credential,
                                                                      apiService: apiManager.apiService)
@@ -406,13 +406,13 @@ private extension CredentialProviderCoordinator {
         guard let shareRepository,
               let shareEventIDRepository,
               let itemRepository,
-              let vaultItemKeysRepository,
+              let shareKeyRepository,
               let remoteSyncEventsDatasource else { return }
         let viewModel = CredentialsViewModel(userId: userData.user.ID,
                                              shareRepository: shareRepository,
                                              shareEventIDRepository: shareEventIDRepository,
                                              itemRepository: itemRepository,
-                                             vaultItemKeysRepository: vaultItemKeysRepository,
+                                             shareKeyRepository: shareKeyRepository,
                                              remoteSyncEventsDatasource: remoteSyncEventsDatasource,
                                              symmetricKey: symmetricKey,
                                              serviceIdentifiers: serviceIdentifiers,
