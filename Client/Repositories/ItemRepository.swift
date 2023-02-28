@@ -268,8 +268,10 @@ public extension ItemRepositoryProtocol {
         let encryptedOldItemContentData = try await localItemDatasoure.getItem(shareId: shareId, itemId: itemId)
         let decryptedOldItemContentData =
         try encryptedOldItemContentData?.getDecryptedItemContent(symmetricKey: symmetricKey)
+        let latestItemKey = try await passKeyManager.getLatestItemKey(shareId: shareId,
+                                                                      itemId: itemId)
         let request = try UpdateItemRequest(oldRevision: oldItem,
-                                            shareKeys: [],
+                                            latestItemKey: latestItemKey,
                                             itemContent: newItemContent)
         let updatedItemRevision =
         try await remoteItemRevisionDatasource.updateItem(shareId: shareId,
