@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import CryptoKit
 import ProtonCore_KeyManager
 
 public struct UpdateItemRequest {
@@ -25,7 +26,7 @@ public struct UpdateItemRequest {
     public let keyRotation: Int64
 
     /// Last item revision existing when the item was created
-    public let lastRevision: Int16
+    public let lastRevision: Int64
 
     /// Encrypted item content encoded in Base64
     public let content: String
@@ -36,12 +37,20 @@ public struct UpdateItemRequest {
 
 public extension UpdateItemRequest {
     init(oldRevision: ItemRevision,
-         shareKeys: [PassKey],
+         latestItemKey: DecryptedItemKey,
          itemContent: ProtobufableItemContentProtocol) throws {
-        self.init(keyRotation: 0,
-                  lastRevision: 0,
-                  content: "",
-                  contentFormatVersion: 0)
+        let sealedBox = try AES.GCM.seal(itemContent.data(),
+                                         key: latestItemKey.keyData,
+                                         associatedData: .itemContent)
+
+        guard let updatedContent = sealedBox.combined?.base64EncodedString() else {
+            throw PPClientError.crypto(.failedToAESEncrypt)
+        }
+
+        self.init(keyRotation: latestItemKey.keyRotation,
+                  lastRevision: oldRevision.revision,
+                  content: updatedContent,
+                  contentFormatVersion: 1)
     }
 }
 
