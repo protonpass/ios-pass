@@ -54,3 +54,49 @@ extension ChallengeProtocol {
   }
   #endif 
 }
+
+public struct ChallengeParametersProvider {
+    public let prefix: String
+#if canImport(UIKit)
+    public let challengeProtocol: ChallengeProtocol?
+#endif
+    public let provideParametersForLoginAndSignup: () -> [[String: Any]]
+    public let provideParametersForSessionFetching: () -> [[String: Any]]
+
+#if canImport(UIKit)
+    public init(prefix: String,
+                challengeProtocol: ChallengeProtocol?,
+                provideParametersForLoginAndSignup: @escaping () -> [[String: Any]],
+                provideParametersForSessionFetching: @escaping () -> [[String: Any]]) {
+        self.prefix = prefix
+        self.challengeProtocol = challengeProtocol
+        self.provideParametersForLoginAndSignup = provideParametersForLoginAndSignup
+        self.provideParametersForSessionFetching = provideParametersForSessionFetching
+    }
+#else
+    public init(prefix: String,
+                provideParametersForLoginAndSignup: @escaping () -> [[String: Any]],
+                provideParametersForSessionFetching: @escaping () -> [[String: Any]]) {
+        self.prefix = prefix
+        self.provideParametersForLoginAndSignup = provideParametersForLoginAndSignup
+        self.provideParametersForSessionFetching = provideParametersForSessionFetching
+    }
+#endif
+}
+
+public extension ChallengeParametersProvider {
+#if canImport(UIKit)
+    static var empty: ChallengeParametersProvider {
+        ChallengeParametersProvider(prefix: "",
+                                    challengeProtocol: nil,
+                                    provideParametersForLoginAndSignup: { [[:]] },
+                                    provideParametersForSessionFetching: { [[:]] })
+    }
+#else
+    static var empty: ChallengeParametersProvider {
+        ChallengeParametersProvider(prefix: "",
+                                    provideParametersForLoginAndSignup: { [[:]] },
+                                    provideParametersForSessionFetching: { [[:]] })
+    }
+#endif
+}

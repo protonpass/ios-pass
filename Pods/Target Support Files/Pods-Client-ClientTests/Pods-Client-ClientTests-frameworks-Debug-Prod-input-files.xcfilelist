@@ -17,6 +17,7 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-Keymaker/ProtonCore_Keymaker.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-Observability/ProtonCore_Observability.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCore_UIFoundations.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework

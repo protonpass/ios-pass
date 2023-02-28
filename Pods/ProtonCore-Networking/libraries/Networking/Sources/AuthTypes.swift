@@ -71,6 +71,8 @@ public final class AuthCredential: NSObject, NSCoding {
         UserUD: \(userID)
         """
     }
+
+    public var isForUnauthenticatedSession: Bool { userID.isEmpty }
     
     public init(sessionID: String,
                 accessToken: String,
@@ -133,11 +135,23 @@ public final class AuthCredential: NSObject, NSCoding {
         self.passwordKeySalt = salt
     }
 
+    @available(*, deprecated, message: "Use update(password:)")
     public func udpate(password: String) {
+        update(password: password)
+    }
+
+    @available(*, deprecated, message: "Use update(sessionID:,accessToken:,                refreshToken:)")
+    public func udpate(sessionID: String,
+                       accessToken: String,
+                       refreshToken: String) {
+        update(sessionID: sessionID, accessToken: accessToken, refreshToken: refreshToken)
+    }
+
+    public func update(password: String) {
         self.mailboxpassword = password
     }
 
-    public func udpate(sessionID: String,
+    public func update(sessionID: String,
                        accessToken: String,
                        refreshToken: String) {
         self.sessionID = sessionID
@@ -150,9 +164,15 @@ public final class AuthCredential: NSObject, NSCoding {
                        accessToken: String,
                        refreshToken: String,
                        expiration: Date) {
-        self.sessionID = sessionID
-        self.accessToken = accessToken
-        self.refreshToken = refreshToken
+        update(sessionID: sessionID, accessToken: accessToken, refreshToken: refreshToken)
+    }
+
+    @available(*, deprecated, message: "Please use the update method without expiration")
+    public func update(sessionID: String,
+                       accessToken: String,
+                       refreshToken: String,
+                       expiration: Date) {
+        update(sessionID: sessionID, accessToken: accessToken, refreshToken: refreshToken)
     }
 
     required init(res: AuthResponse, userName: String) {
@@ -255,6 +275,8 @@ public struct Credential: Equatable {
     public var scopes: Scopes
     
     public var hasFullScope: Bool { scopes.contains("full") }
+
+    public var isForUnauthenticatedSession: Bool { userID.isEmpty }
 
     public init(UID: String, accessToken: String, refreshToken: String, userName: String, userID: String, scopes: Scopes) {
         self.UID = UID
@@ -437,7 +459,7 @@ public enum AuthErrors: Error {
     case emptyClientSrpAuth
     case emptyUserInfoResponse
     case wrongServerProof
-    case externalAccountsNotSupported(message: String, originalError: ResponseError)
+    case externalAccountsNotSupported(message: String, title: String, originalError: ResponseError)
     case addressKeySetupError(Error)
     case networkingError(ResponseError)
     case apiMightBeBlocked(message: String, originalError: ResponseError)
@@ -455,7 +477,7 @@ public enum AuthErrors: Error {
             return self as NSError
         case .addressKeySetupError(let error), .parsingError(let error):
             return error as NSError
-        case .networkingError(let error), .apiMightBeBlocked(_, let error), .externalAccountsNotSupported(_, let error):
+        case .networkingError(let error), .apiMightBeBlocked(_, let error), .externalAccountsNotSupported(_, _, let error):
             return error.underlyingError ?? error as NSError
         }
     }
@@ -467,7 +489,7 @@ public enum AuthErrors: Error {
             return (self as NSError).code
         case .addressKeySetupError(let error), .parsingError(let error):
             return (error as NSError).code
-        case .networkingError(let error), .apiMightBeBlocked(_, let error), .externalAccountsNotSupported(_, let error):
+        case .networkingError(let error), .apiMightBeBlocked(_, let error), .externalAccountsNotSupported(_, _, let error):
             return error.bestShotAtReasonableErrorCode
         }
     }
@@ -480,7 +502,7 @@ public enum AuthErrors: Error {
             return error.localizedDescription
         case .networkingError(let error), .apiMightBeBlocked(_, let error):
             return error.localizedDescription
-        case .externalAccountsNotSupported(let message, _), .notImplementedYet(let message):
+        case .externalAccountsNotSupported(let message, _, _), .notImplementedYet(let message):
             return message
         }
     }

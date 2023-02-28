@@ -21,21 +21,29 @@
 import AuthenticationServices
 import Client
 import Core
+import ProtonCore_Challenge
+import ProtonCore_FeatureSwitch
 import ProtonCore_Keymaker
 import ProtonCore_Services
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
+    private let keychain = PPKeychain()
+    private lazy var keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
     private let logManager = LogManager(module: .autoFillExtension)
+    private let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName())"
 
     private lazy var coordinator: CredentialProviderCoordinator = {
-        .init(apiService:
-              PMAPIService.createAPIService(doh: PPDoH(bundle: .main), sessionUID: ""),
-              container: .Builder.build(name: kProtonPassContainerName, inMemory: false),
-              context: extensionContext,
-              preferences: .init(),
-              logManager: logManager,
-              credentialManager: CredentialManager(logManager: logManager),
-              rootViewController: self)
+        let apiManager = APIManager(keychain: keychain,
+                                    mainKeyProvider: keymaker,
+                                    logManager: logManager,
+                                    appVer: appVersion)
+        return .init(apiManager: apiManager,
+                     container: .Builder.build(name: kProtonPassContainerName, inMemory: false),
+                     context: extensionContext,
+                     preferences: .init(),
+                     logManager: logManager,
+                     credentialManager: CredentialManager(logManager: logManager),
+                     rootViewController: self)
     }()
 
     /*

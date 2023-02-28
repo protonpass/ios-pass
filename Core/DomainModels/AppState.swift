@@ -21,7 +21,8 @@
 import ProtonCore_Login
 
 public enum LogOutReason {
-    case noSessionData
+    case noSessionDataAtAll
+    case noAuthSessionButUnauthSessionAvailable
     case expiredRefreshToken
     case failedToGenerateSymmetricKey
     case failedBiometricAuthentication

@@ -38,18 +38,15 @@ final class WelcomeCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private lazy var welcomeViewController = makeWelcomeViewController()
-    private lazy var forceUpgradeServiceDelegate = makeForceUpgradeDelegate()
     private lazy var logInAndSignUp = makeLoginAndSignUp()
 
-    private let apiServiceDelegate: APIServiceDelegate
-    private let doh: DoH & ServerConfig
+    private let apiService: APIService
 
     weak var delegate: WelcomeCoordinatorDelegate?
     var rootViewController: UIViewController { welcomeViewController }
 
-    init(apiServiceDelegate: APIServiceDelegate) {
-        self.apiServiceDelegate = apiServiceDelegate
-        self.doh = PPDoH(bundle: .main)
+    init(apiService: APIService) {
+        self.apiService = apiService
     }
 
     private func makeWelcomeViewController() -> UIViewController {
@@ -81,9 +78,7 @@ final class WelcomeCoordinator: DeinitPrintable {
                                                 signupMode: .internal)
         return .init(appName: "Proton Pass",
                      clientApp: .other(named: "pass"),
-                     doh: doh,
-                     apiServiceDelegate: apiServiceDelegate,
-                     forceUpgradeDelegate: forceUpgradeServiceDelegate,
+                     apiService: apiService,
                      minimumAccountType: .external,
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))

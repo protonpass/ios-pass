@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-KeyManager",
-  "version": "3.25.2",
+  "version": "3.28.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": null,
-    "tag": "3.25.2"
+    "tag": "3.28.2"
   },
   "platforms": {
     "ios": "11.0",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "ProtonCore-DataModel": [
-      "3.25.2"
+      "3.28.2"
     ]
   },
   "default_subspecs": [
@@ -42,7 +42,7 @@
       "name": "Crypto-Go1.18.8",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.18.8": [
-          "3.25.2"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/KeyManager/Sources/**/*.swift",
@@ -64,7 +64,7 @@
       "name": "Crypto-Go1.19.4",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.19.4": [
-          "3.25.2"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/KeyManager/Sources/**/*.swift",
@@ -86,7 +86,7 @@
       "name": "Crypto-patched-Go1.19.4",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-patched-Go1.19.4": [
-          "3.25.2"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/KeyManager/Sources/**/*.swift",
@@ -108,7 +108,7 @@
       "name": "Crypto+VPN-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
-          "3.25.2"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/KeyManager/Sources/**/*.swift",
@@ -130,7 +130,7 @@
       "name": "Crypto+VPN-Go1.19.4",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.19.4": [
-          "3.25.2"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/KeyManager/Sources/**/*.swift",
@@ -152,7 +152,7 @@
       "name": "Crypto+Search-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
-          "3.25.2"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/KeyManager/Sources/**/*.swift",
@@ -174,7 +174,7 @@
       "name": "Crypto+Search-Go1.19.4",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.19.4": [
-          "3.25.2"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/KeyManager/Sources/**/*.swift",

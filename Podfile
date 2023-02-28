@@ -3,7 +3,7 @@ def proton_core_path
 end
 
 def proton_core_version
-  '3.26.0'
+  '3.28.2'
 end
   
 def pmtest_path
@@ -52,6 +52,11 @@ target 'Client' do
   end
   
   target 'iOSTests' do
+    platform :ios, '15.0'
+    use_frameworks!
+
+    pod 'swift-snapshot-testing', :git => proton_core_path, :tag => proton_core_version
+    pod "ProtonCore-TestingToolkit/UnitTests/Core", :git => proton_core_path, :tag => proton_core_version
   end
 
 end
@@ -66,6 +71,7 @@ target 'Core' do
   pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Keymaker/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Networking', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Observability', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-LoginUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Settings', :git => proton_core_path, :tag => proton_core_version
