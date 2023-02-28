@@ -79,30 +79,16 @@ public struct ItemRevision: Decodable, Equatable {
 }
 
 public extension ItemRevision {
-    func getContentProtobuf(userData: UserData,
-                            share: Share,
-                            shareKeys: [PassKey]) throws -> ItemContentProtobuf {
+    func getContentProtobuf(vaultKey: DecryptedShareKey) throws -> ItemContentProtobuf {
+        guard vaultKey.keyRotation == keyRotation else {
+            throw PPClientError.crypto(.unmatchedKeyRotation(lhsKey: vaultKey.keyRotation,
+                                                             rhsKey: keyRotation))
+        }
+
         #warning("Handle this")
         guard let itemKey else {
             throw PPClientError.crypto(.failedToDecryptContent)
         }
-
-        guard let key = shareKeys.first(where: { $0.keyRotation == keyRotation }),
-              let keyData = try key.key.base64Decode() else {
-            throw PPClientError.crypto(.missingKeys)
-        }
-
-        let decryptionKeys = userData.user.keys.map {
-            DecryptionKey(privateKey: .init(value: $0.privateKey),
-                          passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
-        }
-
-        let verificationKeys = userData.user.keys.map { $0.publicKey }.map { ArmoredKey(value: $0) }
-        let armoredEncryptedLatestKeyContent = try CryptoUtils.armorMessage(keyData)
-        let vaultKey: VerifiedData = try Decryptor.decryptAndVerify(
-            decryptionKeys: decryptionKeys,
-            value: .init(value: armoredEncryptedLatestKeyContent),
-            verificationKeys: verificationKeys)
 
         guard let itemKeyData = try itemKey.base64Decode() else {
             throw PPClientError.crypto(.failedToBase64Decode)
@@ -112,7 +98,7 @@ public extension ItemRevision {
         let itemKeySealedBox = try AES.GCM.SealedBox(combined: itemKeyData)
 
         let decryptedItemKeyData = try AES.GCM.open(itemKeySealedBox,
-                                                    using: .init(data: vaultKey.content),
+                                                    using: .init(data: vaultKey.keyData),
                                                     authenticating: itemKeyTagData)
 
         guard let contentData = try content.base64Decode() else {
