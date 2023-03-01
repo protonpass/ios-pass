@@ -90,7 +90,9 @@ struct CreateEditAliasView: View {
                     } else {
                         aliasPreviewSection
                         if isShowingAdvancedOptions, let suffixSelection = viewModel.suffixSelection {
-                            PrefixSuffixSection(prefix: $viewModel.prefix, suffixSelection: suffixSelection)
+                            PrefixSuffixSection(prefix: $viewModel.prefix,
+                                                suffixSelection: suffixSelection,
+                                                prefixError: viewModel.prefixError)
                         } else {
                             AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
                                 .padding(.vertical)
@@ -176,11 +178,9 @@ struct CreateEditAliasView: View {
                 Text("Alias preview")
                     .sectionTitleText()
 
-                if let prefixError = viewModel.prefixError {
-                    Text(prefixError.localizedDescription)
-                        .font(.callout)
-                        .foregroundColor(.red)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                if viewModel.prefixError != nil {
+                    Text(viewModel.prefix + viewModel.suffix)
+                        .foregroundColor(.notificationError)
                 } else {
                     Text(viewModel.prefix) +
                     Text(viewModel.suffix)

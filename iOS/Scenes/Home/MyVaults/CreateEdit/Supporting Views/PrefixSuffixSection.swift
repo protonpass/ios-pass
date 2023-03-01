@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -26,6 +27,7 @@ struct PrefixSuffixSection: View {
     @Binding var prefix: String
     @FocusState var isFocusedOnPrefix: Bool
     let suffixSelection: SuffixSelection
+    let prefixError: AliasPrefixError?
     var onSubmit: ((() -> Void))?
 
     var body: some View {
@@ -50,8 +52,15 @@ struct PrefixSuffixSection: View {
                         .focused($isFocusedOnPrefix)
                         .submitLabel(.done)
                         .onSubmit { onSubmit?() }
+                    if let prefixError {
+                        Text(prefixError.localizedDescription)
+                            .font(.callout)
+                            .foregroundColor(.notificationError)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .animation(.default, value: prefixError)
 
                 if !prefix.isEmpty {
                     Button(action: {
