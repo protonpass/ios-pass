@@ -141,33 +141,36 @@ struct CreateEditLoginView: View {
     }
 
     private var usernameTextFieldToolbar: some View {
-        HStack {
-            Button(action: viewModel.generateAlias) {
-                HStack {
-                    toolbarIcon(uiImage: IconProvider.alias)
-                    Text("Hide my email")
+        ScrollView(.horizontal) {
+            HStack {
+                Button(action: viewModel.generateAlias) {
+                    HStack {
+                        toolbarIcon(uiImage: IconProvider.alias)
+                        Text("Hide my email")
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
+
+                Divider()
+                    .padding(.horizontal)
+
+                Button(action: {
+                    viewModel.useRealEmailAddress()
+                    if viewModel.password.isEmpty {
+                        isFocusedOnPassword = true
+                    } else {
+                        isFocusedOnUsername = false
+                    }
+                }, label: {
+                    Text("Use \(viewModel.emailAddress)")
+                        .minimumScaleFactor(0.5)
+                })
+                .frame(maxWidth: .infinity, alignment: .center)
             }
-            .frame(maxWidth: .infinity, alignment: .center)
-
-            Divider()
-
-            Button(action: {
-                viewModel.useRealEmailAddress()
-                if viewModel.password.isEmpty {
-                    isFocusedOnPassword = true
-                } else {
-                    isFocusedOnUsername = false
-                }
-            }, label: {
-                Text("Use \(viewModel.emailAddress)")
-                    .minimumScaleFactor(0.5)
-            })
-            .frame(maxWidth: .infinity, alignment: .center)
-        }
-        .transaction { transaction in
-            // Disable animation when switching between toolbars
-            transaction.animation = nil
+            .transaction { transaction in
+                // Disable animation when switching between toolbars
+                transaction.animation = nil
+            }
         }
     }
 

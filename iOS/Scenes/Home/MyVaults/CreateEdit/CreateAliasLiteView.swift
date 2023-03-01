@@ -58,6 +58,7 @@ struct CreateAliasLiteView: View {
                 }
                 .animation(.default, value: viewModel.prefixError)
                 .animation(.default, value: isShowingAdvancedOptions)
+                .padding(.horizontal)
             }
 
             HStack(spacing: 16) {
@@ -78,7 +79,6 @@ struct CreateAliasLiteView: View {
             }
             .padding([.horizontal, .bottom])
         }
-        .padding(.horizontal)
         .tint(Color(uiColor: tintColor))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
