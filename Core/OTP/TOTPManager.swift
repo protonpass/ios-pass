@@ -40,7 +40,7 @@ public struct TOTPTimerData: Hashable {
 }
 
 public struct TOTPData: Equatable {
-    public let username: String
+    public let username: String?
     public let issuer: String?
     public let code: String
     public let timerData: TOTPTimerData
@@ -123,46 +123,45 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
         self.uri = uri
         timer?.invalidate()
         state = .loading
-        guard !uri.isEmpty else {
-            state = .empty
-            return
-        }
+        guard !uri.isEmpty else { state = .empty; return }
 
         do {
-            let otpComponents = try URLUtils.OTPParser.parse(urlString: uri)
-            guard otpComponents.type == .totp else {
-                state = .invalid
-                return
-            }
-            guard let secretData = base32DecodeToData(otpComponents.secret) else {
-                state = .invalid
-                return
+            var totp: TOTP?
+            var username: String?
+            var issuer: String?
+            if uri.contains("otpauth") {
+                // "otpauth" as protocol, parse information
+                let otpComponents = try URLUtils.OTPParser.parse(urlString: uri)
+                if otpComponents.type == .totp,
+                   let secretData = base32DecodeToData(otpComponents.secret) {
+                    username = otpComponents.label
+                    issuer = otpComponents.issuer
+                    totp = TOTP(secret: secretData,
+                                digits: Int(otpComponents.digits),
+                                timeInterval: Int(otpComponents.period),
+                                algorithm: otpComponents.algorithm.otpAlgorithm)
+                }
+            } else if let secretData = base32DecodeToData(uri) {
+                // Treat the whole string as secret
+                totp = TOTP(secret: secretData,
+                            digits: 6,
+                            timeInterval: 30,
+                            algorithm: .sha1)
             }
 
-            guard let totp = TOTP(secret: secretData,
-                                  digits: Int(otpComponents.digits),
-                                  timeInterval: Int(otpComponents.period),
-                                  algorithm: otpComponents.algorithm.otpAlgorithm) else {
-                state = .invalid
-                return
-            }
-
-            calculate(totp: totp,
-                      username: otpComponents.label,
-                      issuer: otpComponents.issuer)
+            guard let totp else { state = .invalid; return }
 
             timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-                self?.calculate(totp: totp,
-                                username: otpComponents.label,
-                                issuer: otpComponents.issuer)
+                self?.calculate(totp: totp, username: username, issuer: issuer)
             }
+            timer?.fire()
         } catch {
             logger.error(error)
             state = .invalid
         }
     }
 
-    private func calculate(totp: TOTP, username: String, issuer: String?) {
+    private func calculate(totp: TOTP, username: String?, issuer: String?) {
         let secondsPast1970 = Int(Date().timeIntervalSince1970)
         let code = totp.generate(secondsPast1970: secondsPast1970) ?? ""
         let timerData = totp.timerData(secondsPast1970: secondsPast1970)
