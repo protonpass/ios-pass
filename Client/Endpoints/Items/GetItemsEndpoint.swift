@@ -23,7 +23,7 @@ import ProtonCore_Services
 
 public struct GetItemsResponse: Decodable {
     let code: Int
-    let items: ItemRevisionList
+    let items: ItemRevisionsPaginated
 }
 
 public struct GetItemsEndpoint: Endpoint {
@@ -37,11 +37,16 @@ public struct GetItemsEndpoint: Endpoint {
 
     public init(credential: AuthCredential,
                 shareId: String,
-                page: Int,
+                sinceToken: String?,
                 pageSize: Int) {
         self.debugDescription = "Get items for share"
         self.path = "/pass/v1/share/\(shareId)/item"
         self.authCredential = credential
-        self.queries = .paginationQuery(page: page, pageSize: pageSize)
+
+        var queries: [String: Any] = ["PageSize": pageSize]
+        if let sinceToken {
+            queries["SinceToken"] = sinceToken
+        }
+        self.queries = queries
     }
 }

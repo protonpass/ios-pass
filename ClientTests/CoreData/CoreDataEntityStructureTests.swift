@@ -61,48 +61,25 @@ final class CoreDataEntityStructureTests: XCTestCase {
         return entity
     }
 
-    func testItemKeyEntity() {
-        let sut = entity(byName: "ItemKeyEntity")
-        verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
-        verifyAttribute(named: "key", on: sut, hasType: .string)
-        verifyAttribute(named: "keyPassphrase", on: sut, hasType: .string)
-        verifyAttribute(named: "keySignature", on: sut, hasType: .string)
-        verifyAttribute(named: "rotationID", on: sut, hasType: .string)
-        verifyAttribute(named: "shareID", on: sut, hasType: .string)
-    }
-
     func testShareEntity() {
         let sut = entity(byName: "ShareEntity")
-        verifyAttribute(named: "acceptanceSignature", on: sut, hasType: .string)
         verifyAttribute(named: "content", on: sut, hasType: .string)
-        verifyAttribute(named: "contentEncryptedAddressSignature", on: sut, hasType: .string)
-        verifyAttribute(named: "contentEncryptedVaultSignature", on: sut, hasType: .string)
         verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer16)
-        verifyAttribute(named: "contentRotationID", on: sut, hasType: .string)
-        verifyAttribute(named: "contentSignatureEmail", on: sut, hasType: .string)
+        verifyAttribute(named: "contentKeyRotation", on: sut, hasType: .integer64)
         verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "expireTime", on: sut, hasType: .integer64)
-        verifyAttribute(named: "inviterAcceptanceSignature", on: sut, hasType: .string)
-        verifyAttribute(named: "inviterEmail", on: sut, hasType: .string)
         verifyAttribute(named: "permission", on: sut, hasType: .integer16)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
-        verifyAttribute(named: "signingKey", on: sut, hasType: .string)
-        verifyAttribute(named: "signingKeyPassphrase", on: sut, hasType: .string)
         verifyAttribute(named: "targetID", on: sut, hasType: .string)
         verifyAttribute(named: "targetType", on: sut, hasType: .integer16)
-        verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "vaultID", on: sut, hasType: .string)
         verifyAttribute(named: "addressID", on: sut, hasType: .string)
     }
 
-    func testVaultKeyEntity() {
-        let sut = entity(byName: "VaultKeyEntity")
-        verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
+    func testShareKeyEntity() {
+        let sut = entity(byName: "ShareKeyEntity")
         verifyAttribute(named: "key", on: sut, hasType: .string)
-        verifyAttribute(named: "keyPassphrase", on: sut, hasType: .string)
-        verifyAttribute(named: "keySignature", on: sut, hasType: .string)
-        verifyAttribute(named: "rotation", on: sut, hasType: .integer64)
-        verifyAttribute(named: "rotationID", on: sut, hasType: .string)
+        verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
     }
 
@@ -112,18 +89,17 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "content", on: sut, hasType: .string)
         verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer16)
         verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
-        verifyAttribute(named: "itemID", on: sut, hasType: .string)
-        verifyAttribute(named: "itemKeySignature", on: sut, hasType: .string)
-        verifyAttribute(named: "modifyTime", on: sut, hasType: .integer64)
-        verifyAttribute(named: "revision", on: sut, hasType: .integer16)
-        verifyAttribute(named: "rotationID", on: sut, hasType: .string)
-        verifyAttribute(named: "shareID", on: sut, hasType: .string)
-        verifyAttribute(named: "signatureEmail", on: sut, hasType: .string)
-        verifyAttribute(named: "state", on: sut, hasType: .integer16)
-        verifyAttribute(named: "userSignature", on: sut, hasType: .string)
-        verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
         verifyAttribute(named: "isLogInItem", on: sut, hasType: .boolean)
+        verifyAttribute(named: "itemID", on: sut, hasType: .string)
+        verifyAttribute(named: "itemKey", on: sut, hasType: .string)
+        verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)
         verifyAttribute(named: "lastUseTime", on: sut, hasType: .integer64)
+        verifyAttribute(named: "modifyTime", on: sut, hasType: .integer64)
+        verifyAttribute(named: "revision", on: sut, hasType: .integer64)
+        verifyAttribute(named: "revisionTime", on: sut, hasType: .integer64)
+        verifyAttribute(named: "shareID", on: sut, hasType: .string)
+        verifyAttribute(named: "state", on: sut, hasType: .integer16)
+        verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
     }
 
     func testShareEventIDEntity() {

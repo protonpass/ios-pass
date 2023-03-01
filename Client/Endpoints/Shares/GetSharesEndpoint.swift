@@ -23,7 +23,7 @@ import ProtonCore_Services
 
 public struct GetSharesResponse: Decodable {
     let code: Int
-    let shares: [PartialShare]
+    let shares: [Share]
 }
 
 public struct GetSharesEndpoint: Endpoint {

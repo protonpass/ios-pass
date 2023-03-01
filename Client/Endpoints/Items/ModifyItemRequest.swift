@@ -49,7 +49,7 @@ public struct ModifyItemResponse: Decodable {
 /// To be deleted/trashed/untrashed
 public struct ItemToBeModified: Encodable {
     public let itemID: String
-    public let revision: Int16
+    public let revision: Int64
 
     enum CodingKeys: String, CodingKey {
         case itemID = "ItemID"
@@ -60,7 +60,7 @@ public struct ItemToBeModified: Encodable {
 /// Trashed/untrashed item
 public struct ModifiedItem: Decodable {
     public let itemID: String
-    public let revision: Int16
+    public let revision: Int64
     public let state: Int16
     public let modifyTime: Int64
     public let revisionTime: Int64

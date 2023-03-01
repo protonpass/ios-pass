@@ -69,13 +69,10 @@ final class WelcomeCoordinator: DeinitPrintable {
     }
 
     private func makeLoginAndSignUp() -> LoginAndSignup {
-        let summaryScreenVariant = SummaryScreenVariant.screenVariant(
-            .custom(.init(image: PassIcon.passIcon,
-                          startButtonText: "Start using Proton Pass")))
         let signUpParameters = SignupParameters(separateDomainsButton: true,
                                                 passwordRestrictions: .default,
-                                                summaryScreenVariant: summaryScreenVariant,
-                                                signupMode: .internal)
+                                                summaryScreenVariant: .noSummaryScreen,
+                                                signupInitialMode: .internal)
         return .init(appName: "Proton Pass",
                      clientApp: .other(named: "pass"),
                      apiService: apiService,

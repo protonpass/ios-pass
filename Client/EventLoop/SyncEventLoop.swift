@@ -81,7 +81,7 @@ public final class SyncEventLoop: DeinitPrintable {
     private let shareEventIDRepository: ShareEventIDRepositoryProtocol
     private let remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol
     private let itemRepository: ItemRepositoryProtocol
-    private let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
+    private let shareKeyRepository: ShareKeyRepositoryProtocol
     private let logger: Logger
 
     public weak var delegate: SyncEventLoopDelegate?
@@ -92,14 +92,14 @@ public final class SyncEventLoop: DeinitPrintable {
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
                 itemRepository: ItemRepositoryProtocol,
-                vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
+                shareKeyRepository: ShareKeyRepositoryProtocol,
                 logManager: LogManager) {
         self.userId = userId
         self.shareRepository = shareRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.remoteSyncEventsDatasource = remoteSyncEventsDatasource
         self.itemRepository = itemRepository
-        self.vaultItemKeysRepository = vaultItemKeysRepository
+        self.shareKeyRepository = shareKeyRepository
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
@@ -118,6 +118,7 @@ public final class SyncEventLoop: DeinitPrintable {
 public extension SyncEventLoop {
     /// Start looping
     func start() {
+        /*
         delegate?.syncEventLoopDidStartLooping()
         timer = .scheduledTimer(withTimeInterval: 1,
                                 repeats: true) { [weak self] _ in
@@ -130,6 +131,7 @@ public extension SyncEventLoop {
             }
         }
         timer?.fire()
+         */
     }
 
     /// Force a sync loop e.g when the app goes foreground, pull to refresh is triggered
@@ -214,7 +216,7 @@ private extension SyncEventLoop {
             } else {
                 // New share
                 let shareId = remoteShare.shareID
-                _ = try await vaultItemKeysRepository.refreshVaultItemKeys(shareId: shareId)
+                _ = try await shareKeyRepository.refreshKeys(shareId: shareId)
                 try await sync(share: remoteShare, hasNewEvents: &hasNewEvents)
             }
         }
@@ -248,7 +250,7 @@ private extension SyncEventLoop {
         if events.newRotationID?.isEmpty == false {
             hasNewEvents = true
             logger.trace("Had new rotation ID for share \(shareId)")
-            _ = try await vaultItemKeysRepository.refreshVaultItemKeys(shareId: shareId)
+            _ = try await shareKeyRepository.refreshKeys(shareId: shareId)
         }
 
         if events.eventsPending {

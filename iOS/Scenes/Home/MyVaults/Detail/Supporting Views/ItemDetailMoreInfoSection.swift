@@ -137,8 +137,9 @@ final class ItemDetailMoreInfoSectionUIModel {
         let item = itemContent.item
 
         if case .login = itemContent.contentData.type,
-           item.lastUseTime != item.createTime {
-            lastAutoFilledDate = fullDateString(item.lastUseTime).capitalizingFirstLetter()
+           let lastUseTime = item.lastUseTime,
+           lastUseTime != item.createTime {
+            lastAutoFilledDate = fullDateString(lastUseTime).capitalizingFirstLetter()
         } else {
             lastAutoFilledDate = nil
         }

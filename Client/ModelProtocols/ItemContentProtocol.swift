@@ -132,6 +132,7 @@ public typealias ProtobufableItemContentProtocol = ItemContentProtocol & Protobu
 extension ItemContentProtobuf: ProtobufableItemContentProtocol {
     public var name: String { metadata.name }
     public var note: String { metadata.note }
+    public var uuid: String { metadata.itemUuid }
 
     public var contentData: ItemContentData {
         switch content.content {
@@ -157,8 +158,12 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         self = try ItemContentProtobuf(serializedData: data)
     }
 
-    public init(name: String, note: String, data: ItemContentData) {
+    public init(name: String,
+                note: String,
+                itemUuid: String,
+                data: ItemContentData) {
         metadata = .init()
+        metadata.itemUuid = itemUuid
         metadata.name = name
         metadata.note = note
         switch data {
@@ -180,6 +185,7 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
 
 public struct ItemContent: ItemContentProtocol {
     public let shareId: String
+    public let itemUuid: String
     public let item: ItemRevision
     public let name: String
     public let note: String
@@ -190,13 +196,14 @@ public struct ItemContent: ItemContentProtocol {
                 contentProtobuf: ItemContentProtobuf) {
         self.shareId = shareId
         self.item = item
+        self.itemUuid = contentProtobuf.uuid
         self.name = contentProtobuf.name
         self.note = contentProtobuf.note
         self.contentData = contentProtobuf.contentData
     }
 
     public var protobuf: ItemContentProtobuf {
-        .init(name: name, note: note, data: contentData)
+        .init(name: name, note: note, itemUuid: itemUuid, data: contentData)
     }
 }
 
@@ -245,6 +252,7 @@ extension ItemContentProtobuf: SymmetricallyEncryptable {
         let encryptedData = try contentData.symmetricallyEncrypted(symmetricKey)
         return .init(name: encryptedName,
                      note: encryptedNote,
+                     itemUuid: uuid,
                      data: encryptedData)
     }
 
@@ -254,6 +262,7 @@ extension ItemContentProtobuf: SymmetricallyEncryptable {
         let decryptedData = try contentData.symmetricallyDecrypted(symmetricKey)
         return .init(name: decryptedName,
                      note: decryptedNote,
+                     itemUuid: uuid,
                      data: decryptedData)
     }
 }

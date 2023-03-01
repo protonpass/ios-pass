@@ -28,7 +28,7 @@ public protocol ShareRepositoryProtocol {
     var userData: UserData { get }
     var localShareDatasource: LocalShareDatasourceProtocol { get }
     var remoteShareDatasouce: RemoteShareDatasourceProtocol { get }
-    var vaultItemKeysRepository: VaultItemKeysRepositoryProtocol { get }
+    var passKeyManager: PassKeyManagerProtocol { get }
     var logger: Logger { get }
 
     /// Get all local shares
@@ -100,10 +100,10 @@ public extension ShareRepositoryProtocol {
 
         var vaults: [VaultProtocol] = []
         for share in shares where share.shareType == .vault {
-            let vaultKeys =
-            try await self.vaultItemKeysRepository.getVaultKeys(shareId: share.shareID)
-            let shareContent = try share.getShareContent(userData: userData,
-                                                         vaultKeys: vaultKeys)
+            let key = try await self.passKeyManager.getShareKey(
+                shareId: share.shareID,
+                keyRotation: share.contentKeyRotation ?? -1)
+            let shareContent = try share.getShareContent(key: key.value)
             switch shareContent {
             case .vault(let vault):
                 vaults.append(vault)
@@ -155,18 +155,18 @@ public struct ShareRepository: ShareRepositoryProtocol {
     public let userData: UserData
     public let localShareDatasource: LocalShareDatasourceProtocol
     public let remoteShareDatasouce: RemoteShareDatasourceProtocol
-    public let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
+    public let passKeyManager: PassKeyManagerProtocol
     public let logger: Logger
 
     public init(userData: UserData,
                 localShareDatasource: LocalShareDatasourceProtocol,
                 remoteShareDatasouce: RemoteShareDatasourceProtocol,
-                vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
+                passKeyManager: PassKeyManagerProtocol,
                 logManager: LogManager) {
         self.userData = userData
         self.localShareDatasource = localShareDatasource
         self.remoteShareDatasouce = remoteShareDatasouce
-        self.vaultItemKeysRepository = vaultItemKeysRepository
+        self.passKeyManager = passKeyManager
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
@@ -181,10 +181,16 @@ public struct ShareRepository: ShareRepositoryProtocol {
         self.localShareDatasource = LocalShareDatasource(container: container)
         self.remoteShareDatasouce = RemoteShareDatasource(authCredential: authCredential,
                                                           apiService: apiService)
-        self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
-                                                               authCredential: authCredential,
-                                                               apiService: apiService,
-                                                               logManager: logManager)
+        let shareKeyRepository = ShareKeyRepository(container: container,
+                                                    authCredential: authCredential,
+                                                    apiService: apiService,
+                                                    logManager: logManager)
+        let itemKeyDatasource = RemoteItemKeyDatasource(authCredential: authCredential,
+                                                        apiService: apiService)
+        self.passKeyManager = PassKeyManager(userData: userData,
+                                             shareKeyRepository: shareKeyRepository,
+                                             itemKeyDatasource: itemKeyDatasource,
+                                             logManager: logManager)
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)

@@ -45,6 +45,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     override func generateItemContent() -> ItemContentProtobuf {
         ItemContentProtobuf(name: name,
                             note: note,
+                            itemUuid: UUID().uuidString,
                             data: ItemContentData.note)
     }
 }

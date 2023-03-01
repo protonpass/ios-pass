@@ -98,7 +98,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          shareRepository: ShareRepositoryProtocol,
          shareEventIDRepository: ShareEventIDRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
-         vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
+         shareKeyRepository: ShareKeyRepositoryProtocol,
          remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
          symmetricKey: SymmetricKey,
          serviceIdentifiers: [ASCredentialServiceIdentifier],
@@ -125,7 +125,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
                                    shareEventIDRepository: shareEventIDRepository,
                                    remoteSyncEventsDatasource: remoteSyncEventsDatasource,
                                    itemRepository: itemRepository,
-                                   vaultItemKeysRepository: vaultItemKeysRepository,
+                                   shareKeyRepository: shareKeyRepository,
                                    logManager: logManager)
 
         self.logManager = logManager
@@ -221,6 +221,7 @@ extension CredentialsViewModel {
                                                                urls: oldData.urls + [newUrl]))
                 let newContent = ItemContentProtobuf(name: oldContent.name,
                                                      note: oldContent.note,
+                                                     itemUuid: oldContent.itemUuid,
                                                      data: newLoginData)
                 try await itemRepository.updateItem(oldItem: encryptedItem.item,
                                                     newItemContent: newContent,

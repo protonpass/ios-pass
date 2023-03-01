@@ -35,21 +35,17 @@ extension ItemEntity {
     @NSManaged var content: String?
     @NSManaged var contentFormatVersion: Int16
     @NSManaged var createTime: Int64
-    /// Is a custom field. Whether the type of item is log in or not
-    @NSManaged var isLogInItem: Bool
+    @NSManaged var isLogInItem: Bool // Custom field
     @NSManaged var itemID: String?
-    @NSManaged var itemKeySignature: String?
+    @NSManaged var itemKey: String?
+    @NSManaged var keyRotation: Int64
     @NSManaged var lastUseTime: Int64
     @NSManaged var modifyTime: Int64
-    @NSManaged var revision: Int16
+    @NSManaged var revision: Int64
     @NSManaged var revisionTime: Int64
-    @NSManaged var rotationID: String?
-    @NSManaged var shareID: String?
-    @NSManaged var signatureEmail: String?
+    @NSManaged var shareID: String? // Custom field
     @NSManaged var state: Int16
-    /// Is a custom field. The exact protobuf structure but have the content symmetrically encrypted
-    @NSManaged var symmetricallyEncryptedContent: String?
-    @NSManaged var userSignature: String?
+    @NSManaged var symmetricallyEncryptedContent: String? // Custom field
 }
 
 extension ItemEntity {
@@ -62,10 +58,6 @@ extension ItemEntity {
             throw PPClientError.coreData(.corrupted(object: self, property: "itemID"))
         }
 
-        guard let rotationID else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "rotationID"))
-        }
-
         guard let symmetricallyEncryptedContent else {
             throw PPClientError.coreData(.corrupted(object: self,
                                                     property: "symmetricallyEncryptedContent"))
@@ -75,27 +67,13 @@ extension ItemEntity {
             throw PPClientError.coreData(.corrupted(object: self, property: "content"))
         }
 
-        guard let userSignature else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "userSignature"))
-        }
-
-        guard let itemKeySignature else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "itemKeySignature"))
-        }
-
-        guard let signatureEmail else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "signatureEmail"))
-        }
-
         let itemRevision = ItemRevision(itemID: itemID,
                                         revision: revision,
                                         contentFormatVersion: contentFormatVersion,
-                                        rotationID: rotationID,
+                                        keyRotation: keyRotation,
                                         content: content,
-                                        userSignature: userSignature,
-                                        itemKeySignature: itemKeySignature,
+                                        itemKey: itemKey,
                                         state: state,
-                                        signatureEmail: signatureEmail,
                                         aliasEmail: aliasEmail,
                                         createTime: createTime,
                                         modifyTime: modifyTime,
@@ -108,23 +86,22 @@ extension ItemEntity {
                      isLogInItem: isLogInItem)
     }
 
-    func hydrate(from item: SymmetricallyEncryptedItem) {
-        self.itemID = item.item.itemID
-        self.revision = item.item.revision
-        self.contentFormatVersion = item.item.contentFormatVersion
-        self.rotationID = item.item.rotationID
-        self.content = item.item.content
-        self.symmetricallyEncryptedContent = item.encryptedContent
-        self.userSignature = item.item.userSignature
-        self.itemKeySignature = item.item.itemKeySignature
-        self.state = item.item.state
-        self.signatureEmail = item.item.signatureEmail
-        self.aliasEmail = item.item.aliasEmail
-        self.createTime = item.item.createTime
-        self.modifyTime = item.item.modifyTime
-        self.lastUseTime = item.item.lastUseTime
-        self.revisionTime = item.item.revisionTime
-        self.shareID = item.shareId
-        self.isLogInItem = item.isLogInItem
+    func hydrate(from symmetricallyEncryptedItem: SymmetricallyEncryptedItem) {
+        let item = symmetricallyEncryptedItem.item
+        self.aliasEmail = item.aliasEmail
+        self.content = item.content
+        self.contentFormatVersion = item.contentFormatVersion
+        self.createTime = item.createTime
+        self.isLogInItem = symmetricallyEncryptedItem.isLogInItem
+        self.itemID = item.itemID
+        self.itemKey = item.itemKey
+        self.keyRotation = item.keyRotation
+        self.lastUseTime = item.lastUseTime ?? 0
+        self.modifyTime = item.modifyTime
+        self.revision = item.revision
+        self.revisionTime = item.revisionTime
+        self.shareID = symmetricallyEncryptedItem.shareId
+        self.state = item.state
+        self.symmetricallyEncryptedContent = symmetricallyEncryptedItem.encryptedContent
     }
 }

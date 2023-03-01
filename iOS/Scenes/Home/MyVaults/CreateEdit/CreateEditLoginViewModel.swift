@@ -142,6 +142,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                                     urls: sanitizedUrls))
         return ItemContentProtobuf(name: title,
                                    note: note,
+                                   itemUuid: UUID().uuidString,
                                    data: logInData)
     }
 
@@ -149,6 +150,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         if let aliasCreationLiteInfo {
             let aliasContent = ItemContentProtobuf(name: title,
                                                    note: "Alias of log in item \"\(title)\"",
+                                                   itemUuid: UUID().uuidString,
                                                    data: .alias)
 
             let aliasCreationInfo = AliasCreationInfo(

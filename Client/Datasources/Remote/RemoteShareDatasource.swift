@@ -29,29 +29,9 @@ public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
 
 public extension RemoteShareDatasourceProtocol {
     func getShares() async throws -> [Share] {
-        var shares = [Share]()
-
-        // Fetch the partial shares first
         let getSharesEndpoint = GetSharesEndpoint(credential: authCredential)
         let getSharesResponse = try await apiService.exec(endpoint: getSharesEndpoint)
-
-        // Then fetch full share for each partial share
-        try await withThrowingTaskGroup(of: Share.self) { [weak self] group in
-            guard let self else { return }
-            for partialShare in getSharesResponse.shares {
-                let getShareEndpoint = GetShareEndpoint(credential: authCredential,
-                                                        shareId: partialShare.shareID)
-                group.addTask {
-                    let getShareResponse =
-                    try await self.apiService.exec(endpoint: getShareEndpoint)
-                    return getShareResponse.share
-                }
-            }
-
-            for try await share in group { shares.append(share) }
-        }
-
-        return shares
+        return getSharesResponse.shares
     }
 
     func getShare(shareId: String) async throws -> Share {
