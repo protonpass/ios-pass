@@ -91,6 +91,7 @@ struct CreateEditAliasView: View {
                         aliasPreviewSection
                         if isShowingAdvancedOptions, let suffixSelection = viewModel.suffixSelection {
                             PrefixSuffixSection(prefix: $viewModel.prefix,
+                                                prefixManuallyEdited: $viewModel.prefixManuallyEdited,
                                                 suffixSelection: suffixSelection,
                                                 prefixError: viewModel.prefixError)
                         } else {

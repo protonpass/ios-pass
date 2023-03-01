@@ -42,7 +42,7 @@ public enum AliasPrefixError: LocalizedError {
 }
 
 public enum AliasPrefixValidator {
-    static let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
+    public static let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
 
     /// Validate a given prefix.
     /// - Parameters:

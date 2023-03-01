@@ -188,7 +188,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     } else {
                         if let firstSuffix = aliasOptions.suffixes.first,
                            let firstMailbox = aliasOptions.mailboxes.first {
-                            var prefix = title.prefix(10).replacingOccurrences(of: " ", with: "").lowercased()
+                            var prefix = PrefixUtils.generatePrefix(fromTitle: title)
                             if prefix.isEmpty {
                                 prefix = String.random(allowedCharacters: [.lowercase, .digit], length: 5)
                             }
