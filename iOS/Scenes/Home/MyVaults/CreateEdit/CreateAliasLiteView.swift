@@ -34,7 +34,7 @@ struct CreateAliasLiteView: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            ScrollView(showsIndicators: false) {
+            ScrollView {
                 VStack(spacing: 8) {
                     aliasAddressSection
                         .padding(.vertical, 30)
