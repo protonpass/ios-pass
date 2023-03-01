@@ -1,7 +1,7 @@
 //
-// ItemKey+Test.swift
-// Proton Pass - Created on 04/08/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// CachableObject.swift
+// Proton Pass - Created on 01/03/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,14 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Client
+import Foundation
 
-extension ItemKey {
-    static func random(rotationId: String? = nil) -> ItemKey {
-        .init(rotationID: rotationId ?? .random(),
-              key: .random(),
-              keyPassphrase: .random(),
-              keySignature: .random(),
-              createTime: .random(in: 1...1_000_000))
+public struct CachableObject<T> {
+    public let isCached: Bool
+    public let value: T
+
+    public init(isCached: Bool, value: T) {
+        self.isCached = isCached
+        self.value = value
     }
 }

@@ -21,7 +21,7 @@
 import CryptoKit
 
 /// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
-public struct SymmetricallyEncryptedItem {
+public struct SymmetricallyEncryptedItem: Equatable {
     /// ID of the share that the item belongs to
     public let shareId: String
 
@@ -77,7 +77,7 @@ public extension Array where Element == SymmetricallyEncryptedItem {
     func sorted() -> Self {
         let predicates: [AreInDecreasingOrder] =
         [
-            { $0.item.lastUseTime > $1.item.lastUseTime },
+            { ($0.item.lastUseTime ?? 0) > ($1.item.lastUseTime ?? 0) },
             { $0.item.modifyTime > $1.item.modifyTime }
         ]
         return sorted { lhs, rhs in
@@ -107,7 +107,7 @@ public extension Array where Element == ScoredSymmetricallyEncryptedItem {
         let predicates: [ScoredAreInDecreasingOrder] =
         [
             { $0.matchScore > $1.matchScore },
-            { $0.item.item.lastUseTime > $1.item.item.lastUseTime },
+            { ($0.item.item.lastUseTime ?? 0) > ($1.item.item.lastUseTime ?? 0) },
             { $0.item.item.modifyTime > $1.item.item.modifyTime }
         ]
         return sorted { lhs, rhs in

@@ -1,6 +1,6 @@
 //
-// ItemLabelKeyPacket.swift
-// Proton Pass - Created on 09/08/2022.
+// PassKey.swift
+// Proton Pass - Created on 19/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,13 +20,14 @@
 
 import Foundation
 
-public struct ItemLabelKeyPacket: Encodable {
-    /// Encrypted ID of the label
-    public let labelID: String
+/// Key used in Pass context
+public struct PassKey: Decodable, Hashable, Equatable {
+    public let key: String
+    public let keyRotation: Int64
+}
 
-    /// KeyPacket for the label encoded in Base64
-    public let keyPacket: String
-
-    /// Base64 encoded keypacket signature
-    public let keyPacketSignature: String
+/// A set of keys, only used in `GET` keys endpoints (get keys for a share, get keys for an item)
+public struct PassKeys: Decodable {
+    let total: Int
+    let keys: [PassKey]
 }

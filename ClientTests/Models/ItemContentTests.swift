@@ -27,6 +27,7 @@ final class ItemContentTests: XCTestCase {
         // Given
         let givenItemContent = ItemContentProtobuf(name: .random(),
                                                    note: .random(),
+                                                   itemUuid: UUID().uuidString,
                                                    data: .random())
         let givenSymmetricKey = SymmetricKey.random()
 

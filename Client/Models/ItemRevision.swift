@@ -40,39 +40,27 @@ public enum ItemState: Int16, CaseIterable {
     }
 }
 
-public struct ItemRevisionList: Decodable {
+public struct ItemRevisionsPaginated: Decodable {
     public let total: Int
+    public let lastToken: String?
     public let revisionsData: [ItemRevision]
 }
 
-public struct ItemRevision: Decodable {
+public struct ItemRevision: Decodable, Equatable {
     public let itemID: String
-    public let revision: Int16
+    public let revision: Int64
     public let contentFormatVersion: Int16
-
-    /// Parent key ID to whom the key packet belongs
-    public let rotationID: String
-
-    /// Base64 encoded item contents including the key packet
+    public let keyRotation: Int64
     public let content: String
 
-    /// Base64 encoded item contents encrypted signature made with the user's address key
-    public let userSignature: String
+    /// Base64 encoded item key. Only for vault shares.
+    public let itemKey: String?
 
-    /// Base64 encoded item contents encrypted signature made with the vault's item key
-    public let itemKeySignature: String
-
-    /// Revision state
+    /// Revision state. Values: 1 = Active, 2 = Trashed
     public let state: Int16
-
-    /// Email address of the signer
-    public let signatureEmail: String
 
     /// In case this item contains an alias, this is the email address for the alias
     public let aliasEmail: String?
-
-    // Post MVP
-    //    public let labels: [String]
 
     /// Creation time of the item
     public let createTime: Int64
@@ -81,7 +69,7 @@ public struct ItemRevision: Decodable {
     public let modifyTime: Int64
 
     /// Time when the item was last used
-    public let lastUseTime: Int64
+    public let lastUseTime: Int64?
 
     /// Creation time of this revision
     public let revisionTime: Int64
@@ -90,68 +78,34 @@ public struct ItemRevision: Decodable {
     public var itemState: ItemState { .init(rawValue: state) ?? .active }
 }
 
-extension ItemRevision {
-    public func getContentProtobuf(userData: UserData,
-                                   share: Share,
-                                   vaultKeys: [VaultKey],
-                                   itemKeys: [ItemKey],
-                                   verifyKeys: [String]) throws -> ItemContentProtobuf {
-        guard let vaultKey = vaultKeys.first(where: { $0.rotationID == rotationID }),
-              let itemKey = itemKeys.first(where: { $0.rotationID == rotationID }) else {
-            throw DataError.keyNotFound(rotationId: rotationID)
+public extension ItemRevision {
+    func getContentProtobuf(vaultKey: DecryptedShareKey) throws -> ItemContentProtobuf {
+        guard vaultKey.keyRotation == keyRotation else {
+            throw PPClientError.crypto(.unmatchedKeyRotation(lhsKey: vaultKey.keyRotation,
+                                                             rhsKey: keyRotation))
         }
 
-        let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
-                                                                        share: share,
-                                                                        vaultKey: vaultKey)
-        let vaultDecryptionKey = DecryptionKey(privateKey: .init(value: vaultKey.key),
-                                               passphrase: .init(value: vaultKeyPassphrase))
-
-        let decryptedContent = try decryptField(decryptionKeys: [vaultDecryptionKey],
-                                                field: content)
-
-        let decryptedItemSignature = try decryptField(decryptionKeys: [vaultDecryptionKey],
-                                                      field: itemKeySignature)
-        try verifyItemSignature(signature: decryptedItemSignature,
-                                itemKey: itemKey,
-                                content: decryptedContent)
-
-        let decryptedUserSignature = try decryptField(decryptionKeys: [vaultDecryptionKey],
-                                                      field: userSignature)
-        // swiftlint:disable:next todo
-        // TODO:
-        //        try verifyUserSignature(signature: decryptedUserSignature,
-        //                                verifyKeys: verifyKeys,
-        //                                content: decryptedContent)
-
-        return try ItemContentProtobuf(data: decryptedContent)
-    }
-
-    private func decryptField(decryptionKeys: [DecryptionKey], field: String) throws -> Data {
-        guard let decoded = try field.base64Decode() else {
-            throw PPClientError.crypto(.failedToDecode)
+        #warning("Handle this")
+        guard let itemKey else {
+            throw PPClientError.crypto(.failedToDecryptContent)
         }
-        let armoredDecoded = try CryptoUtils.armorMessage(decoded)
-        return try ProtonCore_Crypto.Decryptor.decrypt(decryptionKeys: decryptionKeys,
-                                                       encrypted: .init(value: armoredDecoded))
-    }
 
-    private func verifyUserSignature(signature: Data, verifyKeys: [String], content: Data) throws {
-        for key in verifyKeys {
-            let valid = try Crypto().verifyDetached(signature: CryptoUtils.armorSignature(signature),
-                                                    plainData: content,
-                                                    publicKey: key,
-                                                    verifyTime: 0)
-            if valid { return }
+        guard let itemKeyData = try itemKey.base64Decode() else {
+            throw PPClientError.crypto(.failedToBase64Decode)
         }
-        throw PPClientError.crypto(.failedToVerifySignature)
-    }
 
-    private func verifyItemSignature(signature: Data, itemKey: ItemKey, content: Data) throws {
-        let valid = try Crypto().verifyDetached(signature: CryptoUtils.armorSignature(signature),
-                                                plainData: content,
-                                                publicKey: itemKey.key.publicKey,
-                                                verifyTime: Int64(Date().timeIntervalSince1970))
-        if !valid { throw PPClientError.crypto(.failedToVerifySignature) }
+        let decryptedItemKeyData = try AES.GCM.open(itemKeyData,
+                                                    key: vaultKey.keyData,
+                                                    associatedData: .itemKey)
+
+        guard let contentData = try content.base64Decode() else {
+            throw PPClientError.crypto(.failedToBase64Decode)
+        }
+
+        let decryptedContentData = try AES.GCM.open(contentData,
+                                                    key: decryptedItemKeyData,
+                                                    associatedData: .itemContent)
+
+        return try ItemContentProtobuf(data: decryptedContentData)
     }
 }

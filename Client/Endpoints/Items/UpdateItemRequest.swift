@@ -18,84 +18,47 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import CryptoKit
 import ProtonCore_KeyManager
 
 public struct UpdateItemRequest {
     /// RotationID used to encrypt the item contents
-    public let rotationID: String
+    public let keyRotation: Int64
 
     /// Last item revision existing when the item was created
-    public let lastRevision: Int16
+    public let lastRevision: Int64
 
     /// Encrypted item content encoded in Base64
     public let content: String
 
     /// Version of the content format used to create the item
     public let contentFormatVersion: Int16
-
-    /// Contents signature by the user address key encrypted with the same session key
-    /// as the contents encoded in base64
-    public let userSignature: String
-
-    /// Contents signature by the item key encrypted with the same session key
-    /// as the contents encoded in base64
-    public let itemKeySignature: String
 }
 
 public extension UpdateItemRequest {
     init(oldRevision: ItemRevision,
-         vaultKey: VaultKey,
-         vaultKeyPassphrase: String,
-         itemKey: ItemKey,
-         itemKeyPassphrase: String,
-         addressKey: AddressKey,
+         latestItemKey: DecryptedItemKey,
          itemContent: ProtobufableItemContentProtocol) throws {
-        let itemContentData = try itemContent.data()
+        let sealedBox = try AES.GCM.seal(itemContent.data(),
+                                         key: latestItemKey.keyData,
+                                         associatedData: .itemContent)
 
-        guard let contentData = try oldRevision.content.base64Decode() else {
-            throw PPClientError.crypto(.failedToDecode)
+        guard let updatedContent = sealedBox.combined?.base64EncodedString() else {
+            throw PPClientError.crypto(.failedToAESEncrypt)
         }
 
-        let content = try CryptoUtils.armorMessage(contentData)
-
-        let sessionKey = try Decryptor.decryptSessionKey(of: content,
-                                                         privateKey: vaultKey.key,
-                                                         passphrase: vaultKeyPassphrase)
-        let dataPacket = try sessionKey.encrypt(.init(itemContentData))
-
-        let userSignature = try Encryptor.sign(list: itemContentData,
-                                               addressKey: addressKey.key.privateKey,
-                                               addressPassphrase: addressKey.keyPassphrase)
-        let itemKeySignature = try Encryptor.sign(list: itemContentData,
-                                                  addressKey: itemKey.key,
-                                                  addressPassphrase: itemKeyPassphrase)
-
-        guard let unarmoredUserSignature = userSignature.unArmor else {
-            throw PPClientError.crypto(.failedToUnarmor("UserSignature"))
-        }
-        let encryptedUserSignature = try sessionKey.encrypt(.init(unarmoredUserSignature))
-
-        guard let unarmoredItemKeySignature = itemKeySignature.unArmor else {
-            throw PPClientError.crypto(.failedToUnarmor("ItemKeySignature"))
-        }
-        let encryptedItemSignature = try sessionKey.encrypt(.init(unarmoredItemKeySignature))
-
-        self.init(rotationID: oldRevision.rotationID,
+        self.init(keyRotation: latestItemKey.keyRotation,
                   lastRevision: oldRevision.revision,
-                  content: dataPacket.base64EncodedString(),
-                  contentFormatVersion: 1,
-                  userSignature: encryptedUserSignature.base64EncodedString(),
-                  itemKeySignature: encryptedItemSignature.base64EncodedString())
+                  content: updatedContent,
+                  contentFormatVersion: 1)
     }
 }
 
 extension UpdateItemRequest: Encodable {
     enum CodingKeys: String, CodingKey {
-        case rotationID = "RotationID"
+        case keyRotation = "KeyRotation"
         case lastRevision = "LastRevision"
         case content = "Content"
         case contentFormatVersion = "ContentFormatVersion"
-        case userSignature = "UserSignature"
-        case itemKeySignature = "ItemKeySignature"
     }
 }

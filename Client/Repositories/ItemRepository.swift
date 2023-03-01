@@ -38,7 +38,7 @@ public protocol ItemRepositoryProtocol {
     var publicKeyRepository: PublicKeyRepositoryProtocol { get }
     var shareRepository: ShareRepositoryProtocol { get }
     var shareEventIDRepository: ShareEventIDRepositoryProtocol { get }
-    var vaultItemKeysRepository: VaultItemKeysRepositoryProtocol { get }
+    var passKeyManager: PassKeyManagerProtocol { get }
     var logger: Logger { get }
     var delegate: ItemRepositoryDelegate? { get }
 
@@ -268,13 +268,10 @@ public extension ItemRepositoryProtocol {
         let encryptedOldItemContentData = try await localItemDatasoure.getItem(shareId: shareId, itemId: itemId)
         let decryptedOldItemContentData =
         try encryptedOldItemContentData?.getDecryptedItemContent(symmetricKey: symmetricKey)
-        let keysAndPassphrases = try await getKeysAndPassphrases(shareId: shareId)
+        let latestItemKey = try await passKeyManager.getLatestItemKey(shareId: shareId,
+                                                                      itemId: itemId)
         let request = try UpdateItemRequest(oldRevision: oldItem,
-                                            vaultKey: keysAndPassphrases.vaultKey,
-                                            vaultKeyPassphrase: keysAndPassphrases.vaultKeyPassphrase,
-                                            itemKey: keysAndPassphrases.itemKey,
-                                            itemKeyPassphrase: keysAndPassphrases.itemKeyPassphrase,
-                                            addressKey: userData.getAddressKey(),
+                                            latestItemKey: latestItemKey.value,
                                             itemContent: newItemContent)
         let updatedItemRevision =
         try await remoteItemRevisionDatasource.updateItem(shareId: shareId,
@@ -292,13 +289,13 @@ public extension ItemRepositoryProtocol {
                 AutoFillCredential(ids: ids,
                                    username: oldData.username,
                                    url: oldUrl,
-                                   lastUseTime: encryptedItem.item.lastUseTime)
+                                   lastUseTime: encryptedItem.item.lastUseTime ?? 0)
             }
             let newCredentials = newData.urls.map { newUrl in
                 AutoFillCredential(ids: ids,
                                    username: newData.username,
                                    url: newUrl,
-                                   lastUseTime: encryptedItem.item.lastUseTime)
+                                   lastUseTime: encryptedItem.item.lastUseTime ?? 0)
             }
             delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
             delegate?.itemRepositoryHasNewCredentials(newCredentials)
@@ -344,18 +341,13 @@ public extension ItemRepositoryProtocol {
 private extension ItemRepositoryProtocol {
     func refreshItems(shareId: String) async throws {
         logger.trace("Refreshing share \(shareId)")
-        let share = try await shareRepository.getShare(shareId: shareId)
-        let (vaultKeys, itemKeys) = try await vaultItemKeysRepository.refreshVaultItemKeys(shareId: shareId)
         let itemRevisions = try await remoteItemRevisionDatasource.getItemRevisions(shareId: shareId)
         logger.trace("Got \(itemRevisions.count) items from remote for share \(shareId)")
 
         logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
         var encryptedItems = [SymmetricallyEncryptedItem]()
         for itemRevision in itemRevisions {
-            let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
-                                                              share: share,
-                                                              vaultKeys: vaultKeys,
-                                                              itemKeys: itemKeys)
+            let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision, shareId: shareId)
             encryptedItems.append(encrypedItem)
         }
         logger.trace("Saving \(itemRevisions.count) remote item revisions to local database")
@@ -376,26 +368,9 @@ private extension ItemRepositoryProtocol {
 
     func symmetricallyEncrypt(itemRevision: ItemRevision,
                               shareId: String) async throws -> SymmetricallyEncryptedItem {
-        let share = try await shareRepository.getShare(shareId: shareId)
-        let vaultKeys = try await vaultItemKeysRepository.getVaultKeys(shareId: shareId)
-        let itemKeys = try await vaultItemKeysRepository.getItemKeys(shareId: shareId)
-        return try await symmetricallyEncrypt(itemRevision: itemRevision,
-                                              share: share,
-                                              vaultKeys: vaultKeys,
-                                              itemKeys: itemKeys)
-    }
-
-    func symmetricallyEncrypt(itemRevision: ItemRevision,
-                              share: Share,
-                              vaultKeys: [VaultKey],
-                              itemKeys: [ItemKey]) async throws -> SymmetricallyEncryptedItem {
-        let publicKeys = try await publicKeyRepository.getPublicKeys(email: itemRevision.signatureEmail)
-        let verifyKeys = publicKeys.map { $0.value }
-        let contentProtobuf = try itemRevision.getContentProtobuf(userData: userData,
-                                                                  share: share,
-                                                                  vaultKeys: vaultKeys,
-                                                                  itemKeys: itemKeys,
-                                                                  verifyKeys: verifyKeys)
+        let vaultKey = try await passKeyManager.getShareKey(shareId: shareId,
+                                                            keyRotation: itemRevision.keyRotation)
+        let contentProtobuf = try itemRevision.getContentProtobuf(vaultKey: vaultKey.value)
         let encryptedContentProtobuf = try contentProtobuf.symmetricallyEncrypted(symmetricKey)
         let encryptedContent = try encryptedContentProtobuf.serializedData().base64EncodedString()
 
@@ -406,7 +381,7 @@ private extension ItemRepositoryProtocol {
             isLogInItem = false
         }
 
-        return .init(shareId: share.shareID,
+        return .init(shareId: shareId,
                      item: itemRevision,
                      encryptedContent: encryptedContent,
                      isLogInItem: isLogInItem)
@@ -424,7 +399,7 @@ private extension ItemRepositoryProtocol {
                                                         itemId: decryptedLogInItem.item.itemID),
                                              username: data.username,
                                              url: url,
-                                             lastUseTime: encryptedLogInItem.item.lastUseTime))
+                                             lastUseTime: encryptedLogInItem.item.lastUseTime ?? 0))
                 }
             }
         }
@@ -433,34 +408,8 @@ private extension ItemRepositoryProtocol {
 
     func createItemRequest(itemContent: ProtobufableItemContentProtocol,
                            shareId: String) async throws -> CreateItemRequest {
-        let keysAndPassphrases = try await getKeysAndPassphrases(shareId: shareId)
-        return try CreateItemRequest(vaultKey: keysAndPassphrases.vaultKey,
-                                     vaultKeyPassphrase: keysAndPassphrases.vaultKeyPassphrase,
-                                     itemKey: keysAndPassphrases.itemKey,
-                                     itemKeyPassphrase: keysAndPassphrases.itemKeyPassphrase,
-                                     addressKey: keysAndPassphrases.addressKey,
-                                     itemContent: itemContent)
-    }
-
-    func getKeysAndPassphrases(shareId: String) async throws -> KeysAndPassphrases {
-        let latestVaultItemKeys = try await vaultItemKeysRepository.getLatestVaultItemKeys(shareId: shareId)
-        let latestVaultKey = latestVaultItemKeys.vaultKey
-        let latestItemKey = latestVaultItemKeys.itemKey
-        let share = try await shareRepository.getShare(shareId: shareId)
-        let vaultKeyPassphrase = try PassKeyUtils.getVaultKeyPassphrase(userData: userData,
-                                                                        share: share,
-                                                                        vaultKey: latestVaultKey)
-        guard let itemKeyPassphrase =
-                try PassKeyUtils.getItemKeyPassphrase(vaultKey: latestVaultKey,
-                                                      vaultKeyPassphrase: vaultKeyPassphrase,
-                                                      itemKey: latestItemKey) else {
-            fatalError("Post MVP")
-        }
-        return .init(vaultKey: latestVaultKey,
-                     vaultKeyPassphrase: vaultKeyPassphrase,
-                     itemKey: latestItemKey,
-                     itemKeyPassphrase: itemKeyPassphrase,
-                     addressKey: try userData.getAddressKey())
+        let latestKey = try await passKeyManager.getLatestShareKey(shareId: shareId)
+        return try CreateItemRequest(vaultKey: latestKey.value, itemContent: itemContent)
     }
 }
 
@@ -482,7 +431,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
     public let publicKeyRepository: PublicKeyRepositoryProtocol
     public let shareRepository: ShareRepositoryProtocol
     public let shareEventIDRepository: ShareEventIDRepositoryProtocol
-    public let vaultItemKeysRepository: VaultItemKeysRepositoryProtocol
+    public let passKeyManager: PassKeyManagerProtocol
     public let logger: Logger
     public weak var delegate: ItemRepositoryDelegate?
 
@@ -493,7 +442,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 publicKeyRepository: PublicKeyRepositoryProtocol,
                 shareRepository: ShareRepositoryProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
-                vaultItemKeysRepository: VaultItemKeysRepositoryProtocol,
+                passKeyManager: PassKeyManagerProtocol,
                 logManager: LogManager) {
         self.userData = userData
         self.symmetricKey = symmetricKey
@@ -502,7 +451,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.publicKeyRepository = publicKeyRepository
         self.shareRepository = shareRepository
         self.shareEventIDRepository = shareEventIDRepository
-        self.vaultItemKeysRepository = vaultItemKeysRepository
+        self.passKeyManager = passKeyManager
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
@@ -531,20 +480,17 @@ public final class ItemRepository: ItemRepositoryProtocol {
                                                              authCredential: authCredential,
                                                              apiService: apiService,
                                                              logManager: logManager)
-        self.vaultItemKeysRepository = VaultItemKeysRepository(container: container,
-                                                               authCredential: authCredential,
-                                                               apiService: apiService,
-                                                               logManager: logManager)
+        let shareKeyRepository = ShareKeyRepository(container: container,
+                                                    authCredential: authCredential,
+                                                    apiService: apiService,
+                                                    logManager: logManager)
+        let itemKeyDatasource = RemoteItemKeyDatasource(authCredential: authCredential, apiService: apiService)
+        self.passKeyManager = PassKeyManager(userData: userData,
+                                             shareKeyRepository: shareKeyRepository,
+                                             itemKeyDatasource: itemKeyDatasource,
+                                             logManager: logManager)
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
     }
-}
-
-private struct KeysAndPassphrases {
-    let vaultKey: VaultKey
-    let vaultKeyPassphrase: String
-    let itemKey: ItemKey
-    let itemKeyPassphrase: String
-    let addressKey: AddressKey
 }

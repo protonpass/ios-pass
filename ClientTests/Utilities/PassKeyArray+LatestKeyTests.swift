@@ -1,7 +1,7 @@
 //
-// VaultKey+Test.swift
-// Proton Pass - Created on 03/08/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// PassKeyArray+LatestKeyTests.swift
+// Proton Pass - Created on 23/02/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,14 +19,19 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
+import XCTest
 
-extension VaultKey {
-    static func random(rotationId: String? = nil) -> VaultKey {
-        .init(rotationID: rotationId ?? .random(),
-              rotation: .random(in: 1...100),
-              key: .random(),
-              keyPassphrase: .random(),
-              keySignature: .random(),
-              createTime: .random(in: 1...1_000_000))
+final class PassKeyArrayPlusLatestKeyTests: XCTestCase {
+    func testGetLatestKey() throws {
+        // Given
+        let key1 = PassKey(key: .random(), keyRotation: 13)
+        let key2 = PassKey(key: .random(), keyRotation: 578)
+        let key3 = PassKey(key: .random(), keyRotation: 182)
+
+        // When
+        let latestKey = try [key1, key2, key3].latestKey()
+
+        // Then
+        XCTAssertEqual(latestKey, key2)
     }
 }

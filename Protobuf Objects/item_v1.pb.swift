@@ -68,6 +68,8 @@ public struct ProtonPassItemV1_AllowedAndroidApp {
 
   public var hashes: [String] = []
 
+  public var appName: String = String()
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
@@ -395,6 +397,7 @@ extension ProtonPassItemV1_AllowedAndroidApp: SwiftProtobuf.Message, SwiftProtob
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "package_name"),
     2: .same(proto: "hashes"),
+    3: .standard(proto: "app_name"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -405,6 +408,7 @@ extension ProtonPassItemV1_AllowedAndroidApp: SwiftProtobuf.Message, SwiftProtob
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.packageName) }()
       case 2: try { try decoder.decodeRepeatedStringField(value: &self.hashes) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.appName) }()
       default: break
       }
     }
@@ -417,12 +421,16 @@ extension ProtonPassItemV1_AllowedAndroidApp: SwiftProtobuf.Message, SwiftProtob
     if !self.hashes.isEmpty {
       try visitor.visitRepeatedStringField(value: self.hashes, fieldNumber: 2)
     }
+    if !self.appName.isEmpty {
+      try visitor.visitSingularStringField(value: self.appName, fieldNumber: 3)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: ProtonPassItemV1_AllowedAndroidApp, rhs: ProtonPassItemV1_AllowedAndroidApp) -> Bool {
     if lhs.packageName != rhs.packageName {return false}
     if lhs.hashes != rhs.hashes {return false}
+    if lhs.appName != rhs.appName {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

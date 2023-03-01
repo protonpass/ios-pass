@@ -1,7 +1,7 @@
 //
-// GetShareKeysEndpoint.swift
-// Proton Pass - Created on 19/07/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// GetLatestItemKeyEndpoint.swift
+// Proton Pass - Created on 24/02/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,31 +19,27 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_Networking
-import ProtonCore_Services
 
-public struct GetShareKeysResponse: Decodable {
-    let code: Int
-    let shareKeys: PassKeys
+public struct GetLatestItemKeyResponse: Decodable {
+    public let code: Int
+    public let key: PassKey
 }
 
-public struct GetShareKeysEndpoint: Endpoint {
+public struct GetLatestItemKeyEndpoint: Endpoint {
     public typealias Body = EmptyRequest
-    public typealias Response = GetShareKeysResponse
+    public typealias Response = GetLatestItemKeyResponse
 
     public var debugDescription: String
     public var authCredential: AuthCredential?
     public var path: String
     public var method: HTTPMethod
-    public var queries: [String: Any]?
 
     public init(credential: AuthCredential,
                 shareId: String,
-                page: Int,
-                pageSize: Int) {
-        self.debugDescription = "Get keys for share"
+                itemId: String) {
+        self.debugDescription = "Get latest key for item"
         self.authCredential = credential
-        self.path = "/pass/v1/share/\(shareId)/key"
+        self.path = "/pass/v1/share/\(shareId)/item/\(itemId)/key/latest"
         self.method = .get
-        self.queries = .paginationQuery(page: page, pageSize: pageSize)
     }
 }

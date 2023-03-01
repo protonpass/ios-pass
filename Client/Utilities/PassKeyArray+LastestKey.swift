@@ -1,7 +1,7 @@
 //
-// Config-Black.swift
-// Proton Pass - Created on 08/06/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// PassKeyArray+LastestKey.swift
+// Proton Pass - Created on 23/02/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,15 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+import Foundation
 
-SLASH=/
-ACCOUNT_HOST = https:$(SLASH)/account.proton.black
-API_HOST = dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz
-CAPTCHA_HOST = https:$(SLASH)/api.proton.black
-DEFAULT_PATH = /api
-DEFAULT_HOST = https:$(SLASH)/proton.black
-HUMAN_VERIFICATION_V3_HOST = https:$(SLASH)/verify.proton.black
-SIGNUP_DOMAIN = proton.black
-SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) BLACK
+public extension Array where Element == PassKey {
+    func latestKey() throws -> PassKey {
+        guard !isEmpty else {
+            throw PPClientError.crypto(.missingKeys)
+        }
+
+        guard let latestKey = sorted(by: { $0.keyRotation < $1.keyRotation }).last else {
+            throw PPClientError.crypto(.missingKeys)
+        }
+        return latestKey
+    }
+}

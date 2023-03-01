@@ -27,7 +27,7 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
     case corruptedEncryptedContent
     case corruptedUserData(UserDataCorruptionReason)
     case crypto(CryptoFailureReason)
-    case keys(KeysFailureReason)
+    case keysNotFound(shareID: String)
     case networkOperationsOnMainThread
     case shareNotFoundInLocalDB(shareID: String)
     case symmetricEncryption(SymmetricEncryptionFailureReason)
@@ -44,8 +44,8 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
             return reason.debugDescription
         case .crypto(let reason):
             return reason.debugDescription
-        case .keys(let reason):
-            return reason.debugDescription
+        case .keysNotFound(let shareID):
+            return "Keys not found for share \"\(shareID)\""
         case .networkOperationsOnMainThread:
             return "Network operations shouldn't be called on main thread"
         case .shareNotFoundInLocalDB(let shareID):
@@ -97,29 +97,13 @@ public extension PPClientError {
     }
 }
 
-// MARK: - KeysFailureReason
-public extension PPClientError {
-    enum KeysFailureReason: CustomDebugStringConvertible {
-        case vaultKeyNotFound(shareID: String)
-        case itemKeyNotFound(shareID: String, rotationID: String)
-
-        public var debugDescription: String {
-            switch self {
-            case .vaultKeyNotFound(let shareID):
-                return "Vault key not found for share \"\(shareID)\""
-            case let .itemKeyNotFound(shareID, rotationID):
-                return "Item key not found for share \"\(shareID)\" rotation ID \"\(rotationID)\""
-            }
-        }
-    }
-}
-
 // MARK: - CryptoFailureReason
 public extension PPClientError {
     enum CryptoFailureReason: CustomDebugStringConvertible {
         case failedToSplitPGPMessage
         case failedToUnarmor(String)
         case failedToArmor(String)
+        case failedToBase64Decode
         case failedToGetFingerprint
         case failedToGenerateKeyRing
         case failedToEncrypt
@@ -128,7 +112,13 @@ public extension PPClientError {
         case failedToVerifySignature
         case failedToGenerateSessionKey
         case failedToDecode
+        case failedToAESEncrypt
         case addressNotFound(addressID: String)
+        case corruptedShareContent(shareID: String)
+        case missingUserKey(userID: String)
+        case missingPassphrase(keyID: String)
+        case missingKeys
+        case unmatchedKeyRotation(lhsKey: Int64, rhsKey: Int64)
 
         public var debugDescription: String {
             switch self {
@@ -138,6 +128,8 @@ public extension PPClientError {
                 return "Failed to unarmor \(string)"
             case .failedToArmor(let string):
                 return "Failed to armor \(string)"
+            case .failedToBase64Decode:
+                return "Failed to base 64 decode"
             case .failedToGetFingerprint:
                 return "Failed to get fingerprint"
             case .failedToGenerateKeyRing:
@@ -154,8 +146,20 @@ public extension PPClientError {
                 return "Failed to generate session key"
             case .failedToDecode:
                 return "Failed to decode"
+            case .failedToAESEncrypt:
+                return "Failed to AES encrypt"
             case .addressNotFound(let addressID):
                 return "Address not found \"\(addressID)\""
+            case .corruptedShareContent(let shareID):
+                return "Corrupted share content shareID \"\(shareID)\""
+            case .missingUserKey(let userID):
+                return "Missing user key \"\(userID)\""
+            case .missingPassphrase(let keyID):
+                return "Missing passphrase \"\(keyID)\""
+            case .missingKeys:
+                return "Missing keys"
+            case let .unmatchedKeyRotation(lhsKey, rhsKey):
+                return "Unmatch key rotation \(lhsKey) - \(rhsKey)"
             }
         }
     }

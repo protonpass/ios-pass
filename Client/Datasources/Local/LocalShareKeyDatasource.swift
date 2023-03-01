@@ -1,5 +1,5 @@
 //
-// LocalItemKeyDatasource.swift
+// LocalShareKeyDatasource.swift
 // Proton Pass - Created on 16/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,43 +20,43 @@
 
 import CoreData
 
-public protocol LocalItemKeyDatasourceProtocol: LocalDatasourceProtocol {
-    /// Get item keys of a share
-    func getItemKeys(shareId: String) async throws -> [ItemKey]
+public protocol LocalShareKeyDatasourceProtocol: LocalDatasourceProtocol {
+    /// Get keys of a share
+    func getKeys(shareId: String) async throws -> [PassKey]
 
-    /// Insert or update if exist item keys
-    func upsertItemKeys(_ keys: [ItemKey], shareId: String) async throws
+    /// Insert or update if exist keys
+    func upsertKeys(_ keys: [PassKey], shareId: String) async throws
 
-    /// Remove all item keys of a share
-    func removeAllItemKeys(shareId: String) async throws
+    /// Remove all keys of a share
+    func removeAllKeys(shareId: String) async throws
 }
 
-public extension LocalItemKeyDatasourceProtocol {
-    func getItemKeys(shareId: String) async throws -> [ItemKey] {
+public extension LocalShareKeyDatasourceProtocol {
+    func getKeys(shareId: String) async throws -> [PassKey] {
         let taskContext = newTaskContext(type: .fetch)
-        let fetchRequest = ItemKeyEntity.fetchRequest()
+        let fetchRequest = ShareKeyEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try entities.map { try $0.toItemKey() }
+        return try entities.map { try $0.toKey() }
     }
 
-    func upsertItemKeys(_ keys: [ItemKey], shareId: String) async throws {
+    func upsertKeys(_ keys: [PassKey], shareId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
         let batchInsertRequest =
-        newBatchInsertRequest(entity: ItemKeyEntity.entity(context: taskContext),
-                              sourceItems: keys) { managedObject, itemKey in
-            (managedObject as? ItemKeyEntity)?.hydrate(from: itemKey, shareId: shareId)
+        newBatchInsertRequest(entity: ShareKeyEntity.entity(context: taskContext),
+                              sourceItems: keys) { managedObject, key in
+            (managedObject as? ShareKeyEntity)?.hydrate(from: key, shareId: shareId)
         }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    func removeAllItemKeys(shareId: String) async throws {
+    func removeAllKeys(shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemKeyEntity")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ShareKeyEntity")
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }
 }
 
-public final class LocalItemKeyDatasource: LocalDatasource, LocalItemKeyDatasourceProtocol {}
+public final class LocalShareKeyDatasource: LocalDatasource, LocalShareKeyDatasourceProtocol {}

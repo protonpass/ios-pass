@@ -115,7 +115,7 @@ public extension CredentialManagerProtocol {
                                              itemId: decryptedItem.item.itemID,
                                              username: data.username,
                                              url: url,
-                                             lastUseTime: encryptedItem.item.lastUseTime))
+                                             lastUseTime: encryptedItem.item.lastUseTime ?? 0))
                 }
             }
         }

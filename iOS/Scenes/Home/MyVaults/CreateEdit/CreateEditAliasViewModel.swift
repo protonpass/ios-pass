@@ -142,7 +142,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func itemContentType() -> ItemContentType { .alias }
 
     override func generateItemContent() -> ItemContentProtobuf {
-        ItemContentProtobuf(name: title, note: note, data: .alias)
+        ItemContentProtobuf(name: title, note: note, itemUuid: UUID().uuidString, data: .alias)
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
