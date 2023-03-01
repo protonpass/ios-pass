@@ -64,7 +64,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     deinit { print(deinitMessage) }
 
     @Published var title = ""
-    @Published var prefix = String.random(allowedCharacters: [.digit, .lowercase], length: 5)
+    @Published var prefix = ""
+    @Published var prefixManuallyEdited = false
     @Published var note = ""
 
     var suffix: String { suffixSelection?.selectedSuffixString ?? "" }
@@ -131,8 +132,19 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
         getAliasAndAliasOptions()
 
+        _title
+            .projectedValue
+            .dropFirst(3)
+            .sink { [unowned self] _ in
+                if !prefixManuallyEdited {
+                    prefix = PrefixUtils.generatePrefix(fromTitle: title)
+                }
+            }
+            .store(in: &cancellables)
+
         _prefix
             .projectedValue
+            .dropFirst(3) // TextField is edited 3 times when view is loaded
             .sink { [unowned self] _ in
                 self.validatePrefix()
             }
