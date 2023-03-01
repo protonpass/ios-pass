@@ -79,6 +79,7 @@ public extension CoordinatorProtocol {
                  userInterfaceStyle: UIUserInterfaceStyle? = nil,
                  animated: Bool = true,
                  dismissible: Bool = true) {
+        viewController.sheetPresentationController?.preferredCornerRadius = 16
         viewController.isModalInPresentation = !dismissible
         viewController.overrideUserInterfaceStyle = userInterfaceStyle ?? .unspecified
         rootViewController.topMostViewController.present(viewController, animated: animated)
