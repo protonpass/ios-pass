@@ -62,6 +62,10 @@ public extension UIColor {
         ColorProvider.NotificationWarning
     }
 
+    static var passBackground: UIColor {
+        .init(red: 25, green: 25, blue: 39)
+    }
+
     static var separatorNorm: UIColor {
         ColorProvider.SeparatorNorm
     }
@@ -146,6 +150,10 @@ public extension Color {
 
     static var notificationWarning: Color {
         .init(uiColor: .notificationWarning)
+    }
+
+    static var passBackground: Color {
+        .init(uiColor: .passBackground)
     }
 
     static var separatorNorm: Color {
