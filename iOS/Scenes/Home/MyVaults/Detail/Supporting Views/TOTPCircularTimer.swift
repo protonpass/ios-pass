@@ -39,8 +39,7 @@ struct TOTPCircularTimer: View {
             Circle()
                 .trim(from: 0, to: percentage)
                 .stroke(color, style: StrokeStyle(lineWidth: 3))
-                .rotation3DEffect(.degrees(180), axis: (x: 1, y: 0, z: 0))
-                .rotationEffect(.degrees(270))
+                .rotationEffect(.degrees(-90))
                 .transaction { transaction in
                     // Do not animate when closing the ring and start a new loop
                     if data.remaining == data.total {
