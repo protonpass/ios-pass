@@ -103,7 +103,7 @@ public extension ShareRepositoryProtocol {
             let key = try await self.passKeyManager.getShareKey(
                 shareId: share.shareID,
                 keyRotation: share.contentKeyRotation ?? -1)
-            let shareContent = try share.getShareContent(key: key)
+            let shareContent = try share.getShareContent(key: key.value)
             switch shareContent {
             case .vault(let vault):
                 vaults.append(vault)

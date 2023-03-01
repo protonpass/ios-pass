@@ -25,13 +25,13 @@ import ProtonCore_Login
 
 public protocol PassKeyManagerProtocol: AnyObject {
     /// Get share key of a given key rotation to decrypt share content
-    func getShareKey(shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey
+    func getShareKey(shareId: String, keyRotation: Int64) async throws -> CachableObject<DecryptedShareKey>
 
     /// Get share key with latest rotation
-    func getLatestShareKey(shareId: String) async throws -> DecryptedShareKey
+    func getLatestShareKey(shareId: String) async throws -> CachableObject<DecryptedShareKey>
 
     /// Get the latest key of an item to encrypt item content
-    func getLatestItemKey(shareId: String, itemId: String) async throws -> DecryptedItemKey
+    func getLatestItemKey(shareId: String, itemId: String) async throws -> CachableObject<DecryptedItemKey>
 }
 
 public struct DecryptedShareKey {
@@ -73,35 +73,36 @@ public final class PassKeyManager {
 }
 
 extension PassKeyManager: PassKeyManagerProtocol {
-    public func getShareKey(shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey {
+    public func getShareKey(shareId: String,
+                            keyRotation: Int64) async throws -> CachableObject<DecryptedShareKey> {
         let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(keyRotation)\""
         logger.trace("Getting share key \(keyDescription)")
-        if let decryptedShareKey =
+        if let decryptedKey =
             decryptedShareKeys.first(where: { $0.shareId == shareId && $0.keyRotation == keyRotation }) {
             logger.trace("Found cached share key \(keyDescription)")
-            return decryptedShareKey
+            return .init(isCached: true, value: decryptedKey)
         }
 
         logger.trace("No cached share key \(keyDescription). Getting from repository")
-        let encryptedShareKey = try await getEncryptedShareKey(shareId: shareId, keyRotation: keyRotation)
-        let decryptedKeyData = try await decrypt(encryptedShareKey, shareId: shareId, userData: userData)
+        let encryptedKey = try await getEncryptedShareKey(shareId: shareId, keyRotation: keyRotation)
+        let decryptedKeyData = try await decrypt(encryptedKey, shareId: shareId, userData: userData)
 
-        let decryptedShareKey = DecryptedShareKey(shareId: shareId,
-                                                  keyRotation: keyRotation,
-                                                  keyData: decryptedKeyData)
-        decryptedShareKeys.append(decryptedShareKey)
-        return decryptedShareKey
+        let decryptedKey = DecryptedShareKey(shareId: shareId,
+                                             keyRotation: keyRotation,
+                                             keyData: decryptedKeyData)
+        decryptedShareKeys.append(decryptedKey)
+        return .init(isCached: false, value: decryptedKey)
     }
 
-    public func getLatestShareKey(shareId: String) async throws -> DecryptedShareKey {
+    public func getLatestShareKey(shareId: String) async throws -> CachableObject<DecryptedShareKey> {
         let keyDescription = "shareId \"\(shareId)\""
         logger.trace("Getting latest share key \(keyDescription)")
         let latestShareKey = try await getEncryptedLatestShareKey(shareId: shareId)
-        if let decryptedShareKey =
+        if let decryptedKey =
             decryptedShareKeys.first(where: { $0.shareId == shareId &&
                 $0.keyRotation == latestShareKey.keyRotation }) {
             logger.trace("Found cached latest share key \(keyDescription)")
-            return decryptedShareKey
+            return .init(isCached: true, value: decryptedKey)
         }
 
         let decryptedKeyData = try await decrypt(latestShareKey, shareId: shareId, userData: userData)
@@ -109,21 +110,22 @@ extension PassKeyManager: PassKeyManagerProtocol {
                                              keyRotation: latestShareKey.keyRotation,
                                              keyData: decryptedKeyData)
         decryptedShareKeys.append(decryptedKey)
-        return decryptedKey
+        return .init(isCached: false, value: decryptedKey)
     }
 
-    public func getLatestItemKey(shareId: String, itemId: String) async throws -> DecryptedItemKey {
+    public func getLatestItemKey(shareId: String,
+                                 itemId: String) async throws -> CachableObject<DecryptedItemKey> {
         let keyDescription = "shareId \"\(shareId)\", itemId: \"\(itemId)\""
         logger.trace("Getting latest item key \(keyDescription)")
         let latestItemKey = try await itemKeyDatasource.getLatestKey(shareId: shareId, itemId: itemId)
 
-        if let decryptedItemKey =
+        if let decryptedKey =
             decryptedItemKeys.first(where: { $0.shareId == shareId &&
                 $0.itemId == itemId &&
                 $0.keyRotation == latestItemKey.keyRotation
             }) {
             logger.trace("Got cached latest item key \(keyDescription)")
-            return decryptedItemKey
+            return .init(isCached: true, value: decryptedKey)
         }
 
         logger.trace("Decrypting latest item key \(keyDescription)")
@@ -135,12 +137,9 @@ extension PassKeyManager: PassKeyManagerProtocol {
             throw PPClientError.crypto(.failedToBase64Decode)
         }
 
-        let itemKeyTagData = "itemkey".data(using: .utf8) ?? .init()
-        let itemKeySealedBox = try AES.GCM.SealedBox(combined: encryptedItemKeyData)
-
-        let decryptedItemKeyData = try AES.GCM.open(itemKeySealedBox,
-                                                    using: .init(data: vaultKey.keyData),
-                                                    authenticating: itemKeyTagData)
+        let decryptedItemKeyData = try AES.GCM.open(encryptedItemKeyData,
+                                                    key: vaultKey.value.keyData,
+                                                    associatedData: .itemKey)
 
         logger.trace("Decrypted latest item key \(keyDescription)")
         let decryptedItemKey = DecryptedItemKey(shareId: shareId,
@@ -148,7 +147,7 @@ extension PassKeyManager: PassKeyManagerProtocol {
                                                 keyRotation: latestItemKey.keyRotation,
                                                 keyData: decryptedItemKeyData)
         decryptedItemKeys.append(decryptedItemKey)
-        return decryptedItemKey
+        return .init(isCached: false, value: decryptedItemKey)
     }
 }
 
