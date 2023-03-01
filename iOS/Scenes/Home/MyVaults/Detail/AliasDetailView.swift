@@ -51,6 +51,7 @@ struct AliasDetailView: View {
                 }
                 .padding()
             }
+            .background(Color.passBackground)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()

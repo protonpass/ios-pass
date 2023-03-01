@@ -45,6 +45,7 @@ struct CreateEditAliasView: View {
                 switch viewModel.state {
                 case .loading:
                     ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .toolbar { closeButtonToolbar }
 
                 case .error(let error):
@@ -57,6 +58,7 @@ struct CreateEditAliasView: View {
                     content
                 }
             }
+            .background(Color.passBackground)
             .navigationBarTitleDisplayMode(.inline)
         }
         .navigationViewStyle(.stack)
