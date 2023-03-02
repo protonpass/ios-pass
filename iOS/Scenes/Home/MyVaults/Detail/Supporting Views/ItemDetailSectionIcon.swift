@@ -23,7 +23,7 @@ import SwiftUI
 struct ItemDetailSectionIcon: View {
     let icon: UIImage
     let color: UIColor
-    var width: CGFloat = 24
+    var width: CGFloat = 20
 
     var body: some View {
         Image(uiImage: icon)
@@ -31,6 +31,6 @@ struct ItemDetailSectionIcon: View {
             .renderingMode(.template)
             .scaledToFit()
             .foregroundColor(Color(uiColor: color.withAlphaComponent(0.8)))
-            .frame(width: 24)
+            .frame(width: width)
     }
 }

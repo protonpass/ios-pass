@@ -47,7 +47,7 @@ struct ItemDetailTitleView: View {
     }
 
     var body: some View {
-        HStack {
+        HStack(spacing: kItemDetailSectionPadding) {
             ZStack {
                 Color(uiColor: color.withAlphaComponent(0.24))
                     .clipShape(Circle())

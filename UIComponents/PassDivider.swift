@@ -1,6 +1,6 @@
 //
-// ItemContent+UIRelatedProperties.swift
-// Proton Pass - Created on 08/02/2023.
+// PassDivider.swift
+// Proton Pass - Created on 02/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,22 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import UIKit
+import SwiftUI
 
-extension ItemContent {
-    var tintColor: UIColor { contentData.type.tintColor }
-}
+/// Divider with custom color
+public struct PassDivider: View {
+    public init() {}
 
-extension ItemContentType {
-    var tintColor: UIColor {
-        switch self {
-        case .alias:
-            return .init(red: 106, green: 189, blue: 179)
-        case .login:
-            return .passBrand
-        case .note:
-            return .init(red: 255, green: 202, blue: 138)
-        }
+    public var body: some View {
+        Divider()
+            .foregroundColor(.white.opacity(0.04))
     }
 }

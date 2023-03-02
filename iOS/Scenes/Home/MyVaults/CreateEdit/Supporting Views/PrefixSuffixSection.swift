@@ -18,14 +18,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+enum PrefixUtils {
+    static func generatePrefix(fromTitle title: String) -> String {
+        var lowercasedTitle = title.lowercased()
+        let allowedCharacters = AliasPrefixValidator.allowedCharacters
+        lowercasedTitle.unicodeScalars.removeAll(where: { !allowedCharacters.contains($0) })
+        return String(lowercasedTitle.prefix(40))
+    }
+}
+
 struct PrefixSuffixSection: View {
     @Binding var prefix: String
+    @Binding var prefixManuallyEdited: Bool
     @FocusState var isFocusedOnPrefix: Bool
     let suffixSelection: SuffixSelection
+    let prefixError: AliasPrefixError?
     var onSubmit: ((() -> Void))?
 
     var body: some View {
@@ -44,20 +56,29 @@ struct PrefixSuffixSection: View {
                 VStack(alignment: .leading) {
                     Text("Prefix")
                         .sectionTitleText()
-                    TextField("Add a prefix", text: $prefix)
-                        .keyboardType(.emailAddress)
-                        .textInputAutocapitalization(.never)
-                        .focused($isFocusedOnPrefix)
-                        .submitLabel(.done)
-                        .onSubmit { onSubmit?() }
+                    TextField("Add a prefix", text: $prefix) { _ in
+                        prefixManuallyEdited = true
+                    }
+                    .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
+                    .focused($isFocusedOnPrefix)
+                    .submitLabel(.done)
+                    .onSubmit { onSubmit?() }
+                    if let prefixError {
+                        Text(prefixError.localizedDescription)
+                            .font(.callout)
+                            .foregroundColor(.notificationError)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .animation(.default, value: prefixError)
 
                 if !prefix.isEmpty {
                     Button(action: {
                         prefix = ""
                     }, label: {
-                        ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                        ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
                     })
                 }
             }

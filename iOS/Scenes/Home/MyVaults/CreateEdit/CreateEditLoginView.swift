@@ -45,10 +45,11 @@ struct CreateEditLoginView: View {
         NavigationView {
             ScrollViewReader { value in
                 ScrollView {
-                    LazyVStack(spacing: 20) {
+                    LazyVStack(spacing: kItemDetailSectionPadding / 2) {
                         CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
                                                    title: $viewModel.title,
                                                    onSubmit: { isFocusedOnUsername.toggle() })
+                        .padding(.bottom, kItemDetailSectionPadding / 2)
                         usernamePasswordTOTPSection
                         WebsiteSection(viewModel: viewModel)
                         NoteEditSection(note: $viewModel.note, isFocused: $isFocusedOnNote)
@@ -70,6 +71,7 @@ struct CreateEditLoginView: View {
                     }
                 }
             }
+            .background(Color.passBackground)
             .navigationBarTitleDisplayMode(.inline)
             .onFirstAppear {
                 if case .create = viewModel.mode {
@@ -140,33 +142,36 @@ struct CreateEditLoginView: View {
     }
 
     private var usernameTextFieldToolbar: some View {
-        HStack {
-            Button(action: viewModel.generateAlias) {
-                HStack {
-                    toolbarIcon(uiImage: IconProvider.alias)
-                    Text("Hide my email")
+        ScrollView(.horizontal) {
+            HStack {
+                Button(action: viewModel.generateAlias) {
+                    HStack {
+                        toolbarIcon(uiImage: IconProvider.alias)
+                        Text("Hide my email")
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
+
+                Divider()
+                    .padding(.horizontal)
+
+                Button(action: {
+                    viewModel.useRealEmailAddress()
+                    if viewModel.password.isEmpty {
+                        isFocusedOnPassword = true
+                    } else {
+                        isFocusedOnUsername = false
+                    }
+                }, label: {
+                    Text("Use \(viewModel.emailAddress)")
+                        .minimumScaleFactor(0.5)
+                })
+                .frame(maxWidth: .infinity, alignment: .center)
             }
-            .frame(maxWidth: .infinity, alignment: .center)
-
-            Divider()
-
-            Button(action: {
-                viewModel.useRealEmailAddress()
-                if viewModel.password.isEmpty {
-                    isFocusedOnPassword = true
-                } else {
-                    isFocusedOnUsername = false
-                }
-            }, label: {
-                Text("Use \(viewModel.emailAddress)")
-                    .minimumScaleFactor(0.5)
-            })
-            .frame(maxWidth: .infinity, alignment: .center)
-        }
-        .transaction { transaction in
-            // Disable animation when switching between toolbars
-            transaction.animation = nil
+            .transaction { transaction in
+                // Disable animation when switching between toolbars
+                transaction.animation = nil
+            }
         }
     }
 
@@ -237,7 +242,7 @@ struct CreateEditLoginView: View {
     }
 
     private var usernameRow: some View {
-        HStack {
+        HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
@@ -256,7 +261,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.username = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
                 })
             }
         }
@@ -306,7 +311,7 @@ struct CreateEditLoginView: View {
     }
 
     private var pendingAliasRow: some View {
-        HStack {
+        HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.alias, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
@@ -338,7 +343,7 @@ struct CreateEditLoginView: View {
     }
 
     private var passwordRow: some View {
-        HStack {
+        HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.key, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
@@ -368,7 +373,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.password = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
                 })
             }
         }
@@ -377,7 +382,7 @@ struct CreateEditLoginView: View {
     }
 
     private var totpRow: some View {
-        HStack {
+        HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.lock, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
@@ -394,7 +399,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.totpUri = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
                 })
             }
         }
@@ -449,7 +454,7 @@ private struct WebsiteSection: View {
     @ObservedObject var viewModel: CreateEditLoginViewModel
 
     var body: some View {
-        HStack {
+        HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.earth, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {

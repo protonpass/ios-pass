@@ -34,14 +34,16 @@ struct CreateAliasLiteView: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            ScrollView(showsIndicators: false) {
+            ScrollView {
                 VStack(spacing: 8) {
                     aliasAddressSection
                         .padding(.vertical, 30)
 
                     if isShowingAdvancedOptions {
                         PrefixSuffixSection(prefix: $viewModel.prefix,
-                                            suffixSelection: viewModel.suffixSelection)
+                                            prefixManuallyEdited: .constant(false),
+                                            suffixSelection: viewModel.suffixSelection,
+                                            prefixError: viewModel.prefixError)
                     }
 
                     MailboxSection(mailboxSelection: viewModel.mailboxSelection)
@@ -56,6 +58,7 @@ struct CreateAliasLiteView: View {
                 }
                 .animation(.default, value: viewModel.prefixError)
                 .animation(.default, value: isShowingAdvancedOptions)
+                .padding(.horizontal)
             }
 
             HStack(spacing: 16) {
@@ -76,7 +79,6 @@ struct CreateAliasLiteView: View {
             }
             .padding([.horizontal, .bottom])
         }
-        .padding(.horizontal)
         .tint(Color(uiColor: tintColor))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)

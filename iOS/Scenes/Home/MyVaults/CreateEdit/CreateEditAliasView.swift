@@ -45,6 +45,7 @@ struct CreateEditAliasView: View {
                 switch viewModel.state {
                 case .loading:
                     ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .toolbar { closeButtonToolbar }
 
                 case .error(let error):
@@ -57,6 +58,7 @@ struct CreateEditAliasView: View {
                     content
                 }
             }
+            .background(Color.passBackground)
             .navigationBarTitleDisplayMode(.inline)
         }
         .navigationViewStyle(.stack)
@@ -90,7 +92,10 @@ struct CreateEditAliasView: View {
                     } else {
                         aliasPreviewSection
                         if isShowingAdvancedOptions, let suffixSelection = viewModel.suffixSelection {
-                            PrefixSuffixSection(prefix: $viewModel.prefix, suffixSelection: suffixSelection)
+                            PrefixSuffixSection(prefix: $viewModel.prefix,
+                                                prefixManuallyEdited: $viewModel.prefixManuallyEdited,
+                                                suffixSelection: suffixSelection,
+                                                prefixError: viewModel.prefixError)
                         } else {
                             AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
                                 .padding(.vertical)
@@ -176,11 +181,9 @@ struct CreateEditAliasView: View {
                 Text("Alias preview")
                     .sectionTitleText()
 
-                if let prefixError = viewModel.prefixError {
-                    Text(prefixError.localizedDescription)
-                        .font(.callout)
-                        .foregroundColor(.red)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                if viewModel.prefixError != nil {
+                    Text(viewModel.prefix + viewModel.suffix)
+                        .foregroundColor(.notificationError)
                 } else {
                     Text(viewModel.prefix) +
                     Text(viewModel.suffix)
