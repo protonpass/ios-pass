@@ -147,8 +147,7 @@ struct LogInDetailView: View {
                     .sectionTitleText()
 
                 if isShowingPassword {
-                    Text(viewModel.password)
-                        .sectionContentText()
+                    Text(viewModel.coloredPasswordTexts)
                 } else {
                     Text(String(repeating: "•", count: 20))
                         .sectionContentText()

@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import SwiftOTP
+import SwiftUI
 import UIComponents
 import UIKit
 
@@ -44,6 +45,8 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 
     private var cancellables = Set<AnyCancellable>()
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
+
+    var coloredPasswordTexts: [Text] { PasswordUtils.generateColoredPasswords(password) }
 
     override init(itemContent: ItemContent,
                   itemRepository: ItemRepositoryProtocol,
