@@ -94,6 +94,7 @@ final class AppCoordinator {
         self.credentialManager = CredentialManager(logManager: logManager)
         self.preferences = .init()
         self.isUITest = false
+        clearDataInKeychainIfFirstRun()
         bindAppState()
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
@@ -101,6 +102,12 @@ final class AppCoordinator {
             self.wipeAllData(includingUnauthSession: true)
         }
         self.apiManager.delegate = self
+    }
+
+    private func clearDataInKeychainIfFirstRun() {
+        guard preferences.isFirstRun else { return }
+        preferences.isFirstRun = false
+        sessionData = nil
     }
 
     private func bindAppState() {
