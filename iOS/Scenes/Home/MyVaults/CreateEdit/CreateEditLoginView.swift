@@ -45,10 +45,11 @@ struct CreateEditLoginView: View {
         NavigationView {
             ScrollViewReader { value in
                 ScrollView {
-                    LazyVStack(spacing: 20) {
+                    LazyVStack(spacing: kItemDetailSectionPadding / 2) {
                         CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
                                                    title: $viewModel.title,
                                                    onSubmit: { isFocusedOnUsername.toggle() })
+                        .padding(.bottom, kItemDetailSectionPadding / 2)
                         usernamePasswordTOTPSection
                         WebsiteSection(viewModel: viewModel)
                         NoteEditSection(note: $viewModel.note, isFocused: $isFocusedOnNote)
@@ -241,7 +242,7 @@ struct CreateEditLoginView: View {
     }
 
     private var usernameRow: some View {
-        HStack {
+        HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
@@ -260,7 +261,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.username = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
                 })
             }
         }
@@ -310,7 +311,7 @@ struct CreateEditLoginView: View {
     }
 
     private var pendingAliasRow: some View {
-        HStack {
+        HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.alias, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
@@ -342,7 +343,7 @@ struct CreateEditLoginView: View {
     }
 
     private var passwordRow: some View {
-        HStack {
+        HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.key, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
@@ -372,7 +373,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.password = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
                 })
             }
         }
@@ -381,7 +382,7 @@ struct CreateEditLoginView: View {
     }
 
     private var totpRow: some View {
-        HStack {
+        HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.lock, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
@@ -398,7 +399,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.totpUri = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
                 })
             }
         }
@@ -453,7 +454,7 @@ private struct WebsiteSection: View {
     @ObservedObject var viewModel: CreateEditLoginViewModel
 
     var body: some View {
-        HStack {
+        HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.earth, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
