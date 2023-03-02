@@ -40,7 +40,7 @@ public extension View {
 
 public extension Text {
     func navigationTitleText() -> Text {
-        self.font(.callout).fontWeight(.medium)
+        self.font(.callout).fontWeight(.bold)
     }
 
     func sectionTitleText() -> Text {
