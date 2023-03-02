@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-private let kSharedUserDefaults = UserDefaults(suiteName: Constants.appGroup)
+let kSharedUserDefaults = UserDefaults(suiteName: Constants.appGroup)
 
 public final class Preferences: ObservableObject {
     public init() {}
