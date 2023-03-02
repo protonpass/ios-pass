@@ -515,8 +515,8 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
         showGeneratePasswordView(delegate: delegate, mode: .createLogin)
     }
 
-    func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String) {
-        clipboardManager?.copy(text: text, bannerMessage: bannerMessage)
+    func createEditLoginViewModelWantsToOpenSettings() {
+        UIApplication.shared.openAppSettings()
     }
 
     func createEditLoginViewModelCanNotCreateMoreAlias() {
