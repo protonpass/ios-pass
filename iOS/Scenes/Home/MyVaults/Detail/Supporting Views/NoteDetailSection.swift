@@ -37,21 +37,16 @@ struct NoteDetailSection: View {
                 Text("Note")
                     .sectionTitleText()
 
-                if itemContent.note.isEmpty {
-                    Text("Empty note")
-                        .placeholderText()
-                } else {
-                    Text(itemContent.note)
-                        .sectionContentText()
-                        .lineLimit(10)
-                        .textSelection(.enabled)
-                        .onTapGesture {
-                            // Pure heuristic
-                            if itemContent.note.count > 400 {
-                                isShowingFullNote.toggle()
-                            }
+                Text(itemContent.note)
+                    .sectionContentText()
+                    .lineLimit(10)
+                    .textSelection(.enabled)
+                    .onTapGesture {
+                        // Pure heuristic
+                        if itemContent.note.count > 400 {
+                            isShowingFullNote.toggle()
                         }
-                }
+                    }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
