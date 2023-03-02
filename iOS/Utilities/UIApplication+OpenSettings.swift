@@ -20,10 +20,18 @@
 
 import UIKit
 
+@available(iOSApplicationExtension, unavailable)
 extension UIApplication {
     func openPasswordSettings() {
-        if let url = URL(string: "App-prefs:PASSWORDS"), canOpenURL(url) {
-            open(url)
-        }
+        open(urlString: "App-prefs:PASSWORDS")
+    }
+
+    func openAppSettings() {
+        open(urlString: UIApplication.openSettingsURLString)
+    }
+
+    private func open(urlString: String) {
+        guard let url = URL(string: urlString), canOpenURL(url) else { return }
+        open(url)
     }
 }

@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import AVFoundation
 import Client
 import CodeScanner
 import Combine
@@ -31,6 +32,7 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
                                                       delegate: AliasCreationLiteInfoDelegate)
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
+    func createEditLoginViewModelWantsToOpenSettings()
     func createEditLoginViewModelCanNotCreateMoreAlias()
 }
 
@@ -46,6 +48,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
     @Published var invalidURLs = [String]()
     @Published var note = ""
+
+    @Published var isShowingNoCameraPermissionView = false
+    @Published var isShowingCodeScanner = false
 
     /// Proton account email address
     let emailAddress: String
@@ -218,6 +223,27 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         totpUri = UIPasteboard.general.string ?? ""
     }
 
+    func openCodeScanner() {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .denied, .restricted:
+            isShowingNoCameraPermissionView.toggle()
+        case .authorized:
+            isShowingCodeScanner.toggle()
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { [unowned self] success in
+                DispatchQueue.main.async {
+                    if success {
+                        self.isShowingCodeScanner.toggle()
+                    } else {
+                        self.isShowingNoCameraPermissionView.toggle()
+                    }
+                }
+            }
+        @unknown default:
+            logger.trace("Unknown case")
+        }
+    }
+
     func removeAlias() {
         aliasCreationLiteInfo = nil
         username = ""
@@ -231,6 +257,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case .failure(let error):
             delegate?.createEditItemViewModelDidFail(error)
         }
+    }
+
+    func openSettings() {
+        createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToOpenSettings()
     }
 
     func validateURLs() -> Bool {
