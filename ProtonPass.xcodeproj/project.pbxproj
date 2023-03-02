@@ -295,6 +295,7 @@
 		3565FD5B298D427800E2A0EE /* TOTPText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD56298D3E9400E2A0EE /* TOTPText.swift */; };
 		3565FD5D298D49B300E2A0EE /* NoteDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD5C298D49B300E2A0EE /* NoteDetailSection.swift */; };
 		3567E46229B08ABE00511D62 /* PassDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567E46129B08ABE00511D62 /* PassDivider.swift */; };
+		3567E46429B0C93C00511D62 /* PreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567E46329B0C93C00511D62 /* PreferencesTests.swift */; };
 		35690C112923846E00F60C20 /* ItemTypeFilterOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C102923846E00F60C20 /* ItemTypeFilterOption.swift */; };
 		35690C132923D5DA00F60C20 /* NotchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C122923D5DA00F60C20 /* NotchView.swift */; };
 		35690C152923EA8400F60C20 /* Color+ProtonColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C142923EA8400F60C20 /* Color+ProtonColors.swift */; };
@@ -897,6 +898,7 @@
 		3565FD56298D3E9400E2A0EE /* TOTPText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPText.swift; sourceTree = "<group>"; };
 		3565FD5C298D49B300E2A0EE /* NoteDetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailSection.swift; sourceTree = "<group>"; };
 		3567E46129B08ABE00511D62 /* PassDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassDivider.swift; sourceTree = "<group>"; };
+		3567E46329B0C93C00511D62 /* PreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTests.swift; sourceTree = "<group>"; };
 		35690C102923846E00F60C20 /* ItemTypeFilterOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilterOption.swift; sourceTree = "<group>"; };
 		35690C122923D5DA00F60C20 /* NotchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchView.swift; sourceTree = "<group>"; };
 		35690C142923EA8400F60C20 /* Color+ProtonColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProtonColors.swift"; sourceTree = "<group>"; };
@@ -2002,6 +2004,7 @@
 				3553C224296570B80087518A /* Logging */,
 				3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */,
 				354513E828E4D2650020A93A /* CodableBase64Tests.swift */,
+				3567E46329B0C93C00511D62 /* PreferencesTests.swift */,
 				3529432A28DAF6CA00E1F11B /* SearchUtilsTests.swift */,
 				35283E4B29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift */,
 				356A34BC2977C6ED00969BA2 /* URLExtensionTests.swift */,
@@ -3538,6 +3541,7 @@
 				3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */,
 				354513E928E4D2650020A93A /* CodableBase64Tests.swift in Sources */,
 				3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */,
+				3567E46429B0C93C00511D62 /* PreferencesTests.swift in Sources */,
 				3555800728F01A46009C3B88 /* URLUtils+MatcherTests.swift in Sources */,
 				3529432B28DAF6CA00E1F11B /* SearchUtilsTests.swift in Sources */,
 				3553C228296571440087518A /* LoggerTests.swift in Sources */,
