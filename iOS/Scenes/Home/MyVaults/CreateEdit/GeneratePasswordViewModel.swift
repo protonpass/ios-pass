@@ -43,6 +43,22 @@ enum GeneratePasswordViewMode {
     }
 }
 
+enum PasswordUtils {
+    static func generateColoredPasswords(_ password: String) -> [Text] {
+        var texts = [Text]()
+        password.forEach { char in
+            var color = Color.primary
+            if AllowedCharacter.digit.rawValue.contains(char) {
+                color = .passBrand
+            } else if AllowedCharacter.special.rawValue.contains(char) {
+                color = .notificationSuccess
+            }
+            texts.append(Text(String(char)).foregroundColor(color))
+        }
+        return texts
+    }
+}
+
 final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
@@ -64,16 +80,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
         $password
             .sink { [unowned self] newPassword in
-                texts.removeAll()
-                newPassword.forEach { char in
-                    var color = Color.primary
-                    if AllowedCharacter.digit.rawValue.contains(char) {
-                        color = .passBrand
-                    } else if AllowedCharacter.special.rawValue.contains(char) {
-                        color = .notificationSuccess
-                    }
-                    texts.append(Text(String(char)).foregroundColor(color))
-                }
+                texts = PasswordUtils.generateColoredPasswords(newPassword)
             }
             .store(in: &cancellables)
 
