@@ -67,9 +67,10 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
                 texts.removeAll()
                 newPassword.forEach { char in
                     var color = Color.primary
-                    if AllowedCharacter.digit.rawValue.contains(char) ||
-                        AllowedCharacter.special.rawValue.contains(char) {
-                        color = .brandNorm
+                    if AllowedCharacter.digit.rawValue.contains(char) {
+                        color = .passBrand
+                    } else if AllowedCharacter.special.rawValue.contains(char) {
+                        color = .notificationSuccess
                     }
                     texts.append(Text(String(char)).foregroundColor(color))
                 }
