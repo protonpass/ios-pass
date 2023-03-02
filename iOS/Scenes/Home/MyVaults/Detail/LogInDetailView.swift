@@ -42,9 +42,13 @@ struct LogInDetailView: View {
                         .padding(.bottom, 24)
 
                     usernamePassword2FaSection
+
                     urlsSection
                         .padding(.vertical, 8)
-                    NoteDetailSection(itemContent: viewModel.itemContent)
+
+                    if !viewModel.itemContent.note.isEmpty {
+                        NoteDetailSection(itemContent: viewModel.itemContent)
+                    }
 
                     ItemDetailMoreInfoSection(
                         itemContent: viewModel.itemContent,
@@ -242,7 +246,7 @@ struct LogInDetailView: View {
                                 viewModel.openUrl(url)
                             }, label: {
                                 Text(url)
-                                    .foregroundColor(.interactionNorm)
+                                    .foregroundColor(.passBrand)
                                     .multilineTextAlignment(.leading)
                                     .lineLimit(2)
                             })
