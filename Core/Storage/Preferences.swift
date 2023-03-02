@@ -58,6 +58,9 @@ public final class Preferences: ObservableObject {
     @AppStorage("askBeforeTrashing", store: kSharedUserDefaults)
     public var askBeforeTrashing = true
 
+    @AppStorage("isFirstRun", store: kSharedUserDefaults)
+    public var isFirstRun = true
+
     public func reset(isUITests: Bool = false) {
         quickTypeBar = true
         automaticallyCopyTotpCode = false

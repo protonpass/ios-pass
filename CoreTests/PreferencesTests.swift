@@ -173,4 +173,15 @@ final class PreferencesTests: XCTestCase {
         sut.reset()
         XCTAssertTrue(sut.askBeforeTrashing)
     }
+
+    func testIsFirstRunByDefault() {
+        XCTAssertTrue(sut.isFirstRun)
+    }
+
+    func testNoMoreFirstRunAfterResetting() {
+        sut.isFirstRun = false
+        XCTAssertFalse(sut.isFirstRun)
+        sut.reset()
+        XCTAssertFalse(sut.isFirstRun)
+    }
 }
