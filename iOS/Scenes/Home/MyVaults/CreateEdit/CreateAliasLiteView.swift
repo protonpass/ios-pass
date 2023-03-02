@@ -79,12 +79,13 @@ struct CreateAliasLiteView: View {
             }
             .padding([.horizontal, .bottom])
         }
+        .background(Color.passBackground)
         .tint(Color(uiColor: tintColor))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                VStack {
+                VStack(spacing: 18) {
                     NotchView()
                     Text("You are about to create:")
                         .navigationTitleText()
@@ -95,15 +96,15 @@ struct CreateAliasLiteView: View {
 
     @ViewBuilder
     private var aliasAddressSection: some View {
-        if let prefixError = viewModel.prefixError {
-            Text(prefixError.localizedDescription)
-                .foregroundColor(.red)
+        if viewModel.prefixError != nil {
+            Text(viewModel.prefix + viewModel.suffixSelection.selectedSuffixString)
                 .multilineTextAlignment(.center)
+                .foregroundColor(.notificationError)
         } else {
             Text(viewModel.prefix)
                 .font(.title2)
                 .fontWeight(.medium) +
-            Text(viewModel.suffixSelection.selectedSuffix?.suffix ?? "")
+            Text(viewModel.suffixSelection.selectedSuffixString)
                 .font(.title2)
                 .fontWeight(.medium)
                 .foregroundColor(Color(uiColor: tintColor))
