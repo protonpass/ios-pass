@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-private let kSharedUserDefaults = UserDefaults(suiteName: Constants.appGroup)
+let kSharedUserDefaults = UserDefaults(suiteName: Constants.appGroup)
 
 public final class Preferences: ObservableObject {
     public init() {}
@@ -57,6 +57,9 @@ public final class Preferences: ObservableObject {
 
     @AppStorage("askBeforeTrashing", store: kSharedUserDefaults)
     public var askBeforeTrashing = true
+
+    @AppStorage("isFirstRun", store: kSharedUserDefaults)
+    public var isFirstRun = true
 
     public func reset(isUITests: Bool = false) {
         quickTypeBar = true

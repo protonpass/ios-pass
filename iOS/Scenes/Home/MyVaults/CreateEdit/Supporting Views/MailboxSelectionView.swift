@@ -44,30 +44,34 @@ struct MailboxSelectionView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
-                    HStack {
-                        Text(mailbox.email)
-                            .foregroundColor(isSelected(mailbox) ? mode.tintColor : .textNorm)
-                        Spacer()
+            ScrollView {
+                LazyVStack {
+                    ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
+                        HStack {
+                            Text(mailbox.email)
+                                .foregroundColor(isSelected(mailbox) ? mode.tintColor : .textNorm)
+                            Spacer()
 
-                        if isSelected(mailbox) {
-                            Image(uiImage: IconProvider.checkmark)
-                                .foregroundColor(mode.tintColor)
+                            if isSelected(mailbox) {
+                                Image(uiImage: IconProvider.checkmark)
+                                    .foregroundColor(mode.tintColor)
+                            }
                         }
-                    }
-                    .contentShape(Rectangle())
-                    .listRowSeparator(.hidden)
-                    .onTapGesture {
-                        mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
+                        .contentShape(Rectangle())
+                        .background(Color.clear)
+                        .padding(.horizontal)
+                        .frame(height: 32)
+                        .onTapGesture {
+                            mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
+                        }
                     }
                 }
             }
-            .listStyle(.plain)
             .navigationBarTitleDisplayMode(.inline)
+            .background(Color.passBackground)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    VStack {
+                    VStack(spacing: 18) {
                         NotchView()
                         Text("Forward to")
                             .navigationTitleText()
