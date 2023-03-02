@@ -76,6 +76,7 @@ struct CreateEditNoteView: View {
             }
             .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
             .tint(Color(uiColor: viewModel.itemContentType().tintColor))
+            .background(Color.passBackground)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 CreateEditItemToolbar(

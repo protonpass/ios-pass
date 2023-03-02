@@ -41,7 +41,9 @@ struct AliasDetailView: View {
                     aliasMailboxesSection
                         .padding(.bottom, 8)
 
-                    NoteDetailSection(itemContent: viewModel.itemContent)
+                    if !viewModel.itemContent.note.isEmpty {
+                        NoteDetailSection(itemContent: viewModel.itemContent)
+                    }
 
                     ItemDetailMoreInfoSection(
                         itemContent: viewModel.itemContent,
@@ -51,6 +53,7 @@ struct AliasDetailView: View {
                 }
                 .padding()
             }
+            .background(Color.passBackground)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()

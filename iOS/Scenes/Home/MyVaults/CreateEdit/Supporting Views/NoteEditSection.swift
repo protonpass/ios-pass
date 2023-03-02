@@ -27,7 +27,7 @@ struct NoteEditSection: View {
     let isFocused: FocusState<Bool>.Binding
 
     var body: some View {
-        HStack {
+        HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.note, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
@@ -45,7 +45,7 @@ struct NoteEditSection: View {
                 Button(action: {
                     note = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
                 })
             }
         }

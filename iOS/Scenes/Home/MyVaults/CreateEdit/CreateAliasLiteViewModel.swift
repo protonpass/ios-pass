@@ -71,7 +71,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
 
         _prefix
             .projectedValue
-            .dropFirst(3)
+            .dropFirst(3) // TextField is edited 3 times when view is loaded
             .sink { [unowned self] _ in
                 self.validatePrefix()
             }

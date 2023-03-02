@@ -33,15 +33,13 @@ struct GeneratePasswordView: View {
         VStack {
             Text(viewModel.texts)
                 .font(.title3)
-                .fontWeight(.bold)
                 .minimumScaleFactor(0.5)
                 .frame(maxHeight: .infinity, alignment: .center)
-                .padding(.horizontal)
                 .transaction { transaction in
                     transaction.animation = nil
                 }
 
-            Divider()
+            PassDivider()
 
             HStack {
                 Text("\(Int(viewModel.length)) characters")
@@ -52,19 +50,19 @@ struct GeneratePasswordView: View {
                 Slider(value: $viewModel.length,
                        in: 4...64,
                        step: 1)
-                .accentColor(.interactionNorm)
+                .accentColor(.passBrand)
             }
             .padding(.horizontal)
 
-            Divider()
+            PassDivider()
 
             Toggle(isOn: $viewModel.hasSpecialCharacters) {
                 Text("Special characters")
             }
-            .toggleStyle(SwitchToggleStyle.proton)
+            .toggleStyle(SwitchToggleStyle.pass)
             .padding(.horizontal, 16)
 
-            Divider()
+            PassDivider()
 
             HStack {
                 CapsuleTextButton(title: "Cancel",
@@ -77,7 +75,7 @@ struct GeneratePasswordView: View {
                 CapsuleTextButton(
                     title: viewModel.mode.confirmTitle,
                     titleColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light)),
-                    backgroundColor: .brandNorm,
+                    backgroundColor: .passBrand,
                     disabled: false,
                     height: 44,
                     action: {
@@ -90,15 +88,31 @@ struct GeneratePasswordView: View {
             .padding(.vertical)
         }
         .padding(.horizontal)
+        .background(Color.passBackground)
         .animation(.default, value: viewModel.password)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                // Hidden gimmick button to make the navigation title centered properly
+                CircleButton(icon: IconProvider.arrowsRotate,
+                             color: .passBrand,
+                             action: viewModel.regenerate)
+                .opacity(0)
+            }
+
             ToolbarItem(placement: .principal) {
-                VStack {
+                VStack(alignment: .center, spacing: 18) {
                     NotchView()
                     Text("Generate password")
                         .navigationTitleText()
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
+            }
+
+            ToolbarItem(placement: .navigationBarTrailing) {
+                CircleButton(icon: IconProvider.arrowsRotate,
+                             color: .passBrand,
+                             action: viewModel.regenerate)
             }
         }
     }

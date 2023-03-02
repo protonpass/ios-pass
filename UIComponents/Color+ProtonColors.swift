@@ -21,6 +21,7 @@
 import ProtonCore_UIFoundations
 import SwiftUI
 
+// MARK: - UIColor for core colors
 public extension UIColor {
     static var backgroundSecondary: UIColor {
         ColorProvider.BackgroundSecondary
@@ -107,6 +108,7 @@ public extension UIColor {
     }
 }
 
+// MARK: - Color for core colors
 public extension Color {
     static var backgroundSecondary: Color {
         .init(uiColor: .backgroundSecondary)
@@ -190,5 +192,27 @@ public extension Color {
 
     static var textWeak: Color {
         .init(uiColor: .textWeak)
+    }
+}
+
+// MARK: - UIColor for Pass specific colors
+public extension UIColor {
+    static var passBackground: UIColor {
+        .init(red: 25, green: 25, blue: 39)
+    }
+
+    static var passBrand: UIColor {
+        .init(red: 167, green: 121, blue: 255)
+    }
+}
+
+// MARK: - Color for Pass specific colors
+public extension Color {
+    static var passBackground: Color {
+        .init(uiColor: .passBackground)
+    }
+
+    static var passBrand: Color {
+        .init(uiColor: .passBrand)
     }
 }

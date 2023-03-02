@@ -62,6 +62,7 @@ struct NoteDetailView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.passBackground)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
