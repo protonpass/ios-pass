@@ -34,7 +34,6 @@ struct CreateEditLoginView: View {
     @FocusState private var isFocusedOnNote: Bool
     @State private var isShowingDiscardAlert = false
     @State private var isShowingDeleteAliasAlert = false
-    @State private var isShowingScanner = false
     @Namespace private var noteID
 
     init(viewModel: CreateEditLoginViewModel) {
@@ -187,14 +186,12 @@ struct CreateEditLoginView: View {
 
             Divider()
 
-            Button(action: {
-                isShowingScanner.toggle()
-            }, label: {
+            Button(action: viewModel.openCodeScanner) {
                 HStack {
                     toolbarIcon(uiImage: IconProvider.camera)
                     Text("Open camera")
                 }
-            })
+            }
             .frame(maxWidth: .infinity, alignment: .center)
         }
         .transaction { transaction in
@@ -404,9 +401,11 @@ struct CreateEditLoginView: View {
             }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
-        .sheet(isPresented: $isShowingScanner) {
+        .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
+            NoCameraPermissionView(onOpenSettings: viewModel.openSettings)
+        }
+        .sheet(isPresented: $viewModel.isShowingCodeScanner) {
             WrappedCodeScannerView(tintColor: viewModel.itemContentType().tintColor) { result in
-                isShowingScanner = false
                 viewModel.handleScanResult(result)
             }
         }
@@ -427,7 +426,7 @@ private struct WrappedCodeScannerView: View {
                 // swiftlint:disable:next line_length
                 simulatedData: "otpauth://totp/SimpleLogin:john.doe%40example.com?secret=CKTQQJVWT5IXTGDB&amp;issuer=SimpleLogin",
                 isGalleryPresented: $isGaleryPresented,
-                completion: completion)
+                completion: { result in dismiss(); completion(result) })
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

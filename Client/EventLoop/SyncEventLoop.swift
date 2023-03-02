@@ -118,7 +118,6 @@ public final class SyncEventLoop: DeinitPrintable {
 public extension SyncEventLoop {
     /// Start looping
     func start() {
-        /*
         delegate?.syncEventLoopDidStartLooping()
         timer = .scheduledTimer(withTimeInterval: 1,
                                 repeats: true) { [weak self] _ in
@@ -131,7 +130,6 @@ public extension SyncEventLoop {
             }
         }
         timer?.fire()
-         */
     }
 
     /// Force a sync loop e.g when the app goes foreground, pull to refresh is triggered

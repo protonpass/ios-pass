@@ -594,8 +594,8 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
         showGeneratePasswordView(delegate: delegate)
     }
 
-    func createEditLoginViewModelWantsToCopy(text: String, bannerMessage: String) {
-        clipboardManager.copy(text: text, bannerMessage: bannerMessage)
+    func createEditLoginViewModelWantsToOpenSettings() {
+        // Not applicable
     }
 
     func createEditLoginViewModelCanNotCreateMoreAlias() {
