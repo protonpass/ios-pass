@@ -79,7 +79,7 @@ struct CreateAliasLiteView: View {
             }
             .padding([.horizontal, .bottom])
         }
-        .background(Color.passBackground)
+        .background(Color.passSecondaryBackground)
         .tint(Color(uiColor: tintColor))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)

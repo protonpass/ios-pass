@@ -43,8 +43,10 @@ struct LogInDetailView: View {
 
                     usernamePassword2FaSection
 
-                    urlsSection
-                        .padding(.vertical, 8)
+                    if !viewModel.urls.isEmpty {
+                        urlsSection
+                            .padding(.vertical, 8)
+                    }
 
                     if !viewModel.itemContent.note.isEmpty {
                         NoteDetailSection(itemContent: viewModel.itemContent)
@@ -235,33 +237,28 @@ struct LogInDetailView: View {
                 Text("Website")
                     .sectionTitleText()
 
-                if viewModel.urls.isEmpty {
-                    Text("No websites")
-                        .placeholderText()
-                } else {
-                    VStack(alignment: .leading, spacing: 12) {
-                        ForEach(viewModel.urls, id: \.self) { url in
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(viewModel.urls, id: \.self) { url in
+                        Button(action: {
+                            viewModel.openUrl(url)
+                        }, label: {
+                            Text(url)
+                                .foregroundColor(.passBrand)
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(2)
+                        })
+                        .contextMenu {
                             Button(action: {
                                 viewModel.openUrl(url)
                             }, label: {
-                                Text(url)
-                                    .foregroundColor(.passBrand)
-                                    .multilineTextAlignment(.leading)
-                                    .lineLimit(2)
+                                Text("Open")
                             })
-                            .contextMenu {
-                                Button(action: {
-                                    viewModel.openUrl(url)
-                                }, label: {
-                                    Text("Open")
-                                })
 
-                                Button(action: {
-                                    viewModel.copyToClipboard(text: url, message: "Website copied")
-                                }, label: {
-                                    Text("Copy")
-                                })
-                            }
+                            Button(action: {
+                                viewModel.copyToClipboard(text: url, message: "Website copied")
+                            }, label: {
+                                Text("Copy")
+                            })
                         }
                     }
                 }
