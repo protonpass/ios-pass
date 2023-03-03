@@ -45,10 +45,10 @@ struct ItemDetailToolbar: ToolbarContent {
                                        backgroundColor: itemContent.tintColor,
                                        disabled: false,
                                        action: onEdit)
-
-                    CapsuleIconButton(icon: IconProvider.threeDotsVertical,
-                                      color: itemContent.tintColor,
-                                      action: onRevealMoreOptions)
+//
+//                    CapsuleIconButton(icon: IconProvider.threeDotsVertical,
+//                                      color: itemContent.tintColor,
+//                                      action: onRevealMoreOptions)
                 }
 
             case .trashed:

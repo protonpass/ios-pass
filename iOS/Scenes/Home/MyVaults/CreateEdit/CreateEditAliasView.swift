@@ -158,8 +158,7 @@ struct CreateEditAliasView: View {
 
     private var aliasReadonlySection: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.alias,
-                                  color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.alias, color: tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Alias address")

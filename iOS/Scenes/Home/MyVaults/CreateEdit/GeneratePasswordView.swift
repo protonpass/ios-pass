@@ -88,7 +88,7 @@ struct GeneratePasswordView: View {
             .padding(.vertical)
         }
         .padding(.horizontal)
-        .background(Color.passBackground)
+        .background(Color.passSecondaryBackground)
         .animation(.default, value: viewModel.password)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

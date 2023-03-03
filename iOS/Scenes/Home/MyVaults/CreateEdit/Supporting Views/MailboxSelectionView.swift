@@ -44,31 +44,40 @@ struct MailboxSelectionView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                LazyVStack {
-                    ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
-                        HStack {
-                            Text(mailbox.email)
-                                .foregroundColor(isSelected(mailbox) ? mode.tintColor : .textNorm)
-                            Spacer()
+            VStack {
+                ScrollView {
+                    LazyVStack {
+                        ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
+                            HStack {
+                                Text(mailbox.email)
+                                    .foregroundColor(isSelected(mailbox) ? mode.tintColor : .textNorm)
+                                Spacer()
 
-                            if isSelected(mailbox) {
-                                Image(uiImage: IconProvider.checkmark)
-                                    .foregroundColor(mode.tintColor)
+                                if isSelected(mailbox) {
+                                    Image(uiImage: IconProvider.checkmark)
+                                        .foregroundColor(mode.tintColor)
+                                }
                             }
-                        }
-                        .contentShape(Rectangle())
-                        .background(Color.clear)
-                        .padding(.horizontal)
-                        .frame(height: 32)
-                        .onTapGesture {
-                            mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
+                            .contentShape(Rectangle())
+                            .background(Color.clear)
+                            .padding(.horizontal)
+                            .frame(height: 32)
+                            .onTapGesture {
+                                mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
+                            }
                         }
                     }
                 }
+
+                Spacer()
+
+                Button(action: dismiss.callAsFunction) {
+                    Text("Close")
+                        .foregroundColor(.secondary)
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .background(Color.passBackground)
+            .background(Color.passSecondaryBackground)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     VStack(spacing: 18) {
