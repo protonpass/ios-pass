@@ -246,7 +246,6 @@ struct CreateEditLoginView: View {
                 Text("Username")
                     .sectionTitleText()
                 TextField("Add username", text: $viewModel.username)
-                    .textContentType(.username)
                     .textInputAutocapitalization(.never)
                     .focused($isFocusedOnUsername)
                     .submitLabel(.next)

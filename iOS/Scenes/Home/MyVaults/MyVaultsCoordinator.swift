@@ -131,7 +131,7 @@ final class MyVaultsCoordinator: Coordinator {
         let createItemView = CreateItemView(viewModel: createItemViewModel)
         let createItemViewController = UIHostingController(rootView: createItemView)
         createItemViewController.sheetPresentationController?.detents = [.medium(), .large()]
-        present(createItemViewController)
+        present(createItemViewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     private func showVaultListView() {
@@ -143,7 +143,7 @@ final class MyVaultsCoordinator: Coordinator {
         let view = VaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        present(viewController)
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     private func showCreateVaultView() {
@@ -153,7 +153,9 @@ final class MyVaultsCoordinator: Coordinator {
                              logManager: logManager)
         createVaultViewModel.delegate = self
         let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
-        present(createVaultView, dismissible: false)
+        present(createVaultView,
+                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                dismissible: false)
     }
 
     private func showCreateEditLoginView(mode: ItemMode) {
@@ -167,7 +169,9 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
-        present(view, dismissible: false)
+        present(view,
+                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -180,7 +184,9 @@ final class MyVaultsCoordinator: Coordinator {
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
-        present(view, dismissible: false)
+        present(view,
+                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -196,7 +202,7 @@ final class MyVaultsCoordinator: Coordinator {
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.sheetPresentationController?.detents = [.medium()]
         viewModel.onDismiss = { navigationController.dismiss(animated: true) }
-        present(navigationController)
+        present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     private func showMailboxSelectionView(_ mailboxSelection: MailboxSelection,
@@ -204,7 +210,8 @@ final class MyVaultsCoordinator: Coordinator {
         let view = MailboxSelectionView(mailboxSelection: mailboxSelection, mode: mode)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        present(viewController, animated: true, dismissible: true)
+        present(viewController,
+                userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     private func showCreateEditNoteView(mode: ItemMode) {
@@ -214,7 +221,7 @@ final class MyVaultsCoordinator: Coordinator {
                                                 logManager: logManager)
         viewModel.delegate = self
         let view = CreateEditNoteView(viewModel: viewModel)
-        present(view, dismissible: false)
+        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -234,7 +241,7 @@ final class MyVaultsCoordinator: Coordinator {
             navigationController.sheetPresentationController?.detents = [.medium()]
         }
         viewModel.onDismiss = { navigationController.dismiss(animated: true) }
-        present(navigationController)
+        present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     private func showSearchView() {
@@ -253,7 +260,9 @@ final class MyVaultsCoordinator: Coordinator {
             navigationController.modalPresentationStyle = .fullScreen
             navigationController.modalTransitionStyle = .coverVertical
         }
-        present(navigationController, dismissible: UIDevice.current.isIpad)
+        present(navigationController,
+                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                dismissible: UIDevice.current.isIpad)
     }
 
     private func showItemDetailView(_ itemContent: ItemContent) {
@@ -291,7 +300,8 @@ final class MyVaultsCoordinator: Coordinator {
         if UIDevice.current.isIpad {
             push(itemDetailView)
         } else {
-            present(NavigationView { AnyView(itemDetailView) }.navigationViewStyle(.stack))
+            present(NavigationView { AnyView(itemDetailView) }.navigationViewStyle(.stack),
+                    userInterfaceStyle: preferences.theme.userInterfaceStyle)
         }
     }
 
@@ -426,7 +436,9 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         if !UIDevice.current.isIpad {
             viewController.modalPresentationStyle = .fullScreen
         }
-        present(viewController, dismissible: false)
+        present(viewController,
+                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                dismissible: false)
     }
 
     func vaultContentViewModelWantsToShowVaultList() {
@@ -549,7 +561,7 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
-        showFullScreen(text: text, userInterfaceStyle: rootViewController.parent?.overrideUserInterfaceStyle)
+        showFullScreen(text: text, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func itemDetailViewModelWantsToOpen(urlString: String) {

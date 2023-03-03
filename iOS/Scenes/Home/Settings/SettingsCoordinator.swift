@@ -31,6 +31,7 @@ protocol SettingsCoordinatorDelegate: AnyObject {
 
 final class SettingsCoordinator: Coordinator {
     private let settingsViewModel: SettingsViewModel
+    private let preferences: Preferences
     private let logManager: LogManager
 
     weak var delegate: SettingsCoordinatorDelegate?
@@ -47,6 +48,7 @@ final class SettingsCoordinator: Coordinator {
                                        preferences: preferences,
                                        logManager: logManager)
         self.logManager = logManager
+        self.preferences = preferences
         super.init()
         self.settingsViewModel.delegate = self
         start()
@@ -61,7 +63,7 @@ final class SettingsCoordinator: Coordinator {
         let viewModel = DeviceLogsViewModel(module: module)
         viewModel.delegate = self
         let view = DeviceLogsView(viewModel: viewModel)
-        present(view)
+        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     private func clearLogs() {
@@ -153,7 +155,7 @@ extension SettingsCoordinator: DeviceLogsViewModelDelegate {
     func deviceLogsViewModelWantsToShareLogs(_ url: URL) {
         hideLoadingHud()
         let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        present(activityViewController)
+        present(activityViewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func deviceLogsViewModelDidFail(error: Error) {
