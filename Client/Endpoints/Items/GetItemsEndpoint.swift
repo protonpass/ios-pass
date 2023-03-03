@@ -45,7 +45,7 @@ public struct GetItemsEndpoint: Endpoint {
 
         var queries: [String: Any] = ["PageSize": pageSize]
         if let sinceToken {
-            queries["SinceToken"] = sinceToken
+            queries["Since"] = sinceToken
         }
         self.queries = queries
     }
