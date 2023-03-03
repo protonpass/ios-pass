@@ -77,7 +77,7 @@ extension ItemEntity {
                                         aliasEmail: aliasEmail,
                                         createTime: createTime,
                                         modifyTime: modifyTime,
-                                        lastUseTime: lastUseTime,
+                                        lastUseTime: lastUseTime == 0 ? nil : lastUseTime,
                                         revisionTime: revisionTime)
 
         return .init(shareId: shareID,
