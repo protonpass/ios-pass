@@ -40,11 +40,11 @@ public protocol CoordinatorProtocol: AnyObject {
     func push<V: View>(_ view: V, animated: Bool, hidesBackButton: Bool)
     func push(_ viewController: UIViewController, animated: Bool, hidesBackButton: Bool)
     func present<V: View>(_ view: V,
-                          userInterfaceStyle: UIUserInterfaceStyle?,
+                          userInterfaceStyle: UIUserInterfaceStyle,
                           animated: Bool,
                           dismissible: Bool)
     func present(_ viewController: UIViewController,
-                 userInterfaceStyle: UIUserInterfaceStyle?,
+                 userInterfaceStyle: UIUserInterfaceStyle,
                  animated: Bool,
                  dismissible: Bool)
     func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
@@ -66,7 +66,7 @@ public extension CoordinatorProtocol {
     }
 
     func present<V: View>(_ view: V,
-                          userInterfaceStyle: UIUserInterfaceStyle? = nil,
+                          userInterfaceStyle: UIUserInterfaceStyle,
                           animated: Bool = true,
                           dismissible: Bool = true) {
         present(UIHostingController(rootView: view),
@@ -76,12 +76,12 @@ public extension CoordinatorProtocol {
     }
 
     func present(_ viewController: UIViewController,
-                 userInterfaceStyle: UIUserInterfaceStyle? = nil,
+                 userInterfaceStyle: UIUserInterfaceStyle,
                  animated: Bool = true,
                  dismissible: Bool = true) {
         viewController.sheetPresentationController?.preferredCornerRadius = 16
         viewController.isModalInPresentation = !dismissible
-        viewController.overrideUserInterfaceStyle = userInterfaceStyle ?? .unspecified
+        viewController.overrideUserInterfaceStyle = userInterfaceStyle
         rootViewController.topMostViewController.present(viewController, animated: animated)
     }
 

@@ -36,6 +36,7 @@ final class TrashCoordinator: Coordinator {
     private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
     private let trashViewModel: TrashViewModel
+    private let preferences: Preferences
     private let logManager: LogManager
 
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
@@ -50,11 +51,13 @@ final class TrashCoordinator: Coordinator {
          aliasRepository: AliasRepositoryProtocol,
          vaultSelection: VaultSelection,
          syncEventLoop: SyncEventLoop,
+         preferences: Preferences,
          logManager: LogManager) {
         self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.aliasRepository = aliasRepository
+        self.preferences = preferences
         self.logManager = logManager
         self.trashViewModel = TrashViewModel(symmetricKey: symmetricKey,
                                              shareRepository: shareRepository,
@@ -201,8 +204,7 @@ extension TrashCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
-        showFullScreen(text: text,
-                       userInterfaceStyle: rootViewController.parent?.overrideUserInterfaceStyle)
+        showFullScreen(text: text, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func itemDetailViewModelWantsToOpen(urlString: String) {
