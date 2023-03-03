@@ -22,7 +22,7 @@ import Core
 import SwiftUI
 
 extension Coordinator {
-    func showFullScreen(text: String, userInterfaceStyle: UIUserInterfaceStyle?) {
+    func showFullScreen(text: String, userInterfaceStyle: UIUserInterfaceStyle) {
         let view = FullScreenView(text: text)
         let viewController = UIHostingController(rootView: view)
         if UIDevice.current.isIpad {
