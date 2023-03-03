@@ -204,6 +204,10 @@ public extension UIColor {
     static var passBrand: UIColor {
         .init(red: 167, green: 121, blue: 255)
     }
+
+    static var passSecondaryBackground: UIColor {
+        .init(red: 28, green: 28, blue: 48)
+    }
 }
 
 // MARK: - Color for Pass specific colors
@@ -214,5 +218,9 @@ public extension Color {
 
     static var passBrand: Color {
         .init(uiColor: .passBrand)
+    }
+
+    static var passSecondaryBackground: Color {
+        .init(uiColor: .passBackground)
     }
 }

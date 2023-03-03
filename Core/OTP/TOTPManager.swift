@@ -141,7 +141,7 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
                                 timeInterval: Int(otpComponents.period),
                                 algorithm: otpComponents.algorithm.otpAlgorithm)
                 }
-            } else if let secretData = base32DecodeToData(uri) {
+            } else if let secretData = base32DecodeToData(uri.replacingOccurrences(of: " ", with: "")) {
                 // Treat the whole string as secret
                 totp = TOTP(secret: secretData,
                             digits: 6,

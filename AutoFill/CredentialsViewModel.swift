@@ -262,9 +262,12 @@ extension CredentialsViewModel {
     #warning("Ask users to choose a vault")
     // https://jira.protontech.ch/browse/IDTEAM-595
     func showCreateLoginView() {
-        guard case let .loaded(fetchResult, _) = state,
-        let shareId = fetchResult.searchableItems.first?.shareId else { return }
-        delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: shareId, url: urls.first)
+        guard case .loaded = state else { return }
+        Task { @MainActor in
+            let vaults = try await shareRepository.getVaults()
+            guard let firstVault = vaults.first else { return }
+            delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: firstVault.shareId, url: urls.first)
+        }
     }
 }
 
