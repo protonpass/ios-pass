@@ -350,6 +350,11 @@ private extension ItemRepositoryProtocol {
             let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision, shareId: shareId)
             encryptedItems.append(encrypedItem)
         }
+
+        logger.trace("Removing all local old items if any for share \(shareId)")
+        try await localItemDatasoure.removeAllItems(shareId: shareId)
+        logger.trace("Removed all local old items for share \(shareId)")
+
         logger.trace("Saving \(itemRevisions.count) remote item revisions to local database")
         try await localItemDatasoure.upsertItems(encryptedItems)
         logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
