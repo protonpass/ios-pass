@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import MBProgressHUD
 import SwiftUI
 import UIComponents
 import UIKit
@@ -67,6 +68,31 @@ private extension HomepageCoordinator {
 
         start(with: homepageView, secondaryView: placeholderView)
     }
+
+    func showLoadingHud(to view: UIView? = nil) {
+        MBProgressHUD.showAdded(to: view ?? topMostViewController.view, animated: true)
+    }
+
+    func hideLoadingHud(for view: UIView? = nil) {
+        MBProgressHUD.hide(for: view ?? topMostViewController.view, animated: true)
+    }
+
+    func presentCreateItemView() {
+        let view = ItemTypeListView { itemType in
+            print(itemType.description)
+        }
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16.0, *) {
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                // 70 per row + nav bar height
+                CGFloat(ItemType.allCases.count) * 70 + 100
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium()]
+        }
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
 }
 
 // MARK: - Public APIs
@@ -88,6 +114,6 @@ extension HomepageCoordinator {
 // MARK: - HomepageViewModelDelegate
 extension HomepageCoordinator: HomepageViewModelDelegate {
     func homepageViewModelWantsToCreateNewItem() {
-        print(#function)
+        presentCreateItemView()
     }
 }
