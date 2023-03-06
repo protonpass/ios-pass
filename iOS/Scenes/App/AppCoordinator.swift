@@ -57,7 +57,7 @@ final class AppCoordinator {
     @KeychainStorage(key: .symmetricKey)
     private var symmetricKey: String?
 
-    private var homeCoordinator: HomeCoordinator?
+    private var homepageCoordinator: HomepageCoordinator?
     private var welcomeCoordinator: WelcomeCoordinator?
 
     private var rootViewController: UIViewController? { window.rootViewController }
@@ -178,7 +178,7 @@ final class AppCoordinator {
         let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.apiService)
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
-        self.homeCoordinator = nil
+        self.homepageCoordinator = nil
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [unowned self] in
             switch reason {
             case .expiredRefreshToken:
@@ -194,19 +194,14 @@ final class AppCoordinator {
     private func showHomeScene(sessionData: SessionData, manualLogIn: Bool) {
         do {
             let symmetricKey = try getOrCreateSymmetricKey()
-            let homeCoordinator = HomeCoordinator(sessionData: sessionData,
-                                                  apiService: apiManager.apiService,
-                                                  symmetricKey: symmetricKey,
-                                                  container: container,
-                                                  credentialManager: credentialManager,
-                                                  manualLogIn: manualLogIn,
-                                                  preferences: preferences,
-                                                  logManager: logManager)
-            homeCoordinator.delegate = self
-            self.homeCoordinator = homeCoordinator
+            let homepageCoordinator =
+            HomepageCoordinator(credentialManager: credentialManager,
+                                logManager: logManager,
+                                preferences: preferences)
+            self.homepageCoordinator = homepageCoordinator
             self.welcomeCoordinator = nil
-            animateUpdateRootViewController(homeCoordinator.rootViewController) {
-                homeCoordinator.onboardIfNecessary(force: false)
+            animateUpdateRootViewController(homepageCoordinator.rootViewController) {
+                homepageCoordinator.onboardIfNecessary()
             }
             if !manualLogIn {
                 self.requestBiometricAuthenticationIfNecessary()
@@ -293,17 +288,6 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
         alert.addAction(.init(title: "OK", style: .default))
         rootViewController?.present(alert, animated: true)
         // swiftlint:enable line_length
-    }
-}
-
-// MARK: - HomeCoordinatorDelegate
-extension AppCoordinator: HomeCoordinatorDelegate {
-    func homeCoordinatorDidSignOut() {
-        appStateObserver.updateAppState(.loggedOut(.userInitiated))
-    }
-
-    func homeCoordinatorRequestsBiometricAuthentication() {
-        requestBiometricAuthenticationIfNecessary()
     }
 }
 

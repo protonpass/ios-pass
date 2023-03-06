@@ -108,8 +108,8 @@ open class Coordinator: CoordinatorProtocol {
     private let type: CoordinatorType
 
     public var rootViewController: UIViewController { type.controller }
+    public var topMostViewController: UIViewController { rootViewController.topMostViewController }
     public weak var coordinatorDelegate: CoordinatorDelegate?
-    private var topMostViewController: UIViewController { rootViewController.topMostViewController }
 
     public init() {
         if UIDevice.current.isIpad {
