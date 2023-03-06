@@ -194,10 +194,13 @@ final class AppCoordinator {
     private func showHomeScene(sessionData: SessionData, manualLogIn: Bool) {
         do {
             let symmetricKey = try getOrCreateSymmetricKey()
-            let homepageCoordinator =
-            HomepageCoordinator(credentialManager: credentialManager,
-                                logManager: logManager,
-                                preferences: preferences)
+            let homepageCoordinator = HomepageCoordinator(apiService: apiManager.apiService,
+                                                          container: container,
+                                                          credentialManager: credentialManager,
+                                                          logManager: logManager,
+                                                          preferences: preferences,
+                                                          symmetricKey: symmetricKey,
+                                                          userData: sessionData.userData)
             self.homepageCoordinator = homepageCoordinator
             self.welcomeCoordinator = nil
             animateUpdateRootViewController(homepageCoordinator.rootViewController) {
