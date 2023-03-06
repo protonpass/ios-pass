@@ -1573,6 +1573,25 @@
 			path = Items;
 			sourceTree = "<group>";
 		};
+		35603A0029B6587C00021BFB /* Create & Edit Items */ = {
+			isa = PBXGroup;
+			children = (
+				35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */,
+				355BDED3299E64F7009FDBB1 /* CreateAliasLiteView.swift */,
+				355BDED5299E6515009FDBB1 /* CreateAliasLiteViewModel.swift */,
+				3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */,
+				3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */,
+				3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */,
+				35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */,
+				3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */,
+				35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */,
+				3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */,
+				3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */,
+				3572E52729940C0300775FAC /* Supporting Views */,
+			);
+			path = "Create & Edit Items";
+			sourceTree = "<group>";
+		};
 		35610B8528ABCE1900955ACB /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
@@ -1672,22 +1691,10 @@
 		356B69772949DBC600868771 /* CreateEdit */ = {
 			isa = PBXGroup;
 			children = (
-				3572E52729940C0300775FAC /* Supporting Views */,
-				35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */,
-				355BDED3299E64F7009FDBB1 /* CreateAliasLiteView.swift */,
-				355BDED5299E6515009FDBB1 /* CreateAliasLiteViewModel.swift */,
 				3547ABDF287750F100EE85E1 /* CreateItemView.swift */,
 				35476973289D82FE00581E2E /* CreateItemViewModel.swift */,
-				3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */,
-				3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */,
-				3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */,
-				35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */,
-				3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */,
-				35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */,
 				3547ABF12877791000EE85E1 /* CreateVaultView.swift */,
 				3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */,
-				3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */,
-				3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */,
 			);
 			path = CreateEdit;
 			sourceTree = "<group>";
@@ -2189,12 +2196,13 @@
 		35F8CCFE29B617510017DBC6 /* Homepage */ = {
 			isa = PBXGroup;
 			children = (
-				35F8CD0A29B630E10017DBC6 /* Supporting Views */,
 				35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */,
 				35F8CD0329B624F80017DBC6 /* HomepageTabBar.swift */,
 				35F8CD0129B61C9A0017DBC6 /* HomepageView.swift */,
 				35F8CD0529B627720017DBC6 /* HomepageViewModel.swift */,
 				35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */,
+				35603A0029B6587C00021BFB /* Create & Edit Items */,
+				35F8CD0A29B630E10017DBC6 /* Supporting Views */,
 			);
 			path = Homepage;
 			sourceTree = "<group>";
