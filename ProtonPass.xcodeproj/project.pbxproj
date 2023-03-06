@@ -426,6 +426,8 @@
 		35F8CD0229B61C9A0017DBC6 /* HomepageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0129B61C9A0017DBC6 /* HomepageView.swift */; };
 		35F8CD0429B624F80017DBC6 /* HomepageTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0329B624F80017DBC6 /* HomepageTabBar.swift */; };
 		35F8CD0629B627720017DBC6 /* HomepageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0529B627720017DBC6 /* HomepageViewModel.swift */; };
+		35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */; };
+		35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
 		37BE837029954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
 		37BE837129954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
 		37BE837229954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
@@ -1028,6 +1030,8 @@
 		35F8CD0129B61C9A0017DBC6 /* HomepageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageView.swift; sourceTree = "<group>"; };
 		35F8CD0329B624F80017DBC6 /* HomepageTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageTabBar.swift; sourceTree = "<group>"; };
 		35F8CD0529B627720017DBC6 /* HomepageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageViewModel.swift; sourceTree = "<group>"; };
+		35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListView.swift; sourceTree = "<group>"; };
+		35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralItemRow.swift; sourceTree = "<group>"; };
 		37BE836F29954C6000E42C89 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		3CDC57C290CF2F32BE9B8B39 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		4AD83E95CA93A6D9E7C5F7AA /* Pods-iOS.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug-prod.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug-prod.xcconfig"; sourceTree = "<group>"; };
@@ -2185,12 +2189,22 @@
 		35F8CCFE29B617510017DBC6 /* Homepage */ = {
 			isa = PBXGroup;
 			children = (
+				35F8CD0A29B630E10017DBC6 /* Supporting Views */,
 				35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */,
 				35F8CD0329B624F80017DBC6 /* HomepageTabBar.swift */,
 				35F8CD0129B61C9A0017DBC6 /* HomepageView.swift */,
 				35F8CD0529B627720017DBC6 /* HomepageViewModel.swift */,
+				35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */,
 			);
 			path = Homepage;
+			sourceTree = "<group>";
+		};
+		35F8CD0A29B630E10017DBC6 /* Supporting Views */ = {
+			isa = PBXGroup;
+			children = (
+				35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */,
+			);
+			path = "Supporting Views";
 			sourceTree = "<group>";
 		};
 		6699002C29A77182001033B6 /* Mocks */ = {
@@ -3273,6 +3287,7 @@
 				3514E85C28CB2BB1006BD54A /* TrashViewModel.swift in Sources */,
 				35F8CD0029B617670017DBC6 /* HomepageCoordinator.swift in Sources */,
 				35476974289D82FE00581E2E /* CreateItemViewModel.swift in Sources */,
+				35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */,
 				35F8CD0229B61C9A0017DBC6 /* HomepageView.swift in Sources */,
 				354BB14F28A27FF500F50040 /* SearchViewModel.swift in Sources */,
 				353E8B6E2876163F00A2C5E3 /* SidebarView.swift in Sources */,
@@ -3307,6 +3322,7 @@
 				3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */,
 				3586F3B5295885BB00738245 /* SecuritySettingsView.swift in Sources */,
 				35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */,
+				35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */,
 				355903D1295C96D600F6ABFD /* VaultListViewModel.swift in Sources */,
 				3561A1822922DA6E0097078B /* ItemCountView.swift in Sources */,
 				3543615C2941E1A8000CAE12 /* UIApplication+OpenSettings.swift in Sources */,
