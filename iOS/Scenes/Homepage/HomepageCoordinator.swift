@@ -57,10 +57,15 @@ private extension HomepageCoordinator {
     }
 
     func start() {
+        let homepageViewModel = HomepageViewModel()
+        homepageViewModel.delegate = self
+        let homepageView = HomepageView(viewModel: homepageViewModel)
+
         let placeholderView = ItemDetailPlaceholderView {
             self.popTopViewController(animated: true)
         }
-        start(with: HomepageView(), secondaryView: placeholderView)
+
+        start(with: homepageView, secondaryView: placeholderView)
     }
 }
 
@@ -77,5 +82,12 @@ extension HomepageCoordinator {
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         onboardingViewController.isModalInPresentation = true
         topMostViewController.present(onboardingViewController, animated: true)
+    }
+}
+
+// MARK: - HomepageViewModelDelegate
+extension HomepageCoordinator: HomepageViewModelDelegate {
+    func homepageViewModelWantsToCreateNewItem() {
+        print(#function)
     }
 }

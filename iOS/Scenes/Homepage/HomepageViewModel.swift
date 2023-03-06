@@ -1,5 +1,5 @@
 //
-// HomepageView.swift
+// HomepageViewModel.swift
 // Proton Pass - Created on 06/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,22 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Core
 
-struct HomepageView: View {
-    @State private var selectedTab = Tab.items
-    let viewModel: HomepageViewModel
+protocol HomepageViewModelDelegate: AnyObject {
+    func homepageViewModelWantsToCreateNewItem()
+}
 
-    var body: some View {
-        TabView(selection: $selectedTab) {
-            Text("Item list")
-                .tag(Tab.items)
+final class HomepageViewModel: DeinitPrintable {
+    deinit { print(deinitMessage) }
 
-            Text("Account")
-                .tag(Tab.account)
-        }
-        .safeAreaInset(edge: .bottom) {
-            HomepageTabBar(selectedTab: $selectedTab, action: viewModel.createNewItem)
-        }
+    weak var delegate: HomepageViewModelDelegate?
+}
+
+// MARK: - Public APIs
+extension HomepageViewModel {
+    func createNewItem() {
+        delegate?.homepageViewModelWantsToCreateNewItem()
     }
 }

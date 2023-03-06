@@ -424,6 +424,8 @@
 		35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50715286FB61E00A3F6EA /* WelcomeCoordinator.swift */; };
 		35F8CD0029B617670017DBC6 /* HomepageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */; };
 		35F8CD0229B61C9A0017DBC6 /* HomepageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0129B61C9A0017DBC6 /* HomepageView.swift */; };
+		35F8CD0429B624F80017DBC6 /* HomepageTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0329B624F80017DBC6 /* HomepageTabBar.swift */; };
+		35F8CD0629B627720017DBC6 /* HomepageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0529B627720017DBC6 /* HomepageViewModel.swift */; };
 		37BE837029954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
 		37BE837129954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
 		37BE837229954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
@@ -1024,6 +1026,8 @@
 		35E50715286FB61E00A3F6EA /* WelcomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinator.swift; sourceTree = "<group>"; };
 		35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageCoordinator.swift; sourceTree = "<group>"; };
 		35F8CD0129B61C9A0017DBC6 /* HomepageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageView.swift; sourceTree = "<group>"; };
+		35F8CD0329B624F80017DBC6 /* HomepageTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageTabBar.swift; sourceTree = "<group>"; };
+		35F8CD0529B627720017DBC6 /* HomepageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageViewModel.swift; sourceTree = "<group>"; };
 		37BE836F29954C6000E42C89 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		3CDC57C290CF2F32BE9B8B39 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		4AD83E95CA93A6D9E7C5F7AA /* Pods-iOS.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug-prod.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug-prod.xcconfig"; sourceTree = "<group>"; };
@@ -2182,7 +2186,9 @@
 			isa = PBXGroup;
 			children = (
 				35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */,
+				35F8CD0329B624F80017DBC6 /* HomepageTabBar.swift */,
 				35F8CD0129B61C9A0017DBC6 /* HomepageView.swift */,
+				35F8CD0529B627720017DBC6 /* HomepageViewModel.swift */,
 			);
 			path = Homepage;
 			sourceTree = "<group>";
@@ -3262,6 +3268,7 @@
 				3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */,
 				356AD3FB29409C7600EBE4E9 /* DevPreviewsView.swift in Sources */,
 				355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */,
+				35F8CD0629B627720017DBC6 /* HomepageViewModel.swift in Sources */,
 				3565FD55298D3E5700E2A0EE /* TOTPCircularTimer.swift in Sources */,
 				3514E85C28CB2BB1006BD54A /* TrashViewModel.swift in Sources */,
 				35F8CD0029B617670017DBC6 /* HomepageCoordinator.swift in Sources */,
@@ -3349,6 +3356,7 @@
 				3567E46629B0E6F900511D62 /* NoCameraPermissionView.swift in Sources */,
 				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */,
+				35F8CD0429B624F80017DBC6 /* HomepageTabBar.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
