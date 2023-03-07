@@ -619,7 +619,7 @@ extension MyVaultsCoordinator: VaultListViewModelDelegate {
         }
     }
 
-    func vaultListViewModelDidDelete(vault: VaultProtocol) {
+    func vaultListViewModelDidDelete(vault: Vault) {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager?.displayBottomInfoMessage("Vault \"\(vault.name)\" deleted")
             self.vaultSelection.remove(vault: vault)

@@ -26,7 +26,7 @@ import CryptoKit
 import SwiftUI
 
 struct CredentialsFetchResult {
-    let vaults: [VaultProtocol]
+    let vaults: [Vault]
     let searchableItems: [SearchableItem]
     let matchedItems: [ItemListUiModel]
     let notMatchedItems: [ItemListUiModel]
