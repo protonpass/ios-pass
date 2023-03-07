@@ -276,9 +276,22 @@ final class AppCoordinator {
 extension AppCoordinator: WelcomeCoordinatorDelegate {
     func welcomeCoordinator(didFinishWith userData: LoginData) {
         guard userData.scopes.contains("pass") else {
-            sessionData = nil
-            apiManager.clearCredentials()
-            alertNoPassScope()
+            // try refreshing the credentials
+            // this is a workaround for the fact that the user with access to pass won't get the pass scope
+            // if their account lacks keys — howeer, after the credentials refresh, the scope is properly set
+            apiManager.apiService.refreshCredential(userData.getCredential) { result in
+                switch result {
+                case .success(let refreshedCredentials) where refreshedCredentials.scopes.contains("pass"):
+                    self.apiManager.apiService.setSessionUID(uid: refreshedCredentials.UID)
+                    self.apiManager.authHelper.onSessionObtaining(credential: refreshedCredentials)
+                    let sessionData = SessionData(userData: userData)
+                    self.appStateObserver.updateAppState(.loggedIn(data: sessionData, manualLogIn: true))
+                case .success, .failure:
+                    self.sessionData = nil
+                    self.apiManager.clearCredentials()
+                    self.alertNoPassScope()
+                }
+            }
             return
         }
         let sessionData = SessionData(userData: userData)
