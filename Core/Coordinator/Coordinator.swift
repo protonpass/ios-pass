@@ -23,17 +23,8 @@ import SwiftUI
 import UIComponents
 import UIKit
 
-#warning("Remove this protocol")
-public protocol CoordinatorDelegate: AnyObject {
-    func coordinatorWantsToToggleSidebar()
-    func coordinatorWantsToShowLoadingHud()
-    func coordinatorWantsToHideLoadingHud()
-    func coordinatorWantsToAlertError(_ error: Error)
-}
-
 public protocol CoordinatorProtocol: AnyObject {
     var rootViewController: UIViewController { get }
-    var coordinatorDelegate: CoordinatorDelegate? { get }
 
     func start<PrimaryView: View, SecondaryView: View>(with view: PrimaryView,
                                                        secondaryView: SecondaryView)
@@ -110,7 +101,6 @@ open class Coordinator: CoordinatorProtocol {
 
     public var rootViewController: UIViewController { type.controller }
     public var topMostViewController: UIViewController { rootViewController.topMostViewController }
-    public weak var coordinatorDelegate: CoordinatorDelegate?
 
     public init() {
         if UIDevice.current.isIpad {
@@ -227,13 +217,6 @@ open class Coordinator: CoordinatorProtocol {
         }
         return false
     }
-}
-
-public extension Coordinator {
-    func toggleSidebar() { coordinatorDelegate?.coordinatorWantsToToggleSidebar() }
-    func showLoadingHud() { coordinatorDelegate?.coordinatorWantsToShowLoadingHud() }
-    func hideLoadingHud() { coordinatorDelegate?.coordinatorWantsToHideLoadingHud() }
-    func alertError(_ error: Error) { coordinatorDelegate?.coordinatorWantsToAlertError(error) }
 }
 
 public final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
