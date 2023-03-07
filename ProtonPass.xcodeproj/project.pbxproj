@@ -1683,6 +1683,7 @@
 			children = (
 				3569B2A029B788600070830B /* ItemsTabView.swift */,
 				3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */,
+				354BB14728A27E8100F50040 /* Search */,
 			);
 			path = "Items Tab";
 			sourceTree = "<group>";
@@ -2214,7 +2215,6 @@
 				356B697C294A31E400868771 /* DevPreviews */,
 				3547ABCC2876CFA700EE85E1 /* MyVaults */,
 				354E19F2293F8EB900A3F853 /* Onboarding */,
-				354BB14728A27E8100F50040 /* Search */,
 				354513C928E45F840020A93A /* Settings */,
 				353E8B6C2876162B00A2C5E3 /* Sidebar */,
 				3547ABD82876DEF300EE85E1 /* Trash */,
