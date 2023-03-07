@@ -308,6 +308,7 @@
 		3569B29F29B77A760070830B /* VaultContentUiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29E29B77A760070830B /* VaultContentUiModel.swift */; };
 		3569B2A129B788600070830B /* ItemsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A029B788600070830B /* ItemsTabView.swift */; };
 		3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */; };
+		3569B2A629B7C39F0070830B /* View+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A529B7C39F0070830B /* View+Theme.swift */; };
 		356A34B72977B18000969BA2 /* URLUtils+OTPParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34B62977B18000969BA2 /* URLUtils+OTPParser.swift */; };
 		356A34B92977B46300969BA2 /* OTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34B82977B46300969BA2 /* OTP.swift */; };
 		356A34BB2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */; };
@@ -922,6 +923,7 @@
 		3569B29E29B77A760070830B /* VaultContentUiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultContentUiModel.swift; sourceTree = "<group>"; };
 		3569B2A029B788600070830B /* ItemsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabView.swift; sourceTree = "<group>"; };
 		3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabViewModel.swift; sourceTree = "<group>"; };
+		3569B2A529B7C39F0070830B /* View+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Theme.swift"; sourceTree = "<group>"; };
 		356A34B62977B18000969BA2 /* URLUtils+OTPParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+OTPParser.swift"; sourceTree = "<group>"; };
 		356A34B82977B46300969BA2 /* OTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTP.swift; sourceTree = "<group>"; };
 		356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+OTPParserTests.swift"; sourceTree = "<group>"; };
@@ -1364,6 +1366,7 @@
 				3543615B2941E1A8000CAE12 /* UIApplication+OpenSettings.swift */,
 				35A5EEE12958CDBC00A09623 /* UrlOpener.swift */,
 				3557441A295A064F00EA4AF0 /* ClipboardManager.swift */,
+				3569B2A529B7C39F0070830B /* View+Theme.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -3404,6 +3407,7 @@
 				3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				355744172959F5E400EA4AF0 /* ClipboardSettingsView.swift in Sources */,
 				3565FD4F298D319500E2A0EE /* ItemDetailSectionIcon.swift in Sources */,
+				3569B2A629B7C39F0070830B /* View+Theme.swift in Sources */,
 				354513CD28E45FB20020A93A /* SettingsViewModel.swift in Sources */,
 				3567E46629B0E6F900511D62 /* NoCameraPermissionView.swift in Sources */,
 				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,

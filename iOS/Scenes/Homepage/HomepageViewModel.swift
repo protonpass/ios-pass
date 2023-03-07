@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import CryptoKit
 import ProtonCore_Login
@@ -29,26 +30,39 @@ protocol HomepageViewModelDelegate: AnyObject {
     func homepageViewModelWantsToPresentVaultList()
 }
 
-final class HomepageViewModel: DeinitPrintable {
+final class HomepageViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    let vaultsManager: VaultsManager
     let itemsTabViewModel: ItemsTabViewModel
+    let preferences: Preferences
+    let vaultsManager: VaultsManager
 
     weak var delegate: HomepageViewModelDelegate?
 
+    private var cancellables = Set<AnyCancellable>()
+
     init(itemRepository: ItemRepositoryProtocol,
          logManager: LogManager,
+         preferences: Preferences,
          shareRepository: ShareRepositoryProtocol,
          symmetricKey: SymmetricKey,
          userData: UserData) {
+        self.itemsTabViewModel = .init()
+        self.preferences = preferences
         self.vaultsManager = .init(itemRepository: itemRepository,
                                    logManager: logManager,
                                    shareRepository: shareRepository,
                                    symmetricKey: symmetricKey,
                                    userData: userData)
-        self.itemsTabViewModel = .init()
-        self.itemsTabViewModel.delegate = self
+        self.finalizeInitialization()
+    }
+}
+
+// MARK: - Private APIs
+private extension HomepageViewModel {
+    func finalizeInitialization() {
+        itemsTabViewModel.delegate = self
+        preferences.attach(to: self, storeIn: &cancellables)
     }
 }
 

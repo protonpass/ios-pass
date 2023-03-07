@@ -1,6 +1,6 @@
 //
-// HomepageView.swift
-// Proton Pass - Created on 06/03/2023.
+// View+Theme.swift
+// Proton Pass - Created on 07/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,26 +21,33 @@
 import Core
 import SwiftUI
 
-struct HomepageView: View {
-    @State private var selectedTab = Tab.items
-    @StateObject var viewModel: HomepageViewModel
+struct ThemeModifier: ViewModifier {
+    let theme: Theme
 
-    var body: some View {
-        TabView(selection: $selectedTab) {
-            ItemsTabView(viewModel: viewModel.itemsTabViewModel)
-                .tag(Tab.items)
+    func body(content: Content) -> some View {
+        if let colorScheme = theme.colorScheme {
+            content.environment(\.colorScheme, colorScheme)
+        } else {
+            content
+        }
+    }
+}
 
-            Text("Account")
-                .tag(Tab.account)
-        }
-        .safeAreaInset(edge: .bottom) {
-            HomepageTabBar(selectedTab: $selectedTab, action: viewModel.createNewItem)
-        }
-        .theme(viewModel.preferences.theme)
-        .onFirstAppear {
-            Task {
-                await viewModel.vaultsManager.loadVaultsOrCreateIfNecessary()
-            }
+extension View {
+    func theme(_ theme: Theme) -> some View {
+        modifier(ThemeModifier(theme: theme))
+    }
+}
+
+extension Theme {
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .dark:
+            return .dark
+        case .light:
+            return .light
+        case .matchSystem:
+            return nil
         }
     }
 }
