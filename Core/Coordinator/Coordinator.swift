@@ -23,6 +23,7 @@ import SwiftUI
 import UIComponents
 import UIKit
 
+#warning("Remove this protocol")
 public protocol CoordinatorDelegate: AnyObject {
     func coordinatorWantsToToggleSidebar()
     func coordinatorWantsToShowLoadingHud()

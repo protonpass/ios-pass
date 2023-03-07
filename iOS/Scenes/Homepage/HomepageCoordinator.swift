@@ -107,15 +107,20 @@ private extension HomepageCoordinator {
         MBProgressHUD.hide(for: view ?? topMostViewController.view, animated: true)
     }
 
+    func informAliasesLimit() {
+        bannerManager.displayTopErrorMessage("You can not create more aliases.")
+    }
+
     func presentCreateItemView() {
+        let shareId = "39hry1jlHiPzhXRXrWjfS6t3fqA14QbYfrbF30l2PYYWOhVpyJ33nhujM4z4SHtfuQqTx6e7oSQokrqhLMD8LQ=="
         let view = ItemTypeListView { [unowned self] itemType in
             dismissTopMostViewController {
                 switch itemType {
                 case .login:
                     let logInType = ItemCreationType.login(title: nil, url: nil, autofill: false)
-                    self.presentCreateEditLoginView(mode: .create(shareId: "", type: logInType))
+                    self.presentCreateEditLoginView(mode: .create(shareId: shareId, type: logInType))
                 case .alias:
-                    break
+                    self.presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
                 case .note:
                     break
                 case .password:
@@ -136,7 +141,7 @@ private extension HomepageCoordinator {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    private func presentCreateEditLoginView(mode: ItemMode) {
+    func presentCreateEditLoginView(mode: ItemMode) {
         let emailAddress = userData.addresses.first?.email ?? ""
         let viewModel = CreateEditLoginViewModel(mode: mode,
                                                  itemRepository: itemRepository,
@@ -153,8 +158,30 @@ private extension HomepageCoordinator {
         currentCreateEditItemViewModel = viewModel
     }
 
-    private func presentGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?,
-                                             mode: GeneratePasswordViewMode) {
+    func presentCreateEditAliasView(mode: ItemMode) {
+        let viewModel = CreateEditAliasViewModel(mode: mode,
+                                                 itemRepository: itemRepository,
+                                                 aliasRepository: aliasRepository,
+                                                 preferences: preferences,
+                                                 logManager: logManager)
+        viewModel.delegate = self
+        viewModel.createEditAliasViewModelDelegate = self
+        let view = CreateEditAliasView(viewModel: viewModel)
+        present(view,
+                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                dismissible: false)
+        currentCreateEditItemViewModel = viewModel
+    }
+
+    func presentMailboxSelectionView(selection: MailboxSelection, mode: MailboxSelectionView.Mode) {
+        let view = MailboxSelectionView(mailboxSelection: selection, mode: mode)
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
+    func presentGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?,
+                                     mode: GeneratePasswordViewMode) {
         let viewModel = GeneratePasswordViewModel(mode: mode)
         viewModel.delegate = delegate
         let view = GeneratePasswordView(viewModel: viewModel)
@@ -199,11 +226,11 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
 // MARK: - CreateEditItemViewModelDelegate
 extension HomepageCoordinator: CreateEditItemViewModelDelegate {
     func createEditItemViewModelWantsToShowLoadingHud() {
-        showLoadingHud()
+        showLoadingHud(to: nil)
     }
 
     func createEditItemViewModelWantsToHideLoadingHud() {
-        hideLoadingHud()
+        hideLoadingHud(for: nil)
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
@@ -228,7 +255,16 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
                                                       creationInfo: AliasCreationLiteInfo,
                                                       delegate: AliasCreationLiteInfoDelegate) {
-        print(#function)
+        let viewModel = CreateAliasLiteViewModel(options: options,
+                                                 creationInfo: creationInfo)
+        viewModel.aliasCreationDelegate = delegate
+        viewModel.delegate = self
+        let view = CreateAliasLiteView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.sheetPresentationController?.detents = [.medium()]
+        viewModel.onDismiss = { navigationController.dismiss(animated: true) }
+        present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
@@ -240,6 +276,24 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
     }
 
     func createEditLoginViewModelCanNotCreateMoreAlias() {
-        bannerManager.displayTopErrorMessage("You can not create more aliases.")
+        informAliasesLimit()
+    }
+}
+
+// MARK: - CreateEditAliasViewModelDelegate
+extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
+    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
+        presentMailboxSelectionView(selection: mailboxSelection, mode: .createEditAlias)
+    }
+
+    func createEditAliasViewModelCanNotCreateMoreAliases() {
+        informAliasesLimit()
+    }
+}
+
+// MARK: - CreateAliasLiteViewModelDelegate
+extension HomepageCoordinator: CreateAliasLiteViewModelDelegate {
+    func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
+        presentMailboxSelectionView(selection: mailboxSelection, mode: .createAliasLite)
     }
 }
