@@ -114,7 +114,7 @@ private extension HomepageCoordinator {
                 case .alias:
                     self.presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
                 case .note:
-                    break
+                    self.presentCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
                 case .password:
                     break
                 }
@@ -144,9 +144,7 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
-        present(view,
-                userInterfaceStyle: preferences.theme.userInterfaceStyle,
-                dismissible: false)
+        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -159,9 +157,7 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
-        present(view,
-                userInterfaceStyle: preferences.theme.userInterfaceStyle,
-                dismissible: false)
+        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -170,6 +166,17 @@ private extension HomepageCoordinator {
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
+    func presentCreateEditNoteView(mode: ItemMode) {
+        let viewModel = CreateEditNoteViewModel(mode: mode,
+                                                itemRepository: itemRepository,
+                                                preferences: preferences,
+                                                logManager: logManager)
+        viewModel.delegate = self
+        let view = CreateEditNoteView(viewModel: viewModel)
+        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle, dismissible: false)
+        currentCreateEditItemViewModel = viewModel
     }
 
     func presentGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?,
