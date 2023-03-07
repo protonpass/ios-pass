@@ -303,7 +303,6 @@ private extension HomeCoordinator {
                                                       preferences: preferences,
                                                       manualLogIn: manualLogIn,
                                                       logManager: logManager)
-        myVaultsCoordinator.coordinatorDelegate = self
         myVaultsCoordinator.delegate = self.trashCoordinator
         myVaultsCoordinator.urlOpener = self.urlOpener
         myVaultsCoordinator.clipboardManager = self.clipboardManager
@@ -316,7 +315,6 @@ private extension HomeCoordinator {
                                                       symmetricKey: symmetricKey,
                                                       preferences: preferences,
                                                       logManager: logManager)
-        settingsCoordinator.coordinatorDelegate = self
         settingsCoordinator.delegate = self
         return settingsCoordinator
     }
@@ -330,7 +328,6 @@ private extension HomeCoordinator {
                                                 syncEventLoop: eventLoop,
                                                 preferences: preferences,
                                                 logManager: logManager)
-        trashCoordinator.coordinatorDelegate = self
         trashCoordinator.delegate = self
         trashCoordinator.urlOpener = urlOpener
         trashCoordinator.clipboardManager = self.clipboardManager
@@ -482,25 +479,6 @@ extension HomeCoordinator: SideBarViewModelDelegate {
 
     func sideBarViewModelWantsToShowItems(ofType type: ItemContentType) {
         showMyVaultsRootViewController(filterOption: .filtered(type))
-    }
-}
-
-// MARK: - CoordinatorDelegate
-extension HomeCoordinator: CoordinatorDelegate {
-    func coordinatorWantsToToggleSidebar() {
-        showSidebar()
-    }
-
-    func coordinatorWantsToShowLoadingHud() {
-        showLoadingHud()
-    }
-
-    func coordinatorWantsToHideLoadingHud() {
-        hideLoadingHud()
-    }
-
-    func coordinatorWantsToAlertError(_ error: Error) {
-        alert(error: error)
     }
 }
 

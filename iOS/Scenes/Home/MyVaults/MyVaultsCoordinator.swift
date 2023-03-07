@@ -414,17 +414,11 @@ extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
 
 // MARK: - VaultContentViewModelDelegate
 extension MyVaultsCoordinator: VaultContentViewModelDelegate {
-    func vaultContentViewModelWantsToToggleSidebar() {
-        toggleSidebar()
-    }
+    func vaultContentViewModelWantsToToggleSidebar() {}
 
-    func vaultContentViewModelWantsToShowLoadingHud() {
-        coordinatorDelegate?.coordinatorWantsToShowLoadingHud()
-    }
+    func vaultContentViewModelWantsToShowLoadingHud() {}
 
-    func vaultContentViewModelWantsToHideLoadingHud() {
-        coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
-    }
+    func vaultContentViewModelWantsToHideLoadingHud() {}
 
     func vaultContentViewModelWantsToSearch() {
         showSearchView()
@@ -476,13 +470,9 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
 
 // MARK: - CreateEditItemViewModelDelegate
 extension MyVaultsCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToShowLoadingHud() {
-        coordinatorDelegate?.coordinatorWantsToShowLoadingHud()
-    }
+    func createEditItemViewModelWantsToShowLoadingHud() {}
 
-    func createEditItemViewModelWantsToHideLoadingHud() {
-        coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
-    }
+    func createEditItemViewModelWantsToHideLoadingHud() {}
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType) {
@@ -584,13 +574,9 @@ extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
 
 // MARK: - SearchViewModelDelegate
 extension MyVaultsCoordinator: SearchViewModelDelegate {
-    func searchViewModelWantsToShowLoadingHud() {
-        coordinatorDelegate?.coordinatorWantsToShowLoadingHud()
-    }
+    func searchViewModelWantsToShowLoadingHud() {}
 
-    func searchViewModelWantsToHideLoadingHud() {
-        coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
-    }
+    func searchViewModelWantsToHideLoadingHud() {}
 
     func searchViewModelWantsToDismiss() {
         dismissTopMostViewController()
@@ -661,9 +647,7 @@ extension MyVaultsCoordinator: LogInDetailViewModelDelegate {
 
 // MARK: - LoadVaultsViewModelDelegate
 extension MyVaultsCoordinator: LoadVaultsViewModelDelegate {
-    func loadVaultsViewModelWantsToToggleSidebar() {
-        toggleSidebar()
-    }
+    func loadVaultsViewModelWantsToToggleSidebar() {}
 
     func loadVaultsViewModelDidLoadAllItems() {
         delegate?.myVaultsCoordinatorWantsToRefreshTrash()

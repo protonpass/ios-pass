@@ -99,14 +99,6 @@ private extension HomepageCoordinator {
         start(with: homepageView, secondaryView: placeholderView)
     }
 
-    func showLoadingHud(to view: UIView? = nil) {
-        MBProgressHUD.showAdded(to: view ?? topMostViewController.view, animated: true)
-    }
-
-    func hideLoadingHud(for view: UIView? = nil) {
-        MBProgressHUD.hide(for: view ?? topMostViewController.view, animated: true)
-    }
-
     func informAliasesLimit() {
         bannerManager.displayTopErrorMessage("You can not create more aliases.")
     }
@@ -226,11 +218,11 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
 // MARK: - CreateEditItemViewModelDelegate
 extension HomepageCoordinator: CreateEditItemViewModelDelegate {
     func createEditItemViewModelWantsToShowLoadingHud() {
-        showLoadingHud(to: nil)
+        showLoadingHud()
     }
 
     func createEditItemViewModelWantsToHideLoadingHud() {
-        hideLoadingHud(for: nil)
+        hideLoadingHud()
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {

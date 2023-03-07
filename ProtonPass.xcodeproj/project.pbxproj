@@ -303,6 +303,7 @@
 		35690C152923EA8400F60C20 /* Color+ProtonColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35690C142923EA8400F60C20 /* Color+ProtonColors.swift */; };
 		35699B93298103F1006CB225 /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35699B92298103F1006CB225 /* String+HTML.swift */; };
 		35699B97298125FA006CB225 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557441A295A064F00EA4AF0 /* ClipboardManager.swift */; };
+		3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29829B764D60070830B /* Coordinator+ShowHideSpinner.swift */; };
 		356A34B72977B18000969BA2 /* URLUtils+OTPParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34B62977B18000969BA2 /* URLUtils+OTPParser.swift */; };
 		356A34B92977B46300969BA2 /* OTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34B82977B46300969BA2 /* OTP.swift */; };
 		356A34BB2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */; };
@@ -912,6 +913,7 @@
 		35690C122923D5DA00F60C20 /* NotchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchView.swift; sourceTree = "<group>"; };
 		35690C142923EA8400F60C20 /* Color+ProtonColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProtonColors.swift"; sourceTree = "<group>"; };
 		35699B92298103F1006CB225 /* String+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
+		3569B29829B764D60070830B /* Coordinator+ShowHideSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinator+ShowHideSpinner.swift"; sourceTree = "<group>"; };
 		356A34B62977B18000969BA2 /* URLUtils+OTPParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+OTPParser.swift"; sourceTree = "<group>"; };
 		356A34B82977B46300969BA2 /* OTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTP.swift; sourceTree = "<group>"; };
 		356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+OTPParserTests.swift"; sourceTree = "<group>"; };
@@ -1347,6 +1349,7 @@
 		3543615A2941E192000CAE12 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				3569B29829B764D60070830B /* Coordinator+ShowHideSpinner.swift */,
 				356FBD472949246A0063978C /* Coordinator+ShowFullScreen.swift */,
 				3554D42C2967854000DF0CBE /* DeveloperModeStateManager.swift */,
 				3543615B2941E1A8000CAE12 /* UIApplication+OpenSettings.swift */,
@@ -3343,6 +3346,7 @@
 				355635BF2889664200F32353 /* LoadVaultsViewModel.swift in Sources */,
 				3586F3B82958860800738245 /* BrowserSettingsView.swift in Sources */,
 				356B697E294A31F400868771 /* DevPreviewsViewModel.swift in Sources */,
+				3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */,
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
 				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
