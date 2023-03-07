@@ -29,7 +29,7 @@ final class MyVaultsViewModel: DeinitPrintable, ObservableObject {
     private let vaultSelection: VaultSelection
     private var cancellables = Set<AnyCancellable>()
 
-    var vaults: [VaultProtocol] { vaultSelection.vaults }
+    var vaults: [Vault] { vaultSelection.vaults }
 
     init(vaultSelection: VaultSelection) {
         self.vaultSelection = vaultSelection

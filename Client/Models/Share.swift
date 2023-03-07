@@ -30,7 +30,7 @@ public enum ShareType: Int16 {
 }
 
 public enum ShareContent {
-    case vault(VaultProtocol)
+    case vault(Vault)
     case item // Not handled yet
 }
 
