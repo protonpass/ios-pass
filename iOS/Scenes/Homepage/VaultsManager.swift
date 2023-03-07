@@ -1,0 +1,104 @@
+//
+// VaultsManager.swift
+// Proton Pass - Created on 07/03/2023.
+// Copyright (c) 2023 Proton Technologies AG
+//
+// This file is part of Proton Pass.
+//
+// Proton Pass is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Pass is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+
+import Client
+import Core
+import CryptoKit
+import ProtonCore_Login
+
+enum VaultManagerState {
+    case loading
+    case loaded([VaultContentUiModel])
+    case error(Error)
+}
+
+final class VaultsManager: ObservableObject {
+    private let itemRepository: ItemRepositoryProtocol
+    private let logger: Logger
+    private let shareRepository: ShareRepositoryProtocol
+    private let symmetricKey: SymmetricKey
+    private let userData: UserData
+
+    @Published private(set) var state = VaultManagerState.loading
+    @Published var selectedVault: Vault?
+
+    init(itemRepository: ItemRepositoryProtocol,
+         logManager: LogManager,
+         shareRepository: ShareRepositoryProtocol,
+         symmetricKey: SymmetricKey,
+         userData: UserData) {
+        self.itemRepository = itemRepository
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
+        self.shareRepository = shareRepository
+        self.symmetricKey = symmetricKey
+        self.userData = userData
+    }
+
+    @MainActor
+    func loadVaultsOrCreateIfNecessary() async {
+        do {
+            state = .loading
+            var vaults = try await shareRepository.getVaults()
+            if vaults.isEmpty {
+                logger.trace("No local vaults. Getting all remote shares to refresh local vaults.")
+                _ = try await shareRepository.getRemoteShares()
+                vaults = try await shareRepository.getVaults()
+                if vaults.isEmpty {
+                    logger.trace("Refreshed but still no vaults.")
+                    try await createDefaultVault()
+                    await loadVaultsOrCreateIfNecessary()
+                } else {
+                    logger.trace("Found \(vaults.count) vaults after refreshing.")
+                    try await loadContents(for: vaults)
+                }
+            } else {
+                logger.trace("Found \(vaults.count) local vaults")
+                try await loadContents(for: vaults)
+            }
+        } catch {
+            state = .error(error)
+        }
+    }
+}
+
+// MARK: - Private APIs
+private extension VaultsManager {
+    func createDefaultVault() async throws {
+        logger.info("Creating default vault")
+        let request = try CreateVaultRequest(userData: userData,
+                                             name: "Personal",
+                                             description: "Personal vault")
+        try await shareRepository.createVault(request: request)
+        logger.info("Created default vault")
+    }
+
+    @MainActor
+    func loadContents(for vaults: [Vault]) async throws {
+        let uiModels = try await vaults.parallelMap { vault in
+            let items = try await self.itemRepository.getItems(shareId: vault.shareId, state: .active)
+            let itemUiModels = try items.map { try $0.toItemListUiModel(self.symmetricKey) }
+            return VaultContentUiModel(vault: vault,
+                                       items: itemUiModels)
+        }
+        state = .loaded(uiModels)
+    }
+}
