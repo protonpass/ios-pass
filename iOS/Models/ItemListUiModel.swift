@@ -24,7 +24,7 @@ import ProtonCore_UIFoundations
 import UIComponents
 import UIKit
 
-struct ItemListUiModel: ItemIdentifiable, GenericItemProtocol {
+struct ItemListUiModel: ItemIdentifiable, GenericItemProtocol, Hashable {
     let itemId: String
     let shareId: String
     let type: ItemContentType
@@ -41,20 +41,8 @@ extension ItemListUiModel: Identifiable {
     var id: String { itemId + shareId }
 }
 
-extension ItemListUiModel: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(itemId)
-        hasher.combine(shareId)
-        hasher.combine(type)
-        hasher.combine(title)
-        hasher.combine(createTime)
-        hasher.combine(modifyTime)
-        hasher.combine(detail)
-    }
-}
-
 extension SymmetricallyEncryptedItem {
-    func toItemListUiModel(_ symmetricKey: SymmetricKey) async throws -> ItemListUiModel {
+    func toItemListUiModel(_ symmetricKey: SymmetricKey) throws -> ItemListUiModel {
         let encryptedItemContent = try getEncryptedItemContent()
         let name = try symmetricKey.decrypt(encryptedItemContent.name)
 
