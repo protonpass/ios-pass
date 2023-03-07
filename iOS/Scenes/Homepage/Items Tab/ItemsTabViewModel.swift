@@ -1,6 +1,6 @@
 //
-// HomepageView.swift
-// Proton Pass - Created on 06/03/2023.
+// ItemsTabViewModel.swift
+// Proton Pass - Created on 07/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,27 +18,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Core
 
-struct HomepageView: View {
-    @State private var selectedTab = Tab.items
-    let viewModel: HomepageViewModel
+protocol ItemsTabViewModelDelegate: AnyObject {
+    func itemsTabViewModelWantsToSearch()
+    func itemsTabViewModelWantsToPresentVaultList()
+}
 
-    var body: some View {
-        TabView(selection: $selectedTab) {
-            ItemsTabView(viewModel: viewModel.itemsTabViewModel)
-                .tag(Tab.items)
+final class ItemsTabViewModel: ObservableObject, DeinitPrintable {
+    deinit { print(deinitMessage) }
 
-            Text("Account")
-                .tag(Tab.account)
-        }
-        .safeAreaInset(edge: .bottom) {
-            HomepageTabBar(selectedTab: $selectedTab, action: viewModel.createNewItem)
-        }
-        .onFirstAppear {
-            Task {
-                await viewModel.vaultsManager.loadVaultsOrCreateIfNecessary()
-            }
-        }
+    weak var delegate: ItemsTabViewModelDelegate?
+}
+
+// MARK: - Public APIs
+extension ItemsTabViewModel {
+    func search() {
+        delegate?.itemsTabViewModelWantsToSearch()
+    }
+
+    func presentVaultList() {
+        delegate?.itemsTabViewModelWantsToPresentVaultList()
     }
 }

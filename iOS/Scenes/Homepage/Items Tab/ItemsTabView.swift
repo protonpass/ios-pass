@@ -1,6 +1,6 @@
 //
-// HomepageView.swift
-// Proton Pass - Created on 06/03/2023.
+// ItemsTabView.swift
+// Proton Pass - Created on 07/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,24 +20,17 @@
 
 import SwiftUI
 
-struct HomepageView: View {
-    @State private var selectedTab = Tab.items
-    let viewModel: HomepageViewModel
+struct ItemsTabView: View {
+    @StateObject var viewModel: ItemsTabViewModel
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            ItemsTabView(viewModel: viewModel.itemsTabViewModel)
-                .tag(Tab.items)
+        VStack {
+            Button(action: viewModel.search) {
+                Text("Search")
+            }
 
-            Text("Account")
-                .tag(Tab.account)
-        }
-        .safeAreaInset(edge: .bottom) {
-            HomepageTabBar(selectedTab: $selectedTab, action: viewModel.createNewItem)
-        }
-        .onFirstAppear {
-            Task {
-                await viewModel.vaultsManager.loadVaultsOrCreateIfNecessary()
+            Button(action: viewModel.presentVaultList) {
+                Text("Vault list")
             }
         }
     }

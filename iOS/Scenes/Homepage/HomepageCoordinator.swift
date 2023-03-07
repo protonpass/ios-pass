@@ -40,6 +40,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let logger: Logger
     private let logManager: LogManager
     private let preferences: Preferences
+    private let shareRepository: ShareRepositoryProtocol
+    private let symmetricKey: SymmetricKey
     private let userData: UserData
 
     // Lazily initialized properties
@@ -72,6 +74,12 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                             manager: logManager)
         self.logManager = logManager
         self.preferences = preferences
+        self.shareRepository = ShareRepository(userData: userData,
+                                               container: container,
+                                               authCredential: authCredential,
+                                               apiService: apiService,
+                                               logManager: logManager)
+        self.symmetricKey = symmetricKey
         self.userData = userData
         super.init()
         self.finalizeInitialization()
@@ -88,7 +96,11 @@ private extension HomepageCoordinator {
     }
 
     func start() {
-        let homepageViewModel = HomepageViewModel()
+        let homepageViewModel = HomepageViewModel(itemRepository: itemRepository,
+                                                  logManager: logManager,
+                                                  shareRepository: shareRepository,
+                                                  symmetricKey: symmetricKey,
+                                                  userData: userData)
         homepageViewModel.delegate = self
         let homepageView = HomepageView(viewModel: homepageViewModel)
 
@@ -219,6 +231,14 @@ extension HomepageCoordinator {
 extension HomepageCoordinator: HomepageViewModelDelegate {
     func homepageViewModelWantsToCreateNewItem() {
         presentCreateItemView()
+    }
+
+    func homepageViewModelWantsToSearch() {
+        print(#function)
+    }
+
+    func homepageViewModelWantsToPresentVaultList() {
+        print(#function)
     }
 }
 

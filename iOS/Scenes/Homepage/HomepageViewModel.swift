@@ -18,21 +18,54 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
+import CryptoKit
+import ProtonCore_Login
 
 protocol HomepageViewModelDelegate: AnyObject {
     func homepageViewModelWantsToCreateNewItem()
+    func homepageViewModelWantsToSearch()
+    func homepageViewModelWantsToPresentVaultList()
 }
 
 final class HomepageViewModel: DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    let vaultsManager: VaultsManager
+    let itemsTabViewModel: ItemsTabViewModel
+
     weak var delegate: HomepageViewModelDelegate?
+
+    init(itemRepository: ItemRepositoryProtocol,
+         logManager: LogManager,
+         shareRepository: ShareRepositoryProtocol,
+         symmetricKey: SymmetricKey,
+         userData: UserData) {
+        self.vaultsManager = .init(itemRepository: itemRepository,
+                                   logManager: logManager,
+                                   shareRepository: shareRepository,
+                                   symmetricKey: symmetricKey,
+                                   userData: userData)
+        self.itemsTabViewModel = .init()
+        self.itemsTabViewModel.delegate = self
+    }
 }
 
 // MARK: - Public APIs
 extension HomepageViewModel {
     func createNewItem() {
         delegate?.homepageViewModelWantsToCreateNewItem()
+    }
+}
+
+// MARK: - ItemsTabViewModelDelegate
+extension HomepageViewModel: ItemsTabViewModelDelegate {
+    func itemsTabViewModelWantsToSearch() {
+        delegate?.homepageViewModelWantsToSearch()
+    }
+
+    func itemsTabViewModelWantsToPresentVaultList() {
+        delegate?.homepageViewModelWantsToPresentVaultList()
     }
 }

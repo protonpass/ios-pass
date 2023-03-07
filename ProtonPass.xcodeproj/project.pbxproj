@@ -306,6 +306,8 @@
 		3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29829B764D60070830B /* Coordinator+ShowHideSpinner.swift */; };
 		3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29A29B76BF60070830B /* VaultsManager.swift */; };
 		3569B29F29B77A760070830B /* VaultContentUiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29E29B77A760070830B /* VaultContentUiModel.swift */; };
+		3569B2A129B788600070830B /* ItemsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A029B788600070830B /* ItemsTabView.swift */; };
+		3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */; };
 		356A34B72977B18000969BA2 /* URLUtils+OTPParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34B62977B18000969BA2 /* URLUtils+OTPParser.swift */; };
 		356A34B92977B46300969BA2 /* OTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34B82977B46300969BA2 /* OTP.swift */; };
 		356A34BB2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */; };
@@ -918,6 +920,8 @@
 		3569B29829B764D60070830B /* Coordinator+ShowHideSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinator+ShowHideSpinner.swift"; sourceTree = "<group>"; };
 		3569B29A29B76BF60070830B /* VaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultsManager.swift; sourceTree = "<group>"; };
 		3569B29E29B77A760070830B /* VaultContentUiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultContentUiModel.swift; sourceTree = "<group>"; };
+		3569B2A029B788600070830B /* ItemsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabView.swift; sourceTree = "<group>"; };
+		3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabViewModel.swift; sourceTree = "<group>"; };
 		356A34B62977B18000969BA2 /* URLUtils+OTPParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+OTPParser.swift"; sourceTree = "<group>"; };
 		356A34B82977B46300969BA2 /* OTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTP.swift; sourceTree = "<group>"; };
 		356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+OTPParserTests.swift"; sourceTree = "<group>"; };
@@ -1667,6 +1671,15 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
+		3569B2A229B7888B0070830B /* Items Tab */ = {
+			isa = PBXGroup;
+			children = (
+				3569B2A029B788600070830B /* ItemsTabView.swift */,
+				3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */,
+			);
+			path = "Items Tab";
+			sourceTree = "<group>";
+		};
 		356B21D82870F95B001220CB /* Storage */ = {
 			isa = PBXGroup;
 			children = (
@@ -2211,6 +2224,7 @@
 				35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */,
 				3569B29A29B76BF60070830B /* VaultsManager.swift */,
 				35603A0029B6587C00021BFB /* Create & Edit Items */,
+				3569B2A229B7888B0070830B /* Items Tab */,
 				35F8CD0A29B630E10017DBC6 /* Supporting Views */,
 			);
 			path = Homepage;
@@ -3299,6 +3313,7 @@
 				3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */,
 				356AD3FB29409C7600EBE4E9 /* DevPreviewsView.swift in Sources */,
 				355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */,
+				3569B2A129B788600070830B /* ItemsTabView.swift in Sources */,
 				35F8CD0629B627720017DBC6 /* HomepageViewModel.swift in Sources */,
 				3565FD55298D3E5700E2A0EE /* TOTPCircularTimer.swift in Sources */,
 				3514E85C28CB2BB1006BD54A /* TrashViewModel.swift in Sources */,
@@ -3359,6 +3374,7 @@
 				3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */,
 				3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */,
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
+				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
 				357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */,
 				355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */,
 				35992155299F910500FEFA32 /* MailboxSection.swift in Sources */,
