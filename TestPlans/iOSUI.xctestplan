@@ -15,9 +15,6 @@
     {
       "parallelizable" : true,
       "skippedTests" : [
-        "ExternalAccountsCapabilityATests\/testSignInWithExternalAccountWorks()",
-        "ExternalAccountsCapabilityATests\/testSignInWithUsernameAccountWorks()",
-        "ExternalAccountsCapabilityATests\/testSignUpWithInternalAccountWorks()",
         "SettingsTests\/testTelemetrySettings()"
       ],
       "target" : {

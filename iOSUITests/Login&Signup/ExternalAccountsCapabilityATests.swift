@@ -145,18 +145,8 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
             .verify.recoveryDialogDisplay()
             .skipButtonTap(robot: SignupHumanVerificationV3Robot.self)
             .switchToEmailHVMethod()
-            .performEmailVerificationV3(email: randomEmail, code: "666666", to: AccountSummaryRobot.self)
-            .verify.startUsingPassButtonIsShown()
-        QuarkCommands.addPassScopeToUser(username: randomUsername,
-                                         currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
-            if case .failure(let error) = result {
-                XCTFail("\(error)")
-            }
-            _ = summaryBot
-                .startUsingAppTap(robot: AccountSummaryRobot.self)
-//                .verify.startUsingPassButtonIsShown()
-//                .verify.isOnboardingViewShown()
-        }
+            .performEmailVerificationV3(email: randomEmail, code: "666666", to: AutoFillRobot.self)
+            .verify.isAutoFillSetupShown(timeout: 30)
     }
 
     func testSignUpWithExternalAccountIsNotAvailable() {
