@@ -41,7 +41,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
     // Injected properties
     private let symmetricKey: SymmetricKey
     private let itemRepository: ItemRepositoryProtocol
-    private let vaultSelection: VaultSelection
+    private let vaults: [Vault]
     private let logger: Logger
     let preferences: Preferences
 
@@ -88,12 +88,12 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
 
     init(symmetricKey: SymmetricKey,
          itemRepository: ItemRepositoryProtocol,
-         vaultSelection: VaultSelection,
+         vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager) {
         self.symmetricKey = symmetricKey
         self.itemRepository = itemRepository
-        self.vaultSelection = vaultSelection
+        self.vaults = vaults
         self.preferences = preferences
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
@@ -123,8 +123,7 @@ final class SearchViewModel: DeinitPrintable, ObservableObject {
             state = .initializing
             let items = try await itemRepository.getItems(state: .active)
             let getVaultName: (String) -> String = { shareId in
-                let vault = self.vaultSelection.vaults.first { $0.shareId == shareId }
-                return vault?.name ?? ""
+                self.vaults.first { $0.shareId == shareId }?.name ?? ""
             }
             self.items = try items.map { try SearchableItem(symmetricallyEncryptedItem: $0,
                                                             vaultName: getVaultName($0.shareId)) }

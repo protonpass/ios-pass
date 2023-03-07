@@ -50,6 +50,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // References
     private weak var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
+    private weak var searchViewModel: SearchViewModel?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -245,7 +246,16 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
     }
 
     func homepageViewModelWantsToSearch() {
-        print(#function)
+        let viewModel = SearchViewModel(symmetricKey: symmetricKey,
+                                        itemRepository: itemRepository,
+                                        vaults: [],
+                                        preferences: preferences,
+                                        logManager: logManager)
+        viewModel.delegate = self
+        searchViewModel = viewModel
+        let viewController = UIHostingController(rootView: SearchView(viewModel: viewModel))
+        let navigationController = UINavigationController(rootViewController: viewController)
+        present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func homepageViewModelWantsToPresentVaultList() {
@@ -334,5 +344,40 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.clipboardManager.copy(text: password, bannerMessage: "Password copied")
         }
+    }
+}
+
+// MARK: - SearchViewModelDelegate
+extension HomepageCoordinator: SearchViewModelDelegate {
+    func searchViewModelWantsToShowLoadingHud() {
+        showLoadingHud()
+    }
+
+    func searchViewModelWantsToHideLoadingHud() {
+        hideLoadingHud()
+    }
+
+    func searchViewModelWantsToDismiss() {
+        dismissTopMostViewController()
+    }
+
+    func searchViewModelWantsToShowItemDetail(_ item: ItemContent) {
+        print(#function)
+    }
+
+    func searchViewModelWantsToEditItem(_ item: ItemContent) {
+        print(#function)
+    }
+
+    func searchViewModelWantsToCopy(text: String, bannerMessage: String) {
+        print(#function)
+    }
+
+    func searchViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
+        print(#function)
+    }
+
+    func searchViewModelDidFail(_ error: Error) {
+        print(#function)
     }
 }
