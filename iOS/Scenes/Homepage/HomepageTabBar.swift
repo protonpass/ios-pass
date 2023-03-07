@@ -53,8 +53,8 @@ struct HomepageTabBar: View {
 
             Button(action: action) {
                 Image(uiImage: IconProvider.plus)
-                    .foregroundColor(.primary)
             }
+            .buttonStyle(PlusButtonStyle(normalColor: .primary, pressedColor: .passBrand))
             .padding(.horizontal, UIDevice.current.isIpad ? 100 : 0)
 
             if !UIDevice.current.isIpad {
@@ -81,5 +81,16 @@ struct HomepageTabBar: View {
             Image(uiImage: tab.icon)
                 .foregroundColor(selectedTab == tab ? .passBrand : .primary)
         })
+    }
+}
+
+private struct PlusButtonStyle: ButtonStyle {
+    let normalColor: Color
+    let pressedColor: Color
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration
+            .label
+            .foregroundColor(configuration.isPressed ? pressedColor : normalColor)
     }
 }
