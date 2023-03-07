@@ -228,6 +228,7 @@ public final class PPNavigationController: UINavigationController, UIGestureReco
 
     override public func viewDidLoad() {
         super.viewDidLoad()
+        navigationBar.isHidden = true
         interactivePopGestureRecognizer?.delegate = self
     }
 

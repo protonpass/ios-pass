@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import CoreData
 import CryptoKit
@@ -49,6 +50,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // References
     private weak var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
+
+    private var cancellables = Set<AnyCancellable>()
 
     init(apiService: APIService,
          container: NSPersistentContainer,
@@ -93,11 +96,18 @@ private extension HomepageCoordinator {
     /// before the Coordinator is fully initialized. This method is to resolve these dependencies.
     func finalizeInitialization() {
         clipboardManager.bannerManager = bannerManager
+
+        preferences.objectWillChange
+            .sink { _ in
+                self.rootViewController.overrideUserInterfaceStyle = self.preferences.theme.userInterfaceStyle
+            }
+            .store(in: &cancellables)
     }
 
     func start() {
         let homepageViewModel = HomepageViewModel(itemRepository: itemRepository,
                                                   logManager: logManager,
+                                                  preferences: preferences,
                                                   shareRepository: shareRepository,
                                                   symmetricKey: symmetricKey,
                                                   userData: userData)
@@ -109,6 +119,7 @@ private extension HomepageCoordinator {
         }
 
         start(with: homepageView, secondaryView: placeholderView)
+        rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
     }
 
     func informAliasesLimit() {
