@@ -24,13 +24,13 @@ import UIComponents
 
 // swiftlint:disable:next type_name
 enum Tab {
-    case items, account
+    case items, profile
 
     var icon: UIImage {
         switch self {
         case .items:
             return IconProvider.listBullets
-        case .account:
+        case .profile:
             return IconProvider.user
         }
     }
@@ -62,7 +62,7 @@ struct HomepageTabBar: View {
                 Spacer()
             }
 
-            tab(for: .account)
+            tab(for: .profile)
 
             Spacer()
         }

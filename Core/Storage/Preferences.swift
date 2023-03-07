@@ -22,7 +22,8 @@ import SwiftUI
 
 let kSharedUserDefaults = UserDefaults(suiteName: Constants.appGroup)
 
-public final class Preferences: ObservableObject {
+public final class Preferences: ObservableObject, DeinitPrintable {
+    deinit { print(deinitMessage) }
     public init() {}
 
     @AppStorage("quickTypeBar", store: kSharedUserDefaults)

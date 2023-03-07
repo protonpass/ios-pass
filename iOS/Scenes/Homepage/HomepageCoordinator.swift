@@ -30,6 +30,10 @@ import SwiftUI
 import UIComponents
 import UIKit
 
+protocol HomepageCoordinatorDelegate: AnyObject {
+    func homepageCoordinatorWantsToLogOut()
+}
+
 final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -53,6 +57,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private weak var searchViewModel: SearchViewModel?
 
     private var cancellables = Set<AnyCancellable>()
+
+    weak var delegate: HomepageCoordinatorDelegate?
 
     init(apiService: APIService,
          container: NSPersistentContainer,
@@ -99,7 +105,7 @@ private extension HomepageCoordinator {
         clipboardManager.bannerManager = bannerManager
 
         preferences.objectWillChange
-            .sink { _ in
+            .sink { [unowned self] _ in
                 self.rootViewController.overrideUserInterfaceStyle = self.preferences.theme.userInterfaceStyle
             }
             .store(in: &cancellables)
@@ -115,7 +121,7 @@ private extension HomepageCoordinator {
         homepageViewModel.delegate = self
         let homepageView = HomepageView(viewModel: homepageViewModel)
 
-        let placeholderView = ItemDetailPlaceholderView {
+        let placeholderView = ItemDetailPlaceholderView { [unowned self] in
             self.popTopViewController(animated: true)
         }
 
@@ -130,7 +136,7 @@ private extension HomepageCoordinator {
     func presentCreateItemView() {
         let shareId = "39hry1jlHiPzhXRXrWjfS6t3fqA14QbYfrbF30l2PYYWOhVpyJ33nhujM4z4SHtfuQqTx6e7oSQokrqhLMD8LQ=="
         let view = ItemTypeListView { [unowned self] itemType in
-            dismissTopMostViewController {
+            dismissTopMostViewController { [unowned self] in
                 switch itemType {
                 case .login:
                     let logInType = ItemCreationType.login(title: nil, url: nil, autofill: false)
@@ -260,6 +266,10 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
 
     func homepageViewModelWantsToPresentVaultList() {
         print(#function)
+    }
+
+    func homepageViewModelWantsToLogOut() {
+        delegate?.homepageCoordinatorWantsToLogOut()
     }
 }
 

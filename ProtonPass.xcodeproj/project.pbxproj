@@ -309,6 +309,8 @@
 		3569B2A129B788600070830B /* ItemsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A029B788600070830B /* ItemsTabView.swift */; };
 		3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */; };
 		3569B2A629B7C39F0070830B /* View+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A529B7C39F0070830B /* View+Theme.swift */; };
+		3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A829B7D22E0070830B /* ProfileTabView.swift */; };
+		3569B2AB29B7D2430070830B /* ProfileTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */; };
 		356A34B72977B18000969BA2 /* URLUtils+OTPParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34B62977B18000969BA2 /* URLUtils+OTPParser.swift */; };
 		356A34B92977B46300969BA2 /* OTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34B82977B46300969BA2 /* OTP.swift */; };
 		356A34BB2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */; };
@@ -924,6 +926,8 @@
 		3569B2A029B788600070830B /* ItemsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabView.swift; sourceTree = "<group>"; };
 		3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabViewModel.swift; sourceTree = "<group>"; };
 		3569B2A529B7C39F0070830B /* View+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Theme.swift"; sourceTree = "<group>"; };
+		3569B2A829B7D22E0070830B /* ProfileTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
+		3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabViewModel.swift; sourceTree = "<group>"; };
 		356A34B62977B18000969BA2 /* URLUtils+OTPParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+OTPParser.swift"; sourceTree = "<group>"; };
 		356A34B82977B46300969BA2 /* OTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTP.swift; sourceTree = "<group>"; };
 		356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+OTPParserTests.swift"; sourceTree = "<group>"; };
@@ -1683,6 +1687,15 @@
 			path = "Items Tab";
 			sourceTree = "<group>";
 		};
+		3569B2A729B7D2030070830B /* Profile Tab */ = {
+			isa = PBXGroup;
+			children = (
+				3569B2A829B7D22E0070830B /* ProfileTabView.swift */,
+				3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */,
+			);
+			path = "Profile Tab";
+			sourceTree = "<group>";
+		};
 		356B21D82870F95B001220CB /* Storage */ = {
 			isa = PBXGroup;
 			children = (
@@ -2228,6 +2241,7 @@
 				3569B29A29B76BF60070830B /* VaultsManager.swift */,
 				35603A0029B6587C00021BFB /* Create & Edit Items */,
 				3569B2A229B7888B0070830B /* Items Tab */,
+				3569B2A729B7D2030070830B /* Profile Tab */,
 				35F8CD0A29B630E10017DBC6 /* Supporting Views */,
 			);
 			path = Homepage;
@@ -3375,6 +3389,7 @@
 				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
 				3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */,
+				3569B2AB29B7D2430070830B /* ProfileTabViewModel.swift in Sources */,
 				3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */,
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
 				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
@@ -3400,6 +3415,7 @@
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				3586F3B1295884B000738245 /* GeneralSettingsSection.swift in Sources */,
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
+				3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */,
 				354BB15528A2895F00F50040 /* SearchView.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
 				3554D42D2967854000DF0CBE /* DeveloperModeStateManager.swift in Sources */,

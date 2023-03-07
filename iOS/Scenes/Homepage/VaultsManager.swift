@@ -29,7 +29,9 @@ enum VaultManagerState {
     case error(Error)
 }
 
-final class VaultsManager: ObservableObject {
+final class VaultsManager: ObservableObject, DeinitPrintable {
+    deinit { print(deinitMessage) }
+
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
     private let shareRepository: ShareRepositoryProtocol

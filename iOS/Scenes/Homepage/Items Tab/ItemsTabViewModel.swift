@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 
 protocol ItemsTabViewModelDelegate: AnyObject {
@@ -28,7 +29,22 @@ protocol ItemsTabViewModelDelegate: AnyObject {
 final class ItemsTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    let vaultsManager: VaultsManager
+
     weak var delegate: ItemsTabViewModelDelegate?
+
+    private var cancellables = Set<AnyCancellable>()
+
+    init(vaultsManager: VaultsManager) {
+        self.vaultsManager = vaultsManager
+    }
+}
+
+// MARK: - Private APIs
+private extension ItemsTabViewModel {
+    func finalizeInitialization() {
+        vaultsManager.attach(to: self, storeIn: &cancellables)
+    }
 }
 
 // MARK: - Public APIs

@@ -28,6 +28,7 @@ protocol HomepageViewModelDelegate: AnyObject {
     func homepageViewModelWantsToCreateNewItem()
     func homepageViewModelWantsToSearch()
     func homepageViewModelWantsToPresentVaultList()
+    func homepageViewModelWantsToLogOut()
 }
 
 final class HomepageViewModel: ObservableObject, DeinitPrintable {
@@ -35,6 +36,7 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
 
     let itemsTabViewModel: ItemsTabViewModel
     let preferences: Preferences
+    let profileTabViewModel: ProfileTabViewModel
     let vaultsManager: VaultsManager
 
     weak var delegate: HomepageViewModelDelegate?
@@ -47,13 +49,15 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
          shareRepository: ShareRepositoryProtocol,
          symmetricKey: SymmetricKey,
          userData: UserData) {
-        self.itemsTabViewModel = .init()
+        let vaultsManager = VaultsManager(itemRepository: itemRepository,
+                                          logManager: logManager,
+                                          shareRepository: shareRepository,
+                                          symmetricKey: symmetricKey,
+                                          userData: userData)
+        self.itemsTabViewModel = .init(vaultsManager: vaultsManager)
         self.preferences = preferences
-        self.vaultsManager = .init(itemRepository: itemRepository,
-                                   logManager: logManager,
-                                   shareRepository: shareRepository,
-                                   symmetricKey: symmetricKey,
-                                   userData: userData)
+        self.profileTabViewModel = .init()
+        self.vaultsManager = vaultsManager
         self.finalizeInitialization()
     }
 }
@@ -62,6 +66,7 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
 private extension HomepageViewModel {
     func finalizeInitialization() {
         itemsTabViewModel.delegate = self
+        profileTabViewModel.delegate = self
         preferences.attach(to: self, storeIn: &cancellables)
     }
 }
@@ -81,5 +86,12 @@ extension HomepageViewModel: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsToPresentVaultList() {
         delegate?.homepageViewModelWantsToPresentVaultList()
+    }
+}
+
+// MARK: - ProfileTabViewModelDelegate
+extension HomepageViewModel: ProfileTabViewModelDelegate {
+    func profileTabViewModelWantsToLogOut() {
+        delegate?.homepageViewModelWantsToLogOut()
     }
 }
