@@ -30,8 +30,8 @@ struct HomepageView: View {
             ItemsTabView(viewModel: viewModel.itemsTabViewModel)
                 .tag(Tab.items)
 
-            Text("Account")
-                .tag(Tab.account)
+            ProfileTabView(viewModel: viewModel.profileTabViewModel)
+                .tag(Tab.profile)
         }
         .safeAreaInset(edge: .bottom) {
             HomepageTabBar(selectedTab: $selectedTab, action: viewModel.createNewItem)

@@ -201,6 +201,7 @@ final class AppCoordinator {
                                                           preferences: preferences,
                                                           symmetricKey: symmetricKey,
                                                           userData: sessionData.userData)
+            homepageCoordinator.delegate = self
             self.homepageCoordinator = homepageCoordinator
             self.welcomeCoordinator = nil
             animateUpdateRootViewController(homepageCoordinator.rootViewController) {
@@ -337,5 +338,12 @@ private extension AppCoordinator {
                                       preferredStyle: .alert)
         alert.addAction(.init(title: "OK", style: .default))
         rootViewController?.present(alert, animated: true)
+    }
+}
+
+// MARK: - HomepageCoordinatorDelegate
+extension AppCoordinator: HomepageCoordinatorDelegate {
+    func homepageCoordinatorWantsToLogOut() {
+        appStateObserver.updateAppState(.loggedOut(.userInitiated))
     }
 }
