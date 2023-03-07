@@ -116,7 +116,7 @@ private extension HomepageCoordinator {
                 case .note:
                     self.presentCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
                 case .password:
-                    break
+                    self.presentGeneratePasswordView(delegate: self, mode: .random)
                 }
             }
         }
@@ -294,5 +294,14 @@ extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
 extension HomepageCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
         presentMailboxSelectionView(selection: mailboxSelection, mode: .createAliasLite)
+    }
+}
+
+// MARK: - GeneratePasswordViewModelDelegate
+extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
+    func generatePasswordViewModelDidConfirm(password: String) {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.clipboardManager.copy(text: password, bannerMessage: "Password copied")
+        }
     }
 }
