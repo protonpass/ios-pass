@@ -332,7 +332,7 @@ private extension CredentialsViewModel {
             }
 
             let matchedItems = try await matchedEncryptedItems.sorted()
-                .parallelMap { try await $0.item.toItemListUiModel(self.symmetricKey) }
+                .parallelMap { try $0.item.toItemListUiModel(self.symmetricKey) }
             let notMatchedItems = try await notMatchedEncryptedItems.sorted()
                 .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
 

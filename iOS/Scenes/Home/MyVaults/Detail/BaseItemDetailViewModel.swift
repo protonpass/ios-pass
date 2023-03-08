@@ -78,7 +78,7 @@ class BaseItemDetailViewModel {
                     try await itemRepository.getItemTask(shareId: itemContent.shareId,
                                                          itemId: itemContent.item.itemID).value {
                     let symmetricKey = itemRepository.symmetricKey
-                    let item = try await encryptedItem.toItemListUiModel(symmetricKey)
+                    let item = try encryptedItem.toItemListUiModel(symmetricKey)
                     delegate?.itemDetailViewModelWantsToRestore(item)
                     logger.info("Restored \(item.debugInformation)")
                 }

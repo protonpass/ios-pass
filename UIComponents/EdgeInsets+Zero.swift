@@ -1,6 +1,6 @@
 //
-// VaultContentUiModel.swift
-// Proton Pass - Created on 07/03/2023.
+// EdgeInsets+Zero.swift
+// Proton Pass - Created on 08/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,10 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
+import SwiftUI
 
-struct VaultContentUiModel: Hashable {
-    let vault: Vault
-    /// `Active` items only
-    let items: [ItemListUiModelV2]
+public extension EdgeInsets {
+    static var zero: EdgeInsets { .init(top: 0, leading: 0, bottom: 0, trailing: 0) }
 }
