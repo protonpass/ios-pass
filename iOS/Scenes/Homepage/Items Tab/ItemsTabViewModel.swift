@@ -41,6 +41,7 @@ final class ItemsTabViewModel: ObservableObject, DeinitPrintable {
                             category: "\(Self.self)",
                             manager: logManager)
         self.vaultsManager = vaultsManager
+        self.finalizeInitialization()
     }
 }
 

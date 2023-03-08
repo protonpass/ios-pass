@@ -30,39 +30,41 @@ struct EditableVaultListView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 5)
             ScrollView {
-                VStack {
+                VStack(spacing: 0) {
                     switch viewModel.vaultsManager.state {
                     case .loading, .error:
                         // Should never happen
                         ProgressView()
                     case .loaded(let vaults):
-                        let allItemCount = vaults.map { $0.items.count }.reduce(0) { $0 + $1 }
-                        HStack {
-                            VStack {
-                                Text("All vaults")
-                                Text("\(allItemCount) items")
-                            }
-
-                            Spacer()
-
-                            if viewModel.vaultsManager.selectedVault == nil {
-                                Label("", systemImage: "checkmark")
-                                    .foregroundColor(.passBrand)
-                            }
-                        }
-
                         ForEach(vaults, id: \.hashValue) { vault in
-                            HStack {
-                                VStack {
+                            HStack(spacing: 16) {
+                                Color.passBrand
+                                    .clipShape(Circle())
+                                    .frame(width: 40)
+
+                                VStack(alignment: .leading) {
                                     Text(vault.vault.name)
                                     Text("\(vault.items.count) items")
+                                        .font(.callout)
+                                        .foregroundColor(Color.textWeak)
+                                }
+
+                                Spacer()
+
+                                if vault.vault == viewModel.vaultsManager.selectedVault {
+                                    Label("", systemImage: "checkmark")
+                                        .foregroundColor(.passBrand)
+                                        .padding(.trailing)
                                 }
                             }
-                        }
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 70)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                viewModel.vaultsManager.select(vault: vault.vault)
+                            }
 
-                        VStack {
-                            Text("Trash")
-                            Text("0 items")
+                            PassDivider()
                         }
                     }
                 }
