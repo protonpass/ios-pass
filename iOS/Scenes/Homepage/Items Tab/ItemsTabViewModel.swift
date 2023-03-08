@@ -18,17 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToSearch()
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
+    func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
+    func itemsTabViewModelDidEncounter(error: Error)
 }
 
 final class ItemsTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    let itemRepository: ItemRepositoryProtocol
     let logger: Logger
     let vaultsManager: VaultsManager
 
@@ -36,7 +40,10 @@ final class ItemsTabViewModel: ObservableObject, DeinitPrintable {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(logManager: LogManager, vaultsManager: VaultsManager) {
+    init(itemRepository: ItemRepositoryProtocol,
+         logManager: LogManager,
+         vaultsManager: VaultsManager) {
+        self.itemRepository = itemRepository
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
@@ -64,6 +71,20 @@ extension ItemsTabViewModel {
             delegate?.itemsTabViewModelWantsToPresentVaultList(vaultsManager: vaultsManager)
         default:
             logger.error("Can not present vault list. Vaults are not loaded.")
+        }
+    }
+
+    func viewDetail(of item: ItemListUiModelV2) {
+        Task { @MainActor in
+            do {
+                if let itemContent =
+                    try await itemRepository.getDecryptedItemContent(shareId: item.shareId,
+                                                                     itemId: item.itemId) {
+                    delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
+                }
+            } catch {
+                delegate?.itemsTabViewModelDidEncounter(error: error)
+            }
         }
     }
 }

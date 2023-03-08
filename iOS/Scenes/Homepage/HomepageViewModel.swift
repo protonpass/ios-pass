@@ -28,7 +28,9 @@ protocol HomepageViewModelDelegate: AnyObject {
     func homepageViewModelWantsToCreateNewItem()
     func homepageViewModelWantsToSearch()
     func homepageViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
+    func homepageViewModelWantsToViewDetail(of itemContent: ItemContent)
     func homepageViewModelWantsToLogOut()
+    func homepageViewModelDidEncounter(error: Error)
 }
 
 final class HomepageViewModel: ObservableObject, DeinitPrintable {
@@ -56,7 +58,9 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
                                           shareRepository: shareRepository,
                                           symmetricKey: symmetricKey,
                                           userData: userData)
-        self.itemsTabViewModel = .init(logManager: logManager, vaultsManager: vaultsManager)
+        self.itemsTabViewModel = .init(itemRepository: itemRepository,
+                                       logManager: logManager,
+                                       vaultsManager: vaultsManager)
         self.preferences = preferences
         self.profileTabViewModel = .init()
         self.vaultsManager = vaultsManager
@@ -88,6 +92,14 @@ extension HomepageViewModel: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
         delegate?.homepageViewModelWantsToPresentVaultList(vaultsManager: vaultsManager)
+    }
+
+    func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
+        delegate?.homepageViewModelWantsToViewDetail(of: itemContent)
+    }
+
+    func itemsTabViewModelDidEncounter(error: Error) {
+        delegate?.homepageViewModelDidEncounter(error: error)
     }
 }
 
