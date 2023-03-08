@@ -46,11 +46,11 @@ public struct CapsuleTextButton: View {
     public var body: some View {
         Button(action: action) {
             Text(title)
+                .font(.callout)
                 .foregroundColor(disabled ? .passBackground : Color(uiColor: titleColor))
                 .frame(height: height)
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity)
-                .background(Color(uiColor: backgroundColor).opacity(disabled ? 0.08 : 1))
+                .padding(.horizontal, 16)
+                .background(Color(uiColor: backgroundColor))
                 .clipShape(Capsule())
         }
         .animation(.default, value: disabled)

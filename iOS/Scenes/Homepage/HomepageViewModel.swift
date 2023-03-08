@@ -27,7 +27,7 @@ import ProtonCore_Login
 protocol HomepageViewModelDelegate: AnyObject {
     func homepageViewModelWantsToCreateNewItem()
     func homepageViewModelWantsToSearch()
-    func homepageViewModelWantsToPresentVaultList()
+    func homepageViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
     func homepageViewModelWantsToLogOut()
 }
 
@@ -44,17 +44,19 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
 
     init(itemRepository: ItemRepositoryProtocol,
+         manualLogIn: Bool,
          logManager: LogManager,
          preferences: Preferences,
          shareRepository: ShareRepositoryProtocol,
          symmetricKey: SymmetricKey,
          userData: UserData) {
         let vaultsManager = VaultsManager(itemRepository: itemRepository,
+                                          manualLogIn: manualLogIn,
                                           logManager: logManager,
                                           shareRepository: shareRepository,
                                           symmetricKey: symmetricKey,
                                           userData: userData)
-        self.itemsTabViewModel = .init(vaultsManager: vaultsManager)
+        self.itemsTabViewModel = .init(logManager: logManager, vaultsManager: vaultsManager)
         self.preferences = preferences
         self.profileTabViewModel = .init()
         self.vaultsManager = vaultsManager
@@ -84,8 +86,8 @@ extension HomepageViewModel: ItemsTabViewModelDelegate {
         delegate?.homepageViewModelWantsToSearch()
     }
 
-    func itemsTabViewModelWantsToPresentVaultList() {
-        delegate?.homepageViewModelWantsToPresentVaultList()
+    func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
+        delegate?.homepageViewModelWantsToPresentVaultList(vaultsManager: vaultsManager)
     }
 }
 

@@ -198,6 +198,7 @@ final class AppCoordinator {
                                                           container: container,
                                                           credentialManager: credentialManager,
                                                           logManager: logManager,
+                                                          manualLogIn: manualLogIn,
                                                           preferences: preferences,
                                                           symmetricKey: symmetricKey,
                                                           userData: sessionData.userData)

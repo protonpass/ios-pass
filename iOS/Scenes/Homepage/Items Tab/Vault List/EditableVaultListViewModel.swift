@@ -1,6 +1,6 @@
 //
-// ItemsTabViewModel.swift
-// Proton Pass - Created on 07/03/2023.
+// EditableVaultListViewModel.swift
+// Proton Pass - Created on 08/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,48 +21,34 @@
 import Combine
 import Core
 
-protocol ItemsTabViewModelDelegate: AnyObject {
-    func itemsTabViewModelWantsToSearch()
-    func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
+protocol EditableVaultListViewModelDelegate: AnyObject {
+    func editableVaultListViewModelWantsToCreateNewVault()
 }
 
-final class ItemsTabViewModel: ObservableObject, DeinitPrintable {
+final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    let logger: Logger
     let vaultsManager: VaultsManager
 
-    weak var delegate: ItemsTabViewModelDelegate?
-
+    weak var delegate: EditableVaultListViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
-    init(logManager: LogManager, vaultsManager: VaultsManager) {
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+    init(vaultsManager: VaultsManager) {
         self.vaultsManager = vaultsManager
+        self.finalizeInitialization()
     }
 }
 
 // MARK: - Private APIs
-private extension ItemsTabViewModel {
+private extension EditableVaultListViewModel {
     func finalizeInitialization() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
     }
 }
 
 // MARK: - Public APIs
-extension ItemsTabViewModel {
-    func search() {
-        delegate?.itemsTabViewModelWantsToSearch()
-    }
-
-    func presentVaultList() {
-        switch vaultsManager.state {
-        case .loaded:
-            delegate?.itemsTabViewModelWantsToPresentVaultList(vaultsManager: vaultsManager)
-        default:
-            logger.error("Can not present vault list. Vaults are not loaded.")
-        }
+extension EditableVaultListViewModel {
+    func createNewVault() {
+        delegate?.editableVaultListViewModelWantsToCreateNewVault()
     }
 }
