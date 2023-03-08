@@ -27,6 +27,7 @@ import ProtonCore_HumanVerification
 import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
+import ProtonCore_Observability
 import ProtonCore_Services
 
 protocol APIManagerDelegate: AnyObject {
@@ -83,7 +84,7 @@ final class APIManager {
         self.apiService.authDelegate = authHelper
         self.apiService.serviceDelegate = self
 
-        self.configureFeatureFlags()
+        self.setUpCore()
         self.fetchUnauthSessionIfNeeded()
 
         humanHelper = HumanCheckHelper(apiService: apiService, clientApp: .other(named: "pass"))
@@ -104,12 +105,14 @@ final class APIManager {
         apiService.authDelegate = authHelper
     }
 
-    private func configureFeatureFlags() {
+    private func setUpCore() {
+        FeatureFactory.shared.enable(&.observability)
         // Core unauth session feature flag
         FeatureFactory.shared.enable(&.unauthSession)
         #if DEBUG
         FeatureFactory.shared.enable(&.enforceUnauthSessionStrictVerificationOnBackend)
         #endif
+        ObservabilityEnv.current.setupWorld(apiService: apiService)
     }
 
     private func fetchUnauthSessionIfNeeded() {
