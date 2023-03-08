@@ -43,6 +43,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let credentialManager: CredentialManagerProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
+    private let manualLogIn: Bool
     private let logManager: LogManager
     private let preferences: Preferences
     private let shareRepository: ShareRepositoryProtocol
@@ -64,6 +65,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          container: NSPersistentContainer,
          credentialManager: CredentialManagerProtocol,
          logManager: LogManager,
+         manualLogIn: Bool,
          preferences: Preferences,
          symmetricKey: SymmetricKey,
          userData: UserData) {
@@ -83,6 +85,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                             category: "\(Self.self)",
                             manager: logManager)
         self.logManager = logManager
+        self.manualLogIn = manualLogIn
         self.preferences = preferences
         self.shareRepository = ShareRepository(userData: userData,
                                                container: container,
@@ -113,6 +116,7 @@ private extension HomepageCoordinator {
 
     func start() {
         let homepageViewModel = HomepageViewModel(itemRepository: itemRepository,
+                                                  manualLogIn: manualLogIn,
                                                   logManager: logManager,
                                                   preferences: preferences,
                                                   shareRepository: shareRepository,
@@ -264,8 +268,22 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
         present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func homepageViewModelWantsToPresentVaultList() {
-        print(#function)
+    func homepageViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
+        let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager)
+        viewModel.delegate = self
+        let view = EditableVaultListView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            // Num of vaults + trash + create vault button
+            let height = CGFloat(66 * vaultsManager.vaultCount + 66 + 100)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium()]
+        }
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func homepageViewModelWantsToLogOut() {
@@ -388,6 +406,13 @@ extension HomepageCoordinator: SearchViewModelDelegate {
     }
 
     func searchViewModelDidFail(_ error: Error) {
+        print(#function)
+    }
+}
+
+// MARK: - EditableVaultListViewModelDelegate
+extension HomepageCoordinator: EditableVaultListViewModelDelegate {
+    func editableVaultListViewModelWantsToCreateNewVault() {
         print(#function)
     }
 }

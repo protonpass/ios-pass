@@ -33,6 +33,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let itemRepository: ItemRepositoryProtocol
+    private let manualLogIn: Bool
     private let logger: Logger
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
@@ -41,12 +42,23 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     @Published private(set) var state = VaultManagerState.loading
     @Published var selectedVault: Vault?
 
+    var vaultCount: Int {
+        switch state {
+        case .loaded(let vaults):
+            return vaults.count
+        default:
+            return 0
+        }
+    }
+
     init(itemRepository: ItemRepositoryProtocol,
+         manualLogIn: Bool,
          logManager: LogManager,
          shareRepository: ShareRepositoryProtocol,
          symmetricKey: SymmetricKey,
          userData: UserData) {
         self.itemRepository = itemRepository
+        self.manualLogIn = manualLogIn
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
@@ -59,21 +71,21 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     func loadVaultsOrCreateIfNecessary() async {
         do {
             state = .loading
-            var vaults = try await shareRepository.getVaults()
-            if vaults.isEmpty {
-                logger.trace("No local vaults. Getting all remote shares to refresh local vaults.")
-                _ = try await shareRepository.getRemoteShares()
-                vaults = try await shareRepository.getVaults()
+            if manualLogIn {
+                try await itemRepository.refreshItems()
+                let vaults = try await shareRepository.getVaults()
                 if vaults.isEmpty {
-                    logger.trace("Refreshed but still no vaults.")
+                    let userId = userData.user.ID
+                    logger.trace("Creating default vault for user \(userId)")
                     try await createDefaultVault()
-                    await loadVaultsOrCreateIfNecessary()
+                    logger.trace("Created default vault for user \(userId)")
+                    let vaults = try await shareRepository.getVaults()
+                    try await loadContents(for: vaults)
                 } else {
-                    logger.trace("Found \(vaults.count) vaults after refreshing.")
                     try await loadContents(for: vaults)
                 }
             } else {
-                logger.trace("Found \(vaults.count) local vaults")
+                let vaults = try await shareRepository.getVaults()
                 try await loadContents(for: vaults)
             }
         } catch {

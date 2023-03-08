@@ -20,7 +20,7 @@
 
 import Client
 
-struct VaultContentUiModel {
+struct VaultContentUiModel: Hashable {
     let vault: Vault
     /// `Active` items only
     let items: [ItemListUiModel]
