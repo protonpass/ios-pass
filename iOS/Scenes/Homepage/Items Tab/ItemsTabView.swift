@@ -30,14 +30,10 @@ struct ItemsTabView: View {
     var body: some View {
         VStack {
             topBar
-
-            ScrollView {
-                LazyVStack {
-                    ForEach(0..<100, id: \.self) { index in
-                        Text("#\(index)")
-                    }
-                }
+            if let selectedVault = viewModel.vaultsManager.selectedVault {
+                Text(selectedVault.name)
             }
+            Spacer()
         }
         .background(Color.passBackground)
     }

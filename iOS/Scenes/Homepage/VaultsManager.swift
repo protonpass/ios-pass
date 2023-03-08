@@ -40,7 +40,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     private let userData: UserData
 
     @Published private(set) var state = VaultManagerState.loading
-    @Published var selectedVault: Vault?
+    @Published private(set) var selectedVault: Vault?
 
     var vaultCount: Int {
         switch state {
@@ -114,5 +114,14 @@ private extension VaultsManager {
                                        items: itemUiModels)
         }
         state = .loaded(uiModels)
+        selectedVault = vaults.first
+    }
+}
+
+// MARK: - Public APIs
+extension VaultsManager {
+    func select(vault: Vault) {
+        guard vault != selectedVault else { return }
+        selectedVault = vault
     }
 }
