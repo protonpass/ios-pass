@@ -109,7 +109,7 @@ private extension VaultsManager {
     func loadContents(for vaults: [Vault]) async throws {
         let uiModels = try await vaults.parallelMap { vault in
             let items = try await self.itemRepository.getItems(shareId: vault.shareId, state: .active)
-            let itemUiModels = try items.map { try $0.toItemListUiModel(self.symmetricKey) }
+            let itemUiModels = try items.map { try $0.toItemListUiModelV2(self.symmetricKey) }
             return VaultContentUiModel(vault: vault,
                                        items: itemUiModels)
         }
@@ -123,5 +123,10 @@ extension VaultsManager {
     func select(vault: Vault) {
         guard vault != selectedVault else { return }
         selectedVault = vault
+    }
+
+    func getItemsForSelectedVault() -> [ItemListUiModelV2] {
+        guard let selectedVault, case .loaded(let vaults) = state else { return [] }
+        return vaults.first { $0.vault == selectedVault }?.items ?? []
     }
 }

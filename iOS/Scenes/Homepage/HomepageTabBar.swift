@@ -65,12 +65,6 @@ struct HomepageTabBar: View {
 
             Spacer()
         }
-        .padding(.vertical, 16)
-        .background(
-            Color(uiColor: .init(red: 18, green: 18, blue: 27))
-                .opacity(0.8)
-        )
-        .background(.ultraThinMaterial)
     }
 
     private func tab(for tab: Tab) -> some View {

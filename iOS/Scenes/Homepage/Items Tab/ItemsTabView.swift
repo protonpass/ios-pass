@@ -26,16 +26,32 @@ private let kTopBarHeight: CGFloat = 48
 
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
+    @State private var safeAreaInsets = EdgeInsets.zero
 
     var body: some View {
-        VStack {
-            topBar
-            if let selectedVault = viewModel.vaultsManager.selectedVault {
-                Text(selectedVault.name)
+        GeometryReader { proxy in
+            VStack {
+                topBar
+                switch viewModel.vaultsManager.state {
+                case .loading:
+                    ProgressView()
+                case .loaded:
+                    itemList(viewModel.vaultsManager.getItemsForSelectedVault())
+                case .error(let error):
+                    RetryableErrorView(errorMessage: error.messageForTheUser) {
+                        Task { @MainActor in
+                            await viewModel.vaultsManager.loadVaultsOrCreateIfNecessary()
+                        }
+                    }
+                }
+                Spacer()
             }
-            Spacer()
+            .background(Color.passBackground)
+            .edgesIgnoringSafeArea(.bottom)
+            .onFirstAppear {
+                safeAreaInsets = proxy.safeAreaInsets
+            }
         }
-        .background(Color.passBackground)
     }
 
     private var topBar: some View {
@@ -73,5 +89,21 @@ struct ItemsTabView: View {
         }
         .padding(.horizontal)
         .frame(height: kTopBarHeight)
+    }
+
+    private func itemList(_ items: [ItemListUiModelV2]) -> some View {
+        ScrollView {
+            LazyVStack(spacing: 24) {
+                ForEach(items) { item in
+                    GeneralItemRow(
+                        thumbnailView: { EmptyView() },
+                        title: item.title,
+                        description: item.description,
+                        action: {})
+                }
+            }
+            .padding(.horizontal)
+            .padding(.bottom, safeAreaInsets.bottom)
+        }
     }
 }

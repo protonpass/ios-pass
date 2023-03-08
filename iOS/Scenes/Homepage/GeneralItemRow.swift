@@ -55,6 +55,8 @@ struct GeneralItemRow<ThumbnailView: View, TrailingView: View>: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
 
