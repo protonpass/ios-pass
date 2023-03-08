@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -95,15 +96,29 @@ struct ItemsTabView: View {
         ScrollView {
             LazyVStack(spacing: 24) {
                 ForEach(items) { item in
-                    GeneralItemRow(
-                        thumbnailView: { EmptyView() },
-                        title: item.title,
-                        description: item.description,
-                        action: {})
+                    GeneralItemRow(thumbnailView: { thumbnail(for: item) },
+                                   title: item.title,
+                                   description: item.description,
+                                   action: { viewModel.viewDetail(of: item) })
                 }
             }
             .padding(.horizontal)
             .padding(.bottom, safeAreaInsets.bottom)
+        }
+    }
+
+    @ViewBuilder
+    private func thumbnail(for item: ItemListUiModelV2) -> some View {
+        switch item.type {
+        case .alias:
+            CircleButton(icon: IconProvider.alias,
+                         color: ItemContentType.alias.tintColor) {}
+        case .login:
+            CircleButton(icon: IconProvider.keySkeleton,
+                         color: ItemContentType.login.tintColor) {}
+        case .note:
+            CircleButton(icon: IconProvider.notepadChecklist,
+                         color: ItemContentType.note.tintColor) {}
         }
     }
 }

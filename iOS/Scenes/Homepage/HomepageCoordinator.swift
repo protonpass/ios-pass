@@ -54,8 +54,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private lazy var bannerManager: BannerManager = { .init(container: rootViewController) }()
 
     // References
-    private weak var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
-    private weak var searchViewModel: SearchViewModel?
+    private var currentItemDetailViewModel: BaseItemDetailViewModel?
+    private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
+    private var searchViewModel: SearchViewModel?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -135,6 +136,46 @@ private extension HomepageCoordinator {
 
     func informAliasesLimit() {
         bannerManager.displayTopErrorMessage("You can not create more aliases.")
+    }
+
+    func presentItemDetailView(for itemContent: ItemContent) {
+        let itemDetailView: any View
+        let baseItemDetailViewModel: BaseItemDetailViewModel
+        switch itemContent.contentData {
+        case .login:
+            let viewModel = LogInDetailViewModel(itemContent: itemContent,
+                                                 itemRepository: itemRepository,
+                                                 logManager: logManager)
+            viewModel.logInDetailViewModelDelegate = self
+            baseItemDetailViewModel = viewModel
+            itemDetailView = LogInDetailView(viewModel: viewModel)
+
+        case .note:
+            let viewModel = NoteDetailViewModel(itemContent: itemContent,
+                                                itemRepository: itemRepository,
+                                                logManager: logManager)
+            baseItemDetailViewModel = viewModel
+            itemDetailView = NoteDetailView(viewModel: viewModel)
+
+        case .alias:
+            let viewModel = AliasDetailViewModel(itemContent: itemContent,
+                                                 itemRepository: itemRepository,
+                                                 aliasRepository: aliasRepository,
+                                                 logManager: logManager)
+            baseItemDetailViewModel = viewModel
+            itemDetailView = AliasDetailView(viewModel: viewModel)
+        }
+
+        baseItemDetailViewModel.delegate = self
+        currentItemDetailViewModel = baseItemDetailViewModel
+
+        // Push on iPad, sheets on iPhone
+        if UIDevice.current.isIpad {
+            push(itemDetailView)
+        } else {
+            present(NavigationView { AnyView(itemDetailView) }.navigationViewStyle(.stack),
+                    userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        }
     }
 
     func presentCreateItemView() {
@@ -286,8 +327,16 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
+    func homepageViewModelWantsToViewDetail(of itemContent: ItemContent) {
+        presentItemDetailView(for: itemContent)
+    }
+
     func homepageViewModelWantsToLogOut() {
         delegate?.homepageCoordinatorWantsToLogOut()
+    }
+
+    func homepageViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
@@ -414,5 +463,57 @@ extension HomepageCoordinator: SearchViewModelDelegate {
 extension HomepageCoordinator: EditableVaultListViewModelDelegate {
     func editableVaultListViewModelWantsToCreateNewVault() {
         print(#function)
+    }
+}
+
+// MARK: - ItemDetailViewModelDelegate
+extension HomepageCoordinator: ItemDetailViewModelDelegate {
+    func itemDetailViewModelWantsToGoBack() {
+        // Dismiss differently because show differently
+        // (push on iPad, sheets on iPhone)
+        if UIDevice.current.isIpad {
+            popTopViewController(animated: true)
+        } else {
+            dismissTopMostViewController()
+        }
+    }
+
+    func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
+        let mode = ItemMode.edit(itemContent)
+        switch itemContent.contentData.type {
+        case .login:
+            presentCreateEditLoginView(mode: mode)
+        case .note:
+            presentCreateEditNoteView(mode: mode)
+        case .alias:
+            presentCreateEditAliasView(mode: mode)
+        }
+    }
+
+    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel) {
+        print(#function)
+    }
+
+    func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String) {
+        clipboardManager.copy(text: text, bannerMessage: bannerMessage)
+    }
+
+    func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
+        showFullScreen(text: text, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
+    func itemDetailViewModelWantsToOpen(urlString: String) {
+        UrlOpener(preferences: preferences).open(urlString: urlString)
+    }
+
+    func itemDetailViewModelDidFail(_ error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - LogInDetailViewModelDelegate
+extension HomepageCoordinator: LogInDetailViewModelDelegate {
+    func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
+        presentItemDetailView(for: itemContent)
     }
 }
