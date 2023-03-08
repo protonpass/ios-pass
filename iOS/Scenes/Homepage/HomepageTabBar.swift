@@ -22,7 +22,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// swiftlint:disable:next type_name
 enum Tab {
     case items, profile
 
