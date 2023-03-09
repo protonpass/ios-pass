@@ -125,8 +125,9 @@ extension VaultsManager {
         selectedVault = vault
     }
 
-    func getItemsForSelectedVault() -> [ItemListUiModelV2] {
-        guard let selectedVault, case .loaded(let vaults) = state else { return [] }
-        return vaults.first { $0.vault == selectedVault }?.items ?? []
+    func getSortedItems() -> SortedItems<ItemListUiModelV2> {
+        guard let selectedVault, case .loaded(let vaults) = state else { return .empty }
+        let items = vaults.first { $0.vault == selectedVault }?.items ?? []
+        return items.sortedItems()
     }
 }

@@ -31,27 +31,38 @@ extension ItemSortable {
     var greatestTime: Int64 { max(lastUseTime, modifyTime) }
 }
 
-public struct SortedItems {
-    public let today: [ItemSortable]
-    public let yesterday: [ItemSortable]
-    public let last7Days: [ItemSortable]
-    public let last14Days: [ItemSortable]
-    public let last30Days: [ItemSortable]
-    public let last60Days: [ItemSortable]
-    public let last90Days: [ItemSortable]
-    public let others: [ItemSortable]
+public struct SortedItems<T: ItemSortable> {
+    public let today: [T]
+    public let yesterday: [T]
+    public let last7Days: [T]
+    public let last14Days: [T]
+    public let last30Days: [T]
+    public let last60Days: [T]
+    public let last90Days: [T]
+    public let others: [T]
+
+    public static var empty: SortedItems {
+        .init(today: [],
+              yesterday: [],
+              last7Days: [],
+              last14Days: [],
+              last30Days: [],
+              last60Days: [],
+              last90Days: [],
+              others: [])
+    }
 }
 
-extension Array where Element == ItemSortable {
-    func sortedItems() -> SortedItems {
-        var today = [ItemSortable]()
-        var yesterday = [ItemSortable]()
-        var last7Days = [ItemSortable]()
-        var last14Days = [ItemSortable]()
-        var last30Days = [ItemSortable]()
-        var last60Days = [ItemSortable]()
-        var last90Days = [ItemSortable]()
-        var others = [ItemSortable]()
+public extension Array where Element: ItemSortable {
+    func sortedItems() -> SortedItems<Element> {
+        var today = [Element]()
+        var yesterday = [Element]()
+        var last7Days = [Element]()
+        var last14Days = [Element]()
+        var last30Days = [Element]()
+        var last60Days = [Element]()
+        var last90Days = [Element]()
+        var others = [Element]()
 
         let calendar = Calendar.current
         let now = Date()
