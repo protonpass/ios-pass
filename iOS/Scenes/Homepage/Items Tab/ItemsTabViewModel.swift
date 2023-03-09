@@ -25,6 +25,7 @@ import Core
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToSearch()
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
+    func itemsTabViewModelWantsToPresentSortTypeList()
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
     func itemsTabViewModelDidEncounter(error: Error)
 }
@@ -72,6 +73,10 @@ extension ItemsTabViewModel {
         default:
             logger.error("Can not present vault list. Vaults are not loaded.")
         }
+    }
+
+    func presentSortTypeList() {
+        delegate?.itemsTabViewModelWantsToPresentSortTypeList()
     }
 
     func viewDetail(of item: ItemListUiModelV2) {

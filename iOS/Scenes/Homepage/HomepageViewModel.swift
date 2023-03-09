@@ -94,6 +94,10 @@ extension HomepageViewModel: ItemsTabViewModelDelegate {
         delegate?.homepageViewModelWantsToPresentVaultList(vaultsManager: vaultsManager)
     }
 
+    func itemsTabViewModelWantsToPresentSortTypeList() {
+        print(#function)
+    }
+
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
         delegate?.homepageViewModelWantsToViewDetail(of: itemContent)
     }

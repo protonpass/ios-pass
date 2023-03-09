@@ -33,11 +33,34 @@ struct ItemsTabView: View {
         GeometryReader { proxy in
             VStack {
                 topBar
+
                 switch viewModel.vaultsManager.state {
                 case .loading:
                     ProgressView()
+
                 case .loaded:
-                    itemList(viewModel.vaultsManager.getSortedItems())
+                    VStack {
+                        HStack {
+                            Text("All")
+                                .font(.callout)
+                                .fontWeight(.bold) +
+                            Text(" (\(viewModel.vaultsManager.itemCount))")
+                                .font(.callout)
+                                .foregroundColor(.textWeak)
+
+                            Spacer()
+
+                            Button(action: viewModel.presentSortTypeList) {
+                                Label("Most recent", systemImage: "arrow.up.arrow.down")
+                                    .font(.callout.weight(.medium))
+                                    .foregroundColor(.passBrand)
+                            }
+                        }
+                        .padding(.horizontal)
+
+                        itemList(viewModel.vaultsManager.getSortedItems())
+                    }
+
                 case .error(let error):
                     RetryableErrorView(errorMessage: error.messageForTheUser) {
                         Task { @MainActor in
@@ -125,6 +148,7 @@ struct ItemsTabView: View {
                 Text(headerTitle)
                     .font(.caption)
                     .foregroundColor(.textWeak)
+                    .padding(.vertical, 4)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(Color.passBackground)
             })
