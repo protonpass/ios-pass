@@ -1676,6 +1676,21 @@
 			path = AutoFill;
 			sourceTree = "<group>";
 		};
+		3565622529BA760800C43F72 /* Item Detail */ = {
+			isa = PBXGroup;
+			children = (
+				3572E5262994043C00775FAC /* Supporting Views */,
+				354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */,
+				3552F48D28D3467100547146 /* AliasDetailView.swift */,
+				3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */,
+				354F769128C8678100EB2383 /* LogInDetailView.swift */,
+				354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */,
+				354F769528C879AA00EB2383 /* NoteDetailView.swift */,
+				354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */,
+			);
+			path = "Item Detail";
+			sourceTree = "<group>";
+		};
 		3565FD47298CF8BB00E2A0EE /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
@@ -1743,14 +1758,6 @@
 		356B69762949DB9100868771 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				3572E5262994043C00775FAC /* Supporting Views */,
-				354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */,
-				3552F48D28D3467100547146 /* AliasDetailView.swift */,
-				3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */,
-				354F769128C8678100EB2383 /* LogInDetailView.swift */,
-				354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */,
-				354F769528C879AA00EB2383 /* NoteDetailView.swift */,
-				354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -2273,6 +2280,7 @@
 				35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */,
 				3569B29A29B76BF60070830B /* VaultsManager.swift */,
 				35603A0029B6587C00021BFB /* Create & Edit Items */,
+				3565622529BA760800C43F72 /* Item Detail */,
 				3569B2A229B7888B0070830B /* Items Tab */,
 				3569B2A729B7D2030070830B /* Profile Tab */,
 			);
