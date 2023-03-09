@@ -58,7 +58,14 @@ struct ItemsTabView: View {
                         }
                         .padding(.horizontal)
 
-                        itemList(viewModel.vaultsManager.getSortedItems())
+                        switch viewModel.selectedSortType {
+                        case .mostRecent:
+                            itemList(viewModel.vaultsManager.getSelectedVaultItems().mostRecentSortResult())
+                        case .alphabetical:
+                            itemList(viewModel.vaultsManager.getSelectedVaultItems().alphabeticalSortResult())
+                        default:
+                            Text("Not supported (yet)")
+                        }
                     }
 
                 case .error(let error):
@@ -153,6 +160,37 @@ struct ItemsTabView: View {
                     .background(Color.passBackground)
             })
         }
+    }
+
+    private func itemList(_ result: AlphabeticalSortResult<ItemListUiModelV2>) -> some View {
+        ScrollView {
+            LazyVStack(spacing: 24, pinnedViews: [.sectionHeaders]) {
+                ForEach(result.buckets, id: \.letter) { bucket in
+                    section(for: bucket)
+                }
+            }
+            .padding(.horizontal)
+            .padding(.bottom, safeAreaInsets.bottom)
+        }
+    }
+
+    @ViewBuilder
+    private func section(for bucket: AlphabetBucket<ItemListUiModelV2>) -> some View {
+        Section(content: {
+            ForEach(bucket.items) { item in
+                GeneralItemRow(thumbnailView: { thumbnail(for: item) },
+                               title: item.title,
+                               description: item.description,
+                               action: { viewModel.viewDetail(of: item) })
+            }
+        }, header: {
+            Text(bucket.letter.character)
+                .font(.caption)
+                .foregroundColor(.textWeak)
+                .padding(.vertical, 4)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.passBackground)
+        })
     }
 
     @ViewBuilder

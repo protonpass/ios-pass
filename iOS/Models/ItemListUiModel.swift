@@ -94,6 +94,10 @@ extension ItemListUiModelV2: Identifiable {
     var id: String { itemId + shareId }
 }
 
+extension ItemListUiModelV2: AlphabeticalSortable {
+    var alphabeticalSortableString: String { title }
+}
+
 extension SymmetricallyEncryptedItem {
     func toItemListUiModelV2(_ symmetricKey: SymmetricKey) throws -> ItemListUiModelV2 {
         let encryptedItemContent = try getEncryptedItemContent()
