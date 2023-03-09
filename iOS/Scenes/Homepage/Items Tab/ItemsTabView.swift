@@ -115,17 +115,17 @@ struct ItemsTabView: View {
         .frame(height: kTopBarHeight)
     }
 
-    private func itemList(_ sortedItems: SortedItems<ItemListUiModelV2>) -> some View {
+    private func itemList(_ result: MostRecentSortResult<ItemListUiModelV2>) -> some View {
         ScrollView {
             LazyVStack(spacing: 24, pinnedViews: [.sectionHeaders]) {
-                section(for: sortedItems.today, headerTitle: "Today")
-                section(for: sortedItems.yesterday, headerTitle: "Yesterday")
-                section(for: sortedItems.last7Days, headerTitle: "Last week")
-                section(for: sortedItems.last7Days, headerTitle: "Last two weeks")
-                section(for: sortedItems.last30Days, headerTitle: "Last 30 days")
-                section(for: sortedItems.last60Days, headerTitle: "Last 60 days")
-                section(for: sortedItems.last90Days, headerTitle: "Last 90 days")
-                section(for: sortedItems.others, headerTitle: "More than 90 days")
+                section(for: result.today, headerTitle: "Today")
+                section(for: result.yesterday, headerTitle: "Yesterday")
+                section(for: result.last7Days, headerTitle: "Last week")
+                section(for: result.last7Days, headerTitle: "Last two weeks")
+                section(for: result.last30Days, headerTitle: "Last 30 days")
+                section(for: result.last60Days, headerTitle: "Last 60 days")
+                section(for: result.last90Days, headerTitle: "Last 90 days")
+                section(for: result.others, headerTitle: "More than 90 days")
             }
             .padding(.horizontal)
             .padding(.bottom, safeAreaInsets.bottom)

@@ -20,18 +20,34 @@
 
 import Core
 
-/// Should be conformed by structs that represent items with dates.
-/// So that they can be sorted for the homepage.
-public protocol ItemSortable {
+public enum SortTypeV2: CaseIterable {
+    case mostRecent, alphabetical, newestToNewest, oldestToNewest
+
+    public var title: String {
+        switch self {
+        case .mostRecent:
+            return "Most recent"
+        case .alphabetical:
+            return "Alphabetical"
+        case .newestToNewest:
+            return "Newest to oldest"
+        case .oldestToNewest:
+            return "Oldest to newest"
+        }
+    }
+}
+
+// MARK: - Most recent
+public protocol MostRecentSortable {
     var lastUseTime: Int64 { get }
     var modifyTime: Int64 { get }
 }
 
-extension ItemSortable {
+extension MostRecentSortable {
     var greatestTime: Int64 { max(lastUseTime, modifyTime) }
 }
 
-public struct SortedItems<T: ItemSortable> {
+public struct MostRecentSortResult<T: MostRecentSortable> {
     public let today: [T]
     public let yesterday: [T]
     public let last7Days: [T]
@@ -41,7 +57,7 @@ public struct SortedItems<T: ItemSortable> {
     public let last90Days: [T]
     public let others: [T]
 
-    public static var empty: SortedItems {
+    public static var empty: MostRecentSortResult {
         .init(today: [],
               yesterday: [],
               last7Days: [],
@@ -53,8 +69,8 @@ public struct SortedItems<T: ItemSortable> {
     }
 }
 
-public extension Array where Element: ItemSortable {
-    func sortedItems() -> SortedItems<Element> {
+public extension Array where Element: MostRecentSortable {
+    func mostRecentSortResult() -> MostRecentSortResult<Element> {
         var today = [Element]()
         var yesterday = [Element]()
         var last7Days = [Element]()
