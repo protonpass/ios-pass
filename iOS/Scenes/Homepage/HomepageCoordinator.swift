@@ -327,6 +327,24 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
+    func homepageViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
+                                                     delegate: SortTypeListViewModelDelegate) {
+        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
+        viewModel.delegate = delegate
+        let view = SortTypeListView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = CGFloat(44 * SortTypeV2.allCases.count + 60)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium()]
+        }
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
     func homepageViewModelWantsToViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent)
     }

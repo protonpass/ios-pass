@@ -202,7 +202,7 @@ public extension UIColor {
     }
 
     static var passBrand: UIColor {
-        .init(red: 167, green: 121, blue: 255)
+        .init(red: 97, green: 96, blue: 253)
     }
 
     static var passSecondaryBackground: UIColor {

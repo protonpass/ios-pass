@@ -51,7 +51,7 @@ struct ItemsTabView: View {
                             Spacer()
 
                             Button(action: viewModel.presentSortTypeList) {
-                                Label("Most recent", systemImage: "arrow.up.arrow.down")
+                                Label(viewModel.selectedSortType.title, systemImage: "arrow.up.arrow.down")
                                     .font(.callout.weight(.medium))
                                     .foregroundColor(.passBrand)
                             }

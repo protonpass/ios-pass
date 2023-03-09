@@ -20,6 +20,7 @@
 
 import Foundation
 
+#warning("Delete this")
 public enum SortType: CustomStringConvertible, CaseIterable {
     case title, type, createTime, modifyTime
 
