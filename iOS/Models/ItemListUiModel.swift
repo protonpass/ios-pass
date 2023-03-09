@@ -80,7 +80,7 @@ extension SymmetricallyEncryptedItem {
     }
 }
 
-struct ItemListUiModelV2: ItemIdentifiable, ItemSortable, Hashable {
+struct ItemListUiModelV2: ItemIdentifiable, MostRecentSortable, Hashable {
     let itemId: String
     let shareId: String
     let type: ItemContentType

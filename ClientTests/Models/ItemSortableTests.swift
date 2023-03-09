@@ -24,14 +24,14 @@ import XCTest
 
 // swiftlint:disable function_body_length
 final class ItemSortableTests: XCTestCase {
-    struct DummyItem: ItemSortable {
-        let lastUseTime: Int64
-        let modifyTime: Int64
-    }
+    func testMostRecentSort() {
+        struct DummyItem: MostRecentSortable {
+            let lastUseTime: Int64
+            let modifyTime: Int64
+        }
 
-    func testSort() {
         continueAfterFailure = false
-        var items = [ItemSortable]()
+        var items = [DummyItem]()
         let now = Date()
         // Given today items
         let today1 = DummyItem(lastUseTime: now.adding(.init(.second, -10)).time,
@@ -121,7 +121,7 @@ final class ItemSortableTests: XCTestCase {
         items.shuffle()
 
         // When
-        let sortedItems = items.sortedItems()
+        let sortedItems = items.mostRecentSortResult()
 
         // Then
         // Today
@@ -181,7 +181,7 @@ final class ItemSortableTests: XCTestCase {
         assertEqual(others[2], moreThan90Days1)
     }
 
-    func assertEqual(_ lhs: ItemSortable, _ rhs: ItemSortable) {
+    func assertEqual(_ lhs: MostRecentSortable, _ rhs: MostRecentSortable) {
         XCTAssertEqual(lhs.lastUseTime, rhs.lastUseTime)
         XCTAssertEqual(lhs.modifyTime, rhs.modifyTime)
     }
