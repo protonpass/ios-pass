@@ -80,7 +80,7 @@ extension SymmetricallyEncryptedItem {
     }
 }
 
-struct ItemListUiModelV2: ItemIdentifiable, MostRecentSortable, Hashable {
+struct ItemListUiModelV2: ItemIdentifiable, Hashable {
     let itemId: String
     let shareId: String
     let type: ItemContentType
@@ -92,6 +92,12 @@ struct ItemListUiModelV2: ItemIdentifiable, MostRecentSortable, Hashable {
 
 extension ItemListUiModelV2: Identifiable {
     var id: String { itemId + shareId }
+}
+
+extension ItemListUiModelV2: DateSortable {
+    var dateForSorting: Date {
+        Date(timeIntervalSince1970: TimeInterval(max(lastUseTime, modifyTime)))
+    }
 }
 
 extension ItemListUiModelV2: AlphabeticalSortable {

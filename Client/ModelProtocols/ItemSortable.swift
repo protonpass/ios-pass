@@ -38,17 +38,12 @@ public enum SortTypeV2: CaseIterable {
     }
 }
 
+public protocol DateSortable {
+    var dateForSorting: Date { get }
+}
+
 // MARK: - Most recent
-public protocol MostRecentSortable {
-    var lastUseTime: Int64 { get }
-    var modifyTime: Int64 { get }
-}
-
-extension MostRecentSortable {
-    var greatestTime: Int64 { max(lastUseTime, modifyTime) }
-}
-
-public struct MostRecentSortResult<T: MostRecentSortable> {
+public struct MostRecentSortResult<T: DateSortable> {
     public let today: [T]
     public let yesterday: [T]
     public let last7Days: [T]
@@ -59,7 +54,7 @@ public struct MostRecentSortResult<T: MostRecentSortable> {
     public let others: [T]
 }
 
-public extension Array where Element: MostRecentSortable {
+public extension Array where Element: DateSortable {
     func mostRecentSortResult() -> MostRecentSortResult<Element> {
         var today = [Element]()
         var yesterday = [Element]()
@@ -72,10 +67,9 @@ public extension Array where Element: MostRecentSortable {
 
         let calendar = Calendar.current
         let now = Date()
-        let sortedByTime = sorted(by: { $0.greatestTime > $1.greatestTime })
+        let sortedByTime = sorted(by: { $0.dateForSorting > $1.dateForSorting })
         for item in sortedByTime {
-            let itemDate = Date(timeIntervalSince1970: TimeInterval(item.greatestTime))
-            let numberOfDaysFromNow = calendar.numberOfDaysBetween(now, and: itemDate)
+            let numberOfDaysFromNow = calendar.numberOfDaysBetween(now, and: item.dateForSorting)
             switch abs(numberOfDaysFromNow) {
             case 0:
                 today.append(item)
