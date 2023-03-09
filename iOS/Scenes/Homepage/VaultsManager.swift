@@ -51,6 +51,19 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
         }
     }
 
+    var itemCount: Int {
+        switch state {
+        case .loaded(let vaults):
+            if let selectedVault {
+                return vaults.first { $0.vault == selectedVault }?.items.count ?? 0
+            } else {
+                return vaults.map { $0.items.count }.reduce(0) { $0 + $1 }
+            }
+        default:
+            return 0
+        }
+    }
+
     init(itemRepository: ItemRepositoryProtocol,
          manualLogIn: Bool,
          logManager: LogManager,
