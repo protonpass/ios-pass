@@ -57,17 +57,6 @@ public struct MostRecentSortResult<T: MostRecentSortable> {
     public let last60Days: [T]
     public let last90Days: [T]
     public let others: [T]
-
-    public static var empty: MostRecentSortResult {
-        .init(today: [],
-              yesterday: [],
-              last7Days: [],
-              last14Days: [],
-              last30Days: [],
-              last60Days: [],
-              last90Days: [],
-              others: [])
-    }
 }
 
 public extension Array where Element: MostRecentSortable {
@@ -158,8 +147,8 @@ public enum AlphabetLetter {
 // swiftlint:enable identifier_name
 
 public struct AlphabetBucket<T: AlphabeticalSortable> {
-    let letter: AlphabetLetter
-    let items: [T]
+    public let letter: AlphabetLetter
+    public let items: [T]
 }
 
 public protocol AlphabeticalSortable {
@@ -167,7 +156,7 @@ public protocol AlphabeticalSortable {
 }
 
 public struct AlphabeticalSortResult<T: AlphabeticalSortable> {
-    let buckets: [AlphabetBucket<T>]
+    public let buckets: [AlphabetBucket<T>]
 }
 
 public extension Array where Element: AlphabeticalSortable {
@@ -240,7 +229,7 @@ public extension Array where Element: AlphabeticalSortable {
         if !lItems.isEmpty { buckets.append(.init(letter: .l, items: lItems)) }
         if !mItems.isEmpty { buckets.append(.init(letter: .m, items: mItems)) }
         if !nItems.isEmpty { buckets.append(.init(letter: .n, items: nItems)) }
-        if !oItems.isEmpty { buckets.append(.init(letter: .o, items: pItems)) }
+        if !oItems.isEmpty { buckets.append(.init(letter: .o, items: oItems)) }
         if !pItems.isEmpty { buckets.append(.init(letter: .p, items: pItems)) }
         if !qItems.isEmpty { buckets.append(.init(letter: .q, items: qItems)) }
         if !rItems.isEmpty { buckets.append(.init(letter: .r, items: rItems)) }
