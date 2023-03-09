@@ -22,6 +22,7 @@ import SwiftUI
 import UIComponents
 
 struct EditableVaultListView: View {
+    @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: EditableVaultListViewModel
 
     var body: some View {
@@ -61,6 +62,7 @@ struct EditableVaultListView: View {
                             .frame(height: 70)
                             .contentShape(Rectangle())
                             .onTapGesture {
+                                dismiss()
                                 viewModel.vaultsManager.select(vault: vault.vault)
                             }
 
