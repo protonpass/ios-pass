@@ -67,8 +67,8 @@ public extension Array where Element: DateSortable {
 
         let calendar = Calendar.current
         let now = Date()
-        let sortedByTime = sorted(by: { $0.dateForSorting > $1.dateForSorting })
-        for item in sortedByTime {
+        let sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
+        for item in sortedElements {
             let numberOfDaysFromNow = calendar.numberOfDaysBetween(now, and: item.dateForSorting)
             switch abs(numberOfDaysFromNow) {
             case 0:
@@ -210,4 +210,76 @@ public extension Array where Element: AlphabeticalSortable {
     }
     // swiftlint:enable cyclomatic_complexity
     // swiftlint:enable function_body_length
+}
+
+// MARK: - Month year
+public struct MonthYear: Hashable {
+    public let month: Int
+    public let year: Int
+
+    public var relativeString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM yyyy"
+        var dateComponents = DateComponents()
+        dateComponents.day = 1
+        dateComponents.month = month
+        dateComponents.year = year
+        return dateFormatter.string(from: Calendar.current.date(from: dateComponents) ?? .now)
+    }
+
+    init(date: Date) {
+        let components = Calendar.current.dateComponents([.month, .year], from: date)
+        self.month = components.month ?? 0
+        self.year = components.year ?? 0
+    }
+}
+
+extension MonthYear: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.month == rhs.month && lhs.year == rhs.year
+    }
+}
+
+extension MonthYear: Comparable {
+    public static func < (lhs: MonthYear, rhs: MonthYear) -> Bool {
+        if lhs.year == rhs.year {
+            return lhs.month < rhs.month
+        }
+        return lhs.year < rhs.year
+    }
+}
+
+public struct MonthYearBucket<T: DateSortable> {
+    public let monthYear: MonthYear
+    public let items: [T]
+}
+
+public struct MonthYearSortResult<T: DateSortable> {
+    public let buckets: [MonthYearBucket<T>]
+}
+
+public extension Array where Element: DateSortable {
+    func monthYearSortResult(direction: SortDirection) -> MonthYearSortResult<Element> {
+        let sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
+        let dict = Dictionary(grouping: sortedElements) { element in
+            MonthYear(date: element.dateForSorting)
+        }
+
+        var buckets = [MonthYearBucket<Element>]()
+        for key in dict.keys {
+            guard let elements = dict[key] else { continue }
+            buckets.append(.init(monthYear: key, items: elements))
+        }
+
+        buckets = buckets.sorted(by: { lhs, rhs in
+            switch direction {
+            case .ascending:
+                return lhs.monthYear < rhs.monthYear
+            case .descending:
+                return lhs.monthYear > rhs.monthYear
+            }
+        })
+
+        return .init(buckets: buckets)
+    }
 }

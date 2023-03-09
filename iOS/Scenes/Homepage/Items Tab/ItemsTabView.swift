@@ -58,13 +58,16 @@ struct ItemsTabView: View {
                         }
                         .padding(.horizontal)
 
+                        let items = viewModel.vaultsManager.getSelectedVaultItems()
                         switch viewModel.selectedSortType {
                         case .mostRecent:
-                            itemList(viewModel.vaultsManager.getSelectedVaultItems().mostRecentSortResult())
+                            itemList(items.mostRecentSortResult())
                         case .alphabetical:
-                            itemList(viewModel.vaultsManager.getSelectedVaultItems().alphabeticalSortResult())
-                        default:
-                            Text("Not supported (yet)")
+                            itemList(items.alphabeticalSortResult())
+                        case .newestToNewest:
+                            itemList(items.monthYearSortResult(direction: .descending))
+                        case .oldestToNewest:
+                            itemList(items.monthYearSortResult(direction: .ascending))
                         }
                     }
 
@@ -152,12 +155,7 @@ struct ItemsTabView: View {
                                    action: { viewModel.viewDetail(of: item) })
                 }
             }, header: {
-                Text(headerTitle)
-                    .font(.caption)
-                    .foregroundColor(.textWeak)
-                    .padding(.vertical, 4)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.passBackground)
+                sectionHeader(headerTitle)
             })
         }
     }
@@ -184,12 +182,33 @@ struct ItemsTabView: View {
                                action: { viewModel.viewDetail(of: item) })
             }
         }, header: {
-            Text(bucket.letter.character)
-                .font(.caption)
-                .foregroundColor(.textWeak)
-                .padding(.vertical, 4)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.passBackground)
+            sectionHeader(bucket.letter.character)
+        })
+    }
+
+    private func itemList(_ result: MonthYearSortResult<ItemListUiModelV2>) -> some View {
+        ScrollView {
+            LazyVStack(spacing: 24, pinnedViews: [.sectionHeaders]) {
+                ForEach(result.buckets, id: \.monthYear) { bucket in
+                    section(for: bucket)
+                }
+            }
+            .padding(.horizontal)
+            .padding(.bottom, safeAreaInsets.bottom)
+        }
+    }
+
+    @ViewBuilder
+    private func section(for bucket: MonthYearBucket<ItemListUiModelV2>) -> some View {
+        Section(content: {
+            ForEach(bucket.items) { item in
+                GeneralItemRow(thumbnailView: { thumbnail(for: item) },
+                               title: item.title,
+                               description: item.description,
+                               action: { viewModel.viewDetail(of: item) })
+            }
+        }, header: {
+            sectionHeader(bucket.monthYear.relativeString)
         })
     }
 
@@ -206,5 +225,14 @@ struct ItemsTabView: View {
             CircleButton(icon: IconProvider.notepadChecklist,
                          color: ItemContentType.note.tintColor) {}
         }
+    }
+
+    private func sectionHeader(_ title: String) -> some View {
+        Text(title)
+            .font(.caption)
+            .foregroundColor(.textWeak)
+            .padding(.vertical, 4)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.passBackground)
     }
 }
