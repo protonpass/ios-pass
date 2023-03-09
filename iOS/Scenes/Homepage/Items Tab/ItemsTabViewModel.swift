@@ -25,13 +25,16 @@ import Core
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToSearch()
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
-    func itemsTabViewModelWantsToPresentSortTypeList()
+    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
+                                                     delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
     func itemsTabViewModelDidEncounter(error: Error)
 }
 
 final class ItemsTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
+
+    @Published private(set) var selectedSortType = SortTypeV2.mostRecent
 
     let itemRepository: ItemRepositoryProtocol
     let logger: Logger
@@ -76,7 +79,8 @@ extension ItemsTabViewModel {
     }
 
     func presentSortTypeList() {
-        delegate?.itemsTabViewModelWantsToPresentSortTypeList()
+        delegate?.itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
+                                                              delegate: self)
     }
 
     func viewDetail(of item: ItemListUiModelV2) {
@@ -91,5 +95,12 @@ extension ItemsTabViewModel {
                 delegate?.itemsTabViewModelDidEncounter(error: error)
             }
         }
+    }
+}
+
+// MARK: - SortTypeListViewModelDelegate
+extension ItemsTabViewModel: SortTypeListViewModelDelegate {
+    func sortTypeListViewDidSelect(_ sortType: SortTypeV2) {
+        selectedSortType = sortType
     }
 }

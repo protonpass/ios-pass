@@ -31,7 +31,7 @@ extension ItemContentType {
         case .alias:
             return .init(red: 106, green: 189, blue: 179)
         case .login:
-            return .passBrand
+            return .init(red: 167, green: 121, blue: 255)
         case .note:
             return .init(red: 255, green: 202, blue: 138)
         }

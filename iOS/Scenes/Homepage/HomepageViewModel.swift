@@ -28,6 +28,8 @@ protocol HomepageViewModelDelegate: AnyObject {
     func homepageViewModelWantsToCreateNewItem()
     func homepageViewModelWantsToSearch()
     func homepageViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
+    func homepageViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
+                                                     delegate: SortTypeListViewModelDelegate)
     func homepageViewModelWantsToViewDetail(of itemContent: ItemContent)
     func homepageViewModelWantsToLogOut()
     func homepageViewModelDidEncounter(error: Error)
@@ -94,8 +96,10 @@ extension HomepageViewModel: ItemsTabViewModelDelegate {
         delegate?.homepageViewModelWantsToPresentVaultList(vaultsManager: vaultsManager)
     }
 
-    func itemsTabViewModelWantsToPresentSortTypeList() {
-        print(#function)
+    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
+                                                     delegate: SortTypeListViewModelDelegate) {
+        self.delegate?.homepageViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
+                                                                   delegate: delegate)
     }
 
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
