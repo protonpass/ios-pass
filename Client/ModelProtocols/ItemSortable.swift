@@ -103,8 +103,8 @@ public extension Array where Element: DateSortable {
 
 // MARK: - Alphabetical
 // swiftlint:disable identifier_name
-public enum AlphabetLetter {
-    case sharp, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z
+public enum AlphabetLetter: Int {
+    case sharp = 0, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z
 
     public var character: String {
         switch self {
@@ -157,84 +157,54 @@ public extension Array where Element: AlphabeticalSortable {
     // swiftlint:disable cyclomatic_complexity
     // swiftlint:disable function_body_length
     func alphabeticalSortResult() -> AlphabeticalSortResult<Element> {
-        var buckets = [AlphabetBucket<Element>]()
-
         let sortedAlphabetically =
         sorted(by: { $0.alphabeticalSortableString < $1.alphabeticalSortableString })
 
-        var sharpItems = [Element](), aItems = [Element](), bItems = [Element]()
-        var cItems = [Element](), dItems = [Element](), eItems = [Element]()
-        var fItems = [Element](), gItems = [Element](), hItems = [Element]()
-        var iItems = [Element](), jItems = [Element](), kItems = [Element]()
-        var lItems = [Element](), mItems = [Element](), nItems = [Element]()
-        var oItems = [Element](), pItems = [Element](), qItems = [Element]()
-        var rItems = [Element](), sItems = [Element](), tItems = [Element]()
-        var uItems = [Element](), vItems = [Element](), wItems = [Element]()
-        var xItems = [Element](), yItems = [Element](), zItems = [Element]()
-
-        for item in sortedAlphabetically {
-            if let firstCharacter = item.alphabeticalSortableString.first {
-                switch String(firstCharacter).uppercased() {
-                case "A": aItems.append(item)
-                case "B": bItems.append(item)
-                case "C": cItems.append(item)
-                case "D": dItems.append(item)
-                case "E": eItems.append(item)
-                case "F": fItems.append(item)
-                case "G": gItems.append(item)
-                case "H": hItems.append(item)
-                case "I": iItems.append(item)
-                case "J": jItems.append(item)
-                case "K": kItems.append(item)
-                case "L": lItems.append(item)
-                case "M": mItems.append(item)
-                case "N": nItems.append(item)
-                case "O": oItems.append(item)
-                case "P": pItems.append(item)
-                case "Q": qItems.append(item)
-                case "R": rItems.append(item)
-                case "S": sItems.append(item)
-                case "T": tItems.append(item)
-                case "U": uItems.append(item)
-                case "V": vItems.append(item)
-                case "W": wItems.append(item)
-                case "X": xItems.append(item)
-                case "Y": yItems.append(item)
-                case "Z": zItems.append(item)
-                default: sharpItems.append(item)
-                }
+        let dict = Dictionary(grouping: sortedAlphabetically) { element in
+            if let firstCharacter = element.alphabeticalSortableString.first {
+                return String(firstCharacter).uppercased()
             } else {
-                sharpItems.append(item)
+                return ""
             }
         }
 
-        if !sharpItems.isEmpty { buckets.append(.init(letter: .sharp, items: sharpItems)) }
-        if !aItems.isEmpty { buckets.append(.init(letter: .a, items: aItems)) }
-        if !bItems.isEmpty { buckets.append(.init(letter: .b, items: bItems)) }
-        if !cItems.isEmpty { buckets.append(.init(letter: .c, items: cItems)) }
-        if !dItems.isEmpty { buckets.append(.init(letter: .d, items: dItems)) }
-        if !eItems.isEmpty { buckets.append(.init(letter: .e, items: eItems)) }
-        if !fItems.isEmpty { buckets.append(.init(letter: .f, items: fItems)) }
-        if !gItems.isEmpty { buckets.append(.init(letter: .g, items: gItems)) }
-        if !hItems.isEmpty { buckets.append(.init(letter: .h, items: hItems)) }
-        if !iItems.isEmpty { buckets.append(.init(letter: .i, items: iItems)) }
-        if !jItems.isEmpty { buckets.append(.init(letter: .j, items: jItems)) }
-        if !kItems.isEmpty { buckets.append(.init(letter: .k, items: kItems)) }
-        if !lItems.isEmpty { buckets.append(.init(letter: .l, items: lItems)) }
-        if !mItems.isEmpty { buckets.append(.init(letter: .m, items: mItems)) }
-        if !nItems.isEmpty { buckets.append(.init(letter: .n, items: nItems)) }
-        if !oItems.isEmpty { buckets.append(.init(letter: .o, items: oItems)) }
-        if !pItems.isEmpty { buckets.append(.init(letter: .p, items: pItems)) }
-        if !qItems.isEmpty { buckets.append(.init(letter: .q, items: qItems)) }
-        if !rItems.isEmpty { buckets.append(.init(letter: .r, items: rItems)) }
-        if !sItems.isEmpty { buckets.append(.init(letter: .s, items: sItems)) }
-        if !tItems.isEmpty { buckets.append(.init(letter: .t, items: tItems)) }
-        if !uItems.isEmpty { buckets.append(.init(letter: .u, items: uItems)) }
-        if !vItems.isEmpty { buckets.append(.init(letter: .v, items: vItems)) }
-        if !wItems.isEmpty { buckets.append(.init(letter: .w, items: wItems)) }
-        if !xItems.isEmpty { buckets.append(.init(letter: .x, items: xItems)) }
-        if !yItems.isEmpty { buckets.append(.init(letter: .y, items: yItems)) }
-        if !zItems.isEmpty { buckets.append(.init(letter: .z, items: zItems)) }
+        var buckets = [AlphabetBucket<Element>]()
+        for key in dict.keys {
+            guard let elements = dict[key] else { continue }
+            let letter: AlphabetLetter
+            switch key.uppercased() {
+            case "A": letter = .a
+            case "B": letter = .b
+            case "C": letter = .c
+            case "D": letter = .d
+            case "E": letter = .e
+            case "F": letter = .f
+            case "G": letter = .g
+            case "H": letter = .h
+            case "I": letter = .i
+            case "J": letter = .j
+            case "K": letter = .k
+            case "L": letter = .l
+            case "M": letter = .m
+            case "N": letter = .n
+            case "O": letter = .o
+            case "P": letter = .p
+            case "Q": letter = .q
+            case "R": letter = .r
+            case "S": letter = .s
+            case "T": letter = .t
+            case "U": letter = .u
+            case "V": letter = .v
+            case "W": letter = .w
+            case "X": letter = .x
+            case "Y": letter = .y
+            case "Z": letter = .z
+            default: letter = .sharp
+            }
+            buckets.append(.init(letter: letter, items: elements))
+        }
+
+        buckets = buckets.sorted { $0.letter.rawValue < $1.letter.rawValue }
 
         return .init(buckets: buckets)
     }
