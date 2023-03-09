@@ -37,7 +37,7 @@ struct ItemsTabView: View {
                 case .loading:
                     ProgressView()
                 case .loaded:
-                    itemList(viewModel.vaultsManager.getItemsForSelectedVault())
+                    itemList(viewModel.vaultsManager.getSortedItems())
                 case .error(let error):
                     RetryableErrorView(errorMessage: error.messageForTheUser) {
                         Task { @MainActor in
@@ -92,18 +92,42 @@ struct ItemsTabView: View {
         .frame(height: kTopBarHeight)
     }
 
-    private func itemList(_ items: [ItemListUiModelV2]) -> some View {
+    private func itemList(_ sortedItems: SortedItems<ItemListUiModelV2>) -> some View {
         ScrollView {
-            LazyVStack(spacing: 24) {
+            LazyVStack(spacing: 24, pinnedViews: [.sectionHeaders]) {
+                section(for: sortedItems.today, headerTitle: "Today")
+                section(for: sortedItems.yesterday, headerTitle: "Yesterday")
+                section(for: sortedItems.last7Days, headerTitle: "Last week")
+                section(for: sortedItems.last7Days, headerTitle: "Last two weeks")
+                section(for: sortedItems.last30Days, headerTitle: "Last 30 days")
+                section(for: sortedItems.last60Days, headerTitle: "Last 60 days")
+                section(for: sortedItems.last90Days, headerTitle: "Last 90 days")
+                section(for: sortedItems.others, headerTitle: "More than 90 days")
+            }
+            .padding(.horizontal)
+            .padding(.bottom, safeAreaInsets.bottom)
+        }
+    }
+
+    @ViewBuilder
+    private func section(for items: [ItemListUiModelV2], headerTitle: String) -> some View {
+        if items.isEmpty {
+            EmptyView()
+        } else {
+            Section(content: {
                 ForEach(items) { item in
                     GeneralItemRow(thumbnailView: { thumbnail(for: item) },
                                    title: item.title,
                                    description: item.description,
                                    action: { viewModel.viewDetail(of: item) })
                 }
-            }
-            .padding(.horizontal)
-            .padding(.bottom, safeAreaInsets.bottom)
+            }, header: {
+                Text(headerTitle)
+                    .font(.caption)
+                    .foregroundColor(.textWeak)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.passBackground)
+            })
         }
     }
 

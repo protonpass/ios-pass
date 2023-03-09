@@ -80,13 +80,13 @@ extension SymmetricallyEncryptedItem {
     }
 }
 
-struct ItemListUiModelV2: ItemIdentifiable, Hashable {
+struct ItemListUiModelV2: ItemIdentifiable, ItemSortable, Hashable {
     let itemId: String
     let shareId: String
     let type: ItemContentType
     let title: String
     let description: String?
-    let createTime: Int64
+    let lastUseTime: Int64
     let modifyTime: Int64
 }
 
@@ -114,7 +114,7 @@ extension SymmetricallyEncryptedItem {
                      type: encryptedItemContent.contentData.type,
                      title: name,
                      description: note?.isEmpty == true ? nil : note,
-                     createTime: item.createTime,
+                     lastUseTime: item.lastUseTime ?? 0,
                      modifyTime: item.modifyTime)
     }
 }
