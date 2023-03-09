@@ -282,6 +282,10 @@
 		356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */; };
 		3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */; };
 		3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */; };
+		3565621A29B9E1D200C43F72 /* ItemSortable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565621929B9E1D200C43F72 /* ItemSortable.swift */; };
+		3565621C29B9EC9900C43F72 /* ItemSortableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565621B29B9EC9900C43F72 /* ItemSortableTests.swift */; };
+		3565621E29B9EDDB00C43F72 /* Date+AddingValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565621D29B9EDDB00C43F72 /* Date+AddingValue.swift */; };
+		3565622029BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565621F29BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift */; };
 		3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD45298CF4FA00E2A0EE /* CircleButton.swift */; };
 		3565FD49298CF90E00E2A0EE /* CapsuleIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD48298CF90E00E2A0EE /* CapsuleIconButton.swift */; };
 		3565FD4B298D0CA400E2A0EE /* CapsuleLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD4A298D0CA400E2A0EE /* CapsuleLabelButton.swift */; };
@@ -908,6 +912,10 @@
 		356423402925184100D2B7E3 /* OutlinedRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlinedRoundedButton.swift; sourceTree = "<group>"; };
 		356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnReceiveBoolean.swift"; sourceTree = "<group>"; };
 		3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditItemTitleSection.swift; sourceTree = "<group>"; };
+		3565621929B9E1D200C43F72 /* ItemSortable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSortable.swift; sourceTree = "<group>"; };
+		3565621B29B9EC9900C43F72 /* ItemSortableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSortableTests.swift; sourceTree = "<group>"; };
+		3565621D29B9EDDB00C43F72 /* Date+AddingValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+AddingValue.swift"; sourceTree = "<group>"; };
+		3565621F29BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+NumberOfDaysBetween.swift"; sourceTree = "<group>"; };
 		3565FD45298CF4FA00E2A0EE /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		3565FD48298CF90E00E2A0EE /* CapsuleIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleIconButton.swift; sourceTree = "<group>"; };
 		3565FD4A298D0CA400E2A0EE /* CapsuleLabelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleLabelButton.swift; sourceTree = "<group>"; };
@@ -1249,6 +1257,7 @@
 			children = (
 				354BB14328A2683E00F50040 /* ItemContentProtocol.swift */,
 				35492E39293DFB8700BDE231 /* ItemIdentifiable.swift */,
+				3565621929B9E1D200C43F72 /* ItemSortable.swift */,
 				358BD35F287D4EA200802A91 /* VaultProtocol.swift */,
 			);
 			path = ModelProtocols;
@@ -1354,6 +1363,7 @@
 			isa = PBXGroup;
 			children = (
 				3542E2BC28D9CA9C00194F24 /* ItemContentTests.swift */,
+				3565621B29B9EC9900C43F72 /* ItemSortableTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2181,9 +2191,11 @@
 				3531B5402902A9DD0070D2EE /* BiometricAuthenticator.swift */,
 				353E8B73287622F300A2C5E3 /* BundleExtensions.swift */,
 				357B836229AF4D0E0063B3E4 /* CachableObject.swift */,
+				3565621F29BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift */,
 				354513E628E4CE700020A93A /* CodableBase64.swift */,
 				35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */,
 				356B21D62870F8F1001220CB /* Constants.swift */,
+				3565621D29B9EDDB00C43F72 /* Date+AddingValue.swift */,
 				350A97DD2886032000A7168B /* DeinitPrintable.swift */,
 				35635175299C10040059A97A /* IdentifiableObject.swift */,
 				355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */,
@@ -3513,6 +3525,7 @@
 				3529432E28DB455100E1F11B /* ItemSearchResult.swift in Sources */,
 				356E88CC293899B100B27104 /* PullToRefreshable.swift in Sources */,
 				354B7A7428C9FF1B00459AED /* TrashItemsEndpoint.swift in Sources */,
+				3565621A29B9E1D200C43F72 /* ItemSortable.swift in Sources */,
 				35610B8428ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift in Sources */,
 				353876D828F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift in Sources */,
 				35610B7528ABB77800955ACB /* LocalShareKeyDatasource.swift in Sources */,
@@ -3573,6 +3586,7 @@
 				35CAD6A229A78B0900CF3993 /* PassKeyArray+LatestKeyTests.swift in Sources */,
 				350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */,
 				35610B7728ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift in Sources */,
+				3565621C29B9EC9900C43F72 /* ItemSortableTests.swift in Sources */,
 				35464B62289B0380008E65C4 /* PassKey+Test.swift in Sources */,
 				350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */,
 				3542E2BD28D9CA9C00194F24 /* ItemContentTests.swift in Sources */,
@@ -3593,6 +3607,7 @@
 				3553C21D296570260087518A /* LogLevel.swift in Sources */,
 				355751FA2908745B00268116 /* Preferences.swift in Sources */,
 				35426B5E28EF183900F89BB7 /* RuleLabel.swift in Sources */,
+				3565621E29B9EDDB00C43F72 /* Date+AddingValue.swift in Sources */,
 				35699B93298103F1006CB225 /* String+HTML.swift in Sources */,
 				35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */,
 				3565FD53298D3D6500E2A0EE /* Array+Chunked.swift in Sources */,
@@ -3605,6 +3620,7 @@
 				3572E51929938A3C00775FAC /* TOTPManager.swift in Sources */,
 				35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */,
 				35426B6628EF195700F89BB7 /* ParsedHost.swift in Sources */,
+				3565622029BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift in Sources */,
 				35E50702286FB39600A3F6EA /* AppState.swift in Sources */,
 				3553C223296570710087518A /* Logger.swift in Sources */,
 				354036DD28F451AE00F9E729 /* URLUtils.swift in Sources */,
