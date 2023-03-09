@@ -121,60 +121,60 @@ final class ItemSortableTests: XCTestCase {
         items.shuffle()
 
         // When
-        let sortedItems = items.mostRecentSortResult()
+        let sortResult = items.mostRecentSortResult()
 
         // Then
         // Today
-        let today = sortedItems.today
+        let today = sortResult.today
         XCTAssertEqual(today.count, 3)
         assertEqual(today[0], today3)
         assertEqual(today[1], today2)
         assertEqual(today[2], today1)
 
         // Yesterday
-        let yesterday = sortedItems.yesterday
+        let yesterday = sortResult.yesterday
         XCTAssertEqual(yesterday.count, 3)
         assertEqual(yesterday[0], yesterday3)
         assertEqual(yesterday[1], yesterday2)
         assertEqual(yesterday[2], yesterday1)
 
         // Last 7 days
-        let last7Days = sortedItems.last7Days
+        let last7Days = sortResult.last7Days
         XCTAssertEqual(last7Days.count, 3)
         assertEqual(last7Days[0], last7Days2)
         assertEqual(last7Days[1], last7Days1)
         assertEqual(last7Days[2], last7Days3)
 
         // Last 14 days
-        let last14Days = sortedItems.last14Days
+        let last14Days = sortResult.last14Days
         XCTAssertEqual(last14Days.count, 3)
         assertEqual(last14Days[0], last14Days2)
         assertEqual(last14Days[1], last14Days1)
         assertEqual(last14Days[2], last14Days3)
 
         // Last 30 days
-        let last30Days = sortedItems.last30Days
+        let last30Days = sortResult.last30Days
         XCTAssertEqual(last30Days.count, 3)
         assertEqual(last30Days[0], last30Days2)
         assertEqual(last30Days[1], last30Days1)
         assertEqual(last30Days[2], last30Days3)
 
         // Last 60 days
-        let last60Days = sortedItems.last60Days
+        let last60Days = sortResult.last60Days
         XCTAssertEqual(last60Days.count, 3)
         assertEqual(last60Days[0], last60Days3)
         assertEqual(last60Days[1], last60Days1)
         assertEqual(last60Days[2], last60Days2)
 
         // Last 90 days
-        let last90Days = sortedItems.last90Days
+        let last90Days = sortResult.last90Days
         XCTAssertEqual(last90Days.count, 3)
         assertEqual(last90Days[0], last90Days3)
         assertEqual(last90Days[1], last90Days2)
         assertEqual(last90Days[2], last90Days1)
 
         // Others
-        let others = sortedItems.others
+        let others = sortResult.others
         XCTAssertEqual(others.count, 3)
         assertEqual(others[0], moreThan90Days3)
         assertEqual(others[1], moreThan90Days2)
@@ -184,6 +184,45 @@ final class ItemSortableTests: XCTestCase {
     func assertEqual(_ lhs: MostRecentSortable, _ rhs: MostRecentSortable) {
         XCTAssertEqual(lhs.lastUseTime, rhs.lastUseTime)
         XCTAssertEqual(lhs.modifyTime, rhs.modifyTime)
+    }
+
+    func testAlphabeticalSort() {
+        struct DummyItem: AlphabeticalSortable {
+            let alphabeticalSortableString: String
+        }
+        continueAfterFailure = false
+
+        // Given
+        let strings: [String] = ["Chíp", "Touti", "Đen", "Ponyo", "Méo", "Pao", "Chippy"]
+        let items = strings.map { DummyItem(alphabeticalSortableString: $0) }
+
+        // When
+        let sortResult = items.alphabeticalSortResult()
+
+        // Then
+        XCTAssertEqual(sortResult.buckets.count, 5)
+
+        let sharpBucket = sortResult.buckets[0]
+        XCTAssertEqual(sharpBucket.items.count, 1)
+        XCTAssertEqual(sharpBucket.items[0].alphabeticalSortableString, "Đen")
+
+        let cBucket = sortResult.buckets[1]
+        XCTAssertEqual(cBucket.items.count, 2)
+        XCTAssertEqual(cBucket.items[0].alphabeticalSortableString, "Chippy")
+        XCTAssertEqual(cBucket.items[1].alphabeticalSortableString, "Chíp")
+
+        let mBucket = sortResult.buckets[2]
+        XCTAssertEqual(mBucket.items.count, 1)
+        XCTAssertEqual(mBucket.items[0].alphabeticalSortableString, "Méo")
+
+        let pBucket = sortResult.buckets[3]
+        XCTAssertEqual(pBucket.items.count, 2)
+        XCTAssertEqual(pBucket.items[0].alphabeticalSortableString, "Pao")
+        XCTAssertEqual(pBucket.items[1].alphabeticalSortableString, "Ponyo")
+
+        let tBucket = sortResult.buckets[4]
+        XCTAssertEqual(tBucket.items.count, 1)
+        XCTAssertEqual(tBucket.items[0].alphabeticalSortableString, "Touti")
     }
 }
 
