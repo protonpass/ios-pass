@@ -29,6 +29,21 @@ enum VaultManagerState {
     case error(Error)
 }
 
+extension VaultManagerState: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading):
+            return true
+        case let (.loaded(lhsVaults), .loaded(rhsVaults)):
+            return lhsVaults.hashValue == rhsVaults.hashValue
+        case let (.error(lhsError), .error(rhsError)):
+            return lhsError.messageForTheUser == rhsError.messageForTheUser
+        default:
+            return false
+        }
+    }
+}
+
 final class VaultsManager: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -83,7 +98,14 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     func refresh() {
         Task { @MainActor in
             do {
-                state = .loading
+                // No need to show loading indicator once items are loaded beforehand.
+                switch state {
+                case .loaded:
+                    break
+                default:
+                    state = .loading
+                }
+
                 if manualLogIn {
                     try await itemRepository.refreshItems()
                     let vaults = try await shareRepository.getVaults()
