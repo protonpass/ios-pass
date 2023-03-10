@@ -23,11 +23,14 @@ import Combine
 import Core
 
 protocol ItemsTabViewModelDelegate: AnyObject {
+    func itemsTabViewModelWantsToShowSpinner()
+    func itemsTabViewModelWantsToHideSpinner()
     func itemsTabViewModelWantsToSearch()
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
                                                      delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
+    func itemsTabViewModelDidTrash(item: ItemListUiModelV2)
     func itemsTabViewModelDidEncounter(error: Error)
 }
 
@@ -101,7 +104,22 @@ extension ItemsTabViewModel {
     }
 
     func trash(item: ItemListUiModelV2) {
-        print(item.title)
+        Task { @MainActor in
+            defer { delegate?.itemsTabViewModelWantsToHideSpinner() }
+            do {
+                delegate?.itemsTabViewModelWantsToShowSpinner()
+                if let encryptedItem = try await itemRepository.getItem(shareId: item.shareId,
+                                                                        itemId: item.itemId) {
+                    try await itemRepository.trashItems([encryptedItem])
+                    delegate?.itemsTabViewModelDidTrash(item: item)
+                } else {
+                    let error = PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                    delegate?.itemsTabViewModelDidEncounter(error: error)
+                }
+            } catch {
+                delegate?.itemsTabViewModelDidEncounter(error: error)
+            }
+        }
     }
 }
 

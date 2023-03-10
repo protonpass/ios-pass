@@ -274,6 +274,40 @@ private extension HomepageCoordinator {
         viewModel.onDismiss = { navigationController.dismiss(animated: true) }
         present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
+
+    func handleTrashedItem(_ item: ItemListUiModelV2) {
+        let message: String
+        switch item.type {
+        case .alias:
+            message = "Alias deleted"
+        case .login:
+            message = "Login deleted"
+        case .note:
+            message = "Note deleted"
+        }
+
+        if isAtRootViewController() {
+            bannerManager.displayBottomInfoMessage(message)
+        } else {
+            dismissTopMostViewController(animated: true) { [unowned self] in
+                var placeholderViewController: UIViewController?
+                if UIDevice.current.isIpad,
+                   let currentItemDetailViewModel,
+                   currentItemDetailViewModel.itemContent.shareId == item.shareId,
+                   currentItemDetailViewModel.itemContent.item.itemID == item.itemId {
+                    let placeholderView = ItemDetailPlaceholderView { self.popTopViewController(animated: true) }
+                    placeholderViewController = UIHostingController(rootView: placeholderView)
+                }
+                self.popToRoot(animated: true, secondaryViewController: placeholderViewController)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [unowned self] in
+                    self.bannerManager.displayBottomInfoMessage(message)
+                }
+            }
+        }
+
+        homepageViewModel?.vaultsManager.refresh()
+        Task { await searchViewModel?.refreshResults() }
+    }
 }
 
 // MARK: - Public APIs
@@ -305,6 +339,14 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
 
 // MARK: - ItemsTabViewModelDelegate
 extension HomepageCoordinator: ItemsTabViewModelDelegate {
+    func itemsTabViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func itemsTabViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
     func itemsTabViewModelWantsToSearch() {
         let viewModel = SearchViewModel(symmetricKey: symmetricKey,
                                         itemRepository: itemRepository,
@@ -357,6 +399,10 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
         if currentItemDetailViewModel?.itemContent.isSameItem(itemContent) == true { return }
         presentItemDetailView(for: itemContent)
+    }
+
+    func itemsTabViewModelDidTrash(item: ItemListUiModelV2) {
+        handleTrashedItem(item)
     }
 
     func itemsTabViewModelDidEncounter(error: Error) {
