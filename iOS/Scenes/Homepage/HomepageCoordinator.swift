@@ -381,10 +381,6 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         dismissTopMostViewController()
     }
 
-    func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
-        print(#function)
-    }
-
     func createEditItemViewModelDidFail(_ error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
