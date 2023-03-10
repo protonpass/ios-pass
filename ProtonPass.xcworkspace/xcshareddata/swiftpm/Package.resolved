@@ -8,6 +8,15 @@
         "revision" : "c7859712034a08bb5a018fbe8751c1f1edc4b248",
         "version" : "2.2.1"
       }
+    },
+    {
+      "identity" : "swipeactions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/c-villain/SwipeActions",
+      "state" : {
+        "revision" : "feadf8ab260ae55ceec07fa589f176586fb2b2d5",
+        "version" : "0.3.2"
+      }
     }
   ],
   "version" : 2

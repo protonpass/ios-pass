@@ -20,48 +20,40 @@
 
 import SwiftUI
 
-struct GeneralItemRow<ThumbnailView: View, TrailingView: View>: View {
+struct GeneralItemRow<ThumbnailView: View>: View {
     let thumbnailView: ThumbnailView
     let title: String
     let description: String?
-    let trailingView: TrailingView
-    let action: () -> Void
 
     init(@ViewBuilder thumbnailView: () -> ThumbnailView,
          title: String,
-         description: String?,
-         @ViewBuilder trailingView: () -> TrailingView = { EmptyView() },
-         action: @escaping () -> Void) {
+         description: String?) {
         self.thumbnailView = thumbnailView()
         self.title = title
         self.description = description
-        self.trailingView = trailingView()
-        self.action = action
     }
 
     var body: some View {
-        HStack {
-            Button(action: action) {
-                HStack(spacing: kItemDetailSectionPadding) {
-                    thumbnailView
-                        .frame(width: 40)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(title)
-                        if let description {
-                            Text(description)
-                                .font(.callout)
-                                .foregroundColor(.textWeak)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .frame(maxWidth: .infinity)
-                .contentShape(Rectangle())
+        HStack(spacing: kItemDetailSectionPadding) {
+            VStack {
+                Spacer()
+                thumbnailView
+                    .frame(width: 40)
+                Spacer()
             }
-            .buttonStyle(.plain)
 
-            trailingView
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                if let description {
+                    Text(description)
+                        .font(.callout)
+                        .foregroundColor(.textWeak)
+                }
+            }
+            .padding(.vertical, 12)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(height: 40)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .contentShape(Rectangle())
     }
 }
