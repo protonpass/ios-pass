@@ -34,7 +34,7 @@ protocol ItemsTabViewModelDelegate: AnyObject {
 final class ItemsTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published private(set) var selectedSortType = SortTypeV2.mostRecent
+    @Published var selectedSortType = SortTypeV2.mostRecent
 
     let itemRepository: ItemRepositoryProtocol
     let logger: Logger
