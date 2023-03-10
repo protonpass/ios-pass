@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import ProtonCore_Login
 import SwiftUI
@@ -26,16 +27,33 @@ import SwiftUI
 final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    @Published var name = ""
+    @Published var title = ""
     @Published var note = ""
 
-    var isEmpty: Bool { name.isEmpty && note.isEmpty }
-    override var isSaveable: Bool { !name.isEmpty }
+    override var isSaveable: Bool { !title.isEmpty }
+
+    override init(mode: ItemMode,
+                  itemRepository: ItemRepositoryProtocol,
+                  preferences: Preferences,
+                  logManager: LogManager) {
+        super.init(mode: mode,
+                   itemRepository: itemRepository,
+                   preferences: preferences,
+                   logManager: logManager)
+
+        Publishers
+            .CombineLatest($title, $note)
+            .dropFirst(mode.isEditMode ? 1 : 3)
+            .sink(receiveValue: { [unowned self] _ in
+                self.didEditSomething = true
+            })
+            .store(in: &cancellables)
+    }
 
     override func bindValues() {
         if case let .edit(itemContent) = mode,
            case .note = itemContent.contentData {
-            self.name = itemContent.name
+            self.title = itemContent.name
             self.note = itemContent.note
         }
     }
@@ -43,7 +61,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     override func itemContentType() -> ItemContentType { .note }
 
     override func generateItemContent() -> ItemContentProtobuf {
-        ItemContentProtobuf(name: name,
+        ItemContentProtobuf(name: title,
                             note: note,
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.note)

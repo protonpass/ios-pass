@@ -90,10 +90,10 @@ struct CreateEditLoginView: View {
                     isSaving: viewModel.isSaving,
                     itemContentType: viewModel.itemContentType(),
                     onGoBack: {
-                        if viewModel.isEmpty {
-                            dismiss()
-                        } else {
+                        if viewModel.didEditSomething {
                             isShowingDiscardAlert.toggle()
+                        } else {
+                            dismiss()
                         }
                     },
                     onSave: {

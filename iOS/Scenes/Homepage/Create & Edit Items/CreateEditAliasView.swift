@@ -146,10 +146,10 @@ struct CreateEditAliasView: View {
                 isSaving: viewModel.isSaving,
                 itemContentType: viewModel.itemContentType(),
                 onGoBack: {
-                    if viewModel.isEmpty {
-                        dismiss()
-                    } else {
+                    if viewModel.didEditSomething {
                         isShowingDiscardAlert.toggle()
+                    } else {
+                        dismiss()
                     }
                 },
                 onSave: viewModel.save)

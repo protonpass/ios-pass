@@ -39,7 +39,7 @@ struct CreateEditNoteView: View {
             ScrollViewReader { value in
                 ScrollView {
                     LazyVStack {
-                        TextEditorWithPlaceholder(text: $viewModel.name,
+                        TextEditorWithPlaceholder(text: $viewModel.title,
                                                   isFocused: $isFocusedOnTitle,
                                                   placeholder: "Untitled",
                                                   submitLabel: .next)
@@ -58,10 +58,10 @@ struct CreateEditNoteView: View {
                     }
                     .padding()
                 }
-                .onChange(of: viewModel.name) { name in
+                .onChange(of: viewModel.title) { title in
                     // When users press enter, move the cursor to content
-                    if name.last == "\n" {
-                        viewModel.name.removeLast()
+                    if title.last == "\n" {
+                        viewModel.title.removeLast()
                         isFocusedOnContent = true
                     }
                     withAnimation {
@@ -85,10 +85,10 @@ struct CreateEditNoteView: View {
                     isSaving: viewModel.isSaving,
                     itemContentType: viewModel.itemContentType(),
                     onGoBack: {
-                        if viewModel.isEmpty {
-                            dismiss()
-                        } else {
+                        if viewModel.didEditSomething {
                             isShowingDiscardAlert.toggle()
+                        } else {
+                            dismiss()
                         }
                     },
                     onSave: viewModel.save)
