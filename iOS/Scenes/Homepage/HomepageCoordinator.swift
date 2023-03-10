@@ -457,16 +457,24 @@ extension HomepageCoordinator: SearchViewModelDelegate {
         dismissTopMostViewController()
     }
 
-    func searchViewModelWantsToShowItemDetail(_ item: ItemContent) {
-        print(#function)
+    func searchViewModelWantsToShowItemDetail(_ itemContent: ItemContent) {
+        presentItemDetailView(for: itemContent)
     }
 
-    func searchViewModelWantsToEditItem(_ item: ItemContent) {
-        print(#function)
+    func searchViewModelWantsToEditItem(_ itemContent: ItemContent) {
+        let mode = ItemMode.edit(itemContent)
+        switch itemContent.contentData.type {
+        case .login:
+            presentCreateEditLoginView(mode: mode)
+        case .note:
+            presentCreateEditNoteView(mode: mode)
+        case .alias:
+            presentCreateEditAliasView(mode: mode)
+        }
     }
 
     func searchViewModelWantsToCopy(text: String, bannerMessage: String) {
-        print(#function)
+        clipboardManager.copy(text: text, bannerMessage: bannerMessage)
     }
 
     func searchViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
@@ -474,7 +482,7 @@ extension HomepageCoordinator: SearchViewModelDelegate {
     }
 
     func searchViewModelDidFail(_ error: Error) {
-        print(#function)
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
