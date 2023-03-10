@@ -221,6 +221,6 @@ public extension Color {
     }
 
     static var passSecondaryBackground: Color {
-        .init(uiColor: .passBackground)
+        .init(uiColor: .passSecondaryBackground)
     }
 }

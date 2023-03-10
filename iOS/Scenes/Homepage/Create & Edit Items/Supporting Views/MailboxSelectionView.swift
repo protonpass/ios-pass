@@ -88,6 +88,7 @@ struct MailboxSelectionView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 
     private func isSelected(_ mailbox: Mailbox) -> Bool {
