@@ -136,16 +136,14 @@ struct ItemsTabView: View {
                         }
                     })
                 }
-            }, label: {
-                sortTypeLabel
-            })
+            }, label: sortTypeLabel)
         } else {
             Button(action: viewModel.presentSortTypeList,
-                   label: { sortTypeLabel })
+                   label: sortTypeLabel)
         }
     }
 
-    private var sortTypeLabel: some View {
+    private func sortTypeLabel() -> some View {
         Label(viewModel.selectedSortType.title, systemImage: "arrow.up.arrow.down")
             .font(.callout.weight(.medium))
             .foregroundColor(.passBrand)
@@ -155,19 +153,31 @@ struct ItemsTabView: View {
     }
 
     private func itemList(_ result: MostRecentSortResult<ItemListUiModelV2>) -> some View {
-        ScrollView {
-            LazyVStack(spacing: 24, pinnedViews: [.sectionHeaders]) {
-                section(for: result.today, headerTitle: "Today")
-                section(for: result.yesterday, headerTitle: "Yesterday")
-                section(for: result.last7Days, headerTitle: "Last week")
-                section(for: result.last14Days, headerTitle: "Last two weeks")
-                section(for: result.last30Days, headerTitle: "Last 30 days")
-                section(for: result.last60Days, headerTitle: "Last 60 days")
-                section(for: result.last90Days, headerTitle: "Last 90 days")
-                section(for: result.others, headerTitle: "More than 90 days")
+        ItemListScrollView(safeAreaInsets: safeAreaInsets) {
+            section(for: result.today, headerTitle: "Today")
+            section(for: result.yesterday, headerTitle: "Yesterday")
+            section(for: result.last7Days, headerTitle: "Last week")
+            section(for: result.last14Days, headerTitle: "Last two weeks")
+            section(for: result.last30Days, headerTitle: "Last 30 days")
+            section(for: result.last60Days, headerTitle: "Last 60 days")
+            section(for: result.last90Days, headerTitle: "Last 90 days")
+            section(for: result.others, headerTitle: "More than 90 days")
+        }
+    }
+
+    private func itemList(_ result: AlphabeticalSortResult<ItemListUiModelV2>) -> some View {
+        ItemListScrollView(safeAreaInsets: safeAreaInsets) {
+            ForEach(result.buckets, id: \.letter) { bucket in
+                section(for: bucket.items, headerTitle: bucket.letter.character)
             }
-            .padding(.horizontal)
-            .padding(.bottom, safeAreaInsets.bottom)
+        }
+    }
+
+    private func itemList(_ result: MonthYearSortResult<ItemListUiModelV2>) -> some View {
+        ItemListScrollView(safeAreaInsets: safeAreaInsets) {
+            ForEach(result.buckets, id: \.monthYear) { bucket in
+                section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
+            }
         }
     }
 
@@ -178,90 +188,53 @@ struct ItemsTabView: View {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    GeneralItemRow(thumbnailView: { thumbnail(for: item) },
-                                   title: item.title,
-                                   description: item.description,
-                                   action: { viewModel.viewDetail(of: item) })
+                    GeneralItemRow(
+                        thumbnailView: {
+                            switch item.type {
+                            case .alias:
+                                CircleButton(icon: IconProvider.alias,
+                                             color: ItemContentType.alias.tintColor) {}
+                            case .login:
+                                CircleButton(icon: IconProvider.keySkeleton,
+                                             color: ItemContentType.login.tintColor) {}
+                            case .note:
+                                CircleButton(icon: IconProvider.notepadChecklist,
+                                             color: ItemContentType.note.tintColor) {}
+                            }
+                        },
+                        title: item.title,
+                        description: item.description,
+                        action: { viewModel.viewDetail(of: item) })
                 }
             }, header: {
-                sectionHeader(headerTitle)
+                Text(headerTitle)
+                    .font(.caption)
+                    .foregroundColor(.textWeak)
+                    .padding(.vertical, 4)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.passBackground)
             })
         }
     }
+}
 
-    private func itemList(_ result: AlphabeticalSortResult<ItemListUiModelV2>) -> some View {
+private struct ItemListScrollView<Content: View>: View {
+    let safeAreaInsets: EdgeInsets
+    let content: () -> Content
+
+    init(safeAreaInsets: EdgeInsets,
+         @ViewBuilder content: @escaping () -> Content) {
+        self.safeAreaInsets = safeAreaInsets
+        self.content = content
+    }
+
+    var body: some View {
         ScrollView {
             LazyVStack(spacing: 24, pinnedViews: [.sectionHeaders]) {
-                ForEach(result.buckets, id: \.letter) { bucket in
-                    section(for: bucket)
-                }
+                content()
             }
             .padding(.horizontal)
             .padding(.bottom, safeAreaInsets.bottom)
         }
-    }
-
-    @ViewBuilder
-    private func section(for bucket: AlphabetBucket<ItemListUiModelV2>) -> some View {
-        Section(content: {
-            ForEach(bucket.items) { item in
-                GeneralItemRow(thumbnailView: { thumbnail(for: item) },
-                               title: item.title,
-                               description: item.description,
-                               action: { viewModel.viewDetail(of: item) })
-            }
-        }, header: {
-            sectionHeader(bucket.letter.character)
-        })
-    }
-
-    private func itemList(_ result: MonthYearSortResult<ItemListUiModelV2>) -> some View {
-        ScrollView {
-            LazyVStack(spacing: 24, pinnedViews: [.sectionHeaders]) {
-                ForEach(result.buckets, id: \.monthYear) { bucket in
-                    section(for: bucket)
-                }
-            }
-            .padding(.horizontal)
-            .padding(.bottom, safeAreaInsets.bottom)
-        }
-    }
-
-    @ViewBuilder
-    private func section(for bucket: MonthYearBucket<ItemListUiModelV2>) -> some View {
-        Section(content: {
-            ForEach(bucket.items) { item in
-                GeneralItemRow(thumbnailView: { thumbnail(for: item) },
-                               title: item.title,
-                               description: item.description,
-                               action: { viewModel.viewDetail(of: item) })
-            }
-        }, header: {
-            sectionHeader(bucket.monthYear.relativeString)
-        })
-    }
-
-    @ViewBuilder
-    private func thumbnail(for item: ItemListUiModelV2) -> some View {
-        switch item.type {
-        case .alias:
-            CircleButton(icon: IconProvider.alias,
-                         color: ItemContentType.alias.tintColor) {}
-        case .login:
-            CircleButton(icon: IconProvider.keySkeleton,
-                         color: ItemContentType.login.tintColor) {}
-        case .note:
-            CircleButton(icon: IconProvider.notepadChecklist,
-                         color: ItemContentType.note.tintColor) {}
-        }
-    }
-
-    private func sectionHeader(_ title: String) -> some View {
-        Text(title)
-            .font(.caption)
-            .foregroundColor(.textWeak)
-            .padding(.vertical, 4)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.passBackground)
     }
 }
