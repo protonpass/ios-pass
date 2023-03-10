@@ -78,6 +78,7 @@ struct EditableVaultListView: View {
                                   titleColor: .passBrand,
                                   backgroundColor: .passBrand.withAlphaComponent(0.08),
                                   disabled: false,
+                                  maxWidth: nil,
                                   action: viewModel.createNewVault)
                 Spacer()
             }

@@ -40,7 +40,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
         super.init(itemContent: itemContent,
                    itemRepository: itemRepository,
                    logManager: logManager)
-        getAlias()
     }
 
     override func bindValues() {

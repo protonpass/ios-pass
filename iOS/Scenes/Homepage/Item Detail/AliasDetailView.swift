@@ -58,6 +58,7 @@ struct AliasDetailView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
+        .onFirstAppear(perform: viewModel.getAlias)
         .toolbar {
             ItemDetailToolbar(itemContent: viewModel.itemContent,
                               onGoBack: viewModel.goBack,

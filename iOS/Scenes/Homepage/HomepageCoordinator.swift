@@ -347,6 +347,7 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
     }
 
     func homepageViewModelWantsToViewDetail(of itemContent: ItemContent) {
+        if currentItemDetailViewModel?.itemContent.isSameItem(itemContent) == true { return }
         presentItemDetailView(for: itemContent)
     }
 
