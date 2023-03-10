@@ -96,6 +96,10 @@ extension ItemsTabViewModel {
             }
         }
     }
+
+    func trash(item: ItemListUiModelV2) {
+        print(#function)
+    }
 }
 
 // MARK: - SortTypeListViewModelDelegate

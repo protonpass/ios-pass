@@ -21,6 +21,7 @@
 import Client
 import ProtonCore_UIFoundations
 import SwiftUI
+import SwipeActions
 import UIComponents
 
 private let kTopBarHeight: CGFloat = 48
@@ -28,6 +29,7 @@ private let kTopBarHeight: CGFloat = 48
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
+    @State var state: SwipeState = .untouched
 
     var body: some View {
         GeometryReader { proxy in
@@ -188,33 +190,61 @@ struct ItemsTabView: View {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    GeneralItemRow(
-                        thumbnailView: {
-                            switch item.type {
-                            case .alias:
-                                CircleButton(icon: IconProvider.alias,
-                                             color: ItemContentType.alias.tintColor) {}
-                            case .login:
-                                CircleButton(icon: IconProvider.keySkeleton,
-                                             color: ItemContentType.login.tintColor) {}
-                            case .note:
-                                CircleButton(icon: IconProvider.notepadChecklist,
-                                             color: ItemContentType.note.tintColor) {}
-                            }
-                        },
-                        title: item.title,
-                        description: item.description,
-                        action: { viewModel.viewDetail(of: item) })
+                    itemRow(for: item)
                 }
             }, header: {
                 Text(headerTitle)
                     .font(.caption)
                     .foregroundColor(.textWeak)
                     .padding(.vertical, 4)
+                    .padding(.horizontal)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(Color.passBackground)
             })
         }
+    }
+
+    private func itemRow(for item: ItemListUiModelV2) -> some View {
+        Button(action: {
+            viewModel.viewDetail(of: item)
+        }, label: {
+            GeneralItemRow(
+                thumbnailView: {
+                    switch item.type {
+                    case .alias:
+                        CircleButton(icon: IconProvider.alias,
+                                     color: ItemContentType.alias.tintColor) {}
+                    case .login:
+                        CircleButton(icon: IconProvider.keySkeleton,
+                                     color: ItemContentType.login.tintColor) {}
+                    case .note:
+                        CircleButton(icon: IconProvider.notepadChecklist,
+                                     color: ItemContentType.note.tintColor) {}
+                    }
+                },
+                title: item.title,
+                description: item.description)
+            .frame(height: 64)
+            .padding(.horizontal)
+            .addSwipeAction(edge: .trailing, state: $state) {
+                Button(action: {
+                    viewModel.trash(item: item)
+                }, label: {
+                    VStack(spacing: 4) {
+                        Spacer()
+                        Image(uiImage: IconProvider.trash)
+                        Text("Trash")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                        Spacer()
+                    }
+                    .foregroundColor(Color(uiColor: .systemBackground))
+                    .frame(width: 84)
+                    .background(Color.notificationError)
+                })
+            }
+        })
+        .buttonStyle(.plain)
     }
 }
 
@@ -230,10 +260,9 @@ private struct ItemListScrollView<Content: View>: View {
 
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 24, pinnedViews: [.sectionHeaders]) {
+            LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
                 content()
             }
-            .padding(.horizontal)
             .padding(.bottom, safeAreaInsets.bottom)
         }
     }

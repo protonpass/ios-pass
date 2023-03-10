@@ -40,30 +40,17 @@ struct HomepageTabBar: View {
     let action: () -> Void
 
     var body: some View {
-        HStack {
-            Spacer()
-
+        HStack(spacing: 0) {
             tab(for: .items)
-
-            if !UIDevice.current.isIpad {
-                Spacer()
-                Spacer()
-            }
 
             Button(action: action) {
                 Image(uiImage: IconProvider.plus)
+                    .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(PlusButtonStyle(normalColor: .primary, pressedColor: .passBrand))
-            .padding(.horizontal, UIDevice.current.isIpad ? 100 : 0)
-
-            if !UIDevice.current.isIpad {
-                Spacer()
-                Spacer()
-            }
 
             tab(for: .profile)
-
-            Spacer()
         }
     }
 
@@ -72,7 +59,9 @@ struct HomepageTabBar: View {
             selectedTab = tab
         }, label: {
             Image(uiImage: tab.icon)
+                .frame(maxWidth: .infinity)
                 .foregroundColor(selectedTab == tab ? .passBrand : .primary)
+                .contentShape(Rectangle())
         })
     }
 }

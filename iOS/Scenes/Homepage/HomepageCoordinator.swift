@@ -199,8 +199,8 @@ private extension HomepageCoordinator {
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16.0, *) {
             let customDetent = UISheetPresentationController.Detent.custom { _ in
-                // 70 per row + nav bar height
-                CGFloat(ItemType.allCases.count) * 70 + 100
+                // 66 per row + nav bar height
+                CGFloat(ItemType.allCases.count) * 66 + 72
             }
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {

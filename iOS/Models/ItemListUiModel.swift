@@ -116,7 +116,7 @@ extension SymmetricallyEncryptedItem {
         case .alias:
             note = item.aliasEmail
         default:
-            note = try symmetricKey.decrypt(encryptedItemContent.note)
+            note = nil
         }
 
         return .init(itemId: encryptedItemContent.item.itemID,

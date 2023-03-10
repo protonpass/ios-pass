@@ -50,6 +50,8 @@ struct FullScreenView: View {
     var body: some View {
         NavigationView {
             ZStack {
+                Color.passBackground
+                    .edgesIgnoringSafeArea(.all)
                 switch mode {
                 case .text:
                     FullScreenTextView(originalBrightness: $originalBrightness,

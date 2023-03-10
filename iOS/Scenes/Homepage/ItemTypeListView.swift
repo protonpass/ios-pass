@@ -85,12 +85,14 @@ struct ItemTypeListView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                LazyVStack(spacing: kItemDetailSectionPadding) {
+                LazyVStack(spacing: 0) {
                     ForEach(ItemType.allCases, id: \.self) { type in
                         itemRow(for: type)
                             .padding(.horizontal)
-                        PassDivider()
-                            .padding(.horizontal)
+                        if type != ItemType.allCases.last {
+                            PassDivider()
+                                .padding(.horizontal)
+                        }
                     }
                 }
                 .padding(.top, kItemDetailSectionPadding)
@@ -113,23 +115,28 @@ struct ItemTypeListView: View {
     @ViewBuilder
     private func itemRow(for type: ItemType) -> some View {
         let tintColor = type.tintColor
-        GeneralItemRow(
-            thumbnailView: {
-                GeometryReader { proxy in
-                    ZStack {
-                        Color(uiColor: tintColor.withAlphaComponent(0.08))
-                            .clipShape(Circle())
+        Button(action: {
+            onSelectItemType(type)
+        }, label: {
+            GeneralItemRow(
+                thumbnailView: {
+                    GeometryReader { proxy in
+                        ZStack {
+                            Color(uiColor: tintColor.withAlphaComponent(0.08))
+                                .clipShape(Circle())
 
-                        Image(uiImage: type.icon)
-                            .resizable()
-                            .scaledToFit()
-                            .padding(proxy.size.width / 4)
-                            .foregroundColor(Color(uiColor: tintColor))
+                            Image(uiImage: type.icon)
+                                .resizable()
+                                .scaledToFit()
+                                .padding(proxy.size.width / 4)
+                                .foregroundColor(Color(uiColor: tintColor))
+                        }
                     }
-                }
-            },
-            title: type.title,
-            description: type.description,
-            action: { onSelectItemType(type) })
+                },
+                title: type.title,
+                description: type.description)
+            .frame(height: 66)
+        })
+        .buttonStyle(.plain)
     }
 }
