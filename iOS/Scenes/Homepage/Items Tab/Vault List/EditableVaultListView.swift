@@ -82,7 +82,7 @@ struct EditableVaultListView: View {
                                   action: viewModel.createNewVault)
                 Spacer()
             }
-            .padding(.horizontal)
+            .padding([.bottom, .horizontal])
         }
         .background(Color.passSecondaryBackground)
         .frame(maxWidth: .infinity, alignment: .leading)
