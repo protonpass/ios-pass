@@ -80,29 +80,30 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
         self.userData = userData
     }
 
-    @MainActor
-    func loadVaultsOrCreateIfNecessary() async {
-        do {
-            state = .loading
-            if manualLogIn {
-                try await itemRepository.refreshItems()
-                let vaults = try await shareRepository.getVaults()
-                if vaults.isEmpty {
-                    let userId = userData.user.ID
-                    logger.trace("Creating default vault for user \(userId)")
-                    try await createDefaultVault()
-                    logger.trace("Created default vault for user \(userId)")
+    func refresh() {
+        Task { @MainActor in
+            do {
+                state = .loading
+                if manualLogIn {
+                    try await itemRepository.refreshItems()
+                    let vaults = try await shareRepository.getVaults()
+                    if vaults.isEmpty {
+                        let userId = userData.user.ID
+                        logger.trace("Creating default vault for user \(userId)")
+                        try await createDefaultVault()
+                        logger.trace("Created default vault for user \(userId)")
+                        let vaults = try await shareRepository.getVaults()
+                        try await loadContents(for: vaults)
+                    } else {
+                        try await loadContents(for: vaults)
+                    }
+                } else {
                     let vaults = try await shareRepository.getVaults()
                     try await loadContents(for: vaults)
-                } else {
-                    try await loadContents(for: vaults)
                 }
-            } else {
-                let vaults = try await shareRepository.getVaults()
-                try await loadContents(for: vaults)
+            } catch {
+                state = .error(error)
             }
-        } catch {
-            state = .error(error)
         }
     }
 }
@@ -127,7 +128,10 @@ private extension VaultsManager {
                                        items: itemUiModels)
         }
         state = .loaded(uiModels)
-        selectedVault = vaults.first
+
+        if !vaults.contains(where: { $0 == selectedVault }) {
+            selectedVault = vaults.first
+        }
     }
 }
 

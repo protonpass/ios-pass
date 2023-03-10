@@ -37,10 +37,6 @@ struct HomepageView: View {
             HomepageTabBar(selectedTab: $selectedTab, action: viewModel.createNewItem)
         }
         .theme(viewModel.preferences.theme)
-        .onFirstAppear {
-            Task {
-                await viewModel.vaultsManager.loadVaultsOrCreateIfNecessary()
-            }
-        }
+        .onFirstAppear(perform: viewModel.vaultsManager.refresh)
     }
 }

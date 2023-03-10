@@ -54,6 +54,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private lazy var bannerManager: BannerManager = { .init(container: rootViewController) }()
 
     // References
+    private var homepageViewModel: HomepageViewModel?
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var searchViewModel: SearchViewModel?
@@ -132,6 +133,7 @@ private extension HomepageCoordinator {
 
         start(with: homepageView, secondaryView: placeholderView)
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+        self.homepageViewModel = homepageViewModel
     }
 
     func informAliasesLimit() {
@@ -178,8 +180,7 @@ private extension HomepageCoordinator {
         }
     }
 
-    func presentCreateItemView() {
-        let shareId = "39hry1jlHiPzhXRXrWjfS6t3fqA14QbYfrbF30l2PYYWOhVpyJ33nhujM4z4SHtfuQqTx6e7oSQokrqhLMD8LQ=="
+    func presentCreateItemView(shareId: String) {
         let view = ItemTypeListView { [unowned self] itemType in
             dismissTopMostViewController { [unowned self] in
                 switch itemType {
@@ -292,8 +293,8 @@ extension HomepageCoordinator {
 
 // MARK: - HomepageViewModelDelegate
 extension HomepageCoordinator: HomepageViewModelDelegate {
-    func homepageViewModelWantsToCreateNewItem() {
-        presentCreateItemView()
+    func homepageViewModelWantsToCreateNewItem(shareId: String) {
+        presentCreateItemView(shareId: shareId)
     }
 
     func homepageViewModelWantsToSearch() {
@@ -369,11 +370,14 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
-        print(#function)
+        dismissTopMostViewController()
+        homepageViewModel?.vaultsManager.refresh()
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
-        print(#function)
+        homepageViewModel?.vaultsManager.refresh()
+        currentItemDetailViewModel?.refresh()
+        dismissTopMostViewController()
     }
 
     func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {

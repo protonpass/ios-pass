@@ -72,11 +72,8 @@ struct ItemsTabView: View {
                     }
 
                 case .error(let error):
-                    RetryableErrorView(errorMessage: error.messageForTheUser) {
-                        Task { @MainActor in
-                            await viewModel.vaultsManager.loadVaultsOrCreateIfNecessary()
-                        }
-                    }
+                    RetryableErrorView(errorMessage: error.messageForTheUser,
+                                       onRetry: viewModel.vaultsManager.refresh)
                 }
                 Spacer()
             }
