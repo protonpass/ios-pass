@@ -125,6 +125,7 @@ private extension HomepageCoordinator {
                                                   symmetricKey: symmetricKey,
                                                   userData: userData)
         homepageViewModel.delegate = self
+        homepageViewModel.itemsTabViewModelDelegate = self
         let homepageView = HomepageView(viewModel: homepageViewModel)
 
         let placeholderView = ItemDetailPlaceholderView { [unowned self] in
@@ -297,7 +298,14 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
         presentCreateItemView(shareId: shareId)
     }
 
-    func homepageViewModelWantsToSearch() {
+    func homepageViewModelWantsToLogOut() {
+        delegate?.homepageCoordinatorWantsToLogOut()
+    }
+}
+
+// MARK: - ItemsTabViewModelDelegate
+extension HomepageCoordinator: ItemsTabViewModelDelegate {
+    func itemsTabViewModelWantsToSearch() {
         let viewModel = SearchViewModel(symmetricKey: symmetricKey,
                                         itemRepository: itemRepository,
                                         vaults: [],
@@ -310,7 +318,7 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
         present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func homepageViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
+    func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
         let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager)
         viewModel.delegate = self
         let view = EditableVaultListView(viewModel: viewModel)
@@ -328,7 +336,7 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func homepageViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
+    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
                                                      delegate: SortTypeListViewModelDelegate) {
         let viewModel = SortTypeListViewModel(sortType: selectedSortType)
         viewModel.delegate = delegate
@@ -346,16 +354,12 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func homepageViewModelWantsToViewDetail(of itemContent: ItemContent) {
+    func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
         if currentItemDetailViewModel?.itemContent.isSameItem(itemContent) == true { return }
         presentItemDetailView(for: itemContent)
     }
 
-    func homepageViewModelWantsToLogOut() {
-        delegate?.homepageCoordinatorWantsToLogOut()
-    }
-
-    func homepageViewModelDidEncounter(error: Error) {
+    func itemsTabViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }
