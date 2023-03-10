@@ -25,7 +25,7 @@ import CryptoKit
 import ProtonCore_Login
 
 protocol HomepageViewModelDelegate: AnyObject {
-    func homepageViewModelWantsToCreateNewItem()
+    func homepageViewModelWantsToCreateNewItem(shareId: String)
     func homepageViewModelWantsToSearch()
     func homepageViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
     func homepageViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
@@ -82,7 +82,7 @@ private extension HomepageViewModel {
 // MARK: - Public APIs
 extension HomepageViewModel {
     func createNewItem() {
-        delegate?.homepageViewModelWantsToCreateNewItem()
+        delegate?.homepageViewModelWantsToCreateNewItem(shareId: vaultsManager.selectedVault?.shareId ?? "")
     }
 }
 

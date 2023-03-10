@@ -49,6 +49,7 @@ public struct CapsuleTextButton: View {
                 .font(.callout)
                 .foregroundColor(disabled ? .passBackground : Color(uiColor: titleColor))
                 .frame(height: height)
+                .frame(maxWidth: .infinity)
                 .padding(.horizontal, 16)
                 .background(Color(uiColor: backgroundColor))
                 .clipShape(Capsule())
