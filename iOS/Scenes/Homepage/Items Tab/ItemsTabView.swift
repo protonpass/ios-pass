@@ -131,7 +131,7 @@ struct ItemsTabView: View {
                 section(for: result.today, headerTitle: "Today")
                 section(for: result.yesterday, headerTitle: "Yesterday")
                 section(for: result.last7Days, headerTitle: "Last week")
-                section(for: result.last7Days, headerTitle: "Last two weeks")
+                section(for: result.last14Days, headerTitle: "Last two weeks")
                 section(for: result.last30Days, headerTitle: "Last 30 days")
                 section(for: result.last60Days, headerTitle: "Last 60 days")
                 section(for: result.last90Days, headerTitle: "Last 90 days")

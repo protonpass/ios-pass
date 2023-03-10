@@ -260,7 +260,13 @@ public struct MonthYearSortResult<T: DateSortable> {
 
 public extension Array where Element: DateSortable {
     func monthYearSortResult(direction: SortDirection) -> MonthYearSortResult<Element> {
-        let sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
+        let sortedElements: [Element]
+        switch direction {
+        case .ascending:
+            sortedElements = sorted(by: { $0.dateForSorting < $1.dateForSorting })
+        case .descending:
+            sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
+        }
         let dict = Dictionary(grouping: sortedElements) { element in
             MonthYear(date: element.dateForSorting)
         }
