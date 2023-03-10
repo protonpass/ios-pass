@@ -198,4 +198,65 @@ final class ItemSortableTests: XCTestCase {
         XCTAssertEqual(tBucket.items.count, 1)
         XCTAssertEqual(tBucket.items[0].alphabeticalSortableString, "Touti")
     }
+
+    func testMonthYearSort() {
+        struct DummyItem: DateSortable {
+            let dateForSorting: Date
+        }
+
+        continueAfterFailure = false
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        let createDate: (String) -> Date = { dateFormat in
+            dateFormatter.date(from: dateFormat)! // swiftlint:disable:this force_unwrapping
+        }
+        // Given
+        let item1 = DummyItem(dateForSorting: createDate("11/03/2023"))
+        let item2 = DummyItem(dateForSorting: createDate("20/03/2023"))
+        let item3 = DummyItem(dateForSorting: createDate("01/07/2022"))
+        let item4 = DummyItem(dateForSorting: createDate("05/03/2022"))
+        let item5 = DummyItem(dateForSorting: createDate("18/03/2022"))
+        let item6 = DummyItem(dateForSorting: createDate("18/06/2021"))
+
+        let items = [item1, item2, item3, item4, item5, item6].shuffled()
+
+        // When
+        let sortedItemsDescending = items.monthYearSortResult(direction: .descending)
+        let sortedItemsAscending = items.monthYearSortResult(direction: .ascending)
+
+        // Then
+        // Descending
+        XCTAssertEqual(sortedItemsDescending.buckets.count, 4)
+
+        XCTAssertEqual(sortedItemsDescending.buckets[0].items.count, 2)
+        assertEqual(sortedItemsDescending.buckets[0].items[0], item2)
+        assertEqual(sortedItemsDescending.buckets[0].items[1], item1)
+
+        XCTAssertEqual(sortedItemsDescending.buckets[1].items.count, 1)
+        assertEqual(sortedItemsDescending.buckets[1].items[0], item3)
+
+        XCTAssertEqual(sortedItemsDescending.buckets[2].items.count, 2)
+        assertEqual(sortedItemsDescending.buckets[2].items[0], item5)
+        assertEqual(sortedItemsDescending.buckets[2].items[1], item4)
+
+        XCTAssertEqual(sortedItemsDescending.buckets[3].items.count, 1)
+        assertEqual(sortedItemsDescending.buckets[3].items[0], item6)
+
+        // Ascending
+        XCTAssertEqual(sortedItemsAscending.buckets.count, 4)
+
+        XCTAssertEqual(sortedItemsAscending.buckets[0].items.count, 1)
+        assertEqual(sortedItemsAscending.buckets[0].items[0], item6)
+
+        XCTAssertEqual(sortedItemsAscending.buckets[1].items.count, 2)
+        assertEqual(sortedItemsAscending.buckets[1].items[0], item4)
+        assertEqual(sortedItemsAscending.buckets[1].items[1], item5)
+
+        XCTAssertEqual(sortedItemsAscending.buckets[2].items.count, 1)
+        assertEqual(sortedItemsAscending.buckets[2].items[0], item3)
+
+        XCTAssertEqual(sortedItemsAscending.buckets[3].items.count, 2)
+        assertEqual(sortedItemsAscending.buckets[3].items[0], item1)
+        assertEqual(sortedItemsAscending.buckets[3].items[1], item2)
+    }
 }
