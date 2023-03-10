@@ -70,6 +70,7 @@ struct ItemsTabView: View {
                             itemList(items.monthYearSortResult(direction: .ascending))
                         }
                     }
+                    .animation(.default, value: viewModel.vaultsManager.state)
 
                 case .error(let error):
                     RetryableErrorView(errorMessage: error.messageForTheUser,
