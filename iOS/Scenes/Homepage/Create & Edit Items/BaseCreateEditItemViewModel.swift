@@ -29,7 +29,6 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
-    func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType)
     func createEditItemViewModelDidFail(_ error: Error)
 }
 
@@ -143,24 +142,6 @@ class BaseCreateEditItemViewModel {
         }
     }
 
-    func trash() {
-        guard case .edit(let itemContent) = mode else { return }
-        Task { @MainActor in
-            defer { delegate?.createEditItemViewModelWantsToHideLoadingHud() }
-            do {
-                delegate?.createEditItemViewModelWantsToShowLoadingHud()
-                let item = try await getItemTask(shareId: itemContent.shareId,
-                                                 itemId: itemContent.item.itemID).value
-                try await trashItemTask(item: item).value
-                delegate?.createEditItemViewModelDidTrashItem(item, type: itemContentType())
-                logger.info("Trashed \(item.debugInformation)")
-            } catch {
-                logger.error(error)
-                delegate?.createEditItemViewModelDidFail(error)
-            }
-        }
-    }
-
     @MainActor
     private func createItem(shareId: String) async {
         defer { isSaving = false }
@@ -250,12 +231,6 @@ private extension BaseCreateEditItemViewModel {
                 throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
             }
             return item
-        }
-    }
-
-    func trashItemTask(item: SymmetricallyEncryptedItem) -> Task<Void, Error> {
-        Task.detached(priority: .userInitiated) {
-            try await self.itemRepository.trashItems([item])
         }
     }
 }

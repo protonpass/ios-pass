@@ -243,7 +243,7 @@ struct LogInDetailView: View {
                             viewModel.openUrl(url)
                         }, label: {
                             Text(url)
-                                .foregroundColor(.passBrand)
+                                .foregroundColor(Color(uiColor: tintColor))
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(2)
                         })
