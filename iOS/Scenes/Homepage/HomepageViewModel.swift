@@ -26,13 +26,7 @@ import ProtonCore_Login
 
 protocol HomepageViewModelDelegate: AnyObject {
     func homepageViewModelWantsToCreateNewItem(shareId: String)
-    func homepageViewModelWantsToSearch()
-    func homepageViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
-    func homepageViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
-                                                     delegate: SortTypeListViewModelDelegate)
-    func homepageViewModelWantsToViewDetail(of itemContent: ItemContent)
     func homepageViewModelWantsToLogOut()
-    func homepageViewModelDidEncounter(error: Error)
 }
 
 final class HomepageViewModel: ObservableObject, DeinitPrintable {
@@ -44,7 +38,11 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
     let vaultsManager: VaultsManager
 
     weak var delegate: HomepageViewModelDelegate?
-
+    weak var itemsTabViewModelDelegate: ItemsTabViewModelDelegate? {
+        didSet {
+            itemsTabViewModel.delegate = itemsTabViewModelDelegate
+        }
+    }
     private var cancellables = Set<AnyCancellable>()
 
     init(itemRepository: ItemRepositoryProtocol,
@@ -74,7 +72,6 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
 // MARK: - Private APIs
 private extension HomepageViewModel {
     func finalizeInitialization() {
-        itemsTabViewModel.delegate = self
         profileTabViewModel.delegate = self
         preferences.attach(to: self, storeIn: &cancellables)
     }
@@ -84,31 +81,6 @@ private extension HomepageViewModel {
 extension HomepageViewModel {
     func createNewItem() {
         delegate?.homepageViewModelWantsToCreateNewItem(shareId: vaultsManager.selectedVault?.shareId ?? "")
-    }
-}
-
-// MARK: - ItemsTabViewModelDelegate
-extension HomepageViewModel: ItemsTabViewModelDelegate {
-    func itemsTabViewModelWantsToSearch() {
-        delegate?.homepageViewModelWantsToSearch()
-    }
-
-    func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
-        delegate?.homepageViewModelWantsToPresentVaultList(vaultsManager: vaultsManager)
-    }
-
-    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
-                                                     delegate: SortTypeListViewModelDelegate) {
-        self.delegate?.homepageViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
-                                                                   delegate: delegate)
-    }
-
-    func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
-        delegate?.homepageViewModelWantsToViewDetail(of: itemContent)
-    }
-
-    func itemsTabViewModelDidEncounter(error: Error) {
-        delegate?.homepageViewModelDidEncounter(error: error)
     }
 }
 
