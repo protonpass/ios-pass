@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import ProtonCore_Login
 
@@ -73,7 +74,10 @@ class BaseCreateEditItemViewModel {
     let preferences: Preferences
     let logger: Logger
 
+    var didEditSomething = false
+
     weak var delegate: CreateEditItemViewModelDelegate?
+    var cancellables = Set<AnyCancellable>()
 
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,

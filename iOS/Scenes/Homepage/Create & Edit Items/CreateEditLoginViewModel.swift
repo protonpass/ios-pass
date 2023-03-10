@@ -69,10 +69,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         urls.isEmpty || (urls.count == 1 && urls[0].value.isEmpty)
     }
 
-    var isEmpty: Bool {
-        title.isEmpty && username.isEmpty && password.isEmpty && hasNoUrls && note.isEmpty
-    }
-
     var isAutoFilling: Bool {
         if case let .create(_, type) = mode,
            case let .login(_, _, autofill) = type {
@@ -95,6 +91,17 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                    itemRepository: itemRepository,
                    preferences: preferences,
                    logManager: logManager)
+        Publishers
+            .CombineLatest($title, $username)
+            .combineLatest($password)
+            .combineLatest($totpUri)
+            .combineLatest($urls)
+            .combineLatest($note)
+            .dropFirst(mode.isEditMode ? 1 : 3)
+            .sink(receiveValue: { [unowned self] _ in
+                self.didEditSomething = true
+            })
+            .store(in: &cancellables)
     }
 
     override func bindValues() {

@@ -78,8 +78,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     private let prefixCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
 
-    private var cancellables = Set<AnyCancellable>()
-
     enum State {
         case loading
         case loaded
@@ -101,10 +99,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     let aliasRepository: AliasRepositoryProtocol
 
     weak var createEditAliasViewModelDelegate: CreateEditAliasViewModelDelegate?
-
-    var isEmpty: Bool {
-        !state.isLoaded || (title.isEmpty && prefix.isEmpty && note.isEmpty)
-    }
 
     override var isSaveable: Bool {
         switch mode {
@@ -134,7 +128,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
         _title
             .projectedValue
-            .dropFirst(3)
+            .dropFirst(mode.isEditMode ? 1 : 3)
+            .receive(on: RunLoop.main)
             .sink { [unowned self] _ in
                 if !prefixManuallyEdited {
                     prefix = PrefixUtils.generatePrefix(fromTitle: title)
@@ -144,10 +139,20 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
         _prefix
             .projectedValue
-            .dropFirst(3) // TextField is edited 3 times when view is loaded
+            .dropFirst(mode.isEditMode ? 1 : 3)
+            .receive(on: RunLoop.main)
             .sink { [unowned self] _ in
                 self.validatePrefix()
             }
+            .store(in: &cancellables)
+
+        Publishers
+            .CombineLatest($title, $prefix)
+            .combineLatest($note)
+            .dropFirst(mode.isEditMode ? 1 : 3)
+            .sink(receiveValue: { [unowned self] _ in
+                self.didEditSomething = true
+            })
             .store(in: &cancellables)
     }
 
