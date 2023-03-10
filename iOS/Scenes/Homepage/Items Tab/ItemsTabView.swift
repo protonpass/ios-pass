@@ -29,9 +29,18 @@ private let kTopBarHeight: CGFloat = 48
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
-    @State var state: SwipeState = .untouched
+    @State private var toBeTrashedItem: ItemListUiModelV2?
+    @State private var state: SwipeState = .untouched
 
     var body: some View {
+        let isShowingTrashingAlert = Binding<Bool>(get: {
+            toBeTrashedItem != nil
+        }, set: { newValue in
+            if !newValue {
+                toBeTrashedItem = nil
+            }
+        })
+
         GeometryReader { proxy in
             VStack {
                 topBar
@@ -80,6 +89,11 @@ struct ItemsTabView: View {
             .edgesIgnoringSafeArea(.bottom)
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
+            }
+            .moveToTrashAlert(isPresented: isShowingTrashingAlert) {
+                if let toBeTrashedItem {
+                    viewModel.trash(item: toBeTrashedItem)
+                }
             }
         }
     }
@@ -206,6 +220,7 @@ struct ItemsTabView: View {
 
     private func itemRow(for item: ItemListUiModelV2) -> some View {
         Button(action: {
+            collapseSwipeActions()
             viewModel.viewDetail(of: item)
         }, label: {
             GeneralItemRow(
@@ -228,7 +243,8 @@ struct ItemsTabView: View {
             .padding(.horizontal)
             .addSwipeAction(edge: .trailing, state: $state) {
                 Button(action: {
-                    viewModel.trash(item: item)
+                    collapseSwipeActions()
+                    askForConfirmationOrTrashDirectly(item: item)
                 }, label: {
                     VStack(spacing: 4) {
                         Spacer()
@@ -245,6 +261,18 @@ struct ItemsTabView: View {
             }
         })
         .buttonStyle(.plain)
+    }
+
+    private func askForConfirmationOrTrashDirectly(item: ItemListUiModelV2) {
+        if viewModel.preferences.askBeforeTrashing {
+            toBeTrashedItem = item
+        } else {
+            viewModel.trash(item: item)
+        }
+    }
+
+    private func collapseSwipeActions() {
+        state = .swiped(UUID())
     }
 }
 

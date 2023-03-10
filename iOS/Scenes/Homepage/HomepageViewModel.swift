@@ -62,6 +62,7 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
                                           userData: userData)
         self.itemsTabViewModel = .init(itemRepository: itemRepository,
                                        logManager: logManager,
+                                       preferences: preferences,
                                        vaultsManager: vaultsManager)
         self.preferences = preferences
         self.profileTabViewModel = .init()

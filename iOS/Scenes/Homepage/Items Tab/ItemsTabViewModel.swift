@@ -38,6 +38,7 @@ final class ItemsTabViewModel: ObservableObject, DeinitPrintable {
 
     let itemRepository: ItemRepositoryProtocol
     let logger: Logger
+    let preferences: Preferences
     let vaultsManager: VaultsManager
 
     weak var delegate: ItemsTabViewModelDelegate?
@@ -46,11 +47,13 @@ final class ItemsTabViewModel: ObservableObject, DeinitPrintable {
 
     init(itemRepository: ItemRepositoryProtocol,
          logManager: LogManager,
+         preferences: Preferences,
          vaultsManager: VaultsManager) {
         self.itemRepository = itemRepository
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
+        self.preferences = preferences
         self.vaultsManager = vaultsManager
         self.finalizeInitialization()
     }
@@ -98,7 +101,7 @@ extension ItemsTabViewModel {
     }
 
     func trash(item: ItemListUiModelV2) {
-        print(#function)
+        print(item.title)
     }
 }
 
