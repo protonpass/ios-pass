@@ -27,13 +27,13 @@ protocol VaultListViewModelDelegate: AnyObject {
     func vaultListViewModelWantsShowLoadingHud()
     func vaultListViewModelWantsHideLoadingHud()
     func vaultListViewModelWantsToCreateVault()
-    func vaultListViewModelDidDelete(vault: VaultProtocol)
+    func vaultListViewModelDidDelete(vault: Vault)
     func vaultListViewModelDidFail(error: Error)
 }
 
 final class VaultListViewModel: ObservableObject {
-    var vaults: [VaultProtocol] { vaultSelection.vaults }
-    var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
+    var vaults: [Vault] { vaultSelection.vaults }
+    var selectedVault: Vault? { vaultSelection.selectedVault }
 
     private let itemRepository: ItemRepositoryProtocol
     private let shareRespository: ShareRepositoryProtocol
@@ -65,11 +65,11 @@ extension VaultListViewModel {
         delegate?.vaultListViewModelWantsToCreateVault()
     }
 
-    func selectVault(_ vault: VaultProtocol) {
+    func selectVault(_ vault: Vault) {
         vaultSelection.update(selectedVault: vault)
     }
 
-    func deleteVault(_ vault: VaultProtocol) {
+    func deleteVault(_ vault: Vault) {
         Task { @MainActor in
             defer { delegate?.vaultListViewModelWantsHideLoadingHud() }
             do {

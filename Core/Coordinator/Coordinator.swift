@@ -23,16 +23,8 @@ import SwiftUI
 import UIComponents
 import UIKit
 
-public protocol CoordinatorDelegate: AnyObject {
-    func coordinatorWantsToToggleSidebar()
-    func coordinatorWantsToShowLoadingHud()
-    func coordinatorWantsToHideLoadingHud()
-    func coordinatorWantsToAlertError(_ error: Error)
-}
-
 public protocol CoordinatorProtocol: AnyObject {
     var rootViewController: UIViewController { get }
-    var coordinatorDelegate: CoordinatorDelegate? { get }
 
     func start<PrimaryView: View, SecondaryView: View>(with view: PrimaryView,
                                                        secondaryView: SecondaryView)
@@ -108,8 +100,7 @@ open class Coordinator: CoordinatorProtocol {
     private let type: CoordinatorType
 
     public var rootViewController: UIViewController { type.controller }
-    public weak var coordinatorDelegate: CoordinatorDelegate?
-    private var topMostViewController: UIViewController { rootViewController.topMostViewController }
+    public var topMostViewController: UIViewController { rootViewController.topMostViewController }
 
     public init() {
         if UIDevice.current.isIpad {
@@ -228,13 +219,6 @@ open class Coordinator: CoordinatorProtocol {
     }
 }
 
-public extension Coordinator {
-    func toggleSidebar() { coordinatorDelegate?.coordinatorWantsToToggleSidebar() }
-    func showLoadingHud() { coordinatorDelegate?.coordinatorWantsToShowLoadingHud() }
-    func hideLoadingHud() { coordinatorDelegate?.coordinatorWantsToHideLoadingHud() }
-    func alertError(_ error: Error) { coordinatorDelegate?.coordinatorWantsToAlertError(error) }
-}
-
 public final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
     private var statusBarStyle = UIStatusBarStyle.default
 
@@ -244,6 +228,7 @@ public final class PPNavigationController: UINavigationController, UIGestureReco
 
     override public func viewDidLoad() {
         super.viewDidLoad()
+        navigationBar.isHidden = true
         interactivePopGestureRecognizer?.delegate = self
     }
 

@@ -27,6 +27,7 @@ public struct CapsuleTextButton: View {
     let backgroundColor: UIColor
     let disabled: Bool
     let height: CGFloat
+    let maxWidth: CGFloat?
     let action: () -> Void
 
     public init(title: String,
@@ -34,23 +35,26 @@ public struct CapsuleTextButton: View {
                 backgroundColor: UIColor,
                 disabled: Bool,
                 height: CGFloat = 40,
+                maxWidth: CGFloat? = .infinity,
                 action: @escaping () -> Void) {
         self.title = title
         self.titleColor = titleColor
         self.backgroundColor = backgroundColor
         self.disabled = disabled
         self.height = height
+        self.maxWidth = maxWidth
         self.action = action
     }
 
     public var body: some View {
         Button(action: action) {
             Text(title)
+                .font(.callout)
                 .foregroundColor(disabled ? .passBackground : Color(uiColor: titleColor))
                 .frame(height: height)
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity)
-                .background(Color(uiColor: backgroundColor).opacity(disabled ? 0.08 : 1))
+                .frame(maxWidth: maxWidth)
+                .padding(.horizontal, 16)
+                .background(Color(uiColor: backgroundColor))
                 .clipShape(Capsule())
         }
         .animation(.default, value: disabled)

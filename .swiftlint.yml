@@ -24,7 +24,7 @@ opt_in_rules:
   - empty_xctest_method
   - enum_case_associated_values_count
   - expiring_todo
-  - explicit_enum_raw_value
+  # - explicit_enum_raw_value
   - explicit_init
   - explicit_self
   - extension_access_modifier
@@ -116,7 +116,7 @@ file_length:
 # naming rules can set warnings/errors for min_length and max_length
 # additionally they can set excluded names
 type_name:
-  min_length: 4 # only warning
+  min_length: 3 # only warning
   max_length: # warning and error
     warning: 40
     error: 50

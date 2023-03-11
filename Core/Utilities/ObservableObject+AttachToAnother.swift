@@ -27,7 +27,7 @@ public extension ObservableObject {
     /// whenever ViewModel2 is changed.
     func attach<T: ObservableObject>(to another: T, storeIn cancellable: inout Set<AnyCancellable>)
     where T.ObjectWillChangePublisher == ObservableObjectPublisher {
-        objectWillChange.sink { _ in
+        objectWillChange.sink { [unowned another] _ in
             another.objectWillChange.send()
         }
         .store(in: &cancellable)

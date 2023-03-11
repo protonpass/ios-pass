@@ -124,21 +124,15 @@ extension TrashCoordinator: MyVaultsCoordinatorDelegate {
 
 // MARK: - TrashViewModelDelegate
 extension TrashCoordinator: TrashViewModelDelegate {
-    func trashViewModelWantsToToggleSidebar() {
-        toggleSidebar()
-    }
+    func trashViewModelWantsToToggleSidebar() {}
 
-    func trashViewModelWantsToShowLoadingHud() {
-        showLoadingHud()
-    }
+    func trashViewModelWantsToShowLoadingHud() {}
 
     func trashViewModelWantsShowItemDetail(_ item: Client.ItemContent) {
         showItemDetailView(item)
     }
 
-    func trashViewModelWantsToHideLoadingHud() {
-        hideLoadingHud()
-    }
+    func trashViewModelWantsToHideLoadingHud() {}
 
     func trashViewModelDidRestoreItem(_ item: ItemIdentifiable, type: Client.ItemContentType) {
         let message: String
