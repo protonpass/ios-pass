@@ -51,6 +51,7 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
          preferences: Preferences,
          shareRepository: ShareRepositoryProtocol,
          symmetricKey: SymmetricKey,
+         syncEventLoop: SyncEventLoop,
          userData: UserData) {
         let vaultsManager = VaultsManager(itemRepository: itemRepository,
                                           manualLogIn: manualLogIn,
@@ -61,6 +62,7 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
         self.itemsTabViewModel = .init(itemRepository: itemRepository,
                                        logManager: logManager,
                                        preferences: preferences,
+                                       syncEventLoop: syncEventLoop,
                                        vaultsManager: vaultsManager)
         self.preferences = preferences
         self.profileTabViewModel = .init()

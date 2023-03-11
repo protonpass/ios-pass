@@ -171,32 +171,41 @@ struct ItemsTabView: View {
     }
 
     private func itemList(_ result: MostRecentSortResult<ItemListUiModelV2>) -> some View {
-        ItemListView(safeAreaInsets: safeAreaInsets) {
-            section(for: result.today, headerTitle: "Today")
-            section(for: result.yesterday, headerTitle: "Yesterday")
-            section(for: result.last7Days, headerTitle: "Last week")
-            section(for: result.last14Days, headerTitle: "Last two weeks")
-            section(for: result.last30Days, headerTitle: "Last 30 days")
-            section(for: result.last60Days, headerTitle: "Last 60 days")
-            section(for: result.last90Days, headerTitle: "Last 90 days")
-            section(for: result.others, headerTitle: "More than 90 days")
-        }
+        ItemListView(
+            safeAreaInsets: safeAreaInsets,
+            content: {
+                section(for: result.today, headerTitle: "Today")
+                section(for: result.yesterday, headerTitle: "Yesterday")
+                section(for: result.last7Days, headerTitle: "Last week")
+                section(for: result.last14Days, headerTitle: "Last two weeks")
+                section(for: result.last30Days, headerTitle: "Last 30 days")
+                section(for: result.last60Days, headerTitle: "Last 60 days")
+                section(for: result.last90Days, headerTitle: "Last 90 days")
+                section(for: result.others, headerTitle: "More than 90 days")
+            },
+            onRefresh: viewModel.forceSync)
     }
 
     private func itemList(_ result: AlphabeticalSortResult<ItemListUiModelV2>) -> some View {
-        ItemListView(safeAreaInsets: safeAreaInsets) {
-            ForEach(result.buckets, id: \.letter) { bucket in
-                section(for: bucket.items, headerTitle: bucket.letter.character)
-            }
-        }
+        ItemListView(
+            safeAreaInsets: safeAreaInsets,
+            content: {
+                ForEach(result.buckets, id: \.letter) { bucket in
+                    section(for: bucket.items, headerTitle: bucket.letter.character)
+                }
+            },
+            onRefresh: viewModel.forceSync)
     }
 
     private func itemList(_ result: MonthYearSortResult<ItemListUiModelV2>) -> some View {
-        ItemListView(safeAreaInsets: safeAreaInsets) {
-            ForEach(result.buckets, id: \.monthYear) { bucket in
-                section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
-            }
-        }
+        ItemListView(
+            safeAreaInsets: safeAreaInsets,
+            content: {
+                ForEach(result.buckets, id: \.monthYear) { bucket in
+                    section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
+                }
+            },
+            onRefresh: viewModel.forceSync)
     }
 
     @ViewBuilder
@@ -314,11 +323,14 @@ private struct ItemsTabsSkeleton: View {
 private struct ItemListView<Content: View>: View {
     let safeAreaInsets: EdgeInsets
     let content: () -> Content
+    let onRefresh: @Sendable () async -> Void
 
     init(safeAreaInsets: EdgeInsets,
-         @ViewBuilder content: @escaping () -> Content) {
+         @ViewBuilder content: @escaping () -> Content,
+         onRefresh: @Sendable @escaping () async -> Void) {
         self.safeAreaInsets = safeAreaInsets
         self.content = content
+        self.onRefresh = onRefresh
     }
 
     var body: some View {
@@ -327,5 +339,6 @@ private struct ItemListView<Content: View>: View {
         }
         .listStyle(.plain)
         .padding(.bottom, safeAreaInsets.bottom)
+        .refreshable(action: onRefresh)
     }
 }
