@@ -41,6 +41,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let aliasRepository: AliasRepositoryProtocol
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
+    private let eventLoop: SyncEventLoop
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
     private let manualLogIn: Bool
@@ -63,6 +64,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     weak var delegate: HomepageCoordinatorDelegate?
 
+    // swiftlint:disable:next function_body_length
     init(apiService: APIService,
          container: NSPersistentContainer,
          credentialManager: CredentialManagerProtocol,
@@ -72,12 +74,39 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          symmetricKey: SymmetricKey,
          userData: UserData) {
         let authCredential = userData.credential
+        let itemRepository = ItemRepository(userData: userData,
+                                            symmetricKey: symmetricKey,
+                                            container: container,
+                                            apiService: apiService,
+                                            logManager: logManager)
         let remoteAliasDatasource = RemoteAliasDatasource(authCredential: authCredential,
                                                           apiService: apiService)
-        self.aliasRepository =
-        AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
+        let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(authCredential: authCredential,
+                                                                    apiService: apiService)
+        let shareKeyRepository = ShareKeyRepository(container: container,
+                                                    authCredential: authCredential,
+                                                    apiService: apiService,
+                                                    logManager: logManager)
+        let shareEventIDRepository = ShareEventIDRepository(container: container,
+                                                            authCredential: authCredential,
+                                                            apiService: apiService,
+                                                            logManager: logManager)
+        let shareRepository = ShareRepository(userData: userData,
+                                              container: container,
+                                              authCredential: authCredential,
+                                              apiService: apiService,
+                                              logManager: logManager)
+
+        self.aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
         self.clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
+        self.eventLoop = .init(userId: userData.user.ID,
+                               shareRepository: shareRepository,
+                               shareEventIDRepository: shareEventIDRepository,
+                               remoteSyncEventsDatasource: remoteSyncEventsDatasource,
+                               itemRepository: itemRepository,
+                               shareKeyRepository: shareKeyRepository,
+                               logManager: logManager)
         self.itemRepository = ItemRepository(userData: userData,
                                              symmetricKey: symmetricKey,
                                              container: container,
@@ -89,16 +118,13 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.logManager = logManager
         self.manualLogIn = manualLogIn
         self.preferences = preferences
-        self.shareRepository = ShareRepository(userData: userData,
-                                               container: container,
-                                               authCredential: authCredential,
-                                               apiService: apiService,
-                                               logManager: logManager)
+        self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
         self.userData = userData
         super.init()
         self.finalizeInitialization()
         self.start()
+        self.eventLoop.start()
     }
 }
 
@@ -107,11 +133,29 @@ private extension HomepageCoordinator {
     /// Some properties are dependant on other propeties which are in turn not initialized
     /// before the Coordinator is fully initialized. This method is to resolve these dependencies.
     func finalizeInitialization() {
+        eventLoop.delegate = self
         clipboardManager.bannerManager = bannerManager
 
         preferences.objectWillChange
             .sink { [unowned self] _ in
                 self.rootViewController.overrideUserInterfaceStyle = self.preferences.theme.userInterfaceStyle
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { [unowned self] _ in
+                eventLoop.forceSync()
+                Task {
+                    do {
+                        try await credentialManager.insertAllCredentials(from: itemRepository,
+                                                                         symmetricKey: symmetricKey,
+                                                                         forceRemoval: false)
+                        logger.info("App goes back to foreground. Inserted all credentials.")
+                    } catch {
+                        logger.error(error)
+                    }
+                }
             }
             .store(in: &cancellables)
     }
@@ -333,6 +377,7 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
     }
 
     func homepageViewModelWantsToLogOut() {
+        eventLoop.stop()
         delegate?.homepageCoordinatorWantsToLogOut()
     }
 }
@@ -592,5 +637,41 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 extension HomepageCoordinator: LogInDetailViewModelDelegate {
     func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
         presentItemDetailView(for: itemContent)
+    }
+}
+
+// MARK: - SyncEventLoopDelegate
+extension HomepageCoordinator: SyncEventLoopDelegate {
+    func syncEventLoopDidStartLooping() {
+        logger.info("Started looping")
+    }
+
+    func syncEventLoopDidStopLooping() {
+        logger.info("Stopped looping")
+    }
+
+    func syncEventLoopDidBeginNewLoop() {
+        logger.info("Began new sync loop")
+    }
+
+    #warning("Handle no connection reason")
+    func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
+        logger.info("Skipped sync loop \(reason)")
+    }
+
+    func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
+        if hasNewEvents {
+            logger.info("Has new events. Refreshing items")
+            homepageViewModel?.vaultsManager.refresh()
+            currentItemDetailViewModel?.refresh()
+            currentCreateEditItemViewModel?.refresh()
+        } else {
+            logger.info("Has no new events. Do nothing.")
+        }
+    }
+
+    func syncEventLoopDidFailLoop(error: Error) {
+        // Silently fail & not show error to users
+        logger.error(error)
     }
 }
