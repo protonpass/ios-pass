@@ -34,7 +34,7 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelDidEncounter(error: Error)
 }
 
-final class ItemsTabViewModel: ObservableObject, DeinitPrintable {
+final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published var selectedSortType = SortTypeV2.mostRecent
@@ -48,15 +48,21 @@ final class ItemsTabViewModel: ObservableObject, DeinitPrintable {
 
     private var cancellables = Set<AnyCancellable>()
 
+    /// `PullToRefreshable` conformance
+    var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
+    let syncEventLoop: SyncEventLoop
+
     init(itemRepository: ItemRepositoryProtocol,
          logManager: LogManager,
          preferences: Preferences,
+         syncEventLoop: SyncEventLoop,
          vaultsManager: VaultsManager) {
         self.itemRepository = itemRepository
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
         self.preferences = preferences
+        self.syncEventLoop = syncEventLoop
         self.vaultsManager = vaultsManager
         self.finalizeInitialization()
     }
@@ -127,5 +133,12 @@ extension ItemsTabViewModel {
 extension ItemsTabViewModel: SortTypeListViewModelDelegate {
     func sortTypeListViewDidSelect(_ sortType: SortTypeV2) {
         selectedSortType = sortType
+    }
+}
+
+// MARK: - SyncEventLoopPullToRefreshDelegate
+extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
+    func pullToRefreshShouldStopRefreshing() {
+        stopRefreshing()
     }
 }

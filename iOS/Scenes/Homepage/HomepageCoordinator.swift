@@ -167,6 +167,7 @@ private extension HomepageCoordinator {
                                                   preferences: preferences,
                                                   shareRepository: shareRepository,
                                                   symmetricKey: symmetricKey,
+                                                  syncEventLoop: eventLoop,
                                                   userData: userData)
         homepageViewModel.delegate = self
         homepageViewModel.itemsTabViewModelDelegate = self
