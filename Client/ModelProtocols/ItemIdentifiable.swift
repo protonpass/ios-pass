@@ -31,10 +31,4 @@ public extension ItemIdentifiable {
     var debugInformation: String {
         "Item ID (\(itemId)) - Share ID (\(shareId))"
     }
-
-    /// Only tell if items share the same `ShareID` & `ItemID`
-    /// Do not compare item content at all.
-    func isSameItem(_ other: Self) -> Bool {
-        shareId == other.shareId && itemId == other.itemId
-    }
 }

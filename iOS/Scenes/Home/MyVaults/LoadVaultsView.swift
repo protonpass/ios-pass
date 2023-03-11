@@ -37,8 +37,7 @@ struct LoadVaultsView: View {
                                    onRetry: viewModel.getVaults)
                 .padding()
             } else {
-                LoadingVaultView()
-                    .padding()
+                ProgressView()
             }
         }
         .toolbar { toolbarContent }

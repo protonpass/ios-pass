@@ -34,7 +34,7 @@ struct ItemsTabView: View {
         ZStack {
             switch viewModel.vaultsManager.state {
             case .loading:
-                ProgressView()
+                ItemsTabsSkeleton()
 
             case .loaded:
                 content
@@ -258,6 +258,55 @@ struct ItemsTabView: View {
             toBeTrashedItem = item
         } else {
             viewModel.trash(item: item)
+        }
+    }
+}
+
+private struct ItemsTabsSkeleton: View {
+    var body: some View {
+        VStack {
+            HStack {
+                AnimatingGrayGradient()
+                    .frame(width: kTopBarHeight)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                AnimatingGrayGradient()
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .containerShape(Rectangle())
+            }
+
+            .frame(height: kTopBarHeight)
+
+            ScrollView {
+                LazyVStack(spacing: 20) {
+                    ForEach(0..<20, id: \.self) { _ in
+                        itemRow
+                    }
+                }
+            }
+            .disabled(true)
+        }
+        .padding(.horizontal)
+    }
+
+    private var itemRow: some View {
+        HStack(spacing: 16) {
+            AnimatingGrayGradient()
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+
+            VStack(alignment: .leading) {
+                Spacer()
+                AnimatingGrayGradient()
+                    .frame(width: 170, height: 10)
+                    .clipShape(Capsule())
+                Spacer()
+                AnimatingGrayGradient()
+                    .frame(width: 200, height: 10)
+                    .clipShape(Capsule())
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

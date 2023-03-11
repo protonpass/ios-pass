@@ -162,8 +162,6 @@
 		355013F929547C8C004F837E /* AutoFillSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355013F829547C8C004F837E /* AutoFillSettingsView.swift */; };
 		3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
-		3552146229150FFC00BA6229 /* GenericItemSkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */; };
-		3552147E2915251C00BA6229 /* LoadingVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552147D2915251C00BA6229 /* LoadingVaultView.swift */; };
 		355214822915517E00BA6229 /* EditMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355214812915517E00BA6229 /* EditMenuButton.swift */; };
 		355214842915524D00BA6229 /* CopyMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355214832915524D00BA6229 /* CopyMenuButton.swift */; };
 		355222ED293F67A600786F64 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355222EC293F67A600786F64 /* URLExtensions.swift */; };
@@ -806,8 +804,6 @@
 		355013F6295459E1004F837E /* ThemesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesView.swift; sourceTree = "<group>"; };
 		355013F829547C8C004F837E /* AutoFillSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillSettingsView.swift; sourceTree = "<group>"; };
 		3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsSection.swift; sourceTree = "<group>"; };
-		3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericItemSkeletonView.swift; sourceTree = "<group>"; };
-		3552147D2915251C00BA6229 /* LoadingVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingVaultView.swift; sourceTree = "<group>"; };
 		355214812915517E00BA6229 /* EditMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMenuButton.swift; sourceTree = "<group>"; };
 		355214832915524D00BA6229 /* CopyMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyMenuButton.swift; sourceTree = "<group>"; };
 		355222EC293F67A600786F64 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
@@ -1433,7 +1429,6 @@
 				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
 				355635BC2889653B00F32353 /* LoadVaultsView.swift */,
 				355635BE2889664200F32353 /* LoadVaultsViewModel.swift */,
-				3552147D2915251C00BA6229 /* LoadingVaultView.swift */,
 				3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */,
 				350A97DB2885FD7900A7168B /* MyVaultsViewModel.swift */,
 				3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */,
@@ -2125,7 +2120,6 @@
 				35661CB529B91990003BBAD6 /* EdgeInsets+Zero.swift */,
 				35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */,
 				3547ABE92877684D00EE85E1 /* GenericItemView.swift */,
-				3552146129150FFC00BA6229 /* GenericItemSkeletonView.swift */,
 				35498F8728DC769300AF1D8F /* HighlightText.swift */,
 				354F769B28C90B4D00EB2383 /* MoveToTrashModifier.swift */,
 				35690C122923D5DA00F60C20 /* NotchView.swift */,
@@ -3434,7 +3428,6 @@
 				355BDED6299E6515009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				3538932928821A63003DCFC1 /* CreateVaultViewModel.swift in Sources */,
 				3569B29F29B77A760070830B /* VaultContentUiModel.swift in Sources */,
-				3552147E2915251C00BA6229 /* LoadingVaultView.swift in Sources */,
 				353E8B7028761A1700A2C5E3 /* SidebarItem.swift in Sources */,
 				354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */,
 				35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */,
@@ -3728,7 +3721,6 @@
 				3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */,
 				35690C152923EA8400F60C20 /* Color+ProtonColors.swift in Sources */,
 				35570A802926321B00125727 /* View+OpacityReduced.swift in Sources */,
-				3552146229150FFC00BA6229 /* GenericItemSkeletonView.swift in Sources */,
 				354BB15328A2886500F50040 /* SwiftUISearchBar.swift in Sources */,
 				355214842915524D00BA6229 /* CopyMenuButton.swift in Sources */,
 				358C42A828D48DFB00ADE305 /* DiscardChangesAlertModifier.swift in Sources */,
