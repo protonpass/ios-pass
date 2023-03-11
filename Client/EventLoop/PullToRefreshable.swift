@@ -31,6 +31,7 @@ public protocol PullToRefreshable: AnyObject, SyncEventLoopPullToRefreshDelegate
 
 public extension PullToRefreshable {
     @MainActor
+    @Sendable
     func forceSync() async {
         await withCheckedContinuation { [weak self] (continuation: CheckedContinuation<Void, Never>) in
             guard let self else { return }

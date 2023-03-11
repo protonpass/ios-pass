@@ -1425,7 +1425,6 @@
 			isa = PBXGroup;
 			children = (
 				356B69772949DBC600868771 /* CreateEdit */,
-				356B69762949DB9100868771 /* Detail */,
 				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
 				355635BC2889653B00F32353 /* LoadVaultsView.swift */,
 				355635BE2889664200F32353 /* LoadVaultsViewModel.swift */,
@@ -1748,13 +1747,6 @@
 				355A27B42953751200F32EA1 /* Theme.swift */,
 			);
 			path = Storage;
-			sourceTree = "<group>";
-		};
-		356B69762949DB9100868771 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Detail;
 			sourceTree = "<group>";
 		};
 		356B69772949DBC600868771 /* CreateEdit */ = {
