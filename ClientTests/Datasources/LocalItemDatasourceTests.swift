@@ -116,11 +116,12 @@ extension LocalItemDatasourceTests {
         // Given
         let givenItemId = String.random()
         let givenShareId = String.random()
-        _ = try await sut.givenInsertedItem(itemId: givenItemId,
-                                            shareId: givenShareId)
+        let givenItem = try await sut.givenInsertedItem(itemId: givenItemId,
+                                                        shareId: givenShareId)
         let updatedItemRevision = ItemRevision.random(itemId: givenItemId)
         let updatedItem = SymmetricallyEncryptedItem.random(shareId: givenShareId,
-                                                            item: updatedItemRevision)
+                                                            item: updatedItemRevision,
+                                                            isLogInItem: givenItem.isLogInItem)
 
         // When
         try await sut.upsertItems([updatedItem])
