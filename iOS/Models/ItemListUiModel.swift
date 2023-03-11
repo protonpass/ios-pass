@@ -24,7 +24,8 @@ import ProtonCore_UIFoundations
 import UIComponents
 import UIKit
 
-struct ItemListUiModel: ItemIdentifiable, GenericItemProtocol {
+#warning("Remove this")
+struct ItemListUiModel: ItemIdentifiable, GenericItemProtocol, Hashable {
     let itemId: String
     let shareId: String
     let type: ItemContentType
@@ -37,24 +38,14 @@ struct ItemListUiModel: ItemIdentifiable, GenericItemProtocol {
     var iconTintColor: UIColor { type.iconTintColor }
 }
 
+#warning("Remove this")
 extension ItemListUiModel: Identifiable {
     var id: String { itemId + shareId }
 }
 
-extension ItemListUiModel: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(itemId)
-        hasher.combine(shareId)
-        hasher.combine(type)
-        hasher.combine(title)
-        hasher.combine(createTime)
-        hasher.combine(modifyTime)
-        hasher.combine(detail)
-    }
-}
-
+#warning("Remove this")
 extension SymmetricallyEncryptedItem {
-    func toItemListUiModel(_ symmetricKey: SymmetricKey) async throws -> ItemListUiModel {
+    func toItemListUiModel(_ symmetricKey: SymmetricKey) throws -> ItemListUiModel {
         let encryptedItemContent = try getEncryptedItemContent()
         let name = try symmetricKey.decrypt(encryptedItemContent.name)
 
@@ -86,5 +77,54 @@ extension SymmetricallyEncryptedItem {
                      createTime: item.createTime,
                      modifyTime: item.modifyTime,
                      detail: detail)
+    }
+}
+
+struct ItemListUiModelV2: ItemIdentifiable, Hashable {
+    let itemId: String
+    let shareId: String
+    let type: ItemContentType
+    let title: String
+    let description: String?
+    let lastUseTime: Int64
+    let modifyTime: Int64
+}
+
+extension ItemListUiModelV2: Identifiable {
+    var id: String { itemId + shareId }
+}
+
+extension ItemListUiModelV2: DateSortable {
+    var dateForSorting: Date {
+        Date(timeIntervalSince1970: TimeInterval(max(lastUseTime, modifyTime)))
+    }
+}
+
+extension ItemListUiModelV2: AlphabeticalSortable {
+    var alphabeticalSortableString: String { title }
+}
+
+extension SymmetricallyEncryptedItem {
+    func toItemListUiModelV2(_ symmetricKey: SymmetricKey) throws -> ItemListUiModelV2 {
+        let encryptedItemContent = try getEncryptedItemContent()
+        let name = try symmetricKey.decrypt(encryptedItemContent.name)
+
+        var note: String?
+        switch encryptedItemContent.contentData {
+        case .login(let data):
+            note = try symmetricKey.decrypt(data.username)
+        case .alias:
+            note = item.aliasEmail
+        default:
+            note = nil
+        }
+
+        return .init(itemId: encryptedItemContent.item.itemID,
+                     shareId: encryptedItemContent.shareId,
+                     type: encryptedItemContent.contentData.type,
+                     title: name,
+                     description: note?.isEmpty == true ? nil : note,
+                     lastUseTime: item.lastUseTime ?? 0,
+                     modifyTime: item.modifyTime)
     }
 }

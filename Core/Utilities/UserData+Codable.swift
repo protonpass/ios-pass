@@ -23,7 +23,6 @@ import ProtonCore_Login
 import ProtonCore_Networking
 
 extension UserData: Codable {
-    // swiftlint:disable explicit_enum_raw_value
     private enum CodingKeys: String, CodingKey {
         case credential
         case user
@@ -32,7 +31,6 @@ extension UserData: Codable {
         case addresses
         case scopes
     }
-    // swiftlint:enable explicit_enum_raw_value
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -56,7 +54,6 @@ extension UserData: Codable {
 }
 
 extension AuthCredential: Codable {
-    // swiftlint:disable explicit_enum_raw_value
     private enum CodingKeys: String, CodingKey {
         case sessionID
         case accessToken
@@ -68,7 +65,6 @@ extension AuthCredential: Codable {
         case passwordKeySalt
         case mailboxpassword
     }
-    // swiftlint:enable explicit_enum_raw_value
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)

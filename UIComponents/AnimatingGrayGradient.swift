@@ -33,11 +33,10 @@ public struct AnimatingGrayGradient: View {
                            endPoint: .trailing)
             .offset(x: animateGradient ? 300 : -200)
             .frame(width: 200)
+            .animation(.easeInOut(duration: 1).repeatForever(autoreverses: false), value: animateGradient)
         }
         .onFirstAppear {
-            withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: false)) {
-                animateGradient.toggle()
-            }
+            animateGradient.toggle()
         }
     }
 }

@@ -20,31 +20,18 @@
 
 import Core
 
-public protocol VaultProtocol {
-    var id: String { get }
-    var shareId: String { get }
-    var name: String { get }
-    var description: String { get }
-}
-
 public typealias VaultProtobuf = ProtonPassVaultV1_Vault
-public typealias ProtobufableVaultProtocol = VaultProtocol & Protobufable
 
-extension VaultProtobuf: ProtobufableVaultProtocol {
-    public var id: String { UUID().uuidString }
-    public var shareId: String { UUID().uuidString }
-
-    public var description: String { description_p }
-
-    public func data() throws -> Data {
+public extension VaultProtobuf {
+    func data() throws -> Data {
         try self.serializedData()
     }
 
-    public init(data: Data) throws {
+    init(data: Data) throws {
         self = try VaultProtobuf(serializedData: data)
     }
 
-    public init(name: String, description: String) {
+    init(name: String, description: String) {
         self.init()
         self.name = name
         self.description_p = description

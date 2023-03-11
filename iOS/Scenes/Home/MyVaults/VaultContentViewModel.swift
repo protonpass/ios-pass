@@ -101,9 +101,9 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
 
     weak var itemCountDelegate: ItemCountDelegate?
 
-    var selectedVault: VaultProtocol? { vaultSelection.selectedVault }
-    var vaults: [VaultProtocol] { vaultSelection.vaults }
-    var otherVaults: [VaultProtocol] {
+    var selectedVault: Vault? { vaultSelection.selectedVault }
+    var vaults: [Vault] { vaultSelection.vaults }
+    var otherVaults: [Vault] {
         vaultSelection.vaults.filter { $0.id != vaultSelection.selectedVault?.id }
     }
 
@@ -219,7 +219,7 @@ extension VaultContentViewModel {
         }
     }
 
-    func moveItem(_ item: ItemListUiModel, to vault: VaultProtocol) {
+    func moveItem(_ item: ItemListUiModel, to vault: Vault) {
         Task { @MainActor in
             defer { delegate?.vaultContentViewModelWantsToHideLoadingHud() }
             do {

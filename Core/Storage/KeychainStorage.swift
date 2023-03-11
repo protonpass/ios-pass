@@ -127,8 +127,6 @@ public final class KeychainStorage<T: Codable> {
     }
 }
 
-// swiftlint:disable type_name
-// swiftlint:disable explicit_enum_raw_value
 public extension KeychainStorage {
     enum Key: String {
         case unauthSessionCredentials

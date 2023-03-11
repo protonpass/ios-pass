@@ -75,17 +75,11 @@ final class SettingsCoordinator: Coordinator {
 
 // MARK: - SettingsViewModelDelegate
 extension SettingsCoordinator: SettingsViewModelDelegate {
-    func settingsViewModelWantsToToggleSidebar() {
-        toggleSidebar()
-    }
+    func settingsViewModelWantsToToggleSidebar() {}
 
-    func settingsViewModelWantsToShowLoadingHud() {
-        coordinatorDelegate?.coordinatorWantsToShowLoadingHud()
-    }
+    func settingsViewModelWantsToShowLoadingHud() {}
 
-    func settingsViewModelWantsToHideLoadingHud() {
-        coordinatorDelegate?.coordinatorWantsToHideLoadingHud()
-    }
+    func settingsViewModelWantsToHideLoadingHud() {}
 
     func settingsViewModelWantsToDeleteAccount() {
         delegate?.settingsCoordinatorWantsToDeleteAccount()
@@ -158,7 +152,5 @@ extension SettingsCoordinator: DeviceLogsViewModelDelegate {
         present(activityViewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func deviceLogsViewModelDidFail(error: Error) {
-        alertError(error)
-    }
+    func deviceLogsViewModelDidFail(error: Error) {}
 }

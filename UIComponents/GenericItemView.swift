@@ -46,23 +46,6 @@ public protocol GenericItemProtocol {
     var detail: GenericItemDetail { get }
 }
 
-public struct GenericItemV2: GenericItemProtocol {
-    public let icon: UIImage
-    public let iconTintColor: UIColor
-    public let title: String
-    public var detail: GenericItemDetail
-
-    public init(icon: UIImage,
-                iconTintColor: UIColor,
-                title: String,
-                detail: GenericItemDetail) {
-        self.icon = icon
-        self.iconTintColor = iconTintColor
-        self.title = title
-        self.detail = detail
-    }
-}
-
 public struct GenericItemView<TrailingView: View>: View {
     private let item: GenericItemProtocol
     private let action: () -> Void

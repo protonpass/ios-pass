@@ -41,7 +41,7 @@ public protocol ShareRepositoryProtocol {
     func getShare(shareId: String) async throws -> Share
 
     /// Get all local vaults
-    func getVaults() async throws -> [VaultProtocol]
+    func getVaults() async throws -> [Vault]
 
     /// Delete all local shares
     func deleteAllShares() async throws
@@ -94,11 +94,11 @@ public extension ShareRepositoryProtocol {
         throw PPClientError.shareNotFoundInLocalDB(shareID: shareId)
     }
 
-    func getVaults() async throws -> [VaultProtocol] {
+    func getVaults() async throws -> [Vault] {
         logger.trace("Getting local vaults for user \(userId)")
         let shares = try await getShares()
 
-        var vaults: [VaultProtocol] = []
+        var vaults: [Vault] = []
         for share in shares where share.shareType == .vault {
             let key = try await self.passKeyManager.getShareKey(
                 shareId: share.shareID,

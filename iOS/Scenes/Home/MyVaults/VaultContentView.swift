@@ -42,8 +42,7 @@ struct VaultContentView: View {
         Group {
             switch viewModel.state {
             case .loading:
-                LoadingVaultView()
-                    .padding()
+                ProgressView()
 
             case .loaded:
                 if viewModel.filteredItems.isEmpty {
