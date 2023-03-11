@@ -21,7 +21,6 @@
 import Client
 import ProtonCore_UIFoundations
 import SwiftUI
-import SwipeActions
 import UIComponents
 
 private let kTopBarHeight: CGFloat = 48
@@ -30,7 +29,6 @@ struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
     @State private var toBeTrashedItem: ItemListUiModelV2?
-    @State private var state: SwipeState = .untouched
 
     var body: some View {
         let isShowingTrashingAlert = Binding<Bool>(get: {
@@ -169,7 +167,7 @@ struct ItemsTabView: View {
     }
 
     private func itemList(_ result: MostRecentSortResult<ItemListUiModelV2>) -> some View {
-        ItemListScrollView(safeAreaInsets: safeAreaInsets) {
+        ItemListView(safeAreaInsets: safeAreaInsets) {
             section(for: result.today, headerTitle: "Today")
             section(for: result.yesterday, headerTitle: "Yesterday")
             section(for: result.last7Days, headerTitle: "Last week")
@@ -182,7 +180,7 @@ struct ItemsTabView: View {
     }
 
     private func itemList(_ result: AlphabeticalSortResult<ItemListUiModelV2>) -> some View {
-        ItemListScrollView(safeAreaInsets: safeAreaInsets) {
+        ItemListView(safeAreaInsets: safeAreaInsets) {
             ForEach(result.buckets, id: \.letter) { bucket in
                 section(for: bucket.items, headerTitle: bucket.letter.character)
             }
@@ -190,7 +188,7 @@ struct ItemsTabView: View {
     }
 
     private func itemList(_ result: MonthYearSortResult<ItemListUiModelV2>) -> some View {
-        ItemListScrollView(safeAreaInsets: safeAreaInsets) {
+        ItemListView(safeAreaInsets: safeAreaInsets) {
             ForEach(result.buckets, id: \.monthYear) { bucket in
                 section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
             }
@@ -208,19 +206,12 @@ struct ItemsTabView: View {
                 }
             }, header: {
                 Text(headerTitle)
-                    .font(.caption)
-                    .foregroundColor(.textWeak)
-                    .padding(.vertical, 4)
-                    .padding(.horizontal)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.passBackground)
             })
         }
     }
 
     private func itemRow(for item: ItemListUiModelV2) -> some View {
         Button(action: {
-            collapseSwipeActions()
             viewModel.viewDetail(of: item)
         }, label: {
             GeneralItemRow(
@@ -239,28 +230,23 @@ struct ItemsTabView: View {
                 },
                 title: item.title,
                 description: item.description)
-            .frame(height: 64)
-            .padding(.horizontal)
-            .addSwipeAction(edge: .trailing, state: $state) {
-                Button(action: {
-                    collapseSwipeActions()
-                    askForConfirmationOrTrashDirectly(item: item)
-                }, label: {
-                    VStack(spacing: 4) {
-                        Spacer()
-                        Image(uiImage: IconProvider.trash)
-                        Text("Trash")
-                            .font(.caption)
-                            .fontWeight(.medium)
-                        Spacer()
-                    }
-                    .foregroundColor(Color(uiColor: .systemBackground))
-                    .frame(width: 84)
-                    .background(Color.notificationError)
-                })
-            }
         })
-        .buttonStyle(.plain)
+        .listRowSeparator(.hidden)
+        .listRowInsets(.init(top: 0, leading: 16, bottom: 0, trailing: 16)) // 0 spacing between rows
+        .listRowBackground(Color.clear)
+        .frame(height: 64)
+        .swipeActions(edge: .trailing) {
+            Button(action: {
+                askForConfirmationOrTrashDirectly(item: item)
+            }, label: {
+                Label(title: {
+                    Text("Trash")
+                }, icon: {
+                    Image(uiImage: IconProvider.trash)
+                })
+            })
+            .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
+        }
     }
 
     private func askForConfirmationOrTrashDirectly(item: ItemListUiModelV2) {
@@ -270,13 +256,9 @@ struct ItemsTabView: View {
             viewModel.trash(item: item)
         }
     }
-
-    private func collapseSwipeActions() {
-        state = .swiped(UUID())
-    }
 }
 
-private struct ItemListScrollView<Content: View>: View {
+private struct ItemListView<Content: View>: View {
     let safeAreaInsets: EdgeInsets
     let content: () -> Content
 
@@ -287,11 +269,10 @@ private struct ItemListScrollView<Content: View>: View {
     }
 
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-                content()
-            }
-            .padding(.bottom, safeAreaInsets.bottom)
+        List {
+            content()
         }
+        .listStyle(.plain)
+        .padding(.bottom, safeAreaInsets.bottom)
     }
 }

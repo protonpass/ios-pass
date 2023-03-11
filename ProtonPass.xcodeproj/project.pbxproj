@@ -444,7 +444,6 @@
 		35F8CD0629B627720017DBC6 /* HomepageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0529B627720017DBC6 /* HomepageViewModel.swift */; };
 		35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */; };
 		35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
-		35FA7A9529BB7E8B0040E065 /* SwipeActions in Frameworks */ = {isa = PBXBuildFile; productRef = 35FA7A9429BB7E8B0040E065 /* SwipeActions */; };
 		37BE837029954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
 		37BE837129954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
 		37BE837229954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
@@ -1166,7 +1165,6 @@
 				CCE7E1B680E6647D25927D82 /* Pods_iOS.framework in Frameworks */,
 				3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */,
 				356A34C82978630100969BA2 /* CodeScanner in Frameworks */,
-				35FA7A9529BB7E8B0040E065 /* SwipeActions in Frameworks */,
 				3544BCB928E1E42B00EFE130 /* Client.framework in Frameworks */,
 				3544BCBC28E1E42C00EFE130 /* Core.framework in Frameworks */,
 				35D56D562942354A00C2D0E2 /* UIComponents.framework in Frameworks */,
@@ -2533,7 +2531,6 @@
 			name = iOS;
 			packageProductDependencies = (
 				356A34C72978630100969BA2 /* CodeScanner */,
-				35FA7A9429BB7E8B0040E065 /* SwipeActions */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -2750,7 +2747,6 @@
 			mainGroup = 35E5062E286F819F00A3F6EA;
 			packageReferences = (
 				356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */,
-				35FA7A9329BB7E8B0040E065 /* XCRemoteSwiftPackageReference "SwipeActions" */,
 			);
 			productRefGroup = 35E5063C286F819F00A3F6EA /* Products */;
 			projectDirPath = "";
@@ -6433,14 +6429,6 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		35FA7A9329BB7E8B0040E065 /* XCRemoteSwiftPackageReference "SwipeActions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/c-villain/SwipeActions";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.3.2;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -6453,11 +6441,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
-		};
-		35FA7A9429BB7E8B0040E065 /* SwipeActions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 35FA7A9329BB7E8B0040E065 /* XCRemoteSwiftPackageReference "SwipeActions" */;
-			productName = SwipeActions;
 		};
 /* End XCSwiftPackageProductDependency section */
 
