@@ -45,11 +45,12 @@ struct LogInDetailView: View {
 
                     if !viewModel.urls.isEmpty {
                         urlsSection
-                            .padding(.vertical, 8)
+                            .padding(.top, 8)
                     }
 
                     if !viewModel.itemContent.note.isEmpty {
                         NoteDetailSection(itemContent: viewModel.itemContent)
+                            .padding(.top, 8)
                     }
 
                     ItemDetailMoreInfoSection(
