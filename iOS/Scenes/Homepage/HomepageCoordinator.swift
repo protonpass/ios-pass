@@ -442,7 +442,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
-        if currentItemDetailViewModel?.itemContent.isSameItem(itemContent) == true { return }
         presentItemDetailView(for: itemContent)
     }
 
