@@ -31,6 +31,24 @@ struct ItemsTabView: View {
     @State private var toBeTrashedItem: ItemListUiModelV2?
 
     var body: some View {
+        ZStack {
+            switch viewModel.vaultsManager.state {
+            case .loading:
+                ProgressView()
+
+            case .loaded:
+                content
+
+            case .error(let error):
+                RetryableErrorView(errorMessage: error.messageForTheUser,
+                                   onRetry: viewModel.vaultsManager.refresh)
+            }
+        }
+        .background(Color.passBackground)
+    }
+
+    @ViewBuilder
+    private var content: some View {
         let isShowingTrashingAlert = Binding<Bool>(get: {
             toBeTrashedItem != nil
         }, set: { newValue in
@@ -42,49 +60,35 @@ struct ItemsTabView: View {
         GeometryReader { proxy in
             VStack {
                 topBar
+                HStack {
+                    Text("All")
+                        .font(.callout)
+                        .fontWeight(.bold) +
+                    Text(" (\(viewModel.vaultsManager.itemCount))")
+                        .font(.callout)
+                        .foregroundColor(.textWeak)
 
-                switch viewModel.vaultsManager.state {
-                case .loading:
-                    ProgressView()
+                    Spacer()
 
-                case .loaded:
-                    VStack {
-                        HStack {
-                            Text("All")
-                                .font(.callout)
-                                .fontWeight(.bold) +
-                            Text(" (\(viewModel.vaultsManager.itemCount))")
-                                .font(.callout)
-                                .foregroundColor(.textWeak)
+                    sortTypeButton
+                }
+                .padding(.horizontal)
 
-                            Spacer()
-
-                            sortTypeButton
-                        }
-                        .padding(.horizontal)
-
-                        let items = viewModel.vaultsManager.getSelectedVaultItems()
-                        switch viewModel.selectedSortType {
-                        case .mostRecent:
-                            itemList(items.mostRecentSortResult())
-                        case .alphabetical:
-                            itemList(items.alphabeticalSortResult())
-                        case .newestToNewest:
-                            itemList(items.monthYearSortResult(direction: .descending))
-                        case .oldestToNewest:
-                            itemList(items.monthYearSortResult(direction: .ascending))
-                        }
-                    }
-                    .animation(.default, value: viewModel.vaultsManager.state)
-
-                case .error(let error):
-                    RetryableErrorView(errorMessage: error.messageForTheUser,
-                                       onRetry: viewModel.vaultsManager.refresh)
+                let items = viewModel.vaultsManager.getSelectedVaultItems()
+                switch viewModel.selectedSortType {
+                case .mostRecent:
+                    itemList(items.mostRecentSortResult())
+                case .alphabetical:
+                    itemList(items.alphabeticalSortResult())
+                case .newestToNewest:
+                    itemList(items.monthYearSortResult(direction: .descending))
+                case .oldestToNewest:
+                    itemList(items.monthYearSortResult(direction: .ascending))
                 }
                 Spacer()
             }
-            .background(Color.passBackground)
             .edgesIgnoringSafeArea(.bottom)
+            .animation(.default, value: viewModel.vaultsManager.state)
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
             }
