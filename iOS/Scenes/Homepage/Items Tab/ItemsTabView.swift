@@ -187,14 +187,24 @@ struct ItemsTabView: View {
     }
 
     private func itemList(_ result: AlphabeticalSortResult<ItemListUiModelV2>) -> some View {
-        ItemListView(
-            safeAreaInsets: safeAreaInsets,
-            content: {
-                ForEach(result.buckets, id: \.letter) { bucket in
-                    section(for: bucket.items, headerTitle: bucket.letter.character)
+        ScrollViewReader { proxy in
+            ItemListView(
+                safeAreaInsets: safeAreaInsets,
+                showScrollIndicators: false,
+                content: {
+                    ForEach(result.buckets, id: \.letter) { bucket in
+                        section(for: bucket.items, headerTitle: bucket.letter.character)
+                            .id(bucket.letter.character)
+                    }
+                },
+                onRefresh: viewModel.forceSync)
+            .overlay {
+                HStack {
+                    Spacer()
+                    SectionIndexTitles(proxy: proxy, titles: result.buckets.map { $0.letter.character })
                 }
-            },
-            onRefresh: viewModel.forceSync)
+            }
+        }
     }
 
     private func itemList(_ result: MonthYearSortResult<ItemListUiModelV2>) -> some View {
@@ -322,13 +332,16 @@ private struct ItemsTabsSkeleton: View {
 
 private struct ItemListView<Content: View>: View {
     let safeAreaInsets: EdgeInsets
+    let showScrollIndicators: Bool
     let content: () -> Content
     let onRefresh: @Sendable () async -> Void
 
     init(safeAreaInsets: EdgeInsets,
+         showScrollIndicators: Bool = true,
          @ViewBuilder content: @escaping () -> Content,
          onRefresh: @Sendable @escaping () async -> Void) {
         self.safeAreaInsets = safeAreaInsets
+        self.showScrollIndicators = showScrollIndicators
         self.content = content
         self.onRefresh = onRefresh
     }
@@ -339,6 +352,7 @@ private struct ItemListView<Content: View>: View {
         }
         .listStyle(.plain)
         .padding(.bottom, safeAreaInsets.bottom)
+        .scrollIndicatorsHidden(!showScrollIndicators)
         .refreshable(action: onRefresh)
     }
 }
