@@ -32,6 +32,9 @@ struct SectionIndexTitles: View {
                 Text(title)
                     .font(.caption)
                     .foregroundColor(.passBrand)
+                    .multilineTextAlignment(.trailing)
+                    .padding(.leading)
+                    .contentShape(Rectangle())
                     .background(dragObserver(title: title))
             }
         }
