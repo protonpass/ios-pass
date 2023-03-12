@@ -25,6 +25,7 @@ import Core
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToShowSpinner()
     func itemsTabViewModelWantsToHideSpinner()
+    func itemsTabViewModelWantsToCreateNewItem(shareId: String)
     func itemsTabViewModelWantsToSearch()
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
@@ -77,6 +78,11 @@ private extension ItemsTabViewModel {
 
 // MARK: - Public APIs
 extension ItemsTabViewModel {
+    func createNewItem() {
+        guard let selectedVault = vaultsManager.selectedVault else { return }
+        delegate?.itemsTabViewModelWantsToCreateNewItem(shareId: selectedVault.shareId)
+    }
+
     func search() {
         delegate?.itemsTabViewModelWantsToSearch()
     }

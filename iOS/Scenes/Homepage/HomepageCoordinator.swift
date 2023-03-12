@@ -393,6 +393,10 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         hideLoadingHud()
     }
 
+    func itemsTabViewModelWantsToCreateNewItem(shareId: String) {
+        presentCreateItemView(shareId: shareId)
+    }
+
     func itemsTabViewModelWantsToSearch() {
         let viewModel = SearchViewModel(symmetricKey: symmetricKey,
                                         itemRepository: itemRepository,
