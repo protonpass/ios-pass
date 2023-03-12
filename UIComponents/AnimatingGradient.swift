@@ -1,5 +1,5 @@
 //
-// AnimatingGrayGradient.swift
+// AnimatingGradient.swift
 // Proton Pass - Created on 27/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,15 +20,18 @@
 
 import SwiftUI
 
-public struct AnimatingGrayGradient: View {
+public struct AnimatingGradient: View {
     @State private var animateGradient = false
+    let tintColor: UIColor
 
-    public init() {}
+    public init(tintColor: UIColor = .passBrand) {
+        self.tintColor = tintColor
+    }
 
     public var body: some View {
         ZStack {
-            Color(.systemGray6)
-            LinearGradient(colors: [.clear, Color(.systemGray5), .clear],
+            Color(tintColor.withAlphaComponent(0.08))
+            LinearGradient(colors: [.clear, Color(tintColor.withAlphaComponent(0.2)), .clear],
                            startPoint: .leading,
                            endPoint: .trailing)
             .offset(x: animateGradient ? 300 : -200)

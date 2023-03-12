@@ -296,11 +296,11 @@ private struct ItemsTabsSkeleton: View {
     var body: some View {
         VStack {
             HStack {
-                AnimatingGrayGradient()
+                AnimatingGradient()
                     .frame(width: kTopBarHeight)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
-                AnimatingGrayGradient()
+                AnimatingGradient()
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .containerShape(Rectangle())
             }
@@ -321,17 +321,17 @@ private struct ItemsTabsSkeleton: View {
 
     private var itemRow: some View {
         HStack(spacing: 16) {
-            AnimatingGrayGradient()
+            AnimatingGradient()
                 .frame(width: 40, height: 40)
                 .clipShape(Circle())
 
             VStack(alignment: .leading) {
                 Spacer()
-                AnimatingGrayGradient()
+                AnimatingGradient()
                     .frame(width: 170, height: 10)
                     .clipShape(Capsule())
                 Spacer()
-                AnimatingGrayGradient()
+                AnimatingGradient()
                     .frame(width: 200, height: 10)
                     .clipShape(Capsule())
                 Spacer()
