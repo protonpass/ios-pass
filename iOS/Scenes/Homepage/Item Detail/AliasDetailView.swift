@@ -144,9 +144,9 @@ struct AliasDetailView: View {
                     }
                 } else {
                     Group {
-                        AnimatingGrayGradient()
-                        AnimatingGrayGradient()
-                        AnimatingGrayGradient()
+                        AnimatingGradient()
+                        AnimatingGradient()
+                        AnimatingGradient()
                     }
                     .clipShape(Capsule())
                 }
