@@ -22,6 +22,8 @@ import SwiftUI
 import UIComponents
 
 struct EmptyVaultView: View {
+    let onCreateNewItem: () -> Void
+
     var body: some View {
         VStack {
             VStack {
@@ -39,6 +41,12 @@ struct EmptyVaultView: View {
                 Text("Or use the Proton Pass web extension to import items from another password manager.")
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
+                CapsuleTextButton(title: "Create new item",
+                                  titleColor: .white,
+                                  backgroundColor: .passBrand,
+                                  disabled: false,
+                                  maxWidth: nil,
+                                  action: onCreateNewItem)
                 Spacer()
             }
         }

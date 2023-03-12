@@ -1429,7 +1429,6 @@
 			isa = PBXGroup;
 			children = (
 				356B69772949DBC600868771 /* CreateEdit */,
-				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
 				355635BC2889653B00F32353 /* LoadVaultsView.swift */,
 				355635BE2889664200F32353 /* LoadVaultsViewModel.swift */,
 				3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */,
@@ -1729,6 +1728,7 @@
 		3569B2A229B7888B0070830B /* Items Tab */ = {
 			isa = PBXGroup;
 			children = (
+				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
 				3569B2A029B788600070830B /* ItemsTabView.swift */,
 				3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */,
 				3565622329BA5C5900C43F72 /* SortTypeListView.swift */,

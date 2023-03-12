@@ -46,7 +46,7 @@ struct VaultContentView: View {
 
             case .loaded:
                 if viewModel.filteredItems.isEmpty {
-                    EmptyVaultView()
+                    EmptyVaultView(onCreateNewItem: {})
                         .padding(.horizontal)
                 } else {
                     itemList

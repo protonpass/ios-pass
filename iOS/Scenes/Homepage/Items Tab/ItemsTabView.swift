@@ -37,7 +37,7 @@ struct ItemsTabView: View {
                 ItemsTabsSkeleton()
 
             case .loaded:
-                content
+                vaultContent
 
             case .error(let error):
                 RetryableErrorView(errorMessage: error.messageForTheUser,
@@ -48,7 +48,7 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private var content: some View {
+    private var vaultContent: some View {
         let isShowingTrashingAlert = Binding<Bool>(get: {
             toBeTrashedItem != nil
         }, set: { newValue in
@@ -60,33 +60,15 @@ struct ItemsTabView: View {
         GeometryReader { proxy in
             VStack {
                 topBar
-                HStack {
-                    Text("All")
-                        .font(.callout)
-                        .fontWeight(.bold) +
-                    Text(" (\(viewModel.vaultsManager.itemCount))")
-                        .font(.callout)
-                        .foregroundColor(.textWeak)
-
+                if viewModel.vaultsManager.itemCount == 0 {
+                    EmptyVaultView(onCreateNewItem: viewModel.createNewItem)
+                        .padding(.bottom, safeAreaInsets.bottom)
+                } else {
+                    itemList
                     Spacer()
-
-                    sortTypeButton
                 }
-                .padding(.horizontal)
-
-                let items = viewModel.vaultsManager.getSelectedVaultItems()
-                switch viewModel.selectedSortType {
-                case .mostRecent:
-                    itemList(items.mostRecentSortResult())
-                case .alphabetical:
-                    itemList(items.alphabeticalSortResult())
-                case .newestToNewest:
-                    itemList(items.monthYearSortResult(direction: .descending))
-                case .oldestToNewest:
-                    itemList(items.monthYearSortResult(direction: .ascending))
-                }
-                Spacer()
             }
+            .ignoresSafeArea(edges: .bottom)
             .edgesIgnoringSafeArea(.bottom)
             .animation(.default, value: viewModel.vaultsManager.state)
             .onFirstAppear {
@@ -168,6 +150,35 @@ struct ItemsTabView: View {
             .transaction { transaction in
                 transaction.animation = nil
             }
+    }
+
+    @ViewBuilder
+    private var itemList: some View {
+        HStack {
+            Text("All")
+                .font(.callout)
+                .fontWeight(.bold) +
+            Text(" (\(viewModel.vaultsManager.itemCount))")
+                .font(.callout)
+                .foregroundColor(.textWeak)
+
+            Spacer()
+
+            sortTypeButton
+        }
+        .padding(.horizontal)
+
+        let items = viewModel.vaultsManager.getSelectedVaultItems()
+        switch viewModel.selectedSortType {
+        case .mostRecent:
+            itemList(items.mostRecentSortResult())
+        case .alphabetical:
+            itemList(items.alphabeticalSortResult())
+        case .newestToNewest:
+            itemList(items.monthYearSortResult(direction: .descending))
+        case .oldestToNewest:
+            itemList(items.monthYearSortResult(direction: .ascending))
+        }
     }
 
     private func itemList(_ result: MostRecentSortResult<ItemListUiModelV2>) -> some View {
