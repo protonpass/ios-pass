@@ -130,8 +130,6 @@
 		35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		35498F8628DC5D0500AF1D8F /* Collection+ParallelMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */; };
-		35498F8828DC769300AF1D8F /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35498F8728DC769300AF1D8F /* HighlightText.swift */; };
-		35498F8A28DC805400AF1D8F /* ItemSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */; };
 		3549AC9B2982F27900BA5CD6 /* ProtonPass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */; };
 		3549AC9D2982F90B00BA5CD6 /* TOTPLogInItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3549AC9C2982F90B00BA5CD6 /* TOTPLogInItem.swift */; };
 		3549AC9F298306E800BA5CD6 /* TOTPLogInItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3549AC9E298306E800BA5CD6 /* TOTPLogInItemDetailView.swift */; };
@@ -336,6 +334,10 @@
 		356E88CC293899B100B27104 /* PullToRefreshable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E88CB293899B100B27104 /* PullToRefreshable.swift */; };
 		356E88D02938FA1F00B27104 /* UIViewController+TopMostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E88CF2938FA1F00B27104 /* UIViewController+TopMostViewController.swift */; };
 		356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FBD472949246A0063978C /* Coordinator+ShowFullScreen.swift */; };
+		3571B59429BF1321008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
+		3571B59629BF138C008D4350 /* ItemSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59529BF138C008D4350 /* ItemSearchResultView.swift */; };
+		3571B59729BF148A008D4350 /* ItemSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59529BF138C008D4350 /* ItemSearchResultView.swift */; };
+		3571B59829BF1573008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3572E51929938A3C00775FAC /* TOTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E51829938A3C00775FAC /* TOTPManager.swift */; };
 		3572E51B299399AD00775FAC /* PPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E51A299399AD00775FAC /* PPError.swift */; };
 		3572E51C2993AC1700775FAC /* PPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E51A299399AD00775FAC /* PPError.swift */; };
@@ -761,8 +763,6 @@
 		3547ABF12877791000EE85E1 /* CreateVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultView.swift; sourceTree = "<group>"; };
 		35492E39293DFB8700BDE231 /* ItemIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemIdentifiable.swift; sourceTree = "<group>"; };
 		35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+ParallelMap.swift"; sourceTree = "<group>"; };
-		35498F8728DC769300AF1D8F /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
-		35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSearchResultView.swift; sourceTree = "<group>"; };
 		3549AC9C2982F90B00BA5CD6 /* TOTPLogInItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPLogInItem.swift; sourceTree = "<group>"; };
 		3549AC9E298306E800BA5CD6 /* TOTPLogInItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPLogInItemDetailView.swift; sourceTree = "<group>"; };
 		3549ACA0298306FC00BA5CD6 /* TOTPLogInItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPLogInItemDetailViewModel.swift; sourceTree = "<group>"; };
@@ -945,6 +945,8 @@
 		356E88CB293899B100B27104 /* PullToRefreshable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshable.swift; sourceTree = "<group>"; };
 		356E88CF2938FA1F00B27104 /* UIViewController+TopMostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopMostViewController.swift"; sourceTree = "<group>"; };
 		356FBD472949246A0063978C /* Coordinator+ShowFullScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinator+ShowFullScreen.swift"; sourceTree = "<group>"; };
+		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
+		3571B59529BF138C008D4350 /* ItemSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSearchResultView.swift; sourceTree = "<group>"; };
 		3572E51829938A3C00775FAC /* TOTPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPManager.swift; sourceTree = "<group>"; };
 		3572E51A299399AD00775FAC /* PPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPError.swift; sourceTree = "<group>"; };
 		3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemContent+UIRelatedProperties.swift"; sourceTree = "<group>"; };
@@ -1448,6 +1450,7 @@
 		354BB14728A27E8100F50040 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				3571B59529BF138C008D4350 /* ItemSearchResultView.swift */,
 				3554DAB4293A8F7D00595FC7 /* NoSearchResultsView.swift */,
 				354BB15428A2895F00F50040 /* SearchView.swift */,
 				354BB14E28A27FF500F50040 /* SearchViewModel.swift */,
@@ -1658,6 +1661,7 @@
 		3562BCF129BDBF0B00564508 /* Supporting Views */ = {
 			isa = PBXGroup;
 			children = (
+				3571B59329BF1321008D4350 /* HighlightText.swift */,
 				3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */,
 			);
 			path = "Supporting Views";
@@ -2104,9 +2108,7 @@
 				35690C142923EA8400F60C20 /* Color+ProtonColors.swift */,
 				358C42A728D48DFB00ADE305 /* DiscardChangesAlertModifier.swift */,
 				35661CB529B91990003BBAD6 /* EdgeInsets+Zero.swift */,
-				35498F8928DC805400AF1D8F /* ItemSearchResultView.swift */,
 				3547ABE92877684D00EE85E1 /* GenericItemView.swift */,
-				35498F8728DC769300AF1D8F /* HighlightText.swift */,
 				354F769B28C90B4D00EB2383 /* MoveToTrashModifier.swift */,
 				35690C122923D5DA00F60C20 /* NotchView.swift */,
 				355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */,
@@ -3258,6 +3260,7 @@
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
 				3554DAB6293A8F9500595FC7 /* NoSearchResultsView.swift in Sources */,
 				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
+				3571B59729BF148A008D4350 /* ItemSearchResultView.swift in Sources */,
 				3567E46729B0ED8400511D62 /* NoCameraPermissionView.swift in Sources */,
 				3562BC3229954334003FCB13 /* ItemDetailSectionIcon.swift in Sources */,
 				3572E51C2993AC1700775FAC /* PPError.swift in Sources */,
@@ -3272,6 +3275,7 @@
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
 				3553C22D296575560087518A /* LoggerManager+Initializer.swift in Sources */,
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
+				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
 				37BE837129954C6000E42C89 /* APIManager.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
 				35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */,
@@ -3388,6 +3392,7 @@
 				355903D1295C96D600F6ABFD /* VaultListViewModel.swift in Sources */,
 				3561A1822922DA6E0097078B /* ItemCountView.swift in Sources */,
 				3543615C2941E1A8000CAE12 /* UIApplication+OpenSettings.swift in Sources */,
+				3571B59429BF1321008D4350 /* HighlightText.swift in Sources */,
 				3572E5232993D68800775FAC /* ItemContent+UIRelatedProperties.swift in Sources */,
 				3565FD57298D3E9400E2A0EE /* TOTPText.swift in Sources */,
 				35E50714286FB60500A3F6EA /* HomeCoordinator.swift in Sources */,
@@ -3399,6 +3404,7 @@
 				356B697E294A31F400868771 /* DevPreviewsViewModel.swift in Sources */,
 				3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */,
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
+				3571B59629BF138C008D4350 /* ItemSearchResultView.swift in Sources */,
 				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
 				3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */,
@@ -3682,7 +3688,6 @@
 				35661CB629B91990003BBAD6 /* EdgeInsets+Zero.swift in Sources */,
 				35570A8229263F5900125727 /* SpinnerButton.swift in Sources */,
 				355696E0290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift in Sources */,
-				35498F8A28DC805400AF1D8F /* ItemSearchResultView.swift in Sources */,
 				3567E46229B08ABE00511D62 /* PassDivider.swift in Sources */,
 				35570A8429264C2800125727 /* BannerManager.swift in Sources */,
 				35283E4E2927A9A9002F5B84 /* View+ItemDetailModifiers.swift in Sources */,
@@ -3712,7 +3717,6 @@
 				354BB15328A2886500F50040 /* SwiftUISearchBar.swift in Sources */,
 				355214842915524D00BA6229 /* CopyMenuButton.swift in Sources */,
 				358C42A828D48DFB00ADE305 /* DiscardChangesAlertModifier.swift in Sources */,
-				35498F8828DC769300AF1D8F /* HighlightText.swift in Sources */,
 				3562BC2F29950680003FCB13 /* View+OnFirstAppear.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
