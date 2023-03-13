@@ -189,7 +189,7 @@ extension TrashCoordinator: ItemDetailViewModelDelegate {
         print("\(#function) not applicable")
     }
 
-    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel) {
+    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModelV2) {
         trashViewModel.restore(item)
     }
 

@@ -616,7 +616,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         }
     }
 
-    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel) {
+    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModelV2) {
         print(#function)
     }
 

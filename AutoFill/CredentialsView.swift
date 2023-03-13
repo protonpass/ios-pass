@@ -153,8 +153,8 @@ struct CredentialsView: View {
         }
     }
 
-    private func itemList(matchedItems: [ItemListUiModel],
-                          notMatchedItems: [ItemListUiModel]) -> some View {
+    private func itemList(matchedItems: [ItemListUiModelV2],
+                          notMatchedItems: [ItemListUiModelV2]) -> some View {
         List {
             Section(content: {
                 if matchedItems.isEmpty {
@@ -198,13 +198,14 @@ struct CredentialsView: View {
         .animation(.default, value: notMatchedItems.hashValue)
     }
 
-    private func view(for item: ItemListUiModel, action: @escaping () -> Void) -> some View {
-        GenericItemView(
-            item: item,
-            action: action,
-            trailingView: { EmptyView() })
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
+    private func view(for item: ItemListUiModelV2, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            GeneralItemRow(thumbnailView: { EmptyView() },
+                           title: item.title,
+                           description: item.description)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
+        }
     }
 
     private func header(text: String) -> some View {

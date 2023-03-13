@@ -108,32 +108,6 @@ final class MyVaultsCoordinator: Coordinator {
         self.start(with: view, secondaryView: secondaryView)
     }
 
-    private func showCreateItemView() {
-        guard let shareId = vaultSelection.selectedVault?.shareId else { return }
-        let createItemViewModel = CreateItemViewModel()
-        createItemViewModel.onSelectedOption = { [unowned self] option in
-            dismissTopMostViewController(animated: true) { [unowned self] in
-                switch option {
-                case .login:
-                    showCreateEditLoginView(mode: .create(shareId: shareId,
-                                                          type: .login(title: nil,
-                                                                       url: nil,
-                                                                       autofill: false)))
-                case .alias:
-                    showCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
-                case .note:
-                    showCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
-                case .password:
-                    showGeneratePasswordView(delegate: self, mode: .random)
-                }
-            }
-        }
-        let createItemView = CreateItemView(viewModel: createItemViewModel)
-        let createItemViewController = UIHostingController(rootView: createItemView)
-        createItemViewController.sheetPresentationController?.detents = [.medium(), .large()]
-        present(createItemViewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
-    }
-
     private func showVaultListView() {
         let viewModel = VaultListViewModel(itemRepository: itemRepository,
                                            shareRespository: shareRepository,
@@ -439,9 +413,7 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
         showVaultListView()
     }
 
-    func vaultContentViewModelWantsToCreateItem() {
-        showCreateItemView()
-    }
+    func vaultContentViewModelWantsToCreateItem() {}
 
     func vaultContentViewModelWantsToShowItemDetail(_ item: ItemContent) {
         showItemDetailView(item)
@@ -542,7 +514,7 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
         showEditItemView(itemContent)
     }
 
-    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel) {
+    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModelV2) {
         print("\(#function) not applicable")
     }
 
