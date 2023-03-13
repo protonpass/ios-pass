@@ -19,8 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import UIComponents
 import UIKit
+
+public protocol HighlightableText {
+    var fullText: String { get }
+    var highlightText: String? { get }
+    var isLeadingText: Bool { get }
+    var isTrailingText: Bool { get }
+}
 
 public enum SearchResultEither: HighlightableText {
     case notMatched(String)
@@ -61,6 +67,14 @@ public enum SearchResultEither: HighlightableText {
             return searchResult.isTrailingPhrase
         }
     }
+}
+
+public protocol ItemSearchResultProtocol {
+    var icon: UIImage { get }
+    var iconTintColor: UIColor { get }
+    var title: HighlightableText { get }
+    var detail: [HighlightableText] { get }
+    var vaultName: String { get }
 }
 
 public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol {

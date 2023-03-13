@@ -1,7 +1,7 @@
 //
 // ItemSearchResultView.swift
-// Proton Pass - Created on 22/09/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Proton Pass - Created on 13/03/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,15 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import SwiftUI
-
-public protocol ItemSearchResultProtocol {
-    var icon: UIImage { get }
-    var iconTintColor: UIColor { get }
-    var title: HighlightableText { get }
-    var detail: [HighlightableText] { get }
-    var vaultName: String { get }
-}
 
 public struct ItemSearchResultView<TrailingView: View>: View {
     private let result: ItemSearchResultProtocol

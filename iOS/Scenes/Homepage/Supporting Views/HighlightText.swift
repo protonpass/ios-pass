@@ -1,7 +1,7 @@
 //
 // HighlightText.swift
-// Proton Pass - Created on 22/09/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Proton Pass - Created on 13/03/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,14 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import SwiftUI
-
-public protocol HighlightableText {
-    var fullText: String { get }
-    var highlightText: String? { get }
-    var isLeadingText: Bool { get }
-    var isTrailingText: Bool { get }
-}
 
 public struct HighlightText: View {
     public let texts: [Text]
