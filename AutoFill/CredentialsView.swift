@@ -153,8 +153,8 @@ struct CredentialsView: View {
         }
     }
 
-    private func itemList(matchedItems: [ItemListUiModelV2],
-                          notMatchedItems: [ItemListUiModelV2]) -> some View {
+    private func itemList(matchedItems: [ItemUiModel],
+                          notMatchedItems: [ItemUiModel]) -> some View {
         List {
             Section(content: {
                 if matchedItems.isEmpty {
@@ -198,7 +198,7 @@ struct CredentialsView: View {
         .animation(.default, value: notMatchedItems.hashValue)
     }
 
-    private func view(for item: ItemListUiModelV2, action: @escaping () -> Void) -> some View {
+    private func view(for item: ItemUiModel, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             GeneralItemRow(thumbnailView: { EmptyView() },
                            title: item.title,

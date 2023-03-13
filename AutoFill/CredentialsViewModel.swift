@@ -28,8 +28,8 @@ import SwiftUI
 struct CredentialsFetchResult {
     let vaults: [Vault]
     let searchableItems: [SearchableItem]
-    let matchedItems: [ItemListUiModelV2]
-    let notMatchedItems: [ItemListUiModelV2]
+    let matchedItems: [ItemUiModel]
+    let notMatchedItems: [ItemUiModel]
 
     var isEmpty: Bool {
         searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
@@ -332,9 +332,9 @@ private extension CredentialsViewModel {
             }
 
             let matchedItems = try await matchedEncryptedItems.sorted()
-                .parallelMap { try $0.item.toItemListUiModelV2(self.symmetricKey) }
+                .parallelMap { try $0.item.toItemUiModel(self.symmetricKey) }
             let notMatchedItems = try await notMatchedEncryptedItems.sorted()
-                .parallelMap { try await $0.toItemListUiModelV2(self.symmetricKey) }
+                .parallelMap { try $0.toItemUiModel(self.symmetricKey) }
 
             self.logger.debug("Mapped \(encryptedItems.count) encrypted items.")
             self.logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
@@ -410,7 +410,7 @@ protocol TitledItemIdentifiable: ItemIdentifiable {
     var itemTitle: String { get }
 }
 
-extension ItemListUiModelV2: TitledItemIdentifiable {
+extension ItemUiModel: TitledItemIdentifiable {
     var itemTitle: String { title }
 }
 

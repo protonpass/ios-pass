@@ -31,7 +31,7 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
                                                      delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
-    func itemsTabViewModelDidTrash(item: ItemListUiModelV2)
+    func itemsTabViewModelDidTrash(item: ItemUiModel)
     func itemsTabViewModelDidEncounter(error: Error)
 }
 
@@ -101,7 +101,7 @@ extension ItemsTabViewModel {
                                                               delegate: self)
     }
 
-    func viewDetail(of item: ItemListUiModelV2) {
+    func viewDetail(of item: ItemUiModel) {
         Task { @MainActor in
             do {
                 if let itemContent =
@@ -115,7 +115,7 @@ extension ItemsTabViewModel {
         }
     }
 
-    func trash(item: ItemListUiModelV2) {
+    func trash(item: ItemUiModel) {
         Task { @MainActor in
             defer { delegate?.itemsTabViewModelWantsToHideSpinner() }
             do {

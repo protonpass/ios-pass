@@ -24,7 +24,7 @@ import UIComponents
 
 struct TrashView: View {
     @StateObject private var viewModel: TrashViewModel
-    @State private var itemToBeDeleted: ItemListUiModelV2?
+    @State private var itemToBeDeleted: ItemUiModel?
     @State private var isShowingEmptyTrashAlert = false
 
     init(viewModel: TrashViewModel) {
@@ -144,7 +144,7 @@ struct TrashView: View {
         .refreshable { await viewModel.forceSync() }
     }
 
-    private func trailingView(for item: ItemListUiModelV2) -> some View {
+    private func trailingView(for item: ItemUiModel) -> some View {
         Menu(content: {
             Button(action: {
                 viewModel.restore(item)

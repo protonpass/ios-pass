@@ -514,7 +514,7 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
         showEditItemView(itemContent)
     }
 
-    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModelV2) {
+    func itemDetailViewModelWantsToRestore(_ item: ItemUiModel) {
         print("\(#function) not applicable")
     }
 

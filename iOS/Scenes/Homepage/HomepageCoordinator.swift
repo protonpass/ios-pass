@@ -320,7 +320,7 @@ private extension HomepageCoordinator {
         present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func handleTrashedItem(_ item: ItemListUiModelV2) {
+    func handleTrashedItem(_ item: ItemUiModel) {
         let message: String
         switch item.type {
         case .alias:
@@ -450,7 +450,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         presentItemDetailView(for: itemContent)
     }
 
-    func itemsTabViewModelDidTrash(item: ItemListUiModelV2) {
+    func itemsTabViewModelDidTrash(item: ItemUiModel) {
         handleTrashedItem(item)
     }
 
@@ -616,7 +616,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         }
     }
 
-    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModelV2) {
+    func itemDetailViewModelWantsToRestore(_ item: ItemUiModel) {
         print(#function)
     }
 

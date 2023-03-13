@@ -23,5 +23,5 @@ import Client
 struct VaultContentUiModel: Hashable {
     let vault: Vault
     /// `Active` items only
-    let items: [ItemListUiModelV2]
+    let items: [ItemUiModel]
 }
