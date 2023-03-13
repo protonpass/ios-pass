@@ -23,7 +23,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-private let kTopBarHeight: CGFloat = 48
+let kSearchBarHeight: CGFloat = 48
 
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
@@ -92,11 +92,11 @@ struct ItemsTabView: View {
                         .resizable()
                         .scaledToFit()
                         .foregroundColor(Color.passBrand)
-                        .padding(kTopBarHeight / 4)
+                        .padding(kSearchBarHeight / 4)
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 16))
             }
-            .frame(width: kTopBarHeight)
+            .frame(width: kSearchBarHeight)
 
             ZStack {
                 Color.black
@@ -116,7 +116,7 @@ struct ItemsTabView: View {
             .onTapGesture(perform: viewModel.search)
         }
         .padding(.horizontal)
-        .frame(height: kTopBarHeight)
+        .frame(height: kSearchBarHeight)
     }
 
     @ViewBuilder
@@ -297,15 +297,13 @@ private struct ItemsTabsSkeleton: View {
         VStack {
             HStack {
                 AnimatingGradient()
-                    .frame(width: kTopBarHeight)
+                    .frame(width: kSearchBarHeight)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
                 AnimatingGradient()
                     .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .containerShape(Rectangle())
             }
-
-            .frame(height: kTopBarHeight)
+            .frame(height: kSearchBarHeight)
 
             ScrollView {
                 LazyVStack(spacing: 20) {

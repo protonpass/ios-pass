@@ -58,7 +58,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var homepageViewModel: HomepageViewModel?
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
-//    private var searchViewModel: SearchViewModel?
+    private var searchViewModel: SearchViewModel?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -351,7 +351,7 @@ private extension HomepageCoordinator {
         }
 
         homepageViewModel?.vaultsManager.refresh()
-//        Task { await searchViewModel?.refreshResults() }
+        searchViewModel?.refresh()
     }
 }
 
@@ -398,18 +398,11 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToSearch() {
-        /*
-        let viewModel = SearchViewModel(symmetricKey: symmetricKey,
-                                        itemRepository: itemRepository,
-                                        vaults: [],
-                                        preferences: preferences,
-                                        logManager: logManager)
+        let viewModel = SearchViewModel()
         viewModel.delegate = self
         searchViewModel = viewModel
-        let viewController = UIHostingController(rootView: SearchView(viewModel: viewModel))
-        let navigationController = UINavigationController(rootViewController: viewController)
-        present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
-         */
+        let view = SearchView(viewModel: viewModel)
+        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
@@ -602,6 +595,9 @@ extension HomepageCoordinator: LogInDetailViewModelDelegate {
         presentItemDetailView(for: itemContent)
     }
 }
+
+// MARK: - SearchViewModelDelegate
+extension HomepageCoordinator: SearchViewModelDelegate {}
 
 // MARK: - SyncEventLoopDelegate
 extension HomepageCoordinator: SyncEventLoopDelegate {
