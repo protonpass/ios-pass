@@ -108,14 +108,11 @@
 		35464B62289B0380008E65C4 /* PassKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35464B61289B0380008E65C4 /* PassKey+Test.swift */; };
 		35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */; };
 		35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */; };
-		35476974289D82FE00581E2E /* CreateItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476973289D82FE00581E2E /* CreateItemViewModel.swift */; };
 		3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */; };
 		3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */; };
 		3547ABDA2876DF1300EE85E1 /* TrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABD92876DF1300EE85E1 /* TrashView.swift */; };
 		3547ABDE28774D1100EE85E1 /* MyVaultsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */; };
-		3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABDF287750F100EE85E1 /* CreateItemView.swift */; };
 		3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABE12877583B00EE85E1 /* TrashCoordinator.swift */; };
-		3547ABEA2877684D00EE85E1 /* GenericItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABE92877684D00EE85E1 /* GenericItemView.swift */; };
 		3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */; };
 		3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */; };
 		3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */; };
@@ -335,6 +332,7 @@
 		3571B59A29BF173A008D4350 /* BannerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59929BF173A008D4350 /* BannerManager.swift */; };
 		3571B59B29BF188E008D4350 /* BannerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59929BF173A008D4350 /* BannerManager.swift */; };
 		3571B59C29BF19B7008D4350 /* BannerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59929BF173A008D4350 /* BannerManager.swift */; };
+		3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
 		3572E51929938A3C00775FAC /* TOTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E51829938A3C00775FAC /* TOTPManager.swift */; };
 		3572E51B299399AD00775FAC /* PPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E51A299399AD00775FAC /* PPError.swift */; };
 		3572E51C2993AC1700775FAC /* PPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E51A299399AD00775FAC /* PPError.swift */; };
@@ -741,14 +739,11 @@
 		35464B61289B0380008E65C4 /* PassKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassKey+Test.swift"; sourceTree = "<group>"; };
 		3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditLoginViewModel.swift; sourceTree = "<group>"; };
 		35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAliasViewModel.swift; sourceTree = "<group>"; };
-		35476973289D82FE00581E2E /* CreateItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemViewModel.swift; sourceTree = "<group>"; };
 		3547ABCF2876CFF000EE85E1 /* MyVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsView.swift; sourceTree = "<group>"; };
 		3547ABD12876D18100EE85E1 /* ToggleSidebarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleSidebarButton.swift; sourceTree = "<group>"; };
 		3547ABD92876DF1300EE85E1 /* TrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashView.swift; sourceTree = "<group>"; };
 		3547ABDD28774D1100EE85E1 /* MyVaultsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVaultsCoordinator.swift; sourceTree = "<group>"; };
-		3547ABDF287750F100EE85E1 /* CreateItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemView.swift; sourceTree = "<group>"; };
 		3547ABE12877583B00EE85E1 /* TrashCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashCoordinator.swift; sourceTree = "<group>"; };
-		3547ABE92877684D00EE85E1 /* GenericItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericItemView.swift; sourceTree = "<group>"; };
 		3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditLoginView.swift; sourceTree = "<group>"; };
 		3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAliasView.swift; sourceTree = "<group>"; };
 		3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteView.swift; sourceTree = "<group>"; };
@@ -1728,8 +1723,6 @@
 		356B69772949DBC600868771 /* CreateEdit */ = {
 			isa = PBXGroup;
 			children = (
-				3547ABDF287750F100EE85E1 /* CreateItemView.swift */,
-				35476973289D82FE00581E2E /* CreateItemViewModel.swift */,
 				3547ABF12877791000EE85E1 /* CreateVaultView.swift */,
 				3538932828821A63003DCFC1 /* CreateVaultViewModel.swift */,
 			);
@@ -2085,7 +2078,6 @@
 				35690C142923EA8400F60C20 /* Color+ProtonColors.swift */,
 				358C42A728D48DFB00ADE305 /* DiscardChangesAlertModifier.swift */,
 				35661CB529B91990003BBAD6 /* EdgeInsets+Zero.swift */,
-				3547ABE92877684D00EE85E1 /* GenericItemView.swift */,
 				354F769B28C90B4D00EB2383 /* MoveToTrashModifier.swift */,
 				35690C122923D5DA00F60C20 /* NotchView.swift */,
 				355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */,
@@ -3235,6 +3227,7 @@
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
 				3554DAB6293A8F9500595FC7 /* NoSearchResultsView.swift in Sources */,
 				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
+				3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */,
 				3571B59729BF148A008D4350 /* ItemSearchResultView.swift in Sources */,
 				3567E46729B0ED8400511D62 /* NoCameraPermissionView.swift in Sources */,
 				3562BC3229954334003FCB13 /* ItemDetailSectionIcon.swift in Sources */,
@@ -3321,7 +3314,6 @@
 				355783682962EC0B008A4992 /* DeviceLogsViewModel.swift in Sources */,
 				350AF86E299683940045B7B6 /* NoteEditSection.swift in Sources */,
 				35661CB229B8BF97003BBAD6 /* EditableVaultListView.swift in Sources */,
-				3547ABE0287750F100EE85E1 /* CreateItemView.swift in Sources */,
 				356AD3FB29409C7600EBE4E9 /* DevPreviewsView.swift in Sources */,
 				355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */,
 				3569B2A129B788600070830B /* ItemsTabView.swift in Sources */,
@@ -3329,7 +3321,6 @@
 				3565FD55298D3E5700E2A0EE /* TOTPCircularTimer.swift in Sources */,
 				3514E85C28CB2BB1006BD54A /* TrashViewModel.swift in Sources */,
 				35F8CD0029B617670017DBC6 /* HomepageCoordinator.swift in Sources */,
-				35476974289D82FE00581E2E /* CreateItemViewModel.swift in Sources */,
 				35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */,
 				35F8CD0229B61C9A0017DBC6 /* HomepageView.swift in Sources */,
 				354BB14F28A27FF500F50040 /* SearchViewModel.swift in Sources */,
@@ -3674,7 +3665,6 @@
 				3547ABD22876D18100EE85E1 /* ToggleSidebarButton.swift in Sources */,
 				3562BCF729BDE77900564508 /* AnimatingGradient.swift in Sources */,
 				355E6DFC292FD56000C60796 /* Button+ConvenientInitializers.swift in Sources */,
-				3547ABEA2877684D00EE85E1 /* GenericItemView.swift in Sources */,
 				3562BC2D2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift in Sources */,
 				355BDEC8299E1506009FDBB1 /* CapsuleTextButton.swift in Sources */,
 				3562BCF529BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift in Sources */,

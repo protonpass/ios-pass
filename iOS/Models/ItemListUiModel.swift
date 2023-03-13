@@ -20,65 +20,6 @@
 
 import Client
 import CryptoKit
-import ProtonCore_UIFoundations
-import UIComponents
-import UIKit
-
-#warning("Remove this")
-struct ItemListUiModel: ItemIdentifiable, GenericItemProtocol, Hashable {
-    let itemId: String
-    let shareId: String
-    let type: ItemContentType
-    let title: String
-    let createTime: Int64
-    let modifyTime: Int64
-    let detail: GenericItemDetail
-
-    var icon: UIImage { IconProvider.note }
-    var iconTintColor: UIColor { .passBrand }
-}
-
-#warning("Remove this")
-extension ItemListUiModel: Identifiable {
-    var id: String { itemId + shareId }
-}
-
-#warning("Remove this")
-extension SymmetricallyEncryptedItem {
-    func toItemListUiModel(_ symmetricKey: SymmetricKey) throws -> ItemListUiModel {
-        let encryptedItemContent = try getEncryptedItemContent()
-        let name = try symmetricKey.decrypt(encryptedItemContent.name)
-
-        let note: String?
-        let notePlaceholder: String?
-        switch encryptedItemContent.contentData {
-        case .login(let data):
-            note = try symmetricKey.decrypt(data.username)
-            notePlaceholder = "No username"
-        case .alias:
-            note = item.aliasEmail
-            notePlaceholder = nil
-        default:
-            note = try symmetricKey.decrypt(encryptedItemContent.note)
-            notePlaceholder = "Empty note"
-        }
-
-        let detail: GenericItemDetail
-        if let note, !note.isEmpty {
-            detail = .value(note)
-        } else {
-            detail = .placeholder(notePlaceholder)
-        }
-
-        return .init(itemId: encryptedItemContent.item.itemID,
-                     shareId: encryptedItemContent.shareId,
-                     type: encryptedItemContent.contentData.type,
-                     title: name,
-                     createTime: item.createTime,
-                     modifyTime: item.modifyTime,
-                     detail: detail)
-    }
-}
 
 struct ItemListUiModelV2: ItemIdentifiable, Hashable {
     let itemId: String

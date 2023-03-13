@@ -38,9 +38,9 @@ protocol TrashViewModelDelegate: AnyObject {
 
 final class TrashViewModel: DeinitPrintable, PullToRefreshable, ObservableObject {
     @Published private(set) var state = State.loading
-    @Published private(set) var items = [ItemListUiModel]()
+    @Published private(set) var items = [ItemListUiModelV2]()
 
-    var itemsDictionary: [String: [ItemListUiModel]] {
+    var itemsDictionary: [String: [ItemListUiModelV2]] {
         Dictionary(grouping: items, by: { item in
             let vault = vaultSelection.vaults.first { $0.shareId == item.shareId }
             return vault?.name ?? ""
@@ -150,7 +150,7 @@ extension TrashViewModel {
         }
     }
 
-    func selectItem(_ item: ItemListUiModel) {
+    func selectItem(_ item: ItemListUiModelV2) {
         Task { @MainActor in
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
@@ -163,7 +163,7 @@ extension TrashViewModel {
         }
     }
 
-    func restore(_ item: ItemListUiModel) {
+    func restore(_ item: ItemListUiModelV2) {
         Task { @MainActor in
             defer { delegate?.trashViewModelWantsToHideLoadingHud() }
             do {
@@ -180,7 +180,7 @@ extension TrashViewModel {
         }
     }
 
-    func deletePermanently(_ item: ItemListUiModel) {
+    func deletePermanently(_ item: ItemListUiModelV2) {
         Task { @MainActor in
             defer { delegate?.trashViewModelWantsToHideLoadingHud() }
             do {
@@ -197,21 +197,21 @@ extension TrashViewModel {
         }
     }
 
-    private func remove(_ item: ItemListUiModel) {
+    private func remove(_ item: ItemListUiModelV2) {
         items.removeAll(where: { $0.itemId == item.itemId })
     }
 }
 
 // MARK: - Private supporting tasks
 private extension TrashViewModel {
-    func getTrashedItemsTask() -> Task<[ItemListUiModel], Error> {
+    func getTrashedItemsTask() -> Task<[ItemListUiModelV2], Error> {
         Task.detached(priority: .userInitiated) {
             let items = try await self.itemRepository.getItems(state: .trashed)
-            return try await items.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+            return try await items.parallelMap { try await $0.toItemListUiModelV2(self.symmetricKey) }
         }
     }
 
-    func restoreItemTask(_ item: ItemListUiModel) -> Task<Void, Error> {
+    func restoreItemTask(_ item: ItemListUiModelV2) -> Task<Void, Error> {
         Task.detached(priority: .userInitiated) {
             let item = try await self.getItem(item)
             try await self.itemRepository.untrashItems([item])
@@ -233,14 +233,14 @@ private extension TrashViewModel {
         }
     }
 
-    func deleteItemTask(_ item: ItemListUiModel) -> Task<Void, Error> {
+    func deleteItemTask(_ item: ItemListUiModelV2) -> Task<Void, Error> {
         Task.detached(priority: .userInitiated) {
             let item = try await self.getItem(item)
             try await self.itemRepository.deleteItems([item], skipTrash: false)
         }
     }
 
-    func getItem(_ item: ItemListUiModel) async throws -> SymmetricallyEncryptedItem {
+    func getItem(_ item: ItemListUiModelV2) async throws -> SymmetricallyEncryptedItem {
         guard let item = try await itemRepository.getItem(shareId: item.shareId,
                                                           itemId: item.itemId) else {
             throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
@@ -248,7 +248,7 @@ private extension TrashViewModel {
         return item
     }
 
-    func getDecryptedItemContentTask(for item: ItemListUiModel) -> Task<ItemContent, Error> {
+    func getDecryptedItemContentTask(for item: ItemListUiModelV2) -> Task<ItemContent, Error> {
         Task.detached(priority: .userInitiated) {
             let encryptedItem = try await self.getItem(item)
             return try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)

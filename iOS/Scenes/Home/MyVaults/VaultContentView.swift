@@ -27,7 +27,7 @@ import UIComponents
 struct VaultContentView: View {
     @StateObject private var viewModel: VaultContentViewModel
     @State private var didAppear = false
-    @State private var selectedItem: ItemListUiModel?
+    @State private var selectedItem: ItemListUiModelV2?
     @State private var isShowingTrashingAlert = false
 
     private var selectedVaultName: String {
@@ -126,10 +126,13 @@ struct VaultContentView: View {
             }
             Section(content: {
                 ForEach(viewModel.filteredItems, id: \.itemId) { item in
-                    GenericItemView(item: item,
-                                    action: { viewModel.selectItem(item) },
-                                    subtitleLineLimit: 1,
-                                    trailingView: { trailingView(for: item) })
+                    Button(action: {
+                        viewModel.selectItem(item)
+                    }, label: {
+                        GeneralItemRow(thumbnailView: { EmptyView() },
+                                       title: item.title,
+                                       description: item.description)
+                    })
                     .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
                     .swipeActions {
                         Button(action: { askForConfirmationOrTrashDirectly(item: item) },
@@ -149,60 +152,7 @@ struct VaultContentView: View {
         .refreshable { await viewModel.forceSync() }
     }
 
-    private func trailingView(for item: ItemListUiModel) -> some View {
-        Menu(content: {
-            switch item.type {
-            case .login:
-                CopyMenuButton(title: "Copy username",
-                               action: { viewModel.copyUsername(item) })
-
-                CopyMenuButton(title: "Copy password",
-                               action: { viewModel.copyPassword(item) })
-
-            case .alias:
-                CopyMenuButton(title: "Copy email address",
-                               action: { viewModel.copyEmailAddress(item) })
-            case .note:
-                if case .value = item.detail {
-                    CopyMenuButton(title: "Copy note",
-                                   action: { viewModel.copyNote(item) })
-                }
-            }
-
-            EditMenuButton {
-                viewModel.editItem(item)
-            }
-
-            Divider()
-
-            Menu(content: {
-                ForEach(viewModel.otherVaults, id: \.id) { vault in
-                    Button(action: {
-                        viewModel.moveItem(item, to: vault)
-                    }, label: {
-                        Text(vault.name)
-                    })
-                }
-            }, label: {
-                Label(title: {
-                    Text("Move")
-                }, icon: {
-                    Image(uiImage: IconProvider.folderArrowIn)
-                })
-            })
-
-            Divider()
-
-            DestructiveButton(title: "Move to Trash",
-                              icon: IconProvider.trash,
-                              action: { askForConfirmationOrTrashDirectly(item: item) })
-        }, label: {
-            Image(uiImage: IconProvider.threeDotsHorizontal)
-                .foregroundColor(.secondary)
-        })
-    }
-
-    private func askForConfirmationOrTrashDirectly(item: ItemListUiModel) {
+    private func askForConfirmationOrTrashDirectly(item: ItemListUiModelV2) {
         if viewModel.preferences.askBeforeTrashing {
             selectedItem = item
             isShowingTrashingAlert.toggle()
