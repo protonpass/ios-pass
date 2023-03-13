@@ -1,7 +1,7 @@
 //
 // BannerManager.swift
-// Proton Pass - Created on 17/11/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Proton Pass - Created on 13/03/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,32 +20,36 @@
 
 import ProtonCore_UIFoundations
 
-public final class BannerManager {
+final class BannerManager {
     let container: UIViewController
 
-    public init(container: UIViewController) {
+    init(container: UIViewController) {
         self.container = container
     }
 
-    public func display(message: String, at position: PMBannerPosition, style: PMBannerNewStyle) {
+    func display(message: String, at position: PMBannerPosition, style: PMBannerNewStyle) {
         let banner = PMBanner(message: message, style: style)
         banner.show(at: position, on: container.topMostViewController)
     }
 
-    public func displayBottomSuccessMessage(_ message: String) {
+    func displayBottomSuccessMessage(_ message: String) {
         display(message: message, at: .bottom, style: .success)
     }
 
-    public func displayBottomInfoMessage(_ message: String) {
+    func displayBottomInfoMessage(_ message: String) {
         display(message: message, at: .bottom, style: .info)
     }
 
-    public func displayTopErrorMessage(_ message: String,
-                                       dismissButtonTitle: String = "OK",
-                                       onDismiss: ((PMBanner) -> Void)? = nil) {
+    func displayTopErrorMessage(_ message: String,
+                                dismissButtonTitle: String = "OK",
+                                onDismiss: ((PMBanner) -> Void)? = nil) {
         let dismissClosure = onDismiss ?? { banner in banner.dismiss() }
         let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
         banner.addButton(text: dismissButtonTitle, handler: dismissClosure)
         banner.show(at: .top, on: container.topMostViewController)
+    }
+
+    func displayTopErrorMessage(_ error: Error) {
+        displayTopErrorMessage(error.messageForTheUser)
     }
 }

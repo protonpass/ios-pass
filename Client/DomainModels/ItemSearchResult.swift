@@ -70,8 +70,6 @@ public enum SearchResultEither: HighlightableText {
 }
 
 public protocol ItemSearchResultProtocol {
-    var icon: UIImage { get }
-    var iconTintColor: UIColor { get }
     var title: HighlightableText { get }
     var detail: [HighlightableText] { get }
     var vaultName: String { get }
@@ -84,9 +82,6 @@ public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol {
     public let title: HighlightableText
     public let detail: [HighlightableText]
     public let vaultName: String
-
-    public var icon: UIImage { type.icon }
-    public var iconTintColor: UIColor { type.iconTintColor }
 
     public init(shareId: String,
                 itemId: String,
