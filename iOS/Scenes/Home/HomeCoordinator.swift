@@ -58,18 +58,16 @@ final class HomeCoordinator: DeinitPrintable {
     private var detailCoordinator: Coordinator?
     weak var delegate: HomeCoordinatorDelegate?
 
-    var rootViewController: UIViewController { sideMenuController }
+    var rootViewController: UIViewController { .init(nibName: "", bundle: nil) }
     private var topMostViewController: UIViewController {
-        sideMenuController.topMostViewController
+        .init(nibName: "", bundle: nil)
     }
 
     // Side menu
     private lazy var sideMenuWidth = calculateSideMenuWidth()
-    private lazy var sideMenuController = provideSideMenuController()
-    private lazy var sidebarViewController = provideSidebarViewController()
 
     // Banner
-    private lazy var bannerManager = provideBannerManager()
+    private lazy var bannerManager = BannerManager(container: .init(nibName: "", bundle: nil))
 
     // Cover view
     private lazy var appContentCoverViewController = UIHostingController(rootView: AppContentCoverView())
@@ -167,7 +165,6 @@ final class HomeCoordinator: DeinitPrintable {
         self.setUpSideMenuPreferences()
         self.observeForegroundEntrance()
         self.observePreferencesAndVaultSelection()
-        self.updateSideMenuUserInterfaceStyle()
         self.myVaultsCoordinator.bannerManager = bannerManager
     }
 
@@ -239,20 +236,6 @@ private extension HomeCoordinator {
                 self.eventLoop.start()
             }
             .store(in: &cancellables)
-
-        preferences.objectWillChange
-            .sink { [unowned self] _ in
-                self.updateSideMenuUserInterfaceStyle()
-            }
-            .store(in: &cancellables)
-    }
-
-    func updateSideMenuUserInterfaceStyle() {
-        UIView.transition(with: rootViewController.view.window ?? rootViewController.view,
-                          duration: 0.3,
-                          options: .transitionCrossDissolve) {
-            self.sideMenuController.overrideUserInterfaceStyle = self.preferences.theme.userInterfaceStyle
-        }
     }
 }
 
@@ -266,28 +249,6 @@ private extension HomeCoordinator {
             let minEdge = min(bounds.width, bounds.height)
             return minEdge * 4 / 5
         }
-    }
-
-    func provideSideMenuController() -> SideMenuController {
-        let sideMenuController = SideMenuController(contentViewController: myVaultsRootViewController,
-                                                    menuViewController: sidebarViewController)
-        sideMenuController.delegate = self
-        urlOpener.rootViewController = sideMenuController
-        return sideMenuController
-    }
-
-    func provideSidebarViewController() -> UIViewController {
-        let sideBarViewModel = SideBarViewModel(user: sessionData.userData.user)
-        sideBarViewModel.delegate = self
-        myVaultsCoordinator.itemCountDelegate = sideBarViewModel
-        let sidebarView = SidebarView(viewModel: sideBarViewModel, width: sideMenuWidth)
-        return UIHostingController(rootView: sidebarView)
-    }
-
-    func provideBannerManager() -> BannerManager {
-        let bannerManager = BannerManager(container: sideMenuController)
-        self.clipboardManager.bannerManager = bannerManager
-        return bannerManager
     }
 
     func provideMyVaultsCoordinator() -> MyVaultsCoordinator {
@@ -333,60 +294,6 @@ private extension HomeCoordinator {
         trashCoordinator.clipboardManager = self.clipboardManager
         return trashCoordinator
     }
-}
-
-// MARK: - Sidebar
-extension HomeCoordinator {
-    func showSidebar() {
-        sideMenuController.revealMenu()
-    }
-
-    private func showMyVaultsRootViewController(filterOption: ItemTypeFilterOption) {
-        myVaultsCoordinator.updateFilterOption(filterOption)
-        sideMenuController.setContentViewController(to: myVaultsRootViewController,
-                                                    animated: true) { [unowned self] in
-            self.detailCoordinator = self.myVaultsCoordinator
-            self.myVaultsCoordinator.bannerManager = self.bannerManager
-            self.sideMenuController.hideMenu()
-        }
-    }
-
-    func handleSidebarItem(_ sidebarItem: SidebarItem) {
-        switch sidebarItem {
-        case .devPreviews:
-            let viewModel = DevPreviewsViewModel(itemRepository: itemRepository,
-                                                 preferences: preferences)
-            viewModel.delegate = self
-            let view = DevPreviewsView(viewModel: viewModel)
-            rootViewController.present(UIHostingController(rootView: view), animated: true)
-        case .settings:
-            sideMenuController.setContentViewController(to: settingsRootViewController,
-                                                        animated: true) { [unowned self] in
-                self.detailCoordinator = self.settingsCoordinator
-                self.settingsCoordinator.bannerManager = self.bannerManager
-                self.sideMenuController.hideMenu()
-            }
-        case .trash:
-            sideMenuController.setContentViewController(to: trashRootViewController,
-                                                        animated: true) { [unowned self] in
-                self.detailCoordinator = self.trashCoordinator
-                self.trashCoordinator.bannerManager = self.bannerManager
-                self.sideMenuController.hideMenu()
-            }
-        case .bugReport:
-            if let url = URL(string: "https://proton.me/support/contact"),
-               UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            }
-            sideMenuController.hideMenu()
-        case .signOut:
-            requestSignOutConfirmation()
-        }
-    }
-
-    func showUserSwitcher() {
-        print(#function)
-    }
 
     func alert(error: Error) {
         let alert = UIAlertController(title: "Error occured",
@@ -411,6 +318,7 @@ private extension HomeCoordinator {
 // MARK: - Cover
 private extension HomeCoordinator {
     func showCoverView() {
+        /*
         guard let coverView = appContentCoverViewController.view,
         let sideMenuView = sideMenuController.view else { return }
         sideMenuController.addChild(appContentCoverViewController)
@@ -427,6 +335,7 @@ private extension HomeCoordinator {
         UIView.animate(withDuration: 0.15) {
             coverView.alpha = 1.0
         }
+         */
     }
 
     func hideCoverView() {
@@ -454,31 +363,12 @@ private extension HomeCoordinator {
         }
         alert.addAction(signOutAction)
         alert.addAction(.init(title: "Cancel", style: .cancel))
-        sideMenuController.present(alert, animated: true)
+//        sideMenuController.present(alert, animated: true)
     }
 
     func signOut() {
         eventLoop.stop()
         delegate?.homeCoordinatorDidSignOut()
-    }
-}
-
-// MARK: - SideBarViewModelDelegate
-extension HomeCoordinator: SideBarViewModelDelegate {
-    func sideBarViewModelWantsToShowUsersSwitcher() {
-        showUserSwitcher()
-    }
-
-    func sideBarViewModelWantsToHandleItem(_ item: SidebarItem) {
-        handleSidebarItem(item)
-    }
-
-    func sideBarViewModelWantsToShowAllItems() {
-        showMyVaultsRootViewController(filterOption: .all)
-    }
-
-    func sideBarViewModelWantsToShowItems(ofType type: ItemContentType) {
-        showMyVaultsRootViewController(filterOption: .filtered(type))
     }
 }
 
