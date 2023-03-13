@@ -27,7 +27,6 @@ import MBProgressHUD
 import ProtonCore_AccountDeletion
 import ProtonCore_Login
 import ProtonCore_Services
-import SideMenuSwift
 import SwiftUI
 import UIComponents
 import UIKit
@@ -162,7 +161,6 @@ final class HomeCoordinator: DeinitPrintable {
                                shareKeyRepository: shareKeyRepository,
                                logManager: logManager)
         self.eventLoop.delegate = self
-        self.setUpSideMenuPreferences()
         self.observeForegroundEntrance()
         self.observePreferencesAndVaultSelection()
         self.myVaultsCoordinator.bannerManager = bannerManager
@@ -184,18 +182,6 @@ final class HomeCoordinator: DeinitPrintable {
 
 // MARK: - Initialization additional set ups
 private extension HomeCoordinator {
-    func setUpSideMenuPreferences() {
-        SideMenuController.preferences.basic.menuWidth = sideMenuWidth
-        SideMenuController.preferences.basic.position = .sideBySide
-        SideMenuController.preferences.basic.enablePanGesture = true
-        SideMenuController.preferences.basic.enableRubberEffectWhenPanning = false
-        SideMenuController.preferences.animation.shouldAddShadowWhenRevealing = true
-        SideMenuController.preferences.animation.shadowColor = .black
-        SideMenuController.preferences.animation.shadowAlpha = 0.52
-        SideMenuController.preferences.animation.revealDuration = 0.25
-        SideMenuController.preferences.animation.hideDuration = 0.25
-    }
-
     func observeForegroundEntrance() {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
@@ -453,17 +439,6 @@ extension HomeCoordinator: SettingsCoordinatorDelegate {
         myVaultsCoordinator.refreshItems()
         trashCoordinator.refreshTrashedItems()
         bannerManager.displayBottomInfoMessage("Fully synchronized")
-    }
-}
-
-// MARK: - SideMenuControllerDelegate
-extension HomeCoordinator: SideMenuControllerDelegate {
-    func sideMenuControllerWillRevealMenu(_ sideMenuController: SideMenuController) {
-        self.detailCoordinator?.setStatusBarStyle(.lightContent)
-    }
-
-    func sideMenuControllerWillHideMenu(_ sideMenuController: SideMenuController) {
-        self.detailCoordinator?.setStatusBarStyle(.default)
     }
 }
 
