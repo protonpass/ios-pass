@@ -28,7 +28,7 @@ private let kTopBarHeight: CGFloat = 48
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
-    @State private var toBeTrashedItem: ItemListUiModelV2?
+    @State private var toBeTrashedItem: ItemUiModel?
 
     var body: some View {
         ZStack {
@@ -181,7 +181,7 @@ struct ItemsTabView: View {
         }
     }
 
-    private func itemList(_ result: MostRecentSortResult<ItemListUiModelV2>) -> some View {
+    private func itemList(_ result: MostRecentSortResult<ItemUiModel>) -> some View {
         ItemListView(
             safeAreaInsets: safeAreaInsets,
             content: {
@@ -197,7 +197,7 @@ struct ItemsTabView: View {
             onRefresh: viewModel.forceSync)
     }
 
-    private func itemList(_ result: AlphabeticalSortResult<ItemListUiModelV2>) -> some View {
+    private func itemList(_ result: AlphabeticalSortResult<ItemUiModel>) -> some View {
         ScrollViewReader { proxy in
             ItemListView(
                 safeAreaInsets: safeAreaInsets,
@@ -218,7 +218,7 @@ struct ItemsTabView: View {
         }
     }
 
-    private func itemList(_ result: MonthYearSortResult<ItemListUiModelV2>) -> some View {
+    private func itemList(_ result: MonthYearSortResult<ItemUiModel>) -> some View {
         ItemListView(
             safeAreaInsets: safeAreaInsets,
             content: {
@@ -230,7 +230,7 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private func section(for items: [ItemListUiModelV2], headerTitle: String) -> some View {
+    private func section(for items: [ItemUiModel], headerTitle: String) -> some View {
         if items.isEmpty {
             EmptyView()
         } else {
@@ -244,7 +244,7 @@ struct ItemsTabView: View {
         }
     }
 
-    private func itemRow(for item: ItemListUiModelV2) -> some View {
+    private func itemRow(for item: ItemUiModel) -> some View {
         Button(action: {
             viewModel.viewDetail(of: item)
         }, label: {
@@ -283,7 +283,7 @@ struct ItemsTabView: View {
         }
     }
 
-    private func askForConfirmationOrTrashDirectly(item: ItemListUiModelV2) {
+    private func askForConfirmationOrTrashDirectly(item: ItemUiModel) {
         if viewModel.preferences.askBeforeTrashing {
             toBeTrashedItem = item
         } else {

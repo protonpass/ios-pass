@@ -1,5 +1,5 @@
 //
-// ItemListUiModel.swift
+// ItemUiModel.swift
 // Proton Pass - Created on 20/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,7 +21,7 @@
 import Client
 import CryptoKit
 
-struct ItemListUiModelV2: ItemIdentifiable, Hashable {
+struct ItemUiModel: ItemIdentifiable, Hashable {
     let itemId: String
     let shareId: String
     let type: ItemContentType
@@ -31,22 +31,22 @@ struct ItemListUiModelV2: ItemIdentifiable, Hashable {
     let modifyTime: Int64
 }
 
-extension ItemListUiModelV2: Identifiable {
+extension ItemUiModel: Identifiable {
     var id: String { itemId + shareId }
 }
 
-extension ItemListUiModelV2: DateSortable {
+extension ItemUiModel: DateSortable {
     var dateForSorting: Date {
         Date(timeIntervalSince1970: TimeInterval(max(lastUseTime, modifyTime)))
     }
 }
 
-extension ItemListUiModelV2: AlphabeticalSortable {
+extension ItemUiModel: AlphabeticalSortable {
     var alphabeticalSortableString: String { title }
 }
 
 extension SymmetricallyEncryptedItem {
-    func toItemListUiModelV2(_ symmetricKey: SymmetricKey) throws -> ItemListUiModelV2 {
+    func toItemUiModel(_ symmetricKey: SymmetricKey) throws -> ItemUiModel {
         let encryptedItemContent = try getEncryptedItemContent()
         let name = try symmetricKey.decrypt(encryptedItemContent.name)
 

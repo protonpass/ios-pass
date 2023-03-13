@@ -27,7 +27,7 @@ import UIComponents
 struct VaultContentView: View {
     @StateObject private var viewModel: VaultContentViewModel
     @State private var didAppear = false
-    @State private var selectedItem: ItemListUiModelV2?
+    @State private var selectedItem: ItemUiModel?
     @State private var isShowingTrashingAlert = false
 
     private var selectedVaultName: String {
@@ -152,7 +152,7 @@ struct VaultContentView: View {
         .refreshable { await viewModel.forceSync() }
     }
 
-    private func askForConfirmationOrTrashDirectly(item: ItemListUiModelV2) {
+    private func askForConfirmationOrTrashDirectly(item: ItemUiModel) {
         if viewModel.preferences.askBeforeTrashing {
             selectedItem = item
             isShowingTrashingAlert.toggle()
