@@ -45,7 +45,6 @@ final class MyVaultsCoordinator: Coordinator {
 
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
-    private var searchViewModel: SearchViewModel?
 
     weak var itemCountDelegate: ItemCountDelegate? {
         didSet {
@@ -206,27 +205,6 @@ final class MyVaultsCoordinator: Coordinator {
         present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    private func showSearchView() {
-        let viewModel = SearchViewModel(symmetricKey: symmetricKey,
-                                        itemRepository: itemRepository,
-                                        vaults: [],
-                                        preferences: preferences,
-                                        logManager: logManager)
-        viewModel.delegate = self
-        searchViewModel = viewModel
-        let viewController = UIHostingController(rootView: SearchView(viewModel: viewModel))
-        let navigationController = UINavigationController(rootViewController: viewController)
-        if UIDevice.current.isIpad {
-            navigationController.modalPresentationStyle = .formSheet
-        } else {
-            navigationController.modalPresentationStyle = .fullScreen
-            navigationController.modalTransitionStyle = .coverVertical
-        }
-        present(navigationController,
-                userInterfaceStyle: preferences.theme.userInterfaceStyle,
-                dismissible: UIDevice.current.isIpad)
-    }
-
     private func showItemDetailView(_ itemContent: ItemContent) {
         let itemDetailView: any View
         let baseItemDetailViewModel: BaseItemDetailViewModel
@@ -318,7 +296,6 @@ final class MyVaultsCoordinator: Coordinator {
 
         vaultContentViewModel.fetchItems()
         delegate?.myVaultsCoordinatorWantsToRefreshTrash()
-        Task { await searchViewModel?.refreshResults() }
     }
 
     private func handleMovedItem(_ item: ItemIdentifiable, type: ItemContentType) {
@@ -334,7 +311,6 @@ final class MyVaultsCoordinator: Coordinator {
         bannerManager?.displayBottomInfoMessage(message)
         vaultContentViewModel.fetchItems()
         delegate?.myVaultsCoordinatorWantsToRefreshTrash()
-        Task { await searchViewModel?.refreshResults() }
     }
 
     private func handleUpdatedItem(_ itemContentType: ItemContentType) {
@@ -342,7 +318,6 @@ final class MyVaultsCoordinator: Coordinator {
             currentItemDetailViewModel?.refresh()
             bannerManager?.displayBottomSuccessMessage("Changes saved")
             vaultContentViewModel.fetchItems()
-            Task { await searchViewModel?.refreshResults() }
         }
     }
 
@@ -382,9 +357,7 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
 
     func vaultContentViewModelWantsToHideLoadingHud() {}
 
-    func vaultContentViewModelWantsToSearch() {
-        showSearchView()
-    }
+    func vaultContentViewModelWantsToSearch() {}
 
     func vaultContentViewModelWantsToEnableAutoFill() {
         let view = TurnOnAutoFillView(credentialManager: credentialManager)
@@ -527,37 +500,6 @@ extension MyVaultsCoordinator: GeneratePasswordViewModelDelegate {
         dismissTopMostViewController(animated: true) { [unowned self] in
             clipboardManager?.copy(text: password, bannerMessage: "Password copied")
         }
-    }
-}
-
-// MARK: - SearchViewModelDelegate
-extension MyVaultsCoordinator: SearchViewModelDelegate {
-    func searchViewModelWantsToShowLoadingHud() {}
-
-    func searchViewModelWantsToHideLoadingHud() {}
-
-    func searchViewModelWantsToDismiss() {
-        dismissTopMostViewController()
-    }
-
-    func searchViewModelWantsToShowItemDetail(_ item: Client.ItemContent) {
-        showItemDetailView(item)
-    }
-
-    func searchViewModelWantsToEditItem(_ item: Client.ItemContent) {
-        showEditItemView(item)
-    }
-
-    func searchViewModelWantsToCopy(text: String, bannerMessage: String) {
-        clipboardManager?.copy(text: text, bannerMessage: bannerMessage)
-    }
-
-    func searchViewModelDidTrashItem(_ item: ItemIdentifiable, type: Client.ItemContentType) {
-        handleTrashedItem(item, type: type)
-    }
-
-    func searchViewModelDidFail(_ error: Error) {
-        bannerManager?.displayTopErrorMessage(error)
     }
 }
 

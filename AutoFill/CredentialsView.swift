@@ -78,7 +78,8 @@ struct CredentialsView: View {
                                     ProgressView()
 
                                 case .noSearchResults:
-                                    NoSearchResultsView()
+                                    Text("No search results")
+                                        .foregroundColor(.textWeak)
 
                                 case .searchResults(let searchResults):
                                     searchResultsList(searchResults)
@@ -221,8 +222,26 @@ struct CredentialsView: View {
                 if let results = resultDictionary[vaultName] {
                     Section(content: {
                         ForEach(results) { result in
-                            ItemSearchResultView(result: result,
-                                                 action: { select(item: result) })
+                            Button(action: {
+                                select(item: result)
+                            }, label: {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HighlightText(highlightableText: result.title)
+
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        ForEach(0..<result.detail.count, id: \.self) { index in
+                                            let eachDetail = result.detail[index]
+                                            if !eachDetail.fullText.isEmpty {
+                                                HighlightText(highlightableText: eachDetail)
+                                                    .font(.callout)
+                                                    .foregroundColor(Color(.secondaryLabel))
+                                                    .lineLimit(1)
+                                            }
+                                        }
+                                    }
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            })
                         }
                         .listRowSeparator(.hidden)
                     }, header: {
