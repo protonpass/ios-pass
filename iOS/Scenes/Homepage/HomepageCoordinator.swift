@@ -58,7 +58,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var homepageViewModel: HomepageViewModel?
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
-    private var searchViewModel: SearchViewModel?
+//    private var searchViewModel: SearchViewModel?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -351,7 +351,7 @@ private extension HomepageCoordinator {
         }
 
         homepageViewModel?.vaultsManager.refresh()
-        Task { await searchViewModel?.refreshResults() }
+//        Task { await searchViewModel?.refreshResults() }
     }
 }
 
@@ -398,6 +398,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToSearch() {
+        /*
         let viewModel = SearchViewModel(symmetricKey: symmetricKey,
                                         itemRepository: itemRepository,
                                         vaults: [],
@@ -408,6 +409,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         let viewController = UIHostingController(rootView: SearchView(viewModel: viewModel))
         let navigationController = UINavigationController(rootViewController: viewController)
         present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+         */
     }
 
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
@@ -539,49 +541,6 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.clipboardManager.copy(text: password, bannerMessage: "Password copied")
         }
-    }
-}
-
-// MARK: - SearchViewModelDelegate
-extension HomepageCoordinator: SearchViewModelDelegate {
-    func searchViewModelWantsToShowLoadingHud() {
-        showLoadingHud()
-    }
-
-    func searchViewModelWantsToHideLoadingHud() {
-        hideLoadingHud()
-    }
-
-    func searchViewModelWantsToDismiss() {
-        dismissTopMostViewController()
-    }
-
-    func searchViewModelWantsToShowItemDetail(_ itemContent: ItemContent) {
-        presentItemDetailView(for: itemContent)
-    }
-
-    func searchViewModelWantsToEditItem(_ itemContent: ItemContent) {
-        let mode = ItemMode.edit(itemContent)
-        switch itemContent.contentData.type {
-        case .login:
-            presentCreateEditLoginView(mode: mode)
-        case .note:
-            presentCreateEditNoteView(mode: mode)
-        case .alias:
-            presentCreateEditAliasView(mode: mode)
-        }
-    }
-
-    func searchViewModelWantsToCopy(text: String, bannerMessage: String) {
-        clipboardManager.copy(text: text, bannerMessage: bannerMessage)
-    }
-
-    func searchViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
-        print(#function)
-    }
-
-    func searchViewModelDidFail(_ error: Error) {
-        bannerManager.displayTopErrorMessage(error)
     }
 }
 
