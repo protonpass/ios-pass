@@ -204,7 +204,6 @@
 		3555801428F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */; };
 		3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555801528F04F5C009C3B88 /* NoCredentialsView.swift */; };
 		3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555801928F05899009C3B88 /* URLUtils+SanitizerTests.swift */; };
-		3555EDF228A611BC00115EBC /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		355635B7288947DD00F32353 /* VaultSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635B6288947DD00F32353 /* VaultSelection.swift */; };
 		355635B928895B8E00F32353 /* VaultContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635B828895B8E00F32353 /* VaultContentView.swift */; };
 		355635BD2889653B00F32353 /* LoadVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355635BC2889653B00F32353 /* LoadVaultsView.swift */; };
@@ -510,13 +509,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 35E5063A286F819F00A3F6EA;
 			remoteInfo = iOS;
-		};
-		3555EDF428A611BC00115EBC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 35E5062F286F819F00A3F6EA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 35E506A9286F920300A3F6EA;
-			remoteInfo = UIComponents;
 		};
 		356125052982438300EDA991 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1176,7 +1168,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				675A744B254FF56E1C95D91B /* Pods_Client.framework in Frameworks */,
-				3555EDF228A611BC00115EBC /* UIComponents.framework in Frameworks */,
 				358BD36E287D539F00802A91 /* Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2561,7 +2552,6 @@
 			);
 			dependencies = (
 				358BD371287D539F00802A91 /* PBXTargetDependency */,
-				3555EDF528A611BC00115EBC /* PBXTargetDependency */,
 			);
 			name = Client;
 			productName = Client;
@@ -3775,11 +3765,6 @@
 			isa = PBXTargetDependency;
 			target = 35E5063A286F819F00A3F6EA /* iOS */;
 			targetProxy = 354A804028D8B8D8003F49CF /* PBXContainerItemProxy */;
-		};
-		3555EDF528A611BC00115EBC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 35E506A9286F920300A3F6EA /* UIComponents */;
-			targetProxy = 3555EDF428A611BC00115EBC /* PBXContainerItemProxy */;
 		};
 		356125062982438300EDA991 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
