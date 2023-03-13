@@ -108,18 +108,6 @@ final class MyVaultsCoordinator: Coordinator {
         self.start(with: view, secondaryView: secondaryView)
     }
 
-    private func showVaultListView() {
-        let viewModel = VaultListViewModel(itemRepository: itemRepository,
-                                           shareRespository: shareRepository,
-                                           vaultSelection: vaultSelection,
-                                           logManager: logManager)
-        viewModel.delegate = self
-        let view = VaultListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-        viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
-    }
-
     private func showCreateVaultView() {
         let createVaultViewModel =
         CreateVaultViewModel(userData: userData,
@@ -409,9 +397,7 @@ extension MyVaultsCoordinator: VaultContentViewModelDelegate {
                 dismissible: false)
     }
 
-    func vaultContentViewModelWantsToShowVaultList() {
-        showVaultListView()
-    }
+    func vaultContentViewModelWantsToShowVaultList() {}
 
     func vaultContentViewModelWantsToCreateItem() {}
 
@@ -571,34 +557,6 @@ extension MyVaultsCoordinator: SearchViewModelDelegate {
     }
 
     func searchViewModelDidFail(_ error: Error) {
-        bannerManager?.displayTopErrorMessage(error)
-    }
-}
-
-// MARK: - VaultListViewModelDelegate
-extension MyVaultsCoordinator: VaultListViewModelDelegate {
-    func vaultListViewModelWantsShowLoadingHud() {
-        showLoadingHud()
-    }
-
-    func vaultListViewModelWantsHideLoadingHud() {
-        hideLoadingHud()
-    }
-
-    func vaultListViewModelWantsToCreateVault() {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            self.showCreateVaultView()
-        }
-    }
-
-    func vaultListViewModelDidDelete(vault: Vault) {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            self.bannerManager?.displayBottomInfoMessage("Vault \"\(vault.name)\" deleted")
-            self.vaultSelection.remove(vault: vault)
-        }
-    }
-
-    func vaultListViewModelDidFail(error: Error) {
         bannerManager?.displayTopErrorMessage(error)
     }
 }
