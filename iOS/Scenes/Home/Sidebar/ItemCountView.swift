@@ -77,7 +77,7 @@ private struct ItemContentTypeCountView: View {
                     Text(type.countTitle)
                         .foregroundColor(.sidebarTextNorm)
                 }, icon: {
-                    Image(uiImage: type.icon)
+                    Image(uiImage: IconProvider.note)
                         .foregroundColor(.sidebarIconWeak)
                 })
 

@@ -605,9 +605,3 @@ extension HomeCoordinator: DevPreviewsViewModelDelegate {
         alert(error: error)
     }
 }
-
-extension BannerManager {
-    func displayTopErrorMessage(_ error: Error) {
-        displayTopErrorMessage(error.messageForTheUser)
-    }
-}

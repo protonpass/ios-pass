@@ -34,8 +34,8 @@ struct ItemListUiModel: ItemIdentifiable, GenericItemProtocol, Hashable {
     let modifyTime: Int64
     let detail: GenericItemDetail
 
-    var icon: UIImage { type.icon }
-    var iconTintColor: UIColor { type.iconTintColor }
+    var icon: UIImage { IconProvider.note }
+    var iconTintColor: UIColor { .passBrand }
 }
 
 #warning("Remove this")

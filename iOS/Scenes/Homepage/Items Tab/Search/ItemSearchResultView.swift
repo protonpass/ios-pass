@@ -19,7 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 public struct ItemSearchResultView<TrailingView: View>: View {
     private let result: ItemSearchResultProtocol
@@ -39,10 +41,10 @@ public struct ItemSearchResultView<TrailingView: View>: View {
             Button(action: action) {
                 HStack {
                     ZStack {
-                        Color(result.iconTintColor).opacity(0.1)
-                        Image(uiImage: result.icon)
+                        Color(.passBrand).opacity(0.1)
+                        Image(uiImage: IconProvider.note)
                             .resizable()
-                            .foregroundColor(Color(result.iconTintColor))
+                            .foregroundColor(Color(.passBrand))
                             .padding(7.5)
                     }
                     .frame(width: 36, height: 36)
