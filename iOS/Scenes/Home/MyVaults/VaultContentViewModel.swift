@@ -65,26 +65,7 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
     private var allItems = [ItemUiModel]()
     @Published private(set) var state = State.loading
     @Published private(set) var filteredItems = [ItemUiModel]()
-    @Published private(set) var sortTypes = SortType.allCases
     @Published var shouldShowAutoFillBanner = false
-    @Published var filterOption = ItemTypeFilterOption.all {
-        didSet {
-            self.sortTypes = SortType.allCases
-            switch filterOption {
-            case .all:
-                break
-            case .filtered:
-                sortTypes.removeAll { $0 == .type }
-                if sortType == .type {
-                    sortType = .modifyTime
-                    return
-                }
-            }
-            filterAndSort()
-        }
-    }
-    @Published var sortType = SortType.modifyTime { didSet { filterAndSort() } }
-    @Published var sortDirection = SortDirection.descending { didSet { filterAndSort() } }
 
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
@@ -132,16 +113,6 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
                 self.fetchItems(showLoadingIndicator: true)
             }
             .store(in: &cancellables)
-    }
-
-    private func updateItemCount() {
-        itemCountDelegate?.itemCountDidUpdate(allItems.generateItemCount())
-    }
-
-    private func filterAndSort() {
-        filteredItems = allItems.filteredAndSorted(filterOption: filterOption,
-                                                   type: sortType,
-                                                   direction: sortDirection)
     }
 
     private func showAutoFillBannerIfNecessary() {
@@ -195,8 +166,6 @@ extension VaultContentViewModel {
 
             do {
                 allItems = try await getItemsTask().value
-                updateItemCount()
-                filterAndSort()
                 state = .loaded
                 logger.info("Fetched \(allItems.count) items")
             } catch {
@@ -406,52 +375,5 @@ private extension VaultContentViewModel {
 extension VaultContentViewModel: SyncEventLoopPullToRefreshDelegate {
     func pullToRefreshShouldStopRefreshing() {
         stopRefreshing()
-    }
-}
-
-private extension Array where Element == ItemUiModel {
-    mutating func filteredAndSorted(filterOption: ItemTypeFilterOption,
-                                    type: SortType,
-                                    direction: SortDirection) -> Self {
-        /*
-        filter { item in
-            switch filterOption {
-            case .all:
-                return true
-            case .filtered(let type):
-                return item.type == type
-            }
-        }
-        .sorted { lhs, rhs in
-            switch (type, direction) {
-            case (.title, .ascending):
-                return lhs.title < rhs.title
-            case (.title, .descending):
-                return lhs.title > rhs.title
-            case (.type, .ascending):
-                return lhs.type.rawValue < rhs.type.rawValue
-            case (.type, .descending):
-                return lhs.type.rawValue > rhs.type.rawValue
-            case (.createTime, .ascending):
-                return lhs.createTime < rhs.createTime
-            case (.createTime, .descending):
-                return lhs.createTime > rhs.createTime
-            case (.modifyTime, .ascending):
-                return lhs.modifyTime < rhs.modifyTime
-            case (.modifyTime, .descending):
-                return lhs.modifyTime > rhs.modifyTime
-            }
-        }
-         */
-        self
-    }
-
-    func generateItemCount() -> ItemCount {
-        var dictionary: [ItemContentType: Int] = [:]
-        for type in ItemContentType.allCases {
-            let count = filter { $0.type == type }.count
-            dictionary[type] = count
-        }
-        return .init(total: count, typeCountDictionary: dictionary)
     }
 }

@@ -72,50 +72,6 @@ struct VaultContentView: View {
         }
     }
 
-    private var filterStatus: some View {
-        Menu(content: {
-            ForEach(viewModel.sortTypes, id: \.self) { sortType in
-                Button(action: {
-                    viewModel.sortType = sortType
-                }, label: {
-                    Label(title: {
-                        Text(sortType.description)
-                    }, icon: {
-                        if sortType == viewModel.sortType {
-                            Image(systemName: "checkmark")
-                        }
-                    })
-                })
-            }
-            Divider()
-            ForEach(SortDirection.allCases, id: \.self) { sortDirection in
-                Button(action: {
-                    viewModel.sortDirection = sortDirection
-                }, label: {
-                    Label(title: {
-                        Text(sortDirection.description)
-                    }, icon: {
-                        if sortDirection == viewModel.sortDirection {
-                            Image(systemName: "checkmark")
-                        }
-                    })
-                })
-            }
-        }, label: {
-            HStack {
-                Text("Sort by: \(viewModel.sortType.description)")
-                Image(systemName: "chevron.down")
-                    .imageScale(.small)
-            }
-            .font(.callout)
-            .foregroundColor(.secondary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        })
-        .transaction { transaction in
-            transaction.animation = nil
-        }
-    }
-
     private var itemList: some View {
         List {
             if viewModel.shouldShowAutoFillBanner {
@@ -142,7 +98,7 @@ struct VaultContentView: View {
                 }
                 .listRowSeparator(.hidden)
             }, header: {
-                filterStatus
+                EmptyView()
             })
         }
         .listStyle(.plain)
@@ -169,8 +125,6 @@ struct VaultContentView: View {
 
         ToolbarItem(placement: .principal) {
             VStack {
-                Text(viewModel.filterOption.title)
-                    .fontWeight(.semibold)
                 if DeveloperModeStateManager.shared.isOn,
                    let selectedVault = viewModel.vaultSelection.selectedVault {
                     Text(selectedVault.name)
