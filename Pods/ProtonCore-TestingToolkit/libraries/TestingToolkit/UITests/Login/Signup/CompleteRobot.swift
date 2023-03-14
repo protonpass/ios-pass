@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import pmtest
+import fusion
 
 private let titleId = "CompleteViewController.completeTitleLabel"
 private let descriptionId = "CompleteViewController.completeDescriptionLabel"
