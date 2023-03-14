@@ -112,7 +112,7 @@ final class APIManager {
         #if DEBUG
         FeatureFactory.shared.enable(&.enforceUnauthSessionStrictVerificationOnBackend)
         #endif
-        ObservabilityEnv.current.setupWorld(apiService: apiService)
+        ObservabilityEnv.current.setupWorld(requestPerformer: apiService)
     }
 
     private func fetchUnauthSessionIfNeeded() {

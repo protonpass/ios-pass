@@ -71,8 +71,7 @@ final class WelcomeCoordinator: DeinitPrintable {
     private func makeLoginAndSignUp() -> LoginAndSignup {
         let signUpParameters = SignupParameters(separateDomainsButton: true,
                                                 passwordRestrictions: .default,
-                                                summaryScreenVariant: .noSummaryScreen,
-                                                signupInitialMode: .internal)
+                                                summaryScreenVariant: .noSummaryScreen)
         return .init(appName: "Proton Pass",
                      clientApp: .other(named: "pass"),
                      apiService: apiService,

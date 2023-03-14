@@ -21,7 +21,7 @@
 
 import Foundation
 
-import pmtest
+import fusion
 import ProtonCore_Environment
 import ProtonCore_QuarkCommands
 import ProtonCore_TestingToolkit
