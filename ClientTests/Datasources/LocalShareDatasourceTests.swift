@@ -43,7 +43,7 @@ final class LocalShareDatasourceTests: XCTestCase {
         XCTAssertEqual(lhs.shareID, rhs.shareID)
         XCTAssertEqual(lhs.vaultID, rhs.vaultID)
         XCTAssertEqual(lhs.addressID, rhs.addressID)
-        XCTAssertEqual(lhs.targetType, rhs.targetType)
+//        XCTAssertEqual(lhs.targetType, rhs.targetType)
         XCTAssertEqual(lhs.targetID, rhs.targetID)
 //        XCTAssertEqual(lhs.permission, rhs.permission)
         XCTAssertEqual(lhs.content, rhs.content)

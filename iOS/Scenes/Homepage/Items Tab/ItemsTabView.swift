@@ -111,7 +111,7 @@ struct ItemsTabView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 16)
-                    Text("Search in all vaults...")
+                    Text(viewModel.vaultsManager.vaultSelection.searchBarPlacehoder)
                 }
                 .foregroundColor(.textWeak)
                 .padding(.horizontal)

@@ -47,6 +47,15 @@ extension VaultManagerState: Equatable {
 enum VaultSelectionV2 {
     case all
     case precise(Vault)
+
+    var searchBarPlacehoder: String {
+        switch self {
+        case .all:
+            return "Search in all vaults"
+        case .precise(let vault):
+            return "Search in \(vault.name)"
+        }
+    }
 }
 
 final class VaultsManager: ObservableObject, DeinitPrintable {
