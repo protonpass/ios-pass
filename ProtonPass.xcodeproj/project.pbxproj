@@ -464,7 +464,7 @@
 		75283BFF2946E21D006658A6 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75283BF02946E21D006658A6 /* SettingsTests.swift */; };
 		75283C002946E21D006658A6 /* SettingsRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75283BF12946E21D006658A6 /* SettingsRobot.swift */; };
 		75283C012946E21D006658A6 /* HomeRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75283BF32946E21D006658A6 /* HomeRobot.swift */; };
-		75283C032946E49A006658A6 /* ExternalAccountsCapabilityATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75283C022946E49A006658A6 /* ExternalAccountsCapabilityATests.swift */; };
+		75283C032946E49A006658A6 /* ExternalAccountsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75283C022946E49A006658A6 /* ExternalAccountsTests.swift */; };
 		752A68E72954945900DCC65E /* OnboardingRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A68E62954945900DCC65E /* OnboardingRobot.swift */; };
 		75F7578F297928C2008A43D7 /* TokenRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F7578E297928C2008A43D7 /* TokenRefreshTests.swift */; };
 		CCE7E1B680E6647D25927D82 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F5C90C76FB6CAE61EBE55B9 /* Pods_iOS.framework */; };
@@ -1083,7 +1083,7 @@
 		75283BF02946E21D006658A6 /* SettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		75283BF12946E21D006658A6 /* SettingsRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsRobot.swift; sourceTree = "<group>"; };
 		75283BF32946E21D006658A6 /* HomeRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRobot.swift; sourceTree = "<group>"; };
-		75283C022946E49A006658A6 /* ExternalAccountsCapabilityATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalAccountsCapabilityATests.swift; sourceTree = "<group>"; };
+		75283C022946E49A006658A6 /* ExternalAccountsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalAccountsTests.swift; sourceTree = "<group>"; };
 		752A68E62954945900DCC65E /* OnboardingRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingRobot.swift; sourceTree = "<group>"; };
 		75F7578E297928C2008A43D7 /* TokenRefreshTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenRefreshTests.swift; sourceTree = "<group>"; };
 		78F8E0F7C874568D823F1AD8 /* Pods-macOS.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-prod.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-prod.xcconfig"; sourceTree = "<group>"; };
@@ -2309,7 +2309,7 @@
 				75283BE82946E21C006658A6 /* LoginSignupTests.swift */,
 				75283BEA2946E21C006658A6 /* LoginBaseTestCase.swift */,
 				75283BEE2946E21C006658A6 /* LoginWelcomeTests.swift */,
-				75283C022946E49A006658A6 /* ExternalAccountsCapabilityATests.swift */,
+				75283C022946E49A006658A6 /* ExternalAccountsTests.swift */,
 			);
 			path = "Login&Signup";
 			sourceTree = "<group>";
@@ -3737,7 +3737,7 @@
 				7513C54529A5E89B006F7160 /* AutoFillRobot.swift in Sources */,
 				7513C54929A5F9F9006F7160 /* GetStartedRobot.swift in Sources */,
 				75283C012946E21D006658A6 /* HomeRobot.swift in Sources */,
-				75283C032946E49A006658A6 /* ExternalAccountsCapabilityATests.swift in Sources */,
+				75283C032946E49A006658A6 /* ExternalAccountsTests.swift in Sources */,
 				75283C002946E21D006658A6 /* SettingsRobot.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
