@@ -79,8 +79,13 @@ private extension ItemsTabViewModel {
 // MARK: - Public APIs
 extension ItemsTabViewModel {
     func createNewItem() {
-        guard let selectedVault = vaultsManager.selectedVault else { return }
-        delegate?.itemsTabViewModelWantsToCreateNewItem(shareId: selectedVault.shareId)
+        switch vaultsManager.vaultSelection {
+        case .all:
+            // Handle this later
+            break
+        case .precise(let selectedVault):
+            delegate?.itemsTabViewModelWantsToCreateNewItem(shareId: selectedVault.shareId)
+        }
     }
 
     func search() {

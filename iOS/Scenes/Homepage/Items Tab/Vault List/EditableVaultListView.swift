@@ -26,45 +26,54 @@ struct EditableVaultListView: View {
     @StateObject var viewModel: EditableVaultListViewModel
 
     var body: some View {
+        let vaultsManager = viewModel.vaultsManager
         VStack(alignment: .leading) {
             NotchView()
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 5)
             ScrollView {
                 VStack(spacing: 0) {
-                    switch viewModel.vaultsManager.state {
+                    switch vaultsManager.state {
                     case .loading, .error:
                         // Should never happen
                         ProgressView()
                     case .loaded(let vaults):
-                        ForEach(vaults, id: \.hashValue) { vault in
-                            HStack(spacing: 16) {
-                                Color.passBrand
-                                    .clipShape(Circle())
-                                    .frame(width: 40)
-
-                                VStack(alignment: .leading) {
-                                    Text(vault.vault.name)
-                                    Text("\(vault.items.count) items")
-                                        .font(.callout)
-                                        .foregroundColor(Color.textWeak)
-                                }
-
-                                Spacer()
-
-                                if vault.vault == viewModel.vaultsManager.selectedVault {
-                                    Label("", systemImage: "checkmark")
-                                        .foregroundColor(.passBrand)
-                                        .padding(.trailing)
-                                }
-                            }
-                            .frame(maxWidth: .infinity)
+                        Button(action: {
+                            dismiss()
+                            vaultsManager.select(vault: nil)
+                        }, label: {
+                            VaultRow(
+                                thumbnail: {
+                                    Color.passBrand
+                                        .clipShape(Circle())
+                                        .frame(width: 40)
+                                },
+                                title: "All vaults",
+                                description: "\(vaultsManager.getItemCount(for: nil)) items",
+                                isSelected: vaultsManager.isAllVaultsSelected())
                             .frame(height: 70)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
+                        })
+                        .buttonStyle(.plain)
+
+                        PassDivider()
+
+                        ForEach(vaults, id: \.hashValue) { vault in
+                            Button(action: {
                                 dismiss()
-                                viewModel.vaultsManager.select(vault: vault.vault)
-                            }
+                                vaultsManager.select(vault: vault.vault)
+                            }, label: {
+                                VaultRow(
+                                    thumbnail: {
+                                        Color.passBrand
+                                            .clipShape(Circle())
+                                            .frame(width: 40)
+                                    },
+                                    title: vault.vault.name,
+                                    description: "\(vaultsManager.getItemCount(for: vault.vault)) items",
+                                    isSelected: vaultsManager.isSelected(vault.vault))
+                                .frame(height: 70)
+                            })
+                            .buttonStyle(.plain)
 
                             PassDivider()
                         }
@@ -86,5 +95,36 @@ struct EditableVaultListView: View {
         }
         .background(Color.passSecondaryBackground)
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private struct VaultRow<Thumbnail: View>: View {
+    let thumbnail: () -> Thumbnail
+    let title: String
+    let description: String
+    let isSelected: Bool
+
+    var body: some View {
+        HStack(spacing: 16) {
+            thumbnail()
+
+            VStack(alignment: .leading) {
+                Text(title)
+                Text(description)
+                    .font(.callout)
+                    .foregroundColor(Color.textWeak)
+            }
+
+            Spacer()
+
+            if isSelected {
+                Label("", systemImage: "checkmark")
+                    .foregroundColor(.passBrand)
+                    .padding(.trailing)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 70)
+        .contentShape(Rectangle())
     }
 }

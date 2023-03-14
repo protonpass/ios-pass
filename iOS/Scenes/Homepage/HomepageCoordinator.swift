@@ -412,7 +412,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
             // Num of vaults + trash + create vault button
-            let height = CGFloat(66 * vaultsManager.vaultCount + 66 + 100)
+            let height = CGFloat(66 * vaultsManager.getVaultCount() + 66 + 100)
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 height
             }
