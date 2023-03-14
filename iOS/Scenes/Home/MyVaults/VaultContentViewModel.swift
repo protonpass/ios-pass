@@ -72,7 +72,6 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
     private let logger: Logger
     let preferences: Preferences
     let credentialManager: CredentialManagerProtocol
-    let vaultSelection: VaultSelection
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -82,22 +81,17 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
 
     weak var itemCountDelegate: ItemCountDelegate?
 
-    var selectedVault: Vault? { vaultSelection.selectedVault }
-    var vaults: [Vault] { vaultSelection.vaults }
-    var otherVaults: [Vault] {
-        vaultSelection.vaults.filter { $0.id != vaultSelection.selectedVault?.id }
-    }
-
+    var selectedVault: Vault?
+    var vaults = [Vault]()
+    var otherVaults = [Vault]()
     weak var delegate: VaultContentViewModelDelegate?
 
-    init(vaultSelection: VaultSelection,
-         itemRepository: ItemRepositoryProtocol,
+    init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
          syncEventLoop: SyncEventLoop,
          preferences: Preferences,
          logManager: LogManager) {
-        self.vaultSelection = vaultSelection
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.symmetricKey = symmetricKey
@@ -107,12 +101,6 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
                             category: "\(Self.self)",
                             manager: logManager)
         showAutoFillBannerIfNecessary()
-
-        vaultSelection.$selectedVault
-            .sink { [unowned self] _ in
-                self.fetchItems(showLoadingIndicator: true)
-            }
-            .store(in: &cancellables)
     }
 
     private func showAutoFillBannerIfNecessary() {
@@ -325,10 +313,7 @@ extension VaultContentViewModel {
 private extension VaultContentViewModel {
     func getItemsTask() -> Task<[ItemUiModel], Error> {
         Task.detached(priority: .userInitiated) {
-            guard let shareId = self.vaultSelection.selectedVault?.shareId else {
-                throw PPError.vault(.noSelectedVault)
-            }
-            let encryptedItems = try await self.itemRepository.getItems(shareId: shareId,
+            let encryptedItems = try await self.itemRepository.getItems(shareId: "",
                                                                         state: .active)
             return try await encryptedItems.parallelMap { try $0.toItemUiModel(self.symmetricKey) }
         }

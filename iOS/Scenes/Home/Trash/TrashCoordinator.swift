@@ -49,7 +49,6 @@ final class TrashCoordinator: Coordinator {
          shareRepository: ShareRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
-         vaultSelection: VaultSelection,
          syncEventLoop: SyncEventLoop,
          preferences: Preferences,
          logManager: LogManager) {
@@ -62,7 +61,6 @@ final class TrashCoordinator: Coordinator {
         self.trashViewModel = TrashViewModel(symmetricKey: symmetricKey,
                                              shareRepository: shareRepository,
                                              itemRepository: itemRepository,
-                                             vaultSelection: vaultSelection,
                                              syncEventLoop: syncEventLoop,
                                              logManager: logManager)
         super.init()

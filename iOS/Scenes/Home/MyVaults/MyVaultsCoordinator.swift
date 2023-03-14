@@ -32,7 +32,6 @@ protocol MyVaultsCoordinatorDelegate: AnyObject {
 final class MyVaultsCoordinator: Coordinator {
     private let symmetricKey: SymmetricKey
     private let userData: UserData
-    private let vaultSelection: VaultSelection
     private let vaultContentViewModel: VaultContentViewModel
     private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
@@ -59,7 +58,6 @@ final class MyVaultsCoordinator: Coordinator {
 
     init(symmetricKey: SymmetricKey,
          userData: UserData,
-         vaultSelection: VaultSelection,
          shareRepository: ShareRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
@@ -71,19 +69,17 @@ final class MyVaultsCoordinator: Coordinator {
          logManager: LogManager) {
         self.symmetricKey = symmetricKey
         self.userData = userData
-        self.vaultSelection = vaultSelection
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.aliasRepository = aliasRepository
-        self.vaultContentViewModel = .init(vaultSelection: vaultSelection,
-                                           itemRepository: itemRepository,
+        self.vaultContentViewModel = .init(itemRepository: itemRepository,
                                            credentialManager: credentialManager,
                                            symmetricKey: symmetricKey,
                                            syncEventLoop: syncEventLoop,
                                            preferences: preferences,
                                            logManager: logManager)
-        self.myVaultsViewModel = MyVaultsViewModel(vaultSelection: vaultSelection)
+        self.myVaultsViewModel = MyVaultsViewModel()
         self.preferences = preferences
         self.manualLogIn = manualLogIn
         self.logManager = logManager
@@ -93,15 +89,7 @@ final class MyVaultsCoordinator: Coordinator {
     }
 
     private func start() {
-        let viewModel = LoadVaultsViewModel(userData: userData,
-                                            vaultSelection: vaultSelection,
-                                            shareRepository: shareRepository,
-                                            itemRepository: itemRepository,
-                                            manualLogIn: manualLogIn,
-                                            logManager: logManager)
-        viewModel.delegate = self
         let view = MyVaultsView(myVaultsViewModel: myVaultsViewModel,
-                                loadVaultsViewModel: viewModel,
                                 vaultContentViewModel: vaultContentViewModel)
         let secondaryView = ItemDetailPlaceholderView(onGoBack: { self.popTopViewController() })
         self.start(with: view, secondaryView: secondaryView)
@@ -485,14 +473,5 @@ extension MyVaultsCoordinator: CreateAliasLiteViewModelDelegate {
 extension MyVaultsCoordinator: LogInDetailViewModelDelegate {
     func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
         showItemDetailView(itemContent)
-    }
-}
-
-// MARK: - LoadVaultsViewModelDelegate
-extension MyVaultsCoordinator: LoadVaultsViewModelDelegate {
-    func loadVaultsViewModelWantsToToggleSidebar() {}
-
-    func loadVaultsViewModelDidLoadAllItems() {
-        delegate?.myVaultsCoordinatorWantsToRefreshTrash()
     }
 }
