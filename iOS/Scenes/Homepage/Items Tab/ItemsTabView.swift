@@ -129,7 +129,7 @@ struct ItemsTabView: View {
     private var sortTypeButton: some View {
         if UIDevice.current.isIpad {
             Menu(content: {
-                ForEach(SortTypeV2.allCases, id: \.self) { type in
+                ForEach(SortType.allCases, id: \.self) { type in
                     Button(action: {
                         viewModel.selectedSortType = type
                     }, label: {

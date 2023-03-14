@@ -24,13 +24,13 @@ import SwiftUI
 import UIComponents
 
 protocol SortTypeListViewModelDelegate: AnyObject {
-    func sortTypeListViewDidSelect(_ sortType: SortTypeV2)
+    func sortTypeListViewDidSelect(_ sortType: SortType)
 }
 
 final class SortTypeListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var selectedSortType: SortTypeV2 {
+    @Published var selectedSortType: SortType {
         didSet {
             delegate?.sortTypeListViewDidSelect(selectedSortType)
         }
@@ -38,7 +38,7 @@ final class SortTypeListViewModel: ObservableObject, DeinitPrintable {
 
     weak var delegate: SortTypeListViewModelDelegate?
 
-    init(sortType: SortTypeV2) {
+    init(sortType: SortType) {
         self.selectedSortType = sortType
     }
 }
@@ -57,7 +57,7 @@ struct SortTypeListView: View {
                 .fontWeight(.bold)
                 .padding(.top, 22)
 
-            ForEach(SortTypeV2.allCases, id: \.self) { type in
+            ForEach(SortType.allCases, id: \.self) { type in
                 HStack {
                     Text(type.title)
                     Spacer()

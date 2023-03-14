@@ -28,7 +28,7 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToCreateNewItem(shareId: String)
     func itemsTabViewModelWantsToSearch()
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
-    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
+    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                      delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
     func itemsTabViewModelDidTrash(item: ItemUiModel)
@@ -38,7 +38,7 @@ protocol ItemsTabViewModelDelegate: AnyObject {
 final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var selectedSortType = SortTypeV2.mostRecent
+    @Published var selectedSortType = SortType.mostRecent
 
     let itemRepository: ItemRepositoryProtocol
     let logger: Logger
@@ -142,7 +142,7 @@ extension ItemsTabViewModel {
 
 // MARK: - SortTypeListViewModelDelegate
 extension ItemsTabViewModel: SortTypeListViewModelDelegate {
-    func sortTypeListViewDidSelect(_ sortType: SortTypeV2) {
+    func sortTypeListViewDidSelect(_ sortType: SortType) {
         selectedSortType = sortType
     }
 }

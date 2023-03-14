@@ -423,14 +423,14 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
+    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                      delegate: SortTypeListViewModelDelegate) {
         let viewModel = SortTypeListViewModel(sortType: selectedSortType)
         viewModel.delegate = delegate
         let view = SortTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = CGFloat(44 * SortTypeV2.allCases.count + 60)
+            let height = CGFloat(44 * SortType.allCases.count + 60)
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 height
             }
