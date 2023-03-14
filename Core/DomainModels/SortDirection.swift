@@ -1,6 +1,6 @@
 //
-// ItemTypeFilterOption.swift
-// Proton Pass - Created on 15/11/2022.
+// SortDirection.swift
+// Proton Pass - Created on 11/11/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,29 +20,6 @@
 
 import Foundation
 
-public enum ItemTypeFilterOption {
-    case all
-    case filtered(ItemContentType)
-
-    public var title: String {
-        switch self {
-        case .all:
-            return "All items"
-        case .filtered(let type):
-            return type.filterTitle
-        }
-    }
-}
-
-extension ItemTypeFilterOption: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.all, .all):
-            return true
-        case let (.filtered(lhsType), .filtered(rhsType)):
-            return lhsType == rhsType
-        default:
-            return false
-        }
-    }
+public enum SortDirection: CaseIterable {
+    case ascending, descending
 }

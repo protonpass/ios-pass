@@ -330,10 +330,6 @@ final class MyVaultsCoordinator: Coordinator {
         }
         currentCreateEditItemViewModel?.refresh()
     }
-
-    func updateFilterOption(_ filterOption: ItemTypeFilterOption) {
-        vaultContentViewModel.filterOption = filterOption
-    }
 }
 
 // MARK: - CreateVaultViewModelDelegate
