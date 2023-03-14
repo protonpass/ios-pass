@@ -72,7 +72,6 @@ final class HomeCoordinator: DeinitPrintable {
     private lazy var appContentCoverViewController = UIHostingController(rootView: AppContentCoverView())
 
     // My vaults
-    let vaultSelection: VaultSelection
     private lazy var myVaultsCoordinator = provideMyVaultsCoordinator()
     private var myVaultsRootViewController: UIViewController { myVaultsCoordinator.rootViewController }
 
@@ -137,7 +136,6 @@ final class HomeCoordinator: DeinitPrintable {
         self.shareRepository = shareRepository
         itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
         self.credentialManager = credentialManager
-        self.vaultSelection = .init(vaults: [])
         self.manualLogIn = manualLogIn
         self.preferences = preferences
         self.logManager = logManager
@@ -162,7 +160,6 @@ final class HomeCoordinator: DeinitPrintable {
                                logManager: logManager)
         self.eventLoop.delegate = self
         self.observeForegroundEntrance()
-        self.observePreferencesAndVaultSelection()
         self.myVaultsCoordinator.bannerManager = bannerManager
     }
 
@@ -215,14 +212,6 @@ private extension HomeCoordinator {
             }
             .store(in: &cancellables)
     }
-
-    func observePreferencesAndVaultSelection() {
-        vaultSelection.objectWillChange
-            .sink { [unowned self] _ in
-                self.eventLoop.start()
-            }
-            .store(in: &cancellables)
-    }
 }
 
 // MARK: - Lazy var providers
@@ -240,7 +229,6 @@ private extension HomeCoordinator {
     func provideMyVaultsCoordinator() -> MyVaultsCoordinator {
         let myVaultsCoordinator = MyVaultsCoordinator(symmetricKey: symmetricKey,
                                                       userData: sessionData.userData,
-                                                      vaultSelection: vaultSelection,
                                                       shareRepository: shareRepository,
                                                       itemRepository: itemRepository,
                                                       aliasRepository: aliasRepository,
@@ -271,7 +259,6 @@ private extension HomeCoordinator {
                                                 shareRepository: shareRepository,
                                                 itemRepository: itemRepository,
                                                 aliasRepository: aliasRepository,
-                                                vaultSelection: vaultSelection,
                                                 syncEventLoop: eventLoop,
                                                 preferences: preferences,
                                                 logManager: logManager)

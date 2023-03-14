@@ -40,17 +40,11 @@ final class TrashViewModel: DeinitPrintable, PullToRefreshable, ObservableObject
     @Published private(set) var state = State.loading
     @Published private(set) var items = [ItemUiModel]()
 
-    var itemsDictionary: [String: [ItemUiModel]] {
-        Dictionary(grouping: items, by: { item in
-            let vault = vaultSelection.vaults.first { $0.shareId == item.shareId }
-            return vault?.name ?? ""
-        })
-    }
+    var itemsDictionary = [String: [ItemUiModel]]()
 
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
-    private let vaultSelection: VaultSelection
     private let logger: Logger
 
     /// `PullToRefreshable` conformance
@@ -77,13 +71,11 @@ final class TrashViewModel: DeinitPrintable, PullToRefreshable, ObservableObject
     init(symmetricKey: SymmetricKey,
          shareRepository: ShareRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
-         vaultSelection: VaultSelection,
          syncEventLoop: SyncEventLoop,
          logManager: LogManager) {
         self.symmetricKey = symmetricKey
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
-        self.vaultSelection = vaultSelection
         self.syncEventLoop = syncEventLoop
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",

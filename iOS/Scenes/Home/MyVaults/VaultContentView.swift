@@ -123,22 +123,6 @@ struct VaultContentView: View {
             ToggleSidebarButton(action: viewModel.toggleSidebar)
         }
 
-        ToolbarItem(placement: .principal) {
-            VStack {
-                if DeveloperModeStateManager.shared.isOn,
-                   let selectedVault = viewModel.vaultSelection.selectedVault {
-                    Text(selectedVault.name)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-            }
-            .onTapGesture {
-                if DeveloperModeStateManager.shared.isOn {
-                    viewModel.showVaultList()
-                }
-            }
-        }
-
         ToolbarItem(placement: .navigationBarTrailing) {
             HStack {
                 Button(action: viewModel.search) {
