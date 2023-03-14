@@ -113,10 +113,11 @@ struct AliasDetailView: View {
         }
     }
 
+    @ViewBuilder
     private var mailboxesRow: some View {
+        let tintColor = viewModel.itemContent.tintColor
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.forward,
-                                  color: viewModel.itemContent.tintColor)
+            ItemDetailSectionIcon(icon: IconProvider.forward, color: tintColor)
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("Forwarded to")
@@ -144,9 +145,9 @@ struct AliasDetailView: View {
                     }
                 } else {
                     Group {
-                        AnimatingGradient()
-                        AnimatingGradient()
-                        AnimatingGradient()
+                        AnimatingGradient(tintColor: tintColor)
+                        AnimatingGradient(tintColor: tintColor)
+                        AnimatingGradient(tintColor: tintColor)
                     }
                     .clipShape(Capsule())
                 }
