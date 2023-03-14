@@ -109,6 +109,8 @@ final class APIManager {
         FeatureFactory.shared.enable(&.observability)
         // Core unauth session feature flag
         FeatureFactory.shared.enable(&.unauthSession)
+
+        FeatureFactory.shared.enable(&.externalSignup)
         #if DEBUG
         FeatureFactory.shared.enable(&.enforceUnauthSessionStrictVerificationOnBackend)
         #endif

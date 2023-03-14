@@ -1,5 +1,5 @@
 //
-//  ExternalAccountsCapabilityATests.swift
+//  ExternalAccountsTests.swift
 //  iOSUITests - Created on 12/23/22.
 //
 //  Copyright (c) 2022 Proton Technologies AG
@@ -27,7 +27,7 @@ import ProtonCore_QuarkCommands
 import ProtonCore_TestingToolkit
 import XCTest
 
-final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
+final class ExternalAccountsTests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()
 
     // Sign-in with internal account works
@@ -55,10 +55,12 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
             XCTFail("Internal account creation failed: \(error.userFacingMessageInQuarkCommands)")
             return
         }
-        welcomeRobot.logIn()
-            .fillUsername(username: randomUsername)
-            .fillpassword(password: randomPassword)
-            .signIn(robot: AutoFillRobot.self)
+
+        SigninExternalAccountsCapability()
+            .signInWithAccount(userName: randomUsername,
+                               password: randomPassword,
+                               loginRobot: welcomeRobot.logIn(),
+                               retRobot: AutoFillRobot.self)
             .verify.isAutoFillSetupShown()
     }
 
@@ -85,10 +87,12 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
             XCTFail("External account creation failed: \(error.userFacingMessageInQuarkCommands)")
             return
         }
-        welcomeRobot.logIn()
-            .fillUsername(username: randomEmail)
-            .fillpassword(password: randomPassword)
-            .signIn(robot: AutoFillRobot.self)
+
+        SigninExternalAccountsCapability()
+            .signInWithAccount(userName: randomEmail,
+                               password: randomPassword,
+                               loginRobot: welcomeRobot.logIn(),
+                               retRobot: AutoFillRobot.self)
             .verify.isAutoFillSetupShown()
     }
 
@@ -114,60 +118,66 @@ final class ExternalAccountsCapabilityATests: LoginBaseTestCase {
             XCTFail("Username account creation failed: \(error.userFacingMessageInQuarkCommands)")
             return
         }
-        welcomeRobot.logIn()
-            .fillUsername(username: randomUsername)
-            .fillpassword(password: randomPassword)
-            .signIn(robot: AutoFillRobot.self)
-            .verify.isAutoFillSetupShown()
+
+        SigninExternalAccountsCapability()
+            .signInWithAccount(userName: randomUsername,
+                               password: randomPassword,
+                               loginRobot: welcomeRobot.logIn(),
+                               retRobot: AutoFillRobot.self)
+            .verify.isAutoFillSetupShown(timeout: 15.0)
     }
 
     // Sign-up with internal account works
-    // The UI for sign-up with external account is not available
+    // Sign-up with external account works
     // The UI for sign-up with username account is not available
 
     func testSignUpWithInternalAccountWorks() {
-        let doh = Environment.black.doh
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
         let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
-        let summaryBot = welcomeRobot.logIn()
+
+        let signupRobot = welcomeRobot
+            .logIn()
             .switchToCreateAccount()
-            .verify.domainsButtonIsShown()
-            .verify.signupScreenIsShown()
-            .insertName(name: randomUsername)
-            .nextButtonTap(robot: PasswordRobot.self)
-            .verify.passwordScreenIsShown()
-            .insertPassword(password: randomPassword)
-            .insertRepeatPassword(password: randomPassword)
-            .nextButtonTap(robot: RecoveryRobot.self)
-            .verify.recoveryScreenIsShown()
-            .skipButtonTap()
-            .verify.recoveryDialogDisplay()
-            .skipButtonTap(robot: SignupHumanVerificationV3Robot.self)
-            .switchToEmailHVMethod()
-            .performEmailVerificationV3(email: randomEmail, code: "666666", to: AutoFillRobot.self)
-            .verify.isAutoFillSetupShown(timeout: 30)
+            .otherAccountButtonTap()
+            .verify.otherAccountExtButtonIsShown()
+
+        SignupExternalAccountsCapability()
+            .signUpWithInternalAccount(
+                signupRobot: signupRobot,
+                username: randomUsername,
+                password: randomPassword,
+                userEmail: randomEmail,
+                verificationCode: "666666",
+                retRobot: AutoFillRobot.self
+            ).verify.isAutoFillSetupShown(timeout: 30)
     }
 
     func testSignUpWithExternalAccountIsNotAvailable() {
-        welcomeRobot.logIn()
+        let randomPassword = StringUtils.randomAlphanumericString(length: 8)
+        let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
+
+        let signupRobot = welcomeRobot
+            .logIn()
             .switchToCreateAccount()
-            .verify.otherAccountExtButtonIsNotShown()
+            .verify.otherAccountIntButtonIsShown()
+
+        SignupExternalAccountsCapability()
+            .signUpWithExternalAccount(
+                signupRobot: signupRobot,
+                userEmail: randomEmail,
+                password: randomPassword,
+                verificationCode: "666666",
+                retRobot: AutoFillRobot.self
+            )
+            .verify.isAutoFillSetupShown(timeout: 30)
     }
 
     func testSignUpWithUsernameAccountIsNotAvailable() {
         welcomeRobot.logIn()
             .switchToCreateAccount()
+            .otherAccountButtonTap()
+            .verify.otherAccountExtButtonIsShown()
             .verify.domainsButtonIsShown()
-    }
-}
-
-private let kDomainsButtonId = "SignupViewController.nextButton"
-
-public extension SignupRobot.Verify {
-    @discardableResult
-    func domainsButtonIsShown() -> SignupRobot {
-        button(kDomainsButtonId).checkExists()
-        return SignupRobot()
     }
 }
