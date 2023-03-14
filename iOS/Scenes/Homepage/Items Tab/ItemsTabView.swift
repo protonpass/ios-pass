@@ -31,13 +31,19 @@ struct ItemsTabView: View {
     @State private var toBeTrashedItem: ItemUiModel?
 
     var body: some View {
+        let vaultsManager = viewModel.vaultsManager
         ZStack {
-            switch viewModel.vaultsManager.state {
+            switch vaultsManager.state {
             case .loading:
                 ItemsTabsSkeleton()
 
             case .loaded:
-                vaultContent
+                switch vaultsManager.vaultSelection {
+                case .all:
+                    vaultContent(vaultsManager.getItem(for: nil))
+                case .precise(let selectedVault):
+                    vaultContent(vaultsManager.getItem(for: selectedVault))
+                }
 
             case .error(let error):
                 RetryableErrorView(errorMessage: error.messageForTheUser,
@@ -48,7 +54,7 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private var vaultContent: some View {
+    private func vaultContent(_ items: [ItemUiModel]) -> some View {
         let isShowingTrashingAlert = Binding<Bool>(get: {
             toBeTrashedItem != nil
         }, set: { newValue in
@@ -60,11 +66,11 @@ struct ItemsTabView: View {
         GeometryReader { proxy in
             VStack {
                 topBar
-                if viewModel.vaultsManager.itemCount == 0 {
+                if items.isEmpty {
                     EmptyVaultView(onCreateNewItem: viewModel.createNewItem)
                         .padding(.bottom, safeAreaInsets.bottom)
                 } else {
-                    itemList
+                    itemList(items)
                     Spacer()
                 }
             }
@@ -153,12 +159,12 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private var itemList: some View {
+    private func itemList(_ items: [ItemUiModel]) -> some View {
         HStack {
             Text("All")
                 .font(.callout)
                 .fontWeight(.bold) +
-            Text(" (\(viewModel.vaultsManager.itemCount))")
+            Text(" (\(items.count))")
                 .font(.callout)
                 .foregroundColor(.textWeak)
 
@@ -168,7 +174,6 @@ struct ItemsTabView: View {
         }
         .padding(.horizontal)
 
-        let items = viewModel.vaultsManager.getSelectedVaultItems()
         switch viewModel.selectedSortType {
         case .mostRecent:
             itemList(items.mostRecentSortResult())

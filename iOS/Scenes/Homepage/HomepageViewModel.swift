@@ -82,7 +82,13 @@ private extension HomepageViewModel {
 // MARK: - Public APIs
 extension HomepageViewModel {
     func createNewItem() {
-        delegate?.homepageViewModelWantsToCreateNewItem(shareId: vaultsManager.selectedVault?.shareId ?? "")
+        switch vaultsManager.vaultSelection {
+        case .all:
+            // Handle this later
+            break
+        case .precise(let selectedVault):
+            delegate?.homepageViewModelWantsToCreateNewItem(shareId: selectedVault.shareId)
+        }
     }
 }
 
