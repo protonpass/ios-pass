@@ -107,18 +107,6 @@ final class MyVaultsCoordinator: Coordinator {
         self.start(with: view, secondaryView: secondaryView)
     }
 
-    private func showCreateVaultView() {
-        let createVaultViewModel =
-        CreateVaultViewModel(userData: userData,
-                             shareRepository: shareRepository,
-                             logManager: logManager)
-        createVaultViewModel.delegate = self
-        let createVaultView = CreateVaultView(viewModel: createVaultViewModel)
-        present(createVaultView,
-                userInterfaceStyle: preferences.theme.userInterfaceStyle,
-                dismissible: false)
-    }
-
     private func showCreateEditLoginView(mode: ItemMode) {
         let emailAddress = userData.addresses.first?.email ?? ""
         let viewModel = CreateEditLoginViewModel(mode: mode,
@@ -329,19 +317,6 @@ final class MyVaultsCoordinator: Coordinator {
             currentItemDetailViewModel?.refresh()
         }
         currentCreateEditItemViewModel?.refresh()
-    }
-}
-
-// MARK: - CreateVaultViewModelDelegate
-extension MyVaultsCoordinator: CreateVaultViewModelDelegate {
-    func createVaultViewModelDidCreateShare(_ share: Share) {
-        // Set vaults to empty to trigger refresh
-        self.vaultSelection.update(vaults: [])
-        self.dismissTopMostViewController(animated: true, completion: nil)
-    }
-
-    func createVaultViewModelDidFail(_ error: Error) {
-        bannerManager?.displayTopErrorMessage(error)
     }
 }
 
