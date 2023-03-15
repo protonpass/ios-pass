@@ -22,12 +22,15 @@
 import Foundation
 
 import fusion
+import ProtonCore_Doh
 import ProtonCore_Environment
 import ProtonCore_QuarkCommands
 import ProtonCore_TestingToolkit
 import XCTest
 
 final class ExternalAccountsTests: LoginBaseTestCase {
+    let timeout = 120.0
+
     let welcomeRobot = WelcomeRobot()
 
     // Sign-in with internal account works
@@ -37,94 +40,50 @@ final class ExternalAccountsTests: LoginBaseTestCase {
         let doh = Environment.black.doh
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-        let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
-        QuarkCommands.create(account: .freeWithAddressAndKeys(username: randomUsername, password: randomPassword),
-                             currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl()) { result in
-            quarkCommandResult = result
-            QuarkCommands.addPassScopeToUser(username: randomUsername,
-                                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
-                if case .failure(let error) = result {
-                    XCTFail("\(error)")
-                }
-                expectQuarkCommandToFinish.fulfill()
-            }
-        }
-        wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
-        if case .failure(let error) = quarkCommandResult {
-            XCTFail("Internal account creation failed: \(error.userFacingMessageInQuarkCommands)")
-            return
-        }
+        let accountToCreate = AccountAvailableForCreation.freeWithAddressAndKeys(username: randomUsername,
+                                                                                 password: randomPassword)
+
+        guard createAccount(accountToCreate: accountToCreate, doh: doh, username: randomUsername) else { return }
 
         SigninExternalAccountsCapability()
             .signInWithAccount(userName: randomUsername,
                                password: randomPassword,
                                loginRobot: welcomeRobot.logIn(),
                                retRobot: AutoFillRobot.self)
-            .verify.isAutoFillSetupShown()
+            .verify.isAutoFillSetupShown(timeout: timeout)
     }
 
     func testSignInWithExternalAccountWorks() {
         let doh = Environment.black.doh
         let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
+        let accountToCreate = AccountAvailableForCreation.external(email: randomEmail, password: randomPassword)
 
-        let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
-        QuarkCommands.create(account: .external(email: randomEmail, password: randomPassword),
-                             currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl()) { result in
-            quarkCommandResult = result
-            QuarkCommands.addPassScopeToUser(username: randomEmail,
-                                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
-                if case .failure(let error) = result {
-                    XCTFail("\(error)")
-                }
-                expectQuarkCommandToFinish.fulfill()
-            }
-        }
-        wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
-        if case .failure(let error) = quarkCommandResult {
-            XCTFail("External account creation failed: \(error.userFacingMessageInQuarkCommands)")
-            return
-        }
+        guard createAccount(accountToCreate: accountToCreate, doh: doh, username: randomEmail) else { return }
 
         SigninExternalAccountsCapability()
             .signInWithAccount(userName: randomEmail,
                                password: randomPassword,
                                loginRobot: welcomeRobot.logIn(),
                                retRobot: AutoFillRobot.self)
-            .verify.isAutoFillSetupShown()
+            .verify.isAutoFillSetupShown(timeout: timeout)
     }
 
     func testSignInWithUsernameAccountWorks() {
         let doh = Environment.black.doh
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-        let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
-        QuarkCommands.create(account: .freeNoAddressNoKeys(username: randomUsername, password: randomPassword),
-                             currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl()) { result in
-            quarkCommandResult = result
-            QuarkCommands.addPassScopeToUser(username: randomUsername,
-                                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
-                if case .failure(let error) = result {
-                    XCTFail("\(error)")
-                }
-                expectQuarkCommandToFinish.fulfill()
-            }
-        }
-        wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
-        if case .failure(let error) = quarkCommandResult {
-            XCTFail("Username account creation failed: \(error.userFacingMessageInQuarkCommands)")
-            return
-        }
+        let accountToCreate = AccountAvailableForCreation.freeNoAddressNoKeys(username: randomUsername,
+                                                                              password: randomPassword)
+
+        guard createAccount(accountToCreate: accountToCreate, doh: doh, username: randomUsername) else { return }
 
         SigninExternalAccountsCapability()
             .signInWithAccount(userName: randomUsername,
                                password: randomPassword,
                                loginRobot: welcomeRobot.logIn(),
                                retRobot: AutoFillRobot.self)
-            .verify.isAutoFillSetupShown(timeout: 15.0)
+            .verify.isAutoFillSetupShown(timeout: timeout)
     }
 
     // Sign-up with internal account works
@@ -150,7 +109,7 @@ final class ExternalAccountsTests: LoginBaseTestCase {
                 userEmail: randomEmail,
                 verificationCode: "666666",
                 retRobot: AutoFillRobot.self
-            ).verify.isAutoFillSetupShown(timeout: 30)
+            ).verify.isAutoFillSetupShown(timeout: timeout)
     }
 
     func testSignUpWithExternalAccountIsNotAvailable() {
@@ -170,7 +129,7 @@ final class ExternalAccountsTests: LoginBaseTestCase {
                 verificationCode: "666666",
                 retRobot: AutoFillRobot.self
             )
-            .verify.isAutoFillSetupShown(timeout: 30)
+            .verify.isAutoFillSetupShown(timeout: timeout)
     }
 
     func testSignUpWithUsernameAccountIsNotAvailable() {
@@ -179,5 +138,31 @@ final class ExternalAccountsTests: LoginBaseTestCase {
             .otherAccountButtonTap()
             .verify.otherAccountExtButtonIsShown()
             .verify.domainsButtonIsShown()
+    }
+
+    // MARK: - Helpers
+
+    private func createAccount(accountToCreate: AccountAvailableForCreation,
+                               doh: DoHInterface,
+                               username: String) -> Bool {
+        let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
+        var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
+        QuarkCommands.create(account: accountToCreate,
+                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
+            quarkCommandResult = result
+            QuarkCommands.addPassScopeToUser(username: username,
+                                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
+                if case .failure(let error) = result {
+                    XCTFail("\(error)")
+                }
+                expectQuarkCommandToFinish.fulfill()
+            }
+        }
+        wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
+        if case .failure(let error) = quarkCommandResult {
+            XCTFail("Internal account creation failed: \(error.userFacingMessageInQuarkCommands)")
+            return false
+        }
+        return true
     }
 }

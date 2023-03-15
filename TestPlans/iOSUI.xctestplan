@@ -9,7 +9,9 @@
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : false
+    "codeCoverage" : false,
+    "language" : "en",
+    "region" : "US"
   },
   "testTargets" : [
     {
