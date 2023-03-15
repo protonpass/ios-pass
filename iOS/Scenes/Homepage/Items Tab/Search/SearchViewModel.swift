@@ -26,7 +26,7 @@ import CryptoKit
 enum SearchViewState {
     case initializing
     case clean
-    case results([ItemSearchResult])
+    case results
     case error(Error)
 }
 
@@ -36,8 +36,6 @@ extension SearchViewState: Equatable {
         case (.initializing, .initializing),
             (.clean, .clean):
             return true
-        case let (.results(lhsResults), .results(rhsResults)):
-            return lhsResults.hashValue == rhsResults.hashValue
         case let (.error(lhsError), .error(rhsError)):
             return lhsError.messageForTheUser == rhsError.messageForTheUser
         default:
@@ -46,9 +44,13 @@ extension SearchViewState: Equatable {
     }
 }
 
-final class SearchViewModel: ObservableObject {
+final class SearchViewModel: ObservableObject, DeinitPrintable {
+    deinit { print(deinitMessage) }
+
     @Published private(set) var state = SearchViewState.initializing
+    @Published private(set) var itemCount = ItemCount.zero
     @Published var selectedType: ItemContentType?
+    @Published private(set) var filteredResults = [ItemSearchResult]()
 
     // Injected properties
     private let itemRepository: ItemRepositoryProtocol
@@ -61,6 +63,7 @@ final class SearchViewModel: ObservableObject {
     private let searchTermSubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
     private var searchableItems = [SearchableItem]()
+    private var results = [ItemSearchResult]()
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -85,6 +88,13 @@ final class SearchViewModel: ObservableObject {
                 self.doSearch(term: term)
             }
             .store(in: &cancellables)
+
+        $selectedType
+            .receive(on: RunLoop.main)
+            .sink { [unowned self] _ in
+                self.filterResults()
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -100,13 +110,23 @@ private extension SearchViewModel {
             do {
                 let hashedTerm = term.sha256Hashed()
                 logger.trace("Searching for \"\(hashedTerm)\"")
-                let results = try searchableItems.result(for: term, symmetricKey: symmetricKey)
-                state = .results(results)
+                results = try searchableItems.result(for: term, symmetricKey: symmetricKey)
+                itemCount = .init(items: results)
+                filterResults()
+                state = .results
                 logger.trace("Get \(results.count) result(s) for \"\(hashedTerm)\"")
             } catch {
                 logger.error(error)
                 state = .error(error)
             }
+        }
+    }
+
+    func filterResults() {
+        if let selectedType {
+            filteredResults = results.filter { $0.type == selectedType }
+        } else {
+            filteredResults = results
         }
     }
 }
@@ -117,7 +137,13 @@ extension SearchViewModel {
     func loadItems() async {
         do {
             state = .initializing
-            let activeItems = try await itemRepository.getItems(state: .active)
+            let activeItems: [SymmetricallyEncryptedItem]
+            switch vaultSelection {
+            case .all:
+                activeItems = try await itemRepository.getItems(state: .active)
+            case .precise(let vault):
+                activeItems = try await itemRepository.getItems(shareId: vault.shareId, state: .active)
+            }
             searchableItems = try activeItems.map { try SearchableItem(symmetricallyEncryptedItem: $0,
                                                                        vaultName: "") }
             state = .clean
@@ -134,5 +160,9 @@ extension SearchViewModel {
 
     func search(_ term: String) {
         doSearch(term: term)
+    }
+
+    func viewDetail(of result: ItemSearchResult) {
+        print(#function)
     }
 }

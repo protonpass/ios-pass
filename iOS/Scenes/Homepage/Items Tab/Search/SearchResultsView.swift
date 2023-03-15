@@ -19,32 +19,85 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct SearchResultsView: View {
     @Binding var selectedType: ItemContentType?
     let results: [ItemSearchResult]
     let itemCount: ItemCount
-
-    init(selectedType: Binding<ItemContentType?>,
-         results: [ItemSearchResult]) {
-        self._selectedType = selectedType
-        self.results = results
-        self.itemCount = .init(items: results)
-    }
+    let safeAreaInsets: EdgeInsets
+    let onSelect: (ItemSearchResult) -> Void
 
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                SearchResultChips(selectedType: $selectedType, itemCount: itemCount)
-                    .transaction { transaction in
-                        transaction.animation = nil
-                    }
+        List {
+            SearchResultChips(selectedType: $selectedType, itemCount: itemCount)
+                .listRowSeparator(.hidden)
+                .listRowInsets(.zero)
+                .listRowBackground(Color.clear)
+                .transaction { transaction in
+                    transaction.animation = nil
+                }
 
-                ForEach(results) { result in
-                    Text(result.title.fullText)
+            ForEach(results) { result in
+                Button(action: {
+                    onSelect(result)
+                }, label: {
+                    ItemSearchResultView(result: result)
+                })
+                .listRowSeparator(.hidden)
+                .listRowInsets(.zero)
+                .padding(.horizontal)
+                .padding(.vertical, 12)
+                .listRowBackground(Color.clear)
+            }
+
+            Spacer()
+                .listRowSeparator(.hidden)
+                .listRowInsets(.zero)
+                .listRowBackground(Color.clear)
+                .frame(height: safeAreaInsets.bottom)
+        }
+        .listStyle(.plain)
+        .animation(.default, value: results.count)
+    }
+}
+
+private struct ItemSearchResultView: View {
+    let result: ItemSearchResult
+
+    var body: some View {
+        HStack {
+            switch result.type {
+            case .alias:
+                CircleButton(icon: IconProvider.alias,
+                             color: ItemContentType.alias.tintColor) {}
+            case .login:
+                CircleButton(icon: IconProvider.keySkeleton,
+                             color: ItemContentType.login.tintColor) {}
+            case .note:
+                CircleButton(icon: IconProvider.notepadChecklist,
+                             color: ItemContentType.note.tintColor) {}
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                HighlightText(highlightableText: result.title)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    ForEach(0..<result.detail.count, id: \.self) { index in
+                        let eachDetail = result.detail[index]
+                        if !eachDetail.fullText.isEmpty {
+                            HighlightText(highlightableText: eachDetail)
+                                .font(.callout)
+                                .foregroundColor(Color(.secondaryLabel))
+                                .lineLimit(1)
+                        }
+                    }
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .contentShape(Rectangle())
     }
 }

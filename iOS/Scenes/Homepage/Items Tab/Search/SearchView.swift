@@ -26,75 +26,44 @@ struct SearchView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocusedOnSearchBar: Bool
     @StateObject var viewModel: SearchViewModel
+    @State private var safeAreaInsets = EdgeInsets.zero
     @State private var term = ""
 
     var body: some View {
-        ZStack {
-            Color.passBackground
-            switch viewModel.state {
-            case .initializing:
-                SearchViewSkeleton()
-            case .clean, .results:
-                content
-            case .error(let error):
-                RetryableErrorView(errorMessage: error.messageForTheUser,
-                                   onRetry: { Task { await viewModel.loadItems() } })
+        GeometryReader { proxy in
+            ZStack {
+                Color.passBackground
+                    .ignoresSafeArea(edges: .all)
+                switch viewModel.state {
+                case .initializing:
+                    SearchViewSkeleton()
+                case .clean, .results:
+                    content
+                case .error(let error):
+                    RetryableErrorView(errorMessage: error.messageForTheUser,
+                                       onRetry: { Task { await viewModel.loadItems() } })
+                }
+            }
+            .animation(.default, value: viewModel.state)
+            .onFirstAppear {
+                safeAreaInsets = proxy.safeAreaInsets
             }
         }
-        .animation(.default, value: viewModel.state)
     }
 
     private var content: some View {
-        VStack {
-            HStack {
-                ZStack {
-                    Color.black
-                    HStack {
-                        Image(uiImage: IconProvider.magnifier)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(.primary)
-
-                        TextField(viewModel.searchBarPlaceholder, text: $term)
-                            .tint(.passBrand)
-                            .focused($isFocusedOnSearchBar)
-                            .foregroundColor(.primary)
-
-                        Button(action: {
-                            term = ""
-                        }, label: {
-                            Image(uiImage: IconProvider.cross)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(.primary)
-                        })
-                        .buttonStyle(.plain)
-                        .opacity(term.isEmpty ? 0 : 1)
-                        .animation(.default, value: term.isEmpty)
-                    }
-                    .foregroundColor(.textWeak)
-                    .padding(.horizontal)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .containerShape(Rectangle())
-
-                Button(action: dismiss.callAsFunction) {
-                    Text("Cancel")
-                        .fontWeight(.semibold)
-                        .foregroundColor(.passBrand)
-                }
-            }
-            .frame(height: kSearchBarHeight)
-            .padding()
+        VStack(spacing: 0) {
+            searchBar
 
             switch viewModel.state {
             case .clean:
                 Text("Clean")
-            case .results(let results):
-                SearchResultsView(selectedType: $viewModel.selectedType, results: results)
+            case .results:
+                SearchResultsView(selectedType: $viewModel.selectedType,
+                                  results: viewModel.filteredResults,
+                                  itemCount: viewModel.itemCount,
+                                  safeAreaInsets: safeAreaInsets,
+                                  onSelect: { viewModel.viewDetail(of: $0) })
             default:
                 // Impossible cases
                 EmptyView()
@@ -102,9 +71,56 @@ struct SearchView: View {
 
             Spacer()
         }
+        .ignoresSafeArea(edges: .bottom)
         .onFirstAppear { isFocusedOnSearchBar = true }
         .onChange(of: term) { term in
             viewModel.search(term)
         }
+    }
+
+    private var searchBar: some View {
+        HStack {
+            ZStack {
+                Color.black
+                HStack {
+                    Image(uiImage: IconProvider.magnifier)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.primary)
+
+                    TextField(viewModel.searchBarPlaceholder, text: $term)
+                        .tint(.passBrand)
+                        .focused($isFocusedOnSearchBar)
+                        .foregroundColor(.primary)
+
+                    Button(action: {
+                        term = ""
+                    }, label: {
+                        Image(uiImage: IconProvider.cross)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(.primary)
+                    })
+                    .buttonStyle(.plain)
+                    .opacity(term.isEmpty ? 0 : 1)
+                    .animation(.default, value: term.isEmpty)
+                }
+                .foregroundColor(.textWeak)
+                .padding(.horizontal)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .containerShape(Rectangle())
+
+            Button(action: dismiss.callAsFunction) {
+                Text("Cancel")
+                    .fontWeight(.semibold)
+                    .foregroundColor(.passBrand)
+            }
+        }
+        .frame(height: kSearchBarHeight)
+        .padding()
     }
 }
