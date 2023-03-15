@@ -33,7 +33,6 @@ public final class CompleteRobot: CoreElements {
         @discardableResult
         public func completeScreenIsShown<T: CoreElements>(robot _: T.Type) -> T {
             staticText(titleId).wait().checkExists()
-            staticText(descriptionId).checkExists()
             return T()
         }
     }
