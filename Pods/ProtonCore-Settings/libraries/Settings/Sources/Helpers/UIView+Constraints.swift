@@ -42,7 +42,7 @@ public extension UIView {
         let top: NSLayoutConstraint? = top != nil ? topAnchor.constraint(equalTo: superview.topAnchor, constant: top!) : nil
         let bottom: NSLayoutConstraint? = bottom != nil ? bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: bottom!) : nil
         let leading: NSLayoutConstraint? = leading != nil ? leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: leading!) : nil
-        let trailing: NSLayoutConstraint? = trailing != nil ?  trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: trailing!) : nil
+        let trailing: NSLayoutConstraint? = trailing != nil ? trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: trailing!) : nil
         NSLayoutConstraint.activate([top, bottom, leading, trailing].compactMap { $0 })
         return (top, bottom, leading, trailing)
     }
