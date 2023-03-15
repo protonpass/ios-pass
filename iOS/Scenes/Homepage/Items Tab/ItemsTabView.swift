@@ -271,7 +271,8 @@ struct ItemsTabView: View {
                 description: item.description)
         })
         .listRowSeparator(.hidden)
-        .listRowInsets(.init(top: 0, leading: 16, bottom: 0, trailing: 16)) // 0 spacing between rows
+        .listRowInsets(.zero)
+        .padding(.horizontal, 16)
         .listRowBackground(Color.clear)
         .frame(height: 64)
         .swipeActions(edge: .trailing) {

@@ -98,20 +98,6 @@ public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol, Item
     }
 }
 
-extension ItemSearchResult: Hashable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.shareId == rhs.shareId &&
-        lhs.itemId == rhs.itemId &&
-        lhs.type == rhs.type
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(shareId)
-        hasher.combine(itemId)
-        hasher.combine(type)
-    }
-}
-
 extension ItemSearchResult: Identifiable {
     public var id: String { itemId + shareId }
 }

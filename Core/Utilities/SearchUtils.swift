@@ -44,8 +44,8 @@ public enum SearchUtils {
         let matchedWord = text[range]
 
         // We want to extract the matched phrase that has
-        // 20 surrounding characters around the matchedWord
-        let offset = 20
+        // 100 surrounding characters around the matchedWord
+        let offset = 100
         let matchedPhraseUpperIndex = text.index(range.upperBound,
                                                  offsetBy: -offset,
                                                  limitedBy: text.startIndex) ?? text.startIndex

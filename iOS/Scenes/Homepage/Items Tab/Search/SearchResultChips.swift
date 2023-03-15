@@ -28,7 +28,7 @@ struct SearchResultChips: View {
     let itemCount: ItemCount
 
     var body: some View {
-        ScrollView(.horizontal) {
+        ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ItemCountChip(icon: nil,
                               title: "All",
@@ -40,6 +40,7 @@ struct SearchResultChips: View {
                 chip(for: .alias, count: itemCount.aliasCount)
                 chip(for: .note, count: itemCount.noteCount)
             }
+            .padding(.horizontal)
         }
     }
 
