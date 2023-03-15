@@ -109,10 +109,12 @@ final class APIManager {
         FeatureFactory.shared.enable(&.observability)
         // Core unauth session feature flag
         FeatureFactory.shared.enable(&.unauthSession)
+
+        FeatureFactory.shared.enable(&.externalSignup)
         #if DEBUG
         FeatureFactory.shared.enable(&.enforceUnauthSessionStrictVerificationOnBackend)
         #endif
-        ObservabilityEnv.current.setupWorld(apiService: apiService)
+        ObservabilityEnv.current.setupWorld(requestPerformer: apiService)
     }
 
     private func fetchUnauthSessionIfNeeded() {

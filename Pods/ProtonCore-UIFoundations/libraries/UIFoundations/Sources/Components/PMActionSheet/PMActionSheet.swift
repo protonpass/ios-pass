@@ -317,7 +317,7 @@ extension PMActionSheet {
         table.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
 
         // Maximum height of tableview
-        let constant = self.headerView == nil ? 0: -1 * self.viewModel.value.HEADER_HEIGHT
+        let constant = self.headerView == nil ? 0 : -1 * self.viewModel.value.HEADER_HEIGHT
         table.heightAnchor.constraint(lessThanOrEqualTo: self.heightAnchor, multiplier: maximumOccupy, constant: constant).isActive = true
 
         // Real height of tableview
@@ -347,7 +347,7 @@ extension PMActionSheet {
         guard self.headerView != nil else {
             // Tableview bottom constraint when headerview missing
             self.tableView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-            let padding = UIDevice.hasPhysicalHome ? 0: self.viewModel.value.BOTTOM_PADDING
+            let padding = UIDevice.hasPhysicalHome ? 0 : self.viewModel.value.BOTTOM_PADDING
             self.tableView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -1 * padding).isActive = true
             // Actionsheet without header shouldn't have bounces
             self.tableView.bounces = false
@@ -542,7 +542,7 @@ extension PMActionSheet: UIGestureRecognizerDelegate {
                 let v = ges.velocity(in: self.tableView)
                 // If the offset is 0
                 // gesture always works
-                return v.y > 0 ? true: false
+                return v.y > 0 ? true : false
             }
             return false
         }

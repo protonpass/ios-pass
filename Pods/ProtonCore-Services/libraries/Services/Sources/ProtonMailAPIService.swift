@@ -53,7 +53,7 @@ public enum PMAPIServiceTrustKitProviderWrapper: TrustKitProvider {
 extension PMAPIService.APIResponseCompletion {
  
     func call<T>(task: URLSessionDataTask?, error: API.APIError)
-    where Left == API.JSONCompletion, Right == (_ task: URLSessionDataTask?, _ result: Result<T, API.APIError>) -> Void, T: APIDecodableResponse {
+    where Left == JSONCompletion, Right == (_ task: URLSessionDataTask?, _ result: Result<T, API.APIError>) -> Void, T: APIDecodableResponse {
         switch self {
         case .left(let jsonCompletion): jsonCompletion(task, .failure(error))
         case .right(let decodableCompletion): decodableCompletion(task, .failure(error))
@@ -61,7 +61,7 @@ extension PMAPIService.APIResponseCompletion {
     }
     
     func call<T>(task: URLSessionDataTask?, response: Either<[String: Any], T>)
-    where Left == API.JSONCompletion, Right == (_ task: URLSessionDataTask?, _ result: Result<T, API.APIError>) -> Void, T: APIDecodableResponse {
+    where Left == JSONCompletion, Right == (_ task: URLSessionDataTask?, _ result: Result<T, API.APIError>) -> Void, T: APIDecodableResponse {
         switch (self, response) {
         case (.left(let jsonCompletion), .left(let jsonObject)): jsonCompletion(task, .success(jsonObject))
         case (.right(let decodableCompletion), .right(let decodableObject)): decodableCompletion(task, .success(decodableObject))

@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-ObfuscatedConstants",
-  "version": "3.28.2",
+  "version": "3.29.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": null,
-    "tag": "3.28.2"
+    "tag": "3.29.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -43,10 +43,10 @@
       "1.3.1"
     ],
     "ProtonCore-DataModel": [
-      "3.28.2"
+      "3.29.0"
     ],
     "ProtonCore-Networking": [
-      "3.28.2"
+      "3.29.0"
     ]
   },
   "preserve_paths": "libraries/ObfuscatedConstants/Scripts/*",
