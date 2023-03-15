@@ -110,7 +110,7 @@ struct ItemsTabView: View {
                     Image(uiImage: IconProvider.magnifier)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 16)
+                        .frame(width: 20, height: 20)
                     Text(viewModel.vaultsManager.vaultSelection.searchBarPlacehoder)
                 }
                 .foregroundColor(.textWeak)

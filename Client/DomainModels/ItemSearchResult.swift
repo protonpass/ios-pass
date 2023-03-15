@@ -75,7 +75,7 @@ public protocol ItemSearchResultProtocol {
     var vaultName: String { get }
 }
 
-public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol {
+public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol, ItemContentTypeIdentifiable {
     public let shareId: String
     public let itemId: String
     public let type: ItemContentType
@@ -95,6 +95,20 @@ public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol {
         self.title = title
         self.detail = detail
         self.vaultName = vaultName
+    }
+}
+
+extension ItemSearchResult: Hashable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.shareId == rhs.shareId &&
+        lhs.itemId == rhs.itemId &&
+        lhs.type == rhs.type
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(shareId)
+        hasher.combine(itemId)
+        hasher.combine(type)
     }
 }
 
