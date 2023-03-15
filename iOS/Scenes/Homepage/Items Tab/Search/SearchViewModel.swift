@@ -18,15 +18,121 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Client
+import Combine
+import Core
+import CryptoKit
 
-protocol SearchViewModelDelegate: AnyObject {}
+enum SearchViewState {
+    case initializing
+    case clean
+    case results([ItemSearchResult])
+    case error(Error)
+}
+
+extension SearchViewState: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.initializing, .initializing),
+            (.clean, .clean):
+            return true
+        case let (.results(lhsResults), .results(rhsResults)):
+            return lhsResults.hashValue == rhsResults.hashValue
+        case let (.error(lhsError), .error(rhsError)):
+            return lhsError.messageForTheUser == rhsError.messageForTheUser
+        default:
+            return false
+        }
+    }
+}
 
 final class SearchViewModel: ObservableObject {
-    weak var delegate: SearchViewModelDelegate?
+    @Published private(set) var state = SearchViewState.initializing
+    @Published var selectedType: ItemContentType?
+
+    // Injected properties
+    private let itemRepository: ItemRepositoryProtocol
+    private let logger: Logger
+    private let symmetricKey: SymmetricKey
+    private let vaultSelection: VaultSelection
+
+    // Self-intialized properties
+    private var lastSearchTerm = ""
+    private let searchTermSubject = PassthroughSubject<String, Never>()
+    private var lastTask: Task<Void, Never>?
+    private var searchableItems = [SearchableItem]()
+
+    private var cancellables = Set<AnyCancellable>()
+
+    var searchBarPlaceholder: String { vaultSelection.searchBarPlacehoder }
+
+    init(itemRepository: ItemRepositoryProtocol,
+         logManager: LogManager,
+         symmetricKey: SymmetricKey,
+         vaultSelection: VaultSelection) {
+        self.itemRepository = itemRepository
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
+        self.symmetricKey = symmetricKey
+        self.vaultSelection = vaultSelection
+
+        Task { await loadItems() }
+
+        searchTermSubject
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .sink { [unowned self] term in
+                self.doSearch(term: term)
+            }
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: - Private APIs
+private extension SearchViewModel {
+    func doSearch(term: String) {
+        lastSearchTerm = term
+        let term = term.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !term.isEmpty else { state = .clean; return }
+
+        lastTask?.cancel()
+        lastTask = Task { @MainActor in
+            do {
+                let hashedTerm = term.sha256Hashed()
+                logger.trace("Searching for \"\(hashedTerm)\"")
+                let results = try searchableItems.result(for: term, symmetricKey: symmetricKey)
+                state = .results(results)
+                logger.trace("Get \(results.count) result(s) for \"\(hashedTerm)\"")
+            } catch {
+                logger.error(error)
+                state = .error(error)
+            }
+        }
+    }
 }
 
 // MARK: - Public APIs
 extension SearchViewModel {
-    func refresh() {}
+    @MainActor
+    func loadItems() async {
+        do {
+            state = .initializing
+            let activeItems = try await itemRepository.getItems(state: .active)
+            searchableItems = try activeItems.map { try SearchableItem(symmetricallyEncryptedItem: $0,
+                                                                       vaultName: "") }
+            state = .clean
+        } catch {
+            state = .error(error)
+        }
+    }
+
+    @MainActor
+    func refreshResults() async {
+        await loadItems()
+        doSearch(term: lastSearchTerm)
+    }
+
+    func search(_ term: String) {
+        doSearch(term: term)
+    }
 }

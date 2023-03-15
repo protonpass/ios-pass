@@ -351,7 +351,7 @@ private extension HomepageCoordinator {
         }
 
         homepageViewModel?.vaultsManager.refresh()
-        searchViewModel?.refresh()
+        Task { await searchViewModel?.refreshResults() }
     }
 }
 
@@ -397,9 +397,11 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         presentCreateItemView(shareId: shareId)
     }
 
-    func itemsTabViewModelWantsToSearch() {
-        let viewModel = SearchViewModel()
-        viewModel.delegate = self
+    func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
+        let viewModel = SearchViewModel(itemRepository: itemRepository,
+                                        logManager: logManager,
+                                        symmetricKey: symmetricKey,
+                                        vaultSelection: vaultSelection)
         searchViewModel = viewModel
         let view = SearchView(viewModel: viewModel)
         present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
@@ -595,9 +597,6 @@ extension HomepageCoordinator: LogInDetailViewModelDelegate {
         presentItemDetailView(for: itemContent)
     }
 }
-
-// MARK: - SearchViewModelDelegate
-extension HomepageCoordinator: SearchViewModelDelegate {}
 
 // MARK: - SyncEventLoopDelegate
 extension HomepageCoordinator: SyncEventLoopDelegate {

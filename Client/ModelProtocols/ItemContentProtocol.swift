@@ -19,35 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
-import UIKit
 
-#warning("Remove ProtonCore_UIFoundations dependency")
 public enum ItemContentType: Int, CaseIterable {
     case login = 0
     case alias = 1
     case note = 2
-
-    public var countTitle: String {
-        switch self {
-        case .login:
-            return "Logins"
-        case .alias:
-            return "Aliases"
-        case .note:
-            return "Notes"
-        }
-    }
-
-    public var filterTitle: String {
-        switch self {
-        case .login:
-            return "All logins"
-        case .alias:
-            return "All aliases"
-        case .note:
-            return "All notes"
-        }
-    }
 
     public var creationMessage: String {
         switch self {
