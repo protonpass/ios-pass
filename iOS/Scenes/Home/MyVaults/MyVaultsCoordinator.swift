@@ -45,12 +45,6 @@ final class MyVaultsCoordinator: Coordinator {
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
 
-    weak var itemCountDelegate: ItemCountDelegate? {
-        didSet {
-            vaultContentViewModel.itemCountDelegate = itemCountDelegate
-        }
-    }
-
     weak var delegate: MyVaultsCoordinatorDelegate?
     weak var bannerManager: BannerManager?
     weak var clipboardManager: ClipboardManager?

@@ -79,8 +79,6 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop: SyncEventLoop
 
-    weak var itemCountDelegate: ItemCountDelegate?
-
     var selectedVault: Vault?
     var vaults = [Vault]()
     var otherVaults = [Vault]()

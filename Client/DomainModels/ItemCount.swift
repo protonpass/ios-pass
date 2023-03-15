@@ -21,15 +21,13 @@
 import Foundation
 
 public struct ItemCount {
-    public let total: Int
-    public let typeCountDictionary: [ItemContentType: Int]
+    public let loginCount: Int
+    public let aliasCount: Int
+    public let noteCount: Int
 
-    public init(total: Int, typeCountDictionary: [ItemContentType: Int]) {
-        self.total = total
-        self.typeCountDictionary = typeCountDictionary
+    public init(loginCount: Int, aliasCount: Int, noteCount: Int) {
+        self.loginCount = loginCount
+        self.aliasCount = aliasCount
+        self.noteCount = noteCount
     }
-}
-
-public protocol ItemCountDelegate: AnyObject {
-    func itemCountDidUpdate(_ itemCount: ItemCount)
 }

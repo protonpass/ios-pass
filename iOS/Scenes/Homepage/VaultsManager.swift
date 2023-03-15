@@ -44,7 +44,7 @@ extension VaultManagerState: Equatable {
     }
 }
 
-enum VaultSelectionV2 {
+enum VaultSelection {
     case all
     case precise(Vault)
 
@@ -69,7 +69,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     private let userData: UserData
 
     @Published private(set) var state = VaultManagerState.loading
-    @Published private(set) var vaultSelection = VaultSelectionV2.all
+    @Published private(set) var vaultSelection = VaultSelection.all
 
     init(itemRepository: ItemRepositoryProtocol,
          manualLogIn: Bool,
