@@ -2062,10 +2062,10 @@
 				3562BC2C2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift */,
 				354BB13C28A240E000F50040 /* TextExtensions.swift */,
 				354DCCF8291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift */,
+				35283E4D2927A9A9002F5B84 /* View+ItemDetailModifiers.swift */,
 				3562BC2E29950680003FCB13 /* View+OnFirstAppear.swift */,
 				356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */,
 				35570A7F2926321B00125727 /* View+OpacityReduced.swift */,
-				35283E4D2927A9A9002F5B84 /* View+ItemDetailModifiers.swift */,
 				35526B5A28D115340017BB53 /* Pass.xcassets */,
 			);
 			path = UIComponents;
