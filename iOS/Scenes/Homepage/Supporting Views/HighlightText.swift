@@ -36,7 +36,7 @@ public struct HighlightText: View {
             for (index, eachComponent) in components.enumerated() {
                 texts.append(Text(eachComponent))
                 if index != components.count - 1 {
-                    texts.append(Text(highlightText).fontWeight(.bold))
+                    texts.append(Text(highlightText).foregroundColor(.passBrand))
                 }
             }
         } else {

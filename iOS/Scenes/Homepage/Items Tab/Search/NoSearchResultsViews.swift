@@ -30,9 +30,7 @@ struct NoSearchResultsInAllVaultView: View {
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .padding(.bottom)
-                .transaction { transaction in
-                    transaction.animation = nil
-                }
+                .disableAnimations()
 
             Text("Try search again using different spelling or keyword")
                 .font(.callout)
@@ -55,9 +53,7 @@ struct NoSearchResultsInPreciseVaultView: View {
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .padding(.bottom)
-                .transaction { transaction in
-                    transaction.animation = nil
-                }
+                .disableAnimations()
 
             Text("Try search again using different spelling or keyword")
                 .font(.callout)
