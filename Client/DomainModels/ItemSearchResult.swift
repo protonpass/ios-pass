@@ -81,6 +81,8 @@ public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol, Item
     public let type: ItemContentType
     public let title: HighlightableText
     public let detail: [HighlightableText]
+    public let lastUseTime: Int64
+    public let modifyTime: Int64
     public let vaultName: String
 
     public init(shareId: String,
@@ -88,14 +90,28 @@ public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol, Item
                 type: ItemContentType,
                 title: SearchResultEither,
                 detail: [SearchResultEither],
+                lastUseTime: Int64,
+                modifyTime: Int64,
                 vaultName: String) {
         self.shareId = shareId
         self.itemId = itemId
         self.type = type
         self.title = title
         self.detail = detail
+        self.lastUseTime = lastUseTime
+        self.modifyTime = modifyTime
         self.vaultName = vaultName
     }
+}
+
+extension ItemSearchResult: DateSortable {
+    public var dateForSorting: Date {
+        Date(timeIntervalSince1970: TimeInterval(max(lastUseTime, modifyTime)))
+    }
+}
+
+extension ItemSearchResult: AlphabeticalSortable {
+    public var alphabeticalSortableString: String { title.fullText }
 }
 
 extension ItemSearchResult: Identifiable {

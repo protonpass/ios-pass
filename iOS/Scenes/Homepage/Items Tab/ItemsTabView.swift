@@ -126,39 +126,6 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private var sortTypeButton: some View {
-        if UIDevice.current.isIpad {
-            Menu(content: {
-                ForEach(SortType.allCases, id: \.self) { type in
-                    Button(action: {
-                        viewModel.selectedSortType = type
-                    }, label: {
-                        HStack {
-                            Text(type.title)
-                            Spacer()
-                            if type == viewModel.selectedSortType {
-                                Image(systemName: "checkmark")
-                            }
-                        }
-                    })
-                }
-            }, label: sortTypeLabel)
-        } else {
-            Button(action: viewModel.presentSortTypeList,
-                   label: sortTypeLabel)
-        }
-    }
-
-    private func sortTypeLabel() -> some View {
-        Label(viewModel.selectedSortType.title, systemImage: "arrow.up.arrow.down")
-            .font(.callout.weight(.medium))
-            .foregroundColor(.passBrand)
-            .transaction { transaction in
-                transaction.animation = nil
-            }
-    }
-
-    @ViewBuilder
     private func itemList(_ items: [ItemUiModel]) -> some View {
         HStack {
             Text("All")
@@ -170,7 +137,8 @@ struct ItemsTabView: View {
 
             Spacer()
 
-            sortTypeButton
+            SortTypeButton(selectedSortType: $viewModel.selectedSortType,
+                           action: viewModel.presentSortTypeList)
         }
         .padding(.horizontal)
 

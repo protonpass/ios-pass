@@ -62,6 +62,7 @@ struct SearchView: View {
                     .padding(.bottom, safeAreaInsets.bottom + 200)
             case .results:
                 SearchResultsView(selectedType: $viewModel.selectedType,
+                                  selectedSortType: $viewModel.selectedSortType,
                                   results: viewModel.filteredResults,
                                   itemCount: viewModel.itemCount,
                                   safeAreaInsets: safeAreaInsets,

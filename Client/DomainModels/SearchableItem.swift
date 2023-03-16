@@ -88,6 +88,8 @@ extension SearchableItem {
                      type: encryptedItemContent.contentData.type,
                      title: title,
                      detail: detail,
+                     lastUseTime: encryptedItemContent.item.lastUseTime ?? 0,
+                     modifyTime: encryptedItemContent.item.modifyTime,
                      vaultName: vaultName)
     }
 }
