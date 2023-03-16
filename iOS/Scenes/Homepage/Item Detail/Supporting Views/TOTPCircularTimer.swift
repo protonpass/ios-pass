@@ -52,9 +52,7 @@ struct TOTPCircularTimer: View {
                 .font(.caption)
                 .fontWeight(.light)
                 .foregroundColor(.textWeak)
-                .transaction { transaction in
-                    transaction.animation = nil
-                }
+                .disableAnimations()
         }
         .frame(width: 32, height: 32)
     }

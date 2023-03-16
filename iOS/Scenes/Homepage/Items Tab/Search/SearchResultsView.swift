@@ -159,6 +159,7 @@ private struct ItemSearchResultView: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 HighlightText(highlightableText: result.title)
+                    .disableAnimations()
 
                 VStack(alignment: .leading, spacing: 2) {
                     ForEach(0..<result.detail.count, id: \.self) { index in
@@ -168,6 +169,7 @@ private struct ItemSearchResultView: View {
                                 .font(.callout)
                                 .foregroundColor(Color(.secondaryLabel))
                                 .lineLimit(1)
+                                .disableAnimations()
                         }
                     }
                 }

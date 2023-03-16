@@ -51,8 +51,6 @@ struct SortTypeButton: View {
         Label(selectedSortType.title, systemImage: "arrow.up.arrow.down")
             .font(.callout.weight(.medium))
             .foregroundColor(.passBrand)
-            .transaction { transaction in
-                transaction.animation = nil
-            }
+            .disableAnimations()
     }
 }

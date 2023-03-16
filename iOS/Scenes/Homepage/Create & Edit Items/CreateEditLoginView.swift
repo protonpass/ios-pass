@@ -167,10 +167,7 @@ struct CreateEditLoginView: View {
                 })
                 .frame(maxWidth: .infinity, alignment: .center)
             }
-            .transaction { transaction in
-                // Disable animation when switching between toolbars
-                transaction.animation = nil
-            }
+            .disableAnimations() // Disable animation when switching between toolbars
         }
     }
 
@@ -194,10 +191,7 @@ struct CreateEditLoginView: View {
             }
             .frame(maxWidth: .infinity, alignment: .center)
         }
-        .transaction { transaction in
-            // Disable animation when switching between toolbars
-            transaction.animation = nil
-        }
+        .disableAnimations() // Disable animation when switching between toolbars
     }
 
     private var passwordTextFieldToolbar: some View {
@@ -207,9 +201,7 @@ struct CreateEditLoginView: View {
                 Text("Generate password")
             }
         }
-        .transaction { transaction in
-            transaction.animation = nil
-        }
+        .disableAnimations()
     }
 
     private func toolbarIcon(uiImage: UIImage) -> some View {
