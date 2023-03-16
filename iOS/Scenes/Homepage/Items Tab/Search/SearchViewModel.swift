@@ -50,6 +50,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var state = SearchViewState.initializing
     @Published private(set) var itemCount = ItemCount.zero
     @Published var selectedType: ItemContentType?
+    @Published var selectedSortType = SortType.mostRecent
     @Published private(set) var filteredResults = [ItemSearchResult]()
 
     // Injected properties

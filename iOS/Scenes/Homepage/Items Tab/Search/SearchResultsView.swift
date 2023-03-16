@@ -25,41 +25,120 @@ import UIComponents
 
 struct SearchResultsView: View {
     @Binding var selectedType: ItemContentType?
+    @Binding var selectedSortType: SortType
+    private let uuid = UUID()
     let results: [ItemSearchResult]
     let itemCount: ItemCount
     let safeAreaInsets: EdgeInsets
     let onSelect: (ItemSearchResult) -> Void
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             SearchResultChips(selectedType: $selectedType, itemCount: itemCount)
-                .listRowSeparator(.hidden)
-                .listRowInsets(.zero)
-                .listRowBackground(Color.clear)
 
-            List {
-                ForEach(results) { result in
-                    Button(action: {
-                        onSelect(result)
-                    }, label: {
-                        ItemSearchResultView(result: result)
-                    })
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(.zero)
-                    .padding(.horizontal)
-                    .padding(.vertical, 12)
-                    .listRowBackground(Color.clear)
-                }
+            HStack {
+                Text("\(results.count)")
+                    .font(.callout)
+                    .fontWeight(.bold) +
+                Text(" results")
+                    .font(.callout)
+                    .foregroundColor(.textWeak)
 
                 Spacer()
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(.zero)
-                    .listRowBackground(Color.clear)
-                    .frame(height: safeAreaInsets.bottom)
+
+                SortTypeButton(selectedSortType: $selectedSortType, action: {})
             }
-            .listStyle(.plain)
-            .animation(.default, value: results.count)
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+
+            ScrollViewReader { proxy in
+                List {
+                    EmptyView()
+                        .id(uuid)
+                    itemList(results)
+                    Spacer()
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(.zero)
+                        .listRowBackground(Color.clear)
+                        .frame(height: safeAreaInsets.bottom)
+                }
+                .listStyle(.plain)
+                .animation(.default, value: results.count)
+                .onChange(of: selectedType) { _ in
+                    proxy.scrollTo(uuid)
+                }
+                .onChange(of: selectedSortType) { _ in
+                    proxy.scrollTo(uuid)
+                }
+            }
         }
+    }
+
+    @ViewBuilder
+    private func itemList(_ items: [ItemSearchResult]) -> some View {
+        switch selectedSortType {
+        case .mostRecent:
+            itemList(items.mostRecentSortResult())
+        case .alphabetical:
+            itemList(items.alphabeticalSortResult())
+        case .newestToNewest:
+            itemList(items.monthYearSortResult(direction: .descending))
+        case .oldestToNewest:
+            itemList(items.monthYearSortResult(direction: .ascending))
+        }
+    }
+
+    @ViewBuilder
+    private func itemList(_ result: MostRecentSortResult<ItemSearchResult>) -> some View {
+        section(for: result.today, headerTitle: "Today")
+        section(for: result.yesterday, headerTitle: "Yesterday")
+        section(for: result.last7Days, headerTitle: "Last week")
+        section(for: result.last14Days, headerTitle: "Last two weeks")
+        section(for: result.last30Days, headerTitle: "Last 30 days")
+        section(for: result.last60Days, headerTitle: "Last 60 days")
+        section(for: result.last90Days, headerTitle: "Last 90 days")
+        section(for: result.others, headerTitle: "More than 90 days")
+    }
+
+    private func itemList(_ result: AlphabeticalSortResult<ItemSearchResult>) -> some View {
+        ForEach(result.buckets, id: \.letter) { bucket in
+            section(for: bucket.items, headerTitle: bucket.letter.character)
+                .id(bucket.letter.character)
+        }
+    }
+
+    private func itemList(_ result: MonthYearSortResult<ItemSearchResult>) -> some View {
+        ForEach(result.buckets, id: \.monthYear) { bucket in
+            section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
+        }
+    }
+
+    @ViewBuilder
+    private func section(for items: [ItemSearchResult], headerTitle: String) -> some View {
+        if items.isEmpty {
+            EmptyView()
+        } else {
+            Section(content: {
+                ForEach(items) { item in
+                    itemRow(for: item)
+                }
+            }, header: {
+                Text(headerTitle)
+            })
+        }
+    }
+
+    private func itemRow(for item: ItemSearchResult) -> some View {
+        Button(action: {
+            onSelect(item)
+        }, label: {
+            ItemSearchResultView(result: item)
+        })
+        .listRowSeparator(.hidden)
+        .listRowInsets(.zero)
+        .padding(.horizontal)
+        .padding(.vertical, 12)
+        .listRowBackground(Color.clear)
     }
 }
 
