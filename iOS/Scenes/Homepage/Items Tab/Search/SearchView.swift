@@ -57,7 +57,9 @@ struct SearchView: View {
 
             switch viewModel.state {
             case .clean:
-                Text("Clean")
+                EmptySearchView()
+                    .frame(maxHeight: .infinity)
+                    .padding(.bottom, safeAreaInsets.bottom + 200)
             case .results:
                 SearchResultsView(selectedType: $viewModel.selectedType,
                                   results: viewModel.filteredResults,

@@ -307,6 +307,7 @@
 		356B69792949DECF00868771 /* BaseItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */; };
 		356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */; };
 		356B697E294A31F400868771 /* DevPreviewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B697D294A31F400868771 /* DevPreviewsViewModel.swift */; };
+		356B830C29C3359A0084488A /* EmptySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830B29C3359A0084488A /* EmptySearchView.swift */; };
 		356BDA3228DFAA9600B02E5A /* ShareKeyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */; };
 		356BDA3428DFAC9600B02E5A /* RemoteShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
@@ -903,6 +904,7 @@
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
 		356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailPlaceholderView.swift; sourceTree = "<group>"; };
 		356B697D294A31F400868771 /* DevPreviewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevPreviewsViewModel.swift; sourceTree = "<group>"; };
+		356B830B29C3359A0084488A /* EmptySearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySearchView.swift; sourceTree = "<group>"; };
 		356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareKeyRepository.swift; sourceTree = "<group>"; };
 		356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareKeyDatasource.swift; sourceTree = "<group>"; };
 		356C2AAF28730EF00020F577 /* MainKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProvider.swift; sourceTree = "<group>"; };
@@ -1401,6 +1403,7 @@
 		354BB14728A27E8100F50040 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				356B830B29C3359A0084488A /* EmptySearchView.swift */,
 				3570D20229C1F14D00805445 /* SearchResultChips.swift */,
 				3570D20629C20A7E00805445 /* SearchResultsView.swift */,
 				3571B59E29BF7204008D4350 /* SearchView.swift */,
@@ -3279,6 +3282,7 @@
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */,
 				355783682962EC0B008A4992 /* DeviceLogsViewModel.swift in Sources */,
+				356B830C29C3359A0084488A /* EmptySearchView.swift in Sources */,
 				350AF86E299683940045B7B6 /* NoteEditSection.swift in Sources */,
 				35661CB229B8BF97003BBAD6 /* EditableVaultListView.swift in Sources */,
 				356AD3FB29409C7600EBE4E9 /* DevPreviewsView.swift in Sources */,
