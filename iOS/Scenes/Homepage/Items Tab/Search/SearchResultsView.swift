@@ -30,7 +30,8 @@ struct SearchResultsView: View {
     let results: [ItemSearchResult]
     let itemCount: ItemCount
     let safeAreaInsets: EdgeInsets
-    let onSelect: (ItemSearchResult) -> Void
+    let onSelectItem: (ItemSearchResult) -> Void
+    let onSelectSortType: () -> Void
 
     var body: some View {
         VStack(spacing: 0) {
@@ -46,7 +47,7 @@ struct SearchResultsView: View {
 
                 Spacer()
 
-                SortTypeButton(selectedSortType: $selectedSortType, action: {})
+                SortTypeButton(selectedSortType: $selectedSortType, action: onSelectSortType)
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
@@ -65,9 +66,6 @@ struct SearchResultsView: View {
                 .listStyle(.plain)
                 .animation(.default, value: results.count)
                 .onChange(of: selectedType) { _ in
-                    proxy.scrollTo(uuid)
-                }
-                .onChange(of: selectedSortType) { _ in
                     proxy.scrollTo(uuid)
                 }
             }
@@ -130,7 +128,7 @@ struct SearchResultsView: View {
 
     private func itemRow(for item: ItemSearchResult) -> some View {
         Button(action: {
-            onSelect(item)
+            onSelectItem(item)
         }, label: {
             ItemSearchResultView(result: item)
         })

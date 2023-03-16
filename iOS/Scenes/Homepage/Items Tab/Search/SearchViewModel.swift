@@ -30,18 +30,11 @@ enum SearchViewState {
     case error(Error)
 }
 
-extension SearchViewState: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.initializing, .initializing),
-            (.clean, .clean):
-            return true
-        case let (.error(lhsError), .error(rhsError)):
-            return lhsError.messageForTheUser == rhsError.messageForTheUser
-        default:
-            return false
-        }
-    }
+protocol SearchViewModelDelegate: AnyObject {
+    func searchViewModelWantsToViewDetail(of itemContent: ItemContent)
+    func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
+                                                   delegate: SortTypeListViewModelDelegate)
+    func searchViewModelWantsDidEncounter(error: Error)
 }
 
 final class SearchViewModel: ObservableObject, DeinitPrintable {
@@ -67,6 +60,8 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private var results = [ItemSearchResult]()
 
     private var cancellables = Set<AnyCancellable>()
+
+    weak var delegate: SearchViewModelDelegate?
 
     var searchBarPlaceholder: String { vaultSelection.searchBarPlacehoder }
 
@@ -164,6 +159,42 @@ extension SearchViewModel {
     }
 
     func viewDetail(of result: ItemSearchResult) {
-        print(#function)
+        Task { @MainActor in
+            do {
+                if let itemContent =
+                    try await itemRepository.getDecryptedItemContent(shareId: result.shareId,
+                                                                     itemId: result.itemId) {
+                    delegate?.searchViewModelWantsToViewDetail(of: itemContent)
+                }
+            } catch {
+                delegate?.searchViewModelWantsDidEncounter(error: error)
+            }
+        }
+    }
+
+    func presentSortTypeList() {
+        delegate?.searchViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
+                                                            delegate: self)
+    }
+}
+
+// MARK: - SortTypeListViewModelDelegate
+extension SearchViewModel: SortTypeListViewModelDelegate {
+    func sortTypeListViewDidSelect(_ sortType: SortType) {
+        selectedSortType = sortType
+    }
+}
+
+extension SearchViewState: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.initializing, .initializing),
+            (.clean, .clean):
+            return true
+        case let (.error(lhsError), .error(rhsError)):
+            return lhsError.messageForTheUser == rhsError.messageForTheUser
+        default:
+            return false
+        }
     }
 }

@@ -66,7 +66,8 @@ struct SearchView: View {
                                   results: viewModel.filteredResults,
                                   itemCount: viewModel.itemCount,
                                   safeAreaInsets: safeAreaInsets,
-                                  onSelect: { viewModel.viewDetail(of: $0) })
+                                  onSelectItem: { viewModel.viewDetail(of: $0) },
+                                  onSelectSortType: viewModel.presentSortTypeList)
             default:
                 // Impossible cases
                 EmptyView()
