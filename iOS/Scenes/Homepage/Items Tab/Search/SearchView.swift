@@ -61,13 +61,25 @@ struct SearchView: View {
                     .frame(maxHeight: .infinity)
                     .padding(.bottom, safeAreaInsets.bottom + 200)
             case .results:
-                SearchResultsView(selectedType: $viewModel.selectedType,
-                                  selectedSortType: $viewModel.selectedSortType,
-                                  results: viewModel.filteredResults,
-                                  itemCount: viewModel.itemCount,
-                                  safeAreaInsets: safeAreaInsets,
-                                  onSelectItem: { viewModel.viewDetail(of: $0) },
-                                  onSelectSortType: viewModel.presentSortTypeList)
+                if viewModel.results.isEmpty {
+                    switch viewModel.vaultSelection {
+                    case .all:
+                        NoSearchResultsInAllVaultView(term: term)
+                    case .precise(let vault):
+                        NoSearchResultsInPreciseVaultView(term: term,
+                                                          vaultName: vault.name,
+                                                          action: viewModel.searchInAllVaults)
+                    }
+                } else {
+                    SearchResultsView(selectedType: $viewModel.selectedType,
+                                      selectedSortType: $viewModel.selectedSortType,
+                                      results: viewModel.filteredResults,
+                                      itemCount: viewModel.itemCount,
+                                      safeAreaInsets: safeAreaInsets,
+                                      onSelectItem: { viewModel.viewDetail(of: $0) },
+                                      onSelectSortType: viewModel.presentSortTypeList)
+                }
+
             default:
                 // Impossible cases
                 EmptyView()
