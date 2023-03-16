@@ -31,36 +31,35 @@ struct SearchResultsView: View {
     let onSelect: (ItemSearchResult) -> Void
 
     var body: some View {
-        List {
+        VStack {
             SearchResultChips(selectedType: $selectedType, itemCount: itemCount)
                 .listRowSeparator(.hidden)
                 .listRowInsets(.zero)
                 .listRowBackground(Color.clear)
-                .transaction { transaction in
-                    transaction.animation = nil
+
+            List {
+                ForEach(results) { result in
+                    Button(action: {
+                        onSelect(result)
+                    }, label: {
+                        ItemSearchResultView(result: result)
+                    })
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(.zero)
+                    .padding(.horizontal)
+                    .padding(.vertical, 12)
+                    .listRowBackground(Color.clear)
                 }
 
-            ForEach(results) { result in
-                Button(action: {
-                    onSelect(result)
-                }, label: {
-                    ItemSearchResultView(result: result)
-                })
-                .listRowSeparator(.hidden)
-                .listRowInsets(.zero)
-                .padding(.horizontal)
-                .padding(.vertical, 12)
-                .listRowBackground(Color.clear)
+                Spacer()
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(.zero)
+                    .listRowBackground(Color.clear)
+                    .frame(height: safeAreaInsets.bottom)
             }
-
-            Spacer()
-                .listRowSeparator(.hidden)
-                .listRowInsets(.zero)
-                .listRowBackground(Color.clear)
-                .frame(height: safeAreaInsets.bottom)
+            .listStyle(.plain)
+            .animation(.default, value: results.count)
         }
-        .listStyle(.plain)
-        .animation(.default, value: results.count)
     }
 }
 
