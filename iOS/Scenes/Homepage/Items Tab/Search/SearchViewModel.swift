@@ -44,20 +44,20 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var itemCount = ItemCount.zero
     @Published var selectedType: ItemContentType?
     @Published var selectedSortType = SortType.mostRecent
+    @Published private(set) var results = [ItemSearchResult]()
     @Published private(set) var filteredResults = [ItemSearchResult]()
 
     // Injected properties
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
     private let symmetricKey: SymmetricKey
-    private let vaultSelection: VaultSelection
+    private(set) var vaultSelection: VaultSelection
 
     // Self-intialized properties
     private var lastSearchTerm = ""
     private let searchTermSubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
     private var searchableItems = [SearchableItem]()
-    private var results = [ItemSearchResult]()
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -104,6 +104,7 @@ private extension SearchViewModel {
         lastTask?.cancel()
         lastTask = Task { @MainActor in
             do {
+                selectedType = nil
                 let hashedTerm = term.sha256Hashed()
                 logger.trace("Searching for \"\(hashedTerm)\"")
                 results = try searchableItems.result(for: term, symmetricKey: symmetricKey)
@@ -132,7 +133,9 @@ extension SearchViewModel {
     @MainActor
     func loadItems() async {
         do {
-            state = .initializing
+            if case .error = state {
+                state = .initializing
+            }
             let activeItems: [SymmetricallyEncryptedItem]
             switch vaultSelection {
             case .all:
@@ -175,6 +178,11 @@ extension SearchViewModel {
     func presentSortTypeList() {
         delegate?.searchViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
                                                             delegate: self)
+    }
+
+    func searchInAllVaults() {
+        vaultSelection = .all
+        Task { await refreshResults() }
     }
 }
 
