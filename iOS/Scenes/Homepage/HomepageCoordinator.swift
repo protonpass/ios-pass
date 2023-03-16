@@ -320,6 +320,24 @@ private extension HomepageCoordinator {
         present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
+    func presentSortTypeList(selectedSortType: SortType,
+                             delegate: SortTypeListViewModelDelegate) {
+        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
+        viewModel.delegate = delegate
+        let view = SortTypeListView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = CGFloat(44 * SortType.allCases.count + 60)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium()]
+        }
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
     func handleTrashedItem(_ item: ItemUiModel) {
         let message: String
         switch item.type {
@@ -402,6 +420,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
                                         logManager: logManager,
                                         symmetricKey: symmetricKey,
                                         vaultSelection: vaultSelection)
+        viewModel.delegate = self
         searchViewModel = viewModel
         let view = SearchView(viewModel: viewModel)
         present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
@@ -427,20 +446,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                      delegate: SortTypeListViewModelDelegate) {
-        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
-        viewModel.delegate = delegate
-        let view = SortTypeListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = CGFloat(44 * SortType.allCases.count + 60)
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                height
-            }
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
-        }
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
     }
 
     func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
@@ -595,6 +601,22 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 extension HomepageCoordinator: LogInDetailViewModelDelegate {
     func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
         presentItemDetailView(for: itemContent)
+    }
+}
+
+// MARK: - SearchViewModelDelegate
+extension HomepageCoordinator: SearchViewModelDelegate {
+    func searchViewModelWantsToViewDetail(of itemContent: Client.ItemContent) {
+        presentItemDetailView(for: itemContent)
+    }
+
+    func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
+                                                   delegate: SortTypeListViewModelDelegate) {
+        presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
+    }
+
+    func searchViewModelWantsDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
