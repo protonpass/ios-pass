@@ -27,6 +27,17 @@
         <attribute name="email" attributeType="String"/>
         <attribute name="value" attributeType="String"/>
     </entity>
+    <entity name="SearchEntryEntity" representedClassName="SearchEntryEntity" syncable="YES">
+        <attribute name="itemID" attributeType="String"/>
+        <attribute name="shareID" attributeType="String"/>
+        <attribute name="time" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="itemID"/>
+                <constraint value="shareID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="ShareEntity" representedClassName="ShareEntity" syncable="YES">
         <attribute name="addressID" attributeType="String"/>
         <attribute name="content" optional="YES" attributeType="String"/>
