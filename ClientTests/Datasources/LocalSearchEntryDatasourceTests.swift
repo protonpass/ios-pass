@@ -21,6 +21,11 @@
 @testable import Client
 import XCTest
 
+private struct DummyItem: ItemIdentifiable, Hashable, Equatable {
+    let itemId: String
+    let shareId: String
+}
+
 final class LocalSearchEntryDatasourceTests: XCTestCase {
     var sut: LocalSearchEntryDatasource!
 
@@ -52,17 +57,17 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
     func testUpsertEntry() async throws {
         // Given
         let givenEntry = try await sut.givenInsertedEntry()
-        let updatedEntry = SearchEntry(itemID: givenEntry.itemID,
-                                       shareID: givenEntry.shareID,
-                                       time: .random(in: 1_000_000...2_000_000))
+        let newDate = Date.now
 
         // When
-        try await sut.upsert(entry: updatedEntry)
+        try await sut.upsert(item: givenEntry, date: newDate)
         let entries = try await sut.getAllEntries()
 
         // Then
         XCTAssertEqual(entries.count, 1)
-        XCTAssertEqual(entries[0], updatedEntry)
+        XCTAssertEqual(entries[0].itemId, givenEntry.itemId)
+        XCTAssertEqual(entries[0].shareId, givenEntry.shareId)
+        XCTAssertEqual(entries[0].time, Int64(newDate.timeIntervalSince1970))
     }
 
     func testRemoveAllEntries() async throws {
@@ -92,7 +97,7 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
         let givenEntry3 = try await sut.givenInsertedEntry()
 
         // When
-        try await sut.remove(entry: givenEntry2)
+        try await sut.remove(item: givenEntry2)
         let entries = try await sut.getAllEntries()
 
         // Then
@@ -108,13 +113,14 @@ extension SearchEntry {
     }
 }
 
-extension LocalSearchEntryDatasource {
+private extension LocalSearchEntryDatasource {
     @discardableResult
     func givenInsertedEntry(itemID: String = .random(),
                             shareID: String = .random(),
                             time: Int64 = .random(in: 1_000_000...2_000_000)) async throws -> SearchEntry {
-        let entry = SearchEntry(itemID: itemID, shareID: shareID, time: time)
-        try await upsert(entry: entry)
-        return entry
+        let item = DummyItem(itemId: itemID, shareId: shareID)
+        let date = Date(timeIntervalSince1970: TimeInterval(time))
+        try await upsert(item: item, date: date)
+        return .init(item: item, date: date)
     }
 }

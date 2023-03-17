@@ -102,14 +102,14 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
 // MARK: - Private APIs
 private extension SearchViewModel {
+    @MainActor
     func refreshSearchHistory() async throws {
         let rawSearchEntries = try await searchEntryDatasource.getAllEntries()
         let symmetricKey = itemRepository.symmetricKey
         searchEntries = try rawSearchEntries.compactMap { entry in
             if let item = allActiveItems.first(where: {
                 $0.shareId == entry.shareID && $0.itemId == entry.itemID }) {
-                return try .init(entry: entry,
-                                 itemContent: item.getDecryptedItemContent(symmetricKey: symmetricKey))
+                return try item.toSearchEntryUiModel(symmetricKey)
             } else {
                 return nil
             }
@@ -192,7 +192,7 @@ extension SearchViewModel {
                 if let itemContent =
                     try await itemRepository.getDecryptedItemContent(shareId: item.shareId,
                                                                      itemId: item.itemId) {
-                    try await searchEntryDatasource.upsert(entry: .init(item: item))
+                    try await searchEntryDatasource.upsert(item: item, date: .now)
                     try await refreshSearchHistory()
                     delegate?.searchViewModelWantsToViewDetail(of: itemContent)
                 }
@@ -202,10 +202,10 @@ extension SearchViewModel {
         }
     }
 
-    func removeFromHistory(_ entry: SearchEntry) {
+    func removeFromHistory(_ item: ItemIdentifiable) {
         Task { @MainActor in
             do {
-                try await searchEntryDatasource.remove(entry: entry)
+                try await searchEntryDatasource.remove(item: item)
                 try await refreshSearchHistory()
             } catch {
                 delegate?.searchViewModelWantsDidEncounter(error: error)
