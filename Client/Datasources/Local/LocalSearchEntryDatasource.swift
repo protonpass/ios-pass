@@ -23,6 +23,7 @@ import CoreData
 public protocol LocalSearchEntryDatasourceProtocol: LocalDatasourceProtocol {
     func getAllEntries() async throws -> [SearchEntry]
     func upsert(entry: SearchEntry) async throws
+    func removeAllEntries() async throws
     func remove(entry: SearchEntry) async throws
 }
 
@@ -44,6 +45,13 @@ public extension LocalSearchEntryDatasourceProtocol {
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
+    func removeAllEntries() async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchEntryEntity")
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
+
     func remove(entry: SearchEntry) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchEntryEntity")
@@ -56,3 +64,5 @@ public extension LocalSearchEntryDatasourceProtocol {
                           context: taskContext)
     }
 }
+
+public final class LocalSearchEntryDatasource: LocalDatasource, LocalSearchEntryDatasourceProtocol {}

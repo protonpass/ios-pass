@@ -227,6 +227,7 @@
 		355BDED8299E6F9C009FDBB1 /* CreateAliasLiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDED3299E64F7009FDBB1 /* CreateAliasLiteView.swift */; };
 		355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */; };
 		355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */; };
+		355E33AA29C4612800402CAE /* LocalSearchEntryDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E33A929C4612800402CAE /* LocalSearchEntryDatasourceTests.swift */; };
 		355E6DFC292FD56000C60796 /* Button+ConvenientInitializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */; };
 		355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */; };
 		35610B7528ABB77800955ACB /* LocalShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */; };
@@ -841,6 +842,7 @@
 		355BDED3299E64F7009FDBB1 /* CreateAliasLiteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasLiteView.swift; sourceTree = "<group>"; };
 		355BDED5299E6515009FDBB1 /* CreateAliasLiteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasLiteViewModel.swift; sourceTree = "<group>"; };
 		355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailMoreInfoSection.swift; sourceTree = "<group>"; };
+		355E33A929C4612800402CAE /* LocalSearchEntryDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSearchEntryDatasourceTests.swift; sourceTree = "<group>"; };
 		355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+ConvenientInitializers.swift"; sourceTree = "<group>"; };
 		355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemEndpoint.swift; sourceTree = "<group>"; };
 		356043F828ED6B54003BDDDC /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -1772,6 +1774,7 @@
 				358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */,
 				3542E2C628D9EB8000194F24 /* LocalItemDatasourceTests.swift */,
 				358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */,
+				355E33A929C4612800402CAE /* LocalSearchEntryDatasourceTests.swift */,
 				357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */,
 				3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */,
 				35610B7628ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift */,
@@ -1882,10 +1885,10 @@
 				3593DCE628A790F800C235D3 /* LocalDatasource.swift */,
 				3542E2C228D9E16600194F24 /* LocalItemDatasource.swift */,
 				358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */,
+				356B831529C37E560084488A /* LocalSearchEntryDatasource.swift */,
 				3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */,
 				35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */,
 				35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */,
-				356B831529C37E560084488A /* LocalSearchEntryDatasource.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -3529,6 +3532,7 @@
 				358A509828AD87E200F5285C /* PublicKey+Test.swift in Sources */,
 				35366AA228A446CB0085C24D /* ItemRevision+Test.swift in Sources */,
 				3542E2BF28D9CAB200194F24 /* SymmetricKey+Test.swift in Sources */,
+				355E33AA29C4612800402CAE /* LocalSearchEntryDatasourceTests.swift in Sources */,
 				358A509628AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift in Sources */,
 				3542E2BA28D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift in Sources */,
 				3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */,
