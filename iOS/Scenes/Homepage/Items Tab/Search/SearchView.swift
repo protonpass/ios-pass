@@ -57,9 +57,21 @@ struct SearchView: View {
 
             switch viewModel.state {
             case .clean:
-                EmptySearchView()
-                    .frame(maxHeight: .infinity)
-                    .padding(.bottom, safeAreaInsets.bottom + 200)
+                if viewModel.searchEntries.isEmpty {
+                    EmptySearchView()
+                        .frame(maxHeight: .infinity)
+                        .padding(.bottom, safeAreaInsets.bottom + 200)
+                } else {
+                    List {
+                        ForEach(viewModel.searchEntries) { entry in
+                            VStack {
+                                Text(entry.itemContent.name)
+                                Text(entry.itemContent.note)
+                            }
+                        }
+                    }
+                }
+
             case .results:
                 if viewModel.results.isEmpty {
                     switch viewModel.vaultSelection {

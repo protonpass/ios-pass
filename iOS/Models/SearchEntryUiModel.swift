@@ -24,3 +24,7 @@ struct SearchEntryUiModel {
     let entry: SearchEntry
     let itemContent: ItemContent
 }
+
+extension SearchEntryUiModel: Identifiable {
+    var id: String { entry.itemID + entry.shareID }
+}
