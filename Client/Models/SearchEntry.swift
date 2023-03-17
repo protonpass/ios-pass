@@ -37,3 +37,8 @@ public struct SearchEntry: Hashable {
         self.time = Int64(date.timeIntervalSince1970)
     }
 }
+
+extension SearchEntry: ItemIdentifiable {
+    public var shareId: String { shareID }
+    public var itemId: String { itemID }
+}

@@ -62,14 +62,11 @@ struct SearchView: View {
                         .frame(maxHeight: .infinity)
                         .padding(.bottom, safeAreaInsets.bottom + 200)
                 } else {
-                    List {
-                        ForEach(viewModel.searchEntries) { entry in
-                            VStack {
-                                Text(entry.itemContent.name)
-                                Text(entry.itemContent.note)
-                            }
-                        }
-                    }
+                    SearchRecentResultsView(
+                        results: viewModel.searchEntries,
+                        onSelect: { viewModel.viewDetail(of: $0) },
+                        onRemove: { viewModel.removeFromHistory($0) },
+                        onClearResults: viewModel.removeAllSearchHistory)
                 }
 
             case .results:
