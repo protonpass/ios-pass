@@ -31,6 +31,7 @@ public extension LocalSearchEntryDatasourceProtocol {
     func getAllEntries() async throws -> [SearchEntry] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = SearchEntryEntity.fetchRequest()
+        fetchRequest.sortDescriptors = [.init(key: "time", ascending: false)]
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return entities.map { $0.toSearchEntry() }
     }

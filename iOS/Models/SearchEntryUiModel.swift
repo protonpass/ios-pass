@@ -28,3 +28,9 @@ struct SearchEntryUiModel {
 extension SearchEntryUiModel: Identifiable {
     var id: String { entry.itemID + entry.shareID }
 }
+
+extension SearchEntryUiModel: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.entry == rhs.entry
+    }
+}

@@ -60,6 +60,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private var lastSearchTerm = ""
     private let searchTermSubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
+    private var allActiveItems = [SymmetricallyEncryptedItem]()
     private var searchableItems = [SearchableItem]()
 
     private var cancellables = Set<AnyCancellable>()
@@ -101,6 +102,20 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
 // MARK: - Private APIs
 private extension SearchViewModel {
+    func refreshSearchHistory() async throws {
+        let rawSearchEntries = try await searchEntryDatasource.getAllEntries()
+        let symmetricKey = itemRepository.symmetricKey
+        searchEntries = try rawSearchEntries.compactMap { entry in
+            if let item = allActiveItems.first(where: {
+                $0.shareId == entry.shareID && $0.itemId == entry.itemID }) {
+                return try .init(entry: entry,
+                                 itemContent: item.getDecryptedItemContent(symmetricKey: symmetricKey))
+            } else {
+                return nil
+            }
+        }
+    }
+
     func doSearch(term: String) {
         lastSearchTerm = term
         let term = term.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -142,20 +157,8 @@ extension SearchViewModel {
                 state = .initializing
             }
 
-            let allActiveItems = try await itemRepository.getItems(state: .active)
-
-            // Load history
-            let rawSearchEntries = try await searchEntryDatasource.getAllEntries()
-            let symmetricKey = itemRepository.symmetricKey
-            searchEntries = try rawSearchEntries.compactMap { entry in
-                if let item = allActiveItems.first(where: {
-                    $0.shareId == entry.shareID && $0.itemId == entry.itemID }) {
-                    return try .init(entry: entry,
-                                     itemContent: item.getDecryptedItemContent(symmetricKey: symmetricKey))
-                } else {
-                    return nil
-                }
-            }
+            allActiveItems = try await itemRepository.getItems(state: .active)
+            try await refreshSearchHistory()
 
             // Index items for search
             let filteredActiveItems: [SymmetricallyEncryptedItem]
@@ -183,15 +186,38 @@ extension SearchViewModel {
         doSearch(term: term)
     }
 
-    func viewDetail(of result: ItemSearchResult) {
+    func viewDetail(of item: ItemIdentifiable) {
         Task { @MainActor in
             do {
                 if let itemContent =
-                    try await itemRepository.getDecryptedItemContent(shareId: result.shareId,
-                                                                     itemId: result.itemId) {
-                    try await searchEntryDatasource.upsert(entry: .init(item: result))
+                    try await itemRepository.getDecryptedItemContent(shareId: item.shareId,
+                                                                     itemId: item.itemId) {
+                    try await searchEntryDatasource.upsert(entry: .init(item: item))
+                    try await refreshSearchHistory()
                     delegate?.searchViewModelWantsToViewDetail(of: itemContent)
                 }
+            } catch {
+                delegate?.searchViewModelWantsDidEncounter(error: error)
+            }
+        }
+    }
+
+    func removeFromHistory(_ entry: SearchEntry) {
+        Task { @MainActor in
+            do {
+                try await searchEntryDatasource.remove(entry: entry)
+                try await refreshSearchHistory()
+            } catch {
+                delegate?.searchViewModelWantsDidEncounter(error: error)
+            }
+        }
+    }
+
+    func removeAllSearchHistory() {
+        Task { @MainActor in
+            do {
+                try await searchEntryDatasource.removeAllEntries()
+                try await refreshSearchHistory()
             } catch {
                 delegate?.searchViewModelWantsDidEncounter(error: error)
             }

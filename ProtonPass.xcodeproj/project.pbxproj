@@ -229,6 +229,7 @@
 		355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */; };
 		355E33AA29C4612800402CAE /* LocalSearchEntryDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E33A929C4612800402CAE /* LocalSearchEntryDatasourceTests.swift */; };
 		355E33AC29C499E400402CAE /* SearchEntryUiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E33AB29C499E400402CAE /* SearchEntryUiModel.swift */; };
+		355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E33AD29C4AE8600402CAE /* SearchRecentResultsView.swift */; };
 		355E6DFC292FD56000C60796 /* Button+ConvenientInitializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */; };
 		355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */; };
 		35610B7528ABB77800955ACB /* LocalShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */; };
@@ -845,6 +846,7 @@
 		355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailMoreInfoSection.swift; sourceTree = "<group>"; };
 		355E33A929C4612800402CAE /* LocalSearchEntryDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSearchEntryDatasourceTests.swift; sourceTree = "<group>"; };
 		355E33AB29C499E400402CAE /* SearchEntryUiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntryUiModel.swift; sourceTree = "<group>"; };
+		355E33AD29C4AE8600402CAE /* SearchRecentResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRecentResultsView.swift; sourceTree = "<group>"; };
 		355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+ConvenientInitializers.swift"; sourceTree = "<group>"; };
 		355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemEndpoint.swift; sourceTree = "<group>"; };
 		356043F828ED6B54003BDDDC /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -1422,6 +1424,7 @@
 			children = (
 				356B830B29C3359A0084488A /* EmptySearchView.swift */,
 				356B830F29C343F70084488A /* NoSearchResultsViews.swift */,
+				355E33AD29C4AE8600402CAE /* SearchRecentResultsView.swift */,
 				3570D20229C1F14D00805445 /* SearchResultChips.swift */,
 				3570D20629C20A7E00805445 /* SearchResultsView.swift */,
 				3571B59E29BF7204008D4350 /* SearchView.swift */,
@@ -3365,6 +3368,7 @@
 				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
 				3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */,
+				355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */,
 				3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */,
 				3569B2AB29B7D2430070830B /* ProfileTabViewModel.swift in Sources */,
 				35661CB429B8BFCD003BBAD6 /* EditableVaultListViewModel.swift in Sources */,
