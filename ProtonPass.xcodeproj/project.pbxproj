@@ -311,6 +311,9 @@
 		356B830E29C339110084488A /* SortTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830D29C339110084488A /* SortTypeButton.swift */; };
 		356B831029C343F70084488A /* NoSearchResultsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830F29C343F70084488A /* NoSearchResultsViews.swift */; };
 		356B831229C34DD80084488A /* View+DisableAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B831129C34DD80084488A /* View+DisableAnimations.swift */; };
+		356B831429C365320084488A /* SearchEntryEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B831329C365320084488A /* SearchEntryEntity.swift */; };
+		356B831629C37E560084488A /* LocalSearchEntryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B831529C37E560084488A /* LocalSearchEntryDatasource.swift */; };
+		356B831829C37FC50084488A /* SearchEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B831729C37FC50084488A /* SearchEntry.swift */; };
 		356BDA3228DFAA9600B02E5A /* ShareKeyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */; };
 		356BDA3428DFAC9600B02E5A /* RemoteShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
@@ -911,6 +914,9 @@
 		356B830D29C339110084488A /* SortTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortTypeButton.swift; sourceTree = "<group>"; };
 		356B830F29C343F70084488A /* NoSearchResultsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSearchResultsViews.swift; sourceTree = "<group>"; };
 		356B831129C34DD80084488A /* View+DisableAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DisableAnimations.swift"; sourceTree = "<group>"; };
+		356B831329C365320084488A /* SearchEntryEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntryEntity.swift; sourceTree = "<group>"; };
+		356B831529C37E560084488A /* LocalSearchEntryDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSearchEntryDatasource.swift; sourceTree = "<group>"; };
+		356B831729C37FC50084488A /* SearchEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntry.swift; sourceTree = "<group>"; };
 		356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareKeyRepository.swift; sourceTree = "<group>"; };
 		356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareKeyDatasource.swift; sourceTree = "<group>"; };
 		356C2AAF28730EF00020F577 /* MainKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProvider.swift; sourceTree = "<group>"; };
@@ -1476,6 +1482,7 @@
 				3593DCF828A824FE00C235D3 /* ItemRevision.swift */,
 				358AB4982886FA7B00818B44 /* PassKey.swift */,
 				358A508C28AD823000F5285C /* PublicKey.swift */,
+				356B831729C37FC50084488A /* SearchEntry.swift */,
 				355443FC287CA77C0017FCAD /* Share.swift */,
 				353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */,
 				35581812290AB2B000DD94DB /* SyncEvents.swift */,
@@ -1851,6 +1858,7 @@
 			children = (
 				3542E2C428D9E2E700194F24 /* ItemEntity.swift */,
 				358A509128AD856D00F5285C /* PublicKeyEntity.swift */,
+				356B831329C365320084488A /* SearchEntryEntity.swift */,
 				3593DD0728A837DC00C235D3 /* ShareEntity.swift */,
 				35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */,
 				3593DD0628A837DC00C235D3 /* ShareKeyEntity.swift */,
@@ -1877,6 +1885,7 @@
 				3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */,
 				35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */,
 				35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */,
+				356B831529C37E560084488A /* LocalSearchEntryDatasource.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -3420,6 +3429,7 @@
 				359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */,
 				3552F49428D37CFF00547146 /* ChangeMailboxesEndpoint.swift in Sources */,
 				358A509C28AD8B6C00F5285C /* PublicKeyRepository.swift in Sources */,
+				356B831829C37FC50084488A /* SearchEntry.swift in Sources */,
 				3542E2C528D9E2E700194F24 /* ItemEntity.swift in Sources */,
 				35610B7E28ABC9D200955ACB /* RemoteDatasource.swift in Sources */,
 				3558180A290A7FA600DD94DB /* LocalShareEventIDDatasource.swift in Sources */,
@@ -3445,6 +3455,7 @@
 				3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */,
 				354146D428D1F235007E45A6 /* GetAliasOptionsEndpoint.swift in Sources */,
 				35526B6628D11E0C0017BB53 /* ModifyItemRequest.swift in Sources */,
+				356B831429C365320084488A /* SearchEntryEntity.swift in Sources */,
 				3554747C29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift in Sources */,
 				3552F48A28D344E100547146 /* Alias.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
@@ -3472,6 +3483,7 @@
 				3552F48828D322C100547146 /* CreateCustomAliasEndpoint.swift in Sources */,
 				3552F48628D3215600547146 /* CreateCustomAliasRequest.swift in Sources */,
 				35492E3A293DFB8700BDE231 /* ItemIdentifiable.swift in Sources */,
+				356B831629C37E560084488A /* LocalSearchEntryDatasource.swift in Sources */,
 				355A198D294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift in Sources */,
 				355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */,
 				3553424529928762003E3A47 /* PPClientError.swift in Sources */,
