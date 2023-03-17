@@ -69,13 +69,7 @@ public enum SearchResultEither: HighlightableText {
     }
 }
 
-public protocol ItemSearchResultProtocol {
-    var title: HighlightableText { get }
-    var detail: [HighlightableText] { get }
-    var vaultName: String { get }
-}
-
-public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol, ItemContentTypeIdentifiable {
+public struct ItemSearchResult: ItemIdentifiable, ItemContentTypeIdentifiable {
     public let shareId: String
     public let itemId: String
     public let type: ItemContentType
@@ -83,7 +77,6 @@ public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol, Item
     public let detail: [HighlightableText]
     public let lastUseTime: Int64
     public let modifyTime: Int64
-    public let vaultName: String
 
     public init(shareId: String,
                 itemId: String,
@@ -91,8 +84,7 @@ public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol, Item
                 title: SearchResultEither,
                 detail: [SearchResultEither],
                 lastUseTime: Int64,
-                modifyTime: Int64,
-                vaultName: String) {
+                modifyTime: Int64) {
         self.shareId = shareId
         self.itemId = itemId
         self.type = type
@@ -100,7 +92,6 @@ public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol, Item
         self.detail = detail
         self.lastUseTime = lastUseTime
         self.modifyTime = modifyTime
-        self.vaultName = vaultName
     }
 }
 

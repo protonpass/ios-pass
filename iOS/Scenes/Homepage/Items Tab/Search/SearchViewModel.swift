@@ -45,11 +45,14 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     @Published var selectedType: ItemContentType?
     @Published var selectedSortType = SortType.mostRecent
     @Published private(set) var results = [ItemSearchResult]()
+    /// All the results that match `selectedType`
     @Published private(set) var filteredResults = [ItemSearchResult]()
+    @Published private(set) var searchEntries = [SearchEntryUiModel]()
 
     // Injected properties
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
+    private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
     private let symmetricKey: SymmetricKey
     private(set) var vaultSelection: VaultSelection
 
@@ -67,12 +70,14 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     init(itemRepository: ItemRepositoryProtocol,
          logManager: LogManager,
+         searchEntryDatasource: LocalSearchEntryDatasourceProtocol,
          symmetricKey: SymmetricKey,
          vaultSelection: VaultSelection) {
         self.itemRepository = itemRepository
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
+        self.searchEntryDatasource = searchEntryDatasource
         self.symmetricKey = symmetricKey
         self.vaultSelection = vaultSelection
 
@@ -136,15 +141,17 @@ extension SearchViewModel {
             if case .error = state {
                 state = .initializing
             }
-            let activeItems: [SymmetricallyEncryptedItem]
+
+            let allActiveItems = try await itemRepository.getItems(state: .active)
+            let filteredActiveItems: [SymmetricallyEncryptedItem]
             switch vaultSelection {
             case .all:
-                activeItems = try await itemRepository.getItems(state: .active)
+                filteredActiveItems = allActiveItems
             case .precise(let vault):
-                activeItems = try await itemRepository.getItems(shareId: vault.shareId, state: .active)
+                filteredActiveItems = allActiveItems.filter { $0.shareId == vault.shareId }
             }
-            searchableItems = try activeItems.map { try SearchableItem(symmetricallyEncryptedItem: $0,
-                                                                       vaultName: "") }
+            searchableItems =
+            try filteredActiveItems.map { try SearchableItem(from: $0) }
             state = .clean
         } catch {
             state = .error(error)

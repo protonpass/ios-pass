@@ -47,6 +47,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let manualLogIn: Bool
     private let logManager: LogManager
     private let preferences: Preferences
+    private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let userData: UserData
@@ -118,6 +119,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.logManager = logManager
         self.manualLogIn = manualLogIn
         self.preferences = preferences
+        self.searchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
         self.userData = userData
@@ -418,6 +420,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
         let viewModel = SearchViewModel(itemRepository: itemRepository,
                                         logManager: logManager,
+                                        searchEntryDatasource: searchEntryDatasource,
                                         symmetricKey: symmetricKey,
                                         vaultSelection: vaultSelection)
         viewModel.delegate = self
