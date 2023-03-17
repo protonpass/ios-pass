@@ -30,4 +30,10 @@ public struct SearchEntry: Hashable {
         self.shareID = shareID
         self.time = time
     }
+
+    public init(item: ItemIdentifiable, date: Date = .now) {
+        self.itemID = item.itemId
+        self.shareID = item.shareId
+        self.time = Int64(date.timeIntervalSince1970)
+    }
 }

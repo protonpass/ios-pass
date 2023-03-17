@@ -143,6 +143,21 @@ extension SearchViewModel {
             }
 
             let allActiveItems = try await itemRepository.getItems(state: .active)
+
+            // Load history
+            let rawSearchEntries = try await searchEntryDatasource.getAllEntries()
+            let symmetricKey = itemRepository.symmetricKey
+            searchEntries = try rawSearchEntries.compactMap { entry in
+                if let item = allActiveItems.first(where: {
+                    $0.shareId == entry.shareID && $0.itemId == entry.itemID }) {
+                    return try .init(entry: entry,
+                                     itemContent: item.getDecryptedItemContent(symmetricKey: symmetricKey))
+                } else {
+                    return nil
+                }
+            }
+
+            // Index items for search
             let filteredActiveItems: [SymmetricallyEncryptedItem]
             switch vaultSelection {
             case .all:
@@ -150,8 +165,8 @@ extension SearchViewModel {
             case .precise(let vault):
                 filteredActiveItems = allActiveItems.filter { $0.shareId == vault.shareId }
             }
-            searchableItems =
-            try filteredActiveItems.map { try SearchableItem(from: $0) }
+            searchableItems = try filteredActiveItems.map { try SearchableItem(from: $0) }
+
             state = .clean
         } catch {
             state = .error(error)
@@ -174,6 +189,7 @@ extension SearchViewModel {
                 if let itemContent =
                     try await itemRepository.getDecryptedItemContent(shareId: result.shareId,
                                                                      itemId: result.itemId) {
+                    try await searchEntryDatasource.upsert(entry: .init(item: result))
                     delegate?.searchViewModelWantsToViewDetail(of: itemContent)
                 }
             } catch {
