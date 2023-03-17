@@ -216,42 +216,34 @@ struct CredentialsView: View {
             .font(.callout)
     }
 
-    private func searchResultsList(_ resultDictionary: [String: [ItemSearchResult]]) -> some View {
+    private func searchResultsList(_ results: [ItemSearchResult]) -> some View {
         List {
-            ForEach(Array(resultDictionary.keys), id: \.self) { vaultName in
-                if let results = resultDictionary[vaultName] {
-                    Section(content: {
-                        ForEach(results) { result in
-                            Button(action: {
-                                select(item: result)
-                            }, label: {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    HighlightText(highlightableText: result.title)
+            ForEach(results) { result in
+                Button(action: {
+                    select(item: result)
+                }, label: {
+                    VStack(alignment: .leading, spacing: 4) {
+                        HighlightText(highlightableText: result.title)
 
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        ForEach(0..<result.detail.count, id: \.self) { index in
-                                            let eachDetail = result.detail[index]
-                                            if !eachDetail.fullText.isEmpty {
-                                                HighlightText(highlightableText: eachDetail)
-                                                    .font(.callout)
-                                                    .foregroundColor(Color(.secondaryLabel))
-                                                    .lineLimit(1)
-                                            }
-                                        }
-                                    }
+                        VStack(alignment: .leading, spacing: 2) {
+                            ForEach(0..<result.detail.count, id: \.self) { index in
+                                let eachDetail = result.detail[index]
+                                if !eachDetail.fullText.isEmpty {
+                                    HighlightText(highlightableText: eachDetail)
+                                        .font(.callout)
+                                        .foregroundColor(Color(.secondaryLabel))
+                                        .lineLimit(1)
                                 }
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            })
+                            }
                         }
-                        .listRowSeparator(.hidden)
-                    }, header: {
-                        Text(vaultName)
-                    })
-                }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                })
             }
+            .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
-        .animation(.default, value: resultDictionary.keys)
+        .animation(.default, value: results.count)
     }
 
     private func select(item: TitledItemIdentifiable) {

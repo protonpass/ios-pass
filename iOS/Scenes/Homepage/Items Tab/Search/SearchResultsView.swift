@@ -51,6 +51,7 @@ struct SearchResultsView: View {
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
+            .disableAnimations()
 
             ScrollViewReader { proxy in
                 List {

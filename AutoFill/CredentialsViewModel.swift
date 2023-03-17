@@ -58,7 +58,7 @@ enum CredentialsViewLoadedState: Equatable {
     case idle
     case searching
     case noSearchResults
-    case searchResults([String: [ItemSearchResult]]) // Grouped by vault name
+    case searchResults([ItemSearchResult])
 
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
@@ -165,8 +165,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
                     state = .loaded(fetchResult, .noSearchResults)
                     logger.trace("No results for term \(hashedTerm)")
                 } else {
-                    let resultDictionary = Dictionary(grouping: searchResults, by: { $0.vaultName })
-                    state = .loaded(fetchResult, .searchResults(resultDictionary))
+                    state = .loaded(fetchResult, .searchResults(searchResults))
                     logger.trace("Found results for term \(hashedTerm)")
                 }
             } catch {
@@ -284,15 +283,9 @@ private extension CredentialsViewModel {
         }
     }
 
-    // swiftlint:disable function_body_length
     func fetchCredentialsTask() -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) {
             let vaults = try await self.shareRepository.getVaults()
-            let getVaultName: (String) -> String = { shareId in
-                let vault = vaults.first { $0.shareId == shareId }
-                return vault?.name ?? ""
-            }
-
             let encryptedItems = try await self.itemRepository.getItems(state: .active)
             self.logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
@@ -305,8 +298,7 @@ private extension CredentialsViewModel {
                 try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
                 if case .login(let data) = decryptedItemContent.contentData {
-                    searchableItems.append(try SearchableItem(symmetricallyEncryptedItem: encryptedItem,
-                                                              vaultName: getVaultName(encryptedItem.shareId)))
+                    searchableItems.append(try SearchableItem(from: encryptedItem))
 
                     let itemUrls = data.urls.compactMap { URL(string: $0) }
                     var matchResults = [URLUtils.Matcher.MatchResult]()

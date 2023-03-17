@@ -26,14 +26,11 @@ public struct SearchableItem {
     public let shareId: String
     public let itemId: String
     public let encryptedItemContent: ItemContent
-    public let vaultName: String
 
-    public init(symmetricallyEncryptedItem: SymmetricallyEncryptedItem,
-                vaultName: String) throws {
-        self.shareId = symmetricallyEncryptedItem.shareId
-        self.itemId = symmetricallyEncryptedItem.item.itemID
-        self.encryptedItemContent = try symmetricallyEncryptedItem.getEncryptedItemContent()
-        self.vaultName = vaultName
+    public init(from item: SymmetricallyEncryptedItem) throws {
+        self.shareId = item.shareId
+        self.itemId = item.item.itemID
+        self.encryptedItemContent = try item.getEncryptedItemContent()
     }
 }
 
@@ -89,8 +86,7 @@ extension SearchableItem {
                      title: title,
                      detail: detail,
                      lastUseTime: encryptedItemContent.item.lastUseTime ?? 0,
-                     modifyTime: encryptedItemContent.item.modifyTime,
-                     vaultName: vaultName)
+                     modifyTime: encryptedItemContent.item.modifyTime)
     }
 }
 
