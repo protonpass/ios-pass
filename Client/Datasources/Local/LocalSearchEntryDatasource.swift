@@ -22,9 +22,9 @@ import CoreData
 
 public protocol LocalSearchEntryDatasourceProtocol: LocalDatasourceProtocol {
     func getAllEntries() async throws -> [SearchEntry]
-    func upsert(entry: SearchEntry) async throws
+    func upsert(item: ItemIdentifiable, date: Date) async throws
     func removeAllEntries() async throws
-    func remove(entry: SearchEntry) async throws
+    func remove(item: ItemIdentifiable) async throws
 }
 
 public extension LocalSearchEntryDatasourceProtocol {
@@ -36,12 +36,12 @@ public extension LocalSearchEntryDatasourceProtocol {
         return entities.map { $0.toSearchEntry() }
     }
 
-    func upsert(entry: SearchEntry) async throws {
+    func upsert(item: ItemIdentifiable, date: Date) async throws {
         let taskContext = newTaskContext(type: .insert)
         let batchInsertRequest =
         newBatchInsertRequest(entity: SearchEntryEntity.entity(context: taskContext),
-                              sourceItems: [entry]) { managedObject, entry in
-            (managedObject as? SearchEntryEntity)?.hydrate(from: entry)
+                              sourceItems: [item]) { managedObject, item in
+            (managedObject as? SearchEntryEntity)?.hydrate(from: item, date: date)
         }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
@@ -53,13 +53,13 @@ public extension LocalSearchEntryDatasourceProtocol {
                           context: taskContext)
     }
 
-    func remove(entry: SearchEntry) async throws {
+    func remove(item: ItemIdentifiable) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchEntryEntity")
         fetchRequest.predicate = NSCompoundPredicate(
             andPredicateWithSubpredicates: [
-                .init(format: "itemID = %@", entry.itemID),
-                .init(format: "shareID = %@", entry.shareID)
+                .init(format: "itemID = %@", item.itemId),
+                .init(format: "shareID = %@", item.shareId)
             ])
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)

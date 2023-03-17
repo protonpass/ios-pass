@@ -19,13 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct SearchRecentResultsView: View {
     let results: [SearchEntryUiModel]
-    let onSelect: (SearchEntry) -> Void
-    let onRemove: (SearchEntry) -> Void
+    let onSelect: (SearchEntryUiModel) -> Void
+    let onRemove: (SearchEntryUiModel) -> Void
     let onClearResults: () -> Void
 
     var body: some View {
@@ -47,12 +48,17 @@ struct SearchRecentResultsView: View {
                         .foregroundColor(.passBrand)
                 }
             }
+            .padding(.horizontal)
 
             List {
                 ForEach(results) { result in
-                    SearchEntryView(entry: result,
-                                    onSelect: { onSelect(result.entry) },
-                                    onRemove: { onRemove(result.entry) })
+                    SearchEntryView(uiModel: result,
+                                    onSelect: { onSelect(result) },
+                                    onRemove: { onRemove(result) })
+                    .listRowInsets(.zero)
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .padding(.horizontal)
                 }
             }
             .listStyle(.plain)
@@ -62,28 +68,43 @@ struct SearchRecentResultsView: View {
 }
 
 private struct SearchEntryView: View {
-    let entry: SearchEntryUiModel
+    let uiModel: SearchEntryUiModel
     let onSelect: () -> Void
     let onRemove: () -> Void
 
     var body: some View {
         HStack {
             Button(action: onSelect) {
-                HStack {
-                    VStack {
-                        Text(entry.itemContent.name)
-                        Text(entry.itemContent.note)
-                    }
-                }
+                GeneralItemRow(
+                    thumbnailView: {
+                        switch uiModel.type {
+                        case .alias:
+                            CircleButton(icon: IconProvider.alias,
+                                         color: ItemContentType.alias.tintColor) {}
+                        case .login:
+                            CircleButton(icon: IconProvider.keySkeleton,
+                                         color: ItemContentType.login.tintColor) {}
+                        case .note:
+                            CircleButton(icon: IconProvider.notepadChecklist,
+                                         color: ItemContentType.note.tintColor) {}
+                        }
+                    },
+                    title: uiModel.title,
+                    description: uiModel.description)
             }
             .buttonStyle(.plain)
 
             Spacer()
 
             Button(action: onRemove) {
-                Text("X")
+                Image(uiImage: IconProvider.cross)
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundColor(.textWeak)
+                    .frame(width: 24, height: 24)
             }
             .buttonStyle(.plain)
         }
+        .frame(height: 64)
     }
 }

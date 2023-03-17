@@ -19,18 +19,45 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import CryptoKit
 
-struct SearchEntryUiModel {
-    let entry: SearchEntry
-    let itemContent: ItemContent
+struct SearchEntryUiModel: ItemIdentifiable {
+    let itemId: String
+    let shareId: String
+    let type: ItemContentType
+    let title: String
+    let description: String?
 }
 
 extension SearchEntryUiModel: Identifiable {
-    var id: String { entry.itemID + entry.shareID }
+    var id: String { itemId + shareId }
 }
 
 extension SearchEntryUiModel: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.entry == rhs.entry
+        lhs.shareId == rhs.shareId && lhs.itemId == rhs.itemId
+    }
+}
+
+extension SymmetricallyEncryptedItem {
+    func toSearchEntryUiModel(_ symmetricKey: SymmetricKey) throws -> SearchEntryUiModel {
+        let encryptedItemContent = try getEncryptedItemContent()
+        let name = try symmetricKey.decrypt(encryptedItemContent.name)
+
+        let note: String?
+        switch encryptedItemContent.contentData {
+        case .login(let data):
+            note = try symmetricKey.decrypt(data.username)
+        case .alias:
+            note = item.aliasEmail
+        default:
+            note = try symmetricKey.decrypt(encryptedItemContent.note)
+        }
+
+        return .init(itemId: encryptedItemContent.item.itemID,
+                     shareId: encryptedItemContent.shareId,
+                     type: encryptedItemContent.contentData.type,
+                     title: name,
+                     description: note?.isEmpty == true ? nil : note)
     }
 }
