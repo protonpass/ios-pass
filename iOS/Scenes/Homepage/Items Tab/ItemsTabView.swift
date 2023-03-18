@@ -82,7 +82,7 @@ struct ItemsTabView: View {
             }
             .moveToTrashAlert(isPresented: isShowingTrashingAlert) {
                 if let toBeTrashedItem {
-                    viewModel.trash(item: toBeTrashedItem)
+                    viewModel.trash(toBeTrashedItem)
                 }
             }
         }
@@ -217,6 +217,7 @@ struct ItemsTabView: View {
         }
     }
 
+    // swiftlint:disable:next function_body_length
     private func itemRow(for item: ItemUiModel) -> some View {
         Button(action: {
             viewModel.viewDetail(of: item)
@@ -255,13 +256,30 @@ struct ItemsTabView: View {
             })
             .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
         }
+        .itemContextMenu {
+            switch item.type {
+            case .login:
+                return .login(onCopyUsername: { viewModel.copyUsername(item) },
+                              onCopyPassword: { viewModel.copyPassword(item) },
+                              onEdit: { viewModel.edit(item) },
+                              onTrash: { viewModel.trash(item) })
+            case .alias:
+                return .alias(onCopyAlias: { viewModel.copyAlias(item) },
+                              onEdit: { viewModel.edit(item) },
+                              onTrash: { viewModel.trash(item) })
+
+            case .note:
+                return .note(onEdit: { viewModel.edit(item) },
+                             onTrash: { viewModel.trash(item) })
+            }
+        }
     }
 
     private func askForConfirmationOrTrashDirectly(item: ItemUiModel) {
         if viewModel.preferences.askBeforeTrashing {
             toBeTrashedItem = item
         } else {
-            viewModel.trash(item: item)
+            viewModel.trash(item)
         }
     }
 }
