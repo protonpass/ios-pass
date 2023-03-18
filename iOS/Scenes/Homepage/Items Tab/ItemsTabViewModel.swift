@@ -120,7 +120,11 @@ extension ItemsTabViewModel {
         }
     }
 
-    func trash(item: ItemUiModel) {
+    func edit(_ item: ItemUiModel) {
+        print(#function)
+    }
+
+    func trash(_ item: ItemUiModel) {
         Task { @MainActor in
             defer { delegate?.itemsTabViewModelWantsToHideSpinner() }
             do {
@@ -137,6 +141,18 @@ extension ItemsTabViewModel {
                 delegate?.itemsTabViewModelDidEncounter(error: error)
             }
         }
+    }
+
+    func copyUsername(_ item: ItemUiModel) {
+        print(#function)
+    }
+
+    func copyPassword(_ item: ItemUiModel) {
+        print(#function)
+    }
+
+    func copyAlias(_ item: ItemUiModel) {
+        print(#function)
     }
 }
 
