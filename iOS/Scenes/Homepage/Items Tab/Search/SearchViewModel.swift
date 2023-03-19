@@ -55,6 +55,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
     private let symmetricKey: SymmetricKey
     private(set) var vaultSelection: VaultSelection
+    let itemContextMenuHandler: ItemContextMenuHandler
 
     // Self-intialized properties
     private var lastSearchTerm = ""
@@ -69,11 +70,13 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     var searchBarPlaceholder: String { vaultSelection.searchBarPlacehoder }
 
-    init(itemRepository: ItemRepositoryProtocol,
+    init(itemContextMenuHandler: ItemContextMenuHandler,
+         itemRepository: ItemRepositoryProtocol,
          logManager: LogManager,
          searchEntryDatasource: LocalSearchEntryDatasourceProtocol,
          symmetricKey: SymmetricKey,
          vaultSelection: VaultSelection) {
+        self.itemContextMenuHandler = itemContextMenuHandler
         self.itemRepository = itemRepository
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",

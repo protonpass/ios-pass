@@ -234,6 +234,18 @@ private extension HomepageCoordinator {
         }
     }
 
+    func presentEditItemView(for itemContent: ItemContent) {
+        let mode = ItemMode.edit(itemContent)
+        switch itemContent.contentData.type {
+        case .login:
+            presentCreateEditLoginView(mode: mode)
+        case .note:
+            presentCreateEditNoteView(mode: mode)
+        case .alias:
+            presentCreateEditAliasView(mode: mode)
+        }
+    }
+
     func presentCreateItemView(shareId: String) {
         let view = ItemTypeListView { [unowned self] itemType in
             dismissTopMostViewController { [unowned self] in
@@ -390,7 +402,8 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
-        let viewModel = SearchViewModel(itemRepository: itemRepository,
+        let viewModel = SearchViewModel(itemContextMenuHandler: itemContextMenuHandler,
+                                        itemRepository: itemRepository,
                                         logManager: logManager,
                                         searchEntryDatasource: searchEntryDatasource,
                                         symmetricKey: symmetricKey,
@@ -444,14 +457,36 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
+        let message: String
+        switch type {
+        case .login:
+            message = "Login created"
+        case .alias:
+            message = "Alias created"
+        case .note:
+            message = "Note created"
+        }
         dismissTopMostViewController()
+        bannerManager.displayBottomInfoMessage(message)
         homepageViewModel?.vaultsManager.refresh()
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
+        let message: String
+        switch type {
+        case .login:
+            message = "Login udpated"
+        case .alias:
+            message = "Alias udpated"
+        case .note:
+            message = "Note udpated"
+        }
         homepageViewModel?.vaultsManager.refresh()
+        Task { await searchViewModel?.refreshResults() }
         currentItemDetailViewModel?.refresh()
-        dismissTopMostViewController()
+        dismissTopMostViewController { [unowned self] in
+            self.bannerManager.displayBottomInfoMessage(message)
+        }
     }
 
     func createEditItemViewModelDidFail(_ error: Error) {
@@ -536,15 +571,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
-        let mode = ItemMode.edit(itemContent)
-        switch itemContent.contentData.type {
-        case .login:
-            presentCreateEditLoginView(mode: mode)
-        case .note:
-            presentCreateEditNoteView(mode: mode)
-        case .alias:
-            presentCreateEditAliasView(mode: mode)
-        }
+        presentEditItemView(for: itemContent)
     }
 
     func itemDetailViewModelWantsToRestore(_ item: ItemUiModel) {
@@ -586,7 +613,7 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
     }
 
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent) {
-        presentItemDetailView(for: itemContent)
+        presentEditItemView(for: itemContent)
     }
 
     func itemContextMenuHandlerDidTrashAnItem() {

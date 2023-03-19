@@ -69,7 +69,7 @@ public enum SearchResultEither: HighlightableText {
     }
 }
 
-public struct ItemSearchResult: ItemIdentifiable, ItemContentTypeIdentifiable {
+public struct ItemSearchResult: ItemTypeIdentifiable, ItemContentTypeIdentifiable {
     public let shareId: String
     public let itemId: String
     public let type: ItemContentType
