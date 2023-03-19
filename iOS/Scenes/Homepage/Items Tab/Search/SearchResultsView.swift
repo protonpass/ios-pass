@@ -28,6 +28,7 @@ struct SearchResultsView: View {
     @Binding var selectedSortType: SortType
     private let uuid = UUID()
     let results: [ItemSearchResult]
+    let itemContextMenuHandler: ItemContextMenuHandler
     let itemCount: ItemCount
     let safeAreaInsets: EdgeInsets
     let onSelectItem: (ItemSearchResult) -> Void
@@ -138,6 +139,7 @@ struct SearchResultsView: View {
         .padding(.horizontal)
         .padding(.vertical, 12)
         .listRowBackground(Color.clear)
+        .itemContextMenu(item: item, handler: itemContextMenuHandler)
     }
 }
 

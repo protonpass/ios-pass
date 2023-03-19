@@ -83,6 +83,7 @@ struct SearchView: View {
                     SearchResultsView(selectedType: $viewModel.selectedType,
                                       selectedSortType: $viewModel.selectedSortType,
                                       results: viewModel.filteredResults,
+                                      itemContextMenuHandler: viewModel.itemContextMenuHandler,
                                       itemCount: viewModel.itemCount,
                                       safeAreaInsets: safeAreaInsets,
                                       onSelectItem: { viewModel.viewDetail(of: $0) },
