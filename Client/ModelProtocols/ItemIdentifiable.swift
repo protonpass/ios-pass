@@ -32,3 +32,7 @@ public extension ItemIdentifiable {
         "Item ID (\(itemId)) - Share ID (\(shareId))"
     }
 }
+
+public protocol ItemTypeIdentifiable: ItemIdentifiable {
+    var type: ItemContentType { get }
+}

@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 
@@ -99,7 +100,7 @@ struct ItemContextMenuOptionSection: Hashable {
     let options: [ItemContextMenuOption]
 }
 
-extension View {
+private extension View {
     func itemContextMenu(_ menu: () -> ItemContextMenu) -> some View {
         contextMenu {
             ForEach(menu().sections, id: \.hashValue) { section in
@@ -117,6 +118,29 @@ extension View {
                         )
                     }
                 }
+            }
+        }
+    }
+}
+
+extension View {
+    func itemContextMenu(item: ItemTypeIdentifiable,
+                         handler: ItemContextMenuHandler) -> some View {
+        itemContextMenu {
+            switch item.type {
+            case .login:
+                return .login(onCopyUsername: { handler.copyUsername(item) },
+                              onCopyPassword: { handler.copyPassword(item) },
+                              onEdit: { handler.edit(item) },
+                              onTrash: { handler.trash(item) })
+            case .alias:
+                return .alias(onCopyAlias: { handler.copyAlias(item) },
+                              onEdit: { handler.edit(item) },
+                              onTrash: { handler.trash(item) })
+
+            case .note:
+                return .note(onEdit: { handler.edit(item) },
+                             onTrash: { handler.trash(item) })
             }
         }
     }

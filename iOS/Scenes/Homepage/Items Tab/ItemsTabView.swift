@@ -217,7 +217,6 @@ struct ItemsTabView: View {
         }
     }
 
-    // swiftlint:disable:next function_body_length
     private func itemRow(for item: ItemUiModel) -> some View {
         Button(action: {
             viewModel.viewDetail(of: item)
@@ -256,23 +255,7 @@ struct ItemsTabView: View {
             })
             .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
         }
-        .itemContextMenu {
-            switch item.type {
-            case .login:
-                return .login(onCopyUsername: { viewModel.copyUsername(item) },
-                              onCopyPassword: { viewModel.copyPassword(item) },
-                              onEdit: { viewModel.edit(item) },
-                              onTrash: { viewModel.trash(item) })
-            case .alias:
-                return .alias(onCopyAlias: { viewModel.copyAliasAddress(item) },
-                              onEdit: { viewModel.edit(item) },
-                              onTrash: { viewModel.trash(item) })
-
-            case .note:
-                return .note(onEdit: { viewModel.edit(item) },
-                             onTrash: { viewModel.trash(item) })
-            }
-        }
+        .itemContextMenu(item: item, handler: viewModel.itemContextMenuHandler)
     }
 
     private func askForConfirmationOrTrashDirectly(item: ItemUiModel) {
