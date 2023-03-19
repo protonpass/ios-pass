@@ -31,7 +31,6 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                      delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
-    func itemsTabViewModelDidTrash(item: ItemUiModel)
     func itemsTabViewModelDidEncounter(error: Error)
 }
 
@@ -40,6 +39,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     @Published var selectedSortType = SortType.mostRecent
 
+    let itemContextMenuHandler: ItemContextMenuHandler
     let itemRepository: ItemRepositoryProtocol
     let logger: Logger
     let preferences: Preferences
@@ -53,11 +53,13 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop: SyncEventLoop
 
-    init(itemRepository: ItemRepositoryProtocol,
+    init(itemContextMenuHandler: ItemContextMenuHandler,
+         itemRepository: ItemRepositoryProtocol,
          logManager: LogManager,
          preferences: Preferences,
          syncEventLoop: SyncEventLoop,
          vaultsManager: VaultsManager) {
+        self.itemContextMenuHandler = itemContextMenuHandler
         self.itemRepository = itemRepository
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
@@ -121,38 +123,23 @@ extension ItemsTabViewModel {
     }
 
     func edit(_ item: ItemUiModel) {
-        print(#function)
+        itemContextMenuHandler.edit(item)
     }
 
     func trash(_ item: ItemUiModel) {
-        Task { @MainActor in
-            defer { delegate?.itemsTabViewModelWantsToHideSpinner() }
-            do {
-                delegate?.itemsTabViewModelWantsToShowSpinner()
-                if let encryptedItem = try await itemRepository.getItem(shareId: item.shareId,
-                                                                        itemId: item.itemId) {
-                    try await itemRepository.trashItems([encryptedItem])
-                    delegate?.itemsTabViewModelDidTrash(item: item)
-                } else {
-                    let error = PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
-                    delegate?.itemsTabViewModelDidEncounter(error: error)
-                }
-            } catch {
-                delegate?.itemsTabViewModelDidEncounter(error: error)
-            }
-        }
+        itemContextMenuHandler.trash(item)
     }
 
     func copyUsername(_ item: ItemUiModel) {
-        print(#function)
+        itemContextMenuHandler.copyUsername(item)
     }
 
     func copyPassword(_ item: ItemUiModel) {
-        print(#function)
+        itemContextMenuHandler.copyPassword(item)
     }
 
-    func copyAlias(_ item: ItemUiModel) {
-        print(#function)
+    func copyAliasAddress(_ item: ItemUiModel) {
+        itemContextMenuHandler.copyAlias(item)
     }
 }
 

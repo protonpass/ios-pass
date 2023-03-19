@@ -26,7 +26,6 @@ protocol ItemContextMenuHandlerDelegate: AnyObject {
     func itemContextMenuHandlerWantsToHideSpinner()
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent)
     func itemContextMenuHandlerDidTrashAnItem()
-    func itemContextMenuHandlerDidEncounter(error: Error)
 }
 
 final class ItemContextMenuHandler {
@@ -57,7 +56,7 @@ extension ItemContextMenuHandler {
                 let itemContent = try await self.getDecryptedItemContent(for: item)
                 delegate?.itemContextMenuHandlerWantsToEditItem(itemContent)
             } catch {
-                delegate?.itemContextMenuHandlerDidEncounter(error: error)
+                handleError(error)
             }
         }
     }
@@ -69,9 +68,22 @@ extension ItemContextMenuHandler {
                 delegate?.itemContextMenuHandlerWantsToShowSpinner()
                 let encryptedItem = try await getEncryptedItem(for: item)
                 try await itemRepository.trashItems([encryptedItem])
+
+                let message: String
+                switch item.type {
+                case .alias:
+                    message = "Alias deleted"
+                case .login:
+                    message = "Login deleted"
+                case .note:
+                    message = "Note deleted"
+                }
+                clipboardManager.bannerManager?.displayBottomInfoMessage(message)
+
                 delegate?.itemContextMenuHandlerDidTrashAnItem()
             } catch {
-                delegate?.itemContextMenuHandlerDidEncounter(error: error)
+                logger.error(error)
+                handleError(error)
             }
         }
     }
@@ -88,7 +100,7 @@ extension ItemContextMenuHandler {
                 }
             } catch {
                 logger.error(error)
-                delegate?.itemContextMenuHandlerDidEncounter(error: error)
+                handleError(error)
             }
         }
     }
@@ -105,7 +117,7 @@ extension ItemContextMenuHandler {
                 }
             } catch {
                 logger.error(error)
-                delegate?.itemContextMenuHandlerDidEncounter(error: error)
+                handleError(error)
             }
         }
     }
@@ -122,7 +134,7 @@ extension ItemContextMenuHandler {
                 }
             } catch {
                 logger.error(error)
-                delegate?.itemContextMenuHandlerDidEncounter(error: error)
+                handleError(error)
             }
         }
     }
@@ -142,5 +154,9 @@ private extension ItemContextMenuHandler {
             throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
         }
         return encryptedItem
+    }
+
+    func handleError(_ error: Error) {
+        clipboardManager.bannerManager?.displayTopErrorMessage(error)
     }
 }

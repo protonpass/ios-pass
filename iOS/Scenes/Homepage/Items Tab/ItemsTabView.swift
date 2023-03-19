@@ -264,7 +264,7 @@ struct ItemsTabView: View {
                               onEdit: { viewModel.edit(item) },
                               onTrash: { viewModel.trash(item) })
             case .alias:
-                return .alias(onCopyAlias: { viewModel.copyAlias(item) },
+                return .alias(onCopyAlias: { viewModel.copyAliasAddress(item) },
                               onEdit: { viewModel.edit(item) },
                               onTrash: { viewModel.trash(item) })
 
