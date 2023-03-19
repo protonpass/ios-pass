@@ -42,6 +42,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
     private let eventLoop: SyncEventLoop
+    private let itemContextMenuHandler: ItemContextMenuHandler
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
     private let manualLogIn: Bool
@@ -108,6 +109,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                itemRepository: itemRepository,
                                shareKeyRepository: shareKeyRepository,
                                logManager: logManager)
+        self.itemContextMenuHandler = .init(clipboardManager: clipboardManager,
+                                            itemRepository: itemRepository,
+                                            logManager: logManager)
         self.itemRepository = ItemRepository(userData: userData,
                                              symmetricKey: symmetricKey,
                                              container: container,
@@ -137,6 +141,7 @@ private extension HomepageCoordinator {
     func finalizeInitialization() {
         eventLoop.delegate = self
         clipboardManager.bannerManager = bannerManager
+        itemContextMenuHandler.delegate = self
 
         preferences.objectWillChange
             .sink { [unowned self] _ in
@@ -163,7 +168,8 @@ private extension HomepageCoordinator {
     }
 
     func start() {
-        let homepageViewModel = HomepageViewModel(itemRepository: itemRepository,
+        let homepageViewModel = HomepageViewModel(itemContextMenuHandler: itemContextMenuHandler,
+                                                  itemRepository: itemRepository,
                                                   manualLogIn: manualLogIn,
                                                   logManager: logManager,
                                                   preferences: preferences,
@@ -339,40 +345,6 @@ private extension HomepageCoordinator {
         }
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
-
-    func handleTrashedItem(_ item: ItemUiModel) {
-        let message: String
-        switch item.type {
-        case .alias:
-            message = "Alias deleted"
-        case .login:
-            message = "Login deleted"
-        case .note:
-            message = "Note deleted"
-        }
-
-        if isAtRootViewController() {
-            bannerManager.displayBottomInfoMessage(message)
-        } else {
-            dismissTopMostViewController(animated: true) { [unowned self] in
-                var placeholderViewController: UIViewController?
-                if UIDevice.current.isIpad,
-                   let currentItemDetailViewModel,
-                   currentItemDetailViewModel.itemContent.shareId == item.shareId,
-                   currentItemDetailViewModel.itemContent.item.itemID == item.itemId {
-                    let placeholderView = ItemDetailPlaceholderView { self.popTopViewController(animated: true) }
-                    placeholderViewController = UIHostingController(rootView: placeholderView)
-                }
-                self.popToRoot(animated: true, secondaryViewController: placeholderViewController)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [unowned self] in
-                    self.bannerManager.displayBottomInfoMessage(message)
-                }
-            }
-        }
-
-        homepageViewModel?.vaultsManager.refresh()
-        Task { await searchViewModel?.refreshResults() }
-    }
 }
 
 // MARK: - Public APIs
@@ -454,10 +426,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
         presentItemDetailView(for: itemContent)
-    }
-
-    func itemsTabViewModelDidTrash(item: ItemUiModel) {
-        handleTrashedItem(item)
     }
 
     func itemsTabViewModelDidEncounter(error: Error) {
@@ -604,6 +572,26 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 extension HomepageCoordinator: LogInDetailViewModelDelegate {
     func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
         presentItemDetailView(for: itemContent)
+    }
+}
+
+// MARK: - ItemContextMenuHandlerDelegate
+extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
+    func itemContextMenuHandlerWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func itemContextMenuHandlerWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
+    func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent) {
+        presentItemDetailView(for: itemContent)
+    }
+
+    func itemContextMenuHandlerDidTrashAnItem() {
+        homepageViewModel?.vaultsManager.refresh()
+        Task { await searchViewModel?.refreshResults() }
     }
 }
 
