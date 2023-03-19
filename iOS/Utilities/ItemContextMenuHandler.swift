@@ -50,7 +50,7 @@ final class ItemContextMenuHandler {
 // Only show & hide spinner when trashing because API calls are needed.
 // Other operations are local so no need.
 extension ItemContextMenuHandler {
-    func edit(_ item: ItemUiModel) {
+    func edit(_ item: ItemTypeIdentifiable) {
         Task { @MainActor in
             do {
                 let itemContent = try await self.getDecryptedItemContent(for: item)
@@ -61,7 +61,7 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func trash(_ item: ItemUiModel) {
+    func trash(_ item: ItemTypeIdentifiable) {
         Task { @MainActor in
             defer { delegate?.itemContextMenuHandlerWantsToHideSpinner() }
             do {
@@ -88,7 +88,7 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func copyUsername(_ item: ItemUiModel) {
+    func copyUsername(_ item: ItemTypeIdentifiable) {
         guard case .login = item.type else { return }
         Task { @MainActor in
             do {
@@ -105,7 +105,7 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func copyPassword(_ item: ItemUiModel) {
+    func copyPassword(_ item: ItemTypeIdentifiable) {
         guard case .login = item.type else { return }
         Task { @MainActor in
             do {
@@ -122,7 +122,7 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func copyAlias(_ item: ItemUiModel) {
+    func copyAlias(_ item: ItemTypeIdentifiable) {
         guard case .alias = item.type else { return }
         Task { @MainActor in
             do {

@@ -122,24 +122,8 @@ extension ItemsTabViewModel {
         }
     }
 
-    func edit(_ item: ItemUiModel) {
-        itemContextMenuHandler.edit(item)
-    }
-
     func trash(_ item: ItemUiModel) {
         itemContextMenuHandler.trash(item)
-    }
-
-    func copyUsername(_ item: ItemUiModel) {
-        itemContextMenuHandler.copyUsername(item)
-    }
-
-    func copyPassword(_ item: ItemUiModel) {
-        itemContextMenuHandler.copyPassword(item)
-    }
-
-    func copyAliasAddress(_ item: ItemUiModel) {
-        itemContextMenuHandler.copyAlias(item)
     }
 }
 
