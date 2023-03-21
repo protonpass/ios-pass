@@ -88,6 +88,7 @@ struct SearchView: View {
                                   itemCount: itemCount,
                                   results: results,
                                   safeAreaInsets: safeAreaInsets,
+                                  onScroll: { isFocusedOnSearchBar = false },
                                   onSelectItem: { viewModel.viewDetail(of: $0) },
                                   onSelectSortType: viewModel.presentSortTypeList)
 
