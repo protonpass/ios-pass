@@ -21,7 +21,7 @@
 import Core
 
 public enum SortType: CaseIterable {
-    case mostRecent, alphabetical, newestToNewest, oldestToNewest
+    case mostRecent, alphabetical, newestToOldest, oldestToNewest
 
     public var title: String {
         switch self {
@@ -29,7 +29,7 @@ public enum SortType: CaseIterable {
             return "Most recent"
         case .alphabetical:
             return "Alphabetical"
-        case .newestToNewest:
+        case .newestToOldest:
             return "Newest to oldest"
         case .oldestToNewest:
             return "Oldest to newest"

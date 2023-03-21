@@ -27,7 +27,7 @@ struct SearchView: View {
     @FocusState private var isFocusedOnSearchBar: Bool
     @StateObject var viewModel: SearchViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
-    @State private var term = ""
+    @State private var query = ""
 
     var body: some View {
         GeometryReader { proxy in
@@ -37,16 +37,19 @@ struct SearchView: View {
                 switch viewModel.state {
                 case .initializing:
                     SearchViewSkeleton()
-                case .clean, .results:
+
+                case .empty, .history, .noResults, .results:
                     content
+
                 case .error(let error):
                     RetryableErrorView(errorMessage: error.messageForTheUser,
-                                       onRetry: { Task { await viewModel.loadItems() } })
+                                       onRetry: { Task { await viewModel.refreshResults() } })
                 }
             }
             .animation(.default, value: viewModel.state)
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
+                Task { await viewModel.refreshResults() }
             }
         }
     }
@@ -56,39 +59,37 @@ struct SearchView: View {
             searchBar
 
             switch viewModel.state {
-            case .clean:
-                if viewModel.searchEntries.isEmpty {
-                    EmptySearchView()
-                        .frame(maxHeight: .infinity)
-                        .padding(.bottom, safeAreaInsets.bottom + 200)
-                } else {
-                    SearchRecentResultsView(
-                        results: viewModel.searchEntries,
-                        onSelect: { viewModel.viewDetail(of: $0) },
-                        onRemove: { viewModel.removeFromHistory($0) },
-                        onClearResults: viewModel.removeAllSearchHistory)
+            case .empty:
+                EmptySearchView()
+                    .frame(maxHeight: .infinity)
+                    .padding(.bottom, safeAreaInsets.bottom + 200)
+
+            case .history(let history):
+                SearchRecentResultsView(
+                    results: history,
+                    onSelect: { viewModel.viewDetail(of: $0) },
+                    onRemove: { viewModel.removeFromHistory($0) },
+                    onClearResults: viewModel.removeAllSearchHistory)
+
+            case .noResults(let query):
+                switch viewModel.vaultSelection {
+                case .all:
+                    NoSearchResultsInAllVaultView(query: query)
+                case .precise(let vault):
+                    NoSearchResultsInPreciseVaultView(query: query,
+                                                      vaultName: vault.name,
+                                                      action: viewModel.searchInAllVaults)
                 }
 
-            case .results:
-                if viewModel.results.isEmpty {
-                    switch viewModel.vaultSelection {
-                    case .all:
-                        NoSearchResultsInAllVaultView(term: term)
-                    case .precise(let vault):
-                        NoSearchResultsInPreciseVaultView(term: term,
-                                                          vaultName: vault.name,
-                                                          action: viewModel.searchInAllVaults)
-                    }
-                } else {
-                    SearchResultsView(selectedType: $viewModel.selectedType,
-                                      selectedSortType: $viewModel.selectedSortType,
-                                      results: viewModel.filteredResults,
-                                      itemContextMenuHandler: viewModel.itemContextMenuHandler,
-                                      itemCount: viewModel.itemCount,
-                                      safeAreaInsets: safeAreaInsets,
-                                      onSelectItem: { viewModel.viewDetail(of: $0) },
-                                      onSelectSortType: viewModel.presentSortTypeList)
-                }
+            case let .results(itemCount, results):
+                SearchResultsView(selectedType: $viewModel.selectedType,
+                                  selectedSortType: $viewModel.selectedSortType,
+                                  itemContextMenuHandler: viewModel.itemContextMenuHandler,
+                                  itemCount: itemCount,
+                                  results: results,
+                                  safeAreaInsets: safeAreaInsets,
+                                  onSelectItem: { viewModel.viewDetail(of: $0) },
+                                  onSelectSortType: viewModel.presentSortTypeList)
 
             default:
                 // Impossible cases
@@ -99,7 +100,7 @@ struct SearchView: View {
         }
         .ignoresSafeArea(edges: .bottom)
         .onFirstAppear { isFocusedOnSearchBar = true }
-        .onChange(of: term) { term in
+        .onChange(of: query) { term in
             viewModel.search(term)
         }
     }
@@ -115,14 +116,14 @@ struct SearchView: View {
                         .frame(width: 20, height: 20)
                         .foregroundColor(.primary)
 
-                    TextField(viewModel.searchBarPlaceholder, text: $term)
+                    TextField(viewModel.searchBarPlaceholder, text: $query)
                         .tint(.passBrand)
                         .autocorrectionDisabled()
                         .focused($isFocusedOnSearchBar)
                         .foregroundColor(.primary)
 
                     Button(action: {
-                        term = ""
+                        query = ""
                     }, label: {
                         Image(uiImage: IconProvider.cross)
                             .resizable()
@@ -131,8 +132,8 @@ struct SearchView: View {
                             .foregroundColor(.primary)
                     })
                     .buttonStyle(.plain)
-                    .opacity(term.isEmpty ? 0 : 1)
-                    .animation(.default, value: term.isEmpty)
+                    .opacity(query.isEmpty ? 0 : 1)
+                    .animation(.default, value: query.isEmpty)
                 }
                 .foregroundColor(.textWeak)
                 .padding(.horizontal)

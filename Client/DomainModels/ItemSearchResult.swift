@@ -105,6 +105,15 @@ extension ItemSearchResult: AlphabeticalSortable {
     public var alphabeticalSortableString: String { title.fullText }
 }
 
-extension ItemSearchResult: Identifiable {
-    public var id: String { itemId + shareId }
+extension ItemSearchResult: Hashable {
+    public static func == (lhs: ItemSearchResult, rhs: ItemSearchResult) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(itemId)
+        hasher.combine(shareId)
+        let highlightTexts = [title.highlightText] + detail.map { $0.highlightText }
+        hasher.combine(highlightTexts)
+    }
 }
