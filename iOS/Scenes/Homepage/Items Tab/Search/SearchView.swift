@@ -117,6 +117,7 @@ struct SearchView: View {
 
                     TextField(viewModel.searchBarPlaceholder, text: $term)
                         .tint(.passBrand)
+                        .autocorrectionDisabled()
                         .focused($isFocusedOnSearchBar)
                         .foregroundColor(.primary)
 

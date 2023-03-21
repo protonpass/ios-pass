@@ -88,7 +88,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
         Task { await loadItems() }
 
         searchTermSubject
-            .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
+            .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
             .sink { [unowned self] term in
                 self.doSearch(term: term)
             }
