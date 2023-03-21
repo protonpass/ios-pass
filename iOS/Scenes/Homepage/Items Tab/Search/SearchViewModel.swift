@@ -24,9 +24,17 @@ import Core
 import CryptoKit
 
 enum SearchViewState {
+    /// Indexing items
     case initializing
-    case clean
-    case results
+    /// No history, empty search query
+    case empty
+    /// Non-empty history
+    case history([SearchEntryUiModel])
+    /// No results for the given search query
+    case noResults(String)
+    /// Results with a given search query
+    case results(ItemCount, [ItemSearchResult])
+    /// Error
     case error(Error)
 }
 
@@ -41,13 +49,8 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published private(set) var state = SearchViewState.initializing
-    @Published private(set) var itemCount = ItemCount.zero
     @Published var selectedType: ItemContentType?
     @Published var selectedSortType = SortType.mostRecent
-    @Published private(set) var results = [ItemSearchResult]()
-    /// All the results that match `selectedType`
-    @Published private(set) var filteredResults = [ItemSearchResult]()
-    @Published private(set) var searchEntries = [SearchEntryUiModel]()
 
     // Injected properties
     private let itemRepository: ItemRepositoryProtocol
@@ -58,11 +61,13 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     let itemContextMenuHandler: ItemContextMenuHandler
 
     // Self-intialized properties
-    private var lastSearchTerm = ""
-    private let searchTermSubject = PassthroughSubject<String, Never>()
+    private var lastSearchQuery = ""
+    private let searchQuerySubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
     private var allActiveItems = [SymmetricallyEncryptedItem]()
     private var searchableItems = [SearchableItem]()
+    private var history = [SearchEntryUiModel]()
+    private var results = [ItemSearchResult]()
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -85,17 +90,22 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
         self.symmetricKey = symmetricKey
         self.vaultSelection = vaultSelection
 
-        Task { await loadItems() }
-
-        searchTermSubject
+        searchQuerySubject
             .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
             .sink { [unowned self] term in
-                self.doSearch(term: term)
+                self.doSearch(query: term)
             }
             .store(in: &cancellables)
 
         $selectedType
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] _ in
+                self.filterResults()
+            }
+            .store(in: &cancellables)
+
+        $selectedSortType
+            .receive(on: DispatchQueue.main)
             .sink { [unowned self] _ in
                 self.filterResults()
             }
@@ -105,51 +115,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
 // MARK: - Private APIs
 private extension SearchViewModel {
-    @MainActor
-    func refreshSearchHistory() async throws {
-        let rawSearchEntries = try await searchEntryDatasource.getAllEntries()
-        let symmetricKey = itemRepository.symmetricKey
-        searchEntries = try rawSearchEntries.compactMap { entry in
-            if let item = allActiveItems.first(where: {
-                $0.shareId == entry.shareID && $0.itemId == entry.itemID }) {
-                return try item.toSearchEntryUiModel(symmetricKey)
-            } else {
-                return nil
-            }
-        }
-    }
-
-    func doSearch(term: String) {
-        lastSearchTerm = term
-        let term = term.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !term.isEmpty else { state = .clean; return }
-
-        lastTask?.cancel()
-        lastTask = Task { @MainActor in
-            selectedType = nil
-            let hashedTerm = term.sha256Hashed()
-            logger.trace("Searching for \"\(hashedTerm)\"")
-            results = searchableItems.result(for: term)
-            itemCount = .init(items: results)
-            filterResults()
-            state = .results
-            logger.trace("Get \(results.count) result(s) for \"\(hashedTerm)\"")
-        }
-    }
-
-    func filterResults() {
-        if let selectedType {
-            filteredResults = results.filter { $0.type == selectedType }
-        } else {
-            filteredResults = results
-        }
-    }
-}
-
-// MARK: - Public APIs
-extension SearchViewModel {
-    @MainActor
-    func loadItems() async {
+    func indexItems() async {
         do {
             if case .error = state {
                 state = .initializing
@@ -158,7 +124,6 @@ extension SearchViewModel {
             allActiveItems = try await itemRepository.getItems(state: .active)
             try await refreshSearchHistory()
 
-            // Index items for search
             let filteredActiveItems: [SymmetricallyEncryptedItem]
             switch vaultSelection {
             case .all:
@@ -166,23 +131,89 @@ extension SearchViewModel {
             case .precise(let vault):
                 filteredActiveItems = allActiveItems.filter { $0.shareId == vault.shareId }
             }
-            searchableItems = try filteredActiveItems.map { try SearchableItem(from: $0,
-                                                                               symmetricKey: symmetricKey) }
-
-            state = .clean
+            searchableItems =
+            try filteredActiveItems.map { try SearchableItem(from: $0,
+                                                             symmetricKey: symmetricKey) }
         } catch {
             state = .error(error)
         }
     }
 
     @MainActor
+    func refreshSearchHistory() async throws {
+        let searchEntries = try await searchEntryDatasource.getAllEntries()
+        let symmetricKey = itemRepository.symmetricKey
+        history = try searchEntries.compactMap { entry in
+            if let item = allActiveItems.first(where: {
+                $0.shareId == entry.shareID && $0.itemId == entry.itemID }) {
+                return try item.toSearchEntryUiModel(symmetricKey)
+            } else {
+                return nil
+            }
+        }
+
+        switch state {
+        case .history:
+            if history.isEmpty {
+                state = .empty
+            } else {
+                state = .history(history)
+            }
+        default:
+            break
+        }
+    }
+
+    func doSearch(query: String) {
+        lastSearchQuery = query
+        let query = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !query.isEmpty else {
+            if history.isEmpty {
+                state = .empty
+            } else {
+                state = .history(history)
+            }
+            return
+        }
+
+        lastTask?.cancel()
+        lastTask = Task { @MainActor in
+            selectedType = nil
+            let hashedQuery = query.sha256Hashed()
+            logger.trace("Searching for \"\(hashedQuery)\"")
+            results = searchableItems.result(for: query)
+            filterResults()
+            logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
+        }
+    }
+
+    func filterResults() {
+        guard !results.isEmpty else {
+            state = .noResults(lastSearchQuery)
+            return
+        }
+
+        let filteredResults: [ItemSearchResult]
+        if let selectedType {
+            filteredResults = results.filter { $0.type == selectedType }
+        } else {
+            filteredResults = results
+        }
+
+        self.state = .results(.init(items: results), filteredResults)
+    }
+}
+
+// MARK: - Public APIs
+extension SearchViewModel {
+    @MainActor
     func refreshResults() async {
-        await loadItems()
-        doSearch(term: lastSearchTerm)
+        await indexItems()
+        doSearch(query: lastSearchQuery)
     }
 
     func search(_ term: String) {
-        searchTermSubject.send(term)
+        searchQuerySubject.send(term)
     }
 
     func viewDetail(of item: ItemIdentifiable) {
@@ -244,9 +275,18 @@ extension SearchViewModel: SortTypeListViewModelDelegate {
 extension SearchViewState: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
-        case (.initializing, .initializing),
-            (.clean, .clean):
+        case (.initializing, .initializing), (.empty, .empty):
             return true
+
+        case let (.history(lhsHistory), .history(rhsHistory)):
+            return lhsHistory == rhsHistory
+
+        case let (.noResults(lhsQuery), .noResults(rhsQuery)):
+            return lhsQuery == rhsQuery
+
+        case let (.results(_, lhsResults), .results(_, rhsResults)):
+            return lhsResults.hashValue == rhsResults.hashValue
+
         case let (.error(lhsError), .error(rhsError)):
             return lhsError.messageForTheUser == rhsError.messageForTheUser
         default:

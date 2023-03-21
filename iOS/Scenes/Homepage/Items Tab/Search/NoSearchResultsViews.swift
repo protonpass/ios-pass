@@ -22,11 +22,11 @@ import SwiftUI
 import UIComponents
 
 struct NoSearchResultsInAllVaultView: View {
-    let term: String
+    let query: String
 
     var body: some View {
         VStack {
-            Text("Coundn't find \"\(term)\" in all vaults")
+            Text("Coundn't find \"\(query)\" in all vaults")
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .padding(.bottom)
@@ -43,13 +43,13 @@ struct NoSearchResultsInAllVaultView: View {
 }
 
 struct NoSearchResultsInPreciseVaultView: View {
-    let term: String
+    let query: String
     let vaultName: String
     let action: () -> Void
 
     var body: some View {
         VStack {
-            Text("Coundn't find \"\(term)\" in \(vaultName)")
+            Text("Coundn't find \"\(query)\" in \(vaultName)")
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .padding(.bottom)

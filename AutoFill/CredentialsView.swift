@@ -218,7 +218,7 @@ struct CredentialsView: View {
 
     private func searchResultsList(_ results: [ItemSearchResult]) -> some View {
         List {
-            ForEach(results) { result in
+            ForEach(results, id: \.hashValue) { result in
                 Button(action: {
                     select(item: result)
                 }, label: {

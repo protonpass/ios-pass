@@ -27,9 +27,9 @@ struct SearchResultsView: View {
     @Binding var selectedType: ItemContentType?
     @Binding var selectedSortType: SortType
     private let uuid = UUID()
-    let results: [ItemSearchResult]
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemCount: ItemCount
+    let results: [ItemSearchResult]
     let safeAreaInsets: EdgeInsets
     let onSelectItem: (ItemSearchResult) -> Void
     let onSelectSortType: () -> Void
@@ -42,7 +42,7 @@ struct SearchResultsView: View {
                 Text("\(results.count)")
                     .font(.callout)
                     .fontWeight(.bold) +
-                Text(" results")
+                Text(" result(s)")
                     .font(.callout)
                     .foregroundColor(.textWeak)
 
@@ -66,7 +66,7 @@ struct SearchResultsView: View {
                         .frame(height: safeAreaInsets.bottom)
                 }
                 .listStyle(.plain)
-                .animation(.default, value: results.count)
+                .animation(.default, value: results.hashValue)
                 .onChange(of: selectedType) { _ in
                     proxy.scrollTo(uuid)
                 }
@@ -81,7 +81,7 @@ struct SearchResultsView: View {
             itemList(items.mostRecentSortResult())
         case .alphabetical:
             itemList(items.alphabeticalSortResult())
-        case .newestToNewest:
+        case .newestToOldest:
             itemList(items.monthYearSortResult(direction: .descending))
         case .oldestToNewest:
             itemList(items.monthYearSortResult(direction: .ascending))
@@ -119,7 +119,7 @@ struct SearchResultsView: View {
             EmptyView()
         } else {
             Section(content: {
-                ForEach(items) { item in
+                ForEach(items, id: \.hashValue) { item in
                     itemRow(for: item)
                 }
             }, header: {
@@ -133,13 +133,13 @@ struct SearchResultsView: View {
             onSelectItem(item)
         }, label: {
             ItemSearchResultView(result: item)
+                .itemContextMenu(item: item, handler: itemContextMenuHandler)
         })
         .listRowSeparator(.hidden)
         .listRowInsets(.zero)
         .padding(.horizontal)
         .padding(.vertical, 12)
         .listRowBackground(Color.clear)
-        .itemContextMenu(item: item, handler: itemContextMenuHandler)
     }
 }
 

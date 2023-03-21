@@ -50,6 +50,7 @@ struct ItemsTabView: View {
                                    onRetry: viewModel.vaultsManager.refresh)
             }
         }
+        .animation(.default, value: vaultsManager.state)
         .background(Color.passBackground)
     }
 
@@ -147,7 +148,7 @@ struct ItemsTabView: View {
             itemList(items.mostRecentSortResult())
         case .alphabetical:
             itemList(items.alphabeticalSortResult())
-        case .newestToNewest:
+        case .newestToOldest:
             itemList(items.monthYearSortResult(direction: .descending))
         case .oldestToNewest:
             itemList(items.monthYearSortResult(direction: .ascending))
