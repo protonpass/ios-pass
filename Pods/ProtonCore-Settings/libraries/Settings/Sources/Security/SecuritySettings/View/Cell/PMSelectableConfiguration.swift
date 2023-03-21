@@ -34,7 +34,7 @@ public struct PMSelectableConfiguration: PMCellSuplier {
 
     public func cell(at indexPath: IndexPath, for tableView: UITableView, in parent: UIViewController) -> UITableViewCell {
         let cell: PMSelectableCell = tableView.dequeueReusableCell()
-        let hasSeparator =  !tableView.isLastInSection(for: indexPath)
+        let hasSeparator = !tableView.isLastInSection(for: indexPath)
         cell.configureCell(with: self, hasSeparator: hasSeparator, isSelected: isSelected)
         return cell
     }

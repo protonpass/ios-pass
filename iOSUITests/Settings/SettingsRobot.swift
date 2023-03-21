@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 // swiftlint:disable prefixed_toplevel_constant
-import pmtest
+import fusion
 import ProtonCore_TestingToolkit
 import XCTest
 

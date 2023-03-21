@@ -21,7 +21,7 @@
 
 // swiftlint:disable prefixed_toplevel_constant
 
-import pmtest
+import fusion
 import ProtonCore_TestingToolkit
 import XCTest
 
