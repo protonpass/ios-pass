@@ -53,7 +53,7 @@ public struct TextEditorWithPlaceholder: View {
                     .submitLabel(submitLabel)
                     .offset(x: -4)
             }
-            .disableAnimations()
+            .animationsDisabled()
         }
     }
 }

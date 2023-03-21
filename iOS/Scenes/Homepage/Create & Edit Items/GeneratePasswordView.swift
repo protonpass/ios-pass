@@ -35,14 +35,14 @@ struct GeneratePasswordView: View {
                 .font(.title3)
                 .minimumScaleFactor(0.5)
                 .frame(maxHeight: .infinity, alignment: .center)
-                .disableAnimations()
+                .animationsDisabled()
 
             PassDivider()
 
             HStack {
                 Text("\(Int(viewModel.length)) characters")
                     .frame(minWidth: 120, alignment: .leading)
-                    .disableAnimations()
+                    .animationsDisabled()
                 Slider(value: $viewModel.length,
                        in: 4...64,
                        step: 1)

@@ -52,7 +52,7 @@ struct SearchResultsView: View {
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
-            .disableAnimations()
+            .animationsDisabled()
 
             ScrollViewReader { proxy in
                 List {
@@ -162,7 +162,7 @@ private struct ItemSearchResultView: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 HighlightText(highlightableText: result.title)
-                    .disableAnimations()
+                    .animationsDisabled()
 
                 VStack(alignment: .leading, spacing: 2) {
                     ForEach(0..<result.detail.count, id: \.self) { index in
@@ -172,7 +172,7 @@ private struct ItemSearchResultView: View {
                                 .font(.callout)
                                 .foregroundColor(Color(.secondaryLabel))
                                 .lineLimit(1)
-                                .disableAnimations()
+                                .animationsDisabled()
                         }
                     }
                 }

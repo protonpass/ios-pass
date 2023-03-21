@@ -84,7 +84,7 @@ private struct ItemCountChip: View {
         }
         .buttonStyle(.plain)
         .disabled(count == 0) // swiftlint:disable:this empty_count
-        .disableAnimations()
+        .animationsDisabled()
     }
 }
 

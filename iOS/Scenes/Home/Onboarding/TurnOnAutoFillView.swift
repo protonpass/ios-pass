@@ -79,7 +79,7 @@ struct TurnOnAutoFillView: View {
                         Button(action: dismiss.callAsFunction) {
                             Text("Not now")
                                 .foregroundColor(.interactionNorm)
-                                .disableAnimations()
+                                .animationsDisabled()
                         }
                     }
 

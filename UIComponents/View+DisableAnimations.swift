@@ -21,9 +21,11 @@
 import SwiftUI
 
 public extension View {
-    func disableAnimations() -> some View {
+    func animationsDisabled(_ disabled: Bool = true) -> some View {
         transaction { transaction in
-            transaction.animation = nil
+            if disabled {
+                transaction.animation = nil
+            }
         }
     }
 }
