@@ -3,7 +3,7 @@ def proton_core_path
 end
 
 def proton_core_version
-  '3.28.2'
+  '3.29.0'
 end
   
 def pmtest_path
@@ -136,7 +136,7 @@ target "iOSUITests" do
   pod "ProtonCore-TestingToolkit/UITests/Login", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-TestingToolkit/UITests/PaymentsUI", :git => proton_core_path, :tag => proton_core_version
   pod 'swift-snapshot-testing', :git => proton_core_path, :tag => proton_core_version
-  pod "pmtest", :git => "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
+  pod "fusion", :git => "git@gitlab.protontech.ch:tpe/apple-fusion.git", :commit => "1ba256d5"
 end
 
 

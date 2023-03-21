@@ -485,13 +485,13 @@ extension PMBanner {
     }
 
     private func showAnimate(ignoreKeyboard: Bool) {
-        let keyboardHeight = ignoreKeyboard ? 0: self.getKeyboardHeight()
+        let keyboardHeight = ignoreKeyboard ? 0 : self.getKeyboardHeight()
         guard let parent = self.superview else { return }
         switch self.position! {
         case .top, .topCustom:
             self.topConstraint?.constant = self.position!.edgeInsets.top + parent.safeGuide.top
         case .bottom, .bottomCustom:
-            let height = keyboardHeight > 0 ? keyboardHeight: parent.safeGuide.bottom
+            let height = keyboardHeight > 0 ? keyboardHeight : parent.safeGuide.bottom
             self.bottomConstraint?.constant = -1 * self.position!.edgeInsets.bottom - height
         }
         UIView.animate(withDuration: ANIMATE_DURATION) {
