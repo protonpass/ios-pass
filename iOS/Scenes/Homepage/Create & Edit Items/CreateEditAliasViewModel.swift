@@ -198,20 +198,21 @@ extension CreateEditAliasViewModel {
             do {
                 state = .loading
 
+                let aliasOptions = try await getAliasOptionsTask(shareId: shareId).value
+                suffixSelection = .init(suffixes: aliasOptions.suffixes)
+                suffixSelection?.attach(to: self, storeIn: &cancellables)
+                mailboxSelection = .init(mailboxes: aliasOptions.mailboxes)
+                mailboxSelection?.attach(to: self, storeIn: &cancellables)
+
                 if case .edit(let itemContent) = mode {
                     let alias =
                     try await aliasRepository.getAliasDetailsTask(shareId: shareId,
                                                                   itemId: itemContent.item.itemID).value
                     self.aliasEmail = alias.email
                     self.alias = alias
+                    self.mailboxSelection?.selectedMailboxes = alias.mailboxes
                     logger.info("Get alias successfully \(itemContent.debugInformation)")
                 }
-
-                let aliasOptions = try await getAliasOptionsTask(shareId: shareId).value
-                suffixSelection = .init(suffixes: aliasOptions.suffixes)
-                suffixSelection?.attach(to: self, storeIn: &cancellables)
-                mailboxSelection = .init(mailboxes: aliasOptions.mailboxes)
-                mailboxSelection?.attach(to: self, storeIn: &cancellables)
 
                 if !aliasOptions.canCreateAlias {
                     createEditAliasViewModelDelegate?.createEditAliasViewModelCanNotCreateMoreAliases()

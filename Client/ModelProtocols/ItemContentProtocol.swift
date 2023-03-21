@@ -19,36 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
-import ProtonCore_UIFoundations
-import UIKit
 
-#warning("Remove ProtonCore_UIFoundations dependency")
 public enum ItemContentType: Int, CaseIterable {
     case login = 0
     case alias = 1
     case note = 2
-
-    public var countTitle: String {
-        switch self {
-        case .login:
-            return "Logins"
-        case .alias:
-            return "Aliases"
-        case .note:
-            return "Notes"
-        }
-    }
-
-    public var filterTitle: String {
-        switch self {
-        case .login:
-            return "All logins"
-        case .alias:
-            return "All aliases"
-        case .note:
-            return "All notes"
-        }
-    }
 
     public var creationMessage: String {
         switch self {
@@ -58,30 +33,6 @@ public enum ItemContentType: Int, CaseIterable {
             return "Alias created"
         case .note:
             return "Note created"
-        }
-    }
-
-    @available(*, deprecated, message: "Should be removed once updated to new UI")
-    public var icon: UIImage {
-        switch self {
-        case .login:
-            return IconProvider.key
-        case .alias:
-            return IconProvider.alias
-        case .note:
-            return IconProvider.note
-        }
-    }
-
-    @available(*, deprecated, message: "Should be removed once updated to new UI")
-    public var iconTintColor: UIColor {
-        switch self {
-        case .alias:
-            return .iconWeak
-        case .login:
-            return .interactionNorm
-        case .note:
-            return .notificationWarning
         }
     }
 }

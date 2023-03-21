@@ -45,7 +45,8 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
     }
     private var cancellables = Set<AnyCancellable>()
 
-    init(itemRepository: ItemRepositoryProtocol,
+    init(itemContextMenuHandler: ItemContextMenuHandler,
+         itemRepository: ItemRepositoryProtocol,
          manualLogIn: Bool,
          logManager: LogManager,
          preferences: Preferences,
@@ -59,7 +60,8 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
                                           shareRepository: shareRepository,
                                           symmetricKey: symmetricKey,
                                           userData: userData)
-        self.itemsTabViewModel = .init(itemRepository: itemRepository,
+        self.itemsTabViewModel = .init(itemContextMenuHandler: itemContextMenuHandler,
+                                       itemRepository: itemRepository,
                                        logManager: logManager,
                                        preferences: preferences,
                                        syncEventLoop: syncEventLoop,
@@ -82,7 +84,13 @@ private extension HomepageViewModel {
 // MARK: - Public APIs
 extension HomepageViewModel {
     func createNewItem() {
-        delegate?.homepageViewModelWantsToCreateNewItem(shareId: vaultsManager.selectedVault?.shareId ?? "")
+        switch vaultsManager.vaultSelection {
+        case .all:
+            // Handle this later
+            break
+        case .precise(let selectedVault):
+            delegate?.homepageViewModelWantsToCreateNewItem(shareId: selectedVault.shareId)
+        }
     }
 }
 

@@ -19,8 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import UIComponents
 import UIKit
+
+public protocol HighlightableText {
+    var fullText: String { get }
+    var highlightText: String? { get }
+    var isLeadingText: Bool { get }
+    var isTrailingText: Bool { get }
+}
 
 public enum SearchResultEither: HighlightableText {
     case notMatched(String)
@@ -63,32 +69,51 @@ public enum SearchResultEither: HighlightableText {
     }
 }
 
-public struct ItemSearchResult: ItemIdentifiable, ItemSearchResultProtocol {
+public struct ItemSearchResult: ItemTypeIdentifiable, ItemContentTypeIdentifiable {
     public let shareId: String
     public let itemId: String
     public let type: ItemContentType
     public let title: HighlightableText
     public let detail: [HighlightableText]
-    public let vaultName: String
-
-    public var icon: UIImage { type.icon }
-    public var iconTintColor: UIColor { type.iconTintColor }
+    public let lastUseTime: Int64
+    public let modifyTime: Int64
 
     public init(shareId: String,
                 itemId: String,
                 type: ItemContentType,
                 title: SearchResultEither,
                 detail: [SearchResultEither],
-                vaultName: String) {
+                lastUseTime: Int64,
+                modifyTime: Int64) {
         self.shareId = shareId
         self.itemId = itemId
         self.type = type
         self.title = title
         self.detail = detail
-        self.vaultName = vaultName
+        self.lastUseTime = lastUseTime
+        self.modifyTime = modifyTime
     }
 }
 
-extension ItemSearchResult: Identifiable {
-    public var id: String { itemId + shareId }
+extension ItemSearchResult: DateSortable {
+    public var dateForSorting: Date {
+        Date(timeIntervalSince1970: TimeInterval(max(lastUseTime, modifyTime)))
+    }
+}
+
+extension ItemSearchResult: AlphabeticalSortable {
+    public var alphabeticalSortableString: String { title.fullText }
+}
+
+extension ItemSearchResult: Hashable {
+    public static func == (lhs: ItemSearchResult, rhs: ItemSearchResult) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(itemId)
+        hasher.combine(shareId)
+        let highlightTexts = [title.highlightText] + detail.map { $0.highlightText }
+        hasher.combine(highlightTexts)
+    }
 }

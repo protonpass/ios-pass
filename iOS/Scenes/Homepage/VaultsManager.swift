@@ -44,6 +44,20 @@ extension VaultManagerState: Equatable {
     }
 }
 
+enum VaultSelection {
+    case all
+    case precise(Vault)
+
+    var searchBarPlacehoder: String {
+        switch self {
+        case .all:
+            return "Search in all vaults"
+        case .precise(let vault):
+            return "Search in \(vault.name)"
+        }
+    }
+}
+
 final class VaultsManager: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -55,29 +69,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     private let userData: UserData
 
     @Published private(set) var state = VaultManagerState.loading
-    @Published private(set) var selectedVault: Vault?
-
-    var vaultCount: Int {
-        switch state {
-        case .loaded(let vaults):
-            return vaults.count
-        default:
-            return 0
-        }
-    }
-
-    var itemCount: Int {
-        switch state {
-        case .loaded(let vaults):
-            if let selectedVault {
-                return vaults.first { $0.vault == selectedVault }?.items.count ?? 0
-            } else {
-                return vaults.map { $0.items.count }.reduce(0) { $0 + $1 }
-            }
-        default:
-            return 0
-        }
-    }
+    @Published private(set) var vaultSelection = VaultSelection.all
 
     init(itemRepository: ItemRepositoryProtocol,
          manualLogIn: Bool,
@@ -145,32 +137,68 @@ private extension VaultsManager {
     func loadContents(for vaults: [Vault]) async throws {
         let uiModels = try await vaults.parallelMap { vault in
             let items = try await self.itemRepository.getItems(shareId: vault.shareId, state: .active)
-            let itemUiModels = try items.map { try $0.toItemListUiModelV2(self.symmetricKey) }
+            let itemUiModels = try items.map { try $0.toItemUiModel(self.symmetricKey) }
             return VaultContentUiModel(vault: vault,
                                        items: itemUiModels)
         }
         state = .loaded(uiModels)
 
-        if !vaults.contains(where: { $0 == selectedVault }) {
-            selectedVault = vaults.first
+        // Reset to `all` when last selected vault is deleted
+        if case .precise(let selectedVault) = vaultSelection {
+            if !vaults.contains(where: { $0 == selectedVault }) {
+                vaultSelection = .all
+            }
         }
     }
 }
 
 // MARK: - Public APIs
 extension VaultsManager {
-    func select(vault: Vault) {
-        guard vault != selectedVault else { return }
-        selectedVault = vault
+    func select(vault: Vault?) {
+        guard let vault else {
+            vaultSelection = .all
+            return
+        }
+        vaultSelection = .precise(vault)
     }
 
-    func getSelectedVaultItems() -> [ItemListUiModelV2] {
-        guard let selectedVault, case .loaded(let vaults) = state else { return [] }
-        return vaults.first { $0.vault == selectedVault }?.items ?? []
+    func isSelected(_ vault: Vault) -> Bool {
+        guard case .precise(let selectedVault) = vaultSelection else { return false }
+        return selectedVault == vault
     }
 
-    func getAllItems() -> [ItemListUiModelV2] {
+    func isAllVaultsSelected() -> Bool {
+        if case .all = vaultSelection {
+            return true
+        }
+        return false
+    }
+
+    func getItem(for vault: Vault?) -> [ItemUiModel] {
         guard case .loaded(let vaults) = state else { return [] }
-        return vaults.map { $0.items }.reduce(into: []) { $0 += $1 }
+        switch vaultSelection {
+        case .all:
+            return vaults.map { $0.items }.reduce(into: []) { $0 += $1 }
+        case .precise(let selectedVault):
+            return vaults.first { $0.vault == selectedVault }?.items ?? []
+        }
+    }
+
+    func getItemCount(for vault: Vault?) -> Int {
+        guard case .loaded(let vaults) = state else { return 0 }
+        if let vault {
+            return vaults.first { $0.vault == vault }?.items.count ?? 0
+        } else {
+            return vaults.map { $0.items.count }.reduce(into: 0) { $0 += $1 }
+        }
+    }
+
+    func getVaultCount() -> Int {
+        switch state {
+        case .loaded(let vaults):
+            return vaults.count
+        default:
+            return 0
+        }
     }
 }

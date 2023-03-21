@@ -23,32 +23,39 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-private let kTopBarHeight: CGFloat = 48
+let kSearchBarHeight: CGFloat = 48
 
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
-    @State private var toBeTrashedItem: ItemListUiModelV2?
+    @State private var toBeTrashedItem: ItemUiModel?
 
     var body: some View {
+        let vaultsManager = viewModel.vaultsManager
         ZStack {
-            switch viewModel.vaultsManager.state {
+            switch vaultsManager.state {
             case .loading:
                 ItemsTabsSkeleton()
 
             case .loaded:
-                content
+                switch vaultsManager.vaultSelection {
+                case .all:
+                    vaultContent(vaultsManager.getItem(for: nil))
+                case .precise(let selectedVault):
+                    vaultContent(vaultsManager.getItem(for: selectedVault))
+                }
 
             case .error(let error):
                 RetryableErrorView(errorMessage: error.messageForTheUser,
                                    onRetry: viewModel.vaultsManager.refresh)
             }
         }
+        .animation(.default, value: vaultsManager.state)
         .background(Color.passBackground)
     }
 
     @ViewBuilder
-    private var content: some View {
+    private func vaultContent(_ items: [ItemUiModel]) -> some View {
         let isShowingTrashingAlert = Binding<Bool>(get: {
             toBeTrashedItem != nil
         }, set: { newValue in
@@ -60,33 +67,15 @@ struct ItemsTabView: View {
         GeometryReader { proxy in
             VStack {
                 topBar
-                HStack {
-                    Text("All")
-                        .font(.callout)
-                        .fontWeight(.bold) +
-                    Text(" (\(viewModel.vaultsManager.itemCount))")
-                        .font(.callout)
-                        .foregroundColor(.textWeak)
-
+                if items.isEmpty {
+                    EmptyVaultView(onCreateNewItem: viewModel.createNewItem)
+                        .padding(.bottom, safeAreaInsets.bottom)
+                } else {
+                    itemList(items)
                     Spacer()
-
-                    sortTypeButton
                 }
-                .padding(.horizontal)
-
-                let items = viewModel.vaultsManager.getSelectedVaultItems()
-                switch viewModel.selectedSortType {
-                case .mostRecent:
-                    itemList(items.mostRecentSortResult())
-                case .alphabetical:
-                    itemList(items.alphabeticalSortResult())
-                case .newestToNewest:
-                    itemList(items.monthYearSortResult(direction: .descending))
-                case .oldestToNewest:
-                    itemList(items.monthYearSortResult(direction: .ascending))
-                }
-                Spacer()
             }
+            .ignoresSafeArea(edges: .bottom)
             .edgesIgnoringSafeArea(.bottom)
             .animation(.default, value: viewModel.vaultsManager.state)
             .onFirstAppear {
@@ -94,7 +83,7 @@ struct ItemsTabView: View {
             }
             .moveToTrashAlert(isPresented: isShowingTrashingAlert) {
                 if let toBeTrashedItem {
-                    viewModel.trash(item: toBeTrashedItem)
+                    viewModel.trash(toBeTrashedItem)
                 }
             }
         }
@@ -110,11 +99,11 @@ struct ItemsTabView: View {
                         .resizable()
                         .scaledToFit()
                         .foregroundColor(Color.passBrand)
-                        .padding(kTopBarHeight / 4)
+                        .padding(kSearchBarHeight / 4)
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 16))
             }
-            .frame(width: kTopBarHeight)
+            .frame(width: kSearchBarHeight)
 
             ZStack {
                 Color.black
@@ -122,8 +111,8 @@ struct ItemsTabView: View {
                     Image(uiImage: IconProvider.magnifier)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 16)
-                    Text("Search in all vaults...")
+                        .frame(width: 20, height: 20)
+                    Text(viewModel.vaultsManager.vaultSelection.searchBarPlacehoder)
                 }
                 .foregroundColor(.textWeak)
                 .padding(.horizontal)
@@ -134,43 +123,39 @@ struct ItemsTabView: View {
             .onTapGesture(perform: viewModel.search)
         }
         .padding(.horizontal)
-        .frame(height: kTopBarHeight)
+        .frame(height: kSearchBarHeight)
     }
 
     @ViewBuilder
-    private var sortTypeButton: some View {
-        if UIDevice.current.isIpad {
-            Menu(content: {
-                ForEach(SortTypeV2.allCases, id: \.self) { type in
-                    Button(action: {
-                        viewModel.selectedSortType = type
-                    }, label: {
-                        HStack {
-                            Text(type.title)
-                            Spacer()
-                            if type == viewModel.selectedSortType {
-                                Image(systemName: "checkmark")
-                            }
-                        }
-                    })
-                }
-            }, label: sortTypeLabel)
-        } else {
-            Button(action: viewModel.presentSortTypeList,
-                   label: sortTypeLabel)
+    private func itemList(_ items: [ItemUiModel]) -> some View {
+        HStack {
+            Text("All")
+                .font(.callout)
+                .fontWeight(.bold) +
+            Text(" (\(items.count))")
+                .font(.callout)
+                .foregroundColor(.textWeak)
+
+            Spacer()
+
+            SortTypeButton(selectedSortType: $viewModel.selectedSortType,
+                           action: viewModel.presentSortTypeList)
+        }
+        .padding(.horizontal)
+
+        switch viewModel.selectedSortType {
+        case .mostRecent:
+            itemList(items.mostRecentSortResult())
+        case .alphabetical:
+            itemList(items.alphabeticalSortResult())
+        case .newestToOldest:
+            itemList(items.monthYearSortResult(direction: .descending))
+        case .oldestToNewest:
+            itemList(items.monthYearSortResult(direction: .ascending))
         }
     }
 
-    private func sortTypeLabel() -> some View {
-        Label(viewModel.selectedSortType.title, systemImage: "arrow.up.arrow.down")
-            .font(.callout.weight(.medium))
-            .foregroundColor(.passBrand)
-            .transaction { transaction in
-                transaction.animation = nil
-            }
-    }
-
-    private func itemList(_ result: MostRecentSortResult<ItemListUiModelV2>) -> some View {
+    private func itemList(_ result: MostRecentSortResult<ItemUiModel>) -> some View {
         ItemListView(
             safeAreaInsets: safeAreaInsets,
             content: {
@@ -186,18 +171,28 @@ struct ItemsTabView: View {
             onRefresh: viewModel.forceSync)
     }
 
-    private func itemList(_ result: AlphabeticalSortResult<ItemListUiModelV2>) -> some View {
-        ItemListView(
-            safeAreaInsets: safeAreaInsets,
-            content: {
-                ForEach(result.buckets, id: \.letter) { bucket in
-                    section(for: bucket.items, headerTitle: bucket.letter.character)
+    private func itemList(_ result: AlphabeticalSortResult<ItemUiModel>) -> some View {
+        ScrollViewReader { proxy in
+            ItemListView(
+                safeAreaInsets: safeAreaInsets,
+                showScrollIndicators: false,
+                content: {
+                    ForEach(result.buckets, id: \.letter) { bucket in
+                        section(for: bucket.items, headerTitle: bucket.letter.character)
+                            .id(bucket.letter.character)
+                    }
+                },
+                onRefresh: viewModel.forceSync)
+            .overlay {
+                HStack {
+                    Spacer()
+                    SectionIndexTitles(proxy: proxy, titles: result.buckets.map { $0.letter.character })
                 }
-            },
-            onRefresh: viewModel.forceSync)
+            }
+        }
     }
 
-    private func itemList(_ result: MonthYearSortResult<ItemListUiModelV2>) -> some View {
+    private func itemList(_ result: MonthYearSortResult<ItemUiModel>) -> some View {
         ItemListView(
             safeAreaInsets: safeAreaInsets,
             content: {
@@ -209,7 +204,7 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private func section(for items: [ItemListUiModelV2], headerTitle: String) -> some View {
+    private func section(for items: [ItemUiModel], headerTitle: String) -> some View {
         if items.isEmpty {
             EmptyView()
         } else {
@@ -223,7 +218,7 @@ struct ItemsTabView: View {
         }
     }
 
-    private func itemRow(for item: ItemListUiModelV2) -> some View {
+    private func itemRow(for item: ItemUiModel) -> some View {
         Button(action: {
             viewModel.viewDetail(of: item)
         }, label: {
@@ -245,7 +240,8 @@ struct ItemsTabView: View {
                 description: item.description)
         })
         .listRowSeparator(.hidden)
-        .listRowInsets(.init(top: 0, leading: 16, bottom: 0, trailing: 16)) // 0 spacing between rows
+        .listRowInsets(.zero)
+        .padding(.horizontal, 16)
         .listRowBackground(Color.clear)
         .frame(height: 64)
         .swipeActions(edge: .trailing) {
@@ -260,13 +256,14 @@ struct ItemsTabView: View {
             })
             .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
         }
+        .itemContextMenu(item: item, handler: viewModel.itemContextMenuHandler)
     }
 
-    private func askForConfirmationOrTrashDirectly(item: ItemListUiModelV2) {
+    private func askForConfirmationOrTrashDirectly(item: ItemUiModel) {
         if viewModel.preferences.askBeforeTrashing {
             toBeTrashedItem = item
         } else {
-            viewModel.trash(item: item)
+            viewModel.trash(item)
         }
     }
 }
@@ -275,16 +272,14 @@ private struct ItemsTabsSkeleton: View {
     var body: some View {
         VStack {
             HStack {
-                AnimatingGrayGradient()
-                    .frame(width: kTopBarHeight)
+                AnimatingGradient()
+                    .frame(width: kSearchBarHeight)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
-                AnimatingGrayGradient()
+                AnimatingGradient()
                     .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .containerShape(Rectangle())
             }
-
-            .frame(height: kTopBarHeight)
+            .frame(height: kSearchBarHeight)
 
             ScrollView {
                 LazyVStack(spacing: 20) {
@@ -300,17 +295,17 @@ private struct ItemsTabsSkeleton: View {
 
     private var itemRow: some View {
         HStack(spacing: 16) {
-            AnimatingGrayGradient()
+            AnimatingGradient()
                 .frame(width: 40, height: 40)
                 .clipShape(Circle())
 
             VStack(alignment: .leading) {
                 Spacer()
-                AnimatingGrayGradient()
+                AnimatingGradient()
                     .frame(width: 170, height: 10)
                     .clipShape(Capsule())
                 Spacer()
-                AnimatingGrayGradient()
+                AnimatingGradient()
                     .frame(width: 200, height: 10)
                     .clipShape(Capsule())
                 Spacer()
@@ -322,13 +317,16 @@ private struct ItemsTabsSkeleton: View {
 
 private struct ItemListView<Content: View>: View {
     let safeAreaInsets: EdgeInsets
+    let showScrollIndicators: Bool
     let content: () -> Content
     let onRefresh: @Sendable () async -> Void
 
     init(safeAreaInsets: EdgeInsets,
+         showScrollIndicators: Bool = true,
          @ViewBuilder content: @escaping () -> Content,
          onRefresh: @Sendable @escaping () async -> Void) {
         self.safeAreaInsets = safeAreaInsets
+        self.showScrollIndicators = showScrollIndicators
         self.content = content
         self.onRefresh = onRefresh
     }
@@ -339,6 +337,7 @@ private struct ItemListView<Content: View>: View {
         }
         .listStyle(.plain)
         .padding(.bottom, safeAreaInsets.bottom)
+        .scrollIndicatorsHidden(!showScrollIndicators)
         .refreshable(action: onRefresh)
     }
 }

@@ -82,6 +82,7 @@ extension LogInDetailViewModel {
     }
 
     func copyPassword() {
+        guard !password.isEmpty else { return }
         copyToClipboard(text: password, message: "Password copied")
     }
 

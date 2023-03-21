@@ -62,36 +62,16 @@ protocol VaultContentViewModelDelegate: AnyObject {
 final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    private var allItems = [ItemListUiModel]()
+    private var allItems = [ItemUiModel]()
     @Published private(set) var state = State.loading
-    @Published private(set) var filteredItems = [ItemListUiModel]()
-    @Published private(set) var sortTypes = SortType.allCases
+    @Published private(set) var filteredItems = [ItemUiModel]()
     @Published var shouldShowAutoFillBanner = false
-    @Published var filterOption = ItemTypeFilterOption.all {
-        didSet {
-            self.sortTypes = SortType.allCases
-            switch filterOption {
-            case .all:
-                break
-            case .filtered:
-                sortTypes.removeAll { $0 == .type }
-                if sortType == .type {
-                    sortType = .modifyTime
-                    return
-                }
-            }
-            filterAndSort()
-        }
-    }
-    @Published var sortType = SortType.modifyTime { didSet { filterAndSort() } }
-    @Published var sortDirection = SortDirection.descending { didSet { filterAndSort() } }
 
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let logger: Logger
     let preferences: Preferences
     let credentialManager: CredentialManagerProtocol
-    let vaultSelection: VaultSelection
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -99,24 +79,17 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop: SyncEventLoop
 
-    weak var itemCountDelegate: ItemCountDelegate?
-
-    var selectedVault: Vault? { vaultSelection.selectedVault }
-    var vaults: [Vault] { vaultSelection.vaults }
-    var otherVaults: [Vault] {
-        vaultSelection.vaults.filter { $0.id != vaultSelection.selectedVault?.id }
-    }
-
+    var selectedVault: Vault?
+    var vaults = [Vault]()
+    var otherVaults = [Vault]()
     weak var delegate: VaultContentViewModelDelegate?
 
-    init(vaultSelection: VaultSelection,
-         itemRepository: ItemRepositoryProtocol,
+    init(itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          symmetricKey: SymmetricKey,
          syncEventLoop: SyncEventLoop,
          preferences: Preferences,
          logManager: LogManager) {
-        self.vaultSelection = vaultSelection
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.symmetricKey = symmetricKey
@@ -126,22 +99,6 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
                             category: "\(Self.self)",
                             manager: logManager)
         showAutoFillBannerIfNecessary()
-
-        vaultSelection.$selectedVault
-            .sink { [unowned self] _ in
-                self.fetchItems(showLoadingIndicator: true)
-            }
-            .store(in: &cancellables)
-    }
-
-    private func updateItemCount() {
-        itemCountDelegate?.itemCountDidUpdate(allItems.generateItemCount())
-    }
-
-    private func filterAndSort() {
-        filteredItems = allItems.filteredAndSorted(filterOption: filterOption,
-                                                   type: sortType,
-                                                   direction: sortDirection)
     }
 
     private func showAutoFillBannerIfNecessary() {
@@ -195,8 +152,6 @@ extension VaultContentViewModel {
 
             do {
                 allItems = try await getItemsTask().value
-                updateItemCount()
-                filterAndSort()
                 state = .loaded
                 logger.info("Fetched \(allItems.count) items")
             } catch {
@@ -206,7 +161,7 @@ extension VaultContentViewModel {
         }
     }
 
-    func selectItem(_ item: ItemListUiModel) {
+    func selectItem(_ item: ItemUiModel) {
         Task { @MainActor in
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
@@ -219,7 +174,7 @@ extension VaultContentViewModel {
         }
     }
 
-    func moveItem(_ item: ItemListUiModel, to vault: Vault) {
+    func moveItem(_ item: ItemUiModel, to vault: Vault) {
         Task { @MainActor in
             defer { delegate?.vaultContentViewModelWantsToHideLoadingHud() }
             do {
@@ -253,7 +208,7 @@ extension VaultContentViewModel {
         }
     }
 
-    func editItem(_ item: ItemListUiModel) {
+    func editItem(_ item: ItemUiModel) {
         Task { @MainActor in
             do {
                 let itemContent = try await getDecryptedItemContentTask(for: item).value
@@ -266,7 +221,7 @@ extension VaultContentViewModel {
         }
     }
 
-    func copyNote(_ item: ItemListUiModel) {
+    func copyNote(_ item: ItemUiModel) {
         guard case .note = item.type else { return }
         Task { @MainActor in
             do {
@@ -283,7 +238,7 @@ extension VaultContentViewModel {
         }
     }
 
-    func copyUsername(_ item: ItemListUiModel) {
+    func copyUsername(_ item: ItemUiModel) {
         guard case .login = item.type else { return }
         Task { @MainActor in
             do {
@@ -300,7 +255,7 @@ extension VaultContentViewModel {
         }
     }
 
-    func copyPassword(_ item: ItemListUiModel) {
+    func copyPassword(_ item: ItemUiModel) {
         guard case .login = item.type else { return }
         Task { @MainActor in
             do {
@@ -317,7 +272,7 @@ extension VaultContentViewModel {
         }
     }
 
-    func copyEmailAddress(_ item: ItemListUiModel) {
+    func copyEmailAddress(_ item: ItemUiModel) {
         guard case .alias = item.type else { return }
         Task { @MainActor in
             do {
@@ -334,7 +289,7 @@ extension VaultContentViewModel {
         }
     }
 
-    func trashItem(_ item: ItemListUiModel) {
+    func trashItem(_ item: ItemUiModel) {
         Task { @MainActor in
             defer { delegate?.vaultContentViewModelWantsToHideLoadingHud() }
             delegate?.vaultContentViewModelWantsToShowLoadingHud()
@@ -354,25 +309,22 @@ extension VaultContentViewModel {
 
 // MARK: - Private supporting tasks
 private extension VaultContentViewModel {
-    func getItemsTask() -> Task<[ItemListUiModel], Error> {
+    func getItemsTask() -> Task<[ItemUiModel], Error> {
         Task.detached(priority: .userInitiated) {
-            guard let shareId = self.vaultSelection.selectedVault?.shareId else {
-                throw PPError.vault(.noSelectedVault)
-            }
-            let encryptedItems = try await self.itemRepository.getItems(shareId: shareId,
+            let encryptedItems = try await self.itemRepository.getItems(shareId: "",
                                                                         state: .active)
-            return try await encryptedItems.parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+            return try await encryptedItems.parallelMap { try $0.toItemUiModel(self.symmetricKey) }
         }
     }
 
-    func getDecryptedItemContentTask(for item: ItemListUiModel) -> Task<ItemContent, Error> {
+    func getDecryptedItemContentTask(for item: ItemUiModel) -> Task<ItemContent, Error> {
         Task.detached(priority: .userInitiated) {
             let encryptedItem = try await self.getItem(shareId: item.shareId, itemId: item.itemId)
             return try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
         }
     }
 
-    func trashItemTask(for item: ItemListUiModel) -> Task<Void, Error> {
+    func trashItemTask(for item: ItemUiModel) -> Task<Void, Error> {
         Task.detached(priority: .userInitiated) {
             let itemToBeTrashed = try await self.getItem(shareId: item.shareId, itemId: item.itemId)
             try await self.itemRepository.trashItems([itemToBeTrashed])
@@ -406,49 +358,5 @@ private extension VaultContentViewModel {
 extension VaultContentViewModel: SyncEventLoopPullToRefreshDelegate {
     func pullToRefreshShouldStopRefreshing() {
         stopRefreshing()
-    }
-}
-
-private extension Array where Element == ItemListUiModel {
-    mutating func filteredAndSorted(filterOption: ItemTypeFilterOption,
-                                    type: SortType,
-                                    direction: SortDirection) -> Self {
-        filter { item in
-            switch filterOption {
-            case .all:
-                return true
-            case .filtered(let type):
-                return item.type == type
-            }
-        }
-        .sorted { lhs, rhs in
-            switch (type, direction) {
-            case (.title, .ascending):
-                return lhs.title < rhs.title
-            case (.title, .descending):
-                return lhs.title > rhs.title
-            case (.type, .ascending):
-                return lhs.type.rawValue < rhs.type.rawValue
-            case (.type, .descending):
-                return lhs.type.rawValue > rhs.type.rawValue
-            case (.createTime, .ascending):
-                return lhs.createTime < rhs.createTime
-            case (.createTime, .descending):
-                return lhs.createTime > rhs.createTime
-            case (.modifyTime, .ascending):
-                return lhs.modifyTime < rhs.modifyTime
-            case (.modifyTime, .descending):
-                return lhs.modifyTime > rhs.modifyTime
-            }
-        }
-    }
-
-    func generateItemCount() -> ItemCount {
-        var dictionary: [ItemContentType: Int] = [:]
-        for type in ItemContentType.allCases {
-            let count = filter { $0.type == type }.count
-            dictionary[type] = count
-        }
-        return .init(total: count, typeCountDictionary: dictionary)
     }
 }

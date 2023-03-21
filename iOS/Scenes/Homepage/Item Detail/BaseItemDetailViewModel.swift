@@ -27,7 +27,7 @@ let kItemDetailSectionPadding: CGFloat = 16
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToGoBack()
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
-    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel)
+    func itemDetailViewModelWantsToRestore(_ item: ItemUiModel)
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
     func itemDetailViewModelWantsToOpen(urlString: String)
@@ -78,7 +78,7 @@ class BaseItemDetailViewModel {
                     try await itemRepository.getItemTask(shareId: itemContent.shareId,
                                                          itemId: itemContent.item.itemID).value {
                     let symmetricKey = itemRepository.symmetricKey
-                    let item = try encryptedItem.toItemListUiModel(symmetricKey)
+                    let item = try encryptedItem.toItemUiModel(symmetricKey)
                     delegate?.itemDetailViewModelWantsToRestore(item)
                     logger.info("Restored \(item.debugInformation)")
                 }

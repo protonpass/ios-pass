@@ -26,17 +26,9 @@ import SwiftUI
 final class MyVaultsViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
-    private let vaultSelection: VaultSelection
     private var cancellables = Set<AnyCancellable>()
 
-    var vaults: [Vault] { vaultSelection.vaults }
+    var vaults = [Vault]()
 
-    init(vaultSelection: VaultSelection) {
-        self.vaultSelection = vaultSelection
-        vaultSelection.objectWillChange
-            .sink { [unowned self] _ in
-                self.objectWillChange.send()
-            }
-            .store(in: &cancellables)
-    }
+    init() {}
 }

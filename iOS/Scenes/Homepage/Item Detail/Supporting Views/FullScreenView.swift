@@ -51,7 +51,7 @@ struct FullScreenView: View {
         NavigationView {
             ZStack {
                 Color.passBackground
-                    .edgesIgnoringSafeArea(.all)
+                    .ignoresSafeArea()
                 switch mode {
                 case .text:
                     FullScreenTextView(originalBrightness: $originalBrightness,
