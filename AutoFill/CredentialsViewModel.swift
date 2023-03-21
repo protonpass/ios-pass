@@ -155,22 +155,16 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
         lastTask?.cancel()
         lastTask = Task { @MainActor in
-            do {
-                let hashedTerm = term.sha256Hashed()
-                logger.trace("Searching for term \(hashedTerm)")
-                state = .loaded(fetchResult, .searching)
-                let searchResults = try fetchResult.searchableItems.result(for: term,
-                                                                           symmetricKey: symmetricKey)
-                if searchResults.isEmpty {
-                    state = .loaded(fetchResult, .noSearchResults)
-                    logger.trace("No results for term \(hashedTerm)")
-                } else {
-                    state = .loaded(fetchResult, .searchResults(searchResults))
-                    logger.trace("Found results for term \(hashedTerm)")
-                }
-            } catch {
-                logger.error(error)
-                state = .error(error)
+            let hashedTerm = term.sha256Hashed()
+            logger.trace("Searching for term \(hashedTerm)")
+            state = .loaded(fetchResult, .searching)
+            let searchResults = fetchResult.searchableItems.result(for: term)
+            if searchResults.isEmpty {
+                state = .loaded(fetchResult, .noSearchResults)
+                logger.trace("No results for term \(hashedTerm)")
+            } else {
+                state = .loaded(fetchResult, .searchResults(searchResults))
+                logger.trace("Found results for term \(hashedTerm)")
             }
         }
     }
@@ -298,7 +292,8 @@ private extension CredentialsViewModel {
                 try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
                 if case .login(let data) = decryptedItemContent.contentData {
-                    searchableItems.append(try SearchableItem(from: encryptedItem))
+                    searchableItems.append(try SearchableItem(from: encryptedItem,
+                                                              symmetricKey: self.symmetricKey))
 
                     let itemUrls = data.urls.compactMap { URL(string: $0) }
                     var matchResults = [URLUtils.Matcher.MatchResult]()
