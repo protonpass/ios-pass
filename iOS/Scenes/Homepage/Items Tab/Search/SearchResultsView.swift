@@ -31,6 +31,7 @@ struct SearchResultsView: View {
     let itemCount: ItemCount
     let results: [ItemSearchResult]
     let safeAreaInsets: EdgeInsets
+    let onScroll: () -> Void
     let onSelectItem: (ItemSearchResult) -> Void
     let onSelectSortType: () -> Void
 
@@ -67,6 +68,7 @@ struct SearchResultsView: View {
                 }
                 .listStyle(.plain)
                 .animation(.default, value: results.hashValue)
+                .gesture(DragGesture().onChanged { _ in onScroll() })
                 .onChange(of: selectedType) { _ in
                     proxy.scrollTo(uuid)
                 }
