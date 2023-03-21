@@ -149,11 +149,16 @@ struct LogInDetailView: View {
                 Text("Password")
                     .sectionTitleText()
 
-                if isShowingPassword {
-                    Text(viewModel.coloredPasswordTexts)
+                if viewModel.password.isEmpty {
+                    Text("Empty password")
+                        .placeholderText()
                 } else {
-                    Text(String(repeating: "•", count: 20))
-                        .sectionContentText()
+                    if isShowingPassword {
+                        Text(viewModel.coloredPasswordTexts)
+                    } else {
+                        Text(String(repeating: "•", count: 20))
+                            .sectionContentText()
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -162,10 +167,12 @@ struct LogInDetailView: View {
 
             Spacer()
 
-            CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
-                         color: tintColor,
-                         action: { isShowingPassword.toggle() })
-            .fixedSize(horizontal: true, vertical: true)
+            if !viewModel.password.isEmpty {
+                CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
+                             color: tintColor,
+                             action: { isShowingPassword.toggle() })
+                .fixedSize(horizontal: true, vertical: true)
+            }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .animation(.default, value: isShowingPassword)

@@ -28,8 +28,8 @@ import SwiftUI
 struct CredentialsFetchResult {
     let vaults: [Vault]
     let searchableItems: [SearchableItem]
-    let matchedItems: [ItemListUiModel]
-    let notMatchedItems: [ItemListUiModel]
+    let matchedItems: [ItemUiModel]
+    let notMatchedItems: [ItemUiModel]
 
     var isEmpty: Bool {
         searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
@@ -58,7 +58,7 @@ enum CredentialsViewLoadedState: Equatable {
     case idle
     case searching
     case noSearchResults
-    case searchResults([String: [ItemSearchResult]]) // Grouped by vault name
+    case searchResults([ItemSearchResult])
 
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
@@ -155,23 +155,16 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
         lastTask?.cancel()
         lastTask = Task { @MainActor in
-            do {
-                let hashedTerm = term.sha256Hashed()
-                logger.trace("Searching for term \(hashedTerm)")
-                state = .loaded(fetchResult, .searching)
-                let searchResults = try fetchResult.searchableItems.result(for: term,
-                                                                           symmetricKey: symmetricKey)
-                if searchResults.isEmpty {
-                    state = .loaded(fetchResult, .noSearchResults)
-                    logger.trace("No results for term \(hashedTerm)")
-                } else {
-                    let resultDictionary = Dictionary(grouping: searchResults, by: { $0.vaultName })
-                    state = .loaded(fetchResult, .searchResults(resultDictionary))
-                    logger.trace("Found results for term \(hashedTerm)")
-                }
-            } catch {
-                logger.error(error)
-                state = .error(error)
+            let hashedTerm = term.sha256Hashed()
+            logger.trace("Searching for term \(hashedTerm)")
+            state = .loaded(fetchResult, .searching)
+            let searchResults = fetchResult.searchableItems.result(for: term)
+            if searchResults.isEmpty {
+                state = .loaded(fetchResult, .noSearchResults)
+                logger.trace("No results for term \(hashedTerm)")
+            } else {
+                state = .loaded(fetchResult, .searchResults(searchResults))
+                logger.trace("Found results for term \(hashedTerm)")
             }
         }
     }
@@ -284,15 +277,9 @@ private extension CredentialsViewModel {
         }
     }
 
-    // swiftlint:disable function_body_length
     func fetchCredentialsTask() -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) {
             let vaults = try await self.shareRepository.getVaults()
-            let getVaultName: (String) -> String = { shareId in
-                let vault = vaults.first { $0.shareId == shareId }
-                return vault?.name ?? ""
-            }
-
             let encryptedItems = try await self.itemRepository.getItems(state: .active)
             self.logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
@@ -305,8 +292,8 @@ private extension CredentialsViewModel {
                 try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
                 if case .login(let data) = decryptedItemContent.contentData {
-                    searchableItems.append(try SearchableItem(symmetricallyEncryptedItem: encryptedItem,
-                                                              vaultName: getVaultName(encryptedItem.shareId)))
+                    searchableItems.append(try SearchableItem(from: encryptedItem,
+                                                              symmetricKey: self.symmetricKey))
 
                     let itemUrls = data.urls.compactMap { URL(string: $0) }
                     var matchResults = [URLUtils.Matcher.MatchResult]()
@@ -332,9 +319,9 @@ private extension CredentialsViewModel {
             }
 
             let matchedItems = try await matchedEncryptedItems.sorted()
-                .parallelMap { try $0.item.toItemListUiModel(self.symmetricKey) }
+                .parallelMap { try $0.item.toItemUiModel(self.symmetricKey) }
             let notMatchedItems = try await notMatchedEncryptedItems.sorted()
-                .parallelMap { try await $0.toItemListUiModel(self.symmetricKey) }
+                .parallelMap { try $0.toItemUiModel(self.symmetricKey) }
 
             self.logger.debug("Mapped \(encryptedItems.count) encrypted items.")
             self.logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
@@ -410,7 +397,7 @@ protocol TitledItemIdentifiable: ItemIdentifiable {
     var itemTitle: String { get }
 }
 
-extension ItemListUiModel: TitledItemIdentifiable {
+extension ItemUiModel: TitledItemIdentifiable {
     var itemTitle: String { title }
 }
 

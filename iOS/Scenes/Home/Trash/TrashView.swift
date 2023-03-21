@@ -24,7 +24,7 @@ import UIComponents
 
 struct TrashView: View {
     @StateObject private var viewModel: TrashViewModel
-    @State private var itemToBeDeleted: ItemListUiModel?
+    @State private var itemToBeDeleted: ItemUiModel?
     @State private var isShowingEmptyTrashAlert = false
 
     init(viewModel: TrashViewModel) {
@@ -118,11 +118,13 @@ struct TrashView: View {
                 if let items = viewModel.itemsDictionary[vaultName] {
                     Section(content: {
                         ForEach(items, id: \.itemId) { item in
-                            GenericItemView(
-                                item: item,
-                                action: { viewModel.selectItem(item) },
-                                subtitleLineLimit: 1,
-                                trailingView: { trailingView(for: item) })
+                            Button(action: {
+                                viewModel.selectItem(item)
+                            }, label: {
+                                GeneralItemRow(thumbnailView: { EmptyView() },
+                                               title: item.title,
+                                               description: item.description)
+                            })
                             .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
                             .swipeActions {
                                 Button(action: { viewModel.restore(item) },
@@ -142,7 +144,7 @@ struct TrashView: View {
         .refreshable { await viewModel.forceSync() }
     }
 
-    private func trailingView(for item: ItemListUiModel) -> some View {
+    private func trailingView(for item: ItemUiModel) -> some View {
         Menu(content: {
             Button(action: {
                 viewModel.restore(item)

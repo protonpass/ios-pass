@@ -20,7 +20,6 @@
 
 import Combine
 import SwiftUI
-import UIComponents
 import UIKit
 
 public protocol CoordinatorProtocol: AnyObject {
@@ -262,5 +261,20 @@ public final class PPSplitViewController: UISplitViewController {
     func setStatusBarStyle(_ style: UIStatusBarStyle) {
         statusBarStyle = style
         setNeedsStatusBarAppearanceUpdate()
+    }
+}
+
+public extension UIViewController {
+    /// Top most presented view controller
+    var topMostViewController: UIViewController {
+        var topMostViewController = self
+        while true {
+            if let presentationController = topMostViewController.presentedViewController {
+                topMostViewController = presentationController
+            } else {
+                break
+            }
+        }
+        return topMostViewController
     }
 }

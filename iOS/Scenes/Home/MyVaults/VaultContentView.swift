@@ -27,7 +27,7 @@ import UIComponents
 struct VaultContentView: View {
     @StateObject private var viewModel: VaultContentViewModel
     @State private var didAppear = false
-    @State private var selectedItem: ItemListUiModel?
+    @State private var selectedItem: ItemUiModel?
     @State private var isShowingTrashingAlert = false
 
     private var selectedVaultName: String {
@@ -46,7 +46,7 @@ struct VaultContentView: View {
 
             case .loaded:
                 if viewModel.filteredItems.isEmpty {
-                    EmptyVaultView()
+                    EmptyVaultView(onCreateNewItem: {})
                         .padding(.horizontal)
                 } else {
                     itemList
@@ -72,50 +72,6 @@ struct VaultContentView: View {
         }
     }
 
-    private var filterStatus: some View {
-        Menu(content: {
-            ForEach(viewModel.sortTypes, id: \.self) { sortType in
-                Button(action: {
-                    viewModel.sortType = sortType
-                }, label: {
-                    Label(title: {
-                        Text(sortType.description)
-                    }, icon: {
-                        if sortType == viewModel.sortType {
-                            Image(systemName: "checkmark")
-                        }
-                    })
-                })
-            }
-            Divider()
-            ForEach(SortDirection.allCases, id: \.self) { sortDirection in
-                Button(action: {
-                    viewModel.sortDirection = sortDirection
-                }, label: {
-                    Label(title: {
-                        Text(sortDirection.description)
-                    }, icon: {
-                        if sortDirection == viewModel.sortDirection {
-                            Image(systemName: "checkmark")
-                        }
-                    })
-                })
-            }
-        }, label: {
-            HStack {
-                Text("Sort by: \(viewModel.sortType.description)")
-                Image(systemName: "chevron.down")
-                    .imageScale(.small)
-            }
-            .font(.callout)
-            .foregroundColor(.secondary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        })
-        .transaction { transaction in
-            transaction.animation = nil
-        }
-    }
-
     private var itemList: some View {
         List {
             if viewModel.shouldShowAutoFillBanner {
@@ -126,10 +82,13 @@ struct VaultContentView: View {
             }
             Section(content: {
                 ForEach(viewModel.filteredItems, id: \.itemId) { item in
-                    GenericItemView(item: item,
-                                    action: { viewModel.selectItem(item) },
-                                    subtitleLineLimit: 1,
-                                    trailingView: { trailingView(for: item) })
+                    Button(action: {
+                        viewModel.selectItem(item)
+                    }, label: {
+                        GeneralItemRow(thumbnailView: { EmptyView() },
+                                       title: item.title,
+                                       description: item.description)
+                    })
                     .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
                     .swipeActions {
                         Button(action: { askForConfirmationOrTrashDirectly(item: item) },
@@ -139,7 +98,7 @@ struct VaultContentView: View {
                 }
                 .listRowSeparator(.hidden)
             }, header: {
-                filterStatus
+                EmptyView()
             })
         }
         .listStyle(.plain)
@@ -149,60 +108,7 @@ struct VaultContentView: View {
         .refreshable { await viewModel.forceSync() }
     }
 
-    private func trailingView(for item: ItemListUiModel) -> some View {
-        Menu(content: {
-            switch item.type {
-            case .login:
-                CopyMenuButton(title: "Copy username",
-                               action: { viewModel.copyUsername(item) })
-
-                CopyMenuButton(title: "Copy password",
-                               action: { viewModel.copyPassword(item) })
-
-            case .alias:
-                CopyMenuButton(title: "Copy email address",
-                               action: { viewModel.copyEmailAddress(item) })
-            case .note:
-                if case .value = item.detail {
-                    CopyMenuButton(title: "Copy note",
-                                   action: { viewModel.copyNote(item) })
-                }
-            }
-
-            EditMenuButton {
-                viewModel.editItem(item)
-            }
-
-            Divider()
-
-            Menu(content: {
-                ForEach(viewModel.otherVaults, id: \.id) { vault in
-                    Button(action: {
-                        viewModel.moveItem(item, to: vault)
-                    }, label: {
-                        Text(vault.name)
-                    })
-                }
-            }, label: {
-                Label(title: {
-                    Text("Move")
-                }, icon: {
-                    Image(uiImage: IconProvider.folderArrowIn)
-                })
-            })
-
-            Divider()
-
-            DestructiveButton(title: "Move to Trash",
-                              icon: IconProvider.trash,
-                              action: { askForConfirmationOrTrashDirectly(item: item) })
-        }, label: {
-            Image(uiImage: IconProvider.threeDotsHorizontal)
-                .foregroundColor(.secondary)
-        })
-    }
-
-    private func askForConfirmationOrTrashDirectly(item: ItemListUiModel) {
+    private func askForConfirmationOrTrashDirectly(item: ItemUiModel) {
         if viewModel.preferences.askBeforeTrashing {
             selectedItem = item
             isShowingTrashingAlert.toggle()
@@ -215,24 +121,6 @@ struct VaultContentView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             ToggleSidebarButton(action: viewModel.toggleSidebar)
-        }
-
-        ToolbarItem(placement: .principal) {
-            VStack {
-                Text(viewModel.filterOption.title)
-                    .fontWeight(.semibold)
-                if DeveloperModeStateManager.shared.isOn,
-                   let selectedVault = viewModel.vaultSelection.selectedVault {
-                    Text(selectedVault.name)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-            }
-            .onTapGesture {
-                if DeveloperModeStateManager.shared.isOn {
-                    viewModel.showVaultList()
-                }
-            }
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {

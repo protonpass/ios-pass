@@ -220,7 +220,6 @@ PODS:
   - Sentry (7.29.0):
     - Sentry/Core (= 7.29.0)
   - Sentry/Core (7.29.0)
-  - SideMenuSwift (2.0.9)
   - swift-snapshot-testing (1.10.0)
   - SwiftOTP (2.0.3):
     - CryptoSwift (>= 1.0.0)
@@ -269,7 +268,6 @@ DEPENDENCIES:
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.29.0`)"
   - ReachabilitySwift
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.29.0`)
-  - SideMenuSwift (= 2.0.9)
   - "swift-snapshot-testing (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.29.0`)"
   - SwiftOTP
   - SwiftProtobuf (= 1.20.3)
@@ -283,7 +281,6 @@ SPEC REPOS:
     - lottie-ios
     - MBProgressHUD
     - ReachabilitySwift
-    - SideMenuSwift
     - SwiftOTP
     - SwiftProtobuf
 
@@ -555,12 +552,11 @@ SPEC CHECKSUMS:
   ProtonCore-Utilities: 0ce6ff9eff0c5caa9e40ccb062d8c79e2a243925
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   Sentry: 4272663eb0eda312024d795ca3f5a562a8ce5e18
-  SideMenuSwift: 39f1922e225da4aaa8b16591037a929defe960c9
   swift-snapshot-testing: d388c9ff71363d8572312dcb45704bb5df021c8f
   SwiftOTP: ce98ded1ab42e4e66c39228fcad6b0c07b98e494
   SwiftProtobuf: b02b5075dcf60c9f5f403000b3b0c202a11b6ae1
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
 
-PODFILE CHECKSUM: f9e9bb52dd2ffe541445b3caa89316a9ba585ed7
+PODFILE CHECKSUM: e1ffb1200262513d5f19ad1d8ede5884c0bf42e2
 
 COCOAPODS: 1.11.3

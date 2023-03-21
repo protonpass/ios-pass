@@ -25,20 +25,21 @@ import Core
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToShowSpinner()
     func itemsTabViewModelWantsToHideSpinner()
-    func itemsTabViewModelWantsToSearch()
+    func itemsTabViewModelWantsToCreateNewItem(shareId: String)
+    func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection)
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
-    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
+    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                      delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
-    func itemsTabViewModelDidTrash(item: ItemListUiModelV2)
     func itemsTabViewModelDidEncounter(error: Error)
 }
 
 final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var selectedSortType = SortTypeV2.mostRecent
+    @Published var selectedSortType = SortType.mostRecent
 
+    let itemContextMenuHandler: ItemContextMenuHandler
     let itemRepository: ItemRepositoryProtocol
     let logger: Logger
     let preferences: Preferences
@@ -52,11 +53,13 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop: SyncEventLoop
 
-    init(itemRepository: ItemRepositoryProtocol,
+    init(itemContextMenuHandler: ItemContextMenuHandler,
+         itemRepository: ItemRepositoryProtocol,
          logManager: LogManager,
          preferences: Preferences,
          syncEventLoop: SyncEventLoop,
          vaultsManager: VaultsManager) {
+        self.itemContextMenuHandler = itemContextMenuHandler
         self.itemRepository = itemRepository
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
@@ -77,8 +80,18 @@ private extension ItemsTabViewModel {
 
 // MARK: - Public APIs
 extension ItemsTabViewModel {
+    func createNewItem() {
+        switch vaultsManager.vaultSelection {
+        case .all:
+            // Handle this later
+            break
+        case .precise(let selectedVault):
+            delegate?.itemsTabViewModelWantsToCreateNewItem(shareId: selectedVault.shareId)
+        }
+    }
+
     func search() {
-        delegate?.itemsTabViewModelWantsToSearch()
+        delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
     }
 
     func presentVaultList() {
@@ -95,7 +108,7 @@ extension ItemsTabViewModel {
                                                               delegate: self)
     }
 
-    func viewDetail(of item: ItemListUiModelV2) {
+    func viewDetail(of item: ItemUiModel) {
         Task { @MainActor in
             do {
                 if let itemContent =
@@ -109,29 +122,14 @@ extension ItemsTabViewModel {
         }
     }
 
-    func trash(item: ItemListUiModelV2) {
-        Task { @MainActor in
-            defer { delegate?.itemsTabViewModelWantsToHideSpinner() }
-            do {
-                delegate?.itemsTabViewModelWantsToShowSpinner()
-                if let encryptedItem = try await itemRepository.getItem(shareId: item.shareId,
-                                                                        itemId: item.itemId) {
-                    try await itemRepository.trashItems([encryptedItem])
-                    delegate?.itemsTabViewModelDidTrash(item: item)
-                } else {
-                    let error = PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
-                    delegate?.itemsTabViewModelDidEncounter(error: error)
-                }
-            } catch {
-                delegate?.itemsTabViewModelDidEncounter(error: error)
-            }
-        }
+    func trash(_ item: ItemUiModel) {
+        itemContextMenuHandler.trash(item)
     }
 }
 
 // MARK: - SortTypeListViewModelDelegate
 extension ItemsTabViewModel: SortTypeListViewModelDelegate {
-    func sortTypeListViewDidSelect(_ sortType: SortTypeV2) {
+    func sortTypeListViewDidSelect(_ sortType: SortType) {
         selectedSortType = sortType
     }
 }

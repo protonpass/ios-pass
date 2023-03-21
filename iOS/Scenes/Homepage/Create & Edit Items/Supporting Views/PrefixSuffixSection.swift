@@ -117,9 +117,7 @@ struct PrefixSuffixSection: View {
                 ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: .textWeak)
             }
             .padding(.horizontal, kItemDetailSectionPadding)
-            .transaction { transaction in
-                transaction.animation = nil
-            }
+            .animationsDisabled()
         })
     }
 }

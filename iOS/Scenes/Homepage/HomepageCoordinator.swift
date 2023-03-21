@@ -42,11 +42,13 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
     private let eventLoop: SyncEventLoop
+    private let itemContextMenuHandler: ItemContextMenuHandler
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
     private let manualLogIn: Bool
     private let logManager: LogManager
     private let preferences: Preferences
+    private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let userData: UserData
@@ -107,6 +109,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                itemRepository: itemRepository,
                                shareKeyRepository: shareKeyRepository,
                                logManager: logManager)
+        self.itemContextMenuHandler = .init(clipboardManager: clipboardManager,
+                                            itemRepository: itemRepository,
+                                            logManager: logManager)
         self.itemRepository = ItemRepository(userData: userData,
                                              symmetricKey: symmetricKey,
                                              container: container,
@@ -118,6 +123,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.logManager = logManager
         self.manualLogIn = manualLogIn
         self.preferences = preferences
+        self.searchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
         self.userData = userData
@@ -135,6 +141,7 @@ private extension HomepageCoordinator {
     func finalizeInitialization() {
         eventLoop.delegate = self
         clipboardManager.bannerManager = bannerManager
+        itemContextMenuHandler.delegate = self
 
         preferences.objectWillChange
             .sink { [unowned self] _ in
@@ -161,7 +168,8 @@ private extension HomepageCoordinator {
     }
 
     func start() {
-        let homepageViewModel = HomepageViewModel(itemRepository: itemRepository,
+        let homepageViewModel = HomepageViewModel(itemContextMenuHandler: itemContextMenuHandler,
+                                                  itemRepository: itemRepository,
                                                   manualLogIn: manualLogIn,
                                                   logManager: logManager,
                                                   preferences: preferences,
@@ -223,6 +231,18 @@ private extension HomepageCoordinator {
         } else {
             present(NavigationView { AnyView(itemDetailView) }.navigationViewStyle(.stack),
                     userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        }
+    }
+
+    func presentEditItemView(for itemContent: ItemContent) {
+        let mode = ItemMode.edit(itemContent)
+        switch itemContent.contentData.type {
+        case .login:
+            presentCreateEditLoginView(mode: mode)
+        case .note:
+            presentCreateEditNoteView(mode: mode)
+        case .alias:
+            presentCreateEditAliasView(mode: mode)
         }
     }
 
@@ -320,38 +340,22 @@ private extension HomepageCoordinator {
         present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func handleTrashedItem(_ item: ItemListUiModelV2) {
-        let message: String
-        switch item.type {
-        case .alias:
-            message = "Alias deleted"
-        case .login:
-            message = "Login deleted"
-        case .note:
-            message = "Note deleted"
-        }
-
-        if isAtRootViewController() {
-            bannerManager.displayBottomInfoMessage(message)
-        } else {
-            dismissTopMostViewController(animated: true) { [unowned self] in
-                var placeholderViewController: UIViewController?
-                if UIDevice.current.isIpad,
-                   let currentItemDetailViewModel,
-                   currentItemDetailViewModel.itemContent.shareId == item.shareId,
-                   currentItemDetailViewModel.itemContent.item.itemID == item.itemId {
-                    let placeholderView = ItemDetailPlaceholderView { self.popTopViewController(animated: true) }
-                    placeholderViewController = UIHostingController(rootView: placeholderView)
-                }
-                self.popToRoot(animated: true, secondaryViewController: placeholderViewController)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [unowned self] in
-                    self.bannerManager.displayBottomInfoMessage(message)
-                }
+    func presentSortTypeList(selectedSortType: SortType,
+                             delegate: SortTypeListViewModelDelegate) {
+        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
+        viewModel.delegate = delegate
+        let view = SortTypeListView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = CGFloat(44 * SortType.allCases.count + 60)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
             }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium()]
         }
-
-        homepageViewModel?.vaultsManager.refresh()
-        Task { await searchViewModel?.refreshResults() }
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 }
 
@@ -393,17 +397,21 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         hideLoadingHud()
     }
 
-    func itemsTabViewModelWantsToSearch() {
-        let viewModel = SearchViewModel(symmetricKey: symmetricKey,
+    func itemsTabViewModelWantsToCreateNewItem(shareId: String) {
+        presentCreateItemView(shareId: shareId)
+    }
+
+    func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
+        let viewModel = SearchViewModel(itemContextMenuHandler: itemContextMenuHandler,
                                         itemRepository: itemRepository,
-                                        vaults: [],
-                                        preferences: preferences,
-                                        logManager: logManager)
+                                        logManager: logManager,
+                                        searchEntryDatasource: searchEntryDatasource,
+                                        symmetricKey: symmetricKey,
+                                        vaultSelection: vaultSelection)
         viewModel.delegate = self
         searchViewModel = viewModel
-        let viewController = UIHostingController(rootView: SearchView(viewModel: viewModel))
-        let navigationController = UINavigationController(rootViewController: viewController)
-        present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        let view = SearchView(viewModel: viewModel)
+        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
@@ -413,7 +421,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
             // Num of vaults + trash + create vault button
-            let height = CGFloat(66 * vaultsManager.vaultCount + 66 + 100)
+            let height = CGFloat(66 * vaultsManager.getVaultCount() + 66 + 100)
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 height
             }
@@ -424,30 +432,13 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortTypeV2,
+    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                      delegate: SortTypeListViewModelDelegate) {
-        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
-        viewModel.delegate = delegate
-        let view = SortTypeListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = CGFloat(44 * SortTypeV2.allCases.count + 60)
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                height
-            }
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
-        }
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
     }
 
     func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
         presentItemDetailView(for: itemContent)
-    }
-
-    func itemsTabViewModelDidTrash(item: ItemListUiModelV2) {
-        handleTrashedItem(item)
     }
 
     func itemsTabViewModelDidEncounter(error: Error) {
@@ -466,14 +457,36 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
+        let message: String
+        switch type {
+        case .login:
+            message = "Login created"
+        case .alias:
+            message = "Alias created"
+        case .note:
+            message = "Note created"
+        }
         dismissTopMostViewController()
+        bannerManager.displayBottomInfoMessage(message)
         homepageViewModel?.vaultsManager.refresh()
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
+        let message: String
+        switch type {
+        case .login:
+            message = "Login udpated"
+        case .alias:
+            message = "Alias udpated"
+        case .note:
+            message = "Note udpated"
+        }
         homepageViewModel?.vaultsManager.refresh()
+        Task { await searchViewModel?.refreshResults() }
         currentItemDetailViewModel?.refresh()
-        dismissTopMostViewController()
+        dismissTopMostViewController { [unowned self] in
+            self.bannerManager.displayBottomInfoMessage(message)
+        }
     }
 
     func createEditItemViewModelDidFail(_ error: Error) {
@@ -538,49 +551,6 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
     }
 }
 
-// MARK: - SearchViewModelDelegate
-extension HomepageCoordinator: SearchViewModelDelegate {
-    func searchViewModelWantsToShowLoadingHud() {
-        showLoadingHud()
-    }
-
-    func searchViewModelWantsToHideLoadingHud() {
-        hideLoadingHud()
-    }
-
-    func searchViewModelWantsToDismiss() {
-        dismissTopMostViewController()
-    }
-
-    func searchViewModelWantsToShowItemDetail(_ itemContent: ItemContent) {
-        presentItemDetailView(for: itemContent)
-    }
-
-    func searchViewModelWantsToEditItem(_ itemContent: ItemContent) {
-        let mode = ItemMode.edit(itemContent)
-        switch itemContent.contentData.type {
-        case .login:
-            presentCreateEditLoginView(mode: mode)
-        case .note:
-            presentCreateEditNoteView(mode: mode)
-        case .alias:
-            presentCreateEditAliasView(mode: mode)
-        }
-    }
-
-    func searchViewModelWantsToCopy(text: String, bannerMessage: String) {
-        clipboardManager.copy(text: text, bannerMessage: bannerMessage)
-    }
-
-    func searchViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
-        print(#function)
-    }
-
-    func searchViewModelDidFail(_ error: Error) {
-        bannerManager.displayTopErrorMessage(error)
-    }
-}
-
 // MARK: - EditableVaultListViewModelDelegate
 extension HomepageCoordinator: EditableVaultListViewModelDelegate {
     func editableVaultListViewModelWantsToCreateNewVault() {
@@ -601,18 +571,10 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
-        let mode = ItemMode.edit(itemContent)
-        switch itemContent.contentData.type {
-        case .login:
-            presentCreateEditLoginView(mode: mode)
-        case .note:
-            presentCreateEditNoteView(mode: mode)
-        case .alias:
-            presentCreateEditAliasView(mode: mode)
-        }
+        presentEditItemView(for: itemContent)
     }
 
-    func itemDetailViewModelWantsToRestore(_ item: ItemListUiModel) {
+    func itemDetailViewModelWantsToRestore(_ item: ItemUiModel) {
         print(#function)
     }
 
@@ -637,6 +599,42 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 extension HomepageCoordinator: LogInDetailViewModelDelegate {
     func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
         presentItemDetailView(for: itemContent)
+    }
+}
+
+// MARK: - ItemContextMenuHandlerDelegate
+extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
+    func itemContextMenuHandlerWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func itemContextMenuHandlerWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
+    func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent) {
+        presentEditItemView(for: itemContent)
+    }
+
+    func itemContextMenuHandlerDidTrashAnItem() {
+        homepageViewModel?.vaultsManager.refresh()
+        Task { await searchViewModel?.refreshResults() }
+    }
+}
+
+// MARK: - SearchViewModelDelegate
+extension HomepageCoordinator: SearchViewModelDelegate {
+    func searchViewModelWantsToViewDetail(of itemContent: Client.ItemContent) {
+        presentItemDetailView(for: itemContent)
+    }
+
+    func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
+                                                   delegate: SortTypeListViewModelDelegate) {
+        presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
+    }
+
+    func searchViewModelWantsDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 

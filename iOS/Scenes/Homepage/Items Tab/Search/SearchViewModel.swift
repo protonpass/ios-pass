@@ -1,7 +1,7 @@
 //
 // SearchViewModel.swift
-// Proton Pass - Created on 09/08/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Proton Pass - Created on 13/03/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -22,283 +22,275 @@ import Client
 import Combine
 import Core
 import CryptoKit
-import SwiftUI
 
-protocol SearchViewModelDelegate: AnyObject {
-    func searchViewModelWantsToShowLoadingHud()
-    func searchViewModelWantsToHideLoadingHud()
-    func searchViewModelWantsToDismiss()
-    func searchViewModelWantsToShowItemDetail(_ itemContent: ItemContent)
-    func searchViewModelWantsToEditItem(_ itemContent: ItemContent)
-    func searchViewModelWantsToCopy(text: String, bannerMessage: String)
-    func searchViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType)
-    func searchViewModelDidFail(_ error: Error)
+enum SearchViewState {
+    /// Indexing items
+    case initializing
+    /// No history, empty search query
+    case empty
+    /// Non-empty history
+    case history([SearchEntryUiModel])
+    /// No results for the given search query
+    case noResults(String)
+    /// Results with a given search query
+    case results(ItemCount, [ItemSearchResult])
+    /// Error
+    case error(Error)
 }
 
-final class SearchViewModel: DeinitPrintable, ObservableObject {
+protocol SearchViewModelDelegate: AnyObject {
+    func searchViewModelWantsToViewDetail(of itemContent: ItemContent)
+    func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
+                                                   delegate: SortTypeListViewModelDelegate)
+    func searchViewModelWantsDidEncounter(error: Error)
+}
+
+final class SearchViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    @Published private(set) var state = SearchViewState.initializing
+    @Published var selectedType: ItemContentType?
+    @Published var selectedSortType = SortType.mostRecent
+
     // Injected properties
-    private let symmetricKey: SymmetricKey
     private let itemRepository: ItemRepositoryProtocol
-    private let vaults: [Vault]
     private let logger: Logger
-    let preferences: Preferences
+    private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
+    private let symmetricKey: SymmetricKey
+    private(set) var vaultSelection: VaultSelection
+    let itemContextMenuHandler: ItemContextMenuHandler
 
-    // Self-initialized properties
-    private let searchTermSubject = PassthroughSubject<String, Never>()
+    // Self-intialized properties
+    private var lastSearchQuery = ""
+    private let searchQuerySubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
-    private var items = [SearchableItem]()
-
-    private var lastSearchTerm = ""
-    @Published private(set) var state = State.clean
-    @Published private(set) var results = [ItemSearchResult]()
-
-    /// Grouped by vault name
-    var groupedResults: [String: [ItemSearchResult]] {
-        Dictionary(grouping: results, by: { $0.vaultName })
-    }
+    private var allActiveItems = [SymmetricallyEncryptedItem]()
+    private var searchableItems = [SearchableItem]()
+    private var history = [SearchEntryUiModel]()
+    private var results = [ItemSearchResult]()
 
     private var cancellables = Set<AnyCancellable>()
 
     weak var delegate: SearchViewModelDelegate?
 
-    enum State: Equatable {
-        case clean
-        /// Loading items to memory
-        case initializing
-        case searching
-        case results
-        case error(Error)
+    var searchBarPlaceholder: String { vaultSelection.searchBarPlacehoder }
 
-        static func == (lhs: Self, rhs: Self) -> Bool {
-            switch (lhs, rhs) {
-            case (.clean, .clean),
-                (.initializing, .initializing),
-                (.searching, .searching),
-                (.results, .results):
-                return true
-            case let (.error(lhsError), .error(rhsError)):
-                return lhsError.messageForTheUser == rhsError.messageForTheUser
-            default:
-                return false
-            }
-        }
-    }
-
-    init(symmetricKey: SymmetricKey,
+    init(itemContextMenuHandler: ItemContextMenuHandler,
          itemRepository: ItemRepositoryProtocol,
-         vaults: [Vault],
-         preferences: Preferences,
-         logManager: LogManager) {
-        self.symmetricKey = symmetricKey
+         logManager: LogManager,
+         searchEntryDatasource: LocalSearchEntryDatasourceProtocol,
+         symmetricKey: SymmetricKey,
+         vaultSelection: VaultSelection) {
+        self.itemContextMenuHandler = itemContextMenuHandler
         self.itemRepository = itemRepository
-        self.vaults = vaults
-        self.preferences = preferences
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
+        self.searchEntryDatasource = searchEntryDatasource
+        self.symmetricKey = symmetricKey
+        self.vaultSelection = vaultSelection
 
-        Task {
-            await loadItems()
-        }
-        searchTermSubject
-            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+        searchQuerySubject
+            .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
             .sink { [unowned self] term in
-                self.doSearch(term: term)
+                self.doSearch(query: term)
+            }
+            .store(in: &cancellables)
+
+        $selectedType
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] _ in
+                self.filterResults()
+            }
+            .store(in: &cancellables)
+
+        $selectedSortType
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] _ in
+                self.filterResults()
             }
             .store(in: &cancellables)
     }
+}
 
-    @MainActor
-    func refreshResults() async {
-        await loadItems()
-        doSearch(term: lastSearchTerm)
-    }
-
-    @MainActor
-    private func loadItems() async {
+// MARK: - Private APIs
+private extension SearchViewModel {
+    func indexItems() async {
         do {
-            logger.trace("Loading items for search")
-            state = .initializing
-            let items = try await itemRepository.getItems(state: .active)
-            let getVaultName: (String) -> String = { shareId in
-                self.vaults.first { $0.shareId == shareId }?.name ?? ""
+            if case .error = state {
+                state = .initializing
             }
-            self.items = try items.map { try SearchableItem(symmetricallyEncryptedItem: $0,
-                                                            vaultName: getVaultName($0.shareId)) }
-            state = .clean
-            logger.info("Loaded items for search")
+
+            allActiveItems = try await itemRepository.getItems(state: .active)
+            try await refreshSearchHistory()
+
+            let filteredActiveItems: [SymmetricallyEncryptedItem]
+            switch vaultSelection {
+            case .all:
+                filteredActiveItems = allActiveItems
+            case .precise(let vault):
+                filteredActiveItems = allActiveItems.filter { $0.shareId == vault.shareId }
+            }
+            searchableItems =
+            try filteredActiveItems.map { try SearchableItem(from: $0,
+                                                             symmetricKey: symmetricKey) }
         } catch {
-            logger.error(error)
             state = .error(error)
         }
     }
 
-    private func doSearch(term: String) {
-        lastSearchTerm = term
-        let term = term.trimmingCharacters(in: .whitespacesAndNewlines)
-        if term.isEmpty { state = .clean; return }
+    @MainActor
+    func refreshSearchHistory() async throws {
+        let searchEntries = try await searchEntryDatasource.getAllEntries()
+        let symmetricKey = itemRepository.symmetricKey
+        history = try searchEntries.compactMap { entry in
+            if let item = allActiveItems.first(where: {
+                $0.shareId == entry.shareID && $0.itemId == entry.itemID }) {
+                return try item.toSearchEntryUiModel(symmetricKey)
+            } else {
+                return nil
+            }
+        }
+
+        switch state {
+        case .history:
+            if history.isEmpty {
+                state = .empty
+            } else {
+                state = .history(history)
+            }
+        default:
+            break
+        }
+    }
+
+    func doSearch(query: String) {
+        lastSearchQuery = query
+        let query = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !query.isEmpty else {
+            if history.isEmpty {
+                state = .empty
+            } else {
+                state = .history(history)
+            }
+            return
+        }
 
         lastTask?.cancel()
         lastTask = Task { @MainActor in
-            do {
-                let hashedTerm = term.sha256Hashed()
-                logger.trace("Searching for \"\(hashedTerm)\"")
-                state = .searching
-                results = try items.result(for: term, symmetricKey: symmetricKey)
-                state = .results
-                logger.trace("Get \(results.count) result(s) for \"\(hashedTerm)\"")
-            } catch {
-                logger.error(error)
-                state = .error(error)
-            }
+            selectedType = nil
+            let hashedQuery = query.sha256Hashed()
+            logger.trace("Searching for \"\(hashedQuery)\"")
+            results = searchableItems.result(for: query)
+            filterResults()
+            logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
         }
+    }
+
+    func filterResults() {
+        guard !results.isEmpty else {
+            state = .noResults(lastSearchQuery)
+            return
+        }
+
+        let filteredResults: [ItemSearchResult]
+        if let selectedType {
+            filteredResults = results.filter { $0.type == selectedType }
+        } else {
+            filteredResults = results
+        }
+
+        self.state = .results(.init(items: results), filteredResults)
     }
 }
 
-// MARK: - Private supporting tasks
-private extension SearchViewModel {
-    func getDecryptedItemContentTask(for item: ItemSearchResult) -> Task<ItemContent, Error> {
-        Task.detached(priority: .userInitiated) {
-            let encryptedItem = try await self.getItem(shareId: item.shareId, itemId: item.itemId)
-            return try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
-        }
-    }
-
-    func trashItemTask(for item: ItemSearchResult) -> Task<Void, Error> {
-        Task.detached(priority: .userInitiated) {
-            let itemToBeTrashed = try await self.getItem(shareId: item.shareId, itemId: item.itemId)
-            try await self.itemRepository.trashItems([itemToBeTrashed])
-        }
-    }
-
-    func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
-        guard let item = try await itemRepository.getItem(shareId: shareId,
-                                                          itemId: itemId) else {
-            throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
-        }
-        return item
-    }
-}
-
-// MARK: - Public actions
+// MARK: - Public APIs
 extension SearchViewModel {
-    func dismiss() {
-        delegate?.searchViewModelWantsToDismiss()
+    @MainActor
+    func refreshResults() async {
+        await indexItems()
+        doSearch(query: lastSearchQuery)
     }
 
-    func search(term: String) {
-        searchTermSubject.send(term)
+    func search(_ term: String) {
+        searchQuerySubject.send(term)
     }
 
-    func selectItem(_ item: ItemSearchResult) {
+    func viewDetail(of item: ItemIdentifiable) {
         Task { @MainActor in
             do {
-                let itemContent = try await getDecryptedItemContentTask(for: item).value
-                delegate?.searchViewModelWantsToShowItemDetail(itemContent)
-                logger.info("Want to view detail \(itemContent.debugInformation)")
-            } catch {
-                logger.error(error)
-                delegate?.searchViewModelDidFail(error)
-            }
-        }
-    }
-
-    func editItem(_ item: ItemSearchResult) {
-        Task { @MainActor in
-            do {
-                let itemContent = try await getDecryptedItemContentTask(for: item).value
-                delegate?.searchViewModelWantsToEditItem(itemContent)
-                logger.info("Want to edit \(itemContent.debugInformation)")
-            } catch {
-                logger.error(error)
-                delegate?.searchViewModelDidFail(error)
-            }
-        }
-    }
-
-    func copyNote(_ item: ItemSearchResult) {
-        guard case .note = item.type else { return }
-        Task { @MainActor in
-            do {
-                let itemContent = try await getDecryptedItemContentTask(for: item).value
-                if case .note = itemContent.contentData {
-                    delegate?.searchViewModelWantsToCopy(text: itemContent.note,
-                                                         bannerMessage: "Note copied")
-                    logger.info("Want to copy note \(itemContent.debugInformation)")
+                if let itemContent =
+                    try await itemRepository.getDecryptedItemContent(shareId: item.shareId,
+                                                                     itemId: item.itemId) {
+                    try await searchEntryDatasource.upsert(item: item, date: .now)
+                    try await refreshSearchHistory()
+                    delegate?.searchViewModelWantsToViewDetail(of: itemContent)
                 }
             } catch {
-                logger.error(error)
-                delegate?.searchViewModelDidFail(error)
+                delegate?.searchViewModelWantsDidEncounter(error: error)
             }
         }
     }
 
-    func copyUsername(_ item: ItemSearchResult) {
-        guard case .login = item.type else { return }
+    func removeFromHistory(_ item: ItemIdentifiable) {
         Task { @MainActor in
             do {
-                let itemContent = try await getDecryptedItemContentTask(for: item).value
-                if case .login(let data) = itemContent.contentData {
-                    delegate?.searchViewModelWantsToCopy(text: data.username,
-                                                         bannerMessage: "Username copied")
-                    logger.info("Want to copy username \(itemContent.debugInformation)")
-                }
+                try await searchEntryDatasource.remove(item: item)
+                try await refreshSearchHistory()
             } catch {
-                logger.error(error)
-                delegate?.searchViewModelDidFail(error)
+                delegate?.searchViewModelWantsDidEncounter(error: error)
             }
         }
     }
 
-    func copyPassword(_ item: ItemSearchResult) {
-        guard case .login = item.type else { return }
+    func removeAllSearchHistory() {
         Task { @MainActor in
             do {
-                let itemContent = try await getDecryptedItemContentTask(for: item).value
-                if case .login(let data) = itemContent.contentData {
-                    delegate?.searchViewModelWantsToCopy(text: data.password,
-                                                         bannerMessage: "Password copied")
-                    logger.info("Want to copy password \(itemContent.debugInformation)")
-                }
+                try await searchEntryDatasource.removeAllEntries()
+                try await refreshSearchHistory()
             } catch {
-                logger.error(error)
-                delegate?.searchViewModelDidFail(error)
+                delegate?.searchViewModelWantsDidEncounter(error: error)
             }
         }
     }
 
-    func copyEmailAddress(_ item: ItemSearchResult) {
-        guard case .alias = item.type else { return }
-        Task { @MainActor in
-            do {
-                let item = try await getItem(shareId: item.shareId, itemId: item.itemId)
-                if let emailAddress = item.item.aliasEmail {
-                    delegate?.searchViewModelWantsToCopy(text: emailAddress,
-                                                         bannerMessage: "Email address copied")
-                    logger.info("Want to copy email address \(item.debugInformation)")
-                }
-            } catch {
-                logger.error(error)
-                delegate?.searchViewModelDidFail(error)
-            }
-        }
+    func presentSortTypeList() {
+        delegate?.searchViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
+                                                            delegate: self)
     }
 
-    func trashItem(_ item: ItemSearchResult) {
-        Task { @MainActor in
-            defer { delegate?.searchViewModelWantsToHideLoadingHud() }
-            delegate?.searchViewModelWantsToShowLoadingHud()
-            do {
-                try await trashItemTask(for: item).value
-                await refreshResults()
-                delegate?.searchViewModelDidTrashItem(item, type: item.type)
-                logger.info("Trashed \(item.debugInformation)")
-            } catch {
-                logger.error(error)
-                delegate?.searchViewModelDidFail(error)
-            }
+    func searchInAllVaults() {
+        vaultSelection = .all
+        Task { await refreshResults() }
+    }
+}
+
+// MARK: - SortTypeListViewModelDelegate
+extension SearchViewModel: SortTypeListViewModelDelegate {
+    func sortTypeListViewDidSelect(_ sortType: SortType) {
+        selectedSortType = sortType
+    }
+}
+
+extension SearchViewState: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.initializing, .initializing), (.empty, .empty):
+            return true
+
+        case let (.history(lhsHistory), .history(rhsHistory)):
+            return lhsHistory == rhsHistory
+
+        case let (.noResults(lhsQuery), .noResults(rhsQuery)):
+            return lhsQuery == rhsQuery
+
+        case let (.results(_, lhsResults), .results(_, rhsResults)):
+            return lhsResults.hashValue == rhsResults.hashValue
+
+        case let (.error(lhsError), .error(rhsError)):
+            return lhsError.messageForTheUser == rhsError.messageForTheUser
+        default:
+            return false
         }
     }
 }

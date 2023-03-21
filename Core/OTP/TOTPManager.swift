@@ -20,7 +20,6 @@
 
 import SwiftOTP
 import SwiftUI
-import UIComponents
 
 public enum TOTPState: Equatable {
     case loading

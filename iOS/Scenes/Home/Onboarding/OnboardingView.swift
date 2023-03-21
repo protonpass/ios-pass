@@ -77,9 +77,7 @@ struct OnboardingView: View {
                         Button(action: viewModel.secondaryAction) {
                             Text(secondaryButtonTitle)
                                 .foregroundColor(.interactionNorm)
-                                .transaction { transaction in
-                                    transaction.animation = nil
-                                }
+                                .animationsDisabled()
                         }
                         .animation(.default, value: viewModel.state.secondaryButtonTitle)
                     }

@@ -23,20 +23,17 @@ import UIComponents
 
 struct MyVaultsView: View {
     @StateObject private var viewModel: MyVaultsViewModel
-    private let loadVaultsViewModel: LoadVaultsViewModel
     private let vaultContentViewModel: VaultContentViewModel
 
     init(myVaultsViewModel: MyVaultsViewModel,
-         loadVaultsViewModel: LoadVaultsViewModel,
          vaultContentViewModel: VaultContentViewModel) {
         _viewModel = .init(wrappedValue: myVaultsViewModel)
-        self.loadVaultsViewModel = loadVaultsViewModel
         self.vaultContentViewModel = vaultContentViewModel
     }
 
     var body: some View {
         if viewModel.vaults.isEmpty {
-            LoadVaultsView(viewModel: loadVaultsViewModel)
+            EmptyView()
         } else {
             VaultContentView(viewModel: vaultContentViewModel)
         }

@@ -1,7 +1,7 @@
 //
 // SearchView.swift
-// Proton Pass - Created on 09/08/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Proton Pass - Created on 13/03/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,153 +18,138 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct SearchView: View {
-    @StateObject private var viewModel: SearchViewModel
-    @State private var selectedItem: ItemSearchResult?
-    @State private var isShowingTrashingAlert = false
-
-    init(viewModel: SearchViewModel) {
-        _viewModel = .init(wrappedValue: viewModel)
-    }
+    @Environment(\.dismiss) private var dismiss
+    @FocusState private var isFocusedOnSearchBar: Bool
+    @StateObject var viewModel: SearchViewModel
+    @State private var safeAreaInsets = EdgeInsets.zero
+    @State private var query = ""
 
     var body: some View {
-        ZStack {
+        GeometryReader { proxy in
+            ZStack {
+                Color.passBackground
+                    .ignoresSafeArea(edges: .all)
+                switch viewModel.state {
+                case .initializing:
+                    SearchViewSkeleton()
+
+                case .empty, .history, .noResults, .results:
+                    content
+
+                case .error(let error):
+                    RetryableErrorView(errorMessage: error.messageForTheUser,
+                                       onRetry: { Task { await viewModel.refreshResults() } })
+                }
+            }
+            .animation(.default, value: viewModel.state)
+            .onFirstAppear {
+                safeAreaInsets = proxy.safeAreaInsets
+                Task { await viewModel.refreshResults() }
+            }
+        }
+    }
+
+    private var content: some View {
+        VStack(spacing: 0) {
+            searchBar
+
             switch viewModel.state {
-            case .clean:
-                CleanSearchView()
+            case .empty:
+                EmptySearchView()
+                    .frame(maxHeight: .infinity)
+                    .padding(.bottom, safeAreaInsets.bottom + 200)
 
-            case .initializing:
-                ProgressView()
+            case .history(let history):
+                SearchRecentResultsView(
+                    results: history,
+                    onSelect: { viewModel.viewDetail(of: $0) },
+                    onRemove: { viewModel.removeFromHistory($0) },
+                    onClearResults: viewModel.removeAllSearchHistory)
 
-            case .searching:
-                SearchingView()
-
-            case .results:
-                if viewModel.results.isEmpty {
-                    NoSearchResultsView()
-                } else {
-                    resultsList
+            case .noResults(let query):
+                switch viewModel.vaultSelection {
+                case .all:
+                    NoSearchResultsInAllVaultView(query: query)
+                case .precise(let vault):
+                    NoSearchResultsInPreciseVaultView(query: query,
+                                                      vaultName: vault.name,
+                                                      action: viewModel.searchInAllVaults)
                 }
 
-            case .error(let error):
-                Text(error.messageForTheUser)
+            case let .results(itemCount, results):
+                SearchResultsView(selectedType: $viewModel.selectedType,
+                                  selectedSortType: $viewModel.selectedSortType,
+                                  itemContextMenuHandler: viewModel.itemContextMenuHandler,
+                                  itemCount: itemCount,
+                                  results: results,
+                                  safeAreaInsets: safeAreaInsets,
+                                  onScroll: { isFocusedOnSearchBar = false },
+                                  onSelectItem: { viewModel.viewDetail(of: $0) },
+                                  onSelectSortType: viewModel.presentSortTypeList)
+
+            default:
+                // Impossible cases
+                EmptyView()
             }
+
+            Spacer()
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .animation(.default, value: viewModel.state)
-        .toolbar { toolbarContent }
-        .moveToTrashAlert(isPresented: $isShowingTrashingAlert) {
-            if let selectedItem {
-                viewModel.trashItem(selectedItem)
-            }
+        .ignoresSafeArea(edges: .bottom)
+        .onFirstAppear { isFocusedOnSearchBar = true }
+        .onChange(of: query) { term in
+            viewModel.search(term)
         }
     }
 
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .principal) {
-            SwiftUISearchBar(placeholder: "Search",
-                             showsCancelButton: true,
-                             shouldBecomeFirstResponder: true,
-                             onSearch: viewModel.search,
-                             onCancel: viewModel.dismiss)
-            .transaction { transaction in
-                transaction.animation = nil
-            }
-        }
-    }
+    private var searchBar: some View {
+        HStack {
+            ZStack {
+                Color.black
+                HStack {
+                    Image(uiImage: IconProvider.magnifier)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.primary)
 
-    private var resultsList: some View {
-        List {
-            ForEach(Array(viewModel.groupedResults.keys).sorted(), id: \.self) { vaultName in
-                if let results = viewModel.groupedResults[vaultName] {
-                    Section(content: {
-                        ForEach(results) { result in
-                            ItemSearchResultView(result: result,
-                                                 action: { viewModel.selectItem(result) },
-                                                 trailingView: { trailingView(for: result) })
-                        }
-                    }, header: {
-                        Text(vaultName)
+                    TextField(viewModel.searchBarPlaceholder, text: $query)
+                        .tint(.passBrand)
+                        .autocorrectionDisabled()
+                        .focused($isFocusedOnSearchBar)
+                        .foregroundColor(.primary)
+
+                    Button(action: {
+                        query = ""
+                    }, label: {
+                        Image(uiImage: IconProvider.cross)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(.primary)
                     })
+                    .buttonStyle(.plain)
+                    .opacity(query.isEmpty ? 0 : 1)
+                    .animation(.default, value: query.isEmpty)
                 }
+                .foregroundColor(.textWeak)
+                .padding(.horizontal)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .listRowSeparator(.hidden)
-        }
-        .listStyle(.plain)
-        .animation(.default, value: viewModel.results.count)
-    }
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .containerShape(Rectangle())
 
-    private func trailingView(for item: ItemSearchResult) -> some View {
-        Menu(content: {
-            switch item.type {
-            case .login:
-                CopyMenuButton(title: "Copy username",
-                               action: { viewModel.copyUsername(item) })
-
-                CopyMenuButton(title: "Copy password",
-                               action: { viewModel.copyPassword(item) })
-
-            case .alias:
-                CopyMenuButton(title: "Copy email address",
-                               action: { viewModel.copyEmailAddress(item) })
-            case .note:
-                if item.detail.first?.fullText.isEmpty == false {
-                    CopyMenuButton(title: "Copy note",
-                                   action: { viewModel.copyNote(item) })
-                }
+            Button(action: dismiss.callAsFunction) {
+                Text("Cancel")
+                    .fontWeight(.semibold)
+                    .foregroundColor(.passBrand)
             }
-
-            EditMenuButton {
-                viewModel.editItem(item)
-            }
-
-            Divider()
-
-            DestructiveButton(
-                title: "Move to Trash",
-                icon: IconProvider.trash,
-                action: {
-                    if viewModel.preferences.askBeforeTrashing {
-                        selectedItem = item
-                        isShowingTrashingAlert.toggle()
-                    } else {
-                        viewModel.trashItem(item)
-                    }
-                })
-        }, label: {
-            Image(uiImage: IconProvider.threeDotsHorizontal)
-                .foregroundColor(.secondary)
-        })
-    }
-}
-
-private struct CleanSearchView: View {
-    var body: some View {
-        VStack(spacing: 24) {
-            Image(uiImage: PassIcon.magnifyingGlass)
-            Text("Find an alias, login, or note")
-                .font(.title3)
-                .fontWeight(.bold)
-            Spacer()
         }
-        .padding(.top, 100)
-        .padding(.horizontal)
-    }
-}
-
-private struct SearchingView: View {
-    var body: some View {
-        VStack {
-            ProgressView()
-            Spacer()
-        }
-        .padding(.top, 32)
-        .padding(.horizontal)
+        .frame(height: kSearchBarHeight)
+        .padding()
     }
 }

@@ -78,7 +78,8 @@ struct CredentialsView: View {
                                     ProgressView()
 
                                 case .noSearchResults:
-                                    NoSearchResultsView()
+                                    Text("No search results")
+                                        .foregroundColor(.textWeak)
 
                                 case .searchResults(let searchResults):
                                     searchResultsList(searchResults)
@@ -153,8 +154,8 @@ struct CredentialsView: View {
         }
     }
 
-    private func itemList(matchedItems: [ItemListUiModel],
-                          notMatchedItems: [ItemListUiModel]) -> some View {
+    private func itemList(matchedItems: [ItemUiModel],
+                          notMatchedItems: [ItemUiModel]) -> some View {
         List {
             Section(content: {
                 if matchedItems.isEmpty {
@@ -198,13 +199,14 @@ struct CredentialsView: View {
         .animation(.default, value: notMatchedItems.hashValue)
     }
 
-    private func view(for item: ItemListUiModel, action: @escaping () -> Void) -> some View {
-        GenericItemView(
-            item: item,
-            action: action,
-            trailingView: { EmptyView() })
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
+    private func view(for item: ItemUiModel, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            GeneralItemRow(thumbnailView: { EmptyView() },
+                           title: item.title,
+                           description: item.description)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
+        }
     }
 
     private func header(text: String) -> some View {
@@ -214,24 +216,34 @@ struct CredentialsView: View {
             .font(.callout)
     }
 
-    private func searchResultsList(_ resultDictionary: [String: [ItemSearchResult]]) -> some View {
+    private func searchResultsList(_ results: [ItemSearchResult]) -> some View {
         List {
-            ForEach(Array(resultDictionary.keys), id: \.self) { vaultName in
-                if let results = resultDictionary[vaultName] {
-                    Section(content: {
-                        ForEach(results) { result in
-                            ItemSearchResultView(result: result,
-                                                 action: { select(item: result) })
+            ForEach(results, id: \.hashValue) { result in
+                Button(action: {
+                    select(item: result)
+                }, label: {
+                    VStack(alignment: .leading, spacing: 4) {
+                        HighlightText(highlightableText: result.title)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            ForEach(0..<result.detail.count, id: \.self) { index in
+                                let eachDetail = result.detail[index]
+                                if !eachDetail.fullText.isEmpty {
+                                    HighlightText(highlightableText: eachDetail)
+                                        .font(.callout)
+                                        .foregroundColor(Color(.secondaryLabel))
+                                        .lineLimit(1)
+                                }
+                            }
                         }
-                        .listRowSeparator(.hidden)
-                    }, header: {
-                        Text(vaultName)
-                    })
-                }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                })
             }
+            .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
-        .animation(.default, value: resultDictionary.keys)
+        .animation(.default, value: results.count)
     }
 
     private func select(item: TitledItemIdentifiable) {
