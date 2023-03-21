@@ -88,7 +88,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
         Task { await loadItems() }
 
         searchTermSubject
-            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
             .sink { [unowned self] term in
                 self.doSearch(term: term)
             }
@@ -126,19 +126,14 @@ private extension SearchViewModel {
 
         lastTask?.cancel()
         lastTask = Task { @MainActor in
-            do {
-                selectedType = nil
-                let hashedTerm = term.sha256Hashed()
-                logger.trace("Searching for \"\(hashedTerm)\"")
-                results = try searchableItems.result(for: term, symmetricKey: symmetricKey)
-                itemCount = .init(items: results)
-                filterResults()
-                state = .results
-                logger.trace("Get \(results.count) result(s) for \"\(hashedTerm)\"")
-            } catch {
-                logger.error(error)
-                state = .error(error)
-            }
+            selectedType = nil
+            let hashedTerm = term.sha256Hashed()
+            logger.trace("Searching for \"\(hashedTerm)\"")
+            results = searchableItems.result(for: term)
+            itemCount = .init(items: results)
+            filterResults()
+            state = .results
+            logger.trace("Get \(results.count) result(s) for \"\(hashedTerm)\"")
         }
     }
 
@@ -171,7 +166,8 @@ extension SearchViewModel {
             case .precise(let vault):
                 filteredActiveItems = allActiveItems.filter { $0.shareId == vault.shareId }
             }
-            searchableItems = try filteredActiveItems.map { try SearchableItem(from: $0) }
+            searchableItems = try filteredActiveItems.map { try SearchableItem(from: $0,
+                                                                               symmetricKey: symmetricKey) }
 
             state = .clean
         } catch {
@@ -186,7 +182,7 @@ extension SearchViewModel {
     }
 
     func search(_ term: String) {
-        doSearch(term: term)
+        searchTermSubject.send(term)
     }
 
     func viewDetail(of item: ItemIdentifiable) {

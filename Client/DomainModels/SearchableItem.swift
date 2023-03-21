@@ -25,46 +25,64 @@ import CryptoKit
 public struct SearchableItem {
     public let shareId: String
     public let itemId: String
-    public let encryptedItemContent: ItemContent
+    public let type: ItemContentType
+    public let name: String
+    public let note: String
+    public let requiredExtras: [String] // E.g: Username for login items
+    public let optionalExtras: [String] // E.g: URLs for login items
+    public let lastUseTime: Int64
+    public let modifyTime: Int64
 
-    public init(from item: SymmetricallyEncryptedItem) throws {
+    public init(from item: SymmetricallyEncryptedItem, symmetricKey: SymmetricKey) throws {
         self.shareId = item.shareId
         self.itemId = item.item.itemID
-        self.encryptedItemContent = try item.getEncryptedItemContent()
+
+        let itemContent = try item.getDecryptedItemContent(symmetricKey: symmetricKey)
+        self.type = itemContent.contentData.type
+        self.name = itemContent.name
+        self.note = itemContent.note
+
+        switch itemContent.contentData {
+        case .login(let data):
+            self.requiredExtras = [data.username]
+            self.optionalExtras = data.urls
+        default:
+            self.requiredExtras = []
+            self.optionalExtras = []
+        }
+
+        self.lastUseTime = itemContent.item.lastUseTime ?? 0
+        self.modifyTime = item.item.modifyTime
     }
 }
 
 extension SearchableItem {
-    func result(for term: String, symmetricKey: SymmetricKey) throws -> ItemSearchResult? {
-        let decryptedName = try symmetricKey.decrypt(encryptedItemContent.name)
+    func result(for term: String) -> ItemSearchResult? {
         let title: SearchResultEither
-        if let result = SearchUtils.search(query: term, in: decryptedName) {
+        if let result = SearchUtils.search(query: term, in: name) {
             title = .matched(result)
         } else {
-            title = .notMatched(decryptedName)
+            title = .notMatched(name)
         }
 
         var detail = [SearchResultEither]()
-        let decryptedNote = try symmetricKey.decrypt(encryptedItemContent.note)
-        if let result = SearchUtils.search(query: term, in: decryptedNote) {
+        if let result = SearchUtils.search(query: term, in: note) {
             detail.append(.matched(result))
         } else {
-            detail.append(.notMatched(decryptedNote))
+            detail.append(.notMatched(note))
         }
 
-        if case .login(let data) = encryptedItemContent.contentData {
-            let decryptedUsername = try symmetricKey.decrypt(data.username)
-            if let result = SearchUtils.search(query: term, in: decryptedUsername) {
+        for extra in requiredExtras {
+            if let result = SearchUtils.search(query: term, in: extra) {
                 detail.append(.matched(result))
             } else {
-                detail.append(.notMatched(decryptedUsername))
+                detail.append(.notMatched(extra))
             }
+        }
 
-            let decryptedUrls = try data.urls.map { try symmetricKey.decrypt($0) }
-            for decryptedUrl in decryptedUrls {
-                if let result = SearchUtils.search(query: term, in: decryptedUrl) {
-                    detail.append(.matched(result))
-                }
+        for extra in optionalExtras {
+            if let result = SearchUtils.search(query: term, in: extra) {
+                detail.append(.matched(result))
             }
         }
 
@@ -82,16 +100,16 @@ extension SearchableItem {
 
         return .init(shareId: shareId,
                      itemId: itemId,
-                     type: encryptedItemContent.contentData.type,
+                     type: type,
                      title: title,
                      detail: detail,
-                     lastUseTime: encryptedItemContent.item.lastUseTime ?? 0,
-                     modifyTime: encryptedItemContent.item.modifyTime)
+                     lastUseTime: lastUseTime,
+                     modifyTime: modifyTime)
     }
 }
 
 public extension Array where Element == SearchableItem {
-    func result(for term: String, symmetricKey: SymmetricKey) throws -> [ItemSearchResult] {
-        try compactMap { try $0.result(for: term, symmetricKey: symmetricKey) }
+    func result(for term: String) -> [ItemSearchResult] {
+        compactMap { $0.result(for: term) }
     }
 }
