@@ -65,6 +65,7 @@ struct NoteDetailView: View {
         .background(Color.passBackground)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(false)
         .toolbar {
             ItemDetailToolbar(itemContent: viewModel.itemContent,
                               onGoBack: viewModel.goBack,
