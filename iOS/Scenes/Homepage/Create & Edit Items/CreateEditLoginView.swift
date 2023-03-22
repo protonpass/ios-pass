@@ -337,7 +337,8 @@ struct CreateEditLoginView: View {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Password")
                     .sectionTitleText()
-                if viewModel.isPasswordSecure {
+
+                if !viewModel.password.isEmpty, !viewModel.isShowingPassword {
                     Text(String(repeating: "•", count: 20))
                         .sectionContentText()
                 } else {
@@ -348,10 +349,10 @@ struct CreateEditLoginView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .animation(.default, value: viewModel.isPasswordSecure)
+            .animation(.default, value: viewModel.isShowingPassword)
             .contentShape(Rectangle())
             .onTapGesture {
-                viewModel.isPasswordSecure = false
+                viewModel.isShowingPassword = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                     isFocusedOnPassword = true
                 }
@@ -376,12 +377,25 @@ struct CreateEditLoginView: View {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Two Factor Authentication")
                     .sectionTitleText()
-                TextField("otpauth://", text: $viewModel.totpUri)
-                    .keyboardType(.URL)
-                    .textInputAutocapitalization(.never)
-                    .focused($isFocusedOnTOTP)
+
+                if !viewModel.totpUri.isEmpty, !viewModel.isShowingTotpUri {
+                    Text(String(repeating: "•", count: 20))
+                        .sectionContentText()
+                } else {
+                    TextField("otpauth://", text: $viewModel.totpUri)
+                        .keyboardType(.URL)
+                        .textInputAutocapitalization(.never)
+                        .focused($isFocusedOnTOTP)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                viewModel.isShowingTotpUri = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    isFocusedOnTOTP = true
+                }
+            }
 
             if !viewModel.totpUri.isEmpty {
                 Button(action: {
