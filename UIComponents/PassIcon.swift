@@ -44,4 +44,35 @@ public enum PassIcon {
     public static var onboardAliases = UIImage(named: "OnboardAliases")!
     public static var turnOnAutoFillBannerGradient = UIImage(named: "TurnOnAutoFillBannerGradient")!
     public static var turnOnAutoFillBannerKeyboard = UIImage(named: "TurnOnAutoFillBannerKeyboard")!
+
+    public static var vaultIcon1 = UIImage(named: "VaultIcon1")!
+    public static var vaultIcon2 = UIImage(named: "VaultIcon2")!
+    public static var vaultIcon3 = UIImage(named: "VaultIcon3")!
+    public static var vaultIcon4 = UIImage(named: "VaultIcon4")!
+    public static var vaultIcon5 = UIImage(named: "VaultIcon5")!
+    public static var vaultIcon6 = UIImage(named: "VaultIcon6")!
+    public static var vaultIcon7 = UIImage(named: "VaultIcon7")!
+    public static var vaultIcon8 = UIImage(named: "VaultIcon8")!
+    public static var vaultIcon9 = UIImage(named: "VaultIcon9")!
+    public static var vaultIcon10 = UIImage(named: "VaultIcon10")!
+    public static var vaultIcon11 = UIImage(named: "VaultIcon11")!
+    public static var vaultIcon12 = UIImage(named: "VaultIcon12")!
+    public static var vaultIcon13 = UIImage(named: "VaultIcon13")!
+    public static var vaultIcon14 = UIImage(named: "VaultIcon14")!
+    public static var vaultIcon15 = UIImage(named: "VaultIcon15")!
+    public static var vaultIcon16 = UIImage(named: "VaultIcon16")!
+    public static var vaultIcon17 = UIImage(named: "VaultIcon17")!
+    public static var vaultIcon18 = UIImage(named: "VaultIcon18")!
+    public static var vaultIcon19 = UIImage(named: "VaultIcon19")!
+    public static var vaultIcon20 = UIImage(named: "VaultIcon20")!
+    public static var vaultIcon21 = UIImage(named: "VaultIcon21")!
+    public static var vaultIcon22 = UIImage(named: "VaultIcon22")!
+    public static var vaultIcon23 = UIImage(named: "VaultIcon23")!
+    public static var vaultIcon24 = UIImage(named: "VaultIcon24")!
+    public static var vaultIcon25 = UIImage(named: "VaultIcon25")!
+    public static var vaultIcon26 = UIImage(named: "VaultIcon26")!
+    public static var vaultIcon27 = UIImage(named: "VaultIcon27")!
+    public static var vaultIcon28 = UIImage(named: "VaultIcon28")!
+    public static var vaultIcon29 = UIImage(named: "VaultIcon29")!
+    public static var vaultIcon30 = UIImage(named: "VaultIcon30")!
 }

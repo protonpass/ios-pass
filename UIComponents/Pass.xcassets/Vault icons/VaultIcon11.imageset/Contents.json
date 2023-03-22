@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "VaultIcon11.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
