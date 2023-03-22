@@ -43,8 +43,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
-    @Published var isPasswordSecure = false // Password in clear text or not
+    @Published var isShowingPassword = false
     @Published var totpUri = ""
+    @Published var isShowingTotpUri = false
     @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
     @Published var invalidURLs = [String]()
     @Published var note = ""
@@ -111,7 +112,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.title = itemContent.name
                 self.username = data.username
                 self.password = data.password
-                self.isPasswordSecure = true
                 self.totpUri = data.totpUri
                 if !data.urls.isEmpty {
                     self.urls = data.urls.map { .init(value: $0) }
@@ -125,7 +125,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             }
 
         case let .create(_, type):
-            self.isPasswordSecure = false
             if case let .login(title, url, _) = type {
                 self.title = title ?? ""
                 self.urls = [url ?? ""].map { .init(value: $0) }
