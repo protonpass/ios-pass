@@ -52,6 +52,7 @@ struct ItemsTabView: View {
         }
         .animation(.default, value: vaultsManager.state)
         .background(Color.passBackground)
+        .navigationBarHidden(true)
     }
 
     @ViewBuilder
@@ -334,9 +335,13 @@ private struct ItemListView<Content: View>: View {
     var body: some View {
         List {
             content()
+            Spacer()
+                .frame(height: safeAreaInsets.bottom)
+                .listRowSeparator(.hidden)
+                .listRowInsets(.zero)
+                .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
-        .padding(.bottom, safeAreaInsets.bottom)
         .scrollIndicatorsHidden(!showScrollIndicators)
         .refreshable(action: onRefresh)
     }
