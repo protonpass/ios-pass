@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -37,49 +38,17 @@ struct EditableVaultListView: View {
                     case .loading, .error:
                         // Should never happen
                         ProgressView()
-                    case .loaded(let vaults):
-                        Button(action: {
-                            dismiss()
-                            vaultsManager.select(vault: nil)
-                        }, label: {
-                            VaultRow(
-                                thumbnail: {
-                                    CircleButton(icon: PassIcon.allVaults,
-                                                 color: .passBrand,
-                                                 backgroundOpacity: 0.16,
-                                                 action: {})
-                                },
-                                title: "All vaults",
-                                description: "\(vaultsManager.getItemCount(for: nil)) items",
-                                isSelected: vaultsManager.isAllVaultsSelected())
-                            .frame(height: 70)
-                        })
-                        .buttonStyle(.plain)
+                    case let .loaded(vaults, _):
+                        vaultRow(for: .all)
 
                         PassDivider()
 
                         ForEach(vaults, id: \.hashValue) { vault in
-                            Button(action: {
-                                dismiss()
-                                vaultsManager.select(vault: vault.vault)
-                            }, label: {
-                                VaultRow(
-                                    thumbnail: {
-                                        CircleButton(
-                                            icon: vault.vault.displayPreferences.icon.icon.image,
-                                            color: vault.vault.displayPreferences.color.color.color,
-                                            backgroundOpacity: 0.16,
-                                            action: {})
-                                    },
-                                    title: vault.vault.name,
-                                    description: "\(vaultsManager.getItemCount(for: vault.vault)) items",
-                                    isSelected: vaultsManager.isSelected(vault.vault))
-                                .frame(height: 70)
-                            })
-                            .buttonStyle(.plain)
-
+                            vaultRow(for: .precise(vault.vault))
                             PassDivider()
                         }
+
+                        vaultRow(for: .trash)
                     }
                 }
                 .padding(.horizontal)
@@ -98,6 +67,29 @@ struct EditableVaultListView: View {
         }
         .background(Color.passSecondaryBackground)
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    @ViewBuilder
+    private func vaultRow(for selection: VaultSelection) -> some View {
+        let vaultsManager = viewModel.vaultsManager
+        let count = vaultsManager.getItemCount(for: selection)
+        let isSelected = vaultsManager.isSelected(selection)
+        Button(action: {
+            dismiss()
+            vaultsManager.select(selection)
+        }, label: {
+            VaultRow(
+                thumbnail: {
+                    CircleButton(
+                        icon: selection.icon,
+                        color: selection.color,
+                        backgroundOpacity: 0.16,
+                        action: {})},
+                title: selection.title,
+                description: "\(count) items",
+                isSelected: isSelected)
+        })
+        .buttonStyle(.plain)
     }
 }
 
@@ -129,5 +121,40 @@ private struct VaultRow<Thumbnail: View>: View {
         .frame(maxWidth: .infinity)
         .frame(height: 70)
         .contentShape(Rectangle())
+    }
+}
+
+extension VaultSelection {
+    var title: String {
+        switch self {
+        case .all:
+            return "All vaults"
+        case .precise(let vault):
+            return vault.name
+        case .trash:
+            return "Trash"
+        }
+    }
+
+    var icon: UIImage {
+        switch self {
+        case .all:
+            return PassIcon.allVaults
+        case .precise(let vault):
+            return vault.displayPreferences.icon.icon.image
+        case .trash:
+            return IconProvider.trash
+        }
+    }
+
+    var color: UIColor {
+        switch self {
+        case .all:
+            return .passBrand
+        case .precise(let vault):
+            return vault.displayPreferences.color.color.color
+        case .trash:
+            return .textWeak
+        }
     }
 }
