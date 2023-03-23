@@ -45,6 +45,7 @@ public enum PassIcon {
     public static var turnOnAutoFillBannerGradient = UIImage(named: "TurnOnAutoFillBannerGradient")!
     public static var turnOnAutoFillBannerKeyboard = UIImage(named: "TurnOnAutoFillBannerKeyboard")!
 
+    public static var allVaults = UIImage(named: "AllVaults")!
     public static var vaultIcon1 = UIImage(named: "VaultIcon1")!
     public static var vaultIcon2 = UIImage(named: "VaultIcon2")!
     public static var vaultIcon3 = UIImage(named: "VaultIcon3")!
