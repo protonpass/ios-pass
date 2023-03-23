@@ -1,5 +1,5 @@
 //
-// VaultProtocol.swift
+// VaultProtobuf.swift
 // Proton Pass - Created on 12/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
