@@ -103,6 +103,10 @@ public extension UIColor {
         ColorProvider.TextNorm
     }
 
+    static var textHint: UIColor {
+        ColorProvider.TextHint
+    }
+
     static var textWeak: UIColor {
         ColorProvider.TextWeak
     }
@@ -224,6 +228,10 @@ public extension Color {
 
     static var textDisabled: Color {
         .init(uiColor: .textDisabled)
+    }
+
+    static var textHint: Color {
+        .init(uiColor: .textHint)
     }
 
     static var textNorm: Color {

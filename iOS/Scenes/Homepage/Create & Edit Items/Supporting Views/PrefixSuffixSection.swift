@@ -78,7 +78,7 @@ struct PrefixSuffixSection: View {
                     Button(action: {
                         prefix = ""
                     }, label: {
-                        ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
+                        ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
                     })
                 }
             }

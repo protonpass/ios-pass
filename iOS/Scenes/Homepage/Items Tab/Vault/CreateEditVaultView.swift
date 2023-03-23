@@ -25,17 +25,30 @@ import UIComponents
 struct CreateEditVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: CreateEditVaultViewModel
+    @FocusState private var isFocusedOnTitle
 
     var body: some View {
         NavigationView {
-            VStack {
-                Text("AA")
+            VStack(spacing: 24) {
+                previewAndTitle
+                    .fixedSize(horizontal: false, vertical: true)
+                colorsAndIcons
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(kItemDetailSectionPadding)
+            .navigationBarTitleDisplayMode(.inline)
             .background(Color.passBackground)
             .toolbar { toolbarContent }
+            .ignoresSafeArea(.keyboard)
+            .gesture(DragGesture().onChanged { _ in isFocusedOnTitle = false })
         }
         .navigationViewStyle(.stack)
+        .onChange(of: viewModel.selectedIcon) { _ in
+            isFocusedOnTitle = false
+        }
+        .onChange(of: viewModel.selectedColor) { _ in
+            isFocusedOnTitle = false
+        }
     }
 
     @ToolbarContentBuilder
@@ -54,6 +67,158 @@ struct CreateEditVaultView: View {
                 disabled: false,
                 action: viewModel.save)
             .font(.callout)
+        }
+    }
+
+    private var previewAndTitle: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            let previewWidth: CGFloat = UIDevice.current.isIpad ? 60 : 40
+            VStack {
+                Spacer()
+                Image(uiImage: viewModel.selectedIcon.image.withRenderingMode(.alwaysTemplate))
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundColor(Color(uiColor: viewModel.selectedColor.color))
+                    .padding(previewWidth / 4)
+                    .frame(width: previewWidth, height: previewWidth)
+                    .background(Color(uiColor: viewModel.selectedColor.color).opacity(0.16))
+                    .clipShape(Circle())
+                    .animation(.default, value: viewModel.selectedIcon)
+                    .animation(.default, value: viewModel.selectedColor)
+                Spacer()
+            }
+
+            HStack {
+                VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                    Text("Title")
+                        .sectionTitleText()
+                    TextField("Untitled", text: $viewModel.title)
+                        .font(.title.weight(.bold))
+                        .tint(.passBrand)
+                        .submitLabel(.done)
+                        .focused($isFocusedOnTitle)
+                        .onSubmit { isFocusedOnTitle = false }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                if !viewModel.title.isEmpty {
+                    Button(action: {
+                        viewModel.title = ""
+                    }, label: {
+                        ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    })
+                }
+            }
+            .padding(kItemDetailSectionPadding)
+            .roundedEditableSection()
+            .animation(.default, value: viewModel.title.isEmpty)
+        }
+    }
+
+    private var colorsAndIcons: some View {
+        GeometryReader { proxy in
+            let itemPerRow = 5
+            let rowSpacing: CGFloat = 16
+            let rowWidth = rowWidth(size: proxy.size, itemPerRow: itemPerRow, rowSpacing: rowSpacing)
+            VStack(spacing: rowSpacing) {
+                ForEach(VaultColorIcon.allCases.chunked(into: itemPerRow), id: \.self) { chunkedColorIcons in
+                    HStack {
+                        ForEach(chunkedColorIcons, id: \.self) { colorIcon in
+                            switch colorIcon {
+                            case .color(let color):
+                                VaultColorView(color: color, selectedColor: $viewModel.selectedColor)
+                                    .frame(width: rowWidth, height: rowWidth)
+                            case .icon(let icon):
+                                VaultIconView(icon: icon, selectedIcon: $viewModel.selectedIcon)
+                                    .frame(width: rowWidth, height: rowWidth)
+                            }
+
+                            if colorIcon != chunkedColorIcons.last {
+                                Spacer()
+                            }
+                        }
+                    }
+                }
+
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    private func rowWidth(size: CGSize, itemPerRow: Int, rowSpacing: CGFloat) -> CGFloat {
+        let rowSpacing = Int(rowSpacing)
+        let rowCount = VaultColorIcon.allCases.count / itemPerRow
+        let columSpacing = 26
+        let rowHeight = (Int(size.height) - (rowCount - 1) * rowSpacing) / rowCount
+        let rowWidth = (Int(size.width) - (itemPerRow - 1) * columSpacing) / itemPerRow
+        return CGFloat(min(rowHeight, rowWidth))
+    }
+}
+
+private struct VaultColorView: View {
+    let color: VaultColor
+    @Binding var selectedColor: VaultColor
+
+    var body: some View {
+        GeometryReader { proxy in
+            Button(action: {
+                selectedColor = color
+            }, label: {
+                Color(uiColor: color.color)
+                    .clipShape(Circle())
+                    .padding(proxy.size.width / 10)
+                    .overlay(overlay(size: proxy.size))
+            })
+            .buttonStyle(.plain)
+            .animation(.default, value: selectedColor)
+        }
+    }
+
+    @ViewBuilder
+    private func overlay(size: CGSize) -> some View {
+        if color == selectedColor {
+            Circle()
+                .strokeBorder(Color.textHint, style: StrokeStyle(lineWidth: size.width / 20))
+        } else {
+            EmptyView()
+        }
+    }
+}
+
+private struct VaultIconView: View {
+    let icon: VaultIcon
+    @Binding var selectedIcon: VaultIcon
+
+    var body: some View {
+        GeometryReader { proxy in
+            Button(action: {
+                selectedIcon = icon
+            }, label: {
+                ZStack {
+                    Color(uiColor: .init(red: 36, green: 33, blue: 56))
+                    Image(uiImage: icon.image.withRenderingMode(.alwaysTemplate))
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(.textNorm)
+                        .padding(proxy.size.width / 6)
+                }
+                .clipShape(Circle())
+                .padding(proxy.size.width / 10)
+                .overlay(overlay(size: proxy.size))
+            })
+            .buttonStyle(.plain)
+            .animation(.default, value: selectedIcon)
+        }
+    }
+
+    @ViewBuilder
+    private func overlay(size: CGSize) -> some View {
+        if icon == selectedIcon {
+            Circle()
+                .strokeBorder(Color.textHint, style: StrokeStyle(lineWidth: size.width / 20))
+        } else {
+            EmptyView()
         }
     }
 }
