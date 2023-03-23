@@ -40,9 +40,11 @@ struct ItemsTabView: View {
             case .loaded:
                 switch vaultsManager.vaultSelection {
                 case .all:
-                    vaultContent(vaultsManager.getItem(for: nil))
+                    vaultContent(vaultsManager.getItem(for: .all))
                 case .precise(let selectedVault):
-                    vaultContent(vaultsManager.getItem(for: selectedVault))
+                    vaultContent(vaultsManager.getItem(for: .precise(selectedVault)))
+                case .trash:
+                    vaultContent(vaultsManager.getItem(for: .trash))
                 }
 
             case .error(let error):
@@ -103,6 +105,13 @@ struct ItemsTabView: View {
             case .precise(let vault):
                 CircleButton(icon: vault.displayPreferences.icon.icon.image,
                              color: vault.displayPreferences.color.color.color,
+                             backgroundOpacity: 0.16,
+                             action: viewModel.presentVaultList)
+                .frame(width: kSearchBarHeight)
+
+            case .trash:
+                CircleButton(icon: IconProvider.trash,
+                             color: .textWeak,
                              backgroundOpacity: 0.16,
                              action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)

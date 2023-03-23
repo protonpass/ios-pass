@@ -79,6 +79,8 @@ struct SearchView: View {
                     NoSearchResultsInPreciseVaultView(query: query,
                                                       vaultName: vault.name,
                                                       action: viewModel.searchInAllVaults)
+                case .trash:
+                    NoSearchResultsInTrashView(query: query)
                 }
 
             case let .results(itemCount, results):

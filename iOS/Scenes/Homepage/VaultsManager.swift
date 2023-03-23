@@ -25,28 +25,14 @@ import ProtonCore_Login
 
 enum VaultManagerState {
     case loading
-    case loaded([VaultContentUiModel])
+    case loaded(vaults: [VaultContentUiModel], trashedItems: [ItemUiModel])
     case error(Error)
-}
-
-extension VaultManagerState: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.loading, .loading):
-            return true
-        case let (.loaded(lhsVaults), .loaded(rhsVaults)):
-            return lhsVaults.hashValue == rhsVaults.hashValue
-        case let (.error(lhsError), .error(rhsError)):
-            return lhsError.messageForTheUser == rhsError.messageForTheUser
-        default:
-            return false
-        }
-    }
 }
 
 enum VaultSelection {
     case all
     case precise(Vault)
+    case trash
 
     var searchBarPlacehoder: String {
         switch self {
@@ -54,6 +40,8 @@ enum VaultSelection {
             return "Search in all vaults"
         case .precise(let vault):
             return "Search in \(vault.name)"
+        case .trash:
+            return "Search in trash"
         }
     }
 }
@@ -138,10 +126,13 @@ private extension VaultsManager {
         let uiModels = try await vaults.parallelMap { vault in
             let items = try await self.itemRepository.getItems(shareId: vault.shareId, state: .active)
             let itemUiModels = try items.map { try $0.toItemUiModel(self.symmetricKey) }
-            return VaultContentUiModel(vault: vault,
-                                       items: itemUiModels)
+            return VaultContentUiModel(vault: vault, items: itemUiModels)
         }
-        state = .loaded(uiModels)
+
+        let trashedItems =
+        try await itemRepository.getItems(state: .trashed).map { try $0.toItemUiModel(symmetricKey) }
+
+        state = .loaded(vaults: uiModels, trashedItems: trashedItems)
 
         // Reset to `all` when last selected vault is deleted
         if case .precise(let selectedVault) = vaultSelection {
@@ -154,51 +145,73 @@ private extension VaultsManager {
 
 // MARK: - Public APIs
 extension VaultsManager {
-    func select(vault: Vault?) {
-        guard let vault else {
-            vaultSelection = .all
-            return
-        }
-        vaultSelection = .precise(vault)
+    func select(_ selection: VaultSelection) {
+        vaultSelection = selection
     }
 
-    func isSelected(_ vault: Vault) -> Bool {
-        guard case .precise(let selectedVault) = vaultSelection else { return false }
-        return selectedVault == vault
+    func isSelected(_ selection: VaultSelection) -> Bool {
+        vaultSelection == selection
     }
 
-    func isAllVaultsSelected() -> Bool {
-        if case .all = vaultSelection {
-            return true
-        }
-        return false
-    }
-
-    func getItem(for vault: Vault?) -> [ItemUiModel] {
-        guard case .loaded(let vaults) = state else { return [] }
+    func getItem(for selection: VaultSelection) -> [ItemUiModel] {
+        guard case let .loaded(vaults, trashedItems) = state else { return [] }
         switch vaultSelection {
         case .all:
             return vaults.map { $0.items }.reduce(into: []) { $0 += $1 }
         case .precise(let selectedVault):
             return vaults.first { $0.vault == selectedVault }?.items ?? []
+        case  .trash:
+            return trashedItems
         }
     }
 
-    func getItemCount(for vault: Vault?) -> Int {
-        guard case .loaded(let vaults) = state else { return 0 }
-        if let vault {
-            return vaults.first { $0.vault == vault }?.items.count ?? 0
-        } else {
+    func getItemCount(for selection: VaultSelection) -> Int {
+        guard case let .loaded(vaults, trashedItems) = state else { return 0 }
+        switch selection {
+        case .all:
             return vaults.map { $0.items.count }.reduce(into: 0) { $0 += $1 }
+        case .precise(let vault):
+            return vaults.first { $0.vault == vault }?.items.count ?? 0
+        case .trash:
+            return trashedItems.count
         }
     }
 
     func getVaultCount() -> Int {
         switch state {
-        case .loaded(let vaults):
+        case let .loaded(vaults, _):
             return vaults.count
         default:
             return 0
+        }
+    }
+}
+
+extension VaultManagerState: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading):
+            return true
+        case let (.loaded(lhsVaults, lhsTrashedItems), .loaded(rhsVaults, rhsTrashedItems)):
+            return lhsVaults.hashValue == rhsVaults.hashValue &&
+            lhsTrashedItems.hashValue == rhsTrashedItems.hashValue
+        case let (.error(lhsError), .error(rhsError)):
+            return lhsError.messageForTheUser == rhsError.messageForTheUser
+        default:
+            return false
+        }
+    }
+}
+
+extension VaultSelection: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.all, .all), (.trash, .trash):
+            return true
+        case let (.precise(lhsVault), .precise(rhsVault)):
+            return lhsVault.id == rhsVault.id && lhsVault.shareId == rhsVault.shareId
+        default:
+            return false
         }
     }
 }
