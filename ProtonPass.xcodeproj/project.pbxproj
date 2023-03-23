@@ -347,6 +347,8 @@
 		35733B7529CC483300052229 /* CreateEditVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7429CC483300052229 /* CreateEditVaultViewModel.swift */; };
 		35733B7829CC525900052229 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
 		35733B7929CC525A00052229 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
+		35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7C29CC5DB700052229 /* VaultIcon.swift */; };
+		35733B7F29CC60D200052229 /* VaultColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7E29CC60D200052229 /* VaultColor.swift */; };
 		3573CD23292C139900A9EF82 /* AliasPrefixValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */; };
 		3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */; };
 		3573D707297642F400F68DF7 /* DeleteVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */; };
@@ -949,6 +951,8 @@
 		3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditItemToolbar.swift; sourceTree = "<group>"; };
 		35733B7229CC481400052229 /* CreateEditVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditVaultView.swift; sourceTree = "<group>"; };
 		35733B7429CC483300052229 /* CreateEditVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditVaultViewModel.swift; sourceTree = "<group>"; };
+		35733B7C29CC5DB700052229 /* VaultIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultIcon.swift; sourceTree = "<group>"; };
+		35733B7E29CC60D200052229 /* VaultColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultColor.swift; sourceTree = "<group>"; };
 		3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidator.swift; sourceTree = "<group>"; };
 		3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidatorTests.swift; sourceTree = "<group>"; };
 		3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultEndpoint.swift; sourceTree = "<group>"; };
@@ -1344,6 +1348,8 @@
 				3572E51A299399AD00775FAC /* PPError.swift */,
 				355E33AB29C499E400402CAE /* SearchEntryUiModel.swift */,
 				3569B29E29B77A760070830B /* VaultContentUiModel.swift */,
+				35733B7E29CC60D200052229 /* VaultColor.swift */,
+				35733B7C29CC5DB700052229 /* VaultIcon.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3408,6 +3414,7 @@
 				3586F3B1295884B000738245 /* GeneralSettingsSection.swift in Sources */,
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
 				3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */,
+				35733B7F29CC60D200052229 /* VaultColor.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
 				3554D42D2967854000DF0CBE /* DeveloperModeStateManager.swift in Sources */,
 				3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */,
@@ -3418,6 +3425,7 @@
 				3567E46629B0E6F900511D62 /* NoCameraPermissionView.swift in Sources */,
 				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				3547ABE22877583B00EE85E1 /* TrashCoordinator.swift in Sources */,
+				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
 				35F8CD0429B624F80017DBC6 /* HomepageTabBar.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,

@@ -20,7 +20,33 @@
 
 import Foundation
 
-final class CreateEditVaultViewModel: ObservableObject {}
+enum VaultColorIcon {
+    case color(VaultColor)
+    case icon(VaultIcon)
+
+    static var allCases: [VaultColorIcon] {
+        let colors = VaultColor.allCases.map { VaultColorIcon.color($0) }
+        let icons = VaultIcon.allCases.map { VaultColorIcon.icon($0) }
+        return colors + icons
+    }
+}
+
+extension VaultColorIcon: Hashable {
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case .color(let color):
+            hasher.combine(color)
+        case .icon(let icon):
+            hasher.combine(icon)
+        }
+    }
+}
+
+final class CreateEditVaultViewModel: ObservableObject {
+    @Published var selectedColor: VaultColor = .color1
+    @Published var selectedIcon: VaultIcon = .icon1
+    @Published var title = ""
+}
 
 // MARK: - Public APIs
 extension CreateEditVaultViewModel {
