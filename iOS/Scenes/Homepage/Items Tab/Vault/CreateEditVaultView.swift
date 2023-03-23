@@ -75,7 +75,7 @@ struct CreateEditVaultView: View {
             let previewWidth: CGFloat = UIDevice.current.isIpad ? 60 : 40
             VStack {
                 Spacer()
-                Image(uiImage: viewModel.selectedIcon.image.withRenderingMode(.alwaysTemplate))
+                Image(uiImage: viewModel.selectedIcon.image)
                     .resizable()
                     .scaledToFit()
                     .foregroundColor(Color(uiColor: viewModel.selectedColor.color))
@@ -197,7 +197,7 @@ private struct VaultIconView: View {
             }, label: {
                 ZStack {
                     Color(uiColor: .init(red: 36, green: 33, blue: 56))
-                    Image(uiImage: icon.image.withRenderingMode(.alwaysTemplate))
+                    Image(uiImage: icon.image)
                         .resizable()
                         .scaledToFit()
                         .foregroundColor(.textNorm)
