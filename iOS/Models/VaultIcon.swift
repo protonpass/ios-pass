@@ -63,9 +63,9 @@ enum VaultIcon: CaseIterable {
     }
 }
 
-extension VaultProtobuf {
+extension ProtonPassVaultV1_VaultIcon {
     var icon: VaultIcon {
-        switch display.icon {
+        switch self {
         case .icon1: return .icon1
         case .icon2: return .icon2
         case .icon3: return .icon3

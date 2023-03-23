@@ -25,11 +25,17 @@ public struct Vault: Identifiable, Hashable {
     public let shareId: String
     public let name: String
     public let description: String
+    public let displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences
 
-    public init(id: String, shareId: String, name: String, description: String) {
+    public init(id: String,
+                shareId: String,
+                name: String,
+                description: String,
+                displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences) {
         self.id = id
         self.shareId = shareId
         self.name = name
         self.description = description
+        self.displayPreferences = displayPreferences
     }
 }
