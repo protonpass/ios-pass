@@ -554,8 +554,7 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
 // MARK: - EditableVaultListViewModelDelegate
 extension HomepageCoordinator: EditableVaultListViewModelDelegate {
     func editableVaultListViewModelWantsToCreateNewVault() {
-        let viewModel = CreateEditVaultViewModel()
-        let view = CreateEditVaultView(viewModel: viewModel)
+        let view = CreateEditVaultView(viewModel: .init(mode: .create))
         present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 }

@@ -41,9 +41,9 @@ enum VaultColor: CaseIterable {
     }
 }
 
-extension VaultProtobuf {
+extension ProtonPassVaultV1_VaultColor {
     var color: VaultColor {
-        switch display.color {
+        switch self {
         case .color1: return .color1
         case .color2: return .color2
         case .color3: return .color3

@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Client
 
 enum VaultColorIcon {
     case color(VaultColor)
@@ -42,10 +42,40 @@ extension VaultColorIcon: Hashable {
     }
 }
 
+enum VaultMode {
+    case create
+    case edit(Vault)
+
+    var saveButtonTitle: String {
+        switch self {
+        case .create:
+            return "Create Vault"
+        case .edit:
+            return "Save"
+        }
+    }
+}
+
 final class CreateEditVaultViewModel: ObservableObject {
-    @Published var selectedColor: VaultColor = .color1
-    @Published var selectedIcon: VaultIcon = .icon1
-    @Published var title = ""
+    @Published var selectedColor: VaultColor
+    @Published var selectedIcon: VaultIcon
+    @Published var title: String
+
+    let mode: VaultMode
+
+    init(mode: VaultMode) {
+        self.mode = mode
+        switch mode {
+        case .create:
+            selectedColor = .color1
+            selectedIcon = .icon1
+            title = ""
+        case .edit(let vault):
+            selectedColor = vault.displayPreferences.color.color
+            selectedIcon = vault.displayPreferences.icon.icon
+            title = vault.name
+        }
+    }
 }
 
 // MARK: - Public APIs
