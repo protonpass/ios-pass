@@ -92,19 +92,21 @@ struct ItemsTabView: View {
 
     private var topBar: some View {
         HStack {
-            Button(action: viewModel.presentVaultList) {
-                ZStack {
-                    Color.passBrand
-                        .opacity(0.16)
-                    Image(uiImage: IconProvider.vault)
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundColor(Color.passBrand)
-                        .padding(kSearchBarHeight / 4)
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 16))
+            switch viewModel.vaultsManager.vaultSelection {
+            case .all:
+                CircleButton(icon: PassIcon.allVaults,
+                             color: .passBrand,
+                             backgroundOpacity: 0.16,
+                             action: viewModel.presentVaultList)
+                .frame(width: kSearchBarHeight)
+
+            case .precise(let vault):
+                CircleButton(icon: vault.displayPreferences.icon.icon.image,
+                             color: vault.displayPreferences.color.color.color,
+                             backgroundOpacity: 0.16,
+                             action: viewModel.presentVaultList)
+                .frame(width: kSearchBarHeight)
             }
-            .frame(width: kSearchBarHeight)
 
             ZStack {
                 Color.black

@@ -44,9 +44,10 @@ struct EditableVaultListView: View {
                         }, label: {
                             VaultRow(
                                 thumbnail: {
-                                    Color.passBrand
-                                        .clipShape(Circle())
-                                        .frame(width: 40)
+                                    CircleButton(icon: PassIcon.allVaults,
+                                                 color: .passBrand,
+                                                 backgroundOpacity: 0.16,
+                                                 action: {})
                                 },
                                 title: "All vaults",
                                 description: "\(vaultsManager.getItemCount(for: nil)) items",
@@ -64,9 +65,11 @@ struct EditableVaultListView: View {
                             }, label: {
                                 VaultRow(
                                     thumbnail: {
-                                        Color.passBrand
-                                            .clipShape(Circle())
-                                            .frame(width: 40)
+                                        CircleButton(
+                                            icon: vault.vault.displayPreferences.icon.icon.image,
+                                            color: vault.vault.displayPreferences.color.color.color,
+                                            backgroundOpacity: 0.16,
+                                            action: {})
                                     },
                                     title: vault.vault.name,
                                     description: "\(vaultsManager.getItemCount(for: vault.vault)) items",
