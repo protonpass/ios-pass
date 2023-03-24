@@ -232,6 +232,14 @@ private extension SyncEventLoop {
         try await shareEventIDRepository.upsertLastEventId(userId: userId,
                                                            shareId: shareId,
                                                            lastEventId: events.latestEventID)
+
+        if events.fullRefresh {
+            logger.info("Force full sync for share \(shareId)")
+            hasNewEvents = true
+            try await itemRepository.refreshShare(shareId: shareId)
+            return
+        }
+
         if let updatedShare = events.updatedShare {
             hasNewEvents = true
             logger.trace("Found updated share \(shareId)")
