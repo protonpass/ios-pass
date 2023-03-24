@@ -76,8 +76,6 @@ struct EditableVaultListView: View {
     @ViewBuilder
     private func vaultRow(for selection: VaultSelection) -> some View {
         let vaultsManager = viewModel.vaultsManager
-        let count = vaultsManager.getItemCount(for: selection)
-        let isSelected = vaultsManager.isSelected(selection)
 
         HStack {
             Button(action: {
@@ -92,8 +90,8 @@ struct EditableVaultListView: View {
                             backgroundOpacity: 0.16,
                             action: {})},
                     title: selection.title,
-                    description: "\(count) items",
-                    isSelected: isSelected)
+                    itemCount: vaultsManager.getItemCount(for: selection),
+                    isSelected: vaultsManager.isSelected(selection))
             })
             .buttonStyle(.plain)
 
@@ -211,7 +209,7 @@ struct EditableVaultListView: View {
 private struct VaultRow<Thumbnail: View>: View {
     let thumbnail: () -> Thumbnail
     let title: String
-    let description: String
+    let itemCount: Int
     let isSelected: Bool
 
     var body: some View {
@@ -220,9 +218,16 @@ private struct VaultRow<Thumbnail: View>: View {
 
             VStack(alignment: .leading) {
                 Text(title)
-                Text(description)
-                    .font(.callout)
-                    .foregroundColor(Color.textWeak)
+
+                if itemCount == 0 {
+                    Text("Empty")
+                        .font(.callout.italic())
+                        .foregroundColor(Color.textWeak)
+                } else {
+                    Text("\(itemCount) items")
+                        .font(.callout)
+                        .foregroundColor(Color.textWeak)
+                }
             }
 
             Spacer()
