@@ -367,6 +367,11 @@ private extension HomepageCoordinator {
         let view = CreateEditVaultView(viewModel: viewModel)
         present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
+
+    func refreshHomepageAndSearchPage() {
+        homepageViewModel?.vaultsManager.refresh()
+        Task { await searchViewModel?.refreshResults() }
+    }
 }
 
 // MARK: - Public APIs
@@ -476,8 +481,9 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         case .note:
             message = "Note created"
         }
-        dismissTopMostViewController()
-        bannerManager.displayBottomInfoMessage(message)
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            bannerManager.displayBottomInfoMessage(message)
+        }
         homepageViewModel?.vaultsManager.refresh()
     }
 
@@ -631,8 +637,15 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
     }
 
     func itemContextMenuHandlerDidTrashAnItem() {
-        homepageViewModel?.vaultsManager.refresh()
-        Task { await searchViewModel?.refreshResults() }
+        refreshHomepageAndSearchPage()
+    }
+
+    func itemContextMenuHandlerDidUntrashAnItem() {
+        refreshHomepageAndSearchPage()
+    }
+
+    func itemContextMenuHandlerDidPermanentlyDeleteAnItem() {
+        refreshHomepageAndSearchPage()
     }
 }
 

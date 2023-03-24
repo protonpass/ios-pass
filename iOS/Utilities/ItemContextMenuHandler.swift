@@ -26,6 +26,8 @@ protocol ItemContextMenuHandlerDelegate: AnyObject {
     func itemContextMenuHandlerWantsToHideSpinner()
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent)
     func itemContextMenuHandlerDidTrashAnItem()
+    func itemContextMenuHandlerDidUntrashAnItem()
+    func itemContextMenuHandlerDidPermanentlyDeleteAnItem()
 }
 
 final class ItemContextMenuHandler {
@@ -81,6 +83,60 @@ extension ItemContextMenuHandler {
                 clipboardManager.bannerManager?.displayBottomInfoMessage(message)
 
                 delegate?.itemContextMenuHandlerDidTrashAnItem()
+            } catch {
+                logger.error(error)
+                handleError(error)
+            }
+        }
+    }
+
+    func untrash(_ item: ItemTypeIdentifiable) {
+        Task { @MainActor in
+            defer { delegate?.itemContextMenuHandlerWantsToHideSpinner() }
+            do {
+                delegate?.itemContextMenuHandlerWantsToShowSpinner()
+                let encryptedItem = try await getEncryptedItem(for: item)
+                try await itemRepository.untrashItems([encryptedItem])
+
+                let message: String
+                switch item.type {
+                case .alias:
+                    message = "Alias restored"
+                case .login:
+                    message = "Login restored"
+                case .note:
+                    message = "Note restored"
+                }
+                clipboardManager.bannerManager?.displayBottomInfoMessage(message)
+
+                delegate?.itemContextMenuHandlerDidUntrashAnItem()
+            } catch {
+                logger.error(error)
+                handleError(error)
+            }
+        }
+    }
+
+    func deletePermanently(_ item: ItemTypeIdentifiable) {
+        Task { @MainActor in
+            defer { delegate?.itemContextMenuHandlerWantsToHideSpinner() }
+            do {
+                delegate?.itemContextMenuHandlerWantsToShowSpinner()
+                let encryptedItem = try await getEncryptedItem(for: item)
+                try await itemRepository.deleteItems([encryptedItem], skipTrash: false)
+
+                let message: String
+                switch item.type {
+                case .alias:
+                    message = "Alias permanently deleted"
+                case .login:
+                    message = "Login permanently deleted"
+                case .note:
+                    message = "Note permanently deleted"
+                }
+                clipboardManager.bannerManager?.displayBottomInfoMessage(message)
+
+                delegate?.itemContextMenuHandlerDidPermanentlyDeleteAnItem()
             } catch {
                 logger.error(error)
                 handleError(error)
