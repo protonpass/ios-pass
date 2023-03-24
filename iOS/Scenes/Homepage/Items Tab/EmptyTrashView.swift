@@ -34,11 +34,12 @@ struct EmptyTrashView: View {
             }
 
             VStack {
-                Text("No items in trash")
+                Text("Trash empty")
                     .font(.title2)
                     .fontWeight(.bold)
                     .padding(.vertical)
-                Text("Items you move here will stay here until you empty the trash.")
+                Text("Deleted items will be moved here first")
+                    .foregroundColor(.textWeak)
                     .multilineTextAlignment(.center)
                 Spacer()
             }
