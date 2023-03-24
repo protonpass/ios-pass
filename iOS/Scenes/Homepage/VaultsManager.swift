@@ -183,11 +183,19 @@ extension VaultsManager {
     }
 
     func restoreAllTrashedItems() async throws {
-        print(#function)
+        let userId = shareRepository.userData.user.ID
+        logger.trace("Restoring all trashed items for user \(userId)")
+        let trashedItems = try await itemRepository.getItems(state: .trashed)
+        try await itemRepository.untrashItems(trashedItems)
+        logger.info("Restored all trashed items for user \(userId)")
     }
 
-    func emptyTrash() async throws {
-        print(#function)
+    func permanentlyDeleteAllTrashedItems() async throws {
+        let userId = shareRepository.userData.user.ID
+        logger.trace("Permanently deleting all trashed items for user \(userId)")
+        let trashedItems = try await itemRepository.getItems(state: .trashed)
+        try await itemRepository.deleteItems(trashedItems, skipTrash: false)
+        logger.info("Permanently deleted all trashed items for user \(userId)")
     }
 }
 

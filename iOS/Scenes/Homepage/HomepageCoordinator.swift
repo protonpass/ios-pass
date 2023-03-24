@@ -569,12 +569,34 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
 
 // MARK: - EditableVaultListViewModelDelegate
 extension HomepageCoordinator: EditableVaultListViewModelDelegate {
+    func editableVaultListViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func editableVaultListViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
     func editableVaultListViewModelWantsToCreateNewVault() {
         presentCreateEditVaultView(mode: .create)
     }
 
     func editableVaultListViewModelWantsToEdit(vault: Vault) {
         presentCreateEditVaultView(mode: .edit(vault))
+    }
+
+    func editableVaultListViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+
+    func editableVaultListViewModelDidRestoreAllTrashedItems() {
+        bannerManager.displayBottomSuccessMessage("All items restored")
+        refreshHomepageAndSearchPage()
+    }
+
+    func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems() {
+        bannerManager.displayBottomInfoMessage("All items permanently deleted")
+        refreshHomepageAndSearchPage()
     }
 }
 
