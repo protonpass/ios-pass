@@ -58,8 +58,7 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
                                           manualLogIn: manualLogIn,
                                           logManager: logManager,
                                           shareRepository: shareRepository,
-                                          symmetricKey: symmetricKey,
-                                          userData: userData)
+                                          symmetricKey: symmetricKey)
         self.itemsTabViewModel = .init(itemContextMenuHandler: itemContextMenuHandler,
                                        itemRepository: itemRepository,
                                        logManager: logManager,

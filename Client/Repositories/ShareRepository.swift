@@ -48,8 +48,7 @@ public protocol ShareRepositoryProtocol {
 
     func upsertShares(_ shares: [Share]) async throws
 
-    @discardableResult
-    func createVault(request: CreateVaultRequest) async throws -> Share
+    func createVault(_ vault: VaultProtobuf) async throws
 
     /// Delete vault. If vault is not empty (0 active & trashed items)  an error is thrown.
     func deleteVault(shareId: String) async throws
@@ -127,13 +126,13 @@ public extension ShareRepositoryProtocol {
         logger.trace("Upserted \(shares.count) shares for user \(userId)")
     }
 
-    func createVault(request: CreateVaultRequest) async throws -> Share {
+    func createVault(_ vault: VaultProtobuf) async throws {
         logger.trace("Creating vault for user \(userId)")
+        let request = try CreateVaultRequest(userData: userData, vault: vault)
         let createdVault = try await remoteShareDatasouce.createVault(request: request)
         logger.trace("Saving newly created vault to local for user \(userId)")
         try await localShareDatasource.upsertShares([createdVault], userId: userId)
         logger.trace("Created vault for user \(userId)")
-        return createdVault
     }
 
     func deleteVault(shareId: String) async throws {
