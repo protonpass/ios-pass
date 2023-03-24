@@ -23,8 +23,13 @@ import Combine
 import Core
 
 protocol EditableVaultListViewModelDelegate: AnyObject {
+    func editableVaultListViewModelWantsToShowSpinner()
+    func editableVaultListViewModelWantsToHideSpinner()
     func editableVaultListViewModelWantsToCreateNewVault()
     func editableVaultListViewModelWantsToEdit(vault: Vault)
+    func editableVaultListViewModelDidEncounter(error: Error)
+    func editableVaultListViewModelDidRestoreAllTrashedItems()
+    func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems()
 }
 
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
@@ -63,10 +68,28 @@ extension EditableVaultListViewModel {
     }
 
     func restoreAllTrashedItems() {
-        print(#function)
+        Task { @MainActor in
+            defer { delegate?.editableVaultListViewModelWantsToHideSpinner() }
+            do {
+                delegate?.editableVaultListViewModelWantsToShowSpinner()
+                try await vaultsManager.restoreAllTrashedItems()
+                delegate?.editableVaultListViewModelDidRestoreAllTrashedItems()
+            } catch {
+                delegate?.editableVaultListViewModelDidEncounter(error: error)
+            }
+        }
     }
 
     func emptyTrash() {
-        print(#function)
+        Task { @MainActor in
+            defer { delegate?.editableVaultListViewModelWantsToHideSpinner() }
+            do {
+                delegate?.editableVaultListViewModelWantsToShowSpinner()
+                try await vaultsManager.permanentlyDeleteAllTrashedItems()
+                delegate?.editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems()
+            } catch {
+                delegate?.editableVaultListViewModelDidEncounter(error: error)
+            }
+        }
     }
 }
