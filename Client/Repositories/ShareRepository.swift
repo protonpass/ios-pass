@@ -50,6 +50,8 @@ public protocol ShareRepositoryProtocol {
 
     func createVault(_ vault: VaultProtobuf) async throws
 
+    func edit(oldVault: Vault, newVault: VaultProtobuf) async throws
+
     /// Delete vault. If vault is not empty (0 active & trashed items)  an error is thrown.
     func deleteVault(shareId: String) async throws
 }
@@ -133,6 +135,19 @@ public extension ShareRepositoryProtocol {
         logger.trace("Saving newly created vault to local for user \(userId)")
         try await localShareDatasource.upsertShares([createdVault], userId: userId)
         logger.trace("Created vault for user \(userId)")
+    }
+
+    func edit(oldVault: Vault, newVault: VaultProtobuf) async throws {
+        logger.trace("Editing vault \(oldVault.id) for user \(userId)")
+        let shareId = oldVault.shareId
+        let shareKey = try await passKeyManager.getLatestShareKey(shareId: shareId)
+        let request = try UpdateVaultRequest(vault: newVault,
+                                             shareKey: shareKey.value,
+                                             userData: userData)
+        let updatedVault = try await remoteShareDatasouce.updateVault(request: request, shareId: shareId)
+        logger.trace("Saving updated vault \(oldVault.id) to local for user \(userId)")
+        try await localShareDatasource.upsertShares([updatedVault], userId: userId)
+        logger.trace("Updated vault \(oldVault.id) for user \(userId)")
     }
 
     func deleteVault(shareId: String) async throws {

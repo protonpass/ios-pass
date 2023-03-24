@@ -90,11 +90,19 @@ final class CreateEditVaultViewModel: ObservableObject {
 
 // MARK: - Private APIs
 private extension CreateEditVaultViewModel {
+    func generateVaultProtobuf() -> VaultProtobuf {
+        .init(name: title,
+              description: "",
+              color: selectedColor.protobufColor,
+              icon: selectedIcon.protobufIcon)
+    }
+
     func editVault(_ oldVault: Vault) {
         Task { @MainActor in
             defer { delegate?.createEditVaultViewModelWantsToHideSpinner() }
             do {
                 delegate?.createEditVaultViewModelWantsToShowSpinner()
+                try await shareRepository.edit(oldVault: oldVault, newVault: generateVaultProtobuf())
                 delegate?.createEditVaultViewModelDidEditVault()
             } catch {
                 delegate?.createEditVaultViewModelDidEncounter(error: error)
@@ -107,11 +115,7 @@ private extension CreateEditVaultViewModel {
             defer { delegate?.createEditVaultViewModelWantsToHideSpinner() }
             do {
                 delegate?.createEditVaultViewModelWantsToShowSpinner()
-                let vault = VaultProtobuf(name: title,
-                                          description: "",
-                                          color: selectedColor.protobufColor,
-                                          icon: selectedIcon.protobufIcon)
-                try await shareRepository.createVault(vault)
+                try await shareRepository.createVault(generateVaultProtobuf())
                 delegate?.createEditVaultViewModelDidCreateVault()
             } catch {
                 delegate?.createEditVaultViewModelDidEncounter(error: error)
