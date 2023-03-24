@@ -54,7 +54,6 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let mode: VaultMode
     private let logger: Logger
     private let shareRepository: ShareRepositoryProtocol
-    private let userData: UserData
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
@@ -69,7 +68,6 @@ final class CreateEditVaultViewModel: ObservableObject {
 
     init(mode: VaultMode,
          shareRepository: ShareRepositoryProtocol,
-         userData: UserData,
          logManager: LogManager) {
         self.mode = mode
         switch mode {
@@ -87,7 +85,6 @@ final class CreateEditVaultViewModel: ObservableObject {
                             category: "\(Self.self)",
                             manager: logManager)
         self.shareRepository = shareRepository
-        self.userData = userData
     }
 }
 
@@ -114,8 +111,7 @@ private extension CreateEditVaultViewModel {
                                           description: "",
                                           color: selectedColor.protobufColor,
                                           icon: selectedIcon.protobufIcon)
-                let request = try CreateVaultRequest(userData: userData, vault: vault)
-                try await shareRepository.createVault(request: request)
+                try await shareRepository.createVault(vault)
                 delegate?.createEditVaultViewModelDidCreateVault()
             } catch {
                 delegate?.createEditVaultViewModelDidEncounter(error: error)

@@ -54,7 +54,6 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     private let logger: Logger
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
-    private let userData: UserData
 
     @Published private(set) var state = VaultManagerState.loading
     @Published private(set) var vaultSelection = VaultSelection.all
@@ -63,8 +62,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
          manualLogIn: Bool,
          logManager: LogManager,
          shareRepository: ShareRepositoryProtocol,
-         symmetricKey: SymmetricKey,
-         userData: UserData) {
+         symmetricKey: SymmetricKey) {
         self.itemRepository = itemRepository
         self.manualLogIn = manualLogIn
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
@@ -72,7 +70,6 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
                             manager: logManager)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
-        self.userData = userData
     }
 
     func refresh() {
@@ -90,7 +87,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
                     try await itemRepository.refreshItems()
                     let vaults = try await shareRepository.getVaults()
                     if vaults.isEmpty {
-                        let userId = userData.user.ID
+                        let userId = shareRepository.userData.user.ID
                         logger.trace("Creating default vault for user \(userId)")
                         try await createDefaultVault()
                         logger.trace("Created default vault for user \(userId)")
@@ -113,14 +110,11 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
 // MARK: - Private APIs
 private extension VaultsManager {
     func createDefaultVault() async throws {
-        logger.info("Creating default vault")
         let vault = VaultProtobuf(name: "Personal",
                                   description: "Personal vault",
                                   color: .color1,
                                   icon: .icon1)
-        let request = try CreateVaultRequest(userData: userData, vault: vault)
-        try await shareRepository.createVault(request: request)
-        logger.info("Created default vault")
+        try await shareRepository.createVault(vault)
     }
 
     @MainActor
