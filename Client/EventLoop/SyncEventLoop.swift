@@ -232,6 +232,12 @@ private extension SyncEventLoop {
         try await shareEventIDRepository.upsertLastEventId(userId: userId,
                                                            shareId: shareId,
                                                            lastEventId: events.latestEventID)
+        if let updatedShare = events.updatedShare {
+            hasNewEvents = true
+            logger.trace("Found updated share \(shareId)")
+            try await shareRepository.upsertShares([updatedShare])
+        }
+
         if !events.updatedItems.isEmpty {
             hasNewEvents = true
             logger.trace("Found \(events.updatedItems.count) updated items for share \(shareId)")
@@ -245,7 +251,7 @@ private extension SyncEventLoop {
                                                         shareId: shareId)
         }
 
-        if events.newRotationID?.isEmpty == false {
+        if events.newKeyRotation != nil {
             hasNewEvents = true
             logger.trace("Had new rotation ID for share \(shareId)")
             _ = try await shareKeyRepository.refreshKeys(shareId: shareId)
