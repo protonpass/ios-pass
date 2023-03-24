@@ -185,6 +185,14 @@ extension VaultsManager {
             return 0
         }
     }
+
+    func restoreAllTrashedItems() async throws {
+        print(#function)
+    }
+
+    func emptyTrash() async throws {
+        print(#function)
+    }
 }
 
 extension VaultManagerState: Equatable {
