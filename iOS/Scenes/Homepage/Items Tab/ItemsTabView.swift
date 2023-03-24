@@ -29,6 +29,7 @@ struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
     @State private var toBeTrashedItem: ItemUiModel?
+    @State private var isShowingDeleteConfirmation = false
 
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
@@ -239,7 +240,9 @@ struct ItemsTabView: View {
         }
     }
 
+    @ViewBuilder
     private func itemRow(for item: ItemUiModel) -> some View {
+        let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
         Button(action: {
             viewModel.viewDetail(of: item)
         }, label: {
@@ -266,6 +269,28 @@ struct ItemsTabView: View {
         .listRowBackground(Color.clear)
         .frame(height: 64)
         .swipeActions(edge: .trailing) {
+            swipeActions(for: item, isTrashed: isTrashed)
+        }
+        .itemContextMenu(item: item,
+                         isTrashed: isTrashed,
+                         isShowingDeleteConfirmation: $isShowingDeleteConfirmation,
+                         handler: viewModel.itemContextMenuHandler)
+    }
+
+    @ViewBuilder
+    private func swipeActions(for item: ItemUiModel, isTrashed: Bool) -> some View {
+        if isTrashed {
+            Button(action: {
+                isShowingDeleteConfirmation.toggle()
+            }, label: {
+                Label(title: {
+                    Text("Permanently delete")
+                }, icon: {
+                    Image(uiImage: IconProvider.trash)
+                })
+            })
+            .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
+        } else {
             Button(action: {
                 askForConfirmationOrTrashDirectly(item: item)
             }, label: {
@@ -277,7 +302,6 @@ struct ItemsTabView: View {
             })
             .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
         }
-        .itemContextMenu(item: item, handler: viewModel.itemContextMenuHandler)
     }
 
     private func askForConfirmationOrTrashDirectly(item: ItemUiModel) {
