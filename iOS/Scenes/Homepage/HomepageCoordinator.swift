@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable file_length
 import Client
 import Combine
 import Core
@@ -357,6 +358,16 @@ private extension HomepageCoordinator {
         }
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
+
+    func presentCreateEditVaultView(mode: VaultMode) {
+        let viewModel = CreateEditVaultViewModel(mode: mode,
+                                                 shareRepository: shareRepository,
+                                                 userData: userData,
+                                                 logManager: logManager)
+        viewModel.delegate = self
+        let view = CreateEditVaultView(viewModel: viewModel)
+        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
 }
 
 // MARK: - Public APIs
@@ -554,13 +565,11 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
 // MARK: - EditableVaultListViewModelDelegate
 extension HomepageCoordinator: EditableVaultListViewModelDelegate {
     func editableVaultListViewModelWantsToCreateNewVault() {
-        let view = CreateEditVaultView(viewModel: .init(mode: .create))
-        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        presentCreateEditVaultView(mode: .create)
     }
 
     func editableVaultListViewModelWantsToEdit(vault: Vault) {
-        let view = CreateEditVaultView(viewModel: .init(mode: .edit(vault)))
-        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        presentCreateEditVaultView(mode: .edit(vault))
     }
 }
 
@@ -640,6 +649,33 @@ extension HomepageCoordinator: SearchViewModelDelegate {
     }
 
     func searchViewModelWantsDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - CreateEditVaultViewModelDelegate
+extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
+    func createEditVaultViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func createEditVaultViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
+    func createEditVaultViewModelDidCreateVault() {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager.displayBottomSuccessMessage("Vault created")
+        }
+        homepageViewModel?.vaultsManager.refresh()
+    }
+
+    func createEditVaultViewModelDidEditVault() {
+        dismissTopMostViewController(animated: true)
+        homepageViewModel?.vaultsManager.refresh()
+    }
+
+    func createEditVaultViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }

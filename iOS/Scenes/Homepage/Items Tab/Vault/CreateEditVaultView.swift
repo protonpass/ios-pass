@@ -60,7 +60,7 @@ struct CreateEditVaultView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            CapsuleTextButton(title: viewModel.mode.saveButtonTitle,
+            CapsuleTextButton(title: viewModel.saveButtonTitle,
                               titleColor: .textNorm,
                               backgroundColor: .passBrand,
                               disabled: false,

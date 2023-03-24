@@ -116,7 +116,9 @@ private extension VaultsManager {
         logger.info("Creating default vault")
         let request = try CreateVaultRequest(userData: userData,
                                              name: "Personal",
-                                             description: "Personal vault")
+                                             description: "Personal vault",
+                                             color: .color1,
+                                             icon: .icon1)
         try await shareRepository.createVault(request: request)
         logger.info("Created default vault")
     }
