@@ -114,11 +114,11 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
 private extension VaultsManager {
     func createDefaultVault() async throws {
         logger.info("Creating default vault")
-        let request = try CreateVaultRequest(userData: userData,
-                                             name: "Personal",
-                                             description: "Personal vault",
-                                             color: .color1,
-                                             icon: .icon1)
+        let vault = VaultProtobuf(name: "Personal",
+                                  description: "Personal vault",
+                                  color: .color1,
+                                  icon: .icon1)
+        let request = try CreateVaultRequest(userData: userData, vault: vault)
         try await shareRepository.createVault(request: request)
         logger.info("Created default vault")
     }

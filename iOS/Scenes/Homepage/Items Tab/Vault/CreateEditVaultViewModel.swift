@@ -110,11 +110,11 @@ private extension CreateEditVaultViewModel {
             defer { delegate?.createEditVaultViewModelWantsToHideSpinner() }
             do {
                 delegate?.createEditVaultViewModelWantsToShowSpinner()
-                let request = try CreateVaultRequest(userData: userData,
-                                                     name: title,
-                                                     description: "",
-                                                     color: selectedColor.protobufColor,
-                                                     icon: selectedIcon.protobufIcon)
+                let vault = VaultProtobuf(name: title,
+                                          description: "",
+                                          color: selectedColor.protobufColor,
+                                          icon: selectedIcon.protobufIcon)
+                let request = try CreateVaultRequest(userData: userData, vault: vault)
                 try await shareRepository.createVault(request: request)
                 delegate?.createEditVaultViewModelDidCreateVault()
             } catch {
