@@ -21,18 +21,25 @@
 import Foundation
 
 public struct SyncEvents: Decodable {
+    /// Updated share in case the vault content changes
+    public let updatedShare: Share?
+
     /// New or updated items
     public let updatedItems: [ItemRevision]
 
-    /// ItemIDs deleted
+    /// Deleted items
     public let deletedItemIDs: [String]
 
-    /// RotationID of the new key if there's been a key rotation
-    public let newRotationID: String?
+    /// New key rotation value if there has been a key rotation
+    public let newKeyRotation: Int?
 
     /// New latest event ID. It can be the same as the one in the request if there are no events
     public let latestEventID: String
 
-    /// Flag specifing if there are more events in the db and the client should request again more events
+    /// If there are more events to process this will be true
     public let eventsPending: Bool
+
+    /// If the share needs a full refresh this will be true
+    /// E.g: `latestEventID` is too old
+    public let fullRefresh: Bool
 }
