@@ -178,6 +178,8 @@
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
+		3554730829CDD3CC0092E0E4 /* UpdateVaultRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554730729CDD3CC0092E0E4 /* UpdateVaultRequest.swift */; };
+		3554730A29CDD5540092E0E4 /* UpdateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554730929CDD5540092E0E4 /* UpdateVaultEndpoint.swift */; };
 		3554747C29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554747B29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift */; };
 		3554747E29A8E71F0060B555 /* RemoteItemKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554747D29A8E71F0060B555 /* RemoteItemKeyDatasource.swift */; };
 		3554748029A8E8460060B555 /* PassKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554747F29A8E8460060B555 /* PassKeyManager.swift */; };
@@ -807,6 +809,8 @@
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
+		3554730729CDD3CC0092E0E4 /* UpdateVaultRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateVaultRequest.swift; sourceTree = "<group>"; };
+		3554730929CDD5540092E0E4 /* UpdateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateVaultEndpoint.swift; sourceTree = "<group>"; };
 		3554747B29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLatestItemKeyEndpoint.swift; sourceTree = "<group>"; };
 		3554747D29A8E71F0060B555 /* RemoteItemKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteItemKeyDatasource.swift; sourceTree = "<group>"; };
 		3554747F29A8E8460060B555 /* PassKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKeyManager.swift; sourceTree = "<group>"; };
@@ -1513,6 +1517,8 @@
 				3593DCEA28A79CD300C235D3 /* CreateVaultRequest.swift */,
 				35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */,
 				3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */,
+				3554730729CDD3CC0092E0E4 /* UpdateVaultRequest.swift */,
+				3554730929CDD5540092E0E4 /* UpdateVaultEndpoint.swift */,
 			);
 			path = Vault;
 			sourceTree = "<group>";
@@ -3450,6 +3456,7 @@
 				3542E2B828D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift in Sources */,
 				358A509428AD860200F5285C /* LocalPublicKeyDatasource.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProtobuf.swift in Sources */,
+				3554730A29CDD5540092E0E4 /* UpdateVaultEndpoint.swift in Sources */,
 				354146D128D1F1E1007E45A6 /* AliasOptions.swift in Sources */,
 				3529433028DB4C7700E1F11B /* SearchableItem.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
@@ -3485,6 +3492,7 @@
 				356B831429C365320084488A /* SearchEntryEntity.swift in Sources */,
 				3554747C29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift in Sources */,
 				3552F48A28D344E100547146 /* Alias.swift in Sources */,
+				3554730829CDD3CC0092E0E4 /* UpdateVaultRequest.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
 				3530092A28A5281800611F8A /* Vault.swift in Sources */,
 				3558180F290A8C0800DD94DB /* GetLastEventIDEndpoint.swift in Sources */,

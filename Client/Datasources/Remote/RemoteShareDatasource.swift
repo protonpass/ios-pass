@@ -24,6 +24,7 @@ public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
     func getShares() async throws -> [Share]
     func getShare(shareId: String) async throws -> Share
     func createVault(request: CreateVaultRequest) async throws -> Share
+    func updateVault(request: UpdateVaultRequest, shareId: String) async throws -> Share
     func deleteVault(shareId: String) async throws
 }
 
@@ -42,6 +43,14 @@ public extension RemoteShareDatasourceProtocol {
 
     func createVault(request: CreateVaultRequest) async throws -> Share {
         let endpoint = CreateVaultEndpoint(credential: authCredential, request: request)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.share
+    }
+
+    func updateVault(request: UpdateVaultRequest, shareId: String) async throws -> Share {
+        let endpoint = UpdateVaultEndpoint(credential: authCredential,
+                                           shareId: shareId,
+                                           request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.share
     }

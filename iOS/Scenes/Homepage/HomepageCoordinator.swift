@@ -670,7 +670,9 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
     }
 
     func createEditVaultViewModelDidEditVault() {
-        dismissTopMostViewController(animated: true)
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager.displayBottomInfoMessage("Changes saved")
+        }
         homepageViewModel?.vaultsManager.refresh()
     }
 
