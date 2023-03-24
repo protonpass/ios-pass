@@ -167,42 +167,45 @@ struct EditableVaultListView: View {
             })
     }
 
+    @ViewBuilder
     private var trashTrailingView: some View {
-        Menu(content: {
-            Button(action: viewModel.restoreAllTrashedItems) {
-                Label(title: {
-                    Text("Restore all items")
-                }, icon: {
-                    Image(uiImage: IconProvider.clockRotateLeft)
-                })
-            }
-
-            Divider()
-
-            Button(
-                role: .destructive,
-                action: {
-                    isShowingEmptyTrashAlert.toggle()
-                },
-                label: {
+        if viewModel.vaultsManager.getItemCount(for: .trash) > 0 {
+            Menu(content: {
+                Button(action: viewModel.restoreAllTrashedItems) {
                     Label(title: {
-                        Text("Empty trash")
+                        Text("Restore all items")
                     }, icon: {
-                        Image(uiImage: IconProvider.trash)
+                        Image(uiImage: IconProvider.clockRotateLeft)
                     })
-                })
-        }, label: threeDotsIcon)
-        .alert(
-            "Empty trash",
-            isPresented: $isShowingEmptyTrashAlert,
-            actions: {
-                Button(role: .destructive,
-                       action: viewModel.emptyTrash,
-                       label: { Text("Empty trash") })
+                }
 
-                Button(role: .cancel, label: { Text("Cancel") })
-            },
-            message: { Text("All items in trash will be permanently deleted") })
+                Divider()
+
+                Button(
+                    role: .destructive,
+                    action: {
+                        isShowingEmptyTrashAlert.toggle()
+                    },
+                    label: {
+                        Label(title: {
+                            Text("Empty trash")
+                        }, icon: {
+                            Image(uiImage: IconProvider.trash)
+                        })
+                    })
+            }, label: threeDotsIcon)
+            .alert(
+                "Empty trash",
+                isPresented: $isShowingEmptyTrashAlert,
+                actions: {
+                    Button(role: .destructive,
+                           action: viewModel.emptyTrash,
+                           label: { Text("Empty trash") })
+
+                    Button(role: .cancel, label: { Text("Cancel") })
+                },
+                message: { Text("All items in trash will be permanently deleted") })
+        }
     }
 }
 

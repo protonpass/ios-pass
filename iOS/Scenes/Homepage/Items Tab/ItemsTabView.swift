@@ -71,8 +71,17 @@ struct ItemsTabView: View {
             VStack {
                 topBar
                 if items.isEmpty {
-                    EmptyVaultView(onCreateNewItem: viewModel.createNewItem)
-                        .padding(.bottom, safeAreaInsets.bottom)
+                    switch viewModel.vaultsManager.vaultSelection {
+                    case .all:
+                        // Impossible case
+                        EmptyView()
+                    case .precise:
+                        EmptyVaultView(onCreateNewItem: viewModel.createNewItem)
+                            .padding(.bottom, safeAreaInsets.bottom)
+                    case .trash:
+                        EmptyTrashView()
+                            .padding(.bottom, safeAreaInsets.bottom)
+                    }
                 } else {
                     itemList(items)
                     Spacer()

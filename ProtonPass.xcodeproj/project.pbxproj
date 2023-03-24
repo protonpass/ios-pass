@@ -1424,7 +1424,6 @@
 		3547ABD82876DEF300EE85E1 /* Trash */ = {
 			isa = PBXGroup;
 			children = (
-				354AD95F28CB5934000E645B /* EmptyTrashView.swift */,
 				3547ABE12877583B00EE85E1 /* TrashCoordinator.swift */,
 				3547ABD92876DF1300EE85E1 /* TrashView.swift */,
 				3514E85B28CB2BB1006BD54A /* TrashViewModel.swift */,
@@ -1707,6 +1706,7 @@
 		3569B2A229B7888B0070830B /* Items Tab */ = {
 			isa = PBXGroup;
 			children = (
+				354AD95F28CB5934000E645B /* EmptyTrashView.swift */,
 				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
 				3569B2A029B788600070830B /* ItemsTabView.swift */,
 				3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */,
