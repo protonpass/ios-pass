@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -25,6 +26,8 @@ import UIComponents
 struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: EditableVaultListViewModel
+    @State private var vaultToBeDeleted: Vault?
+    @State private var isShowingEmptyTrashAlert = false
 
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
@@ -74,22 +77,133 @@ struct EditableVaultListView: View {
         let vaultsManager = viewModel.vaultsManager
         let count = vaultsManager.getItemCount(for: selection)
         let isSelected = vaultsManager.isSelected(selection)
-        Button(action: {
-            dismiss()
-            vaultsManager.select(selection)
-        }, label: {
-            VaultRow(
-                thumbnail: {
-                    CircleButton(
-                        icon: selection.icon,
-                        color: selection.color,
-                        backgroundOpacity: 0.16,
-                        action: {})},
-                title: selection.title,
-                description: "\(count) items",
-                isSelected: isSelected)
+
+        HStack {
+            Button(action: {
+                dismiss()
+                vaultsManager.select(selection)
+            }, label: {
+                VaultRow(
+                    thumbnail: {
+                        CircleButton(
+                            icon: selection.icon,
+                            color: selection.color,
+                            backgroundOpacity: 0.16,
+                            action: {})},
+                    title: selection.title,
+                    description: "\(count) items",
+                    isSelected: isSelected)
+            })
+            .buttonStyle(.plain)
+
+            Spacer()
+
+            switch selection {
+            case .all:
+                // Gimmick view to take up space
+                threeDotsIcon().opacity(0)
+            case .precise(let vault):
+                vaultTrailingView(vault)
+            case .trash:
+                trashTrailingView
+            }
+        }
+    }
+
+    private func threeDotsIcon() -> some View {
+        Image(uiImage: IconProvider.threeDotsVertical)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 24, height: 24)
+            .foregroundColor(.textWeak)
+    }
+
+    @ViewBuilder
+    private func vaultTrailingView(_ vault: Vault) -> some View {
+        let isShowingDeleteVaultAlert = Binding<Bool>(get: {
+            vaultToBeDeleted != nil
+        }, set: { newValue in
+            if !newValue {
+                vaultToBeDeleted = nil
+            }
         })
-        .buttonStyle(.plain)
+
+        Menu(content: {
+            Button(action: {
+                viewModel.edit(vault: vault)
+            }, label: {
+                Label(title: {
+                    Text("Edit")
+                }, icon: {
+                    Image(uiImage: IconProvider.pencil)
+                })
+            })
+
+            Divider()
+
+            Button(
+                role: .destructive,
+                action: { vaultToBeDeleted = vault },
+                label: {
+                    Label(title: {
+                        Text("Delete vault")
+                    }, icon: {
+                        Image(uiImage: IconProvider.trash)
+                    })
+                })
+        }, label: threeDotsIcon)
+        .alert(
+            "Delete \(vaultToBeDeleted?.name ?? "")?",
+            isPresented: isShowingDeleteVaultAlert,
+            actions: {
+                Button(
+                    role: .destructive,
+                    action: { viewModel.delete(vault: vault) },
+                    label: { Text("Delete this vault") })
+
+                Button(role: .cancel, label: { Text("Cancel") })
+            },
+            message: {
+                Text("All items in this vault will also be deleted")
+            })
+    }
+
+    private var trashTrailingView: some View {
+        Menu(content: {
+            Button(action: viewModel.restoreAllTrashedItems) {
+                Label(title: {
+                    Text("Restore all items")
+                }, icon: {
+                    Image(uiImage: IconProvider.clockRotateLeft)
+                })
+            }
+
+            Divider()
+
+            Button(
+                role: .destructive,
+                action: {
+                    isShowingEmptyTrashAlert.toggle()
+                },
+                label: {
+                    Label(title: {
+                        Text("Empty trash")
+                    }, icon: {
+                        Image(uiImage: IconProvider.trash)
+                    })
+                })
+        }, label: threeDotsIcon)
+        .alert(
+            "Empty trash",
+            isPresented: $isShowingEmptyTrashAlert,
+            actions: {
+                Button(role: .destructive,
+                       action: viewModel.emptyTrash,
+                       label: { Text("Empty trash") })
+
+                Button(role: .cancel, label: { Text("Cancel") })
+            },
+            message: { Text("All items in trash will be permanently deleted") })
     }
 }
 

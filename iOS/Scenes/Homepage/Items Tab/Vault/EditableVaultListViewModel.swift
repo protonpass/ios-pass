@@ -18,11 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 
 protocol EditableVaultListViewModelDelegate: AnyObject {
     func editableVaultListViewModelWantsToCreateNewVault()
+    func editableVaultListViewModelWantsToEdit(vault: Vault)
 }
 
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
@@ -50,5 +52,21 @@ private extension EditableVaultListViewModel {
 extension EditableVaultListViewModel {
     func createNewVault() {
         delegate?.editableVaultListViewModelWantsToCreateNewVault()
+    }
+
+    func edit(vault: Vault) {
+        delegate?.editableVaultListViewModelWantsToEdit(vault: vault)
+    }
+
+    func delete(vault: Vault) {
+        print(#function)
+    }
+
+    func restoreAllTrashedItems() {
+        print(#function)
+    }
+
+    func emptyTrash() {
+        print(#function)
     }
 }

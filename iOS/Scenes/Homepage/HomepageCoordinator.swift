@@ -557,6 +557,11 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
         let view = CreateEditVaultView(viewModel: .init(mode: .create))
         present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
+
+    func editableVaultListViewModelWantsToEdit(vault: Vault) {
+        let view = CreateEditVaultView(viewModel: .init(mode: .edit(vault)))
+        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
 }
 
 // MARK: - ItemDetailViewModelDelegate
