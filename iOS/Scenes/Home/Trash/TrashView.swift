@@ -69,7 +69,7 @@ struct TrashView: View {
                 Text("Items in trash will be deleted permanently. You can not undo this action.")
             })
         .alert(
-            "Delete permanently",
+            "Permanently delete",
             isPresented: isShowingDeleteConfirmation,
             actions: {
                 if let itemToBeDeleted {
@@ -159,7 +159,7 @@ struct TrashView: View {
             Divider()
 
             DestructiveButton(
-                title: "Delete permanently",
+                title: "Permanently delete",
                 icon: IconProvider.trash,
                 action: { itemToBeDeleted = item })
         }, label: {

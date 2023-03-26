@@ -268,8 +268,13 @@ struct ItemsTabView: View {
         .padding(.horizontal, 16)
         .listRowBackground(Color.clear)
         .frame(height: 64)
+        .swipeActions(edge: .leading) {
+            leadingSwipeActions(for: item,
+                                isTrashed: isTrashed,
+                                itemContextMenuHandler: viewModel.itemContextMenuHandler)
+        }
         .swipeActions(edge: .trailing) {
-            swipeActions(for: item, isTrashed: isTrashed)
+            trailingSwipeActions(for: item, isTrashed: isTrashed)
         }
         .itemContextMenu(item: item,
                          isTrashed: isTrashed,
@@ -278,7 +283,27 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private func swipeActions(for item: ItemUiModel, isTrashed: Bool) -> some View {
+    private func leadingSwipeActions(for item: ItemUiModel,
+                                     isTrashed: Bool,
+                                     itemContextMenuHandler: ItemContextMenuHandler) -> some View {
+        if isTrashed {
+            Button(action: {
+                itemContextMenuHandler.untrash(item)
+            }, label: {
+                Label(title: {
+                    Text("Restore")
+                }, icon: {
+                    Image(uiImage: IconProvider.clockRotateLeft)
+                })
+            })
+            .tint(.notificationSuccess)
+        } else {
+            EmptyView()
+        }
+    }
+
+    @ViewBuilder
+    private func trailingSwipeActions(for item: ItemUiModel, isTrashed: Bool) -> some View {
         if isTrashed {
             Button(action: {
                 isShowingDeleteConfirmation.toggle()
