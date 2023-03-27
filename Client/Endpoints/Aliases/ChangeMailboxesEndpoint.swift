@@ -28,17 +28,14 @@ public struct ChangeMailboxesEndpoint: Endpoint {
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
-    public var authCredential: AuthCredential?
     public var body: ChangeMailboxesRequest?
 
-    public init(credential: AuthCredential,
-                shareId: String,
+    public init(shareId: String,
                 itemId: String,
                 mailboxIDs: [Int]) {
         self.debugDescription = "Change alias target mailboxes"
         self.path = "/pass/v1/share/\(shareId)/alias/\(itemId)/mailbox"
         self.method = .post
-        self.authCredential = credential
         self.body = .init(mailboxIDs: mailboxIDs)
     }
 }

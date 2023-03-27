@@ -33,17 +33,14 @@ public struct UpdateItemEndpoint: Endpoint {
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
-    public var authCredential: AuthCredential?
     public var body: UpdateItemRequest?
 
-    public init(credential: AuthCredential,
-                shareId: String,
+    public init(shareId: String,
                 itemId: String,
                 request: UpdateItemRequest) {
         self.debugDescription = "Update item"
         self.path = "/pass/v1/share/\(shareId)/item/\(itemId)"
         self.method = .put
-        self.authCredential = credential
         self.body = request
     }
 }

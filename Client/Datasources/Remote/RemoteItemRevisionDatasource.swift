@@ -37,8 +37,7 @@ public extension RemoteItemRevisionDatasourceProtocol {
         var itemRevisions = [ItemRevision]()
         var sinceToken: String?
         while true {
-            let endpoint = GetItemsEndpoint(credential: authCredential,
-                                            shareId: shareId,
+            let endpoint = GetItemsEndpoint(shareId: shareId,
                                             sinceToken: sinceToken,
                                             pageSize: kDefaultPageSize)
             let response = try await apiService.exec(endpoint: endpoint)
@@ -53,40 +52,35 @@ public extension RemoteItemRevisionDatasourceProtocol {
     }
 
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision {
-        let endpoint = CreateItemEndpoint(credential: authCredential,
-                                          shareId: shareId,
+        let endpoint = CreateItemEndpoint(shareId: shareId,
                                           request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.item
     }
 
     func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> ItemRevision {
-        let endpoint = CreateCustomAliasEndpoint(credential: authCredential,
-                                                 shareId: shareId,
+        let endpoint = CreateCustomAliasEndpoint(shareId: shareId,
                                                  request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.item
     }
 
     func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
-        let endpoint = TrashItemsEndpoint(credential: authCredential,
-                                          shareId: shareId,
+        let endpoint = TrashItemsEndpoint(shareId: shareId,
                                           items: items)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.items
     }
 
     func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
-        let endpoint = UntrashItemsEndpoint(credential: authCredential,
-                                            shareId: shareId,
+        let endpoint = UntrashItemsEndpoint(shareId: shareId,
                                             items: items)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.items
     }
 
     func deleteItemRevisions(_ items: [ItemRevision], shareId: String, skipTrash: Bool) async throws {
-        let endpoint = DeleteItemsEndpoint(credential: authCredential,
-                                           shareId: shareId,
+        let endpoint = DeleteItemsEndpoint(shareId: shareId,
                                            items: items,
                                            skipTrash: skipTrash)
         _ = try await apiService.exec(endpoint: endpoint)
@@ -95,8 +89,7 @@ public extension RemoteItemRevisionDatasourceProtocol {
     func updateItem(shareId: String,
                     itemId: String,
                     request: UpdateItemRequest) async throws -> ItemRevision {
-        let endpoint = UpdateItemEndpoint(credential: authCredential,
-                                          shareId: shareId,
+        let endpoint = UpdateItemEndpoint(shareId: shareId,
                                           itemId: itemId,
                                           request: request)
         let response = try await apiService.exec(endpoint: endpoint)
@@ -106,8 +99,7 @@ public extension RemoteItemRevisionDatasourceProtocol {
     func updateLastUseTime(shareId: String,
                            itemId: String,
                            lastUseTime: TimeInterval) async throws -> ItemRevision {
-        let endpoint = UpdateLastUseTimeEndpoint(credential: authCredential,
-                                                 shareId: shareId,
+        let endpoint = UpdateLastUseTimeEndpoint(shareId: shareId,
                                                  itemId: itemId,
                                                  lastUseTime: lastUseTime)
         let response = try await apiService.exec(endpoint: endpoint)
