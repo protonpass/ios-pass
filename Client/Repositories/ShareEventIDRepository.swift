@@ -86,12 +86,10 @@ public final class ShareEventIDRepository: ShareEventIDRepositoryProtocol {
     }
 
     public init(container: NSPersistentContainer,
-                authCredential: AuthCredential,
                 apiService: APIService,
                 logManager: LogManager) {
         self.localShareEventIDDatasource = LocalShareEventIDDatasource(container: container)
-        self.remoteShareEventIDDatasource = RemoteShareEventIDDatasource(authCredential: authCredential,
-                                                                         apiService: apiService)
+        self.remoteShareEventIDDatasource = RemoteShareEventIDDatasource(apiService: apiService)
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)

@@ -28,17 +28,14 @@ public struct DeleteItemsEndpoint: Endpoint {
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
-    public var authCredential: AuthCredential?
     public var body: ModifyItemRequest?
 
-    public init(credential: AuthCredential,
-                shareId: String,
+    public init(shareId: String,
                 items: [ItemRevision],
                 skipTrash: Bool) {
         self.debugDescription = "Delete items"
         self.path = "/pass/v1/share/\(shareId)/item"
         self.method = .delete
-        self.authCredential = credential
         self.body = .init(items: items, skipTrash: skipTrash)
     }
 }

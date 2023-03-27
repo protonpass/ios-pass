@@ -102,7 +102,6 @@ final class HomeCoordinator: DeinitPrintable {
         self.symmetricKey = symmetricKey
 
         let userId = sessionData.userData.user.ID
-        let authCredential = sessionData.userData.credential
 
         let itemRepository = ItemRepository(userData: sessionData.userData,
                                             symmetricKey: symmetricKey,
@@ -110,18 +109,16 @@ final class HomeCoordinator: DeinitPrintable {
                                             apiService: apiService,
                                             logManager: logManager)
         self.itemRepository = itemRepository
-        self.aliasRepository = AliasRepository(authCredential: authCredential, apiService: apiService)
+        self.aliasRepository = AliasRepository(apiService: apiService)
         self.publicKeyRepository = PublicKeyRepository(container: container,
                                                        apiService: apiService,
                                                        logManager: logManager)
         let shareKeyRepository = ShareKeyRepository(container: container,
-                                                    authCredential: authCredential,
                                                     apiService: apiService,
                                                     logManager: logManager)
         self.shareKeyRepository = shareKeyRepository
 
-        let itemKeyDatasource = RemoteItemKeyDatasource(authCredential: authCredential,
-                                                        apiService: apiService)
+        let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
         let passKeyManager = PassKeyManager(userData: sessionData.userData,
                                             shareKeyRepository: shareKeyRepository,
                                             itemKeyDatasource: itemKeyDatasource,
@@ -129,8 +126,7 @@ final class HomeCoordinator: DeinitPrintable {
         let shareRepository = ShareRepository(
             userData: sessionData.userData,
             localShareDatasource: LocalShareDatasource(container: container),
-            remoteShareDatasouce: RemoteShareDatasource(authCredential: authCredential,
-                                                        apiService: apiService),
+            remoteShareDatasouce: RemoteShareDatasource(apiService: apiService),
             passKeyManager: passKeyManager,
             logManager: logManager)
         self.shareRepository = shareRepository
@@ -146,11 +142,9 @@ final class HomeCoordinator: DeinitPrintable {
         self.clipboardManager = .init(preferences: preferences)
 
         let shareEventIDRepository = ShareEventIDRepository(container: container,
-                                                            authCredential: authCredential,
                                                             apiService: apiService,
                                                             logManager: logManager)
-        let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(authCredential: authCredential,
-                                                                    apiService: apiService)
+        let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
         self.eventLoop = .init(userId: userId,
                                shareRepository: shareRepository,
                                shareEventIDRepository: shareEventIDRepository,

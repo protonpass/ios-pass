@@ -30,13 +30,11 @@ public struct GetShareEndpoint: Endpoint {
     public typealias Response = GetShareResponse
 
     public var debugDescription: String
-    public var authCredential: AuthCredential?
     public var path: String
     public var method: HTTPMethod
 
-    public init(credential: AuthCredential, shareId: String) {
+    public init(shareId: String) {
         self.debugDescription = "Get share data"
-        self.authCredential = credential
         self.path = "/pass/v1/share/\(shareId)"
         self.method = .get
     }

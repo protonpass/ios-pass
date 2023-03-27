@@ -217,18 +217,14 @@ public final class CredentialProviderCoordinator {
               let symmetricKeyData = symmetricKeyString?.data(using: .utf8) else { return }
 
         let symmetricKey = SymmetricKey(data: symmetricKeyData)
-        let credential = sessionData.userData.credential
-        let remoteAliasDatasource = RemoteAliasDatasource(authCredential: credential,
-                                                          apiService: apiManager.apiService)
+        let remoteAliasDatasource = RemoteAliasDatasource(apiService: apiManager.apiService)
 
         self.symmetricKey = symmetricKey
         self.shareRepository = ShareRepository(userData: sessionData.userData,
                                                container: container,
-                                               authCredential: credential,
                                                apiService: apiManager.apiService,
                                                logManager: logManager)
         self.shareEventIDRepository = ShareEventIDRepository(container: container,
-                                                             authCredential: credential,
                                                              apiService: apiManager.apiService,
                                                              logManager: logManager)
 
@@ -240,12 +236,10 @@ public final class CredentialProviderCoordinator {
         itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
         self.itemRepository = itemRepository
         self.shareKeyRepository = ShareKeyRepository(container: container,
-                                                     authCredential: sessionData.userData.credential,
                                                      apiService: apiManager.apiService,
                                                      logManager: logManager)
         self.aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
-        self.remoteSyncEventsDatasource = RemoteSyncEventsDatasource(authCredential: credential,
-                                                                     apiService: apiManager.apiService)
+        self.remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiManager.apiService)
     }
 }
 
