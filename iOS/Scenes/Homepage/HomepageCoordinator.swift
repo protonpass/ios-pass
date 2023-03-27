@@ -658,8 +658,9 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
         presentEditItemView(for: itemContent)
     }
 
-    func itemContextMenuHandlerDidTrashAnItem() {
-        refreshHomepageAndSearchPage()
+    func itemContextMenuHandlerDidTrash(item: ItemIdentifiable) {
+        homepageViewModel?.vaultsManager.refresh(trashedItem: item)
+        searchViewModel?.refreshResults(trashedItem: item)
     }
 
     func itemContextMenuHandlerDidUntrashAnItem() {
