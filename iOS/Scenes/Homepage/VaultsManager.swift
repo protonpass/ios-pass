@@ -171,6 +171,37 @@ extension VaultsManager {
         }
     }
 
+    /// Refresh by 1) adding the `untrashedItem` to the containing vault
+    /// And 2) remove it from `trashedItems` to make the refresh process quicker comparing to a full refresh
+    func refresh(untrashedItem: ItemIdentifiable) {
+        Task { @MainActor in
+            do {
+                guard case var .loaded(vaults, trashedItems) = state else { return }
+
+                // 1: Add `untrashedItem` to the vault that it belongs to
+                if var updatedVault = vaults.first(where: { $0.vault.shareId == untrashedItem.shareId }) {
+                    if let item = try await itemRepository.getItem(shareId: untrashedItem.shareId,
+                                                                   itemId: untrashedItem.itemId) {
+                        let uiModel = try item.toItemUiModel(itemRepository.symmetricKey)
+                        updatedVault = .init(vault: updatedVault.vault,
+                                             items: updatedVault.items.appending(uiModel))
+                    }
+
+                    if let index = vaults.firstIndex(where: { $0.vault.id == updatedVault.vault.id }) {
+                        vaults[index] = updatedVault
+                    }
+                }
+
+                // 2: Remove `trashedItems` from `trashedItems` array
+                trashedItems.remove(item: untrashedItem)
+
+                state = .loaded(vaults: vaults, trashedItems: trashedItems)
+            } catch {
+                state = .error(error)
+            }
+        }
+    }
+
     func select(_ selection: VaultSelection) {
         vaultSelection = selection
     }
