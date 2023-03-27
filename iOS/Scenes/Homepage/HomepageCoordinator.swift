@@ -62,6 +62,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var searchViewModel: SearchViewModel?
+    private var deleteVaultAlertHandler: DeleteVaultAlertHandler?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -583,6 +584,14 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
 
     func editableVaultListViewModelWantsToEdit(vault: Vault) {
         presentCreateEditVaultView(mode: .edit(vault))
+    }
+
+    func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
+                                                        delegate: DeleteVaultAlertHandlerDelegate) {
+        deleteVaultAlertHandler = .init(rootViewController: topMostViewController,
+                                        vault: vault,
+                                        delegate: delegate)
+        deleteVaultAlertHandler?.showAlert()
     }
 
     func editableVaultListViewModelDidEncounter(error: Error) {

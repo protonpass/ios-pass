@@ -26,7 +26,6 @@ import UIComponents
 struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: EditableVaultListViewModel
-    @State private var vaultToBeDeleted: Vault?
     @State private var isShowingEmptyTrashAlert = false
 
     var body: some View {
@@ -119,14 +118,6 @@ struct EditableVaultListView: View {
 
     @ViewBuilder
     private func vaultTrailingView(_ vault: Vault) -> some View {
-        let isShowingDeleteVaultAlert = Binding<Bool>(get: {
-            vaultToBeDeleted != nil
-        }, set: { newValue in
-            if !newValue {
-                vaultToBeDeleted = nil
-            }
-        })
-
         Menu(content: {
             Button(action: {
                 viewModel.edit(vault: vault)
@@ -142,7 +133,7 @@ struct EditableVaultListView: View {
 
             Button(
                 role: .destructive,
-                action: { vaultToBeDeleted = vault },
+                action: { viewModel.delete(vault: vault) },
                 label: {
                     Label(title: {
                         Text("Delete vault")
@@ -151,20 +142,6 @@ struct EditableVaultListView: View {
                     })
                 })
         }, label: threeDotsIcon)
-        .alert(
-            "Delete \(vaultToBeDeleted?.name ?? "")?",
-            isPresented: isShowingDeleteVaultAlert,
-            actions: {
-                Button(
-                    role: .destructive,
-                    action: { viewModel.delete(vault: vault) },
-                    label: { Text("Delete this vault") })
-
-                Button(role: .cancel, label: { Text("Cancel") })
-            },
-            message: {
-                Text("All items in this vault will also be deleted")
-            })
     }
 
     @ViewBuilder
