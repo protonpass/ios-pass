@@ -213,6 +213,12 @@ extension SearchViewModel {
         doSearch(query: lastSearchQuery)
     }
 
+    func refreshResults(trashedItem: ItemIdentifiable) {
+        allActiveItems.remove(item: trashedItem)
+        searchableItems.remove(item: trashedItem)
+        doSearch(query: lastSearchQuery)
+    }
+
     func search(_ term: String) {
         searchQuerySubject.send(term)
     }

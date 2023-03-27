@@ -36,3 +36,19 @@ public extension ItemIdentifiable {
 public protocol ItemTypeIdentifiable: ItemIdentifiable {
     var type: ItemContentType { get }
 }
+
+public extension Array where Element: ItemIdentifiable {
+    func contains<T: ItemIdentifiable>(_ item: T) -> Bool {
+        contains(where: { $0.shareId == item.shareId && $0.itemId == item.itemId })
+    }
+
+    mutating func remove<T: ItemIdentifiable>(item: T) {
+        removeAll { $0.shareId == item.shareId && $0.itemId == item.itemId }
+    }
+
+    func removing<T: ItemIdentifiable>(item: T) -> Self {
+        var copiedArray = self
+        copiedArray.remove(item: item)
+        return copiedArray
+    }
+}

@@ -71,40 +71,6 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
     }
-
-    func refresh() {
-        Task { @MainActor in
-            do {
-                // No need to show loading indicator once items are loaded beforehand.
-                switch state {
-                case .loaded:
-                    break
-                default:
-                    state = .loading
-                }
-
-                if manualLogIn {
-                    try await itemRepository.refreshItems()
-                    let vaults = try await shareRepository.getVaults()
-                    if vaults.isEmpty {
-                        let userId = shareRepository.userData.user.ID
-                        logger.trace("Creating default vault for user \(userId)")
-                        try await createDefaultVault()
-                        logger.trace("Created default vault for user \(userId)")
-                        let vaults = try await shareRepository.getVaults()
-                        try await loadContents(for: vaults)
-                    } else {
-                        try await loadContents(for: vaults)
-                    }
-                } else {
-                    let vaults = try await shareRepository.getVaults()
-                    try await loadContents(for: vaults)
-                }
-            } catch {
-                state = .error(error)
-            }
-        }
-    }
 }
 
 // MARK: - Private APIs
@@ -141,6 +107,70 @@ private extension VaultsManager {
 
 // MARK: - Public APIs
 extension VaultsManager {
+    func refresh() {
+        Task { @MainActor in
+            do {
+                // No need to show loading indicator once items are loaded beforehand.
+                switch state {
+                case .loaded:
+                    break
+                default:
+                    state = .loading
+                }
+
+                if manualLogIn {
+                    try await itemRepository.refreshItems()
+                    let vaults = try await shareRepository.getVaults()
+                    if vaults.isEmpty {
+                        let userId = shareRepository.userData.user.ID
+                        logger.trace("Creating default vault for user \(userId)")
+                        try await createDefaultVault()
+                        logger.trace("Created default vault for user \(userId)")
+                        let vaults = try await shareRepository.getVaults()
+                        try await loadContents(for: vaults)
+                    } else {
+                        try await loadContents(for: vaults)
+                    }
+                } else {
+                    let vaults = try await shareRepository.getVaults()
+                    try await loadContents(for: vaults)
+                }
+            } catch {
+                state = .error(error)
+            }
+        }
+    }
+
+    /// Refresh by 1) removing the `trashedItem` from the containing vault
+    /// And 2) add it to `trashedItems` to make the refresh process quicker comparing to a full refresh
+    func refresh(trashedItem: ItemIdentifiable) {
+        Task { @MainActor in
+            do {
+                guard case var .loaded(vaults, trashedItems) = state else { return }
+
+                // 1: Find the vault that contains `trashedItem` then manually remove it
+                if var updatedVault = vaults.first(where: { $0.items.contains(trashedItem) }) {
+                    updatedVault = .init(vault: updatedVault.vault,
+                                         items: updatedVault.items.removing(item: trashedItem))
+                    if let index = vaults.firstIndex(where: { $0.vault.id == updatedVault.vault.id }) {
+                        vaults[index] = updatedVault
+                    }
+                }
+
+                // 2: Get the full detail of `trashedItem` and append to `trashedItem` array
+                if let item = try await itemRepository.getItem(shareId: trashedItem.shareId,
+                                                               itemId: trashedItem.itemId) {
+                    let uiModel = try item.toItemUiModel(itemRepository.symmetricKey)
+                    trashedItems.append(uiModel)
+                }
+
+                state = .loaded(vaults: vaults, trashedItems: trashedItems)
+            } catch {
+                state = .error(error)
+            }
+        }
+    }
+
     func select(_ selection: VaultSelection) {
         vaultSelection = selection
     }

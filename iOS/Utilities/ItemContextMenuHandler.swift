@@ -25,7 +25,7 @@ protocol ItemContextMenuHandlerDelegate: AnyObject {
     func itemContextMenuHandlerWantsToShowSpinner()
     func itemContextMenuHandlerWantsToHideSpinner()
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent)
-    func itemContextMenuHandlerDidTrashAnItem()
+    func itemContextMenuHandlerDidTrash(item: ItemIdentifiable)
     func itemContextMenuHandlerDidUntrashAnItem()
     func itemContextMenuHandlerDidPermanentlyDeleteAnItem()
 }
@@ -82,7 +82,7 @@ extension ItemContextMenuHandler {
                 }
                 clipboardManager.bannerManager?.displayBottomInfoMessage(message)
 
-                delegate?.itemContextMenuHandlerDidTrashAnItem()
+                delegate?.itemContextMenuHandlerDidTrash(item: item)
             } catch {
                 logger.error(error)
                 handleError(error)
