@@ -85,7 +85,7 @@ private extension VaultsManager {
 
     @MainActor
     func loadContents(for vaults: [Vault]) async throws {
-        let uiModels = try await vaults.parallelMap { vault in
+        var uiModels = try await vaults.parallelMap { vault in
             let items = try await self.itemRepository.getItems(shareId: vault.shareId, state: .active)
             let itemUiModels = try items.map { try $0.toItemUiModel(self.symmetricKey) }
             return VaultContentUiModel(vault: vault, items: itemUiModels)
@@ -94,6 +94,7 @@ private extension VaultsManager {
         let trashedItems =
         try await itemRepository.getItems(state: .trashed).map { try $0.toItemUiModel(symmetricKey) }
 
+        uiModels.sortAlphabetically()
         state = .loaded(vaults: uiModels, trashedItems: trashedItems)
 
         // Reset to `all` when last selected vault is deleted
@@ -203,9 +204,28 @@ extension VaultsManager {
     }
 
     func refresh(permanentlyDeletedItem: ItemIdentifiable) {
-        guard case var .loaded(vaults, trashedItems) = state else { return }
+        guard case .loaded(let vaults, var trashedItems) = state else { return }
         trashedItems.remove(item: permanentlyDeletedItem)
         state = .loaded(vaults: vaults, trashedItems: trashedItems)
+    }
+
+    func refreshAfterVaultEdit() {
+        Task { @MainActor in
+            do {
+                guard case .loaded(var vaults, let trashedItems) = state else { return }
+                let updatedVaults = try await shareRepository.getVaults()
+                for updatedVault in updatedVaults {
+                    if let index = vaults.firstIndex(where: { $0.vault.shareId == updatedVault.shareId }) {
+                        let oldVault = vaults[index]
+                        vaults[index] = .init(vault: updatedVault, items: oldVault.items)
+                    }
+                }
+                vaults.sortAlphabetically()
+                state = .loaded(vaults: vaults, trashedItems: trashedItems)
+            } catch {
+                state = .error(error)
+            }
+        }
     }
 
     func select(_ selection: VaultSelection) {
