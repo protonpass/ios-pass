@@ -121,10 +121,6 @@ extension ItemsTabViewModel {
             }
         }
     }
-
-    func trash(_ item: ItemUiModel) {
-        itemContextMenuHandler.trash(item)
-    }
 }
 
 // MARK: - SortTypeListViewModelDelegate

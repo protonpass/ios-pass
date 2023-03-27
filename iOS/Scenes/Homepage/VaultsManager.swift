@@ -202,6 +202,12 @@ extension VaultsManager {
         }
     }
 
+    func refresh(permanentlyDeletedItem: ItemIdentifiable) {
+        guard case var .loaded(vaults, trashedItems) = state else { return }
+        trashedItems.remove(item: permanentlyDeletedItem)
+        state = .loaded(vaults: vaults, trashedItems: trashedItems)
+    }
+
     func select(_ selection: VaultSelection) {
         vaultSelection = selection
     }
