@@ -667,8 +667,8 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
         homepageViewModel?.vaultsManager.refresh(untrashedItem: item)
     }
 
-    func itemContextMenuHandlerDidPermanentlyDeleteAnItem() {
-        refreshHomepageAndSearchPage()
+    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemIdentifiable) {
+        homepageViewModel?.vaultsManager.refresh(permanentlyDeletedItem: item)
     }
 }
 

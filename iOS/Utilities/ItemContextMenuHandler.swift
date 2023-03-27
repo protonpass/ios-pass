@@ -27,7 +27,7 @@ protocol ItemContextMenuHandlerDelegate: AnyObject {
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent)
     func itemContextMenuHandlerDidTrash(item: ItemIdentifiable)
     func itemContextMenuHandlerDidUntrash(item: ItemIdentifiable)
-    func itemContextMenuHandlerDidPermanentlyDeleteAnItem()
+    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemIdentifiable)
 }
 
 final class ItemContextMenuHandler {
@@ -136,7 +136,7 @@ extension ItemContextMenuHandler {
                 }
                 clipboardManager.bannerManager?.displayBottomInfoMessage(message)
 
-                delegate?.itemContextMenuHandlerDidPermanentlyDeleteAnItem()
+                delegate?.itemContextMenuHandlerDidPermanentlyDelete(item: item)
             } catch {
                 logger.error(error)
                 handleError(error)

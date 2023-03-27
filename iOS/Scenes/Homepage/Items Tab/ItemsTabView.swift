@@ -28,8 +28,7 @@ let kSearchBarHeight: CGFloat = 48
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
-    @State private var toBeTrashedItem: ItemUiModel?
-    @State private var isShowingDeleteConfirmation = false
+    @State private var itemToBePermanentlyDeleted: ItemUiModel?
 
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
@@ -60,14 +59,6 @@ struct ItemsTabView: View {
 
     @ViewBuilder
     private func vaultContent(_ items: [ItemUiModel]) -> some View {
-        let isShowingTrashingAlert = Binding<Bool>(get: {
-            toBeTrashedItem != nil
-        }, set: { newValue in
-            if !newValue {
-                toBeTrashedItem = nil
-            }
-        })
-
         GeometryReader { proxy in
             VStack {
                 topBar
@@ -93,11 +84,6 @@ struct ItemsTabView: View {
             .animation(.default, value: viewModel.vaultsManager.state)
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
-            }
-            .moveToTrashAlert(isPresented: isShowingTrashingAlert) {
-                if let toBeTrashedItem {
-                    viewModel.trash(toBeTrashedItem)
-                }
             }
         }
     }
@@ -242,6 +228,14 @@ struct ItemsTabView: View {
 
     @ViewBuilder
     private func itemRow(for item: ItemUiModel) -> some View {
+        let permanentlyDeleteBinding = Binding<Bool>(get: {
+            itemToBePermanentlyDeleted != nil
+        }, set: { newValue in
+            if !newValue {
+                itemToBePermanentlyDeleted = nil
+            }
+        })
+
         let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
         Button(action: {
             viewModel.viewDetail(of: item)
@@ -274,11 +268,13 @@ struct ItemsTabView: View {
                                 itemContextMenuHandler: viewModel.itemContextMenuHandler)
         }
         .swipeActions(edge: .trailing) {
-            trailingSwipeActions(for: item, isTrashed: isTrashed)
+            trailingSwipeActions(for: item,
+                                 isTrashed: isTrashed,
+                                 itemContextMenuHandler: viewModel.itemContextMenuHandler)
         }
         .itemContextMenu(item: item,
                          isTrashed: isTrashed,
-                         isShowingDeleteConfirmation: $isShowingDeleteConfirmation,
+                         isShowingDeleteConfirmation: permanentlyDeleteBinding,
                          handler: viewModel.itemContextMenuHandler)
     }
 
@@ -303,10 +299,12 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private func trailingSwipeActions(for item: ItemUiModel, isTrashed: Bool) -> some View {
+    private func trailingSwipeActions(for item: ItemUiModel,
+                                      isTrashed: Bool,
+                                      itemContextMenuHandler: ItemContextMenuHandler) -> some View {
         if isTrashed {
             Button(action: {
-                isShowingDeleteConfirmation.toggle()
+                itemToBePermanentlyDeleted = item
             }, label: {
                 Label(title: {
                     Text("Permanently delete")
@@ -317,7 +315,7 @@ struct ItemsTabView: View {
             .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
         } else {
             Button(action: {
-                askForConfirmationOrTrashDirectly(item: item)
+                itemContextMenuHandler.trash(item)
             }, label: {
                 Label(title: {
                     Text("Trash")
@@ -326,14 +324,6 @@ struct ItemsTabView: View {
                 })
             })
             .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
-        }
-    }
-
-    private func askForConfirmationOrTrashDirectly(item: ItemUiModel) {
-        if viewModel.preferences.askBeforeTrashing {
-            toBeTrashedItem = item
-        } else {
-            viewModel.trash(item)
         }
     }
 }
