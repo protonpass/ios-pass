@@ -75,27 +75,21 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          preferences: Preferences,
          symmetricKey: SymmetricKey,
          userData: UserData) {
-        let authCredential = userData.credential
         let itemRepository = ItemRepository(userData: userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
                                             apiService: apiService,
                                             logManager: logManager)
-        let remoteAliasDatasource = RemoteAliasDatasource(authCredential: authCredential,
-                                                          apiService: apiService)
-        let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(authCredential: authCredential,
-                                                                    apiService: apiService)
+        let remoteAliasDatasource = RemoteAliasDatasource(apiService: apiService)
+        let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
         let shareKeyRepository = ShareKeyRepository(container: container,
-                                                    authCredential: authCredential,
                                                     apiService: apiService,
                                                     logManager: logManager)
         let shareEventIDRepository = ShareEventIDRepository(container: container,
-                                                            authCredential: authCredential,
                                                             apiService: apiService,
                                                             logManager: logManager)
         let shareRepository = ShareRepository(userData: userData,
                                               container: container,
-                                              authCredential: authCredential,
                                               apiService: apiService,
                                               logManager: logManager)
 
