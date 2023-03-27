@@ -27,6 +27,8 @@ protocol EditableVaultListViewModelDelegate: AnyObject {
     func editableVaultListViewModelWantsToHideSpinner()
     func editableVaultListViewModelWantsToCreateNewVault()
     func editableVaultListViewModelWantsToEdit(vault: Vault)
+    func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
+                                                        delegate: DeleteVaultAlertHandlerDelegate)
     func editableVaultListViewModelDidEncounter(error: Error)
     func editableVaultListViewModelDidRestoreAllTrashedItems()
     func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems()
@@ -51,6 +53,10 @@ private extension EditableVaultListViewModel {
     func finalizeInitialization() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
     }
+
+    func doDelete(vault: Vault) {
+        print(#function)
+    }
 }
 
 // MARK: - Public APIs
@@ -64,7 +70,12 @@ extension EditableVaultListViewModel {
     }
 
     func delete(vault: Vault) {
-        print(#function)
+        let itemCount = vaultsManager.getItemCount(for: .precise(vault))
+        if itemCount == 0 {
+            doDelete(vault: vault)
+        } else {
+            delegate?.editableVaultListViewModelWantsToConfirmDelete(vault: vault, delegate: self)
+        }
     }
 
     func restoreAllTrashedItems() {
@@ -91,5 +102,12 @@ extension EditableVaultListViewModel {
                 delegate?.editableVaultListViewModelDidEncounter(error: error)
             }
         }
+    }
+}
+
+// MARK: - DeleteVaultConfirmationDelegate
+extension EditableVaultListViewModel: DeleteVaultAlertHandlerDelegate {
+    func confirmDelete(vault: Vault) {
+        doDelete(vault: vault)
     }
 }
