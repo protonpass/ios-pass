@@ -32,16 +32,13 @@ public struct GetItemsEndpoint: Endpoint {
 
     public var debugDescription: String
     public var path: String
-    public var authCredential: AuthCredential?
     public var queries: [String: Any]?
 
-    public init(credential: AuthCredential,
-                shareId: String,
+    public init(shareId: String,
                 sinceToken: String?,
                 pageSize: Int) {
         self.debugDescription = "Get items for share"
         self.path = "/pass/v1/share/\(shareId)/item"
-        self.authCredential = credential
 
         var queries: [String: Any] = ["PageSize": pageSize]
         if let sinceToken {

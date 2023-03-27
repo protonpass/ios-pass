@@ -32,12 +32,9 @@ public struct GetLastEventIDEndpoint: Endpoint {
 
     public var debugDescription: String
     public var path: String
-    public var authCredential: AuthCredential?
 
-    public init(credential: AuthCredential,
-                shareId: String) {
+    public init(shareId: String) {
         self.debugDescription = "Get last eventID"
         self.path = "/pass/v1/share/\(shareId)/event"
-        self.authCredential = credential
     }
 }

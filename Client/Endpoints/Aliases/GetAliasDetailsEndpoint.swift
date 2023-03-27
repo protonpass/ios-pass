@@ -32,11 +32,9 @@ public struct GetAliasDetailsEndpoint: Endpoint {
 
     public var debugDescription: String
     public var path: String
-    public var authCredential: AuthCredential?
 
-    public init(credential: AuthCredential, shareId: String, itemId: String) {
+    public init(shareId: String, itemId: String) {
         self.debugDescription = "Get alias details"
         self.path = "/pass/v1/share/\(shareId)/alias/\(itemId)"
-        self.authCredential = credential
     }
 }

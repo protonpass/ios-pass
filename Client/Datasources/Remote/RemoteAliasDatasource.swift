@@ -28,23 +28,20 @@ public protocol RemoteAliasDatasourceProtocol: RemoteDatasourceProtocol {
 
 public extension RemoteAliasDatasourceProtocol {
     func getAliasOptions(shareId: String) async throws -> AliasOptions {
-        let endpoint = GetAliasOptionsEndpoint(credential: authCredential,
-                                               shareId: shareId)
+        let endpoint = GetAliasOptionsEndpoint(shareId: shareId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.options
     }
 
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
-        let endpoint = GetAliasDetailsEndpoint(credential: authCredential,
-                                               shareId: shareId,
+        let endpoint = GetAliasDetailsEndpoint(shareId: shareId,
                                                itemId: itemId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.alias
     }
 
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
-        let endpoint = ChangeMailboxesEndpoint(credential: authCredential,
-                                               shareId: shareId,
+        let endpoint = ChangeMailboxesEndpoint(shareId: shareId,
                                                itemId: itemId,
                                                mailboxIDs: mailboxIDs)
         let response = try await apiService.exec(endpoint: endpoint)

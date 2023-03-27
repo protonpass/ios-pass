@@ -34,12 +34,9 @@ public struct CreateVaultEndpoint: Endpoint {
     public var path: String
     public var method: HTTPMethod
     public var body: CreateVaultRequest?
-    public var authCredential: AuthCredential?
 
-    public init(credential: AuthCredential,
-                request: CreateVaultRequest) {
+    public init(request: CreateVaultRequest) {
         self.debugDescription = "Create vault"
-        self.authCredential = credential
         self.path = "/pass/v1/vault"
         self.method = .post
         self.body = request

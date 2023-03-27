@@ -31,17 +31,14 @@ public struct GetShareKeysEndpoint: Endpoint {
     public typealias Response = GetShareKeysResponse
 
     public var debugDescription: String
-    public var authCredential: AuthCredential?
     public var path: String
     public var method: HTTPMethod
     public var queries: [String: Any]?
 
-    public init(credential: AuthCredential,
-                shareId: String,
+    public init(shareId: String,
                 page: Int,
                 pageSize: Int) {
         self.debugDescription = "Get keys for share"
-        self.authCredential = credential
         self.path = "/pass/v1/share/\(shareId)/key"
         self.method = .get
         self.queries = .paginationQuery(page: page, pageSize: pageSize)
