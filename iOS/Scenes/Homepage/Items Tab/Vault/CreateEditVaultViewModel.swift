@@ -101,10 +101,13 @@ private extension CreateEditVaultViewModel {
         Task { @MainActor in
             defer { delegate?.createEditVaultViewModelWantsToHideSpinner() }
             do {
+                logger.trace("Editing vault \(oldVault.id)")
                 delegate?.createEditVaultViewModelWantsToShowSpinner()
                 try await shareRepository.edit(oldVault: oldVault, newVault: generateVaultProtobuf())
                 delegate?.createEditVaultViewModelDidEditVault()
+                logger.info("Edited vault \(oldVault.id)")
             } catch {
+                logger.error(error)
                 delegate?.createEditVaultViewModelDidEncounter(error: error)
             }
         }
@@ -114,10 +117,13 @@ private extension CreateEditVaultViewModel {
         Task { @MainActor in
             defer { delegate?.createEditVaultViewModelWantsToHideSpinner() }
             do {
+                logger.trace("Creating vault")
                 delegate?.createEditVaultViewModelWantsToShowSpinner()
                 try await shareRepository.createVault(generateVaultProtobuf())
                 delegate?.createEditVaultViewModelDidCreateVault()
+                logger.info("Created vault")
             } catch {
+                logger.error(error)
                 delegate?.createEditVaultViewModelDidEncounter(error: error)
             }
         }

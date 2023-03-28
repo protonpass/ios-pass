@@ -431,7 +431,8 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
-        let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager)
+        let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager,
+                                                   logManager: logManager)
         viewModel.delegate = self
         let view = EditableVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -592,6 +593,10 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
                                         vault: vault,
                                         delegate: delegate)
         deleteVaultAlertHandler?.showAlert()
+    }
+
+    func editableVaultListViewModelDidDelete(vault: Vault) {
+        bannerManager.displayBottomInfoMessage("Vault \"\(vault.name)\" deleted")
     }
 
     func editableVaultListViewModelDidEncounter(error: Error) {
