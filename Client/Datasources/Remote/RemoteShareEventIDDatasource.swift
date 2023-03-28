@@ -24,7 +24,7 @@ public protocol RemoteShareEventIDDatasourceProtocol: RemoteDatasourceProtocol {
 
 public extension RemoteShareEventIDDatasourceProtocol {
     func getLastEventId(shareId: String) async throws -> String {
-        let endpoint = GetLastEventIDEndpoint(credential: authCredential, shareId: shareId)
+        let endpoint = GetLastEventIDEndpoint(shareId: shareId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.eventID
     }

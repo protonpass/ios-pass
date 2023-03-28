@@ -33,17 +33,14 @@ public struct UpdateLastUseTimeEndpoint: Endpoint {
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
-    public var authCredential: AuthCredential?
     public var body: UpdateLastUseTimeRequest?
 
-    public init(credential: AuthCredential,
-                shareId: String,
+    public init(shareId: String,
                 itemId: String,
                 lastUseTime: TimeInterval) {
         self.debugDescription = "Update item"
         self.path = "/pass/v1/share/\(shareId)/item/\(itemId)/lastuse"
         self.method = .put
-        self.authCredential = credential
         self.body = .init(lastUseTime: Int(lastUseTime))
     }
 }

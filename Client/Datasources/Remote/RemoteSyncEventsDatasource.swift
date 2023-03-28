@@ -24,8 +24,7 @@ public protocol RemoteSyncEventsDatasourceProtocol: RemoteDatasourceProtocol {
 
 public extension RemoteSyncEventsDatasourceProtocol {
     func getEvents(shareId: String, lastEventId: String) async throws -> SyncEvents {
-        let endpoint = GetEventsEndpoint(credential: authCredential,
-                                         shareId: shareId,
+        let endpoint = GetEventsEndpoint(shareId: shareId,
                                          lastEventId: lastEventId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.events

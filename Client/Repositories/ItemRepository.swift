@@ -479,27 +479,22 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 logManager: LogManager) {
         self.userData = userData
         self.symmetricKey = symmetricKey
-        let authCredential = userData.credential
         self.localItemDatasoure = LocalItemDatasource(container: container)
-        self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(authCredential: authCredential,
-                                                                         apiService: apiService)
+        self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(apiService: apiService)
         self.publicKeyRepository = PublicKeyRepository(container: container,
                                                        apiService: apiService,
                                                        logManager: logManager)
         self.shareRepository = ShareRepository(userData: userData,
                                                container: container,
-                                               authCredential: authCredential,
                                                apiService: apiService,
                                                logManager: logManager)
         self.shareEventIDRepository = ShareEventIDRepository(container: container,
-                                                             authCredential: authCredential,
                                                              apiService: apiService,
                                                              logManager: logManager)
         let shareKeyRepository = ShareKeyRepository(container: container,
-                                                    authCredential: authCredential,
                                                     apiService: apiService,
                                                     logManager: logManager)
-        let itemKeyDatasource = RemoteItemKeyDatasource(authCredential: authCredential, apiService: apiService)
+        let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
         self.passKeyManager = PassKeyManager(userData: userData,
                                              shareKeyRepository: shareKeyRepository,
                                              itemKeyDatasource: itemKeyDatasource,

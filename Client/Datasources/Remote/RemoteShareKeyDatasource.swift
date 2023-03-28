@@ -27,8 +27,7 @@ public extension RemoteShareKeyDatasourceProtocol {
         var keys = [PassKey]()
         var page = 0
         while true {
-            let endpoint = GetShareKeysEndpoint(credential: authCredential,
-                                                shareId: shareId,
+            let endpoint = GetShareKeysEndpoint(shareId: shareId,
                                                 page: page,
                                                 pageSize: kDefaultPageSize)
             let response = try await apiService.exec(endpoint: endpoint)

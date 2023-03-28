@@ -81,12 +81,10 @@ public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
     }
 
     public init(container: NSPersistentContainer,
-                authCredential: AuthCredential,
                 apiService: APIService,
                 logManager: LogManager) {
         self.localShareKeyDatasource = LocalShareKeyDatasource(container: container)
-        self.remoteShareKeyDatasource = RemoteShareKeyDatasource(authCredential: authCredential,
-                                                                 apiService: apiService)
+        self.remoteShareKeyDatasource = RemoteShareKeyDatasource(apiService: apiService)
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
