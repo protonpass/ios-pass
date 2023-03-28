@@ -34,13 +34,9 @@ public struct UpdateVaultEndpoint: Endpoint {
     public var path: String
     public var method: HTTPMethod
     public var body: UpdateVaultRequest?
-    public var authCredential: AuthCredential?
 
-    public init(credential: AuthCredential,
-                shareId: String,
-                request: UpdateVaultRequest) {
+    public init(shareId: String, request: UpdateVaultRequest) {
         self.debugDescription = "Edit vault"
-        self.authCredential = credential
         self.path = "/pass/v1/vault/\(shareId)"
         self.method = .put
         self.body = request

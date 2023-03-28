@@ -30,8 +30,7 @@ public struct CreateCustomAliasEndpoint: Endpoint {
     public var method: HTTPMethod
     public var body: CreateCustomAliasRequest?
 
-    public init(shareId: String,
-                request: CreateCustomAliasRequest) {
+    public init(shareId: String, request: CreateCustomAliasRequest) {
         self.debugDescription = "Create a custom alias"
         self.path = "/pass/v1/share/\(shareId)/alias/custom"
         self.method = .post

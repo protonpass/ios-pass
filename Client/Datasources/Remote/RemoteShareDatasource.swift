@@ -48,9 +48,7 @@ public extension RemoteShareDatasourceProtocol {
     }
 
     func updateVault(request: UpdateVaultRequest, shareId: String) async throws -> Share {
-        let endpoint = UpdateVaultEndpoint(credential: authCredential,
-                                           shareId: shareId,
-                                           request: request)
+        let endpoint = UpdateVaultEndpoint(shareId: shareId, request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.share
     }
