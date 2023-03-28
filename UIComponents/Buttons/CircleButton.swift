@@ -24,15 +24,18 @@ import SwiftUI
 public struct CircleButton: View {
     let icon: UIImage
     let color: UIColor
+    let backgroundOpacity: CGFloat
     let height: CGFloat
     let action: () -> Void
 
     public init(icon: UIImage,
                 color: UIColor,
+                backgroundOpacity: CGFloat = 0.08,
                 height: CGFloat = 40,
                 action: @escaping () -> Void) {
         self.icon = icon
         self.color = color
+        self.backgroundOpacity = backgroundOpacity
         self.height = height
         self.action = action
     }
@@ -40,8 +43,9 @@ public struct CircleButton: View {
     public var body: some View {
         Button(action: action) {
             ZStack {
-                Color(uiColor: color.withAlphaComponent(0.08))
+                Color(uiColor: color)
                     .clipShape(Circle())
+                    .opacity(backgroundOpacity)
                 Image(uiImage: icon)
                     .resizable()
                     .renderingMode(.template)

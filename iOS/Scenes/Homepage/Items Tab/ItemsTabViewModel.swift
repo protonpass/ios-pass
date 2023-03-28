@@ -82,7 +82,7 @@ private extension ItemsTabViewModel {
 extension ItemsTabViewModel {
     func createNewItem() {
         switch vaultsManager.vaultSelection {
-        case .all:
+        case .all, .trash:
             // Handle this later
             break
         case .precise(let selectedVault):
@@ -120,10 +120,6 @@ extension ItemsTabViewModel {
                 delegate?.itemsTabViewModelDidEncounter(error: error)
             }
         }
-    }
-
-    func trash(_ item: ItemUiModel) {
-        itemContextMenuHandler.trash(item)
     }
 }
 

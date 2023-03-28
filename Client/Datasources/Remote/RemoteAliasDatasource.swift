@@ -34,8 +34,7 @@ public extension RemoteAliasDatasourceProtocol {
     }
 
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
-        let endpoint = GetAliasDetailsEndpoint(shareId: shareId,
-                                               itemId: itemId)
+        let endpoint = GetAliasDetailsEndpoint(shareId: shareId, itemId: itemId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.alias
     }

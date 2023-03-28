@@ -40,11 +40,9 @@ public struct CreateVaultRequest {
 }
 
 public extension CreateVaultRequest {
-    init(userData: UserData, name: String, description: String) throws {
+    init(userData: UserData, vault: VaultProtobuf) throws {
         contentFormatVersion = 1
         addressID = userData.addresses.first?.addressID ?? ""
-
-        let vault = VaultProtobuf(name: name, description: description)
 
         guard let userKey = userData.user.keys.first else {
             throw PPClientError.crypto(.missingUserKey(userID: userData.user.ID))

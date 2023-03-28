@@ -249,7 +249,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.username = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
                 })
             }
         }
@@ -362,7 +362,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.password = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
                 })
             }
         }
@@ -401,7 +401,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.totpUri = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
                 })
             }
         }

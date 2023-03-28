@@ -79,6 +79,8 @@ struct SearchView: View {
                     NoSearchResultsInPreciseVaultView(query: query,
                                                       vaultName: vault.name,
                                                       action: viewModel.searchInAllVaults)
+                case .trash:
+                    NoSearchResultsInTrashView(query: query)
                 }
 
             case let .results(itemCount, results):
@@ -87,6 +89,7 @@ struct SearchView: View {
                                   itemContextMenuHandler: viewModel.itemContextMenuHandler,
                                   itemCount: itemCount,
                                   results: results,
+                                  isTrash: viewModel.vaultSelection == .trash,
                                   safeAreaInsets: safeAreaInsets,
                                   onScroll: { isFocusedOnSearchBar = false },
                                   onSelectItem: { viewModel.viewDetail(of: $0) },

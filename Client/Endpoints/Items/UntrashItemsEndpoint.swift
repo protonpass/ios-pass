@@ -30,8 +30,7 @@ public struct UntrashItemsEndpoint: Endpoint {
     public var method: HTTPMethod
     public var body: ModifyItemRequest?
 
-    public init(shareId: String,
-                items: [ItemRevision]) {
+    public init(shareId: String, items: [ItemRevision]) {
         self.debugDescription = "Untrash items"
         self.path = "/pass/v1/share/\(shareId)/item/untrash"
         self.method = .post

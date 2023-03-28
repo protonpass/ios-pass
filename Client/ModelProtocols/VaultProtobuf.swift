@@ -1,5 +1,5 @@
 //
-// VaultProtocol.swift
+// VaultProtobuf.swift
 // Proton Pass - Created on 12/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -31,9 +31,14 @@ public extension VaultProtobuf {
         self = try VaultProtobuf(serializedData: data)
     }
 
-    init(name: String, description: String) {
+    init(name: String,
+         description: String,
+         color: ProtonPassVaultV1_VaultColor,
+         icon: ProtonPassVaultV1_VaultIcon) {
         self.init()
         self.name = name
         self.description_p = description
+        self.display.color = color
+        self.display.icon = icon
     }
 }

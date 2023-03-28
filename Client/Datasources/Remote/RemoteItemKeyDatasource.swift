@@ -26,8 +26,7 @@ public protocol RemoteItemKeyDatasourceProtocol: RemoteDatasourceProtocol {
 
 public extension RemoteItemKeyDatasourceProtocol {
     func getLatestKey(shareId: String, itemId: String) async throws -> PassKey {
-        let endpoint = GetLatestItemKeyEndpoint(shareId: shareId,
-                                                itemId: itemId)
+        let endpoint = GetLatestItemKeyEndpoint(shareId: shareId, itemId: itemId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.key
     }

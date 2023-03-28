@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable file_length
 import Client
 import Combine
 import Core
@@ -61,6 +62,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var searchViewModel: SearchViewModel?
+    private var deleteVaultAlertHandler: DeleteVaultAlertHandler?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -351,6 +353,20 @@ private extension HomepageCoordinator {
         }
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
+
+    func presentCreateEditVaultView(mode: VaultMode) {
+        let viewModel = CreateEditVaultViewModel(mode: mode,
+                                                 shareRepository: shareRepository,
+                                                 logManager: logManager)
+        viewModel.delegate = self
+        let view = CreateEditVaultView(viewModel: viewModel)
+        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
+    func refreshHomepageAndSearchPage() {
+        homepageViewModel?.vaultsManager.refresh()
+        Task { await searchViewModel?.refreshResults() }
+    }
 }
 
 // MARK: - Public APIs
@@ -409,19 +425,20 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
-        let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager)
+        let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager,
+                                                   logManager: logManager)
         viewModel.delegate = self
         let view = EditableVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            // Num of vaults + trash + create vault button
-            let height = CGFloat(66 * vaultsManager.getVaultCount() + 66 + 100)
+            // Num of vaults + all items + trash + create vault button
+            let height = CGFloat(66 * vaultsManager.getVaultCount() + 66 + 66 + 100)
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 height
             }
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
@@ -460,8 +477,9 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         case .note:
             message = "Note created"
         }
-        dismissTopMostViewController()
-        bannerManager.displayBottomInfoMessage(message)
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            bannerManager.displayBottomInfoMessage(message)
+        }
         homepageViewModel?.vaultsManager.refresh()
     }
 
@@ -547,8 +565,47 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
 
 // MARK: - EditableVaultListViewModelDelegate
 extension HomepageCoordinator: EditableVaultListViewModelDelegate {
+    func editableVaultListViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func editableVaultListViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
     func editableVaultListViewModelWantsToCreateNewVault() {
-        print(#function)
+        presentCreateEditVaultView(mode: .create)
+    }
+
+    func editableVaultListViewModelWantsToEdit(vault: Vault) {
+        presentCreateEditVaultView(mode: .edit(vault))
+    }
+
+    func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
+                                                        delegate: DeleteVaultAlertHandlerDelegate) {
+        deleteVaultAlertHandler = .init(rootViewController: topMostViewController,
+                                        vault: vault,
+                                        delegate: delegate)
+        deleteVaultAlertHandler?.showAlert()
+    }
+
+    func editableVaultListViewModelDidDelete(vault: Vault) {
+        bannerManager.displayBottomInfoMessage("Vault \"\(vault.name)\" deleted")
+        homepageViewModel?.vaultsManager.refresh(deletedVault: vault)
+    }
+
+    func editableVaultListViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+
+    func editableVaultListViewModelDidRestoreAllTrashedItems() {
+        bannerManager.displayBottomSuccessMessage("All items restored")
+        refreshHomepageAndSearchPage()
+    }
+
+    func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems() {
+        bannerManager.displayBottomInfoMessage("All items permanently deleted")
+        refreshHomepageAndSearchPage()
     }
 }
 
@@ -610,9 +667,17 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
         presentEditItemView(for: itemContent)
     }
 
-    func itemContextMenuHandlerDidTrashAnItem() {
-        homepageViewModel?.vaultsManager.refresh()
-        Task { await searchViewModel?.refreshResults() }
+    func itemContextMenuHandlerDidTrash(item: ItemIdentifiable) {
+        homepageViewModel?.vaultsManager.refresh(trashedItem: item)
+        searchViewModel?.refreshResults(trashedItem: item)
+    }
+
+    func itemContextMenuHandlerDidUntrash(item: ItemIdentifiable) {
+        homepageViewModel?.vaultsManager.refresh(untrashedItem: item)
+    }
+
+    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemIdentifiable) {
+        homepageViewModel?.vaultsManager.refresh(permanentlyDeletedItem: item)
     }
 }
 
@@ -628,6 +693,35 @@ extension HomepageCoordinator: SearchViewModelDelegate {
     }
 
     func searchViewModelWantsDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - CreateEditVaultViewModelDelegate
+extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
+    func createEditVaultViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func createEditVaultViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
+    func createEditVaultViewModelDidCreateVault() {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager.displayBottomSuccessMessage("Vault created")
+        }
+        homepageViewModel?.vaultsManager.refresh()
+    }
+
+    func createEditVaultViewModelDidEditVault() {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager.displayBottomInfoMessage("Changes saved")
+        }
+        homepageViewModel?.vaultsManager.refreshAfterVaultEdit()
+    }
+
+    func createEditVaultViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }

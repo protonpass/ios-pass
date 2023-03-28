@@ -73,3 +73,24 @@ struct NoSearchResultsInPreciseVaultView: View {
         .padding(.top, 180)
     }
 }
+
+struct NoSearchResultsInTrashView: View {
+    let query: String
+
+    var body: some View {
+        VStack {
+            Text("Coundn't find \"\(query)\" in trash")
+                .fontWeight(.semibold)
+                .multilineTextAlignment(.center)
+                .padding(.bottom)
+                .animationsDisabled()
+
+            Text("Try search again using different spelling or keyword")
+                .font(.callout)
+                .foregroundColor(.textWeak)
+                .multilineTextAlignment(.center)
+        }
+        .padding(.horizontal)
+        .padding(.top, 180)
+    }
+}

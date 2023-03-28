@@ -1,0 +1,22 @@
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 3.7998V0.799805" stroke="black" stroke-opacity="0.8" stroke-width="1.2"
+        stroke-linecap="round" stroke-linejoin="round" />
+    <path
+        d="M27.2 19.3996H0.800049C0.800049 16.7488 2.94925 14.5996 5.60005 14.5996H22.4C25.0508 14.5996 27.2 16.7488 27.2 19.3996Z"
+        stroke="black" stroke-opacity="0.8" stroke-width="1.2" stroke-linecap="round"
+        stroke-linejoin="round" />
+    <path d="M14 24.7998V27.1998" stroke="black" stroke-opacity="0.8" stroke-width="1.2"
+        stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M8.00005 23.5996L6.80005 25.9996" stroke="black" stroke-opacity="0.8"
+        stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M20 23.5996L21.2 25.9996" stroke="black" stroke-opacity="0.8" stroke-width="1.2"
+        stroke-linecap="round" stroke-linejoin="round" />
+    <path
+        d="M14.0001 10.9994C14.9942 10.9994 15.8001 10.1935 15.8001 9.19941C15.8001 8.2053 14.9942 7.39941 14.0001 7.39941C13.006 7.39941 12.2001 8.2053 12.2001 9.19941C12.2001 10.1935 13.006 10.9994 14.0001 10.9994Z"
+        stroke="black" stroke-opacity="0.8" stroke-width="1.2" stroke-linecap="round"
+        stroke-linejoin="round" />
+    <path
+        d="M22.4001 14.5998V12.1998C22.4001 7.5606 18.6393 3.7998 14.0001 3.7998C9.3609 3.7998 5.6001 7.5606 5.6001 12.1998V14.5998"
+        stroke="black" stroke-opacity="0.8" stroke-width="1.2" stroke-linecap="round"
+        stroke-linejoin="round" />
+</svg>

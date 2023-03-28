@@ -124,16 +124,17 @@ private extension SearchViewModel {
             allActiveItems = try await itemRepository.getItems(state: .active)
             try await refreshSearchHistory()
 
-            let filteredActiveItems: [SymmetricallyEncryptedItem]
+            let filteredItems: [SymmetricallyEncryptedItem]
             switch vaultSelection {
             case .all:
-                filteredActiveItems = allActiveItems
+                filteredItems = allActiveItems
             case .precise(let vault):
-                filteredActiveItems = allActiveItems.filter { $0.shareId == vault.shareId }
+                filteredItems = allActiveItems.filter { $0.shareId == vault.shareId }
+            case .trash:
+                filteredItems = try await itemRepository.getItems(state: .trashed)
             }
-            searchableItems =
-            try filteredActiveItems.map { try SearchableItem(from: $0,
-                                                             symmetricKey: symmetricKey) }
+            searchableItems = try filteredItems.map { try SearchableItem(from: $0,
+                                                                         symmetricKey: symmetricKey) }
         } catch {
             state = .error(error)
         }
@@ -209,6 +210,12 @@ extension SearchViewModel {
     @MainActor
     func refreshResults() async {
         await indexItems()
+        doSearch(query: lastSearchQuery)
+    }
+
+    func refreshResults(trashedItem: ItemIdentifiable) {
+        allActiveItems.remove(item: trashedItem)
+        searchableItems.remove(item: trashedItem)
         doSearch(query: lastSearchQuery)
     }
 

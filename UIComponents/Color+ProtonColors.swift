@@ -103,8 +103,52 @@ public extension UIColor {
         ColorProvider.TextNorm
     }
 
+    static var textHint: UIColor {
+        ColorProvider.TextHint
+    }
+
     static var textWeak: UIColor {
         ColorProvider.TextWeak
+    }
+
+    static var vaultColor1: UIColor {
+        .init(red: 167, green: 121, blue: 255)
+    }
+
+    static var vaultColor2: UIColor {
+        .init(red: 242, green: 146, blue: 146)
+    }
+
+    static var vaultColor3: UIColor {
+        .init(red: 247, green: 215, blue: 117)
+    }
+
+    static var vaultColor4: UIColor {
+        .init(red: 145, green: 199, blue: 153)
+    }
+
+    static var vaultColor5: UIColor {
+        .init(red: 146, green: 179, blue: 242)
+    }
+
+    static var vaultColor6: UIColor {
+        .init(red: 235, green: 141, blue: 214)
+    }
+
+    static var vaultColor7: UIColor {
+        .init(red: 205, green: 90, blue: 111)
+    }
+
+    static var vaultColor8: UIColor {
+        .init(red: 228, green: 163, blue: 103)
+    }
+
+    static var vaultColor9: UIColor {
+        .init(red: 230, green: 230, blue: 230)
+    }
+
+    static var vaultColor10: UIColor {
+        .init(red: 158, green: 226, blue: 230)
     }
 }
 
@@ -184,6 +228,10 @@ public extension Color {
 
     static var textDisabled: Color {
         .init(uiColor: .textDisabled)
+    }
+
+    static var textHint: Color {
+        .init(uiColor: .textHint)
     }
 
     static var textNorm: Color {
