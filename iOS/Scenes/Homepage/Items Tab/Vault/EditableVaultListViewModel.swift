@@ -29,6 +29,7 @@ protocol EditableVaultListViewModelDelegate: AnyObject {
     func editableVaultListViewModelWantsToEdit(vault: Vault)
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
                                                         delegate: DeleteVaultAlertHandlerDelegate)
+    func editableVaultListViewModelDidDelete(vault: Vault)
     func editableVaultListViewModelDidEncounter(error: Error)
     func editableVaultListViewModelDidRestoreAllTrashedItems()
     func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems()
@@ -37,13 +38,17 @@ protocol EditableVaultListViewModelDelegate: AnyObject {
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    let logger: Logger
     let vaultsManager: VaultsManager
 
     weak var delegate: EditableVaultListViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
-    init(vaultsManager: VaultsManager) {
+    init(vaultsManager: VaultsManager, logManager: LogManager) {
         self.vaultsManager = vaultsManager
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
         self.finalizeInitialization()
     }
 }
@@ -55,7 +60,16 @@ private extension EditableVaultListViewModel {
     }
 
     func doDelete(vault: Vault) {
-        print(#function)
+        Task { @MainActor in
+            defer { delegate?.editableVaultListViewModelWantsToHideSpinner() }
+            do {
+                delegate?.editableVaultListViewModelWantsToShowSpinner()
+                delegate?.editableVaultListViewModelDidDelete(vault: vault)
+            } catch {
+                logger.error(error)
+                delegate?.editableVaultListViewModelDidEncounter(error: error)
+            }
+        }
     }
 }
 
@@ -82,10 +96,13 @@ extension EditableVaultListViewModel {
         Task { @MainActor in
             defer { delegate?.editableVaultListViewModelWantsToHideSpinner() }
             do {
+                logger.trace("Restoring all trashed items")
                 delegate?.editableVaultListViewModelWantsToShowSpinner()
                 try await vaultsManager.restoreAllTrashedItems()
                 delegate?.editableVaultListViewModelDidRestoreAllTrashedItems()
+                logger.info("Restored all trashed items")
             } catch {
+                logger.error(error)
                 delegate?.editableVaultListViewModelDidEncounter(error: error)
             }
         }
@@ -95,10 +112,13 @@ extension EditableVaultListViewModel {
         Task { @MainActor in
             defer { delegate?.editableVaultListViewModelWantsToHideSpinner() }
             do {
+                logger.trace("Emptying all trashed items")
                 delegate?.editableVaultListViewModelWantsToShowSpinner()
                 try await vaultsManager.permanentlyDeleteAllTrashedItems()
                 delegate?.editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems()
+                logger.info("Emptied all trashed items")
             } catch {
+                logger.error(error)
                 delegate?.editableVaultListViewModelDidEncounter(error: error)
             }
         }
