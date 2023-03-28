@@ -35,9 +35,7 @@ public struct UpdateItemEndpoint: Endpoint {
     public var method: HTTPMethod
     public var body: UpdateItemRequest?
 
-    public init(shareId: String,
-                itemId: String,
-                request: UpdateItemRequest) {
+    public init(shareId: String, itemId: String, request: UpdateItemRequest) {
         self.debugDescription = "Update item"
         self.path = "/pass/v1/share/\(shareId)/item/\(itemId)"
         self.method = .put

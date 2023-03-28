@@ -34,9 +34,7 @@ public struct GetItemsEndpoint: Endpoint {
     public var path: String
     public var queries: [String: Any]?
 
-    public init(shareId: String,
-                sinceToken: String?,
-                pageSize: Int) {
+    public init(shareId: String, sinceToken: String?, pageSize: Int) {
         self.debugDescription = "Get items for share"
         self.path = "/pass/v1/share/\(shareId)/item"
 

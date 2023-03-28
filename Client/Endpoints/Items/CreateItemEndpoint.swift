@@ -35,8 +35,7 @@ public struct CreateItemEndpoint: Endpoint {
     public var method: HTTPMethod
     public var body: CreateItemRequest?
 
-    public init(shareId: String,
-                request: CreateItemRequest) {
+    public init(shareId: String, request: CreateItemRequest) {
         self.debugDescription = "Create item"
         self.path = "/pass/v1/share/\(shareId)/item"
         self.method = .post

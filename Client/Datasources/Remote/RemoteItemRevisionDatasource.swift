@@ -52,29 +52,25 @@ public extension RemoteItemRevisionDatasourceProtocol {
     }
 
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision {
-        let endpoint = CreateItemEndpoint(shareId: shareId,
-                                          request: request)
+        let endpoint = CreateItemEndpoint(shareId: shareId, request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.item
     }
 
     func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> ItemRevision {
-        let endpoint = CreateCustomAliasEndpoint(shareId: shareId,
-                                                 request: request)
+        let endpoint = CreateCustomAliasEndpoint(shareId: shareId, request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.item
     }
 
     func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
-        let endpoint = TrashItemsEndpoint(shareId: shareId,
-                                          items: items)
+        let endpoint = TrashItemsEndpoint(shareId: shareId, items: items)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.items
     }
 
     func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
-        let endpoint = UntrashItemsEndpoint(shareId: shareId,
-                                            items: items)
+        let endpoint = UntrashItemsEndpoint(shareId: shareId, items: items)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.items
     }
