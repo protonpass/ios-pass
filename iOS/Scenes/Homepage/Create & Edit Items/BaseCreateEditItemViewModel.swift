@@ -176,18 +176,14 @@ class BaseCreateEditItemViewModel {
     private func editItem(oldItemContent: ItemContent) async {
         defer { isSaving = false }
         do {
-            let shareId = oldItemContent.shareId
             let itemId = oldItemContent.item.itemID
             isSaving = true
             try await additionalEdit()
-            guard let oldItem = try await itemRepository.getItemTask(shareId: shareId,
-                                                                     itemId: itemId).value else {
-                return
-            }
+            let oldItem = try await getItemTask(item: oldItemContent).value
             let newItemContentProtobuf = generateItemContent()
             try await updateItemTask(oldItem: oldItem.item,
                                      newItemContent: newItemContentProtobuf,
-                                     shareId: shareId).value
+                                     shareId: oldItemContent.shareId).value
             delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
             logger.info("Edited \(oldItem.debugInformation)")
         } catch {
@@ -224,11 +220,11 @@ private extension BaseCreateEditItemViewModel {
         }
     }
 
-    func getItemTask(shareId: String, itemId: String) -> Task<SymmetricallyEncryptedItem, Error> {
+    func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) {
-            guard let item = try await self.itemRepository.getItem(shareId: shareId,
-                                                                   itemId: itemId) else {
-                throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
+            guard let item = try await self.itemRepository.getItem(shareId: item.shareId,
+                                                                   itemId: item.itemId) else {
+                throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
             return item
         }
