@@ -27,6 +27,7 @@ import CryptoKit
 import MBProgressHUD
 import ProtonCore_Login
 import ProtonCore_Services
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 import UIKit
@@ -611,6 +612,14 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
 
 // MARK: - ItemDetailViewModelDelegate
 extension HomepageCoordinator: ItemDetailViewModelDelegate {
+    func itemDetailViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func itemDetailViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
     func itemDetailViewModelWantsToGoBack() {
         // Dismiss differently because show differently
         // (push on iPad, sheets on iPhone)
@@ -625,10 +634,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         presentEditItemView(for: itemContent)
     }
 
-    func itemDetailViewModelWantsToRestore(_ item: ItemUiModel) {
-        print(#function)
-    }
-
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String) {
         clipboardManager.copy(text: text, bannerMessage: bannerMessage)
     }
@@ -639,6 +644,36 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelWantsToOpen(urlString: String) {
         UrlOpener(preferences: preferences).open(urlString: urlString)
+    }
+
+    func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
+        homepageViewModel?.vaultsManager.refresh(trashedItem: item)
+        Task { await searchViewModel?.refreshResults() }
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
+                banner.dismiss()
+                self.itemContextMenuHandler.restore(item)
+            }
+            self.bannerManager.displayBottomInfoMessage(item.type.trashMessage,
+                                                        dismissButtonTitle: "Undo",
+                                                        onDismiss: undoBlock)
+        }
+    }
+
+    func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
+        homepageViewModel?.vaultsManager.refresh(untrashedItem: item)
+        Task { await searchViewModel?.refreshResults() }
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
+        }
+    }
+
+    func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
+        homepageViewModel?.vaultsManager.refresh(permanentlyDeletedItem: item)
+        Task { await searchViewModel?.refreshResults() }
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
+        }
     }
 
     func itemDetailViewModelDidFail(_ error: Error) {
@@ -667,17 +702,19 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
         presentEditItemView(for: itemContent)
     }
 
-    func itemContextMenuHandlerDidTrash(item: ItemIdentifiable) {
+    func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable) {
         homepageViewModel?.vaultsManager.refresh(trashedItem: item)
-        searchViewModel?.refreshResults(trashedItem: item)
+        Task { await searchViewModel?.refreshResults() }
     }
 
-    func itemContextMenuHandlerDidUntrash(item: ItemIdentifiable) {
+    func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable) {
         homepageViewModel?.vaultsManager.refresh(untrashedItem: item)
+        Task { await searchViewModel?.refreshResults() }
     }
 
-    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemIdentifiable) {
+    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable) {
         homepageViewModel?.vaultsManager.refresh(permanentlyDeletedItem: item)
+        Task { await searchViewModel?.refreshResults() }
     }
 }
 

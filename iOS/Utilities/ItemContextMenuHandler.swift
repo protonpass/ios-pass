@@ -20,14 +20,15 @@
 
 import Client
 import Core
+import ProtonCore_UIFoundations
 
 protocol ItemContextMenuHandlerDelegate: AnyObject {
     func itemContextMenuHandlerWantsToShowSpinner()
     func itemContextMenuHandlerWantsToHideSpinner()
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent)
-    func itemContextMenuHandlerDidTrash(item: ItemIdentifiable)
-    func itemContextMenuHandlerDidUntrash(item: ItemIdentifiable)
-    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemIdentifiable)
+    func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable)
+    func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable)
+    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable)
 }
 
 final class ItemContextMenuHandler {
@@ -71,16 +72,13 @@ extension ItemContextMenuHandler {
                 let encryptedItem = try await getEncryptedItem(for: item)
                 try await itemRepository.trashItems([encryptedItem])
 
-                let message: String
-                switch item.type {
-                case .alias:
-                    message = "Alias deleted"
-                case .login:
-                    message = "Login deleted"
-                case .note:
-                    message = "Note deleted"
+                let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
+                    banner.dismiss()
+                    self.restore(item)
                 }
-                clipboardManager.bannerManager?.displayBottomInfoMessage(message)
+                clipboardManager.bannerManager?.displayBottomInfoMessage(item.type.trashMessage,
+                                                                         dismissButtonTitle: "Undo",
+                                                                         onDismiss: undoBlock)
 
                 delegate?.itemContextMenuHandlerDidTrash(item: item)
             } catch {
@@ -90,25 +88,14 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func untrash(_ item: ItemTypeIdentifiable) {
+    func restore(_ item: ItemTypeIdentifiable) {
         Task { @MainActor in
             defer { delegate?.itemContextMenuHandlerWantsToHideSpinner() }
             do {
                 delegate?.itemContextMenuHandlerWantsToShowSpinner()
                 let encryptedItem = try await getEncryptedItem(for: item)
                 try await itemRepository.untrashItems([encryptedItem])
-
-                let message: String
-                switch item.type {
-                case .alias:
-                    message = "Alias restored"
-                case .login:
-                    message = "Login restored"
-                case .note:
-                    message = "Note restored"
-                }
-                clipboardManager.bannerManager?.displayBottomInfoMessage(message)
-
+                clipboardManager.bannerManager?.displayBottomSuccessMessage(item.type.restoreMessage)
                 delegate?.itemContextMenuHandlerDidUntrash(item: item)
             } catch {
                 logger.error(error)
@@ -124,18 +111,7 @@ extension ItemContextMenuHandler {
                 delegate?.itemContextMenuHandlerWantsToShowSpinner()
                 let encryptedItem = try await getEncryptedItem(for: item)
                 try await itemRepository.deleteItems([encryptedItem], skipTrash: false)
-
-                let message: String
-                switch item.type {
-                case .alias:
-                    message = "Alias permanently deleted"
-                case .login:
-                    message = "Login permanently deleted"
-                case .note:
-                    message = "Note permanently deleted"
-                }
-                clipboardManager.bannerManager?.displayBottomInfoMessage(message)
-
+                clipboardManager.bannerManager?.displayBottomInfoMessage(item.type.deleteMessage)
                 delegate?.itemContextMenuHandlerDidPermanentlyDelete(item: item)
             } catch {
                 logger.error(error)
@@ -214,5 +190,31 @@ private extension ItemContextMenuHandler {
 
     func handleError(_ error: Error) {
         clipboardManager.bannerManager?.displayTopErrorMessage(error)
+    }
+}
+
+extension ItemContentType {
+    var trashMessage: String {
+        switch self {
+        case .alias: return "Alias moved to trash"
+        case .login: return "Login moved to trash"
+        case .note: return "Note moved to trash"
+        }
+    }
+
+    var restoreMessage: String {
+        switch self {
+        case .alias: return "Alias restored"
+        case .login: return "Login restored"
+        case .note: return "Note restored"
+        }
+    }
+
+    var deleteMessage: String {
+        switch self {
+        case .alias: return "Alias permanently deleted"
+        case .login: return "Login permanently deleted"
+        case .note: return "Note permanently deleted"
+        }
     }
 }

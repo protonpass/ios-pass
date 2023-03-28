@@ -36,7 +36,7 @@ enum ItemContextMenu {
               onTrash: () -> Void)
 
     case trashedItem(onRestore: () -> Void,
-                     onPermanentlyDeleted: () -> Void)
+                     onPermanentlyDelete: () -> Void)
 
     var sections: [ItemContextMenuOptionSection] {
         switch self {
@@ -61,13 +61,13 @@ enum ItemContextMenu {
             return [.init(options: [.editOption(action: onEdit)]),
                     .init(options: [.trashOption(action: onTrash)])]
 
-        case let .trashedItem(onRestore, onPermanentlyDeleted):
+        case let .trashedItem(onRestore, onPermanentlyDelete):
             return [.init(options: [.init(title: "Restore",
                                           icon: IconProvider.clockRotateLeft,
                                           action: onRestore)]),
                     .init(options: [.init(title: "Delete permanently",
                                           icon: IconProvider.trash,
-                                          action: onPermanentlyDeleted,
+                                          action: onPermanentlyDelete,
                                           isDestructive: true)])]
         }
     }
@@ -129,15 +129,15 @@ private extension View {
     }
 }
 
-private struct ItemContextMenuModifier: ViewModifier {
-    @Binding var isShowingDeleteConfirmation: Bool
+struct PermenentlyDeleteItemModifier: ViewModifier {
+    @Binding var isShowingAlert: Bool
     let onDelete: () -> Void
 
     func body(content: Content) -> some View {
         content
             .alert(
                 "Permanently delete?",
-                isPresented: $isShowingDeleteConfirmation,
+                isPresented: $isShowingAlert,
                 actions: {
                     Button(role: .destructive, action: onDelete, label: { Text("Delete") })
                     Button(role: .cancel, label: { Text("Cancel") })
@@ -149,16 +149,12 @@ private struct ItemContextMenuModifier: ViewModifier {
 extension View {
     func itemContextMenu(item: ItemTypeIdentifiable,
                          isTrashed: Bool,
-                         isShowingDeleteConfirmation: Binding<Bool>,
+                         onPermanentlyDelete: @escaping () -> Void,
                          handler: ItemContextMenuHandler) -> some View {
-        modifier(ItemContextMenuModifier(
-            isShowingDeleteConfirmation: isShowingDeleteConfirmation,
-            onDelete: { handler.deletePermanently(item) }))
-        .itemContextMenu {
+        itemContextMenu {
             if isTrashed {
-                return .trashedItem(
-                    onRestore: { handler.untrash(item) },
-                    onPermanentlyDeleted: { isShowingDeleteConfirmation.wrappedValue = true })
+                return .trashedItem(onRestore: { handler.restore(item) },
+                                    onPermanentlyDelete: onPermanentlyDelete)
             } else {
                 switch item.type {
                 case .login:

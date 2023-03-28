@@ -24,7 +24,7 @@ import SwiftUI
 import UIComponents
 
 struct SearchResultsView: View {
-    @State private var isShowingDeleteConfirmation = false
+    @State private var itemToBePermanentlyDeleted: ItemTypeIdentifiable?
     @Binding var selectedType: ItemContentType?
     @Binding var selectedSortType: SortType
     private let uuid = UUID()
@@ -132,21 +132,42 @@ struct SearchResultsView: View {
         }
     }
 
+    @ViewBuilder
     private func itemRow(for item: ItemSearchResult) -> some View {
+        let permanentlyDeleteBinding = Binding<Bool>(get: {
+            itemToBePermanentlyDeleted != nil
+        }, set: { newValue in
+            if !newValue {
+                itemToBePermanentlyDeleted = nil
+            }
+        })
+
         Button(action: {
             onSelectItem(item)
         }, label: {
             ItemSearchResultView(result: item)
-                .itemContextMenu(item: item,
-                                 isTrashed: isTrash,
-                                 isShowingDeleteConfirmation: $isShowingDeleteConfirmation,
-                                 handler: itemContextMenuHandler)
         })
         .listRowSeparator(.hidden)
         .listRowInsets(.zero)
         .padding(.horizontal)
         .padding(.vertical, 12)
         .listRowBackground(Color.clear)
+        .modifier(ItemSwipeModifier(
+            itemToBePermanentlyDeleted: $itemToBePermanentlyDeleted,
+            item: item,
+            isTrashed: isTrash,
+            itemContextMenuHandler: itemContextMenuHandler))
+        .itemContextMenu(item: item,
+                         isTrashed: isTrash,
+                         onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
+                         handler: itemContextMenuHandler)
+        .modifier(PermenentlyDeleteItemModifier(
+            isShowingAlert: permanentlyDeleteBinding,
+            onDelete: {
+                if let itemToBePermanentlyDeleted {
+                    itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)
+                }
+            }))
     }
 }
 
