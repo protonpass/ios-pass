@@ -28,7 +28,7 @@ let kSearchBarHeight: CGFloat = 48
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
-    @State private var itemToBePermanentlyDeleted: ItemUiModel?
+    @State private var itemToBePermanentlyDeleted: ItemTypeIdentifiable?
 
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
@@ -227,6 +227,7 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
+    // swiftlint:disable:next function_body_length
     private func itemRow(for item: ItemUiModel) -> some View {
         let permanentlyDeleteBinding = Binding<Bool>(get: {
             itemToBePermanentlyDeleted != nil
@@ -262,69 +263,22 @@ struct ItemsTabView: View {
         .padding(.horizontal, 16)
         .listRowBackground(Color.clear)
         .frame(height: 64)
-        .swipeActions(edge: .leading) {
-            leadingSwipeActions(for: item,
-                                isTrashed: isTrashed,
-                                itemContextMenuHandler: viewModel.itemContextMenuHandler)
-        }
-        .swipeActions(edge: .trailing) {
-            trailingSwipeActions(for: item,
-                                 isTrashed: isTrashed,
-                                 itemContextMenuHandler: viewModel.itemContextMenuHandler)
-        }
+        .modifier(ItemSwipeModifier(
+            itemToBePermanentlyDeleted: $itemToBePermanentlyDeleted,
+            item: item,
+            isTrashed: isTrashed,
+            itemContextMenuHandler: viewModel.itemContextMenuHandler))
         .itemContextMenu(item: item,
                          isTrashed: isTrashed,
-                         isShowingDeleteConfirmation: permanentlyDeleteBinding,
+                         onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
                          handler: viewModel.itemContextMenuHandler)
-    }
-
-    @ViewBuilder
-    private func leadingSwipeActions(for item: ItemUiModel,
-                                     isTrashed: Bool,
-                                     itemContextMenuHandler: ItemContextMenuHandler) -> some View {
-        if isTrashed {
-            Button(action: {
-                itemContextMenuHandler.untrash(item)
-            }, label: {
-                Label(title: {
-                    Text("Restore")
-                }, icon: {
-                    Image(uiImage: IconProvider.clockRotateLeft)
-                })
-            })
-            .tint(.notificationSuccess)
-        } else {
-            EmptyView()
-        }
-    }
-
-    @ViewBuilder
-    private func trailingSwipeActions(for item: ItemUiModel,
-                                      isTrashed: Bool,
-                                      itemContextMenuHandler: ItemContextMenuHandler) -> some View {
-        if isTrashed {
-            Button(action: {
-                itemToBePermanentlyDeleted = item
-            }, label: {
-                Label(title: {
-                    Text("Permanently delete")
-                }, icon: {
-                    Image(uiImage: IconProvider.trash)
-                })
-            })
-            .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
-        } else {
-            Button(action: {
-                itemContextMenuHandler.trash(item)
-            }, label: {
-                Label(title: {
-                    Text("Trash")
-                }, icon: {
-                    Image(uiImage: IconProvider.trash)
-                })
-            })
-            .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
-        }
+        .modifier(PermenentlyDeleteItemModifier(
+            isShowingAlert: permanentlyDeleteBinding,
+            onDelete: {
+                if let itemToBePermanentlyDeleted {
+                    viewModel.itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)
+                }
+            }))
     }
 }
 

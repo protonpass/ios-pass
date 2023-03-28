@@ -108,4 +108,8 @@ class BaseItemDetailViewModel {
     func copyNote(_ text: String) {
         copyToClipboard(text: text, message: "Note copied")
     }
+
+    func moveToTrash() {}
+
+    func permanentlyDelete() {}
 }

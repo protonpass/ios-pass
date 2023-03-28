@@ -24,31 +24,64 @@ import SwiftUI
 import UIComponents
 
 struct ItemDetailToolbar: ToolbarContent {
+    @State private var isShowingAlert = false
     let itemContent: ItemContent
     let onGoBack: () -> Void
     let onEdit: () -> Void
-    let onRevealMoreOptions: () -> Void
+    let onMoveToTrash: () -> Void
+    let onRestore: () -> Void
+    let onPermanentlyDelete: () -> Void
+
+    private var tintColor: UIColor { itemContent.tintColor }
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
-                         color: itemContent.tintColor,
+                         color: tintColor,
                          action: onGoBack)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
             switch itemContent.item.itemState {
             case .active:
-                HStack(spacing: 0) {
+                HStack {
                     CapsuleLabelButton(icon: IconProvider.pencil,
                                        title: "Edit",
-                                       backgroundColor: itemContent.tintColor,
+                                       backgroundColor: tintColor,
                                        disabled: false,
                                        action: onEdit)
+
+                    Menu(content: {
+                        Button(role: .destructive,
+                               action: onMoveToTrash,
+                               label: { Label(title: { Text("Move to trash") },
+                                              icon: { Image(uiImage: IconProvider.trash) }) })
+                    }, label: {
+                        CapsuleIconButton(icon: IconProvider.threeDotsVertical,
+                                          color: tintColor,
+                                          action: {})
+                    })
                 }
 
             case .trashed:
-                EmptyView()
+                Menu(content: {
+                    Button(action: onRestore,
+                           label: { Label(title: { Text("Restore") },
+                                          icon: { Image(uiImage: IconProvider.clockRotateLeft) }) })
+
+                    Divider()
+
+                    Button(role: .destructive,
+                           action: { isShowingAlert.toggle() },
+                           label: { Label(title: { Text("Permanently delete") },
+                                          icon: { Image(uiImage: IconProvider.trash) }) })
+                }, label: {
+                    CapsuleIconButton(icon: IconProvider.threeDotsVertical,
+                                      color: tintColor,
+                                      action: {})
+                })
+                .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $isShowingAlert,
+                                                        onDelete: onPermanentlyDelete))
             }
         }
     }
