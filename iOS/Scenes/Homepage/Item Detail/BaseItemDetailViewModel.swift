@@ -32,6 +32,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
     func itemDetailViewModelWantsToOpen(urlString: String)
+    func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidFail(_ error: Error)
 }
@@ -73,6 +74,50 @@ class BaseItemDetailViewModel {
         delegate?.itemDetailViewModelWantsToEditItem(itemContent)
     }
 
+    func refresh() {
+        Task { @MainActor in
+            guard let updatedItemContent =
+                    try await itemRepository.getDecryptedItemContent(shareId: itemContent.shareId,
+                                                                     itemId: itemContent.item.itemID) else {
+                return
+            }
+            itemContent = updatedItemContent
+            bindValues()
+        }
+    }
+
+    func showLarge(_ text: String) {
+        delegate?.itemDetailViewModelWantsToShowFullScreen(text)
+    }
+
+    func copyNote(_ text: String) {
+        copyToClipboard(text: text, message: "Note copied")
+    }
+
+    func moveToTrash() {
+        Task { @MainActor in
+            defer { delegate?.itemDetailViewModelWantsToHideSpinner() }
+            do {
+                logger.trace("Trashing \(itemContent.debugInformation)")
+                delegate?.itemDetailViewModelWantsToShowSpinner()
+                if let encryptedItem =
+                    try await itemRepository.getItemTask(shareId: itemContent.shareId,
+                                                         itemId: itemContent.item.itemID).value {
+                    let symmetricKey = itemRepository.symmetricKey
+                    let item = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                    try await itemRepository.trashItems([encryptedItem])
+                    delegate?.itemDetailViewModelDidMoveToTrash(item: item)
+                    logger.info("Trashed \(item.debugInformation)")
+                } else {
+                    throw PPError.itemNotFound(shareID: itemContent.shareId, itemID: itemContent.itemId)
+                }
+            } catch {
+                logger.error(error)
+                delegate?.itemDetailViewModelDidFail(error)
+            }
+        }
+    }
+
     func restore() {
         Task { @MainActor in
             defer { delegate?.itemDetailViewModelWantsToHideSpinner() }
@@ -96,28 +141,6 @@ class BaseItemDetailViewModel {
             }
         }
     }
-
-    func refresh() {
-        Task { @MainActor in
-            guard let updatedItemContent =
-                    try await itemRepository.getDecryptedItemContent(shareId: itemContent.shareId,
-                                                                     itemId: itemContent.item.itemID) else {
-                return
-            }
-            itemContent = updatedItemContent
-            bindValues()
-        }
-    }
-
-    func showLarge(_ text: String) {
-        delegate?.itemDetailViewModelWantsToShowFullScreen(text)
-    }
-
-    func copyNote(_ text: String) {
-        copyToClipboard(text: text, message: "Note copied")
-    }
-
-    func moveToTrash() {}
 
     func permanentlyDelete() {}
 }

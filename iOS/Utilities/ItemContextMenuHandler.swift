@@ -20,14 +20,15 @@
 
 import Client
 import Core
+import ProtonCore_UIFoundations
 
 protocol ItemContextMenuHandlerDelegate: AnyObject {
     func itemContextMenuHandlerWantsToShowSpinner()
     func itemContextMenuHandlerWantsToHideSpinner()
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent)
-    func itemContextMenuHandlerDidTrash(item: ItemIdentifiable)
-    func itemContextMenuHandlerDidUntrash(item: ItemIdentifiable)
-    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemIdentifiable)
+    func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable)
+    func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable)
+    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable)
 }
 
 final class ItemContextMenuHandler {
@@ -70,7 +71,15 @@ extension ItemContextMenuHandler {
                 delegate?.itemContextMenuHandlerWantsToShowSpinner()
                 let encryptedItem = try await getEncryptedItem(for: item)
                 try await itemRepository.trashItems([encryptedItem])
-                clipboardManager.bannerManager?.displayBottomInfoMessage(item.type.trashMessage)
+
+                let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
+                    banner.dismiss()
+                    self.restore(item)
+                }
+                clipboardManager.bannerManager?.displayBottomInfoMessage(item.type.trashMessage,
+                                                                         dismissButtonTitle: "Undo",
+                                                                         onDismiss: undoBlock)
+
                 delegate?.itemContextMenuHandlerDidTrash(item: item)
             } catch {
                 logger.error(error)
