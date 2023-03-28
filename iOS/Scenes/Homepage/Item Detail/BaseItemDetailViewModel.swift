@@ -25,12 +25,14 @@ import UIKit
 let kItemDetailSectionPadding: CGFloat = 16
 
 protocol ItemDetailViewModelDelegate: AnyObject {
+    func itemDetailViewModelWantsToShowSpinner()
+    func itemDetailViewModelWantsToHideSpinner()
     func itemDetailViewModelWantsToGoBack()
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
-    func itemDetailViewModelWantsToRestore(_ item: ItemUiModel)
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
     func itemDetailViewModelWantsToOpen(urlString: String)
+    func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidFail(_ error: Error)
 }
 
@@ -73,14 +75,20 @@ class BaseItemDetailViewModel {
 
     func restore() {
         Task { @MainActor in
+            defer { delegate?.itemDetailViewModelWantsToHideSpinner() }
             do {
+                logger.trace("Restoring \(itemContent.debugInformation)")
+                delegate?.itemDetailViewModelWantsToShowSpinner()
                 if let encryptedItem =
                     try await itemRepository.getItemTask(shareId: itemContent.shareId,
                                                          itemId: itemContent.item.itemID).value {
                     let symmetricKey = itemRepository.symmetricKey
-                    let item = try encryptedItem.toItemUiModel(symmetricKey)
-                    delegate?.itemDetailViewModelWantsToRestore(item)
+                    let item = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                    try await itemRepository.untrashItems([encryptedItem])
+                    delegate?.itemDetailViewModelDidRestore(item: item)
                     logger.info("Restored \(item.debugInformation)")
+                } else {
+                    throw PPError.itemNotFound(shareID: itemContent.shareId, itemID: itemContent.itemId)
                 }
             } catch {
                 logger.error(error)

@@ -153,7 +153,7 @@ extension View {
                          handler: ItemContextMenuHandler) -> some View {
         itemContextMenu {
             if isTrashed {
-                return .trashedItem(onRestore: { handler.untrash(item) },
+                return .trashedItem(onRestore: { handler.restore(item) },
                                     onPermanentlyDelete: onPermanentlyDelete)
             } else {
                 switch item.type {

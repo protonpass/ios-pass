@@ -162,6 +162,10 @@ extension ItemContent: ItemIdentifiable {
     public var itemId: String { item.itemID }
 }
 
+extension ItemContent: ItemTypeIdentifiable {
+    public var type: ItemContentType { contentData.type }
+}
+
 extension ItemContentData: SymmetricallyEncryptable {
     public func symmetricallyEncrypted(_ symmetricKey: SymmetricKey) throws -> ItemContentData {
         switch self {

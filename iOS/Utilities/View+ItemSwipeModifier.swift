@@ -36,7 +36,7 @@ struct ItemSwipeModifier: ViewModifier {
             .swipeActions(edge: .leading) {
                 if isTrashed {
                     Button(action: {
-                        itemContextMenuHandler.untrash(item)
+                        itemContextMenuHandler.restore(item)
                     }, label: {
                         Label(title: {
                             Text("Restore")
