@@ -44,7 +44,7 @@ struct CreateEditItemTitleSection: View {
                 Button(action: {
                     title = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
                 })
             }
         }

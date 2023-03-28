@@ -1,0 +1,26 @@
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M0.94519 15.8277C1.97727 15.3448 2.85038 14.5778 3.46225 13.6166C4.07411 12.6553 4.39939 11.5396 4.39999 10.4001C4.40137 9.02272 3.92631 7.68723 3.05539 6.62012"
+        stroke="black" stroke-opacity="0.8" stroke-width="1.2" stroke-linecap="round"
+        stroke-linejoin="round" />
+    <path
+        d="M24.9447 6.62012C24.3697 7.32664 23.9633 8.155 23.7566 9.04218C23.5498 9.92937 23.5481 10.852 23.7516 11.74C23.955 12.6279 24.3583 13.4578 24.9307 14.1664C25.5031 14.8751 26.2296 15.4439 27.0549 15.8295"
+        stroke="black" stroke-opacity="0.8" stroke-width="1.2" stroke-linecap="round"
+        stroke-linejoin="round" />
+    <path
+        d="M21.7946 21.93C25.0712 20.7378 27.2 18.3738 27.2 13.9998C27.2 10.4989 25.8093 7.14148 23.3339 4.666C20.8584 2.19052 17.5009 0.799805 14 0.799805C10.4992 0.799805 7.14172 2.19052 4.66624 4.666C2.19076 7.14148 0.800049 10.4989 0.800049 13.9998C0.800049 18.3738 2.92885 20.7378 6.20545 21.93"
+        stroke="black" stroke-opacity="0.8" stroke-width="1.2" stroke-linecap="round"
+        stroke-linejoin="round" />
+    <path d="M11.6001 21.2002V22.4002" stroke="black" stroke-opacity="0.8" stroke-width="1.2"
+        stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M16.4 21.2002V22.4002" stroke="black" stroke-opacity="0.8" stroke-width="1.2"
+        stroke-linecap="round" stroke-linejoin="round" />
+    <path
+        d="M21.8001 21.8002C21.8001 25.4002 19.4001 27.2002 14.0001 27.2002C8.60007 27.2002 6.20007 25.4002 6.20007 21.8002C6.20007 20.6002 8.60007 18.2002 14.0001 18.2002C19.4001 18.2002 21.8001 20.6002 21.8001 21.8002Z"
+        stroke="black" stroke-opacity="0.8" stroke-width="1.2" stroke-linecap="round"
+        stroke-linejoin="round" />
+    <path
+        d="M14 12.7998C17.3137 12.7998 20 10.1135 20 6.7998C20 3.4861 17.3137 0.799805 14 0.799805C10.6863 0.799805 8 3.4861 8 6.7998C8 10.1135 10.6863 12.7998 14 12.7998Z"
+        stroke="black" stroke-opacity="0.8" stroke-width="1.2" stroke-linecap="round"
+        stroke-linejoin="round" />
+</svg>

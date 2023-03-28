@@ -63,6 +63,9 @@ public protocol ItemRepositoryProtocol {
     /// Should be only used after logging in & full sync.
     func refreshItems() async throws
 
+    /// Full sync for a given `shareId`
+    func refreshShare(shareId: String) async throws
+
     @discardableResult
     func createItem(itemContent: ProtobufableItemContentProtocol,
                     shareId: String) async throws -> SymmetricallyEncryptedItem
@@ -147,6 +150,13 @@ public extension ItemRepositoryProtocol {
             try await refreshItems(shareId: share.shareID)
         }
         logger.trace("Refreshed items for user \(userId)")
+    }
+
+    func refreshShare(shareId: String) async throws {
+        logger.trace("Refreshing share \(shareId) - user \(userId)")
+        try await localItemDatasoure.removeAllItems(shareId: shareId)
+        try await refreshItems(shareId: shareId)
+        logger.trace("Refreshed share \(shareId) - user \(userId)")
     }
 
     func createItem(itemContent: ProtobufableItemContentProtocol,

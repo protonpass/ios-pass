@@ -25,28 +25,14 @@ import ProtonCore_Login
 
 enum VaultManagerState {
     case loading
-    case loaded([VaultContentUiModel])
+    case loaded(vaults: [VaultContentUiModel], trashedItems: [ItemUiModel])
     case error(Error)
-}
-
-extension VaultManagerState: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.loading, .loading):
-            return true
-        case let (.loaded(lhsVaults), .loaded(rhsVaults)):
-            return lhsVaults.hashValue == rhsVaults.hashValue
-        case let (.error(lhsError), .error(rhsError)):
-            return lhsError.messageForTheUser == rhsError.messageForTheUser
-        default:
-            return false
-        }
-    }
 }
 
 enum VaultSelection {
     case all
     case precise(Vault)
+    case trash
 
     var searchBarPlacehoder: String {
         switch self {
@@ -54,6 +40,8 @@ enum VaultSelection {
             return "Search in all vaults"
         case .precise(let vault):
             return "Search in \(vault.name)"
+        case .trash:
+            return "Search in trash"
         }
     }
 }
@@ -66,7 +54,6 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     private let logger: Logger
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
-    private let userData: UserData
 
     @Published private(set) var state = VaultManagerState.loading
     @Published private(set) var vaultSelection = VaultSelection.all
@@ -75,8 +62,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
          manualLogIn: Bool,
          logManager: LogManager,
          shareRepository: ShareRepositoryProtocol,
-         symmetricKey: SymmetricKey,
-         userData: UserData) {
+         symmetricKey: SymmetricKey) {
         self.itemRepository = itemRepository
         self.manualLogIn = manualLogIn
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
@@ -84,9 +70,44 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
                             manager: logManager)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
-        self.userData = userData
+    }
+}
+
+// MARK: - Private APIs
+private extension VaultsManager {
+    func createDefaultVault() async throws {
+        let vault = VaultProtobuf(name: "Personal",
+                                  description: "Personal vault",
+                                  color: .color1,
+                                  icon: .icon1)
+        try await shareRepository.createVault(vault)
     }
 
+    @MainActor
+    func loadContents(for vaults: [Vault]) async throws {
+        var uiModels = try await vaults.parallelMap { vault in
+            let items = try await self.itemRepository.getItems(shareId: vault.shareId, state: .active)
+            let itemUiModels = try items.map { try $0.toItemUiModel(self.symmetricKey) }
+            return VaultContentUiModel(vault: vault, items: itemUiModels)
+        }
+
+        let trashedItems =
+        try await itemRepository.getItems(state: .trashed).map { try $0.toItemUiModel(symmetricKey) }
+
+        uiModels.sortAlphabetically()
+        state = .loaded(vaults: uiModels, trashedItems: trashedItems)
+
+        // Reset to `all` when last selected vault is deleted
+        if case .precise(let selectedVault) = vaultSelection {
+            if !vaults.contains(where: { $0 == selectedVault }) {
+                vaultSelection = .all
+            }
+        }
+    }
+}
+
+// MARK: - Public APIs
+extension VaultsManager {
     func refresh() {
         Task { @MainActor in
             do {
@@ -102,7 +123,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
                     try await itemRepository.refreshItems()
                     let vaults = try await shareRepository.getVaults()
                     if vaults.isEmpty {
-                        let userId = userData.user.ID
+                        let userId = shareRepository.userData.user.ID
                         logger.trace("Creating default vault for user \(userId)")
                         try await createDefaultVault()
                         logger.trace("Created default vault for user \(userId)")
@@ -120,85 +141,209 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
             }
         }
     }
-}
 
-// MARK: - Private APIs
-private extension VaultsManager {
-    func createDefaultVault() async throws {
-        logger.info("Creating default vault")
-        let request = try CreateVaultRequest(userData: userData,
-                                             name: "Personal",
-                                             description: "Personal vault")
-        try await shareRepository.createVault(request: request)
-        logger.info("Created default vault")
-    }
+    /// Refresh by 1) removing the `trashedItem` from the containing vault
+    /// And 2) add it to `trashedItems` to make the refresh process quicker comparing to a full refresh
+    func refresh(trashedItem: ItemIdentifiable) {
+        Task { @MainActor in
+            do {
+                guard case var .loaded(vaults, trashedItems) = state else { return }
 
-    @MainActor
-    func loadContents(for vaults: [Vault]) async throws {
-        let uiModels = try await vaults.parallelMap { vault in
-            let items = try await self.itemRepository.getItems(shareId: vault.shareId, state: .active)
-            let itemUiModels = try items.map { try $0.toItemUiModel(self.symmetricKey) }
-            return VaultContentUiModel(vault: vault,
-                                       items: itemUiModels)
-        }
-        state = .loaded(uiModels)
+                // 1: Find the vault that contains `trashedItem` then manually remove it
+                if var updatedVault = vaults.first(where: { $0.items.contains(trashedItem) }) {
+                    updatedVault = .init(vault: updatedVault.vault,
+                                         items: updatedVault.items.removing(item: trashedItem))
+                    if let index = vaults.firstIndex(where: { $0.vault.id == updatedVault.vault.id }) {
+                        vaults[index] = updatedVault
+                    }
+                }
 
-        // Reset to `all` when last selected vault is deleted
-        if case .precise(let selectedVault) = vaultSelection {
-            if !vaults.contains(where: { $0 == selectedVault }) {
-                vaultSelection = .all
+                // 2: Get the full detail of `trashedItem` and append to `trashedItem` array
+                if let item = try await itemRepository.getItem(shareId: trashedItem.shareId,
+                                                               itemId: trashedItem.itemId) {
+                    let uiModel = try item.toItemUiModel(symmetricKey)
+                    trashedItems.append(uiModel)
+                }
+
+                state = .loaded(vaults: vaults, trashedItems: trashedItems)
+            } catch {
+                state = .error(error)
             }
         }
     }
-}
 
-// MARK: - Public APIs
-extension VaultsManager {
-    func select(vault: Vault?) {
-        guard let vault else {
-            vaultSelection = .all
-            return
+    /// Refresh by 1) adding the `untrashedItem` to the containing vault
+    /// And 2) remove it from `trashedItems` to make the refresh process quicker comparing to a full refresh
+    func refresh(untrashedItem: ItemIdentifiable) {
+        Task { @MainActor in
+            do {
+                guard case var .loaded(vaults, trashedItems) = state else { return }
+
+                // 1: Add `untrashedItem` to the vault that it belongs to
+                if var updatedVault = vaults.first(where: { $0.vault.shareId == untrashedItem.shareId }) {
+                    if let item = try await itemRepository.getItem(shareId: untrashedItem.shareId,
+                                                                   itemId: untrashedItem.itemId) {
+                        let uiModel = try item.toItemUiModel(symmetricKey)
+                        updatedVault = .init(vault: updatedVault.vault,
+                                             items: updatedVault.items.appending(uiModel))
+                    }
+
+                    if let index = vaults.firstIndex(where: { $0.vault.id == updatedVault.vault.id }) {
+                        vaults[index] = updatedVault
+                    }
+                }
+
+                // 2: Remove `trashedItems` from `trashedItems` array
+                trashedItems.remove(item: untrashedItem)
+
+                state = .loaded(vaults: vaults, trashedItems: trashedItems)
+            } catch {
+                state = .error(error)
+            }
         }
-        vaultSelection = .precise(vault)
     }
 
-    func isSelected(_ vault: Vault) -> Bool {
-        guard case .precise(let selectedVault) = vaultSelection else { return false }
-        return selectedVault == vault
+    func refresh(permanentlyDeletedItem: ItemIdentifiable) {
+        guard case .loaded(let vaults, var trashedItems) = state else { return }
+        trashedItems.remove(item: permanentlyDeletedItem)
+        state = .loaded(vaults: vaults, trashedItems: trashedItems)
     }
 
-    func isAllVaultsSelected() -> Bool {
-        if case .all = vaultSelection {
-            return true
+    func refreshAfterVaultEdit() {
+        Task { @MainActor in
+            do {
+                guard case .loaded(var vaults, let trashedItems) = state else { return }
+                let updatedVaults = try await shareRepository.getVaults()
+                for updatedVault in updatedVaults {
+                    if let index = vaults.firstIndex(where: { $0.vault.shareId == updatedVault.shareId }) {
+                        let oldVault = vaults[index]
+                        vaults[index] = .init(vault: updatedVault, items: oldVault.items)
+                    }
+                }
+                vaults.sortAlphabetically()
+                state = .loaded(vaults: vaults, trashedItems: trashedItems)
+            } catch {
+                state = .error(error)
+            }
         }
-        return false
     }
 
-    func getItem(for vault: Vault?) -> [ItemUiModel] {
-        guard case .loaded(let vaults) = state else { return [] }
+    func refresh(deletedVault: Vault) {
+        Task { @MainActor in
+            do {
+                guard case var .loaded(vaults, _) = state else { return }
+                vaults.removeAll(where: { $0.vault.shareId == deletedVault.shareId })
+
+                let trashedItems = try await itemRepository.getItems(state: .trashed)
+                let trashItemUiModels = try trashedItems.map { try $0.toItemUiModel(symmetricKey) }
+
+                state = .loaded(vaults: vaults, trashedItems: trashItemUiModels)
+            } catch {
+                state = .error(error)
+            }
+        }
+    }
+
+    func select(_ selection: VaultSelection) {
+        vaultSelection = selection
+    }
+
+    func isSelected(_ selection: VaultSelection) -> Bool {
+        vaultSelection == selection
+    }
+
+    func getItem(for selection: VaultSelection) -> [ItemUiModel] {
+        guard case let .loaded(vaults, trashedItems) = state else { return [] }
         switch vaultSelection {
         case .all:
             return vaults.map { $0.items }.reduce(into: []) { $0 += $1 }
         case .precise(let selectedVault):
             return vaults.first { $0.vault == selectedVault }?.items ?? []
+        case  .trash:
+            return trashedItems
         }
     }
 
-    func getItemCount(for vault: Vault?) -> Int {
-        guard case .loaded(let vaults) = state else { return 0 }
-        if let vault {
-            return vaults.first { $0.vault == vault }?.items.count ?? 0
-        } else {
+    func getItemCount(for selection: VaultSelection) -> Int {
+        guard case let .loaded(vaults, trashedItems) = state else { return 0 }
+        switch selection {
+        case .all:
             return vaults.map { $0.items.count }.reduce(into: 0) { $0 += $1 }
+        case .precise(let vault):
+            return vaults.first { $0.vault == vault }?.items.count ?? 0
+        case .trash:
+            return trashedItems.count
         }
     }
 
     func getVaultCount() -> Int {
         switch state {
-        case .loaded(let vaults):
+        case let .loaded(vaults, _):
             return vaults.count
         default:
             return 0
+        }
+    }
+
+    func delete(vault: Vault) async throws {
+        logger.trace("Deleting vault \(vault.shareId)")
+
+        let trashedItems = try await itemRepository.getItems(shareId: vault.shareId, state: .trashed)
+        if !trashedItems.isEmpty {
+            try await itemRepository.deleteItems(trashedItems, skipTrash: false)
+            logger.trace("Deleted \(trashedItems.count) trashed items for vault \(vault.shareId)")
+        }
+
+        let activeItems = try await itemRepository.getItems(shareId: vault.shareId, state: .active)
+        if !activeItems.isEmpty {
+            try await itemRepository.deleteItems(activeItems, skipTrash: true)
+            logger.trace("Deleted \(activeItems.count) active items for vault \(vault.shareId)")
+        }
+
+        try await shareRepository.deleteVault(shareId: vault.shareId)
+        logger.info("Deleted vault \(vault.shareId)")
+    }
+
+    func restoreAllTrashedItems() async throws {
+        logger.trace("Restoring all trashed items")
+        let trashedItems = try await itemRepository.getItems(state: .trashed)
+        try await itemRepository.untrashItems(trashedItems)
+        logger.info("Restored all trashed items")
+    }
+
+    func permanentlyDeleteAllTrashedItems() async throws {
+        logger.trace("Permanently deleting all trashed items")
+        let trashedItems = try await itemRepository.getItems(state: .trashed)
+        try await itemRepository.deleteItems(trashedItems, skipTrash: false)
+        logger.info("Permanently deleted all trashed items")
+    }
+}
+
+extension VaultManagerState: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading):
+            return true
+        case let (.loaded(lhsVaults, lhsTrashedItems), .loaded(rhsVaults, rhsTrashedItems)):
+            return lhsVaults.hashValue == rhsVaults.hashValue &&
+            lhsTrashedItems.hashValue == rhsTrashedItems.hashValue
+        case let (.error(lhsError), .error(rhsError)):
+            return lhsError.messageForTheUser == rhsError.messageForTheUser
+        default:
+            return false
+        }
+    }
+}
+
+extension VaultSelection: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.all, .all), (.trash, .trash):
+            return true
+        case let (.precise(lhsVault), .precise(rhsVault)):
+            return lhsVault.id == rhsVault.id && lhsVault.shareId == rhsVault.shareId
+        default:
+            return false
         }
     }
 }

@@ -97,7 +97,8 @@ public extension Share {
             let vault = Vault(id: vaultID,
                               shareId: shareID,
                               name: vaultContent.name,
-                              description: vaultContent.description_p)
+                              description: vaultContent.description_p,
+                              displayPreferences: vaultContent.display)
             return .vault(vault)
         case .item:
             return .item

@@ -58,8 +58,7 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
                                           manualLogIn: manualLogIn,
                                           logManager: logManager,
                                           shareRepository: shareRepository,
-                                          symmetricKey: symmetricKey,
-                                          userData: userData)
+                                          symmetricKey: symmetricKey)
         self.itemsTabViewModel = .init(itemContextMenuHandler: itemContextMenuHandler,
                                        itemRepository: itemRepository,
                                        logManager: logManager,
@@ -85,7 +84,7 @@ private extension HomepageViewModel {
 extension HomepageViewModel {
     func createNewItem() {
         switch vaultsManager.vaultSelection {
-        case .all:
+        case .all, .trash:
             // Handle this later
             break
         case .precise(let selectedVault):

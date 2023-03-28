@@ -24,12 +24,14 @@ import SwiftUI
 import UIComponents
 
 struct SearchResultsView: View {
+    @State private var isShowingDeleteConfirmation = false
     @Binding var selectedType: ItemContentType?
     @Binding var selectedSortType: SortType
     private let uuid = UUID()
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemCount: ItemCount
     let results: [ItemSearchResult]
+    let isTrash: Bool
     let safeAreaInsets: EdgeInsets
     let onScroll: () -> Void
     let onSelectItem: (ItemSearchResult) -> Void
@@ -135,7 +137,10 @@ struct SearchResultsView: View {
             onSelectItem(item)
         }, label: {
             ItemSearchResultView(result: item)
-                .itemContextMenu(item: item, handler: itemContextMenuHandler)
+                .itemContextMenu(item: item,
+                                 isTrashed: isTrash,
+                                 isShowingDeleteConfirmation: $isShowingDeleteConfirmation,
+                                 handler: itemContextMenuHandler)
         })
         .listRowSeparator(.hidden)
         .listRowInsets(.zero)

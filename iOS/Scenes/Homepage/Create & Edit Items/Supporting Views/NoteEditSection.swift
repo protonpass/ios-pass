@@ -45,7 +45,7 @@ struct NoteEditSection: View {
                 Button(action: {
                     note = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .interactionWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
                 })
             }
         }

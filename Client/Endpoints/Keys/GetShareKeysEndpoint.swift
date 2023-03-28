@@ -35,9 +35,7 @@ public struct GetShareKeysEndpoint: Endpoint {
     public var method: HTTPMethod
     public var queries: [String: Any]?
 
-    public init(shareId: String,
-                page: Int,
-                pageSize: Int) {
+    public init(shareId: String, page: Int, pageSize: Int) {
         self.debugDescription = "Get keys for share"
         self.path = "/pass/v1/share/\(shareId)/key"
         self.method = .get

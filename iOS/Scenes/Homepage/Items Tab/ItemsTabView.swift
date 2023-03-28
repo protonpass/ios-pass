@@ -28,7 +28,7 @@ let kSearchBarHeight: CGFloat = 48
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
-    @State private var toBeTrashedItem: ItemUiModel?
+    @State private var itemToBePermanentlyDeleted: ItemUiModel?
 
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
@@ -40,9 +40,11 @@ struct ItemsTabView: View {
             case .loaded:
                 switch vaultsManager.vaultSelection {
                 case .all:
-                    vaultContent(vaultsManager.getItem(for: nil))
+                    vaultContent(vaultsManager.getItem(for: .all))
                 case .precise(let selectedVault):
-                    vaultContent(vaultsManager.getItem(for: selectedVault))
+                    vaultContent(vaultsManager.getItem(for: .precise(selectedVault)))
+                case .trash:
+                    vaultContent(vaultsManager.getItem(for: .trash))
                 }
 
             case .error(let error):
@@ -57,20 +59,21 @@ struct ItemsTabView: View {
 
     @ViewBuilder
     private func vaultContent(_ items: [ItemUiModel]) -> some View {
-        let isShowingTrashingAlert = Binding<Bool>(get: {
-            toBeTrashedItem != nil
-        }, set: { newValue in
-            if !newValue {
-                toBeTrashedItem = nil
-            }
-        })
-
         GeometryReader { proxy in
             VStack {
                 topBar
                 if items.isEmpty {
-                    EmptyVaultView(onCreateNewItem: viewModel.createNewItem)
-                        .padding(.bottom, safeAreaInsets.bottom)
+                    switch viewModel.vaultsManager.vaultSelection {
+                    case .all:
+                        // Impossible case
+                        EmptyView()
+                    case .precise:
+                        EmptyVaultView(onCreateNewItem: viewModel.createNewItem)
+                            .padding(.bottom, safeAreaInsets.bottom)
+                    case .trash:
+                        EmptyTrashView()
+                            .padding(.bottom, safeAreaInsets.bottom)
+                    }
                 } else {
                     itemList(items)
                     Spacer()
@@ -82,29 +85,33 @@ struct ItemsTabView: View {
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
             }
-            .moveToTrashAlert(isPresented: isShowingTrashingAlert) {
-                if let toBeTrashedItem {
-                    viewModel.trash(toBeTrashedItem)
-                }
-            }
         }
     }
 
     private var topBar: some View {
         HStack {
-            Button(action: viewModel.presentVaultList) {
-                ZStack {
-                    Color.passBrand
-                        .opacity(0.16)
-                    Image(uiImage: IconProvider.vault)
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundColor(Color.passBrand)
-                        .padding(kSearchBarHeight / 4)
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 16))
+            switch viewModel.vaultsManager.vaultSelection {
+            case .all:
+                CircleButton(icon: PassIcon.allVaults,
+                             color: .passBrand,
+                             backgroundOpacity: 0.16,
+                             action: viewModel.presentVaultList)
+                .frame(width: kSearchBarHeight)
+
+            case .precise(let vault):
+                CircleButton(icon: vault.displayPreferences.icon.icon.image,
+                             color: vault.displayPreferences.color.color.color,
+                             backgroundOpacity: 0.16,
+                             action: viewModel.presentVaultList)
+                .frame(width: kSearchBarHeight)
+
+            case .trash:
+                CircleButton(icon: IconProvider.trash,
+                             color: .textWeak,
+                             backgroundOpacity: 0.16,
+                             action: viewModel.presentVaultList)
+                .frame(width: kSearchBarHeight)
             }
-            .frame(width: kSearchBarHeight)
 
             ZStack {
                 Color.black
@@ -219,7 +226,17 @@ struct ItemsTabView: View {
         }
     }
 
+    @ViewBuilder
     private func itemRow(for item: ItemUiModel) -> some View {
+        let permanentlyDeleteBinding = Binding<Bool>(get: {
+            itemToBePermanentlyDeleted != nil
+        }, set: { newValue in
+            if !newValue {
+                itemToBePermanentlyDeleted = nil
+            }
+        })
+
+        let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
         Button(action: {
             viewModel.viewDetail(of: item)
         }, label: {
@@ -245,9 +262,60 @@ struct ItemsTabView: View {
         .padding(.horizontal, 16)
         .listRowBackground(Color.clear)
         .frame(height: 64)
+        .swipeActions(edge: .leading) {
+            leadingSwipeActions(for: item,
+                                isTrashed: isTrashed,
+                                itemContextMenuHandler: viewModel.itemContextMenuHandler)
+        }
         .swipeActions(edge: .trailing) {
+            trailingSwipeActions(for: item,
+                                 isTrashed: isTrashed,
+                                 itemContextMenuHandler: viewModel.itemContextMenuHandler)
+        }
+        .itemContextMenu(item: item,
+                         isTrashed: isTrashed,
+                         isShowingDeleteConfirmation: permanentlyDeleteBinding,
+                         handler: viewModel.itemContextMenuHandler)
+    }
+
+    @ViewBuilder
+    private func leadingSwipeActions(for item: ItemUiModel,
+                                     isTrashed: Bool,
+                                     itemContextMenuHandler: ItemContextMenuHandler) -> some View {
+        if isTrashed {
             Button(action: {
-                askForConfirmationOrTrashDirectly(item: item)
+                itemContextMenuHandler.untrash(item)
+            }, label: {
+                Label(title: {
+                    Text("Restore")
+                }, icon: {
+                    Image(uiImage: IconProvider.clockRotateLeft)
+                })
+            })
+            .tint(.notificationSuccess)
+        } else {
+            EmptyView()
+        }
+    }
+
+    @ViewBuilder
+    private func trailingSwipeActions(for item: ItemUiModel,
+                                      isTrashed: Bool,
+                                      itemContextMenuHandler: ItemContextMenuHandler) -> some View {
+        if isTrashed {
+            Button(action: {
+                itemToBePermanentlyDeleted = item
+            }, label: {
+                Label(title: {
+                    Text("Permanently delete")
+                }, icon: {
+                    Image(uiImage: IconProvider.trash)
+                })
+            })
+            .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
+        } else {
+            Button(action: {
+                itemContextMenuHandler.trash(item)
             }, label: {
                 Label(title: {
                     Text("Trash")
@@ -256,15 +324,6 @@ struct ItemsTabView: View {
                 })
             })
             .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
-        }
-        .itemContextMenu(item: item, handler: viewModel.itemContextMenuHandler)
-    }
-
-    private func askForConfirmationOrTrashDirectly(item: ItemUiModel) {
-        if viewModel.preferences.askBeforeTrashing {
-            toBeTrashedItem = item
-        } else {
-            viewModel.trash(item)
         }
     }
 }

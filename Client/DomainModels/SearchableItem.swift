@@ -22,7 +22,7 @@ import Core
 import CryptoKit
 
 /// Items that live in memory for search purpose
-public struct SearchableItem {
+public struct SearchableItem: ItemTypeIdentifiable {
     public let shareId: String
     public let itemId: String
     public let type: ItemContentType

@@ -35,35 +35,41 @@ enum ItemContextMenu {
     case note(onEdit: () -> Void,
               onTrash: () -> Void)
 
-    var sections: [ItemContextMenuOptionSection] {
-        let customSection: ItemContextMenuOptionSection?
-        let editAndTrashSections: [ItemContextMenuOptionSection]
+    case trashedItem(onRestore: () -> Void,
+                     onPermanentlyDeleted: () -> Void)
 
+    var sections: [ItemContextMenuOptionSection] {
         switch self {
         case let .login(onCopyUsername, onCopyPassword, onEdit, onTrash):
-            customSection = .init(options: [.init(title: "Copy username",
-                                                  icon: IconProvider.user,
-                                                  action: onCopyUsername),
-                                            .init(title: "Copy password",
-                                                  icon: IconProvider.key,
-                                                  action: onCopyPassword)])
-            editAndTrashSections = [.init(options: [.editOption(action: onEdit)]),
-                                    .init(options: [.trashOption(action: onTrash)])]
+            return [.init(options: [.init(title: "Copy username",
+                                          icon: IconProvider.user,
+                                          action: onCopyUsername),
+                                    .init(title: "Copy password",
+                                          icon: IconProvider.key,
+                                          action: onCopyPassword)]),
+                    .init(options: [.editOption(action: onEdit)]),
+                    .init(options: [.trashOption(action: onTrash)])]
 
         case let .alias(onCopyAlias, onEdit, onTrash):
-            customSection = .init(options: [.init(title: "Copy alias address",
-                                                  icon: IconProvider.alias,
-                                                  action: onCopyAlias)])
-            editAndTrashSections = [.init(options: [.editOption(action: onEdit)]),
-                                    .init(options: [.trashOption(action: onTrash)])]
+            return [.init(options: [.init(title: "Copy alias address",
+                                          icon: IconProvider.alias,
+                                          action: onCopyAlias)]),
+                    .init(options: [.editOption(action: onEdit)]),
+                    .init(options: [.trashOption(action: onTrash)])]
 
         case let .note(onEdit, onTrash):
-            customSection = nil
-            editAndTrashSections = [.init(options: [.editOption(action: onEdit)]),
-                                    .init(options: [.trashOption(action: onTrash)])]
-        }
+            return [.init(options: [.editOption(action: onEdit)]),
+                    .init(options: [.trashOption(action: onTrash)])]
 
-        return ([customSection] + editAndTrashSections).compactMap { $0 }
+        case let .trashedItem(onRestore, onPermanentlyDeleted):
+            return [.init(options: [.init(title: "Restore",
+                                          icon: IconProvider.clockRotateLeft,
+                                          action: onRestore)]),
+                    .init(options: [.init(title: "Delete permanently",
+                                          icon: IconProvider.trash,
+                                          action: onPermanentlyDeleted,
+                                          isDestructive: true)])]
+        }
     }
 }
 
@@ -123,24 +129,52 @@ private extension View {
     }
 }
 
+private struct ItemContextMenuModifier: ViewModifier {
+    @Binding var isShowingDeleteConfirmation: Bool
+    let onDelete: () -> Void
+
+    func body(content: Content) -> some View {
+        content
+            .alert(
+                "Permanently delete?",
+                isPresented: $isShowingDeleteConfirmation,
+                actions: {
+                    Button(role: .destructive, action: onDelete, label: { Text("Delete") })
+                    Button(role: .cancel, label: { Text("Cancel") })
+                },
+                message: { Text("You are going to delete the item irreversibly, are you sure?") })
+    }
+}
+
 extension View {
     func itemContextMenu(item: ItemTypeIdentifiable,
+                         isTrashed: Bool,
+                         isShowingDeleteConfirmation: Binding<Bool>,
                          handler: ItemContextMenuHandler) -> some View {
-        itemContextMenu {
-            switch item.type {
-            case .login:
-                return .login(onCopyUsername: { handler.copyUsername(item) },
-                              onCopyPassword: { handler.copyPassword(item) },
-                              onEdit: { handler.edit(item) },
-                              onTrash: { handler.trash(item) })
-            case .alias:
-                return .alias(onCopyAlias: { handler.copyAlias(item) },
-                              onEdit: { handler.edit(item) },
-                              onTrash: { handler.trash(item) })
+        modifier(ItemContextMenuModifier(
+            isShowingDeleteConfirmation: isShowingDeleteConfirmation,
+            onDelete: { handler.deletePermanently(item) }))
+        .itemContextMenu {
+            if isTrashed {
+                return .trashedItem(
+                    onRestore: { handler.untrash(item) },
+                    onPermanentlyDeleted: { isShowingDeleteConfirmation.wrappedValue = true })
+            } else {
+                switch item.type {
+                case .login:
+                    return .login(onCopyUsername: { handler.copyUsername(item) },
+                                  onCopyPassword: { handler.copyPassword(item) },
+                                  onEdit: { handler.edit(item) },
+                                  onTrash: { handler.trash(item) })
+                case .alias:
+                    return .alias(onCopyAlias: { handler.copyAlias(item) },
+                                  onEdit: { handler.edit(item) },
+                                  onTrash: { handler.trash(item) })
 
-            case .note:
-                return .note(onEdit: { handler.edit(item) },
-                             onTrash: { handler.trash(item) })
+                case .note:
+                    return .note(onEdit: { handler.edit(item) },
+                                 onTrash: { handler.trash(item) })
+                }
             }
         }
     }

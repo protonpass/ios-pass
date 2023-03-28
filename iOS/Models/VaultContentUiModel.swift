@@ -25,3 +25,9 @@ struct VaultContentUiModel: Hashable {
     /// `Active` items only
     let items: [ItemUiModel]
 }
+
+extension Array where Element == VaultContentUiModel {
+    mutating func sortAlphabetically() {
+        sort(by: { $0.vault.name < $1.vault.name })
+    }
+}

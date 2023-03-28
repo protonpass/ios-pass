@@ -20,7 +20,7 @@
 
 import Foundation
 
-/// Proton Pass iOS app errors
+/// Proton Pass errors
 enum PPError: Error, CustomDebugStringConvertible {
     /// AutoFill extension
     case credentialProvider(CredentialProviderFailureReason)

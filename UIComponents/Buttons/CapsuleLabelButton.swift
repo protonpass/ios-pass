@@ -54,8 +54,7 @@ public struct CapsuleLabelButton: View {
                 Text(title)
             }
             .padding(.horizontal)
-            .foregroundColor(
-                Color(uiColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light))))
+            .foregroundColor(Color(uiColor: .textNorm))
             .frame(height: height)
             .frame(maxWidth: .infinity)
             .foregroundColor(disabled ? .textDisabled : .textNorm)
