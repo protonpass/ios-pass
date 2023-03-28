@@ -24,17 +24,13 @@ import ProtonCore_Services
 public let kDefaultPageSize = 100
 
 public protocol RemoteDatasourceProtocol: AnyObject {
-    var authCredential: AuthCredential { get }
     var apiService: APIService { get }
 }
 
 public class RemoteDatasource: RemoteDatasourceProtocol {
-    public let authCredential: AuthCredential
     public let apiService: APIService
 
-    public init(authCredential: AuthCredential,
-                apiService: APIService) {
-        self.authCredential = authCredential
+    public init(apiService: APIService) {
         self.apiService = apiService
     }
 }

@@ -28,12 +28,9 @@ public struct DeleteVaultEndpoint: Endpoint {
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
-    public var authCredential: AuthCredential?
 
-    public init(credential: AuthCredential,
-                shareId: String) {
+    public init(shareId: String) {
         self.debugDescription = "Delete vault"
-        self.authCredential = credential
         self.path = "/pass/v1/vault/\(shareId)"
         self.method = .delete
     }

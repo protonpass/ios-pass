@@ -43,7 +43,6 @@ public protocol Endpoint: Request {
 public extension Endpoint {
     var isAuth: Bool { true }
     var autoRetry: Bool { true }
-    var authCredential: AuthCredential? { nil }
     var method: HTTPMethod { .get }
     var body: Body? { nil }
     var nonDefaultTimeout: TimeInterval? { nil }

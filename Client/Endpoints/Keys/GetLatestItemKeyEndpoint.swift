@@ -30,15 +30,12 @@ public struct GetLatestItemKeyEndpoint: Endpoint {
     public typealias Response = GetLatestItemKeyResponse
 
     public var debugDescription: String
-    public var authCredential: AuthCredential?
     public var path: String
     public var method: HTTPMethod
 
-    public init(credential: AuthCredential,
-                shareId: String,
+    public init(shareId: String,
                 itemId: String) {
         self.debugDescription = "Get latest key for item"
-        self.authCredential = credential
         self.path = "/pass/v1/share/\(shareId)/item/\(itemId)/key/latest"
         self.method = .get
     }
