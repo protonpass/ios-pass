@@ -669,15 +669,17 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
 
     func itemContextMenuHandlerDidTrash(item: ItemIdentifiable) {
         homepageViewModel?.vaultsManager.refresh(trashedItem: item)
-        searchViewModel?.refreshResults(trashedItem: item)
+        Task { await searchViewModel?.refreshResults() }
     }
 
     func itemContextMenuHandlerDidUntrash(item: ItemIdentifiable) {
         homepageViewModel?.vaultsManager.refresh(untrashedItem: item)
+        Task { await searchViewModel?.refreshResults() }
     }
 
     func itemContextMenuHandlerDidPermanentlyDelete(item: ItemIdentifiable) {
         homepageViewModel?.vaultsManager.refresh(permanentlyDeletedItem: item)
+        Task { await searchViewModel?.refreshResults() }
     }
 }
 

@@ -70,7 +70,9 @@ struct NoteDetailView: View {
             ItemDetailToolbar(itemContent: viewModel.itemContent,
                               onGoBack: viewModel.goBack,
                               onEdit: viewModel.edit,
-                              onRevealMoreOptions: {})
+                              onMoveToTrash: viewModel.moveToTrash,
+                              onRestore: viewModel.restore,
+                              onPermanentlyDelete: viewModel.permanentlyDelete)
         }
     }
 }
