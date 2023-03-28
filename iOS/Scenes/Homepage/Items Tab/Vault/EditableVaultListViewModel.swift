@@ -64,6 +64,7 @@ private extension EditableVaultListViewModel {
             defer { delegate?.editableVaultListViewModelWantsToHideSpinner() }
             do {
                 delegate?.editableVaultListViewModelWantsToShowSpinner()
+                try await vaultsManager.delete(vault: vault)
                 delegate?.editableVaultListViewModelDidDelete(vault: vault)
             } catch {
                 logger.error(error)
