@@ -26,7 +26,7 @@ struct ItemUiModel: ItemTypeIdentifiable, Hashable {
     let shareId: String
     let type: ItemContentType
     let title: String
-    let description: String?
+    let description: String
     let lastUseTime: Int64
     let modifyTime: Int64
 }
@@ -50,21 +50,21 @@ extension SymmetricallyEncryptedItem {
         let encryptedItemContent = try getEncryptedItemContent()
         let name = try symmetricKey.decrypt(encryptedItemContent.name)
 
-        var note: String?
+        let note: String
         switch encryptedItemContent.contentData {
         case .login(let data):
             note = try symmetricKey.decrypt(data.username)
         case .alias:
-            note = item.aliasEmail
+            note = item.aliasEmail ?? ""
         default:
-            note = nil
+            note = try String(symmetricKey.decrypt(encryptedItemContent.note).prefix(50))
         }
 
         return .init(itemId: encryptedItemContent.item.itemID,
                      shareId: encryptedItemContent.shareId,
                      type: encryptedItemContent.contentData.type,
                      title: name,
-                     description: note?.isEmpty == true ? nil : note,
+                     description: note,
                      lastUseTime: item.lastUseTime ?? 0,
                      modifyTime: item.modifyTime)
     }
