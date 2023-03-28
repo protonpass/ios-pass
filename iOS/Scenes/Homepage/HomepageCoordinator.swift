@@ -444,7 +444,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
             }
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
@@ -597,6 +597,7 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
 
     func editableVaultListViewModelDidDelete(vault: Vault) {
         bannerManager.displayBottomInfoMessage("Vault \"\(vault.name)\" deleted")
+        homepageViewModel?.vaultsManager.refresh(deletedVault: vault)
     }
 
     func editableVaultListViewModelDidEncounter(error: Error) {

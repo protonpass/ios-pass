@@ -161,7 +161,7 @@ extension VaultsManager {
                 // 2: Get the full detail of `trashedItem` and append to `trashedItem` array
                 if let item = try await itemRepository.getItem(shareId: trashedItem.shareId,
                                                                itemId: trashedItem.itemId) {
-                    let uiModel = try item.toItemUiModel(itemRepository.symmetricKey)
+                    let uiModel = try item.toItemUiModel(symmetricKey)
                     trashedItems.append(uiModel)
                 }
 
@@ -183,7 +183,7 @@ extension VaultsManager {
                 if var updatedVault = vaults.first(where: { $0.vault.shareId == untrashedItem.shareId }) {
                     if let item = try await itemRepository.getItem(shareId: untrashedItem.shareId,
                                                                    itemId: untrashedItem.itemId) {
-                        let uiModel = try item.toItemUiModel(itemRepository.symmetricKey)
+                        let uiModel = try item.toItemUiModel(symmetricKey)
                         updatedVault = .init(vault: updatedVault.vault,
                                              items: updatedVault.items.appending(uiModel))
                     }
@@ -222,6 +222,22 @@ extension VaultsManager {
                 }
                 vaults.sortAlphabetically()
                 state = .loaded(vaults: vaults, trashedItems: trashedItems)
+            } catch {
+                state = .error(error)
+            }
+        }
+    }
+
+    func refresh(deletedVault: Vault) {
+        Task { @MainActor in
+            do {
+                guard case var .loaded(vaults, _) = state else { return }
+                vaults.removeAll(where: { $0.vault.shareId == deletedVault.shareId })
+
+                let trashedItems = try await itemRepository.getItems(state: .trashed)
+                let trashItemUiModels = try trashedItems.map { try $0.toItemUiModel(symmetricKey) }
+
+                state = .loaded(vaults: vaults, trashedItems: trashItemUiModels)
             } catch {
                 state = .error(error)
             }
@@ -269,20 +285,37 @@ extension VaultsManager {
         }
     }
 
+    func delete(vault: Vault) async throws {
+        logger.trace("Deleting vault \(vault.shareId)")
+
+        let trashedItems = try await itemRepository.getItems(shareId: vault.shareId, state: .trashed)
+        if !trashedItems.isEmpty {
+            try await itemRepository.deleteItems(trashedItems, skipTrash: false)
+            logger.trace("Deleted \(trashedItems.count) trashed items for vault \(vault.shareId)")
+        }
+
+        let activeItems = try await itemRepository.getItems(shareId: vault.shareId, state: .active)
+        if !activeItems.isEmpty {
+            try await itemRepository.deleteItems(activeItems, skipTrash: true)
+            logger.trace("Deleted \(activeItems.count) active items for vault \(vault.shareId)")
+        }
+
+        try await shareRepository.deleteVault(shareId: vault.shareId)
+        logger.info("Deleted vault \(vault.shareId)")
+    }
+
     func restoreAllTrashedItems() async throws {
-        let userId = shareRepository.userData.user.ID
-        logger.trace("Restoring all trashed items for user \(userId)")
+        logger.trace("Restoring all trashed items")
         let trashedItems = try await itemRepository.getItems(state: .trashed)
         try await itemRepository.untrashItems(trashedItems)
-        logger.info("Restored all trashed items for user \(userId)")
+        logger.info("Restored all trashed items")
     }
 
     func permanentlyDeleteAllTrashedItems() async throws {
-        let userId = shareRepository.userData.user.ID
-        logger.trace("Permanently deleting all trashed items for user \(userId)")
+        logger.trace("Permanently deleting all trashed items")
         let trashedItems = try await itemRepository.getItems(state: .trashed)
         try await itemRepository.deleteItems(trashedItems, skipTrash: false)
-        logger.info("Permanently deleted all trashed items for user \(userId)")
+        logger.info("Permanently deleted all trashed items")
     }
 }
 
