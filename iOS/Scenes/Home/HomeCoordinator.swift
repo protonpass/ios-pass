@@ -79,10 +79,6 @@ final class HomeCoordinator: DeinitPrintable {
     private lazy var settingsCoordinator = provideSettingsCoordinator()
     private var settingsRootViewController: UIViewController { settingsCoordinator.rootViewController }
 
-    // Trash
-    private lazy var trashCoordinator = provideTrashCoordinator()
-    private var trashRootViewController: UIViewController { trashCoordinator.rootViewController }
-
     private let eventLoop: SyncEventLoop
 
     private var cancellables = Set<AnyCancellable>()
@@ -232,7 +228,6 @@ private extension HomeCoordinator {
                                                       preferences: preferences,
                                                       manualLogIn: manualLogIn,
                                                       logManager: logManager)
-        myVaultsCoordinator.delegate = self.trashCoordinator
         myVaultsCoordinator.urlOpener = self.urlOpener
         myVaultsCoordinator.clipboardManager = self.clipboardManager
         return myVaultsCoordinator
@@ -246,20 +241,6 @@ private extension HomeCoordinator {
                                                       logManager: logManager)
         settingsCoordinator.delegate = self
         return settingsCoordinator
-    }
-
-    func provideTrashCoordinator() -> TrashCoordinator {
-        let trashCoordinator = TrashCoordinator(symmetricKey: symmetricKey,
-                                                shareRepository: shareRepository,
-                                                itemRepository: itemRepository,
-                                                aliasRepository: aliasRepository,
-                                                syncEventLoop: eventLoop,
-                                                preferences: preferences,
-                                                logManager: logManager)
-        trashCoordinator.delegate = self
-        trashCoordinator.urlOpener = urlOpener
-        trashCoordinator.clipboardManager = self.clipboardManager
-        return trashCoordinator
     }
 
     func alert(error: Error) {
@@ -362,7 +343,6 @@ extension HomeCoordinator: SyncEventLoopDelegate {
         if hasNewEvents {
             logger.info("Has new events. Refreshing items")
             myVaultsCoordinator.refreshItems()
-            trashCoordinator.refreshTrashedItems()
         } else {
             logger.info("Has no new events. Do nothing.")
         }
@@ -403,13 +383,6 @@ private extension HomeCoordinator {
     }
 }
 
-// MARK: - TrashCoordinatorDelegate
-extension HomeCoordinator: TrashCoordinatorDelegate {
-    func trashCoordinatorDidRestoreItems() {
-        myVaultsCoordinator.refreshItems()
-    }
-}
-
 // MARK: - SettingsCoordinatorDelegate
 extension HomeCoordinator: SettingsCoordinatorDelegate {
     func settingsCoordinatorWantsToDeleteAccount() {
@@ -418,7 +391,6 @@ extension HomeCoordinator: SettingsCoordinatorDelegate {
 
     func settingsCoordinatorDidFinishFullSync() {
         myVaultsCoordinator.refreshItems()
-        trashCoordinator.refreshTrashedItems()
         bannerManager.displayBottomInfoMessage("Fully synchronized")
     }
 }
@@ -443,7 +415,6 @@ extension HomeCoordinator: DevPreviewsViewModelDelegate {
 
     func devPreviewsViewModelDidTrashAllItems(count: Int) {
         myVaultsCoordinator.refreshItems()
-        trashCoordinator.refreshTrashedItems()
         bannerManager.displayBottomInfoMessage("\(count) item(s) sent to trash")
     }
 

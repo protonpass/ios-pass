@@ -36,6 +36,14 @@ final class BannerManager {
         display(message: message, at: .bottom, style: .success)
     }
 
+    func displayBottomInfoMessage(_ message: String,
+                                  dismissButtonTitle: String,
+                                  onDismiss: @escaping ((PMBanner) -> Void)) {
+        let banner = PMBanner(message: message, style: PMBannerNewStyle.info)
+        banner.addButton(text: dismissButtonTitle, handler: onDismiss)
+        banner.show(at: .bottom, on: container.topMostViewController)
+    }
+
     func displayBottomInfoMessage(_ message: String) {
         display(message: message, at: .bottom, style: .info)
     }

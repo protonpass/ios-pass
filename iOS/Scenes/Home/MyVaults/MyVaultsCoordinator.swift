@@ -412,6 +412,16 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
 
 // MARK: - ItemDetailViewModelDelegate
 extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
+    func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {}
+
+    func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {}
+
+    func itemDetailViewModelWantsToShowSpinner() {}
+
+    func itemDetailViewModelWantsToHideSpinner() {}
+
+    func itemDetailViewModelDidRestore(item: Client.ItemTypeIdentifiable) {}
+
     func itemDetailViewModelWantsToGoBack() {
         // Dismiss differently because show differently
         // (push on iPad, sheets on iPhone)
@@ -424,10 +434,6 @@ extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
         showEditItemView(itemContent)
-    }
-
-    func itemDetailViewModelWantsToRestore(_ item: ItemUiModel) {
-        print("\(#function) not applicable")
     }
 
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String) {
