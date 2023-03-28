@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import CryptoKit
 import UIKit
 
 let kItemDetailSectionPadding: CGFloat = 16
@@ -34,6 +35,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToOpen(urlString: String)
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable)
+    func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidFail(_ error: Error)
 }
 
@@ -43,6 +45,8 @@ class BaseItemDetailViewModel {
     let logger: Logger
 
     weak var delegate: ItemDetailViewModelDelegate?
+
+    private var symmetricKey: SymmetricKey { itemRepository.symmetricKey }
 
     init(itemContent: ItemContent,
          itemRepository: ItemRepositoryProtocol,
@@ -100,17 +104,11 @@ class BaseItemDetailViewModel {
             do {
                 logger.trace("Trashing \(itemContent.debugInformation)")
                 delegate?.itemDetailViewModelWantsToShowSpinner()
-                if let encryptedItem =
-                    try await itemRepository.getItemTask(shareId: itemContent.shareId,
-                                                         itemId: itemContent.item.itemID).value {
-                    let symmetricKey = itemRepository.symmetricKey
-                    let item = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-                    try await itemRepository.trashItems([encryptedItem])
-                    delegate?.itemDetailViewModelDidMoveToTrash(item: item)
-                    logger.info("Trashed \(item.debugInformation)")
-                } else {
-                    throw PPError.itemNotFound(shareID: itemContent.shareId, itemID: itemContent.itemId)
-                }
+                let encryptedItem = try await getItemTask(item: itemContent).value
+                let item = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                try await itemRepository.trashItems([encryptedItem])
+                delegate?.itemDetailViewModelDidMoveToTrash(item: item)
+                logger.info("Trashed \(item.debugInformation)")
             } catch {
                 logger.error(error)
                 delegate?.itemDetailViewModelDidFail(error)
@@ -124,17 +122,12 @@ class BaseItemDetailViewModel {
             do {
                 logger.trace("Restoring \(itemContent.debugInformation)")
                 delegate?.itemDetailViewModelWantsToShowSpinner()
-                if let encryptedItem =
-                    try await itemRepository.getItemTask(shareId: itemContent.shareId,
-                                                         itemId: itemContent.item.itemID).value {
-                    let symmetricKey = itemRepository.symmetricKey
-                    let item = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-                    try await itemRepository.untrashItems([encryptedItem])
-                    delegate?.itemDetailViewModelDidRestore(item: item)
-                    logger.info("Restored \(item.debugInformation)")
-                } else {
-                    throw PPError.itemNotFound(shareID: itemContent.shareId, itemID: itemContent.itemId)
-                }
+                let encryptedItem = try await getItemTask(item: itemContent).value
+                let symmetricKey = itemRepository.symmetricKey
+                let item = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                try await itemRepository.untrashItems([encryptedItem])
+                delegate?.itemDetailViewModelDidRestore(item: item)
+                logger.info("Restored \(item.debugInformation)")
             } catch {
                 logger.error(error)
                 delegate?.itemDetailViewModelDidFail(error)
@@ -142,5 +135,34 @@ class BaseItemDetailViewModel {
         }
     }
 
-    func permanentlyDelete() {}
+    func permanentlyDelete() {
+        Task { @MainActor in
+            defer { delegate?.itemDetailViewModelWantsToHideSpinner() }
+            do {
+                logger.trace("Permanently deleting \(itemContent.debugInformation)")
+                delegate?.itemDetailViewModelWantsToShowSpinner()
+                let encryptedItem = try await getItemTask(item: itemContent).value
+                let symmetricKey = itemRepository.symmetricKey
+                let item = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                try await itemRepository.deleteItems([encryptedItem], skipTrash: false)
+                delegate?.itemDetailViewModelDidPermanentlyDelete(item: item)
+                logger.info("Permanently deleted \(item.debugInformation)")
+            } catch {
+                logger.error(error)
+                delegate?.itemDetailViewModelDidFail(error)
+            }
+        }
+    }
+}
+
+private extension BaseItemDetailViewModel {
+    func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
+        Task.detached(priority: .userInitiated) {
+            guard let item = try await self.itemRepository.getItem(shareId: item.shareId,
+                                                                   itemId: item.itemId) else {
+                throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+            }
+            return item
+        }
+    }
 }

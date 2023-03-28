@@ -412,7 +412,9 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
 
 // MARK: - ItemDetailViewModelDelegate
 extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
-    func itemDetailViewModelDidMoveToTrash(item: Client.ItemTypeIdentifiable) {}
+    func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {}
+
+    func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {}
 
     func itemDetailViewModelWantsToShowSpinner() {}
 

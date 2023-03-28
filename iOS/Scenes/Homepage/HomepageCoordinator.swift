@@ -668,6 +668,14 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         }
     }
 
+    func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
+        homepageViewModel?.vaultsManager.refresh(permanentlyDeletedItem: item)
+        Task { await searchViewModel?.refreshResults() }
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
+        }
+    }
+
     func itemDetailViewModelDidFail(_ error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }

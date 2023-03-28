@@ -428,16 +428,6 @@ private extension ItemRepositoryProtocol {
     }
 }
 
-// MARK: - Public supporting tasks
-public extension ItemRepositoryProtocol {
-    func getItemTask(shareId: String, itemId: String) async throws
-    -> Task<SymmetricallyEncryptedItem?, Error> {
-        Task.detached(priority: .userInitiated) {
-            try await getItem(shareId: shareId, itemId: itemId)
-        }
-    }
-}
-
 public final class ItemRepository: ItemRepositoryProtocol {
     public let userData: UserData
     public let symmetricKey: SymmetricKey
