@@ -58,11 +58,6 @@ struct VaultContentView: View {
                 .padding()
             }
         }
-        .moveToTrashAlert(isPresented: $isShowingTrashingAlert) {
-            if let selectedItem {
-                viewModel.trashItem(selectedItem)
-            }
-        }
         .toolbar { toolbarContent }
         .onAppear {
             if !didAppear {
@@ -119,10 +114,6 @@ struct VaultContentView: View {
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            ToggleSidebarButton(action: viewModel.toggleSidebar)
-        }
-
         ToolbarItem(placement: .navigationBarTrailing) {
             HStack {
                 Button(action: viewModel.search) {

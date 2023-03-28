@@ -37,11 +37,6 @@ struct SettingsView: View {
             DeleteAccountSection(onDelete: viewModel.deleteAccount)
         }
         .navigationTitle("Settings")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                ToggleSidebarButton(action: viewModel.toggleSidebar)
-            }
-        }
     }
 }
 
