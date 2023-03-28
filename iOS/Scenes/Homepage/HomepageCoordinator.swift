@@ -611,6 +611,14 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
 
 // MARK: - ItemDetailViewModelDelegate
 extension HomepageCoordinator: ItemDetailViewModelDelegate {
+    func itemDetailViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func itemDetailViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
     func itemDetailViewModelWantsToGoBack() {
         // Dismiss differently because show differently
         // (push on iPad, sheets on iPhone)
@@ -625,10 +633,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         presentEditItemView(for: itemContent)
     }
 
-    func itemDetailViewModelWantsToRestore(_ item: ItemUiModel) {
-        print(#function)
-    }
-
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String) {
         clipboardManager.copy(text: text, bannerMessage: bannerMessage)
     }
@@ -639,6 +643,14 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelWantsToOpen(urlString: String) {
         UrlOpener(preferences: preferences).open(urlString: urlString)
+    }
+
+    func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
+        homepageViewModel?.vaultsManager.refresh(untrashedItem: item)
+        Task { await searchViewModel?.refreshResults() }
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
+        }
     }
 
     func itemDetailViewModelDidFail(_ error: Error) {

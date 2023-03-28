@@ -412,6 +412,12 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
 
 // MARK: - ItemDetailViewModelDelegate
 extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
+    func itemDetailViewModelWantsToShowSpinner() {}
+
+    func itemDetailViewModelWantsToHideSpinner() {}
+
+    func itemDetailViewModelDidRestore(item: Client.ItemTypeIdentifiable) {}
+
     func itemDetailViewModelWantsToGoBack() {
         // Dismiss differently because show differently
         // (push on iPad, sheets on iPhone)
