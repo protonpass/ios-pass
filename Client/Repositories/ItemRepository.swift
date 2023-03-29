@@ -145,12 +145,25 @@ public extension ItemRepositoryProtocol {
 
     func refreshItems() async throws {
         logger.trace("Refreshing items for user \(userId)")
-        try await shareRepository.deleteAllShares()
-        let remoteShares = try await shareRepository.getRemoteShares()
-        for share in remoteShares {
-            try await shareRepository.upsertShares([share])
-            try await refreshItems(shareId: share.shareID)
+
+        // Delete all local shares and items
+        let localShares = try await shareRepository.getShares()
+        for share in localShares {
+            try await localItemDatasoure.removeAllItems(shareId: share.shareID)
         }
+        try await shareRepository.deleteAllShares()
+
+        // Fetch remote shares and items
+        let remoteShares = try await shareRepository.getRemoteShares()
+        await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for share in remoteShares {
+                taskGroup.addTask {
+                    try await shareRepository.upsertShares([share])
+                    try await refreshItems(shareId: share.shareID)
+                }
+            }
+        }
+
         logger.trace("Refreshed items for user \(userId)")
     }
 
