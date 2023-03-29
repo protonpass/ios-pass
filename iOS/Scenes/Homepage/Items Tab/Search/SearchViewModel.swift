@@ -210,10 +210,11 @@ private extension SearchViewModel {
 
 // MARK: - Public APIs
 extension SearchViewModel {
-    @MainActor
-    func refreshResults() async {
-        await indexItems()
-        doSearch(query: lastSearchQuery)
+    func refreshResults() {
+        Task { @MainActor in
+            await indexItems()
+            doSearch(query: lastSearchQuery)
+        }
     }
 
     func search(_ term: String) {

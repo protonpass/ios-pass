@@ -237,6 +237,9 @@ extension VaultsManager {
                 let trashedItems = try await itemRepository.getItems(state: .trashed)
                 let trashItemUiModels = try trashedItems.map { try $0.toItemUiModel(symmetricKey) }
 
+                if case .precise(let selectedVault) = vaultSelection, selectedVault == deletedVault {
+                    vaultSelection = .all
+                }
                 state = .loaded(vaults: vaults, trashedItems: trashItemUiModels)
             } catch {
                 state = .error(error)
@@ -252,14 +255,14 @@ extension VaultsManager {
                 guard case .loaded(var vaults, let trashedItems) = state else { return }
 
                 // Step 1
-                if var oldVault = vaults.first(where: { $0.vault.shareId == oldItem.shareId }),
+                if let oldVault = vaults.first(where: { $0.vault.shareId == oldItem.shareId }),
                    let index = vaults.firstIndex(of: oldVault) {
                     vaults[index] = .init(vault: oldVault.vault,
                                           items: oldVault.items.removing(item: oldItem))
                 }
 
                 // Step 2
-                if var newVault = vaults.first(where: { $0.vault.shareId == newItem.shareId }),
+                if let newVault = vaults.first(where: { $0.vault.shareId == newItem.shareId }),
                    let index = vaults.firstIndex(of: newVault),
                    let item = try await itemRepository.getItem(shareId: newItem.shareId,
                                                                itemId: newItem.itemId) {
