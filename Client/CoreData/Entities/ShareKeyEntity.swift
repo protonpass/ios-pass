@@ -56,7 +56,7 @@ extension ShareKeyEntity {
 extension ShareKeyEntity {
     class func allKeysFetchRequest(shareId: String) -> NSFetchRequest<ShareKeyEntity> {
         let fetchRequest = fetchRequest()
-        fetchRequest.predicate = .init(format: "shareID = %s", shareId)
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         return fetchRequest
     }
 }
