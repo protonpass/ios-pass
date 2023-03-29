@@ -99,6 +99,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
         $selectedType
             .receive(on: DispatchQueue.main)
+            .dropFirst()
             .sink { [unowned self] _ in
                 self.filterResults()
             }
@@ -106,6 +107,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
         $selectedSortType
             .receive(on: DispatchQueue.main)
+            .dropFirst()
             .sink { [unowned self] _ in
                 self.filterResults()
             }
