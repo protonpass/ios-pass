@@ -1,6 +1,6 @@
 //
-// Coordinator+ShowHideSpinner.swift
-// Proton Pass - Created on 07/03/2023.
+// VaultListUiModel.swift
+// Proton Pass - Created on 29/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,17 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import MBProgressHUD
+import Client
 
-extension Coordinator {
-    func showLoadingHud() {
-        guard let view = topMostViewController.view else { return }
-        MBProgressHUD.showAdded(to: view, animated: true)
-    }
+struct VaultListUiModel: Hashable {
+    let vault: Vault
+    let itemCount: Int
+}
 
-    func hideLoadingHud() {
-        guard let view = topMostViewController.view else { return }
-        MBProgressHUD.hide(for: view, animated: true)
+extension VaultListUiModel: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.vault.shareId == rhs.vault.shareId
     }
 }

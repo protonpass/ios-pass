@@ -27,6 +27,7 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
     case corruptedEncryptedContent
     case corruptedUserData(UserDataCorruptionReason)
     case crypto(CryptoFailureReason)
+    case itemNotFound(item: ItemIdentifiable)
     case keysNotFound(shareID: String)
     case networkOperationsOnMainThread
     case shareNotFoundInLocalDB(shareID: String)
@@ -44,6 +45,8 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
             return reason.debugDescription
         case .crypto(let reason):
             return reason.debugDescription
+        case .itemNotFound(let item):
+            return "Item not found ID \"\(item.itemId)\", share ID \"\(item.shareId)\""
         case .keysNotFound(let shareID):
             return "Keys not found for share \"\(shareID)\""
         case .networkOperationsOnMainThread:

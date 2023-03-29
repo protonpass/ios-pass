@@ -646,6 +646,35 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         UrlOpener(preferences: preferences).open(urlString: urlString)
     }
 
+    func itemDetailViewModelDidMove(oldItem: ItemIdentifiable, newItem: ItemIdentifiable, newVault: Vault) {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(newVault.name)\"")
+        }
+        homepageViewModel?.vaultsManager.refreshAfterMovingItem(oldItem: oldItem, newItem: newItem)
+        Task { await searchViewModel?.refreshResults() }
+    }
+
+    func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate) {
+        guard let allVaults = homepageViewModel?.vaultsManager.getAllVaultContents(),
+              !allVaults.isEmpty,
+              let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else { return }
+        let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
+                                               currentVault: .init(vaultContent: currentVault))
+        viewModel.delegate = delegate
+        let view = MoveVaultListView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = CGFloat(66 * allVaults.count + 44)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
         homepageViewModel?.vaultsManager.refresh(trashedItem: item)
         Task { await searchViewModel?.refreshResults() }
