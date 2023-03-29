@@ -50,7 +50,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let itemRepository: ItemRepositoryProtocol
-    private let manualLogIn: Bool
+    private var manualLogIn: Bool
     private let logger: Logger
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
@@ -76,11 +76,14 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
 // MARK: - Private APIs
 private extension VaultsManager {
     func createDefaultVault() async throws {
+        let userId = shareRepository.userData.user.ID
+        logger.trace("Creating default vault for user \(userId)")
         let vault = VaultProtobuf(name: "Personal",
                                   description: "Personal vault",
                                   color: .color1,
                                   icon: .icon1)
         try await shareRepository.createVault(vault)
+        logger.trace("Created default vault for user \(userId)")
     }
 
     @MainActor
@@ -123,15 +126,13 @@ extension VaultsManager {
                     try await itemRepository.refreshItems()
                     let vaults = try await shareRepository.getVaults()
                     if vaults.isEmpty {
-                        let userId = shareRepository.userData.user.ID
-                        logger.trace("Creating default vault for user \(userId)")
                         try await createDefaultVault()
-                        logger.trace("Created default vault for user \(userId)")
                         let vaults = try await shareRepository.getVaults()
                         try await loadContents(for: vaults)
                     } else {
                         try await loadContents(for: vaults)
                     }
+                    manualLogIn = false
                 } else {
                     let vaults = try await shareRepository.getVaults()
                     try await loadContents(for: vaults)
