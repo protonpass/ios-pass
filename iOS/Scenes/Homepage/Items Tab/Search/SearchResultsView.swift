@@ -146,6 +146,10 @@ struct SearchResultsView: View {
             onSelectItem(item)
         }, label: {
             ItemSearchResultView(result: item)
+                .itemContextMenu(item: item,
+                                 isTrashed: isTrash,
+                                 onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
+                                 handler: itemContextMenuHandler)
         })
         .listRowSeparator(.hidden)
         .listRowInsets(.zero)
@@ -157,10 +161,6 @@ struct SearchResultsView: View {
             item: item,
             isTrashed: isTrash,
             itemContextMenuHandler: itemContextMenuHandler))
-        .itemContextMenu(item: item,
-                         isTrashed: isTrash,
-                         onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
-                         handler: itemContextMenuHandler)
         .modifier(PermenentlyDeleteItemModifier(
             isShowingAlert: permanentlyDeleteBinding,
             onDelete: {

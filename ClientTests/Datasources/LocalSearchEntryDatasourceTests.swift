@@ -40,18 +40,47 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
         super.tearDown()
     }
 
-    func testGetAllEntries() async throws {
+    func testGetAllEntriesOfAllVaults() async throws {
         // Given
         let givenEntry1 = try await sut.givenInsertedEntry()
         let givenEntry2 = try await sut.givenInsertedEntry()
         let givenEntry3 = try await sut.givenInsertedEntry()
 
         // When
-        let entries = try await sut.getAllEntries()
+        let entries = try await sut.getAllEntries(shareId: nil)
 
         // Then
         XCTAssertEqual(entries.count, 3)
         XCTAssertEqual(Set([givenEntry1, givenEntry2, givenEntry3]), Set(entries))
+    }
+
+    func testGetAllEntriesOfGivenVault() async throws {
+        // Given
+        let givenShareId1 = String.random()
+        let givenEntry1 = try await sut.givenInsertedEntry(shareID: givenShareId1)
+        let givenEntry2 = try await sut.givenInsertedEntry(shareID: givenShareId1)
+        let givenEntry3 = try await sut.givenInsertedEntry(shareID: givenShareId1)
+
+        let givenShareId2 = String.random()
+        let givenEntry4 = try await sut.givenInsertedEntry(shareID: givenShareId2)
+        let givenEntry5 = try await sut.givenInsertedEntry(shareID: givenShareId2)
+        let givenEntry6 = try await sut.givenInsertedEntry(shareID: givenShareId2)
+
+        // When
+        let allEntries = try await sut.getAllEntries(shareId: nil)
+        let entriesOfShare1 = try await sut.getAllEntries(shareId: givenShareId1)
+        let entriesOfShare2 = try await sut.getAllEntries(shareId: givenShareId2)
+
+        // Then
+        XCTAssertEqual(allEntries.count, 6)
+        XCTAssertEqual(Set([givenEntry1, givenEntry2, givenEntry3, givenEntry4, givenEntry5, givenEntry6]),
+                       Set(allEntries))
+
+        XCTAssertEqual(entriesOfShare1.count, 3)
+        XCTAssertEqual(Set([givenEntry1, givenEntry2, givenEntry3]), Set(entriesOfShare1))
+
+        XCTAssertEqual(entriesOfShare2.count, 3)
+        XCTAssertEqual(Set([givenEntry4, givenEntry5, givenEntry6]), Set(entriesOfShare2))
     }
 
     func testUpsertEntry() async throws {
@@ -61,7 +90,7 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
 
         // When
         try await sut.upsert(item: givenEntry, date: newDate)
-        let entries = try await sut.getAllEntries()
+        let entries = try await sut.getAllEntries(shareId: nil)
 
         // Then
         XCTAssertEqual(entries.count, 1)
@@ -77,14 +106,14 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
         try await sut.givenInsertedEntry()
 
         // When
-        let firstEntries = try await sut.getAllEntries()
+        let firstEntries = try await sut.getAllEntries(shareId: nil)
 
         // Then
         XCTAssertEqual(firstEntries.count, 3)
 
         // When
         try await sut.removeAllEntries()
-        let secondGetEntries = try await sut.getAllEntries()
+        let secondGetEntries = try await sut.getAllEntries(shareId: nil)
 
         // Then
         XCTAssertTrue(secondGetEntries.isEmpty)
@@ -98,7 +127,7 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
 
         // When
         try await sut.remove(item: givenEntry2)
-        let entries = try await sut.getAllEntries()
+        let entries = try await sut.getAllEntries(shareId: nil)
 
         // Then
         XCTAssertEqual(Set([givenEntry1, givenEntry3]), Set(entries))

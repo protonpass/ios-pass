@@ -64,7 +64,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private var lastSearchQuery = ""
     private let searchQuerySubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
-    private var allActiveItems = [SymmetricallyEncryptedItem]()
+    private var allItems = [SymmetricallyEncryptedItem]()
     private var searchableItems = [SearchableItem]()
     private var history = [SearchEntryUiModel]()
     private var results = [ItemSearchResult]()
@@ -123,20 +123,16 @@ private extension SearchViewModel {
                 state = .initializing
             }
 
-            allActiveItems = try await itemRepository.getItems(state: .active)
-            try await refreshSearchHistory()
-
-            let filteredItems: [SymmetricallyEncryptedItem]
             switch vaultSelection {
             case .all:
-                filteredItems = allActiveItems
+                allItems = try await itemRepository.getItems(state: .active)
             case .precise(let vault):
-                filteredItems = allActiveItems.filter { $0.shareId == vault.shareId }
+                allItems = try await itemRepository.getItems(shareId: vault.shareId, state: .active)
             case .trash:
-                filteredItems = try await itemRepository.getItems(state: .trashed)
+                allItems = try await itemRepository.getItems(state: .trashed)
             }
-            searchableItems = try filteredItems.map { try SearchableItem(from: $0,
-                                                                         symmetricKey: symmetricKey) }
+            searchableItems = try allItems.map { try SearchableItem(from: $0, symmetricKey: symmetricKey) }
+            try await refreshSearchHistory()
         } catch {
             state = .error(error)
         }
@@ -144,10 +140,15 @@ private extension SearchViewModel {
 
     @MainActor
     func refreshSearchHistory() async throws {
-        let searchEntries = try await searchEntryDatasource.getAllEntries()
+        var shareId: String?
+        if case .precise(let vault) = vaultSelection {
+            shareId = vault.shareId
+        }
+
+        let searchEntries = try await searchEntryDatasource.getAllEntries(shareId: shareId)
         let symmetricKey = itemRepository.symmetricKey
         history = try searchEntries.compactMap { entry in
-            if let item = allActiveItems.first(where: {
+            if let item = allItems.first(where: {
                 $0.shareId == entry.shareID && $0.itemId == entry.itemID }) {
                 return try item.toSearchEntryUiModel(symmetricKey)
             } else {
