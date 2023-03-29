@@ -373,7 +373,7 @@ private extension HomepageCoordinator {
 
     func refreshHomepageAndSearchPage() {
         vaultsManager.refresh()
-        Task { await searchViewModel?.refreshResults() }
+        searchViewModel?.refreshResults()
     }
 }
 
@@ -502,7 +502,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
             message = "Note udpated"
         }
         vaultsManager.refresh()
-        Task { await searchViewModel?.refreshResults() }
+        searchViewModel?.refreshResults()
         currentItemDetailViewModel?.refresh()
         dismissTopMostViewController { [unowned self] in
             self.bannerManager.displayBottomInfoMessage(message)
@@ -658,7 +658,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
             self.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(newVault.name)\"")
         }
         vaultsManager.refreshAfterMovingItem(oldItem: oldItem, newItem: newItem)
-        Task { await searchViewModel?.refreshResults() }
+        searchViewModel?.refreshResults()
     }
 
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate) {
@@ -684,7 +684,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
         vaultsManager.refresh(trashedItem: item)
-        Task { await searchViewModel?.refreshResults() }
+        searchViewModel?.refreshResults()
         dismissTopMostViewController(animated: true) { [unowned self] in
             let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
                 banner.dismiss()
@@ -698,7 +698,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
         vaultsManager.refresh(untrashedItem: item)
-        Task { await searchViewModel?.refreshResults() }
+        searchViewModel?.refreshResults()
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
         }
@@ -706,7 +706,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
         vaultsManager.refresh(permanentlyDeletedItem: item)
-        Task { await searchViewModel?.refreshResults() }
+        searchViewModel?.refreshResults()
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
         }
@@ -740,17 +740,17 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
 
     func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable) {
         vaultsManager.refresh(trashedItem: item)
-        Task { await searchViewModel?.refreshResults() }
+        searchViewModel?.refreshResults()
     }
 
     func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable) {
         vaultsManager.refresh(untrashedItem: item)
-        Task { await searchViewModel?.refreshResults() }
+        searchViewModel?.refreshResults()
     }
 
     func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable) {
         vaultsManager.refresh(permanentlyDeletedItem: item)
-        Task { await searchViewModel?.refreshResults() }
+        searchViewModel?.refreshResults()
     }
 }
 
