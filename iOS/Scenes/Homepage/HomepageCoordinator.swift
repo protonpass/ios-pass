@@ -646,6 +646,14 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         UrlOpener(preferences: preferences).open(urlString: urlString)
     }
 
+    func itemDetailViewModelDidMove(oldItem: ItemIdentifiable, newItem: ItemIdentifiable, newVault: Vault) {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(newVault.name)\"")
+        }
+        homepageViewModel?.vaultsManager.refreshAfterMovingItem(oldItem: oldItem, newItem: newItem)
+        Task { await searchViewModel?.refreshResults() }
+    }
+
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate) {
         guard let allVaults = homepageViewModel?.vaultsManager.getAllVaultContents(),
               !allVaults.isEmpty,

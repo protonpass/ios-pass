@@ -244,6 +244,38 @@ extension VaultsManager {
         }
     }
 
+    /// Refresh by 1) removing the `oldItem` from the containing vault
+    /// And 2) add `newItem` to the containing vault
+    func refreshAfterMovingItem(oldItem: ItemIdentifiable, newItem: ItemIdentifiable) {
+        Task { @MainActor in
+            do {
+                guard case .loaded(var vaults, let trashedItems) = state else { return }
+
+                // Step 1
+                if var oldVault = vaults.first(where: { $0.vault.shareId == oldItem.shareId }),
+                   let index = vaults.firstIndex(of: oldVault) {
+                    vaults[index] = .init(vault: oldVault.vault,
+                                          items: oldVault.items.removing(item: oldItem))
+                }
+
+                // Step 2
+                if var newVault = vaults.first(where: { $0.vault.shareId == newItem.shareId }),
+                   let index = vaults.firstIndex(of: newVault),
+                   let item = try await itemRepository.getItem(shareId: newItem.shareId,
+                                                               itemId: newItem.itemId) {
+                    let uiModel = try item.toItemUiModel(symmetricKey)
+                    vaults[index] = .init(vault: newVault.vault,
+                                          items: newVault.items.appending(uiModel))
+                }
+
+                vaults.sortAlphabetically()
+                state = .loaded(vaults: vaults, trashedItems: trashedItems)
+            } catch {
+                state = .error(error)
+            }
+        }
+    }
+
     func select(_ selection: VaultSelection) {
         vaultSelection = selection
     }
