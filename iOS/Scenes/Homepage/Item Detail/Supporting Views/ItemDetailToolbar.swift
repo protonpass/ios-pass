@@ -28,6 +28,7 @@ struct ItemDetailToolbar: ToolbarContent {
     let itemContent: ItemContent
     let onGoBack: () -> Void
     let onEdit: () -> Void
+    let onMoveToAnotherVault: () -> Void
     let onMoveToTrash: () -> Void
     let onRestore: () -> Void
     let onPermanentlyDelete: () -> Void
@@ -52,6 +53,12 @@ struct ItemDetailToolbar: ToolbarContent {
                                        action: onEdit)
 
                     Menu(content: {
+                        Button(action: onMoveToAnotherVault,
+                               label: { Label(title: { Text("Move to another vault") },
+                                              icon: { Image(uiImage: IconProvider.folderArrowIn) }) })
+
+                        Divider()
+
                         Button(role: .destructive,
                                action: onMoveToTrash,
                                label: { Label(title: { Text("Move to trash") },
