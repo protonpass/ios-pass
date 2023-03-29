@@ -97,20 +97,29 @@ public extension ShareRepositoryProtocol {
 
     func getVaults() async throws -> [Vault] {
         logger.trace("Getting local vaults for user \(userId)")
-        let shares = try await getShares()
 
-        var vaults: [Vault] = []
-        for share in shares where share.shareType == .vault {
-            let key = try await self.passKeyManager.getShareKey(
-                shareId: share.shareID,
-                keyRotation: share.contentKeyRotation ?? -1)
-            let shareContent = try share.getShareContent(key: key.value)
-            switch shareContent {
-            case .vault(let vault):
-                vaults.append(vault)
-            default:
-                break
+        let vaults = try await withThrowingTaskGroup(of: Vault?.self,
+                                                     returning: [Vault].self) { taskGroup in
+            let shares = try await getShares()
+            for share in shares where share.shareType == .vault {
+                taskGroup.addTask {
+                    let key = try await self.passKeyManager.getShareKey(
+                        shareId: share.shareID,
+                        keyRotation: share.contentKeyRotation ?? -1)
+                    let shareContent = try share.getShareContent(key: key.value)
+                    if case .vault(let vault) = shareContent {
+                        return vault
+                    } else {
+                        return nil
+                    }
+                }
             }
+
+            return try await taskGroup.reduce(into: [Vault](), { partialResult, vault in
+                if let vault {
+                    partialResult.append(vault)
+                }
+            })
         }
         logger.trace("Got \(vaults.count) local vaults for user \(userId)")
         return vaults
