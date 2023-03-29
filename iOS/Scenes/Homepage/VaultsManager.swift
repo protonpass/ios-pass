@@ -276,6 +276,11 @@ extension VaultsManager {
         }
     }
 
+    func getAllVaultContents() -> [VaultContentUiModel] {
+        guard case let .loaded(vaults, _) = state else { return [] }
+        return vaults
+    }
+
     func getVaultCount() -> Int {
         switch state {
         case let .loaded(vaults, _):

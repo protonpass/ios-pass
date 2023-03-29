@@ -186,44 +186,6 @@ struct EditableVaultListView: View {
     }
 }
 
-private struct VaultRow<Thumbnail: View>: View {
-    let thumbnail: () -> Thumbnail
-    let title: String
-    let itemCount: Int
-    let isSelected: Bool
-
-    var body: some View {
-        HStack(spacing: 16) {
-            thumbnail()
-
-            VStack(alignment: .leading) {
-                Text(title)
-
-                if itemCount == 0 {
-                    Text("Empty")
-                        .font(.callout.italic())
-                        .foregroundColor(Color.textWeak)
-                } else {
-                    Text("\(itemCount) items")
-                        .font(.callout)
-                        .foregroundColor(Color.textWeak)
-                }
-            }
-
-            Spacer()
-
-            if isSelected {
-                Label("", systemImage: "checkmark")
-                    .foregroundColor(.passBrand)
-                    .padding(.trailing)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: 70)
-        .contentShape(Rectangle())
-    }
-}
-
 extension VaultSelection {
     var title: String {
         switch self {

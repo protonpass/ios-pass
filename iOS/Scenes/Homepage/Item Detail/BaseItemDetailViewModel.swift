@@ -33,6 +33,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
     func itemDetailViewModelWantsToOpen(urlString: String)
+    func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate)
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable)
@@ -98,6 +99,10 @@ class BaseItemDetailViewModel {
         copyToClipboard(text: text, message: "Note copied")
     }
 
+    func moveToAnotherVault() {
+        delegate?.itemDetailViewModelWantsToMove(item: itemContent, delegate: self)
+    }
+
     func moveToTrash() {
         Task { @MainActor in
             defer { delegate?.itemDetailViewModelWantsToHideSpinner() }
@@ -155,6 +160,7 @@ class BaseItemDetailViewModel {
     }
 }
 
+// MARK: - Private APIs
 private extension BaseItemDetailViewModel {
     func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) {
@@ -164,5 +170,16 @@ private extension BaseItemDetailViewModel {
             }
             return item
         }
+    }
+
+    func doMove(to vault: Vault) {
+        print(#function)
+    }
+}
+
+// MARK: - MoveVaultListViewModelDelegate
+extension BaseItemDetailViewModel: MoveVaultListViewModelDelegate {
+    func moveVaultListViewModelDidPick(vault: Vault) {
+        doMove(to: vault)
     }
 }

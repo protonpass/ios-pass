@@ -1,6 +1,6 @@
 //
-// VaultContentUiModel.swift
-// Proton Pass - Created on 07/03/2023.
+// VaultListUiModel.swift
+// Proton Pass - Created on 29/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,21 +20,13 @@
 
 import Client
 
-struct VaultContentUiModel: Hashable {
+struct VaultListUiModel: Hashable {
     let vault: Vault
-    /// `Active` items only
-    let items: [ItemUiModel]
+    let itemCount: Int
 }
 
-extension VaultListUiModel {
-    init(vaultContent: VaultContentUiModel) {
-        self.vault = vaultContent.vault
-        self.itemCount = vaultContent.items.count
-    }
-}
-
-extension Array where Element == VaultContentUiModel {
-    mutating func sortAlphabetically() {
-        sort(by: { $0.vault.name < $1.vault.name })
+extension VaultListUiModel: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.vault.shareId == rhs.vault.shareId
     }
 }
