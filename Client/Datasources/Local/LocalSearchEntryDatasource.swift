@@ -21,16 +21,20 @@
 import CoreData
 
 public protocol LocalSearchEntryDatasourceProtocol: LocalDatasourceProtocol {
-    func getAllEntries() async throws -> [SearchEntry]
+    /// Get entries of all vaults if `shareId` is `null`
+    func getAllEntries(shareId: String?) async throws -> [SearchEntry]
     func upsert(item: ItemIdentifiable, date: Date) async throws
     func removeAllEntries() async throws
     func remove(item: ItemIdentifiable) async throws
 }
 
 public extension LocalSearchEntryDatasourceProtocol {
-    func getAllEntries() async throws -> [SearchEntry] {
+    func getAllEntries(shareId: String?) async throws -> [SearchEntry] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = SearchEntryEntity.fetchRequest()
+        if let shareId {
+            fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        }
         fetchRequest.sortDescriptors = [.init(key: "time", ascending: false)]
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return entities.map { $0.toSearchEntry() }
