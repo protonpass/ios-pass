@@ -270,6 +270,9 @@ public extension UIViewController {
         var topMostViewController = self
         while true {
             if let presentationController = topMostViewController.presentedViewController {
+                if presentationController.isBeingDismissed {
+                    break
+                }
                 topMostViewController = presentationController
             } else {
                 break

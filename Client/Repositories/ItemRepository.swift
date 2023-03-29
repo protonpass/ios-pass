@@ -89,6 +89,8 @@ public protocol ItemRepositoryProtocol {
 
     func upsertItems(_ items: [ItemRevision], shareId: String) async throws
 
+    func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
+
     /// Delete items locally after sync events
     func deleteItemsLocally(itemIds: [String], shareId: String) async throws
 
@@ -318,6 +320,27 @@ public extension ItemRepositoryProtocol {
             try await symmetricallyEncrypt(itemRevision: $0, shareId: shareId)
         }
         try await localItemDatasoure.upsertItems(encryptedItems)
+    }
+
+    func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem {
+        logger.trace("Moving \(item.debugInformation) to share \(toShareId)")
+        guard let oldEncryptedItem = try await getItem(shareId: item.shareId, itemId: item.itemId) else {
+            throw PPClientError.itemNotFound(item: item)
+        }
+
+        let oldItemContent = try oldEncryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+        let destinationShareKey = try await passKeyManager.getLatestShareKey(shareId: toShareId)
+        let request = try MoveItemRequest(itemContent: oldItemContent.protobuf,
+                                          destinationShareId: toShareId,
+                                          destinationShareKey: destinationShareKey.value)
+        let newItem = try await remoteItemRevisionDatasource.move(itemId: item.itemId,
+                                                                  fromShareId: item.shareId,
+                                                                  request: request)
+        let newEncryptedItem = try await symmetricallyEncrypt(itemRevision: newItem, shareId: toShareId)
+        try await localItemDatasoure.deleteItems([oldEncryptedItem])
+        try await localItemDatasoure.upsertItems([newEncryptedItem])
+        logger.info("Moved \(item.debugInformation) to share \(toShareId)")
+        return newEncryptedItem
     }
 
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem] {

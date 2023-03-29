@@ -33,6 +33,8 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
     func itemDetailViewModelWantsToOpen(urlString: String)
+    func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate)
+    func itemDetailViewModelDidMove(oldItem: ItemIdentifiable, newItem: ItemIdentifiable, newVault: Vault)
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable)
@@ -98,6 +100,10 @@ class BaseItemDetailViewModel {
         copyToClipboard(text: text, message: "Note copied")
     }
 
+    func moveToAnotherVault() {
+        delegate?.itemDetailViewModelWantsToMove(item: itemContent, delegate: self)
+    }
+
     func moveToTrash() {
         Task { @MainActor in
             defer { delegate?.itemDetailViewModelWantsToHideSpinner() }
@@ -155,6 +161,7 @@ class BaseItemDetailViewModel {
     }
 }
 
+// MARK: - Private APIs
 private extension BaseItemDetailViewModel {
     func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) {
@@ -164,5 +171,28 @@ private extension BaseItemDetailViewModel {
             }
             return item
         }
+    }
+
+    func doMove(to vault: Vault) {
+        Task { @MainActor in
+            defer { delegate?.itemDetailViewModelWantsToHideSpinner() }
+            do {
+                logger.trace("Moving \(itemContent.debugInformation) to share \(vault.shareId)")
+                delegate?.itemDetailViewModelWantsToShowSpinner()
+                let newItem = try await itemRepository.move(item: itemContent, toShareId: vault.shareId)
+                logger.trace("Moved \(itemContent.debugInformation) to share \(vault.shareId)")
+                delegate?.itemDetailViewModelDidMove(oldItem: itemContent, newItem: newItem, newVault: vault)
+            } catch {
+                logger.error(error)
+                delegate?.itemDetailViewModelDidFail(error)
+            }
+        }
+    }
+}
+
+// MARK: - MoveVaultListViewModelDelegate
+extension BaseItemDetailViewModel: MoveVaultListViewModelDelegate {
+    func moveVaultListViewModelDidPick(vault: Vault) {
+        doMove(to: vault)
     }
 }

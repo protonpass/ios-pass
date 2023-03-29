@@ -71,6 +71,7 @@ struct LogInDetailView: View {
             ItemDetailToolbar(itemContent: viewModel.itemContent,
                               onGoBack: viewModel.goBack,
                               onEdit: viewModel.edit,
+                              onMoveToAnotherVault: viewModel.moveToAnotherVault,
                               onMoveToTrash: viewModel.moveToTrash,
                               onRestore: viewModel.restore,
                               onPermanentlyDelete: viewModel.permanentlyDelete)
