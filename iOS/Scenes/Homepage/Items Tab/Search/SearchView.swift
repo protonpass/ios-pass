@@ -43,13 +43,13 @@ struct SearchView: View {
 
                 case .error(let error):
                     RetryableErrorView(errorMessage: error.messageForTheUser,
-                                       onRetry: { Task { await viewModel.refreshResults() } })
+                                       onRetry: viewModel.refreshResults)
                 }
             }
             .animation(.default, value: viewModel.state)
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
-                Task { await viewModel.refreshResults() }
+                viewModel.refreshResults()
             }
         }
     }
