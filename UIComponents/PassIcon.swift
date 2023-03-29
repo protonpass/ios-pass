@@ -27,7 +27,6 @@ public enum PassIcon {
     public static var swirls = UIImage(named: "Swirls")!
     public static var trash = UIImage(named: "Trash")!
     public static var magnifyingGlass = UIImage(named: "MagnifyingGlass")!
-    public static var magnifyingGlassOnPaper = UIImage(named: "MagnifyingGlassOnPaper")!
     public static var emptyFolder = UIImage(named: "EmptyFolder")!
     public static var onboardAutoFillGradient = UIImage(named: "OnboardAutoFillGradient")!
     public static var onboardAutoFillEnabled = UIImage(named: "OnboardAutoFillEnabled")!

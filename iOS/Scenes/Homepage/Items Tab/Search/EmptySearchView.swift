@@ -23,11 +23,13 @@ import UIComponents
 
 struct EmptySearchView: View {
     var body: some View {
-        VStack {
-            Image(uiImage: PassIcon.magnifyingGlassOnPaper)
+        VStack(spacing: 40) {
+            Image(uiImage: PassIcon.magnifyingGlass)
             Text("Find an alias, login or note")
-                .fontWeight(.bold)
+                .fontWeight(.semibold)
+            Spacer()
         }
         .padding()
+        .padding(.top, 100)
     }
 }
