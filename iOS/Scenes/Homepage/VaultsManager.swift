@@ -237,6 +237,9 @@ extension VaultsManager {
                 let trashedItems = try await itemRepository.getItems(state: .trashed)
                 let trashItemUiModels = try trashedItems.map { try $0.toItemUiModel(symmetricKey) }
 
+                if case .precise(let selectedVault) = vaultSelection, selectedVault == deletedVault {
+                    vaultSelection = .all
+                }
                 state = .loaded(vaults: vaults, trashedItems: trashItemUiModels)
             } catch {
                 state = .error(error)
