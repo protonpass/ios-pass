@@ -53,12 +53,8 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
          shareRepository: ShareRepositoryProtocol,
          symmetricKey: SymmetricKey,
          syncEventLoop: SyncEventLoop,
-         userData: UserData) {
-        let vaultsManager = VaultsManager(itemRepository: itemRepository,
-                                          manualLogIn: manualLogIn,
-                                          logManager: logManager,
-                                          shareRepository: shareRepository,
-                                          symmetricKey: symmetricKey)
+         userData: UserData,
+         vaultsManager: VaultsManager) {
         self.itemsTabViewModel = .init(itemContextMenuHandler: itemContextMenuHandler,
                                        itemRepository: itemRepository,
                                        logManager: logManager,

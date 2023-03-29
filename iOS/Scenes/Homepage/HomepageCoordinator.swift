@@ -54,6 +54,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let userData: UserData
+    private let vaultsManager: VaultsManager
 
     // Lazily initialized properties
     private lazy var bannerManager: BannerManager = { .init(container: rootViewController) }()
@@ -124,6 +125,11 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
         self.userData = userData
+        self.vaultsManager = .init(itemRepository: itemRepository,
+                                   manualLogIn: manualLogIn,
+                                   logManager: logManager,
+                                   shareRepository: shareRepository,
+                                   symmetricKey: symmetricKey)
         super.init()
         self.finalizeInitialization()
         self.start()
@@ -173,7 +179,8 @@ private extension HomepageCoordinator {
                                                   shareRepository: shareRepository,
                                                   symmetricKey: symmetricKey,
                                                   syncEventLoop: eventLoop,
-                                                  userData: userData)
+                                                  userData: userData,
+                                                  vaultsManager: vaultsManager)
         homepageViewModel.delegate = self
         homepageViewModel.itemsTabViewModelDelegate = self
         let homepageView = HomepageView(viewModel: homepageViewModel)
@@ -365,8 +372,8 @@ private extension HomepageCoordinator {
     }
 
     func refreshHomepageAndSearchPage() {
-        homepageViewModel?.vaultsManager.refresh()
-        Task { await searchViewModel?.refreshResults() }
+        vaultsManager.refresh()
+        searchViewModel?.refreshResults()
     }
 }
 
@@ -481,7 +488,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         dismissTopMostViewController(animated: true) { [unowned self] in
             bannerManager.displayBottomInfoMessage(message)
         }
-        homepageViewModel?.vaultsManager.refresh()
+        vaultsManager.refresh()
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
@@ -494,8 +501,8 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         case .note:
             message = "Note udpated"
         }
-        homepageViewModel?.vaultsManager.refresh()
-        Task { await searchViewModel?.refreshResults() }
+        vaultsManager.refresh()
+        searchViewModel?.refreshResults()
         currentItemDetailViewModel?.refresh()
         dismissTopMostViewController { [unowned self] in
             self.bannerManager.displayBottomInfoMessage(message)
@@ -592,7 +599,7 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
 
     func editableVaultListViewModelDidDelete(vault: Vault) {
         bannerManager.displayBottomInfoMessage("Vault \"\(vault.name)\" deleted")
-        homepageViewModel?.vaultsManager.refresh(deletedVault: vault)
+        vaultsManager.refresh(deletedVault: vault)
     }
 
     func editableVaultListViewModelDidEncounter(error: Error) {
@@ -650,13 +657,13 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(newVault.name)\"")
         }
-        homepageViewModel?.vaultsManager.refreshAfterMovingItem(oldItem: oldItem, newItem: newItem)
-        Task { await searchViewModel?.refreshResults() }
+        vaultsManager.refreshAfterMovingItem(oldItem: oldItem, newItem: newItem)
+        searchViewModel?.refreshResults()
     }
 
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate) {
-        guard let allVaults = homepageViewModel?.vaultsManager.getAllVaultContents(),
-              !allVaults.isEmpty,
+        let allVaults = vaultsManager.getAllVaultContents()
+        guard !allVaults.isEmpty,
               let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else { return }
         let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
                                                currentVault: .init(vaultContent: currentVault))
@@ -676,8 +683,8 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
-        homepageViewModel?.vaultsManager.refresh(trashedItem: item)
-        Task { await searchViewModel?.refreshResults() }
+        vaultsManager.refresh(trashedItem: item)
+        searchViewModel?.refreshResults()
         dismissTopMostViewController(animated: true) { [unowned self] in
             let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
                 banner.dismiss()
@@ -690,16 +697,16 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
-        homepageViewModel?.vaultsManager.refresh(untrashedItem: item)
-        Task { await searchViewModel?.refreshResults() }
+        vaultsManager.refresh(untrashedItem: item)
+        searchViewModel?.refreshResults()
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
         }
     }
 
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        homepageViewModel?.vaultsManager.refresh(permanentlyDeletedItem: item)
-        Task { await searchViewModel?.refreshResults() }
+        vaultsManager.refresh(permanentlyDeletedItem: item)
+        searchViewModel?.refreshResults()
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
         }
@@ -732,18 +739,18 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
     }
 
     func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable) {
-        homepageViewModel?.vaultsManager.refresh(trashedItem: item)
-        Task { await searchViewModel?.refreshResults() }
+        vaultsManager.refresh(trashedItem: item)
+        searchViewModel?.refreshResults()
     }
 
     func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable) {
-        homepageViewModel?.vaultsManager.refresh(untrashedItem: item)
-        Task { await searchViewModel?.refreshResults() }
+        vaultsManager.refresh(untrashedItem: item)
+        searchViewModel?.refreshResults()
     }
 
     func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        homepageViewModel?.vaultsManager.refresh(permanentlyDeletedItem: item)
-        Task { await searchViewModel?.refreshResults() }
+        vaultsManager.refresh(permanentlyDeletedItem: item)
+        searchViewModel?.refreshResults()
     }
 }
 
@@ -777,14 +784,14 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomSuccessMessage("Vault created")
         }
-        homepageViewModel?.vaultsManager.refresh()
+        vaultsManager.refresh()
     }
 
     func createEditVaultViewModelDidEditVault() {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomInfoMessage("Changes saved")
         }
-        homepageViewModel?.vaultsManager.refreshAfterVaultEdit()
+        vaultsManager.refreshAfterVaultEdit()
     }
 
     func createEditVaultViewModelDidEncounter(error: Error) {
@@ -814,7 +821,7 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
         if hasNewEvents {
             logger.info("Has new events. Refreshing items")
-            homepageViewModel?.vaultsManager.refresh()
+            vaultsManager.refresh()
             currentItemDetailViewModel?.refresh()
             currentCreateEditItemViewModel?.refresh()
         } else {
