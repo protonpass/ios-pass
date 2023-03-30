@@ -93,6 +93,14 @@ extension HomepageViewModel {
 
 // MARK: - ProfileTabViewModelDelegate
 extension HomepageViewModel: ProfileTabViewModelDelegate {
+    func profileTabViewModelWantsToShowAccountMenu() {
+        print(#function)
+    }
+
+    func profileTabViewModelWantsToShowSettingsMenu() {
+        print(#function)
+    }
+
     func profileTabViewModelWantsToLogOut() {
         delegate?.homepageViewModelWantsToLogOut()
     }

@@ -39,6 +39,8 @@ struct ProfileTabView: View {
                     itemCountSection
                         .padding(.bottom)
                     biometricAuthenticationSection
+                    accountAndSettingsSection
+                        .padding(.vertical)
                     Button(action: viewModel.logOut) {
                         Text("Log out")
                     }
@@ -102,11 +104,51 @@ struct ProfileTabView: View {
             if case .initialized(let biometryType) = viewModel.biometricAuthenticator.biometryTypeState,
                biometryType != .none {
                 Text("Unlock Proton Pass with a glance.")
-                    .font(.caption)
-                    .foregroundColor(.textWeak)
+                    .font(.callout)
+                    .foregroundColor(.textHint)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .padding(.horizontal)
+    }
+
+    private var accountAndSettingsSection: some View {
+        VStack(spacing: 0) {
+            Button(action: viewModel.showAccountMenu) {
+                HStack {
+                    Text("Account")
+                    Spacer()
+                    ChevronRight()
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .padding(kItemDetailSectionPadding)
+
+            PassDivider()
+
+            Button(action: viewModel.showSettingsMenu) {
+                HStack {
+                    Text("Settings")
+                    Spacer()
+                    ChevronRight()
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .padding(kItemDetailSectionPadding)
+        }
+        .roundedEditableSection()
+        .padding(.horizontal)
+    }
+}
+
+struct ChevronRight: View {
+    var body: some View {
+        Image(systemName: "chevron.right")
+            .resizable()
+            .scaledToFit()
+            .frame(height: 12)
+            .foregroundColor(Color(.tertiaryLabel))
     }
 }
