@@ -24,6 +24,8 @@ import Core
 import SwiftUI
 
 protocol ProfileTabViewModelDelegate: AnyObject {
+    func profileTabViewModelWantsToShowAccountMenu()
+    func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToLogOut()
 }
 
@@ -55,6 +57,14 @@ private extension ProfileTabViewModel {
 
 // MARK: - Public APIs
 extension ProfileTabViewModel {
+    func showAccountMenu() {
+        delegate?.profileTabViewModelWantsToShowAccountMenu()
+    }
+
+    func showSettingsMenu() {
+        delegate?.profileTabViewModelWantsToShowSettingsMenu()
+    }
+
     func logOut() {
         delegate?.profileTabViewModelWantsToLogOut()
     }
