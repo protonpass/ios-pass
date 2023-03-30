@@ -20,7 +20,6 @@
 
 import AuthenticationServices
 import Core
-import CryptoKit
 
 public protocol CredentialManagerProtocol {
     var store: ASCredentialIdentityStore { get }
@@ -34,11 +33,9 @@ public protocol CredentialManagerProtocol {
 
     /// Get all active login items from `ItemRepository` and insert to credential store
     /// - Parameter itemRepository: The `ItemRepository` to get items
-    /// - Parameter symmetricKey: The `SymmetricKey` to decrypt items
     /// - Parameter forceRemoval: If `true`, will remove all credentials before inserting.
     /// if `false`, only insert when no credentials found in credential store
     func insertAllCredentials(from itemRepository: ItemRepositoryProtocol,
-                              symmetricKey: SymmetricKey,
                               forceRemoval: Bool) async throws
     func removeAllCredentials() async throws
 }
@@ -88,7 +85,6 @@ public extension CredentialManagerProtocol {
     }
 
     func insertAllCredentials(from itemRepository: ItemRepositoryProtocol,
-                              symmetricKey: SymmetricKey,
                               forceRemoval: Bool) async throws {
         logger.trace("Trying to insert all credentials from ItemRepository")
         let state = await store.state()
@@ -105,6 +101,7 @@ public extension CredentialManagerProtocol {
             return
         }
 
+        let symmetricKey = itemRepository.symmetricKey
         let encryptedItems = try await itemRepository.getActiveLogInItems()
         var credentials = [AutoFillCredential]()
         for encryptedItem in encryptedItems {

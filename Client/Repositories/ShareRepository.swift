@@ -37,9 +37,6 @@ public protocol ShareRepositoryProtocol {
     /// Get all remote shares
     func getRemoteShares() async throws -> [Share]
 
-    /// Get local share with `shareId`
-    func getShare(shareId: String) async throws -> Share
-
     /// Get all local vaults
     func getVaults() async throws -> [Vault]
 
@@ -85,32 +82,31 @@ public extension ShareRepositoryProtocol {
         }
     }
 
-    func getShare(shareId: String) async throws -> Share {
-        logger.trace("Getting local share \(shareId) of user \(userId)")
-        if let share = try await localShareDatasource.getShare(userId: userId, shareId: shareId) {
-            logger.trace("Got local share \(shareId) of user \(userId)")
-            return share
-        }
-        logger.debug("No local share found \(shareId) of user \(userId)")
-        throw PPClientError.shareNotFoundInLocalDB(shareID: shareId)
-    }
-
     func getVaults() async throws -> [Vault] {
         logger.trace("Getting local vaults for user \(userId)")
-        let shares = try await getShares()
 
-        var vaults: [Vault] = []
-        for share in shares where share.shareType == .vault {
-            let key = try await self.passKeyManager.getShareKey(
-                shareId: share.shareID,
-                keyRotation: share.contentKeyRotation ?? -1)
-            let shareContent = try share.getShareContent(key: key.value)
-            switch shareContent {
-            case .vault(let vault):
-                vaults.append(vault)
-            default:
-                break
+        let vaults = try await withThrowingTaskGroup(of: Vault?.self,
+                                                     returning: [Vault].self) { taskGroup in
+            let shares = try await getShares()
+            for share in shares where share.shareType == .vault {
+                taskGroup.addTask {
+                    let key = try await self.passKeyManager.getShareKey(
+                        shareId: share.shareID,
+                        keyRotation: share.contentKeyRotation ?? -1)
+                    let shareContent = try share.getShareContent(key: key.value)
+                    if case .vault(let vault) = shareContent {
+                        return vault
+                    } else {
+                        return nil
+                    }
+                }
             }
+
+            return try await taskGroup.reduce(into: [Vault](), { partialResult, vault in
+                if let vault {
+                    partialResult.append(vault)
+                }
+            })
         }
         logger.trace("Got \(vaults.count) local vaults for user \(userId)")
         return vaults
@@ -195,7 +191,8 @@ public struct ShareRepository: ShareRepositoryProtocol {
         self.remoteShareDatasouce = RemoteShareDatasource(apiService: apiService)
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
-                                                    logManager: logManager)
+                                                    logManager: logManager,
+                                                    userData: userData)
         let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
         self.passKeyManager = PassKeyManager(userData: userData,
                                              shareKeyRepository: shareKeyRepository,

@@ -50,7 +50,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let itemRepository: ItemRepositoryProtocol
-    private let manualLogIn: Bool
+    private var manualLogIn: Bool
     private let logger: Logger
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
@@ -75,12 +75,16 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
 
 // MARK: - Private APIs
 private extension VaultsManager {
+    @MainActor
     func createDefaultVault() async throws {
+        let userId = shareRepository.userData.user.ID
+        logger.trace("Creating default vault for user \(userId)")
         let vault = VaultProtobuf(name: "Personal",
                                   description: "Personal vault",
                                   color: .color1,
                                   icon: .icon1)
         try await shareRepository.createVault(vault)
+        logger.trace("Created default vault for user \(userId)")
     }
 
     @MainActor
@@ -123,156 +127,17 @@ extension VaultsManager {
                     try await itemRepository.refreshItems()
                     let vaults = try await shareRepository.getVaults()
                     if vaults.isEmpty {
-                        let userId = shareRepository.userData.user.ID
-                        logger.trace("Creating default vault for user \(userId)")
                         try await createDefaultVault()
-                        logger.trace("Created default vault for user \(userId)")
                         let vaults = try await shareRepository.getVaults()
                         try await loadContents(for: vaults)
                     } else {
                         try await loadContents(for: vaults)
                     }
+                    manualLogIn = false
                 } else {
                     let vaults = try await shareRepository.getVaults()
                     try await loadContents(for: vaults)
                 }
-            } catch {
-                state = .error(error)
-            }
-        }
-    }
-
-    /// Refresh by 1) removing the `trashedItem` from the containing vault
-    /// And 2) add it to `trashedItems` to make the refresh process quicker comparing to a full refresh
-    func refresh(trashedItem: ItemIdentifiable) {
-        Task { @MainActor in
-            do {
-                guard case var .loaded(vaults, trashedItems) = state else { return }
-
-                // 1: Find the vault that contains `trashedItem` then manually remove it
-                if var updatedVault = vaults.first(where: { $0.items.contains(trashedItem) }) {
-                    updatedVault = .init(vault: updatedVault.vault,
-                                         items: updatedVault.items.removing(item: trashedItem))
-                    if let index = vaults.firstIndex(where: { $0.vault.id == updatedVault.vault.id }) {
-                        vaults[index] = updatedVault
-                    }
-                }
-
-                // 2: Get the full detail of `trashedItem` and append to `trashedItem` array
-                if let item = try await itemRepository.getItem(shareId: trashedItem.shareId,
-                                                               itemId: trashedItem.itemId) {
-                    let uiModel = try item.toItemUiModel(symmetricKey)
-                    trashedItems.append(uiModel)
-                }
-
-                state = .loaded(vaults: vaults, trashedItems: trashedItems)
-            } catch {
-                state = .error(error)
-            }
-        }
-    }
-
-    /// Refresh by 1) adding the `untrashedItem` to the containing vault
-    /// And 2) remove it from `trashedItems` to make the refresh process quicker comparing to a full refresh
-    func refresh(untrashedItem: ItemIdentifiable) {
-        Task { @MainActor in
-            do {
-                guard case var .loaded(vaults, trashedItems) = state else { return }
-
-                // 1: Add `untrashedItem` to the vault that it belongs to
-                if var updatedVault = vaults.first(where: { $0.vault.shareId == untrashedItem.shareId }) {
-                    if let item = try await itemRepository.getItem(shareId: untrashedItem.shareId,
-                                                                   itemId: untrashedItem.itemId) {
-                        let uiModel = try item.toItemUiModel(symmetricKey)
-                        updatedVault = .init(vault: updatedVault.vault,
-                                             items: updatedVault.items.appending(uiModel))
-                    }
-
-                    if let index = vaults.firstIndex(where: { $0.vault.id == updatedVault.vault.id }) {
-                        vaults[index] = updatedVault
-                    }
-                }
-
-                // 2: Remove `trashedItems` from `trashedItems` array
-                trashedItems.remove(item: untrashedItem)
-
-                state = .loaded(vaults: vaults, trashedItems: trashedItems)
-            } catch {
-                state = .error(error)
-            }
-        }
-    }
-
-    func refresh(permanentlyDeletedItem: ItemIdentifiable) {
-        guard case .loaded(let vaults, var trashedItems) = state else { return }
-        trashedItems.remove(item: permanentlyDeletedItem)
-        state = .loaded(vaults: vaults, trashedItems: trashedItems)
-    }
-
-    func refreshAfterVaultEdit() {
-        Task { @MainActor in
-            do {
-                guard case .loaded(var vaults, let trashedItems) = state else { return }
-                let updatedVaults = try await shareRepository.getVaults()
-                for updatedVault in updatedVaults {
-                    if let index = vaults.firstIndex(where: { $0.vault.shareId == updatedVault.shareId }) {
-                        let oldVault = vaults[index]
-                        vaults[index] = .init(vault: updatedVault, items: oldVault.items)
-                    }
-                }
-                vaults.sortAlphabetically()
-                state = .loaded(vaults: vaults, trashedItems: trashedItems)
-            } catch {
-                state = .error(error)
-            }
-        }
-    }
-
-    func refresh(deletedVault: Vault) {
-        Task { @MainActor in
-            do {
-                guard case var .loaded(vaults, _) = state else { return }
-                vaults.removeAll(where: { $0.vault.shareId == deletedVault.shareId })
-
-                let trashedItems = try await itemRepository.getItems(state: .trashed)
-                let trashItemUiModels = try trashedItems.map { try $0.toItemUiModel(symmetricKey) }
-
-                if case .precise(let selectedVault) = vaultSelection, selectedVault == deletedVault {
-                    vaultSelection = .all
-                }
-                state = .loaded(vaults: vaults, trashedItems: trashItemUiModels)
-            } catch {
-                state = .error(error)
-            }
-        }
-    }
-
-    /// Refresh by 1) removing the `oldItem` from the containing vault
-    /// And 2) add `newItem` to the containing vault
-    func refreshAfterMovingItem(oldItem: ItemIdentifiable, newItem: ItemIdentifiable) {
-        Task { @MainActor in
-            do {
-                guard case .loaded(var vaults, let trashedItems) = state else { return }
-
-                // Step 1
-                if let oldVault = vaults.first(where: { $0.vault.shareId == oldItem.shareId }),
-                   let index = vaults.firstIndex(of: oldVault) {
-                    vaults[index] = .init(vault: oldVault.vault,
-                                          items: oldVault.items.removing(item: oldItem))
-                }
-
-                // Step 2
-                if let newVault = vaults.first(where: { $0.vault.shareId == newItem.shareId }),
-                   let index = vaults.firstIndex(of: newVault),
-                   let item = try await itemRepository.getItem(shareId: newItem.shareId,
-                                                               itemId: newItem.itemId) {
-                    let uiModel = try item.toItemUiModel(symmetricKey)
-                    vaults[index] = .init(vault: newVault.vault,
-                                          items: newVault.items.appending(uiModel))
-                }
-
-                vaults.sortAlphabetically()
-                state = .loaded(vaults: vaults, trashedItems: trashedItems)
             } catch {
                 state = .error(error)
             }
