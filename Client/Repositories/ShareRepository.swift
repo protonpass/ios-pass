@@ -37,9 +37,6 @@ public protocol ShareRepositoryProtocol {
     /// Get all remote shares
     func getRemoteShares() async throws -> [Share]
 
-    /// Get local share with `shareId`
-    func getShare(shareId: String) async throws -> Share
-
     /// Get all local vaults
     func getVaults() async throws -> [Vault]
 
@@ -83,16 +80,6 @@ public extension ShareRepositoryProtocol {
             logger.debug("Failed to get remote shares for user \(userId). \(String(describing: error))")
             throw error
         }
-    }
-
-    func getShare(shareId: String) async throws -> Share {
-        logger.trace("Getting local share \(shareId) of user \(userId)")
-        if let share = try await localShareDatasource.getShare(userId: userId, shareId: shareId) {
-            logger.trace("Got local share \(shareId) of user \(userId)")
-            return share
-        }
-        logger.debug("No local share found \(shareId) of user \(userId)")
-        throw PPClientError.shareNotFoundInLocalDB(shareID: shareId)
     }
 
     func getVaults() async throws -> [Vault] {

@@ -37,6 +37,7 @@ public final class RepositoryManager: DeinitPrintable {
     public let localSearchEntryDatasource: LocalSearchEntryDatasourceProtocol
     public let remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol
 
+    // swiftlint:disable:next function_body_length
     public init(apiService: APIService,
                 container: NSPersistentContainer,
                 logManager: LogManager,
