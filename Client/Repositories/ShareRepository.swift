@@ -204,7 +204,8 @@ public struct ShareRepository: ShareRepositoryProtocol {
         self.remoteShareDatasouce = RemoteShareDatasource(apiService: apiService)
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
-                                                    logManager: logManager)
+                                                    logManager: logManager,
+                                                    userData: userData)
         let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
         self.passKeyManager = PassKeyManager(userData: userData,
                                              shareKeyRepository: shareKeyRepository,

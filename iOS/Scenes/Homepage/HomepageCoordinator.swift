@@ -88,7 +88,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
-                                                    logManager: logManager)
+                                                    logManager: logManager,
+                                                    userData: userData)
         let shareEventIDRepository = ShareEventIDRepository(container: container,
                                                             apiService: apiService,
                                                             logManager: logManager)
