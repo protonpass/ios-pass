@@ -599,7 +599,7 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
 
     func editableVaultListViewModelDidDelete(vault: Vault) {
         bannerManager.displayBottomInfoMessage("Vault \"\(vault.name)\" deleted")
-        vaultsManager.refresh(deletedVault: vault)
+        vaultsManager.refresh()
     }
 
     func editableVaultListViewModelDidEncounter(error: Error) {
@@ -653,12 +653,11 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         UrlOpener(preferences: preferences).open(urlString: urlString)
     }
 
-    func itemDetailViewModelDidMove(oldItem: ItemIdentifiable, newItem: ItemIdentifiable, newVault: Vault) {
+    func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault) {
         dismissTopMostViewController(animated: true) { [unowned self] in
-            self.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(newVault.name)\"")
+            self.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(vault.name)\"")
         }
-        vaultsManager.refreshAfterMovingItem(oldItem: oldItem, newItem: newItem)
-        searchViewModel?.refreshResults()
+        refreshHomepageAndSearchPage()
     }
 
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate) {
@@ -683,8 +682,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
-        vaultsManager.refresh(trashedItem: item)
-        searchViewModel?.refreshResults()
+        refreshHomepageAndSearchPage()
         dismissTopMostViewController(animated: true) { [unowned self] in
             let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
                 banner.dismiss()
@@ -697,16 +695,14 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
-        vaultsManager.refresh(untrashedItem: item)
-        searchViewModel?.refreshResults()
+        refreshHomepageAndSearchPage()
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
         }
     }
 
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        vaultsManager.refresh(permanentlyDeletedItem: item)
-        searchViewModel?.refreshResults()
+        refreshHomepageAndSearchPage()
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
         }
@@ -739,18 +735,15 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
     }
 
     func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable) {
-        vaultsManager.refresh(trashedItem: item)
-        searchViewModel?.refreshResults()
+        refreshHomepageAndSearchPage()
     }
 
     func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable) {
-        vaultsManager.refresh(untrashedItem: item)
-        searchViewModel?.refreshResults()
+        refreshHomepageAndSearchPage()
     }
 
     func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        vaultsManager.refresh(permanentlyDeletedItem: item)
-        searchViewModel?.refreshResults()
+        refreshHomepageAndSearchPage()
     }
 }
 
@@ -791,7 +784,7 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomInfoMessage("Changes saved")
         }
-        vaultsManager.refreshAfterVaultEdit()
+        vaultsManager.refresh()
     }
 
     func createEditVaultViewModelDidEncounter(error: Error) {
