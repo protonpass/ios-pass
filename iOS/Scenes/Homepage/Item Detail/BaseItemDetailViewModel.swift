@@ -34,7 +34,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
     func itemDetailViewModelWantsToOpen(urlString: String)
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate)
-    func itemDetailViewModelDidMove(oldItem: ItemIdentifiable, newItem: ItemIdentifiable, newVault: Vault)
+    func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault)
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable)
@@ -179,9 +179,9 @@ private extension BaseItemDetailViewModel {
             do {
                 logger.trace("Moving \(itemContent.debugInformation) to share \(vault.shareId)")
                 delegate?.itemDetailViewModelWantsToShowSpinner()
-                let newItem = try await itemRepository.move(item: itemContent, toShareId: vault.shareId)
+                try await itemRepository.move(item: itemContent, toShareId: vault.shareId)
                 logger.trace("Moved \(itemContent.debugInformation) to share \(vault.shareId)")
-                delegate?.itemDetailViewModelDidMove(oldItem: itemContent, newItem: newItem, newVault: vault)
+                delegate?.itemDetailViewModelDidMove(item: itemContent, to: vault)
             } catch {
                 logger.error(error)
                 delegate?.itemDetailViewModelDidFail(error)

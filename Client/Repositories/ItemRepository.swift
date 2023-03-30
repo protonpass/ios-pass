@@ -89,6 +89,7 @@ public protocol ItemRepositoryProtocol {
 
     func upsertItems(_ items: [ItemRevision], shareId: String) async throws
 
+    @discardableResult
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
 
     /// Delete items locally after sync events

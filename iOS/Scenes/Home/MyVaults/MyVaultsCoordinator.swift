@@ -412,7 +412,7 @@ extension MyVaultsCoordinator: CreateEditLoginViewModelDelegate {
 
 // MARK: - ItemDetailViewModelDelegate
 extension MyVaultsCoordinator: ItemDetailViewModelDelegate {
-    func itemDetailViewModelDidMove(oldItem: ItemIdentifiable, newItem: ItemIdentifiable, newVault: Vault) {}
+    func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault) {}
 
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate) {}
 
