@@ -25,6 +25,7 @@ import Core
 import CoreData
 import CryptoKit
 import MBProgressHUD
+import ProtonCore_AccountDeletion
 import ProtonCore_Login
 import ProtonCore_Services
 import ProtonCore_UIFoundations
@@ -40,6 +41,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
+    private let apiService: APIService
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
     private let logger: Logger
@@ -75,6 +77,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          preferences: Preferences,
          symmetricKey: SymmetricKey,
          userData: UserData) {
+        self.apiService = apiService
         self.clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
@@ -449,7 +452,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 // MARK: - ProfileTabViewModelDelegate
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func profileTabViewModelWantsToShowAccountMenu() {
-        let viewModel = AccountViewModel()
+        let viewModel = AccountViewModel(username: userData.user.email ?? "")
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
         if UIDevice.current.isIpad {
@@ -466,6 +469,10 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
 // MARK: - AccountViewModelDelegate
 extension HomepageCoordinator: AccountViewModelDelegate {
+    func accountViewModelWantsToGoBack() {
+        itemDetailViewModelWantsToGoBack()
+    }
+
     func accountViewModelWantsToManageSubscription() {
         print(#function)
     }
@@ -476,7 +483,20 @@ extension HomepageCoordinator: AccountViewModelDelegate {
     }
 
     func accountViewModelWantsToDeleteAccount() {
-        print(#function)
+        let accountDeletion = AccountDeletionService(api: apiService)
+        accountDeletion.initiateAccountDeletionProcess(over: rootViewController) { [weak self] result in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self.accountViewModelWantsToSignOut()
+                case .failure(AccountDeletionError.closedByUser):
+                    break
+                case .failure(let error):
+                    self.bannerManager.displayTopErrorMessage(error)
+                }
+            }
+        }
     }
 }
 

@@ -18,19 +18,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Core
 
 protocol AccountViewModelDelegate: AnyObject {
+    func accountViewModelWantsToGoBack()
     func accountViewModelWantsToManageSubscription()
     func accountViewModelWantsToSignOut()
     func accountViewModelWantsToDeleteAccount()
 }
 
-final class AccountViewModel: ObservableObject {
+final class AccountViewModel: DeinitPrintable {
+    deinit { print(deinitMessage) }
+
+    let username: String
+
     weak var delegate: AccountViewModelDelegate?
+
+    init(username: String) {
+        self.username = username
+    }
 }
 
 extension AccountViewModel {
+    func goBack() {
+        delegate?.accountViewModelWantsToGoBack()
+    }
+
     func manageSubscription() {
         delegate?.accountViewModelWantsToManageSubscription()
     }
