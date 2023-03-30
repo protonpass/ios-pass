@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import SwiftUI
 
@@ -29,11 +30,26 @@ protocol ProfileTabViewModelDelegate: AnyObject {
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    var biometricAuthenticator: BiometricAuthenticator
     let itemCountViewModel: ItemCountViewModel
+
+    private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
 
-    init(itemRepository: ItemRepositoryProtocol, logManager: LogManager) {
+    init(itemRepository: ItemRepositoryProtocol,
+         preferences: Preferences,
+         logManager: LogManager) {
+        self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.itemCountViewModel = .init(itemRepository: itemRepository, logManager: logManager)
+        self.finalizeInitialization()
+        self.biometricAuthenticator.initializeBiometryType()
+    }
+}
+
+// MARK: - Private APIs
+private extension ProfileTabViewModel {
+    func finalizeInitialization() {
+        biometricAuthenticator.attach(to: self, storeIn: &cancellables)
     }
 }
 

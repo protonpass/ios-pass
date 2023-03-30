@@ -37,6 +37,8 @@ struct ProfileTabView: View {
             ScrollView {
                 VStack {
                     itemCountSection
+                        .padding(.bottom)
+                    biometricAuthenticationSection
                     Button(action: viewModel.logOut) {
                         Text("Log out")
                     }
@@ -57,5 +59,54 @@ struct ProfileTabView: View {
                 .padding(.horizontal)
             ItemCountView(viewModel: viewModel.itemCountViewModel)
         }
+    }
+
+    private var biometricAuthenticationSection: some View {
+        VStack {
+            Text("Manage my profile")
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Group {
+                switch viewModel.biometricAuthenticator.biometryTypeState {
+                case .idle, .initializing:
+                    ProgressView()
+                case .initialized(let biometryType):
+                    if let uiModel = biometryType.uiModel {
+                        Toggle(isOn: $viewModel.biometricAuthenticator.enabled) {
+                            Label(title: {
+                                Text(uiModel.title)
+                            }, icon: {
+                                if let icon = uiModel.icon {
+                                    Image(systemName: icon)
+                                        .foregroundColor(.passBrand)
+                                } else {
+                                    EmptyView()
+                                }
+                            })
+                        }
+                        .tint(.passBrand)
+                    } else {
+                        Text("Biometric authentication not supported")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                case .error(let error):
+                    Text(error.localizedDescription)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 24)
+            .padding(.horizontal, 16)
+            .roundedEditableSection()
+
+            if case .initialized(let biometryType) = viewModel.biometricAuthenticator.biometryTypeState,
+               biometryType != .none {
+                Text("Unlock Proton Pass with a glance.")
+                    .font(.caption)
+                    .foregroundColor(.textWeak)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .padding(.horizontal)
     }
 }
