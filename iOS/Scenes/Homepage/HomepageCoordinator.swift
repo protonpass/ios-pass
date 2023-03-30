@@ -168,6 +168,7 @@ private extension HomepageCoordinator {
             vaultsManager: vaultsManager)
         homepageViewModel.delegate = self
         homepageViewModel.itemsTabViewModelDelegate = self
+        homepageViewModel.profileTabViewModel.delegate = self
         let homepageView = HomepageView(viewModel: homepageViewModel)
 
         let placeholderView = ItemDetailPlaceholderView { [unowned self] in
@@ -383,11 +384,6 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
     func homepageViewModelWantsToCreateNewItem(shareId: String) {
         presentCreateItemView(shareId: shareId)
     }
-
-    func homepageViewModelWantsToLogOut() {
-        eventLoop.stop()
-        delegate?.homepageCoordinatorWantsToLogOut()
-    }
 }
 
 // MARK: - ItemsTabViewModelDelegate
@@ -447,6 +443,40 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - ProfileTabViewModelDelegate
+extension HomepageCoordinator: ProfileTabViewModelDelegate {
+    func profileTabViewModelWantsToShowAccountMenu() {
+        let viewModel = AccountViewModel()
+        viewModel.delegate = self
+        let view = AccountView(viewModel: viewModel)
+        if UIDevice.current.isIpad {
+            push(view, animated: true, hidesBackButton: true)
+        } else {
+            present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        }
+    }
+
+    func profileTabViewModelWantsToShowSettingsMenu() {
+        print(#function)
+    }
+}
+
+// MARK: - AccountViewModelDelegate
+extension HomepageCoordinator: AccountViewModelDelegate {
+    func accountViewModelWantsToManageSubscription() {
+        print(#function)
+    }
+
+    func accountViewModelWantsToSignOut() {
+        eventLoop.stop()
+        delegate?.homepageCoordinatorWantsToLogOut()
+    }
+
+    func accountViewModelWantsToDeleteAccount() {
+        print(#function)
     }
 }
 

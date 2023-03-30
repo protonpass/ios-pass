@@ -26,7 +26,6 @@ import SwiftUI
 protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
-    func profileTabViewModelWantsToLogOut()
 }
 
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
@@ -43,15 +42,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
          logManager: LogManager) {
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.itemCountViewModel = .init(itemRepository: itemRepository, logManager: logManager)
-        self.finalizeInitialization()
+        self.biometricAuthenticator.attach(to: self, storeIn: &cancellables)
         self.biometricAuthenticator.initializeBiometryType()
-    }
-}
-
-// MARK: - Private APIs
-private extension ProfileTabViewModel {
-    func finalizeInitialization() {
-        biometricAuthenticator.attach(to: self, storeIn: &cancellables)
     }
 }
 
@@ -63,9 +55,5 @@ extension ProfileTabViewModel {
 
     func showSettingsMenu() {
         delegate?.profileTabViewModelWantsToShowSettingsMenu()
-    }
-
-    func logOut() {
-        delegate?.profileTabViewModelWantsToLogOut()
     }
 }

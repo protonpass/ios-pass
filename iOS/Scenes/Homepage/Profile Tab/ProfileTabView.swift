@@ -41,9 +41,6 @@ struct ProfileTabView: View {
                     biometricAuthenticationSection
                     accountAndSettingsSection
                         .padding(.vertical)
-                    Button(action: viewModel.logOut) {
-                        Text("Log out")
-                    }
                     Spacer()
                 }
                 .padding(.top)
