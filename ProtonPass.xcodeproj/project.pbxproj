@@ -156,6 +156,8 @@
 		3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */; };
 		3552F49428D37CFF00547146 /* ChangeMailboxesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */; };
 		35533BB729D58C8F00EC58DE /* RepositoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BB629D58C8F00EC58DE /* RepositoryManager.swift */; };
+		35533BBB29D5C3CA00EC58DE /* ItemCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */; };
+		35533BBD29D5C3D800EC58DE /* ItemCountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BBC29D5C3D800EC58DE /* ItemCountViewModel.swift */; };
 		3553424529928762003E3A47 /* PPClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553424429928762003E3A47 /* PPClientError.swift */; };
 		355342472992A685003E3A47 /* PPCoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355342462992A685003E3A47 /* PPCoreError.swift */; };
 		3553C21B296570090087518A /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C21A296570090087518A /* LogEntry.swift */; };
@@ -787,6 +789,8 @@
 		3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesRequest.swift; sourceTree = "<group>"; };
 		3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesEndpoint.swift; sourceTree = "<group>"; };
 		35533BB629D58C8F00EC58DE /* RepositoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryManager.swift; sourceTree = "<group>"; };
+		35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountView.swift; sourceTree = "<group>"; };
+		35533BBC29D5C3D800EC58DE /* ItemCountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountViewModel.swift; sourceTree = "<group>"; };
 		3553424429928762003E3A47 /* PPClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPClientError.swift; sourceTree = "<group>"; };
 		355342462992A685003E3A47 /* PPCoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPCoreError.swift; sourceTree = "<group>"; };
 		3553C21A296570090087518A /* LogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
@@ -1710,6 +1714,8 @@
 		3569B2A729B7D2030070830B /* Profile Tab */ = {
 			isa = PBXGroup;
 			children = (
+				35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */,
+				35533BBC29D5C3D800EC58DE /* ItemCountViewModel.swift */,
 				3569B2A829B7D22E0070830B /* ProfileTabView.swift */,
 				3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */,
 			);
@@ -3361,6 +3367,7 @@
 				35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */,
 				35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */,
 				355694A429D4673A005DD2EB /* VaultListUiModel.swift in Sources */,
+				35533BBD29D5C3D800EC58DE /* ItemCountViewModel.swift in Sources */,
 				3543615C2941E1A8000CAE12 /* UIApplication+OpenSettings.swift in Sources */,
 				3571B59429BF1321008D4350 /* HighlightText.swift in Sources */,
 				3572E5232993D68800775FAC /* ItemContent+UIRelatedProperties.swift in Sources */,
@@ -3414,6 +3421,7 @@
 				35733B7F29CC60D200052229 /* VaultColor.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
 				3554D42D2967854000DF0CBE /* DeveloperModeStateManager.swift in Sources */,
+				35533BBB29D5C3CA00EC58DE /* ItemCountView.swift in Sources */,
 				3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				355744172959F5E400EA4AF0 /* ClipboardSettingsView.swift in Sources */,
 				3565FD4F298D319500E2A0EE /* ItemDetailSectionIcon.swift in Sources */,

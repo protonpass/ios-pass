@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import SwiftUI
 
@@ -28,7 +29,12 @@ protocol ProfileTabViewModelDelegate: AnyObject {
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    let itemCountViewModel: ItemCountViewModel
     weak var delegate: ProfileTabViewModelDelegate?
+
+    init(itemRepository: ItemRepositoryProtocol, logManager: LogManager) {
+        self.itemCountViewModel = .init(itemRepository: itemRepository, logManager: logManager)
+    }
 }
 
 // MARK: - Public APIs

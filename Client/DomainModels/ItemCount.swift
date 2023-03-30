@@ -20,10 +20,6 @@
 
 import Foundation
 
-public protocol ItemContentTypeIdentifiable {
-    var type: ItemContentType { get }
-}
-
 public struct ItemCount {
     public let loginCount: Int
     public let aliasCount: Int
@@ -39,7 +35,7 @@ public struct ItemCount {
         self.noteCount = noteCount
     }
 
-    public init(items: [ItemContentTypeIdentifiable]) {
+    public init(items: [ItemTypeIdentifiable]) {
         self.loginCount = items.filter { $0.type == .login }.count
         self.aliasCount = items.filter { $0.type == .alias }.count
         self.noteCount = items.filter { $0.type == .note }.count

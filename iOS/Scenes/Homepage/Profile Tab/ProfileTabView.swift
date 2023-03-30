@@ -19,13 +19,43 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIComponents
 
 struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
 
     var body: some View {
-        Button(action: viewModel.logOut) {
-            Text("Log out")
+        VStack(spacing: 0) {
+            HStack {
+                Text("Profile")
+                    .font(.title)
+                    .fontWeight(.bold)
+                Spacer()
+            }
+            .padding(.horizontal)
+
+            ScrollView {
+                VStack {
+                    itemCountSection
+                    Button(action: viewModel.logOut) {
+                        Text("Log out")
+                    }
+                    Spacer()
+                }
+                .padding(.top)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.passBackground)
+    }
+
+    private var itemCountSection: some View {
+        VStack {
+            Text("Items")
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
+            ItemCountView(viewModel: viewModel.itemCountViewModel)
         }
     }
 }
