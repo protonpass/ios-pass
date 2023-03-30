@@ -192,8 +192,7 @@ private extension SyncEventLoop {
 
                 do {
                     delegate?.syncEventLoopDidBeginNewLoop()
-                    var hasNewEvents = false
-                    try await sync(hasNewEvents: &hasNewEvents)
+                    let hasNewEvents = try await sync()
                     delegate?.syncEventLoopDidFinishLoop(hasNewEvents: hasNewEvents)
                 } catch {
                     logger.error(error)
@@ -203,19 +202,30 @@ private extension SyncEventLoop {
         }
     }
 
-    func sync(hasNewEvents: inout Bool) async throws {
+    /// Return `true` if new events found
+    func sync() async throws -> Bool {
         let localShares = try await shareRepository.getShares()
         let remoteShares = try await shareRepository.getRemoteShares()
 
-        for remoteShare in remoteShares {
-            if localShares.contains(where: { $0.shareID == remoteShare.shareID }) {
-                // Existing share
-                try await sync(share: remoteShare, hasNewEvents: &hasNewEvents)
-            } else {
-                // New share
-                let shareId = remoteShare.shareID
-                _ = try await shareKeyRepository.refreshKeys(shareId: shareId)
-                try await sync(share: remoteShare, hasNewEvents: &hasNewEvents)
+        return try await withThrowingTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
+            for remoteShare in remoteShares {
+                taskGroup.addTask {
+                    var hasNewEvents = false
+                    if localShares.contains(where: { $0.shareID == remoteShare.shareID }) {
+                        // Existing share
+                        try await self.sync(share: remoteShare, hasNewEvents: &hasNewEvents)
+                    } else {
+                        // New share
+                        let shareId = remoteShare.shareID
+                        _ = try await self.shareKeyRepository.refreshKeys(shareId: shareId)
+                        try await self.sync(share: remoteShare, hasNewEvents: &hasNewEvents)
+                    }
+                    return hasNewEvents
+                }
+            }
+
+            return try await taskGroup.reduce(into: false) { partialResult, nextValue in
+                partialResult = partialResult || nextValue
             }
         }
     }
