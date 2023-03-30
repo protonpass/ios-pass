@@ -35,7 +35,6 @@ public protocol ItemRepositoryProtocol {
     var symmetricKey: SymmetricKey { get }
     var localItemDatasoure: LocalItemDatasourceProtocol { get }
     var remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol { get }
-    var publicKeyRepository: PublicKeyRepositoryProtocol { get }
     var shareRepository: ShareRepositoryProtocol { get }
     var shareEventIDRepository: ShareEventIDRepositoryProtocol { get }
     var passKeyManager: PassKeyManagerProtocol { get }
@@ -470,7 +469,6 @@ public final class ItemRepository: ItemRepositoryProtocol {
     public let symmetricKey: SymmetricKey
     public let localItemDatasoure: LocalItemDatasourceProtocol
     public let remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol
-    public let publicKeyRepository: PublicKeyRepositoryProtocol
     public let shareRepository: ShareRepositoryProtocol
     public let shareEventIDRepository: ShareEventIDRepositoryProtocol
     public let passKeyManager: PassKeyManagerProtocol
@@ -481,7 +479,6 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 symmetricKey: SymmetricKey,
                 localItemDatasoure: LocalItemDatasourceProtocol,
                 remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol,
-                publicKeyRepository: PublicKeyRepositoryProtocol,
                 shareRepository: ShareRepositoryProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 passKeyManager: PassKeyManagerProtocol,
@@ -490,7 +487,6 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.symmetricKey = symmetricKey
         self.localItemDatasoure = localItemDatasoure
         self.remoteItemRevisionDatasource = remoteItemRevisionDatasource
-        self.publicKeyRepository = publicKeyRepository
         self.shareRepository = shareRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
@@ -508,9 +504,6 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.symmetricKey = symmetricKey
         self.localItemDatasoure = LocalItemDatasource(container: container)
         self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(apiService: apiService)
-        self.publicKeyRepository = PublicKeyRepository(container: container,
-                                                       apiService: apiService,
-                                                       logManager: logManager)
         self.shareRepository = ShareRepository(userData: userData,
                                                container: container,
                                                apiService: apiService,
