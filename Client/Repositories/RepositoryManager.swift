@@ -47,10 +47,15 @@ public final class RepositoryManager: DeinitPrintable {
 
     // Repositories
     public lazy var aliasRepository = makeAliasRepository()
+    public lazy var itemRepository = makeItemRepository()
     public lazy var passKeyManager = makePassKeyManager()
     public lazy var shareEventIDRepository = makeShareEventIDRepository()
     public lazy var shareRepository = makeShareRespository()
     public lazy var shareKeyRepository = makeShareKeyRepository()
+
+    // Public datasources
+    public lazy var localSearchEntryDatasource = makeLocalSearchEntryDatasource()
+    public lazy var remoteSyncEventsDatasource = makeRemoteSyncEventsDatasource()
 
     // Private datasources
     private lazy var remoteAliasDatasource = makeRemoteAliasDatasource()
@@ -157,5 +162,13 @@ private extension RepositoryManager {
 
     func makeRemoteShareEventIDDatasource() -> RemoteShareEventIDDatasourceProtocol {
         RemoteShareEventIDDatasource(apiService: apiService)
+    }
+
+    func makeLocalSearchEntryDatasource() -> LocalSearchEntryDatasourceProtocol {
+        LocalSearchEntryDatasource(container: container)
+    }
+
+    func makeRemoteSyncEventsDatasource() -> RemoteSyncEventsDatasourceProtocol {
+        RemoteSyncEventsDatasource(apiService: apiService)
     }
 }

@@ -180,7 +180,6 @@ private extension HomeCoordinator {
                 Task {
                     do {
                         try await credentialManager.insertAllCredentials(from: itemRepository,
-                                                                         symmetricKey: symmetricKey,
                                                                          forceRemoval: false)
                         logger.info("App goes back to foreground. Inserted all credentials.")
                     } catch {
