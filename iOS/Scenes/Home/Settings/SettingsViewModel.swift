@@ -193,7 +193,6 @@ private extension SettingsViewModel {
                 delegate?.settingsViewModelWantsToShowLoadingHud()
                 if quickTypeBar {
                     try await credentialManager.insertAllCredentials(from: itemRepository,
-                                                                     symmetricKey: symmetricKey,
                                                                      forceRemoval: true)
                     logger.info("Populated credential database QuickTypeBar \(quickTypeBar)")
                 } else {
