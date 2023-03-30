@@ -35,7 +35,6 @@ public protocol ItemRepositoryProtocol {
     var symmetricKey: SymmetricKey { get }
     var localItemDatasoure: LocalItemDatasourceProtocol { get }
     var remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol { get }
-    var publicKeyRepository: PublicKeyRepositoryProtocol { get }
     var shareRepository: ShareRepositoryProtocol { get }
     var shareEventIDRepository: ShareEventIDRepositoryProtocol { get }
     var passKeyManager: PassKeyManagerProtocol { get }
@@ -89,6 +88,7 @@ public protocol ItemRepositoryProtocol {
 
     func upsertItems(_ items: [ItemRevision], shareId: String) async throws
 
+    @discardableResult
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
 
     /// Delete items locally after sync events
@@ -145,12 +145,25 @@ public extension ItemRepositoryProtocol {
 
     func refreshItems() async throws {
         logger.trace("Refreshing items for user \(userId)")
-        try await shareRepository.deleteAllShares()
-        let remoteShares = try await shareRepository.getRemoteShares()
-        for share in remoteShares {
-            try await shareRepository.upsertShares([share])
-            try await refreshItems(shareId: share.shareID)
+
+        // Delete all local shares and items
+        let localShares = try await shareRepository.getShares()
+        for share in localShares {
+            try await localItemDatasoure.removeAllItems(shareId: share.shareID)
         }
+        try await shareRepository.deleteAllShares()
+
+        // Fetch remote shares and items
+        let remoteShares = try await shareRepository.getRemoteShares()
+        await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for share in remoteShares {
+                taskGroup.addTask {
+                    try await shareRepository.upsertShares([share])
+                    try await refreshItems(shareId: share.shareID)
+                }
+            }
+        }
+
         logger.trace("Refreshed items for user \(userId)")
     }
 
@@ -456,7 +469,6 @@ public final class ItemRepository: ItemRepositoryProtocol {
     public let symmetricKey: SymmetricKey
     public let localItemDatasoure: LocalItemDatasourceProtocol
     public let remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol
-    public let publicKeyRepository: PublicKeyRepositoryProtocol
     public let shareRepository: ShareRepositoryProtocol
     public let shareEventIDRepository: ShareEventIDRepositoryProtocol
     public let passKeyManager: PassKeyManagerProtocol
@@ -467,7 +479,6 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 symmetricKey: SymmetricKey,
                 localItemDatasoure: LocalItemDatasourceProtocol,
                 remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol,
-                publicKeyRepository: PublicKeyRepositoryProtocol,
                 shareRepository: ShareRepositoryProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 passKeyManager: PassKeyManagerProtocol,
@@ -476,7 +487,6 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.symmetricKey = symmetricKey
         self.localItemDatasoure = localItemDatasoure
         self.remoteItemRevisionDatasource = remoteItemRevisionDatasource
-        self.publicKeyRepository = publicKeyRepository
         self.shareRepository = shareRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
@@ -494,9 +504,6 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.symmetricKey = symmetricKey
         self.localItemDatasoure = LocalItemDatasource(container: container)
         self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(apiService: apiService)
-        self.publicKeyRepository = PublicKeyRepository(container: container,
-                                                       apiService: apiService,
-                                                       logManager: logManager)
         self.shareRepository = ShareRepository(userData: userData,
                                                container: container,
                                                apiService: apiService,
@@ -506,7 +513,8 @@ public final class ItemRepository: ItemRepositoryProtocol {
                                                              logManager: logManager)
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
-                                                    logManager: logManager)
+                                                    logManager: logManager,
+                                                    userData: userData)
         let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
         self.passKeyManager = PassKeyManager(userData: userData,
                                              shareKeyRepository: shareKeyRepository,
