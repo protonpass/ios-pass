@@ -98,8 +98,9 @@ final class HomeCoordinator: DeinitPrintable {
         self.symmetricKey = symmetricKey
 
         let userId = sessionData.userData.user.ID
+        let userData = sessionData.userData
 
-        let itemRepository = ItemRepository(userData: sessionData.userData,
+        let itemRepository = ItemRepository(userData: userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
                                             apiService: apiService,
@@ -111,11 +112,12 @@ final class HomeCoordinator: DeinitPrintable {
                                                        logManager: logManager)
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
-                                                    logManager: logManager)
+                                                    logManager: logManager,
+                                                    userData: userData)
         self.shareKeyRepository = shareKeyRepository
 
         let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
-        let passKeyManager = PassKeyManager(userData: sessionData.userData,
+        let passKeyManager = PassKeyManager(userData: userData,
                                             shareKeyRepository: shareKeyRepository,
                                             itemKeyDatasource: itemKeyDatasource,
                                             logManager: logManager)

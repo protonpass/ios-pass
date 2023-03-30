@@ -20,7 +20,7 @@
 
 import Core
 import CoreData
-import ProtonCore_Networking
+import ProtonCore_Login
 import ProtonCore_Services
 
 /// This repository is not offline first because without keys, the app is not functional.
@@ -28,6 +28,7 @@ public protocol ShareKeyRepositoryProtocol {
     var localShareKeyDatasource: LocalShareKeyDatasourceProtocol { get }
     var remoteShareKeyDatasource: RemoteShareKeyDatasourceProtocol { get }
     var logger: Logger { get }
+    var userData: UserData { get }
 
     /// Get share keys of a share with `shareId`. Not offline first.
     func getKeys(shareId: String) async throws -> [PassKey]
@@ -69,24 +70,29 @@ public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
     public let localShareKeyDatasource: LocalShareKeyDatasourceProtocol
     public let remoteShareKeyDatasource: RemoteShareKeyDatasourceProtocol
     public let logger: Logger
+    public var userData: UserData
 
     public init(localShareKeyDatasource: LocalShareKeyDatasourceProtocol,
                 remoteShareKeyDatasource: RemoteShareKeyDatasourceProtocol,
-                logManager: LogManager) {
+                logManager: LogManager,
+                userData: UserData) {
         self.localShareKeyDatasource = localShareKeyDatasource
         self.remoteShareKeyDatasource = remoteShareKeyDatasource
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
+        self.userData = userData
     }
 
     public init(container: NSPersistentContainer,
                 apiService: APIService,
-                logManager: LogManager) {
+                logManager: LogManager,
+                userData: UserData) {
         self.localShareKeyDatasource = LocalShareKeyDatasource(container: container)
         self.remoteShareKeyDatasource = RemoteShareKeyDatasource(apiService: apiService)
         self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
                             category: "\(Self.self)",
                             manager: logManager)
+        self.userData = userData
     }
 }
