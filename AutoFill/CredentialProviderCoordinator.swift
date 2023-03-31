@@ -215,8 +215,6 @@ public final class CredentialProviderCoordinator {
               let symmetricKeyData = symmetricKeyString?.data(using: .utf8) else { return }
 
         let symmetricKey = SymmetricKey(data: symmetricKeyData)
-        let remoteAliasDatasource = RemoteAliasDatasource(apiService: apiManager.apiService)
-
         let repositoryManager = RepositoryManager(apiService: apiManager.apiService,
                                                   container: container,
                                                   logManager: logManager,
