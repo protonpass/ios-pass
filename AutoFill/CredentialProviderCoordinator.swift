@@ -217,28 +217,21 @@ public final class CredentialProviderCoordinator {
         let symmetricKey = SymmetricKey(data: symmetricKeyData)
         let remoteAliasDatasource = RemoteAliasDatasource(apiService: apiManager.apiService)
 
+        let repositoryManager = RepositoryManager(apiService: apiManager.apiService,
+                                                  container: container,
+                                                  logManager: logManager,
+                                                  symmetricKey: symmetricKey,
+                                                  userData: sessionData.userData)
         self.symmetricKey = symmetricKey
-        self.shareRepository = ShareRepository(userData: sessionData.userData,
-                                               container: container,
-                                               apiService: apiManager.apiService,
-                                               logManager: logManager)
-        self.shareEventIDRepository = ShareEventIDRepository(container: container,
-                                                             apiService: apiManager.apiService,
-                                                             logManager: logManager)
+        self.shareRepository = repositoryManager.shareRepository
+        self.shareEventIDRepository = repositoryManager.shareEventIDRepository
 
-        let itemRepository = ItemRepository(userData: sessionData.userData,
-                                            symmetricKey: symmetricKey,
-                                            container: container,
-                                            apiService: apiManager.apiService,
-                                            logManager: logManager)
-        itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
+        let itemRepository = repositoryManager.itemRepository
+        (itemRepository as? ItemRepository)?.delegate = credentialManager as? ItemRepositoryDelegate
         self.itemRepository = itemRepository
-        self.shareKeyRepository = ShareKeyRepository(container: container,
-                                                     apiService: apiManager.apiService,
-                                                     logManager: logManager,
-                                                     userData: sessionData.userData)
-        self.aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
-        self.remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiManager.apiService)
+        self.shareKeyRepository = repositoryManager.shareKeyRepository
+        self.aliasRepository = repositoryManager.aliasRepository
+        self.remoteSyncEventsDatasource = repositoryManager.remoteSyncEventsDatasource
     }
 }
 

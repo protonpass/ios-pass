@@ -41,14 +41,6 @@ public struct PublicKeyRepository: PublicKeyRepositoryProtocol {
         self.logger = .init(manager: logManager)
     }
 
-    public init(container: NSPersistentContainer,
-                apiService: APIService,
-                logManager: LogManager) {
-        self.localPublicKeyDatasource = LocalPublicKeyDatasource(container: container)
-        self.remotePublicKeyDatasource = RemotePublicKeyDatasource(apiService: apiService)
-        self.logger = .init(manager: logManager)
-    }
-
     public func getPublicKeys(email: String) async throws -> [PublicKey] {
         logger.trace("Getting public keys for email \(email)")
         let localPublicKeys = try await localPublicKeyDatasource.getPublicKeys(email: email)
