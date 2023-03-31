@@ -529,6 +529,8 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
+
+    func settingViewModelWantsToEditTheme() {}
 }
 
 // MARK: - CreateEditItemViewModelDelegate
