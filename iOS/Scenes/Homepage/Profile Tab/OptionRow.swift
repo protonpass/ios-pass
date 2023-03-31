@@ -1,5 +1,5 @@
 //
-// SettingsOptionRow.swift
+// OptionRow.swift
 // Proton Pass - Created on 31/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -20,14 +20,14 @@
 
 import SwiftUI
 
-struct SettingsOptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
+struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
     var title: String?
     let content: Content
     var leading: LeadingView
     var trailing: TrailingView
-    let action: () -> Void
+    let action: (() -> Void)?
 
-    init(action: @escaping () -> Void,
+    init(action: (() -> Void)? = nil,
          title: String? = nil,
          @ViewBuilder content: () -> Content,
          @ViewBuilder leading: (() -> LeadingView) = { EmptyView() },
@@ -40,26 +40,35 @@ struct SettingsOptionRow<Content: View, LeadingView: View, TrailingView: View>: 
     }
 
     var body: some View {
-        Button(action: action) {
-            HStack {
-                leading
-
-                VStack(alignment: .leading, spacing: 4) {
-                    if let title {
-                        Text(title)
-                            .font(.callout)
-                            .foregroundColor(.textHint)
-                    }
-                    content
-                }
-
-                Spacer()
-
-                trailing
+        if let action {
+            Button(action: action) {
+                realBody
             }
-            .contentShape(Rectangle())
+            .buttonStyle(.plain)
+            .padding(kItemDetailSectionPadding)
+        } else {
+            realBody
+                .padding(kItemDetailSectionPadding)
         }
-        .buttonStyle(.plain)
-        .padding(kItemDetailSectionPadding)
+    }
+
+    private var realBody: some View {
+        HStack {
+            leading
+
+            VStack(alignment: .leading, spacing: 4) {
+                if let title {
+                    Text(title)
+                        .font(.callout)
+                        .foregroundColor(.textHint)
+                }
+                content
+            }
+
+            Spacer()
+
+            trailing
+        }
+        .contentShape(Rectangle())
     }
 }
