@@ -27,10 +27,12 @@ struct SettingViewV2: View {
 
     var body: some View {
         ScrollView {
-            VStack {}
+            VStack {
+                untitledSection
+            }
+            .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding()
         .background(Color.passBackground)
         .navigationTitle("Settings")
         .navigationBarBackButtonHidden()
@@ -44,5 +46,29 @@ struct SettingViewV2: View {
                              action: viewModel.goBack)
             }
         }
+    }
+
+    private var untitledSection: some View {
+        VStack(spacing: 0) {
+            Button(action: viewModel.editDefaultBrowser) {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("Default browser")
+                            .font(.callout)
+                            .foregroundColor(.textHint)
+                        Text(viewModel.selectedBrowser.description)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                    Spacer()
+
+                    ChevronRight()
+                }
+                .padding(kItemDetailSectionPadding)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+        }
+        .roundedEditableSection()
     }
 }

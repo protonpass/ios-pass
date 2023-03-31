@@ -471,7 +471,10 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowSettingsMenu() {
-        print(#function)
+        let viewModel = SettingViewModelV2(preferences: preferences)
+        viewModel.delegate = self
+        let view = SettingViewV2(viewModel: viewModel)
+        adaptivelyPresentDetailView(view: view)
     }
 }
 
@@ -512,6 +515,19 @@ extension HomepageCoordinator: AccountViewModelDelegate {
                     }
                 }
             })
+    }
+}
+// MARK: - SettingViewModelDelegate
+extension HomepageCoordinator: SettingViewModelDelegateV2 {
+    func settingViewModelWantsToGoBack() {
+        adaptivelyDismissCurrentDetailView()
+    }
+
+    func settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser]) {
+        let view = DefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 }
 
