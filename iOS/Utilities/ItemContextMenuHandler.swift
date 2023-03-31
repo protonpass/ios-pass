@@ -43,9 +43,7 @@ final class ItemContextMenuHandler {
          logManager: LogManager) {
         self.clipboardManager = clipboardManager
         self.itemRepository = itemRepository
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 }
 

@@ -80,9 +80,7 @@ public final class ShareEventIDRepository: ShareEventIDRepositoryProtocol {
                 logManager: LogManager) {
         self.localShareEventIDDatasource = localShareEventIDDatasource
         self.remoteShareEventIDDatasource = remoteShareEventIDDatasource
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 
     public init(container: NSPersistentContainer,
@@ -90,8 +88,6 @@ public final class ShareEventIDRepository: ShareEventIDRepositoryProtocol {
                 logManager: LogManager) {
         self.localShareEventIDDatasource = LocalShareEventIDDatasource(container: container)
         self.remoteShareEventIDDatasource = RemoteShareEventIDDatasource(apiService: apiService)
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 }

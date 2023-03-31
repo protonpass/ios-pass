@@ -91,9 +91,7 @@ class BaseCreateEditItemViewModel {
         self.mode = mode
         self.itemRepository = itemRepository
         self.preferences = preferences
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.bindValues()
     }
 

@@ -61,9 +61,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
          vaultsManager: VaultsManager) {
         self.itemContextMenuHandler = itemContextMenuHandler
         self.itemRepository = itemRepository
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.preferences = preferences
         self.syncEventLoop = syncEventLoop
         self.vaultsManager = vaultsManager

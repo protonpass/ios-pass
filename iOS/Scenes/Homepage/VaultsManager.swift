@@ -65,9 +65,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
          symmetricKey: SymmetricKey) {
         self.itemRepository = itemRepository
         self.manualLogIn = manualLogIn
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
     }

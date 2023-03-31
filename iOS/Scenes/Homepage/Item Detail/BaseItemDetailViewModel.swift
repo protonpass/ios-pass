@@ -55,9 +55,7 @@ class BaseItemDetailViewModel {
          logManager: LogManager) {
         self.itemContent = itemContent
         self.itemRepository = itemRepository
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.bindValues()
     }
 

@@ -194,9 +194,7 @@ public struct ShareRepository: ShareRepositoryProtocol {
         self.localShareDatasource = localShareDatasource
         self.remoteShareDatasouce = remoteShareDatasouce
         self.passKeyManager = passKeyManager
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 
     public init(userData: UserData,
@@ -215,8 +213,6 @@ public struct ShareRepository: ShareRepositoryProtocol {
                                              shareKeyRepository: shareKeyRepository,
                                              itemKeyDatasource: itemKeyDatasource,
                                              logManager: logManager)
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 }
