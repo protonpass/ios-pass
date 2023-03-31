@@ -185,6 +185,20 @@ private extension HomepageCoordinator {
         bannerManager.displayTopErrorMessage("You can not create more aliases.")
     }
 
+    func present<V: View>(_ view: V, animated: Bool = true, dismissible: Bool = true) {
+        present(UIHostingController(rootView: view),
+                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                animated: animated,
+                dismissible: dismissible)
+    }
+
+    func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = true) {
+        present(viewController,
+                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                animated: animated,
+                dismissible: dismissible)
+    }
+
     func presentItemDetailView(for itemContent: ItemContent) {
         let view: any View
         let baseViewModel: BaseItemDetailViewModel
@@ -256,7 +270,7 @@ private extension HomepageCoordinator {
         } else {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func presentCreateEditLoginView(mode: ItemMode) {
@@ -270,7 +284,7 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
-        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle, dismissible: false)
+        present(view, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -283,7 +297,7 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
-        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle, dismissible: false)
+        present(view, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -301,7 +315,7 @@ private extension HomepageCoordinator {
                                                 logManager: logManager)
         viewModel.delegate = self
         let view = CreateEditNoteView(viewModel: viewModel)
-        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle, dismissible: false)
+        present(view, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -321,7 +335,7 @@ private extension HomepageCoordinator {
             navigationController.sheetPresentationController?.detents = [.medium()]
         }
         viewModel.onDismiss = { navigationController.dismiss(animated: true) }
-        present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(navigationController)
     }
 
     func presentSortTypeList(selectedSortType: SortType,
@@ -339,7 +353,7 @@ private extension HomepageCoordinator {
         } else {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func presentCreateEditVaultView(mode: VaultMode) {
@@ -348,7 +362,7 @@ private extension HomepageCoordinator {
                                                  logManager: logManager)
         viewModel.delegate = self
         let view = CreateEditVaultView(viewModel: viewModel)
-        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(view)
     }
 
     func refreshHomepageAndSearchPage() {
@@ -374,6 +388,12 @@ private extension HomepageCoordinator {
         } else {
             dismissTopMostViewController()
         }
+    }
+
+    func presentLogsView(for module: PassLogModule) {
+        let viewModel = LogsViewModel(module: module)
+        let view = LogsView(viewModel: viewModel)
+        present(view)
     }
 }
 
@@ -600,9 +620,9 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
     }
 
     func settingViewModelWantsToViewLogs() {
-        let view = LogsView(
-            onSelect: { [unowned self] _ in
-                print(#function)
+        let view = LogTypesView(
+            onSelect: { [unowned self] module in
+                self.presentLogsView(for: module)
             },
             onClear: { [unowned self] in
                 self.bannerManager.displayBottomSuccessMessage("All logs cleared")
