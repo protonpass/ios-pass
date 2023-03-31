@@ -51,6 +51,8 @@ public protocol ShareRepositoryProtocol {
 
     /// Delete vault. If vault is not empty (0 active & trashed items)  an error is thrown.
     func deleteVault(shareId: String) async throws
+
+    func setPrimaryVault(shareId: String) async throws -> Bool
 }
 
 private extension ShareRepositoryProtocol {
@@ -158,6 +160,21 @@ public extension ShareRepositoryProtocol {
         logger.trace("Deleted local vault \(shareId) for user \(userId)")
 
         logger.trace("Finished deleting vault \(shareId) for user \(userId)")
+    }
+
+    func setPrimaryVault(shareId: String) async throws -> Bool {
+        logger.trace("Setting primary vault \(shareId) \(shareId) for user \(userId)")
+        let shares = try await getShares()
+        guard try await remoteShareDatasouce.setPrimaryVault(shareId: shareId) else {
+            logger.trace("Failed to set primary vault \(shareId) \(shareId) for user \(userId)")
+            return false
+        }
+        for share in shares {
+            let clonedShare = share.clone(isPrimary: share.shareID == shareId)
+            try await localShareDatasource.upsertShares([clonedShare], userId: userId)
+        }
+        logger.trace("Finished setting primary vault \(shareId) \(shareId) for user \(userId)")
+        return true
     }
 }
 

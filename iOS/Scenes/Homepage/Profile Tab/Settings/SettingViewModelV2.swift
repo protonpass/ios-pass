@@ -33,6 +33,7 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let preferences: Preferences
+    let vaultsManager: VaultsManager
 
     let supportedBrowsers: [Browser]
     @Published private(set) var selectedBrowser: Browser
@@ -43,7 +44,8 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
     weak var delegate: SettingViewModelDelegateV2?
     private var cancellables = Set<AnyCancellable>()
 
-    init(preferences: Preferences) {
+    init(preferences: Preferences,
+         vaultsManager: VaultsManager) {
         self.preferences = preferences
         let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
             guard let appScheme = browser.appScheme,
@@ -61,6 +63,7 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
         self.selectedTheme = preferences.theme
         self.selectedClipboardExpiration = preferences.clipboardExpiration
         self.shareClipboard = preferences.shareClipboard
+        self.vaultsManager = vaultsManager
 
         preferences
             .objectWillChange
@@ -70,6 +73,8 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
                 self.selectedClipboardExpiration = self.preferences.clipboardExpiration
             }
             .store(in: &cancellables)
+
+        vaultsManager.attach(to: self, storeIn: &cancellables)
     }
 }
 
