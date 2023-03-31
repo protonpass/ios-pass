@@ -220,7 +220,9 @@
 		35581817290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */; };
 		35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */; };
 		355888A429AE5EC3009AA775 /* AESGCM+ConvenientSealOpen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355888A329AE5EC3009AA775 /* AESGCM+ConvenientSealOpen.swift */; };
-		355895AD29D769C1001E2207 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895AC29D769C1001E2207 /* LogsView.swift */; };
+		355895AD29D769C1001E2207 /* LogTypesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895AC29D769C1001E2207 /* LogTypesView.swift */; };
+		355895AF29D76E67001E2207 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895AE29D76E67001E2207 /* LogsView.swift */; };
+		355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895B029D76E9F001E2207 /* LogsViewModel.swift */; };
 		355A198D294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */; };
 		355A198F294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */; };
 		355A27B52953751200F32EA1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme.swift */; };
@@ -861,7 +863,9 @@
 		35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSyncEventsDatasource.swift; sourceTree = "<group>"; };
 		35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDRepository.swift; sourceTree = "<group>"; };
 		355888A329AE5EC3009AA775 /* AESGCM+ConvenientSealOpen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AESGCM+ConvenientSealOpen.swift"; sourceTree = "<group>"; };
-		355895AC29D769C1001E2207 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
+		355895AC29D769C1001E2207 /* LogTypesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTypesView.swift; sourceTree = "<group>"; };
+		355895AE29D76E67001E2207 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
+		355895B029D76E9F001E2207 /* LogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsViewModel.swift; sourceTree = "<group>"; };
 		355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeEndpoint.swift; sourceTree = "<group>"; };
 		355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeRequest.swift; sourceTree = "<group>"; };
 		355A27B42953751200F32EA1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -1788,7 +1792,9 @@
 				356BC36629D7266800F03497 /* EditPrimaryVaultView.swift */,
 				356BC36829D7267F00F03497 /* EditPrimaryVaultViewModel.swift */,
 				356BC35A29D70C5000F03497 /* EditThemeView.swift */,
-				355895AC29D769C1001E2207 /* LogsView.swift */,
+				355895AC29D769C1001E2207 /* LogTypesView.swift */,
+				355895AE29D76E67001E2207 /* LogsView.swift */,
+				355895B029D76E9F001E2207 /* LogsViewModel.swift */,
 				356BC34F29D6C57100F03497 /* SettingViewV2.swift */,
 				356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */,
 			);
@@ -3413,6 +3419,7 @@
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */,
+				355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */,
 				3586F3B5295885BB00738245 /* SecuritySettingsView.swift in Sources */,
 				356B830E29C339110084488A /* SortTypeButton.swift in Sources */,
 				3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */,
@@ -3491,11 +3498,12 @@
 				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
 				35F8CD0429B624F80017DBC6 /* HomepageTabBar.swift in Sources */,
-				355895AD29D769C1001E2207 /* LogsView.swift in Sources */,
+				355895AD29D769C1001E2207 /* LogTypesView.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
+				355895AF29D76E67001E2207 /* LogsView.swift in Sources */,
 				3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */,
 				3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */,
 			);

@@ -18,56 +18,87 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct LogsView: View {
-    let onSelect: (PassLogModule) -> Void
-    let onClear: () -> Void
+    @Environment(\.dismiss) private var dismiss
+    @StateObject var viewModel: LogsViewModel
 
     var body: some View {
-        VStack {
-            VStack(alignment: .center, spacing: 22) {
-                NotchView()
-                    .padding(.top, 5)
-                Text("View logs")
-                    .navigationTitleText()
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
+        NavigationView {
+            ZStack {
+                Color.passBackground
+                    .ignoresSafeArea()
 
-            ScrollView {
-                VStack(spacing: kItemDetailSectionPadding) {
-                    VStack(spacing: 0) {
-                        ForEach(PassLogModule.allCases, id: \.hashValue) { module in
-                            OptionRow(action: { onSelect(module) },
-                                      height: CGFloat(kOptionRowCompactHeight),
-                                      content: { Text(module.title) },
-                                      trailing: { ChevronRight() })
-
-                            if module != PassLogModule.allCases.last {
-                                PassDivider()
-                            }
+                if viewModel.isLoading {
+                    ProgressView()
+                } else if let error = viewModel.error {
+                    RetryableErrorView(errorMessage: error.messageForTheUser,
+                                       onRetry: viewModel.loadLogs)
+                } else if viewModel.entries.isEmpty {
+                    VStack {
+                        Image(systemName: "doc")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 80)
+                            .foregroundColor(.secondary.opacity(0.5))
+                        Text("No logs")
+                            .foregroundColor(.secondary)
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            dismissButton
                         }
                     }
-                    .roundedEditableSection()
-
-                    OptionRow(
-                        action: {
-                            let modules = PassLogModule.allCases.map(LogManager.init)
-                            modules.forEach { $0.removeAllLogs() }
-                            onClear()
-                        },
-                        content: {
-                            Text("Clear all logs")
-                                .foregroundColor(.passBrand)
-                        })
-                    .roundedEditableSection()
+                } else {
+                    logs
                 }
-                .padding([.top, .horizontal])
+            }
+            .navigationTitle(viewModel.module.title)
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        .navigationViewStyle(.stack)
+    }
+
+    private var dismissButton: some View {
+        CircleButton(icon: IconProvider.cross, color: .passBrand, action: dismiss.callAsFunction)
+    }
+
+    private var logs: some View {
+        ScrollViewReader { value in
+            List {
+                ForEach(viewModel.formattedEntries, id: \.self) { entry in
+                    Text(entry)
+                        .font(.caption)
+                        .id(entry)
+                        .listRowBackground(Color.clear)
+                }
+            }
+            .listStyle(.plain)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    dismissButton
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    HStack {
+                        Button(action: {
+                            withAnimation {
+                                value.scrollTo(viewModel.formattedEntries.last ?? "")
+                            }
+                        }, label: {
+                            Image(systemName: "arrow.down.doc")
+                        })
+
+                        Button(action: viewModel.shareLogs) {
+                            Image(uiImage: IconProvider.arrowUpFromSquare)
+                        }
+                    }
+                    .foregroundColor(.primary)
+                }
             }
         }
-        .background(Color.passSecondaryBackground)
     }
 }
