@@ -61,6 +61,7 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
             .objectWillChange
             .sink { [unowned self] in
                 self.selectedBrowser = self.preferences.browser
+                self.selectedTheme = self.preferences.theme
             }
             .store(in: &cancellables)
     }

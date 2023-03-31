@@ -326,6 +326,7 @@
 		356BC35229D6C5B400F03497 /* SettingViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */; };
 		356BC35529D6D6AF00F03497 /* DefaultBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35429D6D6AF00F03497 /* DefaultBrowserView.swift */; };
 		356BC35929D6F36200F03497 /* OptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35829D6F36200F03497 /* OptionRow.swift */; };
+		356BC35B29D70C5000F03497 /* ThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35A29D70C5000F03497 /* ThemeView.swift */; };
 		356BDA3228DFAA9600B02E5A /* ShareKeyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */; };
 		356BDA3428DFAC9600B02E5A /* RemoteShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
@@ -945,6 +946,7 @@
 		356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModelV2.swift; sourceTree = "<group>"; };
 		356BC35429D6D6AF00F03497 /* DefaultBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBrowserView.swift; sourceTree = "<group>"; };
 		356BC35829D6F36200F03497 /* OptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionRow.swift; sourceTree = "<group>"; };
+		356BC35A29D70C5000F03497 /* ThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeView.swift; sourceTree = "<group>"; };
 		356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareKeyRepository.swift; sourceTree = "<group>"; };
 		356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareKeyDatasource.swift; sourceTree = "<group>"; };
 		356C2AAF28730EF00020F577 /* MainKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProvider.swift; sourceTree = "<group>"; };
@@ -1767,6 +1769,7 @@
 				356BC35429D6D6AF00F03497 /* DefaultBrowserView.swift */,
 				356BC34F29D6C57100F03497 /* SettingViewV2.swift */,
 				356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */,
+				356BC35A29D70C5000F03497 /* ThemeView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3411,6 +3414,7 @@
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
 				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
+				356BC35B29D70C5000F03497 /* ThemeView.swift in Sources */,
 				3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */,
 				355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */,
 				3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */,
