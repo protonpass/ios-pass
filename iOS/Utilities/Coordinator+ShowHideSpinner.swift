@@ -22,13 +22,15 @@ import Core
 import MBProgressHUD
 
 extension Coordinator {
-    func showLoadingHud() {
-        guard let view = topMostViewController.view else { return }
+    func showLoadingHud(_ view: UIView? = nil) {
+        let view = view ?? topMostViewController.view
+        guard let view else { return }
         MBProgressHUD.showAdded(to: view, animated: true)
     }
 
-    func hideLoadingHud() {
-        guard let view = topMostViewController.view else { return }
+    func hideLoadingHud(_ view: UIView? = nil) {
+        let view = view ?? topMostViewController.view
+        guard let view else { return }
         MBProgressHUD.hide(for: view, animated: true)
     }
 }
