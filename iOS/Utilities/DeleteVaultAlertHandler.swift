@@ -40,9 +40,9 @@ final class DeleteVaultAlertHandler: DeinitPrintable {
         self.rootViewController = rootViewController
         self.vault = vault
 
-        let alert = UIAlertController(title: "Permanently delete vault",
+        let alert = UIAlertController(title: "Permanently delete vault?",
                                       // swiftlint:disable:next line_length
-                                      message: "Vault \"\(vault.name)\" is not empty. Deleting this vault will also delete all its items. Please enter vault name to confirm.",
+                                      message: "Vault \"\(vault.name)\" is not empty. Deleting this vault will also delete all of its items. Please enter vault name to confirm.",
                                       preferredStyle: .alert)
         self.alert = alert
         self.delegate = delegate

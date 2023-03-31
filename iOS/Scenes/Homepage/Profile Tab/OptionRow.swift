@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIComponents
 
 struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
     var title: String?
@@ -59,8 +60,7 @@ struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
             VStack(alignment: .leading, spacing: 4) {
                 if let title {
                     Text(title)
-                        .font(.callout)
-                        .foregroundColor(.textHint)
+                        .sectionTitleText()
                 }
                 content
             }

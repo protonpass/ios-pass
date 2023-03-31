@@ -66,7 +66,7 @@ struct ProfileTabView: View {
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Group {
+            OptionRow {
                 switch viewModel.biometricAuthenticator.biometryTypeState {
                 case .idle, .initializing:
                     ProgressView()
@@ -93,16 +93,13 @@ struct ProfileTabView: View {
                     Text(error.localizedDescription)
                 }
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 24)
-            .padding(.horizontal, 16)
+            .padding(.vertical, kItemDetailSectionPadding / 2)
             .roundedEditableSection()
 
             if case .initialized(let biometryType) = viewModel.biometricAuthenticator.biometryTypeState,
                biometryType != .none {
                 Text("Unlock Proton Pass with a glance.")
-                    .font(.callout)
-                    .foregroundColor(.textHint)
+                    .sectionTitleText()
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
@@ -111,29 +108,23 @@ struct ProfileTabView: View {
 
     private var accountAndSettingsSection: some View {
         VStack(spacing: 0) {
-            Button(action: viewModel.showAccountMenu) {
+            OptionRow(action: viewModel.showAccountMenu) {
                 HStack {
                     Text("Account")
                     Spacer()
                     ChevronRight()
                 }
-                .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
-            .padding(kItemDetailSectionPadding)
 
             PassDivider()
 
-            Button(action: viewModel.showSettingsMenu) {
+            OptionRow(action: viewModel.showSettingsMenu) {
                 HStack {
                     Text("Settings")
                     Spacer()
                     ChevronRight()
                 }
-                .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
-            .padding(kItemDetailSectionPadding)
         }
         .roundedEditableSection()
         .padding(.horizontal)

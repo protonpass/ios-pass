@@ -50,52 +50,27 @@ struct SettingViewV2: View {
 
     private var untitledSection: some View {
         VStack(spacing: 0) {
-            Button(action: viewModel.editDefaultBrowser) {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("Default browser")
-                            .font(.callout)
-                            .foregroundColor(.textHint)
-                        Text(viewModel.selectedBrowser.description)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                    Spacer()
-
-                    ChevronRight()
-                }
-                .padding(kItemDetailSectionPadding)
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
+            OptionRow(action: viewModel.editDefaultBrowser,
+                      title: "Default browser",
+                      content: { Text(viewModel.selectedBrowser.description) },
+                      trailing: { ChevronRight() })
 
             PassDivider()
 
-            Button(action: viewModel.editTheme) {
-                HStack {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Theme")
-                            .font(.callout)
-                            .foregroundColor(.textHint)
-                        Label(title: {
-                            Text(viewModel.selectedTheme.description)
-                        }, icon: {
-                            Image(uiImage: viewModel.selectedTheme.icon)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 14, height: 14)
-                        })
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                    Spacer()
-
-                    ChevronRight()
-                }
-                .padding(kItemDetailSectionPadding)
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
+            OptionRow(
+                action: viewModel.editTheme,
+                title: "Theme",
+                content: {
+                    Label(title: {
+                        Text(viewModel.selectedTheme.description)
+                    }, icon: {
+                        Image(uiImage: viewModel.selectedTheme.icon)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 14, height: 14)
+                    })
+                },
+                trailing: { ChevronRight() })
         }
         .roundedEditableSection()
     }

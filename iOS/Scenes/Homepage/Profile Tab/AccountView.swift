@@ -28,71 +28,55 @@ struct AccountView: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Username")
-                    .font(.callout)
-                    .foregroundColor(.textHint)
-                Text(viewModel.username)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(kItemDetailSectionPadding)
+            OptionRow(title: "Username",
+                      content: { Text(viewModel.username) })
             .roundedEditableSection()
 
-            Button(action: viewModel.manageSubscription) {
-                HStack {
+            OptionRow(
+                action: viewModel.manageSubscription,
+                content: {
                     Text("Manage subscription")
                         .foregroundColor(.passBrand)
-                    Spacer()
+                },
+                trailing: {
                     CircleButton(icon: IconProvider.arrowOutSquare,
                                  color: .passBrand,
                                  action: {})
-                }
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .padding(.horizontal, kItemDetailSectionPadding)
-            .padding(.vertical, kItemDetailSectionPadding * 1.5)
+                })
+            .padding(.vertical, kItemDetailSectionPadding / 2)
             .roundedEditableSection()
 
-            Button(action: {
-                isShowingSignOutConfirmation.toggle()
-            }, label: {
-                HStack {
+            OptionRow(
+                action: { isShowingSignOutConfirmation.toggle() },
+                content: {
                     Text("Sign out")
                         .foregroundColor(.passBrand)
-                    Spacer()
+                },
+                trailing: {
                     CircleButton(icon: IconProvider.arrowOutFromRectangle,
                                  color: .passBrand,
                                  action: {})
-                }
-                .contentShape(Rectangle())
-            })
-            .buttonStyle(.plain)
-            .padding(.horizontal, kItemDetailSectionPadding)
-            .padding(.vertical, kItemDetailSectionPadding * 1.5)
+                })
+            .padding(.vertical, kItemDetailSectionPadding / 2)
             .roundedEditableSection()
 
-            Button(action: viewModel.deleteAccount) {
-                HStack {
+            OptionRow(
+                action: viewModel.deleteAccount,
+                content: {
                     Text("Delete account")
                         .foregroundColor(.notificationError)
-                    Spacer()
+                },
+                trailing: {
                     CircleButton(icon: IconProvider.trash,
                                  color: .notificationError,
                                  action: {})
-                }
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .padding(.horizontal, kItemDetailSectionPadding)
-            .padding(.vertical, kItemDetailSectionPadding * 1.5)
+                })
+            .padding(.vertical, kItemDetailSectionPadding / 2)
             .roundedEditableSection()
 
             // swiftlint:disable:next line_length
             Text("This will permanently delete your account and all of its data. You will not be able to reactivate this account.")
-                .font(.caption)
-                .foregroundColor(.textHint)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .sectionTitleText()
 
             Spacer()
         }
