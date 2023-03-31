@@ -51,6 +51,10 @@ public extension Text {
         self.foregroundColor(.textNorm)
     }
 
+    func sectionHeaderText() -> Text {
+        self.foregroundColor(.textWeak)
+    }
+
     /// Used for placeholder `Text`s like `Empty notes`, `No items`...
     func placeholderText() -> Text {
         self.font(.body.italic()).foregroundColor(.textWeak)
