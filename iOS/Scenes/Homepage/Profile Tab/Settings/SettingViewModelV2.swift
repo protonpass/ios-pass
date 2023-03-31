@@ -24,16 +24,23 @@ import Core
 import SwiftUI
 
 protocol SettingViewModelDelegateV2: AnyObject {
+    func settingViewModelWantsToShowSpinner()
+    func settingViewModelWantsToHideSpinner()
     func settingViewModelWantsToGoBack()
     func settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser])
     func settingViewModelWantsToEditTheme()
     func settingViewModelWantsToEditClipboardExpiration()
     func settingViewModelWantsToEdit(primaryVault: Vault)
+    func settingViewModelWantsToViewLogs()
+    func settingViewModelDidFinishFullSync()
+    func settingViewModelDidEncounter(error: Error)
 }
 
 final class SettingViewModelV2: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    private let itemRepository: ItemRepositoryProtocol
+    private let logger: Logger
     private let preferences: Preferences
     let vaultsManager: VaultsManager
 
@@ -46,8 +53,14 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
     weak var delegate: SettingViewModelDelegateV2?
     private var cancellables = Set<AnyCancellable>()
 
-    init(preferences: Preferences,
+    init(itemRepository: ItemRepositoryProtocol,
+         logManager: LogManager,
+         preferences: Preferences,
          vaultsManager: VaultsManager) {
+        self.itemRepository = itemRepository
+        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
+                            category: "\(Self.self)",
+                            manager: logManager)
         self.preferences = preferences
         let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
             guard let appScheme = browser.appScheme,
@@ -100,5 +113,25 @@ extension SettingViewModelV2 {
 
     func edit(primaryVault: Vault) {
         delegate?.settingViewModelWantsToEdit(primaryVault: primaryVault)
+    }
+
+    func viewLogs() {
+        delegate?.settingViewModelWantsToViewLogs()
+    }
+
+    func forceSync() {
+        Task { @MainActor in
+            defer { delegate?.settingViewModelWantsToHideSpinner() }
+            do {
+                logger.trace("Doing full sync")
+                delegate?.settingViewModelWantsToShowSpinner()
+                try await itemRepository.refreshItems()
+                logger.info("Finished full sync")
+                delegate?.settingViewModelDidFinishFullSync()
+            } catch {
+                logger.error(error)
+                delegate?.settingViewModelDidEncounter(error: error)
+            }
+        }
     }
 }

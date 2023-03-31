@@ -327,7 +327,7 @@
 		356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */; };
 		356BC35929D6F36200F03497 /* OptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35829D6F36200F03497 /* OptionRow.swift */; };
 		356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35A29D70C5000F03497 /* EditThemeView.swift */; };
-		356BC35D29D710DC00F03497 /* ClipboardExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35C29D710DC00F03497 /* ClipboardExpirationView.swift */; };
+		356BC35D29D710DC00F03497 /* EditClipboardExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */; };
 		356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35E29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift */; };
 		356BC36129D7189900F03497 /* ShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36029D7189900F03497 /* ShareTests.swift */; };
 		356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36229D7226A00F03497 /* VaultThumbnail.swift */; };
@@ -953,7 +953,7 @@
 		356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDefaultBrowserView.swift; sourceTree = "<group>"; };
 		356BC35829D6F36200F03497 /* OptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionRow.swift; sourceTree = "<group>"; };
 		356BC35A29D70C5000F03497 /* EditThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditThemeView.swift; sourceTree = "<group>"; };
-		356BC35C29D710DC00F03497 /* ClipboardExpirationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardExpirationView.swift; sourceTree = "<group>"; };
+		356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClipboardExpirationView.swift; sourceTree = "<group>"; };
 		356BC35E29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPrimaryVaultEndpoint.swift; sourceTree = "<group>"; };
 		356BC36029D7189900F03497 /* ShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTests.swift; sourceTree = "<group>"; };
 		356BC36229D7226A00F03497 /* VaultThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultThumbnail.swift; sourceTree = "<group>"; };
@@ -1781,7 +1781,7 @@
 		356BC35329D6CDA300F03497 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				356BC35C29D710DC00F03497 /* ClipboardExpirationView.swift */,
+				356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */,
 				356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */,
 				356BC36629D7266800F03497 /* EditPrimaryVaultView.swift */,
 				356BC36829D7267F00F03497 /* EditPrimaryVaultViewModel.swift */,
@@ -3450,7 +3450,7 @@
 				355BDED6299E6515009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				3569B29F29B77A760070830B /* VaultContentUiModel.swift in Sources */,
 				3571B5A329BF73C0008D4350 /* SearchViewSkeleton.swift in Sources */,
-				356BC35D29D710DC00F03497 /* ClipboardExpirationView.swift in Sources */,
+				356BC35D29D710DC00F03497 /* EditClipboardExpirationView.swift in Sources */,
 				354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */,
 				35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */,
 				3562BCF329BDBF2500564508 /* SectionIndexTitles.swift in Sources */,

@@ -43,7 +43,6 @@ struct AccountView: View {
                                  color: .passBrand,
                                  action: {})
                 })
-            .padding(.vertical, kItemDetailSectionPadding / 2)
             .roundedEditableSection()
 
             OptionRow(
@@ -57,7 +56,6 @@ struct AccountView: View {
                                  color: .passBrand,
                                  action: {})
                 })
-            .padding(.vertical, kItemDetailSectionPadding / 2)
             .roundedEditableSection()
 
             OptionRow(
@@ -71,7 +69,6 @@ struct AccountView: View {
                                  color: .notificationError,
                                  action: {})
                 })
-            .padding(.vertical, kItemDetailSectionPadding / 2)
             .roundedEditableSection()
 
             // swiftlint:disable:next line_length

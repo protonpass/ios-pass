@@ -41,6 +41,7 @@ struct EditThemeView: View {
                     ForEach(Theme.allCases, id: \.rawValue) { theme in
                         OptionRow(
                             action: { preferences.theme = theme; dismiss() },
+                            height: CGFloat(kOptionRowCompactHeight),
                             content: {
                                 Label(title: {
                                     Text(theme.description)

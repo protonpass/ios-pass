@@ -93,7 +93,6 @@ struct ProfileTabView: View {
                     Text(error.localizedDescription)
                 }
             }
-            .padding(.vertical, kItemDetailSectionPadding / 2)
             .roundedEditableSection()
 
             if case .initialized(let biometryType) = viewModel.biometricAuthenticator.biometryTypeState,

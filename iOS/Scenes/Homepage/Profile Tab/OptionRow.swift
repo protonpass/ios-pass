@@ -21,36 +21,42 @@
 import SwiftUI
 import UIComponents
 
+let kOptionRowCompactHeight = 60
+
 struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
-    var title: String?
-    let content: Content
-    var leading: LeadingView
-    var trailing: TrailingView
     let action: (() -> Void)?
+    let title: String?
+    let height: CGFloat
+    let content: Content
+    let leading: LeadingView
+    let trailing: TrailingView
 
     init(action: (() -> Void)? = nil,
          title: String? = nil,
+         height: CGFloat = 76,
          @ViewBuilder content: () -> Content,
          @ViewBuilder leading: (() -> LeadingView) = { EmptyView() },
          @ViewBuilder trailing: (() -> TrailingView) = { EmptyView() }) {
+        self.action = action
         self.title = title
+        self.height = height
         self.content = content()
         self.leading = leading()
         self.trailing = trailing()
-        self.action = action
     }
 
     var body: some View {
-        if let action {
-            Button(action: action) {
+        Group {
+            if let action {
+                Button(action: action) {
+                    realBody
+                }
+                .buttonStyle(.plain)
+            } else {
                 realBody
             }
-            .buttonStyle(.plain)
-            .padding(kItemDetailSectionPadding)
-        } else {
-            realBody
-                .padding(kItemDetailSectionPadding)
         }
+        .padding(.horizontal, kItemDetailSectionPadding)
     }
 
     private var realBody: some View {
@@ -68,8 +74,8 @@ struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
             Spacer()
 
             trailing
-                .disabled(true)
         }
         .contentShape(Rectangle())
+        .frame(height: height)
     }
 }
