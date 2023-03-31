@@ -28,7 +28,7 @@ struct DefaultBrowserView: View {
     let preferences: Preferences
 
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 0) {
             VStack(alignment: .center, spacing: 22) {
                 NotchView()
                     .padding(.top, 5)
@@ -36,33 +36,40 @@ struct DefaultBrowserView: View {
                     .navigationTitleText()
             }
             .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.bottom, 24)
 
             ScrollView {
                 VStack {
-                    ForEach(supportedBrowsers, id: \.rawValue) { browser in
-                        Button(action: {
-                            preferences.browser = browser
-                            dismiss()
-                        }, label: {
-                            HStack {
-                                Text(browser.description)
-                                Spacer()
-                                if browser == preferences.browser {
-                                    Label("", systemImage: "checkmark")
-                                        .foregroundColor(.passBrand)
+                    VStack {
+                        ForEach(supportedBrowsers, id: \.rawValue) { browser in
+                            Button(action: {
+                                preferences.browser = browser
+                                dismiss()
+                            }, label: {
+                                HStack {
+                                    Text(browser.description)
+                                    Spacer()
+                                    if browser == preferences.browser {
+                                        Label("", systemImage: "checkmark")
+                                            .foregroundColor(.passBrand)
+                                    }
                                 }
-                            }
-                            .contentShape(Rectangle())
-                        })
-                        .buttonStyle(.plain)
-                        .padding(kItemDetailSectionPadding)
+                                .contentShape(Rectangle())
+                            })
+                            .buttonStyle(.plain)
+                            .padding(kItemDetailSectionPadding)
 
-                        if browser != supportedBrowsers.last {
-                            PassDivider()
+                            if browser != supportedBrowsers.last {
+                                PassDivider()
+                            }
                         }
                     }
+                    .roundedEditableSection()
+
+                    Text("This preference will fallback to Safari if the browser of choice is uninstalled.")
+                        .font(.callout)
+                        .foregroundColor(.textHint)
                 }
-                .roundedEditableSection()
             }
             .padding(.horizontal)
         }
