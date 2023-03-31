@@ -520,11 +520,24 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowFeedback() {
-        print(#function)
+        let view = FeedbackChannelsView { [unowned self] selectedChannel in
+            self.urlOpener.open(urlString: selectedChannel.urlString)
+        }
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = CGFloat(52 * FeedbackChannel.allCases.count + 100)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium()]
+        }
+        present(viewController)
     }
 
     func profileTabViewModelWantsToRateApp() {
-        print(#function)
+        urlOpener.open(urlString: kAppStoreUrlString)
     }
 }
 
