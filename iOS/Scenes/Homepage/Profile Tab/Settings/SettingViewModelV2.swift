@@ -26,6 +26,7 @@ protocol SettingViewModelDelegateV2: AnyObject {
     func settingViewModelWantsToGoBack()
     func settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser])
     func settingViewModelWantsToEditTheme()
+    func settingViewModelWantsToEditClipboardExpiration()
 }
 
 final class SettingViewModelV2: ObservableObject, DeinitPrintable {
@@ -36,6 +37,8 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
     let supportedBrowsers: [Browser]
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
+    @Published private(set) var selectedClipboardExpiration: ClipboardExpiration
+    @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
 
     weak var delegate: SettingViewModelDelegateV2?
     private var cancellables = Set<AnyCancellable>()
@@ -56,12 +59,15 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
         self.supportedBrowsers = [.safari, .inAppSafari] + installedBrowsers
 
         self.selectedTheme = preferences.theme
+        self.selectedClipboardExpiration = preferences.clipboardExpiration
+        self.shareClipboard = preferences.shareClipboard
 
         preferences
             .objectWillChange
             .sink { [unowned self] in
                 self.selectedBrowser = self.preferences.browser
                 self.selectedTheme = self.preferences.theme
+                self.selectedClipboardExpiration = self.preferences.clipboardExpiration
             }
             .store(in: &cancellables)
     }
@@ -79,5 +85,9 @@ extension SettingViewModelV2 {
 
     func editTheme() {
         delegate?.settingViewModelWantsToEditTheme()
+    }
+
+    func editClipboardExpiration() {
+        delegate?.settingViewModelWantsToEditClipboardExpiration()
     }
 }

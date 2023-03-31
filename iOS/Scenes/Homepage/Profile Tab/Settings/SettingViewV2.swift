@@ -27,8 +27,9 @@ struct SettingViewV2: View {
 
     var body: some View {
         ScrollView {
-            VStack {
+            VStack(spacing: kItemDetailSectionPadding) {
                 untitledSection
+                clipboardSection
             }
             .padding()
         }
@@ -73,5 +74,30 @@ struct SettingViewV2: View {
                 trailing: { ChevronRight() })
         }
         .roundedEditableSection()
+    }
+
+    private var clipboardSection: some View {
+        VStack(spacing: kItemDetailSectionPadding) {
+            Text("Clipboard")
+                .sectionHeaderText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            VStack(spacing: 0) {
+                OptionRow(action: viewModel.editClipboardExpiration,
+                          title: "Clear clipboard",
+                          content: { Text(viewModel.selectedClipboardExpiration.description) },
+                          trailing: { ChevronRight() })
+
+                PassDivider()
+
+                OptionRow {
+                    Toggle(isOn: $viewModel.shareClipboard) {
+                        Text("Share clipboard between devices")
+                    }
+                    .tint(.passBrand)
+                }
+            }
+            .roundedEditableSection()
+        }
     }
 }
