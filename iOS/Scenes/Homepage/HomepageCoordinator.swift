@@ -188,43 +188,36 @@ private extension HomepageCoordinator {
     }
 
     func presentItemDetailView(for itemContent: ItemContent) {
-        let itemDetailView: any View
-        let baseItemDetailViewModel: BaseItemDetailViewModel
+        let view: any View
+        let baseViewModel: BaseItemDetailViewModel
         switch itemContent.contentData {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
                                                  itemRepository: repositoryManager.itemRepository,
                                                  logManager: logManager)
             viewModel.logInDetailViewModelDelegate = self
-            baseItemDetailViewModel = viewModel
-            itemDetailView = LogInDetailView(viewModel: viewModel)
+            baseViewModel = viewModel
+            view = LogInDetailView(viewModel: viewModel)
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRepository: repositoryManager.itemRepository,
                                                 logManager: logManager)
-            baseItemDetailViewModel = viewModel
-            itemDetailView = NoteDetailView(viewModel: viewModel)
+            baseViewModel = viewModel
+            view = NoteDetailView(viewModel: viewModel)
 
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
                                                  itemRepository: repositoryManager.itemRepository,
                                                  aliasRepository: repositoryManager.aliasRepository,
                                                  logManager: logManager)
-            baseItemDetailViewModel = viewModel
-            itemDetailView = AliasDetailView(viewModel: viewModel)
+            baseViewModel = viewModel
+            view = AliasDetailView(viewModel: viewModel)
         }
 
-        baseItemDetailViewModel.delegate = self
-        currentItemDetailViewModel = baseItemDetailViewModel
-
-        // Push on iPad, sheets on iPhone
-        if UIDevice.current.isIpad {
-            push(itemDetailView)
-        } else {
-            present(NavigationView { AnyView(itemDetailView) }.navigationViewStyle(.stack),
-                    userInterfaceStyle: preferences.theme.userInterfaceStyle)
-        }
+        baseViewModel.delegate = self
+        currentItemDetailViewModel = baseViewModel
+        adaptivelyPresentDetailView(view: view)
     }
 
     func presentEditItemView(for itemContent: ItemContent) {
@@ -364,6 +357,25 @@ private extension HomepageCoordinator {
         vaultsManager.refresh()
         searchViewModel?.refreshResults()
     }
+
+    func adaptivelyPresentDetailView<V: View>(view: V) {
+        if UIDevice.current.isIpad {
+            push(view)
+        } else {
+            present(NavigationView { AnyView(view) }.navigationViewStyle(.stack),
+                    userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        }
+    }
+
+    func adaptivelyDismissCurrentDetailView() {
+        // Dismiss differently because show differently
+        // (push on iPad, sheets on iPhone)
+        if UIDevice.current.isIpad {
+            popTopViewController(animated: true)
+        } else {
+            dismissTopMostViewController()
+        }
+    }
 }
 
 // MARK: - Public APIs
@@ -455,14 +467,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         let viewModel = AccountViewModel(username: userData.user.email ?? "")
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
-
-        // Push on iPad, sheets on iPhone
-        if UIDevice.current.isIpad {
-            push(view)
-        } else {
-            present(NavigationView { AnyView(view) }.navigationViewStyle(.stack),
-                    userInterfaceStyle: preferences.theme.userInterfaceStyle)
-        }
+        adaptivelyPresentDetailView(view: view)
     }
 
     func profileTabViewModelWantsToShowSettingsMenu() {
@@ -473,7 +478,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 // MARK: - AccountViewModelDelegate
 extension HomepageCoordinator: AccountViewModelDelegate {
     func accountViewModelWantsToGoBack() {
-        itemDetailViewModelWantsToGoBack()
+        adaptivelyDismissCurrentDetailView()
     }
 
     func accountViewModelWantsToManageSubscription() {
@@ -673,13 +678,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToGoBack() {
-        // Dismiss differently because show differently
-        // (push on iPad, sheets on iPhone)
-        if UIDevice.current.isIpad {
-            popTopViewController(animated: true)
-        } else {
-            dismissTopMostViewController()
-        }
+        adaptivelyDismissCurrentDetailView()
     }
 
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
