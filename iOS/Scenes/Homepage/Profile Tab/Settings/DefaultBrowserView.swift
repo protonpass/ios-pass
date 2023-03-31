@@ -42,7 +42,7 @@ struct DefaultBrowserView: View {
                 VStack {
                     VStack(spacing: 0) {
                         ForEach(supportedBrowsers, id: \.rawValue) { browser in
-                            SettingsOptionRow(
+                            OptionRow(
                                 action: { preferences.browser = browser; dismiss() },
                                 content: { Text(browser.description) },
                                 trailing: {
