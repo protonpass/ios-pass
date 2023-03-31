@@ -83,9 +83,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
          vaultSelection: VaultSelection) {
         self.itemContextMenuHandler = itemContextMenuHandler
         self.itemRepository = itemRepository
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.searchEntryDatasource = searchEntryDatasource
         self.symmetricKey = symmetricKey
         self.vaultSelection = vaultSelection

@@ -94,9 +94,7 @@ public final class CredentialProviderCoordinator {
         self.context = context
         self.preferences = preferences
         self.logManager = logManager
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         let bannerManager = BannerManager(container: rootViewController)
         self.bannerManager = bannerManager
         self.clipboardManager = .init(preferences: preferences)

@@ -139,9 +139,7 @@ public final class CredentialManager: CredentialManagerProtocol {
     public init(logManager: LogManager,
                 store: ASCredentialIdentityStore = .shared) {
         self.store = store
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 }
 

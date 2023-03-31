@@ -38,9 +38,7 @@ public struct PublicKeyRepository: PublicKeyRepositoryProtocol {
          logManager: LogManager) {
         self.localPublicKeyDatasource = localPublicKeyDatasource
         self.remotePublicKeyDatasource = remotePublicKeyDatasource
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 
     public init(container: NSPersistentContainer,
@@ -48,9 +46,7 @@ public struct PublicKeyRepository: PublicKeyRepositoryProtocol {
                 logManager: LogManager) {
         self.localPublicKeyDatasource = LocalPublicKeyDatasource(container: container)
         self.remotePublicKeyDatasource = RemotePublicKeyDatasource(apiService: apiService)
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 
     public func getPublicKeys(email: String) async throws -> [PublicKey] {

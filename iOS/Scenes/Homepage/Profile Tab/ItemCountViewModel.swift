@@ -35,9 +35,7 @@ final class ItemCountViewModel: ObservableObject {
 
     init(itemRepository: ItemRepositoryProtocol, logManager: LogManager) {
         self.itemRepository = itemRepository
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.refresh()
     }
 

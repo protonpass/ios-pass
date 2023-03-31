@@ -58,9 +58,7 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
          preferences: Preferences,
          vaultsManager: VaultsManager) {
         self.itemRepository = itemRepository
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.preferences = preferences
         let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
             guard let appScheme = browser.appScheme,

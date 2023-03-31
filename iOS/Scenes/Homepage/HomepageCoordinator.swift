@@ -80,9 +80,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.apiService = apiService
         self.clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.logManager = logManager
         self.manualLogIn = manualLogIn
         self.preferences = preferences

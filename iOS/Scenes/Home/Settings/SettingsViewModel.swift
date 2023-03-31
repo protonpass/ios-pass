@@ -122,9 +122,7 @@ final class SettingsViewModel: DeinitPrintable, ObservableObject {
         self.theme = preferences.theme
         self.clipboardExpiration = preferences.clipboardExpiration
         self.shareClipboard = preferences.shareClipboard
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
 
         let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
             guard let appScheme = browser.appScheme,

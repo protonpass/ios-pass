@@ -100,9 +100,7 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
     public private(set) var uri = ""
 
     public init(logManager: LogManager) {
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 
     public var totpData: TOTPData? {
