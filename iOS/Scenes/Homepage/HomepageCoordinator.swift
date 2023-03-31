@@ -538,7 +538,20 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func settingViewModelWantsToEditTheme() {}
+    func settingViewModelWantsToEditTheme() {
+        let view = ThemeView(preferences: preferences)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = CGFloat(66 * Theme.allCases.count + 66)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
 }
 
 // MARK: - CreateEditItemViewModelDelegate
