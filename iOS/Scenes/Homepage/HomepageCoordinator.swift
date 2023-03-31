@@ -455,10 +455,13 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         let viewModel = AccountViewModel(username: userData.user.email ?? "")
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
+
+        // Push on iPad, sheets on iPhone
         if UIDevice.current.isIpad {
-            push(view, animated: true, hidesBackButton: true)
+            push(view)
         } else {
-            present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+            present(NavigationView { AnyView(view) }.navigationViewStyle(.stack),
+                    userInterfaceStyle: preferences.theme.userInterfaceStyle)
         }
     }
 
