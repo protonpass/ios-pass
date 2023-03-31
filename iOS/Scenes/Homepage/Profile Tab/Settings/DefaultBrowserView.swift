@@ -28,7 +28,7 @@ struct DefaultBrowserView: View {
     let preferences: Preferences
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack {
             VStack(alignment: .center, spacing: 22) {
                 NotchView()
                     .padding(.top, 5)
@@ -36,7 +36,6 @@ struct DefaultBrowserView: View {
                     .navigationTitleText()
             }
             .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.bottom, 24)
 
             ScrollView {
                 VStack {
@@ -63,6 +62,7 @@ struct DefaultBrowserView: View {
                         .font(.callout)
                         .foregroundColor(.textHint)
                 }
+                .padding(.top)
             }
             .padding(.horizontal)
         }
