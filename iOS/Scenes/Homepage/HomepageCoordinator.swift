@@ -392,6 +392,7 @@ private extension HomepageCoordinator {
 
     func presentLogsView(for module: PassLogModule) {
         let viewModel = LogsViewModel(module: module)
+        viewModel.delegate = self
         let view = LogsView(viewModel: viewModel)
         present(view)
     }
@@ -981,6 +982,26 @@ extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
     }
 
     func editPrimaryVaultViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - LogsViewModelDelegate
+extension HomepageCoordinator: LogsViewModelDelegate {
+    func logsViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func logsViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
+    func logsViewModelWantsToShareLogs(_ url: URL) {
+        let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        present(activityVC)
+    }
+
+    func logsViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }

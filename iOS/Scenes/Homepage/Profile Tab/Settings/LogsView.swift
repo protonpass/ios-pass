@@ -56,7 +56,6 @@ struct LogsView: View {
                     logs
                 }
             }
-            .navigationTitle(viewModel.module.title)
             .navigationBarTitleDisplayMode(.inline)
         }
         .navigationViewStyle(.stack)
@@ -82,21 +81,22 @@ struct LogsView: View {
                     dismissButton
                 }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    HStack {
-                        Button(action: {
+                ToolbarItem(placement: .principal) {
+                    Text(viewModel.module.title)
+                        .navigationTitleText()
+                        .onTapGesture {
                             withAnimation {
                                 value.scrollTo(viewModel.formattedEntries.last ?? "")
                             }
-                        }, label: {
-                            Image(systemName: "arrow.down.doc")
-                        })
-
-                        Button(action: viewModel.shareLogs) {
-                            Image(uiImage: IconProvider.arrowUpFromSquare)
                         }
-                    }
-                    .foregroundColor(.primary)
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    CapsuleLabelButton(icon: IconProvider.arrowUpFromSquare,
+                                       title: "Share",
+                                       backgroundColor: .passBrand,
+                                       disabled: false,
+                                       action: viewModel.shareLogs)
                 }
             }
         }
