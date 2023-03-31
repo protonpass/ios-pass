@@ -514,6 +514,18 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func profileTabViewModelWantsToShowTermsOfService() {
         urlOpener.open(urlString: "https://proton.me/legal/terms")
     }
+
+    func profileTabViewModelWantsToShowTips() {
+        print(#function)
+    }
+
+    func profileTabViewModelWantsToShowFeedback() {
+        print(#function)
+    }
+
+    func profileTabViewModelWantsToRateApp() {
+        print(#function)
+    }
 }
 
 // MARK: - AccountViewModelDelegate

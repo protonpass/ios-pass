@@ -79,3 +79,24 @@ struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
         .frame(height: height)
     }
 }
+
+struct TextOptionRow: View {
+    let title: String
+    let action: () -> Void
+
+    var body: some View {
+        OptionRow(action: action,
+                  content: { Text(title) },
+                  trailing: { ChevronRight() })
+    }
+}
+
+struct ChevronRight: View {
+    var body: some View {
+        Image(systemName: "chevron.right")
+            .resizable()
+            .scaledToFit()
+            .frame(height: 12)
+            .foregroundColor(Color(.tertiaryLabel))
+    }
+}

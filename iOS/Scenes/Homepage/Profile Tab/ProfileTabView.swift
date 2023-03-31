@@ -42,6 +42,8 @@ struct ProfileTabView: View {
                     accountAndSettingsSection
                         .padding(.vertical)
                     aboutSection
+                    helpCenterSection
+                        .padding(.vertical)
                     Spacer()
                 }
                 .padding(.top)
@@ -108,15 +110,9 @@ struct ProfileTabView: View {
 
     private var accountAndSettingsSection: some View {
         VStack(spacing: 0) {
-            OptionRow(action: viewModel.showAccountMenu,
-                      content: { Text("Account") },
-                      trailing: { ChevronRight() })
-
+            TextOptionRow(title: "Account", action: viewModel.showAccountMenu)
             PassDivider()
-
-            OptionRow(action: viewModel.showSettingsMenu,
-                      content: { Text("Settings") },
-                      trailing: { ChevronRight() })
+            TextOptionRow(title: "Settings", action: viewModel.showSettingsMenu)
         }
         .roundedEditableSection()
         .padding(.horizontal)
@@ -129,34 +125,32 @@ struct ProfileTabView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 0) {
-                OptionRow(action: viewModel.showAcknowledgments,
-                          content: { Text("Acknowledgments") },
-                          trailing: { ChevronRight() })
-
+                TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
                 PassDivider()
-
-                OptionRow(action: viewModel.showPrivacyPolicy,
-                          content: { Text("Privacy policy") },
-                          trailing: { ChevronRight() })
-
+                TextOptionRow(title: "Privacy policy", action: viewModel.showPrivacyPolicy)
                 PassDivider()
-
-                OptionRow(action: viewModel.showTermsOfService,
-                          content: { Text("Terms of service") },
-                          trailing: { ChevronRight() })
+                TextOptionRow(title: "Terms of service", action: viewModel.showTermsOfService)
             }
             .roundedEditableSection()
         }
         .padding(.horizontal)
     }
-}
 
-struct ChevronRight: View {
-    var body: some View {
-        Image(systemName: "chevron.right")
-            .resizable()
-            .scaledToFit()
-            .frame(height: 12)
-            .foregroundColor(Color(.tertiaryLabel))
+    private var helpCenterSection: some View {
+        VStack(spacing: kItemDetailSectionPadding) {
+            Text("Help center")
+                .sectionHeaderText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            VStack(spacing: 0) {
+                TextOptionRow(title: "Tips", action: viewModel.showTips)
+                PassDivider()
+                TextOptionRow(title: "Feedback", action: viewModel.showFeedback)
+                PassDivider()
+                TextOptionRow(title: "Rate app", action: viewModel.rateApp)
+            }
+            .roundedEditableSection()
+        }
+        .padding(.horizontal)
     }
 }
