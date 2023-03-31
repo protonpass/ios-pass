@@ -524,7 +524,7 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
     }
 
     func settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser]) {
-        let view = DefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
+        let view = EditDefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
             let height = CGFloat(66 * supportedBrowsers.count + 100)
@@ -539,7 +539,7 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
     }
 
     func settingViewModelWantsToEditTheme() {
-        let view = ThemeView(preferences: preferences)
+        let view = EditThemeView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
             let height = CGFloat(66 * Theme.allCases.count + 66)

@@ -1,5 +1,5 @@
 //
-// ThemeView.swift
+// EditThemeView.swift
 // Proton Pass - Created on 31/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -22,7 +22,7 @@ import Core
 import SwiftUI
 import UIComponents
 
-struct ThemeView: View {
+struct EditThemeView: View {
     @Environment(\.dismiss) private var dismiss
     let preferences: Preferences
 
