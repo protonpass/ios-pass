@@ -40,24 +40,17 @@ struct DefaultBrowserView: View {
 
             ScrollView {
                 VStack {
-                    VStack {
+                    VStack(spacing: 0) {
                         ForEach(supportedBrowsers, id: \.rawValue) { browser in
-                            Button(action: {
-                                preferences.browser = browser
-                                dismiss()
-                            }, label: {
-                                HStack {
-                                    Text(browser.description)
-                                    Spacer()
+                            SettingsOptionRow(
+                                action: { preferences.browser = browser; dismiss() },
+                                content: { Text(browser.description) },
+                                trailing: {
                                     if browser == preferences.browser {
                                         Label("", systemImage: "checkmark")
                                             .foregroundColor(.passBrand)
                                     }
-                                }
-                                .contentShape(Rectangle())
-                            })
-                            .buttonStyle(.plain)
-                            .padding(kItemDetailSectionPadding)
+                                })
 
                             if browser != supportedBrowsers.last {
                                 PassDivider()

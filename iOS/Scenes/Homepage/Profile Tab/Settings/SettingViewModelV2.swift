@@ -25,6 +25,7 @@ import SwiftUI
 protocol SettingViewModelDelegateV2: AnyObject {
     func settingViewModelWantsToGoBack()
     func settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser])
+    func settingViewModelWantsToEditTheme()
 }
 
 final class SettingViewModelV2: ObservableObject, DeinitPrintable {
@@ -34,6 +35,7 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
 
     let supportedBrowsers: [Browser]
     @Published private(set) var selectedBrowser: Browser
+    @Published private(set) var selectedTheme: Theme
 
     weak var delegate: SettingViewModelDelegateV2?
     private var cancellables = Set<AnyCancellable>()
@@ -53,6 +55,8 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
         preferences.browser : .safari
         self.supportedBrowsers = [.safari, .inAppSafari] + installedBrowsers
 
+        self.selectedTheme = preferences.theme
+
         preferences
             .objectWillChange
             .sink { [unowned self] in
@@ -70,5 +74,9 @@ extension SettingViewModelV2 {
 
     func editDefaultBrowser() {
         delegate?.settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: supportedBrowsers)
+    }
+
+    func editTheme() {
+        delegate?.settingViewModelWantsToEditTheme()
     }
 }

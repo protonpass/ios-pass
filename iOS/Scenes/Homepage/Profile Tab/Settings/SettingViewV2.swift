@@ -68,6 +68,34 @@ struct SettingViewV2: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+
+            PassDivider()
+
+            Button(action: viewModel.editTheme) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Theme")
+                            .font(.callout)
+                            .foregroundColor(.textHint)
+                        Label(title: {
+                            Text(viewModel.selectedTheme.description)
+                        }, icon: {
+                            Image(uiImage: viewModel.selectedTheme.icon)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 14, height: 14)
+                        })
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                    Spacer()
+
+                    ChevronRight()
+                }
+                .padding(kItemDetailSectionPadding)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
         }
         .roundedEditableSection()
     }
