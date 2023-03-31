@@ -50,6 +50,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let preferences: Preferences
     private let repositoryManager: RepositoryManager
     private let symmetricKey: SymmetricKey
+    private let urlOpener: UrlOpener
     private let userData: UserData
 
     // Lazily initialized properties
@@ -90,6 +91,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                        symmetricKey: symmetricKey,
                                        userData: userData)
         self.symmetricKey = symmetricKey
+        self.urlOpener = .init(preferences: preferences)
         self.userData = userData
         super.init()
         self.finalizeInitialization()
@@ -107,6 +109,7 @@ private extension HomepageCoordinator {
         clipboardManager.bannerManager = bannerManager
         itemContextMenuHandler.delegate = self
         (repositoryManager.itemRepository as? ItemRepository)?.delegate = credentialManager as? CredentialManager
+        urlOpener.rootViewController = rootViewController
 
         preferences.objectWillChange
             .sink { [unowned self] _ in
@@ -498,6 +501,18 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         viewModel.delegate = self
         let view = SettingViewV2(viewModel: viewModel)
         adaptivelyPresentDetailView(view: view)
+    }
+
+    func profileTabViewModelWantsToShowAcknowledgments() {
+        print(#function)
+    }
+
+    func profileTabViewModelWantsToShowPrivacyPolicy() {
+        urlOpener.open(urlString: "https://proton.me/legal/privacy")
+    }
+
+    func profileTabViewModelWantsToShowTermsOfService() {
+        urlOpener.open(urlString: "https://proton.me/legal/terms")
     }
 }
 

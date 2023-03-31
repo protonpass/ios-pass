@@ -60,6 +60,7 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
         self.itemRepository = itemRepository
         self.logger = .init(manager: logManager)
         self.preferences = preferences
+
         let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
             guard let appScheme = browser.appScheme,
                   let testUrl = URL(string: appScheme + "proton.me") else {
@@ -67,10 +68,18 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
             }
             return UIApplication.shared.canOpenURL(testUrl)
         }
-        // Double check selected browser here. If it's no more avaible (uninstalled).
-        // Fallback to Safari
-        self.selectedBrowser = installedBrowsers.contains(preferences.browser) ?
-        preferences.browser : .safari
+
+        switch preferences.browser {
+        case .safari, .inAppSafari:
+            self.selectedBrowser = preferences.browser
+        default:
+            if installedBrowsers.contains(preferences.browser) {
+                self.selectedBrowser = preferences.browser
+            } else {
+                self.selectedBrowser = .safari
+            }
+        }
+
         self.supportedBrowsers = [.safari, .inAppSafari] + installedBrowsers
 
         self.selectedTheme = preferences.theme

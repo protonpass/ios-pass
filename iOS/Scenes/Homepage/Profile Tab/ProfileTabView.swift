@@ -41,6 +41,7 @@ struct ProfileTabView: View {
                     biometricAuthenticationSection
                     accountAndSettingsSection
                         .padding(.vertical)
+                    aboutSection
                     Spacer()
                 }
                 .padding(.top)
@@ -107,25 +108,45 @@ struct ProfileTabView: View {
 
     private var accountAndSettingsSection: some View {
         VStack(spacing: 0) {
-            OptionRow(action: viewModel.showAccountMenu) {
-                HStack {
-                    Text("Account")
-                    Spacer()
-                    ChevronRight()
-                }
-            }
+            OptionRow(action: viewModel.showAccountMenu,
+                      content: { Text("Account") },
+                      trailing: { ChevronRight() })
 
             PassDivider()
 
-            OptionRow(action: viewModel.showSettingsMenu) {
-                HStack {
-                    Text("Settings")
-                    Spacer()
-                    ChevronRight()
-                }
-            }
+            OptionRow(action: viewModel.showSettingsMenu,
+                      content: { Text("Settings") },
+                      trailing: { ChevronRight() })
         }
         .roundedEditableSection()
+        .padding(.horizontal)
+    }
+
+    private var aboutSection: some View {
+        VStack(spacing: kItemDetailSectionPadding) {
+            Text("About")
+                .sectionHeaderText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            VStack(spacing: 0) {
+                OptionRow(action: viewModel.showAcknowledgments,
+                          content: { Text("Acknowledgments") },
+                          trailing: { ChevronRight() })
+
+                PassDivider()
+
+                OptionRow(action: viewModel.showPrivacyPolicy,
+                          content: { Text("Privacy policy") },
+                          trailing: { ChevronRight() })
+
+                PassDivider()
+
+                OptionRow(action: viewModel.showTermsOfService,
+                          content: { Text("Terms of service") },
+                          trailing: { ChevronRight() })
+            }
+            .roundedEditableSection()
+        }
         .padding(.horizontal)
     }
 }

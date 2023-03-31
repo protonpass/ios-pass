@@ -26,6 +26,9 @@ import SwiftUI
 protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
+    func profileTabViewModelWantsToShowAcknowledgments()
+    func profileTabViewModelWantsToShowPrivacyPolicy()
+    func profileTabViewModelWantsToShowTermsOfService()
 }
 
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
@@ -55,5 +58,17 @@ extension ProfileTabViewModel {
 
     func showSettingsMenu() {
         delegate?.profileTabViewModelWantsToShowSettingsMenu()
+    }
+
+    func showAcknowledgments() {
+        delegate?.profileTabViewModelWantsToShowAcknowledgments()
+    }
+
+    func showPrivacyPolicy() {
+        delegate?.profileTabViewModelWantsToShowPrivacyPolicy()
+    }
+
+    func showTermsOfService() {
+        delegate?.profileTabViewModelWantsToShowTermsOfService()
     }
 }
