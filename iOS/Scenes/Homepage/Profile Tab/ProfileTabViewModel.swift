@@ -29,6 +29,9 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowAcknowledgments()
     func profileTabViewModelWantsToShowPrivacyPolicy()
     func profileTabViewModelWantsToShowTermsOfService()
+    func profileTabViewModelWantsToShowTips()
+    func profileTabViewModelWantsToShowFeedback()
+    func profileTabViewModelWantsToRateApp()
 }
 
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
@@ -70,5 +73,17 @@ extension ProfileTabViewModel {
 
     func showTermsOfService() {
         delegate?.profileTabViewModelWantsToShowTermsOfService()
+    }
+
+    func showTips() {
+        delegate?.profileTabViewModelWantsToShowTips()
+    }
+
+    func showFeedback() {
+        delegate?.profileTabViewModelWantsToShowFeedback()
+    }
+
+    func rateApp() {
+        delegate?.profileTabViewModelWantsToRateApp()
     }
 }
