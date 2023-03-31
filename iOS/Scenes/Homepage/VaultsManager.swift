@@ -222,6 +222,14 @@ extension VaultsManager {
         try await itemRepository.deleteItems(trashedItems, skipTrash: false)
         logger.info("Permanently deleted all trashed items")
     }
+
+    func getPrimaryVault() -> Vault? {
+        guard case .loaded(let uiModels, _) = state else { return nil }
+        let vaults = uiModels.map { $0.vault }
+        let primaryVault = vaults.first(where: { $0.isPrimary })
+        let oldestVault = vaults.max(by: { $0.createTime < $1.createTime })
+        return primaryVault ?? oldestVault
+    }
 }
 
 extension VaultManagerState: Equatable {

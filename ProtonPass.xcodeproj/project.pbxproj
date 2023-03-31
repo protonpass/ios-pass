@@ -330,6 +330,7 @@
 		356BC35D29D710DC00F03497 /* ClipboardExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35C29D710DC00F03497 /* ClipboardExpirationView.swift */; };
 		356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35E29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift */; };
 		356BC36129D7189900F03497 /* ShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36029D7189900F03497 /* ShareTests.swift */; };
+		356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36229D7226A00F03497 /* VaultThumbnail.swift */; };
 		356BDA3228DFAA9600B02E5A /* ShareKeyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */; };
 		356BDA3428DFAC9600B02E5A /* RemoteShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
@@ -953,6 +954,7 @@
 		356BC35C29D710DC00F03497 /* ClipboardExpirationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardExpirationView.swift; sourceTree = "<group>"; };
 		356BC35E29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPrimaryVaultEndpoint.swift; sourceTree = "<group>"; };
 		356BC36029D7189900F03497 /* ShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTests.swift; sourceTree = "<group>"; };
+		356BC36229D7226A00F03497 /* VaultThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultThumbnail.swift; sourceTree = "<group>"; };
 		356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareKeyRepository.swift; sourceTree = "<group>"; };
 		356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareKeyDatasource.swift; sourceTree = "<group>"; };
 		356C2AAF28730EF00020F577 /* MainKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProvider.swift; sourceTree = "<group>"; };
@@ -1714,6 +1716,7 @@
 				3556949C29D45FD5005DD2EB /* MoveVaultListView.swift */,
 				3556949E29D46001005DD2EB /* MoveVaultListViewModel.swift */,
 				355694A129D466C9005DD2EB /* VaultRow.swift */,
+				356BC36229D7226A00F03497 /* VaultThumbnail.swift */,
 			);
 			path = Vault;
 			sourceTree = "<group>";
@@ -3462,6 +3465,7 @@
 				3586F3B1295884B000738245 /* GeneralSettingsSection.swift in Sources */,
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
 				3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */,
+				356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */,
 				356BC35929D6F36200F03497 /* OptionRow.swift in Sources */,
 				35733B7F29CC60D200052229 /* VaultColor.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,

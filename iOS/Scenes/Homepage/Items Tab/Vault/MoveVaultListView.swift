@@ -70,16 +70,10 @@ struct MoveVaultListView: View {
         Button(action: {
             viewModel.selectedVault = vault
         }, label: {
-            VaultRow(
-                thumbnail: {
-                    CircleButton(
-                        icon: vault.vault.displayPreferences.icon.icon.image,
-                        color: vault.vault.displayPreferences.color.color.color,
-                        backgroundOpacity: 0.16,
-                        action: {})},
-                title: vault.vault.name,
-                itemCount: vault.itemCount,
-                isSelected: viewModel.selectedVault == vault)
+            VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
+                     title: vault.vault.name,
+                     itemCount: vault.itemCount,
+                     isSelected: viewModel.selectedVault == vault)
         })
         .buttonStyle(.plain)
     }

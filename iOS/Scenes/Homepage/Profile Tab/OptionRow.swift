@@ -68,6 +68,7 @@ struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
             Spacer()
 
             trailing
+                .disabled(true)
         }
         .contentShape(Rectangle())
     }

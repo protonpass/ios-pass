@@ -27,6 +27,7 @@ protocol SettingViewModelDelegateV2: AnyObject {
     func settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser])
     func settingViewModelWantsToEditTheme()
     func settingViewModelWantsToEditClipboardExpiration()
+    func settingViewModelWantsToEditPrimaryVault()
 }
 
 final class SettingViewModelV2: ObservableObject, DeinitPrintable {
@@ -94,5 +95,9 @@ extension SettingViewModelV2 {
 
     func editClipboardExpiration() {
         delegate?.settingViewModelWantsToEditClipboardExpiration()
+    }
+
+    func editPrimaryVault() {
+        delegate?.settingViewModelWantsToEditPrimaryVault()
     }
 }
