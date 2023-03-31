@@ -1,5 +1,5 @@
 //
-// DefaultBrowserView.swift
+// EditDefaultBrowserView.swift
 // Proton Pass - Created on 31/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -22,7 +22,7 @@ import Core
 import SwiftUI
 import UIComponents
 
-struct DefaultBrowserView: View {
+struct EditDefaultBrowserView: View {
     @Environment(\.dismiss) private var dismiss
     let supportedBrowsers: [Browser]
     let preferences: Preferences

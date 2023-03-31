@@ -324,9 +324,9 @@
 		356B831829C37FC50084488A /* SearchEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B831729C37FC50084488A /* SearchEntry.swift */; };
 		356BC35029D6C57100F03497 /* SettingViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC34F29D6C57100F03497 /* SettingViewV2.swift */; };
 		356BC35229D6C5B400F03497 /* SettingViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */; };
-		356BC35529D6D6AF00F03497 /* DefaultBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35429D6D6AF00F03497 /* DefaultBrowserView.swift */; };
+		356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */; };
 		356BC35929D6F36200F03497 /* OptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35829D6F36200F03497 /* OptionRow.swift */; };
-		356BC35B29D70C5000F03497 /* ThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35A29D70C5000F03497 /* ThemeView.swift */; };
+		356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35A29D70C5000F03497 /* EditThemeView.swift */; };
 		356BC35D29D710DC00F03497 /* ClipboardExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35C29D710DC00F03497 /* ClipboardExpirationView.swift */; };
 		356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35E29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift */; };
 		356BC36129D7189900F03497 /* ShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36029D7189900F03497 /* ShareTests.swift */; };
@@ -948,9 +948,9 @@
 		356B831729C37FC50084488A /* SearchEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntry.swift; sourceTree = "<group>"; };
 		356BC34F29D6C57100F03497 /* SettingViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewV2.swift; sourceTree = "<group>"; };
 		356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModelV2.swift; sourceTree = "<group>"; };
-		356BC35429D6D6AF00F03497 /* DefaultBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBrowserView.swift; sourceTree = "<group>"; };
+		356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDefaultBrowserView.swift; sourceTree = "<group>"; };
 		356BC35829D6F36200F03497 /* OptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionRow.swift; sourceTree = "<group>"; };
-		356BC35A29D70C5000F03497 /* ThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeView.swift; sourceTree = "<group>"; };
+		356BC35A29D70C5000F03497 /* EditThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditThemeView.swift; sourceTree = "<group>"; };
 		356BC35C29D710DC00F03497 /* ClipboardExpirationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardExpirationView.swift; sourceTree = "<group>"; };
 		356BC35E29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPrimaryVaultEndpoint.swift; sourceTree = "<group>"; };
 		356BC36029D7189900F03497 /* ShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTests.swift; sourceTree = "<group>"; };
@@ -1778,10 +1778,10 @@
 			isa = PBXGroup;
 			children = (
 				356BC35C29D710DC00F03497 /* ClipboardExpirationView.swift */,
-				356BC35429D6D6AF00F03497 /* DefaultBrowserView.swift */,
+				356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */,
+				356BC35A29D70C5000F03497 /* EditThemeView.swift */,
 				356BC34F29D6C57100F03497 /* SettingViewV2.swift */,
 				356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */,
-				356BC35A29D70C5000F03497 /* ThemeView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3419,14 +3419,14 @@
 				354361552941D251000CAE12 /* OnboardingView.swift in Sources */,
 				350A97DC2885FD7900A7168B /* MyVaultsViewModel.swift in Sources */,
 				356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */,
-				356BC35529D6D6AF00F03497 /* DefaultBrowserView.swift in Sources */,
+				356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */,
 				3586F3B82958860800738245 /* BrowserSettingsView.swift in Sources */,
 				356B697E294A31F400868771 /* DevPreviewsViewModel.swift in Sources */,
 				3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */,
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
 				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
-				356BC35B29D70C5000F03497 /* ThemeView.swift in Sources */,
+				356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */,
 				3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */,
 				355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */,
 				3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */,
