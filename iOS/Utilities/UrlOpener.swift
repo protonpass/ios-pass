@@ -31,6 +31,8 @@ final class UrlOpener {
     }
 
     func open(urlString: String) {
+        assert(rootViewController != nil)
+
         // Only open URLs with `http` &`https` scheme in browser.
         // Let the system decide for other schemes.
         guard let url = URL(string: urlString) else { return }
@@ -45,10 +47,11 @@ final class UrlOpener {
             let safariViewController = SFSafariViewController(url: url, configuration: .init())
             safariViewController.preferredControlTintColor = .interactionNorm
             if let rootViewController {
-                rootViewController.present(safariViewController, animated: true)
+                rootViewController.topMostViewController.present(safariViewController, animated: true)
             } else {
                 fallback(url: url)
             }
+
         default:
             if let appScheme = preferences.browser.appScheme {
                 let completeUrl = appScheme + (url.host ?? "") + url.path
