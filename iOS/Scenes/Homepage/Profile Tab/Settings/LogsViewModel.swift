@@ -72,15 +72,16 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
 
     func shareLogs() {
         Task { @MainActor in
-            defer { delegate?.logsViewModelWantsToHideSpinner() }
             do {
                 delegate?.logsViewModelWantsToShowSpinner()
                 let file = FileManager.default.temporaryDirectory.appendingPathComponent(module.logFileName)
                 let log = await logFormatter.format(entries: entries)
                 try log.write(to: file, atomically: true, encoding: .utf8)
                 fileToDelete = file
+                delegate?.logsViewModelWantsToHideSpinner()
                 delegate?.logsViewModelWantsToShareLogs(file)
             } catch {
+                delegate?.logsViewModelWantsToHideSpinner()
                 delegate?.logsViewModelDidEncounter(error: error)
             }
         }
