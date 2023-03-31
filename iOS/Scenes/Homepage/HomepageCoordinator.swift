@@ -526,7 +526,15 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
     func settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser]) {
         let view = DefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
         let viewController = UIHostingController(rootView: view)
-        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        if #available(iOS 16, *) {
+            let height = CGFloat(66 * supportedBrowsers.count + 100)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
