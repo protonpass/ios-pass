@@ -58,6 +58,7 @@ struct EditPrimaryVaultView: View {
                 .roundedEditableSection()
                 .padding([.top, .horizontal])
             }
+            .disabled(viewModel.isLoading)
         }
         .background(Color.passSecondaryBackground)
     }
