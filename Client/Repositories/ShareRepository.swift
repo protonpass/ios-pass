@@ -196,23 +196,4 @@ public struct ShareRepository: ShareRepositoryProtocol {
         self.passKeyManager = passKeyManager
         self.logger = .init(manager: logManager)
     }
-
-    public init(userData: UserData,
-                container: NSPersistentContainer,
-                apiService: APIService,
-                logManager: LogManager) {
-        self.userData = userData
-        self.localShareDatasource = LocalShareDatasource(container: container)
-        self.remoteShareDatasouce = RemoteShareDatasource(apiService: apiService)
-        let shareKeyRepository = ShareKeyRepository(container: container,
-                                                    apiService: apiService,
-                                                    logManager: logManager,
-                                                    userData: userData)
-        let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
-        self.passKeyManager = PassKeyManager(userData: userData,
-                                             shareKeyRepository: shareKeyRepository,
-                                             itemKeyDatasource: itemKeyDatasource,
-                                             logManager: logManager)
-        self.logger = .init(manager: logManager)
-    }
 }
