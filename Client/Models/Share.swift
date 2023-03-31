@@ -108,4 +108,19 @@ public extension Share {
             return .item
         }
     }
+
+    func clone(isPrimary: Bool) -> Share {
+        .init(shareID: shareID,
+              vaultID: vaultID,
+              addressID: addressID,
+              targetType: targetType,
+              targetID: targetID,
+              permission: permission,
+              primary: isPrimary,
+              content: content,
+              contentKeyRotation: contentKeyRotation,
+              contentFormatVersion: contentFormatVersion,
+              expireTime: expireTime,
+              createTime: createTime)
+    }
 }

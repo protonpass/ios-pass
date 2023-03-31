@@ -471,7 +471,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowSettingsMenu() {
-        let viewModel = SettingViewModelV2(preferences: preferences)
+        let viewModel = SettingViewModelV2(preferences: preferences, vaultsManager: vaultsManager)
         viewModel.delegate = self
         let view = SettingViewV2(viewModel: viewModel)
         adaptivelyPresentDetailView(view: view)
