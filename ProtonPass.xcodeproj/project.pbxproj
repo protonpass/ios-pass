@@ -331,6 +331,8 @@
 		356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35E29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift */; };
 		356BC36129D7189900F03497 /* ShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36029D7189900F03497 /* ShareTests.swift */; };
 		356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36229D7226A00F03497 /* VaultThumbnail.swift */; };
+		356BC36729D7266800F03497 /* EditPrimaryVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36629D7266800F03497 /* EditPrimaryVaultView.swift */; };
+		356BC36929D7267F00F03497 /* EditPrimaryVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36829D7267F00F03497 /* EditPrimaryVaultViewModel.swift */; };
 		356BDA3228DFAA9600B02E5A /* ShareKeyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */; };
 		356BDA3428DFAC9600B02E5A /* RemoteShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
@@ -955,6 +957,8 @@
 		356BC35E29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPrimaryVaultEndpoint.swift; sourceTree = "<group>"; };
 		356BC36029D7189900F03497 /* ShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTests.swift; sourceTree = "<group>"; };
 		356BC36229D7226A00F03497 /* VaultThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultThumbnail.swift; sourceTree = "<group>"; };
+		356BC36629D7266800F03497 /* EditPrimaryVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPrimaryVaultView.swift; sourceTree = "<group>"; };
+		356BC36829D7267F00F03497 /* EditPrimaryVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPrimaryVaultViewModel.swift; sourceTree = "<group>"; };
 		356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareKeyRepository.swift; sourceTree = "<group>"; };
 		356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareKeyDatasource.swift; sourceTree = "<group>"; };
 		356C2AAF28730EF00020F577 /* MainKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProvider.swift; sourceTree = "<group>"; };
@@ -1779,6 +1783,8 @@
 			children = (
 				356BC35C29D710DC00F03497 /* ClipboardExpirationView.swift */,
 				356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */,
+				356BC36629D7266800F03497 /* EditPrimaryVaultView.swift */,
+				356BC36829D7267F00F03497 /* EditPrimaryVaultViewModel.swift */,
 				356BC35A29D70C5000F03497 /* EditThemeView.swift */,
 				356BC34F29D6C57100F03497 /* SettingViewV2.swift */,
 				356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */,
@@ -3437,6 +3443,7 @@
 				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
 				357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */,
 				355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */,
+				356BC36929D7267F00F03497 /* EditPrimaryVaultViewModel.swift in Sources */,
 				35992155299F910500FEFA32 /* MailboxSection.swift in Sources */,
 				3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */,
 				35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */,
@@ -3447,6 +3454,7 @@
 				354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */,
 				35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */,
 				3562BCF329BDBF2500564508 /* SectionIndexTitles.swift in Sources */,
+				356BC36729D7266800F03497 /* EditPrimaryVaultView.swift in Sources */,
 				354513CB28E45F960020A93A /* SettingsView.swift in Sources */,
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
 				35733B7529CC483300052229 /* CreateEditVaultViewModel.swift in Sources */,

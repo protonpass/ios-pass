@@ -1,5 +1,5 @@
 //
-// EditDefaultBrowserView.swift
+// EditPrimaryVaultView.swift
 // Proton Pass - Created on 31/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,50 +18,44 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import SwiftUI
 import UIComponents
 
-struct EditDefaultBrowserView: View {
-    @Environment(\.dismiss) private var dismiss
-    let supportedBrowsers: [Browser]
-    let preferences: Preferences
+struct EditPrimaryVaultView: View {
+    @StateObject var viewModel: EditPrimaryVaultViewModel
 
     var body: some View {
         VStack {
             VStack(alignment: .center, spacing: 22) {
                 NotchView()
                     .padding(.top, 5)
-                Text("Default browser")
+                Text("Primary vault")
                     .navigationTitleText()
             }
             .frame(maxWidth: .infinity, alignment: .center)
 
             ScrollView {
-                VStack {
-                    VStack(spacing: 0) {
-                        ForEach(supportedBrowsers, id: \.rawValue) { browser in
-                            OptionRow(
-                                action: { preferences.browser = browser; dismiss() },
-                                content: { Text(browser.description) },
-                                trailing: {
-                                    if browser == preferences.browser {
-                                        Label("", systemImage: "checkmark")
-                                            .foregroundColor(.passBrand)
-                                    }
-                                })
+                VStack(spacing: 0) {
+                    ForEach(viewModel.allVaults, id: \.vault.shareId) { vault in
+                        OptionRow(
+                            action: { viewModel.setAsPrimary(vault: vault.vault) },
+                            content: {
+                                VaultRow(
+                                    thumbnail: { VaultThumbnail(vault: vault.vault) },
+                                    title: vault.vault.name,
+                                    itemCount: vault.itemCount,
+                                    isSelected: vault.vault.shareId == viewModel.primaryVault.shareId,
+                                    height: 44)
+                            })
 
-                            if browser != supportedBrowsers.last {
-                                PassDivider()
-                            }
+                        if vault.vault.shareId != viewModel.allVaults.last?.vault.shareId {
+                            PassDivider()
                         }
                     }
-                    .roundedEditableSection()
 
-                    Text("This preference will fallback to Safari if the browser of choice is uninstalled.")
-                        .font(.callout)
-                        .foregroundColor(.textHint)
+                    Spacer()
                 }
+                .roundedEditableSection()
                 .padding([.top, .horizontal])
             }
         }

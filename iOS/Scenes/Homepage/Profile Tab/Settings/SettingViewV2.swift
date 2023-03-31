@@ -111,12 +111,11 @@ struct SettingViewV2: View {
                 .sectionHeaderText()
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            OptionRow(
-                action: viewModel.editPrimaryVault,
-                title: "Primary vault",
-                content: { Text(vault.name) },
-                leading: { VaultThumbnail(vault: vault) },
-                trailing: { ChevronRight() })
+            OptionRow(action: { viewModel.edit(primaryVault: vault) },
+                      title: "Primary vault",
+                      content: { Text(vault.name) },
+                      leading: { VaultThumbnail(vault: vault) },
+                      trailing: { ChevronRight() })
             .roundedEditableSection()
 
             Text("You can not delete a primary vault")
