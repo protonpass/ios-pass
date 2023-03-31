@@ -484,19 +484,26 @@ extension HomepageCoordinator: AccountViewModelDelegate {
 
     func accountViewModelWantsToDeleteAccount() {
         let accountDeletion = AccountDeletionService(api: apiService)
-        accountDeletion.initiateAccountDeletionProcess(over: rootViewController) { [weak self] result in
-            guard let self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    self.accountViewModelWantsToSignOut()
-                case .failure(AccountDeletionError.closedByUser):
-                    break
-                case .failure(let error):
-                    self.bannerManager.displayTopErrorMessage(error)
+        let view = topMostViewController.view
+        showLoadingHud(view)
+        accountDeletion.initiateAccountDeletionProcess(
+            over: topMostViewController,
+            performAfterShowingAccountDeletionScreen: { [weak self] in
+                self?.hideLoadingHud(view)
+            },
+            completion: { [weak self] result in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self.accountViewModelWantsToSignOut()
+                    case .failure(AccountDeletionError.closedByUser):
+                        break
+                    case .failure(let error):
+                        self.bannerManager.displayTopErrorMessage(error)
+                    }
                 }
-            }
-        }
+            })
     }
 }
 
