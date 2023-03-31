@@ -19,24 +19,50 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 
 protocol EditPrimaryVaultViewModelDelegate: AnyObject {
     func editPrimaryVaultViewModelWantsToShowSpinner()
     func editPrimaryVaultViewModelWantsToHideSpinner()
+    func editPrimaryVaultViewModelDidUpdatePrimaryVault()
+    func editPrimaryVaultViewModelDidEncounter(error: Error)
 }
 
-final class EditPrimaryVaultViewModel: ObservableObject {
+final class EditPrimaryVaultViewModel: ObservableObject, DeinitPrintable {
+    deinit { print(deinitMessage) }
+
     let allVaults: [VaultListUiModel]
-    @Published var primaryVault: Vault
+    @Published private(set) var isLoading = false
+    @Published private(set) var primaryVault: Vault
+
+    private let shareRepository: ShareRepositoryProtocol
 
     weak var delegate: EditPrimaryVaultViewModelDelegate?
 
-    init(allVaults: [VaultListUiModel], primaryVault: Vault) {
+    init(allVaults: [VaultListUiModel],
+         primaryVault: Vault,
+         shareRepository: ShareRepositoryProtocol) {
         self.allVaults = allVaults
         self.primaryVault = primaryVault
+        self.shareRepository = shareRepository
     }
 
     func setAsPrimary(vault: Vault) {
-        print(#function)
+        self.primaryVault = vault
+        Task { @MainActor in
+            defer {
+                isLoading = false
+                delegate?.editPrimaryVaultViewModelWantsToHideSpinner()
+            }
+            do {
+                isLoading = true
+                delegate?.editPrimaryVaultViewModelWantsToShowSpinner()
+                if try await shareRepository.setPrimaryVault(shareId: vault.shareId) {
+                    delegate?.editPrimaryVaultViewModelDidUpdatePrimaryVault()
+                }
+            } catch {
+                delegate?.editPrimaryVaultViewModelDidEncounter(error: error)
+            }
+        }
     }
 }

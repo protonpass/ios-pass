@@ -570,7 +570,9 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
 
     func settingViewModelWantsToEdit(primaryVault: Vault) {
         let allVaults = vaultsManager.getAllVaultContents().map { VaultListUiModel(vaultContent: $0) }
-        let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults, primaryVault: primaryVault)
+        let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults,
+                                                  primaryVault: primaryVault,
+                                                  shareRepository: repositoryManager.shareRepository)
         viewModel.delegate = self
         let view = EditPrimaryVaultView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -916,6 +918,17 @@ extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
 
     func editPrimaryVaultViewModelWantsToHideSpinner() {
         hideLoadingHud()
+    }
+
+    func editPrimaryVaultViewModelDidUpdatePrimaryVault() {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager.displayBottomSuccessMessage("Primary vault updated")
+        }
+        vaultsManager.refresh()
+    }
+
+    func editPrimaryVaultViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
