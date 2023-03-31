@@ -39,6 +39,7 @@ extension ShareEntity {
     @NSManaged var createTime: Int64
     @NSManaged var expireTime: Int64
     @NSManaged var permission: Int16
+    @NSManaged var primary: Bool
     @NSManaged var shareID: String?
     @NSManaged var targetID: String?
     @NSManaged var targetType: Int16
@@ -70,6 +71,7 @@ extension ShareEntity {
                      targetType: targetType,
                      targetID: targetID,
                      permission: permission,
+                     primary: primary,
                      content: content,
                      contentKeyRotation: contentKeyRotation,
                      contentFormatVersion: contentFormatVersion,
@@ -84,6 +86,7 @@ extension ShareEntity {
         createTime = share.createTime
         expireTime = share.expireTime ?? -1
         permission = share.permission
+        primary = share.primary
         shareID = share.shareID
         targetID = share.targetID
         targetType = share.targetType

@@ -46,6 +46,7 @@
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="expireTime" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="permission" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="primary" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="shareID" attributeType="String" defaultValueString=""/>
         <attribute name="targetID" attributeType="String" defaultValueString=""/>
         <attribute name="targetType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
