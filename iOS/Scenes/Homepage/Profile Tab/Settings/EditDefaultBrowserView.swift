@@ -43,6 +43,7 @@ struct EditDefaultBrowserView: View {
                         ForEach(supportedBrowsers, id: \.rawValue) { browser in
                             OptionRow(
                                 action: { preferences.browser = browser; dismiss() },
+                                height: CGFloat(kOptionRowCompactHeight),
                                 content: { Text(browser.description) },
                                 trailing: {
                                     if browser == preferences.browser {
@@ -59,8 +60,7 @@ struct EditDefaultBrowserView: View {
                     .roundedEditableSection()
 
                     Text("This preference will fallback to Safari if the browser of choice is uninstalled.")
-                        .font(.callout)
-                        .foregroundColor(.textHint)
+                        .sectionTitleText()
                 }
                 .padding([.top, .horizontal])
             }

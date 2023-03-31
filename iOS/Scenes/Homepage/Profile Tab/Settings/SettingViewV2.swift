@@ -34,6 +34,7 @@ struct SettingViewV2: View {
                 if let primaryVault = viewModel.vaultsManager.getPrimaryVault() {
                     primaryVaultSection(vault: primaryVault)
                 }
+                applicationSection
             }
             .padding()
         }
@@ -119,6 +120,40 @@ struct SettingViewV2: View {
             .roundedEditableSection()
 
             Text("You can not delete a primary vault")
+                .sectionTitleText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private var applicationSection: some View {
+        VStack(spacing: kItemDetailSectionPadding) {
+            Text("Application")
+                .sectionHeaderText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            VStack(spacing: 0) {
+                OptionRow(action: viewModel.viewLogs,
+                          content: { Text("View logs") },
+                          trailing: { ChevronRight() })
+
+                PassDivider()
+
+                OptionRow(
+                    action: viewModel.forceSync,
+                    content: {
+                        Text("Force Synchronization")
+                            .foregroundColor(.passBrand)
+                    },
+                    trailing: {
+                        CircleButton(icon: IconProvider.arrowRotateRight,
+                                     color: .passBrand,
+                                     action: {})
+                        .disabled(true)
+                    })
+            }
+            .roundedEditableSection()
+
+            Text("Download all your items again to make sure you are in sync.")
                 .sectionTitleText()
                 .frame(maxWidth: .infinity, alignment: .leading)
         }

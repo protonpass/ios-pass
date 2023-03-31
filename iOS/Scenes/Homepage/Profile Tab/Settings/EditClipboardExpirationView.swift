@@ -1,5 +1,5 @@
 //
-// ClipboardExpirationView.swift
+// EditClipboardExpirationView.swift
 // Proton Pass - Created on 31/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -22,7 +22,7 @@ import Core
 import SwiftUI
 import UIComponents
 
-struct ClipboardExpirationView: View {
+struct EditClipboardExpirationView: View {
     @Environment(\.dismiss) private var dismiss
     let preferences: Preferences
 
@@ -41,6 +41,7 @@ struct ClipboardExpirationView: View {
                     ForEach(ClipboardExpiration.allCases, id: \.rawValue) { expiration in
                         OptionRow(
                             action: { preferences.clipboardExpiration = expiration; dismiss() },
+                            height: CGFloat(kOptionRowCompactHeight),
                             content: { Text(expiration.description) },
                             trailing: {
                                 if expiration == preferences.clipboardExpiration {

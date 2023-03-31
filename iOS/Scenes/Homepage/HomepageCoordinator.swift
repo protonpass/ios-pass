@@ -355,6 +355,7 @@ private extension HomepageCoordinator {
 
     func refreshHomepageAndSearchPage() {
         vaultsManager.refresh()
+        homepageViewModel?.profileTabViewModel.itemCountViewModel.refresh()
         searchViewModel?.refreshResults()
     }
 
@@ -471,7 +472,10 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowSettingsMenu() {
-        let viewModel = SettingViewModelV2(preferences: preferences, vaultsManager: vaultsManager)
+        let viewModel = SettingViewModelV2(itemRepository: repositoryManager.itemRepository,
+                                           logManager: logManager,
+                                           preferences: preferences,
+                                           vaultsManager: vaultsManager)
         viewModel.delegate = self
         let view = SettingViewV2(viewModel: viewModel)
         adaptivelyPresentDetailView(view: view)
@@ -517,8 +521,17 @@ extension HomepageCoordinator: AccountViewModelDelegate {
             })
     }
 }
+
 // MARK: - SettingViewModelDelegate
 extension HomepageCoordinator: SettingViewModelDelegateV2 {
+    func settingViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func settingViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
     func settingViewModelWantsToGoBack() {
         adaptivelyDismissCurrentDetailView()
     }
@@ -527,7 +540,7 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
         let view = EditDefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = CGFloat(66 * supportedBrowsers.count + 100)
+            let height = CGFloat(kOptionRowCompactHeight * supportedBrowsers.count + 140)
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 height
             }
@@ -542,7 +555,7 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
         let view = EditThemeView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = CGFloat(66 * Theme.allCases.count + 66)
+            let height = CGFloat(kOptionRowCompactHeight * Theme.allCases.count + 100)
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 height
             }
@@ -554,10 +567,10 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
     }
 
     func settingViewModelWantsToEditClipboardExpiration() {
-        let view = ClipboardExpirationView(preferences: preferences)
+        let view = EditClipboardExpirationView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = CGFloat(66 * ClipboardExpiration.allCases.count + 66)
+            let height = CGFloat(kOptionRowCompactHeight * ClipboardExpiration.allCases.count + 100)
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 height
             }
@@ -586,6 +599,19 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
+    func settingViewModelWantsToViewLogs() {
+        print(#function)
+    }
+
+    func settingViewModelDidFinishFullSync() {
+        refreshHomepageAndSearchPage()
+        bannerManager.displayBottomSuccessMessage("Force synchronization done")
+    }
+
+    func settingViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
