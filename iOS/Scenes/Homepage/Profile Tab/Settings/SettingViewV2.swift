@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -30,6 +31,9 @@ struct SettingViewV2: View {
             VStack(spacing: kItemDetailSectionPadding) {
                 untitledSection
                 clipboardSection
+                if let primaryVault = viewModel.vaultsManager.getPrimaryVault() {
+                    primaryVaultSection(vault: primaryVault)
+                }
             }
             .padding()
         }
@@ -98,6 +102,26 @@ struct SettingViewV2: View {
                 }
             }
             .roundedEditableSection()
+        }
+    }
+
+    private func primaryVaultSection(vault: Vault) -> some View {
+        VStack(spacing: kItemDetailSectionPadding) {
+            Text("Vaults")
+                .sectionHeaderText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            OptionRow(
+                action: viewModel.editPrimaryVault,
+                title: "Primary vault",
+                content: { Text(vault.name) },
+                leading: { VaultThumbnail(vault: vault) },
+                trailing: { ChevronRight() })
+            .roundedEditableSection()
+
+            Text("You can not delete a primary vault")
+                .sectionTitleText()
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

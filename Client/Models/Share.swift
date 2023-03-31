@@ -102,7 +102,8 @@ public extension Share {
                               name: vaultContent.name,
                               description: vaultContent.description_p,
                               displayPreferences: vaultContent.display,
-                              isPrimary: primary)
+                              isPrimary: primary,
+                              createTime: createTime)
             return .vault(vault)
         case .item:
             return .item

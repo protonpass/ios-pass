@@ -567,6 +567,8 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
         }
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
+
+    func settingViewModelWantsToEditPrimaryVault() {}
 }
 
 // MARK: - CreateEditItemViewModelDelegate
