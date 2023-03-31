@@ -226,9 +226,7 @@ extension VaultsManager {
     func getPrimaryVault() -> Vault? {
         guard case .loaded(let uiModels, _) = state else { return nil }
         let vaults = uiModels.map { $0.vault }
-        let primaryVault = vaults.first(where: { $0.isPrimary })
-        let oldestVault = vaults.max(by: { $0.createTime < $1.createTime })
-        return primaryVault ?? oldestVault
+        return vaults.first(where: { $0.isPrimary }) ?? vaults.first
     }
 }
 

@@ -568,7 +568,23 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func settingViewModelWantsToEditPrimaryVault() {}
+    func settingViewModelWantsToEdit(primaryVault: Vault) {
+        let allVaults = vaultsManager.getAllVaultContents().map { VaultListUiModel(vaultContent: $0) }
+        let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults, primaryVault: primaryVault)
+        viewModel.delegate = self
+        let view = EditPrimaryVaultView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = CGFloat(80 * vaultsManager.getVaultCount() + 100)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
 }
 
 // MARK: - CreateEditItemViewModelDelegate
@@ -889,6 +905,17 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
 
     func createEditVaultViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - EditPrimaryVaultViewModelDelegate
+extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
+    func editPrimaryVaultViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func editPrimaryVaultViewModelWantsToHideSpinner() {
+        hideLoadingHud()
     }
 }
 

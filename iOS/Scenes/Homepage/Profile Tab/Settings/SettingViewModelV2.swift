@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 import SwiftUI
@@ -27,7 +28,7 @@ protocol SettingViewModelDelegateV2: AnyObject {
     func settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser])
     func settingViewModelWantsToEditTheme()
     func settingViewModelWantsToEditClipboardExpiration()
-    func settingViewModelWantsToEditPrimaryVault()
+    func settingViewModelWantsToEdit(primaryVault: Vault)
 }
 
 final class SettingViewModelV2: ObservableObject, DeinitPrintable {
@@ -97,7 +98,7 @@ extension SettingViewModelV2 {
         delegate?.settingViewModelWantsToEditClipboardExpiration()
     }
 
-    func editPrimaryVault() {
-        delegate?.settingViewModelWantsToEditPrimaryVault()
+    func edit(primaryVault: Vault) {
+        delegate?.settingViewModelWantsToEdit(primaryVault: primaryVault)
     }
 }

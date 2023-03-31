@@ -64,9 +64,8 @@ struct EditThemeView: View {
                     }
                 }
                 .roundedEditableSection()
-                .padding(.top)
+                .padding([.top, .horizontal])
             }
-            .padding(.horizontal)
         }
         .background(Color.passSecondaryBackground)
     }
