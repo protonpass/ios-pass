@@ -600,7 +600,16 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
     }
 
     func settingViewModelWantsToViewLogs() {
-        print(#function)
+        let view = LogsView(
+            onSelect: { [unowned self] _ in
+                print(#function)
+            },
+            onClear: { [unowned self] in
+                self.bannerManager.displayBottomSuccessMessage("All logs cleared")
+            })
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium()]
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func settingViewModelDidFinishFullSync() {
