@@ -69,7 +69,7 @@ struct ProfileTabView: View {
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            OptionRow {
+            OptionRow(height: .medium) {
                 switch viewModel.biometricAuthenticator.biometryTypeState {
                 case .idle, .initializing:
                     ProgressView()
@@ -125,8 +125,10 @@ struct ProfileTabView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 0) {
+                /*
                 TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
                 PassDivider()
+                 */
                 TextOptionRow(title: "Privacy policy", action: viewModel.showPrivacyPolicy)
                 PassDivider()
                 TextOptionRow(title: "Terms of service", action: viewModel.showTermsOfService)
@@ -143,8 +145,10 @@ struct ProfileTabView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 0) {
+                /*
                 TextOptionRow(title: "Tips", action: viewModel.showTips)
                 PassDivider()
+                 */
                 TextOptionRow(title: "Feedback", action: viewModel.showFeedback)
                 PassDivider()
                 TextOptionRow(title: "Rate app", action: viewModel.rateApp)

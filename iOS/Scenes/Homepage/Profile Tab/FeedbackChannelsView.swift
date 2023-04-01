@@ -60,7 +60,7 @@ struct FeedbackChannelsView: View {
                         })
                         .buttonStyle(.plain)
                         .padding(.horizontal)
-                        .frame(height: 52)
+                        .frame(height: OptionRowHeight.short.value)
 
                         if channel != FeedbackChannel.allCases.last {
                             PassDivider()

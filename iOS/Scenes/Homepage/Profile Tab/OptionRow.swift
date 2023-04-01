@@ -21,19 +21,29 @@
 import SwiftUI
 import UIComponents
 
-let kOptionRowCompactHeight = 60
+enum OptionRowHeight {
+    case short, medium, tall
+
+    var value: CGFloat {
+        switch self {
+        case .short: return 56
+        case .medium: return 72
+        case .tall: return 76
+        }
+    }
+}
 
 struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
     let action: (() -> Void)?
     let title: String?
-    let height: CGFloat
+    let height: OptionRowHeight
     let content: Content
     let leading: LeadingView
     let trailing: TrailingView
 
     init(action: (() -> Void)? = nil,
          title: String? = nil,
-         height: CGFloat = 76,
+         height: OptionRowHeight = .short,
          @ViewBuilder content: () -> Content,
          @ViewBuilder leading: (() -> LeadingView) = { EmptyView() },
          @ViewBuilder trailing: (() -> TrailingView) = { EmptyView() }) {
@@ -76,7 +86,7 @@ struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
             trailing
         }
         .contentShape(Rectangle())
-        .frame(height: height)
+        .frame(height: height.value)
     }
 }
 
@@ -88,6 +98,26 @@ struct TextOptionRow: View {
         OptionRow(action: action,
                   content: { Text(title) },
                   trailing: { ChevronRight() })
+    }
+}
+
+struct SelectableOptionRow<Content: View>: View {
+    let action: () -> Void
+    let height: OptionRowHeight
+    @ViewBuilder let content: () -> Content
+    let isSelected: Bool
+
+    var body: some View {
+        OptionRow(
+            action: action,
+            height: height,
+            content: { content() },
+            trailing: {
+                if isSelected {
+                    Label("", systemImage: "checkmark")
+                        .foregroundColor(.passBrand)
+                }
+            })
     }
 }
 
