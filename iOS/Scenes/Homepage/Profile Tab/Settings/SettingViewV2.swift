@@ -58,6 +58,7 @@ struct SettingViewV2: View {
         VStack(spacing: 0) {
             OptionRow(action: viewModel.editDefaultBrowser,
                       title: "Default browser",
+                      height: .tall,
                       content: { Text(viewModel.selectedBrowser.description) },
                       trailing: { ChevronRight() })
 
@@ -66,6 +67,7 @@ struct SettingViewV2: View {
             OptionRow(
                 action: viewModel.editTheme,
                 title: "Theme",
+                height: .tall,
                 content: {
                     Label(title: {
                         Text(viewModel.selectedTheme.description)
@@ -90,12 +92,13 @@ struct SettingViewV2: View {
             VStack(spacing: 0) {
                 OptionRow(action: viewModel.editClipboardExpiration,
                           title: "Clear clipboard",
+                          height: .tall,
                           content: { Text(viewModel.selectedClipboardExpiration.description) },
                           trailing: { ChevronRight() })
 
                 PassDivider()
 
-                OptionRow {
+                OptionRow(height: .tall) {
                     Toggle(isOn: $viewModel.shareClipboard) {
                         Text("Share clipboard between devices")
                     }
@@ -114,6 +117,7 @@ struct SettingViewV2: View {
 
             OptionRow(action: { viewModel.edit(primaryVault: vault) },
                       title: "Primary vault",
+                      height: .tall,
                       content: { Text(vault.name) },
                       leading: { VaultThumbnail(vault: vault) },
                       trailing: { ChevronRight() })
@@ -132,14 +136,13 @@ struct SettingViewV2: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 0) {
-                OptionRow(action: viewModel.viewLogs,
-                          content: { Text("View logs") },
-                          trailing: { ChevronRight() })
+                TextOptionRow(title: "View logs", action: viewModel.viewLogs)
 
                 PassDivider()
 
                 OptionRow(
                     action: viewModel.forceSync,
+                    height: .medium,
                     content: {
                         Text("Force Synchronization")
                             .foregroundColor(.passBrand)

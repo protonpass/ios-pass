@@ -39,9 +39,9 @@ struct EditThemeView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(Theme.allCases, id: \.rawValue) { theme in
-                        OptionRow(
+                        SelectableOptionRow(
                             action: { preferences.theme = theme; dismiss() },
-                            height: CGFloat(kOptionRowCompactHeight),
+                            height: .short,
                             content: {
                                 Label(title: {
                                     Text(theme.description)
@@ -49,15 +49,10 @@ struct EditThemeView: View {
                                     Image(uiImage: theme.icon)
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(width: 14, height: 14)
+                                        .frame(maxWidth: 20, maxHeight: 20)
                                 })
                             },
-                            trailing: {
-                                if theme == preferences.theme {
-                                    Label("", systemImage: "checkmark")
-                                        .foregroundColor(.passBrand)
-                                }
-                            })
+                            isSelected: theme == preferences.theme )
 
                         if theme != Theme.allCases.last {
                             PassDivider()

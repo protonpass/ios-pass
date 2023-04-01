@@ -41,16 +41,10 @@ struct EditDefaultBrowserView: View {
                 VStack {
                     VStack(spacing: 0) {
                         ForEach(supportedBrowsers, id: \.rawValue) { browser in
-                            OptionRow(
-                                action: { preferences.browser = browser; dismiss() },
-                                height: CGFloat(kOptionRowCompactHeight),
-                                content: { Text(browser.description) },
-                                trailing: {
-                                    if browser == preferences.browser {
-                                        Label("", systemImage: "checkmark")
-                                            .foregroundColor(.passBrand)
-                                    }
-                                })
+                            SelectableOptionRow(action: { preferences.browser = browser; dismiss() },
+                                                height: .short,
+                                                content: { Text(browser.description) },
+                                                isSelected: browser == preferences.browser)
 
                             if browser != supportedBrowsers.last {
                                 PassDivider()

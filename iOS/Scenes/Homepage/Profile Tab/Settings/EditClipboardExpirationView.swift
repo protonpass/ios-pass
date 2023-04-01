@@ -39,16 +39,11 @@ struct EditClipboardExpirationView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(ClipboardExpiration.allCases, id: \.rawValue) { expiration in
-                        OptionRow(
+                        SelectableOptionRow(
                             action: { preferences.clipboardExpiration = expiration; dismiss() },
-                            height: CGFloat(kOptionRowCompactHeight),
+                            height: .short,
                             content: { Text(expiration.description) },
-                            trailing: {
-                                if expiration == preferences.clipboardExpiration {
-                                    Label("", systemImage: "checkmark")
-                                        .foregroundColor(.passBrand)
-                                }
-                            })
+                            isSelected: expiration == preferences.clipboardExpiration)
 
                         if expiration != ClipboardExpiration.allCases.last {
                             PassDivider()

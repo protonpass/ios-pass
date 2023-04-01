@@ -41,11 +41,7 @@ struct LogTypesView: View {
                 VStack(spacing: kItemDetailSectionPadding) {
                     VStack(spacing: 0) {
                         ForEach(PassLogModule.allCases, id: \.hashValue) { module in
-                            OptionRow(action: { onSelect(module) },
-                                      height: CGFloat(kOptionRowCompactHeight),
-                                      content: { Text(module.title) },
-                                      trailing: { ChevronRight() })
-
+                            TextOptionRow(title: module.title) { onSelect(module) }
                             if module != PassLogModule.allCases.last {
                                 PassDivider()
                             }

@@ -29,11 +29,14 @@ struct AccountView: View {
     var body: some View {
         VStack(spacing: 12) {
             OptionRow(title: "Username",
+                      height: .tall,
                       content: { Text(viewModel.username) })
             .roundedEditableSection()
 
+            /*
             OptionRow(
                 action: viewModel.manageSubscription,
+                height: .tall,
                 content: {
                     Text("Manage subscription")
                         .foregroundColor(.passBrand)
@@ -44,9 +47,11 @@ struct AccountView: View {
                                  action: {})
                 })
             .roundedEditableSection()
+             */
 
             OptionRow(
                 action: { isShowingSignOutConfirmation.toggle() },
+                height: .tall,
                 content: {
                     Text("Sign out")
                         .foregroundColor(.passBrand)
@@ -60,6 +65,7 @@ struct AccountView: View {
 
             OptionRow(
                 action: viewModel.deleteAccount,
+                height: .tall,
                 content: {
                     Text("Delete account")
                         .foregroundColor(.notificationError)

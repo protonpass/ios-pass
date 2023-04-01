@@ -599,9 +599,9 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
         let view = EditDefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = CGFloat(kOptionRowCompactHeight * supportedBrowsers.count + 140)
+            let height = Int(OptionRowHeight.short.value) * supportedBrowsers.count + 140
             let customDetent = UISheetPresentationController.Detent.custom { _ in
-                height
+                CGFloat(height)
             }
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {
@@ -614,9 +614,9 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
         let view = EditThemeView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = CGFloat(kOptionRowCompactHeight * Theme.allCases.count + 100)
+            let height = Int(OptionRowHeight.short.value) * Theme.allCases.count + 100
             let customDetent = UISheetPresentationController.Detent.custom { _ in
-                height
+                CGFloat(height)
             }
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {
@@ -629,9 +629,9 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
         let view = EditClipboardExpirationView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = CGFloat(kOptionRowCompactHeight * ClipboardExpiration.allCases.count + 100)
+            let height = Int(OptionRowHeight.short.value) * ClipboardExpiration.allCases.count + 100
             let customDetent = UISheetPresentationController.Detent.custom { _ in
-                height
+                CGFloat(height)
             }
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {
