@@ -55,7 +55,6 @@ final class MyVaultsCoordinator: Coordinator {
          shareRepository: ShareRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
-         publicKeyRepository: PublicKeyRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          syncEventLoop: SyncEventLoop,
          preferences: Preferences,

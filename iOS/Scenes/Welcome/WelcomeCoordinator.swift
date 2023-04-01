@@ -30,6 +30,8 @@ import ProtonCore_Services
 import UIComponents
 import UIKit
 
+let kAppStoreUrlString = "itms-apps://itunes.apple.com/app/id6443490629"
+
 protocol WelcomeCoordinatorDelegate: AnyObject {
     func welcomeCoordinator(didFinishWith loginData: LoginData)
 }
@@ -64,7 +66,7 @@ final class WelcomeCoordinator: DeinitPrintable {
 
     private func makeForceUpgradeDelegate() -> ForceUpgradeDelegate {
         // swiftlint:disable:next force_unwrapping
-        let appStoreUrl = URL(string: "itms-apps://itunes.apple.com/app/id6443490629")!
+        let appStoreUrl = URL(string: kAppStoreUrlString)!
         return ForceUpgradeHelper(config: .mobile(appStoreUrl), responseDelegate: self)
     }
 

@@ -25,6 +25,7 @@ import Core
 import CoreData
 import CryptoKit
 import MBProgressHUD
+import ProtonCore_AccountDeletion
 import ProtonCore_Login
 import ProtonCore_Services
 import ProtonCore_UIFoundations
@@ -40,6 +41,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
+    private let apiService: APIService
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
     private let logger: Logger
@@ -48,6 +50,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let preferences: Preferences
     private let repositoryManager: RepositoryManager
     private let symmetricKey: SymmetricKey
+    private let urlOpener: UrlOpener
     private let userData: UserData
 
     // Lazily initialized properties
@@ -75,11 +78,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          preferences: Preferences,
          symmetricKey: SymmetricKey,
          userData: UserData) {
+        self.apiService = apiService
         self.clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.logManager = logManager
         self.manualLogIn = manualLogIn
         self.preferences = preferences
@@ -89,6 +91,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                        symmetricKey: symmetricKey,
                                        userData: userData)
         self.symmetricKey = symmetricKey
+        self.urlOpener = .init(preferences: preferences)
         self.userData = userData
         super.init()
         self.finalizeInitialization()
@@ -106,6 +109,7 @@ private extension HomepageCoordinator {
         clipboardManager.bannerManager = bannerManager
         itemContextMenuHandler.delegate = self
         (repositoryManager.itemRepository as? ItemRepository)?.delegate = credentialManager as? CredentialManager
+        urlOpener.rootViewController = rootViewController
 
         preferences.objectWillChange
             .sink { [unowned self] _ in
@@ -156,6 +160,7 @@ private extension HomepageCoordinator {
 
     func start() {
         let homepageViewModel = HomepageViewModel(
+            credentialManager: credentialManager,
             itemContextMenuHandler: itemContextMenuHandler,
             itemRepository: repositoryManager.itemRepository,
             manualLogIn: manualLogIn,
@@ -168,6 +173,7 @@ private extension HomepageCoordinator {
             vaultsManager: vaultsManager)
         homepageViewModel.delegate = self
         homepageViewModel.itemsTabViewModelDelegate = self
+        homepageViewModel.profileTabViewModel.delegate = self
         let homepageView = HomepageView(viewModel: homepageViewModel)
 
         let placeholderView = ItemDetailPlaceholderView { [unowned self] in
@@ -183,44 +189,51 @@ private extension HomepageCoordinator {
         bannerManager.displayTopErrorMessage("You can not create more aliases.")
     }
 
+    func present<V: View>(_ view: V, animated: Bool = true, dismissible: Bool = true) {
+        present(UIHostingController(rootView: view),
+                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                animated: animated,
+                dismissible: dismissible)
+    }
+
+    func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = true) {
+        present(viewController,
+                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                animated: animated,
+                dismissible: dismissible)
+    }
+
     func presentItemDetailView(for itemContent: ItemContent) {
-        let itemDetailView: any View
-        let baseItemDetailViewModel: BaseItemDetailViewModel
+        let view: any View
+        let baseViewModel: BaseItemDetailViewModel
         switch itemContent.contentData {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
                                                  itemRepository: repositoryManager.itemRepository,
                                                  logManager: logManager)
             viewModel.logInDetailViewModelDelegate = self
-            baseItemDetailViewModel = viewModel
-            itemDetailView = LogInDetailView(viewModel: viewModel)
+            baseViewModel = viewModel
+            view = LogInDetailView(viewModel: viewModel)
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRepository: repositoryManager.itemRepository,
                                                 logManager: logManager)
-            baseItemDetailViewModel = viewModel
-            itemDetailView = NoteDetailView(viewModel: viewModel)
+            baseViewModel = viewModel
+            view = NoteDetailView(viewModel: viewModel)
 
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
                                                  itemRepository: repositoryManager.itemRepository,
                                                  aliasRepository: repositoryManager.aliasRepository,
                                                  logManager: logManager)
-            baseItemDetailViewModel = viewModel
-            itemDetailView = AliasDetailView(viewModel: viewModel)
+            baseViewModel = viewModel
+            view = AliasDetailView(viewModel: viewModel)
         }
 
-        baseItemDetailViewModel.delegate = self
-        currentItemDetailViewModel = baseItemDetailViewModel
-
-        // Push on iPad, sheets on iPhone
-        if UIDevice.current.isIpad {
-            push(itemDetailView)
-        } else {
-            present(NavigationView { AnyView(itemDetailView) }.navigationViewStyle(.stack),
-                    userInterfaceStyle: preferences.theme.userInterfaceStyle)
-        }
+        baseViewModel.delegate = self
+        currentItemDetailViewModel = baseViewModel
+        adaptivelyPresentDetailView(view: view)
     }
 
     func presentEditItemView(for itemContent: ItemContent) {
@@ -261,7 +274,7 @@ private extension HomepageCoordinator {
         } else {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func presentCreateEditLoginView(mode: ItemMode) {
@@ -275,7 +288,7 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
-        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle, dismissible: false)
+        present(view, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -288,7 +301,7 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
-        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle, dismissible: false)
+        present(view, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -306,7 +319,7 @@ private extension HomepageCoordinator {
                                                 logManager: logManager)
         viewModel.delegate = self
         let view = CreateEditNoteView(viewModel: viewModel)
-        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle, dismissible: false)
+        present(view, dismissible: false)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -326,7 +339,7 @@ private extension HomepageCoordinator {
             navigationController.sheetPresentationController?.detents = [.medium()]
         }
         viewModel.onDismiss = { navigationController.dismiss(animated: true) }
-        present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(navigationController)
     }
 
     func presentSortTypeList(selectedSortType: SortType,
@@ -344,7 +357,7 @@ private extension HomepageCoordinator {
         } else {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func presentCreateEditVaultView(mode: VaultMode) {
@@ -353,12 +366,39 @@ private extension HomepageCoordinator {
                                                  logManager: logManager)
         viewModel.delegate = self
         let view = CreateEditVaultView(viewModel: viewModel)
-        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(view)
     }
 
     func refreshHomepageAndSearchPage() {
         vaultsManager.refresh()
+        homepageViewModel?.profileTabViewModel.itemCountViewModel.refresh()
         searchViewModel?.refreshResults()
+    }
+
+    func adaptivelyPresentDetailView<V: View>(view: V) {
+        if UIDevice.current.isIpad {
+            push(view)
+        } else {
+            present(NavigationView { AnyView(view) }.navigationViewStyle(.stack),
+                    userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        }
+    }
+
+    func adaptivelyDismissCurrentDetailView() {
+        // Dismiss differently because show differently
+        // (push on iPad, sheets on iPhone)
+        if UIDevice.current.isIpad {
+            popTopViewController(animated: true)
+        } else {
+            dismissTopMostViewController()
+        }
+    }
+
+    func presentLogsView(for module: PassLogModule) {
+        let viewModel = LogsViewModel(module: module)
+        viewModel.delegate = self
+        let view = LogsView(viewModel: viewModel)
+        present(view)
     }
 }
 
@@ -382,11 +422,6 @@ extension HomepageCoordinator {
 extension HomepageCoordinator: HomepageViewModelDelegate {
     func homepageViewModelWantsToCreateNewItem(shareId: String) {
         presentCreateItemView(shareId: shareId)
-    }
-
-    func homepageViewModelWantsToLogOut() {
-        eventLoop.stop()
-        delegate?.homepageCoordinatorWantsToLogOut()
     }
 }
 
@@ -446,6 +481,217 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - ProfileTabViewModelDelegate
+extension HomepageCoordinator: ProfileTabViewModelDelegate {
+    func profileTabViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func profileTabViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
+    func profileTabViewModelWantsToShowAccountMenu() {
+        let viewModel = AccountViewModel(username: userData.user.email ?? "")
+        viewModel.delegate = self
+        let view = AccountView(viewModel: viewModel)
+        adaptivelyPresentDetailView(view: view)
+    }
+
+    func profileTabViewModelWantsToShowSettingsMenu() {
+        let viewModel = SettingViewModelV2(itemRepository: repositoryManager.itemRepository,
+                                           logManager: logManager,
+                                           preferences: preferences,
+                                           vaultsManager: vaultsManager)
+        viewModel.delegate = self
+        let view = SettingViewV2(viewModel: viewModel)
+        adaptivelyPresentDetailView(view: view)
+    }
+
+    func profileTabViewModelWantsToShowAcknowledgments() {
+        print(#function)
+    }
+
+    func profileTabViewModelWantsToShowPrivacyPolicy() {
+        urlOpener.open(urlString: "https://proton.me/legal/privacy")
+    }
+
+    func profileTabViewModelWantsToShowTermsOfService() {
+        urlOpener.open(urlString: "https://proton.me/legal/terms")
+    }
+
+    func profileTabViewModelWantsToShowTips() {
+        print(#function)
+    }
+
+    func profileTabViewModelWantsToShowFeedback() {
+        let view = FeedbackChannelsView { [unowned self] selectedChannel in
+            self.urlOpener.open(urlString: selectedChannel.urlString)
+        }
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = CGFloat(52 * FeedbackChannel.allCases.count + 100)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium()]
+        }
+        present(viewController)
+    }
+
+    func profileTabViewModelWantsToRateApp() {
+        urlOpener.open(urlString: kAppStoreUrlString)
+    }
+
+    func profileTabViewModelWantsDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - AccountViewModelDelegate
+extension HomepageCoordinator: AccountViewModelDelegate {
+    func accountViewModelWantsToGoBack() {
+        adaptivelyDismissCurrentDetailView()
+    }
+
+    func accountViewModelWantsToManageSubscription() {
+        print(#function)
+    }
+
+    func accountViewModelWantsToSignOut() {
+        eventLoop.stop()
+        delegate?.homepageCoordinatorWantsToLogOut()
+    }
+
+    func accountViewModelWantsToDeleteAccount() {
+        let accountDeletion = AccountDeletionService(api: apiService)
+        let view = topMostViewController.view
+        showLoadingHud(view)
+        accountDeletion.initiateAccountDeletionProcess(
+            over: topMostViewController,
+            performAfterShowingAccountDeletionScreen: { [weak self] in
+                self?.hideLoadingHud(view)
+            },
+            completion: { [weak self] result in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self.accountViewModelWantsToSignOut()
+                    case .failure(AccountDeletionError.closedByUser):
+                        break
+                    case .failure(let error):
+                        self.bannerManager.displayTopErrorMessage(error)
+                    }
+                }
+            })
+    }
+}
+
+// MARK: - SettingViewModelDelegate
+extension HomepageCoordinator: SettingViewModelDelegateV2 {
+    func settingViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func settingViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
+    func settingViewModelWantsToGoBack() {
+        adaptivelyDismissCurrentDetailView()
+    }
+
+    func settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser]) {
+        let view = EditDefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.short.value) * supportedBrowsers.count + 140
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
+    func settingViewModelWantsToEditTheme() {
+        let view = EditThemeView(preferences: preferences)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.short.value) * Theme.allCases.count + 100
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
+    func settingViewModelWantsToEditClipboardExpiration() {
+        let view = EditClipboardExpirationView(preferences: preferences)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.short.value) * ClipboardExpiration.allCases.count + 100
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
+    func settingViewModelWantsToEdit(primaryVault: Vault) {
+        let allVaults = vaultsManager.getAllVaultContents().map { VaultListUiModel(vaultContent: $0) }
+        let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults,
+                                                  primaryVault: primaryVault,
+                                                  shareRepository: repositoryManager.shareRepository)
+        viewModel.delegate = self
+        let view = EditPrimaryVaultView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = CGFloat(80 * vaultsManager.getVaultCount() + 100)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
+    func settingViewModelWantsToViewLogs() {
+        let view = LogTypesView(
+            onSelect: { [unowned self] module in
+                self.presentLogsView(for: module)
+            },
+            onClear: { [unowned self] in
+                self.bannerManager.displayBottomSuccessMessage("All logs cleared")
+            })
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium()]
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
+    func settingViewModelDidFinishFullSync() {
+        refreshHomepageAndSearchPage()
+        bannerManager.displayBottomSuccessMessage("Force synchronization done")
+    }
+
+    func settingViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }
@@ -613,13 +859,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToGoBack() {
-        // Dismiss differently because show differently
-        // (push on iPad, sheets on iPhone)
-        if UIDevice.current.isIpad {
-            popTopViewController(animated: true)
-        } else {
-            dismissTopMostViewController()
-        }
+        adaptivelyDismissCurrentDetailView()
     }
 
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
@@ -773,6 +1013,48 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
     }
 
     func createEditVaultViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - EditPrimaryVaultViewModelDelegate
+extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
+    func editPrimaryVaultViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func editPrimaryVaultViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
+    func editPrimaryVaultViewModelDidUpdatePrimaryVault() {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            self.bannerManager.displayBottomSuccessMessage("Primary vault updated")
+        }
+        vaultsManager.refresh()
+    }
+
+    func editPrimaryVaultViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - LogsViewModelDelegate
+extension HomepageCoordinator: LogsViewModelDelegate {
+    func logsViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func logsViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
+    func logsViewModelWantsToShareLogs(_ url: URL) {
+        let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        present(activityVC)
+    }
+
+    func logsViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }

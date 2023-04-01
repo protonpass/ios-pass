@@ -129,9 +129,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
                                    logManager: logManager)
 
         self.logManager = logManager
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
 
         self.syncEventLoop.delegate = self
         syncEventLoop.start()

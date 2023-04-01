@@ -100,9 +100,7 @@ public final class SyncEventLoop: DeinitPrintable {
         self.remoteSyncEventsDatasource = remoteSyncEventsDatasource
         self.itemRepository = itemRepository
         self.shareKeyRepository = shareKeyRepository
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 
     func makeReachabilityIfNecessary() throws {

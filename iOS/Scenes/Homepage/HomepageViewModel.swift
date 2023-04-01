@@ -26,7 +26,6 @@ import ProtonCore_Login
 
 protocol HomepageViewModelDelegate: AnyObject {
     func homepageViewModelWantsToCreateNewItem(shareId: String)
-    func homepageViewModelWantsToLogOut()
 }
 
 final class HomepageViewModel: ObservableObject, DeinitPrintable {
@@ -45,7 +44,8 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
     }
     private var cancellables = Set<AnyCancellable>()
 
-    init(itemContextMenuHandler: ItemContextMenuHandler,
+    init(credentialManager: CredentialManagerProtocol,
+         itemContextMenuHandler: ItemContextMenuHandler,
          itemRepository: ItemRepositoryProtocol,
          manualLogIn: Bool,
          logManager: LogManager,
@@ -62,17 +62,12 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
                                        syncEventLoop: syncEventLoop,
                                        vaultsManager: vaultsManager)
         self.preferences = preferences
-        self.profileTabViewModel = .init()
+        self.profileTabViewModel = .init(credentialManager: credentialManager,
+                                         itemRepository: itemRepository,
+                                         preferences: preferences,
+                                         logManager: logManager)
         self.vaultsManager = vaultsManager
-        self.finalizeInitialization()
-    }
-}
-
-// MARK: - Private APIs
-private extension HomepageViewModel {
-    func finalizeInitialization() {
-        profileTabViewModel.delegate = self
-        preferences.attach(to: self, storeIn: &cancellables)
+        self.preferences.attach(to: self, storeIn: &cancellables)
     }
 }
 
@@ -86,12 +81,5 @@ extension HomepageViewModel {
         case .precise(let selectedVault):
             delegate?.homepageViewModelWantsToCreateNewItem(shareId: selectedVault.shareId)
         }
-    }
-}
-
-// MARK: - ProfileTabViewModelDelegate
-extension HomepageViewModel: ProfileTabViewModelDelegate {
-    func profileTabViewModelWantsToLogOut() {
-        delegate?.homepageViewModelWantsToLogOut()
     }
 }

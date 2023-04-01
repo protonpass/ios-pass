@@ -156,6 +156,10 @@
 		3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */; };
 		3552F49428D37CFF00547146 /* ChangeMailboxesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */; };
 		35533BB729D58C8F00EC58DE /* RepositoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BB629D58C8F00EC58DE /* RepositoryManager.swift */; };
+		35533BBB29D5C3CA00EC58DE /* ItemCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */; };
+		35533BBD29D5C3D800EC58DE /* ItemCountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BBC29D5C3D800EC58DE /* ItemCountViewModel.swift */; };
+		35533BBF29D618A200EC58DE /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BBE29D618A200EC58DE /* AccountView.swift */; };
+		35533BC129D618B800EC58DE /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BC029D618B800EC58DE /* AccountViewModel.swift */; };
 		3553424529928762003E3A47 /* PPClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553424429928762003E3A47 /* PPClientError.swift */; };
 		355342472992A685003E3A47 /* PPCoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355342462992A685003E3A47 /* PPCoreError.swift */; };
 		3553C21B296570090087518A /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C21A296570090087518A /* LogEntry.swift */; };
@@ -216,6 +220,10 @@
 		35581817290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */; };
 		35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */; };
 		355888A429AE5EC3009AA775 /* AESGCM+ConvenientSealOpen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355888A329AE5EC3009AA775 /* AESGCM+ConvenientSealOpen.swift */; };
+		355895AD29D769C1001E2207 /* LogTypesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895AC29D769C1001E2207 /* LogTypesView.swift */; };
+		355895AF29D76E67001E2207 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895AE29D76E67001E2207 /* LogsView.swift */; };
+		355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895B029D76E9F001E2207 /* LogsViewModel.swift */; };
+		355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895B229D79565001E2207 /* FeedbackChannelsView.swift */; };
 		355A198D294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */; };
 		355A198F294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */; };
 		355A27B52953751200F32EA1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme.swift */; };
@@ -318,6 +326,17 @@
 		356B831429C365320084488A /* SearchEntryEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B831329C365320084488A /* SearchEntryEntity.swift */; };
 		356B831629C37E560084488A /* LocalSearchEntryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B831529C37E560084488A /* LocalSearchEntryDatasource.swift */; };
 		356B831829C37FC50084488A /* SearchEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B831729C37FC50084488A /* SearchEntry.swift */; };
+		356BC35029D6C57100F03497 /* SettingViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC34F29D6C57100F03497 /* SettingViewV2.swift */; };
+		356BC35229D6C5B400F03497 /* SettingViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */; };
+		356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */; };
+		356BC35929D6F36200F03497 /* OptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35829D6F36200F03497 /* OptionRow.swift */; };
+		356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35A29D70C5000F03497 /* EditThemeView.swift */; };
+		356BC35D29D710DC00F03497 /* EditClipboardExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */; };
+		356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35E29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift */; };
+		356BC36129D7189900F03497 /* ShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36029D7189900F03497 /* ShareTests.swift */; };
+		356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36229D7226A00F03497 /* VaultThumbnail.swift */; };
+		356BC36729D7266800F03497 /* EditPrimaryVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36629D7266800F03497 /* EditPrimaryVaultView.swift */; };
+		356BC36929D7267F00F03497 /* EditPrimaryVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36829D7267F00F03497 /* EditPrimaryVaultViewModel.swift */; };
 		356BDA3228DFAA9600B02E5A /* ShareKeyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */; };
 		356BDA3428DFAC9600B02E5A /* RemoteShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
@@ -787,6 +806,10 @@
 		3552F49128D37CA800547146 /* ChangeMailboxesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesRequest.swift; sourceTree = "<group>"; };
 		3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesEndpoint.swift; sourceTree = "<group>"; };
 		35533BB629D58C8F00EC58DE /* RepositoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryManager.swift; sourceTree = "<group>"; };
+		35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountView.swift; sourceTree = "<group>"; };
+		35533BBC29D5C3D800EC58DE /* ItemCountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountViewModel.swift; sourceTree = "<group>"; };
+		35533BBE29D618A200EC58DE /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		35533BC029D618B800EC58DE /* AccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
 		3553424429928762003E3A47 /* PPClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPClientError.swift; sourceTree = "<group>"; };
 		355342462992A685003E3A47 /* PPCoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPCoreError.swift; sourceTree = "<group>"; };
 		3553C21A296570090087518A /* LogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
@@ -841,6 +864,10 @@
 		35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSyncEventsDatasource.swift; sourceTree = "<group>"; };
 		35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDRepository.swift; sourceTree = "<group>"; };
 		355888A329AE5EC3009AA775 /* AESGCM+ConvenientSealOpen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AESGCM+ConvenientSealOpen.swift"; sourceTree = "<group>"; };
+		355895AC29D769C1001E2207 /* LogTypesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTypesView.swift; sourceTree = "<group>"; };
+		355895AE29D76E67001E2207 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
+		355895B029D76E9F001E2207 /* LogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsViewModel.swift; sourceTree = "<group>"; };
+		355895B229D79565001E2207 /* FeedbackChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackChannelsView.swift; sourceTree = "<group>"; };
 		355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeEndpoint.swift; sourceTree = "<group>"; };
 		355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeRequest.swift; sourceTree = "<group>"; };
 		355A27B42953751200F32EA1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -929,6 +956,17 @@
 		356B831329C365320084488A /* SearchEntryEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntryEntity.swift; sourceTree = "<group>"; };
 		356B831529C37E560084488A /* LocalSearchEntryDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSearchEntryDatasource.swift; sourceTree = "<group>"; };
 		356B831729C37FC50084488A /* SearchEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntry.swift; sourceTree = "<group>"; };
+		356BC34F29D6C57100F03497 /* SettingViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewV2.swift; sourceTree = "<group>"; };
+		356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModelV2.swift; sourceTree = "<group>"; };
+		356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDefaultBrowserView.swift; sourceTree = "<group>"; };
+		356BC35829D6F36200F03497 /* OptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionRow.swift; sourceTree = "<group>"; };
+		356BC35A29D70C5000F03497 /* EditThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditThemeView.swift; sourceTree = "<group>"; };
+		356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClipboardExpirationView.swift; sourceTree = "<group>"; };
+		356BC35E29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPrimaryVaultEndpoint.swift; sourceTree = "<group>"; };
+		356BC36029D7189900F03497 /* ShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTests.swift; sourceTree = "<group>"; };
+		356BC36229D7226A00F03497 /* VaultThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultThumbnail.swift; sourceTree = "<group>"; };
+		356BC36629D7266800F03497 /* EditPrimaryVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPrimaryVaultView.swift; sourceTree = "<group>"; };
+		356BC36829D7267F00F03497 /* EditPrimaryVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPrimaryVaultViewModel.swift; sourceTree = "<group>"; };
 		356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareKeyRepository.swift; sourceTree = "<group>"; };
 		356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareKeyDatasource.swift; sourceTree = "<group>"; };
 		356C2AAF28730EF00020F577 /* MainKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProvider.swift; sourceTree = "<group>"; };
@@ -1337,6 +1375,7 @@
 			children = (
 				3542E2BC28D9CA9C00194F24 /* ItemContentTests.swift */,
 				3565621B29B9EC9900C43F72 /* ItemSortableTests.swift */,
+				356BC36029D7189900F03497 /* ShareTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1505,6 +1544,7 @@
 				3593DCEA28A79CD300C235D3 /* CreateVaultRequest.swift */,
 				35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */,
 				3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */,
+				356BC35E29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift */,
 				3554730729CDD3CC0092E0E4 /* UpdateVaultRequest.swift */,
 				3554730929CDD5540092E0E4 /* UpdateVaultEndpoint.swift */,
 			);
@@ -1688,6 +1728,7 @@
 				3556949C29D45FD5005DD2EB /* MoveVaultListView.swift */,
 				3556949E29D46001005DD2EB /* MoveVaultListViewModel.swift */,
 				355694A129D466C9005DD2EB /* VaultRow.swift */,
+				356BC36229D7226A00F03497 /* VaultThumbnail.swift */,
 			);
 			path = Vault;
 			sourceTree = "<group>";
@@ -1710,8 +1751,15 @@
 		3569B2A729B7D2030070830B /* Profile Tab */ = {
 			isa = PBXGroup;
 			children = (
+				35533BBE29D618A200EC58DE /* AccountView.swift */,
+				35533BC029D618B800EC58DE /* AccountViewModel.swift */,
+				355895B229D79565001E2207 /* FeedbackChannelsView.swift */,
+				35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */,
+				35533BBC29D5C3D800EC58DE /* ItemCountViewModel.swift */,
+				356BC35829D6F36200F03497 /* OptionRow.swift */,
 				3569B2A829B7D22E0070830B /* ProfileTabView.swift */,
 				3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */,
+				356BC35329D6CDA300F03497 /* Settings */,
 			);
 			path = "Profile Tab";
 			sourceTree = "<group>";
@@ -1737,6 +1785,23 @@
 				356B697D294A31F400868771 /* DevPreviewsViewModel.swift */,
 			);
 			path = DevPreviews;
+			sourceTree = "<group>";
+		};
+		356BC35329D6CDA300F03497 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */,
+				356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */,
+				356BC36629D7266800F03497 /* EditPrimaryVaultView.swift */,
+				356BC36829D7267F00F03497 /* EditPrimaryVaultViewModel.swift */,
+				356BC35A29D70C5000F03497 /* EditThemeView.swift */,
+				355895AC29D769C1001E2207 /* LogTypesView.swift */,
+				355895AE29D76E67001E2207 /* LogsView.swift */,
+				355895B029D76E9F001E2207 /* LogsViewModel.swift */,
+				356BC34F29D6C57100F03497 /* SettingViewV2.swift */,
+				356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		3572E51729938A1200775FAC /* OTP */ = {
@@ -3307,6 +3372,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */,
+				356BC35029D6C57100F03497 /* SettingViewV2.swift in Sources */,
 				355694A229D466C9005DD2EB /* VaultRow.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
@@ -3328,6 +3394,7 @@
 				3556949F29D46001005DD2EB /* MoveVaultListViewModel.swift in Sources */,
 				35F8CD0229B61C9A0017DBC6 /* HomepageView.swift in Sources */,
 				3542E2D028DA4E7400194F24 /* ItemUiModel.swift in Sources */,
+				35533BC129D618B800EC58DE /* AccountViewModel.swift in Sources */,
 				355783662962EB15008A4992 /* DeviceLogsView.swift in Sources */,
 				354513CF28E460FD0020A93A /* SettingsCoordinator.swift in Sources */,
 				355013F7295459E1004F837E /* ThemesView.swift in Sources */,
@@ -3355,12 +3422,14 @@
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */,
+				355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */,
 				3586F3B5295885BB00738245 /* SecuritySettingsView.swift in Sources */,
 				356B830E29C339110084488A /* SortTypeButton.swift in Sources */,
 				3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */,
 				35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */,
 				35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */,
 				355694A429D4673A005DD2EB /* VaultListUiModel.swift in Sources */,
+				35533BBD29D5C3D800EC58DE /* ItemCountViewModel.swift in Sources */,
 				3543615C2941E1A8000CAE12 /* UIApplication+OpenSettings.swift in Sources */,
 				3571B59429BF1321008D4350 /* HighlightText.swift in Sources */,
 				3572E5232993D68800775FAC /* ItemContent+UIRelatedProperties.swift in Sources */,
@@ -3369,12 +3438,14 @@
 				354361552941D251000CAE12 /* OnboardingView.swift in Sources */,
 				350A97DC2885FD7900A7168B /* MyVaultsViewModel.swift in Sources */,
 				356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */,
+				356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */,
 				3586F3B82958860800738245 /* BrowserSettingsView.swift in Sources */,
 				356B697E294A31F400868771 /* DevPreviewsViewModel.swift in Sources */,
 				3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */,
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
 				35B2F5A42906C76D00F74108 /* AppContentCoverView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
+				356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */,
 				3557836B296309D0008A4992 /* DeviceLogTypesView.swift in Sources */,
 				355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */,
 				3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */,
@@ -3385,15 +3456,18 @@
 				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
 				357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */,
 				355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */,
+				356BC36929D7267F00F03497 /* EditPrimaryVaultViewModel.swift in Sources */,
 				35992155299F910500FEFA32 /* MailboxSection.swift in Sources */,
 				3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */,
 				35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */,
 				355BDED6299E6515009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				3569B29F29B77A760070830B /* VaultContentUiModel.swift in Sources */,
 				3571B5A329BF73C0008D4350 /* SearchViewSkeleton.swift in Sources */,
+				356BC35D29D710DC00F03497 /* EditClipboardExpirationView.swift in Sources */,
 				354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */,
 				35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */,
 				3562BCF329BDBF2500564508 /* SectionIndexTitles.swift in Sources */,
+				356BC36729D7266800F03497 /* EditPrimaryVaultView.swift in Sources */,
 				354513CB28E45F960020A93A /* SettingsView.swift in Sources */,
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
 				35733B7529CC483300052229 /* CreateEditVaultViewModel.swift in Sources */,
@@ -3404,6 +3478,7 @@
 				3565622429BA5C5900C43F72 /* SortTypeListView.swift in Sources */,
 				35992153299F8C3F00FEFA32 /* PrefixSuffixSection.swift in Sources */,
 				3565FD5D298D49B300E2A0EE /* NoteDetailSection.swift in Sources */,
+				356BC35229D6C5B400F03497 /* SettingViewModelV2.swift in Sources */,
 				3571B59F29BF7204008D4350 /* SearchView.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
@@ -3411,21 +3486,28 @@
 				3586F3B1295884B000738245 /* GeneralSettingsSection.swift in Sources */,
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
 				3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */,
+				356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */,
+				356BC35929D6F36200F03497 /* OptionRow.swift in Sources */,
 				35733B7F29CC60D200052229 /* VaultColor.swift in Sources */,
 				3547ABD02876CFF000EE85E1 /* MyVaultsView.swift in Sources */,
 				3554D42D2967854000DF0CBE /* DeveloperModeStateManager.swift in Sources */,
+				35533BBB29D5C3CA00EC58DE /* ItemCountView.swift in Sources */,
 				3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				355744172959F5E400EA4AF0 /* ClipboardSettingsView.swift in Sources */,
 				3565FD4F298D319500E2A0EE /* ItemDetailSectionIcon.swift in Sources */,
 				3569B2A629B7C39F0070830B /* View+Theme.swift in Sources */,
 				354513CD28E45FB20020A93A /* SettingsViewModel.swift in Sources */,
 				3567E46629B0E6F900511D62 /* NoCameraPermissionView.swift in Sources */,
+				355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */,
 				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
 				35F8CD0429B624F80017DBC6 /* HomepageTabBar.swift in Sources */,
+				355895AD29D769C1001E2207 /* LogTypesView.swift in Sources */,
+				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
+				355895AF29D76E67001E2207 /* LogsView.swift in Sources */,
 				3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */,
 				3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */,
 			);
@@ -3472,6 +3554,7 @@
 				358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */,
 				358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */,
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,
+				356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */,
 				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
 				35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */,
 				358A508D28AD823000F5285C /* PublicKey.swift in Sources */,
@@ -3559,6 +3642,7 @@
 				3542E2BF28D9CAB200194F24 /* SymmetricKey+Test.swift in Sources */,
 				355E33AA29C4612800402CAE /* LocalSearchEntryDatasourceTests.swift in Sources */,
 				358A509628AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift in Sources */,
+				356BC36129D7189900F03497 /* ShareTests.swift in Sources */,
 				3542E2BA28D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift in Sources */,
 				3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */,
 				35CAD6A229A78B0900CF3993 /* PassKeyArray+LatestKeyTests.swift in Sources */,

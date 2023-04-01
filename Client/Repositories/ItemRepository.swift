@@ -490,38 +490,6 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.shareRepository = shareRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
-    }
-
-    public init(userData: UserData,
-                symmetricKey: SymmetricKey,
-                container: NSPersistentContainer,
-                apiService: APIService,
-                logManager: LogManager) {
-        self.userData = userData
-        self.symmetricKey = symmetricKey
-        self.localItemDatasoure = LocalItemDatasource(container: container)
-        self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(apiService: apiService)
-        self.shareRepository = ShareRepository(userData: userData,
-                                               container: container,
-                                               apiService: apiService,
-                                               logManager: logManager)
-        self.shareEventIDRepository = ShareEventIDRepository(container: container,
-                                                             apiService: apiService,
-                                                             logManager: logManager)
-        let shareKeyRepository = ShareKeyRepository(container: container,
-                                                    apiService: apiService,
-                                                    logManager: logManager,
-                                                    userData: userData)
-        let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
-        self.passKeyManager = PassKeyManager(userData: userData,
-                                             shareKeyRepository: shareKeyRepository,
-                                             itemKeyDatasource: itemKeyDatasource,
-                                             logManager: logManager)
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 }

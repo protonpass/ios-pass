@@ -46,9 +46,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     init(vaultsManager: VaultsManager, logManager: LogManager) {
         self.vaultsManager = vaultsManager
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.finalizeInitialization()
     }
 }

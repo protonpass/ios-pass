@@ -95,9 +95,7 @@ final class VaultContentViewModel: DeinitPrintable, PullToRefreshable, Observabl
         self.symmetricKey = symmetricKey
         self.syncEventLoop = syncEventLoop
         self.preferences = preferences
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         showAutoFillBannerIfNecessary()
     }
 
