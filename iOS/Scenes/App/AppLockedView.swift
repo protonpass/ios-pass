@@ -90,7 +90,7 @@ struct AppLockedView: View {
     }
 
     private var lockImage: some View {
-        Image(uiImage: IconProvider.lockFilled)
+        Image(systemName: "lock.fill")
             .resizable()
             .scaledToFit()
             .foregroundColor(.secondary)
