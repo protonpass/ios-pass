@@ -65,9 +65,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
          symmetricKey: SymmetricKey) {
         self.itemRepository = itemRepository
         self.manualLogIn = manualLogIn
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
     }
@@ -221,6 +219,12 @@ extension VaultsManager {
         let trashedItems = try await itemRepository.getItems(state: .trashed)
         try await itemRepository.deleteItems(trashedItems, skipTrash: false)
         logger.info("Permanently deleted all trashed items")
+    }
+
+    func getPrimaryVault() -> Vault? {
+        guard case .loaded(let uiModels, _) = state else { return nil }
+        let vaults = uiModels.map { $0.vault }
+        return vaults.first(where: { $0.isPrimary }) ?? vaults.first
     }
 }
 

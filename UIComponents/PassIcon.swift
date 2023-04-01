@@ -43,6 +43,8 @@ public enum PassIcon {
     public static var onboardAliases = UIImage(named: "OnboardAliases")!
     public static var turnOnAutoFillBannerGradient = UIImage(named: "TurnOnAutoFillBannerGradient")!
     public static var turnOnAutoFillBannerKeyboard = UIImage(named: "TurnOnAutoFillBannerKeyboard")!
+    public static var brandTwitter = UIImage(named: "BrandTwitter")!
+    public static var brandReddit = UIImage(named: "BrandReddit")!
 
     public static var allVaults = UIImage(named: "AllVaults")!
     public static var vaultIcon1 = UIImage(named: "VaultIcon1")!

@@ -53,9 +53,7 @@ public final class BiometricAuthenticator: ObservableObject {
     public init(preferences: Preferences, logManager: LogManager) {
         self.preferences = preferences
         self.enabled = preferences.biometricAuthenticationEnabled
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 
     public func initializeBiometryType() {

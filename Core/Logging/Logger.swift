@@ -35,9 +35,9 @@ public struct Logger {
     let manager: LogManager
     let consolePrintOption: LoggerConsolePrintOption
 
-    public init(subsystem: String,
-                category: String,
-                manager: LogManager,
+    public init(manager: LogManager,
+                subsystem: String = Bundle.main.bundleIdentifier ?? "",
+                category: String = "\(Self.self)",
                 consolePrintOption: LoggerConsolePrintOption = .debug) {
         self.subsystem = subsystem
         self.category = category

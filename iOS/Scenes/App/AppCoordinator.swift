@@ -70,9 +70,7 @@ final class AppCoordinator {
         self.window = window
         self.appStateObserver = .init()
         self.logManager = .init(module: .hostApp)
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: self.logManager)
+        self.logger = .init(manager: self.logManager)
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         self._sessionData.setKeychain(keychain)

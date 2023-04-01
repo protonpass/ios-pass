@@ -38,5 +38,6 @@ public struct RetryableErrorView: View {
             }
             .foregroundColor(.interactionNorm)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

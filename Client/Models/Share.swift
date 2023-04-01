@@ -53,6 +53,9 @@ public struct Share: Decodable {
     /// Permissions for this share
     public let permission: Int16
 
+    /// Whether this vault is primary for this user
+    public let primary: Bool
+
     /// Base64 encoded encrypted content of the share. Can be null for item shares
     public let content: String?
 
@@ -98,10 +101,26 @@ public extension Share {
                               shareId: shareID,
                               name: vaultContent.name,
                               description: vaultContent.description_p,
-                              displayPreferences: vaultContent.display)
+                              displayPreferences: vaultContent.display,
+                              isPrimary: primary)
             return .vault(vault)
         case .item:
             return .item
         }
+    }
+
+    func clone(isPrimary: Bool) -> Share {
+        .init(shareID: shareID,
+              vaultID: vaultID,
+              addressID: addressID,
+              targetType: targetType,
+              targetID: targetID,
+              permission: permission,
+              primary: isPrimary,
+              content: content,
+              contentKeyRotation: contentKeyRotation,
+              contentFormatVersion: contentFormatVersion,
+              expireTime: expireTime,
+              createTime: createTime)
     }
 }

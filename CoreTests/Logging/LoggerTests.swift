@@ -31,9 +31,9 @@ final class LoggerTests: XCTestCase {
         super.setUp()
         // swiftlint:disable:next force_unwrapping
         let url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!
-        sut = .init(subsystem: Self.subsystem,
-                    category: Self.category,
-                    manager: .init(url: url, fileName: "test.log", maxLogLines: 2_000))
+        sut = .init(manager: .init(url: url, fileName: "test.log", maxLogLines: 2_000),
+                    subsystem: Self.subsystem,
+                    category: Self.category)
     }
 
     override func tearDown() {

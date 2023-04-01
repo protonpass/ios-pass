@@ -46,7 +46,6 @@ final class HomeCoordinator: DeinitPrintable {
     private let shareKeyRepository: ShareKeyRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let aliasRepository: AliasRepositoryProtocol
-    private let publicKeyRepository: PublicKeyRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let preferences: Preferences
     private let manualLogIn: Bool
@@ -83,8 +82,6 @@ final class HomeCoordinator: DeinitPrintable {
 
     private var cancellables = Set<AnyCancellable>()
 
-    #warning("Try to simplify this function")
-    // swiftlint:disable:next function_body_length
     init(sessionData: SessionData,
          apiService: APIService,
          symmetricKey: SymmetricKey,
@@ -99,56 +96,29 @@ final class HomeCoordinator: DeinitPrintable {
 
         let userId = sessionData.userData.user.ID
         let userData = sessionData.userData
-
-        let itemRepository = ItemRepository(userData: userData,
-                                            symmetricKey: symmetricKey,
-                                            container: container,
-                                            apiService: apiService,
-                                            logManager: logManager)
-        self.itemRepository = itemRepository
-        self.aliasRepository = AliasRepository(apiService: apiService)
-        self.publicKeyRepository = PublicKeyRepository(container: container,
-                                                       apiService: apiService,
-                                                       logManager: logManager)
-        let shareKeyRepository = ShareKeyRepository(container: container,
-                                                    apiService: apiService,
-                                                    logManager: logManager,
-                                                    userData: userData)
-        self.shareKeyRepository = shareKeyRepository
-
-        let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
-        let passKeyManager = PassKeyManager(userData: userData,
-                                            shareKeyRepository: shareKeyRepository,
-                                            itemKeyDatasource: itemKeyDatasource,
-                                            logManager: logManager)
-        let shareRepository = ShareRepository(
-            userData: sessionData.userData,
-            localShareDatasource: LocalShareDatasource(container: container),
-            remoteShareDatasouce: RemoteShareDatasource(apiService: apiService),
-            passKeyManager: passKeyManager,
-            logManager: logManager)
-        self.shareRepository = shareRepository
-        itemRepository.delegate = credentialManager as? ItemRepositoryDelegate
+        let repositoryManager = RepositoryManager(apiService: apiService,
+                                                  container: container,
+                                                  logManager: logManager,
+                                                  symmetricKey: symmetricKey,
+                                                  userData: userData)
+        self.itemRepository = repositoryManager.itemRepository
+        self.aliasRepository = repositoryManager.aliasRepository
+        self.shareKeyRepository = repositoryManager.shareKeyRepository
+        self.shareRepository = repositoryManager.shareRepository
+        (itemRepository as? ItemRepository)?.delegate = credentialManager as? ItemRepositoryDelegate
         self.credentialManager = credentialManager
         self.manualLogIn = manualLogIn
         self.preferences = preferences
         self.logManager = logManager
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.urlOpener = .init(preferences: preferences)
         self.clipboardManager = .init(preferences: preferences)
-
-        let shareEventIDRepository = ShareEventIDRepository(container: container,
-                                                            apiService: apiService,
-                                                            logManager: logManager)
-        let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
         self.eventLoop = .init(userId: userId,
-                               shareRepository: shareRepository,
-                               shareEventIDRepository: shareEventIDRepository,
-                               remoteSyncEventsDatasource: remoteSyncEventsDatasource,
-                               itemRepository: itemRepository,
-                               shareKeyRepository: shareKeyRepository,
+                               shareRepository: repositoryManager.shareRepository,
+                               shareEventIDRepository: repositoryManager.shareEventIDRepository,
+                               remoteSyncEventsDatasource: repositoryManager.remoteSyncEventsDatasource,
+                               itemRepository: repositoryManager.itemRepository,
+                               shareKeyRepository: repositoryManager.shareKeyRepository,
                                logManager: logManager)
         self.eventLoop.delegate = self
         self.observeForegroundEntrance()
@@ -223,7 +193,6 @@ private extension HomeCoordinator {
                                                       shareRepository: shareRepository,
                                                       itemRepository: itemRepository,
                                                       aliasRepository: aliasRepository,
-                                                      publicKeyRepository: publicKeyRepository,
                                                       credentialManager: credentialManager,
                                                       syncEventLoop: eventLoop,
                                                       preferences: preferences,

@@ -25,6 +25,7 @@ struct VaultRow<Thumbnail: View>: View {
     let title: String
     let itemCount: Int
     let isSelected: Bool
+    var height: CGFloat = 70
 
     var body: some View {
         HStack(spacing: 16) {
@@ -53,7 +54,7 @@ struct VaultRow<Thumbnail: View>: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 70)
+        .frame(height: height)
         .contentShape(Rectangle())
     }
 }

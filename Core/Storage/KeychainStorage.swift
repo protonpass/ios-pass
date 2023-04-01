@@ -50,9 +50,7 @@ public final class KeychainStorage<T: Codable> {
     }
 
     public func setLogManager(_ logManager: LogManager) {
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 
     public var wrappedValue: T? {

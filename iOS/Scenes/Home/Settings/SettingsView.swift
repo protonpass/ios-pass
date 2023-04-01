@@ -133,13 +133,3 @@ private struct DeleteAccountSection: View {
         })
     }
 }
-
-struct ChevronRight: View {
-    var body: some View {
-        Image(systemName: "chevron.right")
-            .resizable()
-            .scaledToFit()
-            .frame(height: 16)
-            .foregroundColor(Color(.tertiaryLabel))
-    }
-}

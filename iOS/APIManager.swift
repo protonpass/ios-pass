@@ -54,9 +54,7 @@ final class APIManager {
     init(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager, appVer: String) {
         self.logManager = logManager
         self.appVer = appVer
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self._authSessionData.setKeychain(keychain)
         self._authSessionData.setMainKeyProvider(mainKeyProvider)
         self._authSessionData.setLogManager(logManager)

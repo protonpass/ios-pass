@@ -78,21 +78,7 @@ public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
                 userData: UserData) {
         self.localShareKeyDatasource = localShareKeyDatasource
         self.remoteShareKeyDatasource = remoteShareKeyDatasource
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
-        self.userData = userData
-    }
-
-    public init(container: NSPersistentContainer,
-                apiService: APIService,
-                logManager: LogManager,
-                userData: UserData) {
-        self.localShareKeyDatasource = LocalShareKeyDatasource(container: container)
-        self.remoteShareKeyDatasource = RemoteShareKeyDatasource(apiService: apiService)
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
         self.userData = userData
     }
 }

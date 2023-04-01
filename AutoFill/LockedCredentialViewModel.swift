@@ -42,9 +42,7 @@ final class LockedCredentialViewModel: ObservableObject {
         self.symmetricKey = symmetricKey
         self.credentialIdentity = credentialIdentity
         self.logManager = logManager
-        self.logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "",
-                            category: "\(Self.self)",
-                            manager: logManager)
+        self.logger = .init(manager: logManager)
     }
 
     func getAndReturnCredential() {
