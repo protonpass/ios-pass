@@ -44,6 +44,9 @@ struct ProfileTabView: View {
                     aboutSection
                     helpCenterSection
                         .padding(.vertical)
+                    Text(viewModel.appVersion)
+                        .sectionTitleText()
+                        .frame(maxWidth: .infinity, alignment: .center)
                     Spacer()
                 }
                 .padding(.top)
