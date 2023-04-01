@@ -42,6 +42,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // Injected & self-initialized properties
     private let apiService: APIService
+    private let appData: AppData
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
     private let logger: Logger
@@ -71,6 +72,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     weak var delegate: HomepageCoordinatorDelegate?
 
     init(apiService: APIService,
+         appData: AppData,
          container: NSPersistentContainer,
          credentialManager: CredentialManagerProtocol,
          logManager: LogManager,
@@ -79,6 +81,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          symmetricKey: SymmetricKey,
          userData: UserData) {
         self.apiService = apiService
+        self.appData = appData
         self.clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
         self.logger = .init(manager: logManager)
