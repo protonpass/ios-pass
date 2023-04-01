@@ -160,6 +160,7 @@ private extension HomepageCoordinator {
 
     func start() {
         let homepageViewModel = HomepageViewModel(
+            credentialManager: credentialManager,
             itemContextMenuHandler: itemContextMenuHandler,
             itemRepository: repositoryManager.itemRepository,
             manualLogIn: manualLogIn,
@@ -486,6 +487,14 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
 // MARK: - ProfileTabViewModelDelegate
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
+    func profileTabViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func profileTabViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
     func profileTabViewModelWantsToShowAccountMenu() {
         let viewModel = AccountViewModel(username: userData.user.email ?? "")
         viewModel.delegate = self
@@ -538,6 +547,10 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToRateApp() {
         urlOpener.open(urlString: kAppStoreUrlString)
+    }
+
+    func profileTabViewModelWantsDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
