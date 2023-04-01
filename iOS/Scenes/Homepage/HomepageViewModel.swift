@@ -44,7 +44,8 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
     }
     private var cancellables = Set<AnyCancellable>()
 
-    init(itemContextMenuHandler: ItemContextMenuHandler,
+    init(credentialManager: CredentialManagerProtocol,
+         itemContextMenuHandler: ItemContextMenuHandler,
          itemRepository: ItemRepositoryProtocol,
          manualLogIn: Bool,
          logManager: LogManager,
@@ -61,7 +62,8 @@ final class HomepageViewModel: ObservableObject, DeinitPrintable {
                                        syncEventLoop: syncEventLoop,
                                        vaultsManager: vaultsManager)
         self.preferences = preferences
-        self.profileTabViewModel = .init(itemRepository: itemRepository,
+        self.profileTabViewModel = .init(credentialManager: credentialManager,
+                                         itemRepository: itemRepository,
                                          preferences: preferences,
                                          logManager: logManager)
         self.vaultsManager = vaultsManager
