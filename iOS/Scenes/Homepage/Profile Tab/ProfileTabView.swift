@@ -37,19 +37,32 @@ struct ProfileTabView: View {
             ScrollView {
                 VStack {
                     itemCountSection
-                        .padding(.bottom)
+
                     biometricAuthenticationSection
+                        .padding(.vertical)
+
+                    if viewModel.autoFillEnabled {
+                        autoFillEnabledSection
+                    } else {
+                        autoFillDisabledSection
+                    }
+
                     accountAndSettingsSection
                         .padding(.vertical)
+
                     aboutSection
+
                     helpCenterSection
                         .padding(.vertical)
+
                     Text(viewModel.appVersion)
                         .sectionTitleText()
+
                         .frame(maxWidth: .infinity, alignment: .center)
                     Spacer()
                 }
                 .padding(.top)
+                .animation(.default, value: viewModel.automaticallyCopyTotpCode)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -104,6 +117,69 @@ struct ProfileTabView: View {
             if case .initialized(let biometryType) = viewModel.biometricAuthenticator.biometryTypeState,
                biometryType != .none {
                 Text("Unlock Proton Pass with a glance.")
+                    .sectionTitleText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .padding(.horizontal)
+    }
+
+    private var autoFillDisabledSection: some View {
+        VStack {
+            Text("AutoFill")
+                .sectionHeaderText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text("AutoFill disabled")
+                .foregroundColor(.textWeak)
+                .padding(.horizontal, kItemDetailSectionPadding)
+                .frame(height: OptionRowHeight.short.value)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .roundedEditableSection()
+
+            VStack(spacing: 0) {
+                Text("AutoFill on apps and websites by enabling Proton Pass AutoFill.")
+                    .sectionTitleText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Button(action: UIApplication.shared.openPasswordSettings) {
+                    Text("Open Settings")
+                        .font(.footnote)
+                        .foregroundColor(.passBrand)
+                        .underline(color: .passBrand)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .padding(.horizontal)
+    }
+
+    private var autoFillEnabledSection: some View {
+        VStack {
+            Text("AutoFill")
+                .sectionHeaderText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            VStack(spacing: 0) {
+                OptionRow(height: .medium) {
+                    Toggle(isOn: $viewModel.quickTypeBar) {
+                        Text("QuickType bar")
+                    }
+                    .tint(.passBrand)
+                }
+
+                PassDivider()
+
+                OptionRow(height: .medium) {
+                    Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
+                        Text("Automatically copy TOTP code")
+                    }
+                    .tint(.passBrand)
+                }
+            }
+            .roundedEditableSection()
+
+            if viewModel.automaticallyCopyTotpCode {
+                Text("When autofilling, you will be warned if TOTP code expires in less than 10 seconds.")
                     .sectionTitleText()
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
