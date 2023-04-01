@@ -46,6 +46,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     let itemRepository: ItemRepositoryProtocol
     let logger: Logger
     let preferences: Preferences
+    let appVersion: String
 
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
     @Published private(set) var autoFillEnabled: Bool { didSet { populateOrRemoveCredentials() } }
@@ -72,6 +73,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         self.itemRepository = itemRepository
         self.logger = .init(manager: logManager)
         self.preferences = preferences
+        self.appVersion = "Version \(Bundle.main.fullAppVersionName()) (\(Bundle.main.buildNumber))"
 
         self.autoFillEnabled = false
         self.quickTypeBar = preferences.quickTypeBar
