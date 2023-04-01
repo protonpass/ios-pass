@@ -33,10 +33,8 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     private let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName())"
 
     private lazy var coordinator: CredentialProviderCoordinator = {
-        let apiManager = APIManager(keychain: keychain,
-                                    mainKeyProvider: keymaker,
-                                    logManager: logManager,
-                                    appVer: appVersion)
+        let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
+        let apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
         return .init(apiManager: apiManager,
                      container: .Builder.build(name: kProtonPassContainerName, inMemory: false),
                      context: extensionContext,
