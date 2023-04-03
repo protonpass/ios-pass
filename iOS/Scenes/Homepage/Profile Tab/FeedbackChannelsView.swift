@@ -44,8 +44,8 @@ struct FeedbackChannelsView: View {
                 VStack {
                     ForEach(FeedbackChannel.allCases, id: \.rawValue) { channel in
                         Button(action: {
-                            onSelectChannel(channel)
                             dismiss()
+                            onSelectChannel(channel)
                         }, label: {
                             Label(title: {
                                 Text(channel.description)
