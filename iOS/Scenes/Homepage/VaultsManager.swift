@@ -122,6 +122,7 @@ extension VaultsManager {
                 }
 
                 if manualLogIn {
+                    logger.info("Manual login, doing full sync")
                     try await itemRepository.refreshItems()
                     let vaults = try await shareRepository.getVaults()
                     if vaults.isEmpty {
@@ -132,9 +133,12 @@ extension VaultsManager {
                         try await loadContents(for: vaults)
                     }
                     manualLogIn = false
+                    logger.info("Manual login, done full sync")
                 } else {
+                    logger.info("Not manual login, getting local shares & items")
                     let vaults = try await shareRepository.getVaults()
                     try await loadContents(for: vaults)
+                    logger.info("Not manual login, done getting local shares & items")
                 }
             } catch {
                 state = .error(error)

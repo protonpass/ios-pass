@@ -38,12 +38,7 @@ final class APIManager {
     private let logManager: LogManager
     private let logger: Logger
     private let appVer: String
-
-    @KeychainStorage(key: .authSessionData)
-    private var authSessionData: SessionData?
-
-    @KeychainStorage(key: .unauthSessionCredentials)
-    private var unauthSessionCredentials: AuthCredential?
+    private let appData: AppData
 
     private(set) var apiService: APIService
     private(set) var authHelper: AuthHelper
@@ -51,19 +46,13 @@ final class APIManager {
 
     weak var delegate: APIManagerDelegate?
 
-    init(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager, appVer: String) {
+    init(logManager: LogManager, appVer: String, appData: AppData) {
         self.logManager = logManager
         self.appVer = appVer
         self.logger = .init(manager: logManager)
-        self._authSessionData.setKeychain(keychain)
-        self._authSessionData.setMainKeyProvider(mainKeyProvider)
-        self._authSessionData.setLogManager(logManager)
-        self._unauthSessionCredentials.setKeychain(keychain)
-        self._unauthSessionCredentials.setMainKeyProvider(mainKeyProvider)
-        self._unauthSessionCredentials.setLogManager(logManager)
+        self.appData = appData
 
-        if let credential = self._authSessionData.wrappedValue?.userData.credential
-            ?? self._unauthSessionCredentials.wrappedValue {
+        if let credential = appData.userData?.credential ?? appData.unauthSessionCredentials {
             self.apiService = PMAPIService.createAPIService(
                 doh: PPDoH(bundle: .main),
                 sessionUID: credential.sessionID,
@@ -95,7 +84,7 @@ final class APIManager {
     }
 
     func clearCredentials() {
-        unauthSessionCredentials = nil
+        appData.unauthSessionCredentials = nil
         apiService.setSessionUID(uid: "")
         // destroying and recreating AuthHelper to clear its cache
         authHelper = AuthHelper()
@@ -132,18 +121,16 @@ final class APIManager {
         }
     }
 
-    // Create a new instance of SessionData with everything copied except credential
-    private func updateSessionData(_ sessionData: SessionData,
-                                   authCredential: AuthCredential) {
-        let currentUserData = sessionData.userData
+    // Create a new instance of UserData with everything copied except credential
+    private func update(userData: UserData, authCredential: AuthCredential) {
         let updatedUserData = UserData(credential: authCredential,
-                                       user: currentUserData.user,
-                                       salts: currentUserData.salts,
-                                       passphrases: currentUserData.passphrases,
-                                       addresses: currentUserData.addresses,
-                                       scopes: currentUserData.scopes)
-        self.authSessionData = .init(userData: updatedUserData)
-        self.unauthSessionCredentials = nil
+                                       user: userData.user,
+                                       salts: userData.salts,
+                                       passphrases: userData.passphrases,
+                                       addresses: userData.addresses,
+                                       scopes: userData.scopes)
+        self.appData.userData = updatedUserData
+        self.appData.unauthSessionCredentials = nil
     }
 }
 
@@ -153,7 +140,7 @@ extension APIManager: AuthHelperDelegate {
         clearCredentials()
         if isAuthenticatedSession {
             logger.info("Authenticated session is invalidated. Logging out...")
-            authSessionData = nil
+            appData.userData = nil
             delegate?.appLoggedOut()
         } else {
             logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
@@ -163,10 +150,10 @@ extension APIManager: AuthHelperDelegate {
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
         logger.info("Session credentials are updated")
-        if let sessionData = authSessionData {
-            updateSessionData(sessionData, authCredential: authCredential)
+        if let userData = appData.userData {
+            update(userData: userData, authCredential: authCredential)
         } else {
-            unauthSessionCredentials = authCredential
+            appData.unauthSessionCredentials = authCredential
         }
     }
 }

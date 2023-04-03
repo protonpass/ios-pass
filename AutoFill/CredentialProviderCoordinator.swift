@@ -35,8 +35,8 @@ import UIComponents
 import UserNotifications
 
 public final class CredentialProviderCoordinator {
-    @KeychainStorage(key: .authSessionData)
-    private var sessionData: SessionData?
+    @KeychainStorage(key: .userData)
+    private var userData: UserData?
 
     @KeychainStorage(key: .symmetricKey)
     private var symmetricKeyString: String?
@@ -83,9 +83,9 @@ public final class CredentialProviderCoordinator {
         self.keychain = keychain
         self.keymaker = .init(autolocker: Autolocker(lockTimeProvider: keychain),
                               keychain: keychain)
-        self._sessionData.setKeychain(keychain)
-        self._sessionData.setMainKeyProvider(keymaker)
-        self._sessionData.setLogManager(logManager)
+        self._userData.setKeychain(keychain)
+        self._userData.setMainKeyProvider(keymaker)
+        self._userData.setLogManager(logManager)
         self._symmetricKeyString.setKeychain(keychain)
         self._symmetricKeyString.setMainKeyProvider(keymaker)
         self._symmetricKeyString.setLogManager(logManager)
@@ -105,13 +105,13 @@ public final class CredentialProviderCoordinator {
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard let sessionData, let symmetricKey else {
+        guard let userData, let symmetricKey else {
             showNoLoggedInView()
             return
         }
-        apiManager.sessionIsAvailable(authCredential: sessionData.userData.credential,
-                                      scopes: sessionData.userData.scopes)
-        showCredentialsView(userData: sessionData.userData,
+        apiManager.sessionIsAvailable(authCredential: userData.credential,
+                                      scopes: userData.scopes)
+        showCredentialsView(userData: userData,
                             symmetricKey: symmetricKey,
                             serviceIdentifiers: serviceIdentifiers)
     }
@@ -198,7 +198,7 @@ public final class CredentialProviderCoordinator {
                 defer { cancel(errorCode: .failed) }
                 do {
                     logger.trace("Authenticaion failed. Removing all credentials")
-                    sessionData = nil
+                    userData = nil
                     try await credentialManager.removeAllCredentials()
                     logger.info("Removed all credentials after authentication failure")
                 } catch {
@@ -211,7 +211,7 @@ public final class CredentialProviderCoordinator {
     }
 
     private func makeSymmetricKeyAndRepositories() {
-        guard let sessionData,
+        guard let userData,
               let symmetricKeyData = symmetricKeyString?.data(using: .utf8) else { return }
 
         let symmetricKey = SymmetricKey(data: symmetricKeyData)
@@ -219,7 +219,7 @@ public final class CredentialProviderCoordinator {
                                                   container: container,
                                                   logManager: logManager,
                                                   symmetricKey: symmetricKey,
-                                                  userData: sessionData.userData)
+                                                  userData: userData)
         self.symmetricKey = symmetricKey
         self.shareRepository = repositoryManager.shareRepository
         self.shareEventIDRepository = repositoryManager.shareEventIDRepository
@@ -424,7 +424,7 @@ private extension CredentialProviderCoordinator {
         let creationType = ItemCreationType.login(title: url?.host,
                                                   url: url?.schemeAndHost,
                                                   autofill: true)
-        let emailAddress = sessionData?.userData.addresses.first?.email ?? ""
+        let emailAddress = userData?.addresses.first?.email ?? ""
         let viewModel = CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                type: creationType),
                                                  itemRepository: itemRepository,

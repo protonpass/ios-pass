@@ -41,23 +41,27 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
+    private let aliasRepository: AliasRepositoryProtocol
     private let apiService: APIService
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
+    private let eventLoop: SyncEventLoop
+    private let itemContextMenuHandler: ItemContextMenuHandler
+    private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
     private let logManager: LogManager
     private let manualLogIn: Bool
+    private let organization: OrganizationLite?
     private let preferences: Preferences
-    private let repositoryManager: RepositoryManager
+    private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
+    private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let urlOpener: UrlOpener
     private let userData: UserData
+    private let vaultsManager: VaultsManager
 
     // Lazily initialized properties
     private lazy var bannerManager: BannerManager = { .init(container: rootViewController) }()
-    private lazy var eventLoop = makeSyncEventLoop()
-    private lazy var itemContextMenuHandler = makeItemContextMenuHandler()
-    private lazy var vaultsManager = makeVaultsManager()
 
     // References
     private var homepageViewModel: HomepageViewModel?
@@ -70,29 +74,65 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     weak var delegate: HomepageCoordinatorDelegate?
 
+    // swiftlint:disable:next function_body_length
     init(apiService: APIService,
          container: NSPersistentContainer,
          credentialManager: CredentialManagerProtocol,
          logManager: LogManager,
          manualLogIn: Bool,
+         organization: OrganizationLite?,
          preferences: Preferences,
          symmetricKey: SymmetricKey,
          userData: UserData) {
+        let itemRepository = ItemRepository(userData: userData,
+                                            symmetricKey: symmetricKey,
+                                            container: container,
+                                            apiService: apiService,
+                                            logManager: logManager)
+        let remoteAliasDatasource = RemoteAliasDatasource(apiService: apiService)
+        let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
+        let shareKeyRepository = ShareKeyRepository(container: container,
+                                                    apiService: apiService,
+                                                    logManager: logManager,
+                                                    userData: userData)
+        let shareEventIDRepository = ShareEventIDRepository(container: container,
+                                                            apiService: apiService,
+                                                            logManager: logManager)
+        let shareRepository = ShareRepository(userData: userData,
+                                              container: container,
+                                              apiService: apiService,
+                                              logManager: logManager)
+
+        self.aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
         self.apiService = apiService
         self.clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
+        self.eventLoop = .init(userId: userData.user.ID,
+                               shareRepository: shareRepository,
+                               shareEventIDRepository: shareEventIDRepository,
+                               remoteSyncEventsDatasource: remoteSyncEventsDatasource,
+                               itemRepository: itemRepository,
+                               shareKeyRepository: shareKeyRepository,
+                               logManager: logManager)
+        self.itemContextMenuHandler = .init(clipboardManager: clipboardManager,
+                                            itemRepository: itemRepository,
+                                            logManager: logManager)
+        self.itemRepository = itemRepository
         self.logger = .init(manager: logManager)
         self.logManager = logManager
         self.manualLogIn = manualLogIn
+        self.organization = organization
         self.preferences = preferences
-        self.repositoryManager = .init(apiService: apiService,
-                                       container: container,
-                                       logManager: logManager,
-                                       symmetricKey: symmetricKey,
-                                       userData: userData)
+        self.searchEntryDatasource = LocalSearchEntryDatasource(container: container)
+        self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
         self.urlOpener = .init(preferences: preferences)
         self.userData = userData
+        self.vaultsManager = .init(itemRepository: itemRepository,
+                                   manualLogIn: manualLogIn,
+                                   logManager: logManager,
+                                   shareRepository: shareRepository,
+                                   symmetricKey: symmetricKey)
         super.init()
         self.finalizeInitialization()
         self.start()
@@ -108,7 +148,7 @@ private extension HomepageCoordinator {
         eventLoop.delegate = self
         clipboardManager.bannerManager = bannerManager
         itemContextMenuHandler.delegate = self
-        (repositoryManager.itemRepository as? ItemRepository)?.delegate = credentialManager as? CredentialManager
+        (itemRepository as? ItemRepository)?.delegate = credentialManager as? CredentialManager
         urlOpener.rootViewController = rootViewController
 
         preferences.objectWillChange
@@ -123,7 +163,7 @@ private extension HomepageCoordinator {
                 eventLoop.forceSync()
                 Task {
                     do {
-                        try await credentialManager.insertAllCredentials(from: repositoryManager.itemRepository,
+                        try await credentialManager.insertAllCredentials(from: itemRepository,
                                                                          forceRemoval: false)
                         logger.info("App goes back to foreground. Inserted all credentials.")
                     } catch {
@@ -134,43 +174,18 @@ private extension HomepageCoordinator {
             .store(in: &cancellables)
     }
 
-    func makeItemContextMenuHandler() -> ItemContextMenuHandler {
-        ItemContextMenuHandler(clipboardManager: clipboardManager,
-                               itemRepository: repositoryManager.itemRepository,
-                               logManager: logManager)
-    }
-
-    func makeSyncEventLoop() -> SyncEventLoop {
-        SyncEventLoop(userId: userData.user.ID,
-                      shareRepository: repositoryManager.shareRepository,
-                      shareEventIDRepository: repositoryManager.shareEventIDRepository,
-                      remoteSyncEventsDatasource: repositoryManager.remoteSyncEventsDatasource,
-                      itemRepository: repositoryManager.itemRepository,
-                      shareKeyRepository: repositoryManager.shareKeyRepository,
-                      logManager: logManager)
-    }
-
-    func makeVaultsManager() -> VaultsManager {
-        VaultsManager(itemRepository: repositoryManager.itemRepository,
-                      manualLogIn: manualLogIn,
-                      logManager: logManager,
-                      shareRepository: repositoryManager.shareRepository,
-                      symmetricKey: symmetricKey)
-    }
-
     func start() {
-        let homepageViewModel = HomepageViewModel(
-            credentialManager: credentialManager,
-            itemContextMenuHandler: itemContextMenuHandler,
-            itemRepository: repositoryManager.itemRepository,
-            manualLogIn: manualLogIn,
-            logManager: logManager,
-            preferences: preferences,
-            shareRepository: repositoryManager.shareRepository,
-            symmetricKey: symmetricKey,
-            syncEventLoop: eventLoop,
-            userData: userData,
-            vaultsManager: vaultsManager)
+        let homepageViewModel = HomepageViewModel(credentialManager: credentialManager,
+                                                  itemContextMenuHandler: itemContextMenuHandler,
+                                                  itemRepository: itemRepository,
+                                                  manualLogIn: manualLogIn,
+                                                  logManager: logManager,
+                                                  preferences: preferences,
+                                                  shareRepository: shareRepository,
+                                                  symmetricKey: symmetricKey,
+                                                  syncEventLoop: eventLoop,
+                                                  userData: userData,
+                                                  vaultsManager: vaultsManager)
         homepageViewModel.delegate = self
         homepageViewModel.itemsTabViewModelDelegate = self
         homepageViewModel.profileTabViewModel.delegate = self
@@ -209,7 +224,7 @@ private extension HomepageCoordinator {
         switch itemContent.contentData {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
-                                                 itemRepository: repositoryManager.itemRepository,
+                                                 itemRepository: itemRepository,
                                                  logManager: logManager)
             viewModel.logInDetailViewModelDelegate = self
             baseViewModel = viewModel
@@ -217,15 +232,15 @@ private extension HomepageCoordinator {
 
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
-                                                itemRepository: repositoryManager.itemRepository,
+                                                itemRepository: itemRepository,
                                                 logManager: logManager)
             baseViewModel = viewModel
             view = NoteDetailView(viewModel: viewModel)
 
         case .alias:
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
-                                                 itemRepository: repositoryManager.itemRepository,
-                                                 aliasRepository: repositoryManager.aliasRepository,
+                                                 itemRepository: itemRepository,
+                                                 aliasRepository: aliasRepository,
                                                  logManager: logManager)
             baseViewModel = viewModel
             view = AliasDetailView(viewModel: viewModel)
@@ -280,8 +295,8 @@ private extension HomepageCoordinator {
     func presentCreateEditLoginView(mode: ItemMode) {
         let emailAddress = userData.addresses.first?.email ?? ""
         let viewModel = CreateEditLoginViewModel(mode: mode,
-                                                 itemRepository: repositoryManager.itemRepository,
-                                                 aliasRepository: repositoryManager.aliasRepository,
+                                                 itemRepository: itemRepository,
+                                                 aliasRepository: aliasRepository,
                                                  preferences: preferences,
                                                  logManager: logManager,
                                                  emailAddress: emailAddress)
@@ -294,8 +309,8 @@ private extension HomepageCoordinator {
 
     func presentCreateEditAliasView(mode: ItemMode) {
         let viewModel = CreateEditAliasViewModel(mode: mode,
-                                                 itemRepository: repositoryManager.itemRepository,
-                                                 aliasRepository: repositoryManager.aliasRepository,
+                                                 itemRepository: itemRepository,
+                                                 aliasRepository: aliasRepository,
                                                  preferences: preferences,
                                                  logManager: logManager)
         viewModel.delegate = self
@@ -314,7 +329,7 @@ private extension HomepageCoordinator {
 
     func presentCreateEditNoteView(mode: ItemMode) {
         let viewModel = CreateEditNoteViewModel(mode: mode,
-                                                itemRepository: repositoryManager.itemRepository,
+                                                itemRepository: itemRepository,
                                                 preferences: preferences,
                                                 logManager: logManager)
         viewModel.delegate = self
@@ -362,7 +377,7 @@ private extension HomepageCoordinator {
 
     func presentCreateEditVaultView(mode: VaultMode) {
         let viewModel = CreateEditVaultViewModel(mode: mode,
-                                                 shareRepository: repositoryManager.shareRepository,
+                                                 shareRepository: shareRepository,
                                                  logManager: logManager)
         viewModel.delegate = self
         let view = CreateEditVaultView(viewModel: viewModel)
@@ -423,6 +438,11 @@ extension HomepageCoordinator: HomepageViewModelDelegate {
     func homepageViewModelWantsToCreateNewItem(shareId: String) {
         presentCreateItemView(shareId: shareId)
     }
+
+    func homepageViewModelWantsToLogOut() {
+        eventLoop.stop()
+        delegate?.homepageCoordinatorWantsToLogOut()
+    }
 }
 
 // MARK: - ItemsTabViewModelDelegate
@@ -441,9 +461,9 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
         let viewModel = SearchViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                        itemRepository: repositoryManager.itemRepository,
+                                        itemRepository: itemRepository,
                                         logManager: logManager,
-                                        searchEntryDatasource: repositoryManager.localSearchEntryDatasource,
+                                        searchEntryDatasource: searchEntryDatasource,
                                         symmetricKey: symmetricKey,
                                         vaultSelection: vaultSelection)
         viewModel.delegate = self
@@ -496,14 +516,17 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowAccountMenu() {
-        let viewModel = AccountViewModel(username: userData.user.email ?? "")
+        let viewModel = AccountViewModel(apiService: apiService,
+                                         logManager: logManager,
+                                         organization: organization,
+                                         username: userData.user.email ?? "")
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
         adaptivelyPresentDetailView(view: view)
     }
 
     func profileTabViewModelWantsToShowSettingsMenu() {
-        let viewModel = SettingViewModelV2(itemRepository: repositoryManager.itemRepository,
+        let viewModel = SettingViewModelV2(itemRepository: itemRepository,
                                            logManager: logManager,
                                            preferences: preferences,
                                            vaultsManager: vaultsManager)
@@ -657,7 +680,7 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
         let allVaults = vaultsManager.getAllVaultContents().map { VaultListUiModel(vaultContent: $0) }
         let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults,
                                                   primaryVault: primaryVault,
-                                                  shareRepository: repositoryManager.shareRepository)
+                                                  shareRepository: shareRepository)
         viewModel.delegate = self
         let view = EditPrimaryVaultView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
