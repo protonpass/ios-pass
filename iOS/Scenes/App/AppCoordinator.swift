@@ -162,7 +162,6 @@ final class AppCoordinator {
         do {
             let symmetricKey = try appData.getSymmetricKey()
             let homepageCoordinator = HomepageCoordinator(apiService: apiManager.apiService,
-                                                          appData: appData,
                                                           container: container,
                                                           credentialManager: credentialManager,
                                                           logManager: logManager,
