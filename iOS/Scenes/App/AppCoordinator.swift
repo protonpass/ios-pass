@@ -24,6 +24,7 @@ import Core
 import CoreData
 import CryptoKit
 import GoLibs
+import MBProgressHUD
 import ProtonCore_Authentication
 import ProtonCore_FeatureSwitch
 import ProtonCore_Keymaker
@@ -77,6 +78,7 @@ final class AppCoordinator {
         self.isUITest = false
         clearUserDataInKeychainIfFirstRun()
         bindAppState()
+        refreshOrganization()
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             self.isUITest = true
@@ -141,6 +143,16 @@ final class AppCoordinator {
         }
     }
 
+    func showLoadingHud() {
+        guard let view = window.rootViewController?.view else { return }
+        MBProgressHUD.showAdded(to: view, animated: true)
+    }
+
+    func hideLoadingHud() {
+        guard let view = window.rootViewController?.view else { return }
+        MBProgressHUD.hide(for: view, animated: true)
+    }
+
     private func showWelcomeScene(reason: LogOutReason) {
         let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.apiService)
         welcomeCoordinator.delegate = self
@@ -159,29 +171,39 @@ final class AppCoordinator {
     }
 
     private func showHomeScene(userData: UserData, manualLogIn: Bool) {
-        do {
-            let symmetricKey = try appData.getSymmetricKey()
-            let homepageCoordinator = HomepageCoordinator(apiService: apiManager.apiService,
-                                                          container: container,
-                                                          credentialManager: credentialManager,
-                                                          logManager: logManager,
-                                                          manualLogIn: manualLogIn,
-                                                          preferences: preferences,
-                                                          symmetricKey: symmetricKey,
-                                                          userData: userData)
-            homepageCoordinator.delegate = self
-            self.homepageCoordinator = homepageCoordinator
-            self.welcomeCoordinator = nil
-            animateUpdateRootViewController(homepageCoordinator.rootViewController) {
-                homepageCoordinator.onboardIfNecessary()
+        Task { @MainActor in
+            do {
+                let apiService = apiManager.apiService
+                if manualLogIn {
+                    showLoadingHud()
+                    appData.organization =
+                    try? await OrganizationProvider.getOrganization(apiService: apiService)
+                    hideLoadingHud()
+                }
+                let symmetricKey = try appData.getSymmetricKey()
+                let homepageCoordinator = HomepageCoordinator(apiService: apiService,
+                                                              container: container,
+                                                              credentialManager: credentialManager,
+                                                              logManager: logManager,
+                                                              manualLogIn: manualLogIn,
+                                                              organization: appData.organization,
+                                                              preferences: preferences,
+                                                              symmetricKey: symmetricKey,
+                                                              userData: userData)
+                homepageCoordinator.delegate = self
+                self.homepageCoordinator = homepageCoordinator
+                self.welcomeCoordinator = nil
+                animateUpdateRootViewController(homepageCoordinator.rootViewController) {
+                    homepageCoordinator.onboardIfNecessary()
+                }
+                if !manualLogIn {
+                    self.requestBiometricAuthenticationIfNecessary()
+                }
+            } catch {
+                logger.error(error)
+                wipeAllData(includingUnauthSession: true)
+                appStateObserver.updateAppState(.loggedOut(.failedToGenerateSymmetricKey))
             }
-            if !manualLogIn {
-                self.requestBiometricAuthenticationIfNecessary()
-            }
-        } catch {
-            logger.error(error)
-            wipeAllData(includingUnauthSession: true)
-            appStateObserver.updateAppState(.loggedOut(.failedToGenerateSymmetricKey))
         }
     }
 
@@ -197,6 +219,7 @@ final class AppCoordinator {
     private func wipeAllData(includingUnauthSession: Bool) {
         logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
         appData.userData = nil
+        appData.organization = nil
         if includingUnauthSession {
             apiManager.clearCredentials()
             keymaker.wipeMainKey()
@@ -230,6 +253,19 @@ final class AppCoordinator {
         }
     }
 
+    private func refreshOrganization() {
+        Task {
+            do {
+                logger.trace("Refreshing organization")
+                appData.organization =
+                try await OrganizationProvider.getOrganization(apiService: apiManager.apiService)
+                logger.trace("Refreshed organization")
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
     private func alertRefreshTokenExpired() {
         let alert = UIAlertController(title: "Your session is expired",
                                       message: "Please log in again",
@@ -245,7 +281,7 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
         guard userData.scopes.contains("pass") else {
             // try refreshing the credentials
             // this is a workaround for the fact that the user with access to pass won't get the pass scope
-            // if their account lacks keys — howeer, after the credentials refresh, the scope is properly set
+            // if their account lacks keys — however, after the credentials refresh, the scope is properly set
             apiManager.apiService.refreshCredential(userData.getCredential) { result in
                 switch result {
                 case .success(let refreshedCredentials) where refreshedCredentials.scopes.contains("pass"):

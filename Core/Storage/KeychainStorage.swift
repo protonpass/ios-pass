@@ -127,6 +127,7 @@ public final class KeychainStorage<T: Codable> {
 
 public extension KeychainStorage {
     enum Key: String {
+        case organization
         case userData
         case unauthSessionCredentials
         case symmetricKey

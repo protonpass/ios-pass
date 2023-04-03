@@ -18,7 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
+import ProtonCore_Services
 
 protocol AccountViewModelDelegate: AnyObject {
     func accountViewModelWantsToGoBack()
@@ -27,15 +29,42 @@ protocol AccountViewModelDelegate: AnyObject {
     func accountViewModelWantsToDeleteAccount()
 }
 
-final class AccountViewModel: DeinitPrintable {
+final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    let apiService: APIService
+    let logger: Logger
     let username: String
+    @Published private(set) var organization: OrganizationLite?
 
     weak var delegate: AccountViewModelDelegate?
 
-    init(username: String) {
+    init(apiService: APIService,
+         logManager: LogManager,
+         organization: OrganizationLite?,
+         username: String) {
+        self.apiService = apiService
+        self.logger = .init(manager: logManager)
         self.username = username
+        self.organization = organization
+        self.refreshOrganization()
+    }
+
+    private func refreshOrganization() {
+        Task { @MainActor in
+            do {
+                logger.trace("Refreshing organization")
+                let organization = try await OrganizationProvider.getOrganization(apiService: apiService)
+                if let organization {
+                    self.organization = organization
+                    logger.info("Refreshed organization")
+                } else {
+                    logger.info("Refreshed organization. User is not subscribed")
+                }
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 }
 

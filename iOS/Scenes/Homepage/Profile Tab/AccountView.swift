@@ -24,13 +24,19 @@ import UIComponents
 
 struct AccountView: View {
     @State private var isShowingSignOutConfirmation = false
-    let viewModel: AccountViewModel
+    @StateObject var viewModel: AccountViewModel
 
     var body: some View {
         VStack(spacing: 12) {
-            OptionRow(title: "Username",
-                      height: .tall,
-                      content: { Text(viewModel.username) })
+            VStack(spacing: 0) {
+                OptionRow(title: "Username",
+                          height: .tall,
+                          content: { Text(viewModel.username) })
+                PassDivider()
+                OptionRow(title: "Subscription Plan",
+                          height: .tall,
+                          content: { Text(viewModel.organization?.planName ?? "Free") })
+            }
             .roundedEditableSection()
 
             /*
@@ -60,6 +66,7 @@ struct AccountView: View {
                     CircleButton(icon: IconProvider.arrowOutFromRectangle,
                                  color: .passBrand,
                                  action: {})
+                    .disabled(true)
                 })
             .roundedEditableSection()
 
@@ -74,6 +81,7 @@ struct AccountView: View {
                     CircleButton(icon: IconProvider.trash,
                                  color: .notificationError,
                                  action: {})
+                    .disabled(true)
                 })
             .roundedEditableSection()
 

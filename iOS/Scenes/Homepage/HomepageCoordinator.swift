@@ -49,8 +49,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let itemContextMenuHandler: ItemContextMenuHandler
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
-    private let manualLogIn: Bool
     private let logManager: LogManager
+    private let manualLogIn: Bool
+    private let organization: OrganizationLite?
     private let preferences: Preferences
     private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
     private let shareRepository: ShareRepositoryProtocol
@@ -79,6 +80,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          credentialManager: CredentialManagerProtocol,
          logManager: LogManager,
          manualLogIn: Bool,
+         organization: OrganizationLite?,
          preferences: Preferences,
          symmetricKey: SymmetricKey,
          userData: UserData) {
@@ -119,6 +121,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.logger = .init(manager: logManager)
         self.logManager = logManager
         self.manualLogIn = manualLogIn
+        self.organization = organization
         self.preferences = preferences
         self.searchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.shareRepository = shareRepository
@@ -513,7 +516,10 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowAccountMenu() {
-        let viewModel = AccountViewModel(username: userData.user.email ?? "")
+        let viewModel = AccountViewModel(apiService: apiService,
+                                         logManager: logManager,
+                                         organization: organization,
+                                         username: userData.user.email ?? "")
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
         adaptivelyPresentDetailView(view: view)
