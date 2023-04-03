@@ -81,4 +81,14 @@ public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
         self.logger = .init(manager: logManager)
         self.userData = userData
     }
+
+    public init(container: NSPersistentContainer,
+                apiService: APIService,
+                logManager: LogManager,
+                userData: UserData) {
+        self.localShareKeyDatasource = LocalShareKeyDatasource(container: container)
+        self.remoteShareKeyDatasource = RemoteShareKeyDatasource(apiService: apiService)
+        self.logger = .init(manager: logManager)
+        self.userData = userData
+    }
 }
