@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import CryptoKit
 import ProtonCore_Keymaker
@@ -31,6 +32,9 @@ final class AppData {
     @KeychainStorage(key: .unauthSessionCredentials)
     var unauthSessionCredentials: AuthCredential?
 
+    @KeychainStorage(key: .organization)
+    var organization: OrganizationLite?
+
     @KeychainStorage(key: .symmetricKey)
     private var symmetricKey: String?
 
@@ -42,6 +46,10 @@ final class AppData {
         self._unauthSessionCredentials.setKeychain(keychain)
         self._unauthSessionCredentials.setMainKeyProvider(mainKeyProvider)
         self._unauthSessionCredentials.setLogManager(logManager)
+
+        self._organization.setKeychain(keychain)
+        self._organization.setMainKeyProvider(mainKeyProvider)
+        self._organization.setLogManager(logManager)
 
         self._symmetricKey.setKeychain(keychain)
         self._symmetricKey.setMainKeyProvider(mainKeyProvider)

@@ -268,6 +268,8 @@
 		3562BCF329BDBF2500564508 /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */; };
 		3562BCF529BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF429BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift */; };
 		3562BCF729BDE77900564508 /* AnimatingGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF629BDE77900564508 /* AnimatingGradient.swift */; };
+		356325D829DACADB006EB16C /* OrganizationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356325D729DACADB006EB16C /* OrganizationProvider.swift */; };
+		356325DE29DB0435006EB16C /* GetOrganizationEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356325DD29DB0435006EB16C /* GetOrganizationEndpoint.swift */; };
 		35635176299C10040059A97A /* IdentifiableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35635175299C10040059A97A /* IdentifiableObject.swift */; };
 		356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */; };
 		3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */; };
@@ -906,6 +908,8 @@
 		3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitles.swift; sourceTree = "<group>"; };
 		3562BCF429BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollIndicatorsHiddenModifier.swift; sourceTree = "<group>"; };
 		3562BCF629BDE77900564508 /* AnimatingGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingGradient.swift; sourceTree = "<group>"; };
+		356325D729DACADB006EB16C /* OrganizationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationProvider.swift; sourceTree = "<group>"; };
+		356325DD29DB0435006EB16C /* GetOrganizationEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetOrganizationEndpoint.swift; sourceTree = "<group>"; };
 		35635175299C10040059A97A /* IdentifiableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiableObject.swift; sourceTree = "<group>"; };
 		356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnReceiveBoolean.swift"; sourceTree = "<group>"; };
 		3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditItemTitleSection.swift; sourceTree = "<group>"; };
@@ -1513,6 +1517,7 @@
 				3558180D290A8BE200DD94DB /* Events */,
 				355E803D28A3071700BE7C9B /* Items */,
 				358AB49F2887044500818B44 /* Keys */,
+				356325DC29DB039E006EB16C /* Organization */,
 				353547BF2880C4470021C716 /* Shares */,
 				35544403287CAF600017FCAD /* Vault */,
 			);
@@ -1686,6 +1691,14 @@
 				3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */,
 			);
 			path = "Supporting Views";
+			sourceTree = "<group>";
+		};
+		356325DC29DB039E006EB16C /* Organization */ = {
+			isa = PBXGroup;
+			children = (
+				356325DD29DB0435006EB16C /* GetOrganizationEndpoint.swift */,
+			);
+			path = Organization;
 			sourceTree = "<group>";
 		};
 		3565622529BA760800C43F72 /* Item Detail */ = {
@@ -1895,6 +1908,7 @@
 				358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */,
 				3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */,
 				358BD35D287D4E8000802A91 /* CryptoUtils.swift */,
+				356325D729DACADB006EB16C /* OrganizationProvider.swift */,
 				35CAD69F29A789A300CF3993 /* PassKeyArray+LastestKey.swift */,
 				3554747F29A8E8460060B555 /* PassKeyManager.swift */,
 				354F768928C72F1000EB2383 /* PassKeyUtils.swift */,
@@ -3567,6 +3581,7 @@
 				354146D428D1F235007E45A6 /* GetAliasOptionsEndpoint.swift in Sources */,
 				35526B6628D11E0C0017BB53 /* ModifyItemRequest.swift in Sources */,
 				356B831429C365320084488A /* SearchEntryEntity.swift in Sources */,
+				356325DE29DB0435006EB16C /* GetOrganizationEndpoint.swift in Sources */,
 				3554747C29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift in Sources */,
 				3552F48A28D344E100547146 /* Alias.swift in Sources */,
 				3554730829CDD3CC0092E0E4 /* UpdateVaultRequest.swift in Sources */,
@@ -3574,6 +3589,7 @@
 				3530092A28A5281800611F8A /* Vault.swift in Sources */,
 				3558180F290A8C0800DD94DB /* GetLastEventIDEndpoint.swift in Sources */,
 				35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */,
+				356325D829DACADB006EB16C /* OrganizationProvider.swift in Sources */,
 				3542E2CB28D9FE8600194F24 /* ItemRepository.swift in Sources */,
 				3573D707297642F400F68DF7 /* DeleteVaultEndpoint.swift in Sources */,
 				35581813290AB2B000DD94DB /* SyncEvents.swift in Sources */,
