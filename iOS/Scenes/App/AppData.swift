@@ -34,7 +34,7 @@ final class AppData {
     @KeychainStorage(key: .symmetricKey)
     private var symmetricKey: String?
 
-    init(keychain: Keychain, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
+    init(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
         self._userData.setKeychain(keychain)
         self._userData.setMainKeyProvider(mainKeyProvider)
         self._userData.setLogManager(logManager)
