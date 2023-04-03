@@ -62,4 +62,12 @@ public struct PublicKeyRepository: PublicKeyRepositoryProtocol {
         logger.trace("Found \(localPublicKeys.count) public keys in local for email \(email)")
         return localPublicKeys
     }
+
+    public init(container: NSPersistentContainer,
+                apiService: APIService,
+                logManager: LogManager) {
+        self.localPublicKeyDatasource = LocalPublicKeyDatasource(container: container)
+        self.remotePublicKeyDatasource = RemotePublicKeyDatasource(apiService: apiService)
+        self.logger = .init(manager: logManager)
+    }
 }

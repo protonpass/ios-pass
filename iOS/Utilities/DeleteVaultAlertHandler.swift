@@ -29,7 +29,6 @@ protocol DeleteVaultAlertHandlerDelegate: AnyObject {
 final class DeleteVaultAlertHandler: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let alert: UIAlertController
     private let rootViewController: UIViewController
     private let vault: Vault
     private let delegate: DeleteVaultAlertHandlerDelegate
@@ -39,20 +38,23 @@ final class DeleteVaultAlertHandler: DeinitPrintable {
          delegate: DeleteVaultAlertHandlerDelegate) {
         self.rootViewController = rootViewController
         self.vault = vault
+        self.delegate = delegate
+    }
 
+    func showAlert() {
         let alert = UIAlertController(title: "Permanently delete vault?",
                                       // swiftlint:disable:next line_length
                                       message: "Vault \"\(vault.name)\" is not empty. Deleting this vault will also delete all of its items. Please enter vault name to confirm.",
                                       preferredStyle: .alert)
-        self.alert = alert
-        self.delegate = delegate
-
         alert.addTextField { [unowned self] textField in
             textField.placeholder = "Confirm vault name"
-            textField.addTarget(self, action: #selector(textDidChanged), for: .editingChanged)
+            let action = UIAction { [vault] _ in
+                alert.actions.first?.isEnabled = textField.text == vault.name
+            }
+            textField.addAction(action, for: .editingChanged)
         }
 
-        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [unowned alert, delegate] _ in
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [vault, delegate] _ in
             if alert.textFields?.first?.text == vault.name {
                 delegate.confirmDelete(vault: vault)
             }
@@ -62,14 +64,7 @@ final class DeleteVaultAlertHandler: DeinitPrintable {
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(cancelAction)
-    }
 
-    @objc
-    private func textDidChanged(_ sender: UITextField) {
-        alert.actions.first?.isEnabled = sender.text == vault.name
-    }
-
-    func showAlert() {
         rootViewController.present(alert, animated: true)
     }
 }

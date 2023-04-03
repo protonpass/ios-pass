@@ -39,7 +39,7 @@ protocol HomeCoordinatorDelegate: AnyObject {
 final class HomeCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let sessionData: SessionData
+    private let userData: UserData
     private let apiService: APIService
     private let symmetricKey: SymmetricKey
     private let shareRepository: ShareRepositoryProtocol
@@ -82,7 +82,7 @@ final class HomeCoordinator: DeinitPrintable {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(sessionData: SessionData,
+    init(userData: UserData,
          apiService: APIService,
          symmetricKey: SymmetricKey,
          container: NSPersistentContainer,
@@ -90,12 +90,11 @@ final class HomeCoordinator: DeinitPrintable {
          manualLogIn: Bool,
          preferences: Preferences,
          logManager: LogManager) {
-        self.sessionData = sessionData
+        self.userData = userData
         self.apiService = apiService
         self.symmetricKey = symmetricKey
 
-        let userId = sessionData.userData.user.ID
-        let userData = sessionData.userData
+        let userId = userData.user.ID
         let repositoryManager = RepositoryManager(apiService: apiService,
                                                   container: container,
                                                   logManager: logManager,
@@ -189,7 +188,7 @@ private extension HomeCoordinator {
 
     func provideMyVaultsCoordinator() -> MyVaultsCoordinator {
         let myVaultsCoordinator = MyVaultsCoordinator(symmetricKey: symmetricKey,
-                                                      userData: sessionData.userData,
+                                                      userData: userData,
                                                       shareRepository: shareRepository,
                                                       itemRepository: itemRepository,
                                                       aliasRepository: aliasRepository,

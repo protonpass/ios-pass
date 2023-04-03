@@ -61,4 +61,8 @@ public struct AliasRepository: AliasRepositoryProtocol {
     public init(remoteAliasDatasouce: RemoteAliasDatasourceProtocol) {
         self.remoteAliasDatasouce = remoteAliasDatasouce
     }
+
+    public init(apiService: APIService) {
+        self.remoteAliasDatasouce = RemoteAliasDatasource(apiService: apiService)
+    }
 }
