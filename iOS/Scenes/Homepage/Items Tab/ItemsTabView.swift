@@ -225,7 +225,6 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    // swiftlint:disable:next function_body_length
     private func itemRow(for item: ItemUiModel) -> some View {
         let permanentlyDeleteBinding = Binding<Bool>(get: {
             itemToBePermanentlyDeleted != nil
@@ -256,10 +255,8 @@ struct ItemsTabView: View {
                 title: item.title,
                 description: item.description)
         })
-        .listRowSeparator(.hidden)
-        .listRowInsets(.zero)
+        .plainListRow()
         .padding(.horizontal, 16)
-        .listRowBackground(Color.clear)
         .frame(height: 64)
         .modifier(ItemSwipeModifier(
             itemToBePermanentlyDeleted: $itemToBePermanentlyDeleted,
@@ -348,9 +345,7 @@ private struct ItemListView<Content: View>: View {
             content()
             Spacer()
                 .frame(height: safeAreaInsets.bottom)
-                .listRowSeparator(.hidden)
-                .listRowInsets(.zero)
-                .listRowBackground(Color.clear)
+                .plainListRow()
         }
         .listStyle(.plain)
         .scrollIndicatorsHidden(!showScrollIndicators)

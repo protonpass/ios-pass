@@ -92,6 +92,7 @@ public final class CredentialProviderCoordinator {
         // Post init
         self.clipboardManager.bannerManager = bannerManager
         self.makeSymmetricKeyAndRepositories()
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .passBrand
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {

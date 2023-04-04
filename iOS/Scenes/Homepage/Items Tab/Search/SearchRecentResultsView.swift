@@ -55,9 +55,7 @@ struct SearchRecentResultsView: View {
                     SearchEntryView(uiModel: result,
                                     onSelect: { onSelect(result) },
                                     onRemove: { onRemove(result) })
-                    .listRowInsets(.zero)
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
+                    .plainListRow()
                     .padding(.horizontal)
                 }
             }
