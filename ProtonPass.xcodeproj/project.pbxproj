@@ -315,8 +315,8 @@
 		356B831429C365320084488A /* SearchEntryEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B831329C365320084488A /* SearchEntryEntity.swift */; };
 		356B831629C37E560084488A /* LocalSearchEntryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B831529C37E560084488A /* LocalSearchEntryDatasource.swift */; };
 		356B831829C37FC50084488A /* SearchEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B831729C37FC50084488A /* SearchEntry.swift */; };
-		356BC35029D6C57100F03497 /* SettingViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC34F29D6C57100F03497 /* SettingViewV2.swift */; };
-		356BC35229D6C5B400F03497 /* SettingViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */; };
+		356BC35029D6C57100F03497 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC34F29D6C57100F03497 /* SettingView.swift */; };
+		356BC35229D6C5B400F03497 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35129D6C5B400F03497 /* SettingViewModel.swift */; };
 		356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */; };
 		356BC35929D6F36200F03497 /* OptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35829D6F36200F03497 /* OptionRow.swift */; };
 		356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35A29D70C5000F03497 /* EditThemeView.swift */; };
@@ -923,8 +923,8 @@
 		356B831329C365320084488A /* SearchEntryEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntryEntity.swift; sourceTree = "<group>"; };
 		356B831529C37E560084488A /* LocalSearchEntryDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSearchEntryDatasource.swift; sourceTree = "<group>"; };
 		356B831729C37FC50084488A /* SearchEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntry.swift; sourceTree = "<group>"; };
-		356BC34F29D6C57100F03497 /* SettingViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewV2.swift; sourceTree = "<group>"; };
-		356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModelV2.swift; sourceTree = "<group>"; };
+		356BC34F29D6C57100F03497 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		356BC35129D6C5B400F03497 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDefaultBrowserView.swift; sourceTree = "<group>"; };
 		356BC35829D6F36200F03497 /* OptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionRow.swift; sourceTree = "<group>"; };
 		356BC35A29D70C5000F03497 /* EditThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditThemeView.swift; sourceTree = "<group>"; };
@@ -1721,8 +1721,8 @@
 				355895AC29D769C1001E2207 /* LogTypesView.swift */,
 				355895AE29D76E67001E2207 /* LogsView.swift */,
 				355895B029D76E9F001E2207 /* LogsViewModel.swift */,
-				356BC34F29D6C57100F03497 /* SettingViewV2.swift */,
-				356BC35129D6C5B400F03497 /* SettingViewModelV2.swift */,
+				356BC34F29D6C57100F03497 /* SettingView.swift */,
+				356BC35129D6C5B400F03497 /* SettingViewModel.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3261,7 +3261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */,
-				356BC35029D6C57100F03497 /* SettingViewV2.swift in Sources */,
+				356BC35029D6C57100F03497 /* SettingView.swift in Sources */,
 				355694A229D466C9005DD2EB /* VaultRow.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
@@ -3349,7 +3349,7 @@
 				3565622429BA5C5900C43F72 /* SortTypeListView.swift in Sources */,
 				35992153299F8C3F00FEFA32 /* PrefixSuffixSection.swift in Sources */,
 				3565FD5D298D49B300E2A0EE /* NoteDetailSection.swift in Sources */,
-				356BC35229D6C5B400F03497 /* SettingViewModelV2.swift in Sources */,
+				356BC35229D6C5B400F03497 /* SettingViewModel.swift in Sources */,
 				3571B59F29BF7204008D4350 /* SearchView.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,

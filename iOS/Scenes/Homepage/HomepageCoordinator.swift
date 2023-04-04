@@ -538,12 +538,12 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowSettingsMenu() {
-        let viewModel = SettingViewModelV2(itemRepository: itemRepository,
-                                           logManager: logManager,
-                                           preferences: preferences,
-                                           vaultsManager: vaultsManager)
+        let viewModel = SettingViewModel(itemRepository: itemRepository,
+                                         logManager: logManager,
+                                         preferences: preferences,
+                                         vaultsManager: vaultsManager)
         viewModel.delegate = self
-        let view = SettingViewV2(viewModel: viewModel)
+        let view = SettingView(viewModel: viewModel)
         adaptivelyPresentDetailView(view: view)
     }
 
@@ -630,7 +630,7 @@ extension HomepageCoordinator: AccountViewModelDelegate {
 }
 
 // MARK: - SettingViewModelDelegate
-extension HomepageCoordinator: SettingViewModelDelegateV2 {
+extension HomepageCoordinator: SettingViewModelDelegate {
     func settingViewModelWantsToShowSpinner() {
         showLoadingHud()
     }
