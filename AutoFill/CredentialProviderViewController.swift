@@ -19,31 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
-import Client
-import Core
-import ProtonCore_Challenge
-import ProtonCore_FeatureSwitch
-import ProtonCore_Keymaker
-import ProtonCore_Services
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
-    private lazy var coordinator = makeCoordinator()
-
-    private func makeCoordinator() -> CredentialProviderCoordinator {
-        let keychain = PPKeychain()
-        let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
-        let logManager = LogManager(module: .autoFillExtension)
-        let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName())"
-        let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
-        let apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
-        return .init(apiManager: apiManager,
-                     container: .Builder.build(name: kProtonPassContainerName, inMemory: false),
-                     context: extensionContext,
-                     preferences: .init(),
-                     logManager: logManager,
-                     credentialManager: CredentialManager(logManager: logManager),
-                     rootViewController: self)
-    }
+    private lazy var coordinator: CredentialProviderCoordinator = {
+        .init(context: extensionContext, rootViewController: self)
+    }()
 
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
