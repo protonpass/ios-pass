@@ -22,6 +22,7 @@ import Core
 import CryptoKit
 import GoLibs
 import ProtonCore_Authentication
+import ProtonCore_Challenge
 import ProtonCore_FeatureSwitch
 import ProtonCore_HumanVerification
 import ProtonCore_Keymaker
