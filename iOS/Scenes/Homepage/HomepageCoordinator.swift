@@ -64,7 +64,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private lazy var bannerManager: BannerManager = { .init(container: rootViewController) }()
 
     // References
-    private var homepageViewModel: HomepageViewModel?
     private var profileTabViewModel: ProfileTabViewModel?
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
