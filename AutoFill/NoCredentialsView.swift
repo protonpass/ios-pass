@@ -19,9 +19,15 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIComponents
 
 struct NoCredentialsView: View {
     var body: some View {
-        Text("You currently have no credential.")
+        VStack {
+            Text("You currently have no login items.")
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
+        .background(Color.passBackground)
     }
 }
