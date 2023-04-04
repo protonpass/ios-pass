@@ -23,8 +23,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-let kSearchBarHeight: CGFloat = 48
-
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
