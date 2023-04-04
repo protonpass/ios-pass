@@ -133,62 +133,84 @@ struct CredentialsView: View {
 
     private func itemList(matchedItems: [ItemUiModel],
                           notMatchedItems: [ItemUiModel]) -> some View {
-        List {
-            Section(content: {
-                if matchedItems.isEmpty {
-                    Text("No suggestions")
-                        .font(.callout.italic())
-                        .listRowSeparator(.hidden)
-                } else {
-                    ForEach(matchedItems) { item in
-                        view(for: item)
-                    }
+        ScrollViewReader { proxy in
+            List {
+                section(for: matchedItems,
+                        emptyPlaceholder: "No suggestions",
+                        headerTitle: "Suggestions for \(viewModel.urls.first?.host ?? "")")
+
+                HStack {
+                    Text("Other items")
+                        .font(.callout)
+                        .fontWeight(.bold) +
+                    Text(" (\(notMatchedItems.count))")
+                        .font(.callout)
+                        .foregroundColor(.textWeak)
+
+                    Spacer()
+
+                    SortTypeButton(selectedSortType: $viewModel.selectedSortType,
+                                   action: viewModel.presentSortTypeList)
                 }
-            }, header: {
-                if let host = viewModel.urls.first?.host {
-                    header(text: "Suggestions for \(host)")
+                .listRowSeparator(.hidden)
+                .listRowInsets(.zero)
+                .listRowBackground(Color.clear)
+                .padding(.horizontal)
+
+                switch viewModel.selectedSortType {
+                case .mostRecent:
+                    sections(for: notMatchedItems.mostRecentSortResult())
+                case .alphabetical:
+                    sections(for: notMatchedItems.alphabeticalSortResult())
+                case .newestToOldest:
+                    sections(for: notMatchedItems.monthYearSortResult(direction: .descending))
+                case .oldestToNewest:
+                    sections(for: notMatchedItems.monthYearSortResult(direction: .ascending))
                 }
-            })
-
-            HStack {
-                Text("All")
-                    .font(.callout)
-                    .fontWeight(.bold) +
-                Text(" (\(notMatchedItems.count))")
-                    .font(.callout)
-                    .foregroundColor(.textWeak)
-
-                Spacer()
-
-                SortTypeButton(selectedSortType: $viewModel.selectedSortType,
-                               action: viewModel.presentSortTypeList)
             }
-            .listRowSeparator(.hidden)
-            .listRowInsets(.zero)
-            .listRowBackground(Color.clear)
-            .padding(.horizontal)
-
-            Section(content: {
-                if notMatchedItems.isEmpty {
-                    Text("No other items")
-                        .font(.callout.italic())
-                        .listRowSeparator(.hidden)
-                } else {
-                    ForEach(notMatchedItems) { item in
-                        view(for: item)
+            .listStyle(.plain)
+            .refreshable { await viewModel.forceSync() }
+            .animation(.default, value: matchedItems.hashValue)
+            .animation(.default, value: notMatchedItems.hashValue)
+            .overlay {
+                if viewModel.selectedSortType == .alphabetical {
+                    HStack {
+                        Spacer()
+                        SectionIndexTitles(proxy: proxy)
                     }
                 }
-            }, header: {
-                header(text: "Others items")
-            })
+            }
         }
-        .listStyle(.plain)
-        .refreshable { await viewModel.forceSync() }
-        .animation(.default, value: matchedItems.hashValue)
-        .animation(.default, value: notMatchedItems.hashValue)
     }
 
-    private func view(for item: ItemUiModel) -> some View {
+    @ViewBuilder
+    private func section(for items: [ItemUiModel],
+                         emptyPlaceholder: String?,
+                         headerTitle: String) -> some View {
+        if items.isEmpty {
+            if let emptyPlaceholder {
+                Section(content: {
+                    Text(emptyPlaceholder)
+                        .font(.callout.italic())
+                        .listRowSeparator(.hidden)
+                }, header: {
+                    Text(headerTitle)
+                })
+            } else {
+                EmptyView()
+            }
+        } else {
+            Section(content: {
+                ForEach(items) { item in
+                    itemRow(for: item)
+                }
+            }, header: {
+                Text(headerTitle)
+            })
+        }
+    }
+
+    private func itemRow(for item: ItemUiModel) -> some View {
         Button(action: {
             viewModel.select(item: item)
         }, label: {
@@ -203,11 +225,30 @@ struct CredentialsView: View {
         .listRowBackground(Color.clear)
     }
 
-    private func header(text: String) -> some View {
-        Text(text)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .foregroundColor(.secondary)
-            .font(.callout)
+    private func sections(for result: MostRecentSortResult<ItemUiModel>) -> some View {
+        Group {
+            section(for: result.today, emptyPlaceholder: nil, headerTitle: "Today")
+            section(for: result.yesterday, emptyPlaceholder: nil, headerTitle: "Yesterday")
+            section(for: result.last7Days, emptyPlaceholder: nil, headerTitle: "Last week")
+            section(for: result.last14Days, emptyPlaceholder: nil, headerTitle: "Last two weeks")
+            section(for: result.last30Days, emptyPlaceholder: nil, headerTitle: "Last 30 days")
+            section(for: result.last60Days, emptyPlaceholder: nil, headerTitle: "Last 60 days")
+            section(for: result.last90Days, emptyPlaceholder: nil, headerTitle: "Last 90 days")
+            section(for: result.others, emptyPlaceholder: nil, headerTitle: "More than 90 days")
+        }
+    }
+
+    private func sections(for result: AlphabeticalSortResult<ItemUiModel>) -> some View {
+        ForEach(result.buckets, id: \.letter) { bucket in
+            section(for: bucket.items, emptyPlaceholder: nil, headerTitle: bucket.letter.character)
+                .id(bucket.letter.character)
+        }
+    }
+
+    private func sections(for result: MonthYearSortResult<ItemUiModel>) -> some View {
+        ForEach(result.buckets, id: \.monthYear) { bucket in
+            section(for: bucket.items, emptyPlaceholder: nil, headerTitle: bucket.monthYear.relativeString)
+        }
     }
 
     private func searchResultsList(_ results: [ItemSearchResult]) -> some View {

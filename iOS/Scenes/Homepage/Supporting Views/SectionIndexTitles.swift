@@ -18,24 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import SwiftUI
 
 // https://www.fivestars.blog/articles/section-title-index-swiftui/
 struct SectionIndexTitles: View {
     let proxy: ScrollViewProxy
-    let titles: [String]
     @GestureState private var dragLocation: CGPoint = .zero
 
     var body: some View {
         VStack {
-            ForEach(titles, id: \.self) { title in
-                Text(title)
+            ForEach(AlphabetLetter.allCases, id: \.rawValue) { letter in
+                Text(letter.character)
                     .font(.caption)
                     .foregroundColor(.passBrand)
                     .multilineTextAlignment(.trailing)
                     .padding(.leading)
                     .contentShape(Rectangle())
-                    .background(dragObserver(title: title))
+                    .background(dragObserver(title: letter.character))
             }
         }
         .gesture(
