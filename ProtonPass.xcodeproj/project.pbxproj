@@ -140,6 +140,8 @@
 		3552272C29DC660300B9607E /* View+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A529B7C39F0070830B /* View+Theme.swift */; };
 		3552272E29DC9EAC00B9607E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552272D29DC9EAC00B9607E /* SearchBar.swift */; };
 		3552272F29DC9FFC00B9607E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552272D29DC9EAC00B9607E /* SearchBar.swift */; };
+		3552273029DCAE2200B9607E /* SortTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830D29C339110084488A /* SortTypeButton.swift */; };
+		3552273129DCAE2E00B9607E /* SortTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565622329BA5C5900C43F72 /* SortTypeListView.swift */; };
 		35526B5B28D115340017BB53 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
 		35526B5D28D116350017BB53 /* PassIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35526B5C28D116350017BB53 /* PassIcon.swift */; };
 		35526B5E28D117820017BB53 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
@@ -3181,6 +3183,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3552273029DCAE2200B9607E /* SortTypeButton.swift in Sources */,
 				3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
 				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
@@ -3214,6 +3217,7 @@
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
 				3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */,
+				3552273129DCAE2E00B9607E /* SortTypeListView.swift in Sources */,
 				350AF87029968C190045B7B6 /* CreateEditItemToolbar.swift in Sources */,
 				35492E3C293E06C600BDE231 /* CreateEditLoginView.swift in Sources */,
 				35492E3B293E06B100BDE231 /* BaseCreateEditItemViewModel.swift in Sources */,

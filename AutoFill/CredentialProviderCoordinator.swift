@@ -430,7 +430,7 @@ private extension CredentialProviderCoordinator {
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
-        presentView(view)
+        present(view)
         currentCreateEditItemViewModel = viewModel
     }
 
@@ -449,7 +449,7 @@ private extension CredentialProviderCoordinator {
             navigationController.sheetPresentationController?.detents = [.medium()]
         }
         viewModel.onDismiss = { navigationController.dismiss(animated: true) }
-        presentViewController(navigationController, dismissible: true)
+        present(navigationController, dismissible: true)
     }
 
     func showLoadingHud() {
@@ -466,16 +466,12 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func presentView<V: View>(_ view: V,
-                              animated: Bool = true,
-                              dismissible: Bool = false) {
+    func present<V: View>(_ view: V, animated: Bool = true, dismissible: Bool = false) {
         let viewController = UIHostingController(rootView: view)
-        presentViewController(viewController)
+        present(viewController)
     }
 
-    func presentViewController(_ viewController: UIViewController,
-                               animated: Bool = true,
-                               dismissible: Bool = false) {
+    func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = false) {
         viewController.isModalInPresentation = !dismissible
         viewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         topMostViewController.present(viewController, animated: animated)
@@ -505,6 +501,25 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
 
     func credentialsViewModelWantsToCancel() {
         cancel(errorCode: .userCanceled)
+    }
+
+    func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
+                                                        delegate: SortTypeListViewModelDelegate) {
+        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
+        viewModel.delegate = delegate
+        let view = SortTypeListView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = CGFloat(44 * SortType.allCases.count + 60)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium()]
+        }
+
+        present(viewController)
     }
 
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?) {

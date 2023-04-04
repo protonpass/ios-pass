@@ -40,6 +40,8 @@ protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToShowLoadingHud()
     func credentialsViewModelWantsToHideLoadingHud()
     func credentialsViewModelWantsToCancel()
+    func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
+                                                        delegate: SortTypeListViewModelDelegate)
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?)
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        item: SymmetricallyEncryptedItem,
@@ -75,6 +77,7 @@ enum CredentialsViewLoadedState: Equatable {
 
 final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @Published private(set) var state = CredentialsViewState.loading
+    @Published var selectedSortType = SortType.mostRecent
 
     private let searchTermSubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
@@ -190,6 +193,11 @@ extension CredentialsViewModel {
                 state = .error(error)
             }
         }
+    }
+
+    func presentSortTypeList() {
+        delegate?.credentialsViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
+                                                                 delegate: self)
     }
 
     func associateAndAutofill(item: ItemIdentifiable) {
@@ -351,6 +359,13 @@ private extension CredentialsViewModel {
     }
 }
 
+// MARK: - SortTypeListViewModelDelegate
+extension CredentialsViewModel: SortTypeListViewModelDelegate {
+    func sortTypeListViewDidSelect(_ sortType: SortType) {
+        selectedSortType = sortType
+    }
+}
+
 // MARK: - SyncEventLoopPullToRefreshDelegate
 extension CredentialsViewModel: SyncEventLoopPullToRefreshDelegate {
     func pullToRefreshShouldStopRefreshing() {
@@ -358,6 +373,7 @@ extension CredentialsViewModel: SyncEventLoopPullToRefreshDelegate {
     }
 }
 
+// MARK: - SyncEventLoopDelegate
 extension CredentialsViewModel: SyncEventLoopDelegate {
     func syncEventLoopDidStartLooping() {
         logger.info("Started looping")
