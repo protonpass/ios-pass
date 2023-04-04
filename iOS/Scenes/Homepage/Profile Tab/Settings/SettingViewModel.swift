@@ -1,5 +1,5 @@
 //
-// SettingViewModelV2.swift
+// SettingViewModel.swift
 // Proton Pass - Created on 31/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -23,7 +23,7 @@ import Combine
 import Core
 import SwiftUI
 
-protocol SettingViewModelDelegateV2: AnyObject {
+protocol SettingViewModelDelegate: AnyObject {
     func settingViewModelWantsToShowSpinner()
     func settingViewModelWantsToHideSpinner()
     func settingViewModelWantsToGoBack()
@@ -36,7 +36,7 @@ protocol SettingViewModelDelegateV2: AnyObject {
     func settingViewModelDidEncounter(error: Error)
 }
 
-final class SettingViewModelV2: ObservableObject, DeinitPrintable {
+final class SettingViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let itemRepository: ItemRepositoryProtocol
@@ -50,7 +50,7 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
     @Published private(set) var selectedClipboardExpiration: ClipboardExpiration
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
 
-    weak var delegate: SettingViewModelDelegateV2?
+    weak var delegate: SettingViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
     init(itemRepository: ItemRepositoryProtocol,
@@ -101,7 +101,7 @@ final class SettingViewModelV2: ObservableObject, DeinitPrintable {
 }
 
 // MARK: - Public APIs
-extension SettingViewModelV2 {
+extension SettingViewModel {
     func goBack() {
         delegate?.settingViewModelWantsToGoBack()
     }

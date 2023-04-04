@@ -1,5 +1,5 @@
 //
-// SettingViewV2.swift
+// SettingView.swift
 // Proton Pass - Created on 31/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -23,8 +23,8 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct SettingViewV2: View {
-    @StateObject var viewModel: SettingViewModelV2
+struct SettingView: View {
+    @StateObject var viewModel: SettingViewModel
 
     var body: some View {
         ScrollView {
