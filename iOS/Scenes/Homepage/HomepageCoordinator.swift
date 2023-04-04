@@ -65,6 +65,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // References
     private var homepageViewModel: HomepageViewModel?
+    private var profileTabViewModel: ProfileTabViewModel?
     private var currentItemDetailViewModel: BaseItemDetailViewModel?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var searchViewModel: SearchViewModel?
@@ -175,29 +176,34 @@ private extension HomepageCoordinator {
     }
 
     func start() {
-        let homepageViewModel = HomepageViewModel(credentialManager: credentialManager,
-                                                  itemContextMenuHandler: itemContextMenuHandler,
+        let itemsTabViewModel = ItemsTabViewModel(itemContextMenuHandler: itemContextMenuHandler,
                                                   itemRepository: itemRepository,
-                                                  manualLogIn: manualLogIn,
                                                   logManager: logManager,
                                                   preferences: preferences,
-                                                  shareRepository: shareRepository,
-                                                  symmetricKey: symmetricKey,
                                                   syncEventLoop: eventLoop,
-                                                  userData: userData,
                                                   vaultsManager: vaultsManager)
-        homepageViewModel.delegate = self
-        homepageViewModel.itemsTabViewModelDelegate = self
-        homepageViewModel.profileTabViewModel.delegate = self
-        let homepageView = HomepageView(viewModel: homepageViewModel)
+        itemsTabViewModel.delegate = self
+
+        let profileTabViewModel = ProfileTabViewModel(credentialManager: credentialManager,
+                                                      itemRepository: itemRepository,
+                                                      preferences: preferences,
+                                                      logManager: logManager)
+        profileTabViewModel.delegate = self
+
+        let homepageTabBarController = HomepageTabBarController(itemsTabViewModel: itemsTabViewModel,
+                                                                profileTabViewModel: profileTabViewModel)
+        homepageTabBarController.homepageTabBarControllerDelegate = self
 
         let placeholderView = ItemDetailPlaceholderView { [unowned self] in
             self.popTopViewController(animated: true)
         }
 
-        start(with: homepageView, secondaryView: placeholderView)
+        start(with: HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
+                                       profileTabViewModel: profileTabViewModel,
+                                       delegate: self).ignoresSafeArea(edges: [.top, .bottom]),
+              secondaryView: placeholderView)
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
-        self.homepageViewModel = homepageViewModel
+        self.profileTabViewModel = profileTabViewModel
     }
 
     func informAliasesLimit() {
@@ -263,7 +269,19 @@ private extension HomepageCoordinator {
         }
     }
 
-    func presentCreateItemView(shareId: String) {
+    func presentCreateItemView(shareId: String?) {
+        var shareId = shareId
+        if shareId == nil {
+            switch vaultsManager.vaultSelection {
+            case .all, .trash:
+                shareId = vaultsManager.getPrimaryVault()?.shareId
+            case .precise(let vault):
+                shareId = vault.shareId
+            }
+        }
+
+        guard let shareId else { return }
+
         let view = ItemTypeListView { [unowned self] itemType in
             dismissTopMostViewController { [unowned self] in
                 switch itemType {
@@ -386,7 +404,7 @@ private extension HomepageCoordinator {
 
     func refreshHomepageAndSearchPage() {
         vaultsManager.refresh()
-        homepageViewModel?.profileTabViewModel.itemCountViewModel.refresh()
+        profileTabViewModel?.itemCountViewModel.refresh()
         searchViewModel?.refreshResults()
     }
 
@@ -433,15 +451,10 @@ extension HomepageCoordinator {
     }
 }
 
-// MARK: - HomepageViewModelDelegate
-extension HomepageCoordinator: HomepageViewModelDelegate {
-    func homepageViewModelWantsToCreateNewItem(shareId: String) {
-        presentCreateItemView(shareId: shareId)
-    }
-
-    func homepageViewModelWantsToLogOut() {
-        eventLoop.stop()
-        delegate?.homepageCoordinatorWantsToLogOut()
+// MARK: - HomepageTabBarControllerDelegate
+extension HomepageCoordinator: HomepageTabBarControllerDelegate {
+    func homepageTabBarControllerWantToCreateNewItem() {
+        presentCreateItemView(shareId: nil)
     }
 }
 
@@ -685,9 +698,9 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
         let view = EditPrimaryVaultView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = CGFloat(80 * vaultsManager.getVaultCount() + 100)
+            let height = Int(OptionRowHeight.medium.value) * vaultsManager.getVaultCount() + 100
             let customDetent = UISheetPresentationController.Detent.custom { _ in
-                height
+                CGFloat(height)
             }
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {
@@ -705,7 +718,15 @@ extension HomepageCoordinator: SettingViewModelDelegateV2 {
                 self.bannerManager.displayBottomSuccessMessage("All logs cleared")
             })
         let viewController = UIHostingController(rootView: view)
-        viewController.sheetPresentationController?.detents = [.medium()]
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.short.value) * 4 + 120
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium()]
+        }
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
