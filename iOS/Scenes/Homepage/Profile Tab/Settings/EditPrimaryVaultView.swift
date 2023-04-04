@@ -39,6 +39,7 @@ struct EditPrimaryVaultView: View {
                     ForEach(viewModel.allVaults, id: \.vault.shareId) { vault in
                         OptionRow(
                             action: { viewModel.setAsPrimary(vault: vault.vault) },
+                            height: .medium,
                             content: {
                                 VaultRow(
                                     thumbnail: { VaultThumbnail(vault: vault.vault) },
