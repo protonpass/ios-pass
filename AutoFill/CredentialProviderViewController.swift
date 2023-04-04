@@ -27,12 +27,13 @@ import ProtonCore_Keymaker
 import ProtonCore_Services
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
-    private let keychain = PPKeychain()
-    private lazy var keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
-    private let logManager = LogManager(module: .autoFillExtension)
-    private let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName())"
+    private lazy var coordinator = makeCoordinator()
 
-    private lazy var coordinator: CredentialProviderCoordinator = {
+    private func makeCoordinator() -> CredentialProviderCoordinator {
+        let keychain = PPKeychain()
+        let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
+        let logManager = LogManager(module: .autoFillExtension)
+        let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName())"
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
         let apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
         return .init(apiManager: apiManager,
@@ -42,7 +43,7 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
                      logManager: logManager,
                      credentialManager: CredentialManager(logManager: logManager),
                      rootViewController: self)
-    }()
+    }
 
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
