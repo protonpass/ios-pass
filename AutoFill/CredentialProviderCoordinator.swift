@@ -35,25 +35,19 @@ import UIComponents
 import UserNotifications
 
 public final class CredentialProviderCoordinator {
-    @KeychainStorage(key: .userData)
-    private var userData: UserData?
-
-    @KeychainStorage(key: .symmetricKey)
-    private var symmetricKeyString: String?
-
     /// Self-initialized properties
-    private let keychain: Keychain
-    private let keymaker: Keymaker
-    private var apiManager: APIManager
-    private let container: NSPersistentContainer
-    private let context: ASCredentialProviderExtensionContext
-    private let preferences: Preferences
-    private let credentialManager: CredentialManagerProtocol
-    private let rootViewController: UIViewController
+    private let apiManager: APIManager
+    private let appData: AppData
     private let bannerManager: BannerManager
     private let clipboardManager: ClipboardManager
+    private let container: NSPersistentContainer
+    private let context: ASCredentialProviderExtensionContext
+    private let credentialManager: CredentialManagerProtocol
+    private let keymaker: Keymaker
     private let logManager: LogManager
     private let logger: Logger
+    private let preferences: Preferences
+    private let rootViewController: UIViewController
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -72,48 +66,50 @@ public final class CredentialProviderCoordinator {
         rootViewController.topMostViewController
     }
 
-    init(apiManager: APIManager,
-         container: NSPersistentContainer,
-         context: ASCredentialProviderExtensionContext,
-         preferences: Preferences,
-         logManager: LogManager,
-         credentialManager: CredentialManagerProtocol,
-         rootViewController: UIViewController) {
+    init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
         let keychain = PPKeychain()
-        self.keychain = keychain
-        self.keymaker = .init(autolocker: Autolocker(lockTimeProvider: keychain),
-                              keychain: keychain)
-        self._userData.setKeychain(keychain)
-        self._userData.setMainKeyProvider(keymaker)
-        self._userData.setLogManager(logManager)
-        self._symmetricKeyString.setKeychain(keychain)
-        self._symmetricKeyString.setMainKeyProvider(keymaker)
-        self._symmetricKeyString.setLogManager(logManager)
-        self.apiManager = apiManager
-        self.container = container
-        self.context = context
-        self.preferences = preferences
-        self.logManager = logManager
-        self.logger = .init(manager: logManager)
+        let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
+        let logManager = LogManager(module: .autoFillExtension)
+        let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName())"
+        let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
+        let apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
         let bannerManager = BannerManager(container: rootViewController)
+        let preferences = Preferences()
+
+        self.apiManager = apiManager
+        self.appData = appData
         self.bannerManager = bannerManager
         self.clipboardManager = .init(preferences: preferences)
-        self.credentialManager = credentialManager
+        self.container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
+        self.context = context
+        self.credentialManager = CredentialManager(logManager: logManager)
+        self.keymaker = keymaker
+        self.logManager = logManager
+        self.logger = .init(manager: logManager)
+        self.preferences = preferences
         self.rootViewController = rootViewController
+
+        // Post init
         self.clipboardManager.bannerManager = bannerManager
-        makeSymmetricKeyAndRepositories()
+        self.makeSymmetricKeyAndRepositories()
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard let userData, let symmetricKey else {
-            showNoLoggedInView()
+        guard let userData = appData.userData else {
+            showNotLoggedInView()
             return
         }
-        apiManager.sessionIsAvailable(authCredential: userData.credential,
-                                      scopes: userData.scopes)
-        showCredentialsView(userData: userData,
-                            symmetricKey: symmetricKey,
-                            serviceIdentifiers: serviceIdentifiers)
+
+        do {
+            let symmetricKey = try appData.getSymmetricKey()
+            apiManager.sessionIsAvailable(authCredential: userData.credential,
+                                          scopes: userData.scopes)
+            showCredentialsView(userData: userData,
+                                symmetricKey: symmetricKey,
+                                serviceIdentifiers: serviceIdentifiers)
+        } catch {
+            alert(error: error)
+        }
     }
 
     /// QuickType bar support
@@ -198,7 +194,7 @@ public final class CredentialProviderCoordinator {
                 defer { cancel(errorCode: .failed) }
                 do {
                     logger.trace("Authenticaion failed. Removing all credentials")
-                    userData = nil
+                    appData.userData = nil
                     try await credentialManager.removeAllCredentials()
                     logger.info("Removed all credentials after authentication failure")
                 } catch {
@@ -211,10 +207,9 @@ public final class CredentialProviderCoordinator {
     }
 
     private func makeSymmetricKeyAndRepositories() {
-        guard let userData,
-              let symmetricKeyData = symmetricKeyString?.data(using: .utf8) else { return }
+        guard let userData = appData.userData,
+              let symmetricKey = try? appData.getSymmetricKey() else { return }
 
-        let symmetricKey = SymmetricKey(data: symmetricKeyData)
         let repositoryManager = RepositoryManager(apiService: apiManager.apiService,
                                                   container: container,
                                                   logManager: logManager,
@@ -408,8 +403,8 @@ private extension CredentialProviderCoordinator {
         showView(CredentialsView(viewModel: viewModel, preferences: preferences))
     }
 
-    func showNoLoggedInView() {
-        let view = NotLoggedInView { [unowned self] in
+    func showNotLoggedInView() {
+        let view = NotLoggedInView(preferences: preferences) { [unowned self] in
             self.cancel(errorCode: .userCanceled)
         }
         showView(view)
@@ -424,7 +419,7 @@ private extension CredentialProviderCoordinator {
         let creationType = ItemCreationType.login(title: url?.host,
                                                   url: url?.schemeAndHost,
                                                   autofill: true)
-        let emailAddress = userData?.addresses.first?.email ?? ""
+        let emailAddress = appData.userData?.addresses.first?.email ?? ""
         let viewModel = CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                type: creationType),
                                                  itemRepository: itemRepository,
@@ -555,13 +550,11 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         }
     }
 
-    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
-        print("\(#function) not applicable")
-    }
+    // Not applicable
+    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {}
 
-    func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {
-        print("\(#function) not applicable")
-    }
+    // Not applicable
+    func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {}
 
     func createEditItemViewModelDidFail(_ error: Error) {
         bannerManager.displayTopErrorMessage(error.messageForTheUser)

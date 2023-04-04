@@ -18,10 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct NotLoggedInView: View {
+    let preferences: Preferences
     let onCancel: () -> Void
 
     var body: some View {
@@ -29,19 +32,19 @@ struct NotLoggedInView: View {
             VStack {
                 Text("Please log in in order to use AutoFill extension")
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
+            .background(Color.passBackground)
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar { toolbarContent }
-        }
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: onCancel) {
-                Image(uiImage: IconProvider.cross)
-                    .foregroundColor(.primary)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    CircleButton(icon: IconProvider.cross,
+                                 color: .passBrand,
+                                 action: onCancel)
+                }
             }
         }
+        .navigationViewStyle(.stack)
+        .theme(preferences.theme)
     }
 }
