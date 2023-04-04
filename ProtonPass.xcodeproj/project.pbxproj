@@ -142,6 +142,7 @@
 		3552272F29DC9FFC00B9607E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552272D29DC9EAC00B9607E /* SearchBar.swift */; };
 		3552273029DCAE2200B9607E /* SortTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830D29C339110084488A /* SortTypeButton.swift */; };
 		3552273129DCAE2E00B9607E /* SortTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565622329BA5C5900C43F72 /* SortTypeListView.swift */; };
+		3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */; };
 		35526B5B28D115340017BB53 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
 		35526B5D28D116350017BB53 /* PassIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35526B5C28D116350017BB53 /* PassIcon.swift */; };
 		35526B5E28D117820017BB53 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
@@ -3224,6 +3225,7 @@
 				3520F36828E327420053A606 /* ItemUiModel.swift in Sources */,
 				355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */,
 				355751F62907FB9000268116 /* AppLockedView.swift in Sources */,
+				3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */,
 				35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */,
 				35733B7829CC525900052229 /* APIManager.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,

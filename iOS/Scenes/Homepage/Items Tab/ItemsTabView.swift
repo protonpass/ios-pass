@@ -192,7 +192,7 @@ struct ItemsTabView: View {
             .overlay {
                 HStack {
                     Spacer()
-                    SectionIndexTitles(proxy: proxy, titles: result.buckets.map { $0.letter.character })
+                    SectionIndexTitles(proxy: proxy)
                 }
             }
         }
