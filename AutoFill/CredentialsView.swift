@@ -26,6 +26,7 @@ import UIComponents
 
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
+    @State private var query = ""
     @State private var isLocked: Bool
     @State private var selectedNotMatchedItem: TitledItemIdentifiable?
     private let preferences: Preferences
@@ -45,62 +46,60 @@ struct CredentialsView: View {
             }
         })
 
-        NavigationView {
-            ZStack {
-                if isLocked {
-                    AppLockedView(preferences: preferences,
-                                  logManager: viewModel.logManager,
-                                  delayed: true,
-                                  onSuccess: { isLocked = false },
-                                  onFailure: viewModel.handleAuthenticationFailure)
-                } else {
-                    switch viewModel.state {
-                    case .loading:
-                        ProgressView()
+        ZStack {
+            Color.passBackground
+                .ignoresSafeArea()
 
-                    case let .loaded(result, state):
-                        if result.isEmpty {
-                            NoCredentialsView()
-                        } else {
-                            VStack(spacing: 0) {
-                                SwiftUISearchBar(placeholder: "Search...",
-                                                 showsCancelButton: false,
-                                                 shouldBecomeFirstResponder: false,
-                                                 onSearch: viewModel.search,
-                                                 onCancel: {})
+            if isLocked {
+                AppLockedView(preferences: preferences,
+                              logManager: viewModel.logManager,
+                              delayed: true,
+                              onSuccess: { isLocked = false },
+                              onFailure: viewModel.handleAuthenticationFailure)
+            } else {
+                switch viewModel.state {
+                case .loading:
+                    ProgressView()
 
-                                switch state {
-                                case .idle:
-                                    itemList(matchedItems: result.matchedItems,
-                                             notMatchedItems: result.notMatchedItems)
+                case let .loaded(result, state):
+                    if result.isEmpty {
+                        NoCredentialsView()
+                    } else {
+                        VStack(spacing: 0) {
+                            SearchBar(query: $query,
+                                      placeholder: "Search in all vaults",
+                                      onCancel: viewModel.cancel)
 
-                                case .searching:
-                                    ProgressView()
+                            switch state {
+                            case .idle:
+                                itemList(matchedItems: result.matchedItems,
+                                         notMatchedItems: result.notMatchedItems)
 
-                                case .noSearchResults:
-                                    Text("No search results")
-                                        .foregroundColor(.textWeak)
+                            case .searching:
+                                ProgressView()
 
-                                case .searchResults(let searchResults):
-                                    searchResultsList(searchResults)
-                                }
+                            case .noSearchResults:
+                                Text("No search results")
+                                    .foregroundColor(.textWeak)
 
-                                Spacer()
+                            case .searchResults(let searchResults):
+                                searchResultsList(searchResults)
                             }
-                            .animation(.default, value: state)
-                        }
 
-                    case .error(let error):
-                        RetryableErrorView(errorMessage: error.messageForTheUser,
-                                           onRetry: viewModel.fetchItems)
+                            Spacer()
+                        }
+                        .animation(.default, value: state)
                     }
+
+                case .error(let error):
+                    RetryableErrorView(errorMessage: error.messageForTheUser,
+                                       onRetry: viewModel.fetchItems)
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar { toolbarContent }
-            .edgesIgnoringSafeArea(.bottom)
         }
-        .navigationViewStyle(.stack)
+        .ignoresSafeArea(edges: .bottom)
+        .theme(preferences.theme)
+        .tint(.passBrand)
         .alert(
             "Associate URL?",
             isPresented: isShowingConfirmationAlert,
@@ -132,28 +131,6 @@ struct CredentialsView: View {
             })
     }
 
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .principal) {
-            Text("Autofill password")
-                .fontWeight(.bold)
-        }
-
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: viewModel.cancel) {
-                Text("Cancel")
-                    .foregroundColor(.primary)
-            }
-        }
-
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.showCreateLoginView) {
-                Image(uiImage: IconProvider.plus)
-                    .foregroundColor(.primary)
-            }
-        }
-    }
-
     private func itemList(matchedItems: [ItemUiModel],
                           notMatchedItems: [ItemUiModel]) -> some View {
         List {
@@ -168,7 +145,6 @@ struct CredentialsView: View {
                             viewModel.select(item: item)
                         }
                     }
-                    .listRowSeparator(.hidden)
                 }
             }, header: {
                 if let host = viewModel.urls.first?.host {
@@ -187,7 +163,6 @@ struct CredentialsView: View {
                             select(item: item)
                         }
                     }
-                    .listRowSeparator(.hidden)
                 }
             }, header: {
                 header(text: "Others items")
@@ -207,6 +182,9 @@ struct CredentialsView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
         }
+        .listRowSeparator(.hidden)
+        .listRowInsets(.zero)
+        .listRowBackground(Color.clear)
     }
 
     private func header(text: String) -> some View {
