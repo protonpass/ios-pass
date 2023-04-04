@@ -143,6 +143,7 @@
 		3552273029DCAE2200B9607E /* SortTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830D29C339110084488A /* SortTypeButton.swift */; };
 		3552273129DCAE2E00B9607E /* SortTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565622329BA5C5900C43F72 /* SortTypeListView.swift */; };
 		3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */; };
+		3552273429DCBFEA00B9607E /* View+PlainListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552273329DCBFEA00B9607E /* View+PlainListRow.swift */; };
 		35526B5B28D115340017BB53 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
 		35526B5D28D116350017BB53 /* PassIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35526B5C28D116350017BB53 /* PassIcon.swift */; };
 		35526B5E28D117820017BB53 /* Pass.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Pass.xcassets */; };
@@ -773,6 +774,7 @@
 		3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsSection.swift; sourceTree = "<group>"; };
 		355222EC293F67A600786F64 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		3552272D29DC9EAC00B9607E /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		3552273329DCBFEA00B9607E /* View+PlainListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+PlainListRow.swift"; sourceTree = "<group>"; };
 		35526B5A28D115340017BB53 /* Pass.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Pass.xcassets; sourceTree = "<group>"; };
 		35526B5C28D116350017BB53 /* PassIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassIcon.swift; sourceTree = "<group>"; };
 		35526B6528D11E0C0017BB53 /* ModifyItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyItemRequest.swift; sourceTree = "<group>"; };
@@ -2074,6 +2076,7 @@
 				3562BC2E29950680003FCB13 /* View+OnFirstAppear.swift */,
 				356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */,
 				35570A7F2926321B00125727 /* View+OpacityReduced.swift */,
+				3552273329DCBFEA00B9607E /* View+PlainListRow.swift */,
 				35526B5A28D115340017BB53 /* Pass.xcassets */,
 			);
 			path = UIComponents;
@@ -3632,6 +3635,7 @@
 				355696E0290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift in Sources */,
 				3567E46229B08ABE00511D62 /* PassDivider.swift in Sources */,
 				35283E4E2927A9A9002F5B84 /* View+ItemDetailModifiers.swift in Sources */,
+				3552273429DCBFEA00B9607E /* View+PlainListRow.swift in Sources */,
 				353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */,
 				3565FD4B298D0CA400E2A0EE /* CapsuleLabelButton.swift in Sources */,
 				354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */,

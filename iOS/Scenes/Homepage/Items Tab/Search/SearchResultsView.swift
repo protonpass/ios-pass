@@ -63,9 +63,7 @@ struct SearchResultsView: View {
                         .id(uuid)
                     itemList(results)
                     Spacer()
-                        .listRowSeparator(.hidden)
-                        .listRowInsets(.zero)
-                        .listRowBackground(Color.clear)
+                        .plainListRow()
                         .frame(height: safeAreaInsets.bottom)
                 }
                 .listStyle(.plain)
@@ -151,11 +149,9 @@ struct SearchResultsView: View {
                                  onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
                                  handler: itemContextMenuHandler)
         })
-        .listRowSeparator(.hidden)
-        .listRowInsets(.zero)
+        .plainListRow()
         .padding(.horizontal)
         .padding(.vertical, 12)
-        .listRowBackground(Color.clear)
         .modifier(ItemSwipeModifier(
             itemToBePermanentlyDeleted: $itemToBePermanentlyDeleted,
             item: item,

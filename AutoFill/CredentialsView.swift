@@ -99,7 +99,6 @@ struct CredentialsView: View {
         }
         .ignoresSafeArea(edges: .bottom)
         .theme(preferences.theme)
-        .tint(.passBrand)
         .alert(
             "Associate URL?",
             isPresented: isShowingConfirmationAlert,
@@ -131,41 +130,54 @@ struct CredentialsView: View {
             })
     }
 
+    // swiftlint:disable:next function_body_length
     private func itemList(matchedItems: [ItemUiModel],
                           notMatchedItems: [ItemUiModel]) -> some View {
         ScrollViewReader { proxy in
             List {
-                section(for: matchedItems,
-                        emptyPlaceholder: "No suggestions",
-                        headerTitle: "Suggestions for \(viewModel.urls.first?.host ?? "")")
-
-                HStack {
-                    Text("Other items")
-                        .font(.callout)
-                        .fontWeight(.bold) +
-                    Text(" (\(notMatchedItems.count))")
-                        .font(.callout)
-                        .foregroundColor(.textWeak)
-
-                    Spacer()
-
-                    SortTypeButton(selectedSortType: $viewModel.selectedSortType,
-                                   action: viewModel.presentSortTypeList)
+                let matchedItemsHeaderTitle = "Suggestions for \(viewModel.urls.first?.host ?? "")"
+                if matchedItems.isEmpty {
+                    Section(content: {
+                        Text("No suggestions")
+                            .font(.callout.italic())
+                            .plainListRow()
+                            .padding(.horizontal)
+                    }, header: {
+                        Text(matchedItemsHeaderTitle)
+                    })
+                } else {
+                    section(for: matchedItems,
+                            headerTitle: matchedItemsHeaderTitle,
+                            areMatchedItems: false)
                 }
-                .listRowSeparator(.hidden)
-                .listRowInsets(.zero)
-                .listRowBackground(Color.clear)
-                .padding(.horizontal)
 
-                switch viewModel.selectedSortType {
-                case .mostRecent:
-                    sections(for: notMatchedItems.mostRecentSortResult())
-                case .alphabetical:
-                    sections(for: notMatchedItems.alphabeticalSortResult())
-                case .newestToOldest:
-                    sections(for: notMatchedItems.monthYearSortResult(direction: .descending))
-                case .oldestToNewest:
-                    sections(for: notMatchedItems.monthYearSortResult(direction: .ascending))
+                if !notMatchedItems.isEmpty {
+                    HStack {
+                        Text("Other items")
+                            .font(.callout)
+                            .fontWeight(.bold) +
+                        Text(" (\(notMatchedItems.count))")
+                            .font(.callout)
+                            .foregroundColor(.textWeak)
+
+                        Spacer()
+
+                        SortTypeButton(selectedSortType: $viewModel.selectedSortType,
+                                       action: viewModel.presentSortTypeList)
+                    }
+                    .plainListRow()
+                    .padding(.horizontal)
+
+                    switch viewModel.selectedSortType {
+                    case .mostRecent:
+                        sections(for: notMatchedItems.mostRecentSortResult())
+                    case .alphabetical:
+                        sections(for: notMatchedItems.alphabeticalSortResult())
+                    case .newestToOldest:
+                        sections(for: notMatchedItems.monthYearSortResult(direction: .descending))
+                    case .oldestToNewest:
+                        sections(for: notMatchedItems.monthYearSortResult(direction: .ascending))
+                    }
                 }
             }
             .listStyle(.plain)
@@ -185,24 +197,14 @@ struct CredentialsView: View {
 
     @ViewBuilder
     private func section(for items: [ItemUiModel],
-                         emptyPlaceholder: String?,
-                         headerTitle: String) -> some View {
+                         headerTitle: String,
+                         areMatchedItems: Bool = false) -> some View {
         if items.isEmpty {
-            if let emptyPlaceholder {
-                Section(content: {
-                    Text(emptyPlaceholder)
-                        .font(.callout.italic())
-                        .listRowSeparator(.hidden)
-                }, header: {
-                    Text(headerTitle)
-                })
-            } else {
-                EmptyView()
-            }
+            EmptyView()
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    itemRow(for: item)
+                    itemRow(for: item, isMatched: areMatchedItems)
                 }
             }, header: {
                 Text(headerTitle)
@@ -210,9 +212,13 @@ struct CredentialsView: View {
         }
     }
 
-    private func itemRow(for item: ItemUiModel) -> some View {
+    private func itemRow(for item: ItemUiModel, isMatched: Bool) -> some View {
         Button(action: {
-            viewModel.select(item: item)
+            if isMatched {
+                viewModel.select(item: item)
+            } else {
+                select(item: item)
+            }
         }, label: {
             GeneralItemRow(thumbnailView: { EmptyView() },
                            title: item.title,
@@ -220,34 +226,32 @@ struct CredentialsView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
         })
-        .listRowSeparator(.hidden)
-        .listRowInsets(.zero)
-        .listRowBackground(Color.clear)
+        .plainListRow()
     }
 
     private func sections(for result: MostRecentSortResult<ItemUiModel>) -> some View {
         Group {
-            section(for: result.today, emptyPlaceholder: nil, headerTitle: "Today")
-            section(for: result.yesterday, emptyPlaceholder: nil, headerTitle: "Yesterday")
-            section(for: result.last7Days, emptyPlaceholder: nil, headerTitle: "Last week")
-            section(for: result.last14Days, emptyPlaceholder: nil, headerTitle: "Last two weeks")
-            section(for: result.last30Days, emptyPlaceholder: nil, headerTitle: "Last 30 days")
-            section(for: result.last60Days, emptyPlaceholder: nil, headerTitle: "Last 60 days")
-            section(for: result.last90Days, emptyPlaceholder: nil, headerTitle: "Last 90 days")
-            section(for: result.others, emptyPlaceholder: nil, headerTitle: "More than 90 days")
+            section(for: result.today, headerTitle: "Today")
+            section(for: result.yesterday, headerTitle: "Yesterday")
+            section(for: result.last7Days, headerTitle: "Last week")
+            section(for: result.last14Days, headerTitle: "Last two weeks")
+            section(for: result.last30Days, headerTitle: "Last 30 days")
+            section(for: result.last60Days, headerTitle: "Last 60 days")
+            section(for: result.last90Days, headerTitle: "Last 90 days")
+            section(for: result.others, headerTitle: "More than 90 days")
         }
     }
 
     private func sections(for result: AlphabeticalSortResult<ItemUiModel>) -> some View {
         ForEach(result.buckets, id: \.letter) { bucket in
-            section(for: bucket.items, emptyPlaceholder: nil, headerTitle: bucket.letter.character)
+            section(for: bucket.items, headerTitle: bucket.letter.character)
                 .id(bucket.letter.character)
         }
     }
 
     private func sections(for result: MonthYearSortResult<ItemUiModel>) -> some View {
         ForEach(result.buckets, id: \.monthYear) { bucket in
-            section(for: bucket.items, emptyPlaceholder: nil, headerTitle: bucket.monthYear.relativeString)
+            section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
         }
     }
 
@@ -275,7 +279,7 @@ struct CredentialsView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 })
             }
-            .listRowSeparator(.hidden)
+            .plainListRow()
         }
         .listStyle(.plain)
         .animation(.default, value: results.count)
