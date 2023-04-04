@@ -477,6 +477,7 @@ private extension CredentialProviderCoordinator {
                                animated: Bool = true,
                                dismissible: Bool = false) {
         viewController.isModalInPresentation = !dismissible
+        viewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         topMostViewController.present(viewController, animated: animated)
     }
 
