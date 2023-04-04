@@ -82,7 +82,7 @@ struct MailboxSelectionView: View {
                 ToolbarItem(placement: .principal) {
                     VStack(spacing: 18) {
                         NotchView()
-                        Text("Forward to")
+                        Text("Forwarding to")
                             .navigationTitleText()
                     }
                 }
