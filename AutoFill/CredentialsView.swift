@@ -150,6 +150,24 @@ struct CredentialsView: View {
                 }
             })
 
+            HStack {
+                Text("All")
+                    .font(.callout)
+                    .fontWeight(.bold) +
+                Text(" (\(notMatchedItems.count))")
+                    .font(.callout)
+                    .foregroundColor(.textWeak)
+
+                Spacer()
+
+                SortTypeButton(selectedSortType: $viewModel.selectedSortType,
+                               action: viewModel.presentSortTypeList)
+            }
+            .listRowSeparator(.hidden)
+            .listRowInsets(.zero)
+            .listRowBackground(Color.clear)
+            .padding(.horizontal)
+
             Section(content: {
                 if notMatchedItems.isEmpty {
                     Text("No other items")
