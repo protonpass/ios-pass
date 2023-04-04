@@ -59,7 +59,7 @@ struct CredentialsView: View {
             } else {
                 switch viewModel.state {
                 case .loading:
-                    ProgressView()
+                    CredentialsSkeletonView()
 
                 case let .loaded(result, state):
                     if result.isEmpty {
@@ -141,9 +141,7 @@ struct CredentialsView: View {
                         .listRowSeparator(.hidden)
                 } else {
                     ForEach(matchedItems) { item in
-                        view(for: item) {
-                            viewModel.select(item: item)
-                        }
+                        view(for: item)
                     }
                 }
             }, header: {
@@ -159,9 +157,7 @@ struct CredentialsView: View {
                         .listRowSeparator(.hidden)
                 } else {
                     ForEach(notMatchedItems) { item in
-                        view(for: item) {
-                            select(item: item)
-                        }
+                        view(for: item)
                     }
                 }
             }, header: {
@@ -174,14 +170,16 @@ struct CredentialsView: View {
         .animation(.default, value: notMatchedItems.hashValue)
     }
 
-    private func view(for item: ItemUiModel, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+    private func view(for item: ItemUiModel) -> some View {
+        Button(action: {
+            viewModel.select(item: item)
+        }, label: {
             GeneralItemRow(thumbnailView: { EmptyView() },
                            title: item.title,
                            description: item.description)
             .frame(maxWidth: .infinity, alignment: .leading)
             .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
-        }
+        })
         .listRowSeparator(.hidden)
         .listRowInsets(.zero)
         .listRowBackground(Color.clear)
@@ -239,6 +237,54 @@ struct CredentialsView: View {
             } else {
                 viewModel.select(item: item)
             }
+        }
+    }
+}
+
+private struct CredentialsSkeletonView: View {
+    var body: some View {
+        VStack {
+            HStack {
+                AnimatingGradient()
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                AnimatingGradient()
+                    .frame(width: kSearchBarHeight)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+            }
+            .frame(height: kSearchBarHeight)
+            .padding(.vertical)
+
+            ScrollView {
+                LazyVStack(spacing: 20) {
+                    ForEach(0..<20, id: \.self) { _ in
+                        itemRow
+                    }
+                }
+            }
+            .disabled(true)
+        }
+        .padding(.horizontal)
+    }
+
+    private var itemRow: some View {
+        HStack(spacing: 16) {
+            AnimatingGradient()
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+
+            VStack(alignment: .leading) {
+                Spacer()
+                AnimatingGradient()
+                    .frame(width: 170, height: 10)
+                    .clipShape(Capsule())
+                Spacer()
+                AnimatingGradient()
+                    .frame(width: 200, height: 10)
+                    .clipShape(Capsule())
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
