@@ -68,6 +68,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
         self.logger = .init(manager: logManager)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
+        self.refresh()
     }
 }
 
