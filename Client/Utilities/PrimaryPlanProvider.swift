@@ -1,5 +1,5 @@
 //
-// OrganizationProvider.swift
+// PrimaryPlanProvider.swift
 // Proton Pass - Created on 03/04/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -22,16 +22,17 @@ import ProtonCore_Authentication
 import ProtonCore_DataModel
 import ProtonCore_Services
 
-public enum OrganizationProvider {
-    /// Return `nil` if user is not subscribed, `OrganizationLite` object otherwise
-    public static func getOrganization(apiService: APIService) async throws -> OrganizationLite? {
+public enum PrimaryPlanProvider {
+    /// Return `nil` if user is not subscribed, primary `Plan` object otherwise
+    public static func getPrimaryPlan(apiService: APIService) async throws -> PlanLite? {
         let user = try await getUser(apiService: apiService)
         guard user.subscribed > 0 else { return nil }
-        return try await apiService.exec(endpoint: GetOrganizationEndpoint()).organization
+        let subscription = try await apiService.exec(endpoint: GetSubscriptionEndpoint()).subscription
+        return subscription.plans.first(where: { $0.isPrimary })
     }
 }
 
-private extension OrganizationProvider {
+private extension PrimaryPlanProvider {
     static func getUser(apiService: APIService) async throws -> User {
         try await withCheckedThrowingContinuation { continuation in
             let authenticator = Authenticator(api: apiService)

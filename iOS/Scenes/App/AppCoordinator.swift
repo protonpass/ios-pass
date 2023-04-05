@@ -78,7 +78,7 @@ final class AppCoordinator {
         self.isUITest = false
         clearUserDataInKeychainIfFirstRun()
         bindAppState()
-        refreshOrganization()
+        refreshPrimaryPlan()
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             self.isUITest = true
@@ -176,8 +176,8 @@ final class AppCoordinator {
                 let apiService = apiManager.apiService
                 if manualLogIn {
                     showLoadingHud()
-                    appData.organization =
-                    try? await OrganizationProvider.getOrganization(apiService: apiService)
+                    appData.primaryPlan =
+                    try? await PrimaryPlanProvider.getPrimaryPlan(apiService: apiService)
                     hideLoadingHud()
                 }
                 let symmetricKey = try appData.getSymmetricKey()
@@ -186,8 +186,8 @@ final class AppCoordinator {
                                                               credentialManager: credentialManager,
                                                               logManager: logManager,
                                                               manualLogIn: manualLogIn,
-                                                              organization: appData.organization,
                                                               preferences: preferences,
+                                                              primaryPlan: appData.primaryPlan,
                                                               symmetricKey: symmetricKey,
                                                               userData: userData)
                 homepageCoordinator.delegate = self
@@ -219,7 +219,7 @@ final class AppCoordinator {
     private func wipeAllData(includingUnauthSession: Bool) {
         logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
         appData.userData = nil
-        appData.organization = nil
+        appData.primaryPlan = nil
         if includingUnauthSession {
             apiManager.clearCredentials()
             keymaker.wipeMainKey()
@@ -253,13 +253,13 @@ final class AppCoordinator {
         }
     }
 
-    private func refreshOrganization() {
+    private func refreshPrimaryPlan() {
         Task {
             do {
-                logger.trace("Refreshing organization")
-                appData.organization =
-                try await OrganizationProvider.getOrganization(apiService: apiManager.apiService)
-                logger.trace("Refreshed organization")
+                logger.trace("Refreshing primary plan")
+                appData.primaryPlan =
+                try await PrimaryPlanProvider.getPrimaryPlan(apiService: apiManager.apiService)
+                logger.trace("Refreshed primary plan")
             } catch {
                 logger.error(error)
             }

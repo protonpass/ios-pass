@@ -653,7 +653,7 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
 
     func extensionSettingsViewModelWantsToLogOut() {
         appData.userData = nil
-        appData.organization = nil
+        appData.primaryPlan = nil
         context.completeExtensionConfigurationRequest()
     }
 
