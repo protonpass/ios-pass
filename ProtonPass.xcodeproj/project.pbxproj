@@ -246,6 +246,11 @@
 		3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */; };
 		3560844929DDA344001F7487 /* OptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35829D6F36200F03497 /* OptionRow.swift */; };
 		3560844C29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560844B29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift */; };
+		3560844F29DDE2C7001F7487 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3560844D29DDE2BE001F7487 /* Colors.xcassets */; };
+		3560845029DDE2C7001F7487 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3560844D29DDE2BE001F7487 /* Colors.xcassets */; };
+		3560845129DDE2C9001F7487 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3560844D29DDE2BE001F7487 /* Colors.xcassets */; };
+		3560845229DDE2CC001F7487 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3560844D29DDE2BE001F7487 /* Colors.xcassets */; };
+		3560845429DDE305001F7487 /* PassColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560845329DDE305001F7487 /* PassColor.swift */; };
 		35610B7528ABB77800955ACB /* LocalShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */; };
 		35610B7728ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7628ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift */; };
 		35610B7E28ABC9D200955ACB /* RemoteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7D28ABC9D200955ACB /* RemoteDatasource.swift */; };
@@ -871,6 +876,8 @@
 		3560844029DDA1C4001F7487 /* ExtensionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSettingsView.swift; sourceTree = "<group>"; };
 		3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSettingsViewModel.swift; sourceTree = "<group>"; };
 		3560844B29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSubscriptionEndpoint.swift; sourceTree = "<group>"; };
+		3560844D29DDE2BE001F7487 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		3560845329DDE305001F7487 /* PassColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassColor.swift; sourceTree = "<group>"; };
 		35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareKeyDatasource.swift; sourceTree = "<group>"; };
 		35610B7628ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareKeyDatasourceTests.swift; sourceTree = "<group>"; };
 		35610B7D28ABC9D200955ACB /* RemoteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDatasource.swift; sourceTree = "<group>"; };
@@ -2075,6 +2082,7 @@
 				35661CB529B91990003BBAD6 /* EdgeInsets+Zero.swift */,
 				35690C122923D5DA00F60C20 /* NotchView.swift */,
 				355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */,
+				3560845329DDE305001F7487 /* PassColor.swift */,
 				3567E46129B08ABE00511D62 /* PassDivider.swift */,
 				35526B5C28D116350017BB53 /* PassIcon.swift */,
 				3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */,
@@ -2090,6 +2098,7 @@
 				356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */,
 				35570A7F2926321B00125727 /* View+OpacityReduced.swift */,
 				3552273329DCBFEA00B9607E /* View+PlainListRow.swift */,
+				3560844D29DDE2BE001F7487 /* Colors.xcassets */,
 				35526B5A28D115340017BB53 /* Icons.xcassets */,
 			);
 			path = UIComponents;
@@ -2704,6 +2713,7 @@
 				3555801028F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig in Resources */,
 				3555801228F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig in Resources */,
 				3544F5E728E2341900834CA4 /* MainInterface.storyboard in Resources */,
+				3560845029DDE2C7001F7487 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2718,6 +2728,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3560845229DDE2CC001F7487 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2731,6 +2742,7 @@
 				35E506CE286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig in Resources */,
 				35E506D0286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig in Resources */,
 				35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */,
+				3560845129DDE2C9001F7487 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2781,6 +2793,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				35526B5B28D115340017BB53 /* Icons.xcassets in Resources */,
+				3560844F29DDE2C7001F7487 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3671,6 +3684,7 @@
 				3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */,
 				354DCCF9291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift in Sources */,
 				3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */,
+				3560845429DDE305001F7487 /* PassColor.swift in Sources */,
 				35690C152923EA8400F60C20 /* Color+ProtonColors.swift in Sources */,
 				35570A802926321B00125727 /* View+OpacityReduced.swift in Sources */,
 				354BB15328A2886500F50040 /* SwiftUISearchBar.swift in Sources */,
