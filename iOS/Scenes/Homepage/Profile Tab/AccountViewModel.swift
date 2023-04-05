@@ -35,31 +35,31 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     let apiService: APIService
     let logger: Logger
     let username: String
-    @Published private(set) var organization: OrganizationLite?
+    @Published private(set) var primaryPlan: PlanLite?
 
     weak var delegate: AccountViewModelDelegate?
 
     init(apiService: APIService,
          logManager: LogManager,
-         organization: OrganizationLite?,
+         primaryPlan: PlanLite?,
          username: String) {
         self.apiService = apiService
         self.logger = .init(manager: logManager)
         self.username = username
-        self.organization = organization
+        self.primaryPlan = primaryPlan
         self.refreshOrganization()
     }
 
     private func refreshOrganization() {
         Task { @MainActor in
             do {
-                logger.trace("Refreshing organization")
-                let organization = try await OrganizationProvider.getOrganization(apiService: apiService)
-                if let organization {
-                    self.organization = organization
-                    logger.info("Refreshed organization")
+                logger.trace("Refreshing primary plan")
+                let primaryPlan = try await PrimaryPlanProvider.getPrimaryPlan(apiService: apiService)
+                if let primaryPlan {
+                    self.primaryPlan = primaryPlan
+                    logger.info("Refreshed primary plan")
                 } else {
-                    logger.info("Refreshed organization. User is not subscribed")
+                    logger.info("Refreshed primary plan. User is not subscribed")
                 }
             } catch {
                 logger.error(error)

@@ -26,19 +26,23 @@ import ProtonCore_Login
 import ProtonCore_Networking
 
 final class AppData {
+    @KeychainStorage(key: .primaryPlan)
+    var primaryPlan: PlanLite?
+
     @KeychainStorage(key: .userData)
     var userData: UserData?
 
     @KeychainStorage(key: .unauthSessionCredentials)
     var unauthSessionCredentials: AuthCredential?
 
-    @KeychainStorage(key: .organization)
-    var organization: OrganizationLite?
-
     @KeychainStorage(key: .symmetricKey)
     private var symmetricKey: String?
 
     init(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
+        self._primaryPlan.setKeychain(keychain)
+        self._primaryPlan.setMainKeyProvider(mainKeyProvider)
+        self._primaryPlan.setLogManager(logManager)
+
         self._userData.setKeychain(keychain)
         self._userData.setMainKeyProvider(mainKeyProvider)
         self._userData.setLogManager(logManager)
@@ -46,10 +50,6 @@ final class AppData {
         self._unauthSessionCredentials.setKeychain(keychain)
         self._unauthSessionCredentials.setMainKeyProvider(mainKeyProvider)
         self._unauthSessionCredentials.setLogManager(logManager)
-
-        self._organization.setKeychain(keychain)
-        self._organization.setMainKeyProvider(mainKeyProvider)
-        self._organization.setLogManager(logManager)
 
         self._symmetricKey.setKeychain(keychain)
         self._symmetricKey.setMainKeyProvider(mainKeyProvider)

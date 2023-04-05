@@ -1,6 +1,6 @@
 //
-// GetOrganizationEndpoint.swift
-// Proton Pass - Created on 03/04/2023.
+// GetSubscriptionEndpoint.swift
+// Proton Pass - Created on 05/04/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,27 +21,34 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-/// This should be supported by core but at the time of writting, `Organization` object from Core didn't
-/// contain the `planName` properties that Pass is interested in.
-/// So this endpoint is a workaround to get user's plan name
-public struct OrganizationLite: Codable {
-    public let planName: String?
+public struct GetSubscriptionResponse: Decodable {
+    public let code: Int
+    public let subscription: SubcriptionLite
 }
 
-public struct GetOrganizationResponse: Decodable {
-    let code: Int
-    let organization: OrganizationLite
-}
-
-public struct GetOrganizationEndpoint: Endpoint {
+public struct GetSubscriptionEndpoint: Endpoint {
     public typealias Body = EmptyRequest
-    public typealias Response = GetOrganizationResponse
+    public typealias Response = GetSubscriptionResponse
 
     public var debugDescription: String
     public var path: String
+    public var method: HTTPMethod
 
     public init() {
-        self.debugDescription = "Get organization"
-        self.path = "/core/v4/organizations"
+        self.debugDescription = "Get subscription"
+        self.path = "/payments/v4/subscription"
+        self.method = .get
     }
+}
+
+public struct SubcriptionLite: Decodable {
+    let plans: [PlanLite]
+}
+
+public struct PlanLite: Codable {
+    public let name: String
+    public let title: String
+    public let type: Int
+
+    public var isPrimary: Bool { type == 1 }
 }
