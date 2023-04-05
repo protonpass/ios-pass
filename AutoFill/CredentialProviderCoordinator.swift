@@ -582,18 +582,38 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
                                                       creationInfo: AliasCreationLiteInfo,
-                                                      delegate: AliasCreationLiteInfoDelegate) {}
+                                                      delegate: AliasCreationLiteInfoDelegate) {
+        let viewModel = CreateAliasLiteViewModel(options: options,
+                                                 creationInfo: creationInfo)
+        viewModel.aliasCreationDelegate = delegate
+        viewModel.delegate = self
+        let view = CreateAliasLiteView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.sheetPresentationController?.detents = [.medium()]
+        viewModel.onDismiss = { navigationController.dismiss(animated: true) }
+        present(navigationController)
+    }
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate)
     }
 
-    func createEditLoginViewModelWantsToOpenSettings() {
-        // Not applicable
-    }
+    // Not applicable
+    func createEditLoginViewModelWantsToOpenSettings() {}
 
     func createEditLoginViewModelCanNotCreateMoreAlias() {
         bannerManager.displayTopErrorMessage("You can not create more aliases.")
+    }
+}
+
+// MARK: - CreateAliasLiteViewModelDelegate
+extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
+    func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
+        let view = MailboxSelectionView(mailboxSelection: mailboxSelection, mode: .createAliasLite)
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        present(viewController)
     }
 }
 
