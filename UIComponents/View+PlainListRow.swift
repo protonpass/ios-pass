@@ -1,7 +1,7 @@
 //
-// MyVaultsViewModel.swift
-// Proton Pass - Created on 18/07/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// View+PlainListRow.swift
+// Proton Pass - Created on 04/04/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,17 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Combine
-import Core
 import SwiftUI
 
-final class MyVaultsViewModel: DeinitPrintable, ObservableObject {
-    deinit { print(deinitMessage) }
-
-    private var cancellables = Set<AnyCancellable>()
-
-    var vaults = [Vault]()
-
-    init() {}
+public extension View {
+    func plainListRow() -> some View {
+        self
+            .listRowSeparator(.hidden)
+            .listRowInsets(.zero)
+            .listRowBackground(Color.clear)
+    }
 }

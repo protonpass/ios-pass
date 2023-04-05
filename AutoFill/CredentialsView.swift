@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import ProtonCore_UIFoundations
 import SwiftUI
@@ -26,6 +27,7 @@ import UIComponents
 
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
+    @State private var query = ""
     @State private var isLocked: Bool
     @State private var selectedNotMatchedItem: TitledItemIdentifiable?
     private let preferences: Preferences
@@ -45,62 +47,36 @@ struct CredentialsView: View {
             }
         })
 
-        NavigationView {
-            ZStack {
-                if isLocked {
-                    AppLockedView(preferences: preferences,
-                                  logManager: viewModel.logManager,
-                                  delayed: true,
-                                  onSuccess: { isLocked = false },
-                                  onFailure: viewModel.handleAuthenticationFailure)
-                } else {
-                    switch viewModel.state {
-                    case .loading:
-                        ProgressView()
+        ZStack {
+            Color.passBackground
+                .ignoresSafeArea()
 
-                    case let .loaded(result, state):
-                        if result.isEmpty {
-                            NoCredentialsView()
-                        } else {
-                            VStack(spacing: 0) {
-                                SwiftUISearchBar(placeholder: "Search...",
-                                                 showsCancelButton: false,
-                                                 shouldBecomeFirstResponder: false,
-                                                 onSearch: viewModel.search,
-                                                 onCancel: {})
+            if isLocked {
+                AppLockedView(preferences: preferences,
+                              logManager: viewModel.logManager,
+                              delayed: true,
+                              onSuccess: { isLocked = false },
+                              onFailure: viewModel.handleAuthenticationFailure)
+            } else {
+                switch viewModel.state {
+                case .loading:
+                    CredentialsSkeletonView()
 
-                                switch state {
-                                case .idle:
-                                    itemList(matchedItems: result.matchedItems,
-                                             notMatchedItems: result.notMatchedItems)
-
-                                case .searching:
-                                    ProgressView()
-
-                                case .noSearchResults:
-                                    Text("No search results")
-                                        .foregroundColor(.textWeak)
-
-                                case .searchResults(let searchResults):
-                                    searchResultsList(searchResults)
-                                }
-
-                                Spacer()
-                            }
-                            .animation(.default, value: state)
-                        }
-
-                    case .error(let error):
-                        RetryableErrorView(errorMessage: error.messageForTheUser,
-                                           onRetry: viewModel.fetchItems)
+                case let .loaded(result, state):
+                    if result.isEmpty {
+                        NoCredentialsView()
+                    } else {
+                        resultView(result: result, state: state)
                     }
+
+                case .error(let error):
+                    RetryableErrorView(errorMessage: error.messageForTheUser,
+                                       onRetry: viewModel.fetchItems)
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar { toolbarContent }
-            .edgesIgnoringSafeArea(.bottom)
         }
-        .navigationViewStyle(.stack)
+        .theme(preferences.theme)
+        .animation(.default, value: isLocked)
         .alert(
             "Associate URL?",
             isPresented: isShowingConfirmationAlert,
@@ -132,118 +108,240 @@ struct CredentialsView: View {
             })
     }
 
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .principal) {
-            Text("Autofill password")
-                .fontWeight(.bold)
-        }
+    private func resultView(result: CredentialsFetchResult,
+                            state: CredentialsViewLoadedState) -> some View {
+        VStack(spacing: 0) {
+            SearchBar(query: $query,
+                      placeholder: "Search in all vaults",
+                      onCancel: viewModel.cancel)
 
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: viewModel.cancel) {
-                Text("Cancel")
-                    .foregroundColor(.primary)
-            }
-        }
+            switch state {
+            case .idle:
+                itemList(matchedItems: result.matchedItems,
+                         notMatchedItems: result.notMatchedItems)
 
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: viewModel.showCreateLoginView) {
-                Image(uiImage: IconProvider.plus)
-                    .foregroundColor(.primary)
+            case .searching:
+                ProgressView()
+
+            case .noSearchResults:
+                NoSearchResultsInAllVaultView(query: query)
+
+            case .searchResults(let results):
+                searchResults(results)
             }
+
+            Spacer()
+
+            CapsuleTextButton(title: "Create login",
+                              titleColor: .passBrand,
+                              backgroundColor: .passBrand.withAlphaComponent(0.08),
+                              disabled: false,
+                              height: 52,
+                              action: viewModel.createLoginItem)
+            .padding(.horizontal)
+            .padding(.vertical, 8)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.default, value: state)
+        .onChange(of: query) { viewModel.search(term: $0) }
     }
 
     private func itemList(matchedItems: [ItemUiModel],
                           notMatchedItems: [ItemUiModel]) -> some View {
-        List {
-            Section(content: {
+        ScrollViewReader { proxy in
+            List {
+                let matchedItemsHeaderTitle = "Suggestions for \(viewModel.urls.first?.host ?? "")"
                 if matchedItems.isEmpty {
-                    Text("No suggestions")
-                        .font(.callout.italic())
-                        .listRowSeparator(.hidden)
+                    Section(content: {
+                        Text("No suggestions")
+                            .font(.callout.italic())
+                            .plainListRow()
+                            .padding(.horizontal)
+                    }, header: {
+                        Text(matchedItemsHeaderTitle)
+                    })
                 } else {
-                    ForEach(matchedItems) { item in
-                        view(for: item) {
-                            viewModel.select(item: item)
+                    section(for: matchedItems.map { .normal($0) }, headerTitle: matchedItemsHeaderTitle)
+                }
+
+                if !notMatchedItems.isEmpty {
+                    HStack {
+                        Text("Other items")
+                            .font(.callout)
+                            .fontWeight(.bold) +
+                        Text(" (\(notMatchedItems.count))")
+                            .font(.callout)
+                            .foregroundColor(.textWeak)
+
+                        Spacer()
+
+                        SortTypeButton(selectedSortType: $viewModel.selectedSortType,
+                                       action: viewModel.presentSortTypeList)
+                    }
+                    .plainListRow()
+                    .padding(.horizontal)
+
+                    sortableSections(for: notMatchedItems.map { .normal($0) })
+                }
+            }
+            .listStyle(.plain)
+            .refreshable { await viewModel.forceSync() }
+            .animation(.default, value: matchedItems.hashValue)
+            .animation(.default, value: notMatchedItems.hashValue)
+            .overlay {
+                if viewModel.selectedSortType == .alphabetical {
+                    HStack {
+                        Spacer()
+                        SectionIndexTitles(proxy: proxy)
+                    }
+                }
+            }
+        }
+    }
+
+    private func searchResults(_ results: [ItemSearchResult]) -> some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text("Results")
+                    .font(.callout)
+                    .fontWeight(.bold) +
+                Text(" (\(results.count))")
+                    .font(.callout)
+                    .foregroundColor(.textWeak)
+
+                Spacer()
+
+                SortTypeButton(selectedSortType: $viewModel.selectedSortType,
+                               action: viewModel.presentSortTypeList)
+            }
+            .padding(.horizontal)
+
+            ScrollViewReader { proxy in
+                List {
+                    sortableSections(for: results.map { .searchResult($0) })
+                }
+                .listStyle(.plain)
+                .animation(.default, value: results.count)
+                .overlay {
+                    if viewModel.selectedSortType == .alphabetical {
+                        HStack {
+                            Spacer()
+                            SectionIndexTitles(proxy: proxy)
                         }
                     }
-                    .listRowSeparator(.hidden)
                 }
-            }, header: {
-                if let host = viewModel.urls.first?.host {
-                    header(text: "Suggestions for \(host)")
-                }
-            })
+            }
+        }
+    }
 
+    @ViewBuilder
+    private func section(for items: [CredentialItem], headerTitle: String) -> some View {
+        if items.isEmpty {
+            EmptyView()
+        } else {
             Section(content: {
-                if notMatchedItems.isEmpty {
-                    Text("No other items")
-                        .font(.callout.italic())
-                        .listRowSeparator(.hidden)
-                } else {
-                    ForEach(notMatchedItems) { item in
-                        view(for: item) {
-                            select(item: item)
-                        }
+                ForEach(items) { item in
+                    switch item {
+                    case .normal(let normalItem):
+                        itemRow(for: normalItem)
+                            .plainListRow()
+                            .padding(.horizontal)
+                    case .searchResult(let searchResultItem):
+                        itemRow(for: searchResultItem)
+                            .plainListRow()
+                            .padding(.horizontal)
+                            .padding(.bottom)
                     }
-                    .listRowSeparator(.hidden)
                 }
             }, header: {
-                header(text: "Others items")
+                Text(headerTitle)
             })
         }
-        .listStyle(.plain)
-        .refreshable { await viewModel.forceSync() }
-        .animation(.default, value: matchedItems.hashValue)
-        .animation(.default, value: notMatchedItems.hashValue)
     }
 
-    private func view(for item: ItemUiModel, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            GeneralItemRow(thumbnailView: { EmptyView() },
-                           title: item.title,
-                           description: item.description)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
+    @ViewBuilder
+    private func sortableSections(for items: [CredentialItem]) -> some View {
+        switch viewModel.selectedSortType {
+        case .mostRecent:
+            sections(for: items.mostRecentSortResult())
+        case .alphabetical:
+            sections(for: items.alphabeticalSortResult())
+        case .newestToOldest:
+            sections(for: items.monthYearSortResult(direction: .descending))
+        case .oldestToNewest:
+            sections(for: items.monthYearSortResult(direction: .ascending))
         }
     }
 
-    private func header(text: String) -> some View {
-        Text(text)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .foregroundColor(.secondary)
-            .font(.callout)
+    private func sections(for result: MostRecentSortResult<CredentialItem>) -> some View {
+        Group {
+            section(for: result.today, headerTitle: "Today")
+            section(for: result.yesterday, headerTitle: "Yesterday")
+            section(for: result.last7Days, headerTitle: "Last week")
+            section(for: result.last14Days, headerTitle: "Last two weeks")
+            section(for: result.last30Days, headerTitle: "Last 30 days")
+            section(for: result.last60Days, headerTitle: "Last 60 days")
+            section(for: result.last90Days, headerTitle: "Last 90 days")
+            section(for: result.others, headerTitle: "More than 90 days")
+        }
     }
 
-    private func searchResultsList(_ results: [ItemSearchResult]) -> some View {
-        List {
-            ForEach(results, id: \.hashValue) { result in
-                Button(action: {
-                    select(item: result)
-                }, label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        HighlightText(highlightableText: result.title)
+    private func sections(for result: AlphabeticalSortResult<CredentialItem>) -> some View {
+        ForEach(result.buckets, id: \.letter) { bucket in
+            section(for: bucket.items, headerTitle: bucket.letter.character)
+                .id(bucket.letter.character)
+        }
+    }
 
-                        VStack(alignment: .leading, spacing: 2) {
-                            ForEach(0..<result.detail.count, id: \.self) { index in
-                                let eachDetail = result.detail[index]
-                                if !eachDetail.fullText.isEmpty {
-                                    HighlightText(highlightableText: eachDetail)
-                                        .font(.callout)
-                                        .foregroundColor(Color(.secondaryLabel))
-                                        .lineLimit(1)
-                                }
+    private func sections(for result: MonthYearSortResult<CredentialItem>) -> some View {
+        ForEach(result.buckets, id: \.monthYear) { bucket in
+            section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
+        }
+    }
+
+    private func itemRow(for item: ItemUiModel) -> some View {
+        Button(action: {
+            select(item: item)
+        }, label: {
+            GeneralItemRow(
+                thumbnailView: {
+                    CircleButton(icon: IconProvider.keySkeleton,
+                                 color: ItemContentType.login.tintColor) {}
+                        .disabled(true)
+                },
+                title: item.title,
+                description: item.description)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        })
+    }
+
+    private func itemRow(for item: ItemSearchResult) -> some View {
+        Button(action: {
+            select(item: item)
+        }, label: {
+            HStack {
+                CircleButton(icon: IconProvider.keySkeleton,
+                             color: ItemContentType.login.tintColor) {}
+                    .disabled(true)
+
+                VStack(alignment: .leading, spacing: 4) {
+                    HighlightText(highlightableText: item.title)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        ForEach(0..<item.detail.count, id: \.self) { index in
+                            let eachDetail = item.detail[index]
+                            if !eachDetail.fullText.isEmpty {
+                                HighlightText(highlightableText: eachDetail)
+                                    .font(.callout)
+                                    .foregroundColor(Color(.secondaryLabel))
+                                    .lineLimit(1)
                             }
                         }
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                })
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .listRowSeparator(.hidden)
-        }
-        .listStyle(.plain)
-        .animation(.default, value: results.count)
+        })
     }
 
     private func select(item: TitledItemIdentifiable) {
@@ -261,6 +359,54 @@ struct CredentialsView: View {
             } else {
                 viewModel.select(item: item)
             }
+        }
+    }
+}
+
+private struct CredentialsSkeletonView: View {
+    var body: some View {
+        VStack {
+            HStack {
+                AnimatingGradient()
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                AnimatingGradient()
+                    .frame(width: kSearchBarHeight)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+            }
+            .frame(height: kSearchBarHeight)
+            .padding(.vertical)
+
+            ScrollView {
+                LazyVStack(spacing: 20) {
+                    ForEach(0..<20, id: \.self) { _ in
+                        itemRow
+                    }
+                }
+            }
+            .disabled(true)
+        }
+        .padding(.horizontal)
+    }
+
+    private var itemRow: some View {
+        HStack(spacing: 16) {
+            AnimatingGradient()
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+
+            VStack(alignment: .leading) {
+                Spacer()
+                AnimatingGradient()
+                    .frame(width: 170, height: 10)
+                    .clipShape(Capsule())
+                Spacer()
+                AnimatingGradient()
+                    .frame(width: 200, height: 10)
+                    .clipShape(Capsule())
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

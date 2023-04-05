@@ -56,7 +56,9 @@ struct SearchView: View {
 
     private var content: some View {
         VStack(spacing: 0) {
-            searchBar
+            SearchBar(query: $query,
+                      placeholder: viewModel.searchBarPlaceholder,
+                      onCancel: dismiss.callAsFunction)
 
             switch viewModel.state {
             case .empty:
@@ -107,52 +109,5 @@ struct SearchView: View {
         .onChange(of: query) { term in
             viewModel.search(term)
         }
-    }
-
-    private var searchBar: some View {
-        HStack {
-            ZStack {
-                Color.black
-                HStack {
-                    Image(uiImage: IconProvider.magnifier)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.primary)
-
-                    TextField(viewModel.searchBarPlaceholder, text: $query)
-                        .tint(.passBrand)
-                        .autocorrectionDisabled()
-                        .focused($isFocusedOnSearchBar)
-                        .foregroundColor(.primary)
-
-                    Button(action: {
-                        query = ""
-                    }, label: {
-                        Image(uiImage: IconProvider.cross)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(.primary)
-                    })
-                    .buttonStyle(.plain)
-                    .opacity(query.isEmpty ? 0 : 1)
-                    .animation(.default, value: query.isEmpty)
-                }
-                .foregroundColor(.textWeak)
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .containerShape(Rectangle())
-
-            Button(action: dismiss.callAsFunction) {
-                Text("Cancel")
-                    .fontWeight(.semibold)
-                    .foregroundColor(.passBrand)
-            }
-        }
-        .frame(height: kSearchBarHeight)
-        .padding()
     }
 }

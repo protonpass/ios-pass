@@ -30,7 +30,7 @@ struct MailboxSection: View {
             ItemDetailSectionIcon(icon: IconProvider.forward, color: .textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Forwarded to")
+                Text("Forwarding to")
                     .sectionTitleText()
                 Text(mailboxSelection.selectedMailboxesString)
                     .sectionContentText()

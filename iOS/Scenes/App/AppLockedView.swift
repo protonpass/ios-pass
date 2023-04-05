@@ -50,6 +50,9 @@ struct AppLockedView: View {
 
     var body: some View {
         ZStack {
+            Color.passBackground
+                .ignoresSafeArea()
+
             switch authenticator.biometryTypeState {
             case .idle, .initializing:
                 lockImage
