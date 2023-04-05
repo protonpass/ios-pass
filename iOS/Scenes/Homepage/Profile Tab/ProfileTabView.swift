@@ -162,7 +162,7 @@ struct ProfileTabView: View {
             VStack(spacing: 0) {
                 OptionRow(height: .medium) {
                     Toggle(isOn: $viewModel.quickTypeBar) {
-                        Text("QuickType bar")
+                        Text("QuickType bar suggestions")
                     }
                     .tint(.passBrand)
                 }
@@ -171,7 +171,7 @@ struct ProfileTabView: View {
 
                 OptionRow(height: .medium) {
                     Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
-                        Text("Automatically copy TOTP code")
+                        Text("Copy Two Factor Authentication code")
                     }
                     .tint(.passBrand)
                 }
@@ -179,7 +179,8 @@ struct ProfileTabView: View {
             .roundedEditableSection()
 
             if viewModel.automaticallyCopyTotpCode {
-                Text("When autofilling, you will be warned if TOTP code expires in less than 10 seconds.")
+                // swiftlint:disable:next line_length
+                Text("When autofilling, you will be warned if Two Factor Authentication code expires in less than 10 seconds.")
                     .sectionTitleText()
                     .frame(maxWidth: .infinity, alignment: .leading)
             }

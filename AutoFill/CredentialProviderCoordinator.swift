@@ -114,16 +114,23 @@ public final class CredentialProviderCoordinator {
     }
 
     func configureExtension() {
-        let completeConfigurationRequest: () -> Void = { [context] in
-            context.completeExtensionConfigurationRequest()
-        }
-
-        guard let userData = appData.userData else {
-            showView(NotLoggedInView(preferences: preferences, onCancel: completeConfigurationRequest))
+        guard appData.userData != nil else {
+            let view = NotLoggedInView(preferences: preferences) { [context] in
+                context.completeExtensionConfigurationRequest()
+            }
+            showView(view)
             return
         }
 
-        showView(Text("Is logged in"))
+        guard let itemRepository else { return }
+
+        let viewModel = ExtensionSettingsViewModel(credentialManager: credentialManager,
+                                                   itemRepository: itemRepository,
+                                                   logManager: logManager,
+                                                   preferences: preferences)
+        viewModel.delegate = self
+        let view = ExtensionSettingsView(viewModel: viewModel)
+        showView(view)
     }
 
     /// QuickType bar support
@@ -627,6 +634,25 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         present(viewController)
+    }
+}
+
+// MARK: - ExtensionSettingsViewModelDelegate
+extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
+    func extensionSettingsViewModelWantsToShowSpinner() {
+        showLoadingHud()
+    }
+
+    func extensionSettingsViewModelWantsToHideSpinner() {
+        hideLoadingHud()
+    }
+
+    func extensionSettingsViewModelWantsToDismiss() {
+        context.completeExtensionConfigurationRequest()
+    }
+
+    func extensionSettingsViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
