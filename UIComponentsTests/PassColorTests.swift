@@ -31,6 +31,9 @@ final class PassColorTests: XCTestCase {
         _ = PassColor.aliasInteractionNormMinor1
         _ = PassColor.aliasInteractionNormMinor2
 
+        _ = PassColor.inputBackgroundNorm
+        _ = PassColor.inputBorderNorm
+
         _ = PassColor.interactionNorm
         _ = PassColor.interactionNormMajor1
         _ = PassColor.interactionNormMajor2
