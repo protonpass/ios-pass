@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "4D7B98A5-5376-4B04-8AE0-602805665584",
+      "id" : "4529ED3C-E513-452B-B2CA-A97910E992C7",
       "name" : "Configuration 1",
       "options" : {
 
@@ -9,11 +9,10 @@
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : false
+
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:ProtonPass.xcodeproj",
         "identifier" : "3560845829DDE7E1001F7487",

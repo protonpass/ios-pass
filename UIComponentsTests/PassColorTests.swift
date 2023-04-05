@@ -24,11 +24,19 @@ import XCTest
 final class PassColorTests: XCTestCase {
     func testGetColors() {
         let expectation = expectation(description: "Should be able to get colors")
+
         _ = PassColor.interactionNorm
         _ = PassColor.interactionNormMajor1
         _ = PassColor.interactionNormMajor2
         _ = PassColor.interactionNormMinor1
         _ = PassColor.interactionNormMajor2
+
+        _ = PassColor.loginInteractionNorm
+        _ = PassColor.loginInteractionNormMajor1
+        _ = PassColor.loginInteractionNormMajor2
+        _ = PassColor.loginInteractionNormMinor1
+        _ = PassColor.loginInteractionNormMinor2
+
         expectation.fulfill()
         wait(for: [expectation], timeout: 5.0)
     }

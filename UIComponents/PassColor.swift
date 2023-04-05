@@ -29,4 +29,10 @@ public extension PassColor {
     static var interactionNormMajor2 = UIColor(named: "InteractionNormMajor2")!
     static var interactionNormMinor1 = UIColor(named: "InteractionNormMinor1")!
     static var interactionNormMinor2 = UIColor(named: "InteractionNormMinor2")!
+
+    static var loginInteractionNorm = UIColor(named: "LoginInteractionNorm")!
+    static var loginInteractionNormMajor1 = UIColor(named: "LoginInteractionNormMajor1")!
+    static var loginInteractionNormMajor2 = UIColor(named: "LoginInteractionNormMajor2")!
+    static var loginInteractionNormMinor1 = UIColor(named: "LoginInteractionNormMinor1")!
+    static var loginInteractionNormMinor2 = UIColor(named: "LoginInteractionNormMinor2")!
 }
