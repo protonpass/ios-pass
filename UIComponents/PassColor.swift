@@ -24,6 +24,12 @@ import UIKit
 public enum PassColor {}
 
 public extension PassColor {
+    static var aliasInteractionNorm = UIColor(named: "AliasInteractionNorm")!
+    static var aliasInteractionNormMajor1 = UIColor(named: "AliasInteractionNormMajor1")!
+    static var aliasInteractionNormMajor2 = UIColor(named: "AliasInteractionNormMajor2")!
+    static var aliasInteractionNormMinor1 = UIColor(named: "AliasInteractionNormMinor1")!
+    static var aliasInteractionNormMinor2 = UIColor(named: "AliasInteractionNormMinor2")!
+
     static var interactionNorm = UIColor(named: "InteractionNorm")!
     static var interactionNormMajor1 = UIColor(named: "InteractionNormMajor1")!
     static var interactionNormMajor2 = UIColor(named: "InteractionNormMajor2")!

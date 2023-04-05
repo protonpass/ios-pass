@@ -25,6 +25,12 @@ final class PassColorTests: XCTestCase {
     func testGetColors() {
         let expectation = expectation(description: "Should be able to get colors")
 
+        _ = PassColor.aliasInteractionNorm
+        _ = PassColor.aliasInteractionNormMajor1
+        _ = PassColor.aliasInteractionNormMajor2
+        _ = PassColor.aliasInteractionNormMinor1
+        _ = PassColor.aliasInteractionNormMinor2
+
         _ = PassColor.interactionNorm
         _ = PassColor.interactionNormMajor1
         _ = PassColor.interactionNormMajor2
