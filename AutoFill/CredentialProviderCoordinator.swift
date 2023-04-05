@@ -651,6 +651,12 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
         context.completeExtensionConfigurationRequest()
     }
 
+    func extensionSettingsViewModelWantsToLogOut() {
+        appData.userData = nil
+        appData.organization = nil
+        context.completeExtensionConfigurationRequest()
+    }
+
     func extensionSettingsViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
