@@ -22,6 +22,7 @@
 import XCTest
 
 final class PassColorTests: XCTestCase {
+    // swiftlint:disable:next function_body_length
     func testGetColors() {
         let expectation = expectation(description: "Should be able to get colors")
 
@@ -68,6 +69,17 @@ final class PassColorTests: XCTestCase {
         _ = PassColor.textInvert
         _ = PassColor.textNorm
         _ = PassColor.textWeak
+
+        _ = PassColor.vaultChestnutRose
+        _ = PassColor.vaultDeYork
+        _ = PassColor.vaultHeliotrope
+        _ = PassColor.vaultJordyBlue
+        _ = PassColor.vaultLavenderMagenta
+        _ = PassColor.vaultMarigoldYellow
+        _ = PassColor.vaultMauvelous
+        _ = PassColor.vaultMercury
+        _ = PassColor.vaultPorsche
+        _ = PassColor.vaultWaterLeaf
 
         expectation.fulfill()
         wait(for: [expectation], timeout: 5.0)
