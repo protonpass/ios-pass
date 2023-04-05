@@ -55,6 +55,12 @@ final class PassColorTests: XCTestCase {
         _ = PassColor.passwordInteractionNormMinor1
         _ = PassColor.passwordInteractionNormMinor2
 
+        _ = PassColor.textDisabled
+        _ = PassColor.textHint
+        _ = PassColor.textInvert
+        _ = PassColor.textNorm
+        _ = PassColor.textWeak
+
         expectation.fulfill()
         wait(for: [expectation], timeout: 5.0)
     }

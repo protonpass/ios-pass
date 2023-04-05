@@ -53,4 +53,10 @@ public extension PassColor {
     static var passwordInteractionNormMajor2 = UIColor(named: "PasswordInteractionNormMajor2")!
     static var passwordInteractionNormMinor1 = UIColor(named: "PasswordInteractionNormMinor1")!
     static var passwordInteractionNormMinor2 = UIColor(named: "PasswordInteractionNormMinor2")!
+
+    static var textDisabled = UIColor(named: "TextDisabled")!
+    static var textHint = UIColor(named: "TextHint")!
+    static var textInvert = UIColor(named: "TextInvert")!
+    static var textNorm = UIColor(named: "TextNorm")!
+    static var textWeak = UIColor(named: "TextWeak")!
 }
