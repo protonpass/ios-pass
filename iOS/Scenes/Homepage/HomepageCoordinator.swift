@@ -51,8 +51,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let logger: Logger
     private let logManager: LogManager
     private let manualLogIn: Bool
-    private let organization: OrganizationLite?
     private let preferences: Preferences
+    private let primaryPlan: PlanLite?
     private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
@@ -80,8 +80,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          credentialManager: CredentialManagerProtocol,
          logManager: LogManager,
          manualLogIn: Bool,
-         organization: OrganizationLite?,
          preferences: Preferences,
+         primaryPlan: PlanLite?,
          symmetricKey: SymmetricKey,
          userData: UserData) {
         let itemRepository = ItemRepository(userData: userData,
@@ -121,8 +121,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.logger = .init(manager: logManager)
         self.logManager = logManager
         self.manualLogIn = manualLogIn
-        self.organization = organization
         self.preferences = preferences
+        self.primaryPlan = primaryPlan
         self.searchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
@@ -188,10 +188,6 @@ private extension HomepageCoordinator {
                                                       preferences: preferences,
                                                       logManager: logManager)
         profileTabViewModel.delegate = self
-
-        let homepageTabBarController = HomepageTabBarController(itemsTabViewModel: itemsTabViewModel,
-                                                                profileTabViewModel: profileTabViewModel)
-        homepageTabBarController.homepageTabBarControllerDelegate = self
 
         let placeholderView = ItemDetailPlaceholderView { [unowned self] in
             self.popTopViewController(animated: true)
@@ -530,7 +526,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func profileTabViewModelWantsToShowAccountMenu() {
         let viewModel = AccountViewModel(apiService: apiService,
                                          logManager: logManager,
-                                         organization: organization,
+                                         primaryPlan: primaryPlan,
                                          username: userData.user.email ?? "")
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)

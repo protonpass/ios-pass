@@ -35,7 +35,7 @@ struct AccountView: View {
                 PassDivider()
                 OptionRow(title: "Subscription Plan",
                           height: .tall,
-                          content: { Text(viewModel.organization?.planName ?? "Free") })
+                          content: { Text(viewModel.primaryPlan?.title ?? "Free") })
             }
             .roundedEditableSection()
 

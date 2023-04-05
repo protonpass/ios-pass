@@ -26,11 +26,11 @@ import UIKit
 struct HomepageTabbarView: UIViewControllerRepresentable {
     let itemsTabViewModel: ItemsTabViewModel
     let profileTabViewModel: ProfileTabViewModel
-    let delegate: HomepageTabBarControllerDelegate?
+    weak var delegate: HomepageTabBarControllerDelegate?
 
     func makeUIViewController(context: Context) -> HomepageTabBarController {
-        let controller = HomepageTabBarController(itemsTabViewModel: itemsTabViewModel,
-                                                  profileTabViewModel: profileTabViewModel)
+        let controller = HomepageTabBarController(itemsTabView: .init(viewModel: itemsTabViewModel),
+                                                  profileTabView: .init(viewModel: profileTabViewModel))
         controller.homepageTabBarControllerDelegate = delegate
         return controller
     }
@@ -47,18 +47,15 @@ protocol HomepageTabBarControllerDelegate: AnyObject {
 final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let itemsTabViewModel: ItemsTabViewModel
-    private let profileTabViewModel: ProfileTabViewModel
-
-    private lazy var itemsTabViewController = makeItemsTabViewController()
-    private lazy var profileTabViewController = makeProfileTabViewController()
+    private let itemsTabView: ItemsTabView
+    private let profileTabView: ProfileTabView
     private let dummyViewController = DummyViewController()
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
-    init(itemsTabViewModel: ItemsTabViewModel, profileTabViewModel: ProfileTabViewModel) {
-        self.itemsTabViewModel = itemsTabViewModel
-        self.profileTabViewModel = profileTabViewModel
+    init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView) {
+        self.itemsTabView = itemsTabView
+        self.profileTabView = profileTabView
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -67,21 +64,15 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func makeItemsTabViewController() -> UIViewController {
-        let view = ItemsTabView(viewModel: self.itemsTabViewModel)
-        return UIHostingController(rootView: view)
-    }
-
-    private func makeProfileTabViewController() -> UIViewController {
-        let view = ProfileTabView(viewModel: self.profileTabViewModel)
-        return UIHostingController(rootView: view)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
+        let itemsTabViewController = UIHostingController(rootView: itemsTabView)
         itemsTabViewController.tabBarItem.image = IconProvider.listBullets
+
+        let profileTabViewController = UIHostingController(rootView: profileTabView)
         profileTabViewController.tabBarItem.image = IconProvider.user
+
         dummyViewController.tabBarItem.image = IconProvider.plus
 
         viewControllers = [itemsTabViewController, dummyViewController, profileTabViewController]
