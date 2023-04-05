@@ -67,4 +67,15 @@ public extension PassColor {
     static var textInvert = UIColor(named: "TextInvert")!
     static var textNorm = UIColor(named: "TextNorm")!
     static var textWeak = UIColor(named: "TextWeak")!
+
+    static var vaultChestnutRose = UIColor(named: "VaultChestnutRose")!
+    static var vaultDeYork = UIColor(named: "VaultDeYork")!
+    static var vaultHeliotrope = UIColor(named: "VaultHeliotrope")!
+    static var vaultJordyBlue = UIColor(named: "VaultJordyBlue")!
+    static var vaultLavenderMagenta = UIColor(named: "VaultLavenderMagenta")!
+    static var vaultMarigoldYellow = UIColor(named: "VaultMarigoldYellow")!
+    static var vaultMauvelous = UIColor(named: "VaultMauvelous")!
+    static var vaultMercury = UIColor(named: "VaultMercury")!
+    static var vaultPorsche = UIColor(named: "VaultPorsche")!
+    static var vaultWaterLeaf = UIColor(named: "VaultWaterLeaf")!
 }
