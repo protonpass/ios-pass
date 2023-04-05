@@ -162,9 +162,7 @@ struct CredentialsView: View {
                         Text(matchedItemsHeaderTitle)
                     })
                 } else {
-                    section(for: matchedItems,
-                            headerTitle: matchedItemsHeaderTitle,
-                            areMatchedItems: false)
+                    section(for: matchedItems, headerTitle: matchedItemsHeaderTitle)
                 }
 
                 if !notMatchedItems.isEmpty {
@@ -212,37 +210,18 @@ struct CredentialsView: View {
     }
 
     @ViewBuilder
-    private func section(for items: [ItemUiModel],
-                         headerTitle: String,
-                         areMatchedItems: Bool = false) -> some View {
+    private func section(for items: [ItemUiModel], headerTitle: String) -> some View {
         if items.isEmpty {
             EmptyView()
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    itemRow(for: item, isMatched: areMatchedItems)
+                    itemRow(for: item)
                 }
             }, header: {
                 Text(headerTitle)
             })
         }
-    }
-
-    private func itemRow(for item: ItemUiModel, isMatched: Bool) -> some View {
-        Button(action: {
-            if isMatched {
-                viewModel.select(item: item)
-            } else {
-                select(item: item)
-            }
-        }, label: {
-            GeneralItemRow(thumbnailView: { EmptyView() },
-                           title: item.title,
-                           description: item.description)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
-        })
-        .plainListRow()
     }
 
     private func sections(for result: MostRecentSortResult<ItemUiModel>) -> some View {
@@ -272,33 +251,67 @@ struct CredentialsView: View {
     }
 
     private func searchResults(_ results: [ItemSearchResult]) -> some View {
-        List {
-            ForEach(results, id: \.hashValue) { result in
-                Button(action: {
-                    select(item: result)
-                }, label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        HighlightText(highlightableText: result.title)
+        VStack(spacing: 0) {
+            HStack {
+                Text("Results")
+                    .font(.callout)
+                    .fontWeight(.bold) +
+                Text(" (\(results.count))")
+                    .font(.callout)
+                    .foregroundColor(.textWeak)
 
-                        VStack(alignment: .leading, spacing: 2) {
-                            ForEach(0..<result.detail.count, id: \.self) { index in
-                                let eachDetail = result.detail[index]
-                                if !eachDetail.fullText.isEmpty {
-                                    HighlightText(highlightableText: eachDetail)
-                                        .font(.callout)
-                                        .foregroundColor(Color(.secondaryLabel))
-                                        .lineLimit(1)
-                                }
-                            }
+                Spacer()
+
+                SortTypeButton(selectedSortType: $viewModel.selectedSortType,
+                               action: viewModel.presentSortTypeList)
+            }
+            .padding(.horizontal)
+
+            List {
+                ForEach(results, id: \.hashValue) { item in
+                    itemRow(for: item)
+                        .padding(.horizontal)
+                }
+            }
+            .listStyle(.plain)
+            .animation(.default, value: results.count)
+        }
+    }
+    private func itemRow(for item: ItemUiModel) -> some View {
+        Button(action: {
+            select(item: item)
+        }, label: {
+            GeneralItemRow(thumbnailView: { EmptyView() },
+                           title: item.title,
+                           description: item.description)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
+        })
+        .plainListRow()
+    }
+
+    private func itemRow(for item: ItemSearchResult) -> some View {
+        Button(action: {
+            select(item: item)
+        }, label: {
+            VStack(alignment: .leading, spacing: 4) {
+                HighlightText(highlightableText: item.title)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    ForEach(0..<item.detail.count, id: \.self) { index in
+                        let eachDetail = item.detail[index]
+                        if !eachDetail.fullText.isEmpty {
+                            HighlightText(highlightableText: eachDetail)
+                                .font(.callout)
+                                .foregroundColor(Color(.secondaryLabel))
+                                .lineLimit(1)
                         }
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                })
+                }
             }
-            .plainListRow()
-        }
-        .listStyle(.plain)
-        .animation(.default, value: results.count)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        })
+        .plainListRow()
     }
 
     private func select(item: TitledItemIdentifiable) {
