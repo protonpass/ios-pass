@@ -18,6 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable force_unwrapping
 import UIKit
 
 public enum PassColor {}
+
+public extension PassColor {
+    static var interactionNorm = UIColor(named: "InteractionNorm")!
+    static var interactionNormMajor1 = UIColor(named: "InteractionNormMajor1")!
+    static var interactionNormMajor2 = UIColor(named: "InteractionNormMajor2")!
+    static var interactionNormMinor1 = UIColor(named: "InteractionNormMinor1")!
+    static var interactionNormMinor2 = UIColor(named: "InteractionNormMinor2")!
+}
