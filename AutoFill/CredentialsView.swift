@@ -244,8 +244,13 @@ struct CredentialsView: View {
                     switch item {
                     case .normal(let normalItem):
                         itemRow(for: normalItem)
+                            .plainListRow()
+                            .padding(.horizontal)
                     case .searchResult(let searchResultItem):
                         itemRow(for: searchResultItem)
+                            .plainListRow()
+                            .padding(.horizontal)
+                            .padding(.bottom)
                     }
                 }
             }, header: {
@@ -298,36 +303,45 @@ struct CredentialsView: View {
         Button(action: {
             select(item: item)
         }, label: {
-            GeneralItemRow(thumbnailView: { EmptyView() },
-                           title: item.title,
-                           description: item.description)
+            GeneralItemRow(
+                thumbnailView: {
+                    CircleButton(icon: IconProvider.keySkeleton,
+                                 color: ItemContentType.login.tintColor) {}
+                        .disabled(true)
+                },
+                title: item.title,
+                description: item.description)
             .frame(maxWidth: .infinity, alignment: .leading)
         })
-        .plainListRow()
     }
 
     private func itemRow(for item: ItemSearchResult) -> some View {
         Button(action: {
             select(item: item)
         }, label: {
-            VStack(alignment: .leading, spacing: 4) {
-                HighlightText(highlightableText: item.title)
+            HStack {
+                CircleButton(icon: IconProvider.keySkeleton,
+                             color: ItemContentType.login.tintColor) {}
+                    .disabled(true)
 
-                VStack(alignment: .leading, spacing: 2) {
-                    ForEach(0..<item.detail.count, id: \.self) { index in
-                        let eachDetail = item.detail[index]
-                        if !eachDetail.fullText.isEmpty {
-                            HighlightText(highlightableText: eachDetail)
-                                .font(.callout)
-                                .foregroundColor(Color(.secondaryLabel))
-                                .lineLimit(1)
+                VStack(alignment: .leading, spacing: 4) {
+                    HighlightText(highlightableText: item.title)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        ForEach(0..<item.detail.count, id: \.self) { index in
+                            let eachDetail = item.detail[index]
+                            if !eachDetail.fullText.isEmpty {
+                                HighlightText(highlightableText: eachDetail)
+                                    .font(.callout)
+                                    .foregroundColor(Color(.secondaryLabel))
+                                    .lineLimit(1)
+                            }
                         }
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         })
-        .plainListRow()
     }
 
     private func select(item: TitledItemIdentifiable) {
