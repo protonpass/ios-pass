@@ -21,6 +21,7 @@
 import Core
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 import UIKit
 
 struct HomepageTabbarView: UIViewControllerRepresentable {
@@ -81,8 +82,8 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         tabBarAppearance.configureWithTransparentBackground()
         tabBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
         tabBarAppearance.backgroundColor = UIColor(red: 19, green: 19, blue: 29).withAlphaComponent(0.8)
-        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = .label
-        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = .passBrand
+        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = PassColor.textNorm
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = PassColor.interactionNorm
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
         UITabBar.appearance().standardAppearance = tabBarAppearance
 

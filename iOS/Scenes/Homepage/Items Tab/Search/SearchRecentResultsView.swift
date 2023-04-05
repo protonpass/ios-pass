@@ -45,7 +45,7 @@ struct SearchRecentResultsView: View {
                     Text("Clear")
                         .font(.callout)
                         .fontWeight(.semibold)
-                        .foregroundColor(.passBrand)
+                        .foregroundColor(Color(uiColor: PassColor.interactionNorm))
                 }
             }
             .padding(.horizontal)

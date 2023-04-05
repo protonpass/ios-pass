@@ -20,6 +20,7 @@
 
 import Client
 import SwiftUI
+import UIComponents
 
 public struct HighlightText: View {
     public let texts: [Text]
@@ -36,7 +37,8 @@ public struct HighlightText: View {
             for (index, eachComponent) in components.enumerated() {
                 texts.append(Text(eachComponent))
                 if index != components.count - 1 {
-                    texts.append(Text(highlightText).foregroundColor(.passBrand))
+                    texts.append(Text(highlightText)
+                        .foregroundColor(Color(uiColor: PassColor.interactionNorm)))
                 }
             }
         } else {

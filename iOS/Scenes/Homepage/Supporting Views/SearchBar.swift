@@ -20,6 +20,7 @@
 
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 let kSearchBarHeight: CGFloat = 48
 
@@ -41,7 +42,7 @@ struct SearchBar: View {
                         .foregroundColor(.primary)
 
                     TextField(placeholder, text: $query)
-                        .tint(.passBrand)
+                        .tint(Color(uiColor: PassColor.interactionNorm))
                         .autocorrectionDisabled()
                         .focused($isFocused)
                         .foregroundColor(.primary)
@@ -69,7 +70,7 @@ struct SearchBar: View {
             Button(action: onCancel) {
                 Text("Cancel")
                     .fontWeight(.semibold)
-                    .foregroundColor(.passBrand)
+                    .foregroundColor(Color(uiColor: PassColor.interactionNorm))
             }
         }
         .frame(height: kSearchBarHeight)

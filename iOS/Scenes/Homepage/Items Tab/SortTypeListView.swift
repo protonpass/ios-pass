@@ -65,7 +65,8 @@ struct SortTypeListView: View {
                         Label("", systemImage: "checkmark")
                     }
                 }
-                .foregroundColor(type == viewModel.selectedSortType ? .passBrand : .primary)
+                .foregroundColor(type == viewModel.selectedSortType ?
+                                 Color(uiColor: PassColor.interactionNorm) : Color(uiColor: PassColor.textNorm))
                 .contentShape(Rectangle())
                 .frame(height: 44)
                 .onTapGesture {
@@ -78,6 +79,6 @@ struct SortTypeListView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .background(Color.passSecondaryBackground)
+        .background(Color(uiColor: PassColor.backgroundWeak))
     }
 }

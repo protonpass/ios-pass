@@ -37,7 +37,7 @@ struct CreateEditVaultView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(kItemDetailSectionPadding)
             .navigationBarTitleDisplayMode(.inline)
-            .background(Color.passBackground)
+            .background(Color(uiColor: PassColor.backgroundNorm))
             .toolbar { toolbarContent }
             .ignoresSafeArea(.keyboard)
             .gesture(DragGesture().onChanged { _ in isFocusedOnTitle = false })
@@ -55,14 +55,14 @@ struct CreateEditVaultView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         color: .passBrand,
+                         color: PassColor.interactionNorm,
                          action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
             CapsuleTextButton(title: viewModel.saveButtonTitle,
                               titleColor: .textNorm,
-                              backgroundColor: .passBrand,
+                              backgroundColor: PassColor.interactionNorm,
                               disabled: false,
                               action: viewModel.save)
             .font(.callout)
@@ -93,7 +93,7 @@ struct CreateEditVaultView: View {
                         .sectionTitleText()
                     TextField("Untitled", text: $viewModel.title)
                         .font(.title.weight(.bold))
-                        .tint(.passBrand)
+                        .tint(Color(uiColor: PassColor.interactionNorm))
                         .submitLabel(.done)
                         .focused($isFocusedOnTitle)
                         .onSubmit { isFocusedOnTitle = false }

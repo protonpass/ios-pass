@@ -26,15 +26,15 @@ struct NoCameraPermissionView: View {
 
     var body: some View {
         ZStack {
-            Color.passBackground
+            Color(uiColor: PassColor.backgroundNorm)
             VStack(spacing: 44) {
                 Text("Camera permission required for this feature to be available")
                     .multilineTextAlignment(.center)
 
                 if !Bundle.main.bundlePath.hasSuffix(".appex") {
                     CapsuleTextButton(title: "Open settings",
-                                      titleColor: .passBackground,
-                                      backgroundColor: .passBrand,
+                                      titleColor: PassColor.textNorm,
+                                      backgroundColor: PassColor.interactionNorm,
                                       disabled: false,
                                       action: onOpenSettings)
                     .frame(width: 250)

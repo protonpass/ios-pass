@@ -47,11 +47,11 @@ enum PasswordUtils {
     static func generateColoredPasswords(_ password: String) -> [Text] {
         var texts = [Text]()
         password.forEach { char in
-            var color = Color.primary
+            var color = Color(uiColor: PassColor.textNorm)
             if AllowedCharacter.digit.rawValue.contains(char) {
-                color = .passBrand
+                color = Color(uiColor: PassColor.interactionNorm)
             } else if AllowedCharacter.special.rawValue.contains(char) {
-                color = .notificationSuccess
+                color = Color(uiColor: PassColor.aliasInteractionNormMajor1)
             }
             texts.append(Text(String(char)).foregroundColor(color))
         }

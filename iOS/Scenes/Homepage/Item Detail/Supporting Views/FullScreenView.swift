@@ -21,6 +21,7 @@
 import CoreImage.CIFilterBuiltins
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct FullScreenView: View {
     @Environment(\.dismiss) private var dismiss
@@ -50,7 +51,7 @@ struct FullScreenView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color.passBackground
+                Color(uiColor: PassColor.backgroundNorm)
                     .ignoresSafeArea()
                 switch mode {
                 case .text:

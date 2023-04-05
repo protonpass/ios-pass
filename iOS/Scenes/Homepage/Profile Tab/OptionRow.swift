@@ -115,7 +115,7 @@ struct SelectableOptionRow<Content: View>: View {
             trailing: {
                 if isSelected {
                     Label("", systemImage: "checkmark")
-                        .foregroundColor(.passBrand)
+                        .foregroundColor(Color(uiColor: PassColor.interactionNorm))
                 }
             })
     }

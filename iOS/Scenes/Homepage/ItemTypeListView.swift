@@ -97,7 +97,7 @@ struct ItemTypeListView: View {
                 }
                 .padding(.top, kItemDetailSectionPadding)
             }
-            .background(Color.passSecondaryBackground)
+            .background(Color(uiColor: PassColor.backgroundWeak))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

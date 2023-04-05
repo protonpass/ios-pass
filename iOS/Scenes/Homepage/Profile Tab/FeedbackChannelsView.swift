@@ -69,7 +69,7 @@ struct FeedbackChannelsView: View {
                 }
             }
         }
-        .background(Color.passSecondaryBackground)
+        .background(Color(uiColor: PassColor.backgroundWeak))
     }
 }
 

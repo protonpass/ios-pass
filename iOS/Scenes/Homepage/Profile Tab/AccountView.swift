@@ -60,11 +60,11 @@ struct AccountView: View {
                 height: .tall,
                 content: {
                     Text("Sign out")
-                        .foregroundColor(.passBrand)
+                        .foregroundColor(Color(uiColor: PassColor.interactionNorm))
                 },
                 trailing: {
                     CircleButton(icon: IconProvider.arrowOutFromRectangle,
-                                 color: .passBrand,
+                                 color: PassColor.interactionNorm,
                                  action: {})
                     .disabled(true)
                 })
@@ -93,7 +93,7 @@ struct AccountView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
-        .background(Color.passBackground)
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .navigationTitle("Account")
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
@@ -102,7 +102,7 @@ struct AccountView: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 CircleButton(icon: UIDevice.current.isIpad ?
                              IconProvider.chevronLeft : IconProvider.chevronDown,
-                             color: .passBrand,
+                             color: PassColor.interactionNorm,
                              action: viewModel.goBack)
             }
         }

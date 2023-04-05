@@ -51,7 +51,7 @@ struct ItemsTabView: View {
             }
         }
         .animation(.default, value: vaultsManager.state)
-        .background(Color.passBackground)
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .navigationBarHidden(true)
     }
 
@@ -91,7 +91,7 @@ struct ItemsTabView: View {
             switch viewModel.vaultsManager.vaultSelection {
             case .all:
                 CircleButton(icon: PassIcon.allVaults,
-                             color: .passBrand,
+                             color: PassColor.interactionNorm,
                              backgroundOpacity: 0.16,
                              action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)

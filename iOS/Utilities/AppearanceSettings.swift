@@ -23,7 +23,8 @@ import UIKit
 
 enum AppearanceSettings {
     static func apply() {
-        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .passBrand
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor =
+        PassColor.interactionNorm
 
         if #unavailable(iOS 16) {
             // Can remove this once dropped iOS 15.

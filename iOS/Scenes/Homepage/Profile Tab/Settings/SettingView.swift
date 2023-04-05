@@ -39,7 +39,7 @@ struct SettingView: View {
             .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.passBackground)
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .navigationTitle("Settings")
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
@@ -49,7 +49,7 @@ struct SettingView: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 CircleButton(icon: UIDevice.current.isIpad ?
                              IconProvider.chevronLeft : IconProvider.chevronDown,
-                             color: .passBrand,
+                             color: PassColor.interactionNorm,
                              action: viewModel.goBack)
             }
         }
@@ -103,7 +103,7 @@ struct SettingView: View {
                     Toggle(isOn: $viewModel.shareClipboard) {
                         Text("Share clipboard between devices")
                     }
-                    .tint(.passBrand)
+                    .tint(Color(uiColor: PassColor.interactionNorm))
                 }
             }
             .roundedEditableSection()
@@ -146,11 +146,11 @@ struct SettingView: View {
                     height: .medium,
                     content: {
                         Text("Force Synchronization")
-                            .foregroundColor(.passBrand)
+                            .foregroundColor(Color(uiColor: PassColor.interactionNorm))
                     },
                     trailing: {
                         CircleButton(icon: IconProvider.arrowRotateRight,
-                                     color: .passBrand,
+                                     color: PassColor.interactionNorm,
                                      action: {})
                         .disabled(true)
                     })

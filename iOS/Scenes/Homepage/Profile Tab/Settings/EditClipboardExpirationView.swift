@@ -55,6 +55,6 @@ struct EditClipboardExpirationView: View {
             }
             .padding(.horizontal)
         }
-        .background(Color.passSecondaryBackground)
+        .background(Color(uiColor: PassColor.backgroundWeak))
     }
 }
