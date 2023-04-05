@@ -40,6 +40,8 @@ protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToShowLoadingHud()
     func credentialsViewModelWantsToHideLoadingHud()
     func credentialsViewModelWantsToCancel()
+    func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
+                                                        delegate: SortTypeListViewModelDelegate)
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?)
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        item: SymmetricallyEncryptedItem,
@@ -73,8 +75,14 @@ enum CredentialsViewLoadedState: Equatable {
     }
 }
 
+enum CredentialItem {
+    case normal(ItemUiModel)
+    case searchResult(ItemSearchResult)
+}
+
 final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @Published private(set) var state = CredentialsViewState.loading
+    @Published var selectedSortType = SortType.mostRecent
 
     private let searchTermSubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
@@ -192,6 +200,11 @@ extension CredentialsViewModel {
         }
     }
 
+    func presentSortTypeList() {
+        delegate?.credentialsViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
+                                                                 delegate: self)
+    }
+
     func associateAndAutofill(item: ItemIdentifiable) {
         Task { @MainActor in
             defer { delegate?.credentialsViewModelWantsToHideLoadingHud() }
@@ -243,21 +256,24 @@ extension CredentialsViewModel {
     }
 
     func search(term: String) {
-        searchTermSubject.send(term)
+        if term.isEmpty {
+            doSearch(term: term)
+        } else {
+            searchTermSubject.send(term)
+        }
     }
 
     func handleAuthenticationFailure() {
         delegate?.credentialsViewModelDidFail(PPError.credentialProvider(.failedToAuthenticate))
     }
 
-    #warning("Ask users to choose a vault")
-    // https://jira.protontech.ch/browse/IDTEAM-595
-    func showCreateLoginView() {
+    func createLoginItem() {
         guard case .loaded = state else { return }
         Task { @MainActor in
             let vaults = try await shareRepository.getVaults()
-            guard let firstVault = vaults.first else { return }
-            delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: firstVault.shareId, url: urls.first)
+            guard let primaryVault = vaults.first(where: { $0.isPrimary }) ?? vaults.first else { return }
+            delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: primaryVault.shareId,
+                                                                 url: urls.first)
         }
     }
 }
@@ -351,6 +367,13 @@ private extension CredentialsViewModel {
     }
 }
 
+// MARK: - SortTypeListViewModelDelegate
+extension CredentialsViewModel: SortTypeListViewModelDelegate {
+    func sortTypeListViewDidSelect(_ sortType: SortType) {
+        selectedSortType = sortType
+    }
+}
+
 // MARK: - SyncEventLoopPullToRefreshDelegate
 extension CredentialsViewModel: SyncEventLoopPullToRefreshDelegate {
     func pullToRefreshShouldStopRefreshing() {
@@ -358,6 +381,7 @@ extension CredentialsViewModel: SyncEventLoopPullToRefreshDelegate {
     }
 }
 
+// MARK: - SyncEventLoopDelegate
 extension CredentialsViewModel: SyncEventLoopDelegate {
     func syncEventLoopDidStartLooping() {
         logger.info("Started looping")
@@ -401,4 +425,33 @@ extension ItemUiModel: TitledItemIdentifiable {
 
 extension ItemSearchResult: TitledItemIdentifiable {
     var itemTitle: String { title.fullText }
+}
+
+extension CredentialItem: DateSortable, AlphabeticalSortable, Identifiable {
+    var id: String {
+        switch self {
+        case .normal(let itemUiModel):
+            return itemUiModel.itemId + itemUiModel.shareId
+        case .searchResult(let itemSearchResult):
+            return itemSearchResult.itemId + itemSearchResult.shareId
+        }
+    }
+
+    var dateForSorting: Date {
+        switch self {
+        case .normal(let itemUiModel):
+            return itemUiModel.dateForSorting
+        case .searchResult(let itemSearchResult):
+            return itemSearchResult.dateForSorting
+        }
+    }
+
+    var alphabeticalSortableString: String {
+        switch self {
+        case .normal(let itemUiModel):
+            return itemUiModel.alphabeticalSortableString
+        case .searchResult(let itemSearchResult):
+            return itemSearchResult.alphabeticalSortableString
+        }
+    }
 }

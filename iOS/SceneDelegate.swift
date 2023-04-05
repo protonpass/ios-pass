@@ -34,18 +34,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window = window
             window.makeKeyAndVisible()
         }
-        setUpAppearances()
+        AppearanceSettings.apply()
         appCoordinator.start()
-    }
-}
-
-private extension SceneDelegate {
-    func setUpAppearances() {
-        UIView.appearance(whenContainedInInstancesOf:
-                            [UIAlertController.self]).tintColor = .interactionNorm
-
-        // Can remove this once dropped iOS 15.
-        // Use scrollContentBackground(_:) on each TextEditor then.
-        UITextView.appearance().backgroundColor = .clear
     }
 }

@@ -16,6 +16,11 @@
 	<string>$(HUMAN_VERIFICATION_V3_HOST)</string>
 	<key>NSExtension</key>
 	<dict>
+		<key>NSExtensionAttributes</key>
+		<dict>
+			<key>ASCredentialProviderExtensionShowsConfigurationUI</key>
+			<true/>
+		</dict>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>

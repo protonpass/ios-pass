@@ -23,8 +23,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-let kSearchBarHeight: CGFloat = 48
-
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
@@ -194,7 +192,7 @@ struct ItemsTabView: View {
             .overlay {
                 HStack {
                     Spacer()
-                    SectionIndexTitles(proxy: proxy, titles: result.buckets.map { $0.letter.character })
+                    SectionIndexTitles(proxy: proxy)
                 }
             }
         }
@@ -227,7 +225,6 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    // swiftlint:disable:next function_body_length
     private func itemRow(for item: ItemUiModel) -> some View {
         let permanentlyDeleteBinding = Binding<Bool>(get: {
             itemToBePermanentlyDeleted != nil
@@ -258,10 +255,8 @@ struct ItemsTabView: View {
                 title: item.title,
                 description: item.description)
         })
-        .listRowSeparator(.hidden)
-        .listRowInsets(.zero)
+        .plainListRow()
         .padding(.horizontal, 16)
-        .listRowBackground(Color.clear)
         .frame(height: 64)
         .modifier(ItemSwipeModifier(
             itemToBePermanentlyDeleted: $itemToBePermanentlyDeleted,
@@ -350,9 +345,7 @@ private struct ItemListView<Content: View>: View {
             content()
             Spacer()
                 .frame(height: safeAreaInsets.bottom)
-                .listRowSeparator(.hidden)
-                .listRowInsets(.zero)
-                .listRowBackground(Color.clear)
+                .plainListRow()
         }
         .listStyle(.plain)
         .scrollIndicatorsHidden(!showScrollIndicators)

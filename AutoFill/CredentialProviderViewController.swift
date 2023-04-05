@@ -19,29 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
-import Client
-import Core
-import ProtonCore_Challenge
-import ProtonCore_FeatureSwitch
-import ProtonCore_Keymaker
-import ProtonCore_Services
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
-    private let keychain = PPKeychain()
-    private lazy var keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
-    private let logManager = LogManager(module: .autoFillExtension)
-    private let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName())"
-
     private lazy var coordinator: CredentialProviderCoordinator = {
-        let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
-        let apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
-        return .init(apiManager: apiManager,
-                     container: .Builder.build(name: kProtonPassContainerName, inMemory: false),
-                     context: extensionContext,
-                     preferences: .init(),
-                     logManager: logManager,
-                     credentialManager: CredentialManager(logManager: logManager),
-                     rootViewController: self)
+        .init(context: extensionContext, rootViewController: self)
     }()
 
     /*
@@ -71,5 +52,9 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
         coordinator.provideCredentialWithBiometricAuthentication(for: credentialIdentity)
+    }
+
+    override func prepareInterfaceForExtensionConfiguration() {
+        coordinator.configureExtension()
     }
 }

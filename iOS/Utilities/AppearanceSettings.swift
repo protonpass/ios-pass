@@ -1,7 +1,7 @@
 //
-// AppContentCoverView.swift
-// Proton Pass - Created on 24/10/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// AppearanceSettings.swift
+// Proton Pass - Created on 05/04/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,16 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
 import UIComponents
+import UIKit
 
-struct AppContentCoverView: View {
-    var body: some View {
-        ZStack {
-            Image(uiImage: PassIcon.passIcon)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 150)
+enum AppearanceSettings {
+    static func apply() {
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .passBrand
+
+        if #unavailable(iOS 16) {
+            // Can remove this once dropped iOS 15.
+            // Use scrollContentBackground(_:) on each TextEditor then.
+            UITextView.appearance().backgroundColor = .clear
         }
     }
 }
