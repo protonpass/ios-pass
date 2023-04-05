@@ -146,7 +146,6 @@ struct CredentialsView: View {
         .onChange(of: query) { viewModel.search(term: $0) }
     }
 
-    // swiftlint:disable:next function_body_length
     private func itemList(matchedItems: [ItemUiModel],
                           notMatchedItems: [ItemUiModel]) -> some View {
         ScrollViewReader { proxy in
@@ -162,7 +161,7 @@ struct CredentialsView: View {
                         Text(matchedItemsHeaderTitle)
                     })
                 } else {
-                    section(for: matchedItems, headerTitle: matchedItemsHeaderTitle)
+                    section(for: matchedItems.map { .normal($0) }, headerTitle: matchedItemsHeaderTitle)
                 }
 
                 if !notMatchedItems.isEmpty {
@@ -182,16 +181,7 @@ struct CredentialsView: View {
                     .plainListRow()
                     .padding(.horizontal)
 
-                    switch viewModel.selectedSortType {
-                    case .mostRecent:
-                        sections(for: notMatchedItems.mostRecentSortResult())
-                    case .alphabetical:
-                        sections(for: notMatchedItems.alphabeticalSortResult())
-                    case .newestToOldest:
-                        sections(for: notMatchedItems.monthYearSortResult(direction: .descending))
-                    case .oldestToNewest:
-                        sections(for: notMatchedItems.monthYearSortResult(direction: .ascending))
-                    }
+                    sortableSections(for: notMatchedItems.map { .normal($0) })
                 }
             }
             .listStyle(.plain)
@@ -206,47 +196,6 @@ struct CredentialsView: View {
                     }
                 }
             }
-        }
-    }
-
-    @ViewBuilder
-    private func section(for items: [ItemUiModel], headerTitle: String) -> some View {
-        if items.isEmpty {
-            EmptyView()
-        } else {
-            Section(content: {
-                ForEach(items) { item in
-                    itemRow(for: item)
-                }
-            }, header: {
-                Text(headerTitle)
-            })
-        }
-    }
-
-    private func sections(for result: MostRecentSortResult<ItemUiModel>) -> some View {
-        Group {
-            section(for: result.today, headerTitle: "Today")
-            section(for: result.yesterday, headerTitle: "Yesterday")
-            section(for: result.last7Days, headerTitle: "Last week")
-            section(for: result.last14Days, headerTitle: "Last two weeks")
-            section(for: result.last30Days, headerTitle: "Last 30 days")
-            section(for: result.last60Days, headerTitle: "Last 60 days")
-            section(for: result.last90Days, headerTitle: "Last 90 days")
-            section(for: result.others, headerTitle: "More than 90 days")
-        }
-    }
-
-    private func sections(for result: AlphabeticalSortResult<ItemUiModel>) -> some View {
-        ForEach(result.buckets, id: \.letter) { bucket in
-            section(for: bucket.items, headerTitle: bucket.letter.character)
-                .id(bucket.letter.character)
-        }
-    }
-
-    private func sections(for result: MonthYearSortResult<ItemUiModel>) -> some View {
-        ForEach(result.buckets, id: \.monthYear) { bucket in
-            section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
         }
     }
 
@@ -267,16 +216,84 @@ struct CredentialsView: View {
             }
             .padding(.horizontal)
 
-            List {
-                ForEach(results, id: \.hashValue) { item in
-                    itemRow(for: item)
-                        .padding(.horizontal)
+            ScrollViewReader { proxy in
+                List {
+                    sortableSections(for: results.map { .searchResult($0) })
+                }
+                .listStyle(.plain)
+                .animation(.default, value: results.count)
+                .overlay {
+                    if viewModel.selectedSortType == .alphabetical {
+                        HStack {
+                            Spacer()
+                            SectionIndexTitles(proxy: proxy)
+                        }
+                    }
                 }
             }
-            .listStyle(.plain)
-            .animation(.default, value: results.count)
         }
     }
+
+    @ViewBuilder
+    private func section(for items: [CredentialItem], headerTitle: String) -> some View {
+        if items.isEmpty {
+            EmptyView()
+        } else {
+            Section(content: {
+                ForEach(items) { item in
+                    switch item {
+                    case .normal(let normalItem):
+                        itemRow(for: normalItem)
+                    case .searchResult(let searchResultItem):
+                        itemRow(for: searchResultItem)
+                    }
+                }
+            }, header: {
+                Text(headerTitle)
+            })
+        }
+    }
+
+    @ViewBuilder
+    private func sortableSections(for items: [CredentialItem]) -> some View {
+        switch viewModel.selectedSortType {
+        case .mostRecent:
+            sections(for: items.mostRecentSortResult())
+        case .alphabetical:
+            sections(for: items.alphabeticalSortResult())
+        case .newestToOldest:
+            sections(for: items.monthYearSortResult(direction: .descending))
+        case .oldestToNewest:
+            sections(for: items.monthYearSortResult(direction: .ascending))
+        }
+    }
+
+    private func sections(for result: MostRecentSortResult<CredentialItem>) -> some View {
+        Group {
+            section(for: result.today, headerTitle: "Today")
+            section(for: result.yesterday, headerTitle: "Yesterday")
+            section(for: result.last7Days, headerTitle: "Last week")
+            section(for: result.last14Days, headerTitle: "Last two weeks")
+            section(for: result.last30Days, headerTitle: "Last 30 days")
+            section(for: result.last60Days, headerTitle: "Last 60 days")
+            section(for: result.last90Days, headerTitle: "Last 90 days")
+            section(for: result.others, headerTitle: "More than 90 days")
+        }
+    }
+
+    private func sections(for result: AlphabeticalSortResult<CredentialItem>) -> some View {
+        ForEach(result.buckets, id: \.letter) { bucket in
+            section(for: bucket.items, headerTitle: bucket.letter.character)
+                .id(bucket.letter.character)
+        }
+    }
+
+    private func sections(for result: MonthYearSortResult<CredentialItem>) -> some View {
+        ForEach(result.buckets, id: \.monthYear) { bucket in
+            section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
+        }
+    }
+
     private func itemRow(for item: ItemUiModel) -> some View {
         Button(action: {
             select(item: item)
@@ -285,7 +302,6 @@ struct CredentialsView: View {
                            title: item.title,
                            description: item.description)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
         })
         .plainListRow()
     }

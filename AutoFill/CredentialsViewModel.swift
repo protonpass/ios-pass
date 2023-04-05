@@ -75,6 +75,11 @@ enum CredentialsViewLoadedState: Equatable {
     }
 }
 
+enum CredentialItem {
+    case normal(ItemUiModel)
+    case searchResult(ItemSearchResult)
+}
+
 final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @Published private(set) var state = CredentialsViewState.loading
     @Published var selectedSortType = SortType.mostRecent
@@ -420,4 +425,33 @@ extension ItemUiModel: TitledItemIdentifiable {
 
 extension ItemSearchResult: TitledItemIdentifiable {
     var itemTitle: String { title.fullText }
+}
+
+extension CredentialItem: DateSortable, AlphabeticalSortable, Identifiable {
+    var id: String {
+        switch self {
+        case .normal(let itemUiModel):
+            return itemUiModel.itemId + itemUiModel.shareId
+        case .searchResult(let itemSearchResult):
+            return itemSearchResult.itemId + itemSearchResult.shareId
+        }
+    }
+
+    var dateForSorting: Date {
+        switch self {
+        case .normal(let itemUiModel):
+            return itemUiModel.dateForSorting
+        case .searchResult(let itemSearchResult):
+            return itemSearchResult.dateForSorting
+        }
+    }
+
+    var alphabeticalSortableString: String {
+        switch self {
+        case .normal(let itemUiModel):
+            return itemUiModel.alphabeticalSortableString
+        case .searchResult(let itemSearchResult):
+            return itemSearchResult.alphabeticalSortableString
+        }
+    }
 }
