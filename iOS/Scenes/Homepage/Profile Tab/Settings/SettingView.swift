@@ -44,6 +44,7 @@ struct SettingView: View {
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
+        .theme(viewModel.selectedTheme)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 CircleButton(icon: UIDevice.current.isIpad ?
