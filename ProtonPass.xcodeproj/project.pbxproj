@@ -245,6 +245,7 @@
 		3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */; };
 		3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */; };
 		3560844929DDA344001F7487 /* OptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35829D6F36200F03497 /* OptionRow.swift */; };
+		3560844C29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560844B29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift */; };
 		35610B7528ABB77800955ACB /* LocalShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */; };
 		35610B7728ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7628ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift */; };
 		35610B7E28ABC9D200955ACB /* RemoteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7D28ABC9D200955ACB /* RemoteDatasource.swift */; };
@@ -269,8 +270,7 @@
 		3562BCF329BDBF2500564508 /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */; };
 		3562BCF529BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF429BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift */; };
 		3562BCF729BDE77900564508 /* AnimatingGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF629BDE77900564508 /* AnimatingGradient.swift */; };
-		356325D829DACADB006EB16C /* OrganizationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356325D729DACADB006EB16C /* OrganizationProvider.swift */; };
-		356325DE29DB0435006EB16C /* GetOrganizationEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356325DD29DB0435006EB16C /* GetOrganizationEndpoint.swift */; };
+		356325D829DACADB006EB16C /* PrimaryPlanProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356325D729DACADB006EB16C /* PrimaryPlanProvider.swift */; };
 		35635176299C10040059A97A /* IdentifiableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35635175299C10040059A97A /* IdentifiableObject.swift */; };
 		356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */; };
 		3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */; };
@@ -870,6 +870,7 @@
 		3560843929DD4909001F7487 /* AppearanceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettings.swift; sourceTree = "<group>"; };
 		3560844029DDA1C4001F7487 /* ExtensionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSettingsView.swift; sourceTree = "<group>"; };
 		3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSettingsViewModel.swift; sourceTree = "<group>"; };
+		3560844B29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSubscriptionEndpoint.swift; sourceTree = "<group>"; };
 		35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareKeyDatasource.swift; sourceTree = "<group>"; };
 		35610B7628ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareKeyDatasourceTests.swift; sourceTree = "<group>"; };
 		35610B7D28ABC9D200955ACB /* RemoteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDatasource.swift; sourceTree = "<group>"; };
@@ -891,8 +892,7 @@
 		3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitles.swift; sourceTree = "<group>"; };
 		3562BCF429BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollIndicatorsHiddenModifier.swift; sourceTree = "<group>"; };
 		3562BCF629BDE77900564508 /* AnimatingGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingGradient.swift; sourceTree = "<group>"; };
-		356325D729DACADB006EB16C /* OrganizationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationProvider.swift; sourceTree = "<group>"; };
-		356325DD29DB0435006EB16C /* GetOrganizationEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetOrganizationEndpoint.swift; sourceTree = "<group>"; };
+		356325D729DACADB006EB16C /* PrimaryPlanProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryPlanProvider.swift; sourceTree = "<group>"; };
 		35635175299C10040059A97A /* IdentifiableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiableObject.swift; sourceTree = "<group>"; };
 		356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnReceiveBoolean.swift"; sourceTree = "<group>"; };
 		3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditItemTitleSection.swift; sourceTree = "<group>"; };
@@ -1469,7 +1469,7 @@
 				3558180D290A8BE200DD94DB /* Events */,
 				355E803D28A3071700BE7C9B /* Items */,
 				358AB49F2887044500818B44 /* Keys */,
-				356325DC29DB039E006EB16C /* Organization */,
+				3560844A29DDBC92001F7487 /* Payments */,
 				353547BF2880C4470021C716 /* Shares */,
 				35544403287CAF600017FCAD /* Vault */,
 			);
@@ -1578,6 +1578,14 @@
 			path = "Create & Edit Items";
 			sourceTree = "<group>";
 		};
+		3560844A29DDBC92001F7487 /* Payments */ = {
+			isa = PBXGroup;
+			children = (
+				3560844B29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift */,
+			);
+			path = Payments;
+			sourceTree = "<group>";
+		};
 		35610B8528ABCE1900955ACB /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
@@ -1634,14 +1642,6 @@
 				3552272D29DC9EAC00B9607E /* SearchBar.swift */,
 			);
 			path = "Supporting Views";
-			sourceTree = "<group>";
-		};
-		356325DC29DB039E006EB16C /* Organization */ = {
-			isa = PBXGroup;
-			children = (
-				356325DD29DB0435006EB16C /* GetOrganizationEndpoint.swift */,
-			);
-			path = Organization;
 			sourceTree = "<group>";
 		};
 		3565622529BA760800C43F72 /* Item Detail */ = {
@@ -1821,7 +1821,7 @@
 				358BD375287E083500802A91 /* APIService+ExecEndpoint.swift */,
 				3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */,
 				358BD35D287D4E8000802A91 /* CryptoUtils.swift */,
-				356325D729DACADB006EB16C /* OrganizationProvider.swift */,
+				356325D729DACADB006EB16C /* PrimaryPlanProvider.swift */,
 				35CAD69F29A789A300CF3993 /* PassKeyArray+LastestKey.swift */,
 				3554747F29A8E8460060B555 /* PassKeyManager.swift */,
 				354F768928C72F1000EB2383 /* PassKeyUtils.swift */,
@@ -3460,6 +3460,7 @@
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,
 				356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */,
 				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
+				3560844C29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift in Sources */,
 				35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */,
 				358A508D28AD823000F5285C /* PublicKey.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
@@ -3470,7 +3471,6 @@
 				354146D428D1F235007E45A6 /* GetAliasOptionsEndpoint.swift in Sources */,
 				35526B6628D11E0C0017BB53 /* ModifyItemRequest.swift in Sources */,
 				356B831429C365320084488A /* SearchEntryEntity.swift in Sources */,
-				356325DE29DB0435006EB16C /* GetOrganizationEndpoint.swift in Sources */,
 				3554747C29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift in Sources */,
 				3552F48A28D344E100547146 /* Alias.swift in Sources */,
 				3554730829CDD3CC0092E0E4 /* UpdateVaultRequest.swift in Sources */,
@@ -3478,7 +3478,7 @@
 				3530092A28A5281800611F8A /* Vault.swift in Sources */,
 				3558180F290A8C0800DD94DB /* GetLastEventIDEndpoint.swift in Sources */,
 				35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */,
-				356325D829DACADB006EB16C /* OrganizationProvider.swift in Sources */,
+				356325D829DACADB006EB16C /* PrimaryPlanProvider.swift in Sources */,
 				3542E2CB28D9FE8600194F24 /* ItemRepository.swift in Sources */,
 				3573D707297642F400F68DF7 /* DeleteVaultEndpoint.swift in Sources */,
 				35581813290AB2B000DD94DB /* SyncEvents.swift in Sources */,
