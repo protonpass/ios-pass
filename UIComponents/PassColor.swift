@@ -47,4 +47,10 @@ public extension PassColor {
     static var noteInteractionNormMajor2 = UIColor(named: "NoteInteractionNormMajor2")!
     static var noteInteractionNormMinor1 = UIColor(named: "NoteInteractionNormMinor1")!
     static var noteInteractionNormMinor2 = UIColor(named: "NoteInteractionNormMinor2")!
+
+    static var passwordInteractionNorm = UIColor(named: "PasswordInteractionNorm")!
+    static var passwordInteractionNormMajor1 = UIColor(named: "PasswordInteractionNormMajor1")!
+    static var passwordInteractionNormMajor2 = UIColor(named: "PasswordInteractionNormMajor2")!
+    static var passwordInteractionNormMinor1 = UIColor(named: "PasswordInteractionNormMinor1")!
+    static var passwordInteractionNormMinor2 = UIColor(named: "PasswordInteractionNormMinor2")!
 }
