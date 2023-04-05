@@ -124,11 +124,10 @@ struct CredentialsView: View {
                 ProgressView()
 
             case .noSearchResults:
-                Text("No search results")
-                    .foregroundColor(.textWeak)
+                NoSearchResultsInAllVaultView(query: query)
 
-            case .searchResults(let searchResults):
-                searchResultsList(searchResults)
+            case .searchResults(let results):
+                searchResults(results)
             }
 
             Spacer()
@@ -272,7 +271,7 @@ struct CredentialsView: View {
         }
     }
 
-    private func searchResultsList(_ results: [ItemSearchResult]) -> some View {
+    private func searchResults(_ results: [ItemSearchResult]) -> some View {
         List {
             ForEach(results, id: \.hashValue) { result in
                 Button(action: {
