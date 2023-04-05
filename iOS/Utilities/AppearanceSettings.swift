@@ -1,7 +1,7 @@
 //
-// SceneDelegate.swift
-// Proton Pass - Created on 01/07/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// AppearanceSettings.swift
+// Proton Pass - Created on 05/04/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,23 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import SwiftUI
 import UIComponents
+import UIKit
 
-final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    var window: UIWindow?
-    private lazy var appCoordinator = AppCoordinator(window: window ?? .init())
+enum AppearanceSettings {
+    static func apply() {
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .passBrand
 
-    func scene(_ scene: UIScene,
-               willConnectTo session: UISceneSession,
-               options connectionOptions: UIScene.ConnectionOptions) {
-        if let windowScene = scene as? UIWindowScene {
-            let window = UIWindow(windowScene: windowScene)
-            self.window = window
-            window.makeKeyAndVisible()
+        if #unavailable(iOS 16) {
+            // Can remove this once dropped iOS 15.
+            // Use scrollContentBackground(_:) on each TextEditor then.
+            UITextView.appearance().backgroundColor = .clear
         }
-        AppearanceSettings.apply()
-        appCoordinator.start()
     }
 }
