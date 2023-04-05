@@ -189,10 +189,6 @@ private extension HomepageCoordinator {
                                                       logManager: logManager)
         profileTabViewModel.delegate = self
 
-        let homepageTabBarController = HomepageTabBarController(itemsTabViewModel: itemsTabViewModel,
-                                                                profileTabViewModel: profileTabViewModel)
-        homepageTabBarController.homepageTabBarControllerDelegate = self
-
         let placeholderView = ItemDetailPlaceholderView { [unowned self] in
             self.popTopViewController(animated: true)
         }
