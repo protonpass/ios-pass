@@ -520,7 +520,7 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
 
-        present(viewController)
+        present(viewController, dismissible: true)
     }
 
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?) {
@@ -592,7 +592,7 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.sheetPresentationController?.detents = [.medium()]
         viewModel.onDismiss = { navigationController.dismiss(animated: true) }
-        present(navigationController)
+        present(navigationController, dismissible: true)
     }
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
