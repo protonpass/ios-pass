@@ -26,6 +26,7 @@ protocol ExtensionSettingsViewModelDelegate: AnyObject {
     func extensionSettingsViewModelWantsToShowSpinner()
     func extensionSettingsViewModelWantsToHideSpinner()
     func extensionSettingsViewModelWantsToDismiss()
+    func extensionSettingsViewModelWantsToLogOut()
     func extensionSettingsViewModelDidEncounter(error: Error)
 }
 
@@ -40,9 +41,12 @@ final class ExtensionSettingsViewModel: ObservableObject {
         }
     }
 
+    @Published var isLocked: Bool
+
     let credentialManager: CredentialManagerProtocol
     let itemRepository: ItemRepositoryProtocol
     let logger: Logger
+    let logManager: LogManager
     let preferences: Preferences
 
     weak var delegate: ExtensionSettingsViewModelDelegate?
@@ -53,11 +57,13 @@ final class ExtensionSettingsViewModel: ObservableObject {
          preferences: Preferences) {
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
+        self.logManager = logManager
         self.logger = .init(manager: logManager)
         self.preferences = preferences
 
         self.quickTypeBar = preferences.quickTypeBar
         self.automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
+        self.isLocked = preferences.biometricAuthenticationEnabled
     }
 }
 
@@ -65,6 +71,10 @@ final class ExtensionSettingsViewModel: ObservableObject {
 extension ExtensionSettingsViewModel {
     func dismiss() {
         delegate?.extensionSettingsViewModelWantsToDismiss()
+    }
+
+    func logOut() {
+        delegate?.extensionSettingsViewModelWantsToLogOut()
     }
 }
 
