@@ -241,6 +241,10 @@
 		3560843A29DD4909001F7487 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560843929DD4909001F7487 /* AppearanceSettings.swift */; };
 		3560843B29DD4909001F7487 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560843929DD4909001F7487 /* AppearanceSettings.swift */; };
 		3560843F29DD7DE9001F7487 /* NoSearchResultsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830F29C343F70084488A /* NoSearchResultsViews.swift */; };
+		3560844229DDA1C4001F7487 /* ExtensionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560844029DDA1C4001F7487 /* ExtensionSettingsView.swift */; };
+		3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */; };
+		3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */; };
+		3560844929DDA344001F7487 /* OptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35829D6F36200F03497 /* OptionRow.swift */; };
 		35610B7528ABB77800955ACB /* LocalShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */; };
 		35610B7728ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7628ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift */; };
 		35610B7E28ABC9D200955ACB /* RemoteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7D28ABC9D200955ACB /* RemoteDatasource.swift */; };
@@ -864,6 +868,8 @@
 		355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItemEndpoint.swift; sourceTree = "<group>"; };
 		356043F828ED6B54003BDDDC /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		3560843929DD4909001F7487 /* AppearanceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettings.swift; sourceTree = "<group>"; };
+		3560844029DDA1C4001F7487 /* ExtensionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSettingsView.swift; sourceTree = "<group>"; };
+		3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSettingsViewModel.swift; sourceTree = "<group>"; };
 		35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareKeyDatasource.swift; sourceTree = "<group>"; };
 		35610B7628ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareKeyDatasourceTests.swift; sourceTree = "<group>"; };
 		35610B7D28ABC9D200955ACB /* RemoteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDatasource.swift; sourceTree = "<group>"; };
@@ -1395,6 +1401,8 @@
 				3544F5E328E2341900834CA4 /* CredentialProviderViewController.swift */,
 				352866BC28E2DCB5000630E2 /* CredentialsView.swift */,
 				3520F36228E325900053A606 /* CredentialsViewModel.swift */,
+				3560844029DDA1C4001F7487 /* ExtensionSettingsView.swift */,
+				3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */,
 				355751F42907FB3200268116 /* LockedCredentialView.swift */,
 				355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */,
 				3555801528F04F5C009C3B88 /* NoCredentialsView.swift */,
@@ -3205,7 +3213,9 @@
 				35492E3D293E06C900BDE231 /* CreateEditLoginViewModel.swift in Sources */,
 				3552272F29DC9FFC00B9607E /* SearchBar.swift in Sources */,
 				3599215A299FA90C00FEFA32 /* PrefixSuffixSection.swift in Sources */,
+				3560844229DDA1C4001F7487 /* ExtensionSettingsView.swift in Sources */,
 				3565FD59298D423A00E2A0EE /* TOTPText.swift in Sources */,
+				3560844929DDA344001F7487 /* OptionRow.swift in Sources */,
 				35699B97298125FA006CB225 /* ClipboardManager.swift in Sources */,
 				3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */,
 				3562BC30299542D6003FCB13 /* ItemContent+UIRelatedProperties.swift in Sources */,
@@ -3224,6 +3234,7 @@
 				355BDED7299E6EE4009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
 				356B69792949DECF00868771 /* BaseItemDetailViewModel.swift in Sources */,
+				3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
 				3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */,
@@ -3397,6 +3408,7 @@
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
+				3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
 				355895AF29D76E67001E2207 /* LogsView.swift in Sources */,
 				3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */,
