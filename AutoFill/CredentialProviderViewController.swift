@@ -53,4 +53,8 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
         coordinator.provideCredentialWithBiometricAuthentication(for: credentialIdentity)
     }
+
+    override func prepareInterfaceForExtensionConfiguration() {
+        coordinator.configureExtension()
+    }
 }
