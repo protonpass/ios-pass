@@ -202,33 +202,3 @@ public extension Color {
         .init(uiColor: .textWeak)
     }
 }
-
-// MARK: - UIColor for Pass specific colors
-public extension UIColor {
-    static var passBackground: UIColor {
-        .init(red: 25, green: 25, blue: 39)
-    }
-
-    static var passBrand: UIColor {
-        .init(red: 97, green: 96, blue: 253)
-    }
-
-    static var passSecondaryBackground: UIColor {
-        .init(red: 28, green: 28, blue: 48)
-    }
-}
-
-// MARK: - Color for Pass specific colors
-public extension Color {
-    static var passBackground: Color {
-        .init(uiColor: .passBackground)
-    }
-
-    static var passBrand: Color {
-        .init(uiColor: .passBrand)
-    }
-
-    static var passSecondaryBackground: Color {
-        .init(uiColor: .passSecondaryBackground)
-    }
-}

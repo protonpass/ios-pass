@@ -78,7 +78,9 @@ private struct ItemCountChip: View {
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 12)
-            .background(isSelected ? Color.passBrand : .passBrand.opacity(0.16))
+            .background(
+                isSelected ?
+                Color(uiColor: PassColor.interactionNorm) : Color(uiColor: PassColor.interactionNormMinor1) )
             .clipShape(Capsule())
             .animation(.default, value: isSelected)
         }

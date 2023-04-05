@@ -48,7 +48,7 @@ struct CredentialsView: View {
         })
 
         ZStack {
-            Color.passBackground
+            Color(uiColor: PassColor.backgroundNorm)
                 .ignoresSafeArea()
 
             if isLocked {
@@ -133,8 +133,8 @@ struct CredentialsView: View {
             Spacer()
 
             CapsuleTextButton(title: "Create login",
-                              titleColor: .passBrand,
-                              backgroundColor: .passBrand.withAlphaComponent(0.08),
+                              titleColor: PassColor.textNorm,
+                              backgroundColor: PassColor.interactionNorm,
                               disabled: false,
                               height: 52,
                               action: viewModel.createLoginItem)

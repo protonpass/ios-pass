@@ -70,7 +70,7 @@ struct CreateEditLoginView: View {
                     }
                 }
             }
-            .background(Color.passBackground)
+            .background(Color(uiColor: PassColor.backgroundNorm))
             .navigationBarTitleDisplayMode(.inline)
             .onFirstAppear {
                 if case .create = viewModel.mode {

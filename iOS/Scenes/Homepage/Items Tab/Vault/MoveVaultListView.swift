@@ -54,15 +54,15 @@ struct MoveVaultListView: View {
                                   action: dismiss.callAsFunction)
 
                 CapsuleTextButton(title: "Confirm",
-                                  titleColor: .passBrand,
-                                  backgroundColor: .passBrand.withAlphaComponent(0.08),
+                                  titleColor: PassColor.textInvert,
+                                  backgroundColor: PassColor.interactionNorm,
                                   disabled: viewModel.selectedVault == nil,
                                   height: 44,
                                   action: { dismiss(); viewModel.confirm() })
             }
             .padding([.bottom, .horizontal])
         }
-        .background(Color.passSecondaryBackground)
+        .background(Color(uiColor: PassColor.backgroundWeak))
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 

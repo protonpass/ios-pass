@@ -62,9 +62,9 @@ struct NoSearchResultsInPreciseVaultView: View {
 
             Button(action: action) {
                 Label("Search in all vaults", systemImage: "magnifyingglass")
-                    .foregroundColor(.passBrand)
+                    .foregroundColor(Color(uiColor: PassColor.interactionNorm))
                     .padding()
-                    .background(Color.passBrand.opacity(0.08))
+                    .background(Color(uiColor: PassColor.interactionNormMinor2))
                     .clipShape(Capsule())
             }
             .padding(.top, 50)

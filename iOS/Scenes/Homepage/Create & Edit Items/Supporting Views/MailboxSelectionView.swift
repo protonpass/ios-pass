@@ -77,7 +77,7 @@ struct MailboxSelectionView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .background(Color.passSecondaryBackground)
+            .background(Color(uiColor: PassColor.backgroundWeak))
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     VStack(spacing: 18) {

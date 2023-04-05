@@ -28,6 +28,6 @@ struct NoCredentialsView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
-        .background(Color.passBackground)
+        .background(Color(uiColor: PassColor.backgroundNorm))
     }
 }

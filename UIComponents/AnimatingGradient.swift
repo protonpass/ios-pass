@@ -24,7 +24,7 @@ public struct AnimatingGradient: View {
     @State private var animateGradient = false
     let tintColor: UIColor
 
-    public init(tintColor: UIColor = .passBrand) {
+    public init(tintColor: UIColor = PassColor.interactionNorm) {
         self.tintColor = tintColor
     }
 

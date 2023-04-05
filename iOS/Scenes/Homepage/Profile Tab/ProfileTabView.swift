@@ -66,7 +66,7 @@ struct ProfileTabView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.passBackground)
+        .background(Color(uiColor: PassColor.backgroundNorm))
     }
 
     private var itemCountSection: some View {
@@ -97,13 +97,13 @@ struct ProfileTabView: View {
                             }, icon: {
                                 if let icon = uiModel.icon {
                                     Image(systemName: icon)
-                                        .foregroundColor(.passBrand)
+                                        .foregroundColor(Color(uiColor: PassColor.interactionNorm))
                                 } else {
                                     EmptyView()
                                 }
                             })
                         }
-                        .tint(.passBrand)
+                        .tint(Color(uiColor: PassColor.interactionNorm))
                     } else {
                         Text("Biometric authentication not supported")
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -144,8 +144,8 @@ struct ProfileTabView: View {
                 Button(action: UIApplication.shared.openPasswordSettings) {
                     Text("Open Settings")
                         .font(.footnote)
-                        .foregroundColor(.passBrand)
-                        .underline(color: .passBrand)
+                        .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                        .underline(color: Color(uiColor: PassColor.interactionNorm))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -164,7 +164,7 @@ struct ProfileTabView: View {
                     Toggle(isOn: $viewModel.quickTypeBar) {
                         Text("QuickType bar suggestions")
                     }
-                    .tint(.passBrand)
+                    .tint(Color(uiColor: PassColor.interactionNorm))
                 }
 
                 PassDivider()
@@ -173,7 +173,7 @@ struct ProfileTabView: View {
                     Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
                         Text("Copy Two Factor Authentication code")
                     }
-                    .tint(.passBrand)
+                    .tint(Color(uiColor: PassColor.interactionNorm))
                 }
             }
             .roundedEditableSection()

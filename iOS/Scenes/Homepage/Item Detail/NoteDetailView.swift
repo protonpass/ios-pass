@@ -62,7 +62,7 @@ struct NoteDetailView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.passBackground)
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)

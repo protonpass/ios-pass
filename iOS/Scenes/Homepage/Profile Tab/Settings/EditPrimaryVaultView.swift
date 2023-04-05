@@ -61,6 +61,6 @@ struct EditPrimaryVaultView: View {
             }
             .disabled(viewModel.isLoading)
         }
-        .background(Color.passSecondaryBackground)
+        .background(Color(uiColor: PassColor.backgroundWeak))
     }
 }

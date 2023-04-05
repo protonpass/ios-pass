@@ -46,7 +46,7 @@ struct GeneratePasswordView: View {
                 Slider(value: $viewModel.length,
                        in: 4...64,
                        step: 1)
-                .accentColor(.passBrand)
+                .accentColor(Color(uiColor: PassColor.interactionNorm))
             }
             .padding(.horizontal)
 
@@ -71,7 +71,7 @@ struct GeneratePasswordView: View {
                 CapsuleTextButton(
                     title: viewModel.mode.confirmTitle,
                     titleColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light)),
-                    backgroundColor: .passBrand,
+                    backgroundColor: PassColor.interactionNorm,
                     disabled: false,
                     height: 44,
                     action: {
@@ -84,14 +84,14 @@ struct GeneratePasswordView: View {
             .padding(.vertical)
         }
         .padding(.horizontal)
-        .background(Color.passSecondaryBackground)
+        .background(Color(uiColor: PassColor.backgroundWeak))
         .animation(.default, value: viewModel.password)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 // Hidden gimmick button to make the navigation title centered properly
                 CircleButton(icon: IconProvider.arrowsRotate,
-                             color: .passBrand,
+                             color: PassColor.interactionNorm,
                              action: viewModel.regenerate)
                 .opacity(0)
             }
@@ -107,7 +107,7 @@ struct GeneratePasswordView: View {
 
             ToolbarItem(placement: .navigationBarTrailing) {
                 CircleButton(icon: IconProvider.arrowsRotate,
-                             color: .passBrand,
+                             color: PassColor.interactionNorm,
                              action: viewModel.regenerate)
             }
         }

@@ -58,7 +58,7 @@ struct CreateEditAliasView: View {
                     content
                 }
             }
-            .background(Color.passBackground)
+            .background(Color(uiColor: PassColor.backgroundNorm))
             .navigationBarTitleDisplayMode(.inline)
         }
         .navigationViewStyle(.stack)

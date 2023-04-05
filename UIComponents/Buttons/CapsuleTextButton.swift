@@ -50,7 +50,9 @@ public struct CapsuleTextButton: View {
         Button(action: action) {
             Text(title)
                 .font(.callout)
-                .foregroundColor(disabled ? .passBackground : Color(uiColor: titleColor))
+                .foregroundColor(disabled ?
+                                 Color(uiColor: PassColor.textDisabled) :
+                                    Color(uiColor: PassColor.textNorm))
                 .frame(height: height)
                 .frame(maxWidth: maxWidth)
                 .padding(.horizontal, 16)

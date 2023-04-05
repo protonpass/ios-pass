@@ -59,8 +59,8 @@ struct EditableVaultListView: View {
 
             HStack {
                 CapsuleTextButton(title: "Create vault",
-                                  titleColor: .passBrand,
-                                  backgroundColor: .passBrand.withAlphaComponent(0.08),
+                                  titleColor: PassColor.interactionNorm,
+                                  backgroundColor: PassColor.interactionNormMinor1,
                                   disabled: false,
                                   maxWidth: nil,
                                   action: viewModel.createNewVault)
@@ -68,7 +68,7 @@ struct EditableVaultListView: View {
             }
             .padding([.bottom, .horizontal])
         }
-        .background(Color.passSecondaryBackground)
+        .background(Color(uiColor: PassColor.backgroundWeak))
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
@@ -212,7 +212,7 @@ extension VaultSelection {
     var color: UIColor {
         switch self {
         case .all:
-            return .passBrand
+            return PassColor.interactionNorm
         case .precise(let vault):
             return vault.displayPreferences.color.color.color
         case .trash:

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIComponents
 
 struct VaultRow<Thumbnail: View>: View {
     let thumbnail: () -> Thumbnail
@@ -49,7 +50,7 @@ struct VaultRow<Thumbnail: View>: View {
 
             if isSelected {
                 Label("", systemImage: "checkmark")
-                    .foregroundColor(.passBrand)
+                    .foregroundColor(Color(uiColor: PassColor.interactionNorm))
                     .padding(.trailing)
             }
         }

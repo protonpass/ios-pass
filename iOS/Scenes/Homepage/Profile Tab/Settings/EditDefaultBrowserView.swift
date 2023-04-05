@@ -59,6 +59,6 @@ struct EditDefaultBrowserView: View {
                 .padding([.top, .horizontal])
             }
         }
-        .background(Color.passSecondaryBackground)
+        .background(Color(uiColor: PassColor.backgroundWeak))
     }
 }

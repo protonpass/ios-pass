@@ -35,12 +35,12 @@ struct NotLoggedInView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
-            .background(Color.passBackground)
+            .background(Color(uiColor: PassColor.backgroundNorm))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.cross,
-                                 color: .passBrand,
+                                 color: PassColor.interactionNorm,
                                  action: onCancel)
                 }
             }
