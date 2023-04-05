@@ -251,7 +251,11 @@ extension CredentialsViewModel {
     }
 
     func search(term: String) {
-        searchTermSubject.send(term)
+        if term.isEmpty {
+            doSearch(term: term)
+        } else {
+            searchTermSubject.send(term)
+        }
     }
 
     func handleAuthenticationFailure() {

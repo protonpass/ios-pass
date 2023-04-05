@@ -240,6 +240,7 @@
 		355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E803E28A3072F00BE7C9B /* CreateItemEndpoint.swift */; };
 		3560843A29DD4909001F7487 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560843929DD4909001F7487 /* AppearanceSettings.swift */; };
 		3560843B29DD4909001F7487 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560843929DD4909001F7487 /* AppearanceSettings.swift */; };
+		3560843F29DD7DE9001F7487 /* NoSearchResultsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830F29C343F70084488A /* NoSearchResultsViews.swift */; };
 		35610B7528ABB77800955ACB /* LocalShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */; };
 		35610B7728ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7628ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift */; };
 		35610B7E28ABC9D200955ACB /* RemoteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7D28ABC9D200955ACB /* RemoteDatasource.swift */; };
@@ -3236,6 +3237,7 @@
 				3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */,
 				35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */,
 				35733B7829CC525900052229 /* APIManager.swift in Sources */,
+				3560843F29DD7DE9001F7487 /* NoSearchResultsViews.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
 				3565FD58298D423800E2A0EE /* TOTPCircularTimer.swift in Sources */,
 				354F1F1B29D8CAC500A6B1E8 /* AppData.swift in Sources */,
