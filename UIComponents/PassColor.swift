@@ -30,6 +30,11 @@ public extension PassColor {
     static var aliasInteractionNormMinor1 = UIColor(named: "AliasInteractionNormMinor1")!
     static var aliasInteractionNormMinor2 = UIColor(named: "AliasInteractionNormMinor2")!
 
+    static var backgroundMedium = UIColor(named: "BackgroundMedium")!
+    static var backgroundNorm = UIColor(named: "BackgroundNorm")!
+    static var backgroundStrong = UIColor(named: "BackgroundStrong")!
+    static var backgroundWeak = UIColor(named: "BackgroundWeak")!
+
     static var inputBackgroundNorm = UIColor(named: "InputBackgroundNorm")!
     static var inputBorderNorm = UIColor(named: "InputBorderNorm")!
 
