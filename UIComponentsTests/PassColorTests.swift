@@ -49,6 +49,12 @@ final class PassColorTests: XCTestCase {
         _ = PassColor.noteInteractionNormMinor1
         _ = PassColor.noteInteractionNormMinor2
 
+        _ = PassColor.passwordInteractionNorm
+        _ = PassColor.passwordInteractionNormMajor1
+        _ = PassColor.passwordInteractionNormMajor2
+        _ = PassColor.passwordInteractionNormMinor1
+        _ = PassColor.passwordInteractionNormMinor2
+
         expectation.fulfill()
         wait(for: [expectation], timeout: 5.0)
     }
