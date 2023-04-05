@@ -30,7 +30,8 @@ struct NotLoggedInView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("Please log in in order to use AutoFill extension")
+                Text("Please log in in order to use Proton Pass AutoFill extension")
+                    .multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()

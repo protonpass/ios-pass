@@ -113,6 +113,19 @@ public final class CredentialProviderCoordinator {
         }
     }
 
+    func configureExtension() {
+        let completeConfigurationRequest: () -> Void = { [context] in
+            context.completeExtensionConfigurationRequest()
+        }
+
+        guard let userData = appData.userData else {
+            showView(NotLoggedInView(preferences: preferences, onCancel: completeConfigurationRequest))
+            return
+        }
+
+        showView(Text("Is logged in"))
+    }
+
     /// QuickType bar support
     func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
         guard let symmetricKey, let itemRepository,
