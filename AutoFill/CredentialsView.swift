@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import ProtonCore_UIFoundations
 import SwiftUI
@@ -65,30 +66,7 @@ struct CredentialsView: View {
                     if result.isEmpty {
                         NoCredentialsView()
                     } else {
-                        VStack(spacing: 0) {
-                            SearchBar(query: $query,
-                                      placeholder: "Search in all vaults",
-                                      onCancel: viewModel.cancel)
-
-                            switch state {
-                            case .idle:
-                                itemList(matchedItems: result.matchedItems,
-                                         notMatchedItems: result.notMatchedItems)
-
-                            case .searching:
-                                ProgressView()
-
-                            case .noSearchResults:
-                                Text("No search results")
-                                    .foregroundColor(.textWeak)
-
-                            case .searchResults(let searchResults):
-                                searchResultsList(searchResults)
-                            }
-
-                            Spacer()
-                        }
-                        .animation(.default, value: state)
+                        resultView(result: result, state: state)
                     }
 
                 case .error(let error):
@@ -97,8 +75,8 @@ struct CredentialsView: View {
                 }
             }
         }
-        .ignoresSafeArea(edges: .bottom)
         .theme(preferences.theme)
+        .animation(.default, value: isLocked)
         .alert(
             "Associate URL?",
             isPresented: isShowingConfirmationAlert,
@@ -128,6 +106,45 @@ struct CredentialsView: View {
                     Text("Would you want to associate \"\(schemeAndHost)\" with \"\(selectedNotMatchedItem.itemTitle)\"?")
                 }
             })
+    }
+
+    private func resultView(result: CredentialsFetchResult,
+                            state: CredentialsViewLoadedState) -> some View {
+        VStack(spacing: 0) {
+            SearchBar(query: $query,
+                      placeholder: "Search in all vaults",
+                      onCancel: viewModel.cancel)
+
+            switch state {
+            case .idle:
+                itemList(matchedItems: result.matchedItems,
+                         notMatchedItems: result.notMatchedItems)
+
+            case .searching:
+                ProgressView()
+
+            case .noSearchResults:
+                Text("No search results")
+                    .foregroundColor(.textWeak)
+
+            case .searchResults(let searchResults):
+                searchResultsList(searchResults)
+            }
+
+            Spacer()
+
+            CapsuleTextButton(title: "Create login",
+                              titleColor: .passBrand,
+                              backgroundColor: .passBrand.withAlphaComponent(0.08),
+                              disabled: false,
+                              height: 52,
+                              action: viewModel.createLoginItem)
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.default, value: state)
+        .onChange(of: query) { viewModel.search(term: $0) }
     }
 
     // swiftlint:disable:next function_body_length

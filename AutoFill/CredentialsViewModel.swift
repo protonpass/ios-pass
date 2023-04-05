@@ -258,14 +258,13 @@ extension CredentialsViewModel {
         delegate?.credentialsViewModelDidFail(PPError.credentialProvider(.failedToAuthenticate))
     }
 
-    #warning("Ask users to choose a vault")
-    // https://jira.protontech.ch/browse/IDTEAM-595
-    func showCreateLoginView() {
+    func createLoginItem() {
         guard case .loaded = state else { return }
         Task { @MainActor in
             let vaults = try await shareRepository.getVaults()
-            guard let firstVault = vaults.first else { return }
-            delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: firstVault.shareId, url: urls.first)
+            guard let primaryVault = vaults.first(where: { $0.isPrimary }) ?? vaults.first else { return }
+            delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: primaryVault.shareId,
+                                                                 url: urls.first)
         }
     }
 }
