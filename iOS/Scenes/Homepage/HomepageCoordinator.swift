@@ -226,7 +226,8 @@ private extension HomepageCoordinator {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
                                                  itemRepository: itemRepository,
-                                                 logManager: logManager)
+                                                 logManager: logManager,
+                                                 theme: preferences.theme)
             viewModel.logInDetailViewModelDelegate = self
             baseViewModel = viewModel
             view = LogInDetailView(viewModel: viewModel)
@@ -234,7 +235,8 @@ private extension HomepageCoordinator {
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRepository: itemRepository,
-                                                logManager: logManager)
+                                                logManager: logManager,
+                                                theme: preferences.theme)
             baseViewModel = viewModel
             view = NoteDetailView(viewModel: viewModel)
 
@@ -242,7 +244,8 @@ private extension HomepageCoordinator {
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
                                                  itemRepository: itemRepository,
                                                  aliasRepository: aliasRepository,
-                                                 logManager: logManager)
+                                                 logManager: logManager,
+                                                 theme: preferences.theme)
             baseViewModel = viewModel
             view = AliasDetailView(viewModel: viewModel)
         }
@@ -524,6 +527,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         let viewModel = AccountViewModel(apiService: apiService,
                                          logManager: logManager,
                                          primaryPlan: primaryPlan,
+                                         theme: preferences.theme,
                                          username: userData.user.email ?? "")
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)

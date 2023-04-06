@@ -34,6 +34,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
     let apiService: APIService
     let logger: Logger
+    let theme: Theme
     let username: String
     @Published private(set) var primaryPlan: PlanLite?
 
@@ -42,11 +43,13 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     init(apiService: APIService,
          logManager: LogManager,
          primaryPlan: PlanLite?,
+         theme: Theme,
          username: String) {
         self.apiService = apiService
         self.logger = .init(manager: logManager)
         self.username = username
         self.primaryPlan = primaryPlan
+        self.theme = theme
         self.refreshOrganization()
     }
 

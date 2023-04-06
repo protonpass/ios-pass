@@ -35,11 +35,13 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     init(itemContent: ItemContent,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
-         logManager: LogManager) {
+         logManager: LogManager,
+         theme: Theme) {
         self.aliasRepository = aliasRepository
         super.init(itemContent: itemContent,
                    itemRepository: itemRepository,
-                   logManager: logManager)
+                   logManager: logManager,
+                   theme: theme)
     }
 
     override func bindValues() {

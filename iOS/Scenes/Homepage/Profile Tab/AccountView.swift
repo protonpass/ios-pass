@@ -104,7 +104,7 @@ struct AccountView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
         }
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .itemDetailBackground(theme: viewModel.theme)
         .navigationTitle("Account")
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)

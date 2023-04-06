@@ -64,13 +64,13 @@ struct AliasDetailView: View {
                 }
                 .padding()
             }
-            .background(Color(uiColor: PassColor.backgroundNorm))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
         .onFirstAppear(perform: viewModel.getAlias)
+        .itemDetailBackground(theme: viewModel.theme)
         .toolbar {
             ItemDetailToolbar(itemContent: viewModel.itemContent,
                               onGoBack: viewModel.goBack,
