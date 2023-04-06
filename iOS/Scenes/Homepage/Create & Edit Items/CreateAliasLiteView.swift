@@ -27,7 +27,6 @@ struct CreateAliasLiteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateAliasLiteViewModel
     @State private var isShowingAdvancedOptions = false
-    let tintColor = ItemContentType.login.tintColor
 
     init(viewModel: CreateAliasLiteViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -66,7 +65,7 @@ struct CreateAliasLiteView: View {
                 HStack(spacing: 16) {
                     CapsuleTextButton(title: "Cancel",
                                       titleColor: PassColor.textWeak,
-                                      backgroundColor: .white.withAlphaComponent(0.08),
+                                      backgroundColor: PassColor.textDisabled,
                                       disabled: false,
                                       height: 44,
                                       action: dismiss.callAsFunction)
@@ -74,7 +73,7 @@ struct CreateAliasLiteView: View {
                     CapsuleTextButton(
                         title: "Confirm",
                         titleColor: PassColor.textInvert,
-                        backgroundColor: tintColor,
+                        backgroundColor: PassColor.loginInteractionNormMajor1,
                         disabled: viewModel.prefixError != nil,
                         height: 44,
                         action: { viewModel.confirm(); dismiss() })
@@ -104,7 +103,7 @@ struct CreateAliasLiteView: View {
             Text(viewModel.suffixSelection.selectedSuffixString)
                 .font(.title2)
                 .fontWeight(.medium)
-                .foregroundColor(Color(uiColor: tintColor))
+                .foregroundColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
         }
     }
 }

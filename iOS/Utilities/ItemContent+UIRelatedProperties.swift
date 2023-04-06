@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import UIComponents
 import UIKit
 
 extension ItemContent {
@@ -29,11 +30,11 @@ extension ItemContentType {
     var tintColor: UIColor {
         switch self {
         case .alias:
-            return .init(red: 106, green: 189, blue: 179)
+            return PassColor.aliasInteractionNorm
         case .login:
-            return .init(red: 167, green: 121, blue: 255)
+            return PassColor.loginInteractionNorm
         case .note:
-            return .init(red: 255, green: 202, blue: 138)
+            return PassColor.noteInteractionNorm
         }
     }
 }

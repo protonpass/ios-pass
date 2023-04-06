@@ -22,6 +22,6 @@ import SwiftUI
 
 public extension SwitchToggleStyle {
     static var pass: SwitchToggleStyle {
-        .init(tint: Color(uiColor: PassColor.interactionNorm))
+        .init(tint: Color(uiColor: PassColor.loginInteractionNormMajor1))
     }
 }
