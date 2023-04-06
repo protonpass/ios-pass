@@ -25,15 +25,7 @@ struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Text("Profile")
-                    .font(.title)
-                    .fontWeight(.bold)
-                Spacer()
-            }
-            .padding(.horizontal)
-
+        NavigationView {
             ScrollView {
                 VStack {
                     itemCountSection
@@ -64,9 +56,12 @@ struct ProfileTabView: View {
                 .padding(.top)
                 .animation(.default, value: viewModel.automaticallyCopyTotpCode)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(uiColor: PassColor.backgroundNorm))
+            .navigationTitle("Profile")
+            .navigationBarTitleDisplayMode(.large)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .navigationViewStyle(.stack)
     }
 
     private var itemCountSection: some View {
