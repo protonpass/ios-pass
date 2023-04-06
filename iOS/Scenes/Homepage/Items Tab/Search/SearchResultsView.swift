@@ -44,7 +44,8 @@ struct SearchResultsView: View {
             HStack {
                 Text("\(results.count)")
                     .font(.callout)
-                    .fontWeight(.bold) +
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm)) +
                 Text(" result(s)")
                     .font(.callout)
                     .foregroundColor(Color(uiColor: PassColor.textWeak))
@@ -126,6 +127,8 @@ struct SearchResultsView: View {
                 }
             }, header: {
                 Text(headerTitle)
+                    .font(.callout)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
             })
         }
     }
@@ -178,6 +181,7 @@ private struct ItemSearchResultView: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 HighlightText(highlightableText: result.title)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .animationsDisabled()
 
                 VStack(alignment: .leading, spacing: 2) {
@@ -186,7 +190,7 @@ private struct ItemSearchResultView: View {
                         if !eachDetail.fullText.isEmpty {
                             HighlightText(highlightableText: eachDetail)
                                 .font(.callout)
-                                .foregroundColor(Color(.secondaryLabel))
+                                .foregroundColor(Color(uiColor: PassColor.textWeak))
                                 .lineLimit(1)
                                 .animationsDisabled()
                         }

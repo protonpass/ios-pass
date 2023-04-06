@@ -38,7 +38,7 @@ public struct HighlightText: View {
                 texts.append(Text(eachComponent))
                 if index != components.count - 1 {
                     texts.append(Text(highlightText)
-                        .foregroundColor(Color(uiColor: PassColor.interactionNorm)))
+                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1)))
                 }
             }
         } else {

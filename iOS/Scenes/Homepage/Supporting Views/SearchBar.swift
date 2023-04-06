@@ -31,17 +31,19 @@ struct SearchBar: View {
     let onCancel: () -> Void
 
     var body: some View {
-        HStack {
+        HStack(spacing: 16) {
             ZStack {
                 Color(uiColor: PassColor.backgroundStrong)
-                HStack {
+                HStack(spacing: 12) {
                     Image(uiImage: IconProvider.magnifier)
                         .resizable()
                         .scaledToFit()
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
                         .frame(width: 20, height: 20)
 
                     TextField(placeholder, text: $query)
                         .tint(Color(uiColor: PassColor.interactionNorm))
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
                         .autocorrectionDisabled()
                         .focused($isFocused)
 
@@ -51,13 +53,13 @@ struct SearchBar: View {
                         Image(uiImage: IconProvider.cross)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 20, height: 20)
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                            .frame(width: 24, height: 24)
                     })
                     .buttonStyle(.plain)
                     .opacity(query.isEmpty ? 0 : 1)
                     .animation(.default, value: query.isEmpty)
                 }
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .padding(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -67,7 +69,7 @@ struct SearchBar: View {
             Button(action: onCancel) {
                 Text("Cancel")
                     .fontWeight(.semibold)
-                    .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                    .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
             }
         }
         .frame(height: kSearchBarHeight)
