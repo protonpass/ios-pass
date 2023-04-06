@@ -24,6 +24,7 @@ import SwiftUI
 import UIComponents
 
 struct CreateAliasLiteView: View {
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateAliasLiteViewModel
     @State private var isShowingAdvancedOptions = false
     let tintColor = ItemContentType.login.tintColor
@@ -33,65 +34,61 @@ struct CreateAliasLiteView: View {
     }
 
     var body: some View {
-        VStack(spacing: 8) {
-            ScrollView {
-                VStack(spacing: 8) {
-                    aliasAddressSection
-                        .padding(.vertical, 30)
+        NavigationView {
+            VStack(spacing: 8) {
+                ScrollView {
+                    VStack(spacing: 8) {
+                        aliasAddressSection
+                            .padding(.vertical, 30)
 
-                    if isShowingAdvancedOptions {
-                        PrefixSuffixSection(prefix: $viewModel.prefix,
-                                            prefixManuallyEdited: .constant(false),
-                                            suffixSelection: viewModel.suffixSelection,
-                                            prefixError: viewModel.prefixError)
+                        if isShowingAdvancedOptions {
+                            PrefixSuffixSection(prefix: $viewModel.prefix,
+                                                prefixManuallyEdited: .constant(false),
+                                                suffixSelection: viewModel.suffixSelection,
+                                                prefixError: viewModel.prefixError)
+                        }
+
+                        MailboxSection(mailboxSelection: viewModel.mailboxSelection)
+                            .onTapGesture(perform: viewModel.showMailboxSelection)
+
+                        if !isShowingAdvancedOptions {
+                            AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
+                                .padding(.vertical)
+                        }
+
+                        Spacer()
                     }
-
-                    MailboxSection(mailboxSelection: viewModel.mailboxSelection)
-                        .onTapGesture(perform: viewModel.showMailboxSelection)
-
-                    if !isShowingAdvancedOptions {
-                        AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
-                            .padding(.vertical)
-                    }
-
-                    Spacer()
+                    .animation(.default, value: viewModel.prefixError)
+                    .animation(.default, value: isShowingAdvancedOptions)
+                    .padding(.horizontal)
                 }
-                .animation(.default, value: viewModel.prefixError)
-                .animation(.default, value: isShowingAdvancedOptions)
-                .padding(.horizontal)
-            }
 
-            HStack(spacing: 16) {
-                CapsuleTextButton(title: "Cancel",
-                                  titleColor: PassColor.textWeak,
-                                  backgroundColor: .white.withAlphaComponent(0.08),
-                                  disabled: false,
-                                  height: 44,
-                                  action: { viewModel.onDismiss?() })
+                HStack(spacing: 16) {
+                    CapsuleTextButton(title: "Cancel",
+                                      titleColor: PassColor.textWeak,
+                                      backgroundColor: .white.withAlphaComponent(0.08),
+                                      disabled: false,
+                                      height: 44,
+                                      action: dismiss.callAsFunction)
 
-                CapsuleTextButton(
-                    title: "Confirm",
-                    titleColor: PassColor.textInvert,
-                    backgroundColor: tintColor,
-                    disabled: viewModel.prefixError != nil,
-                    height: 44,
-                    action: { viewModel.confirm(); viewModel.onDismiss?() })
+                    CapsuleTextButton(
+                        title: "Confirm",
+                        titleColor: PassColor.textInvert,
+                        backgroundColor: tintColor,
+                        disabled: viewModel.prefixError != nil,
+                        height: 44,
+                        action: { viewModel.confirm(); dismiss() })
+                }
+                .padding([.horizontal, .bottom])
             }
-            .padding([.horizontal, .bottom])
-        }
-        .background(Color(uiColor: PassColor.backgroundWeak))
-        .tint(Color(uiColor: tintColor))
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarHidden(false)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                VStack(spacing: 18) {
-                    NotchView()
-                    Text("You are about to create:")
-                        .navigationTitleText()
+            .background(Color(uiColor: PassColor.backgroundWeak))
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    NavigationTitleWithHandle(title: "You are about to create")
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 
     @ViewBuilder

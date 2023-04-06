@@ -460,17 +460,15 @@ private extension CredentialProviderCoordinator {
         viewModel.delegate = delegate
         let view = GeneratePasswordView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        let navigationController = UINavigationController(rootViewController: viewController)
         if #available(iOS 16, *) {
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 344
             }
-            navigationController.sheetPresentationController?.detents = [customDetent]
+            viewController.sheetPresentationController?.detents = [customDetent]
         } else {
-            navigationController.sheetPresentationController?.detents = [.medium()]
+            viewController.sheetPresentationController?.detents = [.medium()]
         }
-        viewModel.onDismiss = { navigationController.dismiss(animated: true) }
-        present(navigationController, dismissible: true)
+        present(viewController, dismissible: true)
     }
 
     func showLoadingHud() {
@@ -603,16 +601,13 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
                                                       creationInfo: AliasCreationLiteInfo,
                                                       delegate: AliasCreationLiteInfoDelegate) {
-        let viewModel = CreateAliasLiteViewModel(options: options,
-                                                 creationInfo: creationInfo)
+        let viewModel = CreateAliasLiteViewModel(options: options, creationInfo: creationInfo)
         viewModel.aliasCreationDelegate = delegate
         viewModel.delegate = self
         let view = CreateAliasLiteView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.sheetPresentationController?.detents = [.medium()]
-        viewModel.onDismiss = { navigationController.dismiss(animated: true) }
-        present(navigationController, dismissible: true)
+        viewController.sheetPresentationController?.detents = [.medium()]
+        present(viewController, dismissible: true)
     }
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {

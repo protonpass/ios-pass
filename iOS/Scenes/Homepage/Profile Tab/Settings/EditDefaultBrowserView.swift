@@ -28,15 +28,7 @@ struct EditDefaultBrowserView: View {
     let preferences: Preferences
 
     var body: some View {
-        VStack {
-            VStack(alignment: .center, spacing: 22) {
-                NotchView()
-                    .padding(.top, 5)
-                Text("Default browser")
-                    .navigationTitleText()
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-
+        NavigationView {
             ScrollView {
                 VStack {
                     VStack(spacing: 0) {
@@ -58,7 +50,15 @@ struct EditDefaultBrowserView: View {
                 }
                 .padding([.top, .horizontal])
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(uiColor: PassColor.backgroundWeak))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    NavigationTitleWithHandle(title: "Default browser")
+                }
+            }
         }
-        .background(Color(uiColor: PassColor.backgroundWeak))
+        .navigationViewStyle(.stack)
     }
 }
