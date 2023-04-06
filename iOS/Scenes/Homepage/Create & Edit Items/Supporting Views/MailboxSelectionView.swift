@@ -74,18 +74,13 @@ struct MailboxSelectionView: View {
 
                 Button(action: dismiss.callAsFunction) {
                     Text("Close")
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
             .background(Color(uiColor: PassColor.backgroundWeak))
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    VStack(spacing: 18) {
-                        NotchView()
-                        Text("Forwarding to")
-                            .navigationTitleText()
-                    }
+                    NavigationTitleWithHandle(title: "Forwarding to")
                 }
             }
         }

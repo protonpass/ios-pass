@@ -49,7 +49,6 @@ final class CreateAliasLiteViewModel: ObservableObject {
 
     weak var aliasCreationDelegate: AliasCreationLiteInfoDelegate?
     weak var delegate: CreateAliasLiteViewModelDelegate?
-    var onDismiss: (() -> Void)?
 
     var suffix: String {
         suffixSelection.selectedSuffix?.suffix ?? ""

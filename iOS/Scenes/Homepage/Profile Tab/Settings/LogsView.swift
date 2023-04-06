@@ -85,7 +85,7 @@ struct LogsView: View {
 
                 ToolbarItem(placement: .principal) {
                     Text(viewModel.module.title)
-                        .navigationTitleText()
+                        .font(.callout.bold())
                         .onTapGesture {
                             withAnimation {
                                 value.scrollTo(viewModel.formattedEntries.last ?? "")

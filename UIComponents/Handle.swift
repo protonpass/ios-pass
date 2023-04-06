@@ -1,5 +1,5 @@
 //
-// NotchView.swift
+// Handle.swift
 // Proton Pass - Created on 15/11/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-public struct NotchView: View {
+public struct Handle: View {
     public init() {}
 
     public var body: some View {

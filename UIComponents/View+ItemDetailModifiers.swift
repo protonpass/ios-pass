@@ -39,10 +39,6 @@ public extension View {
 }
 
 public extension Text {
-    func navigationTitleText() -> Text {
-        self.font(.callout).fontWeight(.bold)
-    }
-
     func sectionTitleText() -> Text {
         self.font(.footnote).foregroundColor(Color(uiColor: PassColor.textWeak))
     }

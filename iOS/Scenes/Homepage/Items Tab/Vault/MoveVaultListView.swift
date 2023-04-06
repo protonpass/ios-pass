@@ -28,7 +28,7 @@ struct MoveVaultListView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            NotchView()
+            Handle()
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 5)
             ScrollView {

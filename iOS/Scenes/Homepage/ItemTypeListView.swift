@@ -101,11 +101,7 @@ struct ItemTypeListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    VStack(spacing: 18) {
-                        NotchView()
-                        Text("Create")
-                            .navigationTitleText()
-                    }
+                    NavigationTitleWithHandle(title: "Create")
                 }
             }
         }

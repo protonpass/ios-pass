@@ -27,15 +27,7 @@ struct EditThemeView: View {
     let preferences: Preferences
 
     var body: some View {
-        VStack {
-            VStack(alignment: .center, spacing: 22) {
-                NotchView()
-                    .padding(.top, 5)
-                Text("Theme")
-                    .navigationTitleText()
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-
+        NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(Theme.allCases, id: \.rawValue) { theme in
@@ -62,7 +54,15 @@ struct EditThemeView: View {
                 .roundedEditableSection()
                 .padding([.top, .horizontal])
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(uiColor: PassColor.backgroundWeak))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    NavigationTitleWithHandle(title: "Theme")
+                }
+            }
         }
-        .background(Color(uiColor: PassColor.backgroundWeak))
+        .navigationViewStyle(.stack)
     }
 }

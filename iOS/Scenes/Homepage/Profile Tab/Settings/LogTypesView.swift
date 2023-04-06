@@ -28,15 +28,7 @@ struct LogTypesView: View {
     let onClear: () -> Void
 
     var body: some View {
-        VStack {
-            VStack(alignment: .center, spacing: 22) {
-                NotchView()
-                    .padding(.top, 5)
-                Text("View logs")
-                    .navigationTitleText()
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-
+        NavigationView {
             ScrollView {
                 VStack(spacing: kItemDetailSectionPadding) {
                     VStack(spacing: 0) {
@@ -63,7 +55,15 @@ struct LogTypesView: View {
                 }
                 .padding([.top, .horizontal])
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(uiColor: PassColor.backgroundWeak))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    NavigationTitleWithHandle(title: "View logs")
+                }
+            }
         }
-        .background(Color(uiColor: PassColor.backgroundWeak))
+        .navigationViewStyle(.stack)
     }
 }

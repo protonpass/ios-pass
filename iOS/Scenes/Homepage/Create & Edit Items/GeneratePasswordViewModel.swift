@@ -70,9 +70,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @Published var hasSpecialCharacters = true
 
     private var cancellables = Set<AnyCancellable>()
-
     weak var delegate: GeneratePasswordViewModelDelegate?
-    var onDismiss: (() -> Void)?
 
     init(mode: GeneratePasswordViewMode) {
         self.mode = mode
