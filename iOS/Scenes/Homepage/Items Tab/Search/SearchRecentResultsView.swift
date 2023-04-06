@@ -32,9 +32,10 @@ struct SearchRecentResultsView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Recent searches")
+                Text("Saved searches")
                     .font(.callout)
-                    .fontWeight(.bold) +
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm)) +
                 Text(" (\(results.count))")
                     .font(.callout)
                     .foregroundColor(Color(uiColor: PassColor.textWeak))
@@ -45,7 +46,7 @@ struct SearchRecentResultsView: View {
                     Text("Clear")
                         .font(.callout)
                         .fontWeight(.semibold)
-                        .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
                 }
             }
             .padding(.horizontal)
@@ -87,11 +88,14 @@ private struct SearchEntryView: View {
             Spacer()
 
             Button(action: onRemove) {
-                Image(uiImage: IconProvider.cross)
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
-                    .frame(width: 24, height: 24)
+                ZStack {
+                    Image(uiImage: IconProvider.cross)
+                        .resizable()
+                        .scaledToFill()
+                        .foregroundColor(Color(uiColor: PassColor.textHint))
+                        .frame(width: 24, height: 24)
+                }
+                .frame(width: 48, height: 48)
             }
             .buttonStyle(.plain)
         }

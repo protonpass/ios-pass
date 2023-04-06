@@ -30,7 +30,7 @@ struct SearchResultChips: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                ItemCountChip(icon: nil,
+                ItemCountChip(icon: IconProvider.listBullets,
                               title: "All",
                               count: itemCount.total,
                               isSelected: selectedType == nil,
@@ -54,7 +54,7 @@ struct SearchResultChips: View {
 }
 
 private struct ItemCountChip: View {
-    let icon: UIImage?
+    let icon: UIImage
     let title: String
     let count: Int
     let isSelected: Bool
@@ -62,25 +62,31 @@ private struct ItemCountChip: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(alignment: .center) {
-                if let icon {
-                    Image(uiImage: icon)
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
-                        .frame(width: 16, height: 16)
-                }
+            HStack(alignment: .center, spacing: 6) {
+                Image(uiImage: icon)
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundColor(Color(uiColor: isSelected ? PassColor.textNorm : PassColor.textWeak))
+                    .frame(width: 16, height: 16)
 
-                Text(title) +
-                Text(" \(count)")
-                    .font(.callout)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+                HStack(spacing: 4) {
+                    Text(title)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+
+                    VStack {
+                        Text(" \(count)")
+                            .font(.caption)
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+                            .padding(.top, 4)
+                        Spacer()
+                    }
+                    .fixedSize(horizontal: true, vertical: true)
+                }
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 12)
-            .background(
-                isSelected ?
-                Color(uiColor: PassColor.interactionNorm) : Color(uiColor: PassColor.interactionNormMinor1) )
+            .background(Color(uiColor: isSelected ?
+                              PassColor.interactionNormMajor1 : PassColor.interactionNormMinor1))
             .clipShape(Capsule())
             .animation(.default, value: isSelected)
         }
