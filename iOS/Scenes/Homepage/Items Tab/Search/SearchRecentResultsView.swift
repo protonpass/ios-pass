@@ -75,17 +75,9 @@ private struct SearchEntryView: View {
             Button(action: onSelect) {
                 GeneralItemRow(
                     thumbnailView: {
-                        switch uiModel.type {
-                        case .alias:
-                            CircleButton(icon: IconProvider.alias,
-                                         color: ItemContentType.alias.tintColor) {}
-                        case .login:
-                            CircleButton(icon: IconProvider.keySkeleton,
-                                         color: ItemContentType.login.tintColor) {}
-                        case .note:
-                            CircleButton(icon: IconProvider.notepadChecklist,
-                                         color: ItemContentType.note.tintColor) {}
-                        }
+                        CircleButton(icon: uiModel.type.icon,
+                                     iconColor: uiModel.type.tintColor,
+                                     backgroundColor: uiModel.type.backgroundNormColor)
                     },
                     title: uiModel.title,
                     description: uiModel.description)

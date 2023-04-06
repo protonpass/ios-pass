@@ -55,7 +55,8 @@ struct CreateEditVaultView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         color: PassColor.interactionNorm,
+                         iconColor: PassColor.interactionNorm,
+                         backgroundColor: PassColor.interactionNormMinor2,
                          action: dismiss.callAsFunction)
         }
 

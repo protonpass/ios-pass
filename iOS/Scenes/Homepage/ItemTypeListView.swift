@@ -48,7 +48,20 @@ enum ItemType: CaseIterable {
         case .note:
             return ItemContentType.note.tintColor
         case .password:
-            return UIColor(red: 252, green: 156, blue: 159)
+            return PassColor.passwordInteractionNorm
+        }
+    }
+
+    var backgroundNormColor: UIColor {
+        switch self {
+        case .login:
+            return ItemContentType.login.backgroundNormColor
+        case .alias:
+            return ItemContentType.alias.backgroundNormColor
+        case .note:
+            return ItemContentType.note.backgroundNormColor
+        case .password:
+            return PassColor.passwordInteractionNormMinor1
         }
     }
 
@@ -116,18 +129,9 @@ struct ItemTypeListView: View {
         }, label: {
             GeneralItemRow(
                 thumbnailView: {
-                    GeometryReader { proxy in
-                        ZStack {
-                            Color(uiColor: tintColor.withAlphaComponent(0.08))
-                                .clipShape(Circle())
-
-                            Image(uiImage: type.icon)
-                                .resizable()
-                                .scaledToFit()
-                                .padding(proxy.size.width / 4)
-                                .foregroundColor(Color(uiColor: tintColor))
-                        }
-                    }
+                    CircleButton(icon: type.icon,
+                                 iconColor: type.tintColor,
+                                 backgroundColor: type.backgroundNormColor)
                 },
                 title: type.title,
                 description: type.description)

@@ -19,22 +19,52 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import ProtonCore_UIFoundations
 import UIComponents
 import UIKit
 
-extension ItemContent {
-    var tintColor: UIColor { contentData.type.tintColor }
-}
-
 extension ItemContentType {
+    var icon: UIImage {
+        switch self {
+        case .alias:
+            return IconProvider.alias
+        case .login:
+            return IconProvider.keySkeleton
+        case .note:
+            return IconProvider.notepadChecklist
+        }
+    }
+
     var tintColor: UIColor {
         switch self {
         case .alias:
-            return PassColor.aliasInteractionNorm
+            return PassColor.aliasInteractionNormMajor1
         case .login:
-            return PassColor.loginInteractionNorm
+            return PassColor.loginInteractionNormMajor1
         case .note:
-            return PassColor.noteInteractionNorm
+            return PassColor.noteInteractionNormMajor1
+        }
+    }
+
+    var backgroundNormColor: UIColor {
+        switch self {
+        case .alias:
+            return PassColor.aliasInteractionNormMinor1
+        case .login:
+            return PassColor.loginInteractionNormMinor1
+        case .note:
+            return PassColor.noteInteractionNormMinor1
+        }
+    }
+
+    var backgroundWeakColor: UIColor {
+        switch self {
+        case .alias:
+            return PassColor.aliasInteractionNormMinor2
+        case .login:
+            return PassColor.loginInteractionNormMinor2
+        case .note:
+            return PassColor.noteInteractionNormMinor2
         }
     }
 }

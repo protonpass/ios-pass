@@ -63,7 +63,8 @@ struct LogsView: View {
 
     private var dismissButton: some View {
         CircleButton(icon: IconProvider.cross,
-                     color: PassColor.interactionNorm,
+                     iconColor: PassColor.interactionNorm,
+                     backgroundColor: PassColor.interactionNormMinor2,
                      action: dismiss.callAsFunction)
     }
 

@@ -40,7 +40,8 @@ struct NotLoggedInView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.cross,
-                                 color: PassColor.interactionNorm,
+                                 iconColor: PassColor.interactionNormMajor1,
+                                 backgroundColor: PassColor.interactionNormMinor2,
                                  action: onCancel)
                 }
             }

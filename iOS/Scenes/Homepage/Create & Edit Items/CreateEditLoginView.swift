@@ -277,8 +277,8 @@ struct CreateEditLoginView: View {
                     })
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
-                             color: viewModel.itemContentType().tintColor,
-                             action: {})
+                             iconColor: viewModel.itemContentType().tintColor,
+                             backgroundColor: viewModel.itemContentType().backgroundNormColor)
             })
         }
         .padding(.horizontal, kItemDetailSectionPadding)
@@ -322,8 +322,8 @@ struct CreateEditLoginView: View {
                     })
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
-                             color: viewModel.itemContentType().tintColor,
-                             action: {})
+                             iconColor: viewModel.itemContentType().tintColor,
+                             backgroundColor: viewModel.itemContentType().backgroundNormColor)
             })
         }
         .padding(.horizontal, kItemDetailSectionPadding)
@@ -410,7 +410,7 @@ struct CreateEditLoginView: View {
             NoCameraPermissionView(onOpenSettings: viewModel.openSettings)
         }
         .sheet(isPresented: $viewModel.isShowingCodeScanner) {
-            WrappedCodeScannerView(tintColor: viewModel.itemContentType().tintColor) { result in
+            WrappedCodeScannerView { result in
                 viewModel.handleScanResult(result)
             }
         }
@@ -421,7 +421,6 @@ struct CreateEditLoginView: View {
 private struct WrappedCodeScannerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isGaleryPresented = false
-    let tintColor: UIColor
     let completion: (Result<ScanResult, ScanError>) -> Void
 
     var body: some View {
@@ -436,7 +435,8 @@ private struct WrappedCodeScannerView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.cross,
-                                 color: tintColor,
+                                 iconColor: PassColor.interactionNormMajor1,
+                                 backgroundColor: PassColor.interactionNormMinor2,
                                  action: dismiss.callAsFunction)
                 }
 
@@ -445,7 +445,7 @@ private struct WrappedCodeScannerView: View {
                         isGaleryPresented.toggle()
                     }, label: {
                         Image(systemName: "photo.on.rectangle.angled")
-                            .foregroundColor(Color(uiColor: tintColor))
+                            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
                     })
                 }
             }

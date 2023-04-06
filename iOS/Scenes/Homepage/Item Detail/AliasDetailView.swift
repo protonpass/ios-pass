@@ -96,7 +96,7 @@ struct AliasDetailView: View {
     private var aliasRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user,
-                                  color: viewModel.itemContent.tintColor)
+                                  color: viewModel.itemContent.type.tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -130,7 +130,7 @@ struct AliasDetailView: View {
 
     @ViewBuilder
     private var mailboxesRow: some View {
-        let tintColor = viewModel.itemContent.tintColor
+        let tintColor = viewModel.itemContent.type.tintColor
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.forward, color: tintColor)
 

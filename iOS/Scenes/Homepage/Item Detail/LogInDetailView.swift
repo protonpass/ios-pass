@@ -28,7 +28,7 @@ struct LogInDetailView: View {
     @State private var isShowingPassword = false
     @Namespace private var bottomID
 
-    private var tintColor: UIColor { viewModel.itemContent.tintColor }
+    private var tintColor: UIColor { viewModel.itemContent.type.tintColor }
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -184,7 +184,8 @@ struct LogInDetailView: View {
 
             if !viewModel.password.isEmpty {
                 CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
-                             color: tintColor,
+                             iconColor: viewModel.itemContent.type.tintColor,
+                             backgroundColor: viewModel.itemContent.type.backgroundNormColor,
                              action: { isShowingPassword.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
             }

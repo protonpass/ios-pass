@@ -76,9 +76,8 @@ struct AccountView: View {
                     },
                     trailing: {
                         CircleButton(icon: IconProvider.arrowOutFromRectangle,
-                                     color: PassColor.interactionNorm,
-                                     action: {})
-                        .disabled(true)
+                                     iconColor: PassColor.interactionNorm,
+                                     backgroundColor: PassColor.interactionNormMinor2)
                     })
                 .roundedEditableSection()
 
@@ -91,9 +90,8 @@ struct AccountView: View {
                     },
                     trailing: {
                         CircleButton(icon: IconProvider.trash,
-                                     color: PassColor.signalDanger,
-                                     action: {})
-                        .disabled(true)
+                                     iconColor: PassColor.signalDanger,
+                                     backgroundColor: PassColor.passwordInteractionNormMinor1)
                     })
                 .roundedEditableSection()
 
@@ -111,14 +109,7 @@ struct AccountView: View {
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                CircleButton(icon: UIDevice.current.isIpad ?
-                             IconProvider.chevronLeft : IconProvider.chevronDown,
-                             color: PassColor.interactionNorm,
-                             action: viewModel.goBack)
-            }
-        }
+        .toolbar { toolbarContent }
         .alert(
             "You will be signed out",
             isPresented: $isShowingSignOutConfirmation,
@@ -129,5 +120,15 @@ struct AccountView: View {
 
                 Button(role: .cancel, label: { Text("Cancel") })
             })
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
+                         iconColor: PassColor.interactionNorm,
+                         backgroundColor: PassColor.interactionNormMinor2,
+                         action: viewModel.goBack)
+        }
     }
 }

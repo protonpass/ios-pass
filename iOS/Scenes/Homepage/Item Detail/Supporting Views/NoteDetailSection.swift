@@ -31,7 +31,7 @@ struct NoteDetailSection: View {
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.note,
-                                  color: itemContent.tintColor)
+                                  color: itemContent.type.tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Note")
@@ -79,7 +79,8 @@ private struct FullNoteView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.chevronDown,
-                                 color: itemContent.tintColor,
+                                 iconColor: itemContent.type.tintColor,
+                                 backgroundColor: itemContent.type.backgroundWeakColor,
                                  action: dismiss.callAsFunction)
                 }
             }

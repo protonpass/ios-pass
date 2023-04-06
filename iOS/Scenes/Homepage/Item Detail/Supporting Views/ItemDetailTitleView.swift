@@ -30,12 +30,14 @@ enum ItemDetailTitleIcon {
 
 struct ItemDetailTitleView: View {
     let title: String
-    let color: UIColor
     let icon: ItemDetailTitleIcon
+    let iconTintColor: UIColor
+    let iconBackgroundColor: UIColor
 
     init(itemContent: ItemContent) {
         self.title = itemContent.name
-        self.color = itemContent.tintColor
+        self.iconTintColor = itemContent.type.tintColor
+        self.iconBackgroundColor = itemContent.type.backgroundNormColor
         switch itemContent.contentData.type {
         case .alias:
             self.icon = .image(IconProvider.alias)
@@ -49,7 +51,7 @@ struct ItemDetailTitleView: View {
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ZStack {
-                Color(uiColor: color.withAlphaComponent(0.24))
+                Color(uiColor: iconBackgroundColor)
                     .clipShape(Circle())
 
                 switch icon {
@@ -58,11 +60,11 @@ struct ItemDetailTitleView: View {
                         .resizable()
                         .scaledToFit()
                         .padding()
-                        .foregroundColor(Color(uiColor: color))
+                        .foregroundColor(Color(uiColor: iconTintColor))
                 case .initials(let initials):
                     Text(initials.uppercased())
                         .fontWeight(.medium)
-                        .foregroundColor(Color(uiColor: color))
+                        .foregroundColor(Color(uiColor: iconTintColor))
                 case .notApplicable:
                     EmptyView()
                 }
