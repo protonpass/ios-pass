@@ -29,13 +29,13 @@ enum ItemType: CaseIterable {
     var icon: UIImage {
         switch self {
         case .login:
-            return IconProvider.keySkeleton
+            return IconProvider.user
         case .alias:
             return IconProvider.alias
         case .note:
             return IconProvider.notepadChecklist
         case .password:
-            return IconProvider.lock
+            return IconProvider.key
         }
     }
 
@@ -98,7 +98,7 @@ struct ItemTypeListView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                LazyVStack(spacing: 0) {
+                VStack(spacing: 0) {
                     ForEach(ItemType.allCases, id: \.self) { type in
                         itemRow(for: type)
                             .padding(.horizontal)
@@ -108,7 +108,6 @@ struct ItemTypeListView: View {
                         }
                     }
                 }
-                .padding(.top, kItemDetailSectionPadding)
             }
             .background(Color(uiColor: PassColor.backgroundWeak))
             .navigationBarTitleDisplayMode(.inline)
@@ -129,9 +128,9 @@ struct ItemTypeListView: View {
         }, label: {
             GeneralItemRow(
                 thumbnailView: {
-                    CircleButton(icon: type.icon,
-                                 iconColor: type.tintColor,
-                                 backgroundColor: type.backgroundNormColor)
+                    SquircleThumbnail(icon: type.icon,
+                                      iconColor: type.tintColor,
+                                      backgroundColor: type.backgroundNormColor)
                 },
                 title: type.title,
                 description: type.description)
