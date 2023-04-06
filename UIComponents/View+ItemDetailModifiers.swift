@@ -29,7 +29,7 @@ public extension View {
     }
 
     func roundedEditableSection() -> some View {
-        self.background(Color.white.opacity(0.04))
+        self.background(Color(uiColor: PassColor.inputBackgroundNorm))
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
