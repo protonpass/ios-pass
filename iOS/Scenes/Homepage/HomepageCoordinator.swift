@@ -189,7 +189,7 @@ private extension HomepageCoordinator {
                                                       logManager: logManager)
         profileTabViewModel.delegate = self
 
-        let placeholderView = ItemDetailPlaceholderView { [unowned self] in
+        let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
             self.popTopViewController(animated: true)
         }
 
