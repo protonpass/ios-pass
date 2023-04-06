@@ -69,10 +69,10 @@ private struct FullNoteView: View {
                     ItemDetailTitleView(itemContent: itemContent)
                         .padding(.bottom)
                     Text("Note")
-                        .font(.callout)
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        .sectionTitleText()
                     Text(itemContent.note)
                         .textSelection(.enabled)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
                 }
                 .padding()
             }

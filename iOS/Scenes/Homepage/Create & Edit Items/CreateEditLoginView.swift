@@ -526,7 +526,7 @@ private struct WebsiteSection: View {
                     viewModel.urls.append(.init(value: ""))
                 }
             }, label: {
-                Label("Add another website", systemImage: "plus")
+                Label("Add", systemImage: "plus")
             })
             .opacityReduced(viewModel.urls.last?.value.isEmpty == true)
         }

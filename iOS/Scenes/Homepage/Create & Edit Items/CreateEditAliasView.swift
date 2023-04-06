@@ -165,7 +165,7 @@ struct CreateEditAliasView: View {
                 Text("Alias address")
                     .sectionTitleText()
                 Text(viewModel.aliasEmail)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    .sectionContentText()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -185,7 +185,8 @@ struct CreateEditAliasView: View {
                     Text(viewModel.prefix + viewModel.suffix)
                         .foregroundColor(Color(uiColor: PassColor.signalDanger))
                 } else {
-                    Text(viewModel.prefix) +
+                    Text(viewModel.prefix)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm)) +
                     Text(viewModel.suffix)
                         .foregroundColor(Color(uiColor: tintColor))
                 }
