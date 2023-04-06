@@ -32,6 +32,17 @@ struct AliasDetailView: View {
     }
 
     var body: some View {
+        if UIDevice.current.isIpad {
+            realBody
+        } else {
+            NavigationView {
+                realBody
+            }
+            .navigationViewStyle(.stack)
+        }
+    }
+
+    private var realBody: some View {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
