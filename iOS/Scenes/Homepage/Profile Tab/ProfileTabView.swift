@@ -60,8 +60,24 @@ struct ProfileTabView: View {
             .background(Color(uiColor: PassColor.backgroundNorm))
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            if viewModel.primaryPlan == nil {
+                CapsuleLabelButton(icon: PassIcon.brandPass,
+                                   title: "Upgrade",
+                                   titleColor: PassColor.interactionNorm,
+                                   backgroundColor: PassColor.interactionNormMinor2,
+                                   action: viewModel.upgrade)
+            } else {
+                EmptyView()
+            }
+        }
     }
 
     private var itemCountSection: some View {
