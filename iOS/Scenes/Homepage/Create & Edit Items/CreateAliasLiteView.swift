@@ -81,6 +81,7 @@ struct CreateAliasLiteView: View {
                 .padding([.horizontal, .bottom])
             }
             .background(Color(uiColor: PassColor.backgroundWeak))
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     NavigationTitleWithHandle(title: "You are about to create")
@@ -99,7 +100,8 @@ struct CreateAliasLiteView: View {
         } else {
             Text(viewModel.prefix)
                 .font(.title2)
-                .fontWeight(.medium) +
+                .fontWeight(.medium)
+                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
             Text(viewModel.suffixSelection.selectedSuffixString)
                 .font(.title2)
                 .fontWeight(.medium)

@@ -36,6 +36,7 @@ struct CreateEditItemTitleSection: View {
                     .font(.title.weight(.bold))
                     .focused(isFocused)
                     .submitLabel(.next)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .onSubmit { onSubmit?() }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -44,7 +45,7 @@ struct CreateEditItemTitleSection: View {
                 Button(action: {
                     title = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: PassColor.textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross)
                 })
             }
         }

@@ -85,7 +85,7 @@ struct AliasDetailView: View {
     private var aliasMailboxesSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
             aliasRow
-            Divider()
+            PassDivider()
             mailboxesRow
         }
         .padding(.vertical, kItemDetailSectionPadding)

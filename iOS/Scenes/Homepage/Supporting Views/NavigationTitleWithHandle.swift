@@ -29,6 +29,7 @@ struct NavigationTitleWithHandle: View {
             Handle()
             Text(title)
                 .font(.callout.bold())
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
         }
     }
 }
