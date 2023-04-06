@@ -43,12 +43,12 @@ struct CreateEditItemToolbar: ToolbarContent {
             if isSaving {
                 ProgressView()
             } else {
-                CapsuleTextButton(title: saveButtonTitle,
-                                  titleColor: PassColor.textNorm,
-                                  backgroundColor: itemContentType.tintColor,
-                                  disabled: !isSaveable,
-                                  action: { Task { await onSave() } })
-                .font(.callout)
+                DisablableCapsuleTextButton(title: saveButtonTitle,
+                                            titleColor: PassColor.textInvert,
+                                            backgroundColor: itemContentType.tintColor,
+                                            disableBackgroundColor: itemContentType.backgroundNormColor,
+                                            disabled: !isSaveable,
+                                            action: { Task { await onSave() } })
             }
         }
     }

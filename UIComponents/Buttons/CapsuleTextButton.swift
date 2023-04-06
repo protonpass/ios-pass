@@ -25,7 +25,6 @@ public struct CapsuleTextButton: View {
     let title: String
     let titleColor: UIColor
     let backgroundColor: UIColor
-    let disabled: Bool
     let height: CGFloat
     let maxWidth: CGFloat?
     let action: () -> Void
@@ -33,14 +32,12 @@ public struct CapsuleTextButton: View {
     public init(title: String,
                 titleColor: UIColor,
                 backgroundColor: UIColor,
-                disabled: Bool,
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
                 action: @escaping () -> Void) {
         self.title = title
         self.titleColor = titleColor
         self.backgroundColor = backgroundColor
-        self.disabled = disabled
         self.height = height
         self.maxWidth = maxWidth
         self.action = action
@@ -57,6 +54,49 @@ public struct CapsuleTextButton: View {
                 .background(Color(uiColor: backgroundColor))
                 .clipShape(Capsule())
         }
+    }
+}
+
+public struct DisablableCapsuleTextButton: View {
+    let title: String
+    let titleColor: UIColor
+    let backgroundColor: UIColor
+    let disableBackgroundColor: UIColor
+    let disabled: Bool
+    let height: CGFloat
+    let maxWidth: CGFloat?
+    let action: () -> Void
+
+    public init(title: String,
+                titleColor: UIColor,
+                backgroundColor: UIColor,
+                disableBackgroundColor: UIColor,
+                disabled: Bool,
+                height: CGFloat = 40,
+                maxWidth: CGFloat? = .infinity,
+                action: @escaping () -> Void) {
+        self.title = title
+        self.titleColor = titleColor
+        self.backgroundColor = backgroundColor
+        self.disableBackgroundColor = disableBackgroundColor
+        self.disabled = disabled
+        self.height = height
+        self.maxWidth = maxWidth
+        self.action = action
+    }
+
+    public var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.callout)
+                .foregroundColor(Color(uiColor: titleColor))
+                .frame(height: height)
+                .frame(maxWidth: maxWidth)
+                .padding(.horizontal, 16)
+                .background(Color(uiColor: disabled ? disableBackgroundColor : backgroundColor))
+                .clipShape(Capsule())
+        }
+        .disabled(disabled)
         .animation(.default, value: disabled)
     }
 }

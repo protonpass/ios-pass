@@ -44,8 +44,6 @@ struct EmptyVaultView: View {
                 CapsuleTextButton(title: "Create new item",
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor2,
-                                  disabled: false,
-                                  maxWidth: nil,
                                   action: onCreateNewItem)
                 Spacer()
             }
