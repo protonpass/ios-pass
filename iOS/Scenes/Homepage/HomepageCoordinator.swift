@@ -532,12 +532,12 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowSettingsMenu() {
-        let viewModel = SettingViewModel(itemRepository: itemRepository,
-                                         logManager: logManager,
-                                         preferences: preferences,
-                                         vaultsManager: vaultsManager)
+        let viewModel = SettingsViewModel(itemRepository: itemRepository,
+                                          logManager: logManager,
+                                          preferences: preferences,
+                                          vaultsManager: vaultsManager)
         viewModel.delegate = self
-        let view = SettingView(viewModel: viewModel)
+        let view = SettingsView(viewModel: viewModel)
         adaptivelyPresentDetailView(view: view)
     }
 
@@ -623,21 +623,21 @@ extension HomepageCoordinator: AccountViewModelDelegate {
     }
 }
 
-// MARK: - SettingViewModelDelegate
-extension HomepageCoordinator: SettingViewModelDelegate {
-    func settingViewModelWantsToShowSpinner() {
+// MARK: - SettingsViewModelDelegate
+extension HomepageCoordinator: SettingsViewModelDelegate {
+    func settingsViewModelWantsToShowSpinner() {
         showLoadingHud()
     }
 
-    func settingViewModelWantsToHideSpinner() {
+    func settingsViewModelWantsToHideSpinner() {
         hideLoadingHud()
     }
 
-    func settingViewModelWantsToGoBack() {
+    func settingsViewModelWantsToGoBack() {
         adaptivelyDismissCurrentDetailView()
     }
 
-    func settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser]) {
+    func settingsViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser]) {
         let view = EditDefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
@@ -652,7 +652,7 @@ extension HomepageCoordinator: SettingViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func settingViewModelWantsToEditTheme() {
+    func settingsViewModelWantsToEditTheme() {
         let view = EditThemeView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
@@ -667,7 +667,7 @@ extension HomepageCoordinator: SettingViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func settingViewModelWantsToEditClipboardExpiration() {
+    func settingsViewModelWantsToEditClipboardExpiration() {
         let view = EditClipboardExpirationView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
@@ -682,7 +682,7 @@ extension HomepageCoordinator: SettingViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func settingViewModelWantsToEdit(primaryVault: Vault) {
+    func settingsViewModelWantsToEdit(primaryVault: Vault) {
         let allVaults = vaultsManager.getAllVaultContents().map { VaultListUiModel(vaultContent: $0) }
         let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults,
                                                   primaryVault: primaryVault,
@@ -702,7 +702,7 @@ extension HomepageCoordinator: SettingViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func settingViewModelWantsToViewLogs() {
+    func settingsViewModelWantsToViewLogs() {
         let view = LogTypesView(
             onSelect: { [unowned self] module in
                 self.presentLogsView(for: module)
@@ -723,12 +723,12 @@ extension HomepageCoordinator: SettingViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func settingViewModelDidFinishFullSync() {
+    func settingsViewModelDidFinishFullSync() {
         refreshHomepageAndSearchPage()
         bannerManager.displayBottomSuccessMessage("Force synchronization done")
     }
 
-    func settingViewModelDidEncounter(error: Error) {
+    func settingsViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }
