@@ -78,7 +78,7 @@ struct TurnOnAutoFillView: View {
                     if !viewModel.enabled {
                         Button(action: dismiss.callAsFunction) {
                             Text("Not now")
-                                .foregroundColor(.interactionNorm)
+                                .foregroundColor(Color(uiColor: PassColor.interactionNorm))
                                 .animationsDisabled()
                         }
                     }
@@ -91,7 +91,7 @@ struct TurnOnAutoFillView: View {
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .background(
-            LinearGradient(colors: [.brandNorm.opacity(0.2), .clear],
+            LinearGradient(colors: [Color(uiColor: PassColor.interactionNorm).opacity(0.2), .clear],
                            startPoint: .topLeading,
                            endPoint: .bottomTrailing)
         )

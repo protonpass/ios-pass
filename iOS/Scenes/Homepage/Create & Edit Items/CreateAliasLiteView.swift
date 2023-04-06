@@ -99,7 +99,7 @@ struct CreateAliasLiteView: View {
         if viewModel.prefixError != nil {
             Text(viewModel.prefix + viewModel.suffixSelection.selectedSuffixString)
                 .multilineTextAlignment(.center)
-                .foregroundColor(.notificationError)
+                .foregroundColor(Color(uiColor: PassColor.signalDanger))
         } else {
             Text(viewModel.prefix)
                 .font(.title2)

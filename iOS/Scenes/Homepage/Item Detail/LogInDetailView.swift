@@ -222,7 +222,7 @@ struct LogInDetailView: View {
                     case .invalid:
                         Text("Invalid Two Factor Authentication URI")
                             .font(.caption)
-                            .foregroundColor(Color(uiColor: .notificationError))
+                            .foregroundColor(Color(uiColor: PassColor.signalDanger))
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

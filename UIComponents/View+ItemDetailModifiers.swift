@@ -24,7 +24,7 @@ public extension View {
     func roundedDetailSection() -> some View {
         overlay(
             RoundedRectangle(cornerRadius: 16)
-                .stroke(Color.interactionWeak, lineWidth: 1)
+                .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 1)
         )
     }
 
@@ -33,7 +33,7 @@ public extension View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.interactionWeak, lineWidth: 1)
+                    .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 1)
             )
     }
 }

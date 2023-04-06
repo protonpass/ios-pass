@@ -36,7 +36,7 @@ public struct RetryableErrorView: View {
             Button(action: onRetry) {
                 Text("Retry")
             }
-            .foregroundColor(.interactionNorm)
+            .foregroundColor(Color(uiColor: PassColor.interactionNorm))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

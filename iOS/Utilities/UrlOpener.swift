@@ -20,6 +20,7 @@
 
 import Core
 import SafariServices
+import UIComponents
 import UIKit
 
 final class UrlOpener {
@@ -45,7 +46,7 @@ final class UrlOpener {
         switch preferences.browser {
         case .inAppSafari:
             let safariViewController = SFSafariViewController(url: url, configuration: .init())
-            safariViewController.preferredControlTintColor = .interactionNorm
+            safariViewController.preferredControlTintColor = PassColor.interactionNorm
             if let rootViewController {
                 rootViewController.topMostViewController.present(safariViewController, animated: true)
             } else {

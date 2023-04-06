@@ -182,7 +182,7 @@ struct CreateEditAliasView: View {
 
                 if viewModel.prefixError != nil {
                     Text(viewModel.prefix + viewModel.suffix)
-                        .foregroundColor(.notificationError)
+                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
                 } else {
                     Text(viewModel.prefix) +
                     Text(viewModel.suffix)

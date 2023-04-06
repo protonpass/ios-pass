@@ -44,7 +44,7 @@ struct ItemSwipeModifier: ViewModifier {
                             Image(uiImage: IconProvider.clockRotateLeft)
                         })
                     })
-                    .tint(.notificationSuccess)
+                    .tint(Color(uiColor: PassColor.signalSuccess))
                 } else {
                     EmptyView()
                 }

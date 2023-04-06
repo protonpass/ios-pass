@@ -28,7 +28,7 @@ public struct ColoredRoundedButton: View {
 
     public init(title: String,
                 titleColor: Color = .white,
-                backgroundColor: Color = .interactionNorm,
+                backgroundColor: Color = Color(uiColor: PassColor.interactionNorm),
                 action: @escaping () -> Void) {
         self.title = title
         self.titleColor = titleColor

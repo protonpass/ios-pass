@@ -67,7 +67,7 @@ struct PrefixSuffixSection: View {
                     if let prefixError {
                         Text(prefixError.localizedDescription)
                             .font(.callout)
-                            .foregroundColor(.notificationError)
+                            .foregroundColor(Color(uiColor: PassColor.signalDanger))
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
