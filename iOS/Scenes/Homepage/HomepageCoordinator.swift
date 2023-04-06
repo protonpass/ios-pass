@@ -916,7 +916,9 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
-        showFullScreen(text: text, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        showFullScreen(text: text,
+                       theme: preferences.theme,
+                       userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func itemDetailViewModelWantsToOpen(urlString: String) {
