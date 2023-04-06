@@ -51,6 +51,7 @@ struct NoteDetailView: View {
                         .fontWeight(.bold)
                         .textSelection(.enabled)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
 
                     if viewModel.note.isEmpty {
                         Text("Empty note")
@@ -61,6 +62,7 @@ struct NoteDetailView: View {
                             .sectionContentText()
                             .textSelection(.enabled)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
                     }
 
                     ItemDetailMoreInfoSection(

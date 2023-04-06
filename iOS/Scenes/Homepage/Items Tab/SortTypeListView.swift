@@ -59,12 +59,16 @@ struct SortTypeListView: View {
                         }
                     }
                     .foregroundColor(Color(uiColor: type == viewModel.selectedSortType ?
-                                           PassColor.interactionNorm : PassColor.textNorm))
+                                           PassColor.interactionNormMajor2 : PassColor.textNorm))
                     .contentShape(Rectangle())
                     .frame(height: 44)
                     .onTapGesture {
                         viewModel.selectedSortType = type
                         dismiss()
+                    }
+
+                    if type != SortType.allCases.last {
+                        PassDivider()
                     }
                 }
                 .padding(.horizontal)

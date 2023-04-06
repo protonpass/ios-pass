@@ -45,13 +45,14 @@ public struct CapsuleLabelButton: View {
 
     public var body: some View {
         Button(action: action) {
-            HStack {
+            HStack(spacing: 6) {
                 Image(uiImage: icon)
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()
-                    .frame(maxHeight: height / 2)
+                    .frame(maxHeight: height / 2.2)
                 Text(title)
+                    .font(.callout)
             }
             .padding(.horizontal)
             .foregroundColor(Color(uiColor: titleColor))
