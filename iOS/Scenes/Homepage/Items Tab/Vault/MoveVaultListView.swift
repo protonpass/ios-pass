@@ -54,6 +54,7 @@ struct MoveVaultListView: View {
 
                 DisablableCapsuleTextButton(title: "Confirm",
                                             titleColor: PassColor.textInvert,
+                                            disableTitleColor: PassColor.textHint,
                                             backgroundColor: PassColor.interactionNormMajor1,
                                             disableBackgroundColor: PassColor.interactionNormMinor1,
                                             disabled: viewModel.selectedVault == nil,

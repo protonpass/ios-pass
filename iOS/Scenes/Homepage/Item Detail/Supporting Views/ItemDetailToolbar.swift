@@ -47,8 +47,8 @@ struct ItemDetailToolbar: ToolbarContent {
                 HStack {
                     CapsuleLabelButton(icon: IconProvider.pencil,
                                        title: "Edit",
+                                       titleColor: PassColor.textInvert,
                                        backgroundColor: itemContent.type.tintColor,
-                                       disabled: false,
                                        action: onEdit)
 
                     Menu(content: {

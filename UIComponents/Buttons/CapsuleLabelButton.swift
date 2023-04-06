@@ -24,21 +24,21 @@ import SwiftUI
 public struct CapsuleLabelButton: View {
     let icon: UIImage
     let title: String
+    let titleColor: UIColor
     let backgroundColor: UIColor
-    let disabled: Bool
     let height: CGFloat
     let action: () -> Void
 
     public init(icon: UIImage,
                 title: String,
+                titleColor: UIColor,
                 backgroundColor: UIColor,
-                disabled: Bool,
                 height: CGFloat = 40,
                 action: @escaping () -> Void) {
         self.icon = icon
         self.title = title
+        self.titleColor = titleColor
         self.backgroundColor = backgroundColor
-        self.disabled = disabled
         self.height = height
         self.action = action
     }
@@ -54,14 +54,12 @@ public struct CapsuleLabelButton: View {
                 Text(title)
             }
             .padding(.horizontal)
-            .foregroundColor(Color(uiColor: PassColor.textNorm))
+            .foregroundColor(Color(uiColor: titleColor))
             .frame(height: height)
             .frame(maxWidth: .infinity)
-            .foregroundColor(Color(uiColor: disabled ? PassColor.textDisabled : PassColor.textNorm))
-            .frame(height: height)
-            .frame(maxWidth: .infinity)
-            .background(Color(uiColor: backgroundColor).opacity(disabled ? 0.08 : 1))
+            .background(Color(uiColor: backgroundColor))
             .clipShape(Capsule())
+            .contentShape(Rectangle())
         }
     }
 }
