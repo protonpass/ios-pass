@@ -90,7 +90,7 @@ struct FullScreenView: View {
                 self.mode = mode.oppositeMode
             }, label: {
                 Image(systemName: mode.oppositeMode.systemImageName)
-                    .foregroundColor(.interactionNorm)
+                    .foregroundColor(Color(uiColor: PassColor.interactionNorm))
             })
         }
     }
@@ -111,7 +111,7 @@ private struct FullScreenTextView: View {
             HStack {
                 Text("A")
                 Slider(value: $percentage)
-                    .tint(.interactionNorm)
+                    .tint(Color(uiColor: PassColor.interactionNorm))
                 Text("A")
                     .font(.title)
             }

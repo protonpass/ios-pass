@@ -75,11 +75,11 @@ struct AccountView: View {
                 height: .tall,
                 content: {
                     Text("Delete account")
-                        .foregroundColor(.notificationError)
+                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
                 },
                 trailing: {
                     CircleButton(icon: IconProvider.trash,
-                                 color: .notificationError,
+                                 color: PassColor.signalDanger,
                                  action: {})
                     .disabled(true)
                 })

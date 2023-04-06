@@ -76,7 +76,7 @@ struct OnboardingView: View {
                     if let secondaryButtonTitle = viewModel.state.secondaryButtonTitle {
                         Button(action: viewModel.secondaryAction) {
                             Text(secondaryButtonTitle)
-                                .foregroundColor(.interactionNorm)
+                                .foregroundColor(Color(uiColor: PassColor.interactionNorm))
                                 .animationsDisabled()
                         }
                         .animation(.default, value: viewModel.state.secondaryButtonTitle)
@@ -98,7 +98,7 @@ struct OnboardingView: View {
 
 struct OnboardingGradientBackground: View {
     var body: some View {
-        LinearGradient(colors: [.brandNorm.opacity(0.2), .clear],
+        LinearGradient(colors: [Color(uiColor: PassColor.interactionNorm).opacity(0.2), .clear],
                        startPoint: .topLeading,
                        endPoint: .bottomTrailing)
     }

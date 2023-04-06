@@ -30,6 +30,8 @@ public extension PassColor {
     static var aliasInteractionNormMinor1 = UIColor(named: "AliasInteractionNormMinor1")!
     static var aliasInteractionNormMinor2 = UIColor(named: "AliasInteractionNormMinor2")!
 
+    static var backdrop = UIColor(named: "Backdrop")
+
     static var backgroundMedium = UIColor(named: "BackgroundMedium")!
     static var backgroundNorm = UIColor(named: "BackgroundNorm")!
     static var backgroundStrong = UIColor(named: "BackgroundStrong")!
@@ -61,6 +63,11 @@ public extension PassColor {
     static var passwordInteractionNormMajor2 = UIColor(named: "PasswordInteractionNormMajor2")!
     static var passwordInteractionNormMinor1 = UIColor(named: "PasswordInteractionNormMinor1")!
     static var passwordInteractionNormMinor2 = UIColor(named: "PasswordInteractionNormMinor2")!
+
+    static var signalDanger = UIColor(named: "SignalDanger")!
+    static var signalInfo = UIColor(named: "SignalInfo")!
+    static var signalSuccess = UIColor(named: "SignalSuccess")!
+    static var signalWarning = UIColor(named: "SignalWarning")!
 
     static var textDisabled = UIColor(named: "TextDisabled")!
     static var textHint = UIColor(named: "TextHint")!

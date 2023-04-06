@@ -26,7 +26,7 @@ public struct NotchView: View {
     public var body: some View {
         HStack {
             Spacer()
-            Color(uiColor: .init(red: 176, green: 176, blue: 176).withAlphaComponent(0.3))
+            Color(uiColor: PassColor.inputBackgroundNorm)
                 .frame(width: 36, height: 5)
                 .clipShape(Capsule())
             Spacer()

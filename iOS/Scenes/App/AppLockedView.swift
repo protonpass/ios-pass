@@ -107,7 +107,7 @@ struct AppLockedView: View {
             }
         }, label: {
             Text("Try again")
-                .foregroundColor(.brandNorm)
+                .foregroundColor(Color(uiColor: PassColor.interactionNorm))
         })
     }
 
