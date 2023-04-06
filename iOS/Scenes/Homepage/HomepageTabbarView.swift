@@ -39,10 +39,10 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: HomepageTabBarController, context: Context) {}
 }
 
-private final class DummyViewController: UIViewController {}
-
 protocol HomepageTabBarControllerDelegate: AnyObject {
+    func homepageTabBarControllerDidSelectItemsTab()
     func homepageTabBarControllerWantToCreateNewItem()
+    func homepageTabBarControllerDidSelectProfileTab()
 }
 
 final class HomepageTabBarController: UITabBarController, DeinitPrintable {
@@ -50,7 +50,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     private let itemsTabView: ItemsTabView
     private let profileTabView: ProfileTabView
-    private let dummyViewController = DummyViewController()
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
@@ -71,10 +70,11 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         let itemsTabViewController = UIHostingController(rootView: itemsTabView)
         itemsTabViewController.tabBarItem.image = IconProvider.listBullets
 
+        let dummyViewController = UIViewController()
+        dummyViewController.tabBarItem.image = IconProvider.plus
+
         let profileTabViewController = UIHostingController(rootView: profileTabView)
         profileTabViewController.tabBarItem.image = IconProvider.user
-
-        dummyViewController.tabBarItem.image = IconProvider.plus
 
         viewControllers = [itemsTabViewController, dummyViewController, profileTabViewController]
 
@@ -99,10 +99,24 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 extension HomepageTabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {
-        if viewController.isKind(of: DummyViewController.self) {
+        guard let viewControllers = tabBarController.viewControllers else { return false }
+        assert(viewControllers.count == 3)
+
+        if viewController == viewControllers[0] {
+            homepageTabBarControllerDelegate?.homepageTabBarControllerDidSelectItemsTab()
+            return true
+        }
+
+        if viewController == viewControllers[1] {
             homepageTabBarControllerDelegate?.homepageTabBarControllerWantToCreateNewItem()
             return false
         }
-        return true
+
+        if viewController == viewControllers[2] {
+            homepageTabBarControllerDelegate?.homepageTabBarControllerDidSelectProfileTab()
+            return true
+        }
+
+        return false
     }
 }
