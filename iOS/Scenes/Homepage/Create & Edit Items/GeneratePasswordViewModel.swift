@@ -49,7 +49,7 @@ enum PasswordUtils {
         password.forEach { char in
             var color = Color(uiColor: PassColor.textNorm)
             if AllowedCharacter.digit.rawValue.contains(char) {
-                color = Color(uiColor: PassColor.interactionNorm)
+                color = Color(uiColor: PassColor.loginInteractionNormMajor1)
             } else if AllowedCharacter.special.rawValue.contains(char) {
                 color = Color(uiColor: PassColor.aliasInteractionNormMajor1)
             }

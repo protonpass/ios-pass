@@ -48,7 +48,7 @@ struct GeneratePasswordView: View {
                     Slider(value: $viewModel.length,
                            in: 4...64,
                            step: 1)
-                    .accentColor(Color(uiColor: PassColor.interactionNorm))
+                    .accentColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
                 }
                 .padding(.horizontal)
 
@@ -65,7 +65,7 @@ struct GeneratePasswordView: View {
                 HStack {
                     CapsuleTextButton(title: "Cancel",
                                       titleColor: PassColor.textWeak,
-                                      backgroundColor: .white.withAlphaComponent(0.08),
+                                      backgroundColor: PassColor.textDisabled,
                                       disabled: false,
                                       height: 44,
                                       action: dismiss.callAsFunction)
@@ -73,7 +73,7 @@ struct GeneratePasswordView: View {
                     CapsuleTextButton(
                         title: viewModel.mode.confirmTitle,
                         titleColor: PassColor.textInvert,
-                        backgroundColor: PassColor.interactionNorm,
+                        backgroundColor: PassColor.loginInteractionNormMajor1,
                         disabled: false,
                         height: 44,
                         action: {
