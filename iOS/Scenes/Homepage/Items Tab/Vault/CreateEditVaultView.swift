@@ -106,7 +106,7 @@ struct CreateEditVaultView: View {
                     Button(action: {
                         viewModel.title = ""
                     }, label: {
-                        ItemDetailSectionIcon(icon: IconProvider.cross, color: PassColor.textWeak)
+                        ItemDetailSectionIcon(icon: IconProvider.cross)
                     })
                 }
             }

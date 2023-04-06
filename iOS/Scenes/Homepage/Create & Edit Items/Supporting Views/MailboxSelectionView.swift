@@ -66,6 +66,9 @@ struct MailboxSelectionView: View {
                             .onTapGesture {
                                 mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
                             }
+
+                            PassDivider()
+                                .padding(.horizontal)
                         }
                     }
                 }
@@ -74,10 +77,11 @@ struct MailboxSelectionView: View {
 
                 Button(action: dismiss.callAsFunction) {
                     Text("Close")
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
                 }
             }
             .background(Color(uiColor: PassColor.backgroundWeak))
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     NavigationTitleWithHandle(title: "Forwarding to")

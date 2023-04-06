@@ -43,7 +43,7 @@ struct PrefixSuffixSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: kItemDetailSectionPadding) {
             prefixRow
-            Divider()
+            PassDivider()
             suffixRow
         }
         .padding(.vertical, kItemDetailSectionPadding)
@@ -62,6 +62,7 @@ struct PrefixSuffixSection: View {
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
                     .focused($isFocusedOnPrefix)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .submitLabel(.done)
                     .onSubmit { onSubmit?() }
                     if let prefixError {
@@ -78,7 +79,7 @@ struct PrefixSuffixSection: View {
                     Button(action: {
                         prefix = ""
                     }, label: {
-                        ItemDetailSectionIcon(icon: IconProvider.cross, color: PassColor.textWeak)
+                        ItemDetailSectionIcon(icon: IconProvider.cross)
                     })
                 }
             }
@@ -114,7 +115,7 @@ struct PrefixSuffixSection: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
-                ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: PassColor.textWeak)
+                ItemDetailSectionIcon(icon: IconProvider.chevronDown)
             }
             .padding(.horizontal, kItemDetailSectionPadding)
             .animationsDisabled()

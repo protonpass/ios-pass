@@ -151,7 +151,7 @@ struct CreateEditLoginView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
 
-                Divider()
+                PassDivider()
                     .padding(.horizontal)
 
                 Button(action: {
@@ -181,7 +181,7 @@ struct CreateEditLoginView: View {
             }
             .frame(maxWidth: .infinity, alignment: .center)
 
-            Divider()
+            PassDivider()
 
             Button(action: viewModel.openCodeScanner) {
                 HStack {
@@ -221,9 +221,9 @@ struct CreateEditLoginView: View {
             } else {
                 usernameRow
             }
-            Divider()
+            PassDivider()
             passwordRow
-            Divider()
+            PassDivider()
             totpRow
         }
         .padding(.vertical, kItemDetailSectionPadding)
@@ -232,7 +232,7 @@ struct CreateEditLoginView: View {
 
     private var usernameRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.user, color: PassColor.textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.user)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -240,6 +240,7 @@ struct CreateEditLoginView: View {
                 TextField("Add username", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
                     .focused($isFocusedOnUsername)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .submitLabel(.next)
                     .onSubmit { isFocusedOnPassword.toggle() }
             }
@@ -249,7 +250,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.username = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: PassColor.textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross)
                 })
             }
         }
@@ -259,7 +260,7 @@ struct CreateEditLoginView: View {
 
     private var createdAliasRow: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.alias, color: PassColor.textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.alias)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -300,7 +301,7 @@ struct CreateEditLoginView: View {
 
     private var pendingAliasRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.alias, color: PassColor.textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.alias)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -332,7 +333,7 @@ struct CreateEditLoginView: View {
 
     private var passwordRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.key, color: PassColor.textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.key)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Password")
@@ -345,6 +346,7 @@ struct CreateEditLoginView: View {
                     TextField("Add password", text: $viewModel.password)
                         .textInputAutocapitalization(.never)
                         .focused($isFocusedOnPassword)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
                         .submitLabel(.done)
                 }
             }
@@ -362,7 +364,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.password = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: PassColor.textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross)
                 })
             }
         }
@@ -372,7 +374,7 @@ struct CreateEditLoginView: View {
 
     private var totpRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.lock, color: PassColor.textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.lock)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Two Factor Authentication")
@@ -386,6 +388,7 @@ struct CreateEditLoginView: View {
                         .keyboardType(.URL)
                         .textInputAutocapitalization(.never)
                         .focused($isFocusedOnTOTP)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -401,7 +404,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.totpUri = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: PassColor.textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross)
                 })
             }
         }
@@ -459,7 +462,7 @@ private struct WebsiteSection: View {
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.earth, color: PassColor.textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.earth)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Website")
@@ -474,7 +477,8 @@ private struct WebsiteSection: View {
                                 .keyboardType(.URL)
                                 .textInputAutocapitalization(.never)
                                 .disableAutocorrection(true)
-                                .foregroundColor(isValid(url) ? .primary : .red)
+                                .foregroundColor(Color(uiColor: isValid(url) ?
+                                                       PassColor.textNorm : PassColor.signalDanger))
 
                             if !url.value.isEmpty {
                                 Button(action: {
@@ -486,14 +490,14 @@ private struct WebsiteSection: View {
                                         }
                                     }
                                 }, label: {
-                                    Image(uiImage: IconProvider.cross)
+                                    ItemDetailSectionIcon(icon: IconProvider.cross)
                                 })
-                                .foregroundColor(Color(uiColor: PassColor.textWeak))
+                                .fixedSize(horizontal: false, vertical: true)
                             }
                         }
 
                         if viewModel.urls.count > 1 || viewModel.urls.first?.value.isEmpty == false {
-                            Divider()
+                            PassDivider()
                         }
                     }
 
