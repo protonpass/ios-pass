@@ -42,8 +42,8 @@ struct EmptyVaultView: View {
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
                 CapsuleTextButton(title: "Create new item",
-                                  titleColor: .white,
-                                  backgroundColor: PassColor.interactionNorm,
+                                  titleColor: PassColor.interactionNormMajor2,
+                                  backgroundColor: PassColor.interactionNormMinor2,
                                   disabled: false,
                                   maxWidth: nil,
                                   action: onCreateNewItem)

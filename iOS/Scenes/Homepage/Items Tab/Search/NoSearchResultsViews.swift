@@ -29,6 +29,7 @@ struct NoSearchResultsInAllVaultView: View {
             Text("Coundn't find \"\(query)\" in all vaults")
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
                 .padding(.bottom)
                 .animationsDisabled()
 
@@ -52,6 +53,7 @@ struct NoSearchResultsInPreciseVaultView: View {
             Text("Coundn't find \"\(query)\" in \(vaultName)")
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
                 .padding(.bottom)
                 .animationsDisabled()
 
@@ -62,7 +64,7 @@ struct NoSearchResultsInPreciseVaultView: View {
 
             Button(action: action) {
                 Label("Search in all vaults", systemImage: "magnifyingglass")
-                    .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                    .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                     .padding()
                     .background(Color(uiColor: PassColor.interactionNormMinor2))
                     .clipShape(Capsule())
@@ -82,6 +84,7 @@ struct NoSearchResultsInTrashView: View {
             Text("Coundn't find \"\(query)\" in trash")
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
                 .padding(.bottom)
                 .animationsDisabled()
 
