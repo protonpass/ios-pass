@@ -45,6 +45,7 @@ struct CreateEditItemToolbar: ToolbarContent {
             } else {
                 DisablableCapsuleTextButton(title: saveButtonTitle,
                                             titleColor: PassColor.textInvert,
+                                            disableTitleColor: PassColor.textHint,
                                             backgroundColor: itemContentType.tintColor,
                                             disableBackgroundColor: itemContentType.backgroundNormColor,
                                             disabled: !isSaveable,

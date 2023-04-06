@@ -97,8 +97,8 @@ struct LogsView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     CapsuleLabelButton(icon: IconProvider.arrowUpFromSquare,
                                        title: "Share",
+                                       titleColor: PassColor.textInvert,
                                        backgroundColor: PassColor.interactionNorm,
-                                       disabled: false,
                                        action: viewModel.shareLogs)
                 }
             }

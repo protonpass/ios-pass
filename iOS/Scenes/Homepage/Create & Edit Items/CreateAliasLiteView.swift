@@ -71,6 +71,7 @@ struct CreateAliasLiteView: View {
 
                     DisablableCapsuleTextButton(title: "Confirm",
                                                 titleColor: PassColor.textInvert,
+                                                disableTitleColor: PassColor.textHint,
                                                 backgroundColor: PassColor.loginInteractionNormMajor1,
                                                 disableBackgroundColor: PassColor.loginInteractionNormMinor1,
                                                 disabled: viewModel.prefixError != nil,

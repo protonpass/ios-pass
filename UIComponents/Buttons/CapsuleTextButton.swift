@@ -60,6 +60,7 @@ public struct CapsuleTextButton: View {
 public struct DisablableCapsuleTextButton: View {
     let title: String
     let titleColor: UIColor
+    let disableTitleColor: UIColor
     let backgroundColor: UIColor
     let disableBackgroundColor: UIColor
     let disabled: Bool
@@ -69,6 +70,7 @@ public struct DisablableCapsuleTextButton: View {
 
     public init(title: String,
                 titleColor: UIColor,
+                disableTitleColor: UIColor,
                 backgroundColor: UIColor,
                 disableBackgroundColor: UIColor,
                 disabled: Bool,
@@ -77,6 +79,7 @@ public struct DisablableCapsuleTextButton: View {
                 action: @escaping () -> Void) {
         self.title = title
         self.titleColor = titleColor
+        self.disableTitleColor = disableTitleColor
         self.backgroundColor = backgroundColor
         self.disableBackgroundColor = disableBackgroundColor
         self.disabled = disabled
@@ -89,7 +92,7 @@ public struct DisablableCapsuleTextButton: View {
         Button(action: action) {
             Text(title)
                 .font(.callout)
-                .foregroundColor(Color(uiColor: titleColor))
+                .foregroundColor(Color(uiColor: disabled ? disableTitleColor : titleColor))
                 .frame(height: height)
                 .frame(maxWidth: maxWidth)
                 .padding(.horizontal, 16)
