@@ -232,7 +232,7 @@ struct CreateEditLoginView: View {
 
     private var usernameRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.user, color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.user, color: PassColor.textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -249,7 +249,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.username = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: PassColor.textWeak)
                 })
             }
         }
@@ -259,7 +259,7 @@ struct CreateEditLoginView: View {
 
     private var createdAliasRow: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.alias, color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.alias, color: PassColor.textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -300,7 +300,7 @@ struct CreateEditLoginView: View {
 
     private var pendingAliasRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.alias, color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.alias, color: PassColor.textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -332,7 +332,7 @@ struct CreateEditLoginView: View {
 
     private var passwordRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.key, color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.key, color: PassColor.textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Password")
@@ -362,7 +362,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.password = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: PassColor.textWeak)
                 })
             }
         }
@@ -372,7 +372,7 @@ struct CreateEditLoginView: View {
 
     private var totpRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.lock, color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.lock, color: PassColor.textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Two Factor Authentication")
@@ -401,7 +401,7 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.totpUri = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross, color: PassColor.textWeak)
                 })
             }
         }
@@ -459,7 +459,7 @@ private struct WebsiteSection: View {
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.earth, color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.earth, color: PassColor.textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Website")
@@ -488,7 +488,7 @@ private struct WebsiteSection: View {
                                 }, label: {
                                     Image(uiImage: IconProvider.cross)
                                 })
-                                .foregroundColor(.textWeak)
+                                .foregroundColor(Color(uiColor: PassColor.textWeak))
                             }
                         }
 

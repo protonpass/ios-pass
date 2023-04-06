@@ -131,7 +131,7 @@ struct ProfileTabView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text("AutoFill disabled")
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .padding(.horizontal, kItemDetailSectionPadding)
                 .frame(height: OptionRowHeight.short.value)
                 .frame(maxWidth: .infinity, alignment: .leading)

@@ -39,7 +39,7 @@ struct EmptyTrashView: View {
                     .fontWeight(.bold)
                     .padding(.vertical)
                 Text("Deleted items will be moved here first")
-                    .foregroundColor(.textWeak)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
                     .multilineTextAlignment(.center)
                 Spacer()
             }

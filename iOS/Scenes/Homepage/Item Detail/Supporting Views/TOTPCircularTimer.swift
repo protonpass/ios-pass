@@ -51,7 +51,7 @@ struct TOTPCircularTimer: View {
             Text("\(data.remaining)")
                 .font(.caption)
                 .fontWeight(.light)
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .animationsDisabled()
         }
         .frame(width: 32, height: 32)

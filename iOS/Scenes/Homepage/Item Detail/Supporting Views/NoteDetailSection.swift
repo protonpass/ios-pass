@@ -70,7 +70,7 @@ private struct FullNoteView: View {
                         .padding(.bottom)
                     Text("Note")
                         .font(.callout)
-                        .foregroundColor(.textWeak)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
                     Text(itemContent.note)
                         .textSelection(.enabled)
                 }

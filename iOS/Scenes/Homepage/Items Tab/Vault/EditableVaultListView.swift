@@ -113,7 +113,7 @@ struct EditableVaultListView: View {
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
-            .foregroundColor(.textWeak)
+            .foregroundColor(Color(uiColor: PassColor.textWeak))
     }
 
     @ViewBuilder
@@ -216,7 +216,7 @@ extension VaultSelection {
         case .precise(let vault):
             return vault.displayPreferences.color.color.color
         case .trash:
-            return .textWeak
+            return PassColor.textWeak
         }
     }
 }

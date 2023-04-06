@@ -44,7 +44,6 @@
 		353C2841291DC729008A5EBF /* SortDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C2840291DC729008A5EBF /* SortDirection.swift */; };
 		353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C95E0289A9E8500E3CDCA /* Share+Test.swift */; };
 		353E10922881827C00E59474 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E10912881827C00E59474 /* UserProtocol.swift */; };
-		353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */; };
 		353E8B74287622F300A2C5E3 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E8B73287622F300A2C5E3 /* BundleExtensions.swift */; };
 		354036DD28F451AE00F9E729 /* URLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354036DC28F451AE00F9E729 /* URLUtils.swift */; };
 		354036DF28F4522000F9E729 /* URLUtils+Matcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354036DE28F4522000F9E729 /* URLUtils+Matcher.swift */; };
@@ -722,7 +721,6 @@
 		353C2840291DC729008A5EBF /* SortDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortDirection.swift; sourceTree = "<group>"; };
 		353C95E0289A9E8500E3CDCA /* Share+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share+Test.swift"; sourceTree = "<group>"; };
 		353E10912881827C00E59474 /* UserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
-		353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarButtonStyles.swift; sourceTree = "<group>"; };
 		353E8B73287622F300A2C5E3 /* BundleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
 		354036DC28F451AE00F9E729 /* URLUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLUtils.swift; sourceTree = "<group>"; };
 		354036DE28F4522000F9E729 /* URLUtils+Matcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+Matcher.swift"; sourceTree = "<group>"; };
@@ -1709,7 +1707,6 @@
 				355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */,
 				3565FD45298CF4FA00E2A0EE /* CircleButton.swift */,
 				354E19F5293F90F500A3F853 /* ColoredRoundedButton.swift */,
-				353E8B7128761F4A00A2C5E3 /* SidebarButtonStyles.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -3744,7 +3741,6 @@
 				3567E46229B08ABE00511D62 /* PassDivider.swift in Sources */,
 				35283E4E2927A9A9002F5B84 /* View+ItemDetailModifiers.swift in Sources */,
 				3552273429DCBFEA00B9607E /* View+PlainListRow.swift in Sources */,
-				353E8B7228761F4A00A2C5E3 /* SidebarButtonStyles.swift in Sources */,
 				3565FD4B298D0CA400E2A0EE /* CapsuleLabelButton.swift in Sources */,
 				354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */,
 				35526B5D28D116350017BB53 /* PassIcon.swift in Sources */,

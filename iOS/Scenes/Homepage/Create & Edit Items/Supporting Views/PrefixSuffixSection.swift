@@ -78,7 +78,7 @@ struct PrefixSuffixSection: View {
                     Button(action: {
                         prefix = ""
                     }, label: {
-                        ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                        ItemDetailSectionIcon(icon: IconProvider.cross, color: PassColor.textWeak)
                     })
                 }
             }
@@ -114,7 +114,7 @@ struct PrefixSuffixSection: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
-                ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: .textWeak)
+                ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: PassColor.textWeak)
             }
             .padding(.horizontal, kItemDetailSectionPadding)
             .animationsDisabled()

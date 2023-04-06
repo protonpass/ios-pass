@@ -171,7 +171,7 @@ struct CredentialsView: View {
                             .fontWeight(.bold) +
                         Text(" (\(notMatchedItems.count))")
                             .font(.callout)
-                            .foregroundColor(.textWeak)
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
 
                         Spacer()
 
@@ -207,7 +207,7 @@ struct CredentialsView: View {
                     .fontWeight(.bold) +
                 Text(" (\(results.count))")
                     .font(.callout)
-                    .foregroundColor(.textWeak)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
 
                 Spacer()
 

@@ -47,7 +47,7 @@ struct SearchResultsView: View {
                     .fontWeight(.bold) +
                 Text(" result(s)")
                     .font(.callout)
-                    .foregroundColor(.textWeak)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
 
                 Spacer()
 

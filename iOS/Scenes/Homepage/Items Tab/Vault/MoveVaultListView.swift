@@ -47,7 +47,7 @@ struct MoveVaultListView: View {
 
             HStack(spacing: 16) {
                 CapsuleTextButton(title: "Cancel",
-                                  titleColor: .textWeak,
+                                  titleColor: PassColor.textWeak,
                                   backgroundColor: .white.withAlphaComponent(0.08),
                                   disabled: false,
                                   height: 44,

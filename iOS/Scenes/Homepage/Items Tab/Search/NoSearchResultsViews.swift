@@ -34,7 +34,7 @@ struct NoSearchResultsInAllVaultView: View {
 
             Text("Try search again using different spelling or keyword")
                 .font(.callout)
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal)
@@ -57,7 +57,7 @@ struct NoSearchResultsInPreciseVaultView: View {
 
             Text("Try search again using different spelling or keyword")
                 .font(.callout)
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .multilineTextAlignment(.center)
 
             Button(action: action) {
@@ -87,7 +87,7 @@ struct NoSearchResultsInTrashView: View {
 
             Text("Try search again using different spelling or keyword")
                 .font(.callout)
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal)

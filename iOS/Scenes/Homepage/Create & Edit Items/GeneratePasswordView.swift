@@ -62,7 +62,7 @@ struct GeneratePasswordView: View {
 
             HStack {
                 CapsuleTextButton(title: "Cancel",
-                                  titleColor: .textWeak,
+                                  titleColor: PassColor.textWeak,
                                   backgroundColor: .white.withAlphaComponent(0.08),
                                   disabled: false,
                                   height: 44,
@@ -70,7 +70,7 @@ struct GeneratePasswordView: View {
 
                 CapsuleTextButton(
                     title: viewModel.mode.confirmTitle,
-                    titleColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light)),
+                    titleColor: PassColor.textInvert,
                     backgroundColor: PassColor.interactionNorm,
                     disabled: false,
                     height: 44,

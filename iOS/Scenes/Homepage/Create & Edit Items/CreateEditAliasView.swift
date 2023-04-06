@@ -164,7 +164,7 @@ struct CreateEditAliasView: View {
                 Text("Alias address")
                     .sectionTitleText()
                 Text(viewModel.aliasEmail)
-                    .foregroundColor(.textWeak)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -174,7 +174,7 @@ struct CreateEditAliasView: View {
 
     private var aliasPreviewSection: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.alias, color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.alias, color: PassColor.textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Alias preview")

@@ -56,7 +56,7 @@ struct TurnOnAutoFillView: View {
                     Text(viewModel.enabled ?
                          OnboardingViewState.autoFillEnabled.description :
                             OnboardingViewState.autoFill.description)
-                    .foregroundColor(.textWeak)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
                     .multilineTextAlignment(.center)
 
                     Spacer()
