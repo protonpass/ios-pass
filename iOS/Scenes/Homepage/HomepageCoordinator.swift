@@ -924,7 +924,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToOpen(urlString: String) {
-        UrlOpener(preferences: preferences).open(urlString: urlString)
+        urlOpener.open(urlString: urlString)
     }
 
     func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault) {
