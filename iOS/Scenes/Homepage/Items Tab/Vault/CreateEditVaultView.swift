@@ -198,7 +198,7 @@ private struct VaultIconView: View {
                 selectedIcon = icon
             }, label: {
                 ZStack {
-                    Color(uiColor: .init(red: 36, green: 33, blue: 56))
+                    Color(uiColor: PassColor.backgroundWeak)
                     Image(uiImage: icon.image)
                         .resizable()
                         .scaledToFit()

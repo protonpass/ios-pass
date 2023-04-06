@@ -34,6 +34,7 @@ struct VaultRow<Thumbnail: View>: View {
 
             VStack(alignment: .leading) {
                 Text(title)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
 
                 if itemCount == 0 {
                     Text("Empty")

@@ -62,6 +62,7 @@ struct EditableVaultListView: View {
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
                                   action: viewModel.createNewVault)
+                .fixedSize(horizontal: true, vertical: true)
                 Spacer()
             }
             .padding([.bottom, .horizontal])
