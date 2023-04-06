@@ -80,8 +80,8 @@ struct ExtensionSettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.cross,
-                                 color: PassColor.backgroundNorm,
-                                 action: viewModel.dismiss)
+                                 iconColor: PassColor.interactionNormMajor1,
+                                 backgroundColor: PassColor.interactionNormMinor2)
                 }
             }
         }

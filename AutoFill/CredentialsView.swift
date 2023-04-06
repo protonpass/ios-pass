@@ -306,8 +306,8 @@ struct CredentialsView: View {
             GeneralItemRow(
                 thumbnailView: {
                     CircleButton(icon: IconProvider.keySkeleton,
-                                 color: ItemContentType.login.tintColor) {}
-                        .disabled(true)
+                                 iconColor: ItemContentType.login.tintColor,
+                                 backgroundColor: ItemContentType.login.backgroundNormColor)
                 },
                 title: item.title,
                 description: item.description)
@@ -321,8 +321,8 @@ struct CredentialsView: View {
         }, label: {
             HStack {
                 CircleButton(icon: IconProvider.keySkeleton,
-                             color: ItemContentType.login.tintColor) {}
-                    .disabled(true)
+                             iconColor: ItemContentType.login.tintColor,
+                             backgroundColor: ItemContentType.login.backgroundNormColor)
 
                 VStack(alignment: .leading, spacing: 4) {
                     HighlightText(highlightableText: item.title)

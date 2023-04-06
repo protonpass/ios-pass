@@ -83,11 +83,10 @@ struct EditableVaultListView: View {
             }, label: {
                 VaultRow(
                     thumbnail: {
-                        CircleButton(
-                            icon: selection.icon,
-                            color: selection.color,
-                            backgroundOpacity: 0.16,
-                            action: {})},
+                        CircleButton(icon: selection.icon,
+                                     iconColor: selection.color,
+                                     backgroundColor: selection.color.withAlphaComponent(0.16))
+                    },
                     title: selection.title,
                     itemCount: vaultsManager.getItemCount(for: selection),
                     isSelected: vaultsManager.isSelected(selection))

@@ -92,7 +92,8 @@ struct GeneratePasswordView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     // Hidden gimmick button to make the navigation title centered properly
                     CircleButton(icon: IconProvider.arrowsRotate,
-                                 color: PassColor.interactionNorm,
+                                 iconColor: PassColor.interactionNormMajor1,
+                                 backgroundColor: PassColor.interactionNormMinor1,
                                  action: viewModel.regenerate)
                     .opacity(0)
                 }
@@ -103,7 +104,8 @@ struct GeneratePasswordView: View {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     CircleButton(icon: IconProvider.arrowsRotate,
-                                 color: PassColor.interactionNorm,
+                                 iconColor: PassColor.interactionNormMajor1,
+                                 backgroundColor: PassColor.interactionNormMinor1,
                                  action: viewModel.regenerate)
                 }
             }

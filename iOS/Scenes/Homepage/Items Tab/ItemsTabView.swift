@@ -91,22 +91,23 @@ struct ItemsTabView: View {
             switch viewModel.vaultsManager.vaultSelection {
             case .all:
                 CircleButton(icon: PassIcon.allVaults,
-                             color: PassColor.loginInteractionNorm,
-                             backgroundOpacity: 0.16,
+                             iconColor: PassColor.loginInteractionNormMajor1,
+                             backgroundColor: PassColor.loginInteractionNormMinor1,
                              action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)
 
             case .precise(let vault):
-                CircleButton(icon: vault.displayPreferences.icon.icon.image,
-                             color: vault.displayPreferences.color.color.color,
-                             backgroundOpacity: 0.16,
-                             action: viewModel.presentVaultList)
+                CircleButton(
+                    icon: vault.displayPreferences.icon.icon.image,
+                    iconColor: vault.displayPreferences.color.color.color,
+                    backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16),
+                    action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)
 
             case .trash:
                 CircleButton(icon: IconProvider.trash,
-                             color: PassColor.textWeak,
-                             backgroundOpacity: 0.16,
+                             iconColor: PassColor.textWeak,
+                             backgroundColor: PassColor.textDisabled,
                              action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)
             }
@@ -240,17 +241,9 @@ struct ItemsTabView: View {
         }, label: {
             GeneralItemRow(
                 thumbnailView: {
-                    switch item.type {
-                    case .alias:
-                        CircleButton(icon: IconProvider.alias,
-                                     color: ItemContentType.alias.tintColor) {}
-                    case .login:
-                        CircleButton(icon: IconProvider.keySkeleton,
-                                     color: ItemContentType.login.tintColor) {}
-                    case .note:
-                        CircleButton(icon: IconProvider.notepadChecklist,
-                                     color: ItemContentType.note.tintColor) {}
-                    }
+                    CircleButton(icon: item.type.icon,
+                                 iconColor: item.type.tintColor,
+                                 backgroundColor: item.type.backgroundNormColor)
                 },
                 title: item.title,
                 description: item.description)

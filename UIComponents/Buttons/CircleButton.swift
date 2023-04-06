@@ -23,37 +23,44 @@ import SwiftUI
 /// A cirle button with an icon inside.
 public struct CircleButton: View {
     let icon: UIImage
-    let color: UIColor
-    let backgroundOpacity: CGFloat
+    let iconColor: UIColor
+    let backgroundColor: UIColor
     let height: CGFloat
-    let action: () -> Void
+    let action: (() -> Void)?
 
     public init(icon: UIImage,
-                color: UIColor,
-                backgroundOpacity: CGFloat = 0.08,
+                iconColor: UIColor,
+                backgroundColor: UIColor,
                 height: CGFloat = 40,
-                action: @escaping () -> Void) {
+                action: (() -> Void)? = nil) {
         self.icon = icon
-        self.color = color
-        self.backgroundOpacity = backgroundOpacity
+        self.iconColor = iconColor
+        self.backgroundColor = backgroundColor
         self.height = height
         self.action = action
     }
 
     public var body: some View {
-        Button(action: action) {
-            ZStack {
-                Color(uiColor: color)
-                    .clipShape(Circle())
-                    .opacity(backgroundOpacity)
-                Image(uiImage: icon)
-                    .resizable()
-                    .renderingMode(.template)
-                    .scaledToFit()
-                    .foregroundColor(Color(uiColor: color))
-                    .padding(.vertical, height / 4)
+        if let action {
+            Button(action: action) {
+                realBody
             }
-            .frame(width: height, height: height)
+        } else {
+            realBody
         }
+    }
+
+    private var realBody: some View {
+        ZStack {
+            Color(uiColor: backgroundColor)
+                .clipShape(Circle())
+            Image(uiImage: icon)
+                .resizable()
+                .renderingMode(.template)
+                .scaledToFit()
+                .foregroundColor(Color(uiColor: iconColor))
+                .padding(.vertical, height / 4)
+        }
+        .frame(width: height, height: height)
     }
 }

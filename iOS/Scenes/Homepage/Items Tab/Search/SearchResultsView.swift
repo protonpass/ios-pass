@@ -172,17 +172,9 @@ private struct ItemSearchResultView: View {
 
     var body: some View {
         HStack {
-            switch result.type {
-            case .alias:
-                CircleButton(icon: IconProvider.alias,
-                             color: ItemContentType.alias.tintColor) {}
-            case .login:
-                CircleButton(icon: IconProvider.keySkeleton,
-                             color: ItemContentType.login.tintColor) {}
-            case .note:
-                CircleButton(icon: IconProvider.notepadChecklist,
-                             color: ItemContentType.note.tintColor) {}
-            }
+            CircleButton(icon: result.type.icon,
+                         iconColor: result.type.tintColor,
+                         backgroundColor: result.type.backgroundNormColor)
 
             VStack(alignment: .leading, spacing: 4) {
                 HighlightText(highlightableText: result.title)

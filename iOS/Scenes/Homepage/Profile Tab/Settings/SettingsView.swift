@@ -57,13 +57,16 @@ struct SettingsView: View {
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
         .theme(viewModel.selectedTheme)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                CircleButton(icon: UIDevice.current.isIpad ?
-                             IconProvider.chevronLeft : IconProvider.chevronDown,
-                             color: PassColor.interactionNorm,
-                             action: viewModel.goBack)
-            }
+        .toolbar { toolbarContent }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
+                         iconColor: PassColor.interactionNorm,
+                         backgroundColor: PassColor.interactionNormMinor2,
+                         action: viewModel.goBack)
         }
     }
 
@@ -158,13 +161,12 @@ struct SettingsView: View {
                     height: .medium,
                     content: {
                         Text("Force Synchronization")
-                            .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                     },
                     trailing: {
                         CircleButton(icon: IconProvider.arrowRotateRight,
-                                     color: PassColor.interactionNorm,
-                                     action: {})
-                        .disabled(true)
+                                     iconColor: PassColor.interactionNormMajor2,
+                                     backgroundColor: PassColor.interactionNormMinor1)
                     })
             }
             .roundedEditableSection()
