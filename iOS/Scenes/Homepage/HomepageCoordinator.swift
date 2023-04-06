@@ -405,8 +405,7 @@ private extension HomepageCoordinator {
         if UIDevice.current.isIpad {
             push(view)
         } else {
-            present(NavigationView { AnyView(view) }.navigationViewStyle(.stack),
-                    userInterfaceStyle: preferences.theme.userInterfaceStyle)
+            present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
         }
     }
 

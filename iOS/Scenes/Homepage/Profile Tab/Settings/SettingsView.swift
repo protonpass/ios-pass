@@ -27,6 +27,18 @@ struct SettingsView: View {
     @StateObject var viewModel: SettingsViewModel
 
     var body: some View {
+        if UIDevice.current.isIpad {
+            realBody
+        } else {
+            NavigationView {
+                realBody
+            }
+            .navigationViewStyle(.stack)
+            .theme(viewModel.selectedTheme)
+        }
+    }
+
+    private var realBody: some View {
         ScrollView {
             VStack(spacing: kItemDetailSectionPadding) {
                 untitledSection
