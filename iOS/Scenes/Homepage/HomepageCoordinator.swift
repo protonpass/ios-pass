@@ -448,8 +448,16 @@ extension HomepageCoordinator {
 
 // MARK: - HomepageTabBarControllerDelegate
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
+    func homepageTabBarControllerDidSelectItemsTab() {
+        print(#function)
+    }
+
     func homepageTabBarControllerWantToCreateNewItem() {
         presentCreateItemView(shareId: nil)
+    }
+
+    func homepageTabBarControllerDidSelectProfileTab() {
+        print(#function)
     }
 }
 
