@@ -138,7 +138,8 @@ struct ItemsTabView: View {
         HStack {
             Text("All")
                 .font(.callout)
-                .fontWeight(.bold) +
+                .fontWeight(.bold)
+                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
             Text(" (\(items.count))")
                 .font(.callout)
                 .foregroundColor(Color(uiColor: PassColor.textWeak))
@@ -221,6 +222,8 @@ struct ItemsTabView: View {
                 }
             }, header: {
                 Text(headerTitle)
+                    .font(.callout)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
             })
         }
     }
