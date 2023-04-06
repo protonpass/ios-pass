@@ -74,7 +74,7 @@ struct LogInDetailView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .itemDetailBackground(theme: viewModel.theme)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)

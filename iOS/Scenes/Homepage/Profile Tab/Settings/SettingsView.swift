@@ -50,13 +50,13 @@ struct SettingsView: View {
             }
             .padding()
         }
+        .theme(viewModel.selectedTheme)
+        .itemDetailBackground(theme: viewModel.selectedTheme)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(uiColor: PassColor.backgroundNorm))
         .navigationTitle("Settings")
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
-        .theme(viewModel.selectedTheme)
         .toolbar { toolbarContent }
     }
 
