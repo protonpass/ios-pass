@@ -61,7 +61,7 @@ struct CreateEditVaultView: View {
 
         ToolbarItem(placement: .navigationBarTrailing) {
             CapsuleTextButton(title: viewModel.saveButtonTitle,
-                              titleColor: .textNorm,
+                              titleColor: PassColor.textNorm,
                               backgroundColor: PassColor.interactionNorm,
                               disabled: false,
                               action: viewModel.save)
@@ -104,7 +104,7 @@ struct CreateEditVaultView: View {
                     Button(action: {
                         viewModel.title = ""
                     }, label: {
-                        ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                        ItemDetailSectionIcon(icon: IconProvider.cross, color: PassColor.textWeak)
                     })
                 }
             }
@@ -178,7 +178,8 @@ private struct VaultColorView: View {
     private func overlay(size: CGSize) -> some View {
         if color == selectedColor {
             Circle()
-                .strokeBorder(Color.textHint, style: StrokeStyle(lineWidth: size.width / 20))
+                .strokeBorder(Color(uiColor: PassColor.textHint),
+                              style: StrokeStyle(lineWidth: size.width / 20))
         } else {
             EmptyView()
         }
@@ -199,7 +200,7 @@ private struct VaultIconView: View {
                     Image(uiImage: icon.image)
                         .resizable()
                         .scaledToFit()
-                        .foregroundColor(.textNorm)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
                         .padding(proxy.size.width / 6)
                 }
                 .clipShape(Circle())
@@ -215,7 +216,8 @@ private struct VaultIconView: View {
     private func overlay(size: CGSize) -> some View {
         if icon == selectedIcon {
             Circle()
-                .strokeBorder(Color.textHint, style: StrokeStyle(lineWidth: size.width / 20))
+                .strokeBorder(Color(uiColor: PassColor.textHint),
+                              style: StrokeStyle(lineWidth: size.width / 20))
         } else {
             EmptyView()
         }

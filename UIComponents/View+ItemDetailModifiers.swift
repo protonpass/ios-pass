@@ -44,19 +44,19 @@ public extension Text {
     }
 
     func sectionTitleText() -> Text {
-        self.font(.footnote).foregroundColor(.textWeak)
+        self.font(.footnote).foregroundColor(Color(uiColor: PassColor.textWeak))
     }
 
     func sectionContentText() -> Text {
-        self.foregroundColor(.textNorm)
+        self.foregroundColor(Color(uiColor: PassColor.textNorm))
     }
 
     func sectionHeaderText() -> Text {
-        self.foregroundColor(.textWeak)
+        self.foregroundColor(Color(uiColor: PassColor.textWeak))
     }
 
     /// Used for placeholder `Text`s like `Empty notes`, `No items`...
     func placeholderText() -> Text {
-        self.font(.body.italic()).foregroundColor(.textWeak)
+        self.font(.body.italic()).foregroundColor(Color(uiColor: PassColor.textWeak))
     }
 }

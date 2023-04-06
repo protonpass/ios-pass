@@ -92,6 +92,6 @@ private struct ItemContentTypeCountView: View {
         .padding(10)
         .frame(height: kChipHeight)
         .frame(minWidth: 103)
-        .overlay(Capsule().strokeBorder(Color.separatorNorm, lineWidth: 2))
+        .overlay(Capsule().strokeBorder(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 2))
     }
 }

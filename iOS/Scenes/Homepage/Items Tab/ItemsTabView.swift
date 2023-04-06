@@ -105,7 +105,7 @@ struct ItemsTabView: View {
 
             case .trash:
                 CircleButton(icon: IconProvider.trash,
-                             color: .textWeak,
+                             color: PassColor.textWeak,
                              backgroundOpacity: 0.16,
                              action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)
@@ -120,7 +120,7 @@ struct ItemsTabView: View {
                         .frame(width: 20, height: 20)
                     Text(viewModel.vaultsManager.vaultSelection.searchBarPlacehoder)
                 }
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .padding(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -140,7 +140,7 @@ struct ItemsTabView: View {
                 .fontWeight(.bold) +
             Text(" (\(items.count))")
                 .font(.callout)
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
 
             Spacer()
 

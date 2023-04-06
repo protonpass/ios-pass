@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIComponents
 
 struct TOTPText: View {
     private let texts: [Text]
@@ -30,7 +31,7 @@ struct TOTPText: View {
         for (index, segment) in segments.enumerated() {
             texts.append(Text(segment).font(.callout).fontWeight(.medium))
             if index != segments.count - 1 {
-                texts.append(Text(" • ").font(.callout).foregroundColor(.textWeak))
+                texts.append(Text(" • ").font(.callout).foregroundColor(Color(uiColor: PassColor.textWeak)))
             }
         }
         self.texts = texts

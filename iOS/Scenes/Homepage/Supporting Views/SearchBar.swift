@@ -60,7 +60,7 @@ struct SearchBar: View {
                     .opacity(query.isEmpty ? 0 : 1)
                     .animation(.default, value: query.isEmpty)
                 }
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .padding(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }

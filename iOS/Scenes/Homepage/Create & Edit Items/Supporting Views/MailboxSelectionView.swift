@@ -50,7 +50,8 @@ struct MailboxSelectionView: View {
                         ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
                             HStack {
                                 Text(mailbox.email)
-                                    .foregroundColor(isSelected(mailbox) ? mode.tintColor : .textNorm)
+                                    .foregroundColor(isSelected(mailbox) ?
+                                                     mode.tintColor : Color(uiColor: PassColor.textNorm))
                                 Spacer()
 
                                 if isSelected(mailbox) {

@@ -27,7 +27,7 @@ struct MailboxSection: View {
 
     var body: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.forward, color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.forward, color: PassColor.textWeak)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Forwarding to")
@@ -37,7 +37,7 @@ struct MailboxSection: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.chevronDown, color: PassColor.textWeak)
         }
         .padding(kItemDetailSectionPadding)
         .roundedEditableSection()

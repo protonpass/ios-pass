@@ -37,12 +37,11 @@ struct VaultRow<Thumbnail: View>: View {
 
                 if itemCount == 0 {
                     Text("Empty")
-                        .font(.callout.italic())
-                        .foregroundColor(Color.textWeak)
+                        .placeholderText()
                 } else {
                     Text("\(itemCount) items")
                         .font(.callout)
-                        .foregroundColor(Color.textWeak)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
                 }
             }
 

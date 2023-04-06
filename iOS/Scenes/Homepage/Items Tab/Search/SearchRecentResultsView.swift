@@ -37,7 +37,7 @@ struct SearchRecentResultsView: View {
                     .fontWeight(.bold) +
                 Text(" (\(results.count))")
                     .font(.callout)
-                    .foregroundColor(.textWeak)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
 
                 Spacer()
 
@@ -98,7 +98,7 @@ private struct SearchEntryView: View {
                 Image(uiImage: IconProvider.cross)
                     .resizable()
                     .scaledToFit()
-                    .foregroundColor(.textWeak)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
                     .frame(width: 24, height: 24)
             }
             .buttonStyle(.plain)

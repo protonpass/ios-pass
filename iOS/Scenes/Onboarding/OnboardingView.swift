@@ -59,7 +59,7 @@ struct OnboardingView: View {
                     Spacer()
 
                     Text(viewModel.state.description)
-                        .foregroundColor(.textWeak)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
                         .multilineTextAlignment(.center)
 
                     Spacer()

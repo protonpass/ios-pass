@@ -67,14 +67,14 @@ private struct ItemCountChip: View {
                     Image(uiImage: icon)
                         .resizable()
                         .scaledToFit()
-                        .foregroundColor(.textWeak)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
                         .frame(width: 16, height: 16)
                 }
 
                 Text(title) +
                 Text(" \(count)")
                     .font(.callout)
-                    .foregroundColor(.textWeak)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 12)

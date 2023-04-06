@@ -63,7 +63,7 @@ struct CreateAliasLiteView: View {
 
             HStack(spacing: 16) {
                 CapsuleTextButton(title: "Cancel",
-                                  titleColor: .textWeak,
+                                  titleColor: PassColor.textWeak,
                                   backgroundColor: .white.withAlphaComponent(0.08),
                                   disabled: false,
                                   height: 44,
@@ -71,7 +71,7 @@ struct CreateAliasLiteView: View {
 
                 CapsuleTextButton(
                     title: "Confirm",
-                    titleColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light)),
+                    titleColor: PassColor.textInvert,
                     backgroundColor: tintColor,
                     disabled: viewModel.prefixError != nil,
                     height: 44,

@@ -21,6 +21,7 @@
 import Client
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct ItemDetailMoreInfoSection: View {
     @State private var isExpanded = false
@@ -40,7 +41,7 @@ struct ItemDetailMoreInfoSection: View {
                         Text("More info")
                             .font(.caption)
                             .fontWeight(.semibold)
-                            .foregroundColor(.textWeak)
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
                     }, icon: {
                         icon(from: IconProvider.infoCircle)
                     })
@@ -81,7 +82,7 @@ struct ItemDetailMoreInfoSection: View {
                     }
                 }
                 .font(.caption)
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
             }
         }
         .contentShape(Rectangle())
@@ -99,7 +100,7 @@ struct ItemDetailMoreInfoSection: View {
             .resizable()
             .scaledToFit()
             .frame(width: 16)
-            .foregroundColor(.textWeak)
+            .foregroundColor(Color(uiColor: PassColor.textWeak))
     }
 
     private func title(_ text: String) -> some View {

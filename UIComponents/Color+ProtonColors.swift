@@ -62,54 +62,6 @@ public extension UIColor {
     static var notificationWarning: UIColor {
         ColorProvider.NotificationWarning
     }
-
-    static var separatorNorm: UIColor {
-        ColorProvider.SeparatorNorm
-    }
-
-    static var sidebarBackground: UIColor {
-        ColorProvider.SidebarBackground
-    }
-
-    static var sidebarIconWeak: UIColor {
-        ColorProvider.SidebarIconWeak
-    }
-
-    static var sidebarInteractionPressed: UIColor {
-        ColorProvider.SidebarInteractionPressed
-    }
-
-    static var sidebarInteractionWeakNorm: UIColor {
-        ColorProvider.SidebarInteractionWeakNorm
-    }
-
-    static var sidebarSeparator: UIColor {
-        ColorProvider.SidebarSeparator
-    }
-
-    static var sidebarTextNorm: UIColor {
-        ColorProvider.SidebarTextNorm
-    }
-
-    static var sidebarTextWeak: UIColor {
-        ColorProvider.SidebarTextWeak
-    }
-
-    static var textDisabled: UIColor {
-        ColorProvider.TextDisabled
-    }
-
-    static var textNorm: UIColor {
-        ColorProvider.TextNorm
-    }
-
-    static var textHint: UIColor {
-        ColorProvider.TextHint
-    }
-
-    static var textWeak: UIColor {
-        ColorProvider.TextWeak
-    }
 }
 
 // MARK: - Color for core colors
@@ -152,53 +104,5 @@ public extension Color {
 
     static var notificationWarning: Color {
         .init(uiColor: .notificationWarning)
-    }
-
-    static var separatorNorm: Color {
-        .init(uiColor: .separatorNorm)
-    }
-
-    static var sidebarBackground: Color {
-        .init(uiColor: .sidebarBackground)
-    }
-
-    static var sidebarIconWeak: Color {
-        .init(uiColor: .sidebarIconWeak)
-    }
-
-    static var sidebarInteractionPressed: Color {
-        .init(uiColor: .sidebarInteractionPressed)
-    }
-
-    static var sidebarInteractionWeakNorm: Color {
-        .init(uiColor: .sidebarInteractionWeakNorm)
-    }
-
-    static var sidebarSeparator: Color {
-        .init(uiColor: .sidebarSeparator)
-    }
-
-    static var sidebarTextNorm: Color {
-        .init(uiColor: .sidebarTextNorm)
-    }
-
-    static var sidebarTextWeak: Color {
-        .init(uiColor: .sidebarTextWeak)
-    }
-
-    static var textDisabled: Color {
-        .init(uiColor: .textDisabled)
-    }
-
-    static var textHint: Color {
-        .init(uiColor: .textHint)
-    }
-
-    static var textNorm: Color {
-        .init(uiColor: .textNorm)
-    }
-
-    static var textWeak: Color {
-        .init(uiColor: .textWeak)
     }
 }
