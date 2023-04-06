@@ -48,14 +48,14 @@ struct MoveVaultListView: View {
             HStack(spacing: 16) {
                 CapsuleTextButton(title: "Cancel",
                                   titleColor: PassColor.textWeak,
-                                  backgroundColor: .white.withAlphaComponent(0.08),
+                                  backgroundColor: PassColor.textDisabled,
                                   disabled: false,
                                   height: 44,
                                   action: dismiss.callAsFunction)
 
                 CapsuleTextButton(title: "Confirm",
                                   titleColor: PassColor.textInvert,
-                                  backgroundColor: PassColor.interactionNorm,
+                                  backgroundColor: PassColor.interactionNormMajor1,
                                   disabled: viewModel.selectedVault == nil,
                                   height: 44,
                                   action: { dismiss(); viewModel.confirm() })
