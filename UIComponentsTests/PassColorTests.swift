@@ -71,6 +71,8 @@ final class PassColorTests: XCTestCase {
         _ = PassColor.signalSuccess
         _ = PassColor.signalWarning
 
+        _ = PassColor.tabBarBackground
+
         _ = PassColor.textDisabled
         _ = PassColor.textHint
         _ = PassColor.textInvert

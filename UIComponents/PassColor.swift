@@ -69,6 +69,8 @@ public extension PassColor {
     static var signalSuccess = UIColor(named: "SignalSuccess")!
     static var signalWarning = UIColor(named: "SignalWarning")!
 
+    static var tabBarBackground = UIColor(named: "TabBarBackground")!
+
     static var textDisabled = UIColor(named: "TextDisabled")!
     static var textHint = UIColor(named: "TextHint")!
     static var textInvert = UIColor(named: "TextInvert")!
