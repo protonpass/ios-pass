@@ -33,19 +33,17 @@ struct SearchBar: View {
     var body: some View {
         HStack {
             ZStack {
-                Color.black
+                Color(uiColor: PassColor.backgroundStrong)
                 HStack {
                     Image(uiImage: IconProvider.magnifier)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 20, height: 20)
-                        .foregroundColor(.primary)
 
                     TextField(placeholder, text: $query)
                         .tint(Color(uiColor: PassColor.interactionNorm))
                         .autocorrectionDisabled()
                         .focused($isFocused)
-                        .foregroundColor(.primary)
 
                     Button(action: {
                         query = ""
@@ -54,7 +52,6 @@ struct SearchBar: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 20, height: 20)
-                            .foregroundColor(.primary)
                     })
                     .buttonStyle(.plain)
                     .opacity(query.isEmpty ? 0 : 1)

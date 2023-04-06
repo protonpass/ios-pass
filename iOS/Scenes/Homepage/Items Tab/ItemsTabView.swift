@@ -91,7 +91,7 @@ struct ItemsTabView: View {
             switch viewModel.vaultsManager.vaultSelection {
             case .all:
                 CircleButton(icon: PassIcon.allVaults,
-                             color: PassColor.interactionNorm,
+                             color: PassColor.loginInteractionNorm,
                              backgroundOpacity: 0.16,
                              action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)
@@ -112,7 +112,7 @@ struct ItemsTabView: View {
             }
 
             ZStack {
-                Color.black
+                Color(uiColor: PassColor.backgroundStrong)
                 HStack {
                     Image(uiImage: IconProvider.magnifier)
                         .resizable()
@@ -125,7 +125,7 @@ struct ItemsTabView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            .containerShape(Rectangle())
+            .contentShape(Rectangle())
             .onTapGesture(perform: viewModel.search)
         }
         .padding(.horizontal)
