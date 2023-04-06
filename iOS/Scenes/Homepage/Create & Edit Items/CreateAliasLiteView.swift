@@ -66,17 +66,16 @@ struct CreateAliasLiteView: View {
                     CapsuleTextButton(title: "Cancel",
                                       titleColor: PassColor.textWeak,
                                       backgroundColor: PassColor.textDisabled,
-                                      disabled: false,
                                       height: 44,
                                       action: dismiss.callAsFunction)
 
-                    CapsuleTextButton(
-                        title: "Confirm",
-                        titleColor: PassColor.textInvert,
-                        backgroundColor: PassColor.loginInteractionNormMajor1,
-                        disabled: viewModel.prefixError != nil,
-                        height: 44,
-                        action: { viewModel.confirm(); dismiss() })
+                    DisablableCapsuleTextButton(title: "Confirm",
+                                                titleColor: PassColor.textInvert,
+                                                backgroundColor: PassColor.loginInteractionNormMajor1,
+                                                disableBackgroundColor: PassColor.loginInteractionNormMinor1,
+                                                disabled: viewModel.prefixError != nil,
+                                                height: 44,
+                                                action: { viewModel.confirm(); dismiss() })
                 }
                 .padding([.horizontal, .bottom])
             }

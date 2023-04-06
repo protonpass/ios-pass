@@ -64,9 +64,7 @@ struct CreateEditVaultView: View {
             CapsuleTextButton(title: viewModel.saveButtonTitle,
                               titleColor: PassColor.textNorm,
                               backgroundColor: PassColor.interactionNorm,
-                              disabled: false,
                               action: viewModel.save)
-            .font(.callout)
         }
     }
 

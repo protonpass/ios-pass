@@ -66,7 +66,6 @@ struct GeneratePasswordView: View {
                     CapsuleTextButton(title: "Cancel",
                                       titleColor: PassColor.textWeak,
                                       backgroundColor: PassColor.textDisabled,
-                                      disabled: false,
                                       height: 44,
                                       action: dismiss.callAsFunction)
 
@@ -74,7 +73,6 @@ struct GeneratePasswordView: View {
                         title: viewModel.mode.confirmTitle,
                         titleColor: PassColor.textInvert,
                         backgroundColor: PassColor.loginInteractionNormMajor1,
-                        disabled: false,
                         height: 44,
                         action: {
                             viewModel.confirm()

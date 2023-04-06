@@ -59,10 +59,8 @@ struct EditableVaultListView: View {
 
             HStack {
                 CapsuleTextButton(title: "Create vault",
-                                  titleColor: PassColor.interactionNorm,
+                                  titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
-                                  disabled: false,
-                                  maxWidth: nil,
                                   action: viewModel.createNewVault)
                 Spacer()
             }

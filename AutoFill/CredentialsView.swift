@@ -135,7 +135,6 @@ struct CredentialsView: View {
             CapsuleTextButton(title: "Create login",
                               titleColor: PassColor.textNorm,
                               backgroundColor: PassColor.interactionNorm,
-                              disabled: false,
                               height: 52,
                               action: viewModel.createLoginItem)
             .padding(.horizontal)

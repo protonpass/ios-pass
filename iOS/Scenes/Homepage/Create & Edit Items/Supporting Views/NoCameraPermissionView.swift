@@ -35,7 +35,6 @@ struct NoCameraPermissionView: View {
                     CapsuleTextButton(title: "Open settings",
                                       titleColor: PassColor.textNorm,
                                       backgroundColor: PassColor.interactionNorm,
-                                      disabled: false,
                                       action: onOpenSettings)
                     .frame(width: 250)
                 } else {

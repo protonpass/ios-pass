@@ -49,16 +49,16 @@ struct MoveVaultListView: View {
                 CapsuleTextButton(title: "Cancel",
                                   titleColor: PassColor.textWeak,
                                   backgroundColor: PassColor.textDisabled,
-                                  disabled: false,
                                   height: 44,
                                   action: dismiss.callAsFunction)
 
-                CapsuleTextButton(title: "Confirm",
-                                  titleColor: PassColor.textInvert,
-                                  backgroundColor: PassColor.interactionNormMajor1,
-                                  disabled: viewModel.selectedVault == nil,
-                                  height: 44,
-                                  action: { dismiss(); viewModel.confirm() })
+                DisablableCapsuleTextButton(title: "Confirm",
+                                            titleColor: PassColor.textInvert,
+                                            backgroundColor: PassColor.interactionNormMajor1,
+                                            disableBackgroundColor: PassColor.interactionNormMinor1,
+                                            disabled: viewModel.selectedVault == nil,
+                                            height: 44,
+                                            action: { dismiss(); viewModel.confirm() })
             }
             .padding([.bottom, .horizontal])
         }
