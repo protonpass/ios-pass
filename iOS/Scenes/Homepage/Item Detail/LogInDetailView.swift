@@ -71,6 +71,7 @@ struct LogInDetailView: View {
                     .id(bottomID)
                 }
                 .padding()
+                .animation(.default, value: isShowingPassword)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -129,9 +130,8 @@ struct LogInDetailView: View {
                                 Text("View Alias")
                                     .font(.callout)
                                     .foregroundColor(Color(uiColor: tintColor))
-                                Color(uiColor: tintColor)
+                                Color(uiColor: viewModel.itemContent.type.backgroundNormColor)
                                     .frame(height: 1)
-                                    .opacity(0.24)
                             }
                             .fixedSize(horizontal: true, vertical: true)
                             .padding(.top, 8)
@@ -188,10 +188,10 @@ struct LogInDetailView: View {
                              backgroundColor: viewModel.itemContent.type.backgroundNormColor,
                              action: { isShowingPassword.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
+                .animationsDisabled()
             }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
-        .animation(.default, value: isShowingPassword)
         .contextMenu {
             Button(action: {
                 withAnimation {
@@ -244,6 +244,7 @@ struct LogInDetailView: View {
                 switch viewModel.totpManager.state {
                 case .valid(let data):
                     TOTPCircularTimer(data: data.timerData)
+                        .animation(nil, value: isShowingPassword)
                 default:
                     EmptyView()
                 }

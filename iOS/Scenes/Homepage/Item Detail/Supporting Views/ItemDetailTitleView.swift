@@ -21,6 +21,7 @@
 import Client
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 enum ItemDetailTitleIcon {
     case image(UIImage)
@@ -52,7 +53,7 @@ struct ItemDetailTitleView: View {
         HStack(spacing: kItemDetailSectionPadding) {
             ZStack {
                 Color(uiColor: iconBackgroundColor)
-                    .clipShape(Circle())
+                    .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
 
                 switch icon {
                 case .image(let image):
@@ -76,6 +77,7 @@ struct ItemDetailTitleView: View {
                 .fontWeight(.bold)
                 .textSelection(.enabled)
                 .lineLimit(2)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
