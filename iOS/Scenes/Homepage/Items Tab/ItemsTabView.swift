@@ -244,9 +244,9 @@ struct ItemsTabView: View {
         }, label: {
             GeneralItemRow(
                 thumbnailView: {
-                    CircleButton(icon: item.type.icon,
-                                 iconColor: item.type.tintColor,
-                                 backgroundColor: item.type.backgroundNormColor)
+                    SquircleThumbnail(icon: item.type.icon,
+                                      iconColor: item.type.tintColor,
+                                      backgroundColor: item.type.backgroundNormColor)
                 },
                 title: item.title,
                 description: item.description)
@@ -279,12 +279,33 @@ private struct ItemsTabsSkeleton: View {
             HStack {
                 AnimatingGradient()
                     .frame(width: kSearchBarHeight)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .clipShape(Circle())
 
                 AnimatingGradient()
                     .clipShape(RoundedRectangle(cornerRadius: 16))
             }
             .frame(height: kSearchBarHeight)
+
+            HStack {
+                AnimatingGradient()
+                    .frame(width: 60)
+                    .clipShape(Capsule())
+
+                Spacer()
+
+                AnimatingGradient()
+                    .frame(width: 150)
+                    .clipShape(Capsule())
+            }
+            .frame(height: 18)
+            .frame(maxWidth: .infinity)
+
+            HStack {
+                AnimatingGradient()
+                    .frame(width: 100, height: 18)
+                    .clipShape(Capsule())
+                Spacer()
+            }
 
             ScrollView {
                 LazyVStack(spacing: 20) {
@@ -302,7 +323,7 @@ private struct ItemsTabsSkeleton: View {
         HStack(spacing: 16) {
             AnimatingGradient()
                 .frame(width: 40, height: 40)
-                .clipShape(Circle())
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
 
             VStack(alignment: .leading) {
                 Spacer()
