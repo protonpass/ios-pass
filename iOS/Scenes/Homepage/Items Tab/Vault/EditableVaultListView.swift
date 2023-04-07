@@ -165,7 +165,7 @@ struct EditableVaultListView: View {
                         Label(title: {
                             Text("Empty trash")
                         }, icon: {
-                            Image(uiImage: IconProvider.trash)
+                            Image(uiImage: IconProvider.trashCross)
                         })
                     })
             }, label: threeDotsIcon)
