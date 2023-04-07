@@ -32,13 +32,13 @@ struct NoteDetailView: View {
     }
 
     var body: some View {
-        if UIDevice.current.isIpad {
-            realBody
-        } else {
+        if viewModel.isShownAsSheet {
             NavigationView {
                 realBody
             }
             .navigationViewStyle(.stack)
+        } else {
+            realBody
         }
     }
 
@@ -80,7 +80,8 @@ struct NoteDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
         .toolbar {
-            ItemDetailToolbar(itemContent: viewModel.itemContent,
+            ItemDetailToolbar(isShownAsSheet: viewModel.isShownAsSheet,
+                              itemContent: viewModel.itemContent,
                               onGoBack: viewModel.goBack,
                               onEdit: viewModel.edit,
                               onMoveToAnotherVault: viewModel.moveToAnotherVault,
