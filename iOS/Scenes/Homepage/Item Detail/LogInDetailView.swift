@@ -28,13 +28,24 @@ struct LogInDetailView: View {
     @State private var isShowingPassword = false
     @Namespace private var bottomID
 
-    private var tintColor: UIColor { viewModel.itemContent.tintColor }
+    private var tintColor: UIColor { viewModel.itemContent.type.tintColor }
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
+        if UIDevice.current.isIpad {
+            realBody
+        } else {
+            NavigationView {
+                realBody
+            }
+            .navigationViewStyle(.stack)
+        }
+    }
+
+    private var realBody: some View {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
@@ -49,7 +60,7 @@ struct LogInDetailView: View {
                     }
 
                     if !viewModel.itemContent.note.isEmpty {
-                        NoteDetailSection(itemContent: viewModel.itemContent)
+                        NoteDetailSection(itemContent: viewModel.itemContent, theme: viewModel.theme)
                             .padding(.top, 8)
                     }
 
@@ -60,10 +71,11 @@ struct LogInDetailView: View {
                     .id(bottomID)
                 }
                 .padding()
+                .animation(.default, value: isShowingPassword)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.passBackground)
+        .itemDetailBackground(theme: viewModel.theme)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
@@ -81,14 +93,14 @@ struct LogInDetailView: View {
     private var usernamePassword2FaSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
             usernameRow
-            Divider()
+            PassDivider()
             passwordRow
 
             switch viewModel.totpManager.state {
             case .empty:
                 EmptyView()
             default:
-                Divider()
+                PassDivider()
                 totpRow
             }
         }
@@ -118,9 +130,8 @@ struct LogInDetailView: View {
                                 Text("View Alias")
                                     .font(.callout)
                                     .foregroundColor(Color(uiColor: tintColor))
-                                Color(uiColor: tintColor)
+                                Color(uiColor: viewModel.itemContent.type.backgroundNormColor)
                                     .frame(height: 1)
-                                    .opacity(0.24)
                             }
                             .fixedSize(horizontal: true, vertical: true)
                             .padding(.top, 8)
@@ -173,13 +184,14 @@ struct LogInDetailView: View {
 
             if !viewModel.password.isEmpty {
                 CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
-                             color: tintColor,
+                             iconColor: viewModel.itemContent.type.tintColor,
+                             backgroundColor: viewModel.itemContent.type.backgroundNormColor,
                              action: { isShowingPassword.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
+                .animationsDisabled()
             }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
-        .animation(.default, value: isShowingPassword)
         .contextMenu {
             Button(action: {
                 withAnimation {
@@ -222,7 +234,7 @@ struct LogInDetailView: View {
                     case .invalid:
                         Text("Invalid Two Factor Authentication URI")
                             .font(.caption)
-                            .foregroundColor(Color(uiColor: .notificationError))
+                            .foregroundColor(Color(uiColor: PassColor.signalDanger))
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -232,6 +244,7 @@ struct LogInDetailView: View {
                 switch viewModel.totpManager.state {
                 case .valid(let data):
                     TOTPCircularTimer(data: data.timerData)
+                        .animation(nil, value: isShowingPassword)
                 default:
                     EmptyView()
                 }

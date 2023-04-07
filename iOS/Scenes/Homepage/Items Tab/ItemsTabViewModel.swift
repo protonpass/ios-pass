@@ -25,7 +25,6 @@ import Core
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToShowSpinner()
     func itemsTabViewModelWantsToHideSpinner()
-    func itemsTabViewModelWantsToCreateNewItem(shareId: String)
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection)
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
@@ -46,6 +45,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     let vaultsManager: VaultsManager
 
     weak var delegate: ItemsTabViewModelDelegate?
+    weak var emptyVaultViewModelDelegate: EmptyVaultViewModelDelegate?
+    lazy var emptyVaultViewModel = makeEmptyVaultViewModel()
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -74,20 +75,16 @@ private extension ItemsTabViewModel {
     func finalizeInitialization() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
     }
+
+    func makeEmptyVaultViewModel() -> EmptyVaultViewModel {
+        let viewModel = EmptyVaultViewModel()
+        viewModel.delegate = emptyVaultViewModelDelegate
+        return viewModel
+    }
 }
 
 // MARK: - Public APIs
 extension ItemsTabViewModel {
-    func createNewItem() {
-        switch vaultsManager.vaultSelection {
-        case .all, .trash:
-            // Handle this later
-            break
-        case .precise(let selectedVault):
-            delegate?.itemsTabViewModelWantsToCreateNewItem(shareId: selectedVault.shareId)
-        }
-    }
-
     func search() {
         delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
     }

@@ -32,12 +32,13 @@ struct SearchRecentResultsView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Recent searches")
+                Text("Saved searches")
                     .font(.callout)
-                    .fontWeight(.bold) +
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm)) +
                 Text(" (\(results.count))")
                     .font(.callout)
-                    .foregroundColor(.textWeak)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
 
                 Spacer()
 
@@ -45,7 +46,7 @@ struct SearchRecentResultsView: View {
                     Text("Clear")
                         .font(.callout)
                         .fontWeight(.semibold)
-                        .foregroundColor(.passBrand)
+                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
                 }
             }
             .padding(.horizontal)
@@ -75,17 +76,9 @@ private struct SearchEntryView: View {
             Button(action: onSelect) {
                 GeneralItemRow(
                     thumbnailView: {
-                        switch uiModel.type {
-                        case .alias:
-                            CircleButton(icon: IconProvider.alias,
-                                         color: ItemContentType.alias.tintColor) {}
-                        case .login:
-                            CircleButton(icon: IconProvider.keySkeleton,
-                                         color: ItemContentType.login.tintColor) {}
-                        case .note:
-                            CircleButton(icon: IconProvider.notepadChecklist,
-                                         color: ItemContentType.note.tintColor) {}
-                        }
+                        SquircleThumbnail(icon: uiModel.type.icon,
+                                          iconColor: uiModel.type.tintColor,
+                                          backgroundColor: uiModel.type.backgroundNormColor)
                     },
                     title: uiModel.title,
                     description: uiModel.description)
@@ -95,11 +88,14 @@ private struct SearchEntryView: View {
             Spacer()
 
             Button(action: onRemove) {
-                Image(uiImage: IconProvider.cross)
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundColor(.textWeak)
-                    .frame(width: 24, height: 24)
+                ZStack {
+                    Image(uiImage: IconProvider.cross)
+                        .resizable()
+                        .scaledToFill()
+                        .foregroundColor(Color(uiColor: PassColor.textHint))
+                        .frame(width: 24, height: 24)
+                }
+                .frame(width: 48, height: 48)
             }
             .buttonStyle(.plain)
         }

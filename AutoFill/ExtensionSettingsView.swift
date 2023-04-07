@@ -47,8 +47,9 @@ struct ExtensionSettingsView: View {
                     OptionRow(height: .medium) {
                         Toggle(isOn: $viewModel.quickTypeBar) {
                             Text("QuickType bar suggestions")
+                                .foregroundColor(Color(uiColor: PassColor.textNorm))
                         }
-                        .tint(.passBrand)
+                        .tint(Color(uiColor: PassColor.interactionNorm))
                     }
                     .roundedEditableSection()
                     Text("Quickly pick a login item from suggestions above the keyboard.")
@@ -61,8 +62,9 @@ struct ExtensionSettingsView: View {
                     OptionRow(height: .medium) {
                         Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
                             Text("Copy Two Factor Authentication code")
+                                .foregroundColor(Color(uiColor: PassColor.textNorm))
                         }
-                        .tint(.passBrand)
+                        .tint(Color(uiColor: PassColor.interactionNorm))
                     }
                     .roundedEditableSection()
 
@@ -75,16 +77,17 @@ struct ExtensionSettingsView: View {
                 }
                 .padding(.horizontal)
             }
-            .background(Color.passBackground)
+            .background(Color(uiColor: PassColor.backgroundNorm))
             .navigationTitle("AutoFill")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.cross,
-                                 color: .passBrand,
-                                 action: viewModel.dismiss)
+                                 iconColor: PassColor.interactionNormMajor1,
+                                 backgroundColor: PassColor.interactionNormMinor2)
                 }
             }
         }
         .navigationViewStyle(.stack)
+        .theme(viewModel.preferences.theme)
     }
 }

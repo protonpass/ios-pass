@@ -50,7 +50,7 @@ struct AppLockedView: View {
 
     var body: some View {
         ZStack {
-            Color.passBackground
+            Color(uiColor: PassColor.backgroundNorm)
                 .ignoresSafeArea()
 
             switch authenticator.biometryTypeState {
@@ -107,7 +107,7 @@ struct AppLockedView: View {
             }
         }, label: {
             Text("Try again")
-                .foregroundColor(.brandNorm)
+                .foregroundColor(Color(uiColor: PassColor.interactionNorm))
         })
     }
 

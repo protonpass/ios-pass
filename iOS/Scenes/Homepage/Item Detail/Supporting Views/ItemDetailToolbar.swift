@@ -33,12 +33,11 @@ struct ItemDetailToolbar: ToolbarContent {
     let onRestore: () -> Void
     let onPermanentlyDelete: () -> Void
 
-    private var tintColor: UIColor { itemContent.tintColor }
-
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
-                         color: tintColor,
+                         iconColor: itemContent.type.tintColor,
+                         backgroundColor: itemContent.type.backgroundWeakColor,
                          action: onGoBack)
         }
 
@@ -48,8 +47,8 @@ struct ItemDetailToolbar: ToolbarContent {
                 HStack {
                     CapsuleLabelButton(icon: IconProvider.pencil,
                                        title: "Edit",
-                                       backgroundColor: tintColor,
-                                       disabled: false,
+                                       titleColor: PassColor.textInvert,
+                                       backgroundColor: itemContent.type.tintColor,
                                        action: onEdit)
 
                     Menu(content: {
@@ -64,9 +63,9 @@ struct ItemDetailToolbar: ToolbarContent {
                                label: { Label(title: { Text("Move to trash") },
                                               icon: { Image(uiImage: IconProvider.trash) }) })
                     }, label: {
-                        CapsuleIconButton(icon: IconProvider.threeDotsVertical,
-                                          color: tintColor,
-                                          action: {})
+                        CircleButton(icon: IconProvider.threeDotsVertical,
+                                     iconColor: itemContent.type.tintColor,
+                                     backgroundColor: itemContent.type.backgroundWeakColor)
                     })
                 }
 
@@ -84,7 +83,7 @@ struct ItemDetailToolbar: ToolbarContent {
                                           icon: { Image(uiImage: IconProvider.trash) }) })
                 }, label: {
                     CapsuleIconButton(icon: IconProvider.threeDotsVertical,
-                                      color: tintColor,
+                                      color: itemContent.type.tintColor,
                                       action: {})
                 })
                 .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $isShowingAlert,

@@ -1,6 +1,6 @@
 //
-// Color+Hex.swift
-// Proton Pass - Created on 09/12/2022.
+// Handle.swift
+// Proton Pass - Created on 15/11/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,14 +20,16 @@
 
 import SwiftUI
 
-public extension Color {
-    init(_ hex: UInt, alpha: Double = 1) {
-        self.init(
-            .sRGB,
-            red: Double((hex >> 16) & 0xFF) / 255,
-            green: Double((hex >> 8) & 0xFF) / 255,
-            blue: Double(hex & 0xFF) / 255,
-            opacity: alpha
-        )
+public struct Handle: View {
+    public init() {}
+
+    public var body: some View {
+        HStack {
+            Spacer()
+            Color(uiColor: PassColor.inputBackgroundNorm)
+                .frame(width: 36, height: 5)
+                .clipShape(Capsule())
+            Spacer()
+        }
     }
 }

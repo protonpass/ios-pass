@@ -19,10 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIComponents
 
 struct ItemDetailSectionIcon: View {
     let icon: UIImage
-    let color: UIColor
+    var color: UIColor = PassColor.textWeak
     var width: CGFloat = 20
 
     var body: some View {
@@ -30,7 +31,7 @@ struct ItemDetailSectionIcon: View {
             .resizable()
             .renderingMode(.template)
             .scaledToFit()
-            .foregroundColor(Color(uiColor: color.withAlphaComponent(0.8)))
+            .foregroundColor(Color(uiColor: color))
             .frame(width: width)
     }
 }

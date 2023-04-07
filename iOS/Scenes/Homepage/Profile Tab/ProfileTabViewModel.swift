@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import ProtonCore_Services
 import SwiftUI
 
 protocol ProfileTabViewModelDelegate: AnyObject {
@@ -40,8 +41,9 @@ protocol ProfileTabViewModelDelegate: AnyObject {
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    let credentialManager: CredentialManagerProtocol
+    let apiService: APIService
     var biometricAuthenticator: BiometricAuthenticator
+    let credentialManager: CredentialManagerProtocol
     let itemCountViewModel: ItemCountViewModel
     let itemRepository: ItemRepositoryProtocol
     let logger: Logger
@@ -60,18 +62,24 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         }
     }
 
+    @Published private(set) var primaryPlan: PlanLite?
+
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
 
-    init(credentialManager: CredentialManagerProtocol,
+    init(apiService: APIService,
+         credentialManager: CredentialManagerProtocol,
          itemRepository: ItemRepositoryProtocol,
+         primaryPlan: PlanLite?,
          preferences: Preferences,
          logManager: LogManager) {
-        self.credentialManager = credentialManager
+        self.apiService = apiService
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
+        self.credentialManager = credentialManager
         self.itemCountViewModel = .init(itemRepository: itemRepository, logManager: logManager)
         self.itemRepository = itemRepository
         self.logger = .init(manager: logManager)
+        self.primaryPlan = primaryPlan
         self.preferences = preferences
         self.appVersion = "Version \(Bundle.main.fullAppVersionName()) (\(Bundle.main.buildNumber))"
 
@@ -108,6 +116,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
 // MARK: - Public APIs
 extension ProfileTabViewModel {
+    func upgrade() {
+        print(#function)
+    }
+
     func showAccountMenu() {
         delegate?.profileTabViewModelWantsToShowAccountMenu()
     }
@@ -147,6 +159,9 @@ private extension ProfileTabViewModel {
         updateAutoFillAvalability()
         biometricAuthenticator.initializeBiometryType()
         biometricAuthenticator.enabled = preferences.biometricAuthenticationEnabled
+        Task { @MainActor in
+            primaryPlan = try await PrimaryPlanProvider.getPrimaryPlan(apiService: apiService).value
+        }
     }
 
     func updateAutoFillAvalability() {

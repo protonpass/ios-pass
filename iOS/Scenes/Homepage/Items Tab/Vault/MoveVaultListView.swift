@@ -28,7 +28,7 @@ struct MoveVaultListView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            NotchView()
+            Handle()
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 5)
             ScrollView {
@@ -47,22 +47,23 @@ struct MoveVaultListView: View {
 
             HStack(spacing: 16) {
                 CapsuleTextButton(title: "Cancel",
-                                  titleColor: .textWeak,
-                                  backgroundColor: .white.withAlphaComponent(0.08),
-                                  disabled: false,
+                                  titleColor: PassColor.textWeak,
+                                  backgroundColor: PassColor.textDisabled,
                                   height: 44,
                                   action: dismiss.callAsFunction)
 
-                CapsuleTextButton(title: "Confirm",
-                                  titleColor: .passBrand,
-                                  backgroundColor: .passBrand.withAlphaComponent(0.08),
-                                  disabled: viewModel.selectedVault == nil,
-                                  height: 44,
-                                  action: { dismiss(); viewModel.confirm() })
+                DisablableCapsuleTextButton(title: "Confirm",
+                                            titleColor: PassColor.textInvert,
+                                            disableTitleColor: PassColor.textHint,
+                                            backgroundColor: PassColor.interactionNormMajor1,
+                                            disableBackgroundColor: PassColor.interactionNormMinor1,
+                                            disabled: viewModel.selectedVault == nil,
+                                            height: 44,
+                                            action: { dismiss(); viewModel.confirm() })
             }
             .padding([.bottom, .horizontal])
         }
-        .background(Color.passSecondaryBackground)
+        .background(Color(uiColor: PassColor.backgroundWeak))
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 

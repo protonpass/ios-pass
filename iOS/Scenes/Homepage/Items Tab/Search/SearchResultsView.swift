@@ -44,10 +44,11 @@ struct SearchResultsView: View {
             HStack {
                 Text("\(results.count)")
                     .font(.callout)
-                    .fontWeight(.bold) +
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm)) +
                 Text(" result(s)")
                     .font(.callout)
-                    .foregroundColor(.textWeak)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
 
                 Spacer()
 
@@ -126,6 +127,8 @@ struct SearchResultsView: View {
                 }
             }, header: {
                 Text(headerTitle)
+                    .font(.callout)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
             })
         }
     }
@@ -172,20 +175,13 @@ private struct ItemSearchResultView: View {
 
     var body: some View {
         HStack {
-            switch result.type {
-            case .alias:
-                CircleButton(icon: IconProvider.alias,
-                             color: ItemContentType.alias.tintColor) {}
-            case .login:
-                CircleButton(icon: IconProvider.keySkeleton,
-                             color: ItemContentType.login.tintColor) {}
-            case .note:
-                CircleButton(icon: IconProvider.notepadChecklist,
-                             color: ItemContentType.note.tintColor) {}
-            }
+            SquircleThumbnail(icon: result.type.icon,
+                              iconColor: result.type.tintColor,
+                              backgroundColor: result.type.backgroundNormColor)
 
             VStack(alignment: .leading, spacing: 4) {
                 HighlightText(highlightableText: result.title)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .animationsDisabled()
 
                 VStack(alignment: .leading, spacing: 2) {
@@ -194,7 +190,7 @@ private struct ItemSearchResultView: View {
                         if !eachDetail.fullText.isEmpty {
                             HighlightText(highlightableText: eachDetail)
                                 .font(.callout)
-                                .foregroundColor(Color(.secondaryLabel))
+                                .foregroundColor(Color(uiColor: PassColor.textWeak))
                                 .lineLimit(1)
                                 .animationsDisabled()
                         }

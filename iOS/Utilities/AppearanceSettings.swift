@@ -23,7 +23,11 @@ import UIKit
 
 enum AppearanceSettings {
     static func apply() {
-        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .passBrand
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor =
+        PassColor.interactionNorm
+
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: PassColor.textNorm]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: PassColor.textNorm]
 
         if #unavailable(iOS 16) {
             // Can remove this once dropped iOS 15.

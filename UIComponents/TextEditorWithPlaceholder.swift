@@ -42,15 +42,18 @@ public struct TextEditorWithPlaceholder: View {
                 .focused(isFocused)
                 .scrollContentBackground(.hidden)
                 .submitLabel(submitLabel)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
         } else {
             ZStack {
                 if text.isEmpty {
                     TextField(placeholder, text: .constant(""))
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
                 }
 
                 TextEditor(text: $text)
                     .focused(isFocused)
                     .submitLabel(submitLabel)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .offset(x: -4)
             }
             .animationsDisabled()

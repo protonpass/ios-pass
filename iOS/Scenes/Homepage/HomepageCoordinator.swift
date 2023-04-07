@@ -182,14 +182,17 @@ private extension HomepageCoordinator {
                                                   syncEventLoop: eventLoop,
                                                   vaultsManager: vaultsManager)
         itemsTabViewModel.delegate = self
+        itemsTabViewModel.emptyVaultViewModelDelegate = self
 
-        let profileTabViewModel = ProfileTabViewModel(credentialManager: credentialManager,
+        let profileTabViewModel = ProfileTabViewModel(apiService: apiService,
+                                                      credentialManager: credentialManager,
                                                       itemRepository: itemRepository,
+                                                      primaryPlan: primaryPlan,
                                                       preferences: preferences,
                                                       logManager: logManager)
         profileTabViewModel.delegate = self
 
-        let placeholderView = ItemDetailPlaceholderView { [unowned self] in
+        let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
             self.popTopViewController(animated: true)
         }
 
@@ -226,7 +229,8 @@ private extension HomepageCoordinator {
         case .login:
             let viewModel = LogInDetailViewModel(itemContent: itemContent,
                                                  itemRepository: itemRepository,
-                                                 logManager: logManager)
+                                                 logManager: logManager,
+                                                 theme: preferences.theme)
             viewModel.logInDetailViewModelDelegate = self
             baseViewModel = viewModel
             view = LogInDetailView(viewModel: viewModel)
@@ -234,7 +238,8 @@ private extension HomepageCoordinator {
         case .note:
             let viewModel = NoteDetailViewModel(itemContent: itemContent,
                                                 itemRepository: itemRepository,
-                                                logManager: logManager)
+                                                logManager: logManager,
+                                                theme: preferences.theme)
             baseViewModel = viewModel
             view = NoteDetailView(viewModel: viewModel)
 
@@ -242,7 +247,8 @@ private extension HomepageCoordinator {
             let viewModel = AliasDetailViewModel(itemContent: itemContent,
                                                  itemRepository: itemRepository,
                                                  aliasRepository: aliasRepository,
-                                                 logManager: logManager)
+                                                 logManager: logManager,
+                                                 theme: preferences.theme)
             baseViewModel = viewModel
             view = AliasDetailView(viewModel: viewModel)
         }
@@ -264,18 +270,8 @@ private extension HomepageCoordinator {
         }
     }
 
-    func presentCreateItemView(shareId: String?) {
-        var shareId = shareId
-        if shareId == nil {
-            switch vaultsManager.vaultSelection {
-            case .all, .trash:
-                shareId = vaultsManager.getPrimaryVault()?.shareId
-            case .precise(let vault):
-                shareId = vault.shareId
-            }
-        }
-
-        guard let shareId else { return }
+    func presentCreateItemView() {
+        guard let shareId = vaultsManager.getSelectedShareId() else { return }
 
         let view = ItemTypeListView { [unowned self] itemType in
             dismissTopMostViewController { [unowned self] in
@@ -357,17 +353,15 @@ private extension HomepageCoordinator {
         viewModel.delegate = delegate
         let view = GeneratePasswordView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        let navigationController = UINavigationController(rootViewController: viewController)
         if #available(iOS 16, *) {
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 344
             }
-            navigationController.sheetPresentationController?.detents = [customDetent]
+            viewController.sheetPresentationController?.detents = [customDetent]
         } else {
-            navigationController.sheetPresentationController?.detents = [.medium()]
+            viewController.sheetPresentationController?.detents = [.medium()]
         }
-        viewModel.onDismiss = { navigationController.dismiss(animated: true) }
-        present(navigationController)
+        present(viewController)
     }
 
     func presentSortTypeList(selectedSortType: SortType,
@@ -407,8 +401,7 @@ private extension HomepageCoordinator {
         if UIDevice.current.isIpad {
             push(view)
         } else {
-            present(NavigationView { AnyView(view) }.navigationViewStyle(.stack),
-                    userInterfaceStyle: preferences.theme.userInterfaceStyle)
+            present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
         }
     }
 
@@ -448,8 +441,16 @@ extension HomepageCoordinator {
 
 // MARK: - HomepageTabBarControllerDelegate
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
+    func homepageTabBarControllerDidSelectItemsTab() {
+        print(#function)
+    }
+
     func homepageTabBarControllerWantToCreateNewItem() {
-        presentCreateItemView(shareId: nil)
+        presentCreateItemView()
+    }
+
+    func homepageTabBarControllerDidSelectProfileTab() {
+        print(#function)
     }
 }
 
@@ -461,10 +462,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsToHideSpinner() {
         hideLoadingHud()
-    }
-
-    func itemsTabViewModelWantsToCreateNewItem(shareId: String) {
-        presentCreateItemView(shareId: shareId)
     }
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
@@ -513,6 +510,25 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 }
 
+// MARK: - EmptyVaultViewModelDelegate
+extension HomepageCoordinator: EmptyVaultViewModelDelegate {
+    func emptyVaultViewModelWantsToCreateLoginItem() {
+        guard let shareId = vaultsManager.getSelectedShareId() else { return }
+        presentCreateEditLoginView(mode: .create(shareId: shareId,
+                                                 type: .login(title: nil, url: nil, autofill: false)))
+    }
+
+    func emptyVaultViewModelWantsToCreateAliasItem() {
+        guard let shareId = vaultsManager.getSelectedShareId() else { return }
+        presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
+    }
+
+    func emptyVaultViewModelWantsToCreateNoteItem() {
+        guard let shareId = vaultsManager.getSelectedShareId() else { return }
+        presentCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
+    }
+}
+
 // MARK: - ProfileTabViewModelDelegate
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func profileTabViewModelWantsToShowSpinner() {
@@ -527,6 +543,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         let viewModel = AccountViewModel(apiService: apiService,
                                          logManager: logManager,
                                          primaryPlan: primaryPlan,
+                                         theme: preferences.theme,
                                          username: userData.user.email ?? "")
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
@@ -534,12 +551,12 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowSettingsMenu() {
-        let viewModel = SettingViewModel(itemRepository: itemRepository,
-                                         logManager: logManager,
-                                         preferences: preferences,
-                                         vaultsManager: vaultsManager)
+        let viewModel = SettingsViewModel(itemRepository: itemRepository,
+                                          logManager: logManager,
+                                          preferences: preferences,
+                                          vaultsManager: vaultsManager)
         viewModel.delegate = self
-        let view = SettingView(viewModel: viewModel)
+        let view = SettingsView(viewModel: viewModel)
         adaptivelyPresentDetailView(view: view)
     }
 
@@ -565,7 +582,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         }
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = CGFloat(52 * FeedbackChannel.allCases.count + 100)
+            let height = CGFloat(52 * FeedbackChannel.allCases.count + 80)
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 height
             }
@@ -625,21 +642,21 @@ extension HomepageCoordinator: AccountViewModelDelegate {
     }
 }
 
-// MARK: - SettingViewModelDelegate
-extension HomepageCoordinator: SettingViewModelDelegate {
-    func settingViewModelWantsToShowSpinner() {
+// MARK: - SettingsViewModelDelegate
+extension HomepageCoordinator: SettingsViewModelDelegate {
+    func settingsViewModelWantsToShowSpinner() {
         showLoadingHud()
     }
 
-    func settingViewModelWantsToHideSpinner() {
+    func settingsViewModelWantsToHideSpinner() {
         hideLoadingHud()
     }
 
-    func settingViewModelWantsToGoBack() {
+    func settingsViewModelWantsToGoBack() {
         adaptivelyDismissCurrentDetailView()
     }
 
-    func settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser]) {
+    func settingsViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser]) {
         let view = EditDefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
@@ -654,7 +671,7 @@ extension HomepageCoordinator: SettingViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func settingViewModelWantsToEditTheme() {
+    func settingsViewModelWantsToEditTheme() {
         let view = EditThemeView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
@@ -669,7 +686,7 @@ extension HomepageCoordinator: SettingViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func settingViewModelWantsToEditClipboardExpiration() {
+    func settingsViewModelWantsToEditClipboardExpiration() {
         let view = EditClipboardExpirationView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
@@ -684,7 +701,7 @@ extension HomepageCoordinator: SettingViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func settingViewModelWantsToEdit(primaryVault: Vault) {
+    func settingsViewModelWantsToEdit(primaryVault: Vault) {
         let allVaults = vaultsManager.getAllVaultContents().map { VaultListUiModel(vaultContent: $0) }
         let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults,
                                                   primaryVault: primaryVault,
@@ -704,7 +721,7 @@ extension HomepageCoordinator: SettingViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func settingViewModelWantsToViewLogs() {
+    func settingsViewModelWantsToViewLogs() {
         let view = LogTypesView(
             onSelect: { [unowned self] module in
                 self.presentLogsView(for: module)
@@ -725,12 +742,12 @@ extension HomepageCoordinator: SettingViewModelDelegate {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func settingViewModelDidFinishFullSync() {
+    func settingsViewModelDidFinishFullSync() {
         refreshHomepageAndSearchPage()
         bannerManager.displayBottomSuccessMessage("Force synchronization done")
     }
 
-    func settingViewModelDidEncounter(error: Error) {
+    func settingsViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }
@@ -789,16 +806,13 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
                                                       creationInfo: AliasCreationLiteInfo,
                                                       delegate: AliasCreationLiteInfoDelegate) {
-        let viewModel = CreateAliasLiteViewModel(options: options,
-                                                 creationInfo: creationInfo)
+        let viewModel = CreateAliasLiteViewModel(options: options, creationInfo: creationInfo)
         viewModel.aliasCreationDelegate = delegate
         viewModel.delegate = self
         let view = CreateAliasLiteView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.sheetPresentationController?.detents = [.medium()]
-        viewModel.onDismiss = { navigationController.dismiss(animated: true) }
-        present(navigationController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        viewController.sheetPresentationController?.detents = [.medium()]
+        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
@@ -910,11 +924,13 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
-        showFullScreen(text: text, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        showFullScreen(text: text,
+                       theme: preferences.theme,
+                       userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func itemDetailViewModelWantsToOpen(urlString: String) {
-        UrlOpener(preferences: preferences).open(urlString: urlString)
+        urlOpener.open(urlString: urlString)
     }
 
     func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault) {

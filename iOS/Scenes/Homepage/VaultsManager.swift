@@ -37,11 +37,11 @@ enum VaultSelection {
     var searchBarPlacehoder: String {
         switch self {
         case .all:
-            return "Search in all vaults"
+            return "Search in all vaults..."
         case .precise(let vault):
-            return "Search in \(vault.name)"
+            return "Search in \(vault.name)..."
         case .trash:
-            return "Search in trash"
+            return "Search in trash..."
         }
     }
 }
@@ -230,6 +230,15 @@ extension VaultsManager {
         guard case .loaded(let uiModels, _) = state else { return nil }
         let vaults = uiModels.map { $0.vault }
         return vaults.first(where: { $0.isPrimary }) ?? vaults.first
+    }
+
+    func getSelectedShareId() -> String? {
+        switch vaultSelection {
+        case .all, .trash:
+            return getPrimaryVault()?.shareId
+        case .precise(let vault):
+            return vault.shareId
+        }
     }
 }
 

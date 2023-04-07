@@ -24,39 +24,35 @@ public extension View {
     func roundedDetailSection() -> some View {
         overlay(
             RoundedRectangle(cornerRadius: 16)
-                .stroke(Color.interactionWeak, lineWidth: 1)
+                .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 1)
         )
     }
 
     func roundedEditableSection() -> some View {
-        self.background(Color.white.opacity(0.04))
+        self.background(Color(uiColor: PassColor.inputBackgroundNorm))
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.interactionWeak, lineWidth: 1)
+                    .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 1)
             )
     }
 }
 
 public extension Text {
-    func navigationTitleText() -> Text {
-        self.font(.callout).fontWeight(.bold)
-    }
-
     func sectionTitleText() -> Text {
-        self.font(.footnote).foregroundColor(.textWeak)
+        self.font(.footnote).foregroundColor(Color(uiColor: PassColor.textWeak))
     }
 
     func sectionContentText() -> Text {
-        self.foregroundColor(.textNorm)
+        self.foregroundColor(Color(uiColor: PassColor.textNorm))
     }
 
     func sectionHeaderText() -> Text {
-        self.foregroundColor(.textWeak)
+        self.foregroundColor(Color(uiColor: PassColor.textWeak))
     }
 
     /// Used for placeholder `Text`s like `Empty notes`, `No items`...
     func placeholderText() -> Text {
-        self.font(.body.italic()).foregroundColor(.textWeak)
+        self.font(.body.italic()).foregroundColor(Color(uiColor: PassColor.textWeak))
     }
 }

@@ -31,17 +31,9 @@ struct FeedbackChannelsView: View {
     let onSelectChannel: (FeedbackChannel) -> Void
 
     var body: some View {
-        VStack {
-            VStack(alignment: .center, spacing: 22) {
-                NotchView()
-                    .padding(.top, 5)
-                Text("Feedback")
-                    .navigationTitleText()
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-
+        NavigationView {
             ScrollView {
-                VStack {
+                VStack(spacing: 0) {
                     ForEach(FeedbackChannel.allCases, id: \.rawValue) { channel in
                         Button(action: {
                             dismiss()
@@ -55,6 +47,7 @@ struct FeedbackChannelsView: View {
                                     .scaledToFit()
                                     .frame(maxWidth: 20, maxHeight: 20)
                             })
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .contentShape(Rectangle())
                         })
@@ -66,10 +59,20 @@ struct FeedbackChannelsView: View {
                             PassDivider()
                         }
                     }
+
+                    Spacer()
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(uiColor: PassColor.backgroundWeak))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    NavigationTitleWithHandle(title: "Feedback")
                 }
             }
         }
-        .background(Color.passSecondaryBackground)
+        .navigationViewStyle(.stack)
     }
 }
 

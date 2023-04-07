@@ -27,85 +27,99 @@ struct AccountView: View {
     @StateObject var viewModel: AccountViewModel
 
     var body: some View {
-        VStack(spacing: 12) {
-            VStack(spacing: 0) {
-                OptionRow(title: "Username",
-                          height: .tall,
-                          content: { Text(viewModel.username) })
-                PassDivider()
-                OptionRow(title: "Subscription Plan",
-                          height: .tall,
-                          content: { Text(viewModel.primaryPlan?.title ?? "Free") })
+        if UIDevice.current.isIpad {
+            realBody
+        } else {
+            NavigationView {
+                realBody
             }
-            .roundedEditableSection()
-
-            /*
-            OptionRow(
-                action: viewModel.manageSubscription,
-                height: .tall,
-                content: {
-                    Text("Manage subscription")
-                        .foregroundColor(.passBrand)
-                },
-                trailing: {
-                    CircleButton(icon: IconProvider.arrowOutSquare,
-                                 color: .passBrand,
-                                 action: {})
-                })
-            .roundedEditableSection()
-             */
-
-            OptionRow(
-                action: { isShowingSignOutConfirmation.toggle() },
-                height: .tall,
-                content: {
-                    Text("Sign out")
-                        .foregroundColor(.passBrand)
-                },
-                trailing: {
-                    CircleButton(icon: IconProvider.arrowOutFromRectangle,
-                                 color: .passBrand,
-                                 action: {})
-                    .disabled(true)
-                })
-            .roundedEditableSection()
-
-            OptionRow(
-                action: viewModel.deleteAccount,
-                height: .tall,
-                content: {
-                    Text("Delete account")
-                        .foregroundColor(.notificationError)
-                },
-                trailing: {
-                    CircleButton(icon: IconProvider.trash,
-                                 color: .notificationError,
-                                 action: {})
-                    .disabled(true)
-                })
-            .roundedEditableSection()
-
-            // swiftlint:disable:next line_length
-            Text("This will permanently delete your account and all of its data. You will not be able to reactivate this account.")
-                .sectionTitleText()
-
-            Spacer()
+            .navigationViewStyle(.stack)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding()
-        .background(Color.passBackground)
+    }
+
+    private var realBody: some View {
+        ScrollView {
+            VStack(spacing: 12) {
+                VStack(spacing: 0) {
+                    OptionRow(
+                        title: "Username",
+                        height: .tall,
+                        content: {
+                            Text(viewModel.username)
+                                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        })
+
+                    PassDivider()
+
+                    OptionRow(
+                        title: "Subscription Plan",
+                        height: .tall,
+                        content: {
+                            Text(viewModel.primaryPlan?.title ?? "Free")
+                                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        })
+                }
+                .roundedEditableSection()
+
+                /*
+                 OptionRow(
+                 action: viewModel.manageSubscription,
+                 height: .tall,
+                 content: {
+                 Text("Manage subscription")
+                 .foregroundColor(.passBrand)
+                 },
+                 trailing: {
+                 CircleButton(icon: IconProvider.arrowOutSquare,
+                 color: .passBrand,
+                 action: {})
+                 })
+                 .roundedEditableSection()
+                 */
+
+                OptionRow(
+                    action: { isShowingSignOutConfirmation.toggle() },
+                    height: .tall,
+                    content: {
+                        Text("Sign out")
+                            .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                    },
+                    trailing: {
+                        CircleButton(icon: IconProvider.arrowOutFromRectangle,
+                                     iconColor: PassColor.interactionNorm,
+                                     backgroundColor: PassColor.interactionNormMinor2)
+                    })
+                .roundedEditableSection()
+
+                OptionRow(
+                    action: viewModel.deleteAccount,
+                    height: .tall,
+                    content: {
+                        Text("Delete account")
+                            .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                    },
+                    trailing: {
+                        CircleButton(icon: IconProvider.trash,
+                                     iconColor: PassColor.signalDanger,
+                                     backgroundColor: PassColor.passwordInteractionNormMinor1)
+                    })
+                .roundedEditableSection()
+
+                // swiftlint:disable:next line_length
+                Text("This will permanently delete your account and all of its data. You will not be able to reactivate this account.")
+                    .sectionTitleText()
+
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding()
+        }
+        .itemDetailBackground(theme: viewModel.theme)
         .navigationTitle("Account")
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                CircleButton(icon: UIDevice.current.isIpad ?
-                             IconProvider.chevronLeft : IconProvider.chevronDown,
-                             color: .passBrand,
-                             action: viewModel.goBack)
-            }
-        }
+        .toolbar { toolbarContent }
         .alert(
             "You will be signed out",
             isPresented: $isShowingSignOutConfirmation,
@@ -116,5 +130,16 @@ struct AccountView: View {
 
                 Button(role: .cancel, label: { Text("Cancel") })
             })
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            CircleButton(icon: UIDevice.current.isIpad ?
+                         IconProvider.chevronLeft : IconProvider.chevronDown,
+                         iconColor: PassColor.interactionNorm,
+                         backgroundColor: PassColor.interactionNormMinor2,
+                         action: viewModel.goBack)
+        }
     }
 }

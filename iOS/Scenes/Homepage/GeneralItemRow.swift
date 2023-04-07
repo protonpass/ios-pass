@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIComponents
 
 struct GeneralItemRow<ThumbnailView: View>: View {
     let thumbnailView: ThumbnailView
@@ -44,10 +45,11 @@ struct GeneralItemRow<ThumbnailView: View>: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                if let description {
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                if let description, !description.isEmpty {
                     Text(description)
                         .font(.callout)
-                        .foregroundColor(.textWeak)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
                 }
             }
             .padding(.vertical, 12)

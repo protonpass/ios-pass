@@ -51,7 +51,7 @@ struct ItemsTabView: View {
             }
         }
         .animation(.default, value: vaultsManager.state)
-        .background(Color.passBackground)
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .navigationBarHidden(true)
     }
 
@@ -62,11 +62,8 @@ struct ItemsTabView: View {
                 topBar
                 if items.isEmpty {
                     switch viewModel.vaultsManager.vaultSelection {
-                    case .all:
-                        // Impossible case
-                        EmptyView()
-                    case .precise:
-                        EmptyVaultView(onCreateNewItem: viewModel.createNewItem)
+                    case .all, .precise:
+                        EmptyVaultView(viewModel: viewModel.emptyVaultViewModel)
                             .padding(.bottom, safeAreaInsets.bottom)
                     case .trash:
                         EmptyTrashView()
@@ -91,28 +88,29 @@ struct ItemsTabView: View {
             switch viewModel.vaultsManager.vaultSelection {
             case .all:
                 CircleButton(icon: PassIcon.allVaults,
-                             color: .passBrand,
-                             backgroundOpacity: 0.16,
+                             iconColor: PassColor.loginInteractionNormMajor1,
+                             backgroundColor: PassColor.loginInteractionNormMinor1,
                              action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)
 
             case .precise(let vault):
-                CircleButton(icon: vault.displayPreferences.icon.icon.image,
-                             color: vault.displayPreferences.color.color.color,
-                             backgroundOpacity: 0.16,
-                             action: viewModel.presentVaultList)
+                CircleButton(
+                    icon: vault.displayPreferences.icon.icon.image,
+                    iconColor: vault.displayPreferences.color.color.color,
+                    backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16),
+                    action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)
 
             case .trash:
                 CircleButton(icon: IconProvider.trash,
-                             color: .textWeak,
-                             backgroundOpacity: 0.16,
+                             iconColor: PassColor.textWeak,
+                             backgroundColor: PassColor.textDisabled,
                              action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)
             }
 
             ZStack {
-                Color.black
+                Color(uiColor: PassColor.backgroundStrong)
                 HStack {
                     Image(uiImage: IconProvider.magnifier)
                         .resizable()
@@ -120,12 +118,12 @@ struct ItemsTabView: View {
                         .frame(width: 20, height: 20)
                     Text(viewModel.vaultsManager.vaultSelection.searchBarPlacehoder)
                 }
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .padding(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            .containerShape(Rectangle())
+            .contentShape(Rectangle())
             .onTapGesture(perform: viewModel.search)
         }
         .padding(.horizontal)
@@ -137,10 +135,11 @@ struct ItemsTabView: View {
         HStack {
             Text("All")
                 .font(.callout)
-                .fontWeight(.bold) +
+                .fontWeight(.bold)
+                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
             Text(" (\(items.count))")
                 .font(.callout)
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
 
             Spacer()
 
@@ -217,9 +216,12 @@ struct ItemsTabView: View {
             Section(content: {
                 ForEach(items) { item in
                     itemRow(for: item)
+                        .plainListRow()
                 }
             }, header: {
                 Text(headerTitle)
+                    .font(.callout)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
             })
         }
     }
@@ -240,22 +242,13 @@ struct ItemsTabView: View {
         }, label: {
             GeneralItemRow(
                 thumbnailView: {
-                    switch item.type {
-                    case .alias:
-                        CircleButton(icon: IconProvider.alias,
-                                     color: ItemContentType.alias.tintColor) {}
-                    case .login:
-                        CircleButton(icon: IconProvider.keySkeleton,
-                                     color: ItemContentType.login.tintColor) {}
-                    case .note:
-                        CircleButton(icon: IconProvider.notepadChecklist,
-                                     color: ItemContentType.note.tintColor) {}
-                    }
+                    SquircleThumbnail(icon: item.type.icon,
+                                      iconColor: item.type.tintColor,
+                                      backgroundColor: item.type.backgroundNormColor)
                 },
                 title: item.title,
                 description: item.description)
         })
-        .plainListRow()
         .padding(.horizontal, 16)
         .frame(height: 64)
         .modifier(ItemSwipeModifier(
@@ -283,12 +276,33 @@ private struct ItemsTabsSkeleton: View {
             HStack {
                 AnimatingGradient()
                     .frame(width: kSearchBarHeight)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .clipShape(Circle())
 
                 AnimatingGradient()
                     .clipShape(RoundedRectangle(cornerRadius: 16))
             }
             .frame(height: kSearchBarHeight)
+
+            HStack {
+                AnimatingGradient()
+                    .frame(width: 60)
+                    .clipShape(Capsule())
+
+                Spacer()
+
+                AnimatingGradient()
+                    .frame(width: 150)
+                    .clipShape(Capsule())
+            }
+            .frame(height: 18)
+            .frame(maxWidth: .infinity)
+
+            HStack {
+                AnimatingGradient()
+                    .frame(width: 100, height: 18)
+                    .clipShape(Capsule())
+                Spacer()
+            }
 
             ScrollView {
                 LazyVStack(spacing: 20) {
@@ -306,7 +320,7 @@ private struct ItemsTabsSkeleton: View {
         HStack(spacing: 16) {
             AnimatingGradient()
                 .frame(width: 40, height: 40)
-                .clipShape(Circle())
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
 
             VStack(alignment: .leading) {
                 Spacer()

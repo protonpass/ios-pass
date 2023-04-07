@@ -70,28 +70,22 @@ private struct ItemContentTypeCountView: View {
 
     var body: some View {
         HStack {
-            ZStack {
-                Color(uiColor: type.tintColor)
-                    .opacity(0.16)
-                Image(uiImage: type.chipIcon)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 16)
-                    .foregroundColor(Color(uiColor: type.tintColor))
-            }
-            .frame(width: 36, height: 36)
-            .clipShape(Circle())
+            CircleButton(icon: type.icon,
+                         iconColor: type.tintColor,
+                         backgroundColor: type.backgroundNormColor,
+                         height: 36)
 
             Spacer()
 
             Text("\(count)")
                 .fontWeight(.bold)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
 
             Spacer()
         }
         .padding(10)
         .frame(height: kChipHeight)
         .frame(minWidth: 103)
-        .overlay(Capsule().strokeBorder(Color.separatorNorm, lineWidth: 2))
+        .overlay(Capsule().strokeBorder(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 1))
     }
 }

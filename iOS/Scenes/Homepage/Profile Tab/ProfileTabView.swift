@@ -25,15 +25,7 @@ struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Text("Profile")
-                    .font(.title)
-                    .fontWeight(.bold)
-                Spacer()
-            }
-            .padding(.horizontal)
-
+        NavigationView {
             ScrollView {
                 VStack {
                     itemCountSection
@@ -64,9 +56,28 @@ struct ProfileTabView: View {
                 .padding(.top)
                 .animation(.default, value: viewModel.automaticallyCopyTotpCode)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(uiColor: PassColor.backgroundNorm))
+            .navigationTitle("Profile")
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar { toolbarContent }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.passBackground)
+        .navigationViewStyle(.stack)
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            if viewModel.primaryPlan == nil {
+                CapsuleLabelButton(icon: PassIcon.brandPass,
+                                   title: "Upgrade",
+                                   titleColor: PassColor.interactionNorm,
+                                   backgroundColor: PassColor.interactionNormMinor2,
+                                   action: viewModel.upgrade)
+            } else {
+                EmptyView()
+            }
+        }
     }
 
     private var itemCountSection: some View {
@@ -75,6 +86,7 @@ struct ProfileTabView: View {
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
             ItemCountView(viewModel: viewModel.itemCountViewModel)
         }
     }
@@ -84,6 +96,7 @@ struct ProfileTabView: View {
             Text("Manage my profile")
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
 
             OptionRow(height: .medium) {
                 switch viewModel.biometricAuthenticator.biometryTypeState {
@@ -94,22 +107,25 @@ struct ProfileTabView: View {
                         Toggle(isOn: $viewModel.biometricAuthenticator.enabled) {
                             Label(title: {
                                 Text(uiModel.title)
+                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
                             }, icon: {
                                 if let icon = uiModel.icon {
                                     Image(systemName: icon)
-                                        .foregroundColor(.passBrand)
+                                        .foregroundColor(Color(uiColor: PassColor.interactionNorm))
                                 } else {
                                     EmptyView()
                                 }
                             })
                         }
-                        .tint(.passBrand)
+                        .tint(Color(uiColor: PassColor.interactionNorm))
                     } else {
                         Text("Biometric authentication not supported")
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
                     }
                 case .error(let error):
                     Text(error.localizedDescription)
+                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
                 }
             }
             .roundedEditableSection()
@@ -131,7 +147,7 @@ struct ProfileTabView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text("AutoFill disabled")
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .padding(.horizontal, kItemDetailSectionPadding)
                 .frame(height: OptionRowHeight.short.value)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -144,8 +160,8 @@ struct ProfileTabView: View {
                 Button(action: UIApplication.shared.openPasswordSettings) {
                     Text("Open Settings")
                         .font(.footnote)
-                        .foregroundColor(.passBrand)
-                        .underline(color: .passBrand)
+                        .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                        .underline(color: Color(uiColor: PassColor.interactionNorm))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -163,8 +179,9 @@ struct ProfileTabView: View {
                 OptionRow(height: .medium) {
                     Toggle(isOn: $viewModel.quickTypeBar) {
                         Text("QuickType bar suggestions")
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
                     }
-                    .tint(.passBrand)
+                    .tint(Color(uiColor: PassColor.interactionNorm))
                 }
 
                 PassDivider()
@@ -172,8 +189,9 @@ struct ProfileTabView: View {
                 OptionRow(height: .medium) {
                     Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
                         Text("Copy Two Factor Authentication code")
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
                     }
-                    .tint(.passBrand)
+                    .tint(Color(uiColor: PassColor.interactionNorm))
                 }
             }
             .roundedEditableSection()

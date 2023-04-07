@@ -50,7 +50,8 @@ struct MailboxSelectionView: View {
                         ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
                             HStack {
                                 Text(mailbox.email)
-                                    .foregroundColor(isSelected(mailbox) ? mode.tintColor : .textNorm)
+                                    .foregroundColor(isSelected(mailbox) ?
+                                                     mode.tintColor : Color(uiColor: PassColor.textNorm))
                                 Spacer()
 
                                 if isSelected(mailbox) {
@@ -65,6 +66,9 @@ struct MailboxSelectionView: View {
                             .onTapGesture {
                                 mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
                             }
+
+                            PassDivider()
+                                .padding(.horizontal)
                         }
                     }
                 }
@@ -73,18 +77,14 @@ struct MailboxSelectionView: View {
 
                 Button(action: dismiss.callAsFunction) {
                     Text("Close")
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
                 }
             }
+            .background(Color(uiColor: PassColor.backgroundWeak))
             .navigationBarTitleDisplayMode(.inline)
-            .background(Color.passSecondaryBackground)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    VStack(spacing: 18) {
-                        NotchView()
-                        Text("Forwarding to")
-                            .navigationTitleText()
-                    }
+                    NavigationTitleWithHandle(title: "Forwarding to")
                 }
             }
         }

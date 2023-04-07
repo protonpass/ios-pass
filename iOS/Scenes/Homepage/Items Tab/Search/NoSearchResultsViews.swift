@@ -29,12 +29,13 @@ struct NoSearchResultsInAllVaultView: View {
             Text("Coundn't find \"\(query)\" in all vaults")
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
                 .padding(.bottom)
                 .animationsDisabled()
 
             Text("Try search again using different spelling or keyword")
                 .font(.callout)
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal)
@@ -52,19 +53,20 @@ struct NoSearchResultsInPreciseVaultView: View {
             Text("Coundn't find \"\(query)\" in \(vaultName)")
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
                 .padding(.bottom)
                 .animationsDisabled()
 
             Text("Try search again using different spelling or keyword")
                 .font(.callout)
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .multilineTextAlignment(.center)
 
             Button(action: action) {
                 Label("Search in all vaults", systemImage: "magnifyingglass")
-                    .foregroundColor(.passBrand)
+                    .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                     .padding()
-                    .background(Color.passBrand.opacity(0.08))
+                    .background(Color(uiColor: PassColor.interactionNormMinor2))
                     .clipShape(Capsule())
             }
             .padding(.top, 50)
@@ -82,12 +84,13 @@ struct NoSearchResultsInTrashView: View {
             Text("Coundn't find \"\(query)\" in trash")
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
                 .padding(.bottom)
                 .animationsDisabled()
 
             Text("Try search again using different spelling or keyword")
                 .font(.callout)
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal)

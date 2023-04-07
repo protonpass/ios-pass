@@ -31,7 +31,7 @@ struct EditableVaultListView: View {
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
         VStack(alignment: .leading) {
-            NotchView()
+            Handle()
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 5)
             ScrollView {
@@ -59,16 +59,15 @@ struct EditableVaultListView: View {
 
             HStack {
                 CapsuleTextButton(title: "Create vault",
-                                  titleColor: .passBrand,
-                                  backgroundColor: .passBrand.withAlphaComponent(0.08),
-                                  disabled: false,
-                                  maxWidth: nil,
+                                  titleColor: PassColor.interactionNormMajor2,
+                                  backgroundColor: PassColor.interactionNormMinor1,
                                   action: viewModel.createNewVault)
+                .fixedSize(horizontal: true, vertical: true)
                 Spacer()
             }
             .padding([.bottom, .horizontal])
         }
-        .background(Color.passSecondaryBackground)
+        .background(Color(uiColor: PassColor.backgroundWeak))
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
@@ -83,11 +82,10 @@ struct EditableVaultListView: View {
             }, label: {
                 VaultRow(
                     thumbnail: {
-                        CircleButton(
-                            icon: selection.icon,
-                            color: selection.color,
-                            backgroundOpacity: 0.16,
-                            action: {})},
+                        CircleButton(icon: selection.icon,
+                                     iconColor: selection.color,
+                                     backgroundColor: selection.color.withAlphaComponent(0.16))
+                    },
                     title: selection.title,
                     itemCount: vaultsManager.getItemCount(for: selection),
                     isSelected: vaultsManager.isSelected(selection))
@@ -113,7 +111,7 @@ struct EditableVaultListView: View {
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
-            .foregroundColor(.textWeak)
+            .foregroundColor(Color(uiColor: PassColor.textWeak))
     }
 
     @ViewBuilder
@@ -167,7 +165,7 @@ struct EditableVaultListView: View {
                         Label(title: {
                             Text("Empty trash")
                         }, icon: {
-                            Image(uiImage: IconProvider.trash)
+                            Image(uiImage: IconProvider.trashCross)
                         })
                     })
             }, label: threeDotsIcon)
@@ -212,11 +210,11 @@ extension VaultSelection {
     var color: UIColor {
         switch self {
         case .all:
-            return .passBrand
+            return PassColor.interactionNorm
         case .precise(let vault):
             return vault.displayPreferences.color.color.color
         case .trash:
-            return .textWeak
+            return PassColor.textWeak
         }
     }
 }

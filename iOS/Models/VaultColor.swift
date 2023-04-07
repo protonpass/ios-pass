@@ -27,16 +27,16 @@ enum VaultColor: CaseIterable {
 
     var color: UIColor {
         switch self {
-        case .color1: return .vaultColor1
-        case .color2: return .vaultColor2
-        case .color3: return .vaultColor3
-        case .color4: return .vaultColor4
-        case .color5: return .vaultColor5
-        case .color6: return .vaultColor6
-        case .color7: return .vaultColor7
-        case .color8: return .vaultColor8
-        case .color9: return .vaultColor9
-        case .color10: return .vaultColor10
+        case .color1: return PassColor.vaultHeliotrope
+        case .color2: return PassColor.vaultMauvelous
+        case .color3: return PassColor.vaultMarigoldYellow
+        case .color4: return PassColor.vaultDeYork
+        case .color5: return PassColor.vaultJordyBlue
+        case .color6: return PassColor.vaultLavenderMagenta
+        case .color7: return PassColor.vaultChestnutRose
+        case .color8: return PassColor.vaultPorsche
+        case .color9: return PassColor.vaultMercury
+        case .color10: return PassColor.vaultWaterLeaf
         }
     }
 }

@@ -32,6 +32,17 @@ struct AliasDetailView: View {
     }
 
     var body: some View {
+        if UIDevice.current.isIpad {
+            realBody
+        } else {
+            NavigationView {
+                realBody
+            }
+            .navigationViewStyle(.stack)
+        }
+    }
+
+    private var realBody: some View {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
@@ -42,7 +53,7 @@ struct AliasDetailView: View {
                         .padding(.bottom, 8)
 
                     if !viewModel.itemContent.note.isEmpty {
-                        NoteDetailSection(itemContent: viewModel.itemContent)
+                        NoteDetailSection(itemContent: viewModel.itemContent, theme: viewModel.theme)
                     }
 
                     ItemDetailMoreInfoSection(
@@ -53,13 +64,13 @@ struct AliasDetailView: View {
                 }
                 .padding()
             }
-            .background(Color.passBackground)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
         .onFirstAppear(perform: viewModel.getAlias)
+        .itemDetailBackground(theme: viewModel.theme)
         .toolbar {
             ItemDetailToolbar(itemContent: viewModel.itemContent,
                               onGoBack: viewModel.goBack,
@@ -74,7 +85,7 @@ struct AliasDetailView: View {
     private var aliasMailboxesSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
             aliasRow
-            Divider()
+            PassDivider()
             mailboxesRow
         }
         .padding(.vertical, kItemDetailSectionPadding)
@@ -85,7 +96,7 @@ struct AliasDetailView: View {
     private var aliasRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user,
-                                  color: viewModel.itemContent.tintColor)
+                                  color: viewModel.itemContent.type.tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -119,7 +130,7 @@ struct AliasDetailView: View {
 
     @ViewBuilder
     private var mailboxesRow: some View {
-        let tintColor = viewModel.itemContent.tintColor
+        let tintColor = viewModel.itemContent.type.tintColor
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.forward, color: tintColor)
 

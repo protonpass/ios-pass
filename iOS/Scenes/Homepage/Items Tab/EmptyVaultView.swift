@@ -18,37 +18,95 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import SwiftUI
 import UIComponents
 
 struct EmptyVaultView: View {
-    let onCreateNewItem: () -> Void
+    let viewModel: EmptyVaultViewModel
 
     var body: some View {
-        VStack {
-            VStack {
-                Spacer()
-                Image(uiImage: PassIcon.emptyFolder)
-                    .resizable()
-                    .scaledToFit()
-            }
-
+        ZStack {
             VStack(alignment: .center) {
-                Text("Add your first item")
+                Text("Your vault is empty")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .padding(.bottom)
-                Text("Or use the Proton Pass web extension to import items from another password manager.")
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .padding(.bottom, 8)
+
+                Text("Let's get started by creating your first item")
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
-                CapsuleTextButton(title: "Create new item",
-                                  titleColor: .white,
-                                  backgroundColor: .passBrand,
-                                  disabled: false,
-                                  maxWidth: nil,
-                                  action: onCreateNewItem)
-                Spacer()
+                    .padding(.bottom, 32)
+
+                ForEach(ItemContentType.allCases, id: \.rawValue) { type in
+                    CreateItemButton(icon: type.icon,
+                                     title: type.createItemTitle,
+                                     tintColor: type.tintColor,
+                                     backgroundColor: type.backgroundNormColor) {
+                        switch type {
+                        case .login:
+                            viewModel.createLogin()
+                        case .alias:
+                            viewModel.createAlias()
+                        case .note:
+                            viewModel.createNote()
+                        }
+                    }
+                }
             }
+            .padding()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+private struct CreateItemButton: View {
+    let icon: UIImage
+    let title: String
+    let tintColor: UIColor
+    let backgroundColor: UIColor
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            ZStack {
+                Color(uiColor: backgroundColor)
+                HStack {
+                    iconImage
+                    Spacer()
+                    Text(title)
+                        .foregroundColor(Color(uiColor: tintColor))
+                    Spacer()
+                    // Gimmick image to help center text
+                    iconImage
+                        .opacity(0)
+                }
+                .padding(.horizontal)
+            }
+            .frame(height: 52)
+            .clipShape(Capsule())
+        }
+    }
+
+    private var iconImage: some View {
+        Image(uiImage: icon)
+            .resizable()
+            .scaledToFit()
+            .frame(maxWidth: 16, maxHeight: 16)
+            .foregroundColor(Color(uiColor: tintColor))
+    }
+}
+
+private extension ItemContentType {
+    var createItemTitle: String {
+        switch self {
+        case .login:
+            return "Create a login"
+        case .alias:
+            return "Create a Hide My Email alias"
+        case .note:
+            return "Create a note"
         }
     }
 }
