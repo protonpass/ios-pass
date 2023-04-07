@@ -414,7 +414,7 @@ struct CreateEditLoginView: View {
                                    onOpenSettings: viewModel.openSettings)
         }
         .sheet(isPresented: $viewModel.isShowingCodeScanner) {
-            WrappedCodeScannerView { result in
+            WrappedCodeScannerView(theme: viewModel.preferences.theme) { result in
                 viewModel.handleScanResult(result)
             }
         }
@@ -425,6 +425,7 @@ struct CreateEditLoginView: View {
 private struct WrappedCodeScannerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isGaleryPresented = false
+    let theme: Theme
     let completion: (Result<ScanResult, ScanError>) -> Void
 
     var body: some View {
@@ -454,6 +455,8 @@ private struct WrappedCodeScannerView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
+        .theme(theme)
     }
 }
 
