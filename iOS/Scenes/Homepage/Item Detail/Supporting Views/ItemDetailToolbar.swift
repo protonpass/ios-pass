@@ -25,6 +25,7 @@ import UIComponents
 
 struct ItemDetailToolbar: ToolbarContent {
     @State private var isShowingAlert = false
+    let isShownAsSheet: Bool
     let itemContent: ItemContent
     let onGoBack: () -> Void
     let onEdit: () -> Void
@@ -35,7 +36,7 @@ struct ItemDetailToolbar: ToolbarContent {
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
+            CircleButton(icon: isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: itemContent.type.tintColor,
                          backgroundColor: itemContent.type.backgroundWeakColor,
                          action: onGoBack)

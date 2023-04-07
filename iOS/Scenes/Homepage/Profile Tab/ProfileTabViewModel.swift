@@ -116,6 +116,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
 // MARK: - Public APIs
 extension ProfileTabViewModel {
+    func refreshItemCount() {
+        itemCountViewModel.refresh()
+    }
+
     func upgrade() {
         print(#function)
     }

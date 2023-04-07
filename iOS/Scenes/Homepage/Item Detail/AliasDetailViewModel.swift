@@ -32,13 +32,15 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 
     private let aliasRepository: AliasRepositoryProtocol
 
-    init(itemContent: ItemContent,
+    init(isShownAsSheet: Bool,
+         itemContent: ItemContent,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          logManager: LogManager,
          theme: Theme) {
         self.aliasRepository = aliasRepository
-        super.init(itemContent: itemContent,
+        super.init(isShownAsSheet: isShownAsSheet,
+                   itemContent: itemContent,
                    itemRepository: itemRepository,
                    logManager: logManager,
                    theme: theme)
