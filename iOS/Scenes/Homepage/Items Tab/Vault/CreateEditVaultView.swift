@@ -37,7 +37,7 @@ struct CreateEditVaultView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(kItemDetailSectionPadding)
             .navigationBarTitleDisplayMode(.inline)
-            .background(Color.passBackground)
+            .background(Color(uiColor: PassColor.backgroundNorm))
             .toolbar { toolbarContent }
             .ignoresSafeArea(.keyboard)
             .gesture(DragGesture().onChanged { _ in isFocusedOnTitle = false })
@@ -55,17 +55,19 @@ struct CreateEditVaultView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         color: .passBrand,
+                         iconColor: PassColor.interactionNorm,
+                         backgroundColor: PassColor.interactionNormMinor2,
                          action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            CapsuleTextButton(title: viewModel.saveButtonTitle,
-                              titleColor: .textNorm,
-                              backgroundColor: .passBrand,
-                              disabled: false,
-                              action: viewModel.save)
-            .font(.callout)
+            DisablableCapsuleTextButton(title: viewModel.saveButtonTitle,
+                                        titleColor: PassColor.textInvert,
+                                        disableTitleColor: PassColor.textHint,
+                                        backgroundColor: PassColor.interactionNorm,
+                                        disableBackgroundColor: PassColor.interactionNormMinor1,
+                                        disabled: viewModel.title.isEmpty,
+                                        action: viewModel.save)
         }
     }
 
@@ -93,7 +95,7 @@ struct CreateEditVaultView: View {
                         .sectionTitleText()
                     TextField("Untitled", text: $viewModel.title)
                         .font(.title.weight(.bold))
-                        .tint(.passBrand)
+                        .tint(Color(uiColor: PassColor.interactionNorm))
                         .submitLabel(.done)
                         .focused($isFocusedOnTitle)
                         .onSubmit { isFocusedOnTitle = false }
@@ -104,7 +106,7 @@ struct CreateEditVaultView: View {
                     Button(action: {
                         viewModel.title = ""
                     }, label: {
-                        ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                        ItemDetailSectionIcon(icon: IconProvider.cross)
                     })
                 }
             }
@@ -178,7 +180,8 @@ private struct VaultColorView: View {
     private func overlay(size: CGSize) -> some View {
         if color == selectedColor {
             Circle()
-                .strokeBorder(Color.textHint, style: StrokeStyle(lineWidth: size.width / 20))
+                .strokeBorder(Color(uiColor: PassColor.textHint),
+                              style: StrokeStyle(lineWidth: size.width / 20))
         } else {
             EmptyView()
         }
@@ -195,11 +198,11 @@ private struct VaultIconView: View {
                 selectedIcon = icon
             }, label: {
                 ZStack {
-                    Color(uiColor: .init(red: 36, green: 33, blue: 56))
+                    Color(uiColor: PassColor.backgroundWeak)
                     Image(uiImage: icon.image)
                         .resizable()
                         .scaledToFit()
-                        .foregroundColor(.textNorm)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
                         .padding(proxy.size.width / 6)
                 }
                 .clipShape(Circle())
@@ -215,7 +218,8 @@ private struct VaultIconView: View {
     private func overlay(size: CGSize) -> some View {
         if icon == selectedIcon {
             Circle()
-                .strokeBorder(Color.textHint, style: StrokeStyle(lineWidth: size.width / 20))
+                .strokeBorder(Color(uiColor: PassColor.textHint),
+                              style: StrokeStyle(lineWidth: size.width / 20))
         } else {
             EmptyView()
         }

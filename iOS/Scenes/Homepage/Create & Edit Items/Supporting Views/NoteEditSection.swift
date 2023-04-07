@@ -28,7 +28,7 @@ struct NoteEditSection: View {
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.note, color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.note)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Note")
@@ -45,7 +45,7 @@ struct NoteEditSection: View {
                 Button(action: {
                     note = ""
                 }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross, color: .textWeak)
+                    ItemDetailSectionIcon(icon: IconProvider.cross)
                 })
             }
         }

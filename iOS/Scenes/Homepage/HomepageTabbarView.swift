@@ -21,6 +21,7 @@
 import Core
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 import UIKit
 
 struct HomepageTabbarView: UIViewControllerRepresentable {
@@ -38,10 +39,10 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: HomepageTabBarController, context: Context) {}
 }
 
-private final class DummyViewController: UIViewController {}
-
 protocol HomepageTabBarControllerDelegate: AnyObject {
+    func homepageTabBarControllerDidSelectItemsTab()
     func homepageTabBarControllerWantToCreateNewItem()
+    func homepageTabBarControllerDidSelectProfileTab()
 }
 
 final class HomepageTabBarController: UITabBarController, DeinitPrintable {
@@ -49,7 +50,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     private let itemsTabView: ItemsTabView
     private let profileTabView: ProfileTabView
-    private let dummyViewController = DummyViewController()
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
@@ -64,25 +64,37 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        if #unavailable(iOS 16) {
+            // UITabBarController automatically embeds child VCs into a UINavigationController
+            // Which then causes 2 navigation bars stacked on top of each other because
+            // the child VCs themselves also have a navigation bar
+            // Looks like this is only the behavior before iOS 16. Safe to remove once dropped iOS 15
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
         let itemsTabViewController = UIHostingController(rootView: itemsTabView)
         itemsTabViewController.tabBarItem.image = IconProvider.listBullets
 
+        let dummyViewController = UIViewController()
+        dummyViewController.tabBarItem.image = IconProvider.plus
+
         let profileTabViewController = UIHostingController(rootView: profileTabView)
         profileTabViewController.tabBarItem.image = IconProvider.user
-
-        dummyViewController.tabBarItem.image = IconProvider.plus
 
         viewControllers = [itemsTabViewController, dummyViewController, profileTabViewController]
 
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithTransparentBackground()
         tabBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
-        tabBarAppearance.backgroundColor = UIColor(red: 19, green: 19, blue: 29).withAlphaComponent(0.8)
-        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = .label
-        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = .passBrand
+        tabBarAppearance.backgroundColor = PassColor.tabBarBackground
+        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = PassColor.textNorm
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = PassColor.interactionNormMajor2
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
         UITabBar.appearance().standardAppearance = tabBarAppearance
 
@@ -98,10 +110,24 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 extension HomepageTabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {
-        if viewController.isKind(of: DummyViewController.self) {
+        guard let viewControllers = tabBarController.viewControllers else { return false }
+        assert(viewControllers.count == 3)
+
+        if viewController == viewControllers[0] {
+            homepageTabBarControllerDelegate?.homepageTabBarControllerDidSelectItemsTab()
+            return true
+        }
+
+        if viewController == viewControllers[1] {
             homepageTabBarControllerDelegate?.homepageTabBarControllerWantToCreateNewItem()
             return false
         }
-        return true
+
+        if viewController == viewControllers[2] {
+            homepageTabBarControllerDelegate?.homepageTabBarControllerDidSelectProfileTab()
+            return true
+        }
+
+        return false
     }
 }

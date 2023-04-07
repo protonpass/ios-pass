@@ -48,36 +48,41 @@ struct SortTypeListView: View {
     @StateObject var viewModel: SortTypeListViewModel
 
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
-            NotchView()
-                .padding(.top, 5)
+        NavigationView {
+            VStack(alignment: .center, spacing: 0) {
+                ForEach(SortType.allCases, id: \.self) { type in
+                    HStack {
+                        Text(type.title)
+                        Spacer()
+                        if type == viewModel.selectedSortType {
+                            Label("", systemImage: "checkmark")
+                        }
+                    }
+                    .foregroundColor(Color(uiColor: type == viewModel.selectedSortType ?
+                                           PassColor.interactionNormMajor2 : PassColor.textNorm))
+                    .contentShape(Rectangle())
+                    .frame(height: 44)
+                    .onTapGesture {
+                        viewModel.selectedSortType = type
+                        dismiss()
+                    }
 
-            Text("Sort by")
-                .font(.callout)
-                .fontWeight(.bold)
-                .padding(.top, 22)
-
-            ForEach(SortType.allCases, id: \.self) { type in
-                HStack {
-                    Text(type.title)
-                    Spacer()
-                    if type == viewModel.selectedSortType {
-                        Label("", systemImage: "checkmark")
+                    if type != SortType.allCases.last {
+                        PassDivider()
                     }
                 }
-                .foregroundColor(type == viewModel.selectedSortType ? .passBrand : .primary)
-                .contentShape(Rectangle())
-                .frame(height: 44)
-                .onTapGesture {
-                    viewModel.selectedSortType = type
-                    dismiss()
+                .padding(.horizontal)
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+            .background(Color(uiColor: PassColor.backgroundWeak))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    NavigationTitleWithHandle(title: "Sort by")
                 }
             }
-            .padding(.horizontal)
-
-            Spacer()
         }
-        .frame(maxWidth: .infinity, alignment: .center)
-        .background(Color.passSecondaryBackground)
+        .navigationViewStyle(.stack)
     }
 }

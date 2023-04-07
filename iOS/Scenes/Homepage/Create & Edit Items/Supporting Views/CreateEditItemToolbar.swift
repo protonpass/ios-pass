@@ -34,7 +34,8 @@ struct CreateEditItemToolbar: ToolbarContent {
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         color: itemContentType.tintColor,
+                         iconColor: itemContentType.tintColor,
+                         backgroundColor: itemContentType.backgroundWeakColor,
                          action: onGoBack)
         }
 
@@ -42,12 +43,13 @@ struct CreateEditItemToolbar: ToolbarContent {
             if isSaving {
                 ProgressView()
             } else {
-                CapsuleTextButton(title: saveButtonTitle,
-                                  titleColor: .textNorm,
-                                  backgroundColor: itemContentType.tintColor,
-                                  disabled: !isSaveable,
-                                  action: { Task { await onSave() } })
-                .font(.callout)
+                DisablableCapsuleTextButton(title: saveButtonTitle,
+                                            titleColor: PassColor.textInvert,
+                                            disableTitleColor: PassColor.textHint,
+                                            backgroundColor: itemContentType.tintColor,
+                                            disableBackgroundColor: itemContentType.backgroundNormColor,
+                                            disabled: !isSaveable,
+                                            action: { Task { await onSave() } })
             }
         }
     }

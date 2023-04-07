@@ -44,7 +44,7 @@ struct ItemSwipeModifier: ViewModifier {
                             Image(uiImage: IconProvider.clockRotateLeft)
                         })
                     })
-                    .tint(.notificationSuccess)
+                    .tint(Color(uiColor: PassColor.signalSuccess))
                 } else {
                     EmptyView()
                 }
@@ -57,7 +57,7 @@ struct ItemSwipeModifier: ViewModifier {
                         Label(title: {
                             Text("Permanently delete")
                         }, icon: {
-                            Image(uiImage: IconProvider.trash)
+                            Image(uiImage: IconProvider.trashCross)
                         })
                     })
                     .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))

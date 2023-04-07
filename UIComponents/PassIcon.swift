@@ -22,6 +22,7 @@ import UIKit
 
 // swiftlint:disable force_unwrapping
 public enum PassIcon {
+    public static var brandPass = UIImage(named: "BrandPass")!
     public static var passIcon = UIImage(named: "ProtonPassIcon")!
     public static var passTextLogo = UIImage(named: "PassTextLogo")!
     public static var swirls = UIImage(named: "Swirls")!

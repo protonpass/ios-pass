@@ -34,7 +34,7 @@ struct TOTPCircularTimer: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(.gray, style: StrokeStyle(lineWidth: 3))
+                .stroke(Color(uiColor: PassColor.textHint), style: StrokeStyle(lineWidth: 3))
 
             Circle()
                 .trim(from: 0, to: percentage)
@@ -51,7 +51,7 @@ struct TOTPCircularTimer: View {
             Text("\(data.remaining)")
                 .font(.caption)
                 .fontWeight(.light)
-                .foregroundColor(.textWeak)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .animationsDisabled()
         }
         .frame(width: 32, height: 32)
@@ -60,9 +60,9 @@ struct TOTPCircularTimer: View {
     private var color: Color {
         switch data.remaining {
         case 0...10:
-            return .notificationError
+            return Color(uiColor: PassColor.signalDanger)
         default:
-            return .notificationSuccess
+            return Color(uiColor: PassColor.signalSuccess)
         }
     }
 }

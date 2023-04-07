@@ -20,6 +20,7 @@
 
 import Client
 import SwiftUI
+import UIComponents
 
 // https://www.fivestars.blog/articles/section-title-index-swiftui/
 struct SectionIndexTitles: View {
@@ -31,7 +32,7 @@ struct SectionIndexTitles: View {
             ForEach(AlphabetLetter.allCases, id: \.rawValue) { letter in
                 Text(letter.character)
                     .font(.caption)
-                    .foregroundColor(.passBrand)
+                    .foregroundColor(Color(uiColor: PassColor.interactionNorm))
                     .multilineTextAlignment(.trailing)
                     .padding(.leading)
                     .contentShape(Rectangle())

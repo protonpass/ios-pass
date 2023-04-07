@@ -24,74 +24,71 @@ import SwiftUI
 import UIComponents
 
 struct CreateAliasLiteView: View {
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateAliasLiteViewModel
     @State private var isShowingAdvancedOptions = false
-    let tintColor = ItemContentType.login.tintColor
 
     init(viewModel: CreateAliasLiteViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
-        VStack(spacing: 8) {
-            ScrollView {
-                VStack(spacing: 8) {
-                    aliasAddressSection
-                        .padding(.vertical, 30)
+        NavigationView {
+            VStack(spacing: 8) {
+                ScrollView {
+                    VStack(spacing: 8) {
+                        aliasAddressSection
+                            .padding(.vertical, 30)
 
-                    if isShowingAdvancedOptions {
-                        PrefixSuffixSection(prefix: $viewModel.prefix,
-                                            prefixManuallyEdited: .constant(false),
-                                            suffixSelection: viewModel.suffixSelection,
-                                            prefixError: viewModel.prefixError)
+                        if isShowingAdvancedOptions {
+                            PrefixSuffixSection(prefix: $viewModel.prefix,
+                                                prefixManuallyEdited: .constant(false),
+                                                suffixSelection: viewModel.suffixSelection,
+                                                prefixError: viewModel.prefixError)
+                        }
+
+                        MailboxSection(mailboxSelection: viewModel.mailboxSelection)
+                            .onTapGesture(perform: viewModel.showMailboxSelection)
+
+                        if !isShowingAdvancedOptions {
+                            AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
+                                .padding(.vertical)
+                        }
+
+                        Spacer()
                     }
-
-                    MailboxSection(mailboxSelection: viewModel.mailboxSelection)
-                        .onTapGesture(perform: viewModel.showMailboxSelection)
-
-                    if !isShowingAdvancedOptions {
-                        AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
-                            .padding(.vertical)
-                    }
-
-                    Spacer()
+                    .animation(.default, value: viewModel.prefixError)
+                    .animation(.default, value: isShowingAdvancedOptions)
+                    .padding(.horizontal)
                 }
-                .animation(.default, value: viewModel.prefixError)
-                .animation(.default, value: isShowingAdvancedOptions)
-                .padding(.horizontal)
-            }
 
-            HStack(spacing: 16) {
-                CapsuleTextButton(title: "Cancel",
-                                  titleColor: .textWeak,
-                                  backgroundColor: .white.withAlphaComponent(0.08),
-                                  disabled: false,
-                                  height: 44,
-                                  action: { viewModel.onDismiss?() })
+                HStack(spacing: 16) {
+                    CapsuleTextButton(title: "Cancel",
+                                      titleColor: PassColor.textWeak,
+                                      backgroundColor: PassColor.textDisabled,
+                                      height: 44,
+                                      action: dismiss.callAsFunction)
 
-                CapsuleTextButton(
-                    title: "Confirm",
-                    titleColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light)),
-                    backgroundColor: tintColor,
-                    disabled: viewModel.prefixError != nil,
-                    height: 44,
-                    action: { viewModel.confirm(); viewModel.onDismiss?() })
+                    DisablableCapsuleTextButton(title: "Confirm",
+                                                titleColor: PassColor.textInvert,
+                                                disableTitleColor: PassColor.textHint,
+                                                backgroundColor: PassColor.loginInteractionNormMajor1,
+                                                disableBackgroundColor: PassColor.loginInteractionNormMinor1,
+                                                disabled: viewModel.prefixError != nil,
+                                                height: 44,
+                                                action: { viewModel.confirm(); dismiss() })
+                }
+                .padding([.horizontal, .bottom])
             }
-            .padding([.horizontal, .bottom])
-        }
-        .background(Color.passSecondaryBackground)
-        .tint(Color(uiColor: tintColor))
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarHidden(false)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                VStack(spacing: 18) {
-                    NotchView()
-                    Text("You are about to create:")
-                        .navigationTitleText()
+            .background(Color(uiColor: PassColor.backgroundWeak))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    NavigationTitleWithHandle(title: "You are about to create")
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 
     @ViewBuilder
@@ -99,15 +96,16 @@ struct CreateAliasLiteView: View {
         if viewModel.prefixError != nil {
             Text(viewModel.prefix + viewModel.suffixSelection.selectedSuffixString)
                 .multilineTextAlignment(.center)
-                .foregroundColor(.notificationError)
+                .foregroundColor(Color(uiColor: PassColor.signalDanger))
         } else {
             Text(viewModel.prefix)
                 .font(.title2)
-                .fontWeight(.medium) +
+                .fontWeight(.medium)
+                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
             Text(viewModel.suffixSelection.selectedSuffixString)
                 .font(.title2)
                 .fontWeight(.medium)
-                .foregroundColor(Color(uiColor: tintColor))
+                .foregroundColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
         }
     }
 }

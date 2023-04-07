@@ -18,34 +18,35 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct ItemDetailPlaceholderView: View {
+    let theme: Theme
     let onGoBack: () -> Void
 
     var body: some View {
         ZStack {
-            Color.passSecondaryBackground
-                .ignoresSafeArea()
             Image(uiImage: PassIcon.passIcon)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 128, height: 128)
                 .grayscale(1)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .itemDetailBackground(theme: theme)
         .toolbar { toolbarContent }
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: onGoBack) {
-                Image(uiImage: IconProvider.chevronLeft)
-                    .resizable()
-                    .foregroundColor(.primary)
-            }
+            CircleButton(icon: IconProvider.chevronLeft,
+                         iconColor: PassColor.interactionNormMajor1,
+                         backgroundColor: PassColor.interactionNormMinor2,
+                         action: onGoBack)
         }
     }
 }

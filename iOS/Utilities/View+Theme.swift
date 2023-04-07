@@ -21,7 +21,7 @@
 import Core
 import SwiftUI
 
-struct ThemeModifier: ViewModifier {
+private struct ThemeModifier: ViewModifier {
     let theme: Theme
 
     func body(content: Content) -> some View {
@@ -35,7 +35,9 @@ struct ThemeModifier: ViewModifier {
 
 extension View {
     func theme(_ theme: Theme) -> some View {
-        modifier(ThemeModifier(theme: theme))
+        self
+            .modifier(ThemeModifier(theme: theme))
+            .animation(.default, value: theme)
     }
 }
 

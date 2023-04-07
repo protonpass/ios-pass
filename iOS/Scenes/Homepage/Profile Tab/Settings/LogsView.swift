@@ -29,7 +29,7 @@ struct LogsView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color.passBackground
+                Color(uiColor: PassColor.backgroundNorm)
                     .ignoresSafeArea()
 
                 if viewModel.isLoading {
@@ -62,7 +62,10 @@ struct LogsView: View {
     }
 
     private var dismissButton: some View {
-        CircleButton(icon: IconProvider.cross, color: .passBrand, action: dismiss.callAsFunction)
+        CircleButton(icon: IconProvider.cross,
+                     iconColor: PassColor.interactionNorm,
+                     backgroundColor: PassColor.interactionNormMinor2,
+                     action: dismiss.callAsFunction)
     }
 
     private var logs: some View {
@@ -83,7 +86,7 @@ struct LogsView: View {
 
                 ToolbarItem(placement: .principal) {
                     Text(viewModel.module.title)
-                        .navigationTitleText()
+                        .font(.callout.bold())
                         .onTapGesture {
                             withAnimation {
                                 value.scrollTo(viewModel.formattedEntries.last ?? "")
@@ -94,8 +97,8 @@ struct LogsView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     CapsuleLabelButton(icon: IconProvider.arrowUpFromSquare,
                                        title: "Share",
-                                       backgroundColor: .passBrand,
-                                       disabled: false,
+                                       titleColor: PassColor.textInvert,
+                                       backgroundColor: PassColor.interactionNorm,
                                        action: viewModel.shareLogs)
                 }
             }

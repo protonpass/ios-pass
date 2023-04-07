@@ -1,5 +1,5 @@
 //
-// SettingView.swift
+// SettingsView.swift
 // Proton Pass - Created on 31/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -23,10 +23,23 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct SettingView: View {
-    @StateObject var viewModel: SettingViewModel
+struct SettingsView: View {
+    @StateObject var viewModel: SettingsViewModel
 
     var body: some View {
+        if UIDevice.current.isIpad {
+            realBody
+                .theme(viewModel.selectedTheme)
+        } else {
+            NavigationView {
+                realBody
+            }
+            .navigationViewStyle(.stack)
+            .theme(viewModel.selectedTheme)
+        }
+    }
+
+    private var realBody: some View {
         ScrollView {
             VStack(spacing: kItemDetailSectionPadding) {
                 untitledSection
@@ -38,19 +51,22 @@ struct SettingView: View {
             }
             .padding()
         }
+        .itemDetailBackground(theme: viewModel.selectedTheme)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.passBackground)
         .navigationTitle("Settings")
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                CircleButton(icon: UIDevice.current.isIpad ?
-                             IconProvider.chevronLeft : IconProvider.chevronDown,
-                             color: .passBrand,
-                             action: viewModel.goBack)
-            }
+        .toolbar { toolbarContent }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
+                         iconColor: PassColor.interactionNorm,
+                         backgroundColor: PassColor.interactionNormMinor2,
+                         action: viewModel.goBack)
         }
     }
 
@@ -102,7 +118,7 @@ struct SettingView: View {
                     Toggle(isOn: $viewModel.shareClipboard) {
                         Text("Share clipboard between devices")
                     }
-                    .tint(.passBrand)
+                    .tint(Color(uiColor: PassColor.interactionNorm))
                 }
             }
             .roundedEditableSection()
@@ -145,13 +161,12 @@ struct SettingView: View {
                     height: .medium,
                     content: {
                         Text("Force Synchronization")
-                            .foregroundColor(.passBrand)
+                            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                     },
                     trailing: {
                         CircleButton(icon: IconProvider.arrowRotateRight,
-                                     color: .passBrand,
-                                     action: {})
-                        .disabled(true)
+                                     iconColor: PassColor.interactionNormMajor2,
+                                     backgroundColor: PassColor.interactionNormMinor1)
                     })
             }
             .roundedEditableSection()

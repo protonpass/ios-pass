@@ -29,13 +29,13 @@ enum ItemType: CaseIterable {
     var icon: UIImage {
         switch self {
         case .login:
-            return IconProvider.keySkeleton
+            return IconProvider.user
         case .alias:
             return IconProvider.alias
         case .note:
             return IconProvider.notepadChecklist
         case .password:
-            return IconProvider.lock
+            return IconProvider.key
         }
     }
 
@@ -48,7 +48,20 @@ enum ItemType: CaseIterable {
         case .note:
             return ItemContentType.note.tintColor
         case .password:
-            return UIColor(red: 252, green: 156, blue: 159)
+            return PassColor.passwordInteractionNorm
+        }
+    }
+
+    var backgroundNormColor: UIColor {
+        switch self {
+        case .login:
+            return ItemContentType.login.backgroundNormColor
+        case .alias:
+            return ItemContentType.alias.backgroundNormColor
+        case .note:
+            return ItemContentType.note.backgroundNormColor
+        case .password:
+            return PassColor.passwordInteractionNormMinor1
         }
     }
 
@@ -85,7 +98,7 @@ struct ItemTypeListView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                LazyVStack(spacing: 0) {
+                VStack(spacing: 0) {
                     ForEach(ItemType.allCases, id: \.self) { type in
                         itemRow(for: type)
                             .padding(.horizontal)
@@ -95,17 +108,12 @@ struct ItemTypeListView: View {
                         }
                     }
                 }
-                .padding(.top, kItemDetailSectionPadding)
             }
-            .background(Color.passSecondaryBackground)
+            .background(Color(uiColor: PassColor.backgroundWeak))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    VStack(spacing: 18) {
-                        NotchView()
-                        Text("Create")
-                            .navigationTitleText()
-                    }
+                    NavigationTitleWithHandle(title: "Create")
                 }
             }
         }
@@ -114,24 +122,14 @@ struct ItemTypeListView: View {
 
     @ViewBuilder
     private func itemRow(for type: ItemType) -> some View {
-        let tintColor = type.tintColor
         Button(action: {
             onSelectItemType(type)
         }, label: {
             GeneralItemRow(
                 thumbnailView: {
-                    GeometryReader { proxy in
-                        ZStack {
-                            Color(uiColor: tintColor.withAlphaComponent(0.08))
-                                .clipShape(Circle())
-
-                            Image(uiImage: type.icon)
-                                .resizable()
-                                .scaledToFit()
-                                .padding(proxy.size.width / 4)
-                                .foregroundColor(Color(uiColor: tintColor))
-                        }
-                    }
+                    SquircleThumbnail(icon: type.icon,
+                                      iconColor: type.tintColor,
+                                      backgroundColor: type.backgroundNormColor)
                 },
                 title: type.title,
                 description: type.description)

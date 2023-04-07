@@ -45,6 +45,7 @@ class BaseItemDetailViewModel {
     let itemRepository: ItemRepositoryProtocol
     private(set) var itemContent: ItemContent
     let logger: Logger
+    let theme: Theme
 
     weak var delegate: ItemDetailViewModelDelegate?
 
@@ -52,10 +53,12 @@ class BaseItemDetailViewModel {
 
     init(itemContent: ItemContent,
          itemRepository: ItemRepositoryProtocol,
-         logManager: LogManager) {
+         logManager: LogManager,
+         theme: Theme) {
         self.itemContent = itemContent
         self.itemRepository = itemRepository
         self.logger = .init(manager: logManager)
+        self.theme = theme
         self.bindValues()
     }
 

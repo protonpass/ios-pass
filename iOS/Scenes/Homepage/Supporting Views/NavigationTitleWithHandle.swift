@@ -1,7 +1,7 @@
 //
-// NotchView.swift
-// Proton Pass - Created on 15/11/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// NavigationTitleWithHandle.swift
+// Proton Pass - Created on 06/04/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,17 +19,17 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIComponents
 
-public struct NotchView: View {
-    public init() {}
+struct NavigationTitleWithHandle: View {
+    let title: String
 
-    public var body: some View {
-        HStack {
-            Spacer()
-            Color(uiColor: .init(red: 176, green: 176, blue: 176).withAlphaComponent(0.3))
-                .frame(width: 36, height: 5)
-                .clipShape(Capsule())
-            Spacer()
+    var body: some View {
+        VStack {
+            Handle()
+            Text(title)
+                .font(.callout.bold())
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
         }
     }
 }

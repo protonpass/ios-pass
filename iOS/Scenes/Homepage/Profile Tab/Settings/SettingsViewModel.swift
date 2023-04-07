@@ -1,5 +1,5 @@
 //
-// SettingViewModel.swift
+// SettingsViewModel.swift
 // Proton Pass - Created on 31/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -23,20 +23,20 @@ import Combine
 import Core
 import SwiftUI
 
-protocol SettingViewModelDelegate: AnyObject {
-    func settingViewModelWantsToShowSpinner()
-    func settingViewModelWantsToHideSpinner()
-    func settingViewModelWantsToGoBack()
-    func settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser])
-    func settingViewModelWantsToEditTheme()
-    func settingViewModelWantsToEditClipboardExpiration()
-    func settingViewModelWantsToEdit(primaryVault: Vault)
-    func settingViewModelWantsToViewLogs()
-    func settingViewModelDidFinishFullSync()
-    func settingViewModelDidEncounter(error: Error)
+protocol SettingsViewModelDelegate: AnyObject {
+    func settingsViewModelWantsToShowSpinner()
+    func settingsViewModelWantsToHideSpinner()
+    func settingsViewModelWantsToGoBack()
+    func settingsViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser])
+    func settingsViewModelWantsToEditTheme()
+    func settingsViewModelWantsToEditClipboardExpiration()
+    func settingsViewModelWantsToEdit(primaryVault: Vault)
+    func settingsViewModelWantsToViewLogs()
+    func settingsViewModelDidFinishFullSync()
+    func settingsViewModelDidEncounter(error: Error)
 }
 
-final class SettingViewModel: ObservableObject, DeinitPrintable {
+final class SettingsViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let itemRepository: ItemRepositoryProtocol
@@ -50,7 +50,7 @@ final class SettingViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var selectedClipboardExpiration: ClipboardExpiration
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
 
-    weak var delegate: SettingViewModelDelegate?
+    weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
     init(itemRepository: ItemRepositoryProtocol,
@@ -101,43 +101,43 @@ final class SettingViewModel: ObservableObject, DeinitPrintable {
 }
 
 // MARK: - Public APIs
-extension SettingViewModel {
+extension SettingsViewModel {
     func goBack() {
-        delegate?.settingViewModelWantsToGoBack()
+        delegate?.settingsViewModelWantsToGoBack()
     }
 
     func editDefaultBrowser() {
-        delegate?.settingViewModelWantsToEditDefaultBrowser(supportedBrowsers: supportedBrowsers)
+        delegate?.settingsViewModelWantsToEditDefaultBrowser(supportedBrowsers: supportedBrowsers)
     }
 
     func editTheme() {
-        delegate?.settingViewModelWantsToEditTheme()
+        delegate?.settingsViewModelWantsToEditTheme()
     }
 
     func editClipboardExpiration() {
-        delegate?.settingViewModelWantsToEditClipboardExpiration()
+        delegate?.settingsViewModelWantsToEditClipboardExpiration()
     }
 
     func edit(primaryVault: Vault) {
-        delegate?.settingViewModelWantsToEdit(primaryVault: primaryVault)
+        delegate?.settingsViewModelWantsToEdit(primaryVault: primaryVault)
     }
 
     func viewLogs() {
-        delegate?.settingViewModelWantsToViewLogs()
+        delegate?.settingsViewModelWantsToViewLogs()
     }
 
     func forceSync() {
         Task { @MainActor in
-            defer { delegate?.settingViewModelWantsToHideSpinner() }
+            defer { delegate?.settingsViewModelWantsToHideSpinner() }
             do {
                 logger.trace("Doing full sync")
-                delegate?.settingViewModelWantsToShowSpinner()
+                delegate?.settingsViewModelWantsToShowSpinner()
                 try await itemRepository.refreshItems()
                 logger.info("Done full sync")
-                delegate?.settingViewModelDidFinishFullSync()
+                delegate?.settingsViewModelDidFinishFullSync()
             } catch {
                 logger.error(error)
-                delegate?.settingViewModelDidEncounter(error: error)
+                delegate?.settingsViewModelDidEncounter(error: error)
             }
         }
     }

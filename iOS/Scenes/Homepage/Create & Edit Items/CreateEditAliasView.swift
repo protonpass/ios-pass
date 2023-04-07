@@ -58,7 +58,7 @@ struct CreateEditAliasView: View {
                     content
                 }
             }
-            .background(Color.passBackground)
+            .background(Color(uiColor: PassColor.backgroundNorm))
             .navigationBarTitleDisplayMode(.inline)
         }
         .navigationViewStyle(.stack)
@@ -69,7 +69,8 @@ struct CreateEditAliasView: View {
     private var closeButtonToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         color: tintColor,
+                         iconColor: ItemContentType.alias.tintColor,
+                         backgroundColor: ItemContentType.alias.backgroundWeakColor,
                          action: dismiss.callAsFunction)
         }
     }
@@ -164,7 +165,7 @@ struct CreateEditAliasView: View {
                 Text("Alias address")
                     .sectionTitleText()
                 Text(viewModel.aliasEmail)
-                    .foregroundColor(.textWeak)
+                    .sectionContentText()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -174,7 +175,7 @@ struct CreateEditAliasView: View {
 
     private var aliasPreviewSection: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.alias, color: .textWeak)
+            ItemDetailSectionIcon(icon: IconProvider.alias)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Alias preview")
@@ -182,9 +183,10 @@ struct CreateEditAliasView: View {
 
                 if viewModel.prefixError != nil {
                     Text(viewModel.prefix + viewModel.suffix)
-                        .foregroundColor(.notificationError)
+                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
                 } else {
-                    Text(viewModel.prefix) +
+                    Text(viewModel.prefix)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm)) +
                     Text(viewModel.suffix)
                         .foregroundColor(Color(uiColor: tintColor))
                 }

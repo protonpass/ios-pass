@@ -23,6 +23,7 @@ import SwiftUI
 import UIComponents
 
 struct GeneratePasswordView: View {
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: GeneratePasswordViewModel
 
     init(viewModel: GeneratePasswordViewModel) {
@@ -30,86 +31,84 @@ struct GeneratePasswordView: View {
     }
 
     var body: some View {
-        VStack {
-            Text(viewModel.texts)
-                .font(.title3)
-                .minimumScaleFactor(0.5)
-                .frame(maxHeight: .infinity, alignment: .center)
-                .animationsDisabled()
-
-            PassDivider()
-
-            HStack {
-                Text("\(Int(viewModel.length)) characters")
-                    .frame(minWidth: 120, alignment: .leading)
+        NavigationView {
+            VStack {
+                Text(viewModel.texts)
+                    .font(.title3)
+                    .minimumScaleFactor(0.5)
+                    .frame(maxHeight: .infinity, alignment: .center)
                     .animationsDisabled()
-                Slider(value: $viewModel.length,
-                       in: 4...64,
-                       step: 1)
-                .accentColor(.passBrand)
+
+                PassDivider()
+
+                HStack {
+                    Text("\(Int(viewModel.length)) characters")
+                        .frame(minWidth: 120, alignment: .leading)
+                        .animationsDisabled()
+                    Slider(value: $viewModel.length,
+                           in: 4...64,
+                           step: 1)
+                    .accentColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
+                }
+                .padding(.horizontal)
+
+                PassDivider()
+
+                Toggle(isOn: $viewModel.hasSpecialCharacters) {
+                    Text("Special characters")
+                }
+                .toggleStyle(SwitchToggleStyle.pass)
+                .padding(.horizontal, 16)
+
+                PassDivider()
+
+                HStack {
+                    CapsuleTextButton(title: "Cancel",
+                                      titleColor: PassColor.textWeak,
+                                      backgroundColor: PassColor.textDisabled,
+                                      height: 44,
+                                      action: dismiss.callAsFunction)
+
+                    CapsuleTextButton(
+                        title: viewModel.mode.confirmTitle,
+                        titleColor: PassColor.textInvert,
+                        backgroundColor: PassColor.loginInteractionNormMajor1,
+                        height: 44,
+                        action: {
+                            viewModel.confirm()
+                            if case .createLogin = viewModel.mode {
+                                dismiss()
+                            }
+                        })
+                }
+                .padding(.vertical)
             }
             .padding(.horizontal)
-
-            PassDivider()
-
-            Toggle(isOn: $viewModel.hasSpecialCharacters) {
-                Text("Special characters")
-            }
-            .toggleStyle(SwitchToggleStyle.pass)
-            .padding(.horizontal, 16)
-
-            PassDivider()
-
-            HStack {
-                CapsuleTextButton(title: "Cancel",
-                                  titleColor: .textWeak,
-                                  backgroundColor: .white.withAlphaComponent(0.08),
-                                  disabled: false,
-                                  height: 44,
-                                  action: { viewModel.onDismiss?() })
-
-                CapsuleTextButton(
-                    title: viewModel.mode.confirmTitle,
-                    titleColor: .textNorm.resolvedColor(with: .init(userInterfaceStyle: .light)),
-                    backgroundColor: .passBrand,
-                    disabled: false,
-                    height: 44,
-                    action: {
-                        viewModel.confirm()
-                        if case .createLogin = viewModel.mode {
-                            viewModel.onDismiss?()
-                        }
-                    })
-            }
-            .padding(.vertical)
-        }
-        .padding(.horizontal)
-        .background(Color.passSecondaryBackground)
-        .animation(.default, value: viewModel.password)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                // Hidden gimmick button to make the navigation title centered properly
-                CircleButton(icon: IconProvider.arrowsRotate,
-                             color: .passBrand,
-                             action: viewModel.regenerate)
-                .opacity(0)
-            }
-
-            ToolbarItem(placement: .principal) {
-                VStack(alignment: .center, spacing: 18) {
-                    NotchView()
-                    Text("Generate password")
-                        .navigationTitleText()
+            .background(Color(uiColor: PassColor.backgroundWeak))
+            .navigationBarTitleDisplayMode(.inline)
+            .animation(.default, value: viewModel.password)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    // Hidden gimmick button to make the navigation title centered properly
+                    CircleButton(icon: IconProvider.arrowsRotate,
+                                 iconColor: PassColor.interactionNormMajor1,
+                                 backgroundColor: PassColor.interactionNormMinor1,
+                                 action: viewModel.regenerate)
+                    .opacity(0)
                 }
-                .frame(maxWidth: .infinity, alignment: .center)
-            }
 
-            ToolbarItem(placement: .navigationBarTrailing) {
-                CircleButton(icon: IconProvider.arrowsRotate,
-                             color: .passBrand,
-                             action: viewModel.regenerate)
+                ToolbarItem(placement: .principal) {
+                    NavigationTitleWithHandle(title: "Generate password")
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    CircleButton(icon: IconProvider.arrowsRotate,
+                                 iconColor: PassColor.interactionNormMajor1,
+                                 backgroundColor: PassColor.interactionNormMinor1,
+                                 action: viewModel.regenerate)
+                }
             }
         }
+        .navigationViewStyle(.stack)
     }
 }

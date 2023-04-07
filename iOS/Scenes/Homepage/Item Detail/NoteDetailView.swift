@@ -32,6 +32,17 @@ struct NoteDetailView: View {
     }
 
     var body: some View {
+        if UIDevice.current.isIpad {
+            realBody
+        } else {
+            NavigationView {
+                realBody
+            }
+            .navigationViewStyle(.stack)
+        }
+    }
+
+    private var realBody: some View {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 24) {
@@ -40,6 +51,7 @@ struct NoteDetailView: View {
                         .fontWeight(.bold)
                         .textSelection(.enabled)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
 
                     if viewModel.note.isEmpty {
                         Text("Empty note")
@@ -50,6 +62,7 @@ struct NoteDetailView: View {
                             .sectionContentText()
                             .textSelection(.enabled)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
                     }
 
                     ItemDetailMoreInfoSection(
@@ -62,7 +75,7 @@ struct NoteDetailView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.passBackground)
+        .itemDetailBackground(theme: viewModel.theme)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)

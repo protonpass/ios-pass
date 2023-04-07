@@ -26,11 +26,8 @@ struct VaultThumbnail: View {
     let vault: Vault
 
     var body: some View {
-        CircleButton(
-            icon: vault.displayPreferences.icon.icon.image,
-            color: vault.displayPreferences.color.color.color,
-            backgroundOpacity: 0.16,
-            action: {})
-        .disabled(true)
+        CircleButton(icon: vault.displayPreferences.icon.icon.image,
+                     iconColor: vault.displayPreferences.color.color.color,
+                     backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16))
     }
 }

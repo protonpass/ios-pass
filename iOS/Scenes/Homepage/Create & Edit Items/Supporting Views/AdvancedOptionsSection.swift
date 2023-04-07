@@ -20,6 +20,7 @@
 
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct AdvancedOptionsSection: View {
     @Binding var isShowingAdvancedOptions: Bool
@@ -37,7 +38,7 @@ struct AdvancedOptionsSection: View {
                     .scaledToFit()
                     .frame(width: 16)
             })
-            .foregroundColor(.textWeak)
+            .foregroundColor(Color(uiColor: PassColor.textWeak))
             .frame(maxWidth: .infinity, alignment: .trailing)
         })
     }

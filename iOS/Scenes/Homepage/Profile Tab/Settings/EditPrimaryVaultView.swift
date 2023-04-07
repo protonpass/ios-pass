@@ -25,15 +25,7 @@ struct EditPrimaryVaultView: View {
     @StateObject var viewModel: EditPrimaryVaultViewModel
 
     var body: some View {
-        VStack {
-            VStack(alignment: .center, spacing: 22) {
-                NotchView()
-                    .padding(.top, 5)
-                Text("Primary vault")
-                    .navigationTitleText()
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-
+        NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(viewModel.allVaults, id: \.vault.shareId) { vault in
@@ -59,8 +51,16 @@ struct EditPrimaryVaultView: View {
                 .roundedEditableSection()
                 .padding([.top, .horizontal])
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .disabled(viewModel.isLoading)
+            .background(Color(uiColor: PassColor.backgroundWeak))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    NavigationTitleWithHandle(title: "Primary vault")
+                }
+            }
         }
-        .background(Color.passSecondaryBackground)
+        .navigationViewStyle(.stack)
     }
 }

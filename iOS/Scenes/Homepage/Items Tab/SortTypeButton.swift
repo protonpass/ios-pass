@@ -20,6 +20,7 @@
 
 import Client
 import SwiftUI
+import UIComponents
 
 struct SortTypeButton: View {
     @Binding var selectedSortType: SortType
@@ -50,7 +51,7 @@ struct SortTypeButton: View {
     private func sortTypeLabel() -> some View {
         Label(selectedSortType.title, systemImage: "arrow.up.arrow.down")
             .font(.callout.weight(.medium))
-            .foregroundColor(.passBrand)
+            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
             .animationsDisabled()
     }
 }

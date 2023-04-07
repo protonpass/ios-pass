@@ -18,9 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CoreImage.CIFilterBuiltins
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct FullScreenView: View {
     @Environment(\.dismiss) private var dismiss
@@ -28,6 +30,7 @@ struct FullScreenView: View {
     @State private var originalBrightness: CGFloat = 0.5
     @State private var percentage: Double = 0.5
     let text: String
+    let theme: Theme
 
     enum Mode {
         case text, qr
@@ -50,38 +53,40 @@ struct FullScreenView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color.passBackground
-                    .ignoresSafeArea()
-                switch mode {
-                case .text:
-                    FullScreenTextView(originalBrightness: $originalBrightness,
-                                       percentage: $percentage,
-                                       text: text)
-                case .qr:
-                    QrCodeView(text: text)
+                Group {
+                    switch mode {
+                    case .text:
+                        FullScreenTextView(originalBrightness: $originalBrightness,
+                                           percentage: $percentage,
+                                           text: text)
+                    case .qr:
+                        QrCodeView(text: text)
+                    }
                 }
+                .padding()
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .animation(.default, value: mode)
-            .padding()
+            .itemDetailBackground(theme: theme)
             .toolbar { toolbarContent }
-            .onAppear {
-                originalBrightness = UIScreen.main.brightness
-                UIScreen.main.brightness = CGFloat(1.0)
-            }
-            .onDisappear {
-                UIScreen.main.brightness = originalBrightness
-            }
         }
         .navigationViewStyle(.stack)
+        .onAppear {
+            originalBrightness = UIScreen.main.brightness
+            UIScreen.main.brightness = CGFloat(1.0)
+        }
+        .onDisappear {
+            UIScreen.main.brightness = originalBrightness
+        }
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: dismiss.callAsFunction) {
-                Image(uiImage: IconProvider.cross)
-                    .foregroundColor(.primary)
-            }
+            CircleButton(icon: IconProvider.cross,
+                         iconColor: PassColor.interactionNormMajor1,
+                         backgroundColor: PassColor.interactionNormMinor2,
+                         action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
@@ -89,7 +94,7 @@ struct FullScreenView: View {
                 self.mode = mode.oppositeMode
             }, label: {
                 Image(systemName: mode.oppositeMode.systemImageName)
-                    .foregroundColor(.interactionNorm)
+                    .foregroundColor(Color(uiColor: PassColor.interactionNorm))
             })
         }
     }
@@ -110,7 +115,7 @@ private struct FullScreenTextView: View {
             HStack {
                 Text("A")
                 Slider(value: $percentage)
-                    .tint(.interactionNorm)
+                    .tint(Color(uiColor: PassColor.interactionNorm))
                 Text("A")
                     .font(.title)
             }
