@@ -29,6 +29,7 @@ struct SettingsView: View {
     var body: some View {
         if UIDevice.current.isIpad {
             realBody
+                .theme(viewModel.selectedTheme)
         } else {
             NavigationView {
                 realBody
@@ -50,7 +51,6 @@ struct SettingsView: View {
             }
             .padding()
         }
-        .theme(viewModel.selectedTheme)
         .itemDetailBackground(theme: viewModel.selectedTheme)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle("Settings")

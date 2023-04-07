@@ -22,7 +22,7 @@ import Core
 import SwiftUI
 import UIComponents
 
-struct ItemDetailBackgroundModifier: ViewModifier {
+private struct ItemDetailBackgroundModifier: ViewModifier {
     @Environment(\.colorScheme) private var colorScheme
     let theme: Theme
 
@@ -38,11 +38,13 @@ struct ItemDetailBackgroundModifier: ViewModifier {
     }
 
     private var finalScheme: ColorScheme {
-        switch (colorScheme, theme) {
-        case (_, .dark), (.dark, .matchSystem):
-            return .dark
-        default:
+        switch theme {
+        case .light:
             return .light
+        case .dark:
+            return .dark
+        case .matchSystem:
+            return colorScheme
         }
     }
 }

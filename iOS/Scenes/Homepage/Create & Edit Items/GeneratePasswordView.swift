@@ -85,6 +85,7 @@ struct GeneratePasswordView: View {
             }
             .padding(.horizontal)
             .background(Color(uiColor: PassColor.backgroundWeak))
+            .navigationBarTitleDisplayMode(.inline)
             .animation(.default, value: viewModel.password)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

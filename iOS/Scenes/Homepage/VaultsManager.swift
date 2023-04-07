@@ -37,11 +37,11 @@ enum VaultSelection {
     var searchBarPlacehoder: String {
         switch self {
         case .all:
-            return "Search in all vaults"
+            return "Search in all vaults..."
         case .precise(let vault):
-            return "Search in \(vault.name)"
+            return "Search in \(vault.name)..."
         case .trash:
-            return "Search in trash"
+            return "Search in trash..."
         }
     }
 }

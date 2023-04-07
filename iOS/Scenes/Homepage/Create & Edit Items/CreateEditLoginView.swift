@@ -410,7 +410,8 @@ struct CreateEditLoginView: View {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
-            NoCameraPermissionView(onOpenSettings: viewModel.openSettings)
+            NoCameraPermissionView(theme: viewModel.preferences.theme,
+                                   onOpenSettings: viewModel.openSettings)
         }
         .sheet(isPresented: $viewModel.isShowingCodeScanner) {
             WrappedCodeScannerView { result in
