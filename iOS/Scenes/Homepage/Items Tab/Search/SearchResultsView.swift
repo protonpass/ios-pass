@@ -175,9 +175,9 @@ private struct ItemSearchResultView: View {
 
     var body: some View {
         HStack {
-            CircleButton(icon: result.type.icon,
-                         iconColor: result.type.tintColor,
-                         backgroundColor: result.type.backgroundNormColor)
+            SquircleThumbnail(icon: result.type.icon,
+                              iconColor: result.type.tintColor,
+                              backgroundColor: result.type.backgroundNormColor)
 
             VStack(alignment: .leading, spacing: 4) {
                 HighlightText(highlightableText: result.title)

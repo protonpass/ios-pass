@@ -34,16 +34,19 @@ struct SearchViewSkeleton: View {
             }
             .frame(height: kSearchBarHeight)
 
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(0..<4, id: \.self) { _ in
-                        AnimatingGradient()
-                            .frame(width: 100, height: 36)
-                            .clipShape(Capsule())
-                    }
-                }
+            HStack {
+                AnimatingGradient()
+                    .frame(width: 160)
+                    .clipShape(Capsule())
+
+                Spacer()
+
+                AnimatingGradient()
+                    .frame(width: 50)
+                    .clipShape(Capsule())
             }
-            .adaptiveScrollDisabled(true)
+            .frame(height: 18)
+            .frame(maxWidth: .infinity)
 
             ScrollView {
                 LazyVStack(spacing: 20) {
@@ -62,7 +65,7 @@ struct SearchViewSkeleton: View {
         HStack(spacing: 16) {
             AnimatingGradient()
                 .frame(width: 40, height: 40)
-                .clipShape(Circle())
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
 
             VStack(alignment: .leading) {
                 Spacer()

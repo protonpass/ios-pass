@@ -122,7 +122,6 @@ struct ItemTypeListView: View {
 
     @ViewBuilder
     private func itemRow(for type: ItemType) -> some View {
-        let tintColor = type.tintColor
         Button(action: {
             onSelectItemType(type)
         }, label: {

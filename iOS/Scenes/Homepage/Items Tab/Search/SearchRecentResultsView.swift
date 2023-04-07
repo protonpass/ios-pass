@@ -76,9 +76,9 @@ private struct SearchEntryView: View {
             Button(action: onSelect) {
                 GeneralItemRow(
                     thumbnailView: {
-                        CircleButton(icon: uiModel.type.icon,
-                                     iconColor: uiModel.type.tintColor,
-                                     backgroundColor: uiModel.type.backgroundNormColor)
+                        SquircleThumbnail(icon: uiModel.type.icon,
+                                          iconColor: uiModel.type.tintColor,
+                                          backgroundColor: uiModel.type.backgroundNormColor)
                     },
                     title: uiModel.title,
                     description: uiModel.description)
