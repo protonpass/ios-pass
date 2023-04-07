@@ -48,12 +48,14 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 
     var coloredPasswordTexts: [Text] { PasswordUtils.generateColoredPasswords(password) }
 
-    override init(itemContent: ItemContent,
+    override init(isShownAsSheet: Bool,
+                  itemContent: ItemContent,
                   itemRepository: ItemRepositoryProtocol,
                   logManager: LogManager,
                   theme: Theme) {
         self.totpManager = .init(logManager: logManager)
-        super.init(itemContent: itemContent,
+        super.init(isShownAsSheet: isShownAsSheet,
+                   itemContent: itemContent,
                    itemRepository: itemRepository,
                    logManager: logManager,
                    theme: theme)

@@ -28,7 +28,7 @@ let kItemDetailSectionPadding: CGFloat = 16
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToShowSpinner()
     func itemDetailViewModelWantsToHideSpinner()
-    func itemDetailViewModelWantsToGoBack()
+    func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool)
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
@@ -42,6 +42,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 }
 
 class BaseItemDetailViewModel {
+    let isShownAsSheet: Bool
     let itemRepository: ItemRepositoryProtocol
     private(set) var itemContent: ItemContent
     let logger: Logger
@@ -51,10 +52,12 @@ class BaseItemDetailViewModel {
 
     private var symmetricKey: SymmetricKey { itemRepository.symmetricKey }
 
-    init(itemContent: ItemContent,
+    init(isShownAsSheet: Bool,
+         itemContent: ItemContent,
          itemRepository: ItemRepositoryProtocol,
          logManager: LogManager,
          theme: Theme) {
+        self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
         self.itemRepository = itemRepository
         self.logger = .init(manager: logManager)
@@ -74,7 +77,7 @@ class BaseItemDetailViewModel {
     }
 
     func goBack() {
-        delegate?.itemDetailViewModelWantsToGoBack()
+        delegate?.itemDetailViewModelWantsToGoBack(isShownAsSheet: isShownAsSheet)
     }
 
     func edit() {

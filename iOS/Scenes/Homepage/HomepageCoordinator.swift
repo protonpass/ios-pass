@@ -64,11 +64,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private lazy var bannerManager: BannerManager = { .init(container: rootViewController) }()
 
     // References
-    private var profileTabViewModel: ProfileTabViewModel?
-    private var currentItemDetailViewModel: BaseItemDetailViewModel?
-    private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
-    private var searchViewModel: SearchViewModel?
-    private var deleteVaultAlertHandler: DeleteVaultAlertHandler?
+    private weak var profileTabViewModel: ProfileTabViewModel?
+    private weak var currentItemDetailViewModel: BaseItemDetailViewModel?
+    private weak var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
+    private weak var searchViewModel: SearchViewModel?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -222,12 +221,13 @@ private extension HomepageCoordinator {
                 dismissible: dismissible)
     }
 
-    func presentItemDetailView(for itemContent: ItemContent) {
+    func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
         let view: any View
         let baseViewModel: BaseItemDetailViewModel
         switch itemContent.contentData {
         case .login:
-            let viewModel = LogInDetailViewModel(itemContent: itemContent,
+            let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
+                                                 itemContent: itemContent,
                                                  itemRepository: itemRepository,
                                                  logManager: logManager,
                                                  theme: preferences.theme)
@@ -236,7 +236,8 @@ private extension HomepageCoordinator {
             view = LogInDetailView(viewModel: viewModel)
 
         case .note:
-            let viewModel = NoteDetailViewModel(itemContent: itemContent,
+            let viewModel = NoteDetailViewModel(isShownAsSheet: asSheet,
+                                                itemContent: itemContent,
                                                 itemRepository: itemRepository,
                                                 logManager: logManager,
                                                 theme: preferences.theme)
@@ -244,7 +245,8 @@ private extension HomepageCoordinator {
             view = NoteDetailView(viewModel: viewModel)
 
         case .alias:
-            let viewModel = AliasDetailViewModel(itemContent: itemContent,
+            let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
+                                                 itemContent: itemContent,
                                                  itemRepository: itemRepository,
                                                  aliasRepository: aliasRepository,
                                                  logManager: logManager,
@@ -255,7 +257,12 @@ private extension HomepageCoordinator {
 
         baseViewModel.delegate = self
         currentItemDetailViewModel = baseViewModel
-        adaptivelyPresentDetailView(view: view)
+
+        if asSheet {
+            present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        } else {
+            push(view)
+        }
     }
 
     func presentEditItemView(for itemContent: ItemContent) {
@@ -502,7 +509,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
-        presentItemDetailView(for: itemContent)
+        presentItemDetailView(for: itemContent, asSheet: false)
     }
 
     func itemsTabViewModelDidEncounter(error: Error) {
@@ -875,10 +882,10 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
 
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
                                                         delegate: DeleteVaultAlertHandlerDelegate) {
-        deleteVaultAlertHandler = .init(rootViewController: topMostViewController,
-                                        vault: vault,
-                                        delegate: delegate)
-        deleteVaultAlertHandler?.showAlert()
+        let handler = DeleteVaultAlertHandler(rootViewController: topMostViewController,
+                                              vault: vault,
+                                              delegate: delegate)
+        handler.showAlert()
     }
 
     func editableVaultListViewModelDidDelete(vault: Vault) {
@@ -911,8 +918,12 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         hideLoadingHud()
     }
 
-    func itemDetailViewModelWantsToGoBack() {
-        adaptivelyDismissCurrentDetailView()
+    func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool) {
+        if isShownAsSheet {
+            dismissTopMostViewController()
+        } else {
+            adaptivelyDismissCurrentDetailView()
+        }
     }
 
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
@@ -996,7 +1007,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 // MARK: - LogInDetailViewModelDelegate
 extension HomepageCoordinator: LogInDetailViewModelDelegate {
     func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
-        presentItemDetailView(for: itemContent)
+        presentItemDetailView(for: itemContent, asSheet: true)
     }
 }
 
@@ -1030,7 +1041,7 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
 // MARK: - SearchViewModelDelegate
 extension HomepageCoordinator: SearchViewModelDelegate {
     func searchViewModelWantsToViewDetail(of itemContent: Client.ItemContent) {
-        presentItemDetailView(for: itemContent)
+        presentItemDetailView(for: itemContent, asSheet: true)
     }
 
     func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
