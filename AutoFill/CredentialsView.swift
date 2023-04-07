@@ -64,7 +64,8 @@ struct CredentialsView: View {
 
                 case let .loaded(result, state):
                     if result.isEmpty {
-                        NoCredentialsView()
+                        NoCredentialsView(onCancel: viewModel.cancel,
+                                          onCreate: viewModel.createLoginItem)
                     } else {
                         resultView(result: result, state: state)
                     }
