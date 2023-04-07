@@ -216,6 +216,7 @@ struct ItemsTabView: View {
             Section(content: {
                 ForEach(items) { item in
                     itemRow(for: item)
+                        .plainListRow()
                 }
             }, header: {
                 Text(headerTitle)
@@ -248,7 +249,6 @@ struct ItemsTabView: View {
                 title: item.title,
                 description: item.description)
         })
-        .plainListRow()
         .padding(.horizontal, 16)
         .frame(height: 64)
         .modifier(ItemSwipeModifier(
