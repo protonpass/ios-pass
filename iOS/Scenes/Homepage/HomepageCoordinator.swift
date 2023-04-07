@@ -398,10 +398,12 @@ private extension HomepageCoordinator {
         present(view)
     }
 
-    func refreshHomepageAndSearchPage() {
+    func refresh() {
         vaultsManager.refresh()
-        profileTabViewModel?.itemCountViewModel.refresh()
+        profileTabViewModel?.refresh()
         searchViewModel?.refreshResults()
+        currentItemDetailViewModel?.refresh()
+        currentCreateEditItemViewModel?.refresh()
     }
 
     func adaptivelyPresentDetailView<V: View>(view: V) {
@@ -750,7 +752,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelDidFinishFullSync() {
-        refreshHomepageAndSearchPage()
+        refresh()
         bannerManager.displayBottomSuccessMessage("Force synchronization done")
     }
 
@@ -899,12 +901,12 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
 
     func editableVaultListViewModelDidRestoreAllTrashedItems() {
         bannerManager.displayBottomSuccessMessage("All items restored")
-        refreshHomepageAndSearchPage()
+        refresh()
     }
 
     func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems() {
         bannerManager.displayBottomInfoMessage("All items permanently deleted")
-        refreshHomepageAndSearchPage()
+        refresh()
     }
 }
 
@@ -948,7 +950,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(vault.name)\"")
         }
-        refreshHomepageAndSearchPage()
+        refresh()
     }
 
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate) {
@@ -973,7 +975,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
-        refreshHomepageAndSearchPage()
+        refresh()
         dismissTopMostViewController(animated: true) { [unowned self] in
             let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
                 banner.dismiss()
@@ -986,14 +988,14 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
-        refreshHomepageAndSearchPage()
+        refresh()
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
         }
     }
 
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        refreshHomepageAndSearchPage()
+        refresh()
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
         }
@@ -1026,15 +1028,15 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
     }
 
     func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable) {
-        refreshHomepageAndSearchPage()
+        refresh()
     }
 
     func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable) {
-        refreshHomepageAndSearchPage()
+        refresh()
     }
 
     func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        refreshHomepageAndSearchPage()
+        refresh()
     }
 }
 
@@ -1147,9 +1149,7 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
         if hasNewEvents {
             logger.info("Has new events. Refreshing items")
-            vaultsManager.refresh()
-            currentItemDetailViewModel?.refresh()
-            currentCreateEditItemViewModel?.refresh()
+            refresh()
         } else {
             logger.info("Has no new events. Do nothing.")
         }
