@@ -41,13 +41,23 @@ struct AccountView: View {
         ScrollView {
             VStack(spacing: 12) {
                 VStack(spacing: 0) {
-                    OptionRow(title: "Username",
-                              height: .tall,
-                              content: { Text(viewModel.username) })
+                    OptionRow(
+                        title: "Username",
+                        height: .tall,
+                        content: {
+                            Text(viewModel.username)
+                                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        })
+
                     PassDivider()
-                    OptionRow(title: "Subscription Plan",
-                              height: .tall,
-                              content: { Text(viewModel.primaryPlan?.title ?? "Free") })
+
+                    OptionRow(
+                        title: "Subscription Plan",
+                        height: .tall,
+                        content: {
+                            Text(viewModel.primaryPlan?.title ?? "Free")
+                                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        })
                 }
                 .roundedEditableSection()
 
@@ -125,7 +135,8 @@ struct AccountView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
+            CircleButton(icon: UIDevice.current.isIpad ?
+                         IconProvider.chevronLeft : IconProvider.chevronDown,
                          iconColor: PassColor.interactionNorm,
                          backgroundColor: PassColor.interactionNormMinor2,
                          action: viewModel.goBack)
