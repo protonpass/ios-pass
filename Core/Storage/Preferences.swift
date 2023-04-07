@@ -45,7 +45,7 @@ public final class Preferences: ObservableObject, DeinitPrintable {
     public var autoFillBannerDisplayed = false
 
     @AppStorage("theme", store: kSharedUserDefaults)
-    public var theme = Theme.dark
+    public var theme = Theme.matchSystem
 
     @AppStorage("browser", store: kSharedUserDefaults)
     public var browser = Browser.safari
@@ -68,7 +68,7 @@ public final class Preferences: ObservableObject, DeinitPrintable {
         failedAttemptCount = 0
         biometricAuthenticationEnabled = false
         autoFillBannerDisplayed = false
-        theme = .dark
+        theme = .matchSystem
         browser = .safari
         clipboardExpiration = .thirtySeconds
         shareClipboard = false

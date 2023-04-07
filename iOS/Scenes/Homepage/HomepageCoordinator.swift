@@ -64,11 +64,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private lazy var bannerManager: BannerManager = { .init(container: rootViewController) }()
 
     // References
-    private var profileTabViewModel: ProfileTabViewModel?
-    private var currentItemDetailViewModel: BaseItemDetailViewModel?
-    private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
-    private var searchViewModel: SearchViewModel?
-    private var deleteVaultAlertHandler: DeleteVaultAlertHandler?
+    private weak var profileTabViewModel: ProfileTabViewModel?
+    private weak var currentItemDetailViewModel: BaseItemDetailViewModel?
+    private weak var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
+    private weak var searchViewModel: SearchViewModel?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -222,12 +221,13 @@ private extension HomepageCoordinator {
                 dismissible: dismissible)
     }
 
-    func presentItemDetailView(for itemContent: ItemContent) {
+    func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
         let view: any View
         let baseViewModel: BaseItemDetailViewModel
         switch itemContent.contentData {
         case .login:
-            let viewModel = LogInDetailViewModel(itemContent: itemContent,
+            let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
+                                                 itemContent: itemContent,
                                                  itemRepository: itemRepository,
                                                  logManager: logManager,
                                                  theme: preferences.theme)
@@ -236,7 +236,8 @@ private extension HomepageCoordinator {
             view = LogInDetailView(viewModel: viewModel)
 
         case .note:
-            let viewModel = NoteDetailViewModel(itemContent: itemContent,
+            let viewModel = NoteDetailViewModel(isShownAsSheet: asSheet,
+                                                itemContent: itemContent,
                                                 itemRepository: itemRepository,
                                                 logManager: logManager,
                                                 theme: preferences.theme)
@@ -244,7 +245,8 @@ private extension HomepageCoordinator {
             view = NoteDetailView(viewModel: viewModel)
 
         case .alias:
-            let viewModel = AliasDetailViewModel(itemContent: itemContent,
+            let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
+                                                 itemContent: itemContent,
                                                  itemRepository: itemRepository,
                                                  aliasRepository: aliasRepository,
                                                  logManager: logManager,
@@ -255,7 +257,12 @@ private extension HomepageCoordinator {
 
         baseViewModel.delegate = self
         currentItemDetailViewModel = baseViewModel
-        adaptivelyPresentDetailView(view: view)
+
+        if asSheet {
+            present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        } else {
+            push(view)
+        }
     }
 
     func presentEditItemView(for itemContent: ItemContent) {
@@ -391,10 +398,12 @@ private extension HomepageCoordinator {
         present(view)
     }
 
-    func refreshHomepageAndSearchPage() {
+    func refresh() {
         vaultsManager.refresh()
-        profileTabViewModel?.itemCountViewModel.refresh()
+        profileTabViewModel?.refreshItemCount()
         searchViewModel?.refreshResults()
+        currentItemDetailViewModel?.refresh()
+        currentCreateEditItemViewModel?.refresh()
     }
 
     func adaptivelyPresentDetailView<V: View>(view: V) {
@@ -442,7 +451,12 @@ extension HomepageCoordinator {
 // MARK: - HomepageTabBarControllerDelegate
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     func homepageTabBarControllerDidSelectItemsTab() {
-        print(#function)
+        if !isCollapsed() {
+            let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
+                self.popTopViewController(animated: true)
+            }
+            push(placeholderView)
+        }
     }
 
     func homepageTabBarControllerWantToCreateNewItem() {
@@ -450,7 +464,9 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     }
 
     func homepageTabBarControllerDidSelectProfileTab() {
-        print(#function)
+        if !isCollapsed() {
+            profileTabViewModelWantsToShowAccountMenu()
+        }
     }
 }
 
@@ -502,7 +518,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
-        presentItemDetailView(for: itemContent)
+        presentItemDetailView(for: itemContent, asSheet: !UIDevice.current.isIpad)
     }
 
     func itemsTabViewModelDidEncounter(error: Error) {
@@ -743,7 +759,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelDidFinishFullSync() {
-        refreshHomepageAndSearchPage()
+        refresh()
         bannerManager.displayBottomSuccessMessage("Force synchronization done")
     }
 
@@ -875,10 +891,10 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
 
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
                                                         delegate: DeleteVaultAlertHandlerDelegate) {
-        deleteVaultAlertHandler = .init(rootViewController: topMostViewController,
-                                        vault: vault,
-                                        delegate: delegate)
-        deleteVaultAlertHandler?.showAlert()
+        let handler = DeleteVaultAlertHandler(rootViewController: topMostViewController,
+                                              vault: vault,
+                                              delegate: delegate)
+        handler.showAlert()
     }
 
     func editableVaultListViewModelDidDelete(vault: Vault) {
@@ -892,12 +908,12 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
 
     func editableVaultListViewModelDidRestoreAllTrashedItems() {
         bannerManager.displayBottomSuccessMessage("All items restored")
-        refreshHomepageAndSearchPage()
+        refresh()
     }
 
     func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems() {
         bannerManager.displayBottomInfoMessage("All items permanently deleted")
-        refreshHomepageAndSearchPage()
+        refresh()
     }
 }
 
@@ -911,8 +927,12 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         hideLoadingHud()
     }
 
-    func itemDetailViewModelWantsToGoBack() {
-        adaptivelyDismissCurrentDetailView()
+    func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool) {
+        if isShownAsSheet {
+            dismissTopMostViewController()
+        } else {
+            popTopViewController(animated: true)
+        }
     }
 
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
@@ -937,7 +957,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(vault.name)\"")
         }
-        refreshHomepageAndSearchPage()
+        refresh()
     }
 
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate) {
@@ -962,7 +982,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
-        refreshHomepageAndSearchPage()
+        refresh()
         dismissTopMostViewController(animated: true) { [unowned self] in
             let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
                 banner.dismiss()
@@ -975,14 +995,14 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
-        refreshHomepageAndSearchPage()
+        refresh()
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
         }
     }
 
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        refreshHomepageAndSearchPage()
+        refresh()
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
         }
@@ -996,7 +1016,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 // MARK: - LogInDetailViewModelDelegate
 extension HomepageCoordinator: LogInDetailViewModelDelegate {
     func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
-        presentItemDetailView(for: itemContent)
+        presentItemDetailView(for: itemContent, asSheet: true)
     }
 }
 
@@ -1015,22 +1035,22 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
     }
 
     func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable) {
-        refreshHomepageAndSearchPage()
+        refresh()
     }
 
     func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable) {
-        refreshHomepageAndSearchPage()
+        refresh()
     }
 
     func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        refreshHomepageAndSearchPage()
+        refresh()
     }
 }
 
 // MARK: - SearchViewModelDelegate
 extension HomepageCoordinator: SearchViewModelDelegate {
     func searchViewModelWantsToViewDetail(of itemContent: Client.ItemContent) {
-        presentItemDetailView(for: itemContent)
+        presentItemDetailView(for: itemContent, asSheet: true)
     }
 
     func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
@@ -1136,9 +1156,7 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
         if hasNewEvents {
             logger.info("Has new events. Refreshing items")
-            vaultsManager.refresh()
-            currentItemDetailViewModel?.refresh()
-            currentCreateEditItemViewModel?.refresh()
+            refresh()
         } else {
             logger.info("Has no new events. Do nothing.")
         }

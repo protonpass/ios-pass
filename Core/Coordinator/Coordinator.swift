@@ -216,6 +216,17 @@ open class Coordinator: CoordinatorProtocol {
         }
         return false
     }
+
+    /// Only applicable for iPad
+    /// `true` when the app is not in full screen (only show 1 page at a time, not in split mode)
+    public func isCollapsed() -> Bool {
+        switch type {
+        case .navigation:
+            return true
+        case .split(let splitViewController):
+            return splitViewController.isCollapsed
+        }
+    }
 }
 
 public final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
