@@ -53,7 +53,7 @@ struct AliasDetailView: View {
                         .padding(.bottom, 8)
 
                     if !viewModel.itemContent.note.isEmpty {
-                        NoteDetailSection(itemContent: viewModel.itemContent)
+                        NoteDetailSection(itemContent: viewModel.itemContent, theme: viewModel.theme)
                     }
 
                     ItemDetailMoreInfoSection(

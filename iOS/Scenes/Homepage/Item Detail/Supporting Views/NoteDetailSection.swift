@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -27,6 +28,7 @@ import UIComponents
 struct NoteDetailSection: View {
     @State private var isShowingFullNote = false
     let itemContent: ItemContent
+    let theme: Theme
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
@@ -53,7 +55,7 @@ struct NoteDetailSection: View {
         .padding(kItemDetailSectionPadding)
         .roundedDetailSection()
         .sheet(isPresented: $isShowingFullNote) {
-            FullNoteView(itemContent: itemContent)
+            FullNoteView(itemContent: itemContent, theme: theme)
         }
     }
 }
@@ -61,6 +63,7 @@ struct NoteDetailSection: View {
 private struct FullNoteView: View {
     @Environment(\.dismiss) private var dismiss
     let itemContent: ItemContent
+    let theme: Theme
 
     var body: some View {
         NavigationView {
@@ -76,6 +79,7 @@ private struct FullNoteView: View {
                 }
                 .padding()
             }
+            .itemDetailBackground(theme: theme)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.chevronDown,
@@ -85,5 +89,7 @@ private struct FullNoteView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
+        .theme(theme)
     }
 }

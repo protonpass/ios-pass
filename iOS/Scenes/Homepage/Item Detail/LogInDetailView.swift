@@ -60,7 +60,7 @@ struct LogInDetailView: View {
                     }
 
                     if !viewModel.itemContent.note.isEmpty {
-                        NoteDetailSection(itemContent: viewModel.itemContent)
+                        NoteDetailSection(itemContent: viewModel.itemContent, theme: viewModel.theme)
                             .padding(.top, 8)
                     }
 
