@@ -133,19 +133,16 @@ struct CredentialsView: View {
 
             Spacer()
 
-            CapsuleTextButton(title: "Create login",
-                              titleColor: PassColor.textNorm,
-                              backgroundColor: PassColor.interactionNorm,
-                              height: 52,
-                              action: viewModel.createLoginItem)
-            .padding(.horizontal)
-            .padding(.vertical, 8)
+            CreateLoginButton(onCreate: viewModel.createLoginItem)
+                .padding(.horizontal)
+                .padding(.vertical, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: state)
         .onChange(of: query) { viewModel.search(term: $0) }
     }
 
+    // swiftlint:disable:next function_body_length
     private func itemList(matchedItems: [ItemUiModel],
                           notMatchedItems: [ItemUiModel]) -> some View {
         ScrollViewReader { proxy in
@@ -155,20 +152,28 @@ struct CredentialsView: View {
                     Section(content: {
                         Text("No suggestions")
                             .font(.callout.italic())
-                            .plainListRow()
                             .padding(.horizontal)
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                            .plainListRow()
                     }, header: {
                         Text(matchedItemsHeaderTitle)
+                            .font(.callout)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
                     })
                 } else {
-                    section(for: matchedItems.map { .normal($0) }, headerTitle: matchedItemsHeaderTitle)
+                    section(for: matchedItems.map { .normal($0) },
+                            headerTitle: matchedItemsHeaderTitle,
+                            headerColor: PassColor.textNorm,
+                            headerFontWeight: .bold)
                 }
 
                 if !notMatchedItems.isEmpty {
                     HStack {
                         Text("Other items")
                             .font(.callout)
-                            .fontWeight(.bold) +
+                            .fontWeight(.bold)
+                            .foregroundColor(Color(uiColor: PassColor.textNorm)) +
                         Text(" (\(notMatchedItems.count))")
                             .font(.callout)
                             .foregroundColor(Color(uiColor: PassColor.textWeak))
@@ -204,7 +209,8 @@ struct CredentialsView: View {
             HStack {
                 Text("Results")
                     .font(.callout)
-                    .fontWeight(.bold) +
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm)) +
                 Text(" (\(results.count))")
                     .font(.callout)
                     .foregroundColor(Color(uiColor: PassColor.textWeak))
@@ -235,7 +241,10 @@ struct CredentialsView: View {
     }
 
     @ViewBuilder
-    private func section(for items: [CredentialItem], headerTitle: String) -> some View {
+    private func section(for items: [CredentialItem],
+                         headerTitle: String,
+                         headerColor: UIColor = PassColor.textWeak,
+                         headerFontWeight: Font.Weight = .regular) -> some View {
         if items.isEmpty {
             EmptyView()
         } else {
@@ -256,7 +265,8 @@ struct CredentialsView: View {
             }, header: {
                 Text(headerTitle)
                     .font(.callout)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    .fontWeight(headerFontWeight)
+                    .foregroundColor(Color(uiColor: headerColor))
             })
         }
     }
@@ -307,9 +317,9 @@ struct CredentialsView: View {
         }, label: {
             GeneralItemRow(
                 thumbnailView: {
-                    CircleButton(icon: IconProvider.keySkeleton,
-                                 iconColor: ItemContentType.login.tintColor,
-                                 backgroundColor: ItemContentType.login.backgroundNormColor)
+                    SquircleThumbnail(icon: IconProvider.keySkeleton,
+                                      iconColor: ItemContentType.login.tintColor,
+                                      backgroundColor: ItemContentType.login.backgroundNormColor)
                 },
                 title: item.title,
                 description: item.description)
@@ -322,9 +332,9 @@ struct CredentialsView: View {
             select(item: item)
         }, label: {
             HStack {
-                CircleButton(icon: IconProvider.keySkeleton,
-                             iconColor: ItemContentType.login.tintColor,
-                             backgroundColor: ItemContentType.login.backgroundNormColor)
+                SquircleThumbnail(icon: IconProvider.keySkeleton,
+                                  iconColor: ItemContentType.login.tintColor,
+                                  backgroundColor: ItemContentType.login.backgroundNormColor)
 
                 VStack(alignment: .leading, spacing: 4) {
                     HighlightText(highlightableText: item.title)
