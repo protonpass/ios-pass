@@ -86,6 +86,7 @@ struct ProfileTabView: View {
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
             ItemCountView(viewModel: viewModel.itemCountViewModel)
         }
     }
@@ -95,6 +96,7 @@ struct ProfileTabView: View {
             Text("Manage my profile")
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
 
             OptionRow(height: .medium) {
                 switch viewModel.biometricAuthenticator.biometryTypeState {
@@ -105,6 +107,7 @@ struct ProfileTabView: View {
                         Toggle(isOn: $viewModel.biometricAuthenticator.enabled) {
                             Label(title: {
                                 Text(uiModel.title)
+                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
                             }, icon: {
                                 if let icon = uiModel.icon {
                                     Image(systemName: icon)
@@ -118,9 +121,11 @@ struct ProfileTabView: View {
                     } else {
                         Text("Biometric authentication not supported")
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
                     }
                 case .error(let error):
                     Text(error.localizedDescription)
+                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
                 }
             }
             .roundedEditableSection()
@@ -174,6 +179,7 @@ struct ProfileTabView: View {
                 OptionRow(height: .medium) {
                     Toggle(isOn: $viewModel.quickTypeBar) {
                         Text("QuickType bar suggestions")
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
                     }
                     .tint(Color(uiColor: PassColor.interactionNorm))
                 }
@@ -183,6 +189,7 @@ struct ProfileTabView: View {
                 OptionRow(height: .medium) {
                     Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
                         Text("Copy Two Factor Authentication code")
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
                     }
                     .tint(Color(uiColor: PassColor.interactionNorm))
                 }

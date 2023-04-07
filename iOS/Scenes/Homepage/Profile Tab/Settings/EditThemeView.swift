@@ -43,6 +43,7 @@ struct EditThemeView: View {
                                         .scaledToFit()
                                         .frame(maxWidth: 20, maxHeight: 20)
                                 })
+                                .foregroundColor(Color(uiColor: PassColor.textNorm))
                             },
                             isSelected: theme == preferences.theme )
 

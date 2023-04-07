@@ -34,7 +34,10 @@ struct EditClipboardExpirationView: View {
                         SelectableOptionRow(
                             action: { preferences.clipboardExpiration = expiration; dismiss() },
                             height: .short,
-                            content: { Text(expiration.description) },
+                            content: {
+                                Text(expiration.description)
+                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                            },
                             isSelected: expiration == preferences.clipboardExpiration)
 
                         if expiration != ClipboardExpiration.allCases.last {

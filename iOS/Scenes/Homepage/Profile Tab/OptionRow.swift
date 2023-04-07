@@ -95,9 +95,13 @@ struct TextOptionRow: View {
     let action: () -> Void
 
     var body: some View {
-        OptionRow(action: action,
-                  content: { Text(title) },
-                  trailing: { ChevronRight() })
+        OptionRow(
+            action: action,
+            content: {
+                Text(title)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+            },
+            trailing: { ChevronRight() })
     }
 }
 
@@ -127,6 +131,6 @@ struct ChevronRight: View {
             .resizable()
             .scaledToFit()
             .frame(height: 12)
-            .foregroundColor(Color(.tertiaryLabel))
+            .foregroundColor(Color(uiColor: PassColor.textHint))
     }
 }

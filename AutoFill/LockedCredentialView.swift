@@ -21,6 +21,7 @@
 import Core
 import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct LockedCredentialView: View {
     let preferences: Preferences
@@ -40,16 +41,17 @@ struct LockedCredentialView: View {
                           onFailure: viewModel.handleAuthenticationFailure)
             .toolbar { toolbarContent }
         }
+        .navigationViewStyle(.stack)
+        .theme(preferences.theme)
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: viewModel.handleCancellation) {
-                Image(uiImage: IconProvider.cross)
-                    .resizable()
-                    .foregroundColor(.primary)
-            }
+            CircleButton(icon: IconProvider.cross,
+                         iconColor: PassColor.interactionNorm,
+                         backgroundColor: PassColor.interactionNormMinor2,
+                         action: viewModel.handleCancellation)
         }
     }
 }

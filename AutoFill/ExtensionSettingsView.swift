@@ -47,6 +47,7 @@ struct ExtensionSettingsView: View {
                     OptionRow(height: .medium) {
                         Toggle(isOn: $viewModel.quickTypeBar) {
                             Text("QuickType bar suggestions")
+                                .foregroundColor(Color(uiColor: PassColor.textNorm))
                         }
                         .tint(Color(uiColor: PassColor.interactionNorm))
                     }
@@ -61,6 +62,7 @@ struct ExtensionSettingsView: View {
                     OptionRow(height: .medium) {
                         Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
                             Text("Copy Two Factor Authentication code")
+                                .foregroundColor(Color(uiColor: PassColor.textNorm))
                         }
                         .tint(Color(uiColor: PassColor.interactionNorm))
                     }
@@ -86,5 +88,6 @@ struct ExtensionSettingsView: View {
             }
         }
         .navigationViewStyle(.stack)
+        .theme(viewModel.preferences.theme)
     }
 }
