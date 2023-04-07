@@ -32,6 +32,7 @@ struct NotLoggedInView: View {
             VStack {
                 Text("Please log in in order to use Proton Pass AutoFill extension")
                     .multilineTextAlignment(.center)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()

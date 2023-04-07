@@ -25,6 +25,7 @@ struct NoCredentialsView: View {
     var body: some View {
         VStack {
             Text("You currently have no login items.")
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()

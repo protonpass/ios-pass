@@ -33,10 +33,14 @@ struct EditDefaultBrowserView: View {
                 VStack {
                     VStack(spacing: 0) {
                         ForEach(supportedBrowsers, id: \.rawValue) { browser in
-                            SelectableOptionRow(action: { preferences.browser = browser; dismiss() },
-                                                height: .short,
-                                                content: { Text(browser.description) },
-                                                isSelected: browser == preferences.browser)
+                            SelectableOptionRow(
+                                action: { preferences.browser = browser; dismiss() },
+                                height: .short,
+                                content: {
+                                    Text(browser.description)
+                                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                },
+                                isSelected: browser == preferences.browser)
 
                             if browser != supportedBrowsers.last {
                                 PassDivider()

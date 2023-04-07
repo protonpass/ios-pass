@@ -26,6 +26,9 @@ enum AppearanceSettings {
         UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor =
         PassColor.interactionNorm
 
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: PassColor.textNorm]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: PassColor.textNorm]
+
         if #unavailable(iOS 16) {
             // Can remove this once dropped iOS 15.
             // Use scrollContentBackground(_:) on each TextEditor then.

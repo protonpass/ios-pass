@@ -33,7 +33,7 @@ struct FeedbackChannelsView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack {
+                VStack(spacing: 0) {
                     ForEach(FeedbackChannel.allCases, id: \.rawValue) { channel in
                         Button(action: {
                             dismiss()
@@ -47,6 +47,7 @@ struct FeedbackChannelsView: View {
                                     .scaledToFit()
                                     .frame(maxWidth: 20, maxHeight: 20)
                             })
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .contentShape(Rectangle())
                         })
