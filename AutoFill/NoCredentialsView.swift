@@ -18,17 +18,49 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct NoCredentialsView: View {
+    let onCancel: () -> Void
+    let onCreate: () -> Void
+
     var body: some View {
-        VStack {
-            Text("You currently have no login items.")
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+        NavigationView {
+            ZStack {
+                Text("You currently have no login items")
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .padding()
+
+                VStack {
+                    Spacer()
+                    CreateLoginButton(onCreate: onCreate)
+                }
+                .padding()
+            }
+            .background(Color(uiColor: PassColor.backgroundNorm))
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    CircleButton(icon: IconProvider.cross,
+                                 iconColor: PassColor.interactionNorm,
+                                 backgroundColor: PassColor.interactionNormMinor2,
+                                 action: onCancel)
+                }
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding()
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .navigationViewStyle(.stack)
+    }
+}
+
+struct CreateLoginButton: View {
+    let onCreate: () -> Void
+
+    var body: some View {
+        CapsuleTextButton(title: "Create login",
+                          titleColor: PassColor.loginInteractionNormMajor1,
+                          backgroundColor: PassColor.loginInteractionNormMinor1,
+                          height: 52,
+                          action: onCreate)
     }
 }
