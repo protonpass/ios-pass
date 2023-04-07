@@ -582,7 +582,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         }
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = CGFloat(52 * FeedbackChannel.allCases.count + 60)
+            let height = CGFloat(52 * FeedbackChannel.allCases.count + 80)
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 height
             }
