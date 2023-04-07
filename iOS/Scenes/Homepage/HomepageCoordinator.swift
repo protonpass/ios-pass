@@ -182,6 +182,7 @@ private extension HomepageCoordinator {
                                                   syncEventLoop: eventLoop,
                                                   vaultsManager: vaultsManager)
         itemsTabViewModel.delegate = self
+        itemsTabViewModel.emptyVaultViewModelDelegate = self
 
         let profileTabViewModel = ProfileTabViewModel(apiService: apiService,
                                                       credentialManager: credentialManager,
@@ -269,18 +270,8 @@ private extension HomepageCoordinator {
         }
     }
 
-    func presentCreateItemView(shareId: String?) {
-        var shareId = shareId
-        if shareId == nil {
-            switch vaultsManager.vaultSelection {
-            case .all, .trash:
-                shareId = vaultsManager.getPrimaryVault()?.shareId
-            case .precise(let vault):
-                shareId = vault.shareId
-            }
-        }
-
-        guard let shareId else { return }
+    func presentCreateItemView() {
+        guard let shareId = vaultsManager.getSelectedShareId() else { return }
 
         let view = ItemTypeListView { [unowned self] itemType in
             dismissTopMostViewController { [unowned self] in
@@ -455,7 +446,7 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     }
 
     func homepageTabBarControllerWantToCreateNewItem() {
-        presentCreateItemView(shareId: nil)
+        presentCreateItemView()
     }
 
     func homepageTabBarControllerDidSelectProfileTab() {
@@ -471,10 +462,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsToHideSpinner() {
         hideLoadingHud()
-    }
-
-    func itemsTabViewModelWantsToCreateNewItem(shareId: String) {
-        presentCreateItemView(shareId: shareId)
     }
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
@@ -520,6 +507,25 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - EmptyVaultViewModelDelegate
+extension HomepageCoordinator: EmptyVaultViewModelDelegate {
+    func emptyVaultViewModelWantsToCreateLoginItem() {
+        guard let shareId = vaultsManager.getSelectedShareId() else { return }
+        presentCreateEditLoginView(mode: .create(shareId: shareId,
+                                                 type: .login(title: nil, url: nil, autofill: false)))
+    }
+
+    func emptyVaultViewModelWantsToCreateAliasItem() {
+        guard let shareId = vaultsManager.getSelectedShareId() else { return }
+        presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
+    }
+
+    func emptyVaultViewModelWantsToCreateNoteItem() {
+        guard let shareId = vaultsManager.getSelectedShareId() else { return }
+        presentCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
     }
 }
 

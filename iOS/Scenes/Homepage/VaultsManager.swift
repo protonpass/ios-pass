@@ -231,6 +231,15 @@ extension VaultsManager {
         let vaults = uiModels.map { $0.vault }
         return vaults.first(where: { $0.isPrimary }) ?? vaults.first
     }
+
+    func getSelectedShareId() -> String? {
+        switch vaultSelection {
+        case .all, .trash:
+            return getPrimaryVault()?.shareId
+        case .precise(let vault):
+            return vault.shareId
+        }
+    }
 }
 
 extension VaultManagerState: Equatable {

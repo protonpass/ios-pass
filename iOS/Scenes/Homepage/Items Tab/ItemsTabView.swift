@@ -62,11 +62,8 @@ struct ItemsTabView: View {
                 topBar
                 if items.isEmpty {
                     switch viewModel.vaultsManager.vaultSelection {
-                    case .all:
-                        // Impossible case
-                        EmptyView()
-                    case .precise:
-                        EmptyVaultView(onCreateNewItem: viewModel.createNewItem)
+                    case .all, .precise:
+                        EmptyVaultView(viewModel: viewModel.emptyVaultViewModel)
                             .padding(.bottom, safeAreaInsets.bottom)
                     case .trash:
                         EmptyTrashView()
