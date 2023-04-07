@@ -18,30 +18,51 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct NoCameraPermissionView: View {
-    var onOpenSettings: () -> Void
+    @Environment(\.dismiss) private var dismiss
+    let theme: Theme
+    let onOpenSettings: () -> Void
 
     var body: some View {
-        ZStack {
-            Color(uiColor: PassColor.backgroundNorm)
-            VStack(spacing: 44) {
-                Text("Camera permission required for this feature to be available")
-                    .multilineTextAlignment(.center)
+        NavigationView {
+            ZStack {
+                Color(uiColor: PassColor.backgroundNorm)
+                    .ignoresSafeArea()
 
-                if !Bundle.main.bundlePath.hasSuffix(".appex") {
-                    CapsuleTextButton(title: "Open settings",
-                                      titleColor: PassColor.textNorm,
-                                      backgroundColor: PassColor.interactionNorm,
-                                      action: onOpenSettings)
-                    .frame(width: 250)
-                } else {
-                    Text("Please allow camera access in Settings")
+                VStack(spacing: 44) {
+                    Text("Camera permission required for this feature to be available")
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+
+                    if !Bundle.main.bundlePath.hasSuffix(".appex") {
+                        CapsuleTextButton(title: "Open Settings",
+                                          titleColor: PassColor.textInvert,
+                                          backgroundColor: PassColor.interactionNorm,
+                                          action: onOpenSettings)
+                        .frame(width: 250)
+                    } else {
+                        Text("Please allow camera access in Settings")
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    }
+                }
+                .padding()
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    CircleButton(icon: IconProvider.cross,
+                                 iconColor: PassColor.interactionNorm,
+                                 backgroundColor: PassColor.interactionNormMinor2,
+                                 action: dismiss.callAsFunction)
                 }
             }
-            .padding()
         }
+        .navigationViewStyle(.stack)
+        .theme(theme)
     }
 }

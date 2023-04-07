@@ -21,7 +21,7 @@
 import Core
 import SwiftUI
 
-struct ThemeModifier: ViewModifier {
+private struct ThemeModifier: ViewModifier {
     let theme: Theme
 
     func body(content: Content) -> some View {
