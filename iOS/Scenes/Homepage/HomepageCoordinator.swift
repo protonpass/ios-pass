@@ -400,7 +400,7 @@ private extension HomepageCoordinator {
 
     func refresh() {
         vaultsManager.refresh()
-        profileTabViewModel?.refresh()
+        profileTabViewModel?.refreshItemCount()
         searchViewModel?.refreshResults()
         currentItemDetailViewModel?.refresh()
         currentCreateEditItemViewModel?.refresh()
@@ -451,7 +451,12 @@ extension HomepageCoordinator {
 // MARK: - HomepageTabBarControllerDelegate
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     func homepageTabBarControllerDidSelectItemsTab() {
-        print(#function)
+        if !isCollapsed() {
+            let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
+                self.popTopViewController(animated: true)
+            }
+            push(placeholderView)
+        }
     }
 
     func homepageTabBarControllerWantToCreateNewItem() {
@@ -459,7 +464,9 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     }
 
     func homepageTabBarControllerDidSelectProfileTab() {
-        print(#function)
+        if !isCollapsed() {
+            profileTabViewModelWantsToShowAccountMenu()
+        }
     }
 }
 
@@ -511,7 +518,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
-        presentItemDetailView(for: itemContent, asSheet: false)
+        presentItemDetailView(for: itemContent, asSheet: !UIDevice.current.isIpad)
     }
 
     func itemsTabViewModelDidEncounter(error: Error) {
@@ -924,7 +931,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         if isShownAsSheet {
             dismissTopMostViewController()
         } else {
-            adaptivelyDismissCurrentDetailView()
+            popTopViewController(animated: true)
         }
     }
 
