@@ -54,12 +54,12 @@ extension TextView.Representable {
             return true
         }
 
-        func textViewDidEndEditing(_ textView: UITextView) {
-            // this check is to ensure we always commit text when we're not using a closure
-            if onCommit != nil {
-                text.wrappedValue = originalText
-            }
-        }
+//        func textViewDidEndEditing(_ textView: UITextView) {
+//            // this check is to ensure we always commit text when we're not using a closure
+//            if onCommit != nil {
+//                text.wrappedValue = originalText
+//            }
+//        }
     }
 }
 
