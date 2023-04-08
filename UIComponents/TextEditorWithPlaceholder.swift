@@ -26,7 +26,6 @@ public struct TextEditorWithPlaceholder: View {
     let fontWeight: UIFont.Weight
     var isFocused: FocusState<Bool>.Binding
     let placeholder: String
-    let submitLabel: SubmitLabel
     let onSubmit: (() -> Void)?
 
     public init(text: Binding<String>,
@@ -34,14 +33,12 @@ public struct TextEditorWithPlaceholder: View {
                 placeholder: String,
                 font: UIFont = .body,
                 fontWeight: UIFont.Weight = .regular,
-                submitLabel: SubmitLabel = .return,
                 onSubmit: (() -> Void)? = nil) {
         self._text = text
         self.font = font
         self.fontWeight = fontWeight
         self.isFocused = isFocused
         self.placeholder = placeholder
-        self.submitLabel = submitLabel
         self.onSubmit = onSubmit
     }
 
@@ -50,10 +47,15 @@ public struct TextEditorWithPlaceholder: View {
             TextField(placeholder, text: $text, axis: .vertical)
                 .focused(isFocused)
                 .scrollContentBackground(.hidden)
-                .submitLabel(submitLabel)
+                .submitLabel(onSubmit != nil ? .next : .return)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                 .font(Font(font.weight(fontWeight)))
-                .onSubmit(onSubmit ?? {})
+                .onChange(of: text) { text in
+                    if let onSubmit, text.contains("\n") {
+                        self.text = text.replacingOccurrences(of: "\n", with: "")
+                        onSubmit()
+                    }
+                }
         } else {
             TextView($text, onCommit: onSubmit)
                 .placeholder(placeholder)

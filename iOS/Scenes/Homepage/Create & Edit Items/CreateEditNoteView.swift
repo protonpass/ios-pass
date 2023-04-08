@@ -44,7 +44,6 @@ struct CreateEditNoteView: View {
                                                   placeholder: "Untitled",
                                                   font: .title,
                                                   fontWeight: .bold,
-                                                  submitLabel: .next,
                                                   onSubmit: { isFocusedOnContent = true })
 
                         TextEditorWithPlaceholder(text: $viewModel.note,
