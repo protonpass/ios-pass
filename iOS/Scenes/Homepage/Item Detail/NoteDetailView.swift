@@ -60,6 +60,7 @@ struct NoteDetailView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     } else {
                         TextView(.constant(viewModel.note))
+                            .autoDetectDataTypes(.all)
                             .isEditable(false)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
