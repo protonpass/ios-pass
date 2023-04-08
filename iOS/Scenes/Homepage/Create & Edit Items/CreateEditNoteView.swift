@@ -38,23 +38,18 @@ struct CreateEditNoteView: View {
         NavigationView {
             ScrollViewReader { value in
                 ScrollView {
-                    LazyVStack {
+                    VStack {
                         TextEditorWithPlaceholder(text: $viewModel.title,
                                                   isFocused: $isFocusedOnTitle,
                                                   placeholder: "Untitled",
+                                                  font: .title,
+                                                  fontWeight: .bold,
                                                   submitLabel: .next)
-                        .font(.title.weight(.bold))
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                        .fixedSize(horizontal: false, vertical: true)
 
                         TextEditorWithPlaceholder(text: $viewModel.note,
                                                   isFocused: $isFocusedOnContent,
                                                   placeholder: "Tap here to continue")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                        .fixedSize(horizontal: false, vertical: true)
                         .id(contentID)
-
-                        Spacer()
                     }
                     .padding()
                 }
