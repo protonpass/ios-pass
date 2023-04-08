@@ -14,7 +14,6 @@ extension TextView {
         let clearsOnInsertion: Bool
         let autocorrection: UITextAutocorrectionType
         let truncationMode: NSLineBreakMode
-        let isFocused: Bool
         let isEditable: Bool
         let isSelectable: Bool
         let isScrollingEnabled: Bool
@@ -27,7 +26,8 @@ extension TextView {
         var onCommit: (() -> Void)?
 
         func makeUIView(context: Context) -> UIKitTextView {
-            context.coordinator.textView
+            context.coordinator.textView.attributedText = text
+            return context.coordinator.textView
         }
 
         func updateUIView(_ view: UIKitTextView, context: Context) {
