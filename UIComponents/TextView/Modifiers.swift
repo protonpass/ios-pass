@@ -157,10 +157,4 @@ public extension TextView {
         }
         return view
     }
-
-    func focused(_ isFocused: Bool) -> TextView {
-        var view = self
-        view.isFocused = isFocused
-        return view
-    }
 }

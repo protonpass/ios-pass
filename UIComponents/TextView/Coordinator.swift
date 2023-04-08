@@ -65,7 +65,6 @@ extension TextView.Representable {
 
 extension TextView.Representable.Coordinator {
     func update(representable: TextView.Representable) {
-        textView.attributedText = representable.text
         textView.font = representable.font
         textView.adjustsFontForContentSizeCategory = true
         textView.textColor = representable.foregroundColor
@@ -76,12 +75,6 @@ extension TextView.Representable.Coordinator {
         textView.isScrollEnabled = representable.isScrollingEnabled
         textView.dataDetectorTypes = representable.autoDetectionTypes
         textView.allowsEditingTextAttributes = representable.allowsRichText
-
-        if representable.isFocused {
-            textView.becomeFirstResponder()
-        } else {
-            textView.resignFirstResponder()
-        }
 
         switch representable.multilineTextAlignment {
         case .leading:

@@ -72,6 +72,15 @@ struct CreateEditLoginView: View {
             }
             .background(Color(uiColor: PassColor.backgroundNorm))
             .navigationBarTitleDisplayMode(.inline)
+            .onChange(of: viewModel.isSaving) { isSaving in
+                if isSaving {
+                    isFocusedOnTitle = false
+                    isFocusedOnUsername = false
+                    isFocusedOnPassword = false
+                    isFocusedOnTOTP = false
+                    isFocusedOnNote = false
+                }
+            }
             .onFirstAppear {
                 if case .create = viewModel.mode {
                     if #available(iOS 16, *) {
