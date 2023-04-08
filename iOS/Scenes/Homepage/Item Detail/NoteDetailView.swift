@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -25,7 +26,7 @@ import UIComponents
 struct NoteDetailView: View {
     @StateObject private var viewModel: NoteDetailViewModel
     @Namespace private var bottomID
-    private let tintColor = UIColor.systemYellow
+    private let tintColor = Color(uiColor: ItemContentType.note.tintColor)
 
     init(viewModel: NoteDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -45,36 +46,36 @@ struct NoteDetailView: View {
     private var realBody: some View {
         ScrollViewReader { value in
             ScrollView {
-                VStack(spacing: 24) {
-                    Text(viewModel.name)
+                VStack {
+                    TextView(.constant(viewModel.name))
                         .font(.title)
                         .fontWeight(.bold)
-                        .textSelection(.enabled)
+                        .isEditable(false)
+                        .foregroundColor(PassColor.textNorm)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
 
                     if viewModel.note.isEmpty {
                         Text("Empty note")
                             .placeholderText()
                             .frame(maxWidth: .infinity, alignment: .leading)
                     } else {
-                        Text(viewModel.note)
-                            .sectionContentText()
-                            .textSelection(.enabled)
+                        TextView(.constant(viewModel.note))
+                            .isEditable(false)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
                     }
 
                     ItemDetailMoreInfoSection(
                         itemContent: viewModel.itemContent,
                         onExpand: { withAnimation { value.scrollTo(bottomID, anchor: .bottom) } })
-                    .padding(.top, 24)
+                    .padding(.top)
                     .id(bottomID)
                 }
                 .padding()
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .accentColor(tintColor) // Remove when iOS 15 is dropped
+        .tint(tintColor)
         .itemDetailBackground(theme: viewModel.theme)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
