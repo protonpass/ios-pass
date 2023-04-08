@@ -27,19 +27,22 @@ public struct TextEditorWithPlaceholder: View {
     var isFocused: FocusState<Bool>.Binding
     let placeholder: String
     let submitLabel: SubmitLabel
+    let onSubmit: (() -> Void)?
 
     public init(text: Binding<String>,
                 isFocused: FocusState<Bool>.Binding,
                 placeholder: String,
                 font: UIFont = .body,
                 fontWeight: UIFont.Weight = .regular,
-                submitLabel: SubmitLabel = .return) {
+                submitLabel: SubmitLabel = .return,
+                onSubmit: (() -> Void)? = nil) {
         self._text = text
         self.font = font
         self.fontWeight = fontWeight
         self.isFocused = isFocused
         self.placeholder = placeholder
         self.submitLabel = submitLabel
+        self.onSubmit = onSubmit
     }
 
     public var body: some View {
@@ -50,12 +53,14 @@ public struct TextEditorWithPlaceholder: View {
                 .submitLabel(submitLabel)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                 .font(Font(font.weight(fontWeight)))
+                .onSubmit(onSubmit ?? {})
         } else {
-            TextView($text)
+            TextView($text, onCommit: onSubmit)
                 .placeholder(placeholder)
                 .font(font)
                 .fontWeight(fontWeight)
                 .foregroundColor(PassColor.textNorm)
+                .returnKey(onSubmit != nil ? .next : .default)
                 .focused(isFocused)
         }
     }

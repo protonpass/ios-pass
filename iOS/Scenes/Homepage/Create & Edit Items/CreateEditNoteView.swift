@@ -44,7 +44,8 @@ struct CreateEditNoteView: View {
                                                   placeholder: "Untitled",
                                                   font: .title,
                                                   fontWeight: .bold,
-                                                  submitLabel: .next)
+                                                  submitLabel: .next,
+                                                  onSubmit: { isFocusedOnContent = true })
 
                         TextEditorWithPlaceholder(text: $viewModel.note,
                                                   isFocused: $isFocusedOnContent,
@@ -53,14 +54,7 @@ struct CreateEditNoteView: View {
                     }
                     .padding()
                 }
-                .onChange(of: viewModel.title) { title in
-                    if #available(iOS 16, *) {
-                        // When users press enter, move the cursor to content
-                        if title.last == "\n" {
-                            viewModel.title.removeLast()
-                            isFocusedOnContent = true
-                        }
-                    }
+                .onChange(of: viewModel.title) { _ in
                     withAnimation {
                         value.scrollTo(contentID, anchor: .bottom)
                     }
