@@ -31,6 +31,7 @@ struct NoteDetailSection: View {
     let theme: Theme
 
     var body: some View {
+        let tintColor = Color(uiColor: itemContent.type.tintColor)
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.note,
                                   color: itemContent.type.tintColor)
@@ -39,10 +40,10 @@ struct NoteDetailSection: View {
                 Text("Note")
                     .sectionTitleText()
 
-                Text(itemContent.note)
-                    .sectionContentText()
-                    .lineLimit(10)
-                    .textSelection(.enabled)
+                TextView(.constant(itemContent.note))
+                    .autoDetectDataTypes(.all)
+                    .foregroundColor(PassColor.textNorm)
+                    .isEditable(false)
                     .onTapGesture {
                         // Pure heuristic
                         if itemContent.note.count > 400 {
@@ -53,6 +54,8 @@ struct NoteDetailSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(kItemDetailSectionPadding)
+        .accentColor(tintColor) // Remove when iOS 15 is dropped
+        .tint(tintColor)
         .roundedDetailSection()
         .sheet(isPresented: $isShowingFullNote) {
             FullNoteView(itemContent: itemContent, theme: theme)
@@ -66,6 +69,7 @@ private struct FullNoteView: View {
     let theme: Theme
 
     var body: some View {
+        let tintColor = Color(uiColor: itemContent.type.tintColor)
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
@@ -73,9 +77,10 @@ private struct FullNoteView: View {
                         .padding(.bottom)
                     Text("Note")
                         .sectionTitleText()
-                    Text(itemContent.note)
-                        .textSelection(.enabled)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    TextView(.constant(itemContent.note))
+                        .autoDetectDataTypes(.all)
+                        .foregroundColor(PassColor.textNorm)
+                        .isEditable(false)
                 }
                 .padding()
             }
@@ -90,6 +95,8 @@ private struct FullNoteView: View {
             }
         }
         .navigationViewStyle(.stack)
+        .accentColor(tintColor) // Remove when iOS 15 is dropped
+        .tint(tintColor)
         .theme(theme)
     }
 }
