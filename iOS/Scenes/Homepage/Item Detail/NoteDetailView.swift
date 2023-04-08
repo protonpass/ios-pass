@@ -52,7 +52,6 @@ struct NoteDetailView: View {
                         .fontWeight(.bold)
                         .isEditable(false)
                         .foregroundColor(PassColor.textNorm)
-                        .frame(maxWidth: .infinity, alignment: .leading)
 
                     if viewModel.note.isEmpty {
                         Text("Empty note")
@@ -62,7 +61,6 @@ struct NoteDetailView: View {
                         TextView(.constant(viewModel.note))
                             .autoDetectDataTypes(.all)
                             .isEditable(false)
-                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
 
                     ItemDetailMoreInfoSection(
