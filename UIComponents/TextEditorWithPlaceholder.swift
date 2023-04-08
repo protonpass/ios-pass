@@ -22,6 +22,8 @@ import SwiftUI
 
 public struct TextEditorWithPlaceholder: View {
     @Binding var text: String
+    let font: UIFont
+    let fontWeight: UIFont.Weight
     var isFocused: FocusState<Bool>.Binding
     let placeholder: String
     let submitLabel: SubmitLabel
@@ -29,8 +31,12 @@ public struct TextEditorWithPlaceholder: View {
     public init(text: Binding<String>,
                 isFocused: FocusState<Bool>.Binding,
                 placeholder: String,
+                font: UIFont = .body,
+                fontWeight: UIFont.Weight = .regular,
                 submitLabel: SubmitLabel = .return) {
         self._text = text
+        self.font = font
+        self.fontWeight = fontWeight
         self.isFocused = isFocused
         self.placeholder = placeholder
         self.submitLabel = submitLabel
@@ -43,20 +49,14 @@ public struct TextEditorWithPlaceholder: View {
                 .scrollContentBackground(.hidden)
                 .submitLabel(submitLabel)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .font(Font(font.weight(fontWeight)))
         } else {
-            ZStack {
-                if text.isEmpty {
-                    TextField(placeholder, text: .constant(""))
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                }
-
-                TextEditor(text: $text)
-                    .focused(isFocused)
-                    .submitLabel(submitLabel)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-                    .offset(x: -4)
-            }
-            .animationsDisabled()
+            TextView($text)
+                .placeholder(placeholder)
+                .font(font)
+                .fontWeight(fontWeight)
+                .foregroundColor(PassColor.textNorm)
+                .focused(isFocused)
         }
     }
 }
