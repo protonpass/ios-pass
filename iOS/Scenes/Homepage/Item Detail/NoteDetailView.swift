@@ -47,6 +47,16 @@ struct NoteDetailView: View {
         ScrollViewReader { value in
             ScrollView {
                 VStack {
+                    if #unavailable(iOS 16) {
+                        // iOS 15 doesn't render navigation bar without this view
+                        // no idea why it only happens to this specific note detail view
+                        // tried adding a dummy `Text` but no help.
+                        // Only `ItemDetailTitleView` works
+                        ItemDetailTitleView(itemContent: viewModel.itemContent)
+                            .frame(height: 0)
+                            .opacity(0)
+                    }
+
                     TextView(.constant(viewModel.name))
                         .font(.title)
                         .fontWeight(.bold)

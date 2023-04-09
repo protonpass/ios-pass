@@ -33,8 +33,7 @@ struct NoteDetailSection: View {
     var body: some View {
         let tintColor = Color(uiColor: itemContent.type.tintColor)
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.note,
-                                  color: itemContent.type.tintColor)
+            ItemDetailSectionIcon(icon: IconProvider.note, color: itemContent.type.tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Note")
@@ -84,6 +83,7 @@ private struct FullNoteView: View {
                 }
                 .padding()
             }
+            .navigationBarTitleDisplayMode(.inline)
             .itemDetailBackground(theme: theme)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
