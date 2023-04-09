@@ -22,18 +22,24 @@ import SwiftUI
 
 public struct TextEditorWithPlaceholder: View {
     @Binding var text: String
+    let font: UIFont
+    let fontWeight: UIFont.Weight
     var isFocused: FocusState<Bool>.Binding
     let placeholder: String
-    let submitLabel: SubmitLabel
+    let onSubmit: (() -> Void)?
 
     public init(text: Binding<String>,
                 isFocused: FocusState<Bool>.Binding,
                 placeholder: String,
-                submitLabel: SubmitLabel = .return) {
+                font: UIFont = .body,
+                fontWeight: UIFont.Weight = .regular,
+                onSubmit: (() -> Void)? = nil) {
         self._text = text
+        self.font = font
+        self.fontWeight = fontWeight
         self.isFocused = isFocused
         self.placeholder = placeholder
-        self.submitLabel = submitLabel
+        self.onSubmit = onSubmit
     }
 
     public var body: some View {
@@ -41,22 +47,23 @@ public struct TextEditorWithPlaceholder: View {
             TextField(placeholder, text: $text, axis: .vertical)
                 .focused(isFocused)
                 .scrollContentBackground(.hidden)
-                .submitLabel(submitLabel)
+                .submitLabel(onSubmit != nil ? .next : .return)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
-        } else {
-            ZStack {
-                if text.isEmpty {
-                    TextField(placeholder, text: .constant(""))
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .font(Font(font.weight(fontWeight)))
+                .onChange(of: text) { text in
+                    if let onSubmit, text.contains("\n") {
+                        self.text = text.replacingOccurrences(of: "\n", with: "")
+                        onSubmit()
+                    }
                 }
-
-                TextEditor(text: $text)
-                    .focused(isFocused)
-                    .submitLabel(submitLabel)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-                    .offset(x: -4)
-            }
-            .animationsDisabled()
+        } else {
+            TextView($text, onCommit: onSubmit)
+                .placeholder(placeholder)
+                .font(font)
+                .fontWeight(fontWeight)
+                .foregroundColor(PassColor.textNorm)
+                .returnKey(onSubmit != nil ? .next : .default)
+                .focused(isFocused)
         }
     }
 }
