@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -25,7 +26,7 @@ import UIComponents
 struct NoteDetailView: View {
     @StateObject private var viewModel: NoteDetailViewModel
     @Namespace private var bottomID
-    private let tintColor = UIColor.systemYellow
+    private let tintColor = Color(uiColor: ItemContentType.note.tintColor)
 
     init(viewModel: NoteDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -45,36 +46,45 @@ struct NoteDetailView: View {
     private var realBody: some View {
         ScrollViewReader { value in
             ScrollView {
-                VStack(spacing: 24) {
-                    Text(viewModel.name)
+                VStack {
+                    if #unavailable(iOS 16) {
+                        // iOS 15 doesn't render navigation bar without this view
+                        // no idea why it only happens to this specific note detail view
+                        // tried adding a dummy `Text` but no help.
+                        // Only `ItemDetailTitleView` works
+                        ItemDetailTitleView(itemContent: viewModel.itemContent)
+                            .frame(height: 0)
+                            .opacity(0)
+                    }
+
+                    TextView(.constant(viewModel.name))
                         .font(.title)
                         .fontWeight(.bold)
-                        .textSelection(.enabled)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        .isEditable(false)
+                        .foregroundColor(PassColor.textNorm)
 
                     if viewModel.note.isEmpty {
                         Text("Empty note")
                             .placeholderText()
                             .frame(maxWidth: .infinity, alignment: .leading)
                     } else {
-                        Text(viewModel.note)
-                            .sectionContentText()
-                            .textSelection(.enabled)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        TextView(.constant(viewModel.note))
+                            .autoDetectDataTypes(.all)
+                            .isEditable(false)
                     }
 
                     ItemDetailMoreInfoSection(
                         itemContent: viewModel.itemContent,
                         onExpand: { withAnimation { value.scrollTo(bottomID, anchor: .bottom) } })
-                    .padding(.top, 24)
+                    .padding(.top)
                     .id(bottomID)
                 }
                 .padding()
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .accentColor(tintColor) // Remove when iOS 15 is dropped
+        .tint(tintColor)
         .itemDetailBackground(theme: viewModel.theme)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)

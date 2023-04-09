@@ -126,6 +126,13 @@ struct CreateEditAliasView: View {
                     value.scrollTo(noteID, anchor: .bottom)
                 }
             }
+            .onChange(of: viewModel.isSaving) { isSaving in
+                if isSaving {
+                    isFocusedOnTitle = false
+                    isFocusedOnPrefix = false
+                    isFocusedOnNote = false
+                }
+            }
         }
         .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
         .tint(Color(uiColor: tintColor))

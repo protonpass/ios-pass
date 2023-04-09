@@ -42,28 +42,18 @@ struct CreateEditNoteView: View {
                         TextEditorWithPlaceholder(text: $viewModel.title,
                                                   isFocused: $isFocusedOnTitle,
                                                   placeholder: "Untitled",
-                                                  submitLabel: .next)
-                        .font(.title.weight(.bold))
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                        .fixedSize(horizontal: false, vertical: true)
+                                                  font: .title,
+                                                  fontWeight: .bold,
+                                                  onSubmit: { isFocusedOnContent = true })
 
                         TextEditorWithPlaceholder(text: $viewModel.note,
                                                   isFocused: $isFocusedOnContent,
                                                   placeholder: "Tap here to continue")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                        .fixedSize(horizontal: false, vertical: true)
                         .id(contentID)
-
-                        Spacer()
                     }
                     .padding()
                 }
-                .onChange(of: viewModel.title) { title in
-                    // When users press enter, move the cursor to content
-                    if title.last == "\n" {
-                        viewModel.title.removeLast()
-                        isFocusedOnContent = true
-                    }
+                .onChange(of: viewModel.title) { _ in
                     withAnimation {
                         value.scrollTo(contentID, anchor: .bottom)
                     }
@@ -78,6 +68,12 @@ struct CreateEditNoteView: View {
             .tint(Color(uiColor: viewModel.itemContentType().tintColor))
             .background(Color(uiColor: PassColor.backgroundNorm))
             .navigationBarTitleDisplayMode(.inline)
+            .onChange(of: viewModel.isSaving) { isSaving in
+                if isSaving {
+                    isFocusedOnTitle = false
+                    isFocusedOnContent = false
+                }
+            }
             .toolbar {
                 CreateEditItemToolbar(
                     saveButtonTitle: viewModel.saveButtonTitle(),
