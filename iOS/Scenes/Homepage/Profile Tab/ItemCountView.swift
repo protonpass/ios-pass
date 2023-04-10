@@ -28,13 +28,14 @@ struct ItemCountView: View {
     @StateObject var viewModel: ItemCountViewModel
 
     var body: some View {
-        switch viewModel.state {
-        case .loading:
-            skeleton
-        case .loaded(let itemCount):
-            content(for: itemCount)
-        case .error:
-            Button("Retry", action: viewModel.refresh)
+        let itemCount = viewModel.itemCount
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ItemContentTypeCountView(type: .login, count: itemCount.loginCount)
+                ItemContentTypeCountView(type: .alias, count: itemCount.aliasCount)
+                ItemContentTypeCountView(type: .note, count: itemCount.noteCount)
+            }
+            .padding(.horizontal)
         }
     }
 
@@ -50,17 +51,6 @@ struct ItemCountView: View {
             .padding(.horizontal)
         }
         .adaptiveScrollDisabled(true)
-    }
-
-    private func content(for itemCount: ItemCount) -> some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ItemContentTypeCountView(type: .login, count: itemCount.loginCount)
-                ItemContentTypeCountView(type: .alias, count: itemCount.aliasCount)
-                ItemContentTypeCountView(type: .note, count: itemCount.noteCount)
-            }
-            .padding(.horizontal)
-        }
     }
 }
 

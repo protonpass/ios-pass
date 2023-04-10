@@ -132,7 +132,6 @@ extension SettingsViewModel {
             do {
                 logger.trace("Doing full sync")
                 delegate?.settingsViewModelWantsToShowSpinner()
-                try await itemRepository.refreshItems()
                 logger.info("Done full sync")
                 delegate?.settingsViewModelDidFinishFullSync()
             } catch {

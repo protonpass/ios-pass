@@ -19,40 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Core
-
-enum ItemCountViewModelState {
-    case loading
-    case loaded(ItemCount)
-    case error(Error)
-}
 
 final class ItemCountViewModel: ObservableObject {
-    @Published private(set) var state = ItemCountViewModelState.loading
-
-    private let itemRepository: ItemRepositoryProtocol
-    private let logger: Logger
-
-    init(itemRepository: ItemRepositoryProtocol, logManager: LogManager) {
-        self.itemRepository = itemRepository
-        self.logger = .init(manager: logManager)
-        self.refresh()
-    }
-
-    func refresh() {
-        Task { @MainActor in
-            do {
-                state = .loading
-                let activeItems = try await itemRepository.getItems(state: .active)
-                let trashedItems = try await itemRepository.getItems(state: .trashed)
-                let symmetricKey = itemRepository.symmetricKey
-                let items = try (activeItems + trashedItems).map { try $0.toItemUiModel(symmetricKey) }
-                let itemCount = ItemCount(items: items)
-                state = .loaded(itemCount)
-            } catch {
-                logger.error(error)
-                state = .error(error)
-            }
-        }
-    }
+    @Published private(set) var itemCount = ItemCount.zero
 }
