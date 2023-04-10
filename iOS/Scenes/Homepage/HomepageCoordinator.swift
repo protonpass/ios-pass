@@ -93,11 +93,13 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
                                                     logManager: logManager,
+                                                    symmetricKey: symmetricKey,
                                                     userData: userData)
         let shareEventIDRepository = ShareEventIDRepository(container: container,
                                                             apiService: apiService,
                                                             logManager: logManager)
-        let shareRepository = ShareRepository(userData: userData,
+        let shareRepository = ShareRepository(symmetricKey: symmetricKey,
+                                              userData: userData,
                                               container: container,
                                               apiService: apiService,
                                               logManager: logManager)

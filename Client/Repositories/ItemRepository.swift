@@ -502,7 +502,8 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.symmetricKey = symmetricKey
         self.localItemDatasoure = LocalItemDatasource(container: container)
         self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(apiService: apiService)
-        self.shareRepository = ShareRepository(userData: userData,
+        self.shareRepository = ShareRepository(symmetricKey: symmetricKey,
+                                               userData: userData,
                                                container: container,
                                                apiService: apiService,
                                                logManager: logManager)
@@ -512,6 +513,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
                                                     logManager: logManager,
+                                                    symmetricKey: symmetricKey,
                                                     userData: userData)
         let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
         self.passKeyManager = PassKeyManager(userData: userData,

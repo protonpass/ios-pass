@@ -57,6 +57,7 @@ public final class RepositoryManager: DeinitPrintable {
         let shareKeyRepository = ShareKeyRepository(localShareKeyDatasource: localShareKeyDatasource,
                                                     remoteShareKeyDatasource: remoteShareKeyDatasource,
                                                     logManager: logManager,
+                                                    symmetricKey: symmetricKey,
                                                     userData: userData)
 
         let passKeyManager = PassKeyManager(userData: userData,
@@ -69,7 +70,8 @@ public final class RepositoryManager: DeinitPrintable {
             remoteShareEventIDDatasource: remoteShareEventIDDatasource,
             logManager: logManager)
 
-        let shareRepository = ShareRepository(userData: userData,
+        let shareRepository = ShareRepository(symmetricKey: symmetricKey,
+                                              userData: userData,
                                               localShareDatasource: localShareDatasource,
                                               remoteShareDatasouce: remoteShareDatasource,
                                               passKeyManager: passKeyManager,
