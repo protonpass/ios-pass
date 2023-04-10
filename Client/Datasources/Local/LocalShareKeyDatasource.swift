@@ -22,25 +22,25 @@ import CoreData
 
 public protocol LocalShareKeyDatasourceProtocol: LocalDatasourceProtocol {
     /// Get keys of a share
-    func getKeys(shareId: String) async throws -> [PassKey]
+    func getKeys(shareId: String) async throws -> [ShareKey]
 
     /// Insert or update if exist keys
-    func upsertKeys(_ keys: [PassKey], shareId: String) async throws
+    func upsertKeys(_ keys: [ShareKey], shareId: String) async throws
 
     /// Remove all keys of a share
     func removeAllKeys(shareId: String) async throws
 }
 
 public extension LocalShareKeyDatasourceProtocol {
-    func getKeys(shareId: String) async throws -> [PassKey] {
+    func getKeys(shareId: String) async throws -> [ShareKey] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ShareKeyEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try entities.map { try $0.toKey() }
+        return try entities.map { try $0.toShareKey() }
     }
 
-    func upsertKeys(_ keys: [PassKey], shareId: String) async throws {
+    func upsertKeys(_ keys: [ShareKey], shareId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
         let batchInsertRequest =
         newBatchInsertRequest(entity: ShareKeyEntity.entity(context: taskContext),

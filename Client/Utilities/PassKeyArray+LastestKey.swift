@@ -20,8 +20,8 @@
 
 import Foundation
 
-public extension Array where Element == PassKey {
-    func latestKey() throws -> PassKey {
+public extension Array where Element == ShareKey {
+    func latestKey() throws -> ShareKey {
         guard !isEmpty else {
             throw PPClientError.crypto(.missingKeys)
         }

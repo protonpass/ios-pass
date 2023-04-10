@@ -79,9 +79,11 @@ final class CoreDataEntityStructureTests: XCTestCase {
 
     func testShareKeyEntity() {
         let sut = entity(byName: "ShareKeyEntity")
+        verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "key", on: sut, hasType: .string)
         verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
+        verifyAttribute(named: "userKeyID", on: sut, hasType: .string)
     }
 
     func testItemEntity() {

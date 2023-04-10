@@ -1,5 +1,5 @@
 //
-// PassKeyArray+LatestKeyTests.swift
+// ShareKeyArray+LatestKeyTests.swift
 // Proton Pass - Created on 23/02/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,12 +21,21 @@
 @testable import Client
 import XCTest
 
-final class PassKeyArrayPlusLatestKeyTests: XCTestCase {
+final class ShareKeyArrayPlusLatestKeyTests: XCTestCase {
     func testGetLatestKey() throws {
         // Given
-        let key1 = PassKey(key: .random(), keyRotation: 13)
-        let key2 = PassKey(key: .random(), keyRotation: 578)
-        let key3 = PassKey(key: .random(), keyRotation: 182)
+        let key1 = ShareKey(createTime: .random(in: 1_000_000...10_000_000),
+                            key: .random(),
+                            keyRotation: 13,
+                            userKeyID: .random())
+        let key2 = ShareKey(createTime: .random(in: 1_000_000...10_000_000),
+                            key: .random(),
+                            keyRotation: 578,
+                            userKeyID: .random())
+        let key3 = ShareKey(createTime: .random(in: 1_000_000...10_000_000),
+                            key: .random(),
+                            keyRotation: 182,
+                            userKeyID: .random())
 
         // When
         let latestKey = try [key1, key2, key3].latestKey()

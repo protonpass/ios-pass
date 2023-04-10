@@ -1,5 +1,5 @@
 //
-// PassKey.swift
+// ShareKey.swift
 // Proton Pass - Created on 19/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,14 +20,14 @@
 
 import Foundation
 
-/// Key used in Pass context
-public struct PassKey: Decodable, Hashable, Equatable {
+public struct ShareKey: Decodable, Hashable, Equatable {
+    public let createTime: Int64
     public let key: String
     public let keyRotation: Int64
+    public let userKeyID: String
 }
 
-/// A set of keys, only used in `GET` keys endpoints (get keys for a share, get keys for an item)
-public struct PassKeys: Decodable {
+public struct ShareKeys: Decodable {
     let total: Int
-    let keys: [PassKey]
+    let keys: [ShareKey]
 }
