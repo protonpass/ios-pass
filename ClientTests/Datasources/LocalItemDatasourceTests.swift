@@ -311,7 +311,7 @@ extension LocalItemDatasourceTests {
                                             isLogInItem: false)
 
         // When
-        let activeLogInItems = try await sut.getActiveLogInItems(shareId: givenShareId)
+        let activeLogInItems = try await sut.getActiveLogInItems()
 
         // Then
         XCTAssertEqual(activeLogInItems.count, 4)

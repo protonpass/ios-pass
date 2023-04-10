@@ -88,6 +88,7 @@ private extension VaultsManager {
 
     @MainActor
     func loadContents(for vaults: [Vault]) async throws {
+        /*
         var uiModels = try await vaults.parallelMap { vault in
             let items = try await self.itemRepository.getItems(shareId: vault.shareId, state: .active)
             let itemUiModels = try items.map { try $0.toItemUiModel(self.symmetricKey) }
@@ -106,6 +107,7 @@ private extension VaultsManager {
                 vaultSelection = .all
             }
         }
+         */
     }
 }
 
@@ -122,6 +124,7 @@ extension VaultsManager {
                     state = .loading
                 }
 
+                /*
                 if manualLogIn {
                     logger.info("Manual login, doing full sync")
                     try await itemRepository.refreshItems()
@@ -141,6 +144,7 @@ extension VaultsManager {
                     try await loadContents(for: vaults)
                     logger.info("Not manual login, done getting local shares & items")
                 }
+                 */
             } catch {
                 state = .error(error)
             }
@@ -195,34 +199,26 @@ extension VaultsManager {
 
     func delete(vault: Vault) async throws {
         logger.trace("Deleting vault \(vault.shareId)")
-
-        let trashedItems = try await itemRepository.getItems(shareId: vault.shareId, state: .trashed)
-        if !trashedItems.isEmpty {
-            try await itemRepository.deleteItems(trashedItems, skipTrash: false)
-            logger.trace("Deleted \(trashedItems.count) trashed items for vault \(vault.shareId)")
-        }
-
-        let activeItems = try await itemRepository.getItems(shareId: vault.shareId, state: .active)
-        if !activeItems.isEmpty {
-            try await itemRepository.deleteItems(activeItems, skipTrash: true)
-            logger.trace("Deleted \(activeItems.count) active items for vault \(vault.shareId)")
-        }
-
         try await shareRepository.deleteVault(shareId: vault.shareId)
+        // Delete local items of the vault
         logger.info("Deleted vault \(vault.shareId)")
     }
 
     func restoreAllTrashedItems() async throws {
         logger.trace("Restoring all trashed items")
+        /*
         let trashedItems = try await itemRepository.getItems(state: .trashed)
         try await itemRepository.untrashItems(trashedItems)
+         */
         logger.info("Restored all trashed items")
     }
 
     func permanentlyDeleteAllTrashedItems() async throws {
         logger.trace("Permanently deleting all trashed items")
+        /*
         let trashedItems = try await itemRepository.getItems(state: .trashed)
         try await itemRepository.deleteItems(trashedItems, skipTrash: false)
+         */
         logger.info("Permanently deleted all trashed items")
     }
 

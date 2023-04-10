@@ -76,7 +76,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         self.apiService = apiService
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.credentialManager = credentialManager
-        self.itemCountViewModel = .init(itemRepository: itemRepository, logManager: logManager)
+        self.itemCountViewModel = .init()
         self.itemRepository = itemRepository
         self.logger = .init(manager: logManager)
         self.primaryPlan = primaryPlan
@@ -117,7 +117,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 // MARK: - Public APIs
 extension ProfileTabViewModel {
     func refreshItemCount() {
-        itemCountViewModel.refresh()
+        print(#function)
     }
 
     func upgrade() {

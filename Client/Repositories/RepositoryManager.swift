@@ -82,7 +82,6 @@ public final class RepositoryManager: DeinitPrintable {
                                              symmetricKey: symmetricKey,
                                              localItemDatasoure: localItemDatasource,
                                              remoteItemRevisionDatasource: remoteItemDatasource,
-                                             shareRepository: shareRepository,
                                              shareEventIDRepository: shareEventIDRepository,
                                              passKeyManager: passKeyManager,
                                              logManager: logManager)

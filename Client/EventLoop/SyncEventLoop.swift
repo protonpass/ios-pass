@@ -244,7 +244,7 @@ private extension SyncEventLoop {
         if events.fullRefresh {
             logger.info("Force full sync for share \(shareId)")
             hasNewEvents = true
-            try await itemRepository.refreshShare(shareId: shareId)
+            try await itemRepository.refreshItems(shareId: shareId)
             return
         }
 
