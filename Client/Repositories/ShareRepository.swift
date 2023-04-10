@@ -20,11 +20,13 @@
 
 import Core
 import CoreData
+import CryptoKit
 import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
 
 public protocol ShareRepositoryProtocol {
+    var symmetricKey: SymmetricKey { get }
     var userData: UserData { get }
     var localShareDatasource: LocalShareDatasourceProtocol { get }
     var remoteShareDatasouce: RemoteShareDatasourceProtocol { get }
@@ -179,17 +181,20 @@ public extension ShareRepositoryProtocol {
 }
 
 public struct ShareRepository: ShareRepositoryProtocol {
+    public let symmetricKey: SymmetricKey
     public let userData: UserData
     public let localShareDatasource: LocalShareDatasourceProtocol
     public let remoteShareDatasouce: RemoteShareDatasourceProtocol
     public let passKeyManager: PassKeyManagerProtocol
     public let logger: Logger
 
-    public init(userData: UserData,
+    public init(symmetricKey: SymmetricKey,
+                userData: UserData,
                 localShareDatasource: LocalShareDatasourceProtocol,
                 remoteShareDatasouce: RemoteShareDatasourceProtocol,
                 passKeyManager: PassKeyManagerProtocol,
                 logManager: LogManager) {
+        self.symmetricKey = symmetricKey
         self.userData = userData
         self.localShareDatasource = localShareDatasource
         self.remoteShareDatasouce = remoteShareDatasouce
@@ -197,16 +202,19 @@ public struct ShareRepository: ShareRepositoryProtocol {
         self.logger = .init(manager: logManager)
     }
 
-    public init(userData: UserData,
+    public init(symmetricKey: SymmetricKey,
+                userData: UserData,
                 container: NSPersistentContainer,
                 apiService: APIService,
                 logManager: LogManager) {
+        self.symmetricKey = symmetricKey
         self.userData = userData
         self.localShareDatasource = LocalShareDatasource(container: container)
         self.remoteShareDatasouce = RemoteShareDatasource(apiService: apiService)
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
                                                     logManager: logManager,
+                                                    symmetricKey: symmetricKey,
                                                     userData: userData)
         let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
         self.passKeyManager = PassKeyManager(userData: userData,

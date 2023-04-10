@@ -436,6 +436,7 @@
 		35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992154299F910500FEFA32 /* MailboxSection.swift */; };
 		35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */; };
 		3599215A299FA90C00FEFA32 /* PrefixSuffixSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */; };
+		359A4DDC29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */; };
 		359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A800C29096A2200EEBC51 /* SyncEventLoop.swift */; };
 		35A5EEE02958B60200A09623 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEDF2958B60200A09623 /* Browser.swift */; };
 		35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEE12958CDBC00A09623 /* UrlOpener.swift */; };
@@ -1060,6 +1061,7 @@
 		35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefixSuffixSection.swift; sourceTree = "<group>"; };
 		35992154299F910500FEFA32 /* MailboxSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSection.swift; sourceTree = "<group>"; };
 		35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSelectionView.swift; sourceTree = "<group>"; };
+		359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedShareKey.swift; sourceTree = "<group>"; };
 		359A800C29096A2200EEBC51 /* SyncEventLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEventLoop.swift; sourceTree = "<group>"; };
 		35A5EEDF2958B60200A09623 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
 		35A5EEE12958CDBC00A09623 /* UrlOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlOpener.swift; sourceTree = "<group>"; };
@@ -1538,6 +1540,7 @@
 				356B831729C37FC50084488A /* SearchEntry.swift */,
 				355443FC287CA77C0017FCAD /* Share.swift */,
 				353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */,
+				359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */,
 				35581812290AB2B000DD94DB /* SyncEvents.swift */,
 				350A97D32885BFFD00A7168B /* Vault.swift */,
 			);
@@ -3581,6 +3584,7 @@
 				35581817290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift in Sources */,
 				355888A429AE5EC3009AA775 /* AESGCM+ConvenientSealOpen.swift in Sources */,
 				3556949929D44DAE005DD2EB /* MoveItemEndpoint.swift in Sources */,
+				359A4DDC29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift in Sources */,
 				358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */,
 				358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */,
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,

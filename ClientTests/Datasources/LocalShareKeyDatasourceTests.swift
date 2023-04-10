@@ -40,10 +40,13 @@ extension LocalShareKeyDatasourceTests {
     func testGetKeys() async throws {
         // Given
         let givenShareId = String.random()
-        let givenKeys = [ShareKey].random(randomElement: .random())
+        let givenKeys = [SymmetricallyEncryptedShareKey]
+            .random(randomElement: .init(encryptedKey: .random(),
+                                         shareId: givenShareId,
+                                         shareKey: .random()))
 
         // When
-        try await sut.upsertKeys(givenKeys, shareId: givenShareId)
+        try await sut.upsertKeys(givenKeys)
 
         // Then
         let keys = try await sut.getKeys(shareId: givenShareId)
@@ -53,16 +56,25 @@ extension LocalShareKeyDatasourceTests {
 
     func testInsertKeys() async throws {
         // Given
-        let firstKeys = [ShareKey].random(randomElement: .random())
-        let secondKeys = [ShareKey].random(randomElement: .random())
-        let thirdKeys = [ShareKey].random(randomElement: .random())
-        let givenKeys = firstKeys + secondKeys + thirdKeys
         let givenShareId = String.random()
+        let firstKeys = [SymmetricallyEncryptedShareKey]
+            .random(randomElement: .init(encryptedKey: .random(),
+                                         shareId: givenShareId,
+                                         shareKey: .random()))
+        let secondKeys = [SymmetricallyEncryptedShareKey]
+            .random(randomElement: .init(encryptedKey: .random(),
+                                         shareId: givenShareId,
+                                         shareKey: .random()))
+        let thirdKeys = [SymmetricallyEncryptedShareKey]
+            .random(randomElement: .init(encryptedKey: .random(),
+                                         shareId: givenShareId,
+                                         shareKey: .random()))
+        let givenKeys = firstKeys + secondKeys + thirdKeys
 
         // When
-        try await sut.upsertKeys(firstKeys, shareId: givenShareId)
-        try await sut.upsertKeys(secondKeys, shareId: givenShareId)
-        try await sut.upsertKeys(thirdKeys, shareId: givenShareId)
+        try await sut.upsertKeys(firstKeys)
+        try await sut.upsertKeys(secondKeys)
+        try await sut.upsertKeys(thirdKeys)
 
         // Then
         let keys = try await sut.getKeys(shareId: givenShareId)
@@ -73,14 +85,20 @@ extension LocalShareKeyDatasourceTests {
     func testRemoveAllKeys() async throws {
         // Given
         let givenFirstShareId = String.random()
-        let givenFirstShareKeys = [ShareKey].random(randomElement: .random())
+        let givenFirstShareKeys = [SymmetricallyEncryptedShareKey]
+            .random(randomElement: .init(encryptedKey: .random(),
+                                         shareId: givenFirstShareId,
+                                         shareKey: .random()))
 
         let givenSecondShareId = String.random()
-        let givenSecondShareKeys = [ShareKey].random(randomElement: .random())
+        let givenSecondShareKeys = [SymmetricallyEncryptedShareKey]
+            .random(randomElement: .init(encryptedKey: .random(),
+                                         shareId: givenSecondShareId,
+                                         shareKey: .random()))
 
         // When
-        try await sut.upsertKeys(givenFirstShareKeys, shareId: givenFirstShareId)
-        try await sut.upsertKeys(givenSecondShareKeys, shareId: givenSecondShareId)
+        try await sut.upsertKeys(givenFirstShareKeys)
+        try await sut.upsertKeys(givenSecondShareKeys)
 
         // Then
         let firstShareKeysFirstGet = try await sut.getKeys(shareId: givenFirstShareId)
@@ -102,9 +120,12 @@ extension LocalShareKeyDatasourceTests {
 }
 
 extension LocalShareKeyDatasource {
-    func givenInsertedKey(shareId: String?, keyRotation: Int64?) async throws -> ShareKey {
-        let key = ShareKey.random(keyRotation: keyRotation)
-        try await upsertKeys([key], shareId: shareId ?? .random())
+    func givenInsertedKey(shareId: String?,
+                          keyRotation: Int64?) async throws -> SymmetricallyEncryptedShareKey {
+        let key = SymmetricallyEncryptedShareKey(encryptedKey: .random(),
+                                                 shareId: shareId ?? .random(),
+                                                 shareKey: ShareKey.random(keyRotation: keyRotation))
+        try await upsertKeys([key])
         return key
     }
 }

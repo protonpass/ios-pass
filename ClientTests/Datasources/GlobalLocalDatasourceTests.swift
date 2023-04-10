@@ -117,8 +117,11 @@ extension GlobalLocalDatasourceTests {
             let share = Share.random(shareId: shareId)
             try await sut.localShareDatasource.upsertShares([share], userId: userId)
 
-            let keys = [ShareKey].random(randomElement: .random())
-            try await sut.localShareKeyDatasource.upsertKeys(keys, shareId: shareId)
+            let keys = [SymmetricallyEncryptedShareKey]
+                .random(randomElement: .init(encryptedKey: .random(),
+                                             shareId: shareId,
+                                             shareKey: .random()))
+            try await sut.localShareKeyDatasource.upsertKeys(keys)
 
             let itemRevisions = [ItemRevision].random(count: itemCount, randomElement: .random())
             try await sut.localItemDatasource.upsertItems(
