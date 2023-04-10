@@ -52,7 +52,7 @@ public final class PassKeyManager {
     private let shareKeyRepository: ShareKeyRepositoryProtocol
     private let itemKeyDatasource: RemoteItemKeyDatasourceProtocol
 
-    private var shareKeys: [PassKey] = []
+    private var shareKeys: [ShareKey] = []
     private var decryptedShareKeys: [DecryptedShareKey] = []
 
     private var decryptedItemKeys: [DecryptedItemKey] = []
@@ -150,7 +150,7 @@ extension PassKeyManager: PassKeyManagerProtocol {
 }
 
 private extension PassKeyManager {
-    func getEncryptedShareKey(shareId: String, keyRotation: Int64) async throws -> PassKey {
+    func getEncryptedShareKey(shareId: String, keyRotation: Int64) async throws -> ShareKey {
         let shareKeys = try await shareKeyRepository.getKeys(shareId: shareId)
 
         if let matchedKey = shareKeys.first(where: { $0.keyRotation == keyRotation }) {
@@ -165,12 +165,12 @@ private extension PassKeyManager {
         return matchedKey
     }
 
-    func getEncryptedLatestShareKey(shareId: String) async throws -> PassKey {
+    func getEncryptedLatestShareKey(shareId: String) async throws -> ShareKey {
         let refreshedShareKeys = try await shareKeyRepository.refreshKeys(shareId: shareId)
         return try refreshedShareKeys.latestKey()
     }
 
-    func decrypt(_ encryptedKey: PassKey, shareId: String, userData: UserData) async throws -> Data {
+    func decrypt(_ encryptedKey: ShareKey, shareId: String, userData: UserData) async throws -> Data {
         let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(encryptedKey.keyRotation)\""
         logger.trace("Decrypting share key \(keyDescription)")
         guard let encryptedKeyData = try encryptedKey.key.base64Decode() else {

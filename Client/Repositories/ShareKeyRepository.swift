@@ -31,15 +31,15 @@ public protocol ShareKeyRepositoryProtocol {
     var userData: UserData { get }
 
     /// Get share keys of a share with `shareId`. Not offline first.
-    func getKeys(shareId: String) async throws -> [PassKey]
+    func getKeys(shareId: String) async throws -> [ShareKey]
 
     /// Refresh share keys of a share with `shareId`
     @discardableResult
-    func refreshKeys(shareId: String) async throws -> [PassKey]
+    func refreshKeys(shareId: String) async throws -> [ShareKey]
 }
 
 public extension ShareKeyRepositoryProtocol {
-    func getKeys(shareId: String) async throws -> [PassKey] {
+    func getKeys(shareId: String) async throws -> [ShareKey] {
         logger.trace("Getting keys for share \(shareId)")
         let keys = try await localShareKeyDatasource.getKeys(shareId: shareId)
         if keys.isEmpty {
@@ -53,7 +53,7 @@ public extension ShareKeyRepositoryProtocol {
         return keys
     }
 
-    func refreshKeys(shareId: String) async throws -> [PassKey] {
+    func refreshKeys(shareId: String) async throws -> [ShareKey] {
         logger.trace("Refreshing keys for share \(shareId)")
         let keys = try await remoteShareKeyDatasource.getKeys(shareId: shareId)
         logger.trace("Got \(keys.count) keys from remote for share \(shareId)")
