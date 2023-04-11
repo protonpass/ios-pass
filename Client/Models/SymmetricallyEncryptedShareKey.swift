@@ -31,3 +31,17 @@ public struct SymmetricallyEncryptedShareKey: Hashable {
     /// Original `ShareKey` object as returned by the server
     public let shareKey: ShareKey
 }
+
+public extension Array where Element == SymmetricallyEncryptedShareKey {
+    func latestKey() throws -> SymmetricallyEncryptedShareKey {
+        guard !isEmpty else {
+            throw PPClientError.crypto(.missingKeys)
+        }
+
+        guard let latestKey =
+                sorted(by: { $0.shareKey.keyRotation < $1.shareKey.keyRotation }).last else {
+            throw PPClientError.crypto(.missingKeys)
+        }
+        return latestKey
+    }
+}

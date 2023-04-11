@@ -35,30 +35,33 @@ final class LocalShareDatasourceTests: XCTestCase {
         super.tearDown()
     }
 
-    func assertEqual(_ lhs: Share, _ rhs: Share) {
+    func assertEqual(_ lhs: SymmetricallyEncryptedShare, _ rhs: SymmetricallyEncryptedShare) {
+        let lhsShare = lhs.share
+        let rhsShare = rhs.share
         // Skip Int16 assertions because they make the tests very flaky
         // Sometime the value is not updated and is always 0
         // Not sure if this only happens to in-memory containers or not
         // If it's the case nothing to worry, otherwise further investigation is needed
-        XCTAssertEqual(lhs.shareID, rhs.shareID)
-        XCTAssertEqual(lhs.vaultID, rhs.vaultID)
-        XCTAssertEqual(lhs.addressID, rhs.addressID)
-//        XCTAssertEqual(lhs.targetType, rhs.targetType)
-        XCTAssertEqual(lhs.targetID, rhs.targetID)
-//        XCTAssertEqual(lhs.permission, rhs.permission)
-//        XCTAssertEqual(lhs.primary, rhs.primary)
-        XCTAssertEqual(lhs.content, rhs.content)
-        XCTAssertEqual(lhs.contentKeyRotation, rhs.contentKeyRotation)
-        XCTAssertEqual(lhs.contentFormatVersion, rhs.contentFormatVersion)
-        XCTAssertEqual(lhs.expireTime, rhs.expireTime)
-        XCTAssertEqual(lhs.createTime, rhs.createTime)
+        XCTAssertEqual(lhs.encryptedContent, rhs.encryptedContent)
+        XCTAssertEqual(lhsShare.shareID, rhsShare.shareID)
+        XCTAssertEqual(lhsShare.vaultID, rhsShare.vaultID)
+        XCTAssertEqual(lhsShare.addressID, rhsShare.addressID)
+//        XCTAssertEqual(lhsShare.targetType, rhsShare.targetType)
+        XCTAssertEqual(lhsShare.targetID, rhsShare.targetID)
+//        XCTAssertEqual(lhsShare.permission, rhsShare.permission)
+//        XCTAssertEqual(lhsShare.primary, rhsShare.primary)
+        XCTAssertEqual(lhsShare.content, rhsShare.content)
+        XCTAssertEqual(lhsShare.contentKeyRotation, rhsShare.contentKeyRotation)
+        XCTAssertEqual(lhsShare.contentFormatVersion, rhsShare.contentFormatVersion)
+        XCTAssertEqual(lhsShare.expireTime, rhsShare.expireTime)
+        XCTAssertEqual(lhsShare.createTime, rhsShare.createTime)
     }
 }
 
 extension LocalShareDatasourceTests {
     func testGetAllShares() async throws {
         // Given
-        let givenShares = [Share].random(randomElement: .random())
+        let givenShares = [SymmetricallyEncryptedShare].random(randomElement: .random())
         let givenUserId = String.random()
 
         // When
@@ -71,8 +74,8 @@ extension LocalShareDatasourceTests {
 
         // Then
         let shares = try await sut.getAllShares(userId: givenUserId)
-        let shareIds = Set(shares.map { $0.shareID })
-        let givenShareIds = Set(givenShares.map { $0.shareID })
+        let shareIds = Set(shares.map { $0.share.shareID })
+        let givenShareIds = Set(givenShares.map { $0.share.shareID })
         XCTAssertEqual(shareIds, givenShareIds)
     }
 
@@ -87,7 +90,7 @@ extension LocalShareDatasourceTests {
         }
 
         let share = try await sut.getShare(userId: givenUserId,
-                                           shareId: givenInsertedShare.shareID)
+                                           shareId: givenInsertedShare.share.shareID)
         XCTAssertNotNil(share)
         let nonNilShare = try XCTUnwrap(share)
         assertEqual(nonNilShare, givenInsertedShare)
@@ -95,9 +98,9 @@ extension LocalShareDatasourceTests {
 
     func testInsertShares() async throws {
         // Given
-        let firstShares = [Share].random(randomElement: .random())
-        let secondShares = [Share].random(randomElement: .random())
-        let thirdShares = [Share].random(randomElement: .random())
+        let firstShares = [SymmetricallyEncryptedShare].random(randomElement: .random())
+        let secondShares = [SymmetricallyEncryptedShare].random(randomElement: .random())
+        let thirdShares = [SymmetricallyEncryptedShare].random(randomElement: .random())
         let givenShares = firstShares + secondShares + thirdShares
         let givenUserId = String.random()
 
@@ -110,8 +113,8 @@ extension LocalShareDatasourceTests {
         let shares = try await sut.getAllShares(userId: givenUserId)
         XCTAssertEqual(shares.count, givenShares.count)
 
-        let shareIds = Set(shares.map { $0.shareID })
-        let givenShareIds = Set(givenShares.map { $0.shareID })
+        let shareIds = Set(shares.map { $0.share.shareID })
+        let givenShareIds = Set(givenShares.map { $0.share.shareID })
         XCTAssertEqual(shareIds, givenShareIds)
     }
 
@@ -120,7 +123,9 @@ extension LocalShareDatasourceTests {
         let givenUserId = String.random()
         let insertedShare = try await sut.givenInsertedShare(userId: givenUserId)
         // Only copy the shareId from givenShare
-        let updatedShare = Share.random(shareId: insertedShare.shareID)
+        let updatedShare = SymmetricallyEncryptedShare(
+            encryptedContent: .random(),
+            share: .random(shareId: insertedShare.share.shareID))
 
         // When
         try await sut.upsertShares([updatedShare], userId: givenUserId)
@@ -136,28 +141,28 @@ extension LocalShareDatasourceTests {
     func testRemoveShare() async throws {
         // Given
         let userId = String.random()
-        let firstShare = Share.random()
-        let secondShare = Share.random()
-        let thirdShare = Share.random()
+        let firstShare = SymmetricallyEncryptedShare.random()
+        let secondShare = SymmetricallyEncryptedShare.random()
+        let thirdShare = SymmetricallyEncryptedShare.random()
 
         // When
         try await sut.upsertShares([firstShare, secondShare, thirdShare], userId: userId)
-        try await sut.removeShare(shareId: secondShare.shareID, userId: userId)
+        try await sut.removeShare(shareId: secondShare.share.shareID, userId: userId)
 
         // Then
         let shares = try await sut.getAllShares(userId: userId)
         XCTAssertEqual(shares.count, 2)
-        XCTAssertTrue(shares.contains(where: { $0.shareID == firstShare.shareID }))
-        XCTAssertTrue(shares.contains(where: { $0.shareID == thirdShare.shareID }))
+        XCTAssertTrue(shares.contains(where: { $0.share.shareID == firstShare.share.shareID }))
+        XCTAssertTrue(shares.contains(where: { $0.share.shareID == thirdShare.share.shareID }))
     }
 
     func testRemoveAllShares() async throws {
         // Given
         let givenFirstUserId = String.random()
-        let givenFirstUserShares = [Share].random(randomElement: .random())
+        let givenFirstUserShares = [SymmetricallyEncryptedShare].random(randomElement: .random())
 
         let givenSecondUserId = String.random()
-        let givenSecondUserShares = [Share].random(randomElement: .random())
+        let givenSecondUserShares = [SymmetricallyEncryptedShare].random(randomElement: .random())
 
         // When
         try await sut.upsertShares(givenFirstUserShares, userId: givenFirstUserId)
@@ -183,8 +188,8 @@ extension LocalShareDatasourceTests {
 }
 
 extension LocalShareDatasource {
-    func givenInsertedShare(userId: String? = nil) async throws -> Share {
-        let share = Share.random(shareId: .random())
+    func givenInsertedShare(userId: String? = nil) async throws -> SymmetricallyEncryptedShare {
+        let share = SymmetricallyEncryptedShare.random()
         try await upsertShares([share], userId: userId ?? .random())
         return share
     }

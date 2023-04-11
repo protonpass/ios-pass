@@ -114,7 +114,8 @@ extension GlobalLocalDatasourceTests {
     func populateData(userId: String, shareIds: [String], itemCount: Int) async throws {
         // Populate share keys & item revisions to a list of shares with given ids
         for shareId in shareIds {
-            let share = Share.random(shareId: shareId)
+            let share = SymmetricallyEncryptedShare(encryptedContent: .random(),
+                                                    share: .random(shareId: shareId))
             try await sut.localShareDatasource.upsertShares([share], userId: userId)
 
             let keys = [SymmetricallyEncryptedShareKey]
