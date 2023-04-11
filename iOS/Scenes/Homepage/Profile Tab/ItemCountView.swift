@@ -73,7 +73,7 @@ private struct ItemContentTypeCountView: View {
             CircleButton(icon: type.icon,
                          iconColor: type.tintColor,
                          backgroundColor: type.backgroundNormColor,
-                         height: 36)
+                         type: .small)
 
             Spacer()
 

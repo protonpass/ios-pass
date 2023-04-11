@@ -28,7 +28,7 @@ struct LogInDetailView: View {
     @State private var isShowingPassword = false
     @Namespace private var bottomID
 
-    private var tintColor: UIColor { viewModel.itemContent.type.tintColor }
+    private var iconTintColor: UIColor { viewModel.itemContent.type.iconTintColor }
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -94,14 +94,14 @@ struct LogInDetailView: View {
     private var usernamePassword2FaSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
             usernameRow
-            PassDivider()
+            PassSectionDivider()
             passwordRow
 
             switch viewModel.totpManager.state {
             case .empty:
                 EmptyView()
             default:
-                PassDivider()
+                PassSectionDivider()
                 totpRow
             }
         }
@@ -112,7 +112,7 @@ struct LogInDetailView: View {
     private var usernameRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.user,
-                                  color: tintColor)
+                                  color: iconTintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -130,7 +130,7 @@ struct LogInDetailView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("View Alias")
                                     .font(.callout)
-                                    .foregroundColor(Color(uiColor: tintColor))
+                                    .foregroundColor(Color(uiColor: iconTintColor))
                                 Color(uiColor: viewModel.itemContent.type.backgroundNormColor)
                                     .frame(height: 1)
                             }
@@ -159,7 +159,7 @@ struct LogInDetailView: View {
     }
     private var passwordRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.key, color: tintColor)
+            ItemDetailSectionIcon(icon: IconProvider.key, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Password")
@@ -185,7 +185,7 @@ struct LogInDetailView: View {
 
             if !viewModel.password.isEmpty {
                 CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
-                             iconColor: viewModel.itemContent.type.tintColor,
+                             iconColor: iconTintColor,
                              backgroundColor: viewModel.itemContent.type.backgroundNormColor,
                              action: { isShowingPassword.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
@@ -218,7 +218,7 @@ struct LogInDetailView: View {
             EmptyView()
         } else {
             HStack(spacing: kItemDetailSectionPadding) {
-                ItemDetailSectionIcon(icon: IconProvider.lock, color: tintColor)
+                ItemDetailSectionIcon(icon: IconProvider.lock, color: iconTintColor)
 
                 VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                     Text("Two Factor Authentication")
@@ -257,7 +257,7 @@ struct LogInDetailView: View {
 
     private var urlsSection: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.earth, color: tintColor)
+            ItemDetailSectionIcon(icon: IconProvider.earth, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Website")
@@ -269,7 +269,7 @@ struct LogInDetailView: View {
                             viewModel.openUrl(url)
                         }, label: {
                             Text(url)
-                                .foregroundColor(Color(uiColor: tintColor))
+                                .foregroundColor(Color(uiColor: iconTintColor))
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(2)
                         })

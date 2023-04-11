@@ -29,7 +29,7 @@ extension ItemContentType {
         case .alias:
             return IconProvider.alias
         case .login:
-            return IconProvider.keySkeleton
+            return IconProvider.user
         case .note:
             return IconProvider.notepadChecklist
         }
@@ -43,6 +43,17 @@ extension ItemContentType {
             return PassColor.loginInteractionNormMajor1
         case .note:
             return PassColor.noteInteractionNormMajor1
+        }
+    }
+
+    var iconTintColor: UIColor {
+        switch self {
+        case .alias:
+            return PassColor.aliasInteractionNormMajor2
+        case .login:
+            return PassColor.loginInteractionNormMajor2
+        case .note:
+            return PassColor.noteInteractionNormMajor2
         }
     }
 
