@@ -60,7 +60,7 @@ struct ItemSwipeModifier: ViewModifier {
                             Image(uiImage: IconProvider.trashCross)
                         })
                     })
-                    .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
+                    .tint(Color(uiColor: PassColor.signalDanger))
                 } else {
                     Button(action: {
                         itemContextMenuHandler.trash(item)
@@ -71,7 +71,7 @@ struct ItemSwipeModifier: ViewModifier {
                             Image(uiImage: IconProvider.trash)
                         })
                     })
-                    .tint(Color(uiColor: .init(red: 252, green: 156, blue: 159)))
+                    .tint(Color(uiColor: PassColor.signalDanger))
                 }
             }
     }
