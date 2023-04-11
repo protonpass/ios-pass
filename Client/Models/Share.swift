@@ -34,7 +34,7 @@ public enum ShareContent {
     case item // Not handled yet
 }
 
-public struct Share: Decodable {
+public struct Share: Decodable, Swift.Hashable {
     /// ID of the share
     public let shareID: String
 

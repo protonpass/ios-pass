@@ -20,13 +20,14 @@
 
 import Foundation
 
-public extension Array where Element == ShareKey {
-    func latestKey() throws -> ShareKey {
+public extension Array where Element == SymmetricallyEncryptedShareKey {
+    func latestKey() throws -> SymmetricallyEncryptedShareKey {
         guard !isEmpty else {
             throw PPClientError.crypto(.missingKeys)
         }
 
-        guard let latestKey = sorted(by: { $0.keyRotation < $1.keyRotation }).last else {
+        guard let latestKey =
+                sorted(by: { $0.shareKey.keyRotation < $1.shareKey.keyRotation }).last else {
             throw PPClientError.crypto(.missingKeys)
         }
         return latestKey

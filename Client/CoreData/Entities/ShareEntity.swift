@@ -32,7 +32,7 @@ extension ShareEntity {
         NSFetchRequest<ShareEntity>(entityName: "ShareEntity")
     }
 
-    @NSManaged var addressID: String?
+    @NSManaged var addressID: String
     @NSManaged var content: String?
     @NSManaged var contentFormatVersion: Int16
     @NSManaged var contentKeyRotation: Int64
@@ -40,46 +40,33 @@ extension ShareEntity {
     @NSManaged var expireTime: Int64
     @NSManaged var permission: Int16
     @NSManaged var primary: Bool
-    @NSManaged var shareID: String?
-    @NSManaged var targetID: String?
+    @NSManaged var shareID: String
+    @NSManaged var symmetricallyEncryptedContent: String?
+    @NSManaged var targetID: String
     @NSManaged var targetType: Int16
-    @NSManaged var vaultID: String?
+    @NSManaged var vaultID: String
     @NSManaged var userID: String
 }
 
 extension ShareEntity {
-    func toShare() throws -> Share {
-        guard let shareID else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "shareID"))
-        }
-
-        guard let addressID else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "addressID"))
-        }
-
-        guard let vaultID else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "vaultID"))
-        }
-
-        guard let targetID else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "targetID"))
-        }
-
-        return .init(shareID: shareID,
-                     vaultID: vaultID,
-                     addressID: addressID,
-                     targetType: targetType,
-                     targetID: targetID,
-                     permission: permission,
-                     primary: primary,
-                     content: content,
-                     contentKeyRotation: contentKeyRotation,
-                     contentFormatVersion: contentFormatVersion,
-                     expireTime: expireTime,
-                     createTime: createTime)
+    func toSymmetricallyEncryptedShare() throws -> SymmetricallyEncryptedShare {
+        .init(encryptedContent: symmetricallyEncryptedContent,
+              share: .init(shareID: shareID,
+                           vaultID: vaultID,
+                           addressID: addressID,
+                           targetType: targetType,
+                           targetID: targetID,
+                           permission: permission,
+                           primary: primary,
+                           content: content,
+                           contentKeyRotation: contentKeyRotation,
+                           contentFormatVersion: contentFormatVersion,
+                           expireTime: expireTime,
+                           createTime: createTime))
     }
 
-    func hydrate(from share: Share, userId: String) {
+    func hydrate(from symmetricallyEncryptedShare: SymmetricallyEncryptedShare, userId: String) {
+        let share = symmetricallyEncryptedShare.share
         content = share.content
         contentFormatVersion = share.contentFormatVersion ?? -1
         contentKeyRotation = share.contentKeyRotation ?? -1
@@ -88,6 +75,7 @@ extension ShareEntity {
         permission = share.permission
         primary = share.primary
         shareID = share.shareID
+        symmetricallyEncryptedContent = symmetricallyEncryptedShare.encryptedContent
         targetID = share.targetID
         targetType = share.targetType
         vaultID = share.vaultID

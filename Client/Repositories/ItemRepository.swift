@@ -281,7 +281,7 @@ public extension ItemRepositoryProtocol {
         let latestItemKey = try await passKeyManager.getLatestItemKey(shareId: shareId,
                                                                       itemId: itemId)
         let request = try UpdateItemRequest(oldRevision: oldItem,
-                                            latestItemKey: latestItemKey.value,
+                                            latestItemKey: latestItemKey,
                                             itemContent: newItemContent)
         let updatedItemRevision =
         try await remoteItemRevisionDatasource.updateItem(shareId: shareId,
@@ -330,7 +330,7 @@ public extension ItemRepositoryProtocol {
         let destinationShareKey = try await passKeyManager.getLatestShareKey(shareId: toShareId)
         let request = try MoveItemRequest(itemContent: oldItemContent.protobuf,
                                           destinationShareId: toShareId,
-                                          destinationShareKey: destinationShareKey.value)
+                                          destinationShareKey: destinationShareKey)
         let newItem = try await remoteItemRevisionDatasource.move(itemId: item.itemId,
                                                                   fromShareId: item.shareId,
                                                                   request: request)
@@ -367,7 +367,7 @@ private extension ItemRepositoryProtocol {
                               shareId: String) async throws -> SymmetricallyEncryptedItem {
         let vaultKey = try await passKeyManager.getShareKey(shareId: shareId,
                                                             keyRotation: itemRevision.keyRotation)
-        let contentProtobuf = try itemRevision.getContentProtobuf(vaultKey: vaultKey.value)
+        let contentProtobuf = try itemRevision.getContentProtobuf(vaultKey: vaultKey)
         let encryptedContentProtobuf = try contentProtobuf.symmetricallyEncrypted(symmetricKey)
         let encryptedContent = try encryptedContentProtobuf.serializedData().base64EncodedString()
 
@@ -406,7 +406,7 @@ private extension ItemRepositoryProtocol {
     func createItemRequest(itemContent: ProtobufableItemContentProtocol,
                            shareId: String) async throws -> CreateItemRequest {
         let latestKey = try await passKeyManager.getLatestShareKey(shareId: shareId)
-        return try CreateItemRequest(vaultKey: latestKey.value, itemContent: itemContent)
+        return try CreateItemRequest(vaultKey: latestKey, itemContent: itemContent)
     }
 }
 
@@ -454,10 +454,10 @@ public final class ItemRepository: ItemRepositoryProtocol {
                                                     symmetricKey: symmetricKey,
                                                     userData: userData)
         let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
-        self.passKeyManager = PassKeyManager(userData: userData,
-                                             shareKeyRepository: shareKeyRepository,
+        self.passKeyManager = PassKeyManager(shareKeyRepository: shareKeyRepository,
                                              itemKeyDatasource: itemKeyDatasource,
-                                             logManager: logManager)
+                                             logManager: logManager,
+                                             symmetricKey: symmetricKey)
         self.logger = .init(manager: logManager)
     }
 }
