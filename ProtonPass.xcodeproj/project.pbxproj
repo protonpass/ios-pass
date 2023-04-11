@@ -173,6 +173,7 @@
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
 		355454C629E54934005289E7 /* SymmetricallyEncryptedShare+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355454C529E54934005289E7 /* SymmetricallyEncryptedShare+Test.swift */; };
+		355454C829E5EB0C005289E7 /* ItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355454C729E5EB0C005289E7 /* ItemKey.swift */; };
 		3554730829CDD3CC0092E0E4 /* UpdateVaultRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554730729CDD3CC0092E0E4 /* UpdateVaultRequest.swift */; };
 		3554730A29CDD5540092E0E4 /* UpdateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554730929CDD5540092E0E4 /* UpdateVaultEndpoint.swift */; };
 		3554747C29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554747B29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift */; };
@@ -839,6 +840,7 @@
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
 		355454C529E54934005289E7 /* SymmetricallyEncryptedShare+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SymmetricallyEncryptedShare+Test.swift"; sourceTree = "<group>"; };
+		355454C729E5EB0C005289E7 /* ItemKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemKey.swift; sourceTree = "<group>"; };
 		3554730729CDD3CC0092E0E4 /* UpdateVaultRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateVaultRequest.swift; sourceTree = "<group>"; };
 		3554730929CDD5540092E0E4 /* UpdateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateVaultEndpoint.swift; sourceTree = "<group>"; };
 		3554747B29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLatestItemKeyEndpoint.swift; sourceTree = "<group>"; };
@@ -1533,6 +1535,7 @@
 				3552F48928D344E100547146 /* Alias.swift */,
 				354146D028D1F1E1007E45A6 /* AliasOptions.swift */,
 				358A508A28AD3BB100F5285C /* DataError.swift */,
+				355454C729E5EB0C005289E7 /* ItemKey.swift */,
 				3593DCF828A824FE00C235D3 /* ItemRevision.swift */,
 				358AB4982886FA7B00818B44 /* ShareKey.swift */,
 				358A508C28AD823000F5285C /* PublicKey.swift */,
@@ -3650,6 +3653,7 @@
 				350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */,
 				3593DD1328A8415300C235D3 /* PersistentContainerBuilder.swift in Sources */,
 				356BDA3228DFAA9600B02E5A /* ShareKeyRepository.swift in Sources */,
+				355454C829E5EB0C005289E7 /* ItemKey.swift in Sources */,
 				358AB4992886FA7B00818B44 /* ShareKey.swift in Sources */,
 				353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */,
 				3593DCFF28A8322300C235D3 /* CreateItemRequest.swift in Sources */,
