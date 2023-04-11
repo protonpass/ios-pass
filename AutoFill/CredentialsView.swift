@@ -319,7 +319,7 @@ struct CredentialsView: View {
                 thumbnailView: {
                     SquircleThumbnail(icon: IconProvider.keySkeleton,
                                       iconColor: ItemContentType.login.tintColor,
-                                      backgroundColor: ItemContentType.login.backgroundNormColor)
+                                      backgroundColor: ItemContentType.login.backgroundWeakColor)
                 },
                 title: item.title,
                 description: item.description)
@@ -334,7 +334,7 @@ struct CredentialsView: View {
             HStack {
                 SquircleThumbnail(icon: IconProvider.keySkeleton,
                                   iconColor: ItemContentType.login.tintColor,
-                                  backgroundColor: ItemContentType.login.backgroundNormColor)
+                                  backgroundColor: ItemContentType.login.backgroundWeakColor)
 
                 VStack(alignment: .leading, spacing: 4) {
                     HighlightText(highlightableText: item.title)
