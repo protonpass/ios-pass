@@ -27,6 +27,8 @@ struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @Namespace private var bottomID
 
+    private var iconTintColor: UIColor { viewModel.itemContent.type.iconTintColor }
+
     init(viewModel: AliasDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
@@ -96,8 +98,7 @@ struct AliasDetailView: View {
 
     private var aliasRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.user,
-                                  color: viewModel.itemContent.type.tintColor)
+            ItemDetailSectionIcon(icon: IconProvider.user, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Username")
@@ -131,9 +132,8 @@ struct AliasDetailView: View {
 
     @ViewBuilder
     private var mailboxesRow: some View {
-        let tintColor = viewModel.itemContent.type.tintColor
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.forward, color: tintColor)
+            ItemDetailSectionIcon(icon: IconProvider.forward, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("Forwarded to")
@@ -161,9 +161,9 @@ struct AliasDetailView: View {
                     }
                 } else {
                     Group {
-                        AnimatingGradient(tintColor: tintColor)
-                        AnimatingGradient(tintColor: tintColor)
-                        AnimatingGradient(tintColor: tintColor)
+                        AnimatingGradient(tintColor: iconTintColor)
+                        AnimatingGradient(tintColor: iconTintColor)
+                        AnimatingGradient(tintColor: iconTintColor)
                     }
                     .clipShape(Capsule())
                 }

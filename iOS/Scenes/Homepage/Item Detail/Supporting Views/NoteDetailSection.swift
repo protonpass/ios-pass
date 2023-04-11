@@ -31,9 +31,9 @@ struct NoteDetailSection: View {
     let theme: Theme
 
     var body: some View {
-        let tintColor = Color(uiColor: itemContent.type.tintColor)
+        let tintColor = Color(uiColor: itemContent.type.iconTintColor)
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.note, color: itemContent.type.tintColor)
+            ItemDetailSectionIcon(icon: IconProvider.note, color: itemContent.type.iconTintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Note")
@@ -68,7 +68,7 @@ private struct FullNoteView: View {
     let theme: Theme
 
     var body: some View {
-        let tintColor = Color(uiColor: itemContent.type.tintColor)
+        let tintColor = Color(uiColor: itemContent.type.iconTintColor)
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
