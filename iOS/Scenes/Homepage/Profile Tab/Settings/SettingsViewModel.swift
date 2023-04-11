@@ -39,7 +39,6 @@ protocol SettingsViewModelDelegate: AnyObject {
 final class SettingsViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
     private let preferences: Preferences
     let vaultsManager: VaultsManager
@@ -53,11 +52,9 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
-    init(itemRepository: ItemRepositoryProtocol,
-         logManager: LogManager,
+    init(logManager: LogManager,
          preferences: Preferences,
          vaultsManager: VaultsManager) {
-        self.itemRepository = itemRepository
         self.logger = .init(manager: logManager)
         self.preferences = preferences
 
@@ -132,6 +129,7 @@ extension SettingsViewModel {
             do {
                 logger.trace("Doing full sync")
                 delegate?.settingsViewModelWantsToShowSpinner()
+                try await vaultsManager.fullSync()
                 logger.info("Done full sync")
                 delegate?.settingsViewModelDidFinishFullSync()
             } catch {

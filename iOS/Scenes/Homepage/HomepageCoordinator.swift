@@ -569,8 +569,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowSettingsMenu() {
-        let viewModel = SettingsViewModel(itemRepository: itemRepository,
-                                          logManager: logManager,
+        let viewModel = SettingsViewModel(logManager: logManager,
                                           preferences: preferences,
                                           vaultsManager: vaultsManager)
         viewModel.delegate = self

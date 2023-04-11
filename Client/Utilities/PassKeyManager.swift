@@ -22,13 +22,13 @@ import Core
 import CryptoKit
 import ProtonCore_Login
 
-public struct DecryptedShareKey {
+public struct DecryptedShareKey: Hashable {
     public let shareId: String
     public let keyRotation: Int64
     public let keyData: Data
 }
 
-public struct DecryptedItemKey {
+public struct DecryptedItemKey: Hashable {
     public let shareId: String
     public let itemId: String
     public let keyRotation: Int64
@@ -51,28 +51,51 @@ public protocol PassKeyManagerProtocol: AnyObject {
     func getLatestItemKey(shareId: String, itemId: String) async throws -> DecryptedItemKey
 }
 
-public extension PassKeyManagerProtocol {
-    func getShareKey(shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey {
+public final class PassKeyManager {
+    public let shareKeyRepository: ShareKeyRepositoryProtocol
+    public let itemKeyDatasource: RemoteItemKeyDatasourceProtocol
+    public let logger: Logger
+    public let symmetricKey: SymmetricKey
+    private var decryptedShareKeys = Set<DecryptedShareKey>()
+
+    public init(shareKeyRepository: ShareKeyRepositoryProtocol,
+                itemKeyDatasource: RemoteItemKeyDatasourceProtocol,
+                logManager: LogManager,
+                symmetricKey: SymmetricKey) {
+        self.shareKeyRepository = shareKeyRepository
+        self.itemKeyDatasource = itemKeyDatasource
+        self.logger = .init(manager: logManager)
+        self.symmetricKey = symmetricKey
+    }
+}
+
+extension PassKeyManager: PassKeyManagerProtocol {
+    public func getShareKey(shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey {
+        // ⚠️ Do not add logs to this function because it's supposed to be called all the time
+        // when decrypting items. As IO operations caused by the log system take time
+        // this will slow down dramatically the decryping process
+        if let cachedKey = decryptedShareKeys.first(where: {
+            $0.shareId == shareId && $0.keyRotation == keyRotation }) {
+            return cachedKey
+        }
+
         let allEncryptedShareKeys = try await shareKeyRepository.getKeys(shareId: shareId)
         guard let encryptedShareKey = allEncryptedShareKeys.first(where: { $0.shareId == shareId }) else {
             throw PPClientError.keysNotFound(shareID: shareId)
         }
-        return try decrypt(encryptedShareKey)
+        return try decryptAndCache(encryptedShareKey)
     }
 
-    func getLatestShareKey(shareId: String) async throws -> DecryptedShareKey {
+    public func getLatestShareKey(shareId: String) async throws -> DecryptedShareKey {
         let allEncryptedShareKeys = try await shareKeyRepository.getKeys(shareId: shareId)
         let latestShareKey = try allEncryptedShareKeys.latestKey()
-        return try decrypt(latestShareKey)
+        return try decryptAndCache(latestShareKey)
     }
 
-    func getLatestItemKey(shareId: String, itemId: String) async throws -> DecryptedItemKey {
+    public func getLatestItemKey(shareId: String, itemId: String) async throws -> DecryptedItemKey {
         let keyDescription = "shareId \"\(shareId)\", itemId: \"\(itemId)\""
         logger.trace("Getting latest item key \(keyDescription)")
         let latestItemKey = try await itemKeyDatasource.getLatestKey(shareId: shareId, itemId: itemId)
-
-        let decryptedKey = try await getShareKey(shareId: shareId,
-                                                 keyRotation: latestItemKey.keyRotation)
 
         logger.trace("Decrypting latest item key \(keyDescription)")
 
@@ -95,31 +118,23 @@ public extension PassKeyManagerProtocol {
     }
 }
 
-private extension PassKeyManagerProtocol {
-    func decrypt(_ encryptedShareKey: SymmetricallyEncryptedShareKey) throws -> DecryptedShareKey {
+private extension PassKeyManager {
+    func decryptAndCache(_ encryptedShareKey: SymmetricallyEncryptedShareKey) throws -> DecryptedShareKey {
+        let shareId = encryptedShareKey.shareId
+        let keyRotation = encryptedShareKey.shareKey.keyRotation
+        let keyDescription = "share id \(shareId), keyRotation: \(keyRotation)"
+        logger.trace("Decrypting share key \(keyDescription)")
+
         let decryptedKey = try symmetricKey.decrypt(encryptedShareKey.encryptedKey)
         guard let decryptedKeyData = try decryptedKey.base64Decode() else {
             throw PPClientError.crypto(.failedToBase64Decode)
         }
-        return .init(shareId: encryptedShareKey.shareId,
-                     keyRotation: encryptedShareKey.shareKey.keyRotation,
-                     keyData: decryptedKeyData)
-    }
-}
+        let decryptedShareKey = DecryptedShareKey(shareId: encryptedShareKey.shareId,
+                                                  keyRotation: encryptedShareKey.shareKey.keyRotation,
+                                                  keyData: decryptedKeyData)
+        decryptedShareKeys.insert(decryptedShareKey)
 
-public final class PassKeyManager: PassKeyManagerProtocol {
-    public let shareKeyRepository: ShareKeyRepositoryProtocol
-    public let itemKeyDatasource: RemoteItemKeyDatasourceProtocol
-    public let logger: Logger
-    public let symmetricKey: SymmetricKey
-
-    public init(shareKeyRepository: ShareKeyRepositoryProtocol,
-                itemKeyDatasource: RemoteItemKeyDatasourceProtocol,
-                logManager: LogManager,
-                symmetricKey: SymmetricKey) {
-        self.shareKeyRepository = shareKeyRepository
-        self.itemKeyDatasource = itemKeyDatasource
-        self.logger = .init(manager: logManager)
-        self.symmetricKey = symmetricKey
+        logger.info("Decrypted & cached share key share \(keyDescription)")
+        return decryptedShareKey
     }
 }
