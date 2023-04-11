@@ -37,6 +37,35 @@ final class LocalItemDatasourceTests: XCTestCase {
 }
 
 extension LocalItemDatasourceTests {
+    func testGetAllItems() async throws {
+        // Given
+        let givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random())
+        try await sut.upsertItems(givenItems)
+
+        // When
+        let items = try await sut.getAllItems()
+
+        // Then
+        XCTAssertEqual(items.count, givenItems.count)
+        XCTAssertEqual(Set(items.map { $0.itemId }), Set(givenItems.map { $0.itemId }))
+    }
+
+    func testGetAllItemsByState() async throws {
+        // Given
+        let givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random())
+        try await sut.upsertItems(givenItems)
+
+        // When
+        let activeItems = try await sut.getItems(state: .active)
+        let trashedItems = try await sut.getItems(state: .trashed)
+        let allItems = activeItems + trashedItems
+
+        // Then
+        XCTAssertEqual(activeItems.count + trashedItems.count, givenItems.count)
+        XCTAssertEqual(Set(allItems.map { $0.itemId }),
+                       Set(givenItems.map { $0.itemId }))
+    }
+
     func testGetItem() async throws {
         // Given
         let givenShareId = String.random()
@@ -202,6 +231,19 @@ extension LocalItemDatasourceTests {
     }
 
     func testRemoveAllItems() async throws {
+        // Given
+        let givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random())
+        try await sut.upsertItems(givenItems)
+
+        // When
+        try await sut.removeAllItems()
+        let items = try await sut.getAllItems()
+
+        // Then
+        XCTAssertTrue(items.isEmpty)
+    }
+
+    func testRemoveAllItemsOfGivenShares() async throws {
         // Given
         let givenFirstShareId = String.random()
         let givenFirstShareItems =
