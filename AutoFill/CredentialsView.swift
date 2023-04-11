@@ -317,9 +317,9 @@ struct CredentialsView: View {
         }, label: {
             GeneralItemRow(
                 thumbnailView: {
-                    SquircleThumbnail(icon: IconProvider.keySkeleton,
+                    SquircleThumbnail(icon: IconProvider.user,
                                       iconColor: ItemContentType.login.tintColor,
-                                      backgroundColor: ItemContentType.login.backgroundNormColor)
+                                      backgroundColor: ItemContentType.login.backgroundWeakColor)
                 },
                 title: item.title,
                 description: item.description)
@@ -332,9 +332,9 @@ struct CredentialsView: View {
             select(item: item)
         }, label: {
             HStack {
-                SquircleThumbnail(icon: IconProvider.keySkeleton,
+                SquircleThumbnail(icon: IconProvider.user,
                                   iconColor: ItemContentType.login.tintColor,
-                                  backgroundColor: ItemContentType.login.backgroundNormColor)
+                                  backgroundColor: ItemContentType.login.backgroundWeakColor)
 
                 VStack(alignment: .leading, spacing: 4) {
                     HighlightText(highlightableText: item.title)

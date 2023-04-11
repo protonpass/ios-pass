@@ -43,7 +43,7 @@ struct PrefixSuffixSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: kItemDetailSectionPadding) {
             prefixRow
-            PassDivider()
+            PassSectionDivider()
             suffixRow
         }
         .padding(.vertical, kItemDetailSectionPadding)

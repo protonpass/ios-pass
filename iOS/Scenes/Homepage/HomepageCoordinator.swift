@@ -507,7 +507,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 height
             }
-            viewController.sheetPresentationController?.detents = [customDetent]
+            viewController.sheetPresentationController?.detents = [customDetent, .large()]
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }

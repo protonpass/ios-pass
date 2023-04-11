@@ -44,7 +44,9 @@ struct MailboxSelectionView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
+            // ZStack instead of VStack because of SwiftUI bug.
+            // See more in "CreateAliasLiteView.swift"
+            ZStack(alignment: .bottom) {
                 ScrollView {
                     LazyVStack {
                         ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
@@ -70,15 +72,15 @@ struct MailboxSelectionView: View {
                             PassDivider()
                                 .padding(.horizontal)
                         }
+
+                        closeButton
+                            .opacity(0)
+                            .disabled(true)
                     }
                 }
 
-                Spacer()
-
-                Button(action: dismiss.callAsFunction) {
-                    Text("Close")
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                }
+                closeButton
+                    .padding()
             }
             .background(Color(uiColor: PassColor.backgroundWeak))
             .navigationBarTitleDisplayMode(.inline)
@@ -93,5 +95,12 @@ struct MailboxSelectionView: View {
 
     private func isSelected(_ mailbox: Mailbox) -> Bool {
         mailboxSelection.selectedMailboxes.contains(mailbox)
+    }
+
+    private var closeButton: some View {
+        Button(action: dismiss.callAsFunction) {
+            Text("Close")
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
+        }
     }
 }

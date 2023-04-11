@@ -46,7 +46,8 @@ struct SearchRecentResultsView: View {
                     Text("Clear")
                         .font(.callout)
                         .fontWeight(.semibold)
-                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        .underline(color: Color(uiColor: PassColor.textWeak))
                 }
             }
             .padding(.horizontal)
@@ -78,7 +79,7 @@ private struct SearchEntryView: View {
                     thumbnailView: {
                         SquircleThumbnail(icon: uiModel.type.icon,
                                           iconColor: uiModel.type.tintColor,
-                                          backgroundColor: uiModel.type.backgroundNormColor)
+                                          backgroundColor: uiModel.type.backgroundWeakColor)
                     },
                     title: uiModel.title,
                     description: uiModel.description)

@@ -184,7 +184,7 @@ struct ProfileTabView: View {
                     .tint(Color(uiColor: PassColor.interactionNorm))
                 }
 
-                PassDivider()
+                PassSectionDivider()
 
                 OptionRow(height: .medium) {
                     Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
@@ -209,7 +209,7 @@ struct ProfileTabView: View {
     private var accountAndSettingsSection: some View {
         VStack(spacing: 0) {
             TextOptionRow(title: "Account", action: viewModel.showAccountMenu)
-            PassDivider()
+            PassSectionDivider()
             TextOptionRow(title: "Settings", action: viewModel.showSettingsMenu)
         }
         .roundedEditableSection()
@@ -225,10 +225,10 @@ struct ProfileTabView: View {
             VStack(spacing: 0) {
                 /*
                 TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
-                PassDivider()
+                 PassSectionDivider()
                  */
                 TextOptionRow(title: "Privacy policy", action: viewModel.showPrivacyPolicy)
-                PassDivider()
+                PassSectionDivider()
                 TextOptionRow(title: "Terms of service", action: viewModel.showTermsOfService)
             }
             .roundedEditableSection()
@@ -245,10 +245,10 @@ struct ProfileTabView: View {
             VStack(spacing: 0) {
                 /*
                 TextOptionRow(title: "Tips", action: viewModel.showTips)
-                PassDivider()
+                 PassSectionDivider()
                  */
                 TextOptionRow(title: "Feedback", action: viewModel.showFeedback)
-                PassDivider()
+                PassSectionDivider()
                 TextOptionRow(title: "Rate app", action: viewModel.rateApp)
             }
             .roundedEditableSection()
