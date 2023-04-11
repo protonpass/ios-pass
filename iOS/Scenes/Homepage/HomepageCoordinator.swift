@@ -161,6 +161,7 @@ private extension HomepageCoordinator {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [unowned self] _ in
+                refresh()
                 eventLoop.forceSync()
                 Task {
                     do {
