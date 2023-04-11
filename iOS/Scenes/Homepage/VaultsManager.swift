@@ -92,7 +92,9 @@ private extension VaultsManager {
         let allItemUiModels = try allItems.map { try $0.toItemUiModel(symmetricKey) }
 
         var vaultContentUiModels = vaults.map { vault in
-            let items = allItemUiModels.filter { $0.shareId == vault.shareId }
+            let items = allItemUiModels
+                .filter { $0.shareId == vault.shareId }
+                .filter { $0.state == .active }
             return VaultContentUiModel(vault: vault, items: items)
         }
         vaultContentUiModels.sortAlphabetically()
@@ -221,19 +223,15 @@ extension VaultsManager {
 
     func restoreAllTrashedItems() async throws {
         logger.trace("Restoring all trashed items")
-        /*
         let trashedItems = try await itemRepository.getItems(state: .trashed)
         try await itemRepository.untrashItems(trashedItems)
-         */
         logger.info("Restored all trashed items")
     }
 
     func permanentlyDeleteAllTrashedItems() async throws {
         logger.trace("Permanently deleting all trashed items")
-        /*
         let trashedItems = try await itemRepository.getItems(state: .trashed)
         try await itemRepository.deleteItems(trashedItems, skipTrash: false)
-         */
         logger.info("Permanently deleted all trashed items")
     }
 
