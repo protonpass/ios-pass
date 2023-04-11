@@ -1,7 +1,7 @@
 //
-// PassKey.swift
-// Proton Pass - Created on 19/07/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// SymmetricallyEncryptedShare.swift
+// Proton Pass - Created on 10/04/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,14 +20,11 @@
 
 import Foundation
 
-/// Key used in Pass context
-public struct PassKey: Decodable, Hashable, Equatable {
-    public let key: String
-    public let keyRotation: Int64
-}
+/// `Share` with its symmetrically encrypted key by an application-wide symmetric key
+public struct SymmetricallyEncryptedShare: Hashable {
+    /// Symmetrically encrypted content in base 64 format
+    public let encryptedContent: String?
 
-/// A set of keys, only used in `GET` keys endpoints (get keys for a share, get keys for an item)
-public struct PassKeys: Decodable {
-    let total: Int
-    let keys: [PassKey]
+    /// Original `Share` object as returned by the server
+    public let share: Share
 }

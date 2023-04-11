@@ -1,5 +1,5 @@
 //
-// PassKey+Test.swift
+// ShareKey+Test.swift
 // Proton Pass - Created on 03/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,8 +20,11 @@
 
 @testable import Client
 
-extension PassKey {
-    static func random(keyRotation: Int64? = nil) -> PassKey {
-        .init(key: .random(), keyRotation: .random(in: 1...1_000_000))
+extension ShareKey {
+    static func random(keyRotation: Int64? = nil) -> ShareKey {
+        .init(createTime: .random(in: 1_000_000...2_000_000),
+              key: .random(),
+              keyRotation: keyRotation ?? .random(in: 1...1_000_000),
+              userKeyID: .random())
     }
 }

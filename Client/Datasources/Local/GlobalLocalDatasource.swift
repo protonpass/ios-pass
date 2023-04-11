@@ -34,7 +34,7 @@ public extension GlobalLocalDatasourceProtocol {
         let shares = try await localShareDatasource.getAllShares(userId: userId)
 
         for share in shares {
-            let shareId = share.shareID
+            let shareId = share.share.shareID
             try await localItemDatasource.removeAllItems(shareId: shareId)
             try await localShareKeyDatasource.removeAllKeys(shareId: shareId)
         }

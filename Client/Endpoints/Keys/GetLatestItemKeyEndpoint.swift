@@ -22,7 +22,7 @@ import ProtonCore_Networking
 
 public struct GetLatestItemKeyResponse: Decodable {
     public let code: Int
-    public let key: PassKey
+    public let key: ShareKey
 }
 
 public struct GetLatestItemKeyEndpoint: Endpoint {

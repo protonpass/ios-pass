@@ -93,11 +93,13 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
                                                     logManager: logManager,
+                                                    symmetricKey: symmetricKey,
                                                     userData: userData)
         let shareEventIDRepository = ShareEventIDRepository(container: container,
                                                             apiService: apiService,
                                                             logManager: logManager)
-        let shareRepository = ShareRepository(userData: userData,
+        let shareRepository = ShareRepository(symmetricKey: symmetricKey,
+                                              userData: userData,
                                               container: container,
                                               apiService: apiService,
                                               logManager: logManager)
@@ -188,7 +190,8 @@ private extension HomepageCoordinator {
                                                       itemRepository: itemRepository,
                                                       primaryPlan: primaryPlan,
                                                       preferences: preferences,
-                                                      logManager: logManager)
+                                                      logManager: logManager,
+                                                      vaultsManager: vaultsManager)
         profileTabViewModel.delegate = self
 
         let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
@@ -400,7 +403,6 @@ private extension HomepageCoordinator {
 
     func refresh() {
         vaultsManager.refresh()
-        profileTabViewModel?.refreshItemCount()
         searchViewModel?.refreshResults()
         currentItemDetailViewModel?.refresh()
         currentCreateEditItemViewModel?.refresh()
@@ -567,8 +569,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowSettingsMenu() {
-        let viewModel = SettingsViewModel(itemRepository: itemRepository,
-                                          logManager: logManager,
+        let viewModel = SettingsViewModel(logManager: logManager,
                                           preferences: preferences,
                                           vaultsManager: vaultsManager)
         viewModel.delegate = self

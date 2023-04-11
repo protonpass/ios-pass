@@ -294,7 +294,7 @@ private extension CredentialsViewModel {
     func fetchCredentialsTask() -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) {
             let vaults = try await self.shareRepository.getVaults()
-            let encryptedItems = try await self.itemRepository.getItems(state: .active)
+            let encryptedItems = try await self.itemRepository.getActiveLogInItems()
             self.logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
             let domainParser = try DomainParser()

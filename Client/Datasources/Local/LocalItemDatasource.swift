@@ -21,6 +21,12 @@
 import CoreData
 
 public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
+    // Get all items (both active & trashed)
+    func getAllItems() async throws -> [SymmetricallyEncryptedItem]
+
+    // Get all items by state
+    func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem]
+
     /// Get a specific item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
@@ -45,15 +51,33 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     /// Permanently delete items with given ids
     func deleteItems(itemIds: [String], shareId: String) async throws
 
+    /// Nuke items of all shares
+    func removeAllItems() async throws
+
     /// Nuke items of a share
     func removeAllItems(shareId: String) async throws
 
     // MARK: - AutoFill related operations
-    /// Get all active log in items of a given share
-    func getActiveLogInItems(shareId: String) async throws -> [SymmetricallyEncryptedItem]
+    /// Get all active log in items
+    func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
 }
 
 public extension LocalItemDatasourceProtocol {
+    func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ItemEntity.fetchRequest()
+        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try itemEntities.map { try $0.toEncryptedItem() }
+    }
+
+    func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ItemEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "state = %d", state.rawValue)
+        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try itemEntities.map { try $0.toEncryptedItem() }
+    }
+
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
@@ -146,6 +170,13 @@ public extension LocalItemDatasourceProtocol {
         }
     }
 
+    func removeAllItems() async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemEntity")
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
+
     func removeAllItems(shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemEntity")
@@ -154,11 +185,10 @@ public extension LocalItemDatasourceProtocol {
                           context: taskContext)
     }
 
-    func getActiveLogInItems(shareId: String) async throws -> [SymmetricallyEncryptedItem] {
+    func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            .init(format: "shareID = %@", shareId),
             .init(format: "state = %d", ItemState.active.rawValue),
             .init(format: "isLogInItem = %d", true)
         ])
