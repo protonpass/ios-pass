@@ -94,14 +94,14 @@ struct LogInDetailView: View {
     private var usernamePassword2FaSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
             usernameRow
-            PassDivider()
+            PassSectionDivider()
             passwordRow
 
             switch viewModel.totpManager.state {
             case .empty:
                 EmptyView()
             default:
-                PassDivider()
+                PassSectionDivider()
                 totpRow
             }
         }

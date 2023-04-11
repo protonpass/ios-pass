@@ -49,7 +49,7 @@ struct AccountView: View {
                                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                         })
 
-                    PassDivider()
+                    PassSectionDivider()
 
                     OptionRow(
                         title: "Subscription Plan",

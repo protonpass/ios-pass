@@ -230,9 +230,9 @@ struct CreateEditLoginView: View {
             } else {
                 usernameRow
             }
-            PassDivider()
+            PassSectionDivider()
             passwordRow
-            PassDivider()
+            PassSectionDivider()
             totpRow
         }
         .padding(.vertical, kItemDetailSectionPadding)
@@ -510,7 +510,7 @@ private struct WebsiteSection: View {
                         }
 
                         if viewModel.urls.count > 1 || viewModel.urls.first?.value.isEmpty == false {
-                            PassDivider()
+                            PassSectionDivider()
                         }
                     }
 

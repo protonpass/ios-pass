@@ -78,7 +78,7 @@ struct SettingsView: View {
                       content: { Text(viewModel.selectedBrowser.description) },
                       trailing: { ChevronRight() })
 
-            PassDivider()
+            PassSectionDivider()
 
             OptionRow(
                 action: viewModel.editTheme,
@@ -112,7 +112,7 @@ struct SettingsView: View {
                           content: { Text(viewModel.selectedClipboardExpiration.description) },
                           trailing: { ChevronRight() })
 
-                PassDivider()
+                PassSectionDivider()
 
                 OptionRow(height: .tall) {
                     Toggle(isOn: $viewModel.shareClipboard) {
@@ -154,7 +154,7 @@ struct SettingsView: View {
             VStack(spacing: 0) {
                 TextOptionRow(title: "View logs", action: viewModel.viewLogs)
 
-                PassDivider()
+                PassSectionDivider()
 
                 OptionRow(
                     action: viewModel.forceSync,
