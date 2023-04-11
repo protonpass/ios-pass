@@ -21,7 +21,8 @@
 @testable import Client
 
 extension Share {
-    static func random(shareId: String? = nil) -> Share {
+    static func random(shareId: String? = nil,
+                       contentKeyRotation: Int64? = nil) -> Share {
         .init(shareID: shareId ?? .random(),
               vaultID: .random(),
               addressID: .random(),
@@ -30,7 +31,7 @@ extension Share {
               permission: .random(in: 0...10),
               primary: .random(),
               content: .random(),
-              contentKeyRotation: .random(in: 0...10),
+              contentKeyRotation: contentKeyRotation ?? .random(in: 0...10),
               contentFormatVersion: .random(in: 0...10),
               expireTime: .random(in: 0...1_000_000),
               createTime: .random(in: 0...1_000_000))

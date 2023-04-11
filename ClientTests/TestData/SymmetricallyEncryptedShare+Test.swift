@@ -1,6 +1,6 @@
 //
-// PassKeyArray+LastestKey.swift
-// Proton Pass - Created on 23/02/2023.
+// SymmetricallyEncryptedShare+Test.swift
+// Proton Pass - Created on 11/04/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,18 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+@testable import Client
 
-public extension Array where Element == SymmetricallyEncryptedShareKey {
-    func latestKey() throws -> SymmetricallyEncryptedShareKey {
-        guard !isEmpty else {
-            throw PPClientError.crypto(.missingKeys)
-        }
-
-        guard let latestKey =
-                sorted(by: { $0.shareKey.keyRotation < $1.shareKey.keyRotation }).last else {
-            throw PPClientError.crypto(.missingKeys)
-        }
-        return latestKey
+extension SymmetricallyEncryptedShare {
+    static func random(shareId: String? = nil,
+                       contentKeyRotation: Int64? = nil) -> SymmetricallyEncryptedShare {
+        .init(encryptedContent: .random(),
+              share: .random(shareId: shareId,
+                             contentKeyRotation: contentKeyRotation))
     }
 }
