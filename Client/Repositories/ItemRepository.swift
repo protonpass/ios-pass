@@ -86,6 +86,9 @@ public protocol ItemRepositoryProtocol {
     @discardableResult
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
 
+    /// Delete all local items
+    func deleteAllItems() async throws
+
     /// Delete items locally after sync events
     func deleteItemsLocally(itemIds: [String], shareId: String) async throws
 
@@ -264,6 +267,10 @@ public extension ItemRepositoryProtocol {
             try await localItemDatasoure.deleteItems(encryptedItems)
             logger.trace("Finished deleting locallly \(items.count) items for share \(shareId)")
         }
+    }
+
+    func deleteAllItems() async throws {
+        try await localItemDatasoure.removeAllItems()
     }
 
     func deleteItemsLocally(itemIds: [String], shareId: String) async throws {

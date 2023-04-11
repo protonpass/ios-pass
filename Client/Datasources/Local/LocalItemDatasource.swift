@@ -51,6 +51,9 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     /// Permanently delete items with given ids
     func deleteItems(itemIds: [String], shareId: String) async throws
 
+    /// Nuke items of all shares
+    func removeAllItems() async throws
+
     /// Nuke items of a share
     func removeAllItems(shareId: String) async throws
 
@@ -165,6 +168,13 @@ public extension LocalItemDatasourceProtocol {
             try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                               context: taskContext)
         }
+    }
+
+    func removeAllItems() async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemEntity")
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
     }
 
     func removeAllItems(shareId: String) async throws {

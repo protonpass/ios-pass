@@ -88,18 +88,16 @@ private extension VaultsManager {
 
     @MainActor
     func loadContents(for vaults: [Vault]) async throws {
-        /*
-        var uiModels = try await vaults.parallelMap { vault in
-            let items = try await self.itemRepository.getItems(shareId: vault.shareId, state: .active)
-            let itemUiModels = try items.map { try $0.toItemUiModel(self.symmetricKey) }
-            return VaultContentUiModel(vault: vault, items: itemUiModels)
+        let allItems = try await itemRepository.getAllItems()
+        let allItemUiModels = try allItems.map { try $0.toItemUiModel(symmetricKey) }
+
+        var vaultContentUiModels = vaults.map { vault in
+            let items = allItemUiModels.filter { $0.shareId == vault.shareId }
+            return VaultContentUiModel(vault: vault, items: items)
         }
+        vaultContentUiModels.sortAlphabetically()
 
-        let trashedItems =
-        try await itemRepository.getItems(state: .trashed).map { try $0.toItemUiModel(symmetricKey) }
-
-        uiModels.sortAlphabetically()
-        state = .loaded(vaults: uiModels, trashedItems: trashedItems)
+        let trashedItems = allItemUiModels.filter { $0.state == .trashed }
 
         // Reset to `all` when last selected vault is deleted
         if case .precise(let selectedVault) = vaultSelection {
@@ -107,7 +105,8 @@ private extension VaultsManager {
                 vaultSelection = .all
             }
         }
-         */
+
+        state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
     }
 }
 
@@ -124,18 +123,9 @@ extension VaultsManager {
                     state = .loading
                 }
 
-                /*
                 if manualLogIn {
                     logger.info("Manual login, doing full sync")
-                    try await itemRepository.refreshItems()
-                    let vaults = try await shareRepository.getVaults()
-                    if vaults.isEmpty {
-                        try await createDefaultVault()
-                        let vaults = try await shareRepository.getVaults()
-                        try await loadContents(for: vaults)
-                    } else {
-                        try await loadContents(for: vaults)
-                    }
+                    try await fullSync()
                     manualLogIn = false
                     logger.info("Manual login, done full sync")
                 } else {
@@ -144,11 +134,36 @@ extension VaultsManager {
                     try await loadContents(for: vaults)
                     logger.info("Not manual login, done getting local shares & items")
                 }
-                 */
             } catch {
                 state = .error(error)
             }
         }
+    }
+
+    func fullSync() async throws {
+        // 1. Delete all local items & shares
+        try await itemRepository.deleteAllItems()
+        try await shareRepository.deleteAllShares()
+
+        // 2. Get all remote shares and their items
+        let remoteShares = try await shareRepository.getRemoteShares()
+        await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for share in remoteShares {
+                taskGroup.addTask { [unowned self] in
+                    try await self.shareRepository.upsertShares([share])
+                    try await self.itemRepository.refreshItems(shareId: share.shareID)
+                }
+            }
+        }
+
+        // 3. Create default vault if not any
+        if remoteShares.isEmpty {
+            try await createDefaultVault()
+        }
+
+        // 4. Load vaults and their contents
+        let vaults = try await shareRepository.getVaults()
+        try await loadContents(for: vaults)
     }
 
     func select(_ selection: VaultSelection) {
