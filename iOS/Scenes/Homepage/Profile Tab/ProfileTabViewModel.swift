@@ -44,11 +44,11 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     let apiService: APIService
     var biometricAuthenticator: BiometricAuthenticator
     let credentialManager: CredentialManagerProtocol
-    let itemCountViewModel: ItemCountViewModel
     let itemRepository: ItemRepositoryProtocol
     let logger: Logger
     let preferences: Preferences
     let appVersion: String
+    let vaultsManager: VaultsManager
 
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
     @Published private(set) var autoFillEnabled: Bool { didSet { populateOrRemoveCredentials() } }
@@ -72,16 +72,17 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
          itemRepository: ItemRepositoryProtocol,
          primaryPlan: PlanLite?,
          preferences: Preferences,
-         logManager: LogManager) {
+         logManager: LogManager,
+         vaultsManager: VaultsManager) {
         self.apiService = apiService
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.credentialManager = credentialManager
-        self.itemCountViewModel = .init()
         self.itemRepository = itemRepository
         self.logger = .init(manager: logManager)
         self.primaryPlan = primaryPlan
         self.preferences = preferences
         self.appVersion = "Version \(Bundle.main.fullAppVersionName()) (\(Bundle.main.buildNumber))"
+        self.vaultsManager = vaultsManager
 
         self.autoFillEnabled = false
         self.quickTypeBar = preferences.quickTypeBar
@@ -116,10 +117,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
 // MARK: - Public APIs
 extension ProfileTabViewModel {
-    func refreshItemCount() {
-        print(#function)
-    }
-
     func upgrade() {
         print(#function)
     }
