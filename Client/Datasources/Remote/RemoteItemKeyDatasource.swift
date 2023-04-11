@@ -21,11 +21,11 @@
 import Foundation
 
 public protocol RemoteItemKeyDatasourceProtocol: RemoteDatasourceProtocol {
-    func getLatestKey(shareId: String, itemId: String) async throws -> ShareKey
+    func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey
 }
 
 public extension RemoteItemKeyDatasourceProtocol {
-    func getLatestKey(shareId: String, itemId: String) async throws -> ShareKey {
+    func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey {
         let endpoint = GetLatestItemKeyEndpoint(shareId: shareId, itemId: itemId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.key
