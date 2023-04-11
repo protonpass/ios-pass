@@ -20,23 +20,43 @@
 
 import SwiftUI
 
+public enum CircleButtonType {
+    case small, regular, big
+
+    var width: CGFloat {
+        switch self {
+        case .small: return 36
+        case .regular: return 40
+        case .big: return 48
+        }
+    }
+
+    var iconWidth: CGFloat {
+        switch self {
+        case .small: return 16
+        case .regular: return 20
+        case .big: return 20
+        }
+    }
+}
+
 /// A cirle button with an icon inside.
 public struct CircleButton: View {
     let icon: UIImage
     let iconColor: UIColor
     let backgroundColor: UIColor
-    let height: CGFloat
+    let type: CircleButtonType
     let action: (() -> Void)?
 
     public init(icon: UIImage,
                 iconColor: UIColor,
                 backgroundColor: UIColor,
-                height: CGFloat = 40,
+                type: CircleButtonType = .regular,
                 action: (() -> Void)? = nil) {
         self.icon = icon
         self.iconColor = iconColor
         self.backgroundColor = backgroundColor
-        self.height = height
+        self.type = type
         self.action = action
     }
 
@@ -59,8 +79,8 @@ public struct CircleButton: View {
                 .renderingMode(.template)
                 .scaledToFit()
                 .foregroundColor(Color(uiColor: iconColor))
-                .padding(.vertical, height / 4)
+                .frame(width: type.iconWidth, height: type.iconWidth)
         }
-        .frame(width: height, height: height)
+        .frame(width: type.width, height: type.width)
     }
 }
