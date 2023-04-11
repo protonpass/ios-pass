@@ -69,7 +69,7 @@ struct SearchBar: View {
             Button(action: onCancel) {
                 Text("Cancel")
                     .fontWeight(.semibold)
-                    .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
+                    .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
             }
         }
         .frame(height: kSearchBarHeight)

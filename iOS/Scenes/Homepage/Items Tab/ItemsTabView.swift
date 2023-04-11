@@ -87,10 +87,11 @@ struct ItemsTabView: View {
         HStack {
             switch viewModel.vaultsManager.vaultSelection {
             case .all:
-                CircleButton(icon: PassIcon.allVaults,
-                             iconColor: PassColor.loginInteractionNormMajor1,
-                             backgroundColor: PassColor.loginInteractionNormMinor1,
-                             action: viewModel.presentVaultList)
+                CircleButton(
+                    icon: PassIcon.allVaults,
+                    iconColor: PassColor.loginInteractionNormMajor2,
+                    backgroundColor: PassColor.loginInteractionNormMajor2.withAlphaComponent(0.16),
+                    action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)
 
             case .precise(let vault):
