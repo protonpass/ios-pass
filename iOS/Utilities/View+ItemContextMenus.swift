@@ -73,7 +73,8 @@ enum ItemContextMenu {
     }
 }
 
-struct ItemContextMenuOption {
+struct ItemContextMenuOption: Identifiable {
+    var id = UUID()
     let title: String
     let icon: UIImage
     let action: () -> Void
@@ -91,27 +92,17 @@ struct ItemContextMenuOption {
     }
 }
 
-extension ItemContextMenuOption: Hashable {
-    static func == (lhs: ItemContextMenuOption, rhs: ItemContextMenuOption) -> Bool {
-        lhs.title == rhs.title && lhs.icon.pngData() == rhs.icon.pngData()
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(title)
-        hasher.combine(icon.pngData())
-    }
-}
-
-struct ItemContextMenuOptionSection: Hashable {
+struct ItemContextMenuOptionSection: Identifiable {
+    var id = UUID()
     let options: [ItemContextMenuOption]
 }
 
 private extension View {
-    func itemContextMenu(_ menu: () -> ItemContextMenu) -> some View {
+    func itemContextMenu(_ menu: ItemContextMenu) -> some View {
         contextMenu {
-            ForEach(menu().sections, id: \.hashValue) { section in
+            ForEach(menu.sections) { section in
                 Section {
-                    ForEach(section.options, id: \.hashValue) { option in
+                    ForEach(section.options) { option in
                         Button(
                             role: option.isDestructive ? .destructive : nil,
                             action: option.action,
@@ -151,26 +142,24 @@ extension View {
                          isTrashed: Bool,
                          onPermanentlyDelete: @escaping () -> Void,
                          handler: ItemContextMenuHandler) -> some View {
-        itemContextMenu {
-            if isTrashed {
-                return .trashedItem(onRestore: { handler.restore(item) },
-                                    onPermanentlyDelete: onPermanentlyDelete)
-            } else {
-                switch item.type {
-                case .login:
-                    return .login(onCopyUsername: { handler.copyUsername(item) },
-                                  onCopyPassword: { handler.copyPassword(item) },
-                                  onEdit: { handler.edit(item) },
-                                  onTrash: { handler.trash(item) })
-                case .alias:
-                    return .alias(onCopyAlias: { handler.copyAlias(item) },
-                                  onEdit: { handler.edit(item) },
-                                  onTrash: { handler.trash(item) })
+        if isTrashed {
+            return itemContextMenu(.trashedItem(onRestore: { handler.restore(item) },
+                                                onPermanentlyDelete: onPermanentlyDelete))
+        } else {
+            switch item.type {
+            case .login:
+                return itemContextMenu(.login(onCopyUsername: { handler.copyUsername(item) },
+                                              onCopyPassword: { handler.copyPassword(item) },
+                                              onEdit: { handler.edit(item) },
+                                              onTrash: { handler.trash(item) }))
+            case .alias:
+                return itemContextMenu(.alias(onCopyAlias: { handler.copyAlias(item) },
+                                              onEdit: { handler.edit(item) },
+                                              onTrash: { handler.trash(item) }))
 
-                case .note:
-                    return .note(onEdit: { handler.edit(item) },
-                                 onTrash: { handler.trash(item) })
-                }
+            case .note:
+                return itemContextMenu(.note(onEdit: { handler.edit(item) },
+                                             onTrash: { handler.trash(item) }))
             }
         }
     }
