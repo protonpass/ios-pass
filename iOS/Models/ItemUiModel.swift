@@ -29,6 +29,7 @@ struct ItemUiModel: ItemTypeIdentifiable, Hashable {
     let description: String
     let lastUseTime: Int64
     let modifyTime: Int64
+    let state: ItemState
 }
 
 extension ItemUiModel: Identifiable {
@@ -66,6 +67,7 @@ extension SymmetricallyEncryptedItem {
                      title: name,
                      description: note,
                      lastUseTime: item.lastUseTime ?? 0,
-                     modifyTime: item.modifyTime)
+                     modifyTime: item.modifyTime,
+                     state: encryptedItemContent.item.itemState)
     }
 }
