@@ -190,7 +190,8 @@ private extension HomepageCoordinator {
                                                       itemRepository: itemRepository,
                                                       primaryPlan: primaryPlan,
                                                       preferences: preferences,
-                                                      logManager: logManager)
+                                                      logManager: logManager,
+                                                      vaultsManager: vaultsManager)
         profileTabViewModel.delegate = self
 
         let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
@@ -402,7 +403,6 @@ private extension HomepageCoordinator {
 
     func refresh() {
         vaultsManager.refresh()
-        profileTabViewModel?.refreshItemCount()
         searchViewModel?.refreshResults()
         currentItemDetailViewModel?.refresh()
         currentCreateEditItemViewModel?.refresh()
