@@ -46,6 +46,17 @@ extension ItemContentType {
         }
     }
 
+    var iconTintColor: UIColor {
+        switch self {
+        case .alias:
+            return PassColor.aliasInteractionNormMajor2
+        case .login:
+            return PassColor.loginInteractionNormMajor2
+        case .note:
+            return PassColor.noteInteractionNormMajor2
+        }
+    }
+
     var backgroundNormColor: UIColor {
         switch self {
         case .alias:
