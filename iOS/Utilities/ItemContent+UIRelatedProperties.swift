@@ -29,7 +29,7 @@ extension ItemContentType {
         case .alias:
             return IconProvider.alias
         case .login:
-            return IconProvider.keySkeleton
+            return IconProvider.user
         case .note:
             return IconProvider.notepadChecklist
         }

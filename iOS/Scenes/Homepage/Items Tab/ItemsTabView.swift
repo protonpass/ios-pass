@@ -91,6 +91,7 @@ struct ItemsTabView: View {
                     icon: PassIcon.allVaults,
                     iconColor: PassColor.loginInteractionNormMajor2,
                     backgroundColor: PassColor.loginInteractionNormMajor2.withAlphaComponent(0.16),
+                    type: .big,
                     action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)
 
