@@ -20,11 +20,13 @@
 
 import Core
 import CoreData
+import CryptoKit
 import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
 
 public protocol ShareRepositoryProtocol {
+    var symmetricKey: SymmetricKey { get }
     var userData: UserData { get }
     var localShareDatasource: LocalShareDatasourceProtocol { get }
     var remoteShareDatasouce: RemoteShareDatasourceProtocol { get }
@@ -32,7 +34,7 @@ public protocol ShareRepositoryProtocol {
     var logger: Logger { get }
 
     /// Get all local shares
-    func getShares() async throws -> [Share]
+    func getShares() async throws -> [SymmetricallyEncryptedShare]
 
     /// Get all remote shares
     func getRemoteShares() async throws -> [Share]
@@ -60,7 +62,7 @@ private extension ShareRepositoryProtocol {
 }
 
 public extension ShareRepositoryProtocol {
-    func getShares() async throws -> [Share] {
+    func getShares() async throws -> [SymmetricallyEncryptedShare] {
         logger.trace("Getting all local shares for user \(userId)")
         do {
             let shares = try await localShareDatasource.getAllShares(userId: userId)
@@ -87,28 +89,21 @@ public extension ShareRepositoryProtocol {
     func getVaults() async throws -> [Vault] {
         logger.trace("Getting local vaults for user \(userId)")
 
-        let vaults = try await withThrowingTaskGroup(of: Vault?.self,
-                                                     returning: [Vault].self) { taskGroup in
-            let shares = try await getShares()
-            for share in shares where share.shareType == .vault {
-                taskGroup.addTask {
-                    let key = try await self.passKeyManager.getShareKey(
-                        shareId: share.shareID,
-                        keyRotation: share.contentKeyRotation ?? -1)
-                    let shareContent = try share.getShareContent(key: key.value)
-                    if case .vault(let vault) = shareContent {
-                        return vault
-                    } else {
-                        return nil
-                    }
-                }
-            }
+        let shares = try await getShares()
+        let vaults = try shares.compactMap { share -> Vault? in
+            guard share.share.shareType == .vault else { return nil }
 
-            return try await taskGroup.reduce(into: [Vault](), { partialResult, vault in
-                if let vault {
-                    partialResult.append(vault)
-                }
-            })
+            guard let encryptedContent = share.encryptedContent else { return nil }
+            let decryptedContent = try symmetricKey.decrypt(encryptedContent)
+            guard let decryptedContentData = try decryptedContent.base64Decode() else { return nil }
+            let vaultContent = try VaultProtobuf(data: decryptedContentData)
+
+            return .init(id: share.share.vaultID,
+                         shareId: share.share.shareID,
+                         name: vaultContent.name,
+                         description: vaultContent.description_p,
+                         displayPreferences: vaultContent.display,
+                         isPrimary: share.share.primary)
         }
         logger.trace("Got \(vaults.count) local vaults for user \(userId)")
         return vaults
@@ -122,7 +117,8 @@ public extension ShareRepositoryProtocol {
 
     func upsertShares(_ shares: [Share]) async throws {
         logger.trace("Upserting \(shares.count) shares for user \(userId)")
-        try await localShareDatasource.upsertShares(shares, userId: userId)
+        let encryptedShares = try await shares.parallelMap { try await symmetricallyEncrypt($0) }
+        try await localShareDatasource.upsertShares(encryptedShares, userId: userId)
         logger.trace("Upserted \(shares.count) shares for user \(userId)")
     }
 
@@ -130,8 +126,9 @@ public extension ShareRepositoryProtocol {
         logger.trace("Creating vault for user \(userId)")
         let request = try CreateVaultRequest(userData: userData, vault: vault)
         let createdVault = try await remoteShareDatasouce.createVault(request: request)
+        let encryptedShare = try await symmetricallyEncrypt(createdVault)
         logger.trace("Saving newly created vault to local for user \(userId)")
-        try await localShareDatasource.upsertShares([createdVault], userId: userId)
+        try await localShareDatasource.upsertShares([encryptedShare], userId: userId)
         logger.trace("Created vault for user \(userId)")
     }
 
@@ -140,11 +137,12 @@ public extension ShareRepositoryProtocol {
         let shareId = oldVault.shareId
         let shareKey = try await passKeyManager.getLatestShareKey(shareId: shareId)
         let request = try UpdateVaultRequest(vault: newVault,
-                                             shareKey: shareKey.value,
+                                             shareKey: shareKey,
                                              userData: userData)
         let updatedVault = try await remoteShareDatasouce.updateVault(request: request, shareId: shareId)
         logger.trace("Saving updated vault \(oldVault.id) to local for user \(userId)")
-        try await localShareDatasource.upsertShares([updatedVault], userId: userId)
+        let encryptedShare = try await symmetricallyEncrypt(updatedVault)
+        try await localShareDatasource.upsertShares([encryptedShare], userId: userId)
         logger.trace("Updated vault \(oldVault.id) for user \(userId)")
     }
 
@@ -170,26 +168,61 @@ public extension ShareRepositoryProtocol {
             return false
         }
         for share in shares {
-            let clonedShare = share.clone(isPrimary: share.shareID == shareId)
-            try await localShareDatasource.upsertShares([clonedShare], userId: userId)
+            let clonedShare = share.share.clone(isPrimary: share.share.shareID == shareId)
+            let clonedEncryptedShare = SymmetricallyEncryptedShare(
+                encryptedContent: share.encryptedContent,
+                share: clonedShare)
+            try await localShareDatasource.upsertShares([clonedEncryptedShare], userId: userId)
         }
         logger.trace("Finished setting primary vault \(shareId) \(shareId) for user \(userId)")
         return true
     }
 }
 
+private extension ShareRepositoryProtocol {
+    func symmetricallyEncrypt(_ share: Share) async throws -> SymmetricallyEncryptedShare {
+        guard let content = share.content,
+              let keyRotation = share.contentKeyRotation else {
+            return .init(encryptedContent: nil, share: share)
+        }
+
+        guard let contentData = try content.base64Decode() else {
+            throw PPClientError.crypto(.failedToBase64Decode)
+        }
+
+        guard contentData.count > 12 else {
+            throw PPClientError.crypto(.corruptedShareContent(shareID: share.shareID))
+        }
+
+        let key = try await passKeyManager.getShareKey(shareId: share.shareID,
+                                                       keyRotation: keyRotation)
+
+        let tagData = "vaultcontent".data(using: .utf8) ?? .init()
+        let sealedbox = try AES.GCM.SealedBox(combined: contentData)
+
+        let decryptedContent = try AES.GCM.open(sealedbox,
+                                                using: .init(data: key.keyData),
+                                                authenticating: tagData)
+        let reencryptedContent = try symmetricKey.encrypt(decryptedContent.encodeBase64())
+        return .init(encryptedContent: reencryptedContent, share: share)
+    }
+}
+
 public struct ShareRepository: ShareRepositoryProtocol {
+    public let symmetricKey: SymmetricKey
     public let userData: UserData
     public let localShareDatasource: LocalShareDatasourceProtocol
     public let remoteShareDatasouce: RemoteShareDatasourceProtocol
     public let passKeyManager: PassKeyManagerProtocol
     public let logger: Logger
 
-    public init(userData: UserData,
+    public init(symmetricKey: SymmetricKey,
+                userData: UserData,
                 localShareDatasource: LocalShareDatasourceProtocol,
                 remoteShareDatasouce: RemoteShareDatasourceProtocol,
                 passKeyManager: PassKeyManagerProtocol,
                 logManager: LogManager) {
+        self.symmetricKey = symmetricKey
         self.userData = userData
         self.localShareDatasource = localShareDatasource
         self.remoteShareDatasouce = remoteShareDatasouce
@@ -197,22 +230,25 @@ public struct ShareRepository: ShareRepositoryProtocol {
         self.logger = .init(manager: logManager)
     }
 
-    public init(userData: UserData,
+    public init(symmetricKey: SymmetricKey,
+                userData: UserData,
                 container: NSPersistentContainer,
                 apiService: APIService,
                 logManager: LogManager) {
+        self.symmetricKey = symmetricKey
         self.userData = userData
         self.localShareDatasource = LocalShareDatasource(container: container)
         self.remoteShareDatasouce = RemoteShareDatasource(apiService: apiService)
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
                                                     logManager: logManager,
+                                                    symmetricKey: symmetricKey,
                                                     userData: userData)
         let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
-        self.passKeyManager = PassKeyManager(userData: userData,
-                                             shareKeyRepository: shareKeyRepository,
+        self.passKeyManager = PassKeyManager(shareKeyRepository: shareKeyRepository,
                                              itemKeyDatasource: itemKeyDatasource,
-                                             logManager: logManager)
+                                             logManager: logManager,
+                                             symmetricKey: symmetricKey)
         self.logger = .init(manager: logManager)
     }
 }

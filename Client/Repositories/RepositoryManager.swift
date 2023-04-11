@@ -57,19 +57,21 @@ public final class RepositoryManager: DeinitPrintable {
         let shareKeyRepository = ShareKeyRepository(localShareKeyDatasource: localShareKeyDatasource,
                                                     remoteShareKeyDatasource: remoteShareKeyDatasource,
                                                     logManager: logManager,
+                                                    symmetricKey: symmetricKey,
                                                     userData: userData)
 
-        let passKeyManager = PassKeyManager(userData: userData,
-                                            shareKeyRepository: shareKeyRepository,
+        let passKeyManager = PassKeyManager(shareKeyRepository: shareKeyRepository,
                                             itemKeyDatasource: remoteItemKeyDatasource,
-                                            logManager: logManager)
+                                            logManager: logManager,
+                                            symmetricKey: symmetricKey)
 
         let shareEventIDRepository = ShareEventIDRepository(
             localShareEventIDDatasource: localShareEventIDDatasource,
             remoteShareEventIDDatasource: remoteShareEventIDDatasource,
             logManager: logManager)
 
-        let shareRepository = ShareRepository(userData: userData,
+        let shareRepository = ShareRepository(symmetricKey: symmetricKey,
+                                              userData: userData,
                                               localShareDatasource: localShareDatasource,
                                               remoteShareDatasouce: remoteShareDatasource,
                                               passKeyManager: passKeyManager,
@@ -80,7 +82,6 @@ public final class RepositoryManager: DeinitPrintable {
                                              symmetricKey: symmetricKey,
                                              localItemDatasoure: localItemDatasource,
                                              remoteItemRevisionDatasource: remoteItemDatasource,
-                                             shareRepository: shareRepository,
                                              shareEventIDRepository: shareEventIDRepository,
                                              passKeyManager: passKeyManager,
                                              logManager: logManager)

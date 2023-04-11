@@ -48,8 +48,7 @@ extension GlobalLocalDatasourceTests {
                                shareIds: firstShareIds,
                                itemCount: firstItemCount)
 
-        let firstSharesFirstGet =
-        try await sut.localShareDatasource.getAllShares(userId: firstUserId)
+        let firstSharesFirstGet = try await sut.localShareDatasource.getAllShares(userId: firstUserId)
         XCTAssertEqual(firstSharesFirstGet.count, firstShareIds.count)
 
         for shareId in firstShareIds {
@@ -113,14 +112,17 @@ extension GlobalLocalDatasourceTests {
     }
 
     func populateData(userId: String, shareIds: [String], itemCount: Int) async throws {
-        // Populate item keys, vault keys & item revisions
-        // to a list of shares with given ids
+        // Populate share keys & item revisions to a list of shares with given ids
         for shareId in shareIds {
-            let share = Share.random(shareId: shareId)
+            let share = SymmetricallyEncryptedShare(encryptedContent: .random(),
+                                                    share: .random(shareId: shareId))
             try await sut.localShareDatasource.upsertShares([share], userId: userId)
 
-            let keys = [PassKey].random(randomElement: .random())
-            try await sut.localShareKeyDatasource.upsertKeys(keys, shareId: shareId)
+            let keys = [SymmetricallyEncryptedShareKey]
+                .random(randomElement: .init(encryptedKey: .random(),
+                                             shareId: shareId,
+                                             shareKey: .random()))
+            try await sut.localShareKeyDatasource.upsertKeys(keys)
 
             let itemRevisions = [ItemRevision].random(count: itemCount, randomElement: .random())
             try await sut.localItemDatasource.upsertItems(

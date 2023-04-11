@@ -25,16 +25,27 @@ import UIComponents
 private let kChipHeight: CGFloat = 56
 
 struct ItemCountView: View {
-    @StateObject var viewModel: ItemCountViewModel
+    @StateObject var vaultsManager: VaultsManager
 
     var body: some View {
-        switch viewModel.state {
+        switch vaultsManager.state {
         case .loading:
             skeleton
-        case .loaded(let itemCount):
-            content(for: itemCount)
-        case .error:
-            Button("Retry", action: viewModel.refresh)
+        case let .loaded(vaults, trashedItems):
+            let activeItems = vaults.map { $0.items }.reduce(into: [], { $0 = $0 + $1 })
+            let allItems = activeItems + trashedItems
+            let itemCount = ItemCount(items: allItems)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ItemContentTypeCountView(type: .login, count: itemCount.loginCount)
+                    ItemContentTypeCountView(type: .alias, count: itemCount.aliasCount)
+                    ItemContentTypeCountView(type: .note, count: itemCount.noteCount)
+                }
+                .padding(.horizontal)
+            }
+        case .error(let error):
+            Text(error.messageForTheUser)
+                .foregroundColor(Color(uiColor: PassColor.signalDanger))
         }
     }
 
@@ -50,17 +61,6 @@ struct ItemCountView: View {
             .padding(.horizontal)
         }
         .adaptiveScrollDisabled(true)
-    }
-
-    private func content(for itemCount: ItemCount) -> some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ItemContentTypeCountView(type: .login, count: itemCount.loginCount)
-                ItemContentTypeCountView(type: .alias, count: itemCount.aliasCount)
-                ItemContentTypeCountView(type: .note, count: itemCount.noteCount)
-            }
-            .padding(.horizontal)
-        }
     }
 }
 

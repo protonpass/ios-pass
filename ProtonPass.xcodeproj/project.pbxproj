@@ -98,7 +98,7 @@
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
-		35464B62289B0380008E65C4 /* PassKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35464B61289B0380008E65C4 /* PassKey+Test.swift */; };
+		35464B62289B0380008E65C4 /* ShareKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35464B61289B0380008E65C4 /* ShareKey+Test.swift */; };
 		35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */; };
 		35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */; };
 		3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */; };
@@ -156,7 +156,6 @@
 		3552F49428D37CFF00547146 /* ChangeMailboxesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */; };
 		35533BB729D58C8F00EC58DE /* RepositoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BB629D58C8F00EC58DE /* RepositoryManager.swift */; };
 		35533BBB29D5C3CA00EC58DE /* ItemCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */; };
-		35533BBD29D5C3D800EC58DE /* ItemCountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BBC29D5C3D800EC58DE /* ItemCountViewModel.swift */; };
 		35533BBF29D618A200EC58DE /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BBE29D618A200EC58DE /* AccountView.swift */; };
 		35533BC129D618B800EC58DE /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BC029D618B800EC58DE /* AccountViewModel.swift */; };
 		3553424529928762003E3A47 /* PPClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553424429928762003E3A47 /* PPClientError.swift */; };
@@ -173,6 +172,7 @@
 		355443FD287CA77C0017FCAD /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355443FC287CA77C0017FCAD /* Share.swift */; };
 		35544407287CB3810017FCAD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544406287CB3810017FCAD /* Endpoint.swift */; };
 		35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */; };
+		355454C629E54934005289E7 /* SymmetricallyEncryptedShare+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355454C529E54934005289E7 /* SymmetricallyEncryptedShare+Test.swift */; };
 		3554730829CDD3CC0092E0E4 /* UpdateVaultRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554730729CDD3CC0092E0E4 /* UpdateVaultRequest.swift */; };
 		3554730A29CDD5540092E0E4 /* UpdateVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554730929CDD5540092E0E4 /* UpdateVaultEndpoint.swift */; };
 		3554747C29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554747B29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift */; };
@@ -393,7 +393,6 @@
 		3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */; };
 		3573D707297642F400F68DF7 /* DeleteVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */; };
 		35758BE02985695700AF2683 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
-		357B836329AF4D0E0063B3E4 /* CachableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B836229AF4D0E0063B3E4 /* CachableObject.swift */; };
 		357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */; };
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
@@ -409,7 +408,7 @@
 		358A509828AD87E200F5285C /* PublicKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509728AD87E200F5285C /* PublicKey+Test.swift */; };
 		358A509A28AD8A8000F5285C /* RemotePublicKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509928AD8A8000F5285C /* RemotePublicKeyDatasource.swift */; };
 		358A509C28AD8B6C00F5285C /* PublicKeyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */; };
-		358AB4992886FA7B00818B44 /* PassKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4982886FA7B00818B44 /* PassKey.swift */; };
+		358AB4992886FA7B00818B44 /* ShareKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4982886FA7B00818B44 /* ShareKey.swift */; };
 		358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */; };
 		358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD35D287D4E8000802A91 /* CryptoUtils.swift */; };
 		358BD360287D4EA200802A91 /* VaultProtobuf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358BD35F287D4EA200802A91 /* VaultProtobuf.swift */; };
@@ -436,6 +435,8 @@
 		35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992154299F910500FEFA32 /* MailboxSection.swift */; };
 		35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */; };
 		3599215A299FA90C00FEFA32 /* PrefixSuffixSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */; };
+		359A4DDC29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */; };
+		359A4DDE29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A4DDD29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift */; };
 		359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A800C29096A2200EEBC51 /* SyncEventLoop.swift */; };
 		35A5EEE02958B60200A09623 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEDF2958B60200A09623 /* Browser.swift */; };
 		35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEE12958CDBC00A09623 /* UrlOpener.swift */; };
@@ -444,8 +445,7 @@
 		35AABE2128B0288B00CEDDE6 /* UpdateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
-		35CAD6A029A789A300CF3993 /* PassKeyArray+LastestKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CAD69F29A789A300CF3993 /* PassKeyArray+LastestKey.swift */; };
-		35CAD6A229A78B0900CF3993 /* PassKeyArray+LatestKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CAD6A129A78B0900CF3993 /* PassKeyArray+LatestKeyTests.swift */; };
+		35CAD6A229A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */; };
 		35D56D562942354A00C2D0E2 /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		35D56D572942354A00C2D0E2 /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
@@ -780,7 +780,7 @@
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
 		3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonSwitchToggleStyle.swift; sourceTree = "<group>"; };
-		35464B61289B0380008E65C4 /* PassKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassKey+Test.swift"; sourceTree = "<group>"; };
+		35464B61289B0380008E65C4 /* ShareKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareKey+Test.swift"; sourceTree = "<group>"; };
 		3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditLoginViewModel.swift; sourceTree = "<group>"; };
 		35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAliasViewModel.swift; sourceTree = "<group>"; };
 		3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditLoginView.swift; sourceTree = "<group>"; };
@@ -823,7 +823,6 @@
 		3552F49328D37CFF00547146 /* ChangeMailboxesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMailboxesEndpoint.swift; sourceTree = "<group>"; };
 		35533BB629D58C8F00EC58DE /* RepositoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryManager.swift; sourceTree = "<group>"; };
 		35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountView.swift; sourceTree = "<group>"; };
-		35533BBC29D5C3D800EC58DE /* ItemCountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountViewModel.swift; sourceTree = "<group>"; };
 		35533BBE29D618A200EC58DE /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		35533BC029D618B800EC58DE /* AccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
 		3553424429928762003E3A47 /* PPClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPClientError.swift; sourceTree = "<group>"; };
@@ -839,6 +838,7 @@
 		355443FC287CA77C0017FCAD /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		35544406287CB3810017FCAD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		35544408287CB55E0017FCAD /* CreateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultEndpoint.swift; sourceTree = "<group>"; };
+		355454C529E54934005289E7 /* SymmetricallyEncryptedShare+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SymmetricallyEncryptedShare+Test.swift"; sourceTree = "<group>"; };
 		3554730729CDD3CC0092E0E4 /* UpdateVaultRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateVaultRequest.swift; sourceTree = "<group>"; };
 		3554730929CDD5540092E0E4 /* UpdateVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateVaultEndpoint.swift; sourceTree = "<group>"; };
 		3554747B29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLatestItemKeyEndpoint.swift; sourceTree = "<group>"; };
@@ -1022,7 +1022,6 @@
 		3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidator.swift; sourceTree = "<group>"; };
 		3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidatorTests.swift; sourceTree = "<group>"; };
 		3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultEndpoint.swift; sourceTree = "<group>"; };
-		357B836229AF4D0E0063B3E4 /* CachableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachableObject.swift; sourceTree = "<group>"; };
 		357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillBanner.swift; sourceTree = "<group>"; };
 		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
@@ -1038,7 +1037,7 @@
 		358A509728AD87E200F5285C /* PublicKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicKey+Test.swift"; sourceTree = "<group>"; };
 		358A509928AD8A8000F5285C /* RemotePublicKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePublicKeyDatasource.swift; sourceTree = "<group>"; };
 		358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyRepository.swift; sourceTree = "<group>"; };
-		358AB4982886FA7B00818B44 /* PassKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKey.swift; sourceTree = "<group>"; };
+		358AB4982886FA7B00818B44 /* ShareKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareKey.swift; sourceTree = "<group>"; };
 		358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareKeysEndpoint.swift; sourceTree = "<group>"; };
 		358BD35D287D4E8000802A91 /* CryptoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoUtils.swift; sourceTree = "<group>"; };
 		358BD35F287D4EA200802A91 /* VaultProtobuf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultProtobuf.swift; sourceTree = "<group>"; };
@@ -1060,6 +1059,8 @@
 		35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefixSuffixSection.swift; sourceTree = "<group>"; };
 		35992154299F910500FEFA32 /* MailboxSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSection.swift; sourceTree = "<group>"; };
 		35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSelectionView.swift; sourceTree = "<group>"; };
+		359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedShareKey.swift; sourceTree = "<group>"; };
+		359A4DDD29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedShare.swift; sourceTree = "<group>"; };
 		359A800C29096A2200EEBC51 /* SyncEventLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEventLoop.swift; sourceTree = "<group>"; };
 		35A5EEDF2958B60200A09623 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
 		35A5EEE12958CDBC00A09623 /* UrlOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlOpener.swift; sourceTree = "<group>"; };
@@ -1068,8 +1069,7 @@
 		35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateItemEndpoint.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
 		35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailTitleView.swift; sourceTree = "<group>"; };
-		35CAD69F29A789A300CF3993 /* PassKeyArray+LastestKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassKeyArray+LastestKey.swift"; sourceTree = "<group>"; };
-		35CAD6A129A78B0900CF3993 /* PassKeyArray+LatestKeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassKeyArray+LatestKeyTests.swift"; sourceTree = "<group>"; };
+		35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SymmetricallyEncryptedShareTests.swift"; sourceTree = "<group>"; };
 		35E50636286F819F00A3F6EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35E5063B286F819F00A3F6EA /* Proton Pass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Pass.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35E50641286F819F00A3F6EA /* Proton Pass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proton Pass.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1317,9 +1317,9 @@
 			isa = PBXGroup;
 			children = (
 				353876D928F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift */,
+				35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */,
 				351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */,
 				350A97D62885C0D500A7168B /* Share+ShareProviderTests.swift */,
-				35CAD6A129A78B0900CF3993 /* PassKeyArray+LatestKeyTests.swift */,
 				3542E2B928D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift */,
 			);
 			path = Utilities;
@@ -1332,9 +1332,10 @@
 				35366AA128A446CB0085C24D /* ItemRevision+Test.swift */,
 				358A509728AD87E200F5285C /* PublicKey+Test.swift */,
 				353C95E0289A9E8500E3CDCA /* Share+Test.swift */,
-				35464B61289B0380008E65C4 /* PassKey+Test.swift */,
+				35464B61289B0380008E65C4 /* ShareKey+Test.swift */,
 				3542E2BE28D9CAB200194F24 /* SymmetricKey+Test.swift */,
 				3542E2C828D9EBC000194F24 /* SymmetricallyEncryptedItem+Test.swift */,
+				355454C529E54934005289E7 /* SymmetricallyEncryptedShare+Test.swift */,
 				350A97D92885C95D00A7168B /* UserData+Test.swift */,
 			);
 			path = TestData;
@@ -1533,11 +1534,13 @@
 				354146D028D1F1E1007E45A6 /* AliasOptions.swift */,
 				358A508A28AD3BB100F5285C /* DataError.swift */,
 				3593DCF828A824FE00C235D3 /* ItemRevision.swift */,
-				358AB4982886FA7B00818B44 /* PassKey.swift */,
+				358AB4982886FA7B00818B44 /* ShareKey.swift */,
 				358A508C28AD823000F5285C /* PublicKey.swift */,
 				356B831729C37FC50084488A /* SearchEntry.swift */,
 				355443FC287CA77C0017FCAD /* Share.swift */,
 				353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */,
+				359A4DDD29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift */,
+				359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */,
 				35581812290AB2B000DD94DB /* SyncEvents.swift */,
 				350A97D32885BFFD00A7168B /* Vault.swift */,
 			);
@@ -1783,7 +1786,6 @@
 				35533BC029D618B800EC58DE /* AccountViewModel.swift */,
 				355895B229D79565001E2207 /* FeedbackChannelsView.swift */,
 				35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */,
-				35533BBC29D5C3D800EC58DE /* ItemCountViewModel.swift */,
 				356BC35829D6F36200F03497 /* OptionRow.swift */,
 				3569B2A829B7D22E0070830B /* ProfileTabView.swift */,
 				3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */,
@@ -1895,7 +1897,6 @@
 				3542B88A288361D4009C9A68 /* AuthCredential+Preview.swift */,
 				358BD35D287D4E8000802A91 /* CryptoUtils.swift */,
 				356325D729DACADB006EB16C /* PrimaryPlanProvider.swift */,
-				35CAD69F29A789A300CF3993 /* PassKeyArray+LastestKey.swift */,
 				3554747F29A8E8460060B555 /* PassKeyManager.swift */,
 				354F768928C72F1000EB2383 /* PassKeyUtils.swift */,
 				350A97D12885BF7E00A7168B /* Protobufable.swift */,
@@ -2220,7 +2221,6 @@
 				355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */,
 				3531B5402902A9DD0070D2EE /* BiometricAuthenticator.swift */,
 				353E8B73287622F300A2C5E3 /* BundleExtensions.swift */,
-				357B836229AF4D0E0063B3E4 /* CachableObject.swift */,
 				3565621F29BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift */,
 				354513E628E4CE700020A93A /* CodableBase64.swift */,
 				35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */,
@@ -3465,7 +3465,6 @@
 				35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */,
 				35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */,
 				355694A429D4673A005DD2EB /* VaultListUiModel.swift in Sources */,
-				35533BBD29D5C3D800EC58DE /* ItemCountViewModel.swift in Sources */,
 				3543615C2941E1A8000CAE12 /* UIApplication+OpenSettings.swift in Sources */,
 				3571B59429BF1321008D4350 /* HighlightText.swift in Sources */,
 				3572E5232993D68800775FAC /* ItemContent+UIRelatedProperties.swift in Sources */,
@@ -3581,12 +3580,14 @@
 				35581817290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift in Sources */,
 				355888A429AE5EC3009AA775 /* AESGCM+ConvenientSealOpen.swift in Sources */,
 				3556949929D44DAE005DD2EB /* MoveItemEndpoint.swift in Sources */,
+				359A4DDC29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift in Sources */,
 				358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */,
 				358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */,
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,
 				356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */,
 				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
 				3560844C29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift in Sources */,
+				359A4DDE29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift in Sources */,
 				35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */,
 				358A508D28AD823000F5285C /* PublicKey.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
@@ -3634,7 +3635,6 @@
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
 				356BDA3428DFAC9600B02E5A /* RemoteShareKeyDatasource.swift in Sources */,
 				35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */,
-				35CAD6A029A789A300CF3993 /* PassKeyArray+LastestKey.swift in Sources */,
 				35581815290AB39C00DD94DB /* GetEventsEndpoint.swift in Sources */,
 				3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */,
 				3561A1802922D1700097078B /* ItemCount.swift in Sources */,
@@ -3650,7 +3650,7 @@
 				350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */,
 				3593DD1328A8415300C235D3 /* PersistentContainerBuilder.swift in Sources */,
 				356BDA3228DFAA9600B02E5A /* ShareKeyRepository.swift in Sources */,
-				358AB4992886FA7B00818B44 /* PassKey.swift in Sources */,
+				358AB4992886FA7B00818B44 /* ShareKey.swift in Sources */,
 				353547C12880C45C0021C716 /* GetSharesEndpoint.swift in Sources */,
 				3593DCFF28A8322300C235D3 /* CreateItemRequest.swift in Sources */,
 				3593DCEB28A79CD300C235D3 /* CreateVaultRequest.swift in Sources */,
@@ -3677,11 +3677,12 @@
 				356BC36129D7189900F03497 /* ShareTests.swift in Sources */,
 				3542E2BA28D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift in Sources */,
 				3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */,
-				35CAD6A229A78B0900CF3993 /* PassKeyArray+LatestKeyTests.swift in Sources */,
+				35CAD6A229A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift in Sources */,
 				350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */,
+				355454C629E54934005289E7 /* SymmetricallyEncryptedShare+Test.swift in Sources */,
 				35610B7728ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift in Sources */,
 				3565621C29B9EC9900C43F72 /* ItemSortableTests.swift in Sources */,
-				35464B62289B0380008E65C4 /* PassKey+Test.swift in Sources */,
+				35464B62289B0380008E65C4 /* ShareKey+Test.swift in Sources */,
 				350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */,
 				3542E2BD28D9CA9C00194F24 /* ItemContentTests.swift in Sources */,
 				3542E2C728D9EB8000194F24 /* LocalItemDatasourceTests.swift in Sources */,
@@ -3726,7 +3727,6 @@
 				356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */,
 				3553C21F2965703D0087518A /* LogFormatter.swift in Sources */,
 				355BDED0299E3807009FDBB1 /* Array+InsertOrRemove.swift in Sources */,
-				357B836329AF4D0E0063B3E4 /* CachableObject.swift in Sources */,
 				353E10922881827C00E59474 /* UserProtocol.swift in Sources */,
 				356A34B72977B18000969BA2 /* URLUtils+OTPParser.swift in Sources */,
 				3553C2212965705C0087518A /* LogManager.swift in Sources */,

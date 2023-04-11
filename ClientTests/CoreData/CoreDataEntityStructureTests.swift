@@ -71,6 +71,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "permission", on: sut, hasType: .integer16)
         verifyAttribute(named: "primary", on: sut, hasType: .boolean)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
+        verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
         verifyAttribute(named: "targetID", on: sut, hasType: .string)
         verifyAttribute(named: "targetType", on: sut, hasType: .integer16)
         verifyAttribute(named: "vaultID", on: sut, hasType: .string)
@@ -79,9 +80,12 @@ final class CoreDataEntityStructureTests: XCTestCase {
 
     func testShareKeyEntity() {
         let sut = entity(byName: "ShareKeyEntity")
+        verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "key", on: sut, hasType: .string)
         verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
+        verifyAttribute(named: "symmetricallyEncryptedKey", on: sut, hasType: .string)
+        verifyAttribute(named: "userKeyID", on: sut, hasType: .string)
     }
 
     func testItemEntity() {

@@ -87,7 +87,7 @@ struct ProfileTabView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
-            ItemCountView(viewModel: viewModel.itemCountViewModel)
+            ItemCountView(vaultsManager: viewModel.vaultsManager)
         }
     }
 

@@ -48,6 +48,7 @@
         <attribute name="permission" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="primary" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="shareID" attributeType="String" defaultValueString=""/>
+        <attribute name="symmetricallyEncryptedContent" optional="YES" attributeType="String"/>
         <attribute name="targetID" attributeType="String" defaultValueString=""/>
         <attribute name="targetType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
@@ -70,9 +71,12 @@
         </uniquenessConstraints>
     </entity>
     <entity name="ShareKeyEntity" representedClassName="ShareKeyEntity" syncable="YES">
+        <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="key" attributeType="String"/>
         <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="shareID" attributeType="String"/>
+        <attribute name="symmetricallyEncryptedKey" attributeType="String"/>
+        <attribute name="userKeyID" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="shareID"/>

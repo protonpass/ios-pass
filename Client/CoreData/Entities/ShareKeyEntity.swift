@@ -32,24 +32,31 @@ extension ShareKeyEntity {
         NSFetchRequest<ShareKeyEntity>(entityName: "ShareKeyEntity")
     }
 
-    @NSManaged var key: String?
+    @NSManaged var createTime: Int64
+    @NSManaged var key: String
     @NSManaged var keyRotation: Int64
-    @NSManaged var shareID: String?
+    @NSManaged var shareID: String
+    @NSManaged var symmetricallyEncryptedKey: String
+    @NSManaged var userKeyID: String
 }
 
 extension ShareKeyEntity {
-    func toKey() throws -> PassKey {
-        guard let key else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "key"))
-        }
-
-        return .init(key: key, keyRotation: keyRotation)
+    func toSymmetricallyEncryptedShareKey() throws -> SymmetricallyEncryptedShareKey {
+        .init(encryptedKey: symmetricallyEncryptedKey,
+              shareId: shareID,
+              shareKey: .init(createTime: createTime,
+                              key: key,
+                              keyRotation: keyRotation,
+                              userKeyID: userKeyID))
     }
 
-    func hydrate(from key: PassKey, shareId: String) {
-        self.key = key.key
-        self.keyRotation = key.keyRotation
-        self.shareID = shareId
+    func hydrate(from symmetricallyEncryptedShareKey: SymmetricallyEncryptedShareKey) {
+        self.createTime = symmetricallyEncryptedShareKey.shareKey.createTime
+        self.key = symmetricallyEncryptedShareKey.shareKey.key
+        self.keyRotation = symmetricallyEncryptedShareKey.shareKey.keyRotation
+        self.shareID = symmetricallyEncryptedShareKey.shareId
+        self.symmetricallyEncryptedKey = symmetricallyEncryptedShareKey.encryptedKey
+        self.userKeyID = symmetricallyEncryptedShareKey.shareKey.userKeyID
     }
 }
 

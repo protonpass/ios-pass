@@ -209,7 +209,7 @@ private extension SyncEventLoop {
             for remoteShare in remoteShares {
                 taskGroup.addTask {
                     var hasNewEvents = false
-                    if localShares.contains(where: { $0.shareID == remoteShare.shareID }) {
+                    if localShares.contains(where: { $0.share.shareID == remoteShare.shareID }) {
                         // Existing share
                         try await self.sync(share: remoteShare, hasNewEvents: &hasNewEvents)
                     } else {
@@ -244,7 +244,7 @@ private extension SyncEventLoop {
         if events.fullRefresh {
             logger.info("Force full sync for share \(shareId)")
             hasNewEvents = true
-            try await itemRepository.refreshShare(shareId: shareId)
+            try await itemRepository.refreshItems(shareId: shareId)
             return
         }
 
