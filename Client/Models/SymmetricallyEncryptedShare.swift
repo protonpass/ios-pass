@@ -1,6 +1,6 @@
 //
-// CachableObject.swift
-// Proton Pass - Created on 01/03/2023.
+// SymmetricallyEncryptedShare.swift
+// Proton Pass - Created on 10/04/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,12 +20,11 @@
 
 import Foundation
 
-public struct CachableObject<T> {
-    public let isCached: Bool
-    public let value: T
+/// `Share` with its symmetrically encrypted key by an application-wide symmetric key
+public struct SymmetricallyEncryptedShare: Hashable {
+    /// Symmetrically encrypted content in base 64 format
+    public let encryptedContent: String?
 
-    public init(isCached: Bool, value: T) {
-        self.isCached = isCached
-        self.value = value
-    }
+    /// Original `Share` object as returned by the server
+    public let share: Share
 }

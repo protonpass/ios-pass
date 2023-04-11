@@ -21,15 +21,15 @@
 import CoreData
 
 public protocol LocalShareDatasourceProtocol: LocalDatasourceProtocol {
-    func getShare(userId: String, shareId: String) async throws -> Share?
-    func getAllShares(userId: String) async throws -> [Share]
-    func upsertShares(_ shares: [Share], userId: String) async throws
+    func getShare(userId: String, shareId: String) async throws -> SymmetricallyEncryptedShare?
+    func getAllShares(userId: String) async throws -> [SymmetricallyEncryptedShare]
+    func upsertShares(_ shares: [SymmetricallyEncryptedShare], userId: String) async throws
     func removeShare(shareId: String, userId: String) async throws
     func removeAllShares(userId: String) async throws
 }
 
 public extension LocalShareDatasourceProtocol {
-    func getShare(userId: String, shareId: String) async throws -> Share? {
+    func getShare(userId: String, shareId: String) async throws -> SymmetricallyEncryptedShare? {
         let taskContext = newTaskContext(type: .fetch)
 
         let fetchRequest = ShareEntity.fetchRequest()
@@ -40,10 +40,10 @@ public extension LocalShareDatasourceProtocol {
             ])
         let shareEntities = try await execute(fetchRequest: fetchRequest,
                                               context: taskContext)
-        return try shareEntities.map { try $0.toShare() }.first
+        return try shareEntities.map { try $0.toSymmetricallyEncryptedShare() }.first
     }
 
-    func getAllShares(userId: String) async throws -> [Share] {
+    func getAllShares(userId: String) async throws -> [SymmetricallyEncryptedShare] {
         let taskContext = newTaskContext(type: .fetch)
 
         let fetchRequest = ShareEntity.fetchRequest()
@@ -51,10 +51,10 @@ public extension LocalShareDatasourceProtocol {
         fetchRequest.sortDescriptors = [.init(key: "createTime", ascending: false)]
         let shareEntities = try await execute(fetchRequest: fetchRequest,
                                               context: taskContext)
-        return try shareEntities.map { try $0.toShare() }
+        return try shareEntities.map { try $0.toSymmetricallyEncryptedShare() }
     }
 
-    func upsertShares(_ shares: [Share], userId: String) async throws {
+    func upsertShares(_ shares: [SymmetricallyEncryptedShare], userId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =

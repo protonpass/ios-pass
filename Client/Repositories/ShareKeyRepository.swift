@@ -34,15 +34,15 @@ public protocol ShareKeyRepositoryProtocol {
     var userData: UserData { get }
 
     /// Get share keys of a share with `shareId`. Not offline first.
-    func getKeys(shareId: String) async throws -> [ShareKey]
+    func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
     /// Refresh share keys of a share with `shareId`
     @discardableResult
-    func refreshKeys(shareId: String) async throws -> [ShareKey]
+    func refreshKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 }
 
 public extension ShareKeyRepositoryProtocol {
-    func getKeys(shareId: String) async throws -> [ShareKey] {
+    func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         logger.trace("Getting keys for share \(shareId)")
         let keys = try await localShareKeyDatasource.getKeys(shareId: shareId)
         if keys.isEmpty {
@@ -53,10 +53,10 @@ public extension ShareKeyRepositoryProtocol {
         }
 
         logger.trace("Got \(keys.count) local keys for share \(shareId)")
-        return keys.map { $0.shareKey }
+        return keys
     }
 
-    func refreshKeys(shareId: String) async throws -> [ShareKey] {
+    func refreshKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         logger.trace("Refreshing keys for share \(shareId)")
         let keys = try await remoteShareKeyDatasource.getKeys(shareId: shareId)
         logger.trace("Got \(keys.count) keys from remote for share \(shareId)")
@@ -74,7 +74,7 @@ public extension ShareKeyRepositoryProtocol {
         logger.trace("Saved \(keys.count) keys to local database for share \(shareId)")
 
         logger.trace("Refreshed keys for share \(shareId)")
-        return keys
+        return encryptedKeys
     }
 }
 

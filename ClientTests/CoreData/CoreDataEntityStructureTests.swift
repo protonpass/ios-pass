@@ -71,6 +71,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "permission", on: sut, hasType: .integer16)
         verifyAttribute(named: "primary", on: sut, hasType: .boolean)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
+        verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
         verifyAttribute(named: "targetID", on: sut, hasType: .string)
         verifyAttribute(named: "targetType", on: sut, hasType: .integer16)
         verifyAttribute(named: "vaultID", on: sut, hasType: .string)

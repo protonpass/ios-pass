@@ -393,7 +393,6 @@
 		3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */; };
 		3573D707297642F400F68DF7 /* DeleteVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */; };
 		35758BE02985695700AF2683 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
-		357B836329AF4D0E0063B3E4 /* CachableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B836229AF4D0E0063B3E4 /* CachableObject.swift */; };
 		357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */; };
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
@@ -437,6 +436,7 @@
 		35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */; };
 		3599215A299FA90C00FEFA32 /* PrefixSuffixSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */; };
 		359A4DDC29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */; };
+		359A4DDE29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A4DDD29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift */; };
 		359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A800C29096A2200EEBC51 /* SyncEventLoop.swift */; };
 		35A5EEE02958B60200A09623 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEDF2958B60200A09623 /* Browser.swift */; };
 		35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEE12958CDBC00A09623 /* UrlOpener.swift */; };
@@ -1023,7 +1023,6 @@
 		3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidator.swift; sourceTree = "<group>"; };
 		3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidatorTests.swift; sourceTree = "<group>"; };
 		3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultEndpoint.swift; sourceTree = "<group>"; };
-		357B836229AF4D0E0063B3E4 /* CachableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachableObject.swift; sourceTree = "<group>"; };
 		357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillBanner.swift; sourceTree = "<group>"; };
 		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
@@ -1062,6 +1061,7 @@
 		35992154299F910500FEFA32 /* MailboxSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSection.swift; sourceTree = "<group>"; };
 		35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSelectionView.swift; sourceTree = "<group>"; };
 		359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedShareKey.swift; sourceTree = "<group>"; };
+		359A4DDD29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedShare.swift; sourceTree = "<group>"; };
 		359A800C29096A2200EEBC51 /* SyncEventLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEventLoop.swift; sourceTree = "<group>"; };
 		35A5EEDF2958B60200A09623 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
 		35A5EEE12958CDBC00A09623 /* UrlOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlOpener.swift; sourceTree = "<group>"; };
@@ -1540,6 +1540,7 @@
 				356B831729C37FC50084488A /* SearchEntry.swift */,
 				355443FC287CA77C0017FCAD /* Share.swift */,
 				353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */,
+				359A4DDD29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift */,
 				359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */,
 				35581812290AB2B000DD94DB /* SyncEvents.swift */,
 				350A97D32885BFFD00A7168B /* Vault.swift */,
@@ -2223,7 +2224,6 @@
 				355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */,
 				3531B5402902A9DD0070D2EE /* BiometricAuthenticator.swift */,
 				353E8B73287622F300A2C5E3 /* BundleExtensions.swift */,
-				357B836229AF4D0E0063B3E4 /* CachableObject.swift */,
 				3565621F29BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift */,
 				354513E628E4CE700020A93A /* CodableBase64.swift */,
 				35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */,
@@ -3591,6 +3591,7 @@
 				356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */,
 				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
 				3560844C29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift in Sources */,
+				359A4DDE29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift in Sources */,
 				35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */,
 				358A508D28AD823000F5285C /* PublicKey.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
@@ -3730,7 +3731,6 @@
 				356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */,
 				3553C21F2965703D0087518A /* LogFormatter.swift in Sources */,
 				355BDED0299E3807009FDBB1 /* Array+InsertOrRemove.swift in Sources */,
-				357B836329AF4D0E0063B3E4 /* CachableObject.swift in Sources */,
 				353E10922881827C00E59474 /* UserProtocol.swift in Sources */,
 				356A34B72977B18000969BA2 /* URLUtils+OTPParser.swift in Sources */,
 				3553C2212965705C0087518A /* LogManager.swift in Sources */,

@@ -20,19 +20,7 @@
 
 import Core
 import CryptoKit
-import ProtonCore_Crypto
 import ProtonCore_Login
-
-public protocol PassKeyManagerProtocol: AnyObject {
-    /// Get share key of a given key rotation to decrypt share content
-    func getShareKey(shareId: String, keyRotation: Int64) async throws -> CachableObject<DecryptedShareKey>
-
-    /// Get share key with latest rotation
-    func getLatestShareKey(shareId: String) async throws -> CachableObject<DecryptedShareKey>
-
-    /// Get the latest key of an item to encrypt item content
-    func getLatestItemKey(shareId: String, itemId: String) async throws -> CachableObject<DecryptedItemKey>
-}
 
 public struct DecryptedShareKey {
     public let shareId: String
@@ -47,84 +35,44 @@ public struct DecryptedItemKey {
     public let keyData: Data
 }
 
-public final class PassKeyManager {
-    private let userData: UserData
-    private let shareKeyRepository: ShareKeyRepositoryProtocol
-    private let itemKeyDatasource: RemoteItemKeyDatasourceProtocol
+public protocol PassKeyManagerProtocol: AnyObject {
+    var itemKeyDatasource: RemoteItemKeyDatasourceProtocol { get }
+    var shareKeyRepository: ShareKeyRepositoryProtocol { get }
+    var logger: Logger { get }
+    var symmetricKey: SymmetricKey { get }
 
-    private var shareKeys: [ShareKey] = []
-    private var decryptedShareKeys: [DecryptedShareKey] = []
+    /// Get share key of a given key rotation to decrypt share content
+    func getShareKey(shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey
 
-    private var decryptedItemKeys: [DecryptedItemKey] = []
+    /// Get share key with latest rotation
+    func getLatestShareKey(shareId: String) async throws -> DecryptedShareKey
 
-    private let logger: Logger
-
-    public init(userData: UserData,
-                shareKeyRepository: ShareKeyRepositoryProtocol,
-                itemKeyDatasource: RemoteItemKeyDatasourceProtocol,
-                logManager: LogManager) {
-        self.userData = userData
-        self.shareKeyRepository = shareKeyRepository
-        self.itemKeyDatasource = itemKeyDatasource
-        self.logger = .init(manager: logManager)
-    }
+    /// Get the latest key of an item to encrypt item content
+    func getLatestItemKey(shareId: String, itemId: String) async throws -> DecryptedItemKey
 }
 
-extension PassKeyManager: PassKeyManagerProtocol {
-    public func getShareKey(shareId: String,
-                            keyRotation: Int64) async throws -> CachableObject<DecryptedShareKey> {
-        let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(keyRotation)\""
-        logger.trace("Getting share key \(keyDescription)")
-        if let decryptedKey =
-            decryptedShareKeys.first(where: { $0.shareId == shareId && $0.keyRotation == keyRotation }) {
-            logger.trace("Found cached share key \(keyDescription)")
-            return .init(isCached: true, value: decryptedKey)
+public extension PassKeyManagerProtocol {
+    func getShareKey(shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey {
+        let allEncryptedShareKeys = try await shareKeyRepository.getKeys(shareId: shareId)
+        guard let encryptedShareKey = allEncryptedShareKeys.first(where: { $0.shareId == shareId }) else {
+            throw PPClientError.keysNotFound(shareID: shareId)
         }
-
-        logger.trace("No cached share key \(keyDescription). Getting from repository")
-        let encryptedKey = try await getEncryptedShareKey(shareId: shareId, keyRotation: keyRotation)
-        let decryptedKeyData = try await decrypt(encryptedKey, shareId: shareId, userData: userData)
-
-        let decryptedKey = DecryptedShareKey(shareId: shareId,
-                                             keyRotation: keyRotation,
-                                             keyData: decryptedKeyData)
-        decryptedShareKeys.append(decryptedKey)
-        return .init(isCached: false, value: decryptedKey)
+        return try decrypt(encryptedShareKey)
     }
 
-    public func getLatestShareKey(shareId: String) async throws -> CachableObject<DecryptedShareKey> {
-        let keyDescription = "shareId \"\(shareId)\""
-        logger.trace("Getting latest share key \(keyDescription)")
-        let latestShareKey = try await getEncryptedLatestShareKey(shareId: shareId)
-        if let decryptedKey =
-            decryptedShareKeys.first(where: { $0.shareId == shareId &&
-                $0.keyRotation == latestShareKey.keyRotation }) {
-            logger.trace("Found cached latest share key \(keyDescription)")
-            return .init(isCached: true, value: decryptedKey)
-        }
-
-        let decryptedKeyData = try await decrypt(latestShareKey, shareId: shareId, userData: userData)
-        let decryptedKey = DecryptedShareKey(shareId: shareId,
-                                             keyRotation: latestShareKey.keyRotation,
-                                             keyData: decryptedKeyData)
-        decryptedShareKeys.append(decryptedKey)
-        return .init(isCached: false, value: decryptedKey)
+    func getLatestShareKey(shareId: String) async throws -> DecryptedShareKey {
+        let allEncryptedShareKeys = try await shareKeyRepository.getKeys(shareId: shareId)
+        let latestShareKey = try allEncryptedShareKeys.latestKey()
+        return try decrypt(latestShareKey)
     }
 
-    public func getLatestItemKey(shareId: String,
-                                 itemId: String) async throws -> CachableObject<DecryptedItemKey> {
+    func getLatestItemKey(shareId: String, itemId: String) async throws -> DecryptedItemKey {
         let keyDescription = "shareId \"\(shareId)\", itemId: \"\(itemId)\""
         logger.trace("Getting latest item key \(keyDescription)")
         let latestItemKey = try await itemKeyDatasource.getLatestKey(shareId: shareId, itemId: itemId)
 
-        if let decryptedKey =
-            decryptedItemKeys.first(where: { $0.shareId == shareId &&
-                $0.itemId == itemId &&
-                $0.keyRotation == latestItemKey.keyRotation
-            }) {
-            logger.trace("Got cached latest item key \(keyDescription)")
-            return .init(isCached: true, value: decryptedKey)
-        }
+        let decryptedKey = try await getShareKey(shareId: shareId,
+                                                 keyRotation: latestItemKey.keyRotation)
 
         logger.trace("Decrypting latest item key \(keyDescription)")
 
@@ -136,62 +84,42 @@ extension PassKeyManager: PassKeyManagerProtocol {
         }
 
         let decryptedItemKeyData = try AES.GCM.open(encryptedItemKeyData,
-                                                    key: vaultKey.value.keyData,
+                                                    key: vaultKey.keyData,
                                                     associatedData: .itemKey)
 
         logger.trace("Decrypted latest item key \(keyDescription)")
-        let decryptedItemKey = DecryptedItemKey(shareId: shareId,
-                                                itemId: itemId,
-                                                keyRotation: latestItemKey.keyRotation,
-                                                keyData: decryptedItemKeyData)
-        decryptedItemKeys.append(decryptedItemKey)
-        return .init(isCached: false, value: decryptedItemKey)
+        return .init(shareId: shareId,
+                     itemId: itemId,
+                     keyRotation: latestItemKey.keyRotation,
+                     keyData: decryptedItemKeyData)
     }
 }
 
-private extension PassKeyManager {
-    func getEncryptedShareKey(shareId: String, keyRotation: Int64) async throws -> ShareKey {
-        let shareKeys = try await shareKeyRepository.getKeys(shareId: shareId)
-
-        if let matchedKey = shareKeys.first(where: { $0.keyRotation == keyRotation }) {
-            return matchedKey
-        }
-
-        let refreshedShareKeys = try await shareKeyRepository.refreshKeys(shareId: shareId)
-
-        guard let matchedKey = refreshedShareKeys.first(where: { $0.keyRotation == keyRotation }) else {
-            throw PPClientError.crypto(.missingKeys)
-        }
-        return matchedKey
-    }
-
-    func getEncryptedLatestShareKey(shareId: String) async throws -> ShareKey {
-        let refreshedShareKeys = try await shareKeyRepository.refreshKeys(shareId: shareId)
-        return try refreshedShareKeys.latestKey()
-    }
-
-    func decrypt(_ encryptedKey: ShareKey, shareId: String, userData: UserData) async throws -> Data {
-        let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(encryptedKey.keyRotation)\""
-        logger.trace("Decrypting share key \(keyDescription)")
-        guard let encryptedKeyData = try encryptedKey.key.base64Decode() else {
-            logger.trace("Failed to base 64 decode share key \(keyDescription)")
+private extension PassKeyManagerProtocol {
+    func decrypt(_ encryptedShareKey: SymmetricallyEncryptedShareKey) throws -> DecryptedShareKey {
+        let decryptedKey = try symmetricKey.decrypt(encryptedShareKey.encryptedKey)
+        guard let decryptedKeyData = try decryptedKey.base64Decode() else {
             throw PPClientError.crypto(.failedToBase64Decode)
         }
+        return .init(shareId: encryptedShareKey.shareId,
+                     keyRotation: encryptedShareKey.shareKey.keyRotation,
+                     keyData: decryptedKeyData)
+    }
+}
 
-        let armoredEncryptedKeyData = try CryptoUtils.armorMessage(encryptedKeyData)
+public final class PassKeyManager: PassKeyManagerProtocol {
+    public let shareKeyRepository: ShareKeyRepositoryProtocol
+    public let itemKeyDatasource: RemoteItemKeyDatasourceProtocol
+    public let logger: Logger
+    public let symmetricKey: SymmetricKey
 
-        let decryptionKeys = userData.user.keys.map {
-            DecryptionKey(privateKey: .init(value: $0.privateKey),
-                          passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
-        }
-
-        let verificationKeys = userData.user.keys.map { $0.publicKey }.map { ArmoredKey(value: $0) }
-        let decryptedKey: VerifiedData = try Decryptor.decryptAndVerify(
-            decryptionKeys: decryptionKeys,
-            value: .init(value: armoredEncryptedKeyData),
-            verificationKeys: verificationKeys)
-
-        logger.trace("Decrypted share key \(keyDescription)")
-        return decryptedKey.content
+    public init(shareKeyRepository: ShareKeyRepositoryProtocol,
+                itemKeyDatasource: RemoteItemKeyDatasourceProtocol,
+                logManager: LogManager,
+                symmetricKey: SymmetricKey) {
+        self.shareKeyRepository = shareKeyRepository
+        self.itemKeyDatasource = itemKeyDatasource
+        self.logger = .init(manager: logManager)
+        self.symmetricKey = symmetricKey
     }
 }
