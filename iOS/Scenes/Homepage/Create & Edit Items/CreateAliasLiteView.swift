@@ -34,7 +34,10 @@ struct CreateAliasLiteView: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 8) {
+            // ZStack instead of VStack as root because of SwiftUI bug
+            // If the ScrollView is contained in a VStack
+            // the navigation bar background is not rendered
+            ZStack(alignment: .bottom) {
                 ScrollView {
                     VStack(spacing: 8) {
                         aliasAddressSection
@@ -56,29 +59,19 @@ struct CreateAliasLiteView: View {
                         }
 
                         Spacer()
+
+                        buttons
+                            .opacity(0)
+                            .disabled(true)
                     }
                     .animation(.default, value: viewModel.prefixError)
                     .animation(.default, value: isShowingAdvancedOptions)
                     .padding(.horizontal)
                 }
 
-                HStack(spacing: 16) {
-                    CapsuleTextButton(title: "Cancel",
-                                      titleColor: PassColor.textWeak,
-                                      backgroundColor: PassColor.textDisabled,
-                                      height: 44,
-                                      action: dismiss.callAsFunction)
-
-                    DisablableCapsuleTextButton(title: "Confirm",
-                                                titleColor: PassColor.textInvert,
-                                                disableTitleColor: PassColor.textHint,
-                                                backgroundColor: PassColor.loginInteractionNormMajor1,
-                                                disableBackgroundColor: PassColor.loginInteractionNormMinor1,
-                                                disabled: viewModel.prefixError != nil,
-                                                height: 44,
-                                                action: { viewModel.confirm(); dismiss() })
-                }
-                .padding([.horizontal, .bottom])
+                buttons
+                    .padding()
+                    .background(Color(uiColor: PassColor.backgroundWeak))
             }
             .background(Color(uiColor: PassColor.backgroundWeak))
             .navigationBarTitleDisplayMode(.inline)
@@ -106,6 +99,25 @@ struct CreateAliasLiteView: View {
                 .font(.title2)
                 .fontWeight(.medium)
                 .foregroundColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
+        }
+    }
+
+    private var buttons: some View {
+        HStack(spacing: 16) {
+            CapsuleTextButton(title: "Cancel",
+                              titleColor: PassColor.textWeak,
+                              backgroundColor: PassColor.textDisabled,
+                              height: 44,
+                              action: dismiss.callAsFunction)
+
+            DisablableCapsuleTextButton(title: "Confirm",
+                                        titleColor: PassColor.textInvert,
+                                        disableTitleColor: PassColor.textHint,
+                                        backgroundColor: PassColor.loginInteractionNormMajor1,
+                                        disableBackgroundColor: PassColor.loginInteractionNormMinor1,
+                                        disabled: viewModel.prefixError != nil,
+                                        height: 44,
+                                        action: { viewModel.confirm(); dismiss() })
         }
     }
 }
