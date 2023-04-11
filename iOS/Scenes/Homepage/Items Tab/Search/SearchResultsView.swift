@@ -177,7 +177,7 @@ private struct ItemSearchResultView: View {
         HStack {
             SquircleThumbnail(icon: result.type.icon,
                               iconColor: result.type.tintColor,
-                              backgroundColor: result.type.backgroundNormColor)
+                              backgroundColor: result.type.backgroundWeakColor)
 
             VStack(alignment: .leading, spacing: 4) {
                 HighlightText(highlightableText: result.title)

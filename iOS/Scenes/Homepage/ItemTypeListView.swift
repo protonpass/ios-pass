@@ -52,16 +52,16 @@ enum ItemType: CaseIterable {
         }
     }
 
-    var backgroundNormColor: UIColor {
+    var backgroundWeakColor: UIColor {
         switch self {
         case .login:
-            return ItemContentType.login.backgroundNormColor
+            return ItemContentType.login.backgroundWeakColor
         case .alias:
-            return ItemContentType.alias.backgroundNormColor
+            return ItemContentType.alias.backgroundWeakColor
         case .note:
-            return ItemContentType.note.backgroundNormColor
+            return ItemContentType.note.backgroundWeakColor
         case .password:
-            return PassColor.passwordInteractionNormMinor1
+            return PassColor.passwordInteractionNormMinor2
         }
     }
 
@@ -129,7 +129,7 @@ struct ItemTypeListView: View {
                 thumbnailView: {
                     SquircleThumbnail(icon: type.icon,
                                       iconColor: type.tintColor,
-                                      backgroundColor: type.backgroundNormColor)
+                                      backgroundColor: type.backgroundWeakColor)
                 },
                 title: type.title,
                 description: type.description)

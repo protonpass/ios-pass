@@ -244,7 +244,7 @@ struct ItemsTabView: View {
                 thumbnailView: {
                     SquircleThumbnail(icon: item.type.icon,
                                       iconColor: item.type.tintColor,
-                                      backgroundColor: item.type.backgroundNormColor)
+                                      backgroundColor: item.type.backgroundWeakColor)
                 },
                 title: item.title,
                 description: item.description)
