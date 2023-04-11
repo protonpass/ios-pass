@@ -248,6 +248,10 @@ struct ItemsTabView: View {
                 },
                 title: item.title,
                 description: item.description)
+            .itemContextMenu(item: item,
+                             isTrashed: isTrashed,
+                             onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
+                             handler: viewModel.itemContextMenuHandler)
         })
         .padding(.horizontal, 16)
         .frame(height: 64)
@@ -256,10 +260,6 @@ struct ItemsTabView: View {
             item: item,
             isTrashed: isTrashed,
             itemContextMenuHandler: viewModel.itemContextMenuHandler))
-        .itemContextMenu(item: item,
-                         isTrashed: isTrashed,
-                         onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
-                         handler: viewModel.itemContextMenuHandler)
         .modifier(PermenentlyDeleteItemModifier(
             isShowingAlert: permanentlyDeleteBinding,
             onDelete: {
