@@ -217,6 +217,15 @@ extension VaultsManager {
     func delete(vault: Vault) async throws {
         logger.trace("Deleting vault \(vault.shareId)")
         try await shareRepository.deleteVault(shareId: vault.shareId)
+        switch state {
+        case let .loaded(vaults, _):
+            if let deletedVault = vaults.first(where: { $0.vault.shareId == vault.shareId }) {
+                let itemIds = deletedVault.items.map { $0.itemId }
+                try await itemRepository.deleteItemsLocally(itemIds: itemIds, shareId: vault.shareId)
+            }
+        default:
+            break
+        }
         // Delete local items of the vault
         logger.info("Deleted vault \(vault.shareId)")
     }
