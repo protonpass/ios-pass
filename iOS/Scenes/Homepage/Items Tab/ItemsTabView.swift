@@ -148,7 +148,7 @@ struct ItemsTabView: View {
             SortTypeButton(selectedSortType: $viewModel.selectedSortType,
                            action: viewModel.presentSortTypeList)
         }
-        .padding(.horizontal)
+        .padding([.top, .horizontal])
 
         switch viewModel.selectedSortType {
         case .mostRecent:

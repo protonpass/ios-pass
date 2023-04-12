@@ -54,8 +54,7 @@ struct SearchResultsView: View {
 
                 SortTypeButton(selectedSortType: $selectedSortType, action: onSelectSortType)
             }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
+            .padding()
             .animationsDisabled()
 
             ScrollViewReader { proxy in
