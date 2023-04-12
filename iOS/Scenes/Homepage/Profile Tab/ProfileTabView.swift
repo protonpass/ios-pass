@@ -60,7 +60,7 @@ struct ProfileTabView: View {
             .background(Color(uiColor: PassColor.backgroundNorm))
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar { toolbarContent }
+//            .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
     }

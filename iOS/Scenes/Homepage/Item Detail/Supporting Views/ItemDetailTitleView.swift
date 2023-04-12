@@ -37,7 +37,7 @@ struct ItemDetailTitleView: View {
 
     init(itemContent: ItemContent) {
         self.title = itemContent.name
-        self.iconTintColor = itemContent.type.normColor
+        self.iconTintColor = itemContent.type.normMajor1Color
         self.iconBackgroundColor = itemContent.type.normMinor1Color
         switch itemContent.contentData.type {
         case .alias:

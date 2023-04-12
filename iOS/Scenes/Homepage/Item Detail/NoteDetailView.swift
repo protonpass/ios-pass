@@ -26,7 +26,6 @@ import UIComponents
 struct NoteDetailView: View {
     @StateObject private var viewModel: NoteDetailViewModel
     @Namespace private var bottomID
-    private let tintColor = Color(uiColor: ItemContentType.note.normColor)
 
     init(viewModel: NoteDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -43,7 +42,9 @@ struct NoteDetailView: View {
         }
     }
 
+    @ViewBuilder
     private var realBody: some View {
+        let tintColor = Color(uiColor: ItemContentType.note.normMajor2Color)
         ScrollViewReader { value in
             ScrollView {
                 VStack {
