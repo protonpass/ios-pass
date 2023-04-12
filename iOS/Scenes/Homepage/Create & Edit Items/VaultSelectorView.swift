@@ -64,6 +64,7 @@ struct VaultSelectorView: View {
                                 itemCount: vault.itemCount,
                                 isSelected: vault.vault.shareId == viewModel.selectedVault.shareId,
                                 height: 74)
+                            .padding(.horizontal)
                         })
                         .buttonStyle(.plain)
 
