@@ -54,6 +54,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let mode: VaultMode
     private let logger: Logger
     private let shareRepository: ShareRepositoryProtocol
+    let theme: Theme
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
@@ -68,7 +69,8 @@ final class CreateEditVaultViewModel: ObservableObject {
 
     init(mode: VaultMode,
          shareRepository: ShareRepositoryProtocol,
-         logManager: LogManager) {
+         logManager: LogManager,
+         theme: Theme) {
         self.mode = mode
         switch mode {
         case .create:
@@ -83,6 +85,7 @@ final class CreateEditVaultViewModel: ObservableObject {
 
         self.logger = .init(manager: logManager)
         self.shareRepository = shareRepository
+        self.theme = theme
     }
 }
 
