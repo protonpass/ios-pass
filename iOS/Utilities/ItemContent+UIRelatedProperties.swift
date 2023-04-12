@@ -31,7 +31,7 @@ extension ItemContentType {
         case .login:
             return IconProvider.user
         case .note:
-            return IconProvider.notepadChecklist
+            return IconProvider.fileLines
         }
     }
 

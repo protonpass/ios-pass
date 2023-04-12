@@ -45,7 +45,7 @@ struct SearchResultChips: View {
     }
 
     private func chip(for type: ItemContentType, count: Int) -> some View {
-        ItemCountChip(icon: type.chipIcon,
+        ItemCountChip(icon: type.icon,
                       title: type.chipTitle,
                       count: count,
                       isSelected: selectedType == type,
@@ -105,17 +105,6 @@ extension ItemContentType {
             return "Alias"
         case .note:
             return "Note"
-        }
-    }
-
-    var chipIcon: UIImage {
-        switch self {
-        case .login:
-            return IconProvider.user
-        case .alias:
-            return IconProvider.alias
-        case .note:
-            return IconProvider.notepadChecklist
         }
     }
 }
