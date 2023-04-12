@@ -33,7 +33,7 @@ enum ItemType: CaseIterable {
         case .alias:
             return IconProvider.alias
         case .note:
-            return IconProvider.notepadChecklist
+            return IconProvider.fileLines
         case .password:
             return IconProvider.key
         }

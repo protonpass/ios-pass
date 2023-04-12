@@ -21,6 +21,7 @@
 import Combine
 import Core
 import Foundation
+import ProtonCore_Networking
 import Reachability
 
 public protocol SyncEventLoopPullToRefreshDelegate: AnyObject {
@@ -202,23 +203,95 @@ private extension SyncEventLoop {
 
     /// Return `true` if new events found
     func sync() async throws -> Bool {
+        // Need to sync 3 operations in 2 steps:
+        // 1. Create & update sync
+        // 2. Delete sync
+
         let localShares = try await shareRepository.getShares()
         let remoteShares = try await shareRepository.getRemoteShares()
 
-        return try await withThrowingTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
+        let hasNewEvents = try await withThrowingTaskGroup(of: Bool.self,
+                                                           returning: Bool.self) { taskGroup in
+            taskGroup.addTask {
+                try await self.syncCreateAndUpdateEvents(localShares: localShares,
+                                                         remoteShares: remoteShares)
+            }
+
+            taskGroup.addTask {
+                try await self.syncDeleteEvents(localShares: localShares, remoteShares: remoteShares)
+            }
+
+            return try await taskGroup.reduce(into: false) { partialResult, nextValue in
+                partialResult = partialResult || nextValue
+            }
+        }
+
+        return hasNewEvents
+    }
+
+    /// Return `true` if new events found
+    func syncCreateAndUpdateEvents(localShares: [SymmetricallyEncryptedShare],
+                                   remoteShares: [Share]) async throws -> Bool {
+        // Compare remote shares against local shares
+        try await withThrowingTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
             for remoteShare in remoteShares {
+                // Task group returning `true` if new events found, `false` other wise
                 taskGroup.addTask {
                     var hasNewEvents = false
                     if localShares.contains(where: { $0.share.shareID == remoteShare.shareID }) {
                         // Existing share
+                        self.logger.trace("Existing share \(remoteShare.shareID)")
                         try await self.sync(share: remoteShare, hasNewEvents: &hasNewEvents)
                     } else {
                         // New share
+                        self.logger.trace("New share \(remoteShare.shareID)")
+                        hasNewEvents = true
                         let shareId = remoteShare.shareID
                         _ = try await self.shareKeyRepository.refreshKeys(shareId: shareId)
+                        try await self.shareRepository.upsertShares([remoteShare])
                         try await self.sync(share: remoteShare, hasNewEvents: &hasNewEvents)
                     }
                     return hasNewEvents
+                }
+            }
+
+            return try await taskGroup.reduce(into: false) { partialResult, nextValue in
+                partialResult = partialResult || nextValue
+            }
+        }
+    }
+
+    /// Return `true` if new events found
+    func syncDeleteEvents(localShares: [SymmetricallyEncryptedShare],
+                          remoteShares: [Share]) async throws -> Bool {
+        // Compare local shares against remote shares
+        try await withThrowingTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
+            for localShare in localShares {
+                // Task group returning `true` if new events found, `false` other wise
+                taskGroup.addTask {
+                    let shareId = localShare.share.shareID
+                    if !remoteShares.contains(where: { $0.shareID == shareId }) {
+                        // We can blindly remove the local share and its items from the database
+                        // but better to double check by asking the server
+                        // and compare with a known error code "DISABLED_SHARE: 300004"
+                        do {
+                            // Expect an error here so passing a dummy boolean
+                            self.logger.trace("Deleted share \(shareId)")
+                            var dummyBoolean = false
+                            try await self.sync(share: localShare.share, hasNewEvents: &dummyBoolean)
+                        } catch {
+                            if let responseError = error as? ResponseError,
+                               responseError.responseCode == 300_004 {
+                                // Confirmed that the vault is really deleted
+                                // safe to delete it locally
+                                try await self.shareRepository.deleteShareLocally(shareId: shareId)
+                                try await self.itemRepository.deleteAllItemsLocally(shareId: shareId)
+                                return true
+                            }
+                            throw error
+                        }
+                    }
+                    return false
                 }
             }
 
