@@ -201,7 +201,7 @@ struct CreateEditAliasView: View {
                             Text("Dummy text")
                                 .opacity(0)
                             AnimatingGradient(tintColor: tintColor)
-                                .clipShape(Rectangle())
+                                .clipShape(Capsule())
                         }
 
                     default:
