@@ -71,8 +71,8 @@ private struct ItemContentTypeCountView: View {
     var body: some View {
         HStack {
             CircleButton(icon: type.icon,
-                         iconColor: type.tintColor,
-                         backgroundColor: type.backgroundNormColor,
+                         iconColor: type.normColor,
+                         backgroundColor: type.normMinor1Color,
                          type: .small)
 
             Spacer()

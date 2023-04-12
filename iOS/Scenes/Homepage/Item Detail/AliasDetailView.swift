@@ -27,7 +27,7 @@ struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @Namespace private var bottomID
 
-    private var iconTintColor: UIColor { viewModel.itemContent.type.iconTintColor }
+    private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
 
     init(viewModel: AliasDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)

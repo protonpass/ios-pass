@@ -28,7 +28,7 @@ struct LogInDetailView: View {
     @State private var isShowingPassword = false
     @Namespace private var bottomID
 
-    private var iconTintColor: UIColor { viewModel.itemContent.type.iconTintColor }
+    private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
 
     init(viewModel: LogInDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -131,7 +131,7 @@ struct LogInDetailView: View {
                                 Text("View Alias")
                                     .font(.callout)
                                     .foregroundColor(Color(uiColor: iconTintColor))
-                                Color(uiColor: viewModel.itemContent.type.backgroundNormColor)
+                                Color(uiColor: viewModel.itemContent.type.normMinor1Color)
                                     .frame(height: 1)
                             }
                             .fixedSize(horizontal: true, vertical: true)
@@ -186,7 +186,7 @@ struct LogInDetailView: View {
             if !viewModel.password.isEmpty {
                 CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
                              iconColor: iconTintColor,
-                             backgroundColor: viewModel.itemContent.type.backgroundNormColor,
+                             backgroundColor: viewModel.itemContent.type.normMinor1Color,
                              action: { isShowingPassword.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
                 .animationsDisabled()
