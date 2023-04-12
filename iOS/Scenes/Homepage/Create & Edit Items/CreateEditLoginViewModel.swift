@@ -105,6 +105,20 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.didEditSomething = true
             })
             .store(in: &cancellables)
+
+        $vault
+            .eraseToAnyPublisher()
+            .dropFirst()
+            .receive(on: RunLoop.main)
+            .sink { [unowned self] _ in
+                if self.aliasOptions != nil {
+                    self.aliasOptions = nil
+                    self.aliasCreationLiteInfo = nil
+                    self.isAlias = false
+                    self.username = ""
+                }
+            }
+            .store(in: &cancellables)
     }
 
     override func bindValues() {
