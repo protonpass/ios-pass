@@ -142,29 +142,25 @@ struct ProfileTabView: View {
 
     private var autoFillDisabledSection: some View {
         VStack {
-            Text("AutoFill")
-                .sectionHeaderText()
-                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack {
+                Text("AutoFill disabled")
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
 
-            Text("AutoFill disabled")
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
-                .padding(.horizontal, kItemDetailSectionPadding)
-                .frame(height: OptionRowHeight.short.value)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .roundedEditableSection()
+                Spacer()
 
-            VStack(spacing: 0) {
-                Text("AutoFill on apps and websites by enabling Proton Pass AutoFill.")
-                    .sectionTitleText()
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 Button(action: UIApplication.shared.openPasswordSettings) {
-                    Text("Open Settings")
-                        .font(.footnote)
-                        .foregroundColor(Color(uiColor: PassColor.interactionNorm))
-                        .underline(color: Color(uiColor: PassColor.interactionNorm))
+                    Label("Open Settings", systemImage: "arrow.up.right.square")
+                        .font(.callout.weight(.semibold))
+                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .padding(.horizontal, kItemDetailSectionPadding)
+            .frame(height: OptionRowHeight.short.value)
+            .roundedEditableSection()
+
+            Text("AutoFill on apps and websites by enabling Proton Pass AutoFill.")
+                .sectionTitleText()
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal)
     }
