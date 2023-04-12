@@ -43,7 +43,10 @@ public protocol ShareRepositoryProtocol {
     func getVaults() async throws -> [Vault]
 
     /// Delete all local shares
-    func deleteAllShares() async throws
+    func deleteAllSharesLocally() async throws
+
+    /// Delete locally a given share
+    func deleteShareLocally(shareId: String) async throws
 
     func upsertShares(_ shares: [Share]) async throws
 
@@ -109,10 +112,16 @@ public extension ShareRepositoryProtocol {
         return vaults
     }
 
-    func deleteAllShares() async throws {
+    func deleteAllSharesLocally() async throws {
         logger.trace("Deleting all local shares for user \(userId)")
         try await localShareDatasource.removeAllShares(userId: userId)
         logger.trace("Deleted all local shares for user \(userId)")
+    }
+
+    func deleteShareLocally(shareId: String) async throws {
+        logger.trace("Deleting local share \(shareId) for user \(userId)")
+        try await localShareDatasource.removeShare(shareId: shareId, userId: userId)
+        logger.trace("Deleted local share \(shareId) for user \(userId)")
     }
 
     func upsertShares(_ shares: [Share]) async throws {

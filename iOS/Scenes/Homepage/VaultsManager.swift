@@ -144,8 +144,8 @@ extension VaultsManager {
 
     func fullSync() async throws {
         // 1. Delete all local items & shares
-        try await itemRepository.deleteAllItems()
-        try await shareRepository.deleteAllShares()
+        try await itemRepository.deleteAllItemsLocally()
+        try await shareRepository.deleteAllSharesLocally()
 
         // 2. Get all remote shares and their items
         let remoteShares = try await shareRepository.getRemoteShares()

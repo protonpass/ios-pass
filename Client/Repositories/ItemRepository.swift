@@ -87,7 +87,10 @@ public protocol ItemRepositoryProtocol {
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
 
     /// Delete all local items
-    func deleteAllItems() async throws
+    func deleteAllItemsLocally() async throws
+
+    /// Delete items locally after sync events
+    func deleteAllItemsLocally(shareId: String) async throws
 
     /// Delete items locally after sync events
     func deleteItemsLocally(itemIds: [String], shareId: String) async throws
@@ -269,12 +272,22 @@ public extension ItemRepositoryProtocol {
         }
     }
 
-    func deleteAllItems() async throws {
+    func deleteAllItemsLocally() async throws {
+        logger.trace("Deleting all items locally")
         try await localItemDatasoure.removeAllItems()
+        logger.trace("Deleted all items locally")
+    }
+
+    func deleteAllItemsLocally(shareId: String) async throws {
+        logger.trace("Deleting all items locally for share \(shareId)")
+        try await localItemDatasoure.removeAllItems(shareId: shareId)
+        logger.trace("Deleted all items locally for share \(shareId)")
     }
 
     func deleteItemsLocally(itemIds: [String], shareId: String) async throws {
+        logger.trace("Deleting locally items \(itemIds) for share \(shareId)")
         try await localItemDatasoure.deleteItems(itemIds: itemIds, shareId: shareId)
+        logger.trace("Deleted locally items \(itemIds) for share \(shareId)")
     }
 
     func updateItem(oldItem: ItemRevision,
