@@ -318,8 +318,8 @@ struct CredentialsView: View {
             GeneralItemRow(
                 thumbnailView: {
                     SquircleThumbnail(icon: IconProvider.user,
-                                      iconColor: ItemContentType.login.normColor,
-                                      backgroundColor: ItemContentType.login.normMinor2Color)
+                                      iconColor: ItemContentType.login.normMajor1Color,
+                                      backgroundColor: ItemContentType.login.normMinor1Color)
                 },
                 title: item.title,
                 description: item.description)
@@ -333,8 +333,8 @@ struct CredentialsView: View {
         }, label: {
             HStack {
                 SquircleThumbnail(icon: IconProvider.user,
-                                  iconColor: ItemContentType.login.normColor,
-                                  backgroundColor: ItemContentType.login.normMinor2Color)
+                                  iconColor: ItemContentType.login.normMajor1Color,
+                                  backgroundColor: ItemContentType.login.normMinor1Color)
 
                 VStack(alignment: .leading, spacing: 4) {
                     HighlightText(highlightableText: item.title)
