@@ -31,9 +31,9 @@ struct NoteDetailSection: View {
     let theme: Theme
 
     var body: some View {
-        let tintColor = Color(uiColor: itemContent.type.iconTintColor)
+        let tintColor = Color(uiColor: itemContent.type.normMajor1Color)
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.note, color: itemContent.type.iconTintColor)
+            ItemDetailSectionIcon(icon: IconProvider.note, color: itemContent.type.normMajor1Color)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Note")
@@ -68,7 +68,7 @@ private struct FullNoteView: View {
     let theme: Theme
 
     var body: some View {
-        let tintColor = Color(uiColor: itemContent.type.iconTintColor)
+        let tintColor = Color(uiColor: itemContent.type.normMajor2Color)
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
@@ -88,8 +88,8 @@ private struct FullNoteView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.chevronDown,
-                                 iconColor: itemContent.type.tintColor,
-                                 backgroundColor: itemContent.type.backgroundWeakColor,
+                                 iconColor: itemContent.type.normMajor1Color,
+                                 backgroundColor: itemContent.type.normMinor2Color,
                                  action: dismiss.callAsFunction)
                 }
             }

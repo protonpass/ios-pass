@@ -72,9 +72,6 @@ struct CreateEditNoteView: View {
                     }
                 }
             }
-            .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
-            .tint(Color(uiColor: viewModel.itemContentType().tintColor))
-            .background(Color(uiColor: PassColor.backgroundNorm))
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: viewModel.isSaving) { isSaving in
                 if isSaving {
@@ -99,6 +96,10 @@ struct CreateEditNoteView: View {
             }
         }
         .navigationViewStyle(.stack)
+        // Remove when dropping iOS 15
+        .accentColor(Color(uiColor: viewModel.itemContentType().normMajor1Color))
+        .tint(Color(uiColor: viewModel.itemContentType().normMajor1Color))
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .onFirstAppear {

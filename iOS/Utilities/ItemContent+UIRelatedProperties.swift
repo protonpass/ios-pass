@@ -35,7 +35,18 @@ extension ItemContentType {
         }
     }
 
-    var tintColor: UIColor {
+    var normColor: UIColor {
+        switch self {
+        case .alias:
+            return PassColor.aliasInteractionNorm
+        case .login:
+            return PassColor.loginInteractionNorm
+        case .note:
+            return PassColor.noteInteractionNorm
+        }
+    }
+
+    var normMajor1Color: UIColor {
         switch self {
         case .alias:
             return PassColor.aliasInteractionNormMajor1
@@ -46,7 +57,7 @@ extension ItemContentType {
         }
     }
 
-    var iconTintColor: UIColor {
+    var normMajor2Color: UIColor {
         switch self {
         case .alias:
             return PassColor.aliasInteractionNormMajor2
@@ -57,7 +68,7 @@ extension ItemContentType {
         }
     }
 
-    var backgroundNormColor: UIColor {
+    var normMinor1Color: UIColor {
         switch self {
         case .alias:
             return PassColor.aliasInteractionNormMinor1
@@ -68,7 +79,7 @@ extension ItemContentType {
         }
     }
 
-    var backgroundWeakColor: UIColor {
+    var normMinor2Color: UIColor {
         switch self {
         case .alias:
             return PassColor.aliasInteractionNormMinor2

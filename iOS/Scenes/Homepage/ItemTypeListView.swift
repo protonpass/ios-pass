@@ -42,11 +42,11 @@ enum ItemType: CaseIterable {
     var tintColor: UIColor {
         switch self {
         case .login:
-            return ItemContentType.login.tintColor
+            return ItemContentType.login.normColor
         case .alias:
-            return ItemContentType.alias.tintColor
+            return ItemContentType.alias.normColor
         case .note:
-            return ItemContentType.note.tintColor
+            return ItemContentType.note.normColor
         case .password:
             return PassColor.passwordInteractionNorm
         }
@@ -55,11 +55,11 @@ enum ItemType: CaseIterable {
     var backgroundWeakColor: UIColor {
         switch self {
         case .login:
-            return ItemContentType.login.backgroundWeakColor
+            return ItemContentType.login.normMinor2Color
         case .alias:
-            return ItemContentType.alias.backgroundWeakColor
+            return ItemContentType.alias.normMinor2Color
         case .note:
-            return ItemContentType.note.backgroundWeakColor
+            return ItemContentType.note.normMinor2Color
         case .password:
             return PassColor.passwordInteractionNormMinor2
         }
