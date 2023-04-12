@@ -83,15 +83,17 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
+         vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager,
-         emailAddress: String) {
+         emailAddress: String) throws {
         self.emailAddress = emailAddress
         self.aliasRepository = aliasRepository
-        super.init(mode: mode,
-                   itemRepository: itemRepository,
-                   preferences: preferences,
-                   logManager: logManager)
+        try super.init(mode: mode,
+                       itemRepository: itemRepository,
+                       vaults: vaults,
+                       preferences: preferences,
+                       logManager: logManager)
         Publishers
             .CombineLatest($title, $username)
             .combineLatest($password)
@@ -102,6 +104,20 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .sink(receiveValue: { [unowned self] _ in
                 self.didEditSomething = true
             })
+            .store(in: &cancellables)
+
+        $vault
+            .eraseToAnyPublisher()
+            .dropFirst()
+            .receive(on: RunLoop.main)
+            .sink { [unowned self] _ in
+                if self.aliasOptions != nil {
+                    self.aliasOptions = nil
+                    self.aliasCreationLiteInfo = nil
+                    self.isAlias = false
+                    self.username = ""
+                }
+            }
             .store(in: &cancellables)
     }
 
@@ -169,7 +185,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
             try await self.itemRepository.createAlias(info: aliasCreationInfo,
                                                       itemContent: aliasContent,
-                                                      shareId: shareId)
+                                                      shareId: vault.shareId)
         }
     }
 
@@ -190,7 +206,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             Task { @MainActor in
                 do {
                     delegate?.createEditItemViewModelWantsToShowLoadingHud()
-                    let aliasOptions = try await aliasRepository.getAliasOptions(shareId: shareId)
+                    let aliasOptions = try await aliasRepository.getAliasOptions(shareId: vault.shareId)
                     delegate?.createEditItemViewModelWantsToHideLoadingHud()
                     if aliasOptions.canCreateAlias == false {
                         createEditLoginViewModelDelegate?.createEditLoginViewModelCanNotCreateMoreAlias()

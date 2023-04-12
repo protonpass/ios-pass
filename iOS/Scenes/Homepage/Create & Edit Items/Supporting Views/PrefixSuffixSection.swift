@@ -36,6 +36,8 @@ struct PrefixSuffixSection: View {
     @Binding var prefix: String
     @Binding var prefixManuallyEdited: Bool
     @FocusState var isFocusedOnPrefix: Bool
+    let isLoading: Bool
+    let tintColor: UIColor
     let suffixSelection: SuffixSelection
     let prefixError: AliasPrefixError?
     var onSubmit: ((() -> Void))?
@@ -110,8 +112,19 @@ struct PrefixSuffixSection: View {
                 VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                     Text("Suffix")
                         .sectionTitleText()
-                    Text(suffixSelection.selectedSuffixString)
-                        .sectionContentText()
+
+                    if isLoading {
+                        ZStack {
+                            // Dummy text to make ZStack occupy a correct height
+                            Text("Dummy text")
+                                .opacity(0)
+                            AnimatingGradient(tintColor: tintColor)
+                                .clipShape(Capsule())
+                        }
+                    } else {
+                        Text(suffixSelection.selectedSuffixString)
+                            .sectionContentText()
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
