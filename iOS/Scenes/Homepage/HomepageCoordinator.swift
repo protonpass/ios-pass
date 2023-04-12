@@ -270,33 +270,26 @@ private extension HomepageCoordinator {
     }
 
     func presentEditItemView(for itemContent: ItemContent) {
-        let mode = ItemMode.edit(itemContent)
-        switch itemContent.contentData.type {
-        case .login:
-            presentCreateEditLoginView(mode: mode)
-        case .note:
-            presentCreateEditNoteView(mode: mode)
-        case .alias:
-            presentCreateEditAliasView(mode: mode)
+        do {
+            let mode = ItemMode.edit(itemContent)
+            switch itemContent.contentData.type {
+            case .login:
+                try presentCreateEditLoginView(mode: mode)
+            case .note:
+                try presentCreateEditNoteView(mode: mode)
+            case .alias:
+                try presentCreateEditAliasView(mode: mode)
+            }
+        } catch {
+            logger.error(error)
+            bannerManager.displayTopErrorMessage(error)
         }
     }
 
-    func presentCreateItemView() {
-        guard let shareId = vaultsManager.getSelectedShareId() else { return }
-
+    func presentItemTypeListView() {
         let view = ItemTypeListView { [unowned self] itemType in
             dismissTopMostViewController { [unowned self] in
-                switch itemType {
-                case .login:
-                    let logInType = ItemCreationType.login(title: nil, url: nil, autofill: false)
-                    self.presentCreateEditLoginView(mode: .create(shareId: shareId, type: logInType))
-                case .alias:
-                    self.presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
-                case .note:
-                    self.presentCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
-                case .password:
-                    self.presentGeneratePasswordView(delegate: self, mode: .random)
-                }
+                self.presentCreateItemView(for: itemType)
             }
         }
         let viewController = UIHostingController(rootView: view)
@@ -312,14 +305,35 @@ private extension HomepageCoordinator {
         present(viewController)
     }
 
-    func presentCreateEditLoginView(mode: ItemMode) {
+    func presentCreateItemView(for itemType: ItemType) {
+        guard let shareId = vaultsManager.getSelectedShareId() else { return }
+        do {
+            switch itemType {
+            case .login:
+                let logInType = ItemCreationType.login(title: nil, url: nil, autofill: false)
+                try self.presentCreateEditLoginView(mode: .create(shareId: shareId, type: logInType))
+            case .alias:
+                try self.presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
+            case .note:
+                try self.presentCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
+            case .password:
+                self.presentGeneratePasswordView(delegate: self, mode: .random)
+            }
+        } catch {
+            logger.error(error)
+            bannerManager.displayTopErrorMessage(error)
+        }
+    }
+
+    func presentCreateEditLoginView(mode: ItemMode) throws {
         let emailAddress = userData.addresses.first?.email ?? ""
-        let viewModel = CreateEditLoginViewModel(mode: mode,
-                                                 itemRepository: itemRepository,
-                                                 aliasRepository: aliasRepository,
-                                                 preferences: preferences,
-                                                 logManager: logManager,
-                                                 emailAddress: emailAddress)
+        let viewModel = try CreateEditLoginViewModel(mode: mode,
+                                                     itemRepository: itemRepository,
+                                                     aliasRepository: aliasRepository,
+                                                     vaults: vaultsManager.getAllVaults(),
+                                                     preferences: preferences,
+                                                     logManager: logManager,
+                                                     emailAddress: emailAddress)
         viewModel.delegate = self
         viewModel.createEditLoginViewModelDelegate = self
         let view = CreateEditLoginView(viewModel: viewModel)
@@ -327,12 +341,13 @@ private extension HomepageCoordinator {
         currentCreateEditItemViewModel = viewModel
     }
 
-    func presentCreateEditAliasView(mode: ItemMode) {
-        let viewModel = CreateEditAliasViewModel(mode: mode,
-                                                 itemRepository: itemRepository,
-                                                 aliasRepository: aliasRepository,
-                                                 preferences: preferences,
-                                                 logManager: logManager)
+    func presentCreateEditAliasView(mode: ItemMode) throws {
+        let viewModel = try CreateEditAliasViewModel(mode: mode,
+                                                     itemRepository: itemRepository,
+                                                     aliasRepository: aliasRepository,
+                                                     vaults: vaultsManager.getAllVaults(),
+                                                     preferences: preferences,
+                                                     logManager: logManager)
         viewModel.delegate = self
         viewModel.createEditAliasViewModelDelegate = self
         let view = CreateEditAliasView(viewModel: viewModel)
@@ -347,11 +362,12 @@ private extension HomepageCoordinator {
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func presentCreateEditNoteView(mode: ItemMode) {
-        let viewModel = CreateEditNoteViewModel(mode: mode,
-                                                itemRepository: itemRepository,
-                                                preferences: preferences,
-                                                logManager: logManager)
+    func presentCreateEditNoteView(mode: ItemMode) throws {
+        let viewModel = try CreateEditNoteViewModel(mode: mode,
+                                                    itemRepository: itemRepository,
+                                                    vaults: vaultsManager.getAllVaults(),
+                                                    preferences: preferences,
+                                                    logManager: logManager)
         viewModel.delegate = self
         let view = CreateEditNoteView(viewModel: viewModel)
         present(view, dismissible: false)
@@ -463,7 +479,7 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     }
 
     func homepageTabBarControllerWantToCreateNewItem() {
-        presentCreateItemView()
+        presentItemTypeListView()
     }
 
     func homepageTabBarControllerDidSelectProfileTab() {
@@ -532,19 +548,15 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 // MARK: - EmptyVaultViewModelDelegate
 extension HomepageCoordinator: EmptyVaultViewModelDelegate {
     func emptyVaultViewModelWantsToCreateLoginItem() {
-        guard let shareId = vaultsManager.getSelectedShareId() else { return }
-        presentCreateEditLoginView(mode: .create(shareId: shareId,
-                                                 type: .login(title: nil, url: nil, autofill: false)))
+        presentCreateItemView(for: .login)
     }
 
     func emptyVaultViewModelWantsToCreateAliasItem() {
-        guard let shareId = vaultsManager.getSelectedShareId() else { return }
-        presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
+        presentCreateItemView(for: .alias)
     }
 
     func emptyVaultViewModelWantsToCreateNoteItem() {
-        guard let shareId = vaultsManager.getSelectedShareId() else { return }
-        presentCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
+        presentCreateItemView(for: .note)
     }
 }
 
@@ -778,6 +790,16 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToHideLoadingHud() {
         hideLoadingHud()
+    }
+
+    func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
+                                                   delegate: VaultSelectorViewModelDelegate) {
+        let vaultContents = vaultsManager.getAllVaultContents()
+        let viewModel = VaultSelectorViewModel(allVaults: vaultContents.map { .init(vaultContent: $0) },
+                                               selectedVault: selectedVault)
+        viewModel.delegate = delegate
+        let view = VaultSelectorView(viewModel: viewModel)
+        present(view)
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {

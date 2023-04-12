@@ -112,13 +112,15 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
+         vaults: [Vault],
          preferences: Preferences,
-         logManager: LogManager) {
+         logManager: LogManager) throws {
         self.aliasRepository = aliasRepository
-        super.init(mode: mode,
-                   itemRepository: itemRepository,
-                   preferences: preferences,
-                   logManager: logManager)
+        try super.init(mode: mode,
+                       itemRepository: itemRepository,
+                       vaults: vaults,
+                       preferences: preferences,
+                       logManager: logManager)
 
         if case let .edit(itemContent) = mode {
             self.title = itemContent.name
@@ -175,7 +177,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         if Set(alias.mailboxes) == Set(mailboxSelection.selectedMailboxes) { return }
         if case let .edit(itemContent) = mode {
             let mailboxIds = mailboxSelection.selectedMailboxes.map { $0.ID }
-            _ = try await changeMailboxesTask(shareId: shareId,
+            _ = try await changeMailboxesTask(shareId: itemContent.shareId,
                                               itemId: itemContent.item.itemID,
                                               mailboxIDs: mailboxIds).value
         }
@@ -198,6 +200,7 @@ extension CreateEditAliasViewModel {
             do {
                 state = .loading
 
+                let shareId = vault.shareId
                 let aliasOptions = try await getAliasOptionsTask(shareId: shareId).value
                 suffixSelection = .init(suffixes: aliasOptions.suffixes)
                 suffixSelection?.attach(to: self, storeIn: &cancellables)
