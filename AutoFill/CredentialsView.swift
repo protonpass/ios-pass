@@ -184,7 +184,7 @@ struct CredentialsView: View {
                                        action: viewModel.presentSortTypeList)
                     }
                     .plainListRow()
-                    .padding(.horizontal)
+                    .padding([.top, .horizontal])
 
                     sortableSections(for: notMatchedItems.map { .normal($0) })
                 }
@@ -220,7 +220,7 @@ struct CredentialsView: View {
                 SortTypeButton(selectedSortType: $viewModel.selectedSortType,
                                action: viewModel.presentSortTypeList)
             }
-            .padding(.horizontal)
+            .padding([.bottom, .horizontal])
 
             ScrollViewReader { proxy in
                 List {
