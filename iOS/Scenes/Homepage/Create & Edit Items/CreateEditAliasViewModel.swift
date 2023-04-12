@@ -91,6 +91,15 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 return false
             }
         }
+
+        var isLoading: Bool {
+            switch self {
+            case .loading:
+                return true
+            default:
+                return false
+            }
+        }
     }
 
     private(set) var alias: Alias?
@@ -145,6 +154,15 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .receive(on: RunLoop.main)
             .sink { [unowned self] _ in
                 self.validatePrefix()
+            }
+            .store(in: &cancellables)
+
+        $vault
+            .eraseToAnyPublisher()
+            .dropFirst()
+            .receive(on: RunLoop.main)
+            .sink { [unowned self] _ in
+                self.getAliasAndAliasOptions()
             }
             .store(in: &cancellables)
 
