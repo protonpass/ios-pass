@@ -46,6 +46,8 @@ struct CreateAliasLiteView: View {
                         if isShowingAdvancedOptions {
                             PrefixSuffixSection(prefix: $viewModel.prefix,
                                                 prefixManuallyEdited: .constant(false),
+                                                isLoading: false,
+                                                tintColor: ItemContentType.login.tintColor,
                                                 suffixSelection: viewModel.suffixSelection,
                                                 prefixError: viewModel.prefixError)
                         }

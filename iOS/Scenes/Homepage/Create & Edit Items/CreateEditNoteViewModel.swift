@@ -34,12 +34,14 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
 
     override init(mode: ItemMode,
                   itemRepository: ItemRepositoryProtocol,
+                  vaults: [Vault],
                   preferences: Preferences,
-                  logManager: LogManager) {
-        super.init(mode: mode,
-                   itemRepository: itemRepository,
-                   preferences: preferences,
-                   logManager: logManager)
+                  logManager: LogManager) throws {
+        try super.init(mode: mode,
+                       itemRepository: itemRepository,
+                       vaults: vaults,
+                       preferences: preferences,
+                       logManager: logManager)
 
         Publishers
             .CombineLatest($title, $note)

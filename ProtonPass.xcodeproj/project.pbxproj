@@ -275,6 +275,12 @@
 		3561251B298271B600EDA991 /* KeyboardContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561251A298271B600EDA991 /* KeyboardContentViewModel.swift */; };
 		356180F728EC4C0C00B1835A /* CredentialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356180F628EC4C0C00B1835A /* CredentialManager.swift */; };
 		3561A1802922D1700097078B /* ItemCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561A17F2922D1700097078B /* ItemCount.swift */; };
+		3561C9F629E6CDFA00D6E518 /* VaultSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561C9F529E6CDFA00D6E518 /* VaultSelectorView.swift */; };
+		3561C9F729E6E34400D6E518 /* VaultSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561C9F529E6CDFA00D6E518 /* VaultSelectorView.swift */; };
+		3561C9F829E6E3E000D6E518 /* VaultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355694A129D466C9005DD2EB /* VaultRow.swift */; };
+		3561C9F929E6E65600D6E518 /* VaultThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36229D7226A00F03497 /* VaultThumbnail.swift */; };
+		3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7C29CC5DB700052229 /* VaultIcon.swift */; };
+		3561C9FB29E6E79B00D6E518 /* VaultColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7E29CC60D200052229 /* VaultColor.swift */; };
 		3562BC2D2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BC2C2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift */; };
 		3562BC2F29950680003FCB13 /* View+OnFirstAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BC2E29950680003FCB13 /* View+OnFirstAppear.swift */; };
 		3562BC30299542D6003FCB13 /* ItemContent+UIRelatedProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */; };
@@ -928,6 +934,7 @@
 		3561251A298271B600EDA991 /* KeyboardContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardContentViewModel.swift; sourceTree = "<group>"; };
 		356180F628EC4C0C00B1835A /* CredentialManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialManager.swift; sourceTree = "<group>"; };
 		3561A17F2922D1700097078B /* ItemCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCount.swift; sourceTree = "<group>"; };
+		3561C9F529E6CDFA00D6E518 /* VaultSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSelectorView.swift; sourceTree = "<group>"; };
 		3562BC2C2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorWithPlaceholder.swift; sourceTree = "<group>"; };
 		3562BC2E29950680003FCB13 /* View+OnFirstAppear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnFirstAppear.swift"; sourceTree = "<group>"; };
 		3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitles.swift; sourceTree = "<group>"; };
@@ -1643,6 +1650,7 @@
 				35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */,
 				3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */,
 				3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */,
+				3561C9F529E6CDFA00D6E518 /* VaultSelectorView.swift */,
 				3572E52729940C0300775FAC /* Supporting Views */,
 			);
 			path = "Create & Edit Items";
@@ -3334,9 +3342,11 @@
 				3560844929DDA344001F7487 /* OptionRow.swift in Sources */,
 				35699B97298125FA006CB225 /* ClipboardManager.swift in Sources */,
 				3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */,
+				3561C9FB29E6E79B00D6E518 /* VaultColor.swift in Sources */,
 				3562BC30299542D6003FCB13 /* ItemContent+UIRelatedProperties.swift in Sources */,
 				3571B59B29BF188E008D4350 /* BannerManager.swift in Sources */,
 				3552272C29DC660300B9607E /* View+Theme.swift in Sources */,
+				3561C9F829E6E3E000D6E518 /* VaultRow.swift in Sources */,
 				3562D3BD29DEB08100981D7D /* NavigationTitleWithHandle.swift in Sources */,
 				355694A529D46923005DD2EB /* VaultListUiModel.swift in Sources */,
 				350AF86F299685690045B7B6 /* NoteEditSection.swift in Sources */,
@@ -3344,6 +3354,7 @@
 				3553C22D296575560087518A /* LoggerManager+Initializer.swift in Sources */,
 				355694A029D4619C005DD2EB /* MoveVaultListViewModel.swift in Sources */,
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
+				3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
 				35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */,
@@ -3360,6 +3371,7 @@
 				35492E3C293E06C600BDE231 /* CreateEditLoginView.swift in Sources */,
 				35492E3B293E06B100BDE231 /* BaseCreateEditItemViewModel.swift in Sources */,
 				3520F36828E327420053A606 /* ItemUiModel.swift in Sources */,
+				3561C9F729E6E34400D6E518 /* VaultSelectorView.swift in Sources */,
 				3562D3C029DEF0DA00981D7D /* View+ItemDetailBackground.swift in Sources */,
 				355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */,
 				355751F62907FB9000268116 /* AppLockedView.swift in Sources */,
@@ -3369,6 +3381,7 @@
 				3560843F29DD7DE9001F7487 /* NoSearchResultsViews.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
 				3565FD58298D423800E2A0EE /* TOTPCircularTimer.swift in Sources */,
+				3561C9F929E6E65600D6E518 /* VaultThumbnail.swift in Sources */,
 				354F1F1B29D8CAC500A6B1E8 /* AppData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3477,6 +3490,7 @@
 				356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */,
 				3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */,
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
+				3561C9F629E6CDFA00D6E518 /* VaultSelectorView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
 				356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */,
 				3562D3BF29DEF0D600981D7D /* View+ItemDetailBackground.swift in Sources */,
@@ -3982,7 +3996,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 81;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -4066,7 +4080,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 81;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -4150,7 +4164,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 81;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -4228,7 +4242,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 81;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -4886,7 +4900,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 81;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -4970,7 +4984,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 81;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
@@ -5056,7 +5070,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 81;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
@@ -5136,7 +5150,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 81;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
@@ -5300,7 +5314,7 @@
 				CODE_SIGN_ENTITLEMENTS = "iOS/iOSDebug-Black.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 81;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -5341,7 +5355,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 81;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -5844,7 +5858,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 81;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -6139,7 +6153,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 81;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;

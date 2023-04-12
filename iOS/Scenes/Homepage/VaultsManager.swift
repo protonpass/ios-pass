@@ -205,6 +205,11 @@ extension VaultsManager {
         return vaults
     }
 
+    func getAllVaults() -> [Vault] {
+        guard case let .loaded(vaults, _) = state else { return [] }
+        return vaults.map { $0.vault }
+    }
+
     func getVaultCount() -> Int {
         switch state {
         case let .loaded(vaults, _):

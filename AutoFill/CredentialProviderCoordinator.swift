@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable file_length
 import AuthenticationServices
 import Client
 import Core
@@ -59,8 +60,8 @@ public final class CredentialProviderCoordinator {
     private var aliasRepository: AliasRepositoryProtocol?
     private var remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
-    private var currentShareId: String?
     private var credentialsViewModel: CredentialsViewModel?
+    private var vaultListUiModels: [VaultListUiModel]?
 
     private var topMostViewController: UIViewController {
         rootViewController.topMostViewController
@@ -434,25 +435,30 @@ private extension CredentialProviderCoordinator {
     func showCreateLoginView(shareId: String,
                              itemRepository: ItemRepositoryProtocol,
                              aliasRepository: AliasRepositoryProtocol,
+                             vaults: [Vault],
                              url: URL?) {
-        currentShareId = shareId
-
-        let creationType = ItemCreationType.login(title: url?.host,
-                                                  url: url?.schemeAndHost,
-                                                  autofill: true)
-        let emailAddress = appData.userData?.addresses.first?.email ?? ""
-        let viewModel = CreateEditLoginViewModel(mode: .create(shareId: shareId,
-                                                               type: creationType),
-                                                 itemRepository: itemRepository,
-                                                 aliasRepository: aliasRepository,
-                                                 preferences: preferences,
-                                                 logManager: logManager,
-                                                 emailAddress: emailAddress)
-        viewModel.delegate = self
-        viewModel.createEditLoginViewModelDelegate = self
-        let view = CreateEditLoginView(viewModel: viewModel)
-        present(view)
-        currentCreateEditItemViewModel = viewModel
+        do {
+            let creationType = ItemCreationType.login(title: url?.host,
+                                                      url: url?.schemeAndHost,
+                                                      autofill: true)
+            let emailAddress = appData.userData?.addresses.first?.email ?? ""
+            let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
+                                                                       type: creationType),
+                                                         itemRepository: itemRepository,
+                                                         aliasRepository: aliasRepository,
+                                                         vaults: vaults,
+                                                         preferences: preferences,
+                                                         logManager: logManager,
+                                                         emailAddress: emailAddress)
+            viewModel.delegate = self
+            viewModel.createEditLoginViewModelDelegate = self
+            let view = CreateEditLoginView(viewModel: viewModel)
+            present(view)
+            currentCreateEditItemViewModel = viewModel
+        } catch {
+            logger.error(error)
+            bannerManager.displayTopErrorMessage(error)
+        }
     }
 
     func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate) {
@@ -542,11 +548,33 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?) {
-        guard let itemRepository, let aliasRepository else { return }
-        showCreateLoginView(shareId: shareId,
-                            itemRepository: itemRepository,
-                            aliasRepository: aliasRepository,
-                            url: url)
+        guard let itemRepository, let aliasRepository, let shareRepository else { return }
+        if let vaultListUiModels {
+            showCreateLoginView(shareId: shareId,
+                                itemRepository: itemRepository,
+                                aliasRepository: aliasRepository,
+                                vaults: vaultListUiModels.map { $0.vault },
+                                url: url)
+        } else {
+            Task { @MainActor in
+                defer { hideLoadingHud() }
+                do {
+                    showLoadingHud()
+                    let items = try await itemRepository.getAllItems()
+                    let vaults = try await shareRepository.getVaults()
+
+                    self.vaultListUiModels = vaults.map { vault in
+                        let activeItems =
+                        items.filter { $0.item.itemState == .active && $0.shareId == vault.shareId }
+                        return .init(vault: vault, itemCount: activeItems.count)
+                    }
+                    credentialsViewModelWantsToCreateLoginItem(shareId: shareId, url: url)
+                } catch {
+                    logger.error(error)
+                    bannerManager.displayTopErrorMessage(error)
+                }
+            }
+        }
     }
 
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
@@ -573,6 +601,15 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToHideLoadingHud() {
         hideLoadingHud()
+    }
+
+    func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
+                                                   delegate: VaultSelectorViewModelDelegate) {
+        guard let vaultListUiModels else { return }
+        let viewModel = VaultSelectorViewModel(allVaults: vaultListUiModels, selectedVault: selectedVault)
+        viewModel.delegate = delegate
+        let view = VaultSelectorView(viewModel: viewModel)
+        present(view)
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,

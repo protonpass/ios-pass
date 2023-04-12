@@ -26,6 +26,8 @@ import ProtonCore_Login
 protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToShowLoadingHud()
     func createEditItemViewModelWantsToHideLoadingHud()
+    func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
+                                                   delegate: VaultSelectorViewModelDelegate)
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
@@ -64,10 +66,10 @@ enum ItemCreationType {
 }
 
 class BaseCreateEditItemViewModel {
+    @Published private(set) var vault: Vault
     @Published private(set) var isSaving = false
     @Published var isObsolete = false
 
-    let shareId: String
     let mode: ItemMode
     let itemRepository: ItemRepositoryProtocol
     let preferences: Preferences
@@ -80,14 +82,21 @@ class BaseCreateEditItemViewModel {
 
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
+         vaults: [Vault],
          preferences: Preferences,
-         logManager: LogManager) {
+         logManager: LogManager) throws {
+        let vaultShareId: String
         switch mode {
         case .create(let shareId, _):
-            self.shareId = shareId
+            vaultShareId = shareId
         case .edit(let itemContent):
-            self.shareId = itemContent.shareId
+            vaultShareId = itemContent.shareId
         }
+
+        guard let vault = vaults.first(where: { $0.shareId == vaultShareId }) else {
+            throw PPError.vault(.vaultNotFound(vaultShareId))
+        }
+        self.vault = vault
         self.mode = mode
         self.itemRepository = itemRepository
         self.preferences = preferences
@@ -128,11 +137,11 @@ class BaseCreateEditItemViewModel {
     @MainActor
     func save() async {
         switch mode {
-        case let .create(shareId, type):
+        case let .create(_, type):
             if type.isAlias {
-                await createAliasItem(shareId: shareId)
+                await createAliasItem()
             } else {
-                await createItem(shareId: shareId)
+                await createItem()
             }
 
         case .edit(let oldItemContent):
@@ -141,12 +150,12 @@ class BaseCreateEditItemViewModel {
     }
 
     @MainActor
-    private func createItem(shareId: String) async {
+    private func createItem() async {
         defer { isSaving = false }
         do {
             isSaving = true
             try await additionalCreate()
-            let item = try await createItemTask(shareId: shareId).value
+            let item = try await createItemTask(shareId: vault.shareId).value
             delegate?.createEditItemViewModelDidCreateItem(item, type: itemContentType())
             logger.info("Created \(item.debugInformation)")
         } catch {
@@ -156,12 +165,12 @@ class BaseCreateEditItemViewModel {
     }
 
     @MainActor
-    private func createAliasItem(shareId: String) async {
+    private func createAliasItem() async {
         guard let info = generateAliasCreationInfo() else { return }
         defer { isSaving = false }
         do {
             isSaving = true
-            let item = try await createAliasItemTask(shareId: shareId, info: info).value
+            let item = try await createAliasItemTask(shareId: vault.shareId, info: info).value
             delegate?.createEditItemViewModelDidCreateItem(item, type: itemContentType())
             logger.info("Created alias item \(item.debugInformation)")
         } catch {
@@ -174,7 +183,6 @@ class BaseCreateEditItemViewModel {
     private func editItem(oldItemContent: ItemContent) async {
         defer { isSaving = false }
         do {
-            let itemId = oldItemContent.item.itemID
             isSaving = true
             try await additionalEdit()
             let oldItem = try await getItemTask(item: oldItemContent).value
@@ -242,5 +250,16 @@ extension BaseCreateEditItemViewModel {
             }
             isObsolete = itemContent.item.revision != updatedItem.item.revision
         }
+    }
+
+    func changeVault() {
+        delegate?.createEditItemViewModelWantsToChangeVault(selectedVault: vault, delegate: self)
+    }
+}
+
+// MARK: - VaultSelectorViewModelDelegate
+extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
+    func vaultSelectorViewModelDidSelect(vault: Vault) {
+        self.vault = vault
     }
 }

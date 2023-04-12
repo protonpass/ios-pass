@@ -48,6 +48,7 @@ extension PPError {
         case canNotDeleteLastVault
         case noSelectedVault
         case vaultNotEmpty(String)
+        case vaultNotFound(String)
 
         var debugDescription: String {
             switch self {
@@ -57,6 +58,8 @@ extension PPError {
                 return "No selected vault"
             case .vaultNotEmpty(let id):
                 return "Vault not empty \"\(id)\""
+            case .vaultNotFound(let id):
+                return "Vault not found \"\(id)\""
             }
         }
     }
