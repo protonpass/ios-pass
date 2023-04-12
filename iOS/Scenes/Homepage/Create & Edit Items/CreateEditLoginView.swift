@@ -47,6 +47,10 @@ struct CreateEditLoginView: View {
                     LazyVStack(spacing: kItemDetailSectionPadding / 2) {
                         CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
                                                    title: $viewModel.title,
+                                                   selectedVault: viewModel.vault,
+                                                   itemContentType: viewModel.itemContentType(),
+                                                   isEditMode: viewModel.mode.isEditMode,
+                                                   onChangeVault: viewModel.changeVault,
                                                    onSubmit: { isFocusedOnUsername.toggle() })
                         .padding(.bottom, kItemDetailSectionPadding / 2)
                         usernamePasswordTOTPSection

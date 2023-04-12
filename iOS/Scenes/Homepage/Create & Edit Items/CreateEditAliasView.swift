@@ -80,13 +80,18 @@ struct CreateEditAliasView: View {
             ScrollView {
                 LazyVStack(spacing: 8) {
                     CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
-                                               title: $viewModel.title) {
+                                               title: $viewModel.title,
+                                               selectedVault: viewModel.vault,
+                                               itemContentType: viewModel.itemContentType(),
+                                               isEditMode: viewModel.mode.isEditMode,
+                                               onChangeVault: viewModel.changeVault,
+                                               onSubmit: {
                         if case .create = viewModel.mode {
                             isFocusedOnPrefix.toggle()
                         } else {
                             isFocusedOnNote.toggle()
                         }
-                    }
+                    })
 
                     if case .edit = viewModel.mode {
                         aliasReadonlySection

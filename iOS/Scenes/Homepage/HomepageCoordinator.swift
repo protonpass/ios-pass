@@ -263,7 +263,7 @@ private extension HomepageCoordinator {
         currentItemDetailViewModel = baseViewModel
 
         if asSheet {
-            present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+            present(view)
         } else {
             push(view)
         }
@@ -359,7 +359,7 @@ private extension HomepageCoordinator {
         let view = MailboxSelectionView(mailboxSelection: selection, mode: mode)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func presentCreateEditNoteView(mode: ItemMode) throws {
@@ -509,7 +509,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         viewModel.delegate = self
         searchViewModel = viewModel
         let view = SearchView(viewModel: viewModel)
-        present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(view)
     }
 
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
@@ -698,7 +698,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func settingsViewModelWantsToEditTheme() {
@@ -713,7 +713,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func settingsViewModelWantsToEditClipboardExpiration() {
@@ -728,7 +728,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func settingsViewModelWantsToEdit(primaryVault: Vault) {
@@ -748,7 +748,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func settingsViewModelWantsToViewLogs() {
@@ -769,7 +769,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func settingsViewModelDidFinishFullSync() {
@@ -799,7 +799,17 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                                                selectedVault: selectedVault)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
-        present(view)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = CGFloat(66 * vaultsManager.getVaultCount() + 100)
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                height
+            }
+            viewController.sheetPresentationController?.detents = [customDetent, .large()]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController)
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
@@ -852,7 +862,7 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
         let view = CreateAliasLiteView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium()]
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {

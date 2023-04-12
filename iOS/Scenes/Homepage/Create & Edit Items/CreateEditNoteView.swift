@@ -39,6 +39,14 @@ struct CreateEditNoteView: View {
             ScrollViewReader { value in
                 ScrollView {
                     LazyVStack {
+                        CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
+                                                   title: .constant(""),
+                                                   selectedVault: viewModel.vault,
+                                                   itemContentType: viewModel.itemContentType(),
+                                                   isEditMode: viewModel.mode.isEditMode,
+                                                   onChangeVault: viewModel.changeVault)
+                        .padding(.bottom, 18)
+
                         TextEditorWithPlaceholder(text: $viewModel.title,
                                                   isFocused: $isFocusedOnTitle,
                                                   placeholder: "Untitled",

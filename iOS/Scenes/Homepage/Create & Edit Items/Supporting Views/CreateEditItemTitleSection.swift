@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -25,9 +26,58 @@ import UIComponents
 struct CreateEditItemTitleSection: View {
     var isFocused: FocusState<Bool>.Binding
     @Binding var title: String
+    let selectedVault: Vault
+    let itemContentType: ItemContentType
+    let isEditMode: Bool
+    var onChangeVault: () -> Void
     var onSubmit: (() -> Void)?
 
     var body: some View {
+        switch itemContentType {
+        case .note:
+            if isEditMode {
+                EmptyView()
+            } else {
+                vaultRow
+                    .roundedEditableSection()
+            }
+
+        default:
+            if isEditMode {
+                titleRow
+                    .roundedEditableSection()
+            } else {
+                VStack(spacing: 0) {
+                    vaultRow
+                    PassSectionDivider()
+                    titleRow
+                }
+                .roundedEditableSection()
+            }
+        }
+    }
+
+    private var vaultRow: some View {
+        Button(action: onChangeVault) {
+            HStack {
+                VaultThumbnail(vault: selectedVault)
+                VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                    Text("Vault")
+                        .sectionTitleText()
+                    Text(selectedVault.name)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                ItemDetailSectionIcon(icon: IconProvider.chevronDown)
+            }
+            .padding(kItemDetailSectionPadding)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var titleRow: some View {
         HStack {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Title")
@@ -50,7 +100,6 @@ struct CreateEditItemTitleSection: View {
             }
         }
         .padding(kItemDetailSectionPadding)
-        .roundedEditableSection()
         .animation(.default, value: title.isEmpty)
     }
 }
