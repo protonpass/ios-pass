@@ -57,7 +57,7 @@ struct ProfileTabView: View {
                 .animation(.default, value: viewModel.automaticallyCopyTotpCode)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(uiColor: PassColor.backgroundNorm))
+            .itemDetailBackground(theme: viewModel.preferences.theme)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
 //            .toolbar { toolbarContent }
