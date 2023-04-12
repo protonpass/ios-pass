@@ -185,8 +185,8 @@ struct LogInDetailView: View {
 
             if !viewModel.password.isEmpty {
                 CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
-                             iconColor: iconTintColor,
-                             backgroundColor: viewModel.itemContent.type.normMinor1Color,
+                             iconColor: viewModel.itemContent.type.normMajor2Color,
+                             backgroundColor: viewModel.itemContent.type.normMinor2Color,
                              action: { isShowingPassword.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
                 .animationsDisabled()
@@ -269,7 +269,7 @@ struct LogInDetailView: View {
                             viewModel.openUrl(url)
                         }, label: {
                             Text(url)
-                                .foregroundColor(Color(uiColor: iconTintColor))
+                                .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor2Color))
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(2)
                         })
