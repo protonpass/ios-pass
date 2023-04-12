@@ -34,8 +34,8 @@ struct CreateEditItemToolbar: ToolbarContent {
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         iconColor: itemContentType.normColor,
-                         backgroundColor: itemContentType.normMinor2Color,
+                         iconColor: itemContentType.normMajor2Color,
+                         backgroundColor: itemContentType.normMinor1Color,
                          action: onGoBack)
         }
 
@@ -46,7 +46,7 @@ struct CreateEditItemToolbar: ToolbarContent {
                 DisablableCapsuleTextButton(title: saveButtonTitle,
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
-                                            backgroundColor: itemContentType.normColor,
+                                            backgroundColor: itemContentType.normMajor1Color,
                                             disableBackgroundColor: itemContentType.normMinor1Color,
                                             disabled: !isSaveable,
                                             action: { Task { await onSave() } })
