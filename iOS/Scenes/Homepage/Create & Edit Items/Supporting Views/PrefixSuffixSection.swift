@@ -119,7 +119,7 @@ struct PrefixSuffixSection: View {
                             Text("Dummy text")
                                 .opacity(0)
                             AnimatingGradient(tintColor: tintColor)
-                                .clipShape(Rectangle())
+                                .clipShape(Capsule())
                         }
                     } else {
                         Text(suffixSelection.selectedSuffixString)
