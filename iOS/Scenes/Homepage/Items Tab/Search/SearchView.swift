@@ -24,7 +24,7 @@ import UIComponents
 
 struct SearchView: View {
     @Environment(\.dismiss) private var dismiss
-    @FocusState private var isFocusedOnSearchBar: Bool
+    @FocusState private var isFocusedOnSearchBar
     @StateObject var viewModel: SearchViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
     @State private var query = ""
@@ -49,6 +49,7 @@ struct SearchView: View {
             .animation(.default, value: viewModel.state)
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
+                isFocusedOnSearchBar = true
                 viewModel.refreshResults()
             }
         }
@@ -57,6 +58,7 @@ struct SearchView: View {
     private var content: some View {
         VStack(spacing: 0) {
             SearchBar(query: $query,
+                      isFocused: $isFocusedOnSearchBar,
                       placeholder: viewModel.searchBarPlaceholder,
                       onCancel: dismiss.callAsFunction)
 
