@@ -27,6 +27,7 @@ import UIComponents
 
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
+    @FocusState private var isFocusedOnSearchBar
     @State private var query = ""
     @State private var isLocked: Bool
     @State private var selectedNotMatchedItem: TitledItemIdentifiable?
@@ -113,6 +114,7 @@ struct CredentialsView: View {
                             state: CredentialsViewLoadedState) -> some View {
         VStack(spacing: 0) {
             SearchBar(query: $query,
+                      isFocused: $isFocusedOnSearchBar,
                       placeholder: "Search in all vaults",
                       onCancel: viewModel.cancel)
 
