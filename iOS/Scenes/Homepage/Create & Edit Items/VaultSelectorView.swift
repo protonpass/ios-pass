@@ -73,6 +73,7 @@ struct VaultSelectorView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .background(Color(uiColor: PassColor.backgroundWeak))
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     NavigationTitleWithHandle(title: "Select a vault")

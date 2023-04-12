@@ -43,19 +43,14 @@ struct CreateEditAliasView: View {
         NavigationView {
             ZStack {
                 switch viewModel.state {
-                case .loading:
-                    ProgressView()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .toolbar { closeButtonToolbar }
+                case .loading, .loaded:
+                    content
 
                 case .error(let error):
                     RetryableErrorView(errorMessage: error.messageForTheUser,
                                        onRetry: viewModel.getAliasAndAliasOptions)
                     .padding()
                     .toolbar { closeButtonToolbar }
-
-                case .loaded:
-                    content
                 }
             }
             .background(Color(uiColor: PassColor.backgroundNorm))
@@ -100,6 +95,8 @@ struct CreateEditAliasView: View {
                         if isShowingAdvancedOptions, let suffixSelection = viewModel.suffixSelection {
                             PrefixSuffixSection(prefix: $viewModel.prefix,
                                                 prefixManuallyEdited: $viewModel.prefixManuallyEdited,
+                                                isLoading: viewModel.state.isLoading,
+                                                tintColor: tintColor,
                                                 suffixSelection: suffixSelection,
                                                 prefixError: viewModel.prefixError)
                         } else {
@@ -197,10 +194,22 @@ struct CreateEditAliasView: View {
                     Text(viewModel.prefix + viewModel.suffix)
                         .foregroundColor(Color(uiColor: PassColor.signalDanger))
                 } else {
-                    Text(viewModel.prefix)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                    Text(viewModel.suffix)
-                        .foregroundColor(Color(uiColor: tintColor))
+                    switch viewModel.state {
+                    case .loading:
+                        ZStack {
+                            // Dummy text to make ZStack occupy a correct height
+                            Text("Dummy text")
+                                .opacity(0)
+                            AnimatingGradient(tintColor: tintColor)
+                                .clipShape(Rectangle())
+                        }
+
+                    default:
+                        Text(viewModel.prefix)
+                            .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+                        Text(viewModel.suffix)
+                            .foregroundColor(Color(uiColor: tintColor))
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
