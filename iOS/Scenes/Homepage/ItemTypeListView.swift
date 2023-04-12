@@ -42,26 +42,26 @@ enum ItemType: CaseIterable {
     var tintColor: UIColor {
         switch self {
         case .login:
-            return ItemContentType.login.normColor
+            return ItemContentType.login.normMajor1Color
         case .alias:
-            return ItemContentType.alias.normColor
+            return ItemContentType.alias.normMajor1Color
         case .note:
-            return ItemContentType.note.normColor
+            return ItemContentType.note.normMajor1Color
         case .password:
-            return PassColor.passwordInteractionNorm
+            return PassColor.passwordInteractionNormMajor1
         }
     }
 
-    var backgroundWeakColor: UIColor {
+    var backgroundColor: UIColor {
         switch self {
         case .login:
-            return ItemContentType.login.normMinor2Color
+            return ItemContentType.login.normMinor1Color
         case .alias:
-            return ItemContentType.alias.normMinor2Color
+            return ItemContentType.alias.normMinor1Color
         case .note:
-            return ItemContentType.note.normMinor2Color
+            return ItemContentType.note.normMinor1Color
         case .password:
-            return PassColor.passwordInteractionNormMinor2
+            return PassColor.passwordInteractionNormMinor1
         }
     }
 
@@ -129,7 +129,7 @@ struct ItemTypeListView: View {
                 thumbnailView: {
                     SquircleThumbnail(icon: type.icon,
                                       iconColor: type.tintColor,
-                                      backgroundColor: type.backgroundWeakColor)
+                                      backgroundColor: type.backgroundColor)
                 },
                 title: type.title,
                 description: type.description)

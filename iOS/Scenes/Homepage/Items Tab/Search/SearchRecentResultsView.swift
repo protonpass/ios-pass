@@ -78,8 +78,8 @@ private struct SearchEntryView: View {
                 GeneralItemRow(
                     thumbnailView: {
                         SquircleThumbnail(icon: uiModel.type.icon,
-                                          iconColor: uiModel.type.normColor,
-                                          backgroundColor: uiModel.type.normMinor2Color)
+                                          iconColor: uiModel.type.normMajor1Color,
+                                          backgroundColor: uiModel.type.normMinor1Color)
                     },
                     title: uiModel.title,
                     description: uiModel.description)
