@@ -80,12 +80,12 @@ struct ItemDetailToolbar: ToolbarContent {
 
                     Button(role: .destructive,
                            action: { isShowingAlert.toggle() },
-                           label: { Label(title: { Text("Permanently delete") },
-                                          icon: { Image(uiImage: IconProvider.trash) }) })
+                           label: { Label(title: { Text("Delete permanently") },
+                                          icon: { Image(uiImage: IconProvider.trashCross) }) })
                 }, label: {
-                    CapsuleIconButton(icon: IconProvider.threeDotsVertical,
-                                      color: itemContent.type.normColor,
-                                      action: {})
+                    CircleButton(icon: IconProvider.threeDotsVertical,
+                                 iconColor: itemContent.type.normMajor2Color,
+                                 backgroundColor: itemContent.type.normMinor1Color)
                 })
                 .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $isShowingAlert,
                                                         onDelete: onPermanentlyDelete))

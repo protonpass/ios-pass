@@ -49,7 +49,7 @@ struct LogTypesView: View {
                         },
                         content: {
                             Text("Clear all logs")
-                                .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                                .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                         })
                     .roundedEditableSection()
                 }
