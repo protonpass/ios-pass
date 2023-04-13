@@ -210,7 +210,7 @@ extension VaultSelection {
     var color: UIColor {
         switch self {
         case .all:
-            return PassColor.loginInteractionNormMajor2
+            return PassColor.interactionNormMajor2
         case .precise(let vault):
             return vault.displayPreferences.color.color.color
         case .trash:
