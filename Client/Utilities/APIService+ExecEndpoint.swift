@@ -33,6 +33,39 @@ public extension APIService {
             }
         }
     }
+
+    /// As of the moment of writting this, `APIService` doesn't support `perform` function
+    /// that returns `Data`. So we make `Decodable` request and expect an error to get the actual `Data`
+    /// from the error object.
+    func execExpectingData<E: Endpoint>(endpoint: E) async throws -> DataResponse {
+        try await withCheckedThrowingContinuation { continuation in
+            NetworkDebugger.printDebugInfo(endpoint: endpoint)
+
+            perform(request: endpoint) { task, result in
+                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
+
+                guard let httpResponse = task?.response as? HTTPURLResponse else {
+                    continuation.resume(throwing: PPClientError.notHttpResponse)
+                    return
+                }
+
+                switch result {
+                case .success:
+                    continuation.resume(throwing: PPClientError.errorExpected)
+
+                case .failure(let error):
+                    if let responseError = error.underlyingError as? SessionResponseError,
+                       case let .responseBodyIsNotADecodableObject(body, _) = responseError {
+                        continuation.resume(returning: .init(httpResponse: httpResponse,
+                                                             protonCode: error.responseCode,
+                                                             data: body))
+                        return
+                    }
+                    continuation.resume(throwing: PPClientError.unexpectedError)
+                }
+            }
+        }
+    }
 }
 
 private enum NetworkDebugger {

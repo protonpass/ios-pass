@@ -206,6 +206,10 @@
 		355751FA2908745B00268116 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
 		355792D929E7FB85001198DA /* VaultLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355792D829E7FB85001198DA /* VaultLabel.swift */; };
 		355792DA29E7FB85001198DA /* VaultLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355792D829E7FB85001198DA /* VaultLabel.swift */; };
+		355792DD29E859A5001198DA /* GetLogoEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355792DC29E859A5001198DA /* GetLogoEndpoint.swift */; };
+		355792E129E85FEF001198DA /* FavIconProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355792E029E85FEF001198DA /* FavIconProvider.swift */; };
+		355792E229E85FEF001198DA /* FavIconProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355792E029E85FEF001198DA /* FavIconProvider.swift */; };
+		355792E429E876B7001198DA /* DataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355792E329E876B7001198DA /* DataResponse.swift */; };
 		35581806290A7DBF00DD94DB /* ShareEventIDEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */; };
 		3558180A290A7FA600DD94DB /* LocalShareEventIDDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */; };
 		3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */; };
@@ -407,7 +411,6 @@
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
 		358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */; };
 		358A508728AD23F900F5285C /* GlobalLocalDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */; };
-		358A508B28AD3BB100F5285C /* DataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508A28AD3BB100F5285C /* DataError.swift */; };
 		358A508D28AD823000F5285C /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508C28AD823000F5285C /* PublicKey.swift */; };
 		358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */; };
 		358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509128AD856D00F5285C /* PublicKeyEntity.swift */; };
@@ -874,6 +877,9 @@
 		355751F42907FB3200268116 /* LockedCredentialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialView.swift; sourceTree = "<group>"; };
 		355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialViewModel.swift; sourceTree = "<group>"; };
 		355792D829E7FB85001198DA /* VaultLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultLabel.swift; sourceTree = "<group>"; };
+		355792DC29E859A5001198DA /* GetLogoEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLogoEndpoint.swift; sourceTree = "<group>"; };
+		355792E029E85FEF001198DA /* FavIconProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavIconProvider.swift; sourceTree = "<group>"; };
+		355792E329E876B7001198DA /* DataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataResponse.swift; sourceTree = "<group>"; };
 		35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDEntity.swift; sourceTree = "<group>"; };
 		35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasource.swift; sourceTree = "<group>"; };
 		3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasourceTests.swift; sourceTree = "<group>"; };
@@ -1038,7 +1044,6 @@
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
 		358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalLocalDatasource.swift; sourceTree = "<group>"; };
 		358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalLocalDatasourceTests.swift; sourceTree = "<group>"; };
-		358A508A28AD3BB100F5285C /* DataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataError.swift; sourceTree = "<group>"; };
 		358A508C28AD823000F5285C /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
 		358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPublicKeysEndpoint.swift; sourceTree = "<group>"; };
 		358A509128AD856D00F5285C /* PublicKeyEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyEntity.swift; sourceTree = "<group>"; };
@@ -1441,6 +1446,7 @@
 				356FBD472949246A0063978C /* Coordinator+ShowFullScreen.swift */,
 				356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */,
 				3554D42C2967854000DF0CBE /* DeveloperModeStateManager.swift */,
+				355792E029E85FEF001198DA /* FavIconProvider.swift */,
 				3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */,
 				355BFDA129C6FD5200A32AD6 /* ItemContextMenuHandler.swift */,
 				3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */,
@@ -1526,8 +1532,10 @@
 			isa = PBXGroup;
 			children = (
 				35544406287CB3810017FCAD /* Endpoint.swift */,
+				355792E329E876B7001198DA /* DataResponse.swift */,
 				354146D228D1F218007E45A6 /* Aliases */,
 				3558180D290A8BE200DD94DB /* Events */,
+				355792DB29E85979001198DA /* Image Proxy */,
 				355E803D28A3071700BE7C9B /* Items */,
 				358AB49F2887044500818B44 /* Keys */,
 				3560844A29DDBC92001F7487 /* Payments */,
@@ -1542,7 +1550,6 @@
 			children = (
 				3552F48928D344E100547146 /* Alias.swift */,
 				354146D028D1F1E1007E45A6 /* AliasOptions.swift */,
-				358A508A28AD3BB100F5285C /* DataError.swift */,
 				355454C729E5EB0C005289E7 /* ItemKey.swift */,
 				3593DCF828A824FE00C235D3 /* ItemRevision.swift */,
 				358AB4982886FA7B00818B44 /* ShareKey.swift */,
@@ -1592,6 +1599,14 @@
 				3553C222296570710087518A /* Logger.swift */,
 			);
 			path = Logging;
+			sourceTree = "<group>";
+		};
+		355792DB29E85979001198DA /* Image Proxy */ = {
+			isa = PBXGroup;
+			children = (
+				355792DC29E859A5001198DA /* GetLogoEndpoint.swift */,
+			);
+			path = "Image Proxy";
 			sourceTree = "<group>";
 		};
 		3558180D290A8BE200DD94DB /* Events */ = {
@@ -3371,6 +3386,7 @@
 				3552273129DCAE2E00B9607E /* SortTypeListView.swift in Sources */,
 				350AF87029968C190045B7B6 /* CreateEditItemToolbar.swift in Sources */,
 				35492E3C293E06C600BDE231 /* CreateEditLoginView.swift in Sources */,
+				355792E229E85FEF001198DA /* FavIconProvider.swift in Sources */,
 				35492E3B293E06B100BDE231 /* BaseCreateEditItemViewModel.swift in Sources */,
 				3520F36828E327420053A606 /* ItemUiModel.swift in Sources */,
 				3561C9F729E6E34400D6E518 /* VaultSelectorView.swift in Sources */,
@@ -3440,6 +3456,7 @@
 				355694A229D466C9005DD2EB /* VaultRow.swift in Sources */,
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
+				355792E129E85FEF001198DA /* FavIconProvider.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */,
@@ -3595,11 +3612,11 @@
 				35581806290A7DBF00DD94DB /* ShareEventIDEntity.swift in Sources */,
 				354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
-				358A508B28AD3BB100F5285C /* DataError.swift in Sources */,
 				3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */,
 				35581817290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift in Sources */,
 				355888A429AE5EC3009AA775 /* AESGCM+ConvenientSealOpen.swift in Sources */,
 				3556949929D44DAE005DD2EB /* MoveItemEndpoint.swift in Sources */,
+				355792DD29E859A5001198DA /* GetLogoEndpoint.swift in Sources */,
 				359A4DDC29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift in Sources */,
 				358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */,
 				358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */,
@@ -3620,6 +3637,7 @@
 				356B831429C365320084488A /* SearchEntryEntity.swift in Sources */,
 				3554747C29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift in Sources */,
 				3552F48A28D344E100547146 /* Alias.swift in Sources */,
+				355792E429E876B7001198DA /* DataResponse.swift in Sources */,
 				3554730829CDD3CC0092E0E4 /* UpdateVaultRequest.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
 				3530092A28A5281800611F8A /* Vault.swift in Sources */,
