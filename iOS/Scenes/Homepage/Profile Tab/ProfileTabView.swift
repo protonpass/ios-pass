@@ -83,10 +83,8 @@ struct ProfileTabView: View {
     private var itemCountSection: some View {
         VStack {
             Text("Items")
-                .fontWeight(.bold)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .profileSectionTitle()
                 .padding(.horizontal)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
             ItemCountView(vaultsManager: viewModel.vaultsManager)
         }
     }
@@ -94,9 +92,7 @@ struct ProfileTabView: View {
     private var biometricAuthenticationSection: some View {
         VStack {
             Text("Manage my profile")
-                .fontWeight(.bold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .profileSectionTitle()
 
             OptionRow(height: .medium) {
                 switch viewModel.biometricAuthenticator.biometryTypeState {
@@ -167,10 +163,6 @@ struct ProfileTabView: View {
 
     private var autoFillEnabledSection: some View {
         VStack {
-            Text("AutoFill")
-                .sectionHeaderText()
-                .frame(maxWidth: .infinity, alignment: .leading)
-
             VStack(spacing: 0) {
                 OptionRow(height: .medium) {
                     Toggle(isOn: $viewModel.quickTypeBar) {
@@ -214,10 +206,6 @@ struct ProfileTabView: View {
 
     private var aboutSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
-            Text("About")
-                .sectionHeaderText()
-                .frame(maxWidth: .infinity, alignment: .leading)
-
             VStack(spacing: 0) {
                 /*
                 TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
@@ -235,8 +223,7 @@ struct ProfileTabView: View {
     private var helpCenterSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
             Text("Help center")
-                .sectionHeaderText()
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .profileSectionTitle()
 
             VStack(spacing: 0) {
                 /*
@@ -250,5 +237,13 @@ struct ProfileTabView: View {
             .roundedEditableSection()
         }
         .padding(.horizontal)
+    }
+}
+
+private extension View {
+    func profileSectionTitle() -> some View {
+        self.foregroundColor(Color(uiColor: PassColor.textNorm))
+            .font(.callout.weight(.bold))
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
