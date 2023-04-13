@@ -37,8 +37,8 @@ struct ItemDetailTitleView: View {
 
     init(itemContent: ItemContent) {
         self.title = itemContent.name
-        self.iconTintColor = itemContent.type.tintColor
-        self.iconBackgroundColor = itemContent.type.backgroundNormColor
+        self.iconTintColor = itemContent.type.normMajor1Color
+        self.iconBackgroundColor = itemContent.type.normMinor1Color
         switch itemContent.contentData.type {
         case .alias:
             self.icon = .image(IconProvider.alias)

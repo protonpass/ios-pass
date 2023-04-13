@@ -117,8 +117,8 @@ struct CreateEditLoginView: View {
             }
             .toolbar { keyboardToolbar }
         }
-        .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
-        .tint(Color(uiColor: viewModel.itemContentType().tintColor))
+        .accentColor(Color(uiColor: viewModel.itemContentType().normMajor1Color)) // Remove when dropping iOS 15
+        .tint(Color(uiColor: viewModel.itemContentType().normMajor1Color))
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
@@ -287,12 +287,13 @@ struct CreateEditLoginView: View {
                     role: .destructive,
                     action: { isShowingDeleteAliasAlert.toggle() },
                     label: {
-                        Label(title: { Text("Delete alias") }, icon: { Image(uiImage: IconProvider.trash) })
+                        Label(title: { Text("Delete alias") },
+                              icon: { Image(uiImage: IconProvider.trash) })
                     })
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
-                             iconColor: viewModel.itemContentType().tintColor,
-                             backgroundColor: viewModel.itemContentType().backgroundNormColor)
+                             iconColor: viewModel.itemContentType().normMajor1Color,
+                             backgroundColor: viewModel.itemContentType().normMinor1Color)
             })
         }
         .padding(.horizontal, kItemDetailSectionPadding)
@@ -336,8 +337,8 @@ struct CreateEditLoginView: View {
                     })
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
-                             iconColor: viewModel.itemContentType().tintColor,
-                             backgroundColor: viewModel.itemContentType().backgroundNormColor)
+                             iconColor: viewModel.itemContentType().normMajor1Color,
+                             backgroundColor: viewModel.itemContentType().normMinor1Color)
             })
         }
         .padding(.horizontal, kItemDetailSectionPadding)

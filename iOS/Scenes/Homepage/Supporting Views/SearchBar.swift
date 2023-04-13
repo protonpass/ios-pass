@@ -26,7 +26,7 @@ let kSearchBarHeight: CGFloat = 48
 
 struct SearchBar: View {
     @Binding var query: String
-    @FocusState var isFocused
+    var isFocused: FocusState<Bool>.Binding
     let placeholder: String
     let onCancel: () -> Void
 
@@ -45,7 +45,7 @@ struct SearchBar: View {
                         .tint(Color(uiColor: PassColor.interactionNorm))
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
                         .autocorrectionDisabled()
-                        .focused($isFocused)
+                        .focused(isFocused)
 
                     Button(action: {
                         query = ""

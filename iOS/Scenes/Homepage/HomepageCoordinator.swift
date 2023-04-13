@@ -412,7 +412,8 @@ private extension HomepageCoordinator {
     func presentCreateEditVaultView(mode: VaultMode) {
         let viewModel = CreateEditVaultViewModel(mode: mode,
                                                  shareRepository: shareRepository,
-                                                 logManager: logManager)
+                                                 logManager: logManager,
+                                                 theme: preferences.theme)
         viewModel.delegate = self
         let view = CreateEditVaultView(viewModel: viewModel)
         present(view)

@@ -36,8 +36,8 @@ struct CreateEditVaultView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(kItemDetailSectionPadding)
+            .itemDetailBackground(theme: viewModel.theme)
             .navigationBarTitleDisplayMode(.inline)
-            .background(Color(uiColor: PassColor.backgroundNorm))
             .toolbar { toolbarContent }
             .ignoresSafeArea(.keyboard)
             .gesture(DragGesture().onChanged { _ in isFocusedOnTitle = false })
@@ -55,8 +55,8 @@ struct CreateEditVaultView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         iconColor: PassColor.interactionNorm,
-                         backgroundColor: PassColor.interactionNormMinor2,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
                          action: dismiss.callAsFunction)
         }
 
@@ -64,7 +64,7 @@ struct CreateEditVaultView: View {
             DisablableCapsuleTextButton(title: viewModel.saveButtonTitle,
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,
-                                        backgroundColor: PassColor.interactionNorm,
+                                        backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
                                         disabled: viewModel.title.isEmpty,
                                         action: viewModel.save)
@@ -198,7 +198,7 @@ private struct VaultIconView: View {
                 selectedIcon = icon
             }, label: {
                 ZStack {
-                    Color(uiColor: PassColor.backgroundWeak)
+                    Color(uiColor: PassColor.inputBackgroundNorm)
                     Image(uiImage: icon.image)
                         .resizable()
                         .scaledToFit()

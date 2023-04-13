@@ -27,6 +27,7 @@ import UIComponents
 
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
+    @FocusState private var isFocusedOnSearchBar
     @State private var query = ""
     @State private var isLocked: Bool
     @State private var selectedNotMatchedItem: TitledItemIdentifiable?
@@ -113,6 +114,7 @@ struct CredentialsView: View {
                             state: CredentialsViewLoadedState) -> some View {
         VStack(spacing: 0) {
             SearchBar(query: $query,
+                      isFocused: $isFocusedOnSearchBar,
                       placeholder: "Search in all vaults",
                       onCancel: viewModel.cancel)
 
@@ -184,7 +186,7 @@ struct CredentialsView: View {
                                        action: viewModel.presentSortTypeList)
                     }
                     .plainListRow()
-                    .padding(.horizontal)
+                    .padding([.top, .horizontal])
 
                     sortableSections(for: notMatchedItems.map { .normal($0) })
                 }
@@ -220,7 +222,7 @@ struct CredentialsView: View {
                 SortTypeButton(selectedSortType: $viewModel.selectedSortType,
                                action: viewModel.presentSortTypeList)
             }
-            .padding(.horizontal)
+            .padding([.bottom, .horizontal])
 
             ScrollViewReader { proxy in
                 List {
@@ -318,8 +320,8 @@ struct CredentialsView: View {
             GeneralItemRow(
                 thumbnailView: {
                     SquircleThumbnail(icon: IconProvider.user,
-                                      iconColor: ItemContentType.login.tintColor,
-                                      backgroundColor: ItemContentType.login.backgroundWeakColor)
+                                      iconColor: ItemContentType.login.normMajor1Color,
+                                      backgroundColor: ItemContentType.login.normMinor1Color)
                 },
                 title: item.title,
                 description: item.description)
@@ -333,8 +335,8 @@ struct CredentialsView: View {
         }, label: {
             HStack {
                 SquircleThumbnail(icon: IconProvider.user,
-                                  iconColor: ItemContentType.login.tintColor,
-                                  backgroundColor: ItemContentType.login.backgroundWeakColor)
+                                  iconColor: ItemContentType.login.normMajor1Color,
+                                  backgroundColor: ItemContentType.login.normMinor1Color)
 
                 VStack(alignment: .leading, spacing: 4) {
                     HighlightText(highlightableText: item.title)

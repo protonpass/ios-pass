@@ -148,7 +148,7 @@ struct ItemsTabView: View {
             SortTypeButton(selectedSortType: $viewModel.selectedSortType,
                            action: viewModel.presentSortTypeList)
         }
-        .padding(.horizontal)
+        .padding([.top, .horizontal])
 
         switch viewModel.selectedSortType {
         case .mostRecent:
@@ -245,8 +245,8 @@ struct ItemsTabView: View {
             GeneralItemRow(
                 thumbnailView: {
                     SquircleThumbnail(icon: item.type.icon,
-                                      iconColor: item.type.tintColor,
-                                      backgroundColor: item.type.backgroundWeakColor)
+                                      iconColor: item.type.normMajor1Color,
+                                      backgroundColor: item.type.normMinor1Color)
                 },
                 title: item.title,
                 description: item.description)

@@ -54,8 +54,7 @@ struct SearchResultsView: View {
 
                 SortTypeButton(selectedSortType: $selectedSortType, action: onSelectSortType)
             }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
+            .padding()
             .animationsDisabled()
 
             ScrollViewReader { proxy in
@@ -176,8 +175,8 @@ private struct ItemSearchResultView: View {
     var body: some View {
         HStack {
             SquircleThumbnail(icon: result.type.icon,
-                              iconColor: result.type.tintColor,
-                              backgroundColor: result.type.backgroundWeakColor)
+                              iconColor: result.type.normMajor1Color,
+                              backgroundColor: result.type.normMinor1Color)
 
             VStack(alignment: .leading, spacing: 4) {
                 HighlightText(highlightableText: result.title)

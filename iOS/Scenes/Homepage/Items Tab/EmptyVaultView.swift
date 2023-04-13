@@ -42,8 +42,8 @@ struct EmptyVaultView: View {
                 ForEach(ItemContentType.allCases, id: \.rawValue) { type in
                     CreateItemButton(icon: type.icon,
                                      title: type.createItemTitle,
-                                     tintColor: type.tintColor,
-                                     backgroundColor: type.backgroundNormColor) {
+                                     tintColor: type.normColor,
+                                     backgroundColor: type.normMinor1Color) {
                         switch type {
                         case .login:
                             viewModel.createLogin()
