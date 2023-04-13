@@ -89,8 +89,8 @@ struct ItemsTabView: View {
             case .all:
                 CircleButton(
                     icon: PassIcon.allVaults,
-                    iconColor: PassColor.loginInteractionNormMajor2,
-                    backgroundColor: PassColor.loginInteractionNormMajor2.withAlphaComponent(0.16),
+                    iconColor: VaultSelection.all.color,
+                    backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16),
                     type: .big,
                     action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)
@@ -105,8 +105,8 @@ struct ItemsTabView: View {
 
             case .trash:
                 CircleButton(icon: IconProvider.trash,
-                             iconColor: PassColor.textWeak,
-                             backgroundColor: PassColor.textDisabled,
+                             iconColor: VaultSelection.trash.color,
+                             backgroundColor: VaultSelection.trash.color.withAlphaComponent(0.16),
                              action: viewModel.presentVaultList)
                 .frame(width: kSearchBarHeight)
             }

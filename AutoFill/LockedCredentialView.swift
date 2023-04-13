@@ -49,8 +49,8 @@ struct LockedCredentialView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         iconColor: PassColor.interactionNorm,
-                         backgroundColor: PassColor.interactionNormMinor2,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
                          action: viewModel.handleCancellation)
         }
     }

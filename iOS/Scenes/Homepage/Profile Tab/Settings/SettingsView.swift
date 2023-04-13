@@ -64,8 +64,8 @@ struct SettingsView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
-                         iconColor: PassColor.interactionNorm,
-                         backgroundColor: PassColor.interactionNormMinor2,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
                          action: viewModel.goBack)
         }
     }

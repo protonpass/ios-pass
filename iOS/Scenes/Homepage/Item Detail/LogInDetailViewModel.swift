@@ -51,12 +51,14 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     override init(isShownAsSheet: Bool,
                   itemContent: ItemContent,
                   itemRepository: ItemRepositoryProtocol,
+                  vault: Vault?,
                   logManager: LogManager,
                   theme: Theme) {
         self.totpManager = .init(logManager: logManager)
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    itemRepository: itemRepository,
+                   vault: vault,
                    logManager: logManager,
                    theme: theme)
         self.totpManager.attach(to: self, storeIn: &cancellables)
