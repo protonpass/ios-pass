@@ -28,6 +28,7 @@ import UIComponents
 struct NoteDetailSection: View {
     @State private var isShowingFullNote = false
     let itemContent: ItemContent
+    let vault: Vault?
     let theme: Theme
 
     var body: some View {
@@ -57,7 +58,7 @@ struct NoteDetailSection: View {
         .tint(tintColor)
         .roundedDetailSection()
         .sheet(isPresented: $isShowingFullNote) {
-            FullNoteView(itemContent: itemContent, theme: theme)
+            FullNoteView(itemContent: itemContent, vault: vault, theme: theme)
         }
     }
 }
@@ -65,6 +66,7 @@ struct NoteDetailSection: View {
 private struct FullNoteView: View {
     @Environment(\.dismiss) private var dismiss
     let itemContent: ItemContent
+    let vault: Vault?
     let theme: Theme
 
     var body: some View {
@@ -72,7 +74,7 @@ private struct FullNoteView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
-                    ItemDetailTitleView(itemContent: itemContent)
+                    ItemDetailTitleView(itemContent: itemContent, vault: vault)
                         .padding(.bottom)
                     Text("Note")
                         .sectionTitleText()
