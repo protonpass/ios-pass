@@ -174,14 +174,27 @@ private struct ItemSearchResultView: View {
 
     var body: some View {
         HStack {
-            SquircleThumbnail(icon: result.type.icon,
-                              iconColor: result.type.normMajor1Color,
-                              backgroundColor: result.type.normMinor1Color)
+            VStack {
+                SquircleThumbnail(icon: result.type.icon,
+                                  iconColor: result.type.normMajor1Color,
+                                  backgroundColor: result.type.normMinor1Color)
+            }
+            .frame(maxHeight: .infinity, alignment: .top)
 
             VStack(alignment: .leading, spacing: 4) {
-                HighlightText(highlightableText: result.title)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-                    .animationsDisabled()
+                HStack(spacing: 4) {
+                    if let vault = result.vault {
+                        Image(uiImage: vault.displayPreferences.icon.icon.image)
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                            .frame(width: 12, height: 12)
+                    }
+                    HighlightText(highlightableText: result.title)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        .animationsDisabled()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
 
                 VStack(alignment: .leading, spacing: 2) {
                     ForEach(0..<result.detail.count, id: \.self) { index in

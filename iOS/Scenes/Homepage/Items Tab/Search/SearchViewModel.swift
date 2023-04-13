@@ -56,6 +56,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
     private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
+    private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private(set) var vaultSelection: VaultSelection
     let itemContextMenuHandler: ItemContextMenuHandler
@@ -79,12 +80,14 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
          itemRepository: ItemRepositoryProtocol,
          logManager: LogManager,
          searchEntryDatasource: LocalSearchEntryDatasourceProtocol,
+         shareRepository: ShareRepositoryProtocol,
          symmetricKey: SymmetricKey,
          vaultSelection: VaultSelection) {
         self.itemContextMenuHandler = itemContextMenuHandler
         self.itemRepository = itemRepository
         self.logger = .init(manager: logManager)
         self.searchEntryDatasource = searchEntryDatasource
+        self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
         self.vaultSelection = vaultSelection
 
@@ -121,6 +124,8 @@ private extension SearchViewModel {
                 state = .initializing
             }
 
+            let vaults = try await shareRepository.getVaults()
+
             switch vaultSelection {
             case .all:
                 allItems = try await itemRepository.getItems(state: .active)
@@ -129,7 +134,9 @@ private extension SearchViewModel {
             case .trash:
                 allItems = try await itemRepository.getItems(state: .trashed)
             }
-            searchableItems = try allItems.map { try SearchableItem(from: $0, symmetricKey: symmetricKey) }
+            searchableItems = try allItems.map { try SearchableItem(from: $0,
+                                                                    symmetricKey: symmetricKey,
+                                                                    allVaults: vaults) }
             try await refreshSearchHistory()
         } catch {
             state = .error(error)
@@ -264,7 +271,7 @@ extension SearchViewModel {
 
     func searchInAllVaults() {
         vaultSelection = .all
-        Task { await refreshResults() }
+        refreshResults()
     }
 }
 

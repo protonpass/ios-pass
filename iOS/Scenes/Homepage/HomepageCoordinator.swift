@@ -537,6 +537,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
                                         itemRepository: itemRepository,
                                         logManager: logManager,
                                         searchEntryDatasource: searchEntryDatasource,
+                                        shareRepository: shareRepository,
                                         symmetricKey: symmetricKey,
                                         vaultSelection: vaultSelection)
         viewModel.delegate = self
