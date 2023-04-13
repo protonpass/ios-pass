@@ -33,7 +33,7 @@ struct CreateEditAliasView: View {
     @State private var isShowingAdvancedOptions = false
     @State private var isShowingDiscardAlert = false
 
-    private var tintColor: UIColor { viewModel.itemContentType().tintColor }
+    private var tintColor: UIColor { viewModel.itemContentType().normMajor1Color }
 
     init(viewModel: CreateEditAliasViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -64,8 +64,8 @@ struct CreateEditAliasView: View {
     private var closeButtonToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         iconColor: ItemContentType.alias.tintColor,
-                         backgroundColor: ItemContentType.alias.backgroundWeakColor,
+                         iconColor: ItemContentType.alias.normMajor1Color,
+                         backgroundColor: ItemContentType.alias.normMinor2Color,
                          action: dismiss.callAsFunction)
         }
     }
@@ -136,7 +136,7 @@ struct CreateEditAliasView: View {
                 }
             }
         }
-        .accentColor(Color(uiColor: viewModel.itemContentType().tintColor)) // Remove when dropping iOS 15
+        .accentColor(Color(uiColor: viewModel.itemContentType().normMajor1Color)) // Remove when dropping iOS 15
         .tint(Color(uiColor: tintColor))
         .onFirstAppear {
             if case .create = viewModel.mode {

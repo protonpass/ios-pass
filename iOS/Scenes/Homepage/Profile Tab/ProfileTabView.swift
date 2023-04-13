@@ -57,10 +57,10 @@ struct ProfileTabView: View {
                 .animation(.default, value: viewModel.automaticallyCopyTotpCode)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(uiColor: PassColor.backgroundNorm))
+            .itemDetailBackground(theme: viewModel.preferences.theme)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar { toolbarContent }
+//            .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
     }
@@ -83,10 +83,8 @@ struct ProfileTabView: View {
     private var itemCountSection: some View {
         VStack {
             Text("Items")
-                .fontWeight(.bold)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .profileSectionTitle()
                 .padding(.horizontal)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
             ItemCountView(vaultsManager: viewModel.vaultsManager)
         }
     }
@@ -94,9 +92,7 @@ struct ProfileTabView: View {
     private var biometricAuthenticationSection: some View {
         VStack {
             Text("Manage my profile")
-                .fontWeight(.bold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .profileSectionTitle()
 
             OptionRow(height: .medium) {
                 switch viewModel.biometricAuthenticator.biometryTypeState {
@@ -142,39 +138,31 @@ struct ProfileTabView: View {
 
     private var autoFillDisabledSection: some View {
         VStack {
-            Text("AutoFill")
-                .sectionHeaderText()
-                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack {
+                Text("AutoFill disabled")
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
 
-            Text("AutoFill disabled")
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
-                .padding(.horizontal, kItemDetailSectionPadding)
-                .frame(height: OptionRowHeight.short.value)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .roundedEditableSection()
+                Spacer()
 
-            VStack(spacing: 0) {
-                Text("AutoFill on apps and websites by enabling Proton Pass AutoFill.")
-                    .sectionTitleText()
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 Button(action: UIApplication.shared.openPasswordSettings) {
-                    Text("Open Settings")
-                        .font(.footnote)
-                        .foregroundColor(Color(uiColor: PassColor.interactionNorm))
-                        .underline(color: Color(uiColor: PassColor.interactionNorm))
+                    Label("Open Settings", systemImage: "arrow.up.right.square")
+                        .font(.callout.weight(.semibold))
+                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .padding(.horizontal, kItemDetailSectionPadding)
+            .frame(height: OptionRowHeight.short.value)
+            .roundedEditableSection()
+
+            Text("AutoFill on apps and websites by enabling Proton Pass AutoFill.")
+                .sectionTitleText()
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal)
     }
 
     private var autoFillEnabledSection: some View {
         VStack {
-            Text("AutoFill")
-                .sectionHeaderText()
-                .frame(maxWidth: .infinity, alignment: .leading)
-
             VStack(spacing: 0) {
                 OptionRow(height: .medium) {
                     Toggle(isOn: $viewModel.quickTypeBar) {
@@ -218,10 +206,6 @@ struct ProfileTabView: View {
 
     private var aboutSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
-            Text("About")
-                .sectionHeaderText()
-                .frame(maxWidth: .infinity, alignment: .leading)
-
             VStack(spacing: 0) {
                 /*
                 TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
@@ -239,8 +223,7 @@ struct ProfileTabView: View {
     private var helpCenterSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
             Text("Help center")
-                .sectionHeaderText()
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .profileSectionTitle()
 
             VStack(spacing: 0) {
                 /*
@@ -254,5 +237,13 @@ struct ProfileTabView: View {
             .roundedEditableSection()
         }
         .padding(.horizontal)
+    }
+}
+
+private extension View {
+    func profileSectionTitle() -> some View {
+        self.foregroundColor(Color(uiColor: PassColor.textNorm))
+            .font(.callout.weight(.bold))
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

@@ -37,8 +37,8 @@ struct ItemDetailToolbar: ToolbarContent {
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
-                         iconColor: itemContent.type.tintColor,
-                         backgroundColor: itemContent.type.backgroundWeakColor,
+                         iconColor: itemContent.type.normMajor2Color,
+                         backgroundColor: itemContent.type.normMinor1Color,
                          action: onGoBack)
         }
 
@@ -49,7 +49,7 @@ struct ItemDetailToolbar: ToolbarContent {
                     CapsuleLabelButton(icon: IconProvider.pencil,
                                        title: "Edit",
                                        titleColor: PassColor.textInvert,
-                                       backgroundColor: itemContent.type.tintColor,
+                                       backgroundColor: itemContent.type.normMajor1Color,
                                        action: onEdit)
 
                     Menu(content: {
@@ -65,8 +65,8 @@ struct ItemDetailToolbar: ToolbarContent {
                                               icon: { Image(uiImage: IconProvider.trash) }) })
                     }, label: {
                         CircleButton(icon: IconProvider.threeDotsVertical,
-                                     iconColor: itemContent.type.tintColor,
-                                     backgroundColor: itemContent.type.backgroundWeakColor)
+                                     iconColor: itemContent.type.normMajor2Color,
+                                     backgroundColor: itemContent.type.normMinor1Color)
                     })
                 }
 
@@ -84,7 +84,7 @@ struct ItemDetailToolbar: ToolbarContent {
                                           icon: { Image(uiImage: IconProvider.trash) }) })
                 }, label: {
                     CapsuleIconButton(icon: IconProvider.threeDotsVertical,
-                                      color: itemContent.type.tintColor,
+                                      color: itemContent.type.normColor,
                                       action: {})
                 })
                 .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $isShowingAlert,

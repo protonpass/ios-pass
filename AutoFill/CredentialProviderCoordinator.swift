@@ -557,7 +557,6 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                                 url: url)
         } else {
             Task { @MainActor in
-                defer { hideLoadingHud() }
                 do {
                     showLoadingHud()
                     let items = try await itemRepository.getAllItems()
@@ -568,9 +567,11 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                         items.filter { $0.item.itemState == .active && $0.shareId == vault.shareId }
                         return .init(vault: vault, itemCount: activeItems.count)
                     }
+                    hideLoadingHud()
                     credentialsViewModelWantsToCreateLoginItem(shareId: shareId, url: url)
                 } catch {
                     logger.error(error)
+                    hideLoadingHud()
                     bannerManager.displayTopErrorMessage(error)
                 }
             }
