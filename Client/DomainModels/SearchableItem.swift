@@ -25,6 +25,7 @@ import CryptoKit
 public struct SearchableItem: ItemTypeIdentifiable {
     public let shareId: String
     public let itemId: String
+    public let vault: Vault? // Optional because we only show vault when there're more than 1 vault
     public let type: ItemContentType
     public let name: String
     public let note: String
@@ -33,9 +34,17 @@ public struct SearchableItem: ItemTypeIdentifiable {
     public let lastUseTime: Int64
     public let modifyTime: Int64
 
-    public init(from item: SymmetricallyEncryptedItem, symmetricKey: SymmetricKey) throws {
-        self.shareId = item.shareId
+    public init(from item: SymmetricallyEncryptedItem,
+                symmetricKey: SymmetricKey,
+                allVaults: [Vault]) throws {
         self.itemId = item.item.itemID
+        self.shareId = item.shareId
+
+        if allVaults.count > 1 {
+            self.vault = allVaults.first { $0.shareId == item.shareId }
+        } else {
+            self.vault = nil
+        }
 
         let itemContent = try item.getDecryptedItemContent(symmetricKey: symmetricKey)
         self.type = itemContent.contentData.type
@@ -103,6 +112,7 @@ extension SearchableItem {
                      type: type,
                      title: title,
                      detail: detail,
+                     vault: vault,
                      lastUseTime: lastUseTime,
                      modifyTime: modifyTime)
     }
