@@ -122,6 +122,11 @@ final class AppCoordinator {
             .sink { _ in
                 // Make sure preferences are up to date
                 self.preferences = .init()
+
+                // Request biometric authentication if user is logged in
+                if self.homepageCoordinator != nil {
+                    self.requestBiometricAuthenticationIfNecessary()
+                }
             }
             .store(in: &cancellables)
 
