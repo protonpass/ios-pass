@@ -34,8 +34,9 @@ struct ItemDetailTitleView: View {
     let icon: ItemDetailTitleIcon
     let iconTintColor: UIColor
     let iconBackgroundColor: UIColor
+    let vault: Vault?
 
-    init(itemContent: ItemContent) {
+    init(itemContent: ItemContent, vault: Vault?) {
         self.title = itemContent.name
         self.iconTintColor = itemContent.type.normMajor1Color
         self.iconBackgroundColor = itemContent.type.normMinor1Color
@@ -47,6 +48,7 @@ struct ItemDetailTitleView: View {
         case .note:
             self.icon = .notApplicable
         }
+        self.vault = vault
     }
 
     var body: some View {
@@ -72,13 +74,20 @@ struct ItemDetailTitleView: View {
             }
             .frame(width: 60, height: 60)
 
-            Text(title)
-                .font(.title)
-                .fontWeight(.bold)
-                .textSelection(.enabled)
-                .lineLimit(2)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+            VStack(alignment: .leading, spacing: 0) {
+                Text(title)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .textSelection(.enabled)
+                    .lineLimit(1)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+
+                if let vault {
+                    VaultLabel(vault: vault)
+                }
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: 60)
     }
 }

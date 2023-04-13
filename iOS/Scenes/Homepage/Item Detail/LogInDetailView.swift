@@ -49,7 +49,7 @@ struct LogInDetailView: View {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
-                    ItemDetailTitleView(itemContent: viewModel.itemContent)
+                    ItemDetailTitleView(itemContent: viewModel.itemContent, vault: viewModel.vault)
                         .padding(.bottom, 24)
 
                     usernamePassword2FaSection
@@ -60,7 +60,9 @@ struct LogInDetailView: View {
                     }
 
                     if !viewModel.itemContent.note.isEmpty {
-                        NoteDetailSection(itemContent: viewModel.itemContent, theme: viewModel.theme)
+                        NoteDetailSection(itemContent: viewModel.itemContent,
+                                          vault: viewModel.vault,
+                                          theme: viewModel.theme)
                             .padding(.top, 8)
                     }
 
