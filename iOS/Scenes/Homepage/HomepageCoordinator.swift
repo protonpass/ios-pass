@@ -72,6 +72,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
 
     weak var delegate: HomepageCoordinatorDelegate?
+    weak var homepageTabDelegete: HomepageTabDelegete?
 
     // swiftlint:disable:next function_body_length
     init(apiService: APIService,
@@ -201,6 +202,7 @@ private extension HomepageCoordinator {
 
         start(with: HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                        profileTabViewModel: profileTabViewModel,
+                                       homepageCoordinator: self,
                                        delegate: self).ignoresSafeArea(edges: [.top, .bottom]),
               secondaryView: placeholderView)
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
@@ -857,6 +859,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
             bannerManager.displayBottomInfoMessage(message)
         }
         vaultsManager.refresh()
+        homepageTabDelegete?.homepageTabShouldChange(tab: .items)
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
