@@ -24,19 +24,40 @@ import SwiftUI
 import UIComponents
 import UIKit
 
+enum HomepageTab {
+    case items, profile
+}
+
+protocol HomepageTabDelegete: AnyObject {
+    func homepageTabShouldChange(tab: HomepageTab)
+}
+
 struct HomepageTabbarView: UIViewControllerRepresentable {
     let itemsTabViewModel: ItemsTabViewModel
     let profileTabViewModel: ProfileTabViewModel
+    weak var homepageCoordinator: HomepageCoordinator?
     weak var delegate: HomepageTabBarControllerDelegate?
 
     func makeUIViewController(context: Context) -> HomepageTabBarController {
         let controller = HomepageTabBarController(itemsTabView: .init(viewModel: itemsTabViewModel),
                                                   profileTabView: .init(viewModel: profileTabViewModel))
         controller.homepageTabBarControllerDelegate = delegate
+        context.coordinator.homepageTabBarController = controller
+        homepageCoordinator?.homepageTabDelegete = context.coordinator
         return controller
     }
 
     func updateUIViewController(_ uiViewController: HomepageTabBarController, context: Context) {}
+
+    func makeCoordinator() -> Coordinator { .init() }
+
+    final class Coordinator: NSObject, HomepageTabDelegete {
+        var homepageTabBarController: HomepageTabBarController?
+
+        func homepageTabShouldChange(tab: HomepageTab) {
+            homepageTabBarController?.select(tab: tab)
+        }
+    }
 }
 
 protocol HomepageTabBarControllerDelegate: AnyObject {
@@ -103,6 +124,15 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
                 item.title = nil
                 item.imageInsets = .init(top: 8, left: 0, bottom: -8, right: 0)
             }
+        }
+    }
+
+    func select(tab: HomepageTab) {
+        switch tab {
+        case .items:
+            selectedViewController = viewControllers?.first
+        case .profile:
+            selectedViewController = viewControllers?.last
         }
     }
 }
