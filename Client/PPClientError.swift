@@ -29,7 +29,6 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
     case crypto(CryptoFailureReason)
     case itemNotFound(item: ItemIdentifiable)
     case keysNotFound(shareID: String)
-    case networkOperationsOnMainThread
     case shareNotFoundInLocalDB(shareID: String)
     case symmetricEncryption(SymmetricEncryptionFailureReason)
     case unknownShareType
@@ -49,8 +48,6 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
             return "Item not found ID \"\(item.itemId)\", share ID \"\(item.shareId)\""
         case .keysNotFound(let shareID):
             return "Keys not found for share \"\(shareID)\""
-        case .networkOperationsOnMainThread:
-            return "Network operations shouldn't be called on main thread"
         case .shareNotFoundInLocalDB(let shareID):
             return "Share not found in local DB \"\(shareID)\""
         case .symmetricEncryption(let reason):

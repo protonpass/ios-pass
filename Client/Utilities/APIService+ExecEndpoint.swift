@@ -27,23 +27,10 @@ public extension APIService {
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
         try await withCheckedThrowingContinuation { continuation in
             NetworkDebugger.printDebugInfo(endpoint: endpoint)
-            let perfomRequest: () -> Void = {
-                perform(request: endpoint) { task, result in
-                    NetworkDebugger.printDebugInfo(endpoint: endpoint,
-                                                   task: task,
-                                                   result: result)
-                    continuation.resume(with: result)
-                }
+            perform(request: endpoint) { task, result in
+                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
+                continuation.resume(with: result)
             }
-#if DEBUG
-            if Thread.isMainThread {
-                continuation.resume(throwing: PPClientError.networkOperationsOnMainThread)
-            } else {
-                perfomRequest()
-            }
-#else
-            perfomRequest()
-#endif
         }
     }
 }
