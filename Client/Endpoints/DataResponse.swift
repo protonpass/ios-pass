@@ -1,7 +1,7 @@
 //
-// DataError.swift
-// Proton Pass - Created on 17/08/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// DataResponse.swift
+// Proton Pass - Created on 13/04/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,13 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public enum DataError: Error, CustomDebugStringConvertible {
-    case keyNotFound(rotationId: String)
+import Foundation
 
-    public var debugDescription: String {
-        switch self {
-        case .keyNotFound(let rotationId):
-            return "Item key or vault key with rotationID \(rotationId) not found"
-        }
-    }
+public struct DataResponse {
+    public let httpResponse: HTTPURLResponse
+    public let protonCode: Int?
+    public let data: Data?
 }
