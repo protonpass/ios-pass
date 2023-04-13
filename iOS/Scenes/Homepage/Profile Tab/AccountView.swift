@@ -82,12 +82,12 @@ struct AccountView: View {
                     height: .tall,
                     content: {
                         Text("Sign out")
-                            .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                     },
                     trailing: {
                         CircleButton(icon: IconProvider.arrowOutFromRectangle,
-                                     iconColor: PassColor.interactionNorm,
-                                     backgroundColor: PassColor.interactionNormMinor2)
+                                     iconColor: PassColor.interactionNormMajor2,
+                                     backgroundColor: PassColor.interactionNormMinor1)
                     })
                 .roundedEditableSection()
 
@@ -137,8 +137,8 @@ struct AccountView: View {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: UIDevice.current.isIpad ?
                          IconProvider.chevronLeft : IconProvider.chevronDown,
-                         iconColor: PassColor.interactionNorm,
-                         backgroundColor: PassColor.interactionNormMinor2,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
                          action: viewModel.goBack)
         }
     }

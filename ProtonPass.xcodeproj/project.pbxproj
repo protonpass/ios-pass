@@ -305,7 +305,6 @@
 		3565622029BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565621F29BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift */; };
 		3565622429BA5C5900C43F72 /* SortTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565622329BA5C5900C43F72 /* SortTypeListView.swift */; };
 		3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD45298CF4FA00E2A0EE /* CircleButton.swift */; };
-		3565FD49298CF90E00E2A0EE /* CapsuleIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD48298CF90E00E2A0EE /* CapsuleIconButton.swift */; };
 		3565FD4B298D0CA400E2A0EE /* CapsuleLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD4A298D0CA400E2A0EE /* CapsuleLabelButton.swift */; };
 		3565FD4F298D319500E2A0EE /* ItemDetailSectionIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD4E298D319500E2A0EE /* ItemDetailSectionIcon.swift */; };
 		3565FD53298D3D6500E2A0EE /* Array+Chunked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD52298D3D6500E2A0EE /* Array+Chunked.swift */; };
@@ -953,7 +952,6 @@
 		3565621F29BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+NumberOfDaysBetween.swift"; sourceTree = "<group>"; };
 		3565622329BA5C5900C43F72 /* SortTypeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortTypeListView.swift; sourceTree = "<group>"; };
 		3565FD45298CF4FA00E2A0EE /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
-		3565FD48298CF90E00E2A0EE /* CapsuleIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleIconButton.swift; sourceTree = "<group>"; };
 		3565FD4A298D0CA400E2A0EE /* CapsuleLabelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleLabelButton.swift; sourceTree = "<group>"; };
 		3565FD4E298D319500E2A0EE /* ItemDetailSectionIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailSectionIcon.swift; sourceTree = "<group>"; };
 		3565FD52298D3D6500E2A0EE /* Array+Chunked.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Chunked.swift"; sourceTree = "<group>"; };
@@ -1750,7 +1748,6 @@
 			isa = PBXGroup;
 			children = (
 				355E6DFB292FD56000C60796 /* Button+ConvenientInitializers.swift */,
-				3565FD48298CF90E00E2A0EE /* CapsuleIconButton.swift */,
 				3565FD4A298D0CA400E2A0EE /* CapsuleLabelButton.swift */,
 				355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */,
 				3565FD45298CF4FA00E2A0EE /* CircleButton.swift */,
@@ -3805,7 +3802,6 @@
 				354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */,
 				35526B5D28D116350017BB53 /* PassIcon.swift in Sources */,
 				35690C132923D5DA00F60C20 /* Handle.swift in Sources */,
-				3565FD49298CF90E00E2A0EE /* CapsuleIconButton.swift in Sources */,
 				3562BCF729BDE77900564508 /* AnimatingGradient.swift in Sources */,
 				355E6DFC292FD56000C60796 /* Button+ConvenientInitializers.swift in Sources */,
 				3562BC2D2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift in Sources */,
