@@ -75,6 +75,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable {
     public let type: ItemContentType
     public let title: HighlightableText
     public let detail: [HighlightableText]
+    public let vault: Vault?
     public let lastUseTime: Int64
     public let modifyTime: Int64
 
@@ -83,6 +84,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable {
                 type: ItemContentType,
                 title: SearchResultEither,
                 detail: [SearchResultEither],
+                vault: Vault?,
                 lastUseTime: Int64,
                 modifyTime: Int64) {
         self.shareId = shareId
@@ -90,6 +92,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable {
         self.type = type
         self.title = title
         self.detail = detail
+        self.vault = vault
         self.lastUseTime = lastUseTime
         self.modifyTime = modifyTime
     }

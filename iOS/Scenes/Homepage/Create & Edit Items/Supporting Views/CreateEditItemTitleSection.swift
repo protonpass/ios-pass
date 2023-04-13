@@ -82,12 +82,12 @@ struct CreateEditItemTitleSection: View {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Title")
                     .sectionTitleText()
-                TextField("Untitled", text: $title)
-                    .font(.title.weight(.bold))
-                    .focused(isFocused)
-                    .submitLabel(.next)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-                    .onSubmit { onSubmit?() }
+                TextEditorWithPlaceholder(text: $title,
+                                          isFocused: isFocused,
+                                          placeholder: "Untitled",
+                                          font: .title,
+                                          fontWeight: .bold,
+                                          onSubmit: onSubmit)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 

@@ -66,7 +66,7 @@ enum ItemContextMenu {
                                           icon: IconProvider.clockRotateLeft,
                                           action: onRestore)]),
                     .init(options: [.init(title: "Delete permanently",
-                                          icon: IconProvider.trash,
+                                          icon: IconProvider.trashCross,
                                           action: onPermanentlyDelete,
                                           isDestructive: true)])]
         }

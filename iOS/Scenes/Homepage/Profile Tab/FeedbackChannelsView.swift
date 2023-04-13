@@ -104,9 +104,9 @@ extension FeedbackChannel {
         case .email:
             return "mailto:pass@proton.me"
         case .twitter:
-            return "https://twitter.com/ProtonPrivacy"
+            return "https://twitter.com/proton_pass"
         case .reddit:
-            return "https://www.reddit.com/r/ProtonMail"
+            return "https://www.reddit.com/r/ProtonPass"
         }
     }
 }

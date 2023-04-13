@@ -307,7 +307,8 @@ private extension CredentialsViewModel {
 
                 if case .login(let data) = decryptedItemContent.contentData {
                     searchableItems.append(try SearchableItem(from: encryptedItem,
-                                                              symmetricKey: self.symmetricKey))
+                                                              symmetricKey: self.symmetricKey,
+                                                              allVaults: vaults))
 
                     let itemUrls = data.urls.compactMap { URL(string: $0) }
                     var matchResults = [URLUtils.Matcher.MatchResult]()

@@ -48,14 +48,16 @@ struct AliasDetailView: View {
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
-                    ItemDetailTitleView(itemContent: viewModel.itemContent)
+                    ItemDetailTitleView(itemContent: viewModel.itemContent, vault: viewModel.vault)
                         .padding(.bottom, 24)
 
                     aliasMailboxesSection
                         .padding(.bottom, 8)
 
                     if !viewModel.itemContent.note.isEmpty {
-                        NoteDetailSection(itemContent: viewModel.itemContent, theme: viewModel.theme)
+                        NoteDetailSection(itemContent: viewModel.itemContent,
+                                          vault: viewModel.vault,
+                                          theme: viewModel.theme)
                     }
 
                     ItemDetailMoreInfoSection(

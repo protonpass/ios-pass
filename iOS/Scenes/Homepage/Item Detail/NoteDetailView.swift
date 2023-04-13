@@ -47,13 +47,13 @@ struct NoteDetailView: View {
         let tintColor = Color(uiColor: ItemContentType.note.normMajor2Color)
         ScrollViewReader { value in
             ScrollView {
-                VStack {
+                VStack(spacing: 0) {
                     if #unavailable(iOS 16) {
                         // iOS 15 doesn't render navigation bar without this view
                         // no idea why it only happens to this specific note detail view
                         // tried adding a dummy `Text` but no help.
                         // Only `ItemDetailTitleView` works
-                        ItemDetailTitleView(itemContent: viewModel.itemContent)
+                        ItemDetailTitleView(itemContent: viewModel.itemContent, vault: nil)
                             .frame(height: 0)
                             .opacity(0)
                     }
@@ -63,6 +63,12 @@ struct NoteDetailView: View {
                         .fontWeight(.bold)
                         .isEditable(false)
                         .foregroundColor(PassColor.textNorm)
+
+                    if let vault = viewModel.vault {
+                        VaultLabel(vault: vault)
+                    }
+
+                    Spacer(minLength: 16)
 
                     if viewModel.note.isEmpty {
                         Text("Empty note")

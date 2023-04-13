@@ -42,7 +42,7 @@ struct NoCameraPermissionView: View {
                     if !Bundle.main.bundlePath.hasSuffix(".appex") {
                         CapsuleTextButton(title: "Open Settings",
                                           titleColor: PassColor.textInvert,
-                                          backgroundColor: PassColor.interactionNorm,
+                                          backgroundColor: PassColor.interactionNormMajor1,
                                           action: onOpenSettings)
                         .frame(width: 250)
                     } else {

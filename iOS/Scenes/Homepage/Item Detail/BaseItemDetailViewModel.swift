@@ -45,6 +45,7 @@ class BaseItemDetailViewModel {
     let isShownAsSheet: Bool
     let itemRepository: ItemRepositoryProtocol
     private(set) var itemContent: ItemContent
+    let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
     let logger: Logger
     let theme: Theme
 
@@ -55,11 +56,13 @@ class BaseItemDetailViewModel {
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
          itemRepository: ItemRepositoryProtocol,
+         vault: Vault?,
          logManager: LogManager,
          theme: Theme) {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
         self.itemRepository = itemRepository
+        self.vault = vault
         self.logger = .init(manager: logManager)
         self.theme = theme
         self.bindValues()

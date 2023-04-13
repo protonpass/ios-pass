@@ -93,7 +93,7 @@ private struct SearchEntryView: View {
                     Image(uiImage: IconProvider.cross)
                         .resizable()
                         .scaledToFill()
-                        .foregroundColor(Color(uiColor: PassColor.textHint))
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
                         .frame(width: 24, height: 24)
                 }
                 .frame(width: 48, height: 48)
