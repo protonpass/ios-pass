@@ -226,46 +226,30 @@ private extension HomepageCoordinator {
     }
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        let view: any View
-        let baseViewModel: BaseItemDetailViewModel
-        switch itemContent.contentData {
-        case .login:
-            let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
-                                                 itemContent: itemContent,
-                                                 itemRepository: itemRepository,
-                                                 logManager: logManager,
-                                                 theme: preferences.theme)
-            viewModel.logInDetailViewModelDelegate = self
-            baseViewModel = viewModel
-            view = LogInDetailView(viewModel: viewModel)
-
-        case .note:
-            let viewModel = NoteDetailViewModel(isShownAsSheet: asSheet,
-                                                itemContent: itemContent,
-                                                itemRepository: itemRepository,
-                                                logManager: logManager,
-                                                theme: preferences.theme)
-            baseViewModel = viewModel
-            view = NoteDetailView(viewModel: viewModel)
-
-        case .alias:
-            let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
-                                                 itemContent: itemContent,
-                                                 itemRepository: itemRepository,
-                                                 aliasRepository: aliasRepository,
-                                                 logManager: logManager,
-                                                 theme: preferences.theme)
-            baseViewModel = viewModel
-            view = AliasDetailView(viewModel: viewModel)
+        // Only show vault when there're more than 1 vault
+        var vault: Vault?
+        let allVaults = vaultsManager.getAllVaults()
+        if allVaults.count > 1 {
+            vault = allVaults.first(where: { $0.shareId == itemContent.shareId })
         }
 
-        baseViewModel.delegate = self
-        currentItemDetailViewModel = baseViewModel
+        let itemDetailPage: ItemDetailPage
+        switch itemContent.contentData {
+        case .login:
+            itemDetailPage = makeLoginItemDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
+        case .note:
+            itemDetailPage = makeNoteDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
+        case .alias:
+            itemDetailPage = makeAliasItemDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
+        }
+
+        itemDetailPage.viewModel.delegate = self
+        currentItemDetailViewModel = itemDetailPage.viewModel
 
         if asSheet {
-            present(view)
+            present(itemDetailPage.view)
         } else {
-            push(view)
+            push(itemDetailPage.view)
         }
     }
 
@@ -449,6 +433,52 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         let view = LogsView(viewModel: viewModel)
         present(view)
+    }
+}
+
+// MARK: - Item detail pages
+private extension HomepageCoordinator {
+    struct ItemDetailPage {
+        let viewModel: BaseItemDetailViewModel
+        let view: any View
+    }
+
+    func makeLoginItemDetailPage(from itemContent: ItemContent,
+                                 asSheet: Bool,
+                                 vault: Vault?) -> ItemDetailPage {
+        let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
+                                             itemContent: itemContent,
+                                             itemRepository: itemRepository,
+                                             vault: vault,
+                                             logManager: logManager,
+                                             theme: preferences.theme)
+        viewModel.logInDetailViewModelDelegate = self
+        return .init(viewModel: viewModel, view: LogInDetailView(viewModel: viewModel))
+    }
+
+    func makeAliasItemDetailPage(from itemContent: ItemContent,
+                                 asSheet: Bool,
+                                 vault: Vault?) -> ItemDetailPage {
+        let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
+                                             itemContent: itemContent,
+                                             itemRepository: itemRepository,
+                                             aliasRepository: aliasRepository,
+                                             vault: vault,
+                                             logManager: logManager,
+                                             theme: preferences.theme)
+        return .init(viewModel: viewModel, view: AliasDetailView(viewModel: viewModel))
+    }
+
+    func makeNoteDetailPage(from itemContent: ItemContent,
+                            asSheet: Bool,
+                            vault: Vault?) -> ItemDetailPage {
+        let viewModel = NoteDetailViewModel(isShownAsSheet: asSheet,
+                                            itemContent: itemContent,
+                                            itemRepository: itemRepository,
+                                            vault: vault,
+                                            logManager: logManager,
+                                            theme: preferences.theme)
+        return .init(viewModel: viewModel, view: NoteDetailView(viewModel: viewModel))
     }
 }
 
