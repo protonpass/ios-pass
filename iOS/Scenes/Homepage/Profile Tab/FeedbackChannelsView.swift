@@ -23,7 +23,7 @@ import SwiftUI
 import UIComponents
 
 enum FeedbackChannel: Int, CaseIterable {
-    case email = 0, twitter, reddit
+    case email = 0, reddit
 }
 
 struct FeedbackChannelsView: View {
@@ -81,8 +81,8 @@ extension FeedbackChannel {
         switch self {
         case .email:
             return IconProvider.paperPlane
-        case .twitter:
-            return PassIcon.brandTwitter
+//        case .twitter:
+//            return PassIcon.brandTwitter
         case .reddit:
             return PassIcon.brandReddit
         }
@@ -92,8 +92,8 @@ extension FeedbackChannel {
         switch self {
         case .email:
             return "Send us a message"
-        case .twitter:
-            return "Write us on Twitter"
+//        case .twitter:
+//            return "Write us on Twitter"
         case .reddit:
             return "Write us on Reddit"
         }
@@ -103,8 +103,8 @@ extension FeedbackChannel {
         switch self {
         case .email:
             return "mailto:pass@proton.me"
-        case .twitter:
-            return "https://twitter.com/proton_pass"
+//        case .twitter:
+//            return "https://twitter.com/proton_pass"
         case .reddit:
             return "https://www.reddit.com/r/ProtonPass"
         }
