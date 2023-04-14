@@ -233,6 +233,7 @@
 		355AA32329E97E3400C20F5F /* PMAPIService+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32229E97E3400C20F5F /* PMAPIService+Test.swift */; };
 		355AA32529E9B41900C20F5F /* ItemThumbnailableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32429E9B41900C20F5F /* ItemThumbnailableTests.swift */; };
 		355AA32729E9D3FD00C20F5F /* StringExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */; };
+		355AA32929E9E3C500C20F5F /* ItemSquircleThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */; };
 		355BDEC8299E1506009FDBB1 /* CapsuleTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */; };
 		355BDECE299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */; };
 		355BDED0299E3807009FDBB1 /* Array+InsertOrRemove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */; };
@@ -910,6 +911,7 @@
 		355AA32229E97E3400C20F5F /* PMAPIService+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PMAPIService+Test.swift"; sourceTree = "<group>"; };
 		355AA32429E9B41900C20F5F /* ItemThumbnailableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemThumbnailableTests.swift; sourceTree = "<group>"; };
 		355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensionTests.swift; sourceTree = "<group>"; };
+		355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSquircleThumbnail.swift; sourceTree = "<group>"; };
 		355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleTextButton.swift; sourceTree = "<group>"; };
 		355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableObject+AttachToAnother.swift"; sourceTree = "<group>"; };
 		355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+InsertOrRemove.swift"; sourceTree = "<group>"; };
@@ -1818,6 +1820,7 @@
 				354AD95F28CB5934000E645B /* EmptyTrashView.swift */,
 				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
 				3568D90F29E036D800A15377 /* EmptyVaultViewModel.swift */,
+				355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */,
 				3569B2A029B788600070830B /* ItemsTabView.swift */,
 				3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */,
 				3565622329BA5C5900C43F72 /* SortTypeListView.swift */,
@@ -3554,6 +3557,7 @@
 				35992155299F910500FEFA32 /* MailboxSection.swift in Sources */,
 				3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */,
 				35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */,
+				355AA32929E9E3C500C20F5F /* ItemSquircleThumbnail.swift in Sources */,
 				355BDED6299E6515009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				3569B29F29B77A760070830B /* VaultContentUiModel.swift in Sources */,
 				3571B5A329BF73C0008D4350 /* SearchViewSkeleton.swift in Sources */,

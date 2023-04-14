@@ -43,6 +43,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 
 class BaseItemDetailViewModel {
     let isShownAsSheet: Bool
+    let favIconRepository: FavIconRepositoryProtocol
     let itemRepository: ItemRepositoryProtocol
     private(set) var itemContent: ItemContent
     let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
@@ -55,12 +56,14 @@ class BaseItemDetailViewModel {
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
+         favIconRepository: FavIconRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          vault: Vault?,
          logManager: LogManager,
          theme: Theme) {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
+        self.favIconRepository = favIconRepository
         self.itemRepository = itemRepository
         self.vault = vault
         self.logger = .init(manager: logManager)

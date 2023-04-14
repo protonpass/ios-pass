@@ -53,7 +53,9 @@ struct NoteDetailView: View {
                         // no idea why it only happens to this specific note detail view
                         // tried adding a dummy `Text` but no help.
                         // Only `ItemDetailTitleView` works
-                        ItemDetailTitleView(itemContent: viewModel.itemContent, vault: nil)
+                        ItemDetailTitleView(itemContent: viewModel.itemContent,
+                                            vault: nil,
+                                            favIconRepository: viewModel.favIconRepository)
                             .frame(height: 0)
                             .opacity(0)
                     }

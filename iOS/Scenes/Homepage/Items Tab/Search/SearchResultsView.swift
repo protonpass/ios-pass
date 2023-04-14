@@ -175,8 +175,8 @@ private struct ItemSearchResultView: View {
     var body: some View {
         HStack {
             VStack {
-                SquircleThumbnail(icon: result.type.icon,
-                                  iconColor: result.type.normMajor1Color,
+                SquircleThumbnail(data: .icon(result.type.icon),
+                                  tintColor: result.type.normMajor1Color,
                                   backgroundColor: result.type.normMinor1Color)
             }
             .frame(maxHeight: .infinity, alignment: .top)

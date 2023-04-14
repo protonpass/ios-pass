@@ -181,7 +181,8 @@ private extension HomepageCoordinator {
     }
 
     func start() {
-        let itemsTabViewModel = ItemsTabViewModel(itemContextMenuHandler: itemContextMenuHandler,
+        let itemsTabViewModel = ItemsTabViewModel(favIconRepository: favIconRepository,
+                                                  itemContextMenuHandler: itemContextMenuHandler,
                                                   itemRepository: itemRepository,
                                                   logManager: logManager,
                                                   preferences: preferences,
@@ -453,6 +454,7 @@ private extension HomepageCoordinator {
                                  vault: Vault?) -> ItemDetailPage {
         let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
+                                             favIconRepository: favIconRepository,
                                              itemRepository: itemRepository,
                                              vault: vault,
                                              logManager: logManager,
@@ -466,6 +468,7 @@ private extension HomepageCoordinator {
                                  vault: Vault?) -> ItemDetailPage {
         let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
+                                             favIconRepository: favIconRepository,
                                              itemRepository: itemRepository,
                                              aliasRepository: aliasRepository,
                                              vault: vault,
@@ -479,6 +482,7 @@ private extension HomepageCoordinator {
                             vault: Vault?) -> ItemDetailPage {
         let viewModel = NoteDetailViewModel(isShownAsSheet: asSheet,
                                             itemContent: itemContent,
+                                            favIconRepository: favIconRepository,
                                             itemRepository: itemRepository,
                                             vault: vault,
                                             logManager: logManager,
