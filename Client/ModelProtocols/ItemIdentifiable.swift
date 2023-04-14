@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Core
 
 /// Should be conformed by structs that represent items differently.
 /// E.g: for different purposes like listing & searching
@@ -35,6 +35,34 @@ public extension ItemIdentifiable {
 
 public protocol ItemTypeIdentifiable: ItemIdentifiable {
     var type: ItemContentType { get }
+}
+
+public protocol ItemThumbnailable {
+    var type: ItemContentType { get }
+    var title: String { get }
+    var url: String? { get }
+}
+
+public extension ItemThumbnailable {
+    func thumbnailData() -> ItemThumbnailData {
+        switch type {
+        case .login:
+            let initials = title.initialsRemovingEmojis()
+            if let url {
+                return .favIcon(type: type, url: url, initials: title.initialsRemovingEmojis())
+            } else {
+                return .initials(type: type, initials: initials)
+            }
+        default:
+            return .icon(type: type)
+        }
+    }
+}
+
+public enum ItemThumbnailData {
+    case icon(type: ItemContentType)
+    case initials(type: ItemContentType, initials: String)
+    case favIcon(type: ItemContentType, url: String, initials: String)
 }
 
 public extension Array where Element: ItemIdentifiable {

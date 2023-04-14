@@ -188,7 +188,7 @@ private extension SearchViewModel {
         lastTask?.cancel()
         lastTask = Task { @MainActor in
             selectedType = nil
-            let hashedQuery = query.sha256Hashed()
+            let hashedQuery = query.sha256
             logger.trace("Searching for \"\(hashedQuery)\"")
             results = searchableItems.result(for: query)
             filterResults()

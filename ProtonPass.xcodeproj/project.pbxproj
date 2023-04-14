@@ -231,6 +231,8 @@
 		355AA31E29E97B0900C20F5F /* FavIconRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31D29E97B0900C20F5F /* FavIconRepository.swift */; };
 		355AA32129E97E0200C20F5F /* FavIconRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32029E97E0200C20F5F /* FavIconRepositoryTests.swift */; };
 		355AA32329E97E3400C20F5F /* PMAPIService+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32229E97E3400C20F5F /* PMAPIService+Test.swift */; };
+		355AA32529E9B41900C20F5F /* ItemThumbnailableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32429E9B41900C20F5F /* ItemThumbnailableTests.swift */; };
+		355AA32729E9D3FD00C20F5F /* StringExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */; };
 		355BDEC8299E1506009FDBB1 /* CapsuleTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */; };
 		355BDECE299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */; };
 		355BDED0299E3807009FDBB1 /* Array+InsertOrRemove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */; };
@@ -906,6 +908,8 @@
 		355AA31D29E97B0900C20F5F /* FavIconRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavIconRepository.swift; sourceTree = "<group>"; };
 		355AA32029E97E0200C20F5F /* FavIconRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavIconRepositoryTests.swift; sourceTree = "<group>"; };
 		355AA32229E97E3400C20F5F /* PMAPIService+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PMAPIService+Test.swift"; sourceTree = "<group>"; };
+		355AA32429E9B41900C20F5F /* ItemThumbnailableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemThumbnailableTests.swift; sourceTree = "<group>"; };
+		355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensionTests.swift; sourceTree = "<group>"; };
 		355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleTextButton.swift; sourceTree = "<group>"; };
 		355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableObject+AttachToAnother.swift"; sourceTree = "<group>"; };
 		355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+InsertOrRemove.swift"; sourceTree = "<group>"; };
@@ -1428,6 +1432,7 @@
 				3542E2BC28D9CA9C00194F24 /* ItemContentTests.swift */,
 				3565621B29B9EC9900C43F72 /* ItemSortableTests.swift */,
 				356BC36029D7189900F03497 /* ShareTests.swift */,
+				355AA32429E9B41900C20F5F /* ItemThumbnailableTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2178,6 +2183,7 @@
 				354513E828E4D2650020A93A /* CodableBase64Tests.swift */,
 				3567E46329B0C93C00511D62 /* PreferencesTests.swift */,
 				3529432A28DAF6CA00E1F11B /* SearchUtilsTests.swift */,
+				355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */,
 				35283E4B29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift */,
 				356A34BC2977C6ED00969BA2 /* URLExtensionTests.swift */,
 				3555800628F01A46009C3B88 /* URLUtils+MatcherTests.swift */,
@@ -3735,6 +3741,7 @@
 				35366AA228A446CB0085C24D /* ItemRevision+Test.swift in Sources */,
 				3542E2BF28D9CAB200194F24 /* SymmetricKey+Test.swift in Sources */,
 				355E33AA29C4612800402CAE /* LocalSearchEntryDatasourceTests.swift in Sources */,
+				355AA32529E9B41900C20F5F /* ItemThumbnailableTests.swift in Sources */,
 				358A509628AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift in Sources */,
 				355AA32129E97E0200C20F5F /* FavIconRepositoryTests.swift in Sources */,
 				356BC36129D7189900F03497 /* ShareTests.swift in Sources */,
@@ -3828,6 +3835,7 @@
 				354513E928E4D2650020A93A /* CodableBase64Tests.swift in Sources */,
 				3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */,
 				3567E46429B0C93C00511D62 /* PreferencesTests.swift in Sources */,
+				355AA32729E9D3FD00C20F5F /* StringExtensionTests.swift in Sources */,
 				3555800728F01A46009C3B88 /* URLUtils+MatcherTests.swift in Sources */,
 				3529432B28DAF6CA00E1F11B /* SearchUtilsTests.swift in Sources */,
 				3553C228296571440087518A /* LoggerTests.swift in Sources */,

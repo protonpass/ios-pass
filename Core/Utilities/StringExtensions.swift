@@ -40,12 +40,26 @@ public extension String {
 
     func base64Decode() throws -> Data? { Data(base64Encoded: self) }
 
-    func sha256Hashed() -> String {
-        SHA256.hash(data: Data(self.utf8)).description
-    }
-
     func capitalizingFirstLetter() -> String {
         prefix(1).capitalized + dropFirst()
+    }
+
+    /// All capitalized. Maximum 2 characters.
+    func initialsRemovingEmojis() -> String {
+        let noEmojisString = String(unicodeScalars.filter { !$0.properties.isEmoji })
+
+        let first2Words = noEmojisString
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .components(separatedBy: " ")
+            .prefix(2)
+
+        if first2Words.count == 2,
+           let firstFirstChar = first2Words.first?.first,
+           let secondChar = first2Words.last?.first {
+            return String([firstFirstChar, secondChar]).uppercased()
+        }
+
+        return String(first2Words.first?.prefix(2) ?? "").uppercased()
     }
 
     mutating func capitalizeFirstLetter() {

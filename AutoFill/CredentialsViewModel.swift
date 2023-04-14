@@ -161,7 +161,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
         lastTask?.cancel()
         lastTask = Task { @MainActor in
-            let hashedTerm = term.sha256Hashed()
+            let hashedTerm = term.sha256
             logger.trace("Searching for term \(hashedTerm)")
             state = .loaded(fetchResult, .searching)
             let searchResults = fetchResult.searchableItems.result(for: term)
