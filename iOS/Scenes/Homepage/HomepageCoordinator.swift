@@ -46,6 +46,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
     private let eventLoop: SyncEventLoop
+    private let favIconRepository: FavIconRepositoryProtocol
     private let itemContextMenuHandler: ItemContextMenuHandler
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
@@ -116,6 +117,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                itemRepository: itemRepository,
                                shareKeyRepository: shareKeyRepository,
                                logManager: logManager)
+        self.favIconRepository = FavIconRepository(apiService: apiService,
+                                                   containerUrl: URL.favIconsContainerURL())
         self.itemContextMenuHandler = .init(clipboardManager: clipboardManager,
                                             itemRepository: itemRepository,
                                             logManager: logManager)
@@ -554,7 +557,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
             // Num of vaults + all items + trash + create vault button
-            let height = CGFloat(66 * vaultsManager.getVaultCount() + 66 + 66 + 100)
+            let height = CGFloat(66 * vaultsManager.getVaultCount() + 66 + 66 + 120)
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 height
             }
@@ -1234,5 +1237,15 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     func syncEventLoopDidFailLoop(error: Error) {
         // Silently fail & not show error to users
         logger.error(error)
+    }
+}
+
+private extension URL {
+    static func favIconsContainerURL() -> URL {
+        guard let fileContainer = FileManager.default.containerURL(
+            forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
+            fatalError("Can not create folder for fav icons")
+        }
+        return fileContainer.appendingPathComponent("FavIcons", isDirectory: true)
     }
 }
