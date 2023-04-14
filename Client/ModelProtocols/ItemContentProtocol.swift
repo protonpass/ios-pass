@@ -166,6 +166,19 @@ extension ItemContent: ItemTypeIdentifiable {
     public var type: ItemContentType { contentData.type }
 }
 
+extension ItemContent: ItemThumbnailable {
+    public var title: String { name }
+
+    public var url: String? {
+        switch contentData {
+        case .login(let data):
+            return data.urls.first
+        default:
+            return nil
+        }
+    }
+}
+
 extension ItemContentData: SymmetricallyEncryptable {
     public func symmetricallyEncrypted(_ symmetricKey: SymmetricKey) throws -> ItemContentData {
         switch self {

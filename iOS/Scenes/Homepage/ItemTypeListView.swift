@@ -127,8 +127,8 @@ struct ItemTypeListView: View {
         }, label: {
             GeneralItemRow(
                 thumbnailView: {
-                    SquircleThumbnail(icon: type.icon,
-                                      iconColor: type.tintColor,
+                    SquircleThumbnail(data: .icon(type.icon),
+                                      tintColor: type.tintColor,
                                       backgroundColor: type.backgroundColor)
                 },
                 title: type.title,

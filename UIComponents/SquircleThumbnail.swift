@@ -20,18 +20,23 @@
 
 import SwiftUI
 
+public enum SquircleThumbnailData {
+    case icon(UIImage)
+    case initials(String)
+}
+
 public struct SquircleThumbnail: View {
-    let icon: UIImage
-    let iconColor: UIColor
+    let data: SquircleThumbnailData
+    let tintColor: UIColor
     let backgroundColor: UIColor
     let height: CGFloat
 
-    public init(icon: UIImage,
-                iconColor: UIColor,
+    public init(data: SquircleThumbnailData,
+                tintColor: UIColor,
                 backgroundColor: UIColor,
                 height: CGFloat = 40) {
-        self.icon = icon
-        self.iconColor = iconColor
+        self.data = data
+        self.tintColor = tintColor
         self.backgroundColor = backgroundColor
         self.height = height
     }
@@ -40,12 +45,22 @@ public struct SquircleThumbnail: View {
         ZStack {
             Color(uiColor: backgroundColor)
                 .clipShape(RoundedRectangle(cornerRadius: height / 2.5, style: .continuous))
-            Image(uiImage: icon)
-                .resizable()
-                .renderingMode(.template)
-                .scaledToFit()
-                .foregroundColor(Color(uiColor: iconColor))
-                .padding(.vertical, height / 4)
+
+            switch data {
+            case .icon(let image):
+                Image(uiImage: image)
+                    .resizable()
+                    .renderingMode(.template)
+                    .scaledToFit()
+                    .foregroundColor(Color(uiColor: tintColor))
+                    .padding(.vertical, height / 4)
+
+            case .initials(let string):
+                Text(string)
+                    .font(.system(size: height / 2.5))
+                    .fontWeight(.medium)
+                    .foregroundColor(Color(uiColor: tintColor))
+            }
         }
         .frame(width: height, height: height)
     }
