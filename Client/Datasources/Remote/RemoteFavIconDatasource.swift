@@ -20,13 +20,13 @@
 
 import Foundation
 
-enum FavIconFetchResult {
+public enum FavIconFetchResult {
     case positive(Data)
     case negative(FavIconNegativityReason)
 }
 
 /// Reason why a fav icon is null
-enum FavIconNegativityReason {
+public enum FavIconNegativityReason {
     /// Everything is ok, the image simply does not exist
     case notExist
 
@@ -35,14 +35,14 @@ enum FavIconNegativityReason {
 }
 
 /// Known domain errors
-enum FavIconError: Int, CaseIterable {
+public enum FavIconError: Int, CaseIterable {
     case notTrusted = 2_011
     case invalidAddress = -1
     case failedToFindForAppropriateSize = 2_511
     case failedToFind = 2_902
 }
 
-protocol RemoteFavIconDatasourceProtocol: RemoteDatasourceProtocol {
+public protocol RemoteFavIconDatasourceProtocol: RemoteDatasourceProtocol {
     func fetchFavIcon(for domain: String) async throws -> FavIconFetchResult
 }
 

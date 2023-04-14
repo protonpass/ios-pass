@@ -230,6 +230,9 @@
 		355AA31829E9525E00C20F5F /* RemoteFavIconDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31729E9525E00C20F5F /* RemoteFavIconDatasource.swift */; };
 		355AA31A29E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */; };
 		355AA31C29E9736A00C20F5F /* Data+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31B29E9736A00C20F5F /* Data+Random.swift */; };
+		355AA31E29E97B0900C20F5F /* FavIconRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31D29E97B0900C20F5F /* FavIconRepository.swift */; };
+		355AA32129E97E0200C20F5F /* FavIconRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32029E97E0200C20F5F /* FavIconRepositoryTests.swift */; };
+		355AA32329E97E3400C20F5F /* PMAPIService+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32229E97E3400C20F5F /* PMAPIService+Test.swift */; };
 		355BDEC8299E1506009FDBB1 /* CapsuleTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */; };
 		355BDECE299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */; };
 		355BDED0299E3807009FDBB1 /* Array+InsertOrRemove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */; };
@@ -903,6 +906,9 @@
 		355AA31729E9525E00C20F5F /* RemoteFavIconDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFavIconDatasource.swift; sourceTree = "<group>"; };
 		355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFavIconDatasourceTests.swift; sourceTree = "<group>"; };
 		355AA31B29E9736A00C20F5F /* Data+Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Random.swift"; sourceTree = "<group>"; };
+		355AA31D29E97B0900C20F5F /* FavIconRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavIconRepository.swift; sourceTree = "<group>"; };
+		355AA32029E97E0200C20F5F /* FavIconRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavIconRepositoryTests.swift; sourceTree = "<group>"; };
+		355AA32229E97E3400C20F5F /* PMAPIService+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PMAPIService+Test.swift"; sourceTree = "<group>"; };
 		355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleTextButton.swift; sourceTree = "<group>"; };
 		355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableObject+AttachToAnother.swift"; sourceTree = "<group>"; };
 		355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+InsertOrRemove.swift"; sourceTree = "<group>"; };
@@ -1351,6 +1357,7 @@
 			children = (
 				3542E2C028D9CB3500194F24 /* ItemContentData+Test.swift */,
 				35366AA128A446CB0085C24D /* ItemRevision+Test.swift */,
+				355AA32229E97E3400C20F5F /* PMAPIService+Test.swift */,
 				358A509728AD87E200F5285C /* PublicKey+Test.swift */,
 				353C95E0289A9E8500E3CDCA /* Share+Test.swift */,
 				35464B61289B0380008E65C4 /* ShareKey+Test.swift */,
@@ -1624,6 +1631,14 @@
 			path = Events;
 			sourceTree = "<group>";
 		};
+		355AA31F29E97DF100C20F5F /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				355AA32029E97E0200C20F5F /* FavIconRepositoryTests.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
 		355DC72029E15E6D00946867 /* TextView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1699,6 +1714,7 @@
 			children = (
 				35533BB629D58C8F00EC58DE /* RepositoryManager.swift */,
 				354146D928D1F585007E45A6 /* AliasRepository.swift */,
+				355AA31D29E97B0900C20F5F /* FavIconRepository.swift */,
 				3542E2CA28D9FE8600194F24 /* ItemRepository.swift */,
 				358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */,
 				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
@@ -2135,6 +2151,7 @@
 				3593DD1128A840BD00C235D3 /* CoreData */,
 				357D9FCE28A9815500F012BB /* Datasources */,
 				3542E2BB28D9CA8D00194F24 /* Models */,
+				355AA31F29E97DF100C20F5F /* Repositories */,
 				350A97D82885C94900A7168B /* TestData */,
 				350A97D52885C0B400A7168B /* Utilities */,
 			);
@@ -3630,6 +3647,7 @@
 				358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */,
 				358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */,
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,
+				355AA31E29E97B0900C20F5F /* FavIconRepository.swift in Sources */,
 				356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */,
 				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
 				3560844C29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift in Sources */,
@@ -3724,6 +3742,7 @@
 				3542E2BF28D9CAB200194F24 /* SymmetricKey+Test.swift in Sources */,
 				355E33AA29C4612800402CAE /* LocalSearchEntryDatasourceTests.swift in Sources */,
 				358A509628AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift in Sources */,
+				355AA32129E97E0200C20F5F /* FavIconRepositoryTests.swift in Sources */,
 				356BC36129D7189900F03497 /* ShareTests.swift in Sources */,
 				3542E2BA28D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift in Sources */,
 				3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */,
@@ -3731,6 +3750,7 @@
 				350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */,
 				355454C629E54934005289E7 /* SymmetricallyEncryptedShare+Test.swift in Sources */,
 				35610B7728ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift in Sources */,
+				355AA32329E97E3400C20F5F /* PMAPIService+Test.swift in Sources */,
 				3565621C29B9EC9900C43F72 /* ItemSortableTests.swift in Sources */,
 				35464B62289B0380008E65C4 /* ShareKey+Test.swift in Sources */,
 				350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */,

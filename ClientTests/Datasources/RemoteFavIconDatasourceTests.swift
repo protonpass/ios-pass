@@ -29,9 +29,7 @@ final class RemoteFavIconDatasourceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        let dummyService = PMAPIService.createAPIServiceWithoutSession(environment: .black,
-                                                                       challengeParametersProvider: .empty)
-        sut = RemoteFavIconDatasource(apiService: dummyService)
+        sut = RemoteFavIconDatasource(apiService: PMAPIService.dummyService())
     }
 
     override func tearDown() {
