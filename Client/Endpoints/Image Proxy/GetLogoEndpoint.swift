@@ -37,6 +37,7 @@ public struct GetLogoEndpoint: Endpoint {
         self.debugDescription = "Get fav icon of a domain"
         self.path = "/core/v4/images/logo"
         self.method = .get
-        self.parameters = ["Domain": domain, "Size": 64, "Mode": "dark"]
+        let host = URL(string: domain)?.host ?? domain
+        self.parameters = ["Domain": host, "Size": 64, "Mode": "dark"]
     }
 }
