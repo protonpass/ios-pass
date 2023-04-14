@@ -52,7 +52,9 @@ public extension FavIconRepositoryProtocol {
         // Try to see if we have a negative cache
         let negativeFileName = FavIconCacheUtils.negativeFileName(for: domain)
         let negativeFileData = try getDataOrRemoveIfObsolete(fileName: negativeFileName)
-        if negativeFileData != nil { return nil }
+        if negativeFileData != nil {
+            return nil
+        }
 
         // Nothing is cached (or cache is obsolete and deleted), fetch from remote
         let result = try await datasource.fetchFavIcon(for: domain)
@@ -91,7 +93,7 @@ public final class FavIconRepository: FavIconRepositoryProtocol {
     public let containerUrl: URL
     public let cacheExpirationDays: Int
 
-    init(apiService: APIService, containerUrl: URL, cacheExpirationDays: Int = 14) {
+    public init(apiService: APIService, containerUrl: URL, cacheExpirationDays: Int = 14) {
         self.datasource = RemoteFavIconDatasource(apiService: apiService)
         self.containerUrl = containerUrl
         self.cacheExpirationDays = cacheExpirationDays

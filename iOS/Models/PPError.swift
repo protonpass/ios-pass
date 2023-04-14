@@ -26,7 +26,6 @@ enum PPError: Error, CustomDebugStringConvertible {
     case credentialProvider(CredentialProviderFailureReason)
     case failedToGetOrCreateSymmetricKey
     case itemNotFound(shareID: String, itemID: String)
-    case unexpectedHttpStatusCode(Int)
     case vault(VaultFailureReason)
 
     var debugDescription: String {
@@ -37,8 +36,6 @@ enum PPError: Error, CustomDebugStringConvertible {
             return "Failed to get or create symmetric key"
         case let .itemNotFound(shareID, itemID):
             return "Item not found \"\(itemID)\" - Share ID \"\(shareID)\""
-        case .unexpectedHttpStatusCode(let code):
-            return "Unexpected HTTP status code (\(code))"
         case .vault(let reason):
             return reason.debugDescription
         }

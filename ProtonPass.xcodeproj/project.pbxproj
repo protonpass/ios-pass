@@ -207,8 +207,6 @@
 		355792D929E7FB85001198DA /* VaultLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355792D829E7FB85001198DA /* VaultLabel.swift */; };
 		355792DA29E7FB85001198DA /* VaultLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355792D829E7FB85001198DA /* VaultLabel.swift */; };
 		355792DD29E859A5001198DA /* GetLogoEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355792DC29E859A5001198DA /* GetLogoEndpoint.swift */; };
-		355792E129E85FEF001198DA /* FavIconProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355792E029E85FEF001198DA /* FavIconProvider.swift */; };
-		355792E229E85FEF001198DA /* FavIconProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355792E029E85FEF001198DA /* FavIconProvider.swift */; };
 		355792E429E876B7001198DA /* DataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355792E329E876B7001198DA /* DataResponse.swift */; };
 		35581806290A7DBF00DD94DB /* ShareEventIDEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */; };
 		3558180A290A7FA600DD94DB /* LocalShareEventIDDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */; };
@@ -884,7 +882,6 @@
 		355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedCredentialViewModel.swift; sourceTree = "<group>"; };
 		355792D829E7FB85001198DA /* VaultLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultLabel.swift; sourceTree = "<group>"; };
 		355792DC29E859A5001198DA /* GetLogoEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLogoEndpoint.swift; sourceTree = "<group>"; };
-		355792E029E85FEF001198DA /* FavIconProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavIconProvider.swift; sourceTree = "<group>"; };
 		355792E329E876B7001198DA /* DataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataResponse.swift; sourceTree = "<group>"; };
 		35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareEventIDEntity.swift; sourceTree = "<group>"; };
 		35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareEventIDDatasource.swift; sourceTree = "<group>"; };
@@ -1459,7 +1456,6 @@
 				356FBD472949246A0063978C /* Coordinator+ShowFullScreen.swift */,
 				356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */,
 				3554D42C2967854000DF0CBE /* DeveloperModeStateManager.swift */,
-				355792E029E85FEF001198DA /* FavIconProvider.swift */,
 				3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */,
 				355BFDA129C6FD5200A32AD6 /* ItemContextMenuHandler.swift */,
 				3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */,
@@ -3412,7 +3408,6 @@
 				3552273129DCAE2E00B9607E /* SortTypeListView.swift in Sources */,
 				350AF87029968C190045B7B6 /* CreateEditItemToolbar.swift in Sources */,
 				35492E3C293E06C600BDE231 /* CreateEditLoginView.swift in Sources */,
-				355792E229E85FEF001198DA /* FavIconProvider.swift in Sources */,
 				35492E3B293E06B100BDE231 /* BaseCreateEditItemViewModel.swift in Sources */,
 				3520F36828E327420053A606 /* ItemUiModel.swift in Sources */,
 				3561C9F729E6E34400D6E518 /* VaultSelectorView.swift in Sources */,
@@ -3482,7 +3477,6 @@
 				355694A229D466C9005DD2EB /* VaultRow.swift in Sources */,
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
-				355792E129E85FEF001198DA /* FavIconProvider.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */,
