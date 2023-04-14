@@ -34,6 +34,7 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
     case shareNotFoundInLocalDB(shareID: String)
     case symmetricEncryption(SymmetricEncryptionFailureReason)
     case unexpectedError
+    case unexpectedHttpStatusCode(Int)
     case unknownShareType
     case unmatchedRotationID(leftID: String, rightID: String)
 
@@ -61,6 +62,8 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
             return reason.debugDescription
         case .unexpectedError:
             return "Unexpected error"
+        case .unexpectedHttpStatusCode(let statusCode):
+            return "Unexpected HTTP status code \(statusCode)"
         case .unknownShareType:
             return "Unknown share type"
         case let .unmatchedRotationID(leftID, rightID):
