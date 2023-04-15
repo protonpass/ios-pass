@@ -493,11 +493,8 @@ private extension HomepageCoordinator {
 
 // MARK: - Public APIs
 extension HomepageCoordinator {
-    /// `forced` should only be used for QA
-    /// Return `true` if onboard screen is shown, `false` otherwise
-    @discardableResult
-    func onboardIfNecessary(forced: Bool = false) -> Bool {
-        guard forced || !preferences.onboarded else { return false }
+    func onboardIfNecessary() {
+        if preferences.onboarded { return }
         let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
                                                       preferences: preferences,
                                                       bannerManager: bannerManager,
@@ -507,7 +504,6 @@ extension HomepageCoordinator {
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         onboardingViewController.isModalInPresentation = true
         topMostViewController.present(onboardingViewController, animated: true)
-        return true
     }
 }
 
@@ -672,8 +668,13 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         urlOpener.open(urlString: kAppStoreUrlString)
     }
 
-    func profileTabViewModelWantsToOnboard() {
-        onboardIfNecessary(forced: true)
+    func profileTabViewModelWantsToQaFeatures() {
+        let viewModel = QAFeaturesViewModel(credentialManager: credentialManager,
+                                            preferences: preferences,
+                                            bannerManager: bannerManager,
+                                            logManager: logManager)
+        let view = QAFeaturesView(viewModel: viewModel)
+        present(view)
     }
 
     func profileTabViewModelWantsDidEncounter(error: Error) {

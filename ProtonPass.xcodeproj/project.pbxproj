@@ -39,7 +39,10 @@
 		353547C32880CF470021C716 /* UserData+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353547C22880CF470021C716 /* UserData+Codable.swift */; };
 		35366AA228A446CB0085C24D /* ItemRevision+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366AA128A446CB0085C24D /* ItemRevision+Test.swift */; };
 		35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35366AA328A4580E0085C24D /* GetItemsEndpoint.swift */; };
-		353739DE29EAC1E300A3255E /* HomepageCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739DD29EAC1E300A3255E /* HomepageCoordinatorTests.swift */; };
+		353739E129EAE8C000A3255E /* HapticFeedbacksSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */; };
+		353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E229EAE9D900A3255E /* QAFeaturesView.swift */; };
+		353739E529EAEA6000A3255E /* QAFeaturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E429EAEA6000A3255E /* QAFeaturesViewModel.swift */; };
+		353739E729EAEE6F00A3255E /* OnboardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E629EAEE6F00A3255E /* OnboardSection.swift */; };
 		353876D828F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */; };
 		353876DA28F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353876D928F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift */; };
 		353C2841291DC729008A5EBF /* SortDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C2840291DC729008A5EBF /* SortDirection.swift */; };
@@ -751,7 +754,10 @@
 		353547C22880CF470021C716 /* UserData+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Codable.swift"; sourceTree = "<group>"; };
 		35366AA128A446CB0085C24D /* ItemRevision+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemRevision+Test.swift"; sourceTree = "<group>"; };
 		35366AA328A4580E0085C24D /* GetItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetItemsEndpoint.swift; sourceTree = "<group>"; };
-		353739DD29EAC1E300A3255E /* HomepageCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageCoordinatorTests.swift; sourceTree = "<group>"; };
+		353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbacksSection.swift; sourceTree = "<group>"; };
+		353739E229EAE9D900A3255E /* QAFeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QAFeaturesView.swift; sourceTree = "<group>"; };
+		353739E429EAEA6000A3255E /* QAFeaturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QAFeaturesViewModel.swift; sourceTree = "<group>"; };
+		353739E629EAEE6F00A3255E /* OnboardSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardSection.swift; sourceTree = "<group>"; };
 		353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedItem.swift; sourceTree = "<group>"; };
 		353876D928F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SymmetricallyEncryptedItemSortTests.swift"; sourceTree = "<group>"; };
 		353C2840291DC729008A5EBF /* SortDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortDirection.swift; sourceTree = "<group>"; };
@@ -1412,6 +1418,17 @@
 			path = Shares;
 			sourceTree = "<group>";
 		};
+		353739DF29EAE84000A3255E /* QA Features */ = {
+			isa = PBXGroup;
+			children = (
+				353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */,
+				353739E629EAEE6F00A3255E /* OnboardSection.swift */,
+				353739E229EAE9D900A3255E /* QAFeaturesView.swift */,
+				353739E429EAEA6000A3255E /* QAFeaturesViewModel.swift */,
+			);
+			path = "QA Features";
+			sourceTree = "<group>";
+		};
 		354146D228D1F218007E45A6 /* Aliases */ = {
 			isa = PBXGroup;
 			children = (
@@ -1524,7 +1541,6 @@
 			children = (
 				6699002C29A77182001033B6 /* Mocks */,
 				6699002A29A76D86001033B6 /* APIManagerTests.swift */,
-				353739DD29EAC1E300A3255E /* HomepageCoordinatorTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -1864,6 +1880,7 @@
 				356BC35829D6F36200F03497 /* OptionRow.swift */,
 				3569B2A829B7D22E0070830B /* ProfileTabView.swift */,
 				3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */,
+				353739DF29EAE84000A3255E /* QA Features */,
 				356BC35329D6CDA300F03497 /* Settings */,
 			);
 			path = "Profile Tab";
@@ -3524,7 +3541,6 @@
 			files = (
 				6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */,
 				6699002E29A77197001033B6 /* KeychainMock.swift in Sources */,
-				353739DE29EAC1E300A3255E /* HomepageCoordinatorTests.swift in Sources */,
 				6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3574,6 +3590,7 @@
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */,
+				353739E129EAE8C000A3255E /* HapticFeedbacksSection.swift in Sources */,
 				356D474429D1E228004792B2 /* DeleteVaultAlertHandler.swift in Sources */,
 				356B830C29C3359A0084488A /* EmptySearchView.swift in Sources */,
 				350AF86E299683940045B7B6 /* NoteEditSection.swift in Sources */,
@@ -3616,6 +3633,7 @@
 				35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */,
 				355694A429D4673A005DD2EB /* VaultListUiModel.swift in Sources */,
 				3543615C2941E1A8000CAE12 /* UIApplication+OpenSettings.swift in Sources */,
+				353739E729EAEE6F00A3255E /* OnboardSection.swift in Sources */,
 				3571B59429BF1321008D4350 /* HighlightText.swift in Sources */,
 				3572E5232993D68800775FAC /* ItemContent+UIRelatedProperties.swift in Sources */,
 				3565FD57298D3E9400E2A0EE /* TOTPText.swift in Sources */,
@@ -3646,6 +3664,7 @@
 				355BDED6299E6515009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				3569B29F29B77A760070830B /* VaultContentUiModel.swift in Sources */,
 				3571B5A329BF73C0008D4350 /* SearchViewSkeleton.swift in Sources */,
+				353739E529EAEA6000A3255E /* QAFeaturesViewModel.swift in Sources */,
 				356BC35D29D710DC00F03497 /* EditClipboardExpirationView.swift in Sources */,
 				354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */,
 				35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */,
@@ -3657,6 +3676,7 @@
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
 				3568D91029E036D800A15377 /* EmptyVaultViewModel.swift in Sources */,
+				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
 				35733B7329CC481400052229 /* CreateEditVaultView.swift in Sources */,
 				3571B59A29BF173A008D4350 /* BannerManager.swift in Sources */,
 				3565622429BA5C5900C43F72 /* SortTypeListView.swift in Sources */,

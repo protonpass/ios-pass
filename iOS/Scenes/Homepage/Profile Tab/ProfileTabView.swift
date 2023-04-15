@@ -209,18 +209,16 @@ struct ProfileTabView: View {
     }
 
     private var aboutSection: some View {
-        VStack(spacing: kItemDetailSectionPadding) {
-            VStack(spacing: 0) {
-                /*
-                TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
-                 PassSectionDivider()
-                 */
-                TextOptionRow(title: "Privacy policy", action: viewModel.showPrivacyPolicy)
-                PassSectionDivider()
-                TextOptionRow(title: "Terms of service", action: viewModel.showTermsOfService)
-            }
-            .roundedEditableSection()
+        VStack(spacing: 0) {
+            /*
+             TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
+             PassSectionDivider()
+             */
+            TextOptionRow(title: "Privacy policy", action: viewModel.showPrivacyPolicy)
+            PassSectionDivider()
+            TextOptionRow(title: "Terms of service", action: viewModel.showTermsOfService)
         }
+        .roundedEditableSection()
         .padding(.horizontal)
     }
 
@@ -244,15 +242,10 @@ struct ProfileTabView: View {
     }
 
     private var qaFeaturesSection: some View {
-        VStack(spacing: kItemDetailSectionPadding) {
-            Text("QA features")
-                .profileSectionTitle()
-
-            VStack(spacing: 0) {
-                TextOptionRow(title: "Onboard", action: viewModel.onboard)
-            }
-            .roundedEditableSection()
+        VStack(spacing: 0) {
+            TextOptionRow(title: "QA Features", action: viewModel.qaFeatures)
         }
+        .roundedEditableSection()
         .padding(.horizontal)
     }
 }
