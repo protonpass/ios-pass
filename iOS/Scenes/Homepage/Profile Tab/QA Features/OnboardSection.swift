@@ -21,24 +21,32 @@
 import SwiftUI
 
 struct OnboardSection: View {
-    @State private var isShowingOnboarding = false
+    @State private var isShowingFullScreen = false
+    @State private var isShowingSheet = false
     @ObservedObject var viewModel: QAFeaturesViewModel
 
     var body: some View {
         Section(content: {
             Button(action: {
-                isShowingOnboarding.toggle()
+                if UIDevice.current.isIpad {
+                    isShowingSheet.toggle()
+                } else {
+                    isShowingFullScreen.toggle()
+                }
             }, label: {
                 Text("Onboard")
             })
         }, header: {
             Text("👋")
         })
-        .fullScreenCover(isPresented: $isShowingOnboarding) {
-            OnboardingView(viewModel: .init(credentialManager: viewModel.credentialManager,
-                                            preferences: viewModel.preferences,
-                                            bannerManager: viewModel.bannerManager,
-                                            logManager: viewModel.logManager))
-        }
+        .fullScreenCover(isPresented: $isShowingFullScreen) { onboardingView }
+        .sheet(isPresented: $isShowingSheet) { onboardingView }
+    }
+
+    private var onboardingView: some View {
+        OnboardingView(viewModel: .init(credentialManager: viewModel.credentialManager,
+                                        preferences: viewModel.preferences,
+                                        bannerManager: viewModel.bannerManager,
+                                        logManager: viewModel.logManager))
     }
 }
