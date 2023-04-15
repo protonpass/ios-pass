@@ -28,7 +28,9 @@ final class FavIconRepositoryTests: XCTestCase {
     override func setUp() {
         super.setUp()
         sut = FavIconRepository(apiService: PMAPIService.dummyService(),
-                                containerUrl: getDocumentsDirectory())
+                                containerUrl: getDocumentsDirectory(),
+                                cacheExpirationDays: 14,
+                                symmetricKey: .random())
     }
 
     override func tearDown() {
@@ -39,57 +41,71 @@ final class FavIconRepositoryTests: XCTestCase {
 
 // MARK: - FavIconCacheUtils test
 extension FavIconRepositoryTests {
-    func testHashDomains() {
-        XCTAssertEqual(FavIconCacheUtils.hash(for: "proton.me"),
-                       "proton.me".sha256)
-        XCTAssertEqual(FavIconCacheUtils.hash(for: "https://proton.me"),
-                       "proton.me".sha256)
-        XCTAssertEqual(FavIconCacheUtils.hash(for: "https://proton.me/path/to/sth"),
-                       "proton.me".sha256)
-        XCTAssertEqual(FavIconCacheUtils.hash(for: "http://proton.me/path/to/sth"),
-                       "proton.me".sha256)
-        XCTAssertEqual(FavIconCacheUtils.hash(for: "proton.me/path/to/sth"),
-                       "proton.me/path/to/sth".sha256)
-        XCTAssertEqual(FavIconCacheUtils.hash(for: "https://proton.me/path/to/sth"),
-                       "proton.me".sha256)
-        XCTAssertEqual(FavIconCacheUtils.hash(for: "https://proton.me/blog/lessons-from-lastpass#protect"),
-                       "proton.me".sha256)
+    func testEncryptDomains() throws {
+        let test: (String, String) throws -> Void = { [self] inputDomain, outputDomain in
+            let key = sut.symmetricKey
+            let encryptedDomain = try FavIconCacheUtils.encrypt(domain: inputDomain,
+                                                                with: key)
+            let decryptedDomain = try key.decrypt(encryptedDomain)
+            XCTAssertEqual(decryptedDomain, outputDomain)
+        }
+        try test("proton.me", "proton.me")
+        try test("https://proton.me", "proton.me")
+        try test("https://proton.me/path/to/sth", "proton.me")
+        try test("http://proton.me/path/to/sth", "proton.me")
+        try test("proton.me/path/to/sth", "proton.me/path/to/sth")
+        try test("https://proton.me/path/to/sth", "proton.me")
+        try test("https://proton.me/blog/lessons-from-lastpass#protect", "proton.me")
     }
 
-    func testGeneratePositiveFileNames() {
-        XCTAssertEqual(FavIconCacheUtils.positiveFileName(for: "proton.me"),
-                       "\("proton.me".sha256).positive")
-        XCTAssertEqual(FavIconCacheUtils.positiveFileName(for: "https://proton.me"),
-                       "\("proton.me".sha256).positive")
-        XCTAssertEqual(FavIconCacheUtils.positiveFileName(for: "https://proton.me/path/to/sth"),
-                       "\("proton.me".sha256).positive")
-        XCTAssertEqual(FavIconCacheUtils.positiveFileName(for: "http://proton.me/path/to/sth"),
-                       "\("proton.me".sha256).positive")
-        XCTAssertEqual(FavIconCacheUtils.positiveFileName(for: "proton.me/path/to/sth"),
-                       "\("proton.me/path/to/sth".sha256).positive")
-        XCTAssertEqual(FavIconCacheUtils.positiveFileName(for: "https://proton.me/path/to/sth"),
-                       "\("proton.me".sha256).positive")
-        XCTAssertEqual(
-            FavIconCacheUtils.positiveFileName(for: "https://proton.me/blog/lessons-from-lastpass#protect"),
-            "\("proton.me".sha256).positive")
+    func testGeneratePositiveFileNames() throws {
+        let test: (String, String) throws -> Void = { [self] inputDomain, outputDomain in
+            let key = sut.symmetricKey
+            let fullName = try FavIconCacheUtils.positiveFileName(for: inputDomain,
+                                                                  with: key)
+            let components = fullName.components(separatedBy: ".")
+
+            XCTAssertEqual(components.count, 2)
+
+            let encryptedFileName = try XCTUnwrap(components.first)
+            let decryptedFileName = try key.decrypt(encryptedFileName)
+            XCTAssertEqual(decryptedFileName, outputDomain)
+
+            let `extension` = try XCTUnwrap(components.last)
+            XCTAssertEqual(`extension`, "positive")
+        }
+        try test("proton.me", "proton.me")
+        try test("https://proton.me", "proton.me")
+        try test("https://proton.me/path/to/sth", "proton.me")
+        try test("http://proton.me/path/to/sth", "proton.me")
+        try test("proton.me/path/to/sth", "proton.me/path/to/sth")
+        try test("https://proton.me/path/to/sth", "proton.me")
+        try test("https://proton.me/blog/lessons-from-lastpass#protect", "proton.me")
     }
 
-    func testGenerateNegativeFileNames() {
-        XCTAssertEqual(FavIconCacheUtils.negativeFileName(for: "proton.me"),
-                       "\("proton.me".sha256).negative")
-        XCTAssertEqual(FavIconCacheUtils.negativeFileName(for: "https://proton.me"),
-                       "\("proton.me".sha256).negative")
-        XCTAssertEqual(FavIconCacheUtils.negativeFileName(for: "https://proton.me/path/to/sth"),
-                       "\("proton.me".sha256).negative")
-        XCTAssertEqual(FavIconCacheUtils.negativeFileName(for: "http://proton.me/path/to/sth"),
-                       "\("proton.me".sha256).negative")
-        XCTAssertEqual(FavIconCacheUtils.negativeFileName(for: "proton.me/path/to/sth"),
-                       "\("proton.me/path/to/sth".sha256).negative")
-        XCTAssertEqual(FavIconCacheUtils.negativeFileName(for: "https://proton.me/path/to/sth"),
-                       "\("proton.me".sha256).negative")
-        XCTAssertEqual(
-            FavIconCacheUtils.negativeFileName(for: "https://proton.me/blog/lessons-from-lastpass#protect"),
-            "\("proton.me".sha256).negative")
+    func testGenerateNegativeFileNames() throws {
+        let test: (String, String) throws -> Void = { [self] inputDomain, outputDomain in
+            let key = sut.symmetricKey
+            let fullName = try FavIconCacheUtils.negativeFileName(for: inputDomain,
+                                                                  with: key)
+            let components = fullName.components(separatedBy: ".")
+
+            XCTAssertEqual(components.count, 2)
+
+            let encryptedFileName = try XCTUnwrap(components.first)
+            let decryptedFileName = try key.decrypt(encryptedFileName)
+            XCTAssertEqual(decryptedFileName, outputDomain)
+
+            let `extension` = try XCTUnwrap(components.last)
+            XCTAssertEqual(`extension`, "negative")
+        }
+        try test("proton.me", "proton.me")
+        try test("https://proton.me", "proton.me")
+        try test("https://proton.me/path/to/sth", "proton.me")
+        try test("http://proton.me/path/to/sth", "proton.me")
+        try test("proton.me/path/to/sth", "proton.me/path/to/sth")
+        try test("https://proton.me/path/to/sth", "proton.me")
+        try test("https://proton.me/blog/lessons-from-lastpass#protect", "proton.me")
     }
 
     func testCacheNotNullData() throws {

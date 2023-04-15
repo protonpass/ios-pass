@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import CryptoKit
 import ProtonCore_Services
 
 /// Take care of fetching and caching behind the scenes
@@ -26,6 +27,7 @@ public protocol FavIconRepositoryProtocol {
     /// URL to the folder that contains cached fav icons
     var containerUrl: URL { get }
     var cacheExpirationDays: Int { get }
+    var symmetricKey: SymmetricKey { get }
 
     /// Return `Data` if any (whether from cache or newly fetched we don't care)
     /// Return `nil` if the fav icon doesn't exist or fetched but encountered a known `FavIconError`
@@ -39,7 +41,8 @@ public protocol FavIconRepositoryProtocol {
 public extension FavIconRepositoryProtocol {
     func getFavIconData(for domain: String) async throws -> Data? {
         // Try to see if we have a postive cache
-        let positiveFileName = FavIconCacheUtils.positiveFileName(for: domain)
+        let positiveFileName = try FavIconCacheUtils.positiveFileName(for: domain,
+                                                                      with: symmetricKey)
         let positiveFileData = try getDataOrRemoveIfObsolete(fileName: positiveFileName)
         if let positiveFileData {
             if positiveFileData.isEmpty {
@@ -50,7 +53,8 @@ public extension FavIconRepositoryProtocol {
         }
 
         // Try to see if we have a negative cache
-        let negativeFileName = FavIconCacheUtils.negativeFileName(for: domain)
+        let negativeFileName = try FavIconCacheUtils.negativeFileName(for: domain,
+                                                                      with: symmetricKey)
         let negativeFileData = try getDataOrRemoveIfObsolete(fileName: negativeFileName)
         if negativeFileData != nil {
             return nil
@@ -92,30 +96,33 @@ public final class FavIconRepository: FavIconRepositoryProtocol {
     public let datasource: RemoteFavIconDatasourceProtocol
     public let containerUrl: URL
     public let cacheExpirationDays: Int
+    public let symmetricKey: SymmetricKey
 
-    public init(apiService: APIService, containerUrl: URL, cacheExpirationDays: Int = 14) {
+    public init(apiService: APIService,
+                containerUrl: URL,
+                cacheExpirationDays: Int,
+                symmetricKey: SymmetricKey) {
         self.datasource = RemoteFavIconDatasource(apiService: apiService)
         self.containerUrl = containerUrl
         self.cacheExpirationDays = cacheExpirationDays
+        self.symmetricKey = symmetricKey
     }
 }
 
 enum FavIconCacheUtils {
-    static func hash(for domain: String) -> String {
-        guard let host = URL(string: domain)?.host else {
-            return domain.sha256
-        }
-        return host.sha256
+    static func encrypt(domain: String, with key: SymmetricKey) throws -> String {
+        let host = URL(string: domain)?.host ?? domain
+        return try key.encrypt(host)
     }
 
-    static func positiveFileName(for domain: String) -> String {
-        let hash = hash(for: domain)
-        return "\(hash).positive"
+    static func positiveFileName(for domain: String, with key: SymmetricKey) throws -> String {
+        let encryptedFileName = try encrypt(domain: domain, with: key)
+        return "\(encryptedFileName).positive"
     }
 
-    static func negativeFileName(for domain: String) -> String {
-        let hash = hash(for: domain)
-        return "\(hash).negative"
+    static func negativeFileName(for domain: String, with key: SymmetricKey) throws -> String {
+        let encryptedFileName = try encrypt(domain: domain, with: key)
+        return "\(encryptedFileName).negative"
     }
 
     static func cache(data: Data?, fileName: String, containerUrl: URL) throws {
