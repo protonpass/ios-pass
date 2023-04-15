@@ -1,6 +1,6 @@
 //
-// NoCameraPermissionView.swift
-// Proton Pass - Created on 02/03/2023.
+// QAFeaturesView.swift
+// Proton Pass - Created on 15/04/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -23,36 +23,18 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct NoCameraPermissionView: View {
+struct QAFeaturesView: View {
     @Environment(\.dismiss) private var dismiss
-    let theme: Theme
-    let onOpenSettings: () -> Void
+    @StateObject var viewModel: QAFeaturesViewModel
 
     var body: some View {
+        let tintColor = Color(uiColor: PassColor.interactionNorm)
         NavigationView {
-            ZStack {
-                Color(uiColor: PassColor.backgroundNorm)
-                    .ignoresSafeArea()
-
-                VStack(spacing: 44) {
-                    Text("Camera permission required for this feature to be available")
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-
-                    if !Bundle.main.bundlePath.hasSuffix(".appex") {
-                        CapsuleTextButton(title: "Open Settings",
-                                          titleColor: PassColor.textInvert,
-                                          backgroundColor: PassColor.interactionNormMajor1,
-                                          action: onOpenSettings)
-                        .frame(width: 250)
-                    } else {
-                        Text("Please allow camera access in Settings")
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
-                    }
-                }
-                .padding()
+            Form {
+                OnboardSection(viewModel: viewModel)
+                HapticFeedbacksSection()
             }
+            .navigationTitle("QA Features")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.cross,
@@ -62,7 +44,8 @@ struct NoCameraPermissionView: View {
                 }
             }
         }
+        .accentColor(tintColor)
+        .tint(tintColor)
         .navigationViewStyle(.stack)
-        .theme(theme)
     }
 }
