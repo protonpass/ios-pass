@@ -47,6 +47,10 @@ struct ProfileTabView: View {
                     helpCenterSection
                         .padding(.vertical)
 
+                    if UserDefaults.standard.bool(forKey: "qa_features") {
+                        qaFeaturesSection
+                    }
+
                     Text(viewModel.appVersion)
                         .sectionTitleText()
 
@@ -233,6 +237,19 @@ struct ProfileTabView: View {
                 TextOptionRow(title: "Feedback", action: viewModel.showFeedback)
                 PassSectionDivider()
                 TextOptionRow(title: "Rate app", action: viewModel.rateApp)
+            }
+            .roundedEditableSection()
+        }
+        .padding(.horizontal)
+    }
+
+    private var qaFeaturesSection: some View {
+        VStack(spacing: kItemDetailSectionPadding) {
+            Text("QA features")
+                .profileSectionTitle()
+
+            VStack(spacing: 0) {
+                TextOptionRow(title: "Onboard", action: viewModel.onboard)
             }
             .roundedEditableSection()
         }
