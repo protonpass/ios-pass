@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable force_unwrapping
 @testable import Client
 import Core
 import ProtonCore_Services
@@ -147,10 +146,7 @@ extension RemoteFavIconDatasourceTests {
 
 private extension DataResponse {
     static func random(statusCode: Int, protonCode: Int?, data: Data?) -> DataResponse {
-        .init(httpResponse: .init(url: URL(string: "https://proton.me")!,
-                                  statusCode: statusCode,
-                                  httpVersion: nil,
-                                  headerFields: nil)!,
+        .init(httpCode: statusCode,
               protonCode: protonCode,
               data: data)
     }
