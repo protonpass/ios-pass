@@ -186,11 +186,9 @@ final class AppCoordinator {
                     hideLoadingHud()
                 }
                 let symmetricKey = try self.appData.getSymmetricKey()
-                let domainParser = try DomainParser()
                 let homepageCoordinator = HomepageCoordinator(apiService: apiService,
                                                               container: container,
                                                               credentialManager: credentialManager,
-                                                              domainParser: domainParser,
                                                               logManager: logManager,
                                                               manualLogIn: manualLogIn,
                                                               preferences: preferences,
