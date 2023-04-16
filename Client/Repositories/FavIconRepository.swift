@@ -34,7 +34,6 @@ public protocol FavIconRepositoryProtocol {
     /// URL to the folder that contains cached fav icons
     var containerUrl: URL { get }
     var cacheExpirationDays: Int { get }
-    var domainParser: DomainParser { get }
     var symmetricKey: SymmetricKey { get }
 
     func getIcon(for domain: String) async throws -> FavIcon
@@ -44,20 +43,19 @@ public protocol FavIconRepositoryProtocol {
 
 public extension FavIconRepositoryProtocol {
     func getIcon(for domain: String) async throws -> FavIcon {
-        let rootDomain = URLUtils.Sanitizer.sanitizeAndGetRootDomain(domain,
-                                                                     domainParser: domainParser)
-        let hashedRootDomain = rootDomain.sha256
-        let dataUrl = containerUrl.appendingPathComponent("\(hashedRootDomain).data",
+        let domain = URL(string: domain)?.host ?? domain
+        let hashedDomain = domain.sha256
+        let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
                                                           conformingTo: .data)
         if let data = try getDataOrRemoveIfObsolete(url: dataUrl) {
             // Found valid cached fav icon
-            return try .init(domain: rootDomain,
+            return try .init(domain: domain,
                              data: symmetricKey.decrypt(data),
                              isFromCache: true)
         }
 
         // Fav icon is not cached (or cache is obsolete and deleted), fetch from remote
-        let result = try await datasource.fetchFavIcon(for: rootDomain)
+        let result = try await datasource.fetchFavIcon(for: domain)
 
         let dataToWrite: Data
         switch result {
@@ -69,15 +67,15 @@ public extension FavIconRepositoryProtocol {
 
         // Create 2 files: 1 contains the actual data & 1 contains the encrypted root domain
         try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(dataToWrite),
-                                        fileName: "\(hashedRootDomain).data",
+                                        fileName: "\(hashedDomain).data",
                                         containerUrl: containerUrl)
-        guard let rootDomainData = rootDomain.data(using: .utf8) else {
-            throw PPClientError.crypto(.failedToEncode(rootDomain))
+        guard let domainData = domain.data(using: .utf8) else {
+            throw PPClientError.crypto(.failedToEncode(domain))
         }
-        try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(rootDomainData),
-                                        fileName: "\(hashedRootDomain).domain",
+        try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(domainData),
+                                        fileName: "\(hashedDomain).domain",
                                         containerUrl: containerUrl)
-        return .init(domain: rootDomain, data: dataToWrite, isFromCache: false)
+        return .init(domain: domain, data: dataToWrite, isFromCache: false)
     }
 
     func getAllCachedIcons() throws -> [FavIcon] {
@@ -133,18 +131,15 @@ public final class FavIconRepository: FavIconRepositoryProtocol {
     public let datasource: RemoteFavIconDatasourceProtocol
     public let containerUrl: URL
     public let cacheExpirationDays: Int
-    public let domainParser: DomainParser
     public let symmetricKey: SymmetricKey
 
     public init(apiService: APIService,
                 containerUrl: URL,
                 cacheExpirationDays: Int,
-                domainParser: DomainParser,
                 symmetricKey: SymmetricKey) {
         self.datasource = RemoteFavIconDatasource(apiService: apiService)
         self.containerUrl = containerUrl
         self.cacheExpirationDays = cacheExpirationDays
-        self.domainParser = domainParser
         self.symmetricKey = symmetricKey
     }
 }

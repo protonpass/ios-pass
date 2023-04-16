@@ -79,7 +79,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     init(apiService: APIService,
          container: NSPersistentContainer,
          credentialManager: CredentialManagerProtocol,
-         domainParser: DomainParser,
          logManager: LogManager,
          manualLogIn: Bool,
          preferences: Preferences,
@@ -121,7 +120,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.favIconRepository = FavIconRepository(apiService: apiService,
                                                    containerUrl: URL.favIconsContainerURL(),
                                                    cacheExpirationDays: 14,
-                                                   domainParser: domainParser,
                                                    symmetricKey: symmetricKey)
         self.itemContextMenuHandler = .init(clipboardManager: clipboardManager,
                                             itemRepository: itemRepository,
