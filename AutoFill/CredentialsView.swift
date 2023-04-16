@@ -339,11 +339,11 @@ struct CredentialsView: View {
                                   backgroundColor: ItemContentType.login.normMinor1Color)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    HighlightText(highlightableText: item.title)
+                    HighlightText(highlightableText: item.highlightableTitle)
 
                     VStack(alignment: .leading, spacing: 2) {
-                        ForEach(0..<item.detail.count, id: \.self) { index in
-                            let eachDetail = item.detail[index]
+                        ForEach(0..<item.highlightableDetail.count, id: \.self) { index in
+                            let eachDetail = item.highlightableDetail[index]
                             if !eachDetail.fullText.isEmpty {
                                 HighlightText(highlightableText: eachDetail)
                                     .font(.callout)

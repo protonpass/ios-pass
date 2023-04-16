@@ -127,7 +127,9 @@ private extension FavIconRepositoryProtocol {
     }
 }
 
-public final class FavIconRepository: FavIconRepositoryProtocol {
+public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable {
+    deinit { print(deinitMessage) }
+
     public let datasource: RemoteFavIconDatasourceProtocol
     public let containerUrl: URL
     public let cacheExpirationDays: Int

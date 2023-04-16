@@ -28,6 +28,7 @@ struct SearchResultsView: View {
     @Binding var selectedType: ItemContentType?
     @Binding var selectedSortType: SortType
     private let uuid = UUID()
+    let favIconRepository: FavIconRepositoryProtocol
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemCount: ItemCount
     let results: [ItemSearchResult]
@@ -145,7 +146,7 @@ struct SearchResultsView: View {
         Button(action: {
             onSelectItem(item)
         }, label: {
-            ItemSearchResultView(result: item)
+            ItemSearchResultView(result: item, favIconRepository: favIconRepository)
                 .itemContextMenu(item: item,
                                  isTrashed: isTrash,
                                  onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
@@ -171,13 +172,13 @@ struct SearchResultsView: View {
 
 private struct ItemSearchResultView: View {
     let result: ItemSearchResult
+    let favIconRepository: FavIconRepositoryProtocol
 
     var body: some View {
         HStack {
             VStack {
-                SquircleThumbnail(data: .icon(result.type.icon),
-                                  tintColor: result.type.normMajor1Color,
-                                  backgroundColor: result.type.normMinor1Color)
+                ItemSquircleThumbnail(data: result.thumbnailData(),
+                                      repository: favIconRepository)
             }
             .frame(maxHeight: .infinity, alignment: .top)
 
@@ -190,15 +191,15 @@ private struct ItemSearchResultView: View {
                             .foregroundColor(Color(uiColor: PassColor.textWeak))
                             .frame(width: 12, height: 12)
                     }
-                    HighlightText(highlightableText: result.title)
+                    HighlightText(highlightableText: result.highlightableTitle)
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
                         .animationsDisabled()
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    ForEach(0..<result.detail.count, id: \.self) { index in
-                        let eachDetail = result.detail[index]
+                    ForEach(0..<result.highlightableDetail.count, id: \.self) { index in
+                        let eachDetail = result.highlightableDetail[index]
                         if !eachDetail.fullText.isEmpty {
                             HighlightText(highlightableText: eachDetail)
                                 .font(.callout)
