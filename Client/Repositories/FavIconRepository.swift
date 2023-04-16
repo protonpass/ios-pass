@@ -68,7 +68,7 @@ public extension FavIconRepositoryProtocol {
                 // Should not occur but who knows
                 return nil
             }
-            return positiveFileData
+            return try symmetricKey.decrypt(positiveFileData)
         }
 
         // Try to see if we have a negative cache
@@ -84,7 +84,7 @@ public extension FavIconRepositoryProtocol {
 
         switch result {
         case .positive(let data):
-            try FileUtils.createOrOverwrite(data: data,
+            try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(data),
                                             fileName: positiveFileName,
                                             containerUrl: containerUrl)
             return data
