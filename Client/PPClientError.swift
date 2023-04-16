@@ -122,6 +122,7 @@ public extension PPClientError {
         case failedToVerifySignature
         case failedToGenerateSessionKey
         case failedToDecode
+        case failedToEncode(String)
         case failedToAESEncrypt
         case addressNotFound(addressID: String)
         case corruptedShareContent(shareID: String)
@@ -158,6 +159,8 @@ public extension PPClientError {
                 return "Failed to generate session key"
             case .failedToDecode:
                 return "Failed to decode"
+            case .failedToEncode(let string):
+                return "Failed to encode \"\(string)\""
             case .failedToAESEncrypt:
                 return "Failed to AES encrypt"
             case .addressNotFound(let addressID):

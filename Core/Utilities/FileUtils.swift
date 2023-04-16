@@ -54,6 +54,7 @@ public enum FileUtils {
         return fileUrl
     }
 
+    /// Return `nil` if the file does not exist or is removed
     public static func getDataRemovingIfObsolete(url: URL, isObsolete: Bool) throws -> Data? {
         guard FileManager.default.fileExists(atPath: url.path) else { return nil }
 

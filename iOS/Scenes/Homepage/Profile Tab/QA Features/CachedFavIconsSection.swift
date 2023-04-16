@@ -38,7 +38,7 @@ struct CachedFavIconsSection: View {
 }
 
 final class CachedFavIconsViewModel: ObservableObject {
-    @Published private(set) var data = [FavIconData]()
+    @Published private(set) var icons = [FavIcon]()
     @Published private(set) var error: Error?
 
     let favIconRepository: FavIconRepositoryProtocol
@@ -51,7 +51,7 @@ final class CachedFavIconsViewModel: ObservableObject {
         Task { @MainActor in
             do {
                 self.error = nil
-                self.data = try favIconRepository.getAllCachedIcons()
+                self.icons = try favIconRepository.getAllCachedIcons()
             } catch {
                 self.error = error
             }
@@ -63,7 +63,7 @@ final class CachedFavIconsViewModel: ObservableObject {
             do {
                 self.error = nil
                 try favIconRepository.emptyCache()
-                self.data = try favIconRepository.getAllCachedIcons()
+                self.icons = try favIconRepository.getAllCachedIcons()
             } catch {
                 self.error = error
             }
@@ -79,7 +79,7 @@ struct CachedFavIconsView: View {
                 RetryableErrorView(errorMessage: error.messageForTheUser,
                                    onRetry: viewModel.loadIcons)
             } else {
-                if viewModel.data.isEmpty {
+                if viewModel.icons.isEmpty {
                     Text("Empty cache")
                         .font(.body.italic())
                         .foregroundColor(.secondary)
@@ -102,34 +102,35 @@ struct CachedFavIconsView: View {
     @ViewBuilder
     private var cachedIcons: some View {
         Section {
-            Text("⚠️ the fav icon is cached but can't be displayed")
-            Text("🟠 the fav icon doesn't exist")
+            Text("🔴 icon is cached but can't be displayed")
+            Text("🟡 icon doesn't exist")
         }
 
         Section(content: {
-            ForEach(viewModel.data, id: \.hashValue) { icon in
+            ForEach(viewModel.icons, id: \.hashValue) { icon in
                 HStack {
-                    switch icon.type {
-                    case .positive:
-                        if let data = icon.data,
-                           let image = UIImage(data: data) {
+                    if icon.data.isEmpty {
+                        Color.yellow
+                            .clipShape(Circle())
+                            .frame(width: 24, height: 24)
+                    } else {
+                        if let image = UIImage(data: icon.data) {
                             Image(uiImage: image)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 48)
+                                .frame(width: 24, height: 24)
                         } else {
-                            Text("⚠️")
+                            Color.red
+                                .clipShape(Circle())
+                                .frame(width: 24, height: 24)
                         }
-
-                    case .negative:
-                        Text("🟠")
                     }
 
                     Text(icon.domain)
                 }
             }
         }, header: {
-            Text("\(viewModel.data.count) cached icons")
+            Text("\(viewModel.icons.count) cached icons")
         })
     }
 }

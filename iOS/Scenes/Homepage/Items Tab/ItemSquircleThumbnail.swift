@@ -76,8 +76,9 @@ struct ItemSquircleThumbnail: View {
             .onFirstAppear {
                 Task { @MainActor in
                     do {
-                        if let data = try await repository.getFavIconData(for: url) {
-                            image = .init(data: data)
+                        let favIcon = try await repository.getIcon(for: url)
+                        if !favIcon.data.isEmpty {
+                            self.image = .init(data: favIcon.data)
                         }
                     } catch {
                         print(error)
