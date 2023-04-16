@@ -18,8 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CryptoKit
 import ProtonCore_Services
+
+public extension FavIconData {
+    enum `Type` {
+        case positive, negative
+    }
+}
+
+public struct FavIconData: Hashable {
+    public let domain: String
+    public let data: Data?
+    public let type: `Type`
+}
 
 /// Take care of fetching and caching behind the scenes
 public protocol FavIconRepositoryProtocol {
@@ -27,6 +40,7 @@ public protocol FavIconRepositoryProtocol {
     /// URL to the folder that contains cached fav icons
     var containerUrl: URL { get }
     var cacheExpirationDays: Int { get }
+    var domainParser: DomainParser { get }
     var symmetricKey: SymmetricKey { get }
 
     /// Return `Data` if any (whether from cache or newly fetched we don't care)
@@ -36,12 +50,17 @@ public protocol FavIconRepositoryProtocol {
     /// Throw an error when encounter networking errors or not known errors.
     /// Can not do anything in this case but log the error and silently fail.
     func getFavIconData(for domain: String) async throws -> Data?
+
+    func getAllCachedIcons() throws -> [FavIconData]
 }
 
 public extension FavIconRepositoryProtocol {
     func getFavIconData(for domain: String) async throws -> Data? {
         // Try to see if we have a postive cache
-        let positiveFileName = try FavIconCacheUtils.positiveFileName(for: domain,
+        let rootDomain =
+        URLUtils.Sanitizer.sanitizeAndGetRootDomain(domain,
+                                                    domainParser: domainParser) ?? domain
+        let positiveFileName = try FavIconCacheUtils.positiveFileName(for: rootDomain,
                                                                       with: symmetricKey)
         let positiveFileData = try getDataOrRemoveIfObsolete(fileName: positiveFileName)
         if let positiveFileData {
@@ -53,7 +72,7 @@ public extension FavIconRepositoryProtocol {
         }
 
         // Try to see if we have a negative cache
-        let negativeFileName = try FavIconCacheUtils.negativeFileName(for: domain,
+        let negativeFileName = try FavIconCacheUtils.negativeFileName(for: rootDomain,
                                                                       with: symmetricKey)
         let negativeFileData = try getDataOrRemoveIfObsolete(fileName: negativeFileName)
         if negativeFileData != nil {
@@ -61,33 +80,74 @@ public extension FavIconRepositoryProtocol {
         }
 
         // Nothing is cached (or cache is obsolete and deleted), fetch from remote
-        let result = try await datasource.fetchFavIcon(for: domain)
+        let result = try await datasource.fetchFavIcon(for: rootDomain)
 
         switch result {
         case .positive(let data):
-            try FavIconCacheUtils.cache(data: data,
-                                        fileName: positiveFileName,
-                                        containerUrl: containerUrl)
+            try FileUtils.createOrOverwrite(data: data,
+                                            fileName: positiveFileName,
+                                            containerUrl: containerUrl)
             return data
         case .negative:
-            try FavIconCacheUtils.cache(data: nil,
-                                        fileName: negativeFileName,
-                                        containerUrl: containerUrl)
+            try FileUtils.createOrOverwrite(data: nil,
+                                            fileName: negativeFileName,
+                                            containerUrl: containerUrl)
             return nil
+        }
+    }
+
+    func getAllCachedIcons() throws -> [FavIconData] {
+        let urls = try FileManager.default.contentsOfDirectory(at: containerUrl,
+                                                               includingPropertiesForKeys: nil)
+        return try urls.map { url -> FavIconData? in
+            var type: FavIconData.`Type`?
+            let pathExtension = url.pathExtension
+            switch pathExtension {
+            case "positive":
+                type = .positive
+            case "negative":
+                type = .negative
+            default:
+                return nil
+            }
+
+            let base64FileName = url.deletingPathExtension().lastPathComponent
+            guard let fileNameData = try base64FileName.base64Decode(),
+                  let encryptedFileName = String(data: fileNameData, encoding: .utf8) else {
+                throw PPClientError.crypto(.failedToBase64Decode)
+            }
+            let decryptedFileName = try symmetricKey.decrypt(encryptedFileName)
+
+            if let type {
+                let data = try Data(contentsOf: url)
+                return FavIconData(domain: decryptedFileName,
+                                   data: data.isEmpty ? nil : data,
+                                   type: type)
+            }
+
+            return nil
+        }.compactMap { $0 }
+    }
+
+    func emptyCache() throws {
+        guard FileManager.default.fileExists(atPath: containerUrl.path) else { return }
+        let urls = try FileManager.default.contentsOfDirectory(at: containerUrl,
+                                                               includingPropertiesForKeys: nil)
+        for url in urls {
+            try FileManager.default.removeItem(at: url)
         }
     }
 }
 
 private extension FavIconRepositoryProtocol {
     func getDataOrRemoveIfObsolete(fileName: String) throws -> Data? {
-        let isObsolete = FavIconCacheUtils.isObsolete(fileName: fileName,
-                                                      containerUrl: containerUrl,
-                                                      currentDate: .now,
-                                                      thresholdInDays: cacheExpirationDays)
+        let fileUrl = containerUrl.appendingPathComponent(fileName, conformingTo: .data)
+        let isObsolete = FileUtils.isObsolete(url: fileUrl,
+                                              currentDate: .now,
+                                              thresholdInDays: cacheExpirationDays)
 
-        let fileData = try FavIconCacheUtils.getDataRemovingIfObsolete(fileName: fileName,
-                                                                       containerUrl: containerUrl,
-                                                                       isObsolete: isObsolete)
+        let fileData = try FileUtils.getDataRemovingIfObsolete(url: fileUrl,
+                                                               isObsolete: isObsolete)
         return fileData
     }
 }
@@ -96,79 +156,52 @@ public final class FavIconRepository: FavIconRepositoryProtocol {
     public let datasource: RemoteFavIconDatasourceProtocol
     public let containerUrl: URL
     public let cacheExpirationDays: Int
+    public let domainParser: DomainParser
     public let symmetricKey: SymmetricKey
 
     public init(apiService: APIService,
                 containerUrl: URL,
                 cacheExpirationDays: Int,
+                domainParser: DomainParser,
                 symmetricKey: SymmetricKey) {
         self.datasource = RemoteFavIconDatasource(apiService: apiService)
         self.containerUrl = containerUrl
         self.cacheExpirationDays = cacheExpirationDays
+        self.domainParser = domainParser
         self.symmetricKey = symmetricKey
     }
 }
 
 enum FavIconCacheUtils {
-    static func encrypt(domain: String, with key: SymmetricKey) throws -> String {
-        let host = URL(string: domain)?.host ?? domain
-        return try key.encrypt(host)
+    /// Symmetrically encrypt with a given key and then base 64 the cipher text
+    /// Base 64 because symmetric encryption can produce slashes "/"
+    /// Slashed are not allowed in file names hence confuses later file operations
+    static func encryptAndBase64(text: String, with key: SymmetricKey) throws -> String {
+        let cipherText = try key.encrypt(text)
+        guard let base64 = cipherText.data(using: .utf8)?.base64EncodedString() else {
+            throw PPClientError.crypto(.failedToBase64Encode)
+        }
+        return base64
     }
 
+    /// Decrypt the encrypted &  base 64 cipher text produced by `encryptAndBase64(text:with:)`
+    static func decrypt(base64: String, with key: SymmetricKey) throws -> String {
+        guard let data = try base64.base64Decode(),
+              let cipherText = String(data: data, encoding: .utf8) else {
+            throw PPClientError.crypto(.failedToBase64Decode)
+        }
+        return try key.decrypt(cipherText)
+    }
+
+    /// Append "positive" as the extension of the file
     static func positiveFileName(for domain: String, with key: SymmetricKey) throws -> String {
-        let encryptedFileName = try encrypt(domain: domain, with: key)
+        let encryptedFileName = try encryptAndBase64(text: domain, with: key)
         return "\(encryptedFileName).positive"
     }
 
+    /// Append "negative" as the extension of the file
     static func negativeFileName(for domain: String, with key: SymmetricKey) throws -> String {
-        let encryptedFileName = try encrypt(domain: domain, with: key)
+        let encryptedFileName = try encryptAndBase64(text: domain, with: key)
         return "\(encryptedFileName).negative"
-    }
-
-    static func cache(data: Data?, fileName: String, containerUrl: URL) throws {
-        // Create the containing folder if not exist first
-        if !FileManager.default.fileExists(atPath: containerUrl.path) {
-            try FileManager.default.createDirectory(at: containerUrl,
-                                                    withIntermediateDirectories: true)
-        }
-
-        let fileUrl = containerUrl.appendingPathComponent(fileName, conformingTo: .data)
-        FileManager.default.createFile(atPath: fileUrl.path, contents: data)
-    }
-
-    static func getDataRemovingIfObsolete(fileName: String,
-                                          containerUrl: URL,
-                                          isObsolete: Bool) throws -> Data? {
-        let fileUrl = containerUrl.appendingPathComponent(fileName, conformingTo: .data)
-
-        guard FileManager.default.fileExists(atPath: fileUrl.path) else { return nil }
-
-        if isObsolete {
-            // Removal might fail, we don't care
-            // so we ignore the error by doing `try?` instead of `try`
-            try? FileManager.default.removeItem(at: fileUrl)
-            return nil
-        }
-        return try Data(contentsOf: fileUrl)
-    }
-
-    /// Do not care if the file exist or not.
-    /// Consider obsolete by default if the file does not exist or fail to get file's attributes
-    static func isObsolete(fileName: String,
-                           containerUrl: URL,
-                           currentDate: Date,
-                           thresholdInDays: Int) -> Bool {
-        let fileUrl = containerUrl.appendingPathComponent(fileName, conformingTo: .data)
-        guard let attributes = try? FileManager.default.attributesOfItem(atPath: fileUrl.path) else {
-            return true
-        }
-
-        if let creationDate = attributes[.creationDate] as? Date {
-            let numberOfDays = Calendar.current.numberOfDaysBetween(creationDate,
-                                                                    and: currentDate)
-            return abs(numberOfDays) >= thresholdInDays
-        }
-
-        return true
     }
 }

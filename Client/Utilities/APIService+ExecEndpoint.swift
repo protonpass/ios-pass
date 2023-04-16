@@ -44,11 +44,6 @@ public extension APIService {
             perform(request: endpoint) { task, result in
                 NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
 
-                guard let httpResponse = task?.response as? HTTPURLResponse else {
-                    continuation.resume(throwing: PPClientError.notHttpResponse)
-                    return
-                }
-
                 switch result {
                 case .success:
                     continuation.resume(throwing: PPClientError.errorExpected)
@@ -56,7 +51,7 @@ public extension APIService {
                 case .failure(let error):
                     if let responseError = error.underlyingError as? SessionResponseError,
                        case let .responseBodyIsNotADecodableObject(body, _) = responseError {
-                        continuation.resume(returning: .init(httpResponse: httpResponse,
+                        continuation.resume(returning: .init(httpCode: error.httpCode,
                                                              protonCode: error.responseCode,
                                                              data: body))
                         return
