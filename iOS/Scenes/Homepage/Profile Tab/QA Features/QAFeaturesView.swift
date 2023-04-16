@@ -33,6 +33,7 @@ struct QAFeaturesView: View {
             Form {
                 OnboardSection(viewModel: viewModel)
                 HapticFeedbacksSection()
+                CachedFavIconsSection(favIconRepository: viewModel.favIconRepository)
             }
             .navigationTitle("QA Features")
             .toolbar {

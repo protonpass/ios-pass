@@ -674,6 +674,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToQaFeatures() {
         let viewModel = QAFeaturesViewModel(credentialManager: credentialManager,
+                                            favIconRepository: favIconRepository,
                                             preferences: preferences,
                                             bannerManager: bannerManager,
                                             logManager: logManager)

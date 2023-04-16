@@ -23,15 +23,18 @@ import Core
 
 final class QAFeaturesViewModel: ObservableObject {
     let credentialManager: CredentialManagerProtocol
+    let favIconRepository: FavIconRepositoryProtocol
     let preferences: Preferences
     let bannerManager: BannerManager
     let logManager: LogManager
 
     init(credentialManager: CredentialManagerProtocol,
+         favIconRepository: FavIconRepositoryProtocol,
          preferences: Preferences,
          bannerManager: BannerManager,
          logManager: LogManager) {
         self.credentialManager = credentialManager
+        self.favIconRepository = favIconRepository
         self.preferences = preferences
         self.bannerManager = bannerManager
         self.logManager = logManager
