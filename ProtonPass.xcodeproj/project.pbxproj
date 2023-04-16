@@ -150,6 +150,8 @@
 		35526B5D28D116350017BB53 /* PassIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35526B5C28D116350017BB53 /* PassIcon.swift */; };
 		35526B5E28D117820017BB53 /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Icons.xcassets */; };
 		35526B6628D11E0C0017BB53 /* ModifyItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35526B6528D11E0C0017BB53 /* ModifyItemRequest.swift */; };
+		3552A28629EBFCAA00ABDB6E /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552A28529EBFCAA00ABDB6E /* FileUtils.swift */; };
+		3552A28829EBFE2800ABDB6E /* FileUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552A28729EBFE2800ABDB6E /* FileUtilsTests.swift */; };
 		3552F48628D3215600547146 /* CreateCustomAliasRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48528D3215600547146 /* CreateCustomAliasRequest.swift */; };
 		3552F48828D322C100547146 /* CreateCustomAliasEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48728D322C100547146 /* CreateCustomAliasEndpoint.swift */; };
 		3552F48A28D344E100547146 /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48928D344E100547146 /* Alias.swift */; };
@@ -845,6 +847,8 @@
 		35526B5A28D115340017BB53 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		35526B5C28D116350017BB53 /* PassIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassIcon.swift; sourceTree = "<group>"; };
 		35526B6528D11E0C0017BB53 /* ModifyItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyItemRequest.swift; sourceTree = "<group>"; };
+		3552A28529EBFCAA00ABDB6E /* FileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtils.swift; sourceTree = "<group>"; };
+		3552A28729EBFE2800ABDB6E /* FileUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtilsTests.swift; sourceTree = "<group>"; };
 		3552F48528D3215600547146 /* CreateCustomAliasRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomAliasRequest.swift; sourceTree = "<group>"; };
 		3552F48728D322C100547146 /* CreateCustomAliasEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomAliasEndpoint.swift; sourceTree = "<group>"; };
 		3552F48928D344E100547146 /* Alias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alias.swift; sourceTree = "<group>"; };
@@ -2250,6 +2254,7 @@
 				3553C224296570B80087518A /* Logging */,
 				3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */,
 				354513E828E4D2650020A93A /* CodableBase64Tests.swift */,
+				3552A28729EBFE2800ABDB6E /* FileUtilsTests.swift */,
 				3567E46329B0C93C00511D62 /* PreferencesTests.swift */,
 				3529432A28DAF6CA00E1F11B /* SearchUtilsTests.swift */,
 				355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */,
@@ -2353,6 +2358,7 @@
 				3565621D29B9EDDB00C43F72 /* Date+AddingValue.swift */,
 				355AA31B29E9736A00C20F5F /* Data+Random.swift */,
 				350A97DD2886032000A7168B /* DeinitPrintable.swift */,
+				3552A28529EBFCAA00ABDB6E /* FileUtils.swift */,
 				35635175299C10040059A97A /* IdentifiableObject.swift */,
 				355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */,
 				35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */,
@@ -3885,6 +3891,7 @@
 				3565621E29B9EDDB00C43F72 /* Date+AddingValue.swift in Sources */,
 				35699B93298103F1006CB225 /* String+HTML.swift in Sources */,
 				35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */,
+				3552A28629EBFCAA00ABDB6E /* FileUtils.swift in Sources */,
 				3565FD53298D3D6500E2A0EE /* Array+Chunked.swift in Sources */,
 				354513E728E4CE700020A93A /* CodableBase64.swift in Sources */,
 				35A5EEE02958B60200A09623 /* Browser.swift in Sources */,
@@ -3940,6 +3947,7 @@
 				356A34BD2977C6ED00969BA2 /* URLExtensionTests.swift in Sources */,
 				356A34BB2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift in Sources */,
 				35283E4C29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift in Sources */,
+				3552A28829EBFE2800ABDB6E /* FileUtilsTests.swift in Sources */,
 				3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */,
 				354513E928E4D2650020A93A /* CodableBase64Tests.swift in Sources */,
 				3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */,

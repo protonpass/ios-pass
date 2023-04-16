@@ -54,7 +54,7 @@ extension RemoteFavIconDatasourceProtocol {
     }
 
     func handle(dataResponse: DataResponse) throws -> FavIconFetchResult {
-        switch dataResponse.httpResponse.statusCode {
+        switch dataResponse.httpCode {
         case 200, 204:
             if let data = dataResponse.data {
                 return .positive(data)
@@ -67,7 +67,7 @@ extension RemoteFavIconDatasourceProtocol {
                let favIconError = FavIconError(rawValue: protonCode) {
                 return .negative(.error(favIconError))
             }
-            throw PPClientError.unexpectedHttpStatusCode(dataResponse.httpResponse.statusCode)
+            throw PPClientError.unexpectedHttpStatusCode(dataResponse.httpCode)
         }
     }
 }

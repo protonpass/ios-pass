@@ -30,11 +30,10 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
     case errorExpected
     case itemNotFound(item: ItemIdentifiable)
     case keysNotFound(shareID: String)
-    case notHttpResponse
     case shareNotFoundInLocalDB(shareID: String)
     case symmetricEncryption(SymmetricEncryptionFailureReason)
     case unexpectedError
-    case unexpectedHttpStatusCode(Int)
+    case unexpectedHttpStatusCode(Int?)
     case unknownShareType
     case unmatchedRotationID(leftID: String, rightID: String)
 
@@ -54,8 +53,6 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
             return "Item not found ID \"\(item.itemId)\", share ID \"\(item.shareId)\""
         case .keysNotFound(let shareID):
             return "Keys not found for share \"\(shareID)\""
-        case .notHttpResponse:
-            return "Not HTTP response"
         case .shareNotFoundInLocalDB(let shareID):
             return "Share not found in local DB \"\(shareID)\""
         case .symmetricEncryption(let reason):
@@ -116,6 +113,7 @@ public extension PPClientError {
         case failedToUnarmor(String)
         case failedToArmor(String)
         case failedToBase64Decode
+        case failedToBase64Encode
         case failedToGetFingerprint
         case failedToGenerateKeyRing
         case failedToEncrypt
@@ -142,6 +140,8 @@ public extension PPClientError {
                 return "Failed to armor \(string)"
             case .failedToBase64Decode:
                 return "Failed to base 64 decode"
+            case .failedToBase64Encode:
+                return "Failed to base 64 encode"
             case .failedToGetFingerprint:
                 return "Failed to get fingerprint"
             case .failedToGenerateKeyRing:

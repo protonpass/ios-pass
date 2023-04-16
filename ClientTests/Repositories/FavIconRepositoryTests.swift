@@ -18,7 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable force_try
 @testable import Client
+import Core
 import ProtonCore_Services
 import XCTest
 
@@ -27,199 +29,85 @@ final class FavIconRepositoryTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        let documentDirectory = FileUtils.getDocumentsDirectory()
+        let containerUrl = documentDirectory.appendingPathComponent("FavIcons",
+                                                                    isDirectory: true)
         sut = FavIconRepository(apiService: PMAPIService.dummyService(),
-                                containerUrl: getDocumentsDirectory(),
+                                containerUrl: containerUrl,
                                 cacheExpirationDays: 14,
+                                domainParser: try! .init(),
                                 symmetricKey: .random())
+        try? sut.emptyCache()
     }
 
     override func tearDown() {
+        try? sut.emptyCache()
         sut = nil
         super.tearDown()
     }
 }
 
-// MARK: - FavIconCacheUtils test
 extension FavIconRepositoryTests {
-    func testEncryptDomains() throws {
-        let test: (String, String) throws -> Void = { [self] inputDomain, outputDomain in
-            let key = sut.symmetricKey
-            let encryptedDomain = try FavIconCacheUtils.encrypt(domain: inputDomain,
-                                                                with: key)
-            let decryptedDomain = try key.decrypt(encryptedDomain)
-            XCTAssertEqual(decryptedDomain, outputDomain)
-        }
-        try test("proton.me", "proton.me")
-        try test("https://proton.me", "proton.me")
-        try test("https://proton.me/path/to/sth", "proton.me")
-        try test("http://proton.me/path/to/sth", "proton.me")
-        try test("proton.me/path/to/sth", "proton.me/path/to/sth")
-        try test("https://proton.me/path/to/sth", "proton.me")
-        try test("https://proton.me/blog/lessons-from-lastpass#protect", "proton.me")
-    }
+    func testGetAllCachedIcons() throws {
+        // Given
+        let key = sut.symmetricKey
+        let containerUrl = sut.containerUrl
 
-    func testGeneratePositiveFileNames() throws {
-        let test: (String, String) throws -> Void = { [self] inputDomain, outputDomain in
-            let key = sut.symmetricKey
-            let fullName = try FavIconCacheUtils.positiveFileName(for: inputDomain,
+        let random: (String) throws -> FavIconData = { domain in
+            let type: FavIconData.`Type` = Bool.random() ? .negative : .positive
+
+            let data: Data?
+            let fileName: String
+            switch type {
+            case .positive:
+                data = .random()
+                fileName = try FavIconCacheUtils.positiveFileName(for: domain,
                                                                   with: key)
-            let components = fullName.components(separatedBy: ".")
-
-            XCTAssertEqual(components.count, 2)
-
-            let encryptedFileName = try XCTUnwrap(components.first)
-            let decryptedFileName = try key.decrypt(encryptedFileName)
-            XCTAssertEqual(decryptedFileName, outputDomain)
-
-            let `extension` = try XCTUnwrap(components.last)
-            XCTAssertEqual(`extension`, "positive")
-        }
-        try test("proton.me", "proton.me")
-        try test("https://proton.me", "proton.me")
-        try test("https://proton.me/path/to/sth", "proton.me")
-        try test("http://proton.me/path/to/sth", "proton.me")
-        try test("proton.me/path/to/sth", "proton.me/path/to/sth")
-        try test("https://proton.me/path/to/sth", "proton.me")
-        try test("https://proton.me/blog/lessons-from-lastpass#protect", "proton.me")
-    }
-
-    func testGenerateNegativeFileNames() throws {
-        let test: (String, String) throws -> Void = { [self] inputDomain, outputDomain in
-            let key = sut.symmetricKey
-            let fullName = try FavIconCacheUtils.negativeFileName(for: inputDomain,
+            case .negative:
+                data = nil
+                fileName = try FavIconCacheUtils.negativeFileName(for: domain,
                                                                   with: key)
-            let components = fullName.components(separatedBy: ".")
+            }
 
-            XCTAssertEqual(components.count, 2)
-
-            let encryptedFileName = try XCTUnwrap(components.first)
-            let decryptedFileName = try key.decrypt(encryptedFileName)
-            XCTAssertEqual(decryptedFileName, outputDomain)
-
-            let `extension` = try XCTUnwrap(components.last)
-            XCTAssertEqual(`extension`, "negative")
+            try FileUtils.createOrOverwrite(data: data, fileName: fileName, containerUrl: containerUrl)
+            return .init(domain: domain, data: data, type: type)
         }
-        try test("proton.me", "proton.me")
-        try test("https://proton.me", "proton.me")
-        try test("https://proton.me/path/to/sth", "proton.me")
-        try test("http://proton.me/path/to/sth", "proton.me")
-        try test("proton.me/path/to/sth", "proton.me/path/to/sth")
-        try test("https://proton.me/path/to/sth", "proton.me")
-        try test("https://proton.me/blog/lessons-from-lastpass#protect", "proton.me")
-    }
 
-    func testCacheNotNullData() throws {
-        // Given
-        let givenContainerUrl = getDocumentsDirectory()
-        let givenData = Data.random()
-        let givenFileName = String.random()
-        try FavIconCacheUtils.cache(data: givenData,
-                                    fileName: givenFileName,
-                                    containerUrl: givenContainerUrl)
+        let givenCachedItems = try Array(repeating: 0, count: .random(in: 10...100)).map { _ in
+            try random(.random())
+        }
+
+        // Dummy files
+        for _ in 0..<100 {
+            try FileUtils.createOrOverwrite(data: .random(),
+                                            fileName: .random(),
+                                            containerUrl: containerUrl)
+        }
 
         // When
-        let fileUrl = givenContainerUrl.appendingPathComponent(givenFileName,
-                                                               conformingTo: .data)
-        let data = try Data(contentsOf: fileUrl)
+        let icons = try sut.getAllCachedIcons()
 
         // Then
-        XCTAssertEqual(data, givenData)
-    }
-
-    func testCacheNullData() throws {
-        // Given
-        let givenContainerUrl = getDocumentsDirectory()
-        let givenFileName = String.random()
-        try FavIconCacheUtils.cache(data: nil,
-                                    fileName: givenFileName,
-                                    containerUrl: givenContainerUrl)
-
-        // When
-        let fileUrl = givenContainerUrl.appendingPathComponent(givenFileName,
-                                                               conformingTo: .data)
-        let data = try Data(contentsOf: fileUrl)
-
-        // Then
-        XCTAssertTrue(data.isEmpty)
-    }
-
-    func testGetValidData() throws {
-        // Given
-        let givenContainerUrl = getDocumentsDirectory()
-        let givenFileName = String.random()
-        let givenData = Data.random()
-        try FavIconCacheUtils.cache(data: givenData,
-                                    fileName: givenFileName,
-                                    containerUrl: givenContainerUrl)
-
-        // When
-        var data = try FavIconCacheUtils.getDataRemovingIfObsolete(fileName: givenFileName,
-                                                                   containerUrl: givenContainerUrl,
-                                                                   isObsolete: false)
-
-        // Then
-        data = try XCTUnwrap(data)
-        XCTAssertEqual(data, givenData)
-
-        let fileUrl = givenContainerUrl.appendingPathComponent(givenFileName, conformingTo: .data)
-        XCTAssertTrue(FileManager.default.fileExists(atPath: fileUrl.path), "File still exists")
-    }
-
-    func testGetObsoleteData() throws {
-        // Given
-        let givenContainerUrl = getDocumentsDirectory()
-        let givenFileName = String.random()
-        let givenData = Data.random()
-        try FavIconCacheUtils.cache(data: givenData,
-                                    fileName: givenFileName,
-                                    containerUrl: givenContainerUrl)
-
-        // When
-        let data = try FavIconCacheUtils.getDataRemovingIfObsolete(fileName: givenFileName,
-                                                                   containerUrl: givenContainerUrl,
-                                                                   isObsolete: true)
-
-        // Then
-        XCTAssertNil(data)
-
-        let fileUrl = givenContainerUrl.appendingPathComponent(givenFileName, conformingTo: .data)
-        XCTAssertFalse(FileManager.default.fileExists(atPath: fileUrl.path), "File is deleted")
-    }
-
-    func testCheckObsolescences() throws {
-        // Given
-        let givenContainerUrl = getDocumentsDirectory()
-        let givenFileName = String.random()
-        let givenData = Data.random()
-        try FavIconCacheUtils.cache(data: givenData,
-                                    fileName: givenFileName,
-                                    containerUrl: givenContainerUrl)
-
-        // Then
-        XCTAssertFalse(FavIconCacheUtils.isObsolete(fileName: givenFileName,
-                                                    containerUrl: givenContainerUrl,
-                                                    currentDate: .now,
-                                                    thresholdInDays: 3))
-        XCTAssertFalse(FavIconCacheUtils.isObsolete(fileName: givenFileName,
-                                                    containerUrl: givenContainerUrl,
-                                                    currentDate: .now.adding(component: .day,
-                                                                             value: 1),
-                                                    thresholdInDays: 3))
-        XCTAssertFalse(FavIconCacheUtils.isObsolete(fileName: givenFileName,
-                                                    containerUrl: givenContainerUrl,
-                                                    currentDate: .now.adding(component: .day,
-                                                                             value: 2),
-                                                    thresholdInDays: 3))
-        XCTAssertTrue(FavIconCacheUtils.isObsolete(fileName: givenFileName,
-                                                   containerUrl: givenContainerUrl,
-                                                   currentDate: .now.adding(component: .day,
-                                                                            value: 3),
-                                                   thresholdInDays: 3))
+        XCTAssertEqual(icons.count, givenCachedItems.count)
+        for item in givenCachedItems {
+            XCTAssertTrue(icons.contains(item))
+        }
     }
 }
 
-private func getDocumentsDirectory() -> URL {
-    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-    let documentsDirectory = paths[0]
-    return documentsDirectory
+// MARK: - FavIconCacheUtils test
+extension FavIconRepositoryTests {
+    func testEncryptionAndDecryption() throws {
+        // Given
+        let key = sut.symmetricKey
+        let givenClearText = String.random()
+
+        // When
+        let encryptedText = try FavIconCacheUtils.encryptAndBase64(text: givenClearText,
+                                                                   with: key)
+        let decryptedText = try FavIconCacheUtils.decrypt(base64: encryptedText, with: key)
+
+        // Then
+        XCTAssertEqual(decryptedText, givenClearText)
+    }
 }

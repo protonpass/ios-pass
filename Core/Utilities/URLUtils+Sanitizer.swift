@@ -49,5 +49,30 @@ public extension URLUtils {
 
             return nil
         }
+
+        public static func sanitizeAndGetRootDomain(_ urlString: String,
+                                                    domainParser: DomainParser) -> String? {
+            guard let sanitizedUrlString = sanitize(urlString),
+                  let host = URL(string: sanitizedUrlString)?.host,
+                  let parsedHost = domainParser.parse(host: host) else { return nil }
+            let publicSufix = parsedHost.publicSuffix
+            let domains = host.components(separatedBy: ".")
+            var rootDomain = ""
+            var foundPublixSuffix = false
+            for domain in domains.reversed() {
+                if rootDomain.isEmpty {
+                    rootDomain = domain
+                } else {
+                    rootDomain = "\(domain).\(rootDomain)"
+                }
+
+                if foundPublixSuffix {
+                    return rootDomain
+                }
+
+                foundPublixSuffix = rootDomain == publicSufix
+            }
+            return rootDomain
+        }
     }
 }

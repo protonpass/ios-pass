@@ -21,7 +21,7 @@
 import Foundation
 
 public struct DataResponse {
-    public let httpResponse: HTTPURLResponse
+    public let httpCode: Int?
     public let protonCode: Int?
     public let data: Data?
 }
