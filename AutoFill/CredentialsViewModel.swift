@@ -93,6 +93,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger: Logger
+    let favIconRepository: FavIconRepositoryProtocol
     let logManager: LogManager
     let urls: [URL]
 
@@ -108,11 +109,13 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          itemRepository: ItemRepositoryProtocol,
          shareKeyRepository: ShareKeyRepositoryProtocol,
          remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
+         favIconRepository: FavIconRepositoryProtocol,
          symmetricKey: SymmetricKey,
          serviceIdentifiers: [ASCredentialServiceIdentifier],
          logManager: LogManager) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
+        self.favIconRepository = favIconRepository
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
         self.urls = serviceIdentifiers.map { serviceIdentifier in
