@@ -236,7 +236,6 @@
 		355AA31A29E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */; };
 		355AA31C29E9736A00C20F5F /* Data+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31B29E9736A00C20F5F /* Data+Random.swift */; };
 		355AA31E29E97B0900C20F5F /* FavIconRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31D29E97B0900C20F5F /* FavIconRepository.swift */; };
-		355AA32129E97E0200C20F5F /* FavIconRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32029E97E0200C20F5F /* FavIconRepositoryTests.swift */; };
 		355AA32329E97E3400C20F5F /* PMAPIService+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32229E97E3400C20F5F /* PMAPIService+Test.swift */; };
 		355AA32529E9B41900C20F5F /* ItemThumbnailableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32429E9B41900C20F5F /* ItemThumbnailableTests.swift */; };
 		355AA32729E9D3FD00C20F5F /* StringExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */; };
@@ -927,7 +926,6 @@
 		355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFavIconDatasourceTests.swift; sourceTree = "<group>"; };
 		355AA31B29E9736A00C20F5F /* Data+Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Random.swift"; sourceTree = "<group>"; };
 		355AA31D29E97B0900C20F5F /* FavIconRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavIconRepository.swift; sourceTree = "<group>"; };
-		355AA32029E97E0200C20F5F /* FavIconRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavIconRepositoryTests.swift; sourceTree = "<group>"; };
 		355AA32229E97E3400C20F5F /* PMAPIService+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PMAPIService+Test.swift"; sourceTree = "<group>"; };
 		355AA32429E9B41900C20F5F /* ItemThumbnailableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemThumbnailableTests.swift; sourceTree = "<group>"; };
 		355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensionTests.swift; sourceTree = "<group>"; };
@@ -1680,14 +1678,6 @@
 			path = Events;
 			sourceTree = "<group>";
 		};
-		355AA31F29E97DF100C20F5F /* Repositories */ = {
-			isa = PBXGroup;
-			children = (
-				355AA32029E97E0200C20F5F /* FavIconRepositoryTests.swift */,
-			);
-			path = Repositories;
-			sourceTree = "<group>";
-		};
 		355DC72029E15E6D00946867 /* TextView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2228,7 +2218,6 @@
 				3593DD1128A840BD00C235D3 /* CoreData */,
 				357D9FCE28A9815500F012BB /* Datasources */,
 				3542E2BB28D9CA8D00194F24 /* Models */,
-				355AA31F29E97DF100C20F5F /* Repositories */,
 				350A97D82885C94900A7168B /* TestData */,
 				350A97D52885C0B400A7168B /* Utilities */,
 			);
@@ -3862,7 +3851,6 @@
 				355E33AA29C4612800402CAE /* LocalSearchEntryDatasourceTests.swift in Sources */,
 				355AA32529E9B41900C20F5F /* ItemThumbnailableTests.swift in Sources */,
 				358A509628AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift in Sources */,
-				355AA32129E97E0200C20F5F /* FavIconRepositoryTests.swift in Sources */,
 				356BC36129D7189900F03497 /* ShareTests.swift in Sources */,
 				3542E2BA28D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift in Sources */,
 				3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */,

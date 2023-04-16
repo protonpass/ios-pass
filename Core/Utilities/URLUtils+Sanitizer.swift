@@ -51,10 +51,10 @@ public extension URLUtils {
         }
 
         public static func sanitizeAndGetRootDomain(_ urlString: String,
-                                                    domainParser: DomainParser) -> String? {
+                                                    domainParser: DomainParser) -> String {
             guard let sanitizedUrlString = sanitize(urlString),
                   let host = URL(string: sanitizedUrlString)?.host,
-                  let parsedHost = domainParser.parse(host: host) else { return nil }
+                  let parsedHost = domainParser.parse(host: host) else { return urlString }
             let publicSufix = parsedHost.publicSuffix
             let domains = host.components(separatedBy: ".")
             var rootDomain = ""
