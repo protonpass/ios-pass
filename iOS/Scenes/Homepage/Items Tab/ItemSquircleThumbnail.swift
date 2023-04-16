@@ -33,6 +33,15 @@ enum ItemSquircleThumbnailSize {
             return 60
         }
     }
+
+    var strokeWidth: CGFloat {
+        switch self {
+        case .regular:
+            return 2
+        case .large:
+            return 3
+        }
+    }
 }
 
 struct ItemSquircleThumbnail: View {
@@ -64,14 +73,16 @@ struct ItemSquircleThumbnail: View {
                                   height: size.height)
 
                 if let image {
-                    Color(uiColor: PassColor.backgroundMedium)
+                    Color(uiColor: PassColor.backgroundWeak)
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFit()
+                        .padding(size.height / 5)
                 }
             }
             .frame(width: size.height, height: size.height)
             .clipShape(RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous))
+            .overlay(overlay)
             .animation(.default, value: image)
             .onFirstAppear {
                 Task { @MainActor in
@@ -85,6 +96,17 @@ struct ItemSquircleThumbnail: View {
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private var overlay: some View {
+        if image != nil {
+            RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous)
+                .strokeBorder(Color(uiColor: PassColor.backgroundMedium),
+                              lineWidth: size.strokeWidth)
+        } else {
+            EmptyView()
         }
     }
 }
