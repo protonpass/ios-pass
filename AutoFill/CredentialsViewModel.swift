@@ -425,7 +425,7 @@ extension ItemUiModel: TitledItemIdentifiable {
 }
 
 extension ItemSearchResult: TitledItemIdentifiable {
-    var itemTitle: String { title.fullText }
+    var itemTitle: String { highlightableTitle.fullText }
 }
 
 extension CredentialItem: DateSortable, AlphabeticalSortable, Identifiable {

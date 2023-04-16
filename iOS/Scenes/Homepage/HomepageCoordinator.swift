@@ -542,7 +542,8 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
-        let viewModel = SearchViewModel(itemContextMenuHandler: itemContextMenuHandler,
+        let viewModel = SearchViewModel(favIconRepository: favIconRepository,
+                                        itemContextMenuHandler: itemContextMenuHandler,
                                         itemRepository: itemRepository,
                                         logManager: logManager,
                                         searchEntryDatasource: searchEntryDatasource,
