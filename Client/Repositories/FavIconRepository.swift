@@ -120,9 +120,9 @@ public extension FavIconRepositoryProtocol {
 
             if let type {
                 let data = try Data(contentsOf: url)
-                return FavIconData(domain: decryptedFileName,
-                                   data: data.isEmpty ? nil : data,
-                                   type: type)
+                return try FavIconData(domain: decryptedFileName,
+                                       data: data.isEmpty ? nil : symmetricKey.decrypt(data),
+                                       type: type)
             }
 
             return nil
