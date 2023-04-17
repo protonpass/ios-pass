@@ -51,7 +51,7 @@ public final class Preferences: ObservableObject, DeinitPrintable {
     public var browser = Browser.safari
 
     @AppStorage("clipboardExpiration", store: kSharedUserDefaults)
-    public var clipboardExpiration = ClipboardExpiration.thirtySeconds
+    public var clipboardExpiration = ClipboardExpiration.oneMinute
 
     @AppStorage("shareClipboard", store: kSharedUserDefaults)
     public var shareClipboard = false
@@ -70,7 +70,7 @@ public final class Preferences: ObservableObject, DeinitPrintable {
         autoFillBannerDisplayed = false
         theme = .dark
         browser = .safari
-        clipboardExpiration = .thirtySeconds
+        clipboardExpiration = .oneMinute
         shareClipboard = false
         askBeforeTrashing = true
         if isUITests {
