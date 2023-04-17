@@ -52,7 +52,7 @@ struct AccountView: View {
                     PassSectionDivider()
 
                     OptionRow(
-                        title: "Subscription Plan",
+                        title: "Subscription plan",
                         height: .tall,
                         content: {
                             Text(viewModel.primaryPlan?.title ?? "Free")

@@ -890,11 +890,11 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         let message: String
         switch type {
         case .login:
-            message = "Login udpated"
+            message = "Login updated"
         case .alias:
-            message = "Alias udpated"
+            message = "Alias updated"
         case .note:
-            message = "Note udpated"
+            message = "Note updated"
         }
         vaultsManager.refresh()
         searchViewModel?.refreshResults()
