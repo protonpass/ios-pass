@@ -59,7 +59,7 @@ public extension ItemThumbnailable {
     }
 }
 
-public enum ItemThumbnailData {
+public enum ItemThumbnailData: Equatable {
     case icon(type: ItemContentType)
     case initials(type: ItemContentType, initials: String)
     case favIcon(type: ItemContentType, url: String, initials: String)

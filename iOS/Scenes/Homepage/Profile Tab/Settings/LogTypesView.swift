@@ -32,7 +32,8 @@ struct LogTypesView: View {
             ScrollView {
                 VStack(spacing: kItemDetailSectionPadding) {
                     VStack(spacing: 0) {
-                        ForEach(PassLogModule.allCases, id: \.hashValue) { module in
+                        ForEach([PassLogModule.hostApp, PassLogModule.autoFillExtension],
+                                id: \.hashValue) { module in
                             TextOptionRow(title: module.title) { onSelect(module) }
                             if module != PassLogModule.allCases.last {
                                 PassDivider()

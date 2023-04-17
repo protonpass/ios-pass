@@ -52,7 +52,7 @@ struct CreateAliasLiteView: View {
                                                 prefixError: viewModel.prefixError)
                         }
 
-                        MailboxSection(mailboxSelection: viewModel.mailboxSelection)
+                        MailboxSection(mailboxSelection: viewModel.mailboxSelection, mode: .create)
                             .onTapGesture(perform: viewModel.showMailboxSelection)
 
                         if !isShowingAdvancedOptions {

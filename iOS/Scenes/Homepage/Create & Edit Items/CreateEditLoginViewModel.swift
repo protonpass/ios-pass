@@ -174,7 +174,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func additionalCreate() async throws {
         if let aliasCreationLiteInfo {
             let aliasContent = ItemContentProtobuf(name: title,
-                                                   note: "Alias of log in item \"\(title)\"",
+                                                   note: "Alias of login item \"\(title)\"",
                                                    itemUuid: UUID().uuidString,
                                                    data: .alias)
 

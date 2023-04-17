@@ -288,7 +288,6 @@
 		35610B8428ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */; };
 		35610B8928ABCF1900955ACB /* ShareRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B8828ABCF1900955ACB /* ShareRepository.swift */; };
 		356125032982438300EDA991 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356125022982438300EDA991 /* KeyboardViewController.swift */; };
-		356125072982438300EDA991 /* Keyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 356125002982438300EDA991 /* Keyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3561250E2982538900EDA991 /* KeyboardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561250D2982538900EDA991 /* KeyboardCoordinator.swift */; };
 		356125102982544400EDA991 /* KeyboardNotLoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561250F2982544400EDA991 /* KeyboardNotLoggedInView.swift */; };
 		356125122982548A00EDA991 /* KeyboardContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356125112982548A00EDA991 /* KeyboardContentView.swift */; };
@@ -321,6 +320,7 @@
 		356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */; };
 		3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */; };
 		3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */; };
+		3565362129ED7545007A43D3 /* PassIconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565362029ED7545007A43D3 /* PassIconTests.swift */; };
 		3565621A29B9E1D200C43F72 /* ItemSortable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565621929B9E1D200C43F72 /* ItemSortable.swift */; };
 		3565621C29B9EC9900C43F72 /* ItemSortableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565621B29B9EC9900C43F72 /* ItemSortableTests.swift */; };
 		3565621E29B9EDDB00C43F72 /* Date+AddingValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565621D29B9EDDB00C43F72 /* Date+AddingValue.swift */; };
@@ -421,7 +421,6 @@
 		3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */; };
 		3573D707297642F400F68DF7 /* DeleteVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */; };
 		35758BE02985695700AF2683 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
-		357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */; };
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
@@ -586,13 +585,6 @@
 			remoteGlobalIDString = 35E5063A286F819F00A3F6EA;
 			remoteInfo = iOS;
 		};
-		356125052982438300EDA991 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 35E5062F286F819F00A3F6EA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 356124FF2982438300EDA991;
-			remoteInfo = Keyboard;
-		};
 		356125152982587000EDA991 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 35E5062F286F819F00A3F6EA /* Project object */;
@@ -693,7 +685,6 @@
 			dstSubfolderSpec = 13;
 			files = (
 				3544F5EC28E2341900834CA4 /* AutoFill.appex in Embed App Extensions */,
-				356125072982438300EDA991 /* Keyboard.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -992,6 +983,7 @@
 		35635175299C10040059A97A /* IdentifiableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiableObject.swift; sourceTree = "<group>"; };
 		356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnReceiveBoolean.swift"; sourceTree = "<group>"; };
 		3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditItemTitleSection.swift; sourceTree = "<group>"; };
+		3565362029ED7545007A43D3 /* PassIconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassIconTests.swift; sourceTree = "<group>"; };
 		3565621929B9E1D200C43F72 /* ItemSortable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSortable.swift; sourceTree = "<group>"; };
 		3565621B29B9EC9900C43F72 /* ItemSortableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSortableTests.swift; sourceTree = "<group>"; };
 		3565621D29B9EDDB00C43F72 /* Date+AddingValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+AddingValue.swift"; sourceTree = "<group>"; };
@@ -1075,7 +1067,6 @@
 		3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidator.swift; sourceTree = "<group>"; };
 		3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidatorTests.swift; sourceTree = "<group>"; };
 		3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultEndpoint.swift; sourceTree = "<group>"; };
-		357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillBanner.swift; sourceTree = "<group>"; };
 		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
@@ -1576,7 +1567,6 @@
 				354361542941D251000CAE12 /* OnboardingView.swift */,
 				354361562941D419000CAE12 /* OnboardingViewModel.swift */,
 				354361582941DA0C000CAE12 /* OnboardingViewState.swift */,
-				357D7BC429435D7B00AAC594 /* TurnOnAutoFillBanner.swift */,
 				357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */,
 				357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */,
 			);
@@ -1749,6 +1739,7 @@
 			isa = PBXGroup;
 			children = (
 				3560846529DDE7FD001F7487 /* PassColorTests.swift */,
+				3565362029ED7545007A43D3 /* PassIconTests.swift */,
 			);
 			path = UIComponentsTests;
 			sourceTree = "<group>";
@@ -2690,7 +2681,6 @@
 				35E50696286F87A700A3F6EA /* PBXTargetDependency */,
 				3544F5EB28E2341900834CA4 /* PBXTargetDependency */,
 				35D56D592942354A00C2D0E2 /* PBXTargetDependency */,
-				356125062982438300EDA991 /* PBXTargetDependency */,
 			);
 			name = iOS;
 			packageProductDependencies = (
@@ -3555,6 +3545,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3560846629DDE7FD001F7487 /* PassColorTests.swift in Sources */,
+				3565362129ED7545007A43D3 /* PassIconTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3659,7 +3650,6 @@
 				3571B5A129BF7225008D4350 /* SearchViewModel.swift in Sources */,
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
 				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
-				357D7BC529435D7B00AAC594 /* TurnOnAutoFillBanner.swift in Sources */,
 				355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */,
 				356BC36929D7267F00F03497 /* EditPrimaryVaultViewModel.swift in Sources */,
 				3562D3BC29DEB08100981D7D /* NavigationTitleWithHandle.swift in Sources */,
@@ -4056,11 +4046,6 @@
 			target = 35E5063A286F819F00A3F6EA /* iOS */;
 			targetProxy = 3560846729DDEB5F001F7487 /* PBXContainerItemProxy */;
 		};
-		356125062982438300EDA991 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 356124FF2982438300EDA991 /* Keyboard */;
-			targetProxy = 356125052982438300EDA991 /* PBXContainerItemProxy */;
-		};
 		356125162982587000EDA991 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 35E50683286F87A600A3F6EA /* Core */;
@@ -4167,7 +4152,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -4251,7 +4236,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -4335,7 +4320,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -4413,7 +4398,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -5071,7 +5056,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -5155,7 +5140,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
@@ -5241,7 +5226,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
@@ -5321,7 +5306,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
@@ -5426,7 +5411,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -5631,7 +5616,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -5710,7 +5695,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
@@ -6142,7 +6127,7 @@
 				CODE_SIGN_ENTITLEMENTS = "iOS/iOSDebug-Black.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -6183,7 +6168,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -6686,7 +6671,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -6981,7 +6966,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 87;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;

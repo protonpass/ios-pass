@@ -26,11 +26,11 @@ enum PassLogModule: CaseIterable {
     var title: String {
         switch self {
         case .hostApp:
-            return "Host Application Logs"
+            return "Application logs"
         case .autoFillExtension:
-            return "AutoFill Extension Logs"
+            return "AutoFill extension logs"
         case .keyboardExtension:
-            return "Keyboard Extension Logs"
+            return "Keyboard extension logs"
         }
     }
 

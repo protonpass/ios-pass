@@ -44,10 +44,12 @@ struct SettingsView: View {
             VStack(spacing: kItemDetailSectionPadding) {
                 untitledSection
                 clipboardSection
+                    .padding(.vertical)
                 if let primaryVault = viewModel.vaultsManager.getPrimaryVault() {
                     primaryVaultSection(vault: primaryVault)
                 }
                 applicationSection
+                    .padding(.top)
             }
             .padding()
         }
@@ -126,10 +128,11 @@ struct SettingsView: View {
     }
 
     private func primaryVaultSection(vault: Vault) -> some View {
-        VStack(spacing: kItemDetailSectionPadding) {
+        VStack(spacing: 0) {
             Text("Vaults")
                 .sectionHeaderText()
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, kItemDetailSectionPadding)
 
             OptionRow(action: { viewModel.edit(primaryVault: vault) },
                       title: "Primary vault",
@@ -142,14 +145,16 @@ struct SettingsView: View {
             Text("You can not delete a primary vault")
                 .sectionTitleText()
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, kItemDetailSectionPadding / 2)
         }
     }
 
     private var applicationSection: some View {
-        VStack(spacing: kItemDetailSectionPadding) {
+        VStack(spacing: 0) {
             Text("Application")
                 .sectionHeaderText()
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, kItemDetailSectionPadding)
 
             VStack(spacing: 0) {
                 TextOptionRow(title: "View logs", action: viewModel.viewLogs)
@@ -160,7 +165,7 @@ struct SettingsView: View {
                     action: viewModel.forceSync,
                     height: .medium,
                     content: {
-                        Text("Force Synchronization")
+                        Text("Force synchronization")
                             .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                     },
                     trailing: {
@@ -171,9 +176,10 @@ struct SettingsView: View {
             }
             .roundedEditableSection()
 
-            Text("Download all your items again to make sure you are in sync.")
+            Text("Download all your items again to make sure you are in sync")
                 .sectionTitleText()
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, kItemDetailSectionPadding / 2)
         }
     }
 }

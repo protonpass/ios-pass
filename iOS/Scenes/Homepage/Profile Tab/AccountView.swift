@@ -39,7 +39,7 @@ struct AccountView: View {
 
     private var realBody: some View {
         ScrollView {
-            VStack(spacing: 12) {
+            VStack {
                 VStack(spacing: 0) {
                     OptionRow(
                         title: "Username",
@@ -52,7 +52,7 @@ struct AccountView: View {
                     PassSectionDivider()
 
                     OptionRow(
-                        title: "Subscription Plan",
+                        title: "Subscription plan",
                         height: .tall,
                         content: {
                             Text(viewModel.primaryPlan?.title ?? "Free")
@@ -90,6 +90,7 @@ struct AccountView: View {
                                      backgroundColor: PassColor.interactionNormMinor1)
                     })
                 .roundedEditableSection()
+                .padding(.vertical)
 
                 OptionRow(
                     action: viewModel.deleteAccount,

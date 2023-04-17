@@ -74,6 +74,11 @@ struct LogInDetailView: View {
                         onExpand: { withAnimation { value.scrollTo(bottomID, anchor: .bottom) } })
                     .padding(.top, 24)
                     .id(bottomID)
+
+                    if viewModel.isAlias {
+                        viewAliasCard
+                            .padding(.top)
+                    }
                 }
                 .padding()
                 .animation(.default, value: isShowingPassword)
@@ -120,7 +125,7 @@ struct LogInDetailView: View {
                                   color: iconTintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Username")
+                Text("Username or email")
                     .sectionTitleText()
 
                 if viewModel.username.isEmpty {
@@ -132,16 +137,12 @@ struct LogInDetailView: View {
 
                     if viewModel.isAlias {
                         Button(action: viewModel.showAliasDetail) {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("View Alias")
-                                    .font(.callout)
-                                    .foregroundColor(Color(uiColor: iconTintColor))
-                                Color(uiColor: viewModel.itemContent.type.normMinor1Color)
-                                    .frame(height: 1)
-                            }
-                            .fixedSize(horizontal: true, vertical: true)
-                            .padding(.top, 8)
+                            Text("View alias")
+                                .font(.callout)
+                                .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor1Color))
+                                .underline(color: Color(uiColor: viewModel.itemContent.type.normMajor1Color))
                         }
+                        .padding(.top, 8)
                     }
                 }
             }
@@ -226,7 +227,7 @@ struct LogInDetailView: View {
                 ItemDetailSectionIcon(icon: IconProvider.lock, color: iconTintColor)
 
                 VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                    Text("Two Factor Authentication")
+                    Text("2FA token (TOTP)")
                         .sectionTitleText()
 
                     switch viewModel.totpManager.state {
@@ -238,7 +239,7 @@ struct LogInDetailView: View {
                         TOTPText(code: data.code)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     case .invalid:
-                        Text("Invalid Two Factor Authentication URI")
+                        Text("Invalid TOTP URI")
                             .font(.caption)
                             .foregroundColor(Color(uiColor: PassColor.signalDanger))
                     }
@@ -299,5 +300,22 @@ struct LogInDetailView: View {
         }
         .padding(kItemDetailSectionPadding)
         .roundedDetailSection()
+    }
+
+    private var viewAliasCard: some View {
+        Group {
+            Text("View and edit details for this alias on the separate alias page. ")
+                .font(.callout)
+                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+            Text("View")
+                .font(.callout)
+                .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor1Color))
+                .underline(color: Color(uiColor: viewModel.itemContent.type.normMajor1Color))
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(kItemDetailSectionPadding)
+        .background(Color(uiColor: PassColor.backgroundMedium))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .onTapGesture(perform: viewModel.showAliasDetail)
     }
 }
