@@ -146,10 +146,11 @@ struct SettingsView: View {
     }
 
     private var applicationSection: some View {
-        VStack(spacing: kItemDetailSectionPadding) {
+        VStack(spacing: 0) {
             Text("Application")
                 .sectionHeaderText()
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, kItemDetailSectionPadding)
 
             VStack(spacing: 0) {
                 TextOptionRow(title: "View logs", action: viewModel.viewLogs)
@@ -160,7 +161,7 @@ struct SettingsView: View {
                     action: viewModel.forceSync,
                     height: .medium,
                     content: {
-                        Text("Force Synchronization")
+                        Text("Force synchronization")
                             .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                     },
                     trailing: {
@@ -171,9 +172,10 @@ struct SettingsView: View {
             }
             .roundedEditableSection()
 
-            Text("Download all your items again to make sure you are in sync.")
+            Text("Download all your items again to make sure you are in sync")
                 .sectionTitleText()
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, kItemDetailSectionPadding / 2)
         }
     }
 }
