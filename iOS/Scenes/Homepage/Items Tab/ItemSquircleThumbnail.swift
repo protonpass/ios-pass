@@ -109,10 +109,13 @@ struct ItemSquircleThumbnail: View {
 
     private func loadFavIcon(url: String, force: Bool) {
         if !force, image != nil { return }
+        if force { image = nil }
         Task { @MainActor in
             do {
                 let favIcon = try await repository.getIcon(for: url)
-                self.image = .init(data: favIcon.data)
+                if let image = UIImage(data: favIcon.data) {
+                    self.image = image
+                }
             } catch {
                 print(error)
             }
