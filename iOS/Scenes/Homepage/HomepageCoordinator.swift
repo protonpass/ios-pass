@@ -347,8 +347,10 @@ private extension HomepageCoordinator {
         currentCreateEditItemViewModel = viewModel
     }
 
-    func presentMailboxSelectionView(selection: MailboxSelection, mode: MailboxSelectionView.Mode) {
-        let view = MailboxSelectionView(mailboxSelection: selection, mode: mode)
+    func presentMailboxSelectionView(selection: MailboxSelection,
+                                     mode: MailboxSelectionView.Mode,
+                                     titleMode: MailboxSection.Mode) {
+        let view = MailboxSelectionView(mailboxSelection: selection, mode: mode, titleMode: titleMode)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         present(viewController)
@@ -936,8 +938,11 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
 
 // MARK: - CreateEditAliasViewModelDelegate
 extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
-    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        presentMailboxSelectionView(selection: mailboxSelection, mode: .createEditAlias)
+    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection,
+                                                        titleMode: MailboxSection.Mode) {
+        presentMailboxSelectionView(selection: mailboxSelection,
+                                    mode: .createEditAlias,
+                                    titleMode: titleMode)
     }
 
     func createEditAliasViewModelCanNotCreateMoreAliases() {
@@ -948,7 +953,9 @@ extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
 // MARK: - CreateAliasLiteViewModelDelegate
 extension HomepageCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        presentMailboxSelectionView(selection: mailboxSelection, mode: .createAliasLite)
+        presentMailboxSelectionView(selection: mailboxSelection,
+                                    mode: .createAliasLite,
+                                    titleMode: .create)
     }
 }
 

@@ -24,13 +24,27 @@ import UIComponents
 
 struct MailboxSection: View {
     @ObservedObject var mailboxSelection: MailboxSelection
+    let mode: Mode
+
+    enum Mode {
+        case create, edit
+
+        var title: String {
+            switch self {
+            case .create:
+                return "Forward to"
+            case .edit:
+                return "Forwarding to"
+            }
+        }
+    }
 
     var body: some View {
         HStack {
             ItemDetailSectionIcon(icon: IconProvider.forward)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Forwarding to")
+                Text(mode.title)
                     .sectionTitleText()
                 Text(mailboxSelection.selectedMailboxesString)
                     .sectionContentText()
