@@ -29,9 +29,10 @@ final class OnboardingViewModel: ObservableObject {
     @Published private(set) var state = OnboardingViewState.autoFill
 
     private let credentialManager: CredentialManagerProtocol
-    private let preferences: Preferences
     private let biometricAuthenticator: BiometricAuthenticator
     private let bannerManager: BannerManager
+    let preferences: Preferences
+
     private var cancellables = Set<AnyCancellable>()
 
     init(credentialManager: CredentialManagerProtocol,

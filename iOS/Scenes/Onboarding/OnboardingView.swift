@@ -89,6 +89,7 @@ struct OnboardingView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(maxWidth: .infinity, alignment: .center)
+        .theme(viewModel.preferences.theme)
         .background(OnboardingGradientBackground())
         .background(Color(.systemBackground))
         .edgesIgnoringSafeArea(.all)
@@ -114,11 +115,6 @@ struct OnboardingAutoFillView: View {
                 stepImage(PassIcon.onboardAutoFillStep4)
                 stepImage(PassIcon.onboardAutoFillStep5)
             }
-            .background(
-                Image(uiImage: PassIcon.onboardAutoFillGradient)
-                    .resizable()
-                    .frame(width: 2)
-                    .padding(.vertical, 36))
 
             VStack(alignment: .leading, spacing: 24) {
                 Text("Open **Settings** app")
@@ -161,12 +157,10 @@ private struct OnboardingBiometricAuthenticationView: View {
     let enabled: Bool
     var body: some View {
         ZStack {
-            Image(uiImage: PassIcon.onboardBiometricAuthenticationBackground)
+            Image(uiImage: PassIcon.onboardAuthenticationBackground)
                 .resizable()
                 .scaledToFit()
-            Image(uiImage: enabled ?
-                  PassIcon.onboardBiometricAuthenticationEnabled :
-                    PassIcon.onboardBiometricAuthentication)
+            Image(uiImage: enabled ? PassIcon.onboardAuthenticationEnabled : PassIcon.onboardAuthentication)
             .resizable()
             .scaledToFit()
             .frame(maxWidth: 180)
