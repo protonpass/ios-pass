@@ -115,8 +115,8 @@ final class PreferencesTests: XCTestCase {
         XCTAssertFalse(sut.autoFillBannerDisplayed)
     }
 
-    func testThemeIsMatchSystemkByDefault() {
-        XCTAssertEqual(sut.theme, .matchSystem)
+    func testThemeIsDarkByDefault() {
+        XCTAssertEqual(sut.theme, .dark)
     }
 
     func testThemeIsMatchSystemAfterResetting() {
