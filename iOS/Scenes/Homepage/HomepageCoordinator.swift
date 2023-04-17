@@ -698,6 +698,7 @@ extension HomepageCoordinator: AccountViewModelDelegate {
 
     func accountViewModelWantsToSignOut() {
         eventLoop.stop()
+        try? favIconRepository.emptyCache()
         delegate?.homepageCoordinatorWantsToLogOut()
     }
 

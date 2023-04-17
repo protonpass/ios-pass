@@ -63,6 +63,15 @@ public enum ItemThumbnailData {
     case icon(type: ItemContentType)
     case initials(type: ItemContentType, initials: String)
     case favIcon(type: ItemContentType, url: String, initials: String)
+
+    public var url: String? {
+        switch self {
+        case let .favIcon(_, url, _):
+            return url
+        default:
+            return nil
+        }
+    }
 }
 
 public extension Array where Element: ItemIdentifiable {

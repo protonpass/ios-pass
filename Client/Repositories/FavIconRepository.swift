@@ -37,6 +37,7 @@ public protocol FavIconRepositoryProtocol {
     var symmetricKey: SymmetricKey { get }
 
     func getIcon(for domain: String) async throws -> FavIcon
+    func getCachedIcon(for domain: String) -> FavIcon?
     func getAllCachedIcons() throws -> [FavIcon]
     func emptyCache() throws
 }
@@ -76,6 +77,19 @@ public extension FavIconRepositoryProtocol {
                                         fileName: "\(hashedDomain).domain",
                                         containerUrl: containerUrl)
         return .init(domain: domain, data: dataToWrite, isFromCache: false)
+    }
+
+    func getCachedIcon(for domain: String) -> FavIcon? {
+        let domain = URL(string: domain)?.host ?? domain
+        let hashedDomain = domain.sha256
+        let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
+                                                          conformingTo: .data)
+        if let data = try? getDataOrRemoveIfObsolete(url: dataUrl) {
+            return try? .init(domain: domain,
+                              data: symmetricKey.decrypt(data),
+                              isFromCache: true)
+        }
+        return nil
     }
 
     func getAllCachedIcons() throws -> [FavIcon] {

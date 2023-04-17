@@ -49,7 +49,18 @@ struct ItemSquircleThumbnail: View {
 
     let data: ItemThumbnailData
     let repository: FavIconRepositoryProtocol
-    var size: ItemSquircleThumbnailSize = .regular
+    let size: ItemSquircleThumbnailSize
+
+    init(data: ItemThumbnailData,
+         repository: FavIconRepositoryProtocol,
+         size: ItemSquircleThumbnailSize = .regular) {
+        if let url = data.url, let cachedFavIcon = repository.getCachedIcon(for: url) {
+            self._image = .init(initialValue: .init(data: cachedFavIcon.data))
+        }
+        self.data = data
+        self.repository = repository
+        self.size = size
+    }
 
     var body: some View {
         switch data {
@@ -86,6 +97,7 @@ struct ItemSquircleThumbnail: View {
             .animation(.default, value: image)
             .onFirstAppear {
                 Task { @MainActor in
+                    guard image == nil else { return }
                     do {
                         let favIcon = try await repository.getIcon(for: url)
                         if !favIcon.data.isEmpty {
