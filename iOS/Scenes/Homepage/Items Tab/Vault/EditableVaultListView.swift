@@ -199,7 +199,7 @@ extension VaultSelection {
     var icon: UIImage {
         switch self {
         case .all:
-            return PassIcon.allVaults
+            return PassIcon.brandPass
         case .precise(let vault):
             return vault.displayPreferences.icon.icon.image
         case .trash:

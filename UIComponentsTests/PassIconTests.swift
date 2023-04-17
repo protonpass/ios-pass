@@ -49,7 +49,6 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.swirls
         _ = PassIcon.trash
 
-        _ = PassIcon.allVaults
         _ = PassIcon.vaultIcon1
         _ = PassIcon.vaultIcon2
         _ = PassIcon.vaultIcon3

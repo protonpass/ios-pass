@@ -88,7 +88,7 @@ struct ItemsTabView: View {
             switch viewModel.vaultsManager.vaultSelection {
             case .all:
                 CircleButton(
-                    icon: PassIcon.allVaults,
+                    icon: PassIcon.brandPass,
                     iconColor: VaultSelection.all.color,
                     backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16),
                     type: .big,
