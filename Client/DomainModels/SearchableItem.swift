@@ -29,6 +29,7 @@ public struct SearchableItem: ItemTypeIdentifiable {
     public let type: ItemContentType
     public let name: String
     public let note: String
+    public let url: String?
     public let requiredExtras: [String] // E.g: Username for login items
     public let optionalExtras: [String] // E.g: URLs for login items
     public let lastUseTime: Int64
@@ -53,9 +54,11 @@ public struct SearchableItem: ItemTypeIdentifiable {
 
         switch itemContent.contentData {
         case .login(let data):
+            self.url = data.urls.first
             self.requiredExtras = [data.username]
             self.optionalExtras = data.urls
         default:
+            self.url = nil
             self.requiredExtras = []
             self.optionalExtras = []
         }
@@ -112,6 +115,7 @@ extension SearchableItem {
                      type: type,
                      title: title,
                      detail: detail,
+                     url: url,
                      vault: vault,
                      lastUseTime: lastUseTime,
                      modifyTime: modifyTime)

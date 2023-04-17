@@ -47,6 +47,10 @@ struct ProfileTabView: View {
                     helpCenterSection
                         .padding(.vertical)
 
+                    if UserDefaults.standard.bool(forKey: "qa_features") {
+                        qaFeaturesSection
+                    }
+
                     Text(viewModel.appVersion)
                         .sectionTitleText()
 
@@ -205,18 +209,16 @@ struct ProfileTabView: View {
     }
 
     private var aboutSection: some View {
-        VStack(spacing: kItemDetailSectionPadding) {
-            VStack(spacing: 0) {
-                /*
-                TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
-                 PassSectionDivider()
-                 */
-                TextOptionRow(title: "Privacy policy", action: viewModel.showPrivacyPolicy)
-                PassSectionDivider()
-                TextOptionRow(title: "Terms of service", action: viewModel.showTermsOfService)
-            }
-            .roundedEditableSection()
+        VStack(spacing: 0) {
+            /*
+             TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
+             PassSectionDivider()
+             */
+            TextOptionRow(title: "Privacy policy", action: viewModel.showPrivacyPolicy)
+            PassSectionDivider()
+            TextOptionRow(title: "Terms of service", action: viewModel.showTermsOfService)
         }
+        .roundedEditableSection()
         .padding(.horizontal)
     }
 
@@ -236,6 +238,14 @@ struct ProfileTabView: View {
             }
             .roundedEditableSection()
         }
+        .padding(.horizontal)
+    }
+
+    private var qaFeaturesSection: some View {
+        VStack(spacing: 0) {
+            TextOptionRow(title: "QA Features", action: viewModel.qaFeatures)
+        }
+        .roundedEditableSection()
         .padding(.horizontal)
     }
 }

@@ -64,8 +64,8 @@ struct CreateEditAliasView: View {
     private var closeButtonToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         iconColor: ItemContentType.alias.normMajor1Color,
-                         backgroundColor: ItemContentType.alias.normMinor2Color,
+                         iconColor: ItemContentType.alias.normMajor2Color,
+                         backgroundColor: ItemContentType.alias.normMinor1Color,
                          action: dismiss.callAsFunction)
         }
     }

@@ -26,12 +26,15 @@ struct SearchEntryUiModel: ItemIdentifiable {
     let shareId: String
     let type: ItemContentType
     let title: String
+    let url: String?
     let description: String?
 }
 
 extension SearchEntryUiModel: Identifiable {
     var id: String { itemId + shareId }
 }
+
+extension SearchEntryUiModel: ItemThumbnailable {}
 
 extension SearchEntryUiModel: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
@@ -45,9 +48,13 @@ extension SymmetricallyEncryptedItem {
         let name = try symmetricKey.decrypt(encryptedItemContent.name)
 
         let note: String?
+        var url: String?
         switch encryptedItemContent.contentData {
         case .login(let data):
             note = try symmetricKey.decrypt(data.username)
+            if let firstUrl = data.urls.first {
+                url = try symmetricKey.decrypt(firstUrl)
+            }
         case .alias:
             note = item.aliasEmail
         default:
@@ -58,6 +65,7 @@ extension SymmetricallyEncryptedItem {
                      shareId: encryptedItemContent.shareId,
                      type: encryptedItemContent.contentData.type,
                      title: name,
+                     url: url,
                      description: note?.isEmpty == true ? nil : note)
     }
 }

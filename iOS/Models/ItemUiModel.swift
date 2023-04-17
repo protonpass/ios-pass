@@ -21,12 +21,13 @@
 import Client
 import CryptoKit
 
-struct ItemUiModel: ItemTypeIdentifiable, Hashable {
+struct ItemUiModel: ItemTypeIdentifiable, ItemThumbnailable, Hashable {
     let itemId: String
     let shareId: String
     let type: ItemContentType
     let title: String
     let description: String
+    let url: String?
     let lastUseTime: Int64
     let modifyTime: Int64
     let state: ItemState
@@ -52,13 +53,24 @@ extension SymmetricallyEncryptedItem {
         let name = try symmetricKey.decrypt(encryptedItemContent.name)
 
         let note: String
+        let url: String?
+
         switch encryptedItemContent.contentData {
         case .login(let data):
             note = try symmetricKey.decrypt(data.username)
+            if let firstUrl = data.urls.first {
+                url = try symmetricKey.decrypt(firstUrl)
+            } else {
+                url = nil
+            }
+
         case .alias:
             note = item.aliasEmail ?? ""
+            url = nil
+
         default:
             note = try String(symmetricKey.decrypt(encryptedItemContent.note).prefix(50))
+            url = nil
         }
 
         return .init(itemId: encryptedItemContent.item.itemID,
@@ -66,6 +78,7 @@ extension SymmetricallyEncryptedItem {
                      type: encryptedItemContent.contentData.type,
                      title: name,
                      description: note,
+                     url: url,
                      lastUseTime: item.lastUseTime ?? 0,
                      modifyTime: item.modifyTime,
                      state: encryptedItemContent.item.itemState)

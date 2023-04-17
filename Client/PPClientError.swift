@@ -27,11 +27,13 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
     case corruptedEncryptedContent
     case corruptedUserData(UserDataCorruptionReason)
     case crypto(CryptoFailureReason)
+    case errorExpected
     case itemNotFound(item: ItemIdentifiable)
     case keysNotFound(shareID: String)
-    case networkOperationsOnMainThread
     case shareNotFoundInLocalDB(shareID: String)
     case symmetricEncryption(SymmetricEncryptionFailureReason)
+    case unexpectedError
+    case unexpectedHttpStatusCode(Int?)
     case unknownShareType
     case unmatchedRotationID(leftID: String, rightID: String)
 
@@ -45,16 +47,20 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
             return reason.debugDescription
         case .crypto(let reason):
             return reason.debugDescription
+        case .errorExpected:
+            return "An error is expected"
         case .itemNotFound(let item):
             return "Item not found ID \"\(item.itemId)\", share ID \"\(item.shareId)\""
         case .keysNotFound(let shareID):
             return "Keys not found for share \"\(shareID)\""
-        case .networkOperationsOnMainThread:
-            return "Network operations shouldn't be called on main thread"
         case .shareNotFoundInLocalDB(let shareID):
             return "Share not found in local DB \"\(shareID)\""
         case .symmetricEncryption(let reason):
             return reason.debugDescription
+        case .unexpectedError:
+            return "Unexpected error"
+        case .unexpectedHttpStatusCode(let statusCode):
+            return "Unexpected HTTP status code \(statusCode)"
         case .unknownShareType:
             return "Unknown share type"
         case let .unmatchedRotationID(leftID, rightID):
@@ -107,6 +113,7 @@ public extension PPClientError {
         case failedToUnarmor(String)
         case failedToArmor(String)
         case failedToBase64Decode
+        case failedToBase64Encode
         case failedToGetFingerprint
         case failedToGenerateKeyRing
         case failedToEncrypt
@@ -115,6 +122,7 @@ public extension PPClientError {
         case failedToVerifySignature
         case failedToGenerateSessionKey
         case failedToDecode
+        case failedToEncode(String)
         case failedToAESEncrypt
         case addressNotFound(addressID: String)
         case corruptedShareContent(shareID: String)
@@ -133,6 +141,8 @@ public extension PPClientError {
                 return "Failed to armor \(string)"
             case .failedToBase64Decode:
                 return "Failed to base 64 decode"
+            case .failedToBase64Encode:
+                return "Failed to base 64 encode"
             case .failedToGetFingerprint:
                 return "Failed to get fingerprint"
             case .failedToGenerateKeyRing:
@@ -149,6 +159,8 @@ public extension PPClientError {
                 return "Failed to generate session key"
             case .failedToDecode:
                 return "Failed to decode"
+            case .failedToEncode(let string):
+                return "Failed to encode \"\(string)\""
             case .failedToAESEncrypt:
                 return "Failed to AES encrypt"
             case .addressNotFound(let addressID):

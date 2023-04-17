@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable force_try
 @testable import Core
 import XCTest
 
@@ -44,5 +45,19 @@ final class URLUtilsPlusSanitizerTests: XCTestCase {
                        "ssh://example.com/test?abc=")
 
         XCTAssertEqual(URLUtils.Sanitizer.sanitize("example.com"), "https://example.com")
+    }
+
+    func testSanitizeAndGetRootDomain() {
+        let parser = try! DomainParser()
+        let test: (String, String) -> Void = { input, output in
+            XCTAssertEqual(URLUtils.Sanitizer.sanitizeAndGetRootDomain(input,
+                                                                       domainParser: parser),
+                           output)
+        }
+        test("example.com/path?param=true", "example.com")
+        test("ssh://example.com/test?abc=", "example.com")
+        test("https://account.proton.me/path?param=true", "proton.me")
+        test("https://gitlab.tech.proton.me/test?abc=", "proton.me")
+        test("https://gitlab.tech.proton.co.uk/test?abc=", "proton.co.uk")
     }
 }

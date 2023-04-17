@@ -38,6 +38,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     @Published var selectedSortType = SortType.mostRecent
 
+    let favIconRepository: FavIconRepositoryProtocol
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemRepository: ItemRepositoryProtocol
     let logger: Logger
@@ -54,12 +55,14 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop: SyncEventLoop
 
-    init(itemContextMenuHandler: ItemContextMenuHandler,
+    init(favIconRepository: FavIconRepositoryProtocol,
+         itemContextMenuHandler: ItemContextMenuHandler,
          itemRepository: ItemRepositoryProtocol,
          logManager: LogManager,
          preferences: Preferences,
          syncEventLoop: SyncEventLoop,
          vaultsManager: VaultsManager) {
+        self.favIconRepository = favIconRepository
         self.itemContextMenuHandler = itemContextMenuHandler
         self.itemRepository = itemRepository
         self.logger = .init(manager: logManager)
