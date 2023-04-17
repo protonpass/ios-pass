@@ -27,6 +27,7 @@ struct MailboxSelectionView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var mailboxSelection: MailboxSelection
     let mode: Mode
+    let titleMode: MailboxSection.Mode
 
     enum Mode {
         case createEditAlias
@@ -86,7 +87,7 @@ struct MailboxSelectionView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: "Forwarding to")
+                    NavigationTitleWithHandle(title: titleMode.title)
                 }
             }
         }

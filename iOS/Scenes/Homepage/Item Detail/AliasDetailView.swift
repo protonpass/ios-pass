@@ -141,7 +141,7 @@ struct AliasDetailView: View {
             ItemDetailSectionIcon(icon: IconProvider.forward, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Forwarded to")
+                Text("Forwarding to")
                     .sectionTitleText()
 
                 if let mailboxes = viewModel.mailboxes {

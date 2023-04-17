@@ -55,7 +55,8 @@ final class MailboxSelection: ObservableObject {
 }
 
 protocol CreateEditAliasViewModelDelegate: AnyObject {
-    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection)
+    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection,
+                                                        titleMode: MailboxSection.Mode)
     func createEditAliasViewModelCanNotCreateMoreAliases()
 }
 
@@ -251,7 +252,8 @@ extension CreateEditAliasViewModel {
     func showMailboxSelection() {
         guard let mailboxSelection else { return }
         createEditAliasViewModelDelegate?
-            .createEditAliasViewModelWantsToSelectMailboxes(mailboxSelection)
+            .createEditAliasViewModelWantsToSelectMailboxes(mailboxSelection,
+                                                            titleMode: mode.isEditMode ? .edit : .create)
     }
 }
 
