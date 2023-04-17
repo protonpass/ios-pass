@@ -36,6 +36,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.onboardAuthentication
         _ = PassIcon.onboardAuthenticationBackground
         _ = PassIcon.onboardAuthenticationEnabled
+        _ = PassIcon.onboardAutoFillGradient
         _ = PassIcon.onboardAutoFillEnabled
         _ = PassIcon.onboardAutoFillStep1
         _ = PassIcon.onboardAutoFillStep2

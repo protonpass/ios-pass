@@ -33,6 +33,7 @@ public extension PassIcon {
     static var onboardAuthentication = UIImage(named: "OnboardAuthentication")!
     static var onboardAuthenticationBackground = UIImage(named: "OnboardAuthenticationBackground")!
     static var onboardAuthenticationEnabled = UIImage(named: "OnboardAuthenticationEnabled")!
+    static var onboardAutoFillGradient = UIImage(named: "OnboardAutoFillGradient")!
     static var onboardAutoFillEnabled = UIImage(named: "OnboardAutoFillEnabled")!
     static var onboardAutoFillStep1 = UIImage(named: "OnboardAutoFillStep1")!
     static var onboardAutoFillStep2 = UIImage(named: "OnboardAutoFillStep2")!

@@ -106,6 +106,11 @@ struct OnboardingAutoFillView: View {
                 stepImage(PassIcon.onboardAutoFillStep4)
                 stepImage(PassIcon.onboardAutoFillStep5)
             }
+            .background(
+                Image(uiImage: PassIcon.onboardAutoFillGradient)
+                    .resizable()
+                    .frame(width: 2)
+                    .padding(.vertical, 36))
 
             VStack(alignment: .leading, spacing: 24) {
                 Text("Open **Settings** app")
