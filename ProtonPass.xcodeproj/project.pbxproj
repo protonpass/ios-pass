@@ -321,6 +321,8 @@
 		3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */; };
 		3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */; };
 		3565362129ED7545007A43D3 /* PassIconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565362029ED7545007A43D3 /* PassIconTests.swift */; };
+		3565362429EDD6F8007A43D3 /* SendEventsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565362329EDD6F8007A43D3 /* SendEventsEndpoint.swift */; };
+		3565362629EDD8E4007A43D3 /* SendEventsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565362529EDD8E4007A43D3 /* SendEventsRequest.swift */; };
 		3565621A29B9E1D200C43F72 /* ItemSortable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565621929B9E1D200C43F72 /* ItemSortable.swift */; };
 		3565621C29B9EC9900C43F72 /* ItemSortableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565621B29B9EC9900C43F72 /* ItemSortableTests.swift */; };
 		3565621E29B9EDDB00C43F72 /* Date+AddingValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565621D29B9EDDB00C43F72 /* Date+AddingValue.swift */; };
@@ -984,6 +986,8 @@
 		356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnReceiveBoolean.swift"; sourceTree = "<group>"; };
 		3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditItemTitleSection.swift; sourceTree = "<group>"; };
 		3565362029ED7545007A43D3 /* PassIconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassIconTests.swift; sourceTree = "<group>"; };
+		3565362329EDD6F8007A43D3 /* SendEventsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendEventsEndpoint.swift; sourceTree = "<group>"; };
+		3565362529EDD8E4007A43D3 /* SendEventsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendEventsRequest.swift; sourceTree = "<group>"; };
 		3565621929B9E1D200C43F72 /* ItemSortable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSortable.swift; sourceTree = "<group>"; };
 		3565621B29B9EC9900C43F72 /* ItemSortableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSortableTests.swift; sourceTree = "<group>"; };
 		3565621D29B9EDDB00C43F72 /* Date+AddingValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+AddingValue.swift"; sourceTree = "<group>"; };
@@ -1588,6 +1592,7 @@
 				35544406287CB3810017FCAD /* Endpoint.swift */,
 				355792E329E876B7001198DA /* DataResponse.swift */,
 				354146D228D1F218007E45A6 /* Aliases */,
+				3565362229EDD6C7007A43D3 /* Data */,
 				3558180D290A8BE200DD94DB /* Events */,
 				355792DB29E85979001198DA /* Image Proxy */,
 				355E803D28A3071700BE7C9B /* Items */,
@@ -1802,6 +1807,15 @@
 				3552272D29DC9EAC00B9607E /* SearchBar.swift */,
 			);
 			path = "Supporting Views";
+			sourceTree = "<group>";
+		};
+		3565362229EDD6C7007A43D3 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				3565362529EDD8E4007A43D3 /* SendEventsRequest.swift */,
+				3565362329EDD6F8007A43D3 /* SendEventsEndpoint.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		3565622529BA760800C43F72 /* Item Detail */ = {
@@ -3749,6 +3763,7 @@
 				355888A429AE5EC3009AA775 /* AESGCM+ConvenientSealOpen.swift in Sources */,
 				3556949929D44DAE005DD2EB /* MoveItemEndpoint.swift in Sources */,
 				355792DD29E859A5001198DA /* GetLogoEndpoint.swift in Sources */,
+				3565362629EDD8E4007A43D3 /* SendEventsRequest.swift in Sources */,
 				359A4DDC29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift in Sources */,
 				358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */,
 				358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */,
@@ -3770,6 +3785,7 @@
 				356B831429C365320084488A /* SearchEntryEntity.swift in Sources */,
 				3554747C29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift in Sources */,
 				3552F48A28D344E100547146 /* Alias.swift in Sources */,
+				3565362429EDD6F8007A43D3 /* SendEventsEndpoint.swift in Sources */,
 				355792E429E876B7001198DA /* DataResponse.swift in Sources */,
 				3554730829CDD3CC0092E0E4 /* UpdateVaultRequest.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
