@@ -119,13 +119,13 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.theme, .dark)
     }
 
-    func testThemeIsMatchSystemAfterResetting() {
+    func testThemeIsDarkAfterResetting() {
         sut.theme = .light
         XCTAssertEqual(sut.theme, .light)
-        sut.theme = .dark
-        XCTAssertEqual(sut.theme, .dark)
-        sut.reset()
+        sut.theme = .matchSystem
         XCTAssertEqual(sut.theme, .matchSystem)
+        sut.reset()
+        XCTAssertEqual(sut.theme, .dark)
     }
 
     func testBrowserIsSafariByDefault() {
