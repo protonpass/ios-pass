@@ -180,7 +180,7 @@ struct ProfileTabView: View {
 
                 OptionRow(height: .medium) {
                     Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
-                        Text("Copy Two Factor Authentication code")
+                        Text("Copy 2FA code")
                             .foregroundColor(Color(uiColor: PassColor.textNorm))
                     }
                     .tint(Color(uiColor: PassColor.interactionNorm))
