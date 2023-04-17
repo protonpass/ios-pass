@@ -126,10 +126,11 @@ struct SettingsView: View {
     }
 
     private func primaryVaultSection(vault: Vault) -> some View {
-        VStack(spacing: kItemDetailSectionPadding) {
+        VStack(spacing: 0) {
             Text("Vaults")
                 .sectionHeaderText()
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, kItemDetailSectionPadding)
 
             OptionRow(action: { viewModel.edit(primaryVault: vault) },
                       title: "Primary vault",
@@ -142,6 +143,7 @@ struct SettingsView: View {
             Text("You can not delete a primary vault")
                 .sectionTitleText()
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, kItemDetailSectionPadding / 2)
         }
     }
 

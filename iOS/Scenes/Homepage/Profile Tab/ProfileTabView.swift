@@ -132,7 +132,7 @@ struct ProfileTabView: View {
 
             if case .initialized(let biometryType) = viewModel.biometricAuthenticator.biometryTypeState,
                biometryType != .none {
-                Text("Unlock Proton Pass with a glance.")
+                Text("Unlock Proton Pass with a glance")
                     .sectionTitleText()
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -189,8 +189,7 @@ struct ProfileTabView: View {
             .roundedEditableSection()
 
             if viewModel.automaticallyCopyTotpCode {
-                // swiftlint:disable:next line_length
-                Text("When autofilling, you will be warned if Two Factor Authentication code expires in less than 10 seconds.")
+                Text("When autofilling, you will be warned if the 2FA code expires in less than 10 seconds")
                     .sectionTitleText()
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
