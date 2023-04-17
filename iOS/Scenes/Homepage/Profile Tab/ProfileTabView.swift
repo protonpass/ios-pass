@@ -94,9 +94,10 @@ struct ProfileTabView: View {
     }
 
     private var biometricAuthenticationSection: some View {
-        VStack {
+        VStack(spacing: 0) {
             Text("Manage my profile")
                 .profileSectionTitle()
+                .padding(.bottom, kItemDetailSectionPadding)
 
             OptionRow(height: .medium) {
                 switch viewModel.biometricAuthenticator.biometryTypeState {
@@ -135,13 +136,14 @@ struct ProfileTabView: View {
                 Text("Unlock Proton Pass with a glance")
                     .sectionTitleText()
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, kItemDetailSectionPadding / 2)
             }
         }
         .padding(.horizontal)
     }
 
     private var autoFillDisabledSection: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack {
                 Text("AutoFill disabled")
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -161,6 +163,7 @@ struct ProfileTabView: View {
             Text("AutoFill on apps and websites by enabling Proton Pass AutoFill.")
                 .sectionTitleText()
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, kItemDetailSectionPadding / 2)
         }
         .padding(.horizontal)
     }
@@ -222,9 +225,10 @@ struct ProfileTabView: View {
     }
 
     private var helpCenterSection: some View {
-        VStack(spacing: kItemDetailSectionPadding) {
+        VStack(spacing: 0) {
             Text("Help center")
                 .profileSectionTitle()
+                .padding(.bottom, kItemDetailSectionPadding)
 
             VStack(spacing: 0) {
                 /*

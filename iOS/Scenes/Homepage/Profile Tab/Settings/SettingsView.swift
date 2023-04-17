@@ -44,10 +44,12 @@ struct SettingsView: View {
             VStack(spacing: kItemDetailSectionPadding) {
                 untitledSection
                 clipboardSection
+                    .padding(.vertical)
                 if let primaryVault = viewModel.vaultsManager.getPrimaryVault() {
                     primaryVaultSection(vault: primaryVault)
                 }
                 applicationSection
+                    .padding(.top)
             }
             .padding()
         }
