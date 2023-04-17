@@ -38,7 +38,7 @@ enum GeneratePasswordViewMode {
         case .createLogin:
             return "Confirm"
         case .random:
-            return "Copy & close"
+            return "Copy and close"
         }
     }
 }

@@ -106,7 +106,8 @@ struct CreateEditAliasView: View {
                     }
 
                     if let mailboxSelection = viewModel.mailboxSelection {
-                        MailboxSection(mailboxSelection: mailboxSelection)
+                        MailboxSection(mailboxSelection: mailboxSelection,
+                                       mode: viewModel.mode.isEditMode ? .edit : .create)
                             .onTapGesture(perform: viewModel.showMailboxSelection)
                     }
 
@@ -115,6 +116,7 @@ struct CreateEditAliasView: View {
                 }
                 .padding()
                 .animation(.default, value: isShowingAdvancedOptions)
+                .animation(.default, value: viewModel.mailboxSelection != nil)
             }
             .onChange(of: isFocusedOnNote) { isFocusedOnNote in
                 if isFocusedOnNote {
@@ -173,8 +175,19 @@ struct CreateEditAliasView: View {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Alias address")
                     .sectionTitleText()
-                Text(viewModel.aliasEmail)
-                    .sectionContentText()
+                switch viewModel.state {
+                case .loading:
+                    ZStack {
+                        // Dummy text to make ZStack occupy a correct height
+                        Text("Dummy text")
+                            .opacity(0)
+                        AnimatingGradient(tintColor: tintColor)
+                            .clipShape(Capsule())
+                    }
+                default:
+                    Text(viewModel.aliasEmail)
+                        .sectionContentText()
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -187,7 +200,7 @@ struct CreateEditAliasView: View {
             ItemDetailSectionIcon(icon: IconProvider.alias)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Alias preview")
+                Text("You are about to create")
                     .sectionTitleText()
 
                 if viewModel.prefixError != nil {

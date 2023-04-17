@@ -115,17 +115,17 @@ final class PreferencesTests: XCTestCase {
         XCTAssertFalse(sut.autoFillBannerDisplayed)
     }
 
-    func testThemeIsMatchSystemkByDefault() {
-        XCTAssertEqual(sut.theme, .matchSystem)
+    func testThemeIsDarkByDefault() {
+        XCTAssertEqual(sut.theme, .dark)
     }
 
-    func testThemeIsMatchSystemAfterResetting() {
+    func testThemeIsDarkAfterResetting() {
         sut.theme = .light
         XCTAssertEqual(sut.theme, .light)
-        sut.theme = .dark
-        XCTAssertEqual(sut.theme, .dark)
-        sut.reset()
+        sut.theme = .matchSystem
         XCTAssertEqual(sut.theme, .matchSystem)
+        sut.reset()
+        XCTAssertEqual(sut.theme, .dark)
     }
 
     func testBrowserIsSafariByDefault() {
@@ -141,15 +141,15 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.browser, .safari)
     }
 
-    func testClipboardExpiresAfter30SecondsByDefault() {
-        XCTAssertEqual(sut.clipboardExpiration, .thirtySeconds)
+    func testClipboardExpiresAfterOneMinuteByDefault() {
+        XCTAssertEqual(sut.clipboardExpiration, .oneMinute)
     }
 
-    func testClipboardExpiresAfter40SecondsAfterResetting() {
+    func testClipboardExpiresAfterOneMinuteAfterResetting() {
         sut.clipboardExpiration = .fifteenSeconds
         XCTAssertEqual(sut.clipboardExpiration, .fifteenSeconds)
         sut.reset()
-        XCTAssertEqual(sut.clipboardExpiration, .thirtySeconds)
+        XCTAssertEqual(sut.clipboardExpiration, .oneMinute)
     }
 
     func testDoNotShareClipboardByDefault() {

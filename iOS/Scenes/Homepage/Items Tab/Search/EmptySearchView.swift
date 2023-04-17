@@ -25,7 +25,7 @@ struct EmptySearchView: View {
     var body: some View {
         VStack(spacing: 40) {
             Image(uiImage: PassIcon.magnifyingGlass)
-            Text("Find an alias, login or note")
+            Text("Find an alias, login, or note")
                 .fontWeight(.semibold)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
             Spacer()

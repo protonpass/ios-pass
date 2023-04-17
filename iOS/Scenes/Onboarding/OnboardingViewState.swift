@@ -23,8 +23,10 @@ import Foundation
 enum OnboardingViewState {
     case autoFill
     case autoFillEnabled
-    case biometricAuthentication
-    case biometricAuthenticationEnabled
+    case biometricAuthenticationTouchID
+    case biometricAuthenticationFaceID
+    case faceIDEnabled
+    case touchIDEnabled
     case aliases
 
     var title: String {
@@ -32,13 +34,15 @@ enum OnboardingViewState {
         case .autoFill:
             return "Enjoy the magic of AutoFill"
         case .autoFillEnabled:
-            return "Ready to AutoFill"
-        case .biometricAuthentication:
+            return "Log in to apps instantly"
+        case .biometricAuthenticationTouchID, .biometricAuthenticationFaceID:
             return "Protect your most sensitive data"
-        case .biometricAuthenticationEnabled:
+        case .faceIDEnabled:
             return "Face ID enabled"
+        case .touchIDEnabled:
+            return "Touch ID enabled"
         case .aliases:
-            return "Don’t give spam a chance"
+            return "Control what lands in your inbox"
         }
     }
 
@@ -49,14 +53,14 @@ enum OnboardingViewState {
             return "Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours."
         case .autoFillEnabled:
             // swiftlint:disable:next line_length
-            return "When logging it to a site or service, tap the Proton Pass icon to automatically fill in your login details."
-        case .biometricAuthentication:
+            return "When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details."
+        case .biometricAuthenticationTouchID, .biometricAuthenticationFaceID:
             return "Set Proton Pass to unlock with your face or fingerprint so only you have access."
-        case .biometricAuthenticationEnabled:
+        case .faceIDEnabled, .touchIDEnabled:
             return "Now you can unlock Proton Pass only when you need it⏤quickly and securely."
         case .aliases:
             // swiftlint:disable:next line_length
-            return "Use email aliases to hide your actual email address and prevent spam from filling up your inbox."
+            return "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive."
         }
     }
 
@@ -64,22 +68,22 @@ enum OnboardingViewState {
         switch self {
         case .autoFill:
             return "Go to Settings"
-        case .biometricAuthentication:
-            return "Enable FaceID"
+        case .biometricAuthenticationTouchID:
+            return "Enable Touch ID"
+        case .biometricAuthenticationFaceID:
+            return "Enable Face ID"
         case .aliases:
-            return "Get started"
-        case .autoFillEnabled, .biometricAuthenticationEnabled:
+            return "Start using Proton Pass"
+        case .autoFillEnabled, .faceIDEnabled, .touchIDEnabled:
             return "Next"
         }
     }
 
     var secondaryButtonTitle: String? {
         switch self {
-        case .autoFill:
+        case .autoFill, .biometricAuthenticationTouchID, .biometricAuthenticationFaceID:
             return "Not now"
-        case .biometricAuthentication:
-            return "No thanks"
-        case .autoFillEnabled, .biometricAuthenticationEnabled, .aliases:
+        case .autoFillEnabled, .faceIDEnabled, .touchIDEnabled, .aliases:
             return nil
         }
     }

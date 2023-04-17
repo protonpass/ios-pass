@@ -78,47 +78,47 @@ struct ItemSquircleThumbnail: View {
 
         case let .favIcon(type, url, initials):
             ZStack {
-                SquircleThumbnail(data: .initials(initials),
-                                  tintColor: type.normMajor1Color,
-                                  backgroundColor: type.normMinor1Color,
-                                  height: size.height)
-
                 if let image {
-                    Color(uiColor: PassColor.backgroundWeak)
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFit()
-                        .padding(size.height / 5)
+                    ZStack {
+                        Color.white
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFit()
+                            .padding(size.height / 5)
+                        RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous)
+                            .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: size.strokeWidth)
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous))
+                } else {
+                    SquircleThumbnail(data: .initials(initials),
+                                      tintColor: type.normMajor1Color,
+                                      backgroundColor: type.normMinor1Color,
+                                      height: size.height)
                 }
             }
             .frame(width: size.height, height: size.height)
-            .clipShape(RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous))
-            .overlay(overlay)
             .animation(.default, value: image)
-            .onFirstAppear {
-                Task { @MainActor in
-                    guard image == nil else { return }
-                    do {
-                        let favIcon = try await repository.getIcon(for: url)
-                        if !favIcon.data.isEmpty {
-                            self.image = .init(data: favIcon.data)
-                        }
-                    } catch {
-                        print(error)
-                    }
+            .onChange(of: data, perform: { newValue in
+                if let newUrl = newValue.url {
+                    loadFavIcon(url: newUrl, force: true)
                 }
-            }
+            })
+            .onFirstAppear { loadFavIcon(url: url, force: false) }
         }
     }
 
-    @ViewBuilder
-    private var overlay: some View {
-        if image != nil {
-            RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous)
-                .strokeBorder(Color(uiColor: PassColor.backgroundMedium),
-                              lineWidth: size.strokeWidth)
-        } else {
-            EmptyView()
+    private func loadFavIcon(url: String, force: Bool) {
+        if !force, image != nil { return }
+        if force { image = nil }
+        Task { @MainActor in
+            do {
+                let favIcon = try await repository.getIcon(for: url)
+                if let image = UIImage(data: favIcon.data) {
+                    self.image = image
+                }
+            } catch {
+                print(error)
+            }
         }
     }
 }

@@ -56,7 +56,7 @@ struct CreateEditNoteView: View {
 
                         TextEditorWithPlaceholder(text: $viewModel.note,
                                                   isFocused: $isFocusedOnContent,
-                                                  placeholder: "Tap here to continue")
+                                                  placeholder: "Note")
                         .id(contentID)
                     }
                     .padding()

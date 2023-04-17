@@ -106,16 +106,11 @@ struct AliasDetailView: View {
             ItemDetailSectionIcon(icon: IconProvider.user, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Username")
+                Text("Alias address")
                     .sectionTitleText()
 
-                if viewModel.aliasEmail.isEmpty {
-                    Text("No username")
-                        .placeholderText()
-                } else {
-                    Text(viewModel.aliasEmail)
-                        .sectionContentText()
-                }
+                Text(viewModel.aliasEmail)
+                    .sectionContentText()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -141,7 +136,7 @@ struct AliasDetailView: View {
             ItemDetailSectionIcon(icon: IconProvider.forward, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Forwarded to")
+                Text("Forwarding to")
                     .sectionTitleText()
 
                 if let mailboxes = viewModel.mailboxes {
