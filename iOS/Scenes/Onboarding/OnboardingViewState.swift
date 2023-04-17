@@ -23,8 +23,10 @@ import Foundation
 enum OnboardingViewState {
     case autoFill
     case autoFillEnabled
-    case biometricAuthentication
-    case biometricAuthenticationEnabled
+    case biometricAuthenticationTouchID
+    case biometricAuthenticationFaceID
+    case faceIDEnabled
+    case touchIDEnabled
     case aliases
 
     var title: String {
@@ -33,10 +35,12 @@ enum OnboardingViewState {
             return "Enjoy the magic of AutoFill"
         case .autoFillEnabled:
             return "Ready to AutoFill"
-        case .biometricAuthentication:
+        case .biometricAuthenticationTouchID, .biometricAuthenticationFaceID:
             return "Protect your most sensitive data"
-        case .biometricAuthenticationEnabled:
+        case .faceIDEnabled:
             return "Face ID enabled"
+        case .touchIDEnabled:
+            return "Touch ID enabled"
         case .aliases:
             return "Don’t give spam a chance"
         }
@@ -50,9 +54,9 @@ enum OnboardingViewState {
         case .autoFillEnabled:
             // swiftlint:disable:next line_length
             return "When logging it to a site or service, tap the Proton Pass icon to automatically fill in your login details."
-        case .biometricAuthentication:
+        case .biometricAuthenticationTouchID, .biometricAuthenticationFaceID:
             return "Set Proton Pass to unlock with your face or fingerprint so only you have access."
-        case .biometricAuthenticationEnabled:
+        case .faceIDEnabled, .touchIDEnabled:
             return "Now you can unlock Proton Pass only when you need it⏤quickly and securely."
         case .aliases:
             // swiftlint:disable:next line_length
@@ -64,22 +68,22 @@ enum OnboardingViewState {
         switch self {
         case .autoFill:
             return "Go to Settings"
-        case .biometricAuthentication:
-            return "Enable FaceID"
+        case .biometricAuthenticationTouchID:
+            return "Enable Touch ID"
+        case .biometricAuthenticationFaceID:
+            return "Enable Face ID"
         case .aliases:
-            return "Get started"
-        case .autoFillEnabled, .biometricAuthenticationEnabled:
+            return "Start using Proton Pass"
+        case .autoFillEnabled, .faceIDEnabled, .touchIDEnabled:
             return "Next"
         }
     }
 
     var secondaryButtonTitle: String? {
         switch self {
-        case .autoFill:
+        case .autoFill, .biometricAuthenticationTouchID, .biometricAuthenticationFaceID:
             return "Not now"
-        case .biometricAuthentication:
-            return "No thanks"
-        case .autoFillEnabled, .biometricAuthenticationEnabled, .aliases:
+        case .autoFillEnabled, .faceIDEnabled, .touchIDEnabled, .aliases:
             return nil
         }
     }

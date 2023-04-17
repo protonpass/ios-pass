@@ -57,9 +57,15 @@ final class OnboardingViewModel: ObservableObject {
         preferences.objectWillChange
             .sink { [weak self] _ in
                 guard let self else { return }
-                if self.preferences.biometricAuthenticationEnabled,
-                    case .biometricAuthentication = self.state {
-                    self.state = .biometricAuthenticationEnabled
+                if self.preferences.biometricAuthenticationEnabled {
+                    switch self.state {
+                    case .biometricAuthenticationFaceID:
+                        self.state = .faceIDEnabled
+                    case .biometricAuthenticationTouchID:
+                        self.state = .touchIDEnabled
+                    default:
+                        break
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -88,6 +94,30 @@ final class OnboardingViewModel: ObservableObject {
         preferences.onboarded = true
         finished = true
     }
+
+    private func showAppropriateBiometricAuthenticationStep() {
+        if case .initialized(let type) = biometricAuthenticator.biometryTypeState {
+            switch type {
+            case .faceID:
+                if preferences.biometricAuthenticationEnabled {
+                    state = .faceIDEnabled
+                } else {
+                    state = .biometricAuthenticationFaceID
+                }
+            case .touchID:
+                if preferences.biometricAuthenticationEnabled {
+                    state = .touchIDEnabled
+                } else {
+                    state = .biometricAuthenticationTouchID
+                }
+            default:
+                state = .aliases
+            }
+        } else {
+            // Should not happen
+            state = .aliases
+        }
+    }
 }
 
 // MARK: - Public actions
@@ -98,16 +128,12 @@ extension OnboardingViewModel {
             UIApplication.shared.openPasswordSettings()
 
         case .autoFillEnabled:
-            if preferences.biometricAuthenticationEnabled {
-                state = .biometricAuthenticationEnabled
-            } else {
-                state = .biometricAuthentication
-            }
+            showAppropriateBiometricAuthenticationStep()
 
-        case .biometricAuthentication:
+        case .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:
             biometricAuthenticator.toggleEnabled(force: true)
 
-        case .biometricAuthenticationEnabled:
+        case .faceIDEnabled, .touchIDEnabled:
             state = .aliases
 
         case .aliases:
@@ -118,13 +144,14 @@ extension OnboardingViewModel {
     func secondaryAction() {
         switch state {
         case .autoFill, .autoFillEnabled:
-            if preferences.biometricAuthenticationEnabled {
-                state = .biometricAuthenticationEnabled
-            } else {
-                state = .biometricAuthentication
-            }
-        case .biometricAuthentication, .biometricAuthenticationEnabled:
+            showAppropriateBiometricAuthenticationStep()
+
+        case .biometricAuthenticationFaceID,
+                .biometricAuthenticationTouchID,
+                .faceIDEnabled,
+                .touchIDEnabled:
             state = .aliases
+
         case .aliases:
             finishOnboarding()
         }
