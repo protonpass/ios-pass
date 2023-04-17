@@ -276,7 +276,7 @@ struct CreateEditLoginView: View {
             ItemDetailSectionIcon(icon: IconProvider.alias)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Username")
+                Text("Username or email")
                     .sectionTitleText()
                 Text(viewModel.username)
             }
@@ -318,7 +318,7 @@ struct CreateEditLoginView: View {
             ItemDetailSectionIcon(icon: IconProvider.alias)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Username")
+                Text("Username or email")
                     .sectionTitleText()
                 Text(viewModel.username)
             }
@@ -391,7 +391,7 @@ struct CreateEditLoginView: View {
             ItemDetailSectionIcon(icon: IconProvider.lock)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Two Factor Authentication")
+                Text("2FA token (TOTP)")
                     .sectionTitleText()
 
                 if !viewModel.totpUri.isEmpty, !viewModel.isShowingTotpUri {
