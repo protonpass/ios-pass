@@ -30,6 +30,10 @@ public extension SymmetricKey {
         return cypherData.base64EncodedString()
     }
 
+    func encrypt(_ clearData: Data) throws -> Data {
+        try ChaChaPoly.seal(clearData, using: self).combined
+    }
+
     /// Decrypt an encrypted base64 string
     func decrypt(_ cypherText: String) throws -> String {
         guard let data = Data(base64Encoded: cypherText) else {
@@ -42,6 +46,11 @@ public extension SymmetricKey {
             throw PPClientError.symmetricEncryption(.failedToUtf8Decode)
         }
         return clearText
+    }
+
+    func decrypt(_ cypherData: Data) throws -> Data {
+        let sealedBox = try ChaChaPoly.SealedBox(combined: cypherData)
+        return try ChaChaPoly.open(sealedBox, using: self)
     }
 }
 

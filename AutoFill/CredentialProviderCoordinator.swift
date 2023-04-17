@@ -56,6 +56,7 @@ public final class CredentialProviderCoordinator {
     private var shareRepository: ShareRepositoryProtocol?
     private var shareEventIDRepository: ShareEventIDRepositoryProtocol?
     private var itemRepository: ItemRepositoryProtocol?
+    private var favIconRepository: FavIconRepositoryProtocol?
     private var shareKeyRepository: ShareKeyRepositoryProtocol?
     private var aliasRepository: AliasRepositoryProtocol?
     private var remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol?
@@ -244,6 +245,10 @@ public final class CredentialProviderCoordinator {
         let itemRepository = repositoryManager.itemRepository
         (itemRepository as? ItemRepository)?.delegate = credentialManager as? ItemRepositoryDelegate
         self.itemRepository = itemRepository
+        self.favIconRepository = FavIconRepository(apiService: apiManager.apiService,
+                                                   containerUrl: URL.favIconsContainerURL(),
+                                                   cacheExpirationDays: 14,
+                                                   symmetricKey: symmetricKey)
         self.shareKeyRepository = repositoryManager.shareKeyRepository
         self.aliasRepository = repositoryManager.aliasRepository
         self.remoteSyncEventsDatasource = repositoryManager.remoteSyncEventsDatasource
@@ -409,6 +414,7 @@ private extension CredentialProviderCoordinator {
         guard let shareRepository,
               let shareEventIDRepository,
               let itemRepository,
+              let favIconRepository,
               let shareKeyRepository,
               let remoteSyncEventsDatasource else { return }
         let viewModel = CredentialsViewModel(userId: userData.user.ID,
@@ -417,6 +423,7 @@ private extension CredentialProviderCoordinator {
                                              itemRepository: itemRepository,
                                              shareKeyRepository: shareKeyRepository,
                                              remoteSyncEventsDatasource: remoteSyncEventsDatasource,
+                                             favIconRepository: favIconRepository,
                                              symmetricKey: symmetricKey,
                                              serviceIdentifiers: serviceIdentifiers,
                                              logManager: logManager)

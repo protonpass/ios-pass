@@ -46,6 +46,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
     private let eventLoop: SyncEventLoop
+    private let favIconRepository: FavIconRepositoryProtocol
     private let itemContextMenuHandler: ItemContextMenuHandler
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
@@ -116,6 +117,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                itemRepository: itemRepository,
                                shareKeyRepository: shareKeyRepository,
                                logManager: logManager)
+        self.favIconRepository = FavIconRepository(apiService: apiService,
+                                                   containerUrl: URL.favIconsContainerURL(),
+                                                   cacheExpirationDays: 14,
+                                                   symmetricKey: symmetricKey)
         self.itemContextMenuHandler = .init(clipboardManager: clipboardManager,
                                             itemRepository: itemRepository,
                                             logManager: logManager)
@@ -178,7 +183,8 @@ private extension HomepageCoordinator {
     }
 
     func start() {
-        let itemsTabViewModel = ItemsTabViewModel(itemContextMenuHandler: itemContextMenuHandler,
+        let itemsTabViewModel = ItemsTabViewModel(favIconRepository: favIconRepository,
+                                                  itemContextMenuHandler: itemContextMenuHandler,
                                                   itemRepository: itemRepository,
                                                   logManager: logManager,
                                                   preferences: preferences,
@@ -450,6 +456,7 @@ private extension HomepageCoordinator {
                                  vault: Vault?) -> ItemDetailPage {
         let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
+                                             favIconRepository: favIconRepository,
                                              itemRepository: itemRepository,
                                              vault: vault,
                                              logManager: logManager,
@@ -463,6 +470,7 @@ private extension HomepageCoordinator {
                                  vault: Vault?) -> ItemDetailPage {
         let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
+                                             favIconRepository: favIconRepository,
                                              itemRepository: itemRepository,
                                              aliasRepository: aliasRepository,
                                              vault: vault,
@@ -476,6 +484,7 @@ private extension HomepageCoordinator {
                             vault: Vault?) -> ItemDetailPage {
         let viewModel = NoteDetailViewModel(isShownAsSheet: asSheet,
                                             itemContent: itemContent,
+                                            favIconRepository: favIconRepository,
                                             itemRepository: itemRepository,
                                             vault: vault,
                                             logManager: logManager,
@@ -487,7 +496,7 @@ private extension HomepageCoordinator {
 // MARK: - Public APIs
 extension HomepageCoordinator {
     func onboardIfNecessary() {
-        guard !preferences.onboarded else { return }
+        if preferences.onboarded { return }
         let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
                                                       preferences: preferences,
                                                       bannerManager: bannerManager,
@@ -533,7 +542,8 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
-        let viewModel = SearchViewModel(itemContextMenuHandler: itemContextMenuHandler,
+        let viewModel = SearchViewModel(favIconRepository: favIconRepository,
+                                        itemContextMenuHandler: itemContextMenuHandler,
                                         itemRepository: itemRepository,
                                         logManager: logManager,
                                         searchEntryDatasource: searchEntryDatasource,
@@ -554,7 +564,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
             // Num of vaults + all items + trash + create vault button
-            let height = CGFloat(66 * vaultsManager.getVaultCount() + 66 + 66 + 100)
+            let height = CGFloat(66 * vaultsManager.getVaultCount() + 66 + 66 + 120)
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 height
             }
@@ -661,6 +671,16 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         urlOpener.open(urlString: kAppStoreUrlString)
     }
 
+    func profileTabViewModelWantsToQaFeatures() {
+        let viewModel = QAFeaturesViewModel(credentialManager: credentialManager,
+                                            favIconRepository: favIconRepository,
+                                            preferences: preferences,
+                                            bannerManager: bannerManager,
+                                            logManager: logManager)
+        let view = QAFeaturesView(viewModel: viewModel)
+        present(view)
+    }
+
     func profileTabViewModelWantsDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
@@ -678,6 +698,7 @@ extension HomepageCoordinator: AccountViewModelDelegate {
 
     func accountViewModelWantsToSignOut() {
         eventLoop.stop()
+        try? favIconRepository.emptyCache()
         delegate?.homepageCoordinatorWantsToLogOut()
     }
 

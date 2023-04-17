@@ -27,23 +27,38 @@ public extension APIService {
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
         try await withCheckedThrowingContinuation { continuation in
             NetworkDebugger.printDebugInfo(endpoint: endpoint)
-            let perfomRequest: () -> Void = {
-                perform(request: endpoint) { task, result in
-                    NetworkDebugger.printDebugInfo(endpoint: endpoint,
-                                                   task: task,
-                                                   result: result)
-                    continuation.resume(with: result)
+            perform(request: endpoint) { task, result in
+                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
+                continuation.resume(with: result)
+            }
+        }
+    }
+
+    /// As of the moment of writting this, `APIService` doesn't support `perform` function
+    /// that returns `Data`. So we make `Decodable` request and expect an error to get the actual `Data`
+    /// from the error object.
+    func execExpectingData<E: Endpoint>(endpoint: E) async throws -> DataResponse {
+        try await withCheckedThrowingContinuation { continuation in
+            NetworkDebugger.printDebugInfo(endpoint: endpoint)
+
+            perform(request: endpoint) { task, result in
+                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
+
+                switch result {
+                case .success:
+                    continuation.resume(throwing: PPClientError.errorExpected)
+
+                case .failure(let error):
+                    if let responseError = error.underlyingError as? SessionResponseError,
+                       case let .responseBodyIsNotADecodableObject(body, _) = responseError {
+                        continuation.resume(returning: .init(httpCode: error.httpCode,
+                                                             protonCode: error.responseCode,
+                                                             data: body))
+                        return
+                    }
+                    continuation.resume(throwing: PPClientError.unexpectedError)
                 }
             }
-#if DEBUG
-            if Thread.isMainThread {
-                continuation.resume(throwing: PPClientError.networkOperationsOnMainThread)
-            } else {
-                perfomRequest()
-            }
-#else
-            perfomRequest()
-#endif
         }
     }
 }

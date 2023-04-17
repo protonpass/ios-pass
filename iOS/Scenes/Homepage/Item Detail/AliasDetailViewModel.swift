@@ -34,6 +34,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
+         favIconRepository: FavIconRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          vault: Vault?,
@@ -42,6 +43,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
         self.aliasRepository = aliasRepository
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
+                   favIconRepository: favIconRepository,
                    itemRepository: itemRepository,
                    vault: vault,
                    logManager: logManager,

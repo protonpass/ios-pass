@@ -178,14 +178,14 @@ final class AppCoordinator {
     private func showHomeScene(userData: UserData, manualLogIn: Bool) {
         Task { @MainActor in
             do {
-                let apiService = apiManager.apiService
+                let apiService = self.apiManager.apiService
                 if manualLogIn {
                     showLoadingHud()
                     appData.primaryPlan =
                     try? await PrimaryPlanProvider.getPrimaryPlan(apiService: apiService)
                     hideLoadingHud()
                 }
-                let symmetricKey = try appData.getSymmetricKey()
+                let symmetricKey = try self.appData.getSymmetricKey()
                 let homepageCoordinator = HomepageCoordinator(apiService: apiService,
                                                               container: container,
                                                               credentialManager: credentialManager,

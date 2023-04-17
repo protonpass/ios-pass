@@ -73,8 +73,9 @@ public struct ItemSearchResult: ItemTypeIdentifiable {
     public let shareId: String
     public let itemId: String
     public let type: ItemContentType
-    public let title: HighlightableText
-    public let detail: [HighlightableText]
+    public let highlightableTitle: HighlightableText
+    public let highlightableDetail: [HighlightableText]
+    public let url: String?
     public let vault: Vault?
     public let lastUseTime: Int64
     public let modifyTime: Int64
@@ -84,18 +85,24 @@ public struct ItemSearchResult: ItemTypeIdentifiable {
                 type: ItemContentType,
                 title: SearchResultEither,
                 detail: [SearchResultEither],
+                url: String?,
                 vault: Vault?,
                 lastUseTime: Int64,
                 modifyTime: Int64) {
         self.shareId = shareId
         self.itemId = itemId
         self.type = type
-        self.title = title
-        self.detail = detail
+        self.highlightableTitle = title
+        self.highlightableDetail = detail
+        self.url = url
         self.vault = vault
         self.lastUseTime = lastUseTime
         self.modifyTime = modifyTime
     }
+}
+
+extension ItemSearchResult: ItemThumbnailable {
+    public var title: String { highlightableTitle.fullText }
 }
 
 extension ItemSearchResult: DateSortable {
@@ -105,7 +112,7 @@ extension ItemSearchResult: DateSortable {
 }
 
 extension ItemSearchResult: AlphabeticalSortable {
-    public var alphabeticalSortableString: String { title.fullText }
+    public var alphabeticalSortableString: String { highlightableTitle.fullText }
 }
 
 extension ItemSearchResult: Hashable {
@@ -116,7 +123,7 @@ extension ItemSearchResult: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(itemId)
         hasher.combine(shareId)
-        let highlightTexts = [title.highlightText] + detail.map { $0.highlightText }
-        hasher.combine(highlightTexts)
+        let texts = [highlightableTitle.highlightText] + highlightableDetail.map { $0.highlightText }
+        hasher.combine(texts)
     }
 }

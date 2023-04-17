@@ -25,6 +25,7 @@ import UIComponents
 
 struct SearchRecentResultsView: View {
     let results: [SearchEntryUiModel]
+    let favIconRepository: FavIconRepositoryProtocol
     let onSelect: (SearchEntryUiModel) -> Void
     let onRemove: (SearchEntryUiModel) -> Void
     let onClearResults: () -> Void
@@ -55,6 +56,7 @@ struct SearchRecentResultsView: View {
             List {
                 ForEach(results) { result in
                     SearchEntryView(uiModel: result,
+                                    favIconRepository: favIconRepository,
                                     onSelect: { onSelect(result) },
                                     onRemove: { onRemove(result) })
                     .plainListRow()
@@ -69,6 +71,7 @@ struct SearchRecentResultsView: View {
 
 private struct SearchEntryView: View {
     let uiModel: SearchEntryUiModel
+    let favIconRepository: FavIconRepositoryProtocol
     let onSelect: () -> Void
     let onRemove: () -> Void
 
@@ -77,9 +80,8 @@ private struct SearchEntryView: View {
             Button(action: onSelect) {
                 GeneralItemRow(
                     thumbnailView: {
-                        SquircleThumbnail(icon: uiModel.type.icon,
-                                          iconColor: uiModel.type.normMajor1Color,
-                                          backgroundColor: uiModel.type.normMinor1Color)
+                        ItemSquircleThumbnail(data: uiModel.thumbnailData(),
+                                              repository: favIconRepository)
                     },
                     title: uiModel.title,
                     description: uiModel.description)

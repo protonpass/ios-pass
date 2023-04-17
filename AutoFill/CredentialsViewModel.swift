@@ -93,6 +93,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger: Logger
+    let favIconRepository: FavIconRepositoryProtocol
     let logManager: LogManager
     let urls: [URL]
 
@@ -108,11 +109,13 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          itemRepository: ItemRepositoryProtocol,
          shareKeyRepository: ShareKeyRepositoryProtocol,
          remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
+         favIconRepository: FavIconRepositoryProtocol,
          symmetricKey: SymmetricKey,
          serviceIdentifiers: [ASCredentialServiceIdentifier],
          logManager: LogManager) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
+        self.favIconRepository = favIconRepository
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
         self.urls = serviceIdentifiers.map { serviceIdentifier in
@@ -161,7 +164,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
         lastTask?.cancel()
         lastTask = Task { @MainActor in
-            let hashedTerm = term.sha256Hashed()
+            let hashedTerm = term.sha256
             logger.trace("Searching for term \(hashedTerm)")
             state = .loaded(fetchResult, .searching)
             let searchResults = fetchResult.searchableItems.result(for: term)
@@ -425,7 +428,7 @@ extension ItemUiModel: TitledItemIdentifiable {
 }
 
 extension ItemSearchResult: TitledItemIdentifiable {
-    var itemTitle: String { title.fullText }
+    var itemTitle: String { highlightableTitle.fullText }
 }
 
 extension CredentialItem: DateSortable, AlphabeticalSortable, Identifiable {

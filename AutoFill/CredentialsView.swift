@@ -319,9 +319,8 @@ struct CredentialsView: View {
         }, label: {
             GeneralItemRow(
                 thumbnailView: {
-                    SquircleThumbnail(icon: IconProvider.user,
-                                      iconColor: ItemContentType.login.normMajor1Color,
-                                      backgroundColor: ItemContentType.login.normMinor1Color)
+                    ItemSquircleThumbnail(data: item.thumbnailData(),
+                                          repository: viewModel.favIconRepository)
                 },
                 title: item.title,
                 description: item.description)
@@ -334,16 +333,18 @@ struct CredentialsView: View {
             select(item: item)
         }, label: {
             HStack {
-                SquircleThumbnail(icon: IconProvider.user,
-                                  iconColor: ItemContentType.login.normMajor1Color,
-                                  backgroundColor: ItemContentType.login.normMinor1Color)
+                VStack {
+                    ItemSquircleThumbnail(data: item.thumbnailData(),
+                                          repository: viewModel.favIconRepository)
+                }
+                .frame(maxHeight: .infinity, alignment: .top)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    HighlightText(highlightableText: item.title)
+                    HighlightText(highlightableText: item.highlightableTitle)
 
                     VStack(alignment: .leading, spacing: 2) {
-                        ForEach(0..<item.detail.count, id: \.self) { index in
-                            let eachDetail = item.detail[index]
+                        ForEach(0..<item.highlightableDetail.count, id: \.self) { index in
+                            let eachDetail = item.highlightableDetail[index]
                             if !eachDetail.fullText.isEmpty {
                                 HighlightText(highlightableText: eachDetail)
                                     .font(.callout)

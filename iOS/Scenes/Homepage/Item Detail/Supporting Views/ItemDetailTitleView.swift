@@ -23,59 +23,19 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-enum ItemDetailTitleIcon {
-    case image(UIImage)
-    case initials(String)
-    case notApplicable
-}
-
 struct ItemDetailTitleView: View {
-    let title: String
-    let icon: ItemDetailTitleIcon
-    let iconTintColor: UIColor
-    let iconBackgroundColor: UIColor
+    let itemContent: ItemContent
     let vault: Vault?
-
-    init(itemContent: ItemContent, vault: Vault?) {
-        self.title = itemContent.name
-        self.iconTintColor = itemContent.type.normMajor1Color
-        self.iconBackgroundColor = itemContent.type.normMinor1Color
-        switch itemContent.contentData.type {
-        case .alias:
-            self.icon = .image(IconProvider.alias)
-        case .login:
-            self.icon = .initials(String(itemContent.name.prefix(2)).uppercased())
-        case .note:
-            self.icon = .notApplicable
-        }
-        self.vault = vault
-    }
+    let favIconRepository: FavIconRepositoryProtocol
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ZStack {
-                Color(uiColor: iconBackgroundColor)
-                    .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-
-                switch icon {
-                case .image(let image):
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFit()
-                        .padding()
-                        .foregroundColor(Color(uiColor: iconTintColor))
-                case .initials(let initials):
-                    Text(initials.uppercased())
-                        .fontWeight(.medium)
-                        .foregroundColor(Color(uiColor: iconTintColor))
-                case .notApplicable:
-                    EmptyView()
-                }
-            }
-            .frame(width: 60, height: 60)
+            ItemSquircleThumbnail(data: itemContent.thumbnailData(),
+                                  repository: favIconRepository,
+                                  size: .large)
 
             VStack(alignment: .leading, spacing: 0) {
-                Text(title)
+                Text(itemContent.name)
                     .font(.title)
                     .fontWeight(.bold)
                     .textSelection(.enabled)
