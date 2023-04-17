@@ -120,7 +120,7 @@ struct LogInDetailView: View {
                                   color: iconTintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Username")
+                Text("Username or email")
                     .sectionTitleText()
 
                 if viewModel.username.isEmpty {
@@ -226,7 +226,7 @@ struct LogInDetailView: View {
                 ItemDetailSectionIcon(icon: IconProvider.lock, color: iconTintColor)
 
                 VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                    Text("Two Factor Authentication")
+                    Text("2FA token (TOTP)")
                         .sectionTitleText()
 
                     switch viewModel.totpManager.state {
@@ -238,7 +238,7 @@ struct LogInDetailView: View {
                         TOTPText(code: data.code)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     case .invalid:
-                        Text("Invalid Two Factor Authentication URI")
+                        Text("Invalid TOTP URI")
                             .font(.caption)
                             .foregroundColor(Color(uiColor: PassColor.signalDanger))
                     }
