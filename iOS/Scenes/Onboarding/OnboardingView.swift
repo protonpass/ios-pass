@@ -36,9 +36,9 @@ struct OnboardingView: View {
                     }
                 case .autoFillEnabled:
                     OnboardingAutoFillEnabledView()
-                case .biometricAuthentication:
+                case .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:
                     OnboardingBiometricAuthenticationView(enabled: false)
-                case .biometricAuthenticationEnabled:
+                case .faceIDEnabled, .touchIDEnabled:
                     OnboardingBiometricAuthenticationView(enabled: true)
                 case .aliases:
                     OnboardingAliasesView()
@@ -48,15 +48,13 @@ struct OnboardingView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             VStack(spacing: 0) {
-                VStack {
+                VStack(spacing: 16) {
                     Spacer()
 
                     Text(viewModel.state.title)
-                        .font(.title2)
-                        .fontWeight(.medium)
-                        .padding(.vertical, 24)
-
-                    Spacer()
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
 
                     Text(viewModel.state.description)
                         .foregroundColor(Color(uiColor: PassColor.textWeak))
@@ -68,15 +66,17 @@ struct OnboardingView: View {
                 Spacer()
 
                 VStack {
-                    ColoredRoundedButton(title: viewModel.state.primaryButtonTitle,
-                                         action: viewModel.primaryAction)
-                    .frame(height: 48)
+                    CapsuleTextButton(title: viewModel.state.primaryButtonTitle,
+                                      titleColor: PassColor.textInvert,
+                                      backgroundColor: PassColor.interactionNormMajor1,
+                                      height: 60,
+                                      action: viewModel.primaryAction)
                     .padding(.vertical, 26)
 
                     if let secondaryButtonTitle = viewModel.state.secondaryButtonTitle {
                         Button(action: viewModel.secondaryAction) {
                             Text(secondaryButtonTitle)
-                                .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                                .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                                 .animationsDisabled()
                         }
                         .animation(.default, value: viewModel.state.secondaryButtonTitle)
@@ -89,19 +89,10 @@ struct OnboardingView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .theme(viewModel.preferences.theme)
-        .background(OnboardingGradientBackground())
-        .background(Color(.systemBackground))
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .edgesIgnoringSafeArea(.all)
+        .theme(viewModel.preferences.theme)
         .onReceiveBoolean(viewModel.$finished, perform: dismiss.callAsFunction)
-    }
-}
-
-struct OnboardingGradientBackground: View {
-    var body: some View {
-        LinearGradient(colors: [Color(uiColor: PassColor.interactionNorm).opacity(0.2), .clear],
-                       startPoint: .topLeading,
-                       endPoint: .bottomTrailing)
     }
 }
 
@@ -128,6 +119,7 @@ struct OnboardingAutoFillView: View {
                 Text("Select **Proton Pass**")
                     .frame(height: 36)
             }
+            .foregroundColor(Color(uiColor: PassColor.textNorm))
         }
         .frame(maxWidth: .infinity)
     }
