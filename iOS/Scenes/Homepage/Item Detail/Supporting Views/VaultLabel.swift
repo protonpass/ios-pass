@@ -28,7 +28,7 @@ struct VaultLabel: View {
     var body: some View {
         Label(title: {
             Text(vault.name)
-                .font(.callout)
+                .font(.footnote)
         }, icon: {
             Image(uiImage: vault.displayPreferences.icon.icon.smallImage)
                 .resizable()
