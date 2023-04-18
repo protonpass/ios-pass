@@ -76,8 +76,8 @@ struct AliasDetailView: View {
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .onFirstAppear(perform: viewModel.getAlias)
-        .itemDetailBackground(theme: viewModel.theme)
         .toolbar {
             ItemDetailToolbar(isShownAsSheet: viewModel.isShownAsSheet,
                               itemContent: viewModel.itemContent,

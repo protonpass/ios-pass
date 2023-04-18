@@ -221,7 +221,7 @@ struct CreateEditAliasView: View {
                         Text(viewModel.prefix)
                             .foregroundColor(Color(uiColor: PassColor.textNorm)) +
                         Text(viewModel.suffix)
-                            .foregroundColor(Color(uiColor: tintColor))
+                            .foregroundColor(Color(uiColor: viewModel.itemContentType().normMajor2Color))
                     }
                 }
             }

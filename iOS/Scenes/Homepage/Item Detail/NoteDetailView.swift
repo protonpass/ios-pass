@@ -95,10 +95,10 @@ struct NoteDetailView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .accentColor(tintColor) // Remove when iOS 15 is dropped
         .tint(tintColor)
-        .itemDetailBackground(theme: viewModel.theme)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar {
             ItemDetailToolbar(isShownAsSheet: viewModel.isShownAsSheet,
                               itemContent: viewModel.itemContent,

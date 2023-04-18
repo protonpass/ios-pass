@@ -36,8 +36,8 @@ struct CreateEditVaultView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(kItemDetailSectionPadding)
-            .itemDetailBackground(theme: viewModel.theme)
             .navigationBarTitleDisplayMode(.inline)
+            .background(Color(uiColor: PassColor.backgroundNorm))
             .toolbar { toolbarContent }
             .ignoresSafeArea(.keyboard)
             .gesture(DragGesture().onChanged { _ in isFocusedOnTitle = false })
