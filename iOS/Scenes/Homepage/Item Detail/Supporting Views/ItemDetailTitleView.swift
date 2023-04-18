@@ -34,7 +34,7 @@ struct ItemDetailTitleView: View {
                                   repository: favIconRepository,
                                   size: .large)
 
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(itemContent.name)
                     .font(.title)
                     .fontWeight(.bold)

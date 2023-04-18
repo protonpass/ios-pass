@@ -68,6 +68,7 @@ struct NoteDetailView: View {
 
                     if let vault = viewModel.vault {
                         VaultLabel(vault: vault)
+                            .padding(.top, 4)
                     }
 
                     Spacer(minLength: 16)

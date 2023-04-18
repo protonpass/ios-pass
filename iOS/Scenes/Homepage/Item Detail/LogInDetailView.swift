@@ -52,7 +52,7 @@ struct LogInDetailView: View {
                     ItemDetailTitleView(itemContent: viewModel.itemContent,
                                         vault: viewModel.vault,
                                         favIconRepository: viewModel.favIconRepository)
-                        .padding(.bottom, 24)
+                        .padding(.bottom, 40)
 
                     usernamePassword2FaSection
 
