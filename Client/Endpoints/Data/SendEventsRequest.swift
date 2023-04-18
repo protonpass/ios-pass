@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct SendEventsRequest: Encodable {
+struct SendEventsRequest: Encodable {
     let eventInfo: [EventInfo]
 
     enum CodingKeys: String, CodingKey {
@@ -28,10 +28,10 @@ public struct SendEventsRequest: Encodable {
     }
 }
 
-public struct EventInfo: Encodable {
-    public let measurementGroup: String
-    public let event: String
-    public let dimensions: Dimensions
+struct EventInfo: Encodable {
+    let measurementGroup: String
+    let event: String
+    let dimensions: Dimensions
 
     enum CodingKeys: String, CodingKey {
         case measurementGroup = "MeasurementGroup"
@@ -39,22 +39,22 @@ public struct EventInfo: Encodable {
         case dimensions = "Dimensions"
     }
 
-    public struct Dimensions: Encodable {
-        public let type: String
-        public let userTier: String
+    struct Dimensions: Encodable {
+        let type: String
+        let userTier: String
 
         enum CodingKeys: String, CodingKey {
             case type = "type"
             case userTier = "user_tier"
         }
 
-        public init(type: String, userTier: String) {
+        init(type: String, userTier: String) {
             self.type = type
             self.userTier = userTier
         }
     }
 
-    public init(measurementGroup: String, event: String, dimensions: Dimensions) {
+    init(measurementGroup: String, event: String, dimensions: Dimensions) {
         self.measurementGroup = measurementGroup
         self.event = event
         self.dimensions = dimensions
