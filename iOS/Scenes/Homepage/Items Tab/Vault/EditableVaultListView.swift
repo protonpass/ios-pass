@@ -201,7 +201,7 @@ extension VaultSelection {
         case .all:
             return PassIcon.brandPass
         case .precise(let vault):
-            return vault.displayPreferences.icon.icon.image
+            return vault.displayPreferences.icon.icon.bigImage
         case .trash:
             return IconProvider.trash
         }

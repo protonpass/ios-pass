@@ -27,38 +27,73 @@ enum VaultIcon: CaseIterable {
     case icon11, icon12, icon13, icon14, icon15, icon16, icon17, icon18, icon19, icon20
     case icon21, icon22, icon23, icon24, icon25, icon26, icon27, icon28, icon29, icon30
 
-    var image: UIImage {
+    var bigImage: UIImage {
         switch self {
-        case .icon1: return PassIcon.vaultIcon1
-        case .icon2: return PassIcon.vaultIcon2
-        case .icon3: return PassIcon.vaultIcon3
-        case .icon4: return PassIcon.vaultIcon4
-        case .icon5: return PassIcon.vaultIcon5
-        case .icon6: return PassIcon.vaultIcon6
-        case .icon7: return PassIcon.vaultIcon7
-        case .icon8: return PassIcon.vaultIcon8
-        case .icon9: return PassIcon.vaultIcon9
-        case .icon10: return PassIcon.vaultIcon10
-        case .icon11: return PassIcon.vaultIcon11
-        case .icon12: return PassIcon.vaultIcon12
-        case .icon13: return PassIcon.vaultIcon13
-        case .icon14: return PassIcon.vaultIcon14
-        case .icon15: return PassIcon.vaultIcon15
-        case .icon16: return PassIcon.vaultIcon16
-        case .icon17: return PassIcon.vaultIcon17
-        case .icon18: return PassIcon.vaultIcon18
-        case .icon19: return PassIcon.vaultIcon19
-        case .icon20: return PassIcon.vaultIcon20
-        case .icon21: return PassIcon.vaultIcon21
-        case .icon22: return PassIcon.vaultIcon22
-        case .icon23: return PassIcon.vaultIcon23
-        case .icon24: return PassIcon.vaultIcon24
-        case .icon25: return PassIcon.vaultIcon25
-        case .icon26: return PassIcon.vaultIcon26
-        case .icon27: return PassIcon.vaultIcon27
-        case .icon28: return PassIcon.vaultIcon28
-        case .icon29: return PassIcon.vaultIcon29
-        case .icon30: return PassIcon.vaultIcon30
+        case .icon1: return PassIcon.vaultIcon1Big
+        case .icon2: return PassIcon.vaultIcon2Big
+        case .icon3: return PassIcon.vaultIcon3Big
+        case .icon4: return PassIcon.vaultIcon4Big
+        case .icon5: return PassIcon.vaultIcon5Big
+        case .icon6: return PassIcon.vaultIcon6Big
+        case .icon7: return PassIcon.vaultIcon7Big
+        case .icon8: return PassIcon.vaultIcon8Big
+        case .icon9: return PassIcon.vaultIcon9Big
+        case .icon10: return PassIcon.vaultIcon10Big
+        case .icon11: return PassIcon.vaultIcon11Big
+        case .icon12: return PassIcon.vaultIcon12Big
+        case .icon13: return PassIcon.vaultIcon13Big
+        case .icon14: return PassIcon.vaultIcon14Big
+        case .icon15: return PassIcon.vaultIcon15Big
+        case .icon16: return PassIcon.vaultIcon16Big
+        case .icon17: return PassIcon.vaultIcon17Big
+        case .icon18: return PassIcon.vaultIcon18Big
+        case .icon19: return PassIcon.vaultIcon19Big
+        case .icon20: return PassIcon.vaultIcon20Big
+        case .icon21: return PassIcon.vaultIcon21Big
+        case .icon22: return PassIcon.vaultIcon22Big
+        case .icon23: return PassIcon.vaultIcon23Big
+        case .icon24: return PassIcon.vaultIcon24Big
+        case .icon25: return PassIcon.vaultIcon25Big
+        case .icon26: return PassIcon.vaultIcon26Big
+        case .icon27: return PassIcon.vaultIcon27Big
+        case .icon28: return PassIcon.vaultIcon28Big
+        case .icon29: return PassIcon.vaultIcon29Big
+        case .icon30: return PassIcon.vaultIcon30Big
+        }
+    }
+
+    var smallImage: UIImage {
+        switch self {
+        case .icon1: return PassIcon.vaultIcon1Small
+        case .icon2: return PassIcon.vaultIcon2Small
+        case .icon3: return PassIcon.vaultIcon3Small
+        case .icon4: return PassIcon.vaultIcon4Small
+        case .icon5: return PassIcon.vaultIcon5Small
+        case .icon6: return PassIcon.vaultIcon6Small
+        case .icon7: return PassIcon.vaultIcon7Small
+        case .icon8: return PassIcon.vaultIcon8Small
+        case .icon9: return PassIcon.vaultIcon9Small
+        case .icon10: return PassIcon.vaultIcon10Small
+        case .icon11: return PassIcon.vaultIcon11Small
+        case .icon12: return PassIcon.vaultIcon12Small
+        case .icon13: return PassIcon.vaultIcon13Small
+        case .icon14: return PassIcon.vaultIcon14Small
+        case .icon15: return PassIcon.vaultIcon15Small
+        case .icon16: return PassIcon.vaultIcon16Small
+        case .icon17: return PassIcon.vaultIcon17Small
+        case .icon18: return PassIcon.vaultIcon18Small
+        case .icon19: return PassIcon.vaultIcon19Small
+        case .icon20: return PassIcon.vaultIcon20Small
+        case .icon21: return PassIcon.vaultIcon21Small
+        case .icon22: return PassIcon.vaultIcon22Small
+        case .icon23: return PassIcon.vaultIcon23Small
+        case .icon24: return PassIcon.vaultIcon24Small
+        case .icon25: return PassIcon.vaultIcon25Small
+        case .icon26: return PassIcon.vaultIcon26Small
+        case .icon27: return PassIcon.vaultIcon27Small
+        case .icon28: return PassIcon.vaultIcon28Small
+        case .icon29: return PassIcon.vaultIcon29Small
+        case .icon30: return PassIcon.vaultIcon30Small
         }
     }
 }
