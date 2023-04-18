@@ -69,6 +69,7 @@ struct VaultSelectorView: View {
                         .buttonStyle(.plain)
 
                         PassDivider()
+                            .padding(.horizontal)
                     }
                 }
             }
