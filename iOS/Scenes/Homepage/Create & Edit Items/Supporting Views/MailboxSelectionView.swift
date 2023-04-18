@@ -36,9 +36,9 @@ struct MailboxSelectionView: View {
         var tintColor: Color {
             switch self {
             case .createEditAlias:
-                return Color(uiColor: ItemContentType.alias.normColor)
+                return Color(uiColor: ItemContentType.alias.normMajor2Color)
             case .createAliasLite:
-                return Color(uiColor: ItemContentType.login.normColor)
+                return Color(uiColor: ItemContentType.login.normMajor2Color)
             }
         }
     }

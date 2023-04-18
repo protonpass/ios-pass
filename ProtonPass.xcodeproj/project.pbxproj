@@ -311,8 +311,6 @@
 		3562BCF729BDE77900564508 /* AnimatingGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF629BDE77900564508 /* AnimatingGradient.swift */; };
 		3562D3BC29DEB08100981D7D /* NavigationTitleWithHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562D3BB29DEB08100981D7D /* NavigationTitleWithHandle.swift */; };
 		3562D3BD29DEB08100981D7D /* NavigationTitleWithHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562D3BB29DEB08100981D7D /* NavigationTitleWithHandle.swift */; };
-		3562D3BF29DEF0D600981D7D /* View+ItemDetailBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562D3BE29DEF0D600981D7D /* View+ItemDetailBackground.swift */; };
-		3562D3C029DEF0DA00981D7D /* View+ItemDetailBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562D3BE29DEF0D600981D7D /* View+ItemDetailBackground.swift */; };
 		3562D3C229DF670200981D7D /* SquircleThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562D3C129DF670200981D7D /* SquircleThumbnail.swift */; };
 		356325D829DACADB006EB16C /* PrimaryPlanProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356325D729DACADB006EB16C /* PrimaryPlanProvider.swift */; };
 		35635176299C10040059A97A /* IdentifiableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35635175299C10040059A97A /* IdentifiableObject.swift */; };
@@ -977,7 +975,6 @@
 		3562BCF429BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollIndicatorsHiddenModifier.swift; sourceTree = "<group>"; };
 		3562BCF629BDE77900564508 /* AnimatingGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingGradient.swift; sourceTree = "<group>"; };
 		3562D3BB29DEB08100981D7D /* NavigationTitleWithHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTitleWithHandle.swift; sourceTree = "<group>"; };
-		3562D3BE29DEF0D600981D7D /* View+ItemDetailBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemDetailBackground.swift"; sourceTree = "<group>"; };
 		3562D3C129DF670200981D7D /* SquircleThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquircleThumbnail.swift; sourceTree = "<group>"; };
 		356325D729DACADB006EB16C /* PrimaryPlanProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryPlanProvider.swift; sourceTree = "<group>"; };
 		35635175299C10040059A97A /* IdentifiableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiableObject.swift; sourceTree = "<group>"; };
@@ -1512,7 +1509,6 @@
 				3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */,
 				356750D429D31E9200247648 /* View+ItemSwipeModifier.swift */,
 				3569B2A529B7C39F0070830B /* View+Theme.swift */,
-				3562D3BE29DEF0D600981D7D /* View+ItemDetailBackground.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -3527,7 +3523,6 @@
 				35492E3B293E06B100BDE231 /* BaseCreateEditItemViewModel.swift in Sources */,
 				3520F36828E327420053A606 /* ItemUiModel.swift in Sources */,
 				3561C9F729E6E34400D6E518 /* VaultSelectorView.swift in Sources */,
-				3562D3C029DEF0DA00981D7D /* View+ItemDetailBackground.swift in Sources */,
 				355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */,
 				355751F62907FB9000268116 /* AppLockedView.swift in Sources */,
 				3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */,
@@ -3653,7 +3648,6 @@
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
 				356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */,
 				3552A28A29EC29BF00ABDB6E /* CachedFavIconsSection.swift in Sources */,
-				3562D3BF29DEF0D600981D7D /* View+ItemDetailBackground.swift in Sources */,
 				355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */,
 				3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */,
 				3569B2AB29B7D2430070830B /* ProfileTabViewModel.swift in Sources */,
@@ -4164,7 +4158,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -4248,7 +4242,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -4332,7 +4326,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -4410,7 +4404,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -5068,7 +5062,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -5152,7 +5146,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
@@ -5238,7 +5232,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
@@ -5318,7 +5312,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
@@ -5423,7 +5417,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -5628,7 +5622,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -5707,7 +5701,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
@@ -6139,7 +6133,7 @@
 				CODE_SIGN_ENTITLEMENTS = "iOS/iOSDebug-Black.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -6180,7 +6174,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -6683,7 +6677,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
@@ -6978,7 +6972,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 89;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;

@@ -36,7 +36,6 @@ struct ItemDetailPlaceholderView: View {
                 .grayscale(1)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .itemDetailBackground(theme: theme)
         .toolbar { toolbarContent }
     }
 

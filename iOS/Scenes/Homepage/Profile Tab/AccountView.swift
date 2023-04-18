@@ -115,11 +115,11 @@ struct AccountView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
         }
-        .itemDetailBackground(theme: viewModel.theme)
         .navigationTitle("Account")
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar { toolbarContent }
         .alert(
             "You will be signed out",
