@@ -1,6 +1,6 @@
 //
-// SendEventsEndpoint.swift
-// Proton Pass - Created on 17/04/2023.
+// LocalTelemetryEventDatasource.swift
+// Proton Pass - Created on 19/04/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,22 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Networking
-import ProtonCore_Services
+import CoreData
 
-public struct SendEventsEndpoint: Endpoint {
-    public typealias Body = SendEventsRequest
-    public typealias Response = CodeOnlyResponse
-
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: SendEventsRequest?
-
-    public init(events: [EventInfo]) {
-        self.debugDescription = "Send a list of events to the data telemetry system"
-        self.path = "/data/v1/stats/multiple"
-        self.method = .post
-        self.body = .init(eventInfo: events)
-    }
-}
+public protocol LocalTelemetryEventDatasource: LocalDatasourceProtocol {}
