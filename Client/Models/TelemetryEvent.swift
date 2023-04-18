@@ -20,7 +20,12 @@
 
 import Foundation
 
-enum TelemetryEvent {
+struct TelemetryEvent {
+    let uuid: String
+    let type: TelemetryEventType
+}
+
+enum TelemetryEventType {
     case create(ItemContentType)
     case read(ItemContentType)
     case update(ItemContentType)
@@ -61,7 +66,7 @@ enum TelemetryEvent {
     }
 }
 
-extension TelemetryEvent: Equatable {
+extension TelemetryEventType: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case let (.create(lhsType), .create(rhsType)):
