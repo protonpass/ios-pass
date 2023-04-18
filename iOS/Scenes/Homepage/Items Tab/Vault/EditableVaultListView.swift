@@ -51,6 +51,8 @@ struct EditableVaultListView: View {
                         }
 
                         vaultRow(for: .trash)
+
+                        PassDivider()
                     }
                 }
                 .padding(.horizontal)
@@ -88,7 +90,8 @@ struct EditableVaultListView: View {
                     },
                     title: selection.title,
                     itemCount: vaultsManager.getItemCount(for: selection),
-                    isSelected: vaultsManager.isSelected(selection))
+                    isSelected: vaultsManager.isSelected(selection),
+                    height: 74)
             })
             .buttonStyle(.plain)
 
