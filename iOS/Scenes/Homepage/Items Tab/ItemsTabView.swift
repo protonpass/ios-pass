@@ -97,7 +97,7 @@ struct ItemsTabView: View {
 
             case .precise(let vault):
                 CircleButton(
-                    icon: vault.displayPreferences.icon.icon.image,
+                    icon: vault.displayPreferences.icon.icon.bigImage,
                     iconColor: vault.displayPreferences.color.color.color,
                     backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16),
                     action: viewModel.presentVaultList)
