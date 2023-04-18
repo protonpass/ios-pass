@@ -47,7 +47,11 @@ struct SettingsView: View {
                     .padding(.vertical)
                 if let primaryVault = viewModel.vaultsManager.getPrimaryVault() {
                     primaryVaultSection(vault: primaryVault)
+                        .padding(.bottom)
                 }
+
+                logsSection
+
                 applicationSection
                     .padding(.top)
             }
@@ -149,6 +153,40 @@ struct SettingsView: View {
         }
     }
 
+    private var logsSection: some View {
+        VStack(spacing: 0) {
+            Text("Logs")
+                .sectionHeaderText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, kItemDetailSectionPadding)
+
+            VStack(spacing: 0) {
+                TextOptionRow(title: "Application logs", action: viewModel.viewHostAppLogs)
+
+                PassSectionDivider()
+
+                TextOptionRow(title: "AutoFill extension logs",
+                              action: viewModel.viewAutoFillExensionLogs)
+            }
+            .roundedEditableSection()
+
+            OptionRow(
+                action: viewModel.clearLogs,
+                height: .medium,
+                content: {
+                    Text("Clear all logs")
+                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                },
+                trailing: {
+                    CircleButton(icon: IconProvider.trash,
+                                 iconColor: PassColor.interactionNormMajor2,
+                                 backgroundColor: PassColor.interactionNormMinor1)
+                })
+            .roundedEditableSection()
+            .padding(.top, kItemDetailSectionPadding / 2)
+        }
+    }
+
     private var applicationSection: some View {
         VStack(spacing: 0) {
             Text("Application")
@@ -156,24 +194,18 @@ struct SettingsView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, kItemDetailSectionPadding)
 
-            VStack(spacing: 0) {
-                TextOptionRow(title: "View logs", action: viewModel.viewLogs)
-
-                PassSectionDivider()
-
-                OptionRow(
-                    action: viewModel.forceSync,
-                    height: .medium,
-                    content: {
-                        Text("Force synchronization")
-                            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
-                    },
-                    trailing: {
-                        CircleButton(icon: IconProvider.arrowRotateRight,
-                                     iconColor: PassColor.interactionNormMajor2,
-                                     backgroundColor: PassColor.interactionNormMinor1)
-                    })
-            }
+            OptionRow(
+                action: viewModel.forceSync,
+                height: .medium,
+                content: {
+                    Text("Force synchronization")
+                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                },
+                trailing: {
+                    CircleButton(icon: IconProvider.arrowRotateRight,
+                                 iconColor: PassColor.interactionNormMajor2,
+                                 backgroundColor: PassColor.interactionNormMinor1)
+                })
             .roundedEditableSection()
 
             Text("Download all your items again to make sure you are in sync")

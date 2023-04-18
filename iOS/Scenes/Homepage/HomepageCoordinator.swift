@@ -808,25 +808,18 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         present(viewController)
     }
 
-    func settingsViewModelWantsToViewLogs() {
-        let view = LogTypesView(
-            onSelect: { [unowned self] module in
-                self.presentLogsView(for: module)
-            },
-            onClear: { [unowned self] in
-                self.bannerManager.displayBottomSuccessMessage("All logs cleared")
-            })
-        let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.short.value) * 4 + 120
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                CGFloat(height)
-            }
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
-        }
-        present(viewController)
+    func settingsViewModelWantsToViewHostAppLogs() {
+        presentLogsView(for: .hostApp)
+    }
+
+    func settingsViewModelWantsToViewAutoFillExtensionLogs() {
+        presentLogsView(for: .autoFillExtension)
+    }
+
+    func settingsViewModelWantsToClearLogs() {
+        let modules = PassLogModule.allCases.map(LogManager.init)
+        modules.forEach { $0.removeAllLogs() }
+        bannerManager.displayBottomSuccessMessage("All logs cleared")
     }
 
     func settingsViewModelDidFinishFullSync() {

@@ -31,7 +31,9 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToEditTheme()
     func settingsViewModelWantsToEditClipboardExpiration()
     func settingsViewModelWantsToEdit(primaryVault: Vault)
-    func settingsViewModelWantsToViewLogs()
+    func settingsViewModelWantsToViewHostAppLogs()
+    func settingsViewModelWantsToViewAutoFillExtensionLogs()
+    func settingsViewModelWantsToClearLogs()
     func settingsViewModelDidFinishFullSync()
     func settingsViewModelDidEncounter(error: Error)
 }
@@ -119,8 +121,16 @@ extension SettingsViewModel {
         delegate?.settingsViewModelWantsToEdit(primaryVault: primaryVault)
     }
 
-    func viewLogs() {
-        delegate?.settingsViewModelWantsToViewLogs()
+    func viewHostAppLogs() {
+        delegate?.settingsViewModelWantsToViewHostAppLogs()
+    }
+
+    func viewAutoFillExensionLogs() {
+        delegate?.settingsViewModelWantsToViewAutoFillExtensionLogs()
+    }
+
+    func clearLogs() {
+        delegate?.settingsViewModelWantsToClearLogs()
     }
 
     func forceSync() {
