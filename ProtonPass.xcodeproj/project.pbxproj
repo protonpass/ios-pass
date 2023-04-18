@@ -126,6 +126,9 @@
 		354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14328A2683E00F50040 /* ItemContentProtocol.swift */; };
 		354DCCF9291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354DCCF8291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift */; };
 		354E19F6293F90F500A3F853 /* ColoredRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E19F5293F90F500A3F853 /* ColoredRoundedButton.swift */; };
+		354EA82929EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EA82829EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift */; };
+		354EA82B29EF4FE300F1FB95 /* TelemetryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EA82A29EF4FE300F1FB95 /* TelemetryEvent.swift */; };
+		354EA82D29EF53B500F1FB95 /* TelemetryEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EA82C29EF53B500F1FB95 /* TelemetryEventTests.swift */; };
 		354F1F1A29D8C2A200A6B1E8 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F1F1929D8C2A200A6B1E8 /* AppData.swift */; };
 		354F1F1B29D8CAC500A6B1E8 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F1F1929D8C2A200A6B1E8 /* AppData.swift */; };
 		354F1F1C29D8CAC600A6B1E8 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F1F1929D8C2A200A6B1E8 /* AppData.swift */; };
@@ -423,8 +426,6 @@
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
-		358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */; };
-		358A508728AD23F900F5285C /* GlobalLocalDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */; };
 		358A508D28AD823000F5285C /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508C28AD823000F5285C /* PublicKey.swift */; };
 		358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */; };
 		358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509128AD856D00F5285C /* PublicKeyEntity.swift */; };
@@ -825,6 +826,9 @@
 		354BB14328A2683E00F50040 /* ItemContentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContentProtocol.swift; sourceTree = "<group>"; };
 		354DCCF8291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+AdaptiveScrollDisabled.swift"; sourceTree = "<group>"; };
 		354E19F5293F90F500A3F853 /* ColoredRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredRoundedButton.swift; sourceTree = "<group>"; };
+		354EA82829EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTelemetryEventDatasource.swift; sourceTree = "<group>"; };
+		354EA82A29EF4FE300F1FB95 /* TelemetryEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEvent.swift; sourceTree = "<group>"; };
+		354EA82C29EF53B500F1FB95 /* TelemetryEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventTests.swift; sourceTree = "<group>"; };
 		354F1F1929D8C2A200A6B1E8 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		354F768928C72F1000EB2383 /* PassKeyUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKeyUtils.swift; sourceTree = "<group>"; };
 		354F769128C8678100EB2383 /* LogInDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInDetailView.swift; sourceTree = "<group>"; };
@@ -1069,8 +1073,6 @@
 		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
-		358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalLocalDatasource.swift; sourceTree = "<group>"; };
-		358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalLocalDatasourceTests.swift; sourceTree = "<group>"; };
 		358A508C28AD823000F5285C /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
 		358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPublicKeysEndpoint.swift; sourceTree = "<group>"; };
 		358A509128AD856D00F5285C /* PublicKeyEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyEntity.swift; sourceTree = "<group>"; };
@@ -1470,8 +1472,9 @@
 			children = (
 				3542E2BC28D9CA9C00194F24 /* ItemContentTests.swift */,
 				3565621B29B9EC9900C43F72 /* ItemSortableTests.swift */,
-				356BC36029D7189900F03497 /* ShareTests.swift */,
 				355AA32429E9B41900C20F5F /* ItemThumbnailableTests.swift */,
+				356BC36029D7189900F03497 /* ShareTests.swift */,
+				354EA82C29EF53B500F1FB95 /* TelemetryEventTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1613,6 +1616,7 @@
 				359A4DDD29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift */,
 				359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */,
 				35581812290AB2B000DD94DB /* SyncEvents.swift */,
+				354EA82A29EF4FE300F1FB95 /* TelemetryEvent.swift */,
 				350A97D32885BFFD00A7168B /* Vault.swift */,
 			);
 			path = Models;
@@ -1961,7 +1965,6 @@
 		357D9FCE28A9815500F012BB /* Datasources */ = {
 			isa = PBXGroup;
 			children = (
-				358A508628AD23F900F5285C /* GlobalLocalDatasourceTests.swift */,
 				3542E2C628D9EB8000194F24 /* LocalItemDatasourceTests.swift */,
 				358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */,
 				355E33A929C4612800402CAE /* LocalSearchEntryDatasourceTests.swift */,
@@ -2051,7 +2054,6 @@
 		3593DD1928A8460E00C235D3 /* Local */ = {
 			isa = PBXGroup;
 			children = (
-				358A508428AD21A900F5285C /* GlobalLocalDatasource.swift */,
 				3593DCE628A790F800C235D3 /* LocalDatasource.swift */,
 				3542E2C228D9E16600194F24 /* LocalItemDatasource.swift */,
 				358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */,
@@ -2059,6 +2061,7 @@
 				3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */,
 				35581809290A7FA600DD94DB /* LocalShareEventIDDatasource.swift */,
 				35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */,
+				354EA82829EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -3755,7 +3758,6 @@
 				355792DD29E859A5001198DA /* GetLogoEndpoint.swift in Sources */,
 				3565362629EDD8E4007A43D3 /* SendEventsRequest.swift in Sources */,
 				359A4DDC29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift in Sources */,
-				358A508528AD21A900F5285C /* GlobalLocalDatasource.swift in Sources */,
 				358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */,
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,
 				355AA31E29E97B0900C20F5F /* FavIconRepository.swift in Sources */,
@@ -3789,7 +3791,9 @@
 				3530FADA28CEFA0900CE8A8F /* DeleteItemsEndpoint.swift in Sources */,
 				3593DCE728A790F800C235D3 /* LocalDatasource.swift in Sources */,
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
+				354EA82B29EF4FE300F1FB95 /* TelemetryEvent.swift in Sources */,
 				356180F728EC4C0C00B1835A /* CredentialManager.swift in Sources */,
+				354EA82929EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift in Sources */,
 				3542E2C328D9E16600194F24 /* LocalItemDatasource.swift in Sources */,
 				354146D628D1F466007E45A6 /* RemoteAliasDatasource.swift in Sources */,
 				3529432E28DB455100E1F11B /* ItemSearchResult.swift in Sources */,
@@ -3842,9 +3846,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				358A508728AD23F900F5285C /* GlobalLocalDatasourceTests.swift in Sources */,
 				3542E2C928D9EBC000194F24 /* SymmetricallyEncryptedItem+Test.swift in Sources */,
 				355AA31A29E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift in Sources */,
+				354EA82D29EF53B500F1FB95 /* TelemetryEventTests.swift in Sources */,
 				353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */,
 				357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */,
 				351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */,

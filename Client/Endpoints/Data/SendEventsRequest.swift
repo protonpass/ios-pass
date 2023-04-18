@@ -21,23 +21,21 @@
 import Foundation
 
 public struct SendEventsRequest: Encodable {
-    let eventInfo: [TelemetryEvent]
+    let eventInfo: [EventInfo]
 
     enum CodingKeys: String, CodingKey {
         case eventInfo = "EventInfo"
     }
 }
 
-public struct TelemetryEvent: Encodable {
+public struct EventInfo: Encodable {
     public let measurementGroup: String
     public let event: String
-    public let values: [String]
     public let dimensions: Dimensions
 
     enum CodingKeys: String, CodingKey {
         case measurementGroup = "MeasurementGroup"
         case event = "Event"
-        case values = "Values"
         case dimensions = "Dimensions"
     }
 
@@ -56,10 +54,9 @@ public struct TelemetryEvent: Encodable {
         }
     }
 
-    public init(measurementGroup: String, event: String, values: [String], dimensions: Dimensions) {
+    public init(measurementGroup: String, event: String, dimensions: Dimensions) {
         self.measurementGroup = measurementGroup
         self.event = event
-        self.values = values
         self.dimensions = dimensions
     }
 }
