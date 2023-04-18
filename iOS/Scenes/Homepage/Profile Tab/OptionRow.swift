@@ -22,10 +22,11 @@ import SwiftUI
 import UIComponents
 
 enum OptionRowHeight {
-    case short, medium, tall
+    case compact, short, medium, tall
 
     var value: CGFloat {
         switch self {
+        case .compact: return 44
         case .short: return 56
         case .medium: return 72
         case .tall: return 76
@@ -37,6 +38,7 @@ struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
     let action: (() -> Void)?
     let title: String?
     let height: OptionRowHeight
+    let horizontalPadding: CGFloat
     let content: Content
     let leading: LeadingView
     let trailing: TrailingView
@@ -44,12 +46,14 @@ struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
     init(action: (() -> Void)? = nil,
          title: String? = nil,
          height: OptionRowHeight = .short,
+         horizontalPadding: CGFloat = kItemDetailSectionPadding,
          @ViewBuilder content: () -> Content,
          @ViewBuilder leading: (() -> LeadingView) = { EmptyView() },
          @ViewBuilder trailing: (() -> TrailingView) = { EmptyView() }) {
         self.action = action
         self.title = title
         self.height = height
+        self.horizontalPadding = horizontalPadding
         self.content = content()
         self.leading = leading()
         self.trailing = trailing()
@@ -66,7 +70,7 @@ struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
                 realBody
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, horizontalPadding)
     }
 
     private var realBody: some View {
@@ -115,6 +119,7 @@ struct SelectableOptionRow<Content: View>: View {
         OptionRow(
             action: action,
             height: height,
+            horizontalPadding: 0,
             content: { content() },
             trailing: {
                 if isSelected {

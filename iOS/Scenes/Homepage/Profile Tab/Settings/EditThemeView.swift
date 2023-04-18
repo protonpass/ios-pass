@@ -47,13 +47,10 @@ struct EditThemeView: View {
                             },
                             isSelected: theme == preferences.theme )
 
-                        if theme != Theme.allCases.last {
-                            PassDivider()
-                        }
+                        PassDivider()
                     }
                 }
-                .roundedEditableSection()
-                .padding([.top, .horizontal])
+                .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(uiColor: PassColor.backgroundWeak))

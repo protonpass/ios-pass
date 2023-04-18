@@ -33,20 +33,17 @@ struct EditClipboardExpirationView: View {
                     ForEach(ClipboardExpiration.allCases, id: \.rawValue) { expiration in
                         SelectableOptionRow(
                             action: { preferences.clipboardExpiration = expiration; dismiss() },
-                            height: .short,
+                            height: .compact,
                             content: {
                                 Text(expiration.description)
                                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                             },
                             isSelected: expiration == preferences.clipboardExpiration)
 
-                        if expiration != ClipboardExpiration.allCases.last {
-                            PassDivider()
-                        }
+                        PassDivider()
                     }
                 }
-                .roundedEditableSection()
-                .padding([.top, .horizontal])
+                .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(uiColor: PassColor.backgroundWeak))

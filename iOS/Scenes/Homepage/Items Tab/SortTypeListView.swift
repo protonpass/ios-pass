@@ -51,25 +51,20 @@ struct SortTypeListView: View {
         NavigationView {
             VStack(alignment: .center, spacing: 0) {
                 ForEach(SortType.allCases, id: \.self) { type in
-                    HStack {
-                        Text(type.title)
-                        Spacer()
-                        if type == viewModel.selectedSortType {
-                            Label("", systemImage: "checkmark")
-                        }
-                    }
-                    .foregroundColor(Color(uiColor: type == viewModel.selectedSortType ?
-                                           PassColor.interactionNormMajor2 : PassColor.textNorm))
-                    .contentShape(Rectangle())
-                    .frame(height: 44)
-                    .onTapGesture {
-                        viewModel.selectedSortType = type
-                        dismiss()
-                    }
+                    SelectableOptionRow(
+                        action: {
+                            viewModel.selectedSortType = type
+                            dismiss()
+                        },
+                        height: .compact,
+                        content: {
+                            Text(type.title)
+                                .foregroundColor(Color(uiColor: type == viewModel.selectedSortType ?
+                                                       PassColor.interactionNormMajor2 : PassColor.textNorm))
+                        },
+                        isSelected: type == viewModel.selectedSortType)
 
-                    if type != SortType.allCases.last {
-                        PassDivider()
-                    }
+                    PassDivider()
                 }
                 .padding(.horizontal)
                 Spacer()

@@ -32,6 +32,7 @@ struct EditPrimaryVaultView: View {
                         OptionRow(
                             action: { viewModel.setAsPrimary(vault: vault.vault) },
                             height: .medium,
+                            horizontalPadding: 0,
                             content: {
                                 VaultRow(
                                     thumbnail: { VaultThumbnail(vault: vault.vault) },
@@ -41,15 +42,10 @@ struct EditPrimaryVaultView: View {
                                     height: 44)
                             })
 
-                        if vault.vault.shareId != viewModel.allVaults.last?.vault.shareId {
-                            PassDivider()
-                        }
+                        PassDivider()
                     }
-
-                    Spacer()
                 }
-                .roundedEditableSection()
-                .padding([.top, .horizontal])
+                .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .disabled(viewModel.isLoading)
