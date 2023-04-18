@@ -30,29 +30,25 @@ struct EditDefaultBrowserView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack {
-                    VStack(spacing: 0) {
-                        ForEach(supportedBrowsers, id: \.rawValue) { browser in
-                            SelectableOptionRow(
-                                action: { preferences.browser = browser; dismiss() },
-                                height: .short,
-                                content: {
-                                    Text(browser.description)
-                                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                                },
-                                isSelected: browser == preferences.browser)
+                VStack(spacing: 0) {
+                    ForEach(supportedBrowsers, id: \.rawValue) { browser in
+                        SelectableOptionRow(
+                            action: { preferences.browser = browser; dismiss() },
+                            height: .compact,
+                            content: {
+                                Text(browser.description)
+                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                            },
+                            isSelected: browser == preferences.browser)
 
-                            if browser != supportedBrowsers.last {
-                                PassDivider()
-                            }
-                        }
+                        PassDivider()
                     }
-                    .roundedEditableSection()
 
                     Text("This preference will fallback to Safari if the browser of choice is uninstalled.")
                         .sectionTitleText()
+                        .padding(.vertical)
                 }
-                .padding([.top, .horizontal])
+                .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(uiColor: PassColor.backgroundWeak))
