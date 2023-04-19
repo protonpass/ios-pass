@@ -23,6 +23,7 @@ import CryptoKit
 import GoLibs
 import ProtonCore_Authentication
 import ProtonCore_Challenge
+import ProtonCore_Environment
 import ProtonCore_FeatureSwitch
 import ProtonCore_HumanVerification
 import ProtonCore_Keymaker
@@ -40,6 +41,7 @@ final class APIManager {
     private let logger: Logger
     private let appVer: String
     private let appData: AppData
+    private let trustKitDelegate: LoggingTrustKitDelegate
 
     private(set) var apiService: APIService
     private(set) var authHelper: AuthHelper
@@ -48,9 +50,14 @@ final class APIManager {
     weak var delegate: APIManagerDelegate?
 
     init(logManager: LogManager, appVer: String, appData: AppData) {
+        let logger = Logger(manager: logManager)
+        let trustKitDelegate = LoggingTrustKitDelegate(logger: logger)
+        APIManager.setUpCertificatePinning(trustKitDelegate: trustKitDelegate)
+
+        self.trustKitDelegate = trustKitDelegate
         self.logManager = logManager
         self.appVer = appVer
-        self.logger = .init(manager: logManager)
+        self.logger = logger
         self.appData = appData
 
         if let credential = appData.userData?.credential ?? appData.unauthSessionCredentials {
@@ -91,6 +98,12 @@ final class APIManager {
         authHelper = AuthHelper()
         authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
         apiService.authDelegate = authHelper
+    }
+
+    private static func setUpCertificatePinning(trustKitDelegate: TrustKitDelegate) {
+        TrustKitWrapper.setUp(delegate: trustKitDelegate)
+        PMAPIService.noTrustKit = false
+        PMAPIService.trustKit = TrustKitWrapper.current
     }
 
     private func setUpCore() {
@@ -176,5 +189,24 @@ extension APIManager: APIServiceDelegate {
         // swiftlint:disable:next todo
         // TODO: Handle this
         return true
+    }
+}
+
+// MARK: - TrustKitDelegate
+private class LoggingTrustKitDelegate: TrustKitDelegate {
+    let logger: Logger
+
+    init(logger: Logger) {
+        self.logger = logger
+    }
+
+    func onTrustKitValidationError(_ error: TrustKitError) {
+        // just logging right now
+        switch error {
+        case .failed:
+            logger.error("Trust kit validation failed")
+        case .hardfailed:
+            logger.error("Trust kit validation failed with hardfail")
+        }
     }
 }
