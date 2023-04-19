@@ -37,4 +37,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         AppearanceSettings.apply()
         appCoordinator.start()
     }
+
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        window?.alpha = 0
+    }
+
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        window?.alpha = 1
+    }
 }
