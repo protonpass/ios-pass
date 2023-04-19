@@ -500,6 +500,7 @@
 		6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002A29A76D86001033B6 /* APIManagerTests.swift */; };
 		6699002E29A77197001033B6 /* KeychainMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002D29A77197001033B6 /* KeychainMock.swift */; };
 		6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */; };
+		66E960D529F046C6004D96AF /* PassLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66E960D429F046C6004D96AF /* PassLaunchScreen.storyboard */; };
 		675A744B254FF56E1C95D91B /* Pods_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 303E837161E0B51054C04021 /* Pods_Client.framework */; };
 		6EA5015186914BB62E54DBE6 /* Pods_Client_ClientTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D35678054D43CDE3733E788 /* Pods_Client_ClientTests.framework */; };
 		706849B55C70CEEC0D81FBF3 /* Pods_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 302E54D07ED836B91BE0C248 /* Pods_macOS.framework */; };
@@ -1153,6 +1154,7 @@
 		6699002A29A76D86001033B6 /* APIManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
 		6699002D29A77197001033B6 /* KeychainMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMock.swift; sourceTree = "<group>"; };
 		6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProviderMock.swift; sourceTree = "<group>"; };
+		66E960D429F046C6004D96AF /* PassLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = PassLaunchScreen.storyboard; path = "Pods/ProtonCore-UIFoundations/libraries/UIFoundations/LaunchScreens/PassLaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
 		683905819D159624F444A02C /* Pods-Client-ClientTests.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
 		70B9DCC580A1534DBDA4F437 /* Pods-iOS.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release-black.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release-black.xcconfig"; sourceTree = "<group>"; };
 		726D9C24A4B8451F39AA08BB /* Pods-Core.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
@@ -2162,6 +2164,7 @@
 		35E50652286F826000A3F6EA /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				66E960D429F046C6004D96AF /* PassLaunchScreen.storyboard */,
 				352866BE28E3065A000630E2 /* iOSDebug-Black.entitlements */,
 				356B21D52870F844001220CB /* iOS.entitlements */,
 				35E50658286F838800A3F6EA /* Info.plist */,
@@ -2946,6 +2949,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66E960D529F046C6004D96AF /* PassLaunchScreen.storyboard in Resources */,
 				35526B5E28D117820017BB53 /* Icons.xcassets in Resources */,
 				35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */,
 				3560845129DDE2C9001F7487 /* Colors.xcassets in Resources */,
@@ -5366,8 +5370,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = PassLaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -6081,8 +6088,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = PassLaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -6122,8 +6132,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = PassLaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -6625,8 +6638,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = PassLaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -6920,8 +6936,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = PassLaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
