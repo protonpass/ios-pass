@@ -57,7 +57,7 @@ public extension CreateVaultRequest {
         let signerKey = SigningKey(privateKey: privateKey,
                                    passphrase: .init(value: passphrase))
 
-        let vaultKey = PassKeyUtils.randomKey()
+        let vaultKey = try Data.random()
         let encryptedVaultKeyData = try Encryptor.encrypt(publicKey: publicKey,
                                                           clearData: vaultKey,
                                                           signerKey: signerKey)
