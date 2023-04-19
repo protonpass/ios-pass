@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Foundations",
-  "version": "3.29.0",
+  "version": "5.1.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": null,
-    "tag": "3.29.0"
+    "tag": "5.1.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -27,14 +27,14 @@
     "5.6"
   ],
   "pod_target_xcconfig": {
-    "APPLICATION_EXTENSION_API_ONLY": "NO"
+    "APPLICATION_EXTENSION_API_ONLY": "YES"
   },
   "default_subspecs": [
 
   ],
   "dependencies": {
     "ProtonCore-Log": [
-      "3.29.0"
+      "5.1.0"
     ]
   },
   "ios": {

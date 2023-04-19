@@ -36,28 +36,25 @@ public class CreateAddressTestCases {
 
     public func testShowCreateAddressSuccessfulCreation<T: CoreElements>(robot _: T.Type) -> T {
         quarkCommands.createUser(externalEmail: random.email, password: random.password)
-        
-        loginRobot
-            .fillUsername(username: random.email)
-            .fillpassword(password: random.password)
-            .signIn(robot: CreateAddressRobot.self)
-            .verify.createAddress(email: random.email)
-            .tapContinueButton()
-        return T()
+
+        return SigninExternalAccountsCapability()
+            .convertExternalAccountToInternal(email: random.email,
+                                              password: random.password,
+                                              username: nil,
+                                              loginRobot: loginRobot,
+                                              retRobot: T.self)
     }
     
     public func testShowCreateAddressNewNameSuccessfulCreation<T: CoreElements>(robot _: T.Type) -> T {
         quarkCommands.createUser(externalEmail: random.email, password: random.password)
-        let newEmail = generateName()
+        let newUsername = generateName()
         
-        loginRobot
-            .fillUsername(username: random.email)
-            .fillpassword(password: random.password)
-            .signIn(robot: CreateAddressRobot.self)
-            .verify.createAddress(email: random.email)
-            .fillUsername(username: newEmail)
-            .tapContinueButton()
-        return T()
+        return SigninExternalAccountsCapability()
+            .convertExternalAccountToInternal(email: random.email,
+                                              password: random.password,
+                                              username: newUsername,
+                                              loginRobot: loginRobot,
+                                              retRobot: T.self)
     }
     
     public func testShowCreateAddressCancelButton() {
@@ -103,7 +100,7 @@ public class CreateAddressTestCases {
     }
     
     private func generateEmail() -> Email {
-        let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
+        let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@\(StringUtils.randomAlphanumericString(length: 8)).com"
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
         return Email(email: randomEmail, password: randomPassword)
     }

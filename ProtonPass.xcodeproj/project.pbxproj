@@ -521,7 +521,6 @@
 		CCE7E1B680E6647D25927D82 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F5C90C76FB6CAE61EBE55B9 /* Pods_iOS.framework */; };
 		E40DE51A41CD97CC92DF6EF9 /* Pods_Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81DBB96363B0551C727A1AF9 /* Pods_Core.framework */; };
 		EAAEB05BFBCBEB08162111D3 /* Pods_Client_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26B3098DA5BEED9ECD640EB8 /* Pods_Client_iOSTests.framework */; };
-		F3B112DC463B4355E9979BEA /* Pods_Keyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0152A1F831F6696FC8639A48 /* Pods_Keyboard.framework */; };
 		F53DC9E901354CB27344B8B0 /* Pods_AutoFill.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE32F98A2102F4FD59442842 /* Pods_AutoFill.framework */; };
 /* End PBXBuildFile section */
 
@@ -682,7 +681,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0152A1F831F6696FC8639A48 /* Pods_Keyboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Keyboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0201F7A5DA6395D2A81EC9CF /* Pods-iOSUITests.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.release-black.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.release-black.xcconfig"; sourceTree = "<group>"; };
 		05BB58E3AF6F668997F9A688 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		0732689995489E51EB3A34F5 /* Pods-UIComponents.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release-prod.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release-prod.xcconfig"; sourceTree = "<group>"; };
@@ -695,12 +693,10 @@
 		17BE26CF2B94EDD6A22376D3 /* Pods-Client-ClientTests.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.release-black.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.release-black.xcconfig"; sourceTree = "<group>"; };
 		17D15977914828A6DFEE18C6 /* Pods-UIComponents.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.debug-black.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.debug-black.xcconfig"; sourceTree = "<group>"; };
 		1A319647D011E96DE85C3A50 /* Pods-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		1BFA8E689706896BE8D28A34 /* Pods-Keyboard.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keyboard.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-Keyboard/Pods-Keyboard.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
 		1CAF01E39F49DD204AB5CDDB /* Pods-iOSUITests.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.release-prod.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.release-prod.xcconfig"; sourceTree = "<group>"; };
 		1E3B68C8C289D03C90EDC374 /* Pods-UIComponents.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
 		1F5C90C76FB6CAE61EBE55B9 /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		20BFF04E7821BB820D7FD2DB /* Pods-Client.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
-		22AD6EB91F565AD0C4ADD40C /* Pods-Keyboard.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keyboard.release-prod.xcconfig"; path = "Target Support Files/Pods-Keyboard/Pods-Keyboard.release-prod.xcconfig"; sourceTree = "<group>"; };
 		259E778BA83D0093652C7BDF /* Pods-Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.debug.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.debug.xcconfig"; sourceTree = "<group>"; };
 		26B3098DA5BEED9ECD640EB8 /* Pods_Client_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Client_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A2387AA3DDC1A71F6C10348 /* Pods-Client-ClientTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.debug.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1181,9 +1177,7 @@
 		81DBB96363B0551C727A1AF9 /* Pods_Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83A3B0925AABD3FD2AA0F210 /* Pods-macOS.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-black.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-black.xcconfig"; sourceTree = "<group>"; };
 		90C0C1685F4D41658DEF1E6C /* Pods-Client.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.debug-black.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.debug-black.xcconfig"; sourceTree = "<group>"; };
-		91F0DD6840D5EB696C0BF158 /* Pods-Keyboard.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keyboard.debug-black.xcconfig"; path = "Target Support Files/Pods-Keyboard/Pods-Keyboard.debug-black.xcconfig"; sourceTree = "<group>"; };
 		93AC007F0743C065058291A6 /* Pods-Core-CoreTests.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-prod.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		93B092B4BC49D12C72ABD8CC /* Pods-Keyboard.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keyboard.debug-prod.xcconfig"; path = "Target Support Files/Pods-Keyboard/Pods-Keyboard.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		946F2D8BDA19ED0C714A6A22 /* Pods-Core-CoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug.xcconfig"; sourceTree = "<group>"; };
 		97D2D6F8FD1A0A99A0662537 /* Pods-UIComponents.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.debug-prod.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		9965F4B39D9422BF0D7E5B85 /* Pods-Core-CoreTests.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
@@ -1192,7 +1186,6 @@
 		A1E0D78F806CB695524002A9 /* Pods-macOS.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
 		A4E4EA6BF38A98C49659B2BA /* Pods-macOS.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug-prod.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		A7A8977220EAD2E5C505F8CF /* Pods_Core_CoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Core_CoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD7AF73AADF8CC012F8CFD21 /* Pods-Keyboard.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keyboard.release-black.xcconfig"; path = "Target Support Files/Pods-Keyboard/Pods-Keyboard.release-black.xcconfig"; sourceTree = "<group>"; };
 		BD7FE7A5D7863113BC743656 /* Pods-iOSUITests.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
 		BE32F98A2102F4FD59442842 /* Pods_AutoFill.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AutoFill.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0485B91C0DEF5918A6C1733 /* Pods-Core.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.debug-prod.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.debug-prod.xcconfig"; sourceTree = "<group>"; };
@@ -1250,7 +1243,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				356125132982587000EDA991 /* Core.framework in Frameworks */,
-				F3B112DC463B4355E9979BEA /* Pods_Keyboard.framework in Frameworks */,
 				35758BE02985695700AF2683 /* Client.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1344,7 +1336,6 @@
 				BE32F98A2102F4FD59442842 /* Pods_AutoFill.framework */,
 				D56F1368DBEE5894B8A7AA5C /* Pods_iOSUITests.framework */,
 				26B3098DA5BEED9ECD640EB8 /* Pods_Client_iOSTests.framework */,
-				0152A1F831F6696FC8639A48 /* Pods_Keyboard.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2528,17 +2519,12 @@
 				80AC4779C71BD8F89D6A14C0 /* Pods-Client-iOSTests.debug-prod.xcconfig */,
 				CBC47769DCAD49B4772D80FB /* Pods-Client-iOSTests.release-black.xcconfig */,
 				516CDE61530718391B5F970B /* Pods-Client-iOSTests.release-prod.xcconfig */,
-				91F0DD6840D5EB696C0BF158 /* Pods-Keyboard.debug-black.xcconfig */,
-				93B092B4BC49D12C72ABD8CC /* Pods-Keyboard.debug-prod.xcconfig */,
-				BD7AF73AADF8CC012F8CFD21 /* Pods-Keyboard.release-black.xcconfig */,
-				22AD6EB91F565AD0C4ADD40C /* Pods-Keyboard.release-prod.xcconfig */,
 				3C13DBA0B8C0C668500A98D4 /* Pods-AutoFill.release-prod-qa.xcconfig */,
 				20BFF04E7821BB820D7FD2DB /* Pods-Client.release-prod-qa.xcconfig */,
 				683905819D159624F444A02C /* Pods-Client-ClientTests.release-prod-qa.xcconfig */,
 				50F9263A8A746957BD9149AE /* Pods-Client-iOSTests.release-prod-qa.xcconfig */,
 				726D9C24A4B8451F39AA08BB /* Pods-Core.release-prod-qa.xcconfig */,
 				9965F4B39D9422BF0D7E5B85 /* Pods-Core-CoreTests.release-prod-qa.xcconfig */,
-				1BFA8E689706896BE8D28A34 /* Pods-Keyboard.release-prod-qa.xcconfig */,
 				1E3B68C8C289D03C90EDC374 /* Pods-UIComponents.release-prod-qa.xcconfig */,
 				D704CA14C22B2B517F7A2844 /* Pods-iOS.release-prod-qa.xcconfig */,
 				BD7FE7A5D7863113BC743656 /* Pods-iOSUITests.release-prod-qa.xcconfig */,
@@ -2644,7 +2630,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3561250C2982438300EDA991 /* Build configuration list for PBXNativeTarget "Keyboard" */;
 			buildPhases = (
-				22825B8EE6D763F1ECE353E1 /* [CP] Check Pods Manifest.lock */,
 				356124FC2982438300EDA991 /* Sources */,
 				356124FD2982438300EDA991 /* Frameworks */,
 				356124FE2982438300EDA991 /* Resources */,
@@ -3063,28 +3048,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		22825B8EE6D763F1ECE353E1 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Keyboard-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2F0F26329D235765A5DCF552 /* [CP] Check Pods Manifest.lock */ = {
@@ -5011,7 +4974,6 @@
 		};
 		356125082982438300EDA991 /* Debug-Black */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91F0DD6840D5EB696C0BF158 /* Pods-Keyboard.debug-black.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5094,7 +5056,6 @@
 		};
 		356125092982438300EDA991 /* Debug-Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93B092B4BC49D12C72ABD8CC /* Pods-Keyboard.debug-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5180,7 +5141,6 @@
 		};
 		3561250A2982438300EDA991 /* Release-Black */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD7AF73AADF8CC012F8CFD21 /* Pods-Keyboard.release-black.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5260,7 +5220,6 @@
 		};
 		3561250B2982438300EDA991 /* Release-Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 22AD6EB91F565AD0C4ADD40C /* Pods-Keyboard.release-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5649,7 +5608,6 @@
 		};
 		35C2161C29EA8A0B001720FF /* Release-Prod-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1BFA8E689706896BE8D28A34 /* Pods-Keyboard.release-prod-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
