@@ -139,8 +139,8 @@ struct LogInDetailView: View {
                         Button(action: viewModel.showAliasDetail) {
                             Text("View alias")
                                 .font(.callout)
-                                .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor1Color))
-                                .underline(color: Color(uiColor: viewModel.itemContent.type.normMajor1Color))
+                                .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor2Color))
+                                .underline(color: Color(uiColor: viewModel.itemContent.type.normMajor2Color))
                         }
                         .padding(.top, 8)
                     }
@@ -309,8 +309,8 @@ struct LogInDetailView: View {
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
             Text("View")
                 .font(.callout)
-                .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor1Color))
-                .underline(color: Color(uiColor: viewModel.itemContent.type.normMajor1Color))
+                .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor2Color))
+                .underline(color: Color(uiColor: viewModel.itemContent.type.normMajor2Color))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
