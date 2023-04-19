@@ -27,7 +27,7 @@ final class FileUtilsTests: XCTestCase {
     func testCreateNewFileWithData() throws {
         // Given
         let givenFileName = String.random()
-        let givenData = Data.random()
+        let givenData = try Data.random()
 
         // When
         let fileUrl = try FileUtils.createOrOverwrite(data: givenData,
@@ -56,7 +56,7 @@ final class FileUtilsTests: XCTestCase {
     func testOverwriteData() throws {
         // Given
         let givenFileName = String.random()
-        let givenData = Data.random()
+        let givenData = try Data.random()
         try FileUtils.createOrOverwrite(data: nil,
                                         fileName: givenFileName,
                                         containerUrl: containerUrl)
@@ -76,7 +76,7 @@ final class FileUtilsTests: XCTestCase {
         let givenDate = Date.now
         let givenFileUrl = containerUrl.appendingPathComponent(.random())
         FileManager.default.createFile(atPath: givenFileUrl.path,
-                                       contents: .random(),
+                                       contents: try .random(),
                                        attributes: [.creationDate: givenDate])
 
         // When
@@ -91,7 +91,7 @@ final class FileUtilsTests: XCTestCase {
         let givenDate = Date.now
         let givenFileUrl = containerUrl.appendingPathComponent(.random())
         FileManager.default.createFile(atPath: givenFileUrl.path,
-                                       contents: .random(),
+                                       contents: try .random(),
                                        attributes: [.modificationDate: givenDate])
 
         // When
@@ -104,7 +104,7 @@ final class FileUtilsTests: XCTestCase {
     func testCheckObsolescences() throws {
         // Given
         let givenFileName = String.random()
-        let givenData = Data.random()
+        let givenData = try Data.random()
         let fileUrl = try FileUtils.createOrOverwrite(data: givenData,
                                                       fileName: givenFileName,
                                                       containerUrl: containerUrl)
@@ -130,7 +130,7 @@ final class FileUtilsTests: XCTestCase {
     func testGetValidData() throws {
         // Given
         let givenFileName = String.random()
-        let givenData = Data.random()
+        let givenData = try Data.random()
         let fileUrl = try FileUtils.createOrOverwrite(data: givenData,
                                                       fileName: givenFileName,
                                                       containerUrl: containerUrl)
@@ -146,7 +146,7 @@ final class FileUtilsTests: XCTestCase {
     func testGetObsoleteData() throws {
         // Given
         let givenFileName = String.random()
-        let givenData = Data.random()
+        let givenData = try Data.random()
         let fileUrl = try FileUtils.createOrOverwrite(data: givenData,
                                                       fileName: givenFileName,
                                                       containerUrl: containerUrl)

@@ -57,16 +57,24 @@ final class AppData {
     }
 
     func getSymmetricKey() throws -> SymmetricKey {
-        if symmetricKey == nil {
-            symmetricKey = String.random(length: 32)
+        if let symmetricKey {
+            if symmetricKey.count == 32 {
+                // Legacy path with 32-character long string
+                guard let symmetricKeyData = symmetricKey.data(using: .utf8) else {
+                    throw PPError.failedToGetOrCreateSymmetricKey
+                }
+                return .init(data: symmetricKeyData)
+            } else {
+                // New path with base 64 string
+                guard let symmetricKeyData = try symmetricKey.base64Decode() else {
+                    throw PPError.failedToGetOrCreateSymmetricKey
+                }
+                return .init(data: symmetricKeyData)
+            }
+        } else {
+            let randomData = try Data.random()
+            self.symmetricKey = randomData.encodeBase64()
+            return .init(data: randomData)
         }
-
-        guard let symmetricKey,
-              let symmetricKeyData = symmetricKey.data(using: .utf8) else {
-            // Should never happen
-            throw PPError.failedToGetOrCreateSymmetricKey
-        }
-
-        return .init(data: symmetricKeyData)
     }
 }

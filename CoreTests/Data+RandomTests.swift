@@ -1,7 +1,7 @@
 //
-// PassKeyUtils.swift
-// Proton Pass - Created on 06/09/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Data+RandomTests.swift
+// Proton Pass - Created on 19/04/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,23 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import GoLibs
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_KeyManager
-import ProtonCore_Login
+@testable import Core
+import XCTest
 
-typealias DecryptionKey = ProtonCore_Crypto.DecryptionKey
-typealias Encryptor = ProtonCore_Crypto.Encryptor
+final class DataPlusRandomTests: XCTestCase {
+    func testRandomData() throws {
+        // Given
+        let givenByteCount = Int.random(in: 100...1_000)
 
-public enum PassKeyUtils {
-    static func randomKey() -> Data {
-        var key = Data(count: 32)
-        _ = key.withUnsafeMutableBytes {
-            // swiftlint:disable:next force_unwrapping
-            SecRandomCopyBytes(kSecRandomDefault, 32, $0.baseAddress!)
-        }
-        return key
+        // When
+        let randomData = try Data.random(byteCount: givenByteCount)
+
+        // Then
+        XCTAssertEqual(randomData.count, givenByteCount)
     }
 }

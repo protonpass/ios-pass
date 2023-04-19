@@ -46,7 +46,7 @@ extension MoveItemRequest {
     init(itemContent: ProtobufableItemContentProtocol,
          destinationShareId: String,
          destinationShareKey: DecryptedShareKey) throws {
-        let itemKey = PassKeyUtils.randomKey()
+        let itemKey = try Data.random()
         let encryptedContent = try AES.GCM.seal(itemContent.data(),
                                                 key: itemKey,
                                                 associatedData: .itemContent)
