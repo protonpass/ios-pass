@@ -3,19 +3,19 @@ def proton_core_path
 end
 
 def proton_core_version
-  '3.29.0'
+  '5.1.2'
 end
   
 def pmtest_path
-  'git@gitlab.protontech.ch:apple/shared/pmtestautomation.git'
+  'git@gitlab.protontech.ch:tpe/apple-fusion.git'
 end
 
 def pmtest_commit
-  "2bc09250d65786c316aa8a2a203404ada745bea2"
+  "1ba256d5"
 end
 
 def crypto_variant
-  "Crypto-Go1.19.4"
+  "Crypto-Go1.20.2"
 end
 
 def client_and_ios_pods
@@ -115,10 +115,6 @@ target 'iOS' do
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.29.0'
 
   target 'AutoFill' do
-    inherit! :search_paths
-  end
-
-  target 'Keyboard' do
     inherit! :search_paths
   end
 
