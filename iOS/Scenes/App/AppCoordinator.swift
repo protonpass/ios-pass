@@ -349,7 +349,8 @@ private extension AppCoordinator {
         guard preferences.biometricAuthenticationEnabled else { return }
         self.appLockedViewController = self.makeAppLockedViewController()
         guard let appLockedViewController = self.appLockedViewController else { return }
-        self.rootViewController?.present(appLockedViewController, animated: false)
+        self.rootViewController?.topMostViewController.present(appLockedViewController,
+                                                               animated: false)
     }
 
     func alertFailedBiometricAuthentication() {
