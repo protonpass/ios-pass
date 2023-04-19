@@ -42,7 +42,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     private func setUpSentry() {
         SentrySDK.start { options in
-            options.dsn = "https://a053e81a23354f1eb6becdeb3a91440a@sentry-new.protontech.ch/44"
+            options.dsn = "https://a053e81a23354f1eb6becdeb3a91440a@pass-api.proton.me/core/v4/reports/sentry/44"
             if ProcessInfo.processInfo.environment["me.proton.pass.SentryDebug"] == "1" {
                 options.debug = true
             }
