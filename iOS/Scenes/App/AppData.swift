@@ -63,6 +63,8 @@ final class AppData {
                 guard let symmetricKeyData = symmetricKey.data(using: .utf8) else {
                     throw PPError.failedToGetOrCreateSymmetricKey
                 }
+                // Update the legacy key to the new model
+                self.symmetricKey = symmetricKeyData.encodeBase64()
                 return .init(data: symmetricKeyData)
             } else {
                 // New path with base 64 string
