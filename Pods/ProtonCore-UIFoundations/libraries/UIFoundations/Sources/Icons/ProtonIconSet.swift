@@ -604,8 +604,21 @@ public struct ProtonIconSet {
     
     public let vpnWordmarkNoBackground = ProtonIcon(name: "VPNWordmarkNoBackground",
                                                     vpnFallbackName: "VPNWordmarkNoBackgroundAlwaysDark")
+
+    public let passWordmarkNoBackground = ProtonIcon(name: "PassWordmarkNoBackground",
+                                                     vpnFallbackName: "PassWordmarkNoBackgroundAlwaysDark")
     
     // LoginUI-specific
+
+    public let calendarTopImage = ProtonIcon(name: "CalendarTopImage")
+
+    public let driveTopImage = ProtonIcon(name: "DriveTopImage")
+
+    public let mailTopImage = ProtonIcon(name: "MailTopImage")
+
+    public let vpnTopImage = ProtonIcon(name: "VPNTopImage")
+
+    public let passTopImage = ProtonIcon(name: "PassTopImage")
     
     public let calendarWordmarkNoIcon = ProtonIcon(name: "CalendarWordmarkNoIcon")
     
@@ -615,27 +628,7 @@ public struct ProtonIconSet {
     
     public let vpnWordmarkNoIcon = ProtonIcon(name: "VPNWordmarkNoIcon")
     
-    // swiftlint:disable inclusive_language
-    
-    public var masterBrandBrandColorNoEffect: ProtonIcon {
-        switch Brand.currentBrand {
-        case .proton:
-            return ProtonIcon(name: "MasterbrandBrandColorNoEffect")
-        case .vpn:
-            return ProtonIcon(name: "VPNMasterbrandBrandColorNoEffect")
-        }
-    }
-    
-    // swiftlint:enable inclusive_language
-    
-    public var swirls: ProtonIcon {
-        switch Brand.currentBrand {
-        case .proton:
-            return ProtonIcon(name: "Swirls")
-        case .vpn:
-            return ProtonIcon(name: "VPNSwirls")
-        }
-    }
+    public let footer = ProtonIcon(name: "Footer")
     
     public let summary = ProtonIcon(name: "Summary")
     

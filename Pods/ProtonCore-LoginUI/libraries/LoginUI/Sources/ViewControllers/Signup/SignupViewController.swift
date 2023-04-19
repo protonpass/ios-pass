@@ -171,7 +171,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
 
         setUpCloseButton(showCloseButton: showCloseButton, action: #selector(SignupViewController.onCloseButtonTap(_:)))
         requestDomain()
-        configureAccountType()
+        configureAccountType(nil)
         generateAccessibilityIdentifiers()
         
         try? internalNameTextField.setUpChallenge(viewModel.challenge, type: .username)
@@ -187,21 +187,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     // MARK: Actions
 
     @IBAction func onOtherAccountButtonTap(_ sender: ProtonButton) {
-        cancelFocus()
-        PMBanner.dismissAll(on: self)
-        let isFirstResponder = currentlyUsedTextField.isFirstResponder
-        if isFirstResponder { _ = currentlyUsedTextField.resignFirstResponder() }
-        contentView.fadeOut(withDuration: 0.5) { [self] in
-            self.contentView.fadeIn(withDuration: 0.5)
-            self.currentlyUsedTextField.isError = false
-            if self.signupAccountType == .internal {
-                signupAccountType = .external
-            } else {
-                signupAccountType = .internal
-            }
-            configureAccountType()
-            if isFirstResponder { _ = currentlyUsedTextField.becomeFirstResponder() }
-        }
+        switchSignupAccountFlow(prefilledUsernameOrEmail: nil)
     }
 
     @IBAction func onNextButtonTap(_ sender: ProtonButton) {
@@ -227,19 +213,27 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         var sheet: PMActionSheet?
         let currentDomain = viewModel.currentlyChosenSignUpDomain
         let items = viewModel.allSignUpDomains.map { [weak self] domain in
-            PMActionSheetPlainItem(title: "@\(domain)", icon: nil, isOn: domain == currentDomain) { [weak self] _ in
+            let isOn = domain == currentDomain
+            return PMActionSheetItem(style: .text("@\(domain)"), markType: isOn ? .checkMark : .none) { [weak self] _ in
                 sheet?.dismiss(animated: true)
                 self?.viewModel.currentlyChosenSignUpDomain = domain
                 self?.configureDomainSuffix()
             }
         }
-        let header = PMActionSheetHeaderView(title: CoreString._su_domains_sheet_title,
-                                             subtitle: nil,
-                                             leftItem: PMActionSheetPlainItem(title: nil, icon: IconProvider.crossSmall) { _ in sheet?.dismiss(animated: true) },
-                                             rightItem: nil,
-                                             hasSeparator: false)
-        let itemGroup = PMActionSheetItemGroup(items: items, style: .clickable)
-        sheet = PMActionSheet(headerView: header, itemGroups: [itemGroup], showDragBar: false)
+        let header = PMActionSheetHeaderView(
+            title: CoreString._su_domains_sheet_title,
+            subtitle: nil,
+            leftItem: .right(IconProvider.crossSmall),
+            rightItem: nil,
+            showDragBar: false,
+            hasSeparator: false,
+            leftItemHandler: {
+                sheet?.dismiss(animated: true)
+            },
+            rightItemHandler: nil
+        )
+        let itemGroup = PMActionSheetItemGroup(items: items, style: .singleSelection)
+        sheet = PMActionSheet(headerView: header, itemGroups: [itemGroup])
         sheet?.eventsListener = self
         sheet?.presentAt(self, animated: true)
     }
@@ -256,12 +250,30 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         }
     }
 
-    private func configureAccountType() {
-        internalNameTextField.value = ""
-        externalEmailTextField.value = ""
+    private func switchSignupAccountFlow(prefilledUsernameOrEmail: String?) {
+        cancelFocus()
+        PMBanner.dismissAll(on: self)
+        let isFirstResponder = currentlyUsedTextField.isFirstResponder
+        if isFirstResponder { _ = currentlyUsedTextField.resignFirstResponder() }
+        contentView.fadeOut(withDuration: 0.5) { [self] in
+            self.contentView.fadeIn(withDuration: 0.5)
+            self.currentlyUsedTextField.isError = false
+            if self.signupAccountType == .internal {
+                signupAccountType = .external
+            } else {
+                signupAccountType = .internal
+            }
+            configureAccountType(prefilledUsernameOrEmail)
+            if isFirstResponder { _ = currentlyUsedTextField.becomeFirstResponder() }
+        }
+    }
+
+    private func configureAccountType(_ prefilledUsernameOrEmail: String?) {
         switch signupAccountType {
         case .external:
             ObservabilityEnv.report(.screenLoadCountTotal(screenName: .externalAccountAvailable))
+            internalNameTextField.value = ""
+            externalEmailTextField.value = prefilledUsernameOrEmail ?? ""
             externalEmailTextField.isHidden = false
             usernameAndDomainsView.isHidden = true
             domainsView.isHidden = true
@@ -269,6 +281,8 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             internalNameTextField.isHidden = true
         case .internal:
             ObservabilityEnv.report(.screenLoadCountTotal(screenName: .protonAccountAvailable))
+            internalNameTextField.value = prefilledUsernameOrEmail ?? ""
+            externalEmailTextField.value = ""
             externalEmailTextField.isHidden = true
             usernameAndDomainsView.isHidden = false
             domainsView.isHidden = false
@@ -381,11 +395,18 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             self.unlockUI()
             self.nextButton.isSelected = false
             _ = self.currentlyUsedTextField.becomeFirstResponder()
+        } protonDomainUsedForExternalAccount: { username in
+            self.unlockUI()
+            self.nextButton.isSelected = false
+            self.switchSignupAccountFlow(prefilledUsernameOrEmail: username)
         }
     }
 
     private func handleCheckFailure(error: AvailabilityError, email: String = "", isExternalEmail: Bool = false) {
         switch error {
+        case .protonDomainUsedForExternalAccount:
+            // this error is not user-facing
+            return
         case .generic(let message, let code, _):
             if isExternalEmail, code == APIErrorCode.humanVerificationAddressAlreadyTaken {
                 self.delegate?.hvEmailAlreadyExists(email: email)
@@ -398,6 +419,11 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
                 self.showError(message: message)
             }
         case .notAvailable(let message):
+            if isExternalEmail {
+                ObservabilityEnv.report(.externalAccountAvailableSignupTotal(status: .failed))
+            } else {
+                ObservabilityEnv.report(.protonAccountAvailableSignupTotal(status: .failed))
+            }
             self.currentlyUsedTextField.isError = true
             if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                 self.showError(message: message)

@@ -160,7 +160,15 @@ public class PMAPIService: APIService {
     private(set) var isHumanVerifyUIPresented: Atomic<Bool> = .init(false)
     private(set) var isForceUpgradeUIPresented: Atomic<Bool> = .init(false)
     
+    let protonMailResponseCodeHandler = ProtonMailResponseCodeHandler()
     let hvDispatchGroup = DispatchGroup()
+
+    // DispatchQueue for synchronization of the device verification process
+    private(set) var isDeviceVerifyProcessing = Atomic(false)
+    let dvSynchronizingQueue = DispatchQueue(label: "ch.proton.api.device_verification_async", qos: .userInitiated, attributes: .concurrent)
+    let dvCompletionQueue = DispatchQueue.main
+    let dvDispatchGroup = DispatchGroup()
+    
     let fetchAuthCredentialsAsyncQueue = DispatchQueue(label: "ch.proton.api.credential_fetch_async", qos: .userInitiated)
     let fetchAuthCredentialsSyncSerialQueue = DispatchQueue(label: "ch.proton.api.credential_fetch_sync", qos: .userInitiated)
     let fetchAuthCredentialCompletionBlockBackgroundQueue = DispatchQueue(
@@ -395,4 +403,12 @@ extension PMAPIService {
                   trustKitProvider: trustKitProvider,
                   challengeParametersProvider: challengeParametersProvider)
     }
+    
+    internal func getResponseError(task: URLSessionDataTask?, response: APIResponse, error: NSError?) -> ResponseError {
+        return ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
+                             responseCode: response.code,
+                             userFacingMessage: response.errorMessage,
+                             underlyingError: error)
+    }
+    
 }

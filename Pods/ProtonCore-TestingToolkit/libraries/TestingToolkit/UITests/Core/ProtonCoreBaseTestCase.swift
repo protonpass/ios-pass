@@ -80,15 +80,17 @@ open class ProtonCoreBaseTestCase: CoreTestCase {
 
 public extension ProtonCoreBaseTestCase {
     var randomName: String {
-        return UUID().uuidString.replacingOccurrences(of: "-", with: "")
+        StringUtils.randomAlphanumericString(length: 8)
     }
     
     var randomPassword: String {
-        return UUID().uuidString.replacingOccurrences(of: "-", with: "")
+        StringUtils.randomAlphanumericString(length: 8)
     }
         
     var randomEmail: String {
-        // max username length is 40 so let's shorten it
-        return "\(randomName.substring(to: String.Index(encodedOffset: 20)))@test.me"
+        let username = StringUtils.randomAlphanumericString(length: 8)
+        let domain = StringUtils.randomAlphanumericString(length: 8)
+        let tld = "com"
+        return "\(username)@\(domain).\(tld)"
     }
 }

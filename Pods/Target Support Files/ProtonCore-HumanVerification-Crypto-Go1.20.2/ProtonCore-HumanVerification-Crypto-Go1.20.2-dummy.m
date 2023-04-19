@@ -1,0 +1,5 @@
+#import <Foundation/Foundation.h>
+@interface PodsDummy_ProtonCore_HumanVerification_Crypto_Go1_20_2 : NSObject
+@end
+@implementation PodsDummy_ProtonCore_HumanVerification_Crypto_Go1_20_2
+@end
