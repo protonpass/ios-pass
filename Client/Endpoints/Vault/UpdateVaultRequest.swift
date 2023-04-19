@@ -41,24 +41,7 @@ public extension UpdateVaultRequest {
          shareKey: DecryptedShareKey,
          userData: UserData) throws {
         contentFormatVersion = 1
-
-        guard let userKey = userData.user.keys.first else {
-            throw PPClientError.crypto(.missingUserKey(userID: userData.user.ID))
-        }
-
-        guard let passphrase = userData.passphrases[userKey.keyID] else {
-            throw PPClientError.crypto(.missingPassphrase(keyID: userKey.keyID))
-        }
-
-        let publicKey = ArmoredKey(value: userKey.publicKey)
-        let privateKey = ArmoredKey(value: userKey.privateKey)
-        let signerKey = SigningKey(privateKey: privateKey,
-                                   passphrase: .init(value: passphrase))
-
         let vaultKey = shareKey.keyData
-        let encryptedVaultKeyData = try Encryptor.encrypt(publicKey: publicKey,
-                                                          clearData: vaultKey,
-                                                          signerKey: signerKey)
 
         let encryptedContent = try AES.GCM.seal(vault.data(),
                                                 key: vaultKey,
