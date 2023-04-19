@@ -18,11 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import UIComponents
 import UIKit
 
 enum AppearanceSettings {
     static func apply() {
+        Brand.currentBrand = .pass
+
         UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor =
         PassColor.interactionNorm
 
