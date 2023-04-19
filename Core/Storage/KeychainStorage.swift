@@ -91,17 +91,17 @@ public final class KeychainStorage<T: Codable> {
         set {
             let keyRawValue = key.rawValue
             guard let keychain else {
-                logger?.warning("Keychain is not set for key \(key). Early exit.")
+                logger?.warning("Keychain is not set for key \(keyRawValue). Early exit.")
                 return
             }
 
             guard let mainKeyProvider else {
-                logger?.warning("MainKeyProvider is not set for key \(key). Early exit")
+                logger?.warning("MainKeyProvider is not set for key \(keyRawValue). Early exit")
                 return
             }
 
             guard let mainKey = mainKeyProvider.mainKey else {
-                logger?.warning("mainKey is null for key \(key). Early exit")
+                logger?.warning("mainKey is null for key \(keyRawValue). Early exit")
                 return
             }
 

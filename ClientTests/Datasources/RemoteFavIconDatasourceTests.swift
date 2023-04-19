@@ -40,7 +40,7 @@ final class RemoteFavIconDatasourceTests: XCTestCase {
 extension RemoteFavIconDatasourceTests {
     func testReturnPositiveWhenStatusCode200AndDataNotNil() async throws {
         // Given
-        let givenData = Data.random()
+        let givenData = try Data.random()
         let givenDataResponse = DataResponse.random(statusCode: 200, protonCode: nil, data: givenData)
 
         // When

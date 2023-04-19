@@ -24,6 +24,7 @@ import Foundation
 public enum PPCoreError: Error, CustomDebugStringConvertible {
     case biometryTypeNotInitialized
     case failedToConvertBase64StringToData(String)
+    case failedToRandomizeData
     case totp(TOTPDataCurruptionReason)
 
     public var debugDescription: String {
@@ -32,6 +33,8 @@ public enum PPCoreError: Error, CustomDebugStringConvertible {
             return "Biometry type not initialized"
         case .failedToConvertBase64StringToData(let string):
             return "Failed to convert base 64 string to data \"\(string)\""
+        case .failedToRandomizeData:
+            return "Failed to randomize data"
         case .totp(let reason):
             return reason.debugDescription
         }

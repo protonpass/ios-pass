@@ -20,25 +20,15 @@
 
 import Foundation
 
-// https://www.advancedswift.com/secure-random-number-swift/
 public extension Data {
-    /// ⚠️ Not safe to use. For testing purposes only.
-    static func random(count: Int = .random(in: 100...1_000)) -> Data {
-        var bytes = [Int8](repeating: 0, count: count)
-
-        // Fill bytes with secure random data
-        let status = SecRandomCopyBytes(
-            kSecRandomDefault,
-            count,
-            &bytes
-        )
-
-        // A status of errSecSuccess indicates success
-        if status == errSecSuccess {
-            // Convert bytes to Data
-            let data = Data(bytes: bytes, count: count)
-            return data
+    static func random(byteCount: Int = 32) throws -> Data {
+        var data = Data(count: byteCount)
+        _ = try data.withUnsafeMutableBytes { byte in
+            guard let baseAddress = byte.baseAddress else {
+                throw PPCoreError.biometryTypeNotInitialized
+            }
+            return SecRandomCopyBytes(kSecRandomDefault, byteCount, baseAddress)
         }
-        fatalError("You should have not used this function. You've been warned.")
+        return data
     }
 }

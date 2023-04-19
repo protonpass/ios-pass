@@ -25,6 +25,9 @@ import ProtonCore_Crypto
 import ProtonCore_Login
 import ProtonCore_Services
 
+typealias DecryptionKey = ProtonCore_Crypto.DecryptionKey
+typealias Encryptor = ProtonCore_Crypto.Encryptor
+
 /// This repository is not offline first because without keys, the app is not functional.
 public protocol ShareKeyRepositoryProtocol {
     var localShareKeyDatasource: LocalShareKeyDatasourceProtocol { get }
