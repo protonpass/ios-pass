@@ -132,7 +132,6 @@
 		354F1F1A29D8C2A200A6B1E8 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F1F1929D8C2A200A6B1E8 /* AppData.swift */; };
 		354F1F1B29D8CAC500A6B1E8 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F1F1929D8C2A200A6B1E8 /* AppData.swift */; };
 		354F1F1C29D8CAC600A6B1E8 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F1F1929D8C2A200A6B1E8 /* AppData.swift */; };
-		354F768A28C72F1000EB2383 /* PassKeyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F768928C72F1000EB2383 /* PassKeyUtils.swift */; };
 		354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769128C8678100EB2383 /* LogInDetailView.swift */; };
 		354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */; };
 		354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769528C879AA00EB2383 /* NoteDetailView.swift */; };
@@ -279,6 +278,7 @@
 		3560845429DDE305001F7487 /* PassColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560845329DDE305001F7487 /* PassColor.swift */; };
 		3560845D29DDE7E1001F7487 /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		3560846629DDE7FD001F7487 /* PassColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560846529DDE7FD001F7487 /* PassColorTests.swift */; };
+		35608C3029F0559A00CA3864 /* Data+RandomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35608C2F29F0559A00CA3864 /* Data+RandomTests.swift */; };
 		35610B7528ABB77800955ACB /* LocalShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */; };
 		35610B7728ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7628ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift */; };
 		35610B7E28ABC9D200955ACB /* RemoteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35610B7D28ABC9D200955ACB /* RemoteDatasource.swift */; };
@@ -820,7 +820,6 @@
 		354EA82A29EF4FE300F1FB95 /* TelemetryEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEvent.swift; sourceTree = "<group>"; };
 		354EA82C29EF53B500F1FB95 /* TelemetryEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventTests.swift; sourceTree = "<group>"; };
 		354F1F1929D8C2A200A6B1E8 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
-		354F768928C72F1000EB2383 /* PassKeyUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKeyUtils.swift; sourceTree = "<group>"; };
 		354F769128C8678100EB2383 /* LogInDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInDetailView.swift; sourceTree = "<group>"; };
 		354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInDetailViewModel.swift; sourceTree = "<group>"; };
 		354F769528C879AA00EB2383 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
@@ -946,6 +945,7 @@
 		3560845329DDE305001F7487 /* PassColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassColor.swift; sourceTree = "<group>"; };
 		3560845929DDE7E1001F7487 /* UIComponentsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIComponentsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3560846529DDE7FD001F7487 /* PassColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassColorTests.swift; sourceTree = "<group>"; };
+		35608C2F29F0559A00CA3864 /* Data+RandomTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+RandomTests.swift"; sourceTree = "<group>"; };
 		35610B7428ABB77800955ACB /* LocalShareKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareKeyDatasource.swift; sourceTree = "<group>"; };
 		35610B7628ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareKeyDatasourceTests.swift; sourceTree = "<group>"; };
 		35610B7D28ABC9D200955ACB /* RemoteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDatasource.swift; sourceTree = "<group>"; };
@@ -1985,7 +1985,6 @@
 				358BD35D287D4E8000802A91 /* CryptoUtils.swift */,
 				356325D729DACADB006EB16C /* PrimaryPlanProvider.swift */,
 				3554747F29A8E8460060B555 /* PassKeyManager.swift */,
-				354F768928C72F1000EB2383 /* PassKeyUtils.swift */,
 				350A97D12885BF7E00A7168B /* Protobufable.swift */,
 				3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */,
 			);
@@ -2251,6 +2250,7 @@
 				3555800628F01A46009C3B88 /* URLUtils+MatcherTests.swift */,
 				356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */,
 				3555801928F05899009C3B88 /* URLUtils+SanitizerTests.swift */,
+				35608C2F29F0559A00CA3864 /* Data+RandomTests.swift */,
 			);
 			path = CoreTests;
 			sourceTree = "<group>";
@@ -3727,7 +3727,6 @@
 				3558180A290A7FA600DD94DB /* LocalShareEventIDDatasource.swift in Sources */,
 				358A509A28AD8A8000F5285C /* RemotePublicKeyDatasource.swift in Sources */,
 				35610B8928ABCF1900955ACB /* ShareRepository.swift in Sources */,
-				354F768A28C72F1000EB2383 /* PassKeyUtils.swift in Sources */,
 				35581806290A7DBF00DD94DB /* ShareEventIDEntity.swift in Sources */,
 				354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
@@ -3931,6 +3930,7 @@
 				3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */,
 				354513E928E4D2650020A93A /* CodableBase64Tests.swift in Sources */,
 				3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */,
+				35608C3029F0559A00CA3864 /* Data+RandomTests.swift in Sources */,
 				3567E46429B0C93C00511D62 /* PreferencesTests.swift in Sources */,
 				355AA32729E9D3FD00C20F5F /* StringExtensionTests.swift in Sources */,
 				3555800728F01A46009C3B88 /* URLUtils+MatcherTests.swift in Sources */,
