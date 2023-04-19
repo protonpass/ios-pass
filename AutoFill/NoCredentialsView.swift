@@ -58,7 +58,7 @@ struct CreateLoginButton: View {
 
     var body: some View {
         CapsuleTextButton(title: "Create login",
-                          titleColor: PassColor.loginInteractionNormMajor1,
+                          titleColor: PassColor.loginInteractionNormMajor2,
                           backgroundColor: PassColor.loginInteractionNormMinor1,
                           height: 52,
                           action: onCreate)
