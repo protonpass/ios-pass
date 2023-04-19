@@ -49,9 +49,9 @@ enum PasswordUtils {
         password.forEach { char in
             var color = Color(uiColor: PassColor.textNorm)
             if AllowedCharacter.digit.rawValue.contains(char) {
-                color = Color(uiColor: PassColor.loginInteractionNormMajor1)
+                color = Color(uiColor: PassColor.loginInteractionNormMajor2)
             } else if AllowedCharacter.special.rawValue.contains(char) {
-                color = Color(uiColor: PassColor.aliasInteractionNormMajor1)
+                color = Color(uiColor: PassColor.aliasInteractionNormMajor2)
             }
             texts.append(Text(String(char)).foregroundColor(color))
         }
