@@ -93,7 +93,6 @@ private struct FullNoteView: View {
                 .padding()
             }
             .navigationBarTitleDisplayMode(.inline)
-            .itemDetailBackground(theme: theme)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.chevronDown,

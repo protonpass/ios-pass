@@ -66,13 +66,13 @@ struct ItemSquircleThumbnail: View {
         switch data {
         case .icon(let type):
             SquircleThumbnail(data: .icon(type.icon),
-                              tintColor: type.normMajor1Color,
+                              tintColor: type.normMajor2Color,
                               backgroundColor: type.normMinor1Color,
                               height: size.height)
 
         case let .initials(type, initials):
             SquircleThumbnail(data: .initials(initials),
-                              tintColor: type.normMajor1Color,
+                              tintColor: type.normMajor2Color,
                               backgroundColor: type.normMinor1Color,
                               height: size.height)
 
@@ -91,7 +91,7 @@ struct ItemSquircleThumbnail: View {
                     .clipShape(RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous))
                 } else {
                     SquircleThumbnail(data: .initials(initials),
-                                      tintColor: type.normMajor1Color,
+                                      tintColor: type.normMajor2Color,
                                       backgroundColor: type.normMinor1Color,
                                       height: size.height)
                 }

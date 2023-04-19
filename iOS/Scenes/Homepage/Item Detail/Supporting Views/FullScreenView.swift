@@ -67,7 +67,6 @@ struct FullScreenView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .animation(.default, value: mode)
-            .itemDetailBackground(theme: theme)
             .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)

@@ -57,6 +57,7 @@ struct LogsView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .background(Color(uiColor: PassColor.backgroundNorm))
         }
         .navigationViewStyle(.stack)
     }
