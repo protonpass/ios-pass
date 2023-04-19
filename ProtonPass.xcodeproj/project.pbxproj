@@ -195,10 +195,6 @@
 		3554D42D2967854000DF0CBE /* DeveloperModeStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3554D42C2967854000DF0CBE /* DeveloperModeStateManager.swift */; };
 		3554DAB7293A910700595FC7 /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35526B5A28D115340017BB53 /* Icons.xcassets */; };
 		3555800728F01A46009C3B88 /* URLUtils+MatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555800628F01A46009C3B88 /* URLUtils+MatcherTests.swift */; };
-		3555800E28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555800D28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig */; };
-		3555801028F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555800F28F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig */; };
-		3555801228F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555801128F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig */; };
-		3555801428F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */; };
 		3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555801528F04F5C009C3B88 /* NoCredentialsView.swift */; };
 		3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555801928F05899009C3B88 /* URLUtils+SanitizerTests.swift */; };
 		3556949929D44DAE005DD2EB /* MoveItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3556949829D44DAE005DD2EB /* MoveItemEndpoint.swift */; };
@@ -471,8 +467,6 @@
 		35AABE2128B0288B00CEDDE6 /* UpdateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
-		35C2161629EA8991001720FF /* iOS-Release-Prod-QA.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35C2161529EA8991001720FF /* iOS-Release-Prod-QA.xcconfig */; };
-		35C2162529EA8AA5001720FF /* AutoFill-Release-Prod-QA.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35C2162429EA8AA5001720FF /* AutoFill-Release-Prod-QA.xcconfig */; };
 		35C2162729EA8B0B001720FF /* macOS-Release-Prod-QA.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35C2162629EA8B0B001720FF /* macOS-Release-Prod-QA.xcconfig */; };
 		35CAD6A229A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */; };
 		35D56D562942354A00C2D0E2 /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
@@ -487,10 +481,6 @@
 		35E5068C286F87A700A3F6EA /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; };
 		35E50694286F87A700A3F6EA /* Core.h in Headers */ = {isa = PBXBuildFile; fileRef = 35E50686286F87A600A3F6EA /* Core.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		35E506AD286F920300A3F6EA /* UIComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 35E506AC286F920300A3F6EA /* UIComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		35E506CE286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */; };
-		35E506CF286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */; };
-		35E506D0286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */; };
-		35E506D1286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506CD286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig */; };
 		35E506D9286FB12000A3F6EA /* macOS-Debug-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D5286FB12000A3F6EA /* macOS-Debug-Black.xcconfig */; };
 		35E506DA286FB12000A3F6EA /* macOS-Release-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D6286FB12000A3F6EA /* macOS-Release-Black.xcconfig */; };
 		35E506DB286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D7286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig */; };
@@ -2940,11 +2930,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3554DAB7293A910700595FC7 /* Icons.xcassets in Resources */,
-				3555801428F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig in Resources */,
-				3555800E28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig in Resources */,
-				3555801028F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig in Resources */,
-				3555801228F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig in Resources */,
-				35C2162529EA8AA5001720FF /* AutoFill-Release-Prod-QA.xcconfig in Resources */,
 				3544F5E728E2341900834CA4 /* MainInterface.storyboard in Resources */,
 				3560845029DDE2C7001F7487 /* Colors.xcassets in Resources */,
 			);
@@ -2977,11 +2962,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				35526B5E28D117820017BB53 /* Icons.xcassets in Resources */,
-				35E506D1286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig in Resources */,
-				35E506CF286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig in Resources */,
-				35E506CE286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig in Resources */,
-				35E506D0286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig in Resources */,
-				35C2161629EA8991001720FF /* iOS-Release-Prod-QA.xcconfig in Resources */,
 				35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */,
 				3560845129DDE2C9001F7487 /* Colors.xcassets in Resources */,
 			);
