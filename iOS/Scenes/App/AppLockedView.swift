@@ -55,23 +55,36 @@ struct AppLockedView: View {
 
             switch authenticator.biometryTypeState {
             case .idle, .initializing:
-                lockImage
+                passLogo
                 ProgressView()
 
             case .initialized:
-                VStack {
-                    lockImage
-                    if isLastAttempt {
-                        // swiftlint:disable:next line_length
-                        Text("This is your last attempt. You will be logged out after failling to authenticate again.")
-                            .multilineTextAlignment(.center)
-                        retryButton
-                    } else if preferences.failedAttemptCount > 0 {
-                        Text("\(remainingAttempts) remaining attempts")
-                        retryButton
+                GeometryReader { proxy in
+                    VStack {
+                        Spacer()
+                            .frame(height: proxy.size.height / 2)
+                        VStack {
+                            Spacer()
+                            passLogo
+                            if isLastAttempt {
+                                // swiftlint:disable:next line_length
+                                Text("This is your last attempt. You will be logged out after failling to authenticate again.")
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                retryButton
+                                    .padding(.top)
+                            } else if preferences.failedAttemptCount > 0 {
+                                Text("\(remainingAttempts) remaining attempts")
+                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                retryButton
+                                    .padding(.top)
+                            }
+                            Spacer()
+                        }
                     }
+                    .padding()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .padding()
                 .task {
                     if preferences.failedAttemptCount == 0 {
                         await authenticate(delayed: delayed)
@@ -82,22 +95,24 @@ struct AppLockedView: View {
 
             case .error(let error):
                 VStack {
-                    lockImage
+                    passLogo
                     Text(error.localizedDescription)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
                 }
             }
         }
+        .theme(preferences.theme)
         .onAppear {
             authenticator.initializeBiometryType()
         }
     }
 
-    private var lockImage: some View {
-        Image(systemName: "lock.fill")
+    private var passLogo: some View {
+        Image(uiImage: PassIcon.passIcon)
             .resizable()
             .scaledToFit()
-            .foregroundColor(.secondary)
-            .frame(maxWidth: 100)
+            .frame(maxWidth: 120)
     }
 
     private var retryButton: some View {
@@ -107,7 +122,7 @@ struct AppLockedView: View {
             }
         }, label: {
             Text("Try again")
-                .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
         })
     }
 

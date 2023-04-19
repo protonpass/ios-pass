@@ -103,7 +103,7 @@ struct GeneratePasswordView: View {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     CircleButton(icon: IconProvider.arrowsRotate,
-                                 iconColor: PassColor.loginInteractionNormMajor1,
+                                 iconColor: PassColor.loginInteractionNormMajor2,
                                  backgroundColor: PassColor.loginInteractionNormMinor1,
                                  action: viewModel.regenerate)
                 }

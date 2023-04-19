@@ -197,7 +197,7 @@ struct CreateEditAliasView: View {
 
     private var aliasPreviewSection: some View {
         HStack {
-            ItemDetailSectionIcon(icon: IconProvider.alias)
+            ItemDetailSectionIcon(icon: IconProvider.alias, color: tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("You are about to create")

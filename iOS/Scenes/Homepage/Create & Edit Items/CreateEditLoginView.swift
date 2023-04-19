@@ -117,8 +117,8 @@ struct CreateEditLoginView: View {
             }
             .toolbar { keyboardToolbar }
         }
-        .accentColor(Color(uiColor: viewModel.itemContentType().normMajor1Color)) // Remove when dropping iOS 15
-        .tint(Color(uiColor: viewModel.itemContentType().normMajor1Color))
+        .accentColor(Color(uiColor: viewModel.itemContentType().normMajor2Color)) // Remove when dropping iOS 15
+        .tint(Color(uiColor: viewModel.itemContentType().normMajor2Color))
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
