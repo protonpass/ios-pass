@@ -25,12 +25,15 @@ import ProtonCore_Authentication
 import ProtonCore_Challenge
 import ProtonCore_Environment
 import ProtonCore_FeatureSwitch
+import ProtonCore_ForceUpgrade
 import ProtonCore_HumanVerification
 import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Observability
 import ProtonCore_Services
+
+let kAppStoreUrlString = "itms-apps://itunes.apple.com/app/id6443490629"
 
 protocol APIManagerDelegate: AnyObject {
     func appLoggedOut()
@@ -45,6 +48,7 @@ final class APIManager {
 
     private(set) var apiService: APIService
     private(set) var authHelper: AuthHelper
+    private(set) var forceUpgradeHelper: ForceUpgradeHelper?
     private(set) var humanHelper: HumanCheckHelper?
 
     weak var delegate: APIManagerDelegate?
@@ -79,11 +83,16 @@ final class APIManager {
         self.apiService.authDelegate = authHelper
         self.apiService.serviceDelegate = self
 
+        self.humanHelper = HumanCheckHelper(apiService: apiService, clientApp: .other(named: "pass"))
+        self.apiService.humanDelegate = humanHelper
+
+        // swiftlint:disable:next force_unwrapping
+        self.forceUpgradeHelper = ForceUpgradeHelper(config: .mobile(URL(string: kAppStoreUrlString)!),
+                                                     responseDelegate: self)
+        self.apiService.forceUpgradeDelegate = forceUpgradeHelper
+
         self.setUpCore()
         self.fetchUnauthSessionIfNeeded()
-
-        humanHelper = HumanCheckHelper(apiService: apiService, clientApp: .other(named: "pass"))
-        self.apiService.humanDelegate = humanHelper
     }
 
     func sessionIsAvailable(authCredential: AuthCredential, scopes: Scopes) {
@@ -190,6 +199,12 @@ extension APIManager: APIServiceDelegate {
         // TODO: Handle this
         return true
     }
+}
+
+// MARK: - ForceUpgradeResponseDelegate
+extension APIManager: ForceUpgradeResponseDelegate {
+    func onQuitButtonPressed() {}
+    func onUpdateButtonPressed() {}
 }
 
 // MARK: - TrustKitDelegate

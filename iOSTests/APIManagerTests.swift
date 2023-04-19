@@ -61,7 +61,7 @@ final class APIManagerTests: XCTestCase {
                     maxUpload: .zero,
                     role: .zero,
                     private: .zero,
-                    subscribed: .zero,
+                    subscribed: [],
                     services: .zero,
                     delinquent: .zero,
                     orgPrivateKey: .empty,

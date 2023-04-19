@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Challenge",
-  "version": "3.29.0",
+  "version": "5.1.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": null,
-    "tag": "3.29.0"
+    "tag": "5.1.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -27,17 +27,17 @@
     "5.6"
   ],
   "pod_target_xcconfig": {
-    "APPLICATION_EXTENSION_API_ONLY": "NO"
+    "APPLICATION_EXTENSION_API_ONLY": "YES"
   },
   "dependencies": {
     "ProtonCore-Foundations": [
-      "3.29.0"
+      "5.1.0"
     ],
     "ProtonCore-UIFoundations": [
-      "3.29.0"
+      "5.1.0"
     ],
     "ProtonCore-DataModel": [
-      "3.29.0"
+      "5.1.0"
     ]
   },
   "default_subspecs": [

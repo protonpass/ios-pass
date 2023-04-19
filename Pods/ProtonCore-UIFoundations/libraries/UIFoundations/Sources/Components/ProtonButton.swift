@@ -90,8 +90,7 @@ public class ProtonButton: UIButton, AccessibleView {
         modeConfiguration()
     }
 
-    fileprivate func setup() {
-        layer.cornerRadius = 8.0
+    private func setup() {
         clipsToBounds = true
         titleLabel?.numberOfLines = 0
         titleLabel?.lineBreakMode = .byWordWrapping
@@ -100,7 +99,13 @@ public class ProtonButton: UIButton, AccessibleView {
         generateAccessibilityIdentifiers()
     }
 
-    fileprivate func modeConfiguration() {
+    private func modeConfiguration() {
+        switch Brand.currentBrand {
+        case .proton, .vpn:
+            layer.cornerRadius = 8.0
+        case .pass:
+            layer.cornerRadius = 24.0
+        }
         switch mode {
         case .solid:
             solidLayout()
@@ -155,19 +160,33 @@ public class ProtonButton: UIButton, AccessibleView {
         }
     }
 
-    fileprivate func solidLayout() {
+    private func solidLayout() {
         setTitleColor(ColorProvider.White, for: .normal)
         setTitleColor(ColorProvider.White, for: .highlighted)
         setTitleColor(ColorProvider.White, for: .selected)
         setTitleColor(ColorProvider.White.withAlphaComponent(0.4), for: .disabled)
-        setBackgroundColor(ColorProvider.BrandNorm, forState: .normal)
+        switch Brand.currentBrand {
+        case .proton, .vpn:
+            setBackgroundColor(ColorProvider.InteractionNorm, forState: .normal)
+        case .pass:
+            setBackgroundColor(.dynamic(light: ColorProvider.InteractionNorm,
+                                        dark: ColorProvider.InteractionNormMajor1PassTheme),
+                               forState: .normal)
+        }
         setBackgroundColor(ColorProvider.BrandDarken20, forState: .highlighted)
         setBackgroundColor(ColorProvider.BrandDarken20, forState: .selected)
         setBackgroundColor(ColorProvider.BrandLighten40, forState: .disabled)
     }
 
-    fileprivate func nonSolidLayout() {
-        setTitleColor(.dynamic(light: ColorProvider.BrandNorm, dark: ColorProvider.BrandLighten20), for: .normal)
+    private func nonSolidLayout() {
+        switch Brand.currentBrand {
+        case .proton, .vpn:
+            setTitleColor(ColorProvider.TextAccent, for: .normal)
+        case .pass:
+            setTitleColor(.dynamic(light: ColorProvider.TextAccent,
+                                   dark: ColorProvider.InteractionNormMajor2PassTheme),
+                          for: .normal)
+        }
         setTitleColor(ColorProvider.BrandDarken20, for: .highlighted)
         setTitleColor(ColorProvider.BrandDarken20, for: .selected)
         setBackgroundColor(.clear, forState: .normal)
@@ -178,7 +197,14 @@ public class ProtonButton: UIButton, AccessibleView {
     
     private func imageLayout(isImageOnly: Bool) {
         if isImageOnly {
-            setTitleColor(ColorProvider.InteractionNorm, for: .normal)
+            switch Brand.currentBrand {
+            case .proton, .vpn:
+                setTitleColor(ColorProvider.InteractionNorm, for: .normal)
+            case .pass:
+                setTitleColor(.dynamic(light: ColorProvider.InteractionNorm,
+                                       dark: ColorProvider.InteractionNormMajor1PassTheme),
+                              for: .normal)
+            }
             setTitleColor(ColorProvider.InteractionNorm, for: .highlighted)
             setTitleColor(ColorProvider.InteractionNorm, for: .selected)
             setTitleColor(ColorProvider.TextDisabled, for: .disabled)

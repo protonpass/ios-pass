@@ -23,7 +23,6 @@ import Foundation
 import fusion
 
 private let titleId = "CompleteViewController.completeTitleLabel"
-private let descriptionId = "CompleteViewController.completeDescriptionLabel"
 
 public final class CompleteRobot: CoreElements {
 

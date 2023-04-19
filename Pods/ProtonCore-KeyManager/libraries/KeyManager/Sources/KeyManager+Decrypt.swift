@@ -23,24 +23,6 @@ import Foundation
 import GoLibs
 import ProtonCore_DataModel
 
-@available(*, deprecated, message: "Please use the non-optional variant")
-public func decryptAttachment(dataPackage: Data,
-                              keyPackage: Data,
-                              addrKeys: [Key],
-                              userBinKeys privateKeys: [Data],
-                              passphrase: String) throws -> Data? {
-    if addrKeys.isKeyV2 {
-        return try dataPackage.decryptAttachment(keyPackage: keyPackage,
-                                                 userKeys: privateKeys,
-                                                 passphrase: passphrase,
-                                                 keys: addrKeys)
-    } else {
-        return try dataPackage.decryptAttachment(dataPackage,
-                                                 passphrase: passphrase,
-                                                 privKeys: addrKeys.binPrivKeysArray)
-    }
-}
-
 public func decryptAttachmentNonOptional(dataPackage: Data,
                                          keyPackage: Data,
                                          addrKeys: [Key],

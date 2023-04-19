@@ -36,21 +36,23 @@ public struct PMAutolockSelectionCellConfiguration: PMCellSuplier {
 
         let onTap = { [weak navigationController = parent.navigationController] in
             var sheet: PMActionSheet!
-            let header = PMActionSheetHeaderView(title: "Auto-Lock Timeout", subtitle: nil, leftItem: nil, rightItem: nil)
+            let header = PMActionSheetHeaderView(title: "Auto-Lock Timeout")
 
             // selectable rows
             let items = [LockTime.never, .always, .every(minutes: 1), .every(minutes: 2), .every(minutes: 5), .every(minutes: 10), .every(minutes: 15), .every(minutes: 30), .every(minutes: 60)]
             .map { timeout in
-                PMActionSheetPlainItem(title: timeout.title, icon: nil, isOn: self.autoLocker.autolockerTimeout == timeout) { [unowned sheet, unowned autoLocker, unowned router] _ in
+                let isOn = self.autoLocker.autolockerTimeout == timeout
+                return PMActionSheetItem(style: .text(timeout.title), markType: isOn ? .checkMark : .none) { [unowned autoLocker, unowned router] _ in
                     autoLocker.setAutolockerTimeout(timeout)
                     router.refreshSections?()
                     sheet?.dismiss(animated: true)
                 }
             }
-            let itemsGroup = PMActionSheetItemGroup(items: items, style: .clickable)
+            let itemsGroup = PMActionSheetItemGroup(items: items, style: .singleSelection)
 
             // cancel
-            let cancel = PMActionSheetPlainItem(title: "Cancel", icon: nil, textColor: ColorProvider.TextWeak, alignment: .center, hasSeparator: false, handler: nil)
+            let textComponent = PMActionSheetTextComponent(text: .left("Cancel"), textColor: ColorProvider.TextWeak, edge: [nil, 8, nil, 8], textAlignment: .center)
+            let cancel = PMActionSheetItem(components: [textComponent], markType: .none, handler: nil)
             let cancelGroup = PMActionSheetItemGroup(items: [cancel], style: .clickable)
 
             // sheet
