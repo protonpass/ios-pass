@@ -53,11 +53,11 @@ public struct SquircleThumbnail: View {
                     .renderingMode(.template)
                     .scaledToFit()
                     .foregroundColor(Color(uiColor: tintColor))
-                    .padding(.vertical, height / 4)
+                    .padding(.vertical, height / 3.5)
 
             case .initials(let string):
                 Text(string)
-                    .font(.system(size: height / 2.5))
+                    .font(.system(size: height / 3))
                     .fontWeight(.medium)
                     .foregroundColor(Color(uiColor: tintColor))
             }

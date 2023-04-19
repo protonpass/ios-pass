@@ -392,9 +392,9 @@ private extension HomepageCoordinator {
         let view = SortTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = CGFloat(44 * SortType.allCases.count + 60)
+            let height = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
             let customDetent = UISheetPresentationController.Detent.custom { _ in
-                height
+                CGFloat(height)
             }
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {
@@ -747,7 +747,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         let view = EditDefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.short.value) * supportedBrowsers.count + 140
+            let height = Int(OptionRowHeight.compact.value) * supportedBrowsers.count + 140
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 CGFloat(height)
             }
@@ -762,7 +762,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         let view = EditThemeView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.short.value) * Theme.allCases.count + 100
+            let height = Int(OptionRowHeight.short.value) * Theme.allCases.count + 60
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 CGFloat(height)
             }
@@ -777,7 +777,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         let view = EditClipboardExpirationView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.short.value) * ClipboardExpiration.allCases.count + 100
+            let height = Int(OptionRowHeight.compact.value) * ClipboardExpiration.allCases.count + 60
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 CGFloat(height)
             }
@@ -797,7 +797,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         let view = EditPrimaryVaultView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.medium.value) * vaultsManager.getVaultCount() + 100
+            let height = Int(OptionRowHeight.medium.value) * vaultsManager.getVaultCount() + 60
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 CGFloat(height)
             }
@@ -808,25 +808,18 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         present(viewController)
     }
 
-    func settingsViewModelWantsToViewLogs() {
-        let view = LogTypesView(
-            onSelect: { [unowned self] module in
-                self.presentLogsView(for: module)
-            },
-            onClear: { [unowned self] in
-                self.bannerManager.displayBottomSuccessMessage("All logs cleared")
-            })
-        let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.short.value) * 4 + 120
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                CGFloat(height)
-            }
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
-        }
-        present(viewController)
+    func settingsViewModelWantsToViewHostAppLogs() {
+        presentLogsView(for: .hostApp)
+    }
+
+    func settingsViewModelWantsToViewAutoFillExtensionLogs() {
+        presentLogsView(for: .autoFillExtension)
+    }
+
+    func settingsViewModelWantsToClearLogs() {
+        let modules = PassLogModule.allCases.map(LogManager.init)
+        modules.forEach { $0.removeAllLogs() }
+        bannerManager.displayBottomSuccessMessage("All logs cleared")
     }
 
     func settingsViewModelDidFinishFullSync() {

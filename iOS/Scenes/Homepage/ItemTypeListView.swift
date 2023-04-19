@@ -42,13 +42,13 @@ enum ItemType: CaseIterable {
     var tintColor: UIColor {
         switch self {
         case .login:
-            return ItemContentType.login.normMajor1Color
+            return ItemContentType.login.normMajor2Color
         case .alias:
-            return ItemContentType.alias.normMajor1Color
+            return ItemContentType.alias.normMajor2Color
         case .note:
-            return ItemContentType.note.normMajor1Color
+            return ItemContentType.note.normMajor2Color
         case .password:
-            return PassColor.passwordInteractionNormMajor1
+            return PassColor.passwordInteractionNormMajor2
         }
     }
 

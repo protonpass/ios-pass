@@ -51,6 +51,8 @@ struct EditableVaultListView: View {
                         }
 
                         vaultRow(for: .trash)
+
+                        PassDivider()
                     }
                 }
                 .padding(.horizontal)
@@ -88,7 +90,8 @@ struct EditableVaultListView: View {
                     },
                     title: selection.title,
                     itemCount: vaultsManager.getItemCount(for: selection),
-                    isSelected: vaultsManager.isSelected(selection))
+                    isSelected: vaultsManager.isSelected(selection),
+                    height: 74)
             })
             .buttonStyle(.plain)
 
@@ -199,9 +202,9 @@ extension VaultSelection {
     var icon: UIImage {
         switch self {
         case .all:
-            return PassIcon.allVaults
+            return PassIcon.brandPass
         case .precise(let vault):
-            return vault.displayPreferences.icon.icon.image
+            return vault.displayPreferences.icon.icon.bigImage
         case .trash:
             return IconProvider.trash
         }

@@ -36,8 +36,8 @@ struct CreateEditVaultView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(kItemDetailSectionPadding)
-            .itemDetailBackground(theme: viewModel.theme)
             .navigationBarTitleDisplayMode(.inline)
+            .background(Color(uiColor: PassColor.backgroundNorm))
             .toolbar { toolbarContent }
             .ignoresSafeArea(.keyboard)
             .gesture(DragGesture().onChanged { _ in isFocusedOnTitle = false })
@@ -76,7 +76,7 @@ struct CreateEditVaultView: View {
             let previewWidth: CGFloat = UIDevice.current.isIpad ? 60 : 40
             VStack {
                 Spacer()
-                Image(uiImage: viewModel.selectedIcon.image)
+                Image(uiImage: viewModel.selectedIcon.bigImage)
                     .resizable()
                     .scaledToFit()
                     .foregroundColor(Color(uiColor: viewModel.selectedColor.color))
@@ -199,7 +199,7 @@ private struct VaultIconView: View {
             }, label: {
                 ZStack {
                     Color(uiColor: PassColor.inputBackgroundNorm)
-                    Image(uiImage: icon.image)
+                    Image(uiImage: icon.bigImage)
                         .resizable()
                         .scaledToFit()
                         .foregroundColor(Color(uiColor: PassColor.textNorm))

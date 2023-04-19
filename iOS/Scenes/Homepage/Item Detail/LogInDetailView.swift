@@ -52,7 +52,7 @@ struct LogInDetailView: View {
                     ItemDetailTitleView(itemContent: viewModel.itemContent,
                                         vault: viewModel.vault,
                                         favIconRepository: viewModel.favIconRepository)
-                        .padding(.bottom, 24)
+                        .padding(.bottom, 40)
 
                     usernamePassword2FaSection
 
@@ -85,10 +85,10 @@ struct LogInDetailView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .itemDetailBackground(theme: viewModel.theme)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar {
             ItemDetailToolbar(isShownAsSheet: viewModel.isShownAsSheet,
                               itemContent: viewModel.itemContent,

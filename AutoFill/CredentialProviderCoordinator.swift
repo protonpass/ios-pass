@@ -542,9 +542,9 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
         let view = SortTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = CGFloat(44 * SortType.allCases.count + 60)
+            let height = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
             let customDetent = UISheetPresentationController.Detent.custom { _ in
-                height
+                CGFloat(height)
             }
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {

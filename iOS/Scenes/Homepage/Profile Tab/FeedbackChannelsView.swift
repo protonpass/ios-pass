@@ -35,33 +35,29 @@ struct FeedbackChannelsView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(FeedbackChannel.allCases, id: \.rawValue) { channel in
-                        Button(action: {
-                            dismiss()
-                            onSelectChannel(channel)
-                        }, label: {
-                            Label(title: {
-                                Text(channel.description)
-                            }, icon: {
-                                Image(uiImage: channel.icon)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(maxWidth: 20, maxHeight: 20)
+                        OptionRow(
+                            action: {
+                                dismiss()
+                                onSelectChannel(channel)
+                            },
+                            height: .short,
+                            horizontalPadding: 0,
+                            content: {
+                                Label(title: {
+                                    Text(channel.description)
+                                }, icon: {
+                                    Image(uiImage: channel.icon)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(maxWidth: 20, maxHeight: 20)
+                                })
+                                .foregroundColor(Color(uiColor: PassColor.textNorm))
                             })
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .contentShape(Rectangle())
-                        })
-                        .buttonStyle(.plain)
-                        .padding(.horizontal)
-                        .frame(height: OptionRowHeight.short.value)
 
-                        if channel != FeedbackChannel.allCases.last {
-                            PassDivider()
-                        }
+                        PassDivider()
                     }
-
-                    Spacer()
                 }
+                .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(uiColor: PassColor.backgroundWeak))

@@ -107,7 +107,7 @@ struct AccountView: View {
                 .roundedEditableSection()
 
                 // swiftlint:disable:next line_length
-                Text("This will permanently delete your account and all of its data. You will not be able to reactivate this account.")
+                Text("This will permanently delete your Proton account and all of its data, including email, calendars and data stored in Drive. You will not be able to reactivate this account.")
                     .sectionTitleText()
 
                 Spacer()
@@ -115,11 +115,11 @@ struct AccountView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
         }
-        .itemDetailBackground(theme: viewModel.theme)
         .navigationTitle("Account")
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar { toolbarContent }
         .alert(
             "You will be signed out",

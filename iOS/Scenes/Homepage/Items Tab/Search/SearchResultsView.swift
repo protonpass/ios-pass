@@ -185,7 +185,7 @@ private struct ItemSearchResultView: View {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 4) {
                     if let vault = result.vault {
-                        Image(uiImage: vault.displayPreferences.icon.icon.image)
+                        Image(uiImage: vault.displayPreferences.icon.icon.smallImage)
                             .resizable()
                             .scaledToFit()
                             .foregroundColor(Color(uiColor: PassColor.textWeak))

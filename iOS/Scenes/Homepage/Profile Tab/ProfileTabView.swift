@@ -61,9 +61,9 @@ struct ProfileTabView: View {
                 .animation(.default, value: viewModel.automaticallyCopyTotpCode)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .itemDetailBackground(theme: viewModel.preferences.theme)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
+            .background(Color(uiColor: PassColor.backgroundNorm))
 //            .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
@@ -144,20 +144,20 @@ struct ProfileTabView: View {
 
     private var autoFillDisabledSection: some View {
         VStack(spacing: 0) {
-            HStack {
-                Text("AutoFill disabled")
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+            OptionRow(height: .medium) {
+                HStack {
+                    Text("AutoFill disabled")
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
 
-                Spacer()
+                    Spacer()
 
-                Button(action: UIApplication.shared.openPasswordSettings) {
-                    Label("Open Settings", systemImage: "arrow.up.right.square")
-                        .font(.callout.weight(.semibold))
-                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                    Button(action: UIApplication.shared.openPasswordSettings) {
+                        Label("Open Settings", systemImage: "arrow.up.right.square")
+                            .font(.callout.weight(.semibold))
+                            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                    }
                 }
             }
-            .padding(.horizontal, kItemDetailSectionPadding)
-            .frame(height: OptionRowHeight.short.value)
             .roundedEditableSection()
 
             Text("AutoFill on apps and websites by enabling Proton Pass AutoFill.")
