@@ -49,26 +49,40 @@ public extension TOTPData {
     /// Init and calculate TOTP data of the current moment.
     /// Should only be used to quickly get TOTP data from a given URI in AutoFill context.
     init(uri: String) throws {
-        let otpComponents = try URLUtils.OTPParser.parse(urlString: uri)
-        guard otpComponents.type == .totp else {
-            throw PPCoreError.totp(.unsupportedOTP)
+        var totp: TOTP?
+        var username: String?
+        var issuer: String?
+        if uri.contains("otpauth") {
+            // "otpauth" as protocol, parse information
+            let otpComponents = try URLUtils.OTPParser.parse(urlString: uri)
+            if otpComponents.type == .totp,
+               let secretData = base32DecodeToData(otpComponents.secret) {
+                username = otpComponents.label
+                issuer = otpComponents.issuer
+                totp = TOTP(secret: secretData,
+                            digits: Int(otpComponents.digits),
+                            timeInterval: Int(otpComponents.period),
+                            algorithm: otpComponents.algorithm.otpAlgorithm)
+            }
+        } else if let secretData = base32DecodeToData(uri.replacingOccurrences(of: " ", with: "")) {
+            // Treat the whole string as secret
+            totp = TOTP(secret: secretData,
+                        digits: 6,
+                        timeInterval: 30,
+                        algorithm: .sha1)
         }
 
-        guard let secretData = base32DecodeToData(otpComponents.secret) else {
-            throw PPCoreError.totp(.failedToDecodeSecret)
-        }
-
-        guard let totp = TOTP(secret: secretData,
-                              digits: Int(otpComponents.digits),
-                              timeInterval: Int(otpComponents.period),
-                              algorithm: otpComponents.algorithm.otpAlgorithm) else {
+        guard let totp else {
             throw PPCoreError.totp(.failedToInitializeTOTPObject)
         }
-        self.username = otpComponents.label
-        self.issuer = otpComponents.issuer
+
         let secondsPast1970 = Int(Date().timeIntervalSince1970)
-        self.code = totp.generate(secondsPast1970: secondsPast1970) ?? ""
-        self.timerData = totp.timerData(secondsPast1970: secondsPast1970)
+        let code = totp.generate(secondsPast1970: secondsPast1970) ?? ""
+        let timerData = totp.timerData(secondsPast1970: secondsPast1970)
+        self.username = username
+        self.issuer = issuer
+        self.code = code
+        self.timerData = timerData
     }
 }
 
