@@ -36,4 +36,26 @@ public class SigninExternalAccountsCapability {
             .fillpassword(password: password)
             .signIn(robot: retRobot)
     }
+
+    public func convertExternalAccountToInternal<T: CoreElements>(email: String,
+                                                                  password: String,
+                                                                  username: String?,
+                                                                  loginRobot: LoginRobot,
+                                                                  retRobot: T.Type) -> T {
+
+        let createAccountRobot = loginRobot
+            .fillUsername(username: email)
+            .fillpassword(password: password)
+            .signIn(robot: CreateAddressRobot.self)
+            .verify.createAddress(email: email)
+
+        if let username {
+            _ = createAccountRobot
+                .fillUsername(username: username)
+        }
+
+        createAccountRobot.tapContinueButton()
+
+        return T()
+    }
 }

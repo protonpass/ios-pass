@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_APIClient
 import ProtonCore_Networking
 import ProtonCore_DataModel
 import ProtonCore_CoreTranslation
@@ -29,16 +30,18 @@ public struct CreateAddressData {
     public let credential: AuthCredential
     public let user: User
     public let mailboxPassword: String
+    public let passwordMode: PasswordMode
     
-    public init(email: String, credential: AuthCredential, user: User, mailboxPassword: String) {
+    public init(email: String, credential: AuthCredential, user: User, mailboxPassword: String, passwordMode: PasswordMode) {
         self.email = email
         self.credential = credential
         self.user = user
         self.mailboxPassword = mailboxPassword
+        self.passwordMode = passwordMode
     }
 
     public func withUpdatedUser(_ user: User) -> CreateAddressData {
-        CreateAddressData(email: email, credential: credential, user: user, mailboxPassword: mailboxPassword)
+        CreateAddressData(email: email, credential: credential, user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode)
     }
 }
 
@@ -183,6 +186,11 @@ public extension SignupError {
 }
 
 public enum AvailabilityError: Error {
+    // this error should be handled by redirecting to the internal signup flow and not shown to the user
+    // that's the reason for the `nonUserFacingMessage` parameter
+    case protonDomainUsedForExternalAccount(username: String, domain: String, nonUserFacingMessage: String)
+
+    // these errors contain message that might be shown to the users
     case notAvailable(message: String)
     case generic(message: String, code: Int, originalError: Error)
     case apiMightBeBlocked(message: String, originalError: Error)
@@ -191,6 +199,8 @@ public enum AvailabilityError: Error {
 extension AvailabilityError: Equatable {
     public static func == (lhs: AvailabilityError, rhs: AvailabilityError) -> Bool {
         switch (lhs, rhs) {
+        case (.protonDomainUsedForExternalAccount(let lusername, let ldomain, _),
+              .protonDomainUsedForExternalAccount(let rusername, let rdomain, _)): return lusername == rusername && ldomain == rdomain
         case (.notAvailable(let lmessage), .notAvailable(let rmessage)): return lmessage == rmessage
         case (.apiMightBeBlocked(let lmessage, _), .apiMightBeBlocked(let rmessage, _)): return lmessage == rmessage
         case (.generic(let lmessage, let lcode, _), .generic(let rmessage, let rcode, _)): return lmessage == rmessage && lcode == rcode
@@ -202,6 +212,9 @@ extension AvailabilityError: Equatable {
 public extension AvailabilityError {
     var userFacingMessageInLogin: String {
         switch self {
+        case .protonDomainUsedForExternalAccount(_, _, let message):
+            assertionFailure("This error should be handled without user-facing error message")
+            return message
         case .generic(let message, _, _), .notAvailable(let message), .apiMightBeBlocked(let message, _): return message
         }
     }
@@ -315,7 +328,7 @@ public protocol Login {
 
     func login(username: String, password: String, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
-    func finishLoginFlow(mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
+    func finishLoginFlow(mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func logout(credential: AuthCredential?, completion: @escaping (Result<Void, Error>) -> Void)
 
     func checkAvailabilityForUsernameAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void)

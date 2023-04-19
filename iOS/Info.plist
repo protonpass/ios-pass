@@ -2,12 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>APP_VERSION_IDENTIFIER =
-	<string>$(APP_VERSION_IDENTIFIER =
 	<key>ACCOUNT_HOST</key>
 	<string>$(ACCOUNT_HOST)</string>
 	<key>API_HOST</key>
 	<string>$(API_HOST)</string>
+	<key>APP_VERSION_IDENTIFIER =
+	<string>$(APP_VERSION_IDENTIFIER =
 	<key>CAPTCHA_HOST</key>
 	<string>$(CAPTCHA_HOST)</string>
 	<key>DEFAULT_HOST</key>
@@ -16,6 +16,18 @@
 	<string>$(DEFAULT_PATH)</string>
 	<key>HUMAN_VERIFICATION_V3_HOST</key>
 	<string>$(HUMAN_VERIFICATION_V3_HOST)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>ITSEncryptionExportComplianceCode</key>
+	<string>72e333d0-d159-45e3-ad41-39acb89134e8</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechrome</string>
+		<string>ddgQuickLink</string>
+		<string>firefox</string>
+		<string>brave</string>
+		<string>microsoft-edge</string>
+	</array>
 	<key>SIGNUP_DOMAIN</key>
 	<string>$(SIGNUP_DOMAIN)</string>
 	<key>UIApplicationSceneManifest</key>
@@ -35,23 +47,7 @@
 			</array>
 		</dict>
 	</dict>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Restrict unwelcome access to your Proton Pass account on this device</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
-	<key>ITSEncryptionExportComplianceCode</key>
-	<string>72e333d0-d159-45e3-ad41-39acb89134e8</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>googlechrome</string>
-		<string>ddgQuickLink</string>
-		<string>firefox</string>
-		<string>brave</string>
-		<string>microsoft-edge</string>
-	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Scan for QR codes</string>
 </dict>
 </plist>

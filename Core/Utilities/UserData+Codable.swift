@@ -122,7 +122,7 @@ public extension UserData {
                         maxUpload: 0,
                         role: 0,
                         private: 0,
-                        subscribed: 0,
+                        subscribed: [],
                         services: 0,
                         delinquent: 0,
                         orgPrivateKey: nil,

@@ -41,6 +41,7 @@ public enum ScreenVariant<SpecificScreenData, CustomScreenData> {
     case calendar(SpecificScreenData)
     case drive(SpecificScreenData)
     case vpn(SpecificScreenData)
+    case pass(SpecificScreenData)
     case custom(CustomScreenData)
 }
 

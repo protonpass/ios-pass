@@ -80,11 +80,6 @@ extension Key {
         return self.privateKey.fingerprint
     }
     
-    @available(*, deprecated, renamed: "shortFingerprint", message: "fix typo")
-    public var shortFingerpritn: String {
-        return self.shortFingerprint
-    }
-    
     public var shortFingerprint: String {
         let fignerprint = self.fingerprint
         if fignerprint.count > 8 {
@@ -100,10 +95,6 @@ extension Key {
     }
 
     // Mark - Key v2
-    @available(*, deprecated, renamed: "passphrase(userBinKeys:mailboxPassphrase:)")
-    public func passphrase(userBinKeys: [Data], passphrase mailboxPassphrase: String) throws -> String {
-        try passphrase(userBinKeys: userBinKeys, mailboxPassphrase: mailboxPassphrase)
-    }
     /// Key_1_2  the func to get the real passphrase that can decrypt the body. TODO:: add unit tests
     /// - Parameters:
     ///   - userBinKeys: user keys need to unarmed to binary
@@ -137,25 +128,9 @@ extension Key {
         return plainToken
     }
 
-    @available(*, deprecated, message: "Use version passphrase(userKeys:mailboxPassphrase), all user keys are needed")
-    public func passphrase(userKey: Key, passphrase mailboxPassphrase: String) throws -> String {
-        try passphrase(userKey: userKey, mailboxPassphrase: mailboxPassphrase)
-    }
-    
-    @available(*, deprecated, message: "Use passphrase(userKeys:mailboxPassphrase), all user keys are needed, not only the primary.")
-    public func passphrase(userKey: Key, mailboxPassphrase: String) throws -> String {
-        return try self.passphrase(userBinKeys: [userKey.binPrivKeys], mailboxPassphrase: mailboxPassphrase)
-    }
-    
     public func passphrase(userKeys: [Key], mailboxPassphrase: String) throws -> String {
         return try self.passphrase(userPrivateKeys: userKeys.toArmoredPrivateKeys,
                                    mailboxPassphrase: Passphrase.init(value: mailboxPassphrase)).value
-    }
-    
-    @available(*, deprecated, message: "Please use the non-optional variant")
-    public func decryptMessage(encrypted: String, userBinKeys privateKeys: [Data], passphrase: String) throws -> String? {
-        let addressKeyPassphrase = try self.passphrase(userBinKeys: privateKeys, mailboxPassphrase: passphrase)
-        return try encrypted.decryptMessageWithSinglKey(self.privateKey, passphrase: addressKeyPassphrase)
     }
     
     public func decryptMessageNonOptional(encrypted: String, userBinKeys privateKeys: [Data], passphrase: String) throws -> String {

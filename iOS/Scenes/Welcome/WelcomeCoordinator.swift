@@ -30,8 +30,6 @@ import ProtonCore_Services
 import UIComponents
 import UIKit
 
-let kAppStoreUrlString = "itms-apps://itunes.apple.com/app/id6443490629"
-
 protocol WelcomeCoordinatorDelegate: AnyObject {
     func welcomeCoordinator(didFinishWith loginData: LoginData)
 }
@@ -52,22 +50,10 @@ final class WelcomeCoordinator: DeinitPrintable {
     }
 
     private func makeWelcomeViewController() -> UIViewController {
-        let welcomeScreenVariant = WelcomeScreenVariant.custom(
-            .init(topImage: PassIcon.swirls,
-                  logo: PassIcon.passIcon,
-                  wordmark: PassIcon.passTextLogo,
-                  body: "Secure password manager and more",
-                  brand: .proton))
-        return WelcomeViewController(variant: welcomeScreenVariant,
-                                     delegate: self,
-                                     username: nil,
-                                     signupAvailable: true)
-    }
-
-    private func makeForceUpgradeDelegate() -> ForceUpgradeDelegate {
-        // swiftlint:disable:next force_unwrapping
-        let appStoreUrl = URL(string: kAppStoreUrlString)!
-        return ForceUpgradeHelper(config: .mobile(appStoreUrl), responseDelegate: self)
+        WelcomeViewController(variant: .pass(.init(body: "Secure password manager and more")),
+                              delegate: self,
+                              username: nil,
+                              signupAvailable: true)
     }
 
     private func makeLoginAndSignUp() -> LoginAndSignup {
@@ -81,12 +67,6 @@ final class WelcomeCoordinator: DeinitPrintable {
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))
     }
-}
-
-// MARK: - ForceUpgradeResponseDelegate
-extension WelcomeCoordinator: ForceUpgradeResponseDelegate {
-    func onQuitButtonPressed() {}
-    func onUpdateButtonPressed() {}
 }
 
 // MARK: - WelcomeViewControllerDelegate

@@ -26,7 +26,7 @@ public enum PrimaryPlanProvider {
     /// Return `nil` if user is not subscribed, primary `Plan` object otherwise
     public static func getPrimaryPlan(apiService: APIService) async throws -> PlanLite? {
         let user = try await getUser(apiService: apiService)
-        guard user.subscribed > 0 else { return nil }
+        guard user.subscribed.isEmpty == false else { return nil }
         let subscription = try await apiService.exec(endpoint: GetSubscriptionEndpoint()).subscription
         return subscription.plans.first(where: { $0.isPrimary })
     }
