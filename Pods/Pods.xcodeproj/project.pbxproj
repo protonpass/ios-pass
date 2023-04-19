@@ -234,7 +234,7 @@
 		1CDD41A9B6D4F0D00302EA896D6F11A3 /* SentryThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 89F4303F3D742489F1C868D65459897A /* SentryThread.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1CE590F527762B1E77E4F708BE6C9BDE /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90B684393D00E325D6FFCB349EB7E83 /* Response.swift */; };
 		1D6C66F5870CAFFD2FEF1B6CF70CE658 /* Pods-iOS-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 816D50DCF730171B0266D52F98958F3B /* Pods-iOS-dummy.m */; };
-		1D7E13C7E0AAAE4298AE6F2C71842F89 /* ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Resources-HumanVerification in Resources */ = {isa = PBXBuildFile; fileRef = 7396C400A236B5CFCDAF37B1B9267AEF /* ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Resources-HumanVerification */; };
+		1D7E13C7E0AAAE4298AE6F2C71842F89 /* Resources-HumanVerification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7396C400A236B5CFCDAF37B1B9267AEF /* Resources-HumanVerification.bundle */; };
 		1D9B4CD7308FEB919FEC1CF54E68FC98 /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA913C4FF1CB4249B32314104F3F2E2 /* AnimationView.swift */; };
 		1DADEBBB6B1327A9EB513333F1263A34 /* ValidationTokenError.json in Resources */ = {isa = PBXBuildFile; fileRef = A60876315343D7765D8090A2A7D53B9F /* ValidationTokenError.json */; };
 		1DC75A0A77AF28277B13FCB0E4B229EF /* ItemsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA4EF904BBB2B996EA2421771E140E /* ItemsExtension.swift */; };
@@ -311,7 +311,7 @@
 		27B789F04CE2CC78E0BA681E9AEEBFED /* SentryFileIOTrackingIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = AE5E18488D59E0777345DF66D3AC63E6 /* SentryFileIOTrackingIntegration.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		27C5D0CC41B96F94953046052A7DD4E5 /* AuthInfoOnePasswordUserWith2FA.json in Resources */ = {isa = PBXBuildFile; fileRef = 41FF9D055D841F125555D374D661654E /* AuthInfoOnePasswordUserWith2FA.json */; };
 		286ABDED7DB168F5ED2083B17FA2BC87 /* SentryUIDeviceWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2633E50B5024E1AEBC9852329BB8C73D /* SentryUIDeviceWrapper.m */; };
-		28932606FBB4C5D5BCECF882A8602CA9 /* ProtonCore-UIFoundations-Resources-UIFoundations in Resources */ = {isa = PBXBuildFile; fileRef = 3F3C9EE5CA38A2ED088E64B93144017D /* ProtonCore-UIFoundations-Resources-UIFoundations */; };
+		28932606FBB4C5D5BCECF882A8602CA9 /* Resources-UIFoundations.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3F3C9EE5CA38A2ED088E64B93144017D /* Resources-UIFoundations.bundle */; };
 		290C53B2C66C96F5A1D403E31B25E690 /* KeyframeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B36971D477E9FD317F1218FC64849F8 /* KeyframeExtensions.swift */; };
 		2920A54D8BA247A8472CB56DC19885C8 /* WireFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ABD0F58E9DBF7335203363102901D9 /* WireFormat.swift */; };
 		2925B7F9DC1A44ADA1E46F792E80BA94 /* KeyframeInterpolator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D80B4CAC6742481A791905FC9F1B4D /* KeyframeInterpolator.swift */; };
@@ -747,7 +747,7 @@
 		64B41C57CD492B11C205058C5F8A8F38 /* UIView+Sentry.h in Headers */ = {isa = PBXBuildFile; fileRef = EC715D79974C53FED047748037E73853 /* UIView+Sentry.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		64BAFCC1DAEEC1F29BF64DDAEFA4EAFB /* LayerImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196623AC0637540F0A37E377F6B72198 /* LayerImageProvider.swift */; };
 		6533DD000E0E6A3EFFF90FDBB4508E6C /* PMTextField+TwoFactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446538634C9F6B5229B911C767BCFDFA /* PMTextField+TwoFactor.swift */; };
-		653CEB0CA9CC37BEDE4549744FA4BD9F /* ProtonCore-TroubleShooting-Resources-TroubleShooting in Resources */ = {isa = PBXBuildFile; fileRef = 8226BF23F697DA046B918F3369044C3B /* ProtonCore-TroubleShooting-Resources-TroubleShooting */; };
+		653CEB0CA9CC37BEDE4549744FA4BD9F /* Resources-TroubleShooting.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8226BF23F697DA046B918F3369044C3B /* Resources-TroubleShooting.bundle */; };
 		653DC4A501992DE4BF77696FE7BF557F /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484787CE5B613CFB1B2CCB78BF1E67D8 /* NSView.swift */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		655C976D6C41CEE52E3FC20A4A5D9BE5 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5ADA1696BA45BA96D93FC823A00329 /* SessionDelegate.swift */; };
 		65776AD853E3A4335E433CF491CE7F81 /* PMCell+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F9F6BA734FE21D7FCD811561DF5B25 /* PMCell+Extensions.swift */; };
@@ -1325,7 +1325,7 @@
 		B0E11CDE3591EC0A58BECFAE4764A01D /* SentryCrashThread.c in Sources */ = {isa = PBXBuildFile; fileRef = 2CF8068E06ADE5C556ADA05D2267128E /* SentryCrashThread.c */; };
 		B107E0D3BC80611C7E1A68D8F3E544ED /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA333CD2835BDC6CB25E34614BCC1FE /* APIService.swift */; };
 		B15FAB74686EE1CB7B0F061D3FB749A6 /* LocalFetchFeatureProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75453DE19F1AB7939105F1FA3A9275BF /* LocalFetchFeatureProvider.swift */; };
-		B160C1471A6454CD5437C544FB0F20A6 /* ProtonCore-CoreTranslation-Resources-CoreTranslation in Resources */ = {isa = PBXBuildFile; fileRef = 5990D7D3A9B5771850131F0ECFDD0FB5 /* ProtonCore-CoreTranslation-Resources-CoreTranslation */; };
+		B160C1471A6454CD5437C544FB0F20A6 /* Resources-CoreTranslation.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5990D7D3A9B5771850131F0ECFDD0FB5 /* Resources-CoreTranslation.bundle */; };
 		B185D05E2E053BD450A7B4B796C9FE3E /* LoginTestUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290D56A3CD409B6AAABBEA172143D171 /* LoginTestUser.swift */; };
 		B18FDD6F1E92A4A783383723FC8D0325 /* PlatformTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72351181F2E0F19F8A5A890324039DB /* PlatformTypes.swift */; };
 		B19EEB82344B8A66E1E5A4818B937CAF /* SentryCrashJSONCodec.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3AF7042DC336341D12A65D3FFE1A4A /* SentryCrashJSONCodec.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1399,7 +1399,7 @@
 		B8E974899BBEAEFE63D43A39A596BA2E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EB534CA7BD231A6C7D4E025F8249A1F /* Foundation.framework */; };
 		B8EC211A2DDFD2F0E5F3D5A270BD4AEE /* NoPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B07D4CA0D313558FA031EEE1C8D6784 /* NoPadding.swift */; };
 		B901D1294607403FC807A73BE8100072 /* SentryStacktraceBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49524ECC45448BD401B7652E85AA592A /* SentryStacktraceBuilder.m */; };
-		B90503521EFC00C4C7ADF184F032407D /* ProtonCore-PaymentsUI-Resources-PaymentsUI in Resources */ = {isa = PBXBuildFile; fileRef = D51C39A804B49E00DEEFCD4848042FAA /* ProtonCore-PaymentsUI-Resources-PaymentsUI */; };
+		B90503521EFC00C4C7ADF184F032407D /* Resources-PaymentsUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D51C39A804B49E00DEEFCD4848042FAA /* Resources-PaymentsUI.bundle */; };
 		B90D37673BB2C1F90F173AF0FC8053C3 /* ExpireSessionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC97CA130C270875D1E2F593DDD14E0F /* ExpireSessionAPI.swift */; };
 		B94907CB8834AEAF607D6F096BF211BB /* SentryCrashJSONCodec.c in Sources */ = {isa = PBXBuildFile; fileRef = 74C4FF2FE53DCAA074DC150D57E0657C /* SentryCrashJSONCodec.c */; };
 		B9B2F2C731A1803636FA2B2CCC3930F7 /* UIColor+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59BAA88E996FB8F5C257433786F4E21 /* UIColor+Helper.swift */; };
@@ -1442,7 +1442,7 @@
 		BE861C134A0D6A03EFFD440A562DD841 /* UIDevice+info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB93155119F9F220C602BA3E2B5E2BD /* UIDevice+info.swift */; };
 		BE95463EA746F651DF5A25F196C91DE8 /* SentryCrashMemory.c in Sources */ = {isa = PBXBuildFile; fileRef = 73BE6A05111321183008128CDA883C10 /* SentryCrashMemory.c */; };
 		BE986FF9B89288442E0824E304516D6A /* SentryDefaultCurrentDateProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F1292977592ED08E95B4AA1A71C4AD /* SentryDefaultCurrentDateProvider.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		BE98B85E590A5A44459F20BE86F27E1D /* ProtonCore-FeatureSwitch-Resources-FeatureSwitch in Resources */ = {isa = PBXBuildFile; fileRef = 469A47CCAE96D2324431C624A944CA2E /* ProtonCore-FeatureSwitch-Resources-FeatureSwitch */; };
+		BE98B85E590A5A44459F20BE86F27E1D /* Resources-FeatureSwitch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 469A47CCAE96D2324431C624A944CA2E /* Resources-FeatureSwitch.bundle */; };
 		BEBD3611C1E322B21978AE72FAFB98D5 /* TwoFAEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89CD533536DAACB555A5A710AE5A19D /* TwoFAEndpoint.swift */; };
 		BEBDB933275D4DA88F9AB5F186EB5F06 /* FeatureCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7E68AC533F29869C59E152B2D72A9F /* FeatureCommon.swift */; };
 		BEC9D1D528650ACCF60EBC21AA440802 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A594331FD9F9AF7E9273833C45737100 /* SummaryViewController.swift */; };
@@ -1699,7 +1699,7 @@
 		E38542F6E9313A1EA84F76A31981C5CE /* PMTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3D1B6371126DE94E34CE9BD965034 /* PMTabBarController.swift */; };
 		E387849595D5471EC02C32742EC772E0 /* PMTabBarConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF9372D107592578A51DC7A809ADEBE /* PMTabBarConfig.swift */; };
 		E3D3BB58FACFDE1E1BCA1D74AD5DB7CB /* SentryNSDataSwizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCB5CF9B4109E93F2A580D27A5C5B00 /* SentryNSDataSwizzling.m */; };
-		E4220A922D38E4D189689F76EC71C22D /* ProtonCore-HumanVerification-Crypto-Go1.20.2-Resources-HumanVerification in Resources */ = {isa = PBXBuildFile; fileRef = F4B09AB7737310BE10562EE67A2E3669 /* ProtonCore-HumanVerification-Crypto-Go1.20.2-Resources-HumanVerification */; };
+		E4220A922D38E4D189689F76EC71C22D /* Resources-HumanVerification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F4B09AB7737310BE10562EE67A2E3669 /* Resources-HumanVerification.bundle */; };
 		E4275B718B3156AE46919C01134C0D63 /* AnimationViewInitializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D2ADA622A391D36419E5C8DEF02CC /* AnimationViewInitializers.swift */; };
 		E428C030279F9A294E5FDC3DB47B00C7 /* ProtonCore-APIClient-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E0229A5D09087EB81952B1A52F63497 /* ProtonCore-APIClient-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E433F8AE76C160BB1483131C71CE3F02 /* FillNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA9C56936A89E432C77BFB18B5B6B91 /* FillNode.swift */; };
@@ -1741,8 +1741,8 @@
 		E91002E737C22056AE85568BA4870330 /* ConfirmationPasswordConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBD2D9785E2B81FAF48DE2FB7ACA43E /* ConfirmationPasswordConfigurationViewModel.swift */; };
 		E949BA45BC61A04CE6C06362756F7092 /* SentryFramesTrackingIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = 87A7936132B007F994A1329FD28A7FB1 /* SentryFramesTrackingIntegration.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E97234E80DA148AF7667615F6ADA184D /* LogoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779DB1A532F7B9EDE098932868218E7 /* LogoutManager.swift */; };
-		E9C040C85CF385264CF637B0D2A9726C /* ProtonCore-LoginUI-Resources-LoginUI in Resources */ = {isa = PBXBuildFile; fileRef = 18743E1D356E1251C1E90A2315F2EBC4 /* ProtonCore-LoginUI-Resources-LoginUI */; };
-		E9F709AD491F084F470F265ED1B06441 /* ProtonCore-Settings-Resources-Settings in Resources */ = {isa = PBXBuildFile; fileRef = 6AF1CA60E46AE69301628F8F733F2C32 /* ProtonCore-Settings-Resources-Settings */; };
+		E9C040C85CF385264CF637B0D2A9726C /* Resources-LoginUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 18743E1D356E1251C1E90A2315F2EBC4 /* Resources-LoginUI.bundle */; };
+		E9F709AD491F084F470F265ED1B06441 /* Resources-Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6AF1CA60E46AE69301628F8F733F2C32 /* Resources-Settings.bundle */; };
 		EA2B7F66944E3394480891BA46CA5C1E /* SentryNoOpSpan.m in Sources */ = {isa = PBXBuildFile; fileRef = E456686DB8890F5AA16789E0A48EA5AD /* SentryNoOpSpan.m */; };
 		EA53709EEC22638861BCB4CC01472465 /* SentryBacktrace.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E9049383533556CFDEF40CBFDA46C737 /* SentryBacktrace.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		EA9F27D95F3C62CF9EA5D09EBAA70C1C /* PMBannerNewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FF158F2C3A31F1F1A01D68060A869C /* PMBannerNewStyle.swift */; };
@@ -1767,7 +1767,7 @@
 		ECF08473D5D3DDF762D420A5BD891763 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3561D06C226B6A9DDDCCF11DCFA324 /* UITableViewCell+Extension.swift */; };
 		ECFE19A855C63533E97B1515CAB2FC68 /* StrokeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0809A8109B430B3D96628523C2870180 /* StrokeRenderer.swift */; };
 		ED01A68235E0FE289CC78DD6EDDE6888 /* PlanCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6FF4D3E093FFD506918B2D9C2F62C80 /* PlanCell.xib */; };
-		ED3C354075B36B8462FCC59AF0E72B12 /* ProtonCore-Login-Resources-Login in Resources */ = {isa = PBXBuildFile; fileRef = 4167689DC9E0E35B2BF880A5B9A0E07B /* ProtonCore-Login-Resources-Login */; };
+		ED3C354075B36B8462FCC59AF0E72B12 /* Resources-Login.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4167689DC9E0E35B2BF880A5B9A0E07B /* Resources-Login.bundle */; };
 		ED4811ED97BE4A9861246BD3E18FA49D /* TSKReportsRateLimiter.h in Headers */ = {isa = PBXBuildFile; fileRef = AEB75CA7A1A9BE032D2CC5E532DB6709 /* TSKReportsRateLimiter.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		ED4F08090FE3CC3650E0D34E4B94B36B /* PMCountryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFDB1BD051A8F1060B4D1109DA30EED /* PMCountryPicker.swift */; };
 		ED5B4CC2A857ADF5C0E48C23469C7043 /* PMCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8985E6F9A3349BCC5678D3A341A2DF69 /* PMCell.xib */; };
@@ -4683,7 +4683,7 @@
 		17B4A9DF5817D162DDB80611BD11B37F /* SentryMeta.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryMeta.m; path = Sources/Sentry/SentryMeta.m; sourceTree = "<group>"; };
 		17EFD100E0E8C052CA1F0226BDE7E88E /* TrimPathNode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrimPathNode.swift; path = Sources/Private/MainThread/NodeRenderSystem/Nodes/ModifierNodes/TrimPathNode.swift; sourceTree = "<group>"; };
 		186B90FA93A9597DCB2B3DE8ADA3695C /* SplitPacket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SplitPacket.swift; path = libraries/Crypto/Sources/SplitPacket.swift; sourceTree = "<group>"; };
-		18743E1D356E1251C1E90A2315F2EBC4 /* ProtonCore-LoginUI-Resources-LoginUI */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "ProtonCore-LoginUI-Resources-LoginUI"; path = "Resources-LoginUI.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		18743E1D356E1251C1E90A2315F2EBC4 /* Resources-LoginUI.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Resources-LoginUI.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		18A06A4380E15400DBE125B0B80BAD28 /* SwiftOTP-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftOTP-umbrella.h"; sourceTree = "<group>"; };
 		18B4B1795471D4C614D70B1348940686 /* Pods-Core-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Core-acknowledgements.plist"; sourceTree = "<group>"; };
 		18B940E6437B485928E079E1B63E9BC0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
@@ -5005,7 +5005,7 @@
 		3EC21D98F01CF2B88904847EC9DA84B4 /* OpacityAnimation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OpacityAnimation.swift; path = Sources/Private/CoreAnimation/Animations/OpacityAnimation.swift; sourceTree = "<group>"; };
 		3EE7365ED31F8C24D0B3E6C9E5C6FA3F /* Localizable.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3EE8DC343960E53FFD89E58936AFD011 /* SignupCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SignupCoordinator.swift; path = libraries/LoginUI/Sources/Coordinators/SignupCoordinator.swift; sourceTree = "<group>"; };
-		3F3C9EE5CA38A2ED088E64B93144017D /* ProtonCore-UIFoundations-Resources-UIFoundations */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "ProtonCore-UIFoundations-Resources-UIFoundations"; path = "Resources-UIFoundations.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F3C9EE5CA38A2ED088E64B93144017D /* Resources-UIFoundations.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Resources-UIFoundations.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F46297D6014815102EFD86C58797BAB /* LoginAndSignup+DataTypes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "LoginAndSignup+DataTypes.swift"; path = "libraries/Login/Sources/LoginAndSignup+DataTypes.swift"; sourceTree = "<group>"; };
 		3F49A54654C8B0A72F0E0C8DFB197AF4 /* PMTextFieldCombo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PMTextFieldCombo.swift; path = libraries/UIFoundations/Sources/Components/PMTextField/PMTextFieldCombo.swift; sourceTree = "<group>"; };
 		3F522A9FFCEE20BD97E3B98696CD1855 /* CryptoSwift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CryptoSwift-prefix.pch"; sourceTree = "<group>"; };
@@ -5018,7 +5018,7 @@
 		40EE833BA5074726C48BDD27125122AD /* PassLaunchScreen.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; name = PassLaunchScreen.storyboard; path = libraries/UIFoundations/LaunchScreens/PassLaunchScreen.storyboard; sourceTree = "<group>"; };
 		40FDB30C56DAE2EBCB9EF22BDC7DDC15 /* SentryMessage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryMessage.m; path = Sources/Sentry/SentryMessage.m; sourceTree = "<group>"; };
 		41196F760A6AF946426E6759F4C81C83 /* ValueContainer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ValueContainer.swift; path = Sources/Private/MainThread/NodeRenderSystem/NodeProperties/ValueContainer.swift; sourceTree = "<group>"; };
-		4167689DC9E0E35B2BF880A5B9A0E07B /* ProtonCore-Login-Resources-Login */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "ProtonCore-Login-Resources-Login"; path = "Resources-Login.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4167689DC9E0E35B2BF880A5B9A0E07B /* Resources-Login.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Resources-Login.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		416802CBDA82CD7DB22C1E5B8B8F4C6B /* swift-snapshot-testing */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "swift-snapshot-testing"; path = SnapshotTesting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		416F39CE31C36D9ED94EC89783ABB048 /* SignupUITestCases.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SignupUITestCases.swift; path = libraries/TestingToolkit/UITests/Login/Signup/SignupUITestCases.swift; sourceTree = "<group>"; };
 		41945F1D64A0033C69D2FA958EFE101D /* TSKTrustKitConfig.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TSKTrustKitConfig.h; path = TrustKit/public/TSKTrustKitConfig.h; sourceTree = "<group>"; };
@@ -5060,7 +5060,7 @@
 		4679DDD0CBCB1EA0B0376F9DE0B91DCA /* Google_Protobuf_Duration+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_Duration+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_Duration+Extensions.swift"; sourceTree = "<group>"; };
 		468B08AE2751C2ED04BB0A70E3799578 /* Pods-Core.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Core.release-prod.xcconfig"; sourceTree = "<group>"; };
 		469766BF70C282F4233676AA65440C93 /* Localizable.stringsdict */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.stringsdict; name = Localizable.stringsdict; path = "es-la.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
-		469A47CCAE96D2324431C624A944CA2E /* ProtonCore-FeatureSwitch-Resources-FeatureSwitch */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "ProtonCore-FeatureSwitch-Resources-FeatureSwitch"; path = "Resources-FeatureSwitch.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		469A47CCAE96D2324431C624A944CA2E /* Resources-FeatureSwitch.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Resources-FeatureSwitch.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		46ABD0F58E9DBF7335203363102901D9 /* WireFormat.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WireFormat.swift; path = Sources/SwiftProtobuf/WireFormat.swift; sourceTree = "<group>"; };
 		46BA9FAE916143F39AE43ED777407DC0 /* Notification+KeyboardExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Notification+KeyboardExtension.swift"; path = "libraries/HumanVerification/Sources/iOS/Extensions/Notification+KeyboardExtension.swift"; sourceTree = "<group>"; };
 		46BF42AF71D35C5963D2295BF2904882 /* UnlockViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UnlockViewModel.swift; path = libraries/Settings/Sources/Unlock/UnlockViewModel/UnlockViewModel.swift; sourceTree = "<group>"; };
@@ -5241,7 +5241,7 @@
 		5918B9289512CC88A26B98829CD06373 /* AggregatableObservabilityEvent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AggregatableObservabilityEvent.swift; path = libraries/Observability/Sources/Utils/AggregatableObservabilityEvent.swift; sourceTree = "<group>"; };
 		592E1E205DD92717441CCA6F221D726B /* TemporaryHacks.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TemporaryHacks.swift; path = "libraries/Authentication-KeyGeneration/Sources/TemporaryHacks.swift"; sourceTree = "<group>"; };
 		59568DC338E7B0499D4BCEEB380E9649 /* Key+Response.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Key+Response.swift"; path = "libraries/DataModel/Sources/Key+Response.swift"; sourceTree = "<group>"; };
-		5990D7D3A9B5771850131F0ECFDD0FB5 /* ProtonCore-CoreTranslation-Resources-CoreTranslation */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "ProtonCore-CoreTranslation-Resources-CoreTranslation"; path = "Resources-CoreTranslation.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5990D7D3A9B5771850131F0ECFDD0FB5 /* Resources-CoreTranslation.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Resources-CoreTranslation.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		59C59E1C25A2A94E25C88BCE92F3A8F8 /* KeypathSearchable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KeypathSearchable.swift; path = Sources/Private/MainThread/NodeRenderSystem/NodeProperties/Protocols/KeypathSearchable.swift; sourceTree = "<group>"; };
 		5A04BB83113DCE47D929C9F9DF47C305 /* StreamDecryptor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StreamDecryptor.swift; path = Sources/CryptoSwift/StreamDecryptor.swift; sourceTree = "<group>"; };
 		5A1F5782000CA9892918B3FE44C9416E /* SentryScreenFrames.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryScreenFrames.h; path = Sources/Sentry/Public/SentryScreenFrames.h; sourceTree = "<group>"; };
@@ -5404,7 +5404,7 @@
 		6A65ACA5577BF23AD574A3B2AC8DD0B0 /* CachedImageProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CachedImageProvider.swift; path = Sources/Private/MainThread/LayerContainers/Utility/CachedImageProvider.swift; sourceTree = "<group>"; };
 		6ABC752ED492C898D82FA7CE09595C4F /* XCUITestCaseRecording.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XCUITestCaseRecording.swift; path = Sources/iOS/Recording/XCUITestCaseRecording.swift; sourceTree = "<group>"; };
 		6AD5474B04A4BFCEA9FF3CE51C7DA617 /* UsersAvailableError.json */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.json; name = UsersAvailableError.json; path = libraries/Login/Tests/UnitTests/Mocks/Responses/UnavailableUsername/UsersAvailableError.json; sourceTree = "<group>"; };
-		6AF1CA60E46AE69301628F8F733F2C32 /* ProtonCore-Settings-Resources-Settings */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "ProtonCore-Settings-Resources-Settings"; path = "Resources-Settings.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6AF1CA60E46AE69301628F8F733F2C32 /* Resources-Settings.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Resources-Settings.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AFA850F8C28F243F4A38FEC8BFE00C2 /* PMActionBarItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PMActionBarItem.swift; path = libraries/UIFoundations/Sources/Components/PMActionBar/PMActionBarItem.swift; sourceTree = "<group>"; };
 		6B0B3F842FB9219D285D6CA4B9B1629F /* PMSystemSettingCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PMSystemSettingCell.swift; path = libraries/Settings/Sources/Settings/UI/Cells/AppSettingCell/PMSystemSettingCell.swift; sourceTree = "<group>"; };
 		6B24488B067A4020079830A7DF633DA0 /* Transform.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Transform.swift; path = Sources/Private/Model/Objects/Transform.swift; sourceTree = "<group>"; };
@@ -5485,7 +5485,7 @@
 		736AD6C0774E62C14C9AD051246A0BDD /* UIViewController+Sentry.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+Sentry.m"; path = "Sources/Sentry/UIViewController+Sentry.m"; sourceTree = "<group>"; };
 		737C8D2EEF0C0216CE2267D60F1DECBF /* LongTermTask.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LongTermTask.swift; path = libraries/Foundations/Sources/iOS/LongTermTask.swift; sourceTree = "<group>"; };
 		737E995038F4EC9152893D42C3599EB2 /* Localizable.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		7396C400A236B5CFCDAF37B1B9267AEF /* ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Resources-HumanVerification */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Resources-HumanVerification"; path = "Resources-HumanVerification.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7396C400A236B5CFCDAF37B1B9267AEF /* Resources-HumanVerification.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Resources-HumanVerification.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		739E2E7FF0168D6612ADAF3EC824F613 /* Stabbing+Ergonomics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Stabbing+Ergonomics.swift"; path = "libraries/TestingToolkit/UnitTests/Core/Stabbing+Ergonomics.swift"; sourceTree = "<group>"; };
 		73BE6A05111321183008128CDA883C10 /* SentryCrashMemory.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = SentryCrashMemory.c; path = Sources/SentryCrash/Recording/Tools/SentryCrashMemory.c; sourceTree = "<group>"; };
 		7449022D77605825EDEB7BEDB56B2BDC /* SwiftOTP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftOTP.release.xcconfig; sourceTree = "<group>"; };
@@ -5625,7 +5625,7 @@
 		81F452DD7BF4EEB69B48A4B0C95C2D2D /* PaymentsUIViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PaymentsUIViewModel.swift; path = libraries/PaymentsUI/Sources/ViewModels/PaymentsUIViewModel.swift; sourceTree = "<group>"; };
 		81FD60CF9BDAA3E69C59848B991B4F44 /* ProtonColorPalettemacOS.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProtonColorPalettemacOS.swift; path = libraries/UIFoundations/Sources/Colors/ProtonColorPalettemacOS.swift; sourceTree = "<group>"; };
 		8208CBED2B5FBADD3946DB37A7581FB0 /* GradientFillNode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GradientFillNode.swift; path = Sources/Private/MainThread/NodeRenderSystem/Nodes/RenderNodes/GradientFillNode.swift; sourceTree = "<group>"; };
-		8226BF23F697DA046B918F3369044C3B /* ProtonCore-TroubleShooting-Resources-TroubleShooting */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "ProtonCore-TroubleShooting-Resources-TroubleShooting"; path = "Resources-TroubleShooting.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8226BF23F697DA046B918F3369044C3B /* Resources-TroubleShooting.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Resources-TroubleShooting.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8227A52D013BFBD4612D19DF09BD159C /* Ellipse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Ellipse.swift; path = Sources/Private/Model/ShapeItems/Ellipse.swift; sourceTree = "<group>"; };
 		823BA9544C7B5B9F742A78B2B9E8C32B /* ProtonCore-ObfuscatedConstants-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ProtonCore-ObfuscatedConstants-dummy.m"; sourceTree = "<group>"; };
 		8245744F042EF07957D929EAE1ABE6FA /* Result+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Result+Extensions.swift"; path = "libraries/Login/Sources/Extensions/Result+Extensions.swift"; sourceTree = "<group>"; };
@@ -6310,7 +6310,7 @@
 		D4B8BA9934DEEE24555B4AE89199B08C /* TSKLog.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TSKLog.h; path = TrustKit/TSKLog.h; sourceTree = "<group>"; };
 		D4F4D45325636DB8AF97A63A02931C7D /* SentryGlobalEventProcessor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryGlobalEventProcessor.h; path = Sources/Sentry/include/SentryGlobalEventProcessor.h; sourceTree = "<group>"; };
 		D50C79FC0FCE8CA46EAF9CF797C3E7A6 /* swift-snapshot-testing-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "swift-snapshot-testing-dummy.m"; sourceTree = "<group>"; };
-		D51C39A804B49E00DEEFCD4848042FAA /* ProtonCore-PaymentsUI-Resources-PaymentsUI */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "ProtonCore-PaymentsUI-Resources-PaymentsUI"; path = "Resources-PaymentsUI.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D51C39A804B49E00DEEFCD4848042FAA /* Resources-PaymentsUI.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Resources-PaymentsUI.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D53FBD81474ADB2AEB0DB416643C1068 /* BezierPath.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BezierPath.swift; path = Sources/Private/Utility/Primitives/BezierPath.swift; sourceTree = "<group>"; };
 		D54974B7CCA4E828A5EDE9C8E3A51727 /* ProtonCore-AccountDeletion-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ProtonCore-AccountDeletion-prefix.pch"; sourceTree = "<group>"; };
 		D56B0ED023D7CB801D17FBB2573C29B6 /* Date+misc.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Date+misc.swift"; path = "libraries/Payments/Sources/Extensions/Date+misc.swift"; sourceTree = "<group>"; };
@@ -6571,7 +6571,7 @@
 		F4A0FD70E73191663F128386DA72280E /* TransformAnimations.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TransformAnimations.swift; path = Sources/Private/CoreAnimation/Animations/TransformAnimations.swift; sourceTree = "<group>"; };
 		F4A46CFD1C4B94A5AB53CDA38C563249 /* SentryByteCountFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryByteCountFormatter.m; path = Sources/Sentry/SentryByteCountFormatter.m; sourceTree = "<group>"; };
 		F4AE83FD52D6AC8394F361B54D84ABC9 /* Pods-iOSUITests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-iOSUITests.modulemap"; sourceTree = "<group>"; };
-		F4B09AB7737310BE10562EE67A2E3669 /* ProtonCore-HumanVerification-Crypto-Go1.20.2-Resources-HumanVerification */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "ProtonCore-HumanVerification-Crypto-Go1.20.2-Resources-HumanVerification"; path = "Resources-HumanVerification.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4B09AB7737310BE10562EE67A2E3669 /* Resources-HumanVerification.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Resources-HumanVerification.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4B19ED37925214CA97E4961DE672C4C /* SentryQueueableRequestManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryQueueableRequestManager.m; path = Sources/Sentry/SentryQueueableRequestManager.m; sourceTree = "<group>"; };
 		F4CC0F50125A1A7EAB8CAE1A3FE477DC /* SentryEvent.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryEvent.m; path = Sources/Sentry/SentryEvent.m; sourceTree = "<group>"; };
 		F4D6F38045C484C8EDF275C960FB6747 /* ProtonCore-CoreTranslation.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "ProtonCore-CoreTranslation.modulemap"; sourceTree = "<group>"; };
@@ -7299,43 +7299,43 @@
 				FC7C02CC0CAEC05AB7B2666BFEE67FC2 /* ProtonCore-Authentication-KeyGeneration */,
 				E5982731B3EC5928933A307F50DBD081 /* ProtonCore-Challenge */,
 				A588C805416AACB4AA93CECF09098CD8 /* ProtonCore-CoreTranslation */,
-				5990D7D3A9B5771850131F0ECFDD0FB5 /* ProtonCore-CoreTranslation-Resources-CoreTranslation */,
+				5990D7D3A9B5771850131F0ECFDD0FB5 /* Resources-CoreTranslation.bundle */,
 				F938205949AD42948F507BB37E2009C9 /* ProtonCore-DataModel */,
 				3B9DD31C89F334CFD6A79A2103A25A81 /* ProtonCore-Doh */,
 				AA116C80EF4C7FB7E64892B64684AFD0 /* ProtonCore-Environment */,
 				24D3948D2DC8D44369DCAB659462FA94 /* ProtonCore-FeatureSwitch */,
-				469A47CCAE96D2324431C624A944CA2E /* ProtonCore-FeatureSwitch-Resources-FeatureSwitch */,
+				469A47CCAE96D2324431C624A944CA2E /* Resources-FeatureSwitch.bundle */,
 				67C2F63C90C4E427B1501ECEB939F498 /* ProtonCore-ForceUpgrade */,
 				389AE1094E57FFC013F3A73A77E2245B /* ProtonCore-Foundations */,
 				8710149E4822B88A6CEDDF0BF1E4A371 /* ProtonCore-GoLibs */,
 				8CE37EC7A845B16BAAA3A88799E4E598 /* ProtonCore-Hash */,
 				D644D00C7CA4A9892D65A04C2C324C58 /* ProtonCore-HumanVerification-Crypto-Go1.20.2 */,
-				F4B09AB7737310BE10562EE67A2E3669 /* ProtonCore-HumanVerification-Crypto-Go1.20.2-Resources-HumanVerification */,
+				F4B09AB7737310BE10562EE67A2E3669 /* Resources-HumanVerification.bundle */,
 				6E56E5A5D40AF872881A6D765D0CA4CD /* ProtonCore-HumanVerification.default-Crypto-Go1.20.2 */,
-				7396C400A236B5CFCDAF37B1B9267AEF /* ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Resources-HumanVerification */,
+				7396C400A236B5CFCDAF37B1B9267AEF /* Resources-HumanVerification.bundle */,
 				74F5AB3BAB171AE71C3A32043EDE262A /* ProtonCore-Keymaker */,
 				F3F6312C7223AF854C9B5A4C6F9E4830 /* ProtonCore-KeyManager */,
 				7CD1367DD4697AC3BB67CBAB7FEFE9B2 /* ProtonCore-Log */,
 				CDD4A65C6F231E44D380680704B8AAB0 /* ProtonCore-Login */,
-				4167689DC9E0E35B2BF880A5B9A0E07B /* ProtonCore-Login-Resources-Login */,
+				4167689DC9E0E35B2BF880A5B9A0E07B /* Resources-Login.bundle */,
 				1992BBCC94B28DF804A52530140EDE97 /* ProtonCore-LoginUI */,
-				18743E1D356E1251C1E90A2315F2EBC4 /* ProtonCore-LoginUI-Resources-LoginUI */,
+				18743E1D356E1251C1E90A2315F2EBC4 /* Resources-LoginUI.bundle */,
 				9B01148582E3701D53D4484A32ADED43 /* ProtonCore-Networking */,
 				67524DD74D422E6402D0FE207BD93EBE /* ProtonCore-ObfuscatedConstants */,
 				B986B33B100CF13A1B9B5CBB9DE2840B /* ProtonCore-Observability */,
 				8C28155D248552048E28B523D310F4B9 /* ProtonCore-Payments */,
 				70EB1B8999D5EB6839C4979D73FA5361 /* ProtonCore-PaymentsUI */,
-				D51C39A804B49E00DEEFCD4848042FAA /* ProtonCore-PaymentsUI-Resources-PaymentsUI */,
+				D51C39A804B49E00DEEFCD4848042FAA /* Resources-PaymentsUI.bundle */,
 				1DB9307491D44C252C763F6C634A702D /* ProtonCore-QuarkCommands */,
 				E0B7F590EB3E988DDDDBB62FE6B301C2 /* ProtonCore-Services */,
 				9D6BAB04A035A97F3A6546A3BED0510B /* ProtonCore-Settings */,
-				6AF1CA60E46AE69301628F8F733F2C32 /* ProtonCore-Settings-Resources-Settings */,
+				6AF1CA60E46AE69301628F8F733F2C32 /* Resources-Settings.bundle */,
 				E2CB8B10B6BD9D23E4DF664FB5573897 /* ProtonCore-TestingToolkit-756d2294 */,
 				F64D604A2893C51A9210806144E929CD /* ProtonCore-TestingToolkit-UnitTests_Core */,
 				BBB1BECBD850D1AED1B371CEF4C5D3CF /* ProtonCore-TroubleShooting */,
-				8226BF23F697DA046B918F3369044C3B /* ProtonCore-TroubleShooting-Resources-TroubleShooting */,
+				8226BF23F697DA046B918F3369044C3B /* Resources-TroubleShooting.bundle */,
 				6FC62CC82F591B5BA8BE787855F69E6D /* ProtonCore-UIFoundations */,
-				3F3C9EE5CA38A2ED088E64B93144017D /* ProtonCore-UIFoundations-Resources-UIFoundations */,
+				3F3C9EE5CA38A2ED088E64B93144017D /* Resources-UIFoundations.bundle */,
 				B3FD0D6043CB9D1CF1315DFEDD293EE7 /* ProtonCore-Utilities */,
 				21B03CA622E690725A6626C088E1D09F /* ReachabilitySwift */,
 				0115C3C00C175D77422084DD0542CE6F /* Sentry */,
@@ -11459,7 +11459,7 @@
 			);
 			name = "ProtonCore-FeatureSwitch-Resources-FeatureSwitch";
 			productName = "Resources-FeatureSwitch";
-			productReference = 469A47CCAE96D2324431C624A944CA2E /* ProtonCore-FeatureSwitch-Resources-FeatureSwitch */;
+			productReference = 469A47CCAE96D2324431C624A944CA2E /* Resources-FeatureSwitch.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		34CC7BDE5CE5A935DE32E614B32DD123 /* ProtonCore-Payments */ = {
@@ -11644,7 +11644,7 @@
 			);
 			name = "ProtonCore-HumanVerification-Crypto-Go1.20.2-Resources-HumanVerification";
 			productName = "Resources-HumanVerification";
-			productReference = F4B09AB7737310BE10562EE67A2E3669 /* ProtonCore-HumanVerification-Crypto-Go1.20.2-Resources-HumanVerification */;
+			productReference = F4B09AB7737310BE10562EE67A2E3669 /* Resources-HumanVerification.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		61168821A209B1E4BACFE744FED965E0 /* ProtonCore-KeyManager */ = {
@@ -11742,7 +11742,7 @@
 			);
 			name = "ProtonCore-PaymentsUI-Resources-PaymentsUI";
 			productName = "Resources-PaymentsUI";
-			productReference = D51C39A804B49E00DEEFCD4848042FAA /* ProtonCore-PaymentsUI-Resources-PaymentsUI */;
+			productReference = D51C39A804B49E00DEEFCD4848042FAA /* Resources-PaymentsUI.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		74A19571330C6AD7B460DD4009D85122 /* ProtonCore-TroubleShooting-Resources-TroubleShooting */ = {
@@ -11759,7 +11759,7 @@
 			);
 			name = "ProtonCore-TroubleShooting-Resources-TroubleShooting";
 			productName = "Resources-TroubleShooting";
-			productReference = 8226BF23F697DA046B918F3369044C3B /* ProtonCore-TroubleShooting-Resources-TroubleShooting */;
+			productReference = 8226BF23F697DA046B918F3369044C3B /* Resources-TroubleShooting.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		756C82E63D45060F4171B93E932F7EE9 /* ProtonCore-Networking */ = {
@@ -11800,7 +11800,7 @@
 			);
 			name = "ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Resources-HumanVerification";
 			productName = "Resources-HumanVerification";
-			productReference = 7396C400A236B5CFCDAF37B1B9267AEF /* ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Resources-HumanVerification */;
+			productReference = 7396C400A236B5CFCDAF37B1B9267AEF /* Resources-HumanVerification.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		7C384D4E40DC9C708009CFA8F1287CDB /* ProtonCore-FeatureSwitch */ = {
@@ -12115,7 +12115,7 @@
 			);
 			name = "ProtonCore-CoreTranslation-Resources-CoreTranslation";
 			productName = "Resources-CoreTranslation";
-			productReference = 5990D7D3A9B5771850131F0ECFDD0FB5 /* ProtonCore-CoreTranslation-Resources-CoreTranslation */;
+			productReference = 5990D7D3A9B5771850131F0ECFDD0FB5 /* Resources-CoreTranslation.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		9F32B1269C72C21A2F1468B362FD42FC /* ProtonCore-Hash */ = {
@@ -12412,7 +12412,7 @@
 			);
 			name = "ProtonCore-UIFoundations-Resources-UIFoundations";
 			productName = "Resources-UIFoundations";
-			productReference = 3F3C9EE5CA38A2ED088E64B93144017D /* ProtonCore-UIFoundations-Resources-UIFoundations */;
+			productReference = 3F3C9EE5CA38A2ED088E64B93144017D /* Resources-UIFoundations.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		CD0FF3BC778B3FCB738FC984D6B07ABC /* ProtonCore-Authentication */ = {
@@ -12480,7 +12480,7 @@
 			);
 			name = "ProtonCore-LoginUI-Resources-LoginUI";
 			productName = "Resources-LoginUI";
-			productReference = 18743E1D356E1251C1E90A2315F2EBC4 /* ProtonCore-LoginUI-Resources-LoginUI */;
+			productReference = 18743E1D356E1251C1E90A2315F2EBC4 /* Resources-LoginUI.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		DAB6882A1DEAF54A333268A8D9D07DD3 /* Pods-UIComponents */ = {
@@ -12577,7 +12577,7 @@
 			);
 			name = "ProtonCore-Login-Resources-Login";
 			productName = "Resources-Login";
-			productReference = 4167689DC9E0E35B2BF880A5B9A0E07B /* ProtonCore-Login-Resources-Login */;
+			productReference = 4167689DC9E0E35B2BF880A5B9A0E07B /* Resources-Login.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		E7C040C9BE913CFE06396B7BCE19667A /* ProtonCore-HumanVerification.default-Crypto-Go1.20.2 */ = {
@@ -12774,7 +12774,7 @@
 			);
 			name = "ProtonCore-Settings-Resources-Settings";
 			productName = "Resources-Settings";
-			productReference = 6AF1CA60E46AE69301628F8F733F2C32 /* ProtonCore-Settings-Resources-Settings */;
+			productReference = 6AF1CA60E46AE69301628F8F733F2C32 /* Resources-Settings.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		FF3D227EE5203488FB458EFE39423FB2 /* Pods-Client */ = {
@@ -12981,7 +12981,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED3C354075B36B8462FCC59AF0E72B12 /* ProtonCore-Login-Resources-Login in Resources */,
+				ED3C354075B36B8462FCC59AF0E72B12 /* Resources-Login.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13054,7 +13054,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9C040C85CF385264CF637B0D2A9726C /* ProtonCore-LoginUI-Resources-LoginUI in Resources */,
+				E9C040C85CF385264CF637B0D2A9726C /* Resources-LoginUI.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13083,7 +13083,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B90503521EFC00C4C7ADF184F032407D /* ProtonCore-PaymentsUI-Resources-PaymentsUI in Resources */,
+				B90503521EFC00C4C7ADF184F032407D /* Resources-PaymentsUI.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13107,7 +13107,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4220A922D38E4D189689F76EC71C22D /* ProtonCore-HumanVerification-Crypto-Go1.20.2-Resources-HumanVerification in Resources */,
+				E4220A922D38E4D189689F76EC71C22D /* Resources-HumanVerification.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13180,7 +13180,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D7E13C7E0AAAE4298AE6F2C71842F89 /* ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Resources-HumanVerification in Resources */,
+				1D7E13C7E0AAAE4298AE6F2C71842F89 /* Resources-HumanVerification.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13238,7 +13238,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28932606FBB4C5D5BCECF882A8602CA9 /* ProtonCore-UIFoundations-Resources-UIFoundations in Resources */,
+				28932606FBB4C5D5BCECF882A8602CA9 /* Resources-UIFoundations.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13309,7 +13309,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE98B85E590A5A44459F20BE86F27E1D /* ProtonCore-FeatureSwitch-Resources-FeatureSwitch in Resources */,
+				BE98B85E590A5A44459F20BE86F27E1D /* Resources-FeatureSwitch.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13324,7 +13324,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B160C1471A6454CD5437C544FB0F20A6 /* ProtonCore-CoreTranslation-Resources-CoreTranslation in Resources */,
+				B160C1471A6454CD5437C544FB0F20A6 /* Resources-CoreTranslation.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13332,7 +13332,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				653CEB0CA9CC37BEDE4549744FA4BD9F /* ProtonCore-TroubleShooting-Resources-TroubleShooting in Resources */,
+				653CEB0CA9CC37BEDE4549744FA4BD9F /* Resources-TroubleShooting.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13505,7 +13505,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9F709AD491F084F470F265ED1B06441 /* ProtonCore-Settings-Resources-Settings in Resources */,
+				E9F709AD491F084F470F265ED1B06441 /* Resources-Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -18174,6 +18174,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-TroubleShooting";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_TroubleShooting;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-TroubleShooting/ResourceBundle-Resources-TroubleShooting-ProtonCore-TroubleShooting-Info.plist";
@@ -18422,6 +18423,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-LoginUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_LoginUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-LoginUI/ResourceBundle-Resources-LoginUI-ProtonCore-LoginUI-Info.plist";
@@ -19522,6 +19524,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-FeatureSwitch";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_FeatureSwitch;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-FeatureSwitch/ResourceBundle-Resources-FeatureSwitch-ProtonCore-FeatureSwitch-Info.plist";
@@ -19541,6 +19544,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Login";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Login;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Login/ResourceBundle-Resources-Login-ProtonCore-Login-Info.plist";
@@ -19931,6 +19935,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Login";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Login;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Login/ResourceBundle-Resources-Login-ProtonCore-Login-Info.plist";
@@ -20477,6 +20482,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification-Crypto-Go1.20.2-Info.plist";
@@ -20636,6 +20642,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-PaymentsUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_PaymentsUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-PaymentsUI/ResourceBundle-Resources-PaymentsUI-ProtonCore-PaymentsUI-Info.plist";
@@ -20694,6 +20701,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-TroubleShooting";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_TroubleShooting;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-TroubleShooting/ResourceBundle-Resources-TroubleShooting-ProtonCore-TroubleShooting-Info.plist";
@@ -20903,6 +20911,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Settings";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Settings;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Settings/ResourceBundle-Resources-Settings-ProtonCore-Settings-Info.plist";
@@ -20924,6 +20933,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-LoginUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_LoginUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-LoginUI/ResourceBundle-Resources-LoginUI-ProtonCore-LoginUI-Info.plist";
@@ -20984,6 +20994,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-PaymentsUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_PaymentsUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-PaymentsUI/ResourceBundle-Resources-PaymentsUI-ProtonCore-PaymentsUI-Info.plist";
@@ -21042,6 +21053,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-CoreTranslation";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_CoreTranslation;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-CoreTranslation/ResourceBundle-Resources-CoreTranslation-ProtonCore-CoreTranslation-Info.plist";
@@ -21286,6 +21298,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-UIFoundations";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_UIFoundations;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-UIFoundations/ResourceBundle-Resources-UIFoundations-ProtonCore-UIFoundations-Info.plist";
@@ -21345,6 +21358,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-FeatureSwitch";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_FeatureSwitch;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-FeatureSwitch/ResourceBundle-Resources-FeatureSwitch-ProtonCore-FeatureSwitch-Info.plist";
@@ -21404,6 +21418,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-LoginUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_LoginUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-LoginUI/ResourceBundle-Resources-LoginUI-ProtonCore-LoginUI-Info.plist";
@@ -21425,6 +21440,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Login";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Login;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Login/ResourceBundle-Resources-Login-ProtonCore-Login-Info.plist";
@@ -21706,6 +21722,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-FeatureSwitch";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_FeatureSwitch;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-FeatureSwitch/ResourceBundle-Resources-FeatureSwitch-ProtonCore-FeatureSwitch-Info.plist";
@@ -21763,6 +21780,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification-Crypto-Go1.20.2-Info.plist";
@@ -22048,6 +22066,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-CoreTranslation";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_CoreTranslation;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-CoreTranslation/ResourceBundle-Resources-CoreTranslation-ProtonCore-CoreTranslation-Info.plist";
@@ -22180,6 +22199,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-TroubleShooting";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_TroubleShooting;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-TroubleShooting/ResourceBundle-Resources-TroubleShooting-ProtonCore-TroubleShooting-Info.plist";
@@ -22239,6 +22259,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-TroubleShooting";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_TroubleShooting;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-TroubleShooting/ResourceBundle-Resources-TroubleShooting-ProtonCore-TroubleShooting-Info.plist";
@@ -22373,6 +22394,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-LoginUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_LoginUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-LoginUI/ResourceBundle-Resources-LoginUI-ProtonCore-LoginUI-Info.plist";
@@ -22507,6 +22529,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Settings";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Settings;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Settings/ResourceBundle-Resources-Settings-ProtonCore-Settings-Info.plist";
@@ -22951,6 +22974,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification-Crypto-Go1.20.2-Info.plist";
@@ -24448,6 +24472,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-UIFoundations";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_UIFoundations;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-UIFoundations/ResourceBundle-Resources-UIFoundations-ProtonCore-UIFoundations-Info.plist";
@@ -24774,6 +24799,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-UIFoundations";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_UIFoundations;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-UIFoundations/ResourceBundle-Resources-UIFoundations-ProtonCore-UIFoundations-Info.plist";
@@ -24911,6 +24937,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-UIFoundations";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_UIFoundations;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-UIFoundations/ResourceBundle-Resources-UIFoundations-ProtonCore-UIFoundations-Info.plist";
@@ -25009,6 +25036,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-FeatureSwitch";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_FeatureSwitch;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-FeatureSwitch/ResourceBundle-Resources-FeatureSwitch-ProtonCore-FeatureSwitch-Info.plist";
@@ -25399,6 +25427,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Login";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Login;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Login/ResourceBundle-Resources-Login-ProtonCore-Login-Info.plist";
@@ -25419,6 +25448,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification.default-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification.default-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Info.plist";
@@ -25555,6 +25585,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-CoreTranslation";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_CoreTranslation;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-CoreTranslation/ResourceBundle-Resources-CoreTranslation-ProtonCore-CoreTranslation-Info.plist";
@@ -25576,6 +25607,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification.default-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification.default-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Info.plist";
@@ -26971,6 +27003,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification.default-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification.default-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Info.plist";
@@ -28013,6 +28046,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-PaymentsUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_PaymentsUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-PaymentsUI/ResourceBundle-Resources-PaymentsUI-ProtonCore-PaymentsUI-Info.plist";
@@ -28265,6 +28299,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-PaymentsUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_PaymentsUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-PaymentsUI/ResourceBundle-Resources-PaymentsUI-ProtonCore-PaymentsUI-Info.plist";
@@ -28397,6 +28432,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-TroubleShooting";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_TroubleShooting;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-TroubleShooting/ResourceBundle-Resources-TroubleShooting-ProtonCore-TroubleShooting-Info.plist";
@@ -29030,6 +29066,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Login";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Login;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Login/ResourceBundle-Resources-Login-ProtonCore-Login-Info.plist";
@@ -29198,6 +29235,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-TroubleShooting";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_TroubleShooting;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-TroubleShooting/ResourceBundle-Resources-TroubleShooting-ProtonCore-TroubleShooting-Info.plist";
@@ -29218,6 +29256,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification-Crypto-Go1.20.2-Info.plist";
@@ -29239,6 +29278,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-CoreTranslation";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_CoreTranslation;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-CoreTranslation/ResourceBundle-Resources-CoreTranslation-ProtonCore-CoreTranslation-Info.plist";
@@ -29407,6 +29447,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification-Crypto-Go1.20.2-Info.plist";
@@ -29427,6 +29468,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-FeatureSwitch";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_FeatureSwitch;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-FeatureSwitch/ResourceBundle-Resources-FeatureSwitch-ProtonCore-FeatureSwitch-Info.plist";
@@ -29828,6 +29870,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Settings";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Settings;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Settings/ResourceBundle-Resources-Settings-ProtonCore-Settings-Info.plist";
@@ -30074,6 +30117,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification-Crypto-Go1.20.2-Info.plist";
@@ -30172,6 +30216,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-CoreTranslation";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_CoreTranslation;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-CoreTranslation/ResourceBundle-Resources-CoreTranslation-ProtonCore-CoreTranslation-Info.plist";
@@ -30461,6 +30506,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-PaymentsUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_PaymentsUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-PaymentsUI/ResourceBundle-Resources-PaymentsUI-ProtonCore-PaymentsUI-Info.plist";
@@ -30713,6 +30759,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification-Crypto-Go1.20.2-Info.plist";
@@ -31000,6 +31047,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification.default-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification.default-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Info.plist";
@@ -31269,6 +31317,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Settings";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Settings;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Settings/ResourceBundle-Resources-Settings-ProtonCore-Settings-Info.plist";
@@ -31323,6 +31372,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-CoreTranslation";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_CoreTranslation;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-CoreTranslation/ResourceBundle-Resources-CoreTranslation-ProtonCore-CoreTranslation-Info.plist";
@@ -31498,6 +31548,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification.default-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification.default-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Info.plist";
@@ -31520,6 +31571,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification.default-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification.default-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Info.plist";
@@ -31991,6 +32043,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-LoginUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_LoginUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-LoginUI/ResourceBundle-Resources-LoginUI-ProtonCore-LoginUI-Info.plist";
@@ -32049,6 +32102,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Settings";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Settings;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Settings/ResourceBundle-Resources-Settings-ProtonCore-Settings-Info.plist";
@@ -32144,6 +32198,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Settings";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Settings;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Settings/ResourceBundle-Resources-Settings-ProtonCore-Settings-Info.plist";
@@ -32316,6 +32371,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Settings";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Settings;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Settings/ResourceBundle-Resources-Settings-ProtonCore-Settings-Info.plist";
@@ -32415,6 +32471,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Login";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Login;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Login/ResourceBundle-Resources-Login-ProtonCore-Login-Info.plist";
@@ -32474,6 +32531,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-UIFoundations";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_UIFoundations;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-UIFoundations/ResourceBundle-Resources-UIFoundations-ProtonCore-UIFoundations-Info.plist";
@@ -32570,6 +32628,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-FeatureSwitch";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_FeatureSwitch;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-FeatureSwitch/ResourceBundle-Resources-FeatureSwitch-ProtonCore-FeatureSwitch-Info.plist";
@@ -32627,6 +32686,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-PaymentsUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_PaymentsUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-PaymentsUI/ResourceBundle-Resources-PaymentsUI-ProtonCore-PaymentsUI-Info.plist";
@@ -32723,6 +32783,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-TroubleShooting";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_TroubleShooting;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-TroubleShooting/ResourceBundle-Resources-TroubleShooting-ProtonCore-TroubleShooting-Info.plist";
@@ -32744,6 +32805,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-LoginUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_LoginUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-LoginUI/ResourceBundle-Resources-LoginUI-ProtonCore-LoginUI-Info.plist";
@@ -32841,6 +32903,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-UIFoundations";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_UIFoundations;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-UIFoundations/ResourceBundle-Resources-UIFoundations-ProtonCore-UIFoundations-Info.plist";
@@ -33483,6 +33546,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-PaymentsUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_PaymentsUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-PaymentsUI/ResourceBundle-Resources-PaymentsUI-ProtonCore-PaymentsUI-Info.plist";
@@ -33656,6 +33720,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-HumanVerification.default-Crypto-Go1.20.2";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_HumanVerification;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-HumanVerification.default-Crypto-Go1.20.2/ResourceBundle-Resources-HumanVerification-ProtonCore-HumanVerification.default-Crypto-Go1.20.2-Info.plist";
@@ -33933,6 +33998,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-Login";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_Login;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-Login/ResourceBundle-Resources-Login-ProtonCore-Login-Info.plist";
@@ -34067,6 +34133,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-CoreTranslation";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_CoreTranslation;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-CoreTranslation/ResourceBundle-Resources-CoreTranslation-ProtonCore-CoreTranslation-Info.plist";
@@ -34275,6 +34342,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-FeatureSwitch";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_FeatureSwitch;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-FeatureSwitch/ResourceBundle-Resources-FeatureSwitch-ProtonCore-FeatureSwitch-Info.plist";
@@ -34374,6 +34442,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-UIFoundations";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_UIFoundations;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-UIFoundations/ResourceBundle-Resources-UIFoundations-ProtonCore-UIFoundations-Info.plist";
@@ -34430,6 +34499,7 @@
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/ProtonCore-LoginUI";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = No;
 				IBSC_MODULE = ProtonCore_LoginUI;
 				INFOPLIST_FILE = "Target Support Files/ProtonCore-LoginUI/ResourceBundle-Resources-LoginUI-ProtonCore-LoginUI-Info.plist";
