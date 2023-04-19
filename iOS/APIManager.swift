@@ -86,6 +86,7 @@ final class APIManager {
         self.humanHelper = HumanCheckHelper(apiService: apiService, clientApp: .other(named: "pass"))
         self.apiService.humanDelegate = humanHelper
 
+        // swiftlint:disable:next force_unwrapping
         self.forceUpgradeHelper = ForceUpgradeHelper(config: .mobile(URL(string: kAppStoreUrlString)!),
                                                      responseDelegate: self)
         self.apiService.forceUpgradeDelegate = forceUpgradeHelper

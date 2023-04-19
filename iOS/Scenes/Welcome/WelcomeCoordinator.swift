@@ -50,10 +50,10 @@ final class WelcomeCoordinator: DeinitPrintable {
     }
 
     private func makeWelcomeViewController() -> UIViewController {
-        return WelcomeViewController(variant: .pass(.init(body: "Secure password manager and more")),
-                                     delegate: self,
-                                     username: nil,
-                                     signupAvailable: true)
+        WelcomeViewController(variant: .pass(.init(body: "Secure password manager and more")),
+                              delegate: self,
+                              username: nil,
+                              signupAvailable: true)
     }
 
     private func makeLoginAndSignUp() -> LoginAndSignup {
