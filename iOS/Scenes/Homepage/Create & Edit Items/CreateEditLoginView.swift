@@ -252,6 +252,7 @@ struct CreateEditLoginView: View {
                     .sectionTitleText()
                 TextField("Add username", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
                     .focused($isFocusedOnUsername)
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .submitLabel(.next)
@@ -359,6 +360,7 @@ struct CreateEditLoginView: View {
                 } else {
                     TextField("Add password", text: $viewModel.password)
                         .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
                         .focused($isFocusedOnPassword)
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
                         .submitLabel(.done)
@@ -401,6 +403,7 @@ struct CreateEditLoginView: View {
                     TextField("otpauth://", text: $viewModel.totpUri)
                         .keyboardType(.URL)
                         .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
                         .focused($isFocusedOnTOTP)
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
                 }
@@ -494,7 +497,7 @@ private struct WebsiteSection: View {
                                 }
                                 .keyboardType(.URL)
                                 .textInputAutocapitalization(.never)
-                                .disableAutocorrection(true)
+                                .autocorrectionDisabled()
                                 .foregroundColor(Color(uiColor: isValid(url) ?
                                                        PassColor.textNorm : PassColor.signalDanger))
 
