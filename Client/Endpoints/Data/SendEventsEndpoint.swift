@@ -21,16 +21,16 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public struct SendEventsEndpoint: Endpoint {
-    public typealias Body = SendEventsRequest
-    public typealias Response = CodeOnlyResponse
+struct SendEventsEndpoint: Endpoint {
+    typealias Body = SendEventsRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: SendEventsRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: SendEventsRequest?
 
-    public init(events: [EventInfo]) {
+    init(events: [EventInfo]) {
         self.debugDescription = "Send a list of events to the data telemetry system"
         self.path = "/data/v1/stats/multiple"
         self.method = .post

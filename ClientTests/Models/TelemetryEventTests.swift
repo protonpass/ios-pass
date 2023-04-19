@@ -22,11 +22,11 @@
 import XCTest
 
 final class TelemetryEventTests: XCTestCase {
-    func testRawValues() throws {
-        let test: (TelemetryEvent, String) throws -> Void = { event, expectedOutput in
+    func testEventTypeConversions() throws {
+        let test: (TelemetryEventType, String) throws -> Void = { event, expectedOutput in
             XCTAssertEqual(event.rawValue, expectedOutput)
 
-            let outputEvent = try XCTUnwrap(TelemetryEvent(rawValue: expectedOutput))
+            let outputEvent = try XCTUnwrap(TelemetryEventType(rawValue: expectedOutput))
             XCTAssertEqual(event, outputEvent)
         }
         try test(.create(.login), "create.0")
