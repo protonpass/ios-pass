@@ -168,6 +168,7 @@ public extension Array where Element: AlphabeticalSortable {
         }
 
         var buckets = [AlphabetBucket<Element>]()
+        var sharpElements = [Element]()
         for key in dict.keys {
             guard let elements = dict[key] else { continue }
             let letter: AlphabetLetter
@@ -198,11 +199,17 @@ public extension Array where Element: AlphabeticalSortable {
             case "X": letter = .x
             case "Y": letter = .y
             case "Z": letter = .z
-            default: letter = .sharp
+            default:
+                letter = .sharp
+                sharpElements.append(contentsOf: elements)
             }
-            buckets.append(.init(letter: letter, items: elements))
+
+            if letter != .sharp {
+                buckets.append(.init(letter: letter, items: elements))
+            }
         }
 
+        buckets.append(.init(letter: .sharp, items: sharpElements))
         buckets = buckets.sorted { $0.letter.rawValue < $1.letter.rawValue }
 
         return .init(buckets: buckets)
