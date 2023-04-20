@@ -69,6 +69,13 @@ public protocol ItemRepositoryProtocol {
                      itemContent: ProtobufableItemContentProtocol,
                      shareId: String) async throws -> SymmetricallyEncryptedItem
 
+    /// Create alias and another item at the same time
+    @discardableResult
+    func createAlias(info: AliasCreationInfo,
+                     aliasItemContent: ProtobufableItemContentProtocol,
+                     otherItemContent: ProtobufableItemContentProtocol,
+                     shareId: String) async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem)
+
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
     func deleteAlias(email: String) async throws
@@ -198,6 +205,26 @@ public extension ItemRepositoryProtocol {
         try await localItemDatasoure.upsertItems([encryptedItem])
         logger.trace("Saved alias \(createdItemRevision.itemID) to local database")
         return encryptedItem
+    }
+
+    func createAlias(info: AliasCreationInfo,
+                     aliasItemContent: ProtobufableItemContentProtocol,
+                     otherItemContent: ProtobufableItemContentProtocol,
+                     shareId: String) async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
+        logger.trace("Creating alias and another item")
+        let createAliasItemRequest = try await createItemRequest(itemContent: aliasItemContent, shareId: shareId)
+        let createOtherItemRequest = try await createItemRequest(itemContent: otherItemContent, shareId: shareId)
+        let request = CreateAliasAndAnotherItemRequest(info: info,
+                                                       aliasItem: createAliasItemRequest,
+                                                       otherItem: createOtherItemRequest)
+        let bundle = try await remoteItemRevisionDatasource.createAliasAndAnotherItem(shareId: shareId,
+                                                                                      request: request)
+        logger.trace("Saving newly created alias & other item to local database")
+        let encryptedAlias = try await symmetricallyEncrypt(itemRevision: bundle.alias, shareId: shareId)
+        let encryptedOtherItem = try await symmetricallyEncrypt(itemRevision: bundle.item, shareId: shareId)
+        try await localItemDatasoure.upsertItems([encryptedAlias, encryptedOtherItem])
+        logger.trace("Saved alias & other item to local database")
+        return (encryptedAlias, encryptedOtherItem)
     }
 
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws {
