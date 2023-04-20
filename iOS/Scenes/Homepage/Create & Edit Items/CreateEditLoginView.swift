@@ -393,14 +393,14 @@ struct CreateEditLoginView: View {
             ItemDetailSectionIcon(icon: IconProvider.lock)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("2FA token (TOTP)")
+                Text("2FA secret (TOTP)")
                     .sectionTitleText()
 
                 if !viewModel.totpUri.isEmpty, !viewModel.isShowingTotpUri {
                     Text(String(repeating: "•", count: 20))
                         .sectionContentText()
                 } else {
-                    TextField("otpauth://", text: $viewModel.totpUri)
+                    TextField("Add 2FA secret", text: $viewModel.totpUri)
                         .keyboardType(.URL)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
