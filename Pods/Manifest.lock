@@ -92,26 +92,11 @@ PODS:
   - ProtonCore-GoLibs/Crypto-Go1.20.2 (5.1.0):
     - ProtonCore-DataModel (= 5.1.0)
   - ProtonCore-Hash (5.1.0)
-  - ProtonCore-HumanVerification (5.1.0):
-    - ProtonCore-APIClient (= 5.1.0)
-    - ProtonCore-CoreTranslation (= 5.1.0)
-    - ProtonCore-Foundations (= 5.1.0)
-    - ProtonCore-HumanVerification/ErrorWarningEmittingDefaultSubspec (= 5.1.0)
-    - ProtonCore-Observability (= 5.1.0)
-    - ProtonCore-UIFoundations (= 5.1.0)
-    - ProtonCore-Utilities (= 5.1.0)
   - ProtonCore-HumanVerification/Crypto-Go1.20.2 (5.1.0):
     - ProtonCore-APIClient (= 5.1.0)
     - ProtonCore-CoreTranslation (= 5.1.0)
     - ProtonCore-Foundations (= 5.1.0)
     - ProtonCore-GoLibs/Crypto-Go1.20.2 (= 5.1.0)
-    - ProtonCore-Observability (= 5.1.0)
-    - ProtonCore-UIFoundations (= 5.1.0)
-    - ProtonCore-Utilities (= 5.1.0)
-  - ProtonCore-HumanVerification/ErrorWarningEmittingDefaultSubspec (5.1.0):
-    - ProtonCore-APIClient (= 5.1.0)
-    - ProtonCore-CoreTranslation (= 5.1.0)
-    - ProtonCore-Foundations (= 5.1.0)
     - ProtonCore-Observability (= 5.1.0)
     - ProtonCore-UIFoundations (= 5.1.0)
     - ProtonCore-Utilities (= 5.1.0)
@@ -259,7 +244,7 @@ DEPENDENCIES:
   - "ProtonCore-Foundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.1.2`)"
   - "ProtonCore-GoLibs/Crypto-Go1.20.2 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.1.2`)"
   - "ProtonCore-Hash (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.1.2`)"
-  - "ProtonCore-HumanVerification (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.1.2`)"
+  - "ProtonCore-HumanVerification/Crypto-Go1.20.2 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.1.2`)"
   - "ProtonCore-Keymaker/Crypto-Go1.20.2 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.1.2`)"
   - "ProtonCore-KeyManager/Crypto-Go1.20.2 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.1.2`)"
   - "ProtonCore-Log (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.1.2`)"
@@ -573,6 +558,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: b02b5075dcf60c9f5f403000b3b0c202a11b6ae1
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
 
-PODFILE CHECKSUM: d4d3781b6fa40f5c474e3bbe5c4fe78f800ad128
+PODFILE CHECKSUM: 463d82343fce33dad75904a3747a37f6e5e2268f
 
 COCOAPODS: 1.12.0
