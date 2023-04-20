@@ -110,6 +110,9 @@ final class AppCoordinator {
                     self.apiManager.sessionIsAvailable(authCredential: userData.credential,
                                                        scopes: userData.scopes)
                     self.showHomeScene(userData: userData, manualLogIn: manualLogIn)
+                    if manualLogIn {
+                        self.checkAccessToPass()
+                    }
 
                 case .undefined:
                     self.logger.warning("Undefined app state. Don't know what to do...")
@@ -265,6 +268,21 @@ final class AppCoordinator {
                 appData.primaryPlan =
                 try await PrimaryPlanProvider.getPrimaryPlan(apiService: apiManager.apiService)
                 logger.trace("Refreshed primary plan")
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    /// Inform the BE that the users had logged in into Pass
+    /// so that welcome or instruction emails can be sent
+    private func checkAccessToPass() {
+        Task {
+            do {
+                logger.trace("Checking access to Pass")
+                let endpoint = CheckAccessToPassEndpoint()
+                _ = try await apiManager.apiService.exec(endpoint: endpoint)
+                logger.info("Checked access to Pass")
             } catch {
                 logger.error(error)
             }
