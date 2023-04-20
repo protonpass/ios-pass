@@ -58,6 +58,6 @@ final class BannerManager {
     }
 
     func displayTopErrorMessage(_ error: Error) {
-        displayTopErrorMessage(error.messageForTheUser)
+        displayTopErrorMessage(error.localizedDescription)
     }
 }

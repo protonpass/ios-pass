@@ -715,14 +715,17 @@ extension HomepageCoordinator: AccountViewModelDelegate {
             },
             completion: { [weak self] result in
                 guard let self else { return }
+                self.hideLoadingHud(view)
                 DispatchQueue.main.async {
                     switch result {
                     case .success:
+                        self.logger.trace("Account deletion successful")
                         self.accountViewModelWantsToSignOut()
                     case .failure(AccountDeletionError.closedByUser):
-                        break
+                        self.logger.trace("Accpunt deletion form closed by user")
                     case .failure(let error):
-                        self.bannerManager.displayTopErrorMessage(error)
+                        self.logger.error(error)
+                        self.bannerManager.displayTopErrorMessage(error.userFacingMessageInAccountDeletion)
                     }
                 }
             })

@@ -61,8 +61,6 @@ struct AppLockedView: View {
             case .initialized:
                 GeometryReader { proxy in
                     VStack {
-                        Spacer()
-                            .frame(height: proxy.size.height / 2)
                         VStack {
                             Spacer()
                             passLogo
@@ -79,8 +77,9 @@ struct AppLockedView: View {
                                 retryButton
                                     .padding(.top)
                             }
-                            Spacer()
                         }
+                        Spacer()
+                            .frame(height: proxy.size.height / 2)
                     }
                     .padding()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -112,7 +111,7 @@ struct AppLockedView: View {
         Image(uiImage: PassIcon.passIcon)
             .resizable()
             .scaledToFit()
-            .frame(maxWidth: 120)
+            .frame(maxWidth: 160)
     }
 
     private var retryButton: some View {
