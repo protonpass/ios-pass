@@ -54,15 +54,6 @@ enum ItemCreationType {
     case alias
     case login(title: String?, url: String?, autofill: Bool)
     case other
-
-    var isAlias: Bool {
-        switch self {
-        case .alias:
-            return true
-        default:
-            return false
-        }
-    }
 }
 
 class BaseCreateEditItemViewModel {
@@ -128,112 +119,84 @@ class BaseCreateEditItemViewModel {
         }
     }
 
-    func additionalCreate() async throws {}
-
     func additionalEdit() async throws {}
 
     func generateAliasCreationInfo() -> AliasCreationInfo? { nil }
+    func generateAliasItemContent() -> ItemContentProtobuf? { nil }
 
-    @MainActor
-    func save() async {
-        switch mode {
-        case let .create(_, type):
-            if type.isAlias {
-                await createAliasItem()
+    func save() {
+        Task { @MainActor in
+            defer { isSaving = false }
+            isSaving = true
+
+            do {
+                switch mode {
+                case let .create(_, type):
+                    logger.trace("Creating item")
+                    if let createdItem = try await createItem(for: type) {
+                        logger.info("Created \(createdItem.debugInformation)")
+                        delegate?.createEditItemViewModelDidCreateItem(createdItem, type: itemContentType())
+                    }
+
+                case .edit(let oldItemContent):
+                    logger.trace("Editing \(oldItemContent.debugInformation)")
+                    try await editItem(oldItemContent: oldItemContent)
+                    logger.info("Edited \(oldItemContent.debugInformation)")
+                    delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
+                }
+            } catch {
+                logger.error(error)
+                delegate?.createEditItemViewModelDidFail(error)
+            }
+        }
+    }
+
+    private func createItem(for type: ItemCreationType) async throws -> SymmetricallyEncryptedItem? {
+        let shareId = vault.shareId
+        let itemContent = generateItemContent()
+
+        switch type {
+        case .alias:
+            if let aliasCreationInfo = generateAliasCreationInfo() {
+                return try await itemRepository.createAlias(info: aliasCreationInfo,
+                                                            itemContent: itemContent,
+                                                            shareId: shareId)
             } else {
-                await createItem()
+                assertionFailure("aliasCreationInfo should not be null")
+                logger.warning("Can not create alias because creation info is empty")
+                return nil
             }
 
-        case .edit(let oldItemContent):
-            await editItem(oldItemContent: oldItemContent)
-        }
-    }
-
-    @MainActor
-    private func createItem() async {
-        defer { isSaving = false }
-        do {
-            isSaving = true
-            try await additionalCreate()
-            let item = try await createItemTask(shareId: vault.shareId).value
-            delegate?.createEditItemViewModelDidCreateItem(item, type: itemContentType())
-            logger.info("Created \(item.debugInformation)")
-        } catch {
-            logger.error(error)
-            delegate?.createEditItemViewModelDidFail(error)
-        }
-    }
-
-    @MainActor
-    private func createAliasItem() async {
-        guard let info = generateAliasCreationInfo() else { return }
-        defer { isSaving = false }
-        do {
-            isSaving = true
-            let item = try await createAliasItemTask(shareId: vault.shareId, info: info).value
-            delegate?.createEditItemViewModelDidCreateItem(item, type: itemContentType())
-            logger.info("Created alias item \(item.debugInformation)")
-        } catch {
-            logger.error(error)
-            delegate?.createEditItemViewModelDidFail(error)
-        }
-    }
-
-    @MainActor
-    private func editItem(oldItemContent: ItemContent) async {
-        defer { isSaving = false }
-        do {
-            isSaving = true
-            try await additionalEdit()
-            let oldItem = try await getItemTask(item: oldItemContent).value
-            let newItemContentProtobuf = generateItemContent()
-            try await updateItemTask(oldItem: oldItem.item,
-                                     newItemContent: newItemContentProtobuf,
-                                     shareId: oldItemContent.shareId).value
-            delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
-            logger.info("Edited \(oldItem.debugInformation)")
-        } catch {
-            logger.error(error)
-            delegate?.createEditItemViewModelDidFail(error)
-        }
-    }
-}
-
-// MARK: - Private supporting tasks
-private extension BaseCreateEditItemViewModel {
-    func createItemTask(shareId: String) -> Task<SymmetricallyEncryptedItem, Error> {
-        Task.detached(priority: .userInitiated) {
-            try await self.itemRepository.createItem(itemContent: self.generateItemContent(),
-                                                     shareId: shareId)
-        }
-    }
-
-    func createAliasItemTask(shareId: String, info: AliasCreationInfo) -> Task<SymmetricallyEncryptedItem, Error> {
-        Task.detached(priority: .userInitiated) {
-            try await self.itemRepository.createAlias(info: info,
-                                                      itemContent: self.generateItemContent(),
-                                                      shareId: shareId)
-        }
-    }
-
-    func updateItemTask(oldItem: ItemRevision,
-                        newItemContent: ProtobufableItemContentProtocol,
-                        shareId: String) -> Task<Void, Error> {
-        Task.detached(priority: .userInitiated) {
-            try await self.itemRepository.updateItem(oldItem: oldItem,
-                                                     newItemContent: newItemContent,
-                                                     shareId: shareId)
-        }
-    }
-
-    func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
-        Task.detached(priority: .userInitiated) {
-            guard let item = try await self.itemRepository.getItem(shareId: item.shareId,
-                                                                   itemId: item.itemId) else {
-                throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+        case .login:
+            if let aliasCreationInfo = generateAliasCreationInfo(),
+               let aliasItemContent = generateAliasItemContent() {
+                let (_, createdLoginItem) = try await itemRepository.createAliasAndOtherItem(
+                    info: aliasCreationInfo,
+                    aliasItemContent: aliasItemContent,
+                    otherItemContent: itemContent,
+                    shareId: shareId)
+                return createdLoginItem
             }
-            return item
+
+        default:
+            break
         }
+
+        return try await itemRepository.createItem(itemContent: itemContent, shareId: shareId)
+    }
+
+    private func editItem(oldItemContent: ItemContent) async throws {
+        try await additionalEdit()
+        let itemId = oldItemContent.itemId
+        let shareId = oldItemContent.shareId
+        guard let oldItem = try await itemRepository.getItem(shareId: shareId,
+                                                             itemId: itemId) else {
+            throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
+        }
+        let newItemContent = generateItemContent()
+        try await itemRepository.updateItem(oldItem: oldItem.item,
+                                            newItemContent: newItemContent,
+                                            shareId: oldItem.shareId)
     }
 }
 

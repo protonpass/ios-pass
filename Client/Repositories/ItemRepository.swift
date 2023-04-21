@@ -69,12 +69,12 @@ public protocol ItemRepositoryProtocol {
                      itemContent: ProtobufableItemContentProtocol,
                      shareId: String) async throws -> SymmetricallyEncryptedItem
 
-    /// Create alias and another item at the same time
     @discardableResult
-    func createAlias(info: AliasCreationInfo,
-                     aliasItemContent: ProtobufableItemContentProtocol,
-                     otherItemContent: ProtobufableItemContentProtocol,
-                     shareId: String) async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem)
+    func createAliasAndOtherItem(
+        info: AliasCreationInfo,
+        aliasItemContent: ProtobufableItemContentProtocol,
+        otherItemContent: ProtobufableItemContentProtocol,
+        shareId: String) async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem)
 
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
@@ -207,10 +207,11 @@ public extension ItemRepositoryProtocol {
         return encryptedItem
     }
 
-    func createAlias(info: AliasCreationInfo,
-                     aliasItemContent: ProtobufableItemContentProtocol,
-                     otherItemContent: ProtobufableItemContentProtocol,
-                     shareId: String) async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
+    func createAliasAndOtherItem(info: AliasCreationInfo,
+                                 aliasItemContent: ProtobufableItemContentProtocol,
+                                 otherItemContent: ProtobufableItemContentProtocol,
+                                 shareId: String)
+    async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
         logger.trace("Creating alias and another item")
         let createAliasItemRequest = try await createItemRequest(itemContent: aliasItemContent, shareId: shareId)
         let createOtherItemRequest = try await createItemRequest(itemContent: otherItemContent, shareId: shareId)
