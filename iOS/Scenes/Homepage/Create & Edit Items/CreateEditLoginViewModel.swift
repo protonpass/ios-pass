@@ -171,22 +171,20 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                    data: logInData)
     }
 
-    override func additionalCreate() async throws {
-        if let aliasCreationLiteInfo {
-            let aliasContent = ItemContentProtobuf(name: title,
-                                                   note: "Alias of login item \"\(title)\"",
-                                                   itemUuid: UUID().uuidString,
-                                                   data: .alias)
+    override func generateAliasCreationInfo() -> AliasCreationInfo? {
+        guard isAlias, let aliasCreationLiteInfo else { return nil }
 
-            let aliasCreationInfo = AliasCreationInfo(
-                prefix: aliasCreationLiteInfo.prefix,
-                suffix: aliasCreationLiteInfo.suffix,
-                mailboxIds: aliasCreationLiteInfo.mailboxes.map { $0.ID })
+        return .init(prefix: aliasCreationLiteInfo.prefix,
+                     suffix: aliasCreationLiteInfo.suffix,
+                     mailboxIds: aliasCreationLiteInfo.mailboxes.map { $0.ID })
+    }
 
-            try await self.itemRepository.createAlias(info: aliasCreationInfo,
-                                                      itemContent: aliasContent,
-                                                      shareId: vault.shareId)
-        }
+    override func generateAliasItemContent() -> ItemContentProtobuf? {
+        guard isAlias, aliasCreationLiteInfo != nil else { return nil }
+        return .init(name: title,
+                     note: "Alias of login item \"\(title)\"",
+                     itemUuid: UUID().uuidString,
+                     data: .alias)
     }
 
     override func additionalEdit() async throws {
