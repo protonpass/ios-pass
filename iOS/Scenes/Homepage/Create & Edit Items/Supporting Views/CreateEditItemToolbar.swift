@@ -29,7 +29,7 @@ struct CreateEditItemToolbar: ToolbarContent {
     let isSaving: Bool
     let itemContentType: ItemContentType
     let onGoBack: () -> Void
-    let onSave: () async -> Void
+    let onSave: () -> Void
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -49,7 +49,7 @@ struct CreateEditItemToolbar: ToolbarContent {
                                             backgroundColor: itemContentType.normMajor1Color,
                                             disableBackgroundColor: itemContentType.normMinor1Color,
                                             disabled: !isSaveable,
-                                            action: { Task { await onSave() } })
+                                            action: onSave)
             }
         }
     }

@@ -111,7 +111,7 @@ struct CreateEditLoginView: View {
                     },
                     onSave: {
                         if viewModel.validateURLs() {
-                            await viewModel.save()
+                            viewModel.save()
                         }
                     })
             }
@@ -248,9 +248,9 @@ struct CreateEditLoginView: View {
             ItemDetailSectionIcon(icon: IconProvider.user)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Username")
+                Text("Username or email")
                     .sectionTitleText()
-                TextField("Add username", text: $viewModel.username)
+                TextField("Add username or email", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($isFocusedOnUsername)
