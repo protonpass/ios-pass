@@ -205,13 +205,9 @@ private extension ShareRepositoryProtocol {
 
         let key = try await passKeyManager.getShareKey(shareId: share.shareID,
                                                        keyRotation: keyRotation)
-
-        let tagData = "vaultcontent".data(using: .utf8) ?? .init()
-        let sealedbox = try AES.GCM.SealedBox(combined: contentData)
-
-        let decryptedContent = try AES.GCM.open(sealedbox,
-                                                using: .init(data: key.keyData),
-                                                authenticating: tagData)
+        let decryptedContent = try AES.GCM.open(contentData,
+                                                key: key.keyData,
+                                                associatedData: .vaultcontent)
         let reencryptedContent = try symmetricKey.encrypt(decryptedContent.encodeBase64())
         return .init(encryptedContent: reencryptedContent, share: share)
     }
