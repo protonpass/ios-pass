@@ -85,12 +85,9 @@ public extension Share {
             throw PPClientError.crypto(.corruptedShareContent(shareID: shareID))
         }
 
-        let tagData = "vaultcontent".data(using: .utf8) ?? .init()
-        let sealedbox = try AES.GCM.SealedBox(combined: contentData)
-
-        let decryptedContent = try AES.GCM.open(sealedbox,
-                                                using: .init(data: key.keyData),
-                                                authenticating: tagData)
+        let decryptedContent = try AES.GCM.open(contentData,
+                                                key: key.keyData,
+                                                associatedData: .vaultcontent)
 
         switch shareType {
         case .unknown:
