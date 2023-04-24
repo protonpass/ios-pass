@@ -90,7 +90,7 @@ extension TelemetryEvent: Equatable {
     }
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.uuid == rhs.uuid && lhs.type.rawValue == rhs.type.rawValue
+        lhs.uuid == rhs.uuid && lhs.type == rhs.type
     }
 }
 

@@ -424,6 +424,8 @@
 		35758BE02985695700AF2683 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
 		357602A829F6ECD3003062A2 /* TelemetryEventEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602A729F6ECD3003062A2 /* TelemetryEventEntity.swift */; };
 		357602AA29F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */; };
+		357602AC29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */; };
+		357602AE29F6FDA0003062A2 /* TelemetryEventRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */; };
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
@@ -1067,6 +1069,8 @@
 		3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultEndpoint.swift; sourceTree = "<group>"; };
 		357602A729F6ECD3003062A2 /* TelemetryEventEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventEntity.swift; sourceTree = "<group>"; };
 		357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTelemetryEventDatasourceTests.swift; sourceTree = "<group>"; };
+		357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteTelemetryEventDatasource.swift; sourceTree = "<group>"; };
+		357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventRepository.swift; sourceTree = "<group>"; };
 		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
@@ -1762,6 +1766,7 @@
 				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
 				35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */,
 				356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */,
+				357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -2084,6 +2089,7 @@
 				35581810290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift */,
 				356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */,
 				35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */,
+				357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -3700,6 +3706,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				357602AC29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift in Sources */,
 				3542E2B828D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift in Sources */,
 				358A509428AD860200F5285C /* LocalPublicKeyDatasource.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProtobuf.swift in Sources */,
@@ -3747,6 +3754,7 @@
 				35526B6628D11E0C0017BB53 /* ModifyItemRequest.swift in Sources */,
 				356B831429C365320084488A /* SearchEntryEntity.swift in Sources */,
 				3554747C29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift in Sources */,
+				357602AE29F6FDA0003062A2 /* TelemetryEventRepository.swift in Sources */,
 				3552F48A28D344E100547146 /* Alias.swift in Sources */,
 				3565362429EDD6F8007A43D3 /* SendEventsEndpoint.swift in Sources */,
 				355792E429E876B7001198DA /* DataResponse.swift in Sources */,
