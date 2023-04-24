@@ -20,7 +20,7 @@
 
 import Foundation
 
-struct TelemetryEvent {
+public struct TelemetryEvent {
     let uuid: String
     let type: TelemetryEventType
 }
@@ -31,7 +31,7 @@ enum TelemetryEventType {
     case update(ItemContentType)
     case delete(ItemContentType)
 
-    var rawValue: String {
+    public var rawValue: String {
         switch self {
         case .create(let type):
             return "create.\(type.rawValue)"

@@ -49,7 +49,7 @@ extension ShareEntity {
 }
 
 extension ShareEntity {
-    func toSymmetricallyEncryptedShare() throws -> SymmetricallyEncryptedShare {
+    func toSymmetricallyEncryptedShare() -> SymmetricallyEncryptedShare {
         .init(encryptedContent: symmetricallyEncryptedContent,
               share: .init(shareID: shareID,
                            vaultID: vaultID,

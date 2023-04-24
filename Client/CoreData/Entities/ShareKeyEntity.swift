@@ -41,7 +41,7 @@ extension ShareKeyEntity {
 }
 
 extension ShareKeyEntity {
-    func toSymmetricallyEncryptedShareKey() throws -> SymmetricallyEncryptedShareKey {
+    func toSymmetricallyEncryptedShareKey() -> SymmetricallyEncryptedShareKey {
         .init(encryptedKey: symmetricallyEncryptedKey,
               shareId: shareID,
               shareKey: .init(createTime: createTime,

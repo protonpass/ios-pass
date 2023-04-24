@@ -84,4 +84,13 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="TelemetryEventEntity" representedClassName="TelemetryEventEntity" syncable="YES">
+        <attribute name="rawValue" attributeType="String"/>
+        <attribute name="uuid" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="uuid"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
 </model>
