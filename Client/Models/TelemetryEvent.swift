@@ -25,7 +25,7 @@ public struct TelemetryEvent {
     let type: TelemetryEventType
 }
 
-enum TelemetryEventType {
+public enum TelemetryEventType {
     case create(ItemContentType)
     case read(ItemContentType)
     case update(ItemContentType)
@@ -67,7 +67,7 @@ enum TelemetryEventType {
 }
 
 extension TelemetryEventType: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case let (.create(lhsType), .create(rhsType)):
             return lhsType == rhsType

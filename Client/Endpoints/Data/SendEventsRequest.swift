@@ -28,7 +28,7 @@ struct SendEventsRequest: Encodable {
     }
 }
 
-struct EventInfo: Encodable {
+public struct EventInfo: Encodable {
     let measurementGroup: String
     let event: String
     let dimensions: Dimensions
@@ -58,5 +58,54 @@ struct EventInfo: Encodable {
         self.measurementGroup = measurementGroup
         self.event = event
         self.dimensions = dimensions
+    }
+}
+
+public extension EventInfo {
+    init(event: TelemetryEvent, planName: String) {
+        self.measurementGroup = "pass.ios.user_actions"
+        self.event = event.eventName
+        self.dimensions = .init(type: event.itemContentType.dimensionType, userTier: planName)
+    }
+}
+
+private extension TelemetryEvent {
+    var eventName: String {
+        switch type {
+        case .create:
+            return "item.creation"
+        case .read:
+            return "item.read"
+        case .update:
+            return "item.update"
+        case .delete:
+            return "item.deletion"
+        }
+    }
+
+    var itemContentType: ItemContentType {
+        switch type {
+        case .create(let type):
+            return type
+        case .read(let type):
+            return type
+        case .update(let type):
+            return type
+        case .delete(let type):
+            return type
+        }
+    }
+}
+
+private extension ItemContentType {
+    var dimensionType: String {
+        switch self {
+        case .login:
+            return "login"
+        case .alias:
+            return "alias"
+        case .note:
+            return "note"
+        }
     }
 }
