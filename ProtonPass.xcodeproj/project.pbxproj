@@ -1585,16 +1585,10 @@
 			children = (
 				35544406287CB3810017FCAD /* Endpoint.swift */,
 				355792E329E876B7001198DA /* DataResponse.swift */,
-				354146D228D1F218007E45A6 /* Aliases */,
+				357602B129F712AE003062A2 /* Pass */,
 				3565362229EDD6C7007A43D3 /* Data */,
-				3558180D290A8BE200DD94DB /* Events */,
-				355792DB29E85979001198DA /* Image Proxy */,
-				355E803D28A3071700BE7C9B /* Items */,
-				358AB49F2887044500818B44 /* Keys */,
+				355792DB29E85979001198DA /* Core */,
 				3560844A29DDBC92001F7487 /* Payments */,
-				353547BF2880C4470021C716 /* Shares */,
-				355CA56229F1901E000B8248 /* User */,
-				35544403287CAF600017FCAD /* Vault */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -1657,12 +1651,12 @@
 			path = Logging;
 			sourceTree = "<group>";
 		};
-		355792DB29E85979001198DA /* Image Proxy */ = {
+		355792DB29E85979001198DA /* Core */ = {
 			isa = PBXGroup;
 			children = (
 				355792DC29E859A5001198DA /* GetLogoEndpoint.swift */,
 			);
-			path = "Image Proxy";
+			path = Core;
 			sourceTree = "<group>";
 		};
 		3558180D290A8BE200DD94DB /* Events */ = {
@@ -1969,6 +1963,20 @@
 				35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */,
 			);
 			path = "Supporting Views";
+			sourceTree = "<group>";
+		};
+		357602B129F712AE003062A2 /* Pass */ = {
+			isa = PBXGroup;
+			children = (
+				354146D228D1F218007E45A6 /* Aliases */,
+				3558180D290A8BE200DD94DB /* Events */,
+				355E803D28A3071700BE7C9B /* Items */,
+				358AB49F2887044500818B44 /* Keys */,
+				353547BF2880C4470021C716 /* Shares */,
+				355CA56229F1901E000B8248 /* User */,
+				35544403287CAF600017FCAD /* Vault */,
+			);
+			path = Pass;
 			sourceTree = "<group>";
 		};
 		357D9FCE28A9815500F012BB /* Datasources */ = {
