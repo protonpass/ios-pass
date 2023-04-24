@@ -49,15 +49,17 @@ struct AccountView: View {
                                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                         })
 
-                    PassSectionDivider()
+                    if let planName = viewModel.planName {
+                        PassSectionDivider()
 
-                    OptionRow(
-                        title: "Subscription plan",
-                        height: .tall,
-                        content: {
-                            Text(viewModel.primaryPlan?.title ?? "Free")
-                                .foregroundColor(Color(uiColor: PassColor.textNorm))
-                        })
+                        OptionRow(
+                            title: "Subscription plan",
+                            height: .tall,
+                            content: {
+                                Text(planName)
+                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                            })
+                    }
                 }
                 .roundedEditableSection()
 
@@ -112,6 +114,7 @@ struct AccountView: View {
 
                 Spacer()
             }
+            .animation(.default, value: viewModel.planName)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
         }

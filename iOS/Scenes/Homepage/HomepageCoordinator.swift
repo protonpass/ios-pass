@@ -53,12 +53,13 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let logManager: LogManager
     private let manualLogIn: Bool
     private let preferences: Preferences
-    private let primaryPlan: PlanLite?
     private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let urlOpener: UrlOpener
     private let userData: UserData
+    private let userPlan: UserPlan?
+    private let userPlanProvider: UserPlanProviderProtocol
     private let vaultsManager: VaultsManager
 
     // Lazily initialized properties
@@ -82,9 +83,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          logManager: LogManager,
          manualLogIn: Bool,
          preferences: Preferences,
-         primaryPlan: PlanLite?,
          symmetricKey: SymmetricKey,
-         userData: UserData) {
+         userData: UserData,
+         userPlan: UserPlan?,
+         userPlanProvider: UserPlanProviderProtocol) {
         let itemRepository = ItemRepository(userData: userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
@@ -129,12 +131,13 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.logManager = logManager
         self.manualLogIn = manualLogIn
         self.preferences = preferences
-        self.primaryPlan = primaryPlan
         self.searchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
         self.urlOpener = .init(preferences: preferences)
         self.userData = userData
+        self.userPlan = userPlan
+        self.userPlanProvider = userPlanProvider
         self.vaultsManager = .init(itemRepository: itemRepository,
                                    manualLogIn: manualLogIn,
                                    logManager: logManager,
@@ -196,9 +199,10 @@ private extension HomepageCoordinator {
         let profileTabViewModel = ProfileTabViewModel(apiService: apiService,
                                                       credentialManager: credentialManager,
                                                       itemRepository: itemRepository,
-                                                      primaryPlan: primaryPlan,
                                                       preferences: preferences,
                                                       logManager: logManager,
+                                                      userPlan: userPlan,
+                                                      userPlanProvider: userPlanProvider,
                                                       vaultsManager: vaultsManager)
         profileTabViewModel.delegate = self
 
@@ -619,9 +623,10 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func profileTabViewModelWantsToShowAccountMenu() {
         let viewModel = AccountViewModel(apiService: apiService,
                                          logManager: logManager,
-                                         primaryPlan: primaryPlan,
                                          theme: preferences.theme,
-                                         username: userData.user.email ?? "")
+                                         username: userData.user.email ?? "",
+                                         userPlan: userPlan,
+                                         userPlanProvider: userPlanProvider)
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
         adaptivelyPresentDetailView(view: view)

@@ -49,6 +49,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     let logger: Logger
     let preferences: Preferences
     let appVersion: String
+    let userPlanProvider: UserPlanProviderProtocol
     let vaultsManager: VaultsManager
 
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
@@ -63,7 +64,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         }
     }
 
-    @Published private(set) var primaryPlan: PlanLite?
+    @Published private(set) var userPlan: UserPlan?
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
@@ -71,18 +72,20 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     init(apiService: APIService,
          credentialManager: CredentialManagerProtocol,
          itemRepository: ItemRepositoryProtocol,
-         primaryPlan: PlanLite?,
          preferences: Preferences,
          logManager: LogManager,
+         userPlan: UserPlan?,
+         userPlanProvider: UserPlanProviderProtocol,
          vaultsManager: VaultsManager) {
         self.apiService = apiService
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
         self.logger = .init(manager: logManager)
-        self.primaryPlan = primaryPlan
         self.preferences = preferences
         self.appVersion = "Version \(Bundle.main.fullAppVersionName()) (\(Bundle.main.buildNumber))"
+        self.userPlan = userPlan
+        self.userPlanProvider = userPlanProvider
         self.vaultsManager = vaultsManager
 
         self.autoFillEnabled = false
@@ -166,7 +169,7 @@ private extension ProfileTabViewModel {
         biometricAuthenticator.initializeBiometryType()
         biometricAuthenticator.enabled = preferences.biometricAuthenticationEnabled
         Task { @MainActor in
-            primaryPlan = try await PrimaryPlanProvider.getPrimaryPlan(apiService: apiService).value
+            userPlan = try await userPlanProvider.getUserPlan()
         }
     }
 

@@ -511,7 +511,7 @@ private extension CredentialProviderCoordinator {
 
     func alert(error: Error) {
         let alert = UIAlertController(title: "Error occured",
-                                      message: error.messageForTheUser,
+                                      message: error.localizedDescription,
                                       preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [unowned self] _ in
             self.cancel(errorCode: .failed)
@@ -637,7 +637,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
     func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {}
 
     func createEditItemViewModelDidFail(_ error: Error) {
-        bannerManager.displayTopErrorMessage(error.messageForTheUser)
+        bannerManager.displayTopErrorMessage(error.localizedDescription)
     }
 }
 
@@ -695,7 +695,7 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
 
     func extensionSettingsViewModelWantsToLogOut() {
         appData.userData = nil
-        appData.primaryPlan = nil
+        appData.userPlan = nil
         context.completeExtensionConfigurationRequest()
     }
 

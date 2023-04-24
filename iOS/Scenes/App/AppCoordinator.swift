@@ -46,6 +46,7 @@ final class AppCoordinator {
     private let logger: Logger
     private var container: NSPersistentContainer
     private let credentialManager: CredentialManagerProtocol
+    private let userPlanProvider: UserPlanProviderProtocol
     private var preferences: Preferences
     private var isUITest: Bool
     private let appVersion = "ios-pass@\(Bundle.main.fullAppVersionName())"
@@ -74,6 +75,7 @@ final class AppCoordinator {
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)
+        self.userPlanProvider = UserPlanProvider(apiService: apiManager.apiService, logManager: logManager)
         self.preferences = .init()
         self.isUITest = false
         clearUserDataInKeychainIfFirstRun()
@@ -184,8 +186,9 @@ final class AppCoordinator {
                 let apiService = self.apiManager.apiService
                 if manualLogIn {
                     showLoadingHud()
-                    appData.primaryPlan =
-                    try? await PrimaryPlanProvider.getPrimaryPlan(apiService: apiService)
+                    // Optionally fetch user plan. We don't want to prevent users from using the app
+                    // because of a null user plan
+                    appData.userPlan = try? await userPlanProvider.getUserPlan()
                     hideLoadingHud()
                 }
                 let symmetricKey = try self.appData.getSymmetricKey()
@@ -195,9 +198,10 @@ final class AppCoordinator {
                                                               logManager: logManager,
                                                               manualLogIn: manualLogIn,
                                                               preferences: preferences,
-                                                              primaryPlan: appData.primaryPlan,
                                                               symmetricKey: symmetricKey,
-                                                              userData: userData)
+                                                              userData: userData,
+                                                              userPlan: appData.userPlan,
+                                                              userPlanProvider: userPlanProvider)
                 homepageCoordinator.delegate = self
                 self.homepageCoordinator = homepageCoordinator
                 self.welcomeCoordinator = nil
@@ -227,7 +231,7 @@ final class AppCoordinator {
     private func wipeAllData(includingUnauthSession: Bool) {
         logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
         appData.userData = nil
-        appData.primaryPlan = nil
+        appData.userPlan = nil
         if includingUnauthSession {
             apiManager.clearCredentials()
             keymaker.wipeMainKey()
@@ -264,10 +268,9 @@ final class AppCoordinator {
     private func refreshPrimaryPlan() {
         Task {
             do {
-                logger.trace("Refreshing primary plan")
-                appData.primaryPlan =
-                try await PrimaryPlanProvider.getPrimaryPlan(apiService: apiManager.apiService)
-                logger.trace("Refreshed primary plan")
+                logger.trace("Refreshing user plan")
+                appData.userPlan = try await userPlanProvider.getUserPlan()
+                logger.trace("Refreshed user plan")
             } catch {
                 logger.error(error)
             }
