@@ -422,6 +422,8 @@
 		3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */; };
 		3573D707297642F400F68DF7 /* DeleteVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */; };
 		35758BE02985695700AF2683 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
+		357602A829F6ECD3003062A2 /* TelemetryEventEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602A729F6ECD3003062A2 /* TelemetryEventEntity.swift */; };
+		357602AA29F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */; };
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
@@ -1063,6 +1065,8 @@
 		3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidator.swift; sourceTree = "<group>"; };
 		3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidatorTests.swift; sourceTree = "<group>"; };
 		3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultEndpoint.swift; sourceTree = "<group>"; };
+		357602A729F6ECD3003062A2 /* TelemetryEventEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventEntity.swift; sourceTree = "<group>"; };
+		357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTelemetryEventDatasourceTests.swift; sourceTree = "<group>"; };
 		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
@@ -1971,6 +1975,7 @@
 				357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */,
 				3558180B290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift */,
 				35610B7628ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift */,
+				357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */,
 				355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */,
 			);
 			path = Datasources;
@@ -2037,6 +2042,7 @@
 				3593DD0728A837DC00C235D3 /* ShareEntity.swift */,
 				35581805290A7DBF00DD94DB /* ShareEventIDEntity.swift */,
 				3593DD0628A837DC00C235D3 /* ShareKeyEntity.swift */,
+				357602A729F6ECD3003062A2 /* TelemetryEventEntity.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -3725,6 +3731,7 @@
 				358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */,
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,
 				355AA31E29E97B0900C20F5F /* FavIconRepository.swift in Sources */,
+				357602A829F6ECD3003062A2 /* TelemetryEventEntity.swift in Sources */,
 				356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */,
 				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
 				3560844C29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift in Sources */,
@@ -3839,6 +3846,7 @@
 				3542E2BD28D9CA9C00194F24 /* ItemContentTests.swift in Sources */,
 				3542E2C728D9EB8000194F24 /* LocalItemDatasourceTests.swift in Sources */,
 				353876DA28F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift in Sources */,
+				357602AA29F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift in Sources */,
 				3542F0262899431D004007C7 /* CoreDataEntityStructureTests.swift in Sources */,
 				358BD366287D4F9200802A91 /* CreateVaultRequestTests.swift in Sources */,
 			);
