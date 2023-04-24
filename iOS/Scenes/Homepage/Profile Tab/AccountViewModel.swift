@@ -36,34 +36,46 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     let logger: Logger
     let theme: Theme
     let username: String
-    @Published private(set) var primaryPlan: PlanLite?
+    let userPlanProvider: UserPlanProviderProtocol
+    @Published private(set) var userPlan: UserPlan?
 
     weak var delegate: AccountViewModelDelegate?
 
+    var planName: String? {
+        switch userPlan {
+        case .none:
+            return nil
+        case .some(let wrapped):
+            switch wrapped {
+            case .free:
+                return "Free"
+            case .paid(let plan):
+                return plan.title
+            case .subUser:
+                return nil
+            }
+        }
+    }
+
     init(apiService: APIService,
          logManager: LogManager,
-         primaryPlan: PlanLite?,
          theme: Theme,
-         username: String) {
+         username: String,
+         userPlan: UserPlan?,
+         userPlanProvider: UserPlanProviderProtocol) {
         self.apiService = apiService
         self.logger = .init(manager: logManager)
         self.username = username
-        self.primaryPlan = primaryPlan
         self.theme = theme
+        self.userPlan = userPlan
+        self.userPlanProvider = userPlanProvider
         self.refreshOrganization()
     }
 
     private func refreshOrganization() {
         Task { @MainActor in
             do {
-                logger.trace("Refreshing primary plan")
-                let primaryPlan = try await PrimaryPlanProvider.getPrimaryPlan(apiService: apiService)
-                if let primaryPlan {
-                    self.primaryPlan = primaryPlan
-                    logger.info("Refreshed primary plan")
-                } else {
-                    logger.info("Refreshed primary plan. User is not subscribed")
-                }
+                userPlan = try await userPlanProvider.getUserPlan()
             } catch {
                 logger.error(error)
             }
