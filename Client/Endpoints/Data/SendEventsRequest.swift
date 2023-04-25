@@ -62,10 +62,10 @@ public struct EventInfo: Encodable {
 }
 
 public extension EventInfo {
-    init(event: TelemetryEvent, planName: String) {
-        self.measurementGroup = "pass.ios.user_actions"
+    init(event: TelemetryEvent, userPlan: UserPlan) {
+        self.measurementGroup = "pass.any.user_actions"
         self.event = event.eventName
-        self.dimensions = .init(type: event.itemContentType.dimensionType, userTier: planName)
+        self.dimensions = .init(type: event.itemContentType.dimensionType, userTier: userPlan.userTier)
     }
 }
 
@@ -106,6 +106,19 @@ private extension ItemContentType {
             return "alias"
         case .note:
             return "note"
+        }
+    }
+}
+
+private extension UserPlan {
+    var userTier: String {
+        switch self {
+        case .free:
+            return "free"
+        case .paid(let plan):
+            return plan.name
+        case .subUser:
+            return "subuser"
         }
     }
 }

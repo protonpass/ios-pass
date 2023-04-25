@@ -430,6 +430,7 @@
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
+		3586477929F7D109003487B1 /* CurrentDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586477829F7D109003487B1 /* CurrentDateProvider.swift */; };
 		358A508D28AD823000F5285C /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508C28AD823000F5285C /* PublicKey.swift */; };
 		358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */; };
 		358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509128AD856D00F5285C /* PublicKeyEntity.swift */; };
@@ -1076,6 +1077,7 @@
 		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
+		3586477829F7D109003487B1 /* CurrentDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDateProvider.swift; sourceTree = "<group>"; };
 		358A508C28AD823000F5285C /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
 		358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPublicKeysEndpoint.swift; sourceTree = "<group>"; };
 		358A509128AD856D00F5285C /* PublicKeyEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyEntity.swift; sourceTree = "<group>"; };
@@ -2377,6 +2379,7 @@
 				354513E628E4CE700020A93A /* CodableBase64.swift */,
 				35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */,
 				356B21D62870F8F1001220CB /* Constants.swift */,
+				3586477829F7D109003487B1 /* CurrentDateProvider.swift */,
 				3565621D29B9EDDB00C43F72 /* Date+AddingValue.swift */,
 				355AA31B29E9736A00C20F5F /* Data+Random.swift */,
 				350A97DD2886032000A7168B /* DeinitPrintable.swift */,
@@ -3928,6 +3931,7 @@
 				35426B6228EF18E600F89BB7 /* DomainParser.swift in Sources */,
 				3553C21B296570090087518A /* LogEntry.swift in Sources */,
 				355744192959F68500EA4AF0 /* ClipboardExpiration.swift in Sources */,
+				3586477929F7D109003487B1 /* CurrentDateProvider.swift in Sources */,
 				353547C32880CF470021C716 /* UserData+Codable.swift in Sources */,
 				354036E128F452F200F9E729 /* URLUtils+Sanitizer.swift in Sources */,
 			);

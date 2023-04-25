@@ -56,8 +56,8 @@ public final class Preferences: ObservableObject, DeinitPrintable {
     @AppStorage("shareClipboard", store: kSharedUserDefaults)
     public var shareClipboard = false
 
-    @AppStorage("askBeforeTrashing", store: kSharedUserDefaults)
-    public var askBeforeTrashing = true
+    @AppStorage("telemetryThreshold", store: kSharedUserDefaults)
+    public var telemetryThreshold: TimeInterval?
 
     @AppStorage("isFirstRun", store: kSharedUserDefaults)
     public var isFirstRun = true
@@ -72,7 +72,7 @@ public final class Preferences: ObservableObject, DeinitPrintable {
         browser = .safari
         clipboardExpiration = .oneMinute
         shareClipboard = false
-        askBeforeTrashing = true
+        telemetryThreshold = nil
         if isUITests {
             onboarded = false
         }

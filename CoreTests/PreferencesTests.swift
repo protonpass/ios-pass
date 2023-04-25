@@ -163,15 +163,16 @@ final class PreferencesTests: XCTestCase {
         XCTAssertFalse(sut.shareClipboard)
     }
 
-    func testAskBeforeTrashingByDefault() {
-        XCTAssertTrue(sut.askBeforeTrashing)
+    func testTelemetryThresholdNilByDefault() {
+        XCTAssertNil(sut.telemetryThreshold)
     }
 
-    func testAskBeforeTrashingAfterResetting() {
-        sut.askBeforeTrashing = false
-        XCTAssertFalse(sut.askBeforeTrashing)
+    func testTelemetryThresholdNilAfterResetting() {
+        let date = Date.now
+        sut.telemetryThreshold = date.timeIntervalSince1970
+        XCTAssertEqual(sut.telemetryThreshold, date.timeIntervalSince1970)
         sut.reset()
-        XCTAssertTrue(sut.askBeforeTrashing)
+        XCTAssertNil(sut.telemetryThreshold)
     }
 
     func testIsFirstRunByDefault() {
