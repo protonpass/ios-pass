@@ -137,7 +137,7 @@ private struct EventView: View {
             Spacer()
 
             Text(uiModel.relativeDate)
-                .font(.callout)
+                .font(.footnote)
                 .foregroundColor(Color(uiColor: PassColor.textWeak))
         }
     }
@@ -176,7 +176,7 @@ private extension TelemetryEventType {
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
             return PassColor.signalInfo
         case .searchClick, .searchTriggered:
-            return PassColor.signalWarning
+            return PassColor.signalDanger
         }
     }
 
@@ -193,7 +193,7 @@ private extension TelemetryEventType {
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
             return PassColor.signalInfo.withAlphaComponent(0.16)
         case .searchClick, .searchTriggered:
-            return PassColor.signalWarning.withAlphaComponent(0.16)
+            return PassColor.signalDanger.withAlphaComponent(0.16)
         }
     }
 
@@ -208,13 +208,13 @@ private extension TelemetryEventType {
         case .delete:
             return "Delete ❌"
         case .autofillDisplay:
-            return "AutoFill extension opened 🗒️🔑"
+            return "AutoFill extension opened 🔑"
         case .autofillTriggeredFromSource:
             return "AutoFill triggered from QuickType bar ⌨️"
         case .autofillTriggeredFromApp:
             return "AutoFill triggered from extension 📱"
         case .searchClick:
-            return "Pick search result 🗒️🔎"
+            return "Pick search result 🔎"
         case .searchTriggered:
             return "Open search 🔎"
         }
