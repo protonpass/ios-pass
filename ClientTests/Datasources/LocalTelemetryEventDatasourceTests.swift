@@ -49,6 +49,10 @@ extension LocalTelemetryEventDatasourceTests {
         let event7 = try await givenInsertedEvent(userId: givenUserId)
         let event8 = try await givenInsertedEvent(userId: givenUserId)
 
+        // Then
+        let allEvents = try await sut.getAllEvents(userId: givenUserId)
+        XCTAssertEqual(allEvents.count, 8)
+
         // When
         let firstThreeEvents = try await sut.getOldestEvents(count: 3, userId: givenUserId)
 
@@ -87,7 +91,7 @@ extension LocalTelemetryEventDatasourceTests {
 
 extension TelemetryEvent: Equatable {
     static func random() -> TelemetryEvent {
-        .init(uuid: UUID().uuidString, type: .random())
+        .init(uuid: UUID().uuidString, time: Date.now.timeIntervalSince1970, type: .random())
     }
 
     public static func == (lhs: Self, rhs: Self) -> Bool {

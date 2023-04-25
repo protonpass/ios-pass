@@ -22,6 +22,7 @@ import Foundation
 
 public struct TelemetryEvent {
     let uuid: String
+    let time: TimeInterval
     let type: TelemetryEventType
 }
 
