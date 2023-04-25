@@ -83,13 +83,13 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     public let scheduler: TelemetrySchedulerProtocol
     public let userId: String
 
-    init(localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol,
-         remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol,
-         userPlanProvider: UserPlanProviderProtocol,
-         eventCount: Int,
-         logManager: LogManager,
-         scheduler: TelemetrySchedulerProtocol,
-         userId: String) {
+    public init(localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol,
+                remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol,
+                userPlanProvider: UserPlanProviderProtocol,
+                eventCount: Int,
+                logManager: LogManager,
+                scheduler: TelemetrySchedulerProtocol,
+                userId: String) {
         self.localTelemetryEventDatasource = localTelemetryEventDatasource
         self.remoteTelemetryEventDatasource = remoteTelemetryEventDatasource
         self.userPlanProvider = userPlanProvider
@@ -117,7 +117,6 @@ public extension TelemetrySchedulerProtocol {
         if let threshhold {
             return currentDate > threshhold
         } else {
-            randomNextThreshold()
             return false
         }
     }
@@ -149,7 +148,7 @@ public final class TelemetryScheduler: TelemetrySchedulerProtocol {
     public let maxIntervalInHours = 12
     public let preferences: Preferences
 
-    init(currentDateProvider: CurrentDateProviderProtocol, preferences: Preferences) {
+    public init(currentDateProvider: CurrentDateProviderProtocol, preferences: Preferences) {
         self.currentDateProvider = currentDateProvider
         self.preferences = preferences
     }

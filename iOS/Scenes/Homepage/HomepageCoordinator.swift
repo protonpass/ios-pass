@@ -56,6 +56,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
+    private let telemetryEventRepository: TelemetryEventRepositoryProtocol
     private let urlOpener: UrlOpener
     private let userData: UserData
     private let userPlan: UserPlan?
@@ -134,6 +135,15 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.searchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
+        self.telemetryEventRepository = TelemetryEventRepository(
+            localTelemetryEventDatasource: LocalTelemetryEventDatasource(container: container),
+            remoteTelemetryEventDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
+            userPlanProvider: UserPlanProvider(apiService: apiService, logManager: logManager),
+            eventCount: 500,
+            logManager: logManager,
+            scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
+                                          preferences: preferences),
+            userId: userData.user.ID)
         self.urlOpener = .init(preferences: preferences)
         self.userData = userData
         self.userPlan = userPlan
@@ -162,25 +172,23 @@ private extension HomepageCoordinator {
         urlOpener.rootViewController = rootViewController
 
         preferences.objectWillChange
-            .sink { [unowned self] _ in
-                self.rootViewController.overrideUserInterfaceStyle = self.preferences.theme.userInterfaceStyle
+            .sink { [weak self] _ in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    self.rootViewController.overrideUserInterfaceStyle = self.preferences.theme.userInterfaceStyle
+                }
             }
             .store(in: &cancellables)
 
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
-            .sink { [unowned self] _ in
-                refresh()
-                eventLoop.forceSync()
-                Task {
-                    do {
-                        try await credentialManager.insertAllCredentials(from: itemRepository,
-                                                                         forceRemoval: false)
-                        logger.info("App goes back to foreground. Inserted all credentials.")
-                    } catch {
-                        logger.error(error)
-                    }
-                }
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.logger.info("App goes back to foreground")
+                self.refresh()
+                self.sendAllEventsIfApplicable()
+                self.eventLoop.forceSync()
+                self.updateCredentials()
             }
             .store(in: &cancellables)
     }
@@ -263,6 +271,7 @@ private extension HomepageCoordinator {
         } else {
             push(itemDetailPage.view)
         }
+        addNewEvent(type: .read(itemContent.type))
     }
 
     func presentEditItemView(for itemContent: ItemContent) {
@@ -447,6 +456,38 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         let view = LogsView(viewModel: viewModel)
         present(view)
+    }
+
+    func addNewEvent(type: TelemetryEventType) {
+        Task {
+            do {
+                try await telemetryEventRepository.addNewEvent(type: type)
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func sendAllEventsIfApplicable() {
+        Task {
+            do {
+                try await telemetryEventRepository.sendAllEventsIfApplicable()
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func updateCredentials() {
+        Task {
+            do {
+                try await credentialManager.insertAllCredentials(from: itemRepository,
+                                                                 forceRemoval: false)
+                logger.info("Updated all credentials.")
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 }
 
@@ -880,6 +921,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         case .note:
             message = "Note created"
         }
+        addNewEvent(type: .create(type))
         dismissTopMostViewController(animated: true) { [unowned self] in
             bannerManager.displayBottomInfoMessage(message)
         }
@@ -897,6 +939,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         case .note:
             message = "Note updated"
         }
+        addNewEvent(type: .update(type))
         vaultsManager.refresh()
         searchViewModel?.refreshResults()
         currentItemDetailViewModel?.refresh()
@@ -1056,6 +1099,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
             self.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(vault.name)\"")
         }
         refresh()
+        addNewEvent(type: .update(item.type))
     }
 
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate) {
@@ -1090,6 +1134,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
                                                         dismissButtonTitle: "Undo",
                                                         onDismiss: undoBlock)
         }
+        addNewEvent(type: .update(item.type))
     }
 
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
@@ -1097,6 +1142,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
         }
+        addNewEvent(type: .update(item.type))
     }
 
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
@@ -1104,6 +1150,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         dismissTopMostViewController(animated: true) { [unowned self] in
             self.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
         }
+        addNewEvent(type: .delete(item.type))
     }
 
     func itemDetailViewModelDidFail(_ error: Error) {
