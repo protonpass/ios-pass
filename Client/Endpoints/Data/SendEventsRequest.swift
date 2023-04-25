@@ -40,16 +40,19 @@ public struct EventInfo: Encodable {
     }
 
     struct Dimensions: Encodable {
-        let type: String
+        let type: String?
+        let location: String?
         let userTier: String
 
         enum CodingKeys: String, CodingKey {
             case type = "type"
+            case location = "location"
             case userTier = "user_tier"
         }
 
-        init(type: String, userTier: String) {
+        init(type: String?, location: String?, userTier: String) {
             self.type = type
+            self.location = location
             self.userTier = userTier
         }
     }
@@ -65,7 +68,9 @@ public extension EventInfo {
     init(event: TelemetryEvent, userPlan: UserPlan) {
         self.measurementGroup = "pass.any.user_actions"
         self.event = event.eventName
-        self.dimensions = .init(type: event.itemContentType.dimensionType, userTier: userPlan.userTier)
+        self.dimensions = .init(type: event.dimensionType,
+                                location: event.dimensionLocation,
+                                userTier: userPlan.userTier)
     }
 }
 
@@ -80,19 +85,50 @@ private extension TelemetryEvent {
             return "item.update"
         case .delete:
             return "item.deletion"
+        case .autofillDisplay:
+            return "autofill.display"
+        case .autofillTriggeredFromApp, .autofillTriggeredFromSource:
+            return "autofill.triggered"
+        case .searchClick:
+            return "search.click"
+        case .searchTriggered:
+            return "search.triggered"
         }
     }
 
-    var itemContentType: ItemContentType {
+    var dimensionType: String? {
         switch type {
-        case .create(let type):
-            return type
-        case .read(let type):
-            return type
-        case .update(let type):
-            return type
-        case .delete(let type):
-            return type
+        case .create(let itemContentType):
+            return itemContentType.dimensionType
+        case .read(let itemContentType):
+            return itemContentType.dimensionType
+        case .update(let itemContentType):
+            return itemContentType.dimensionType
+        case .delete(let itemContentType):
+            return itemContentType.dimensionType
+        case .autofillDisplay,
+                .autofillTriggeredFromSource,
+                .autofillTriggeredFromApp,
+                .searchClick,
+                .searchTriggered:
+            return nil
+        }
+    }
+
+    var dimensionLocation: String? {
+        switch type {
+        case .autofillTriggeredFromSource:
+            return "source"
+        case .autofillTriggeredFromApp:
+            return "app"
+        case .create,
+                .read,
+                .update,
+                .delete,
+                .autofillDisplay,
+                .searchClick,
+                .searchTriggered:
+            return nil
         }
     }
 }

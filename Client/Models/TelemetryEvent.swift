@@ -31,6 +31,11 @@ public enum TelemetryEventType {
     case read(ItemContentType)
     case update(ItemContentType)
     case delete(ItemContentType)
+    case autofillDisplay
+    case autofillTriggeredFromSource // AutoFill from QuickType bar
+    case autofillTriggeredFromApp // AutoFill manually from extension
+    case searchTriggered
+    case searchClick
 
     public var rawValue: String {
         switch self {
@@ -42,10 +47,41 @@ public enum TelemetryEventType {
             return "update.\(type.rawValue)"
         case .delete(let type):
             return "delete.\(type.rawValue)"
+        case .autofillDisplay:
+            return "autofill.display"
+        case .autofillTriggeredFromSource:
+            return "autofill.triggered.source"
+        case .autofillTriggeredFromApp:
+            return "autofill.triggered.app"
+        case .searchTriggered:
+            return "search.triggered"
+        case .searchClick:
+            return "search.click"
         }
     }
 
     init?(rawValue: String) {
+        switch rawValue {
+        case "autofill.display":
+            self = .autofillDisplay
+        case "autofill.triggered.source":
+            self = .autofillTriggeredFromSource
+        case "autofill.triggered.app":
+            self = .autofillTriggeredFromApp
+        case "search.triggered":
+            self = .searchTriggered
+        case "search.click":
+            self = .searchClick
+        default:
+            if let crudEvent = Self.crudEvent(rawValue: rawValue) {
+                self = crudEvent
+            } else {
+                return nil
+            }
+        }
+    }
+
+    private static func crudEvent(rawValue: String) -> TelemetryEventType? {
         let components = rawValue.components(separatedBy: ".")
         guard components.count == 2,
               let eventType = components.first,
@@ -54,13 +90,13 @@ public enum TelemetryEventType {
 
         switch eventType {
         case "create":
-            self = .create(itemType)
+            return .create(itemType)
         case "read":
-            self = .read(itemType)
+            return .read(itemType)
         case "update":
-            self = .update(itemType)
+            return .update(itemType)
         case "delete":
-            self = .delete(itemType)
+            return .delete(itemType)
         default:
             return nil
         }
@@ -78,6 +114,12 @@ extension TelemetryEventType: Equatable {
             return lhsType == rhsType
         case let (.delete(lhsType), .delete(rhsType)):
             return lhsType == rhsType
+        case (.autofillDisplay, .autofillDisplay),
+            (.autofillTriggeredFromSource, .autofillTriggeredFromSource),
+            (.autofillTriggeredFromApp, .autofillTriggeredFromApp),
+            (.searchTriggered, .searchTriggered),
+            (.searchClick, .searchClick):
+            return true
         default:
             return false
         }
