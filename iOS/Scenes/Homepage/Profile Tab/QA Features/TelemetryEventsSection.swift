@@ -129,9 +129,9 @@ private struct EventView: View {
                 Text(uiModel.event.type.emoji)
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
             }, icon: {
-                CircleButton(icon: event.type.itemContentType.icon,
-                             iconColor: event.type.itemContentType.normMajor1Color,
-                             backgroundColor: event.type.itemContentType.normMinor1Color)
+                CircleButton(icon: event.type.icon,
+                             iconColor: event.type.iconColor,
+                             backgroundColor: event.type.backgroundColor)
             })
 
             Spacer()
@@ -144,16 +144,56 @@ private struct EventView: View {
 }
 
 private extension TelemetryEventType {
-    var itemContentType: ItemContentType {
+    var icon: UIImage {
         switch self {
         case .create(let type):
-            return type
+            return type.icon
         case .read(let type):
-            return type
+            return type.icon
         case .update(let type):
-            return type
+            return type.icon
         case .delete(let type):
-            return type
+            return type.icon
+        case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
+            // swiftlint:disable:next force_unwrapping
+            return UIImage(systemName: "rectangle.and.pencil.and.ellipsis")!
+        case .searchClick, .searchTriggered:
+            // swiftlint:disable:next force_unwrapping
+            return UIImage(systemName: "magnifyingglass")!
+        }
+    }
+
+    var iconColor: UIColor {
+        switch self {
+        case .create(let type):
+            return type.normMajor1Color
+        case .read(let type):
+            return type.normMajor1Color
+        case .update(let type):
+            return type.normMajor1Color
+        case .delete(let type):
+            return type.normMajor1Color
+        case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
+            return PassColor.signalInfo
+        case .searchClick, .searchTriggered:
+            return PassColor.signalWarning
+        }
+    }
+
+    var backgroundColor: UIColor {
+        switch self {
+        case .create(let type):
+            return type.normMinor1Color
+        case .read(let type):
+            return type.normMinor1Color
+        case .update(let type):
+            return type.normMinor1Color
+        case .delete(let type):
+            return type.normMinor1Color
+        case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
+            return PassColor.signalInfo.withAlphaComponent(0.16)
+        case .searchClick, .searchTriggered:
+            return PassColor.signalWarning.withAlphaComponent(0.16)
         }
     }
 
@@ -167,6 +207,16 @@ private extension TelemetryEventType {
             return "Update ✏️"
         case .delete:
             return "Delete ❌"
+        case .autofillDisplay:
+            return "AutoFill extension opened 🗒️🔑"
+        case .autofillTriggeredFromSource:
+            return "AutoFill triggered from QuickType bar ⌨️"
+        case .autofillTriggeredFromApp:
+            return "AutoFill triggered from extension 📱"
+        case .searchClick:
+            return "Pick search result 🗒️🔎"
+        case .searchTriggered:
+            return "Open search 🔎"
         }
     }
 }
