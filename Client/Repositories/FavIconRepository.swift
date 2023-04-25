@@ -48,11 +48,9 @@ public extension FavIconRepositoryProtocol {
         let hashedDomain = domain.sha256
         let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
                                                           conformingTo: .data)
-        if let data = try getDataOrRemoveIfObsolete(url: dataUrl) {
-            // Found valid cached fav icon
-            return try .init(domain: domain,
-                             data: symmetricKey.decrypt(data),
-                             isFromCache: true)
+        if let encryptedData = try getDataOrRemoveIfObsolete(url: dataUrl),
+           let decryptedData = try? symmetricKey.decrypt(encryptedData) {
+            return .init(domain: domain, data: decryptedData, isFromCache: true)
         }
 
         // Fav icon is not cached (or cache is obsolete and deleted), fetch from remote
@@ -96,12 +94,12 @@ public extension FavIconRepositoryProtocol {
         let urls = try FileManager.default.contentsOfDirectory(at: containerUrl,
                                                                includingPropertiesForKeys: nil)
 
-        let getDecryptedData: (URL) throws -> Data = { url in
+        let getDecryptedData: (URL) throws -> Data? = { url in
             let encryptedData = try Data(contentsOf: url)
             if encryptedData.isEmpty {
                 return .init()
             } else {
-                return try symmetricKey.decrypt(encryptedData)
+                return try? symmetricKey.decrypt(encryptedData)
             }
         }
 
@@ -110,9 +108,10 @@ public extension FavIconRepositoryProtocol {
             let hashedRootDomain = url.deletingPathExtension().lastPathComponent
             let domainUrl = containerUrl.appendingPathComponent("\(hashedRootDomain).domain",
                                                                 conformingTo: .data)
-            let domainData = try getDecryptedData(domainUrl)
-            if let decryptedRootDomain = String(data: domainData, encoding: .utf8) {
-                let decryptedImageData = try getDecryptedData(url)
+
+            if let domainData = try getDecryptedData(domainUrl),
+               let decryptedRootDomain = String(data: domainData, encoding: .utf8),
+               let decryptedImageData = try getDecryptedData(url) {
                 icons.append(.init(domain: decryptedRootDomain,
                                    data: decryptedImageData,
                                    isFromCache: true))
