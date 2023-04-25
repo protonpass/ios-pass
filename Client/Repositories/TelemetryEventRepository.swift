@@ -22,6 +22,7 @@ import Core
 import ProtonCore_Login
 import ProtonCore_Services
 
+// MARK: - TelemetryEventRepositoryProtocol
 public protocol TelemetryEventRepositoryProtocol {
     var localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol { get }
     var remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol { get }
@@ -37,7 +38,7 @@ public protocol TelemetryEventRepositoryProtocol {
     func sendAllEventsIfApplicable() async throws -> Bool
 }
 
-extension TelemetryEventRepositoryProtocol {
+public extension TelemetryEventRepositoryProtocol {
     func addNewEvent(type: TelemetryEventType) async throws {
         try await localTelemetryEventDatasource.insert(event: .init(uuid: UUID().uuidString, type: type))
         logger.debug("Added new event")
@@ -68,6 +69,30 @@ extension TelemetryEventRepositoryProtocol {
     }
 }
 
+public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
+    public let localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol
+    public let remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol
+    public let userPlanProvider: UserPlanProviderProtocol
+    public let eventCount: Int
+    public let logger: Logger
+    public let scheduler: TelemetrySchedulerProtocol
+
+    init(localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol,
+         remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol,
+         userPlanProvider: UserPlanProviderProtocol,
+         eventCount: Int,
+         logManager: LogManager,
+         scheduler: TelemetrySchedulerProtocol) {
+        self.localTelemetryEventDatasource = localTelemetryEventDatasource
+        self.remoteTelemetryEventDatasource = remoteTelemetryEventDatasource
+        self.userPlanProvider = userPlanProvider
+        self.eventCount = eventCount
+        self.logger = .init(manager: logManager)
+        self.scheduler = scheduler
+    }
+}
+
+// MARK: - TelemetrySchedulerProtocol
 public protocol TelemetrySchedulerProtocol: AnyObject {
     var currentDateProvider: CurrentDateProviderProtocol { get }
     var threshhold: Date? { get set }
