@@ -97,7 +97,7 @@ public extension TelemetrySchedulerProtocol {
 }
 
 public final class TelemetryScheduler: TelemetrySchedulerProtocol {
-    public let currentDateProvider: CurrentDateProviderProtocol = CurrentDateProvider()
+    public let currentDateProvider: CurrentDateProviderProtocol
     public var threshhold: Date? {
         get {
             if let telemetryThreshold = preferences.telemetryThreshold {
@@ -114,9 +114,10 @@ public final class TelemetryScheduler: TelemetrySchedulerProtocol {
     public let eventCount = 500
     public let minIntervalInHours = 6
     public let maxIntervalInHours = 12
-    public var preferences: Preferences
+    public let preferences: Preferences
 
-    init(preferences: Preferences) {
+    init(currentDateProvider: CurrentDateProviderProtocol, preferences: Preferences) {
+        self.currentDateProvider = currentDateProvider
         self.preferences = preferences
     }
 }
