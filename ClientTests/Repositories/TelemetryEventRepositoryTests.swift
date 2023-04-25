@@ -29,6 +29,12 @@ private final class MockedRemoteDatasource: RemoteTelemetryEventDatasourceProtoc
     func send(events: [EventInfo]) async throws {}
 }
 
+private final class MockedCurrentDateProvider: CurrentDateProviderProtocol {
+    var currentDate = Date.now
+
+    func getCurrentDate() -> Date { currentDate }
+}
+
 private final class MockedFreeUserPlanProvider: UserPlanProviderProtocol {
     let apiService = PMAPIService.dummyService()
     let logger = Logger.dummyLogger()
@@ -37,9 +43,17 @@ private final class MockedFreeUserPlanProvider: UserPlanProviderProtocol {
 }
 
 final class TelemetryEventRepositoryTests: XCTestCase {
+    var localDatasource: LocalTelemetryEventDatasourceProtocol!
     var sut: TelemetryEventRepositoryProtocol!
 
+    override func setUp() {
+        super.setUp()
+        localDatasource = LocalTelemetryEventDatasource(
+            container: .Builder.build(name: kProtonPassContainerName, inMemory: true))
+    }
+
     override func tearDown() {
+        localDatasource = nil
         sut = nil
         super.tearDown()
     }
@@ -47,13 +61,10 @@ final class TelemetryEventRepositoryTests: XCTestCase {
 
 extension TelemetryEventRepositoryTests {
     func testAddNewEvents() async throws {
-        let mockedLocalDatasource = LocalTelemetryEventDatasource(
-            container: .Builder.build(name: kProtonPassContainerName, inMemory: true))
+        // Given
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                                     preferences: .init())
-
-        // Given
-        sut = TelemetryEventRepository(localTelemetryEventDatasource: mockedLocalDatasource,
+        sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
                                        userPlanProvider: MockedFreeUserPlanProvider(),
                                        eventCount: 100,
@@ -65,7 +76,7 @@ extension TelemetryEventRepositoryTests {
         try await sut.addNewEvent(type: .read(.alias))
         try await sut.addNewEvent(type: .update(.note))
         try await sut.addNewEvent(type: .delete(.login))
-        let events = try await mockedLocalDatasource.getOldestEvents(count: 100)
+        let events = try await localDatasource.getOldestEvents(count: 100)
 
         // Then
         XCTAssertEqual(events.count, 4)
@@ -73,5 +84,69 @@ extension TelemetryEventRepositoryTests {
         XCTAssertEqual(events[1].type, .read(.alias))
         XCTAssertEqual(events[2].type, .update(.note))
         XCTAssertEqual(events[3].type, .delete(.login))
+    }
+
+    func testDoNotSendEventWhenThresholdNotReached() async throws {
+        // Given
+        let givenCurrentDate = Date.now
+        let mockedCurrentDateProvider = MockedCurrentDateProvider()
+        mockedCurrentDateProvider.currentDate = givenCurrentDate
+
+        let preferences = Preferences()
+        preferences.telemetryThreshold = givenCurrentDate.addingTimeInterval(1).timeIntervalSince1970
+        let telemetryScheduler = TelemetryScheduler(currentDateProvider: mockedCurrentDateProvider,
+                                                    preferences: preferences)
+        sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
+                                       remoteTelemetryEventDatasource: MockedRemoteDatasource(),
+                                       userPlanProvider: MockedFreeUserPlanProvider(),
+                                       eventCount: 100,
+                                       logManager: .dummyLogManager(),
+                                       scheduler: telemetryScheduler)
+
+        // When
+        let isSent = try await sut.sendAllEventsIfApplicable()
+
+        // Then
+        XCTAssertFalse(isSent)
+    }
+
+    func testSendAllEventsAndRandomNewThresholdIfThresholdIsReached() async throws {
+        // Given
+        let givenCurrentDate = Date.now
+        let mockedCurrentDateProvider = MockedCurrentDateProvider()
+        mockedCurrentDateProvider.currentDate = givenCurrentDate
+
+        let preferences = Preferences()
+        preferences.telemetryThreshold = givenCurrentDate.addingTimeInterval(-1).timeIntervalSince1970
+        let telemetryScheduler = TelemetryScheduler(currentDateProvider: mockedCurrentDateProvider,
+                                                    preferences: preferences)
+        // Send only 1 event at a time to test if the while loop inside TelemetryEventRepository
+        // works correctly when dealing with a large number of events
+        sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
+                                       remoteTelemetryEventDatasource: MockedRemoteDatasource(),
+                                       userPlanProvider: MockedFreeUserPlanProvider(),
+                                       eventCount: 1,
+                                       logManager: .dummyLogManager(),
+                                       scheduler: telemetryScheduler)
+
+        // When
+        try await sut.addNewEvent(type: .create(.login))
+        try await sut.addNewEvent(type: .read(.alias))
+        try await sut.addNewEvent(type: .update(.note))
+        try await sut.addNewEvent(type: .delete(.login))
+
+        let isSent = try await sut.sendAllEventsIfApplicable()
+        let events = try await localDatasource.getOldestEvents(count: 100)
+        let newThreshold = try XCTUnwrap(telemetryScheduler.threshhold)
+        let difference = Calendar.current.dateComponents([.hour],
+                                                         from: givenCurrentDate,
+                                                         to: newThreshold)
+        let differenceInHours = try XCTUnwrap(difference.hour)
+
+        // Then
+        XCTAssertTrue(isSent)
+        XCTAssertTrue(events.isEmpty) // No more events left in local db
+        XCTAssertTrue(differenceInHours >= telemetryScheduler.minIntervalInHours)
+        XCTAssertTrue(differenceInHours <= telemetryScheduler.maxIntervalInHours)
     }
 }

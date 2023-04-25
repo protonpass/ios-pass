@@ -61,6 +61,7 @@ public extension TelemetryEventRepositoryProtocol {
             }
             let eventInfos = events.map { EventInfo(event: $0, userPlan: userPlan) }
             try await remoteTelemetryEventDatasource.send(events: eventInfos)
+            try await localTelemetryEventDatasource.remove(events: events)
         }
 
         scheduler.randomNextThreshold()
