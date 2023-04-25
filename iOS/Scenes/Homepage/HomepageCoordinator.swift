@@ -139,7 +139,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
             localTelemetryEventDatasource: LocalTelemetryEventDatasource(container: container),
             remoteTelemetryEventDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
             userPlanProvider: UserPlanProvider(apiService: apiService, logManager: logManager),
-            eventCount: 500,
             logManager: logManager,
             scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                           preferences: preferences),

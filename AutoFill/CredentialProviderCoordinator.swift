@@ -60,6 +60,7 @@ public final class CredentialProviderCoordinator {
     private var shareKeyRepository: ShareKeyRepositoryProtocol?
     private var aliasRepository: AliasRepositoryProtocol?
     private var remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol?
+    private var telemetryEventRepository: TelemetryEventRepositoryProtocol?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var vaultListUiModels: [VaultListUiModel]?
@@ -94,6 +95,7 @@ public final class CredentialProviderCoordinator {
         // Post init
         self.clipboardManager.bannerManager = bannerManager
         self.makeSymmetricKeyAndRepositories()
+        self.sendAllEventsIfApplicable()
         AppearanceSettings.apply()
     }
 
@@ -110,6 +112,7 @@ public final class CredentialProviderCoordinator {
             showCredentialsView(userData: userData,
                                 symmetricKey: symmetricKey,
                                 serviceIdentifiers: serviceIdentifiers)
+            addNewEvent(type: .autofillDisplay)
         } catch {
             alert(error: error)
         }
@@ -232,8 +235,9 @@ public final class CredentialProviderCoordinator {
     private func makeSymmetricKeyAndRepositories() {
         guard let userData = appData.userData,
               let symmetricKey = try? appData.getSymmetricKey() else { return }
+        let apiService = apiManager.apiService
 
-        let repositoryManager = RepositoryManager(apiService: apiManager.apiService,
+        let repositoryManager = RepositoryManager(apiService: apiService,
                                                   container: container,
                                                   logManager: logManager,
                                                   symmetricKey: symmetricKey,
@@ -245,13 +249,41 @@ public final class CredentialProviderCoordinator {
         let itemRepository = repositoryManager.itemRepository
         (itemRepository as? ItemRepository)?.delegate = credentialManager as? ItemRepositoryDelegate
         self.itemRepository = itemRepository
-        self.favIconRepository = FavIconRepository(apiService: apiManager.apiService,
+        self.favIconRepository = FavIconRepository(apiService: apiService,
                                                    containerUrl: URL.favIconsContainerURL(),
                                                    cacheExpirationDays: 14,
                                                    symmetricKey: symmetricKey)
         self.shareKeyRepository = repositoryManager.shareKeyRepository
         self.aliasRepository = repositoryManager.aliasRepository
         self.remoteSyncEventsDatasource = repositoryManager.remoteSyncEventsDatasource
+        self.telemetryEventRepository = TelemetryEventRepository(
+            localTelemetryEventDatasource: LocalTelemetryEventDatasource(container: container),
+            remoteTelemetryEventDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
+            userPlanProvider: UserPlanProvider(apiService: apiService, logManager: logManager),
+            logManager: logManager,
+            scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
+                                          preferences: preferences),
+            userId: userData.user.ID)
+    }
+
+    func addNewEvent(type: TelemetryEventType) {
+        Task {
+            do {
+                try await telemetryEventRepository?.addNewEvent(type: type)
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func sendAllEventsIfApplicable() {
+        Task {
+            do {
+                try await telemetryEventRepository?.sendAllEventsIfApplicable()
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 }
 
@@ -348,6 +380,12 @@ private extension CredentialProviderCoordinator {
                 try await itemRepository.update(item: encryptedItem,
                                                 lastUseTime: lastUseTime)
                 logger.info("Updated lastUseTime \(encryptedItem.debugInformation)")
+
+                if quickTypeBar {
+                    addNewEvent(type: .autofillTriggeredFromSource)
+                } else {
+                    addNewEvent(type: .autofillTriggeredFromApp)
+                }
             } catch {
                 logger.error(error)
                 if quickTypeBar {

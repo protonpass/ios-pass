@@ -71,7 +71,6 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
                                        userPlanProvider: MockedFreeUserPlanProvider(),
-                                       eventCount: 100,
                                        logManager: .dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)
@@ -99,7 +98,6 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
                                        userPlanProvider: MockedFreeUserPlanProvider(),
-                                       eventCount: 100,
                                        logManager: .dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)
@@ -127,7 +125,6 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
                                        userPlanProvider: MockedFreeUserPlanProvider(),
-                                       eventCount: 100,
                                        logManager: .dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)
@@ -155,10 +152,10 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
                                        userPlanProvider: MockedFreeUserPlanProvider(),
-                                       eventCount: 1,
                                        logManager: .dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userId: givenUserId)
+                                       userId: givenUserId,
+                                       eventCount: 1)
 
         // When
         try await sut.addNewEvent(type: .create(.login))

@@ -87,10 +87,10 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     public init(localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol,
                 remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol,
                 userPlanProvider: UserPlanProviderProtocol,
-                eventCount: Int,
                 logManager: LogManager,
                 scheduler: TelemetrySchedulerProtocol,
-                userId: String) {
+                userId: String,
+                eventCount: Int = 500) {
         self.localTelemetryEventDatasource = localTelemetryEventDatasource
         self.remoteTelemetryEventDatasource = remoteTelemetryEventDatasource
         self.userPlanProvider = userPlanProvider

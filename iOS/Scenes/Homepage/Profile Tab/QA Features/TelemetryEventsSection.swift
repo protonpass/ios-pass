@@ -123,23 +123,21 @@ private struct EventView: View {
 
     var body: some View {
         let event = uiModel.event
-
-        HStack {
-            Label(title: {
+        Label(title: {
+            VStack(alignment: .leading) {
                 Text(uiModel.event.type.emoji)
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
-            }, icon: {
-                CircleButton(icon: event.type.icon,
-                             iconColor: event.type.iconColor,
-                             backgroundColor: event.type.backgroundColor)
-            })
 
-            Spacer()
-
-            Text(uiModel.relativeDate)
-                .font(.footnote)
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
-        }
+                Text(uiModel.relativeDate)
+                    .font(.footnote)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }, icon: {
+            CircleButton(icon: event.type.icon,
+                         iconColor: event.type.iconColor,
+                         backgroundColor: event.type.backgroundColor)
+        })
     }
 }
 
@@ -210,9 +208,9 @@ private extension TelemetryEventType {
         case .autofillDisplay:
             return "AutoFill extension opened 🔑"
         case .autofillTriggeredFromSource:
-            return "AutoFill triggered from QuickType bar ⌨️"
+            return "Autofilled from QuickType bar ⌨️"
         case .autofillTriggeredFromApp:
-            return "AutoFill triggered from extension 📱"
+            return "Autofilled from extension 📱"
         case .searchClick:
             return "Pick search result 🔎"
         case .searchTriggered:
