@@ -44,16 +44,19 @@ private final class MockedFreeUserPlanProvider: UserPlanProviderProtocol {
 
 final class TelemetryEventRepositoryTests: XCTestCase {
     var localDatasource: LocalTelemetryEventDatasourceProtocol!
+    var preferences: Preferences!
     var sut: TelemetryEventRepositoryProtocol!
 
     override func setUp() {
         super.setUp()
         localDatasource = LocalTelemetryEventDatasource(
             container: .Builder.build(name: kProtonPassContainerName, inMemory: true))
+        preferences = .init()
     }
 
     override func tearDown() {
         localDatasource = nil
+        preferences.reset()
         sut = nil
         super.tearDown()
     }
@@ -64,7 +67,7 @@ extension TelemetryEventRepositoryTests {
         // Given
         let givenUserId = String.random()
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
-                                                    preferences: .init())
+                                                    preferences: preferences)
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
                                        userPlanProvider: MockedFreeUserPlanProvider(),
@@ -88,6 +91,28 @@ extension TelemetryEventRepositoryTests {
         XCTAssertEqual(events[3].type, .delete(.login))
     }
 
+    func testAutoGenerateThresholdWhenCurrentThresholdIsNil() async throws {
+        // Given
+        let givenUserId = String.random()
+        let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
+                                                    preferences: preferences)
+        sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
+                                       remoteTelemetryEventDatasource: MockedRemoteDatasource(),
+                                       userPlanProvider: MockedFreeUserPlanProvider(),
+                                       eventCount: 100,
+                                       logManager: .dummyLogManager(),
+                                       scheduler: telemetryScheduler,
+                                       userId: givenUserId)
+        XCTAssertNil(sut.scheduler.threshhold)
+
+        // When
+        let isSent = try await sut.sendAllEventsIfApplicable()
+
+        // Then
+        XCTAssertNotNil(sut.scheduler.threshhold)
+        XCTAssertFalse(isSent)
+    }
+
     func testDoNotSendEventWhenThresholdNotReached() async throws {
         // Given
         let givenUserId = String.random()
@@ -96,7 +121,6 @@ extension TelemetryEventRepositoryTests {
         let mockedCurrentDateProvider = MockedCurrentDateProvider()
         mockedCurrentDateProvider.currentDate = givenCurrentDate
 
-        let preferences = Preferences()
         preferences.telemetryThreshold = givenCurrentDate.addingTimeInterval(1).timeIntervalSince1970
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: mockedCurrentDateProvider,
                                                     preferences: preferences)
@@ -123,7 +147,6 @@ extension TelemetryEventRepositoryTests {
         let mockedCurrentDateProvider = MockedCurrentDateProvider()
         mockedCurrentDateProvider.currentDate = givenCurrentDate
 
-        let preferences = Preferences()
         preferences.telemetryThreshold = givenCurrentDate.addingTimeInterval(-1).timeIntervalSince1970
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: mockedCurrentDateProvider,
                                                     preferences: preferences)

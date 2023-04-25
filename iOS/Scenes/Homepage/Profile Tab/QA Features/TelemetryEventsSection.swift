@@ -78,6 +78,7 @@ private final class TelemetryEventsViewModel: ObservableObject {
                 // Reverse to move new events to the top of the list
                 self.uiModels = events.reversed().map { TelemetryEventUiModel(event: $0,
                                                                               formatter: formatter) }
+                self.error = nil
             } catch {
                 self.error = error
             }
@@ -92,13 +93,28 @@ private struct TelemetryEventsView: View {
         if let error = viewModel.error {
             RetryableErrorView(errorMessage: error.localizedDescription, onRetry: viewModel.refresh)
         } else {
-            Form {
+            if viewModel.uiModels.isEmpty {
+                Form {
+                    Text("No events")
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                }
+            } else {
+                eventsList
+            }
+        }
+    }
+
+    private var eventsList: some View {
+        Form {
+            Section(content: {
                 ForEach(viewModel.uiModels) { uiModel in
                     EventView(uiModel: uiModel)
                 }
-            }
-            .navigationTitle(viewModel.relativeThreshold)
+            }, header: {
+                Text("\(viewModel.uiModels.count) pending event(s)")
+            })
         }
+        .navigationTitle(viewModel.relativeThreshold)
     }
 }
 
