@@ -39,17 +39,18 @@ final class LocalTelemetryEventDatasourceTests: XCTestCase {
 extension LocalTelemetryEventDatasourceTests {
     func testInsertGetAndRemoveEvents() async throws {
         // Given
-        let event1 = try await givenInsertedEvent()
-        let event2 = try await givenInsertedEvent()
-        let event3 = try await givenInsertedEvent()
-        let event4 = try await givenInsertedEvent()
-        let event5 = try await givenInsertedEvent()
-        let event6 = try await givenInsertedEvent()
-        let event7 = try await givenInsertedEvent()
-        let event8 = try await givenInsertedEvent()
+        let givenUserId = String.random()
+        let event1 = try await givenInsertedEvent(userId: givenUserId)
+        let event2 = try await givenInsertedEvent(userId: givenUserId)
+        let event3 = try await givenInsertedEvent(userId: givenUserId)
+        let event4 = try await givenInsertedEvent(userId: givenUserId)
+        let event5 = try await givenInsertedEvent(userId: givenUserId)
+        let event6 = try await givenInsertedEvent(userId: givenUserId)
+        let event7 = try await givenInsertedEvent(userId: givenUserId)
+        let event8 = try await givenInsertedEvent(userId: givenUserId)
 
         // When
-        let firstThreeEvents = try await sut.getOldestEvents(count: 3)
+        let firstThreeEvents = try await sut.getOldestEvents(count: 3, userId: givenUserId)
 
         // Then
         XCTAssertEqual(firstThreeEvents.count, 3)
@@ -58,8 +59,8 @@ extension LocalTelemetryEventDatasourceTests {
         XCTAssertEqual(firstThreeEvents[2], event3)
 
         // When
-        try await sut.remove(events: firstThreeEvents)
-        let secondThreeEvents = try await sut.getOldestEvents(count: 3)
+        try await sut.remove(events: firstThreeEvents, userId: givenUserId)
+        let secondThreeEvents = try await sut.getOldestEvents(count: 3, userId: givenUserId)
 
         // Then
         XCTAssertEqual(secondThreeEvents.count, 3)
@@ -68,8 +69,8 @@ extension LocalTelemetryEventDatasourceTests {
         XCTAssertEqual(secondThreeEvents[2], event6)
 
         // When
-        try await sut.remove(events: secondThreeEvents)
-        let lastEvents = try await sut.getOldestEvents(count: 3)
+        try await sut.remove(events: secondThreeEvents, userId: givenUserId)
+        let lastEvents = try await sut.getOldestEvents(count: 3, userId: givenUserId)
 
         // Then
         XCTAssertEqual(lastEvents.count, 2)
@@ -77,9 +78,9 @@ extension LocalTelemetryEventDatasourceTests {
         XCTAssertEqual(lastEvents[1], event8)
     }
 
-    func givenInsertedEvent() async throws -> TelemetryEvent {
+    func givenInsertedEvent(userId: String) async throws -> TelemetryEvent {
         let event = TelemetryEvent.random()
-        try await sut.insert(event: event)
+        try await sut.insert(event: event, userId: userId)
         return event
     }
 }

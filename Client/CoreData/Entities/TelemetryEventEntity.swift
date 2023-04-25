@@ -33,6 +33,8 @@ extension TelemetryEventEntity {
 
     @NSManaged var uuid: String
     @NSManaged var rawValue: String
+    @NSManaged var time: Double
+    @NSManaged var userID: String
 }
 
 extension TelemetryEventEntity {
@@ -43,8 +45,10 @@ extension TelemetryEventEntity {
         return .init(uuid: uuid, type: type)
     }
 
-    func hydrate(from event: TelemetryEvent) {
+    func hydrate(from event: TelemetryEvent, userId: String) {
         self.uuid = event.uuid
         self.rawValue = event.type.rawValue
+        self.time = Date.now.timeIntervalSince1970
+        self.userID = userId
     }
 }

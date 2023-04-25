@@ -30,6 +30,7 @@ public protocol TelemetryEventRepositoryProtocol {
     var eventCount: Int { get }
     var logger: Logger { get }
     var scheduler: TelemetrySchedulerProtocol { get }
+    var userId: String { get }
 
     func addNewEvent(type: TelemetryEventType) async throws
 
@@ -40,7 +41,9 @@ public protocol TelemetryEventRepositoryProtocol {
 
 public extension TelemetryEventRepositoryProtocol {
     func addNewEvent(type: TelemetryEventType) async throws {
-        try await localTelemetryEventDatasource.insert(event: .init(uuid: UUID().uuidString, type: type))
+        try await localTelemetryEventDatasource.insert(event: .init(uuid: UUID().uuidString,
+                                                                    type: type),
+                                                       userId: userId)
         logger.debug("Added new event")
     }
 
@@ -55,13 +58,14 @@ public extension TelemetryEventRepositoryProtocol {
         let userPlan = try await userPlanProvider.getUserPlan()
 
         while true {
-            let events = try await localTelemetryEventDatasource.getOldestEvents(count: eventCount)
+            let events = try await localTelemetryEventDatasource.getOldestEvents(count: eventCount,
+                                                                                 userId: userId)
             if events.isEmpty {
                 break
             }
             let eventInfos = events.map { EventInfo(event: $0, userPlan: userPlan) }
             try await remoteTelemetryEventDatasource.send(events: eventInfos)
-            try await localTelemetryEventDatasource.remove(events: events)
+            try await localTelemetryEventDatasource.remove(events: events, userId: userId)
         }
 
         scheduler.randomNextThreshold()
@@ -77,19 +81,22 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     public let eventCount: Int
     public let logger: Logger
     public let scheduler: TelemetrySchedulerProtocol
+    public let userId: String
 
     init(localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol,
          remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol,
          userPlanProvider: UserPlanProviderProtocol,
          eventCount: Int,
          logManager: LogManager,
-         scheduler: TelemetrySchedulerProtocol) {
+         scheduler: TelemetrySchedulerProtocol,
+         userId: String) {
         self.localTelemetryEventDatasource = localTelemetryEventDatasource
         self.remoteTelemetryEventDatasource = remoteTelemetryEventDatasource
         self.userPlanProvider = userPlanProvider
         self.eventCount = eventCount
         self.logger = .init(manager: logManager)
         self.scheduler = scheduler
+        self.userId = userId
     }
 }
 

@@ -62,6 +62,7 @@ final class TelemetryEventRepositoryTests: XCTestCase {
 extension TelemetryEventRepositoryTests {
     func testAddNewEvents() async throws {
         // Given
+        let givenUserId = String.random()
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                                     preferences: .init())
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
@@ -69,14 +70,15 @@ extension TelemetryEventRepositoryTests {
                                        userPlanProvider: MockedFreeUserPlanProvider(),
                                        eventCount: 100,
                                        logManager: .dummyLogManager(),
-                                       scheduler: telemetryScheduler)
+                                       scheduler: telemetryScheduler,
+                                       userId: givenUserId)
 
         // When
         try await sut.addNewEvent(type: .create(.login))
         try await sut.addNewEvent(type: .read(.alias))
         try await sut.addNewEvent(type: .update(.note))
         try await sut.addNewEvent(type: .delete(.login))
-        let events = try await localDatasource.getOldestEvents(count: 100)
+        let events = try await localDatasource.getOldestEvents(count: 100, userId: givenUserId)
 
         // Then
         XCTAssertEqual(events.count, 4)
@@ -88,6 +90,8 @@ extension TelemetryEventRepositoryTests {
 
     func testDoNotSendEventWhenThresholdNotReached() async throws {
         // Given
+        let givenUserId = String.random()
+
         let givenCurrentDate = Date.now
         let mockedCurrentDateProvider = MockedCurrentDateProvider()
         mockedCurrentDateProvider.currentDate = givenCurrentDate
@@ -101,7 +105,8 @@ extension TelemetryEventRepositoryTests {
                                        userPlanProvider: MockedFreeUserPlanProvider(),
                                        eventCount: 100,
                                        logManager: .dummyLogManager(),
-                                       scheduler: telemetryScheduler)
+                                       scheduler: telemetryScheduler,
+                                       userId: givenUserId)
 
         // When
         let isSent = try await sut.sendAllEventsIfApplicable()
@@ -112,6 +117,8 @@ extension TelemetryEventRepositoryTests {
 
     func testSendAllEventsAndRandomNewThresholdIfThresholdIsReached() async throws {
         // Given
+        let givenUserId = String.random()
+
         let givenCurrentDate = Date.now
         let mockedCurrentDateProvider = MockedCurrentDateProvider()
         mockedCurrentDateProvider.currentDate = givenCurrentDate
@@ -127,7 +134,8 @@ extension TelemetryEventRepositoryTests {
                                        userPlanProvider: MockedFreeUserPlanProvider(),
                                        eventCount: 1,
                                        logManager: .dummyLogManager(),
-                                       scheduler: telemetryScheduler)
+                                       scheduler: telemetryScheduler,
+                                       userId: givenUserId)
 
         // When
         try await sut.addNewEvent(type: .create(.login))
@@ -136,7 +144,7 @@ extension TelemetryEventRepositoryTests {
         try await sut.addNewEvent(type: .delete(.login))
 
         let isSent = try await sut.sendAllEventsIfApplicable()
-        let events = try await localDatasource.getOldestEvents(count: 100)
+        let events = try await localDatasource.getOldestEvents(count: 100, userId: givenUserId)
         let newThreshold = try XCTUnwrap(telemetryScheduler.threshhold)
         let difference = Calendar.current.dateComponents([.hour],
                                                          from: givenCurrentDate,
