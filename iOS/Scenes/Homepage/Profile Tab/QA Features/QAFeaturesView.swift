@@ -34,6 +34,8 @@ struct QAFeaturesView: View {
                 OnboardSection(viewModel: viewModel)
                 HapticFeedbacksSection()
                 CachedFavIconsSection(favIconRepository: viewModel.favIconRepository)
+                TelemetryEventsSection(telemetryEventRepository: viewModel.telemetryEventRepository,
+                                       userId: viewModel.userData.user.ID)
             }
             .navigationTitle("QA Features")
             .toolbar {

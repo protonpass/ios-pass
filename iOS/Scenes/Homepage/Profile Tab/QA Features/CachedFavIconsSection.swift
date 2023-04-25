@@ -76,7 +76,7 @@ struct CachedFavIconsView: View {
     var body: some View {
         Form {
             if let error = viewModel.error {
-                RetryableErrorView(errorMessage: error.messageForTheUser,
+                RetryableErrorView(errorMessage: error.localizedDescription,
                                    onRetry: viewModel.loadIcons)
             } else {
                 if viewModel.icons.isEmpty {

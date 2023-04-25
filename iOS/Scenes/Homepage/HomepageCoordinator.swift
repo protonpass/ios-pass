@@ -157,6 +157,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.finalizeInitialization()
         self.start()
         self.eventLoop.start()
+        self.sendAllEventsIfApplicable()
     }
 }
 
@@ -722,9 +723,11 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func profileTabViewModelWantsToQaFeatures() {
         let viewModel = QAFeaturesViewModel(credentialManager: credentialManager,
                                             favIconRepository: favIconRepository,
+                                            telemetryEventRepository: telemetryEventRepository,
                                             preferences: preferences,
                                             bannerManager: bannerManager,
-                                            logManager: logManager)
+                                            logManager: logManager,
+                                            userData: userData)
         let view = QAFeaturesView(viewModel: viewModel)
         present(view)
     }
@@ -1181,14 +1184,17 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
 
     func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable) {
         refresh()
+        addNewEvent(type: .update(item.type))
     }
 
     func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable) {
         refresh()
+        addNewEvent(type: .update(item.type))
     }
 
     func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable) {
         refresh()
+        addNewEvent(type: .delete(item.type))
     }
 }
 
