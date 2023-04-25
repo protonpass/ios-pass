@@ -602,6 +602,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         searchViewModel = viewModel
         let view = SearchView(viewModel: viewModel)
         present(view)
+        addNewEvent(type: .searchTriggered)
     }
 
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
@@ -1202,6 +1203,7 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
 extension HomepageCoordinator: SearchViewModelDelegate {
     func searchViewModelWantsToViewDetail(of itemContent: Client.ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: true)
+        addNewEvent(type: .searchClick)
     }
 
     func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
