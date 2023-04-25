@@ -42,6 +42,7 @@ public protocol TelemetryEventRepositoryProtocol {
 public extension TelemetryEventRepositoryProtocol {
     func addNewEvent(type: TelemetryEventType) async throws {
         try await localTelemetryEventDatasource.insert(event: .init(uuid: UUID().uuidString,
+                                                                    time: Date.now.timeIntervalSince1970,
                                                                     type: type),
                                                        userId: userId)
         logger.debug("Added new event")

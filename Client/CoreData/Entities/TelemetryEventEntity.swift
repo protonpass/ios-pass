@@ -42,13 +42,13 @@ extension TelemetryEventEntity {
         guard let type = TelemetryEventType(rawValue: rawValue) else {
             throw PPClientError.coreData(.corrupted(object: self, property: "rawValue"))
         }
-        return .init(uuid: uuid, type: type)
+        return .init(uuid: uuid, time: time, type: type)
     }
 
     func hydrate(from event: TelemetryEvent, userId: String) {
         self.uuid = event.uuid
         self.rawValue = event.type.rawValue
-        self.time = Date.now.timeIntervalSince1970
+        self.time = event.time
         self.userID = userId
     }
 }

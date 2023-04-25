@@ -25,6 +25,9 @@ public protocol LocalTelemetryEventDatasourceProtocol: LocalDatasourceProtocol {
     ///   - count: the maximum number of events
     func getOldestEvents(count: Int, userId: String) async throws -> [TelemetryEvent]
 
+    /// Get all events triggered by a user. For debugging purposes only.
+    func getAllEvents(userId: String) async throws -> [TelemetryEvent]
+
     func insert(event: TelemetryEvent, userId: String) async throws
 
     func remove(events: [TelemetryEvent], userId: String) async throws
@@ -37,6 +40,15 @@ public extension LocalTelemetryEventDatasourceProtocol {
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         fetchRequest.sortDescriptors = [.init(key: "time", ascending: true)]
         fetchRequest.fetchLimit = count
+        let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try entities.map { try $0.toTelemetryEvent() }
+    }
+
+    func getAllEvents(userId: String) async throws -> [TelemetryEvent] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = TelemetryEventEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
+        fetchRequest.sortDescriptors = [.init(key: "time", ascending: true)]
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try entities.map { try $0.toTelemetryEvent() }
     }
