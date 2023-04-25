@@ -25,10 +25,16 @@ import ProtonCore_Services
 public protocol TelemetryEventRepositoryProtocol {
     var localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol { get }
     var remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol { get }
+    var userPlanProvider: UserPlanProviderProtocol { get }
+    var eventCount: Int { get }
     var logger: Logger { get }
+    var scheduler: TelemetrySchedulerProtocol { get }
 
     func addNewEvent(type: TelemetryEventType) async throws
-    func sendAllEventsIfApplicable() async throws
+
+    /// - Returns: `true` if threshold is reached, `false` if threshold is not reached
+    @discardableResult
+    func sendAllEventsIfApplicable() async throws -> Bool
 }
 
 extension TelemetryEventRepositoryProtocol {
@@ -37,15 +43,80 @@ extension TelemetryEventRepositoryProtocol {
         logger.debug("Added new event")
     }
 
-    func sendAllEventsIfApplicable() async throws {
-        let eventCount = 100
+    func sendAllEventsIfApplicable() async throws -> Bool {
+        guard scheduler.shouldSendEvents() else {
+            logger.trace("Threshold not reached")
+            return false
+        }
+
+        logger.trace("Threshold is reached. Sending events if any.")
+        logger.trace("Refreshing user plan")
+        let userPlan = try await userPlanProvider.getUserPlan()
+
         while true {
             let events = try await localTelemetryEventDatasource.getOldestEvents(count: eventCount)
             if events.isEmpty {
                 break
             }
-            let eventInfos = events.map { EventInfo(event: $0, planName: "free") }
+            let eventInfos = events.map { EventInfo(event: $0, userPlan: userPlan) }
             try await remoteTelemetryEventDatasource.send(events: eventInfos)
         }
+
+        scheduler.randomNextThreshold()
+        logger.info("Sent all events")
+        return true
+    }
+}
+
+public protocol TelemetrySchedulerProtocol: AnyObject {
+    var currentDateProvider: CurrentDateProviderProtocol { get }
+    var threshhold: Date? { get set }
+    var minIntervalInHours: Int { get }
+    var maxIntervalInHours: Int { get }
+
+    func shouldSendEvents() -> Bool
+    func randomNextThreshold()
+}
+
+public extension TelemetrySchedulerProtocol {
+    func shouldSendEvents() -> Bool {
+        let currentDate = currentDateProvider.getCurrentDate()
+        if let threshhold {
+            return currentDate > threshhold
+        } else {
+            randomNextThreshold()
+            return false
+        }
+    }
+
+    func randomNextThreshold() {
+        let randomIntervalInHours = Int.random(in: minIntervalInHours...maxIntervalInHours)
+        let currentDate = currentDateProvider.getCurrentDate()
+        threshhold = currentDate.adding(component: .hour, value: randomIntervalInHours)
+    }
+}
+
+public final class TelemetryScheduler: TelemetrySchedulerProtocol {
+    public let currentDateProvider: CurrentDateProviderProtocol = CurrentDateProvider()
+    public var threshhold: Date? {
+        get {
+            if let telemetryThreshold = preferences.telemetryThreshold {
+                return Date(timeIntervalSince1970: telemetryThreshold)
+            } else {
+                return nil
+            }
+        }
+
+        set {
+            preferences.telemetryThreshold = newValue?.timeIntervalSince1970
+        }
+    }
+    public let eventCount = 500
+    public let minIntervalInHours = 6
+    public let maxIntervalInHours = 12
+    public var preferences: Preferences
+
+    init(preferences: Preferences) {
+        self.preferences = preferences
     }
 }
