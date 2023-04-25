@@ -125,5 +125,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         let sut = entity(byName: "TelemetryEventEntity")
         verifyAttribute(named: "uuid", on: sut, hasType: .string)
         verifyAttribute(named: "rawValue", on: sut, hasType: .string)
+        verifyAttribute(named: "time", on: sut, hasType: .double)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 }
