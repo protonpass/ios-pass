@@ -431,6 +431,8 @@
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
 		3586477929F7D109003487B1 /* CurrentDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586477829F7D109003487B1 /* CurrentDateProvider.swift */; };
+		3586477C29F7D5C5003487B1 /* TelemetryEventRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586477B29F7D5C5003487B1 /* TelemetryEventRepositoryTests.swift */; };
+		3586477E29F7D5F5003487B1 /* TelemetrySchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586477D29F7D5F5003487B1 /* TelemetrySchedulerTests.swift */; };
 		358A508D28AD823000F5285C /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508C28AD823000F5285C /* PublicKey.swift */; };
 		358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */; };
 		358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509128AD856D00F5285C /* PublicKeyEntity.swift */; };
@@ -1078,6 +1080,8 @@
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
 		3586477829F7D109003487B1 /* CurrentDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDateProvider.swift; sourceTree = "<group>"; };
+		3586477B29F7D5C5003487B1 /* TelemetryEventRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventRepositoryTests.swift; sourceTree = "<group>"; };
+		3586477D29F7D5F5003487B1 /* TelemetrySchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetrySchedulerTests.swift; sourceTree = "<group>"; };
 		358A508C28AD823000F5285C /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
 		358A508F28AD83A800F5285C /* GetPublicKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPublicKeysEndpoint.swift; sourceTree = "<group>"; };
 		358A509128AD856D00F5285C /* PublicKeyEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyEntity.swift; sourceTree = "<group>"; };
@@ -1999,6 +2003,15 @@
 			path = Datasources;
 			sourceTree = "<group>";
 		};
+		3586477A29F7D5A5003487B1 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				3586477B29F7D5C5003487B1 /* TelemetryEventRepositoryTests.swift */,
+				3586477D29F7D5F5003487B1 /* TelemetrySchedulerTests.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
 		358AB49F2887044500818B44 /* Keys */ = {
 			isa = PBXGroup;
 			children = (
@@ -2249,6 +2262,7 @@
 				3593DD1128A840BD00C235D3 /* CoreData */,
 				357D9FCE28A9815500F012BB /* Datasources */,
 				3542E2BB28D9CA8D00194F24 /* Models */,
+				3586477A29F7D5A5003487B1 /* Repositories */,
 				350A97D82885C94900A7168B /* TestData */,
 				350A97D52885C0B400A7168B /* Utilities */,
 			);
@@ -3847,6 +3861,7 @@
 				354EA82D29EF53B500F1FB95 /* TelemetryEventTests.swift in Sources */,
 				353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */,
 				357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */,
+				3586477E29F7D5F5003487B1 /* TelemetrySchedulerTests.swift in Sources */,
 				351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */,
 				3542E2C128D9CB3500194F24 /* ItemContentData+Test.swift in Sources */,
 				358A509828AD87E200F5285C /* PublicKey+Test.swift in Sources */,
@@ -3866,6 +3881,7 @@
 				3565621C29B9EC9900C43F72 /* ItemSortableTests.swift in Sources */,
 				35464B62289B0380008E65C4 /* ShareKey+Test.swift in Sources */,
 				350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */,
+				3586477C29F7D5C5003487B1 /* TelemetryEventRepositoryTests.swift in Sources */,
 				3542E2BD28D9CA9C00194F24 /* ItemContentTests.swift in Sources */,
 				3542E2C728D9EB8000194F24 /* LocalItemDatasourceTests.swift in Sources */,
 				353876DA28F6C0BB0040F139 /* Array+SymmetricallyEncryptedItemSortTests.swift in Sources */,
