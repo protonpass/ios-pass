@@ -118,6 +118,7 @@ public extension TelemetrySchedulerProtocol {
         if let threshhold {
             return currentDate > threshhold
         } else {
+            randomNextThreshold()
             return false
         }
     }

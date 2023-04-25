@@ -21,9 +21,9 @@
 import Foundation
 
 public struct TelemetryEvent {
-    let uuid: String
-    let time: TimeInterval
-    let type: TelemetryEventType
+    public let uuid: String
+    public let time: TimeInterval
+    public let type: TelemetryEventType
 }
 
 public enum TelemetryEventType {
