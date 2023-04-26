@@ -244,12 +244,12 @@ private extension SyncEventLoop {
                         try await self.sync(share: remoteShare, hasNewEvents: &hasNewEvents)
                     } else {
                         // New share
-                        self.logger.trace("New share \(remoteShare.shareID)")
+                        self.logger.debug("New share \(remoteShare.shareID)")
                         hasNewEvents = true
                         let shareId = remoteShare.shareID
                         _ = try await self.shareKeyRepository.refreshKeys(shareId: shareId)
                         try await self.shareRepository.upsertShares([remoteShare])
-                        try await self.sync(share: remoteShare, hasNewEvents: &hasNewEvents)
+                        try await self.itemRepository.refreshItems(shareId: shareId)
                     }
                     return hasNewEvents
                 }
