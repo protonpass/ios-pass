@@ -27,6 +27,7 @@ import CryptoKit
 import MBProgressHUD
 import ProtonCore_AccountDeletion
 import ProtonCore_Login
+import ProtonCore_PaymentsUI
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 import SwiftUI
@@ -52,6 +53,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let logger: Logger
     private let logManager: LogManager
     private let manualLogIn: Bool
+    private let paymentsManager: PaymentsManager
     private let preferences: Preferences
     private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
     private let shareRepository: ShareRepositoryProtocol
@@ -69,6 +71,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
+    private var paymentsUI: PaymentsUI?
 
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
@@ -87,7 +90,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          manualLogIn: Bool,
          preferences: Preferences,
          symmetricKey: SymmetricKey,
-         userData: UserData) {
+         userData: UserData,
+         userPlan: UserPlan?,
+         userPlanProvider: UserPlanProviderProtocol,
+         paymentsManager: PaymentsManager) {
         let itemRepository = ItemRepository(userData: userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
@@ -144,6 +150,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.logger = .init(manager: logManager)
         self.logManager = logManager
         self.manualLogIn = manualLogIn
+        self.paymentsManager = paymentsManager
         self.preferences = preferences
         self.searchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.shareRepository = shareRepository
@@ -791,7 +798,28 @@ extension HomepageCoordinator: AccountViewModelDelegate {
     }
 
     func accountViewModelWantsToManageSubscription() {
-        print(#function)
+        var paymentsUI = paymentsManager.createPaymentsUI()
+        // keep reference to avoid being deallocated
+        self.paymentsUI = paymentsUI
+        paymentsUI.showCurrentPlan(presentationType: .modal, backendFetch: true) { result in
+            // TODO: refresh the state if needed or show error in the completion block
+            switch result {
+            case let .open(viewController, opened):
+                break
+            case .close:
+                break
+            case let .purchasedPlan(accountPlan):
+                break
+            case .toppedUpCredits:
+                break
+            case let .planPurchaseProcessingInProgress(accountPlan):
+                break
+            case let .purchaseError(error):
+                break
+            case let .apiMightBeBlocked(message, originalError):
+                break
+            }
+        }
     }
 
     func accountViewModelWantsToSignOut() {
