@@ -666,6 +666,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         default:
             handleCreatedItem(type)
         }
+        addNewEvent(type: .create(type))
     }
 
     // Not applicable
