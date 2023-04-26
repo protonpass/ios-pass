@@ -175,6 +175,17 @@ final class PreferencesTests: XCTestCase {
         XCTAssertNil(sut.telemetryThreshold)
     }
 
+    func testDisplayFavIconsEnabledByDefault() {
+        XCTAssertTrue(sut.displayFavIcons)
+    }
+
+    func testDisplayFavIconsEnabledAfterResetting() {
+        sut.displayFavIcons = false
+        XCTAssertFalse(sut.displayFavIcons)
+        sut.reset()
+        XCTAssertTrue(sut.displayFavIcons)
+    }
+
     func testIsFirstRunByDefault() {
         XCTAssertTrue(sut.isFirstRun)
     }

@@ -112,8 +112,8 @@ struct ItemSquircleThumbnail: View {
         if force { image = nil }
         Task { @MainActor in
             do {
-                let favIcon = try await repository.getIcon(for: url)
-                if let image = UIImage(data: favIcon.data) {
+                if let favIcon = try await repository.getIcon(for: url),
+                   let image = UIImage(data: favIcon.data) {
                     self.image = image
                 }
             } catch {
