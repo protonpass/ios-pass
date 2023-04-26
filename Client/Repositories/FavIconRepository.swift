@@ -34,16 +34,28 @@ public protocol FavIconRepositoryProtocol {
     /// URL to the folder that contains cached fav icons
     var containerUrl: URL { get }
     var cacheExpirationDays: Int { get }
+    var preferences: Preferences { get }
     var symmetricKey: SymmetricKey { get }
 
-    func getIcon(for domain: String) async throws -> FavIcon
+    /// Always return `nil` if fav icons are disabled in `Preferences`
+    /// Check if the icon is cached on disk and decryptable. Otherwise go fetch a new icon.
+    func getIcon(for domain: String) async throws -> FavIcon?
+
+    /// Always return `nil` if fav icons are disabled in `Preferences`
+    /// Only get icon from disk. Do not go fetch if icon is not cached.
     func getCachedIcon(for domain: String) -> FavIcon?
+
+    /// For debugging purposes only
     func getAllCachedIcons() throws -> [FavIcon]
+
+    /// Remove cached icons from disk
     func emptyCache() throws
 }
 
 public extension FavIconRepositoryProtocol {
-    func getIcon(for domain: String) async throws -> FavIcon {
+    func getIcon(for domain: String) async throws -> FavIcon? {
+        guard preferences.displayFavIcons else { return nil }
+
         let domain = URL(string: domain)?.host ?? domain
         let hashedDomain = domain.sha256
         let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
@@ -53,7 +65,7 @@ public extension FavIconRepositoryProtocol {
             return .init(domain: domain, data: decryptedData, isFromCache: true)
         }
 
-        // Fav icon is not cached (or cache is obsolete and deleted), fetch from remote
+        // Fav icon is not cached (or cached but is obsolete/deleted/not decryptable), fetch from remote
         let result = try await datasource.fetchFavIcon(for: domain)
 
         let dataToWrite: Data
@@ -78,6 +90,7 @@ public extension FavIconRepositoryProtocol {
     }
 
     func getCachedIcon(for domain: String) -> FavIcon? {
+        guard preferences.displayFavIcons else { return nil }
         let domain = URL(string: domain)?.host ?? domain
         let hashedDomain = domain.sha256
         let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
@@ -146,15 +159,18 @@ public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable
     public let datasource: RemoteFavIconDatasourceProtocol
     public let containerUrl: URL
     public let cacheExpirationDays: Int
+    public let preferences: Preferences
     public let symmetricKey: SymmetricKey
 
     public init(apiService: APIService,
                 containerUrl: URL,
-                cacheExpirationDays: Int,
-                symmetricKey: SymmetricKey) {
+                preferences: Preferences,
+                symmetricKey: SymmetricKey,
+                cacheExpirationDays: Int = 14) {
         self.datasource = RemoteFavIconDatasource(apiService: apiService)
         self.containerUrl = containerUrl
         self.cacheExpirationDays = cacheExpirationDays
+        self.preferences = preferences
         self.symmetricKey = symmetricKey
     }
 }
