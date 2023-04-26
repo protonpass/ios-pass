@@ -122,7 +122,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                logManager: logManager)
         self.favIconRepository = FavIconRepository(apiService: apiService,
                                                    containerUrl: URL.favIconsContainerURL(),
-                                                   cacheExpirationDays: 14,
+                                                   preferences: preferences,
                                                    symmetricKey: symmetricKey)
         self.itemContextMenuHandler = .init(clipboardManager: clipboardManager,
                                             itemRepository: itemRepository,
@@ -872,6 +872,16 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         let modules = PassLogModule.allCases.map(LogManager.init)
         modules.forEach { $0.removeAllLogs() }
         bannerManager.displayBottomSuccessMessage("All logs cleared")
+    }
+
+    func settingsViewModelDidDisableFavIcons() {
+        do {
+            logger.trace("Fav icons are disabled. Removing all cached fav icons")
+            try favIconRepository.emptyCache()
+            logger.info("Removed all cached fav icons")
+        } catch {
+            logger.error(error)
+        }
     }
 
     func settingsViewModelDidFinishFullSync() {

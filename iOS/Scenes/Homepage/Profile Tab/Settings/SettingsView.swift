@@ -78,11 +78,15 @@ struct SettingsView: View {
 
     private var untitledSection: some View {
         VStack(spacing: 0) {
-            OptionRow(action: viewModel.editDefaultBrowser,
-                      title: "Default browser",
-                      height: .tall,
-                      content: { Text(viewModel.selectedBrowser.description) },
-                      trailing: { ChevronRight() })
+            OptionRow(
+                action: viewModel.editDefaultBrowser,
+                title: "Default browser",
+                height: .tall,
+                content: {
+                    Text(viewModel.selectedBrowser.description)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                },
+                trailing: { ChevronRight() })
 
             PassSectionDivider()
 
@@ -99,8 +103,19 @@ struct SettingsView: View {
                             .scaledToFit()
                             .frame(width: 14, height: 14)
                     })
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
                 },
                 trailing: { ChevronRight() })
+
+            PassSectionDivider()
+
+            OptionRow(height: .tall) {
+                Toggle(isOn: $viewModel.displayFavIcons) {
+                    Text("Show website icons")
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                }
+                .tint(Color(uiColor: PassColor.interactionNorm))
+            }
         }
         .roundedEditableSection()
     }
@@ -112,17 +127,22 @@ struct SettingsView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 0) {
-                OptionRow(action: viewModel.editClipboardExpiration,
-                          title: "Clear clipboard",
-                          height: .tall,
-                          content: { Text(viewModel.selectedClipboardExpiration.description) },
-                          trailing: { ChevronRight() })
+                OptionRow(
+                    action: viewModel.editClipboardExpiration,
+                    title: "Clear clipboard",
+                    height: .tall,
+                    content: {
+                        Text(viewModel.selectedClipboardExpiration.description)
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    },
+                    trailing: { ChevronRight() })
 
                 PassSectionDivider()
 
                 OptionRow(height: .tall) {
                     Toggle(isOn: $viewModel.shareClipboard) {
                         Text("Share clipboard between devices")
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
                     }
                     .tint(Color(uiColor: PassColor.interactionNorm))
                 }
@@ -141,7 +161,7 @@ struct SettingsView: View {
             OptionRow(action: { viewModel.edit(primaryVault: vault) },
                       title: "Primary vault",
                       height: .tall,
-                      content: { Text(vault.name) },
+                      content: { Text(vault.name).foregroundColor(Color(uiColor: PassColor.textNorm)) },
                       leading: { VaultThumbnail(vault: vault) },
                       trailing: { ChevronRight() })
             .roundedEditableSection()

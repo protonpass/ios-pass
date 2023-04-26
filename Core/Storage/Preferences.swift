@@ -59,6 +59,9 @@ public final class Preferences: ObservableObject, DeinitPrintable {
     @AppStorage("telemetryThreshold", store: kSharedUserDefaults)
     public var telemetryThreshold: TimeInterval?
 
+    @AppStorage("displayFavIcons", store: kSharedUserDefaults)
+    public var displayFavIcons = true
+
     @AppStorage("isFirstRun", store: kSharedUserDefaults)
     public var isFirstRun = true
 
@@ -73,6 +76,7 @@ public final class Preferences: ObservableObject, DeinitPrintable {
         clipboardExpiration = .oneMinute
         shareClipboard = false
         telemetryThreshold = nil
+        displayFavIcons = true
         if isUITests {
             onboarded = false
         }
