@@ -236,10 +236,8 @@ struct ProfileTabView: View {
                 .padding(.bottom, kItemDetailSectionPadding)
 
             VStack(spacing: 0) {
-                /*
-                TextOptionRow(title: "Tips", action: viewModel.showTips)
-                 PassSectionDivider()
-                 */
+                TextOptionRow(title: "Import to Proton Pass", action: viewModel.showImportInstructions)
+                PassSectionDivider()
                 TextOptionRow(title: "Feedback", action: viewModel.showFeedback)
                 PassSectionDivider()
                 TextOptionRow(title: "Rate app", action: viewModel.rateApp)

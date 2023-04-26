@@ -32,7 +32,7 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowAcknowledgments()
     func profileTabViewModelWantsToShowPrivacyPolicy()
     func profileTabViewModelWantsToShowTermsOfService()
-    func profileTabViewModelWantsToShowTips()
+    func profileTabViewModelWantsToShowImportInstructions()
     func profileTabViewModelWantsToShowFeedback()
     func profileTabViewModelWantsToRateApp()
     func profileTabViewModelWantsToQaFeatures()
@@ -145,8 +145,8 @@ extension ProfileTabViewModel {
         delegate?.profileTabViewModelWantsToShowTermsOfService()
     }
 
-    func showTips() {
-        delegate?.profileTabViewModelWantsToShowTips()
+    func showImportInstructions() {
+        delegate?.profileTabViewModelWantsToShowImportInstructions()
     }
 
     func showFeedback() {
