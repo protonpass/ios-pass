@@ -117,6 +117,8 @@ private extension TelemetryEvent {
 
     var dimensionLocation: String? {
         switch type {
+        case .autofillDisplay:
+            return "app"
         case .autofillTriggeredFromSource:
             return "source"
         case .autofillTriggeredFromApp:
@@ -125,7 +127,6 @@ private extension TelemetryEvent {
                 .read,
                 .update,
                 .delete,
-                .autofillDisplay,
                 .searchClick,
                 .searchTriggered:
             return nil
