@@ -695,8 +695,8 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         urlOpener.open(urlString: "https://proton.me/legal/terms")
     }
 
-    func profileTabViewModelWantsToShowTips() {
-        print(#function)
+    func profileTabViewModelWantsToShowImportInstructions() {
+        urlOpener.open(urlString: "https://proton.me/support/pass-import")
     }
 
     func profileTabViewModelWantsToShowFeedback() {
