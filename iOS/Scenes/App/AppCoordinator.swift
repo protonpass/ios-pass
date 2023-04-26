@@ -42,6 +42,7 @@ final class AppCoordinator {
     private let keymaker: Keymaker
     private let appData: AppData
     private let apiManager: APIManager
+    private let paymentsManager: PaymentsManager
     private let logManager: LogManager
     private let logger: Logger
     private var container: NSPersistentContainer
@@ -71,7 +72,11 @@ final class AppCoordinator {
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
         self.appData = appData
         self.keymaker = keymaker
-        self.apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
+        let apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
+        self.apiManager = apiManager
+        self.paymentsManager = PaymentsManager(apiService: apiManager.apiService,
+                                               appData: appData,
+                                               mainKeyProvider: keymaker)
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)
