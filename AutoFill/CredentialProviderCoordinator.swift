@@ -251,7 +251,7 @@ public final class CredentialProviderCoordinator {
         self.itemRepository = itemRepository
         self.favIconRepository = FavIconRepository(apiService: apiService,
                                                    containerUrl: URL.favIconsContainerURL(),
-                                                   cacheExpirationDays: 14,
+                                                   preferences: preferences,
                                                    symmetricKey: symmetricKey)
         self.shareKeyRepository = repositoryManager.shareKeyRepository
         self.aliasRepository = repositoryManager.aliasRepository

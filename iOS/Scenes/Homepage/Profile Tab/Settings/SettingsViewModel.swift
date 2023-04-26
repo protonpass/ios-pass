@@ -34,6 +34,7 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToViewHostAppLogs()
     func settingsViewModelWantsToViewAutoFillExtensionLogs()
     func settingsViewModelWantsToClearLogs()
+    func settingsViewModelDidDisableFavIcons()
     func settingsViewModelDidFinishFullSync()
     func settingsViewModelDidEncounter(error: Error)
 }
@@ -49,6 +50,14 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
     @Published private(set) var selectedClipboardExpiration: ClipboardExpiration
+    @Published var displayFavIcons: Bool {
+        didSet {
+            preferences.displayFavIcons = displayFavIcons
+            if !displayFavIcons {
+                delegate?.settingsViewModelDidDisableFavIcons()
+            }
+        }
+    }
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
 
     weak var delegate: SettingsViewModelDelegate?
@@ -83,12 +92,15 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
         self.selectedTheme = preferences.theme
         self.selectedClipboardExpiration = preferences.clipboardExpiration
+        self.displayFavIcons = preferences.displayFavIcons
         self.shareClipboard = preferences.shareClipboard
         self.vaultsManager = vaultsManager
 
         preferences
             .objectWillChange
             .sink { [unowned self] in
+                // These options are changed in other pages by passing a references
+                // of Preferences. So we listen to changes and update here.
                 self.selectedBrowser = self.preferences.browser
                 self.selectedTheme = self.preferences.theme
                 self.selectedClipboardExpiration = self.preferences.clipboardExpiration
