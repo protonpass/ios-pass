@@ -103,6 +103,15 @@ struct ItemSquircleThumbnail: View {
                     loadFavIcon(url: newUrl, force: true)
                 }
             })
+            .onReceive(repository.preferences.objectWillChange) { _ in
+                if repository.preferences.displayFavIcons {
+                    if image == nil {
+                        loadFavIcon(url: url, force: false)
+                    }
+                } else {
+                    image = nil
+                }
+            }
             .onFirstAppear { loadFavIcon(url: url, force: false) }
         }
     }
