@@ -63,21 +63,20 @@ struct AccountView: View {
                 }
                 .roundedEditableSection()
 
-                /*
-                 OptionRow(
-                 action: viewModel.manageSubscription,
-                 height: .tall,
-                 content: {
-                 Text("Manage subscription")
-                 .foregroundColor(.passBrand)
-                 },
-                 trailing: {
-                 CircleButton(icon: IconProvider.arrowOutSquare,
-                 color: .passBrand,
-                 action: {})
-                 })
-                 .roundedEditableSection()
-                 */
+                OptionRow(
+                    action: viewModel.manageSubscription,
+                    height: .tall,
+                    content: {
+                        Text("Manage subscription")
+                            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                    },
+                    trailing: {
+                        CircleButton(icon: IconProvider.arrowOutSquare,
+                                     iconColor: PassColor.interactionNormMajor2,
+                                     backgroundColor: PassColor.interactionNormMinor1)
+                    })
+                    .roundedEditableSection()
+                    .padding(.top)
 
                 OptionRow(
                     action: { isShowingSignOutConfirmation.toggle() },

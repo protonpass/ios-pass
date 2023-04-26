@@ -205,7 +205,10 @@ final class AppCoordinator {
                                                               manualLogIn: manualLogIn,
                                                               preferences: preferences,
                                                               symmetricKey: symmetricKey,
-                                                              userData: userData)
+                                                              userData: userData,
+                                                              userPlan: appData.userPlan,
+                                                              userPlanProvider: userPlanProvider,
+                                                              paymentsManager: paymentsManager)
                 homepageCoordinator.delegate = self
                 self.homepageCoordinator = homepageCoordinator
                 self.welcomeCoordinator = nil

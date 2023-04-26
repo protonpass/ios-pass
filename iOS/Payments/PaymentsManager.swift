@@ -28,7 +28,6 @@ final class PaymentsManager {
     private let appData: AppData
     private let mainKeyProvider: MainKeyProvider
     private let payments: Payments
-    private let paymentsUI: PaymentsUI
     private let inMemoryTokenStorage: PaymentTokenStorage
 
     // TODO: should we provide the actual BugAlertHandler?
@@ -45,22 +44,23 @@ final class PaymentsManager {
                                 apiService: apiService,
                                 localStorage: inMemoryDataStorage,
                                 reportBugAlertHandler: bugAlertHandler)
-        let paymentsUI = PaymentsUI(payments: payments,
-                                    clientApp: PaymentsConstants.clientApp,
-                                    shownPlanNames: PaymentsConstants.shownPlanNames)
-
         self.appData = appData
         self.mainKeyProvider = mainKeyProvider
         self.inMemoryTokenStorage = inMemoryTokenStorage
         self.payments = payments
-        self.paymentsUI = paymentsUI
 
         payments.storeKitManager.delegate = self
 
         initializePaymentsStack()
     }
 
-    func initializePaymentsStack() {
+    func createPaymentsUI() -> PaymentsUI {
+        PaymentsUI(payments: payments,
+                   clientApp: PaymentsConstants.clientApp,
+                   shownPlanNames: PaymentsConstants.shownPlanNames)
+    }
+
+    private func initializePaymentsStack() {
         payments.planService.currentSubscriptionChangeDelegate = self
         payments.storeKitManager.delegate = self
         payments.storeKitManager.updateAvailableProductsList { [weak self] error in
