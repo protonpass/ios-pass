@@ -301,7 +301,7 @@ extension SearchViewState: Equatable {
             return lhsResults.hashValue == rhsResults.hashValue
 
         case let (.error(lhsError), .error(rhsError)):
-            return lhsError.messageForTheUser == rhsError.messageForTheUser
+            return lhsError.localizedDescription == rhsError.localizedDescription
         default:
             return false
         }
