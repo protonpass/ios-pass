@@ -120,4 +120,12 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "time", on: sut, hasType: .integer64)
     }
+
+    func testTelemetryEventEntity() {
+        let sut = entity(byName: "TelemetryEventEntity")
+        verifyAttribute(named: "uuid", on: sut, hasType: .string)
+        verifyAttribute(named: "rawValue", on: sut, hasType: .string)
+        verifyAttribute(named: "time", on: sut, hasType: .double)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
+    }
 }

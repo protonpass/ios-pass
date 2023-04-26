@@ -41,5 +41,10 @@ final class TelemetryEventTests: XCTestCase {
         try test(.delete(.login), "delete.0")
         try test(.delete(.alias), "delete.1")
         try test(.delete(.note), "delete.2")
+        try test(.autofillDisplay, "autofill.display")
+        try test(.autofillTriggeredFromSource, "autofill.triggered.source")
+        try test(.autofillTriggeredFromApp, "autofill.triggered.app")
+        try test(.searchTriggered, "search.triggered")
+        try test(.searchClick, "search.click")
     }
 }

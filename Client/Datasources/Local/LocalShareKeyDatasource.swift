@@ -37,7 +37,7 @@ public extension LocalShareKeyDatasourceProtocol {
         let fetchRequest = ShareKeyEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try entities.map { try $0.toSymmetricallyEncryptedShareKey() }
+        return entities.map { $0.toSymmetricallyEncryptedShareKey() }
     }
 
     func upsertKeys(_ keys: [SymmetricallyEncryptedShareKey]) async throws {
