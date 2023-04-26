@@ -40,7 +40,7 @@ public extension LocalShareDatasourceProtocol {
             ])
         let shareEntities = try await execute(fetchRequest: fetchRequest,
                                               context: taskContext)
-        return try shareEntities.map { try $0.toSymmetricallyEncryptedShare() }.first
+        return shareEntities.map { $0.toSymmetricallyEncryptedShare() }.first
     }
 
     func getAllShares(userId: String) async throws -> [SymmetricallyEncryptedShare] {
@@ -51,7 +51,7 @@ public extension LocalShareDatasourceProtocol {
         fetchRequest.sortDescriptors = [.init(key: "createTime", ascending: false)]
         let shareEntities = try await execute(fetchRequest: fetchRequest,
                                               context: taskContext)
-        return try shareEntities.map { try $0.toSymmetricallyEncryptedShare() }
+        return shareEntities.map { $0.toSymmetricallyEncryptedShare() }
     }
 
     func upsertShares(_ shares: [SymmetricallyEncryptedShare], userId: String) async throws {

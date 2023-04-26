@@ -28,7 +28,7 @@ struct SendEventsRequest: Encodable {
     }
 }
 
-struct EventInfo: Encodable {
+public struct EventInfo: Encodable {
     let measurementGroup: String
     let event: String
     let dimensions: Dimensions
@@ -40,16 +40,19 @@ struct EventInfo: Encodable {
     }
 
     struct Dimensions: Encodable {
-        let type: String
+        let type: String?
+        let location: String?
         let userTier: String
 
         enum CodingKeys: String, CodingKey {
             case type = "type"
+            case location = "location"
             case userTier = "user_tier"
         }
 
-        init(type: String, userTier: String) {
+        init(type: String?, location: String?, userTier: String) {
             self.type = type
+            self.location = location
             self.userTier = userTier
         }
     }
@@ -58,5 +61,101 @@ struct EventInfo: Encodable {
         self.measurementGroup = measurementGroup
         self.event = event
         self.dimensions = dimensions
+    }
+}
+
+public extension EventInfo {
+    init(event: TelemetryEvent, userPlan: UserPlan) {
+        self.measurementGroup = "pass.any.user_actions"
+        self.event = event.eventName
+        self.dimensions = .init(type: event.dimensionType,
+                                location: event.dimensionLocation,
+                                userTier: userPlan.userTier)
+    }
+}
+
+private extension TelemetryEvent {
+    var eventName: String {
+        switch type {
+        case .create:
+            return "item.creation"
+        case .read:
+            return "item.read"
+        case .update:
+            return "item.update"
+        case .delete:
+            return "item.deletion"
+        case .autofillDisplay:
+            return "autofill.display"
+        case .autofillTriggeredFromApp, .autofillTriggeredFromSource:
+            return "autofill.triggered"
+        case .searchClick:
+            return "search.click"
+        case .searchTriggered:
+            return "search.triggered"
+        }
+    }
+
+    var dimensionType: String? {
+        switch type {
+        case .create(let itemContentType):
+            return itemContentType.dimensionType
+        case .read(let itemContentType):
+            return itemContentType.dimensionType
+        case .update(let itemContentType):
+            return itemContentType.dimensionType
+        case .delete(let itemContentType):
+            return itemContentType.dimensionType
+        case .autofillDisplay,
+                .autofillTriggeredFromSource,
+                .autofillTriggeredFromApp,
+                .searchClick,
+                .searchTriggered:
+            return nil
+        }
+    }
+
+    var dimensionLocation: String? {
+        switch type {
+        case .autofillDisplay:
+            return "app"
+        case .autofillTriggeredFromSource:
+            return "source"
+        case .autofillTriggeredFromApp:
+            return "app"
+        case .create,
+                .read,
+                .update,
+                .delete,
+                .searchClick,
+                .searchTriggered:
+            return nil
+        }
+    }
+}
+
+private extension ItemContentType {
+    var dimensionType: String {
+        switch self {
+        case .login:
+            return "login"
+        case .alias:
+            return "alias"
+        case .note:
+            return "note"
+        }
+    }
+}
+
+private extension UserPlan {
+    var userTier: String {
+        switch self {
+        case .free:
+            return "free"
+        case .paid(let plan):
+            return plan.name
+        case .subUser:
+            return "subuser"
+        }
     }
 }

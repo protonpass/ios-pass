@@ -72,12 +72,17 @@ struct ProfileTabView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            if viewModel.primaryPlan == nil {
-                CapsuleLabelButton(icon: PassIcon.brandPass,
-                                   title: "Upgrade",
-                                   titleColor: PassColor.interactionNorm,
-                                   backgroundColor: PassColor.interactionNormMinor2,
-                                   action: viewModel.upgrade)
+            if let userPlan = viewModel.userPlan {
+                switch userPlan {
+                case .free:
+                    CapsuleLabelButton(icon: PassIcon.brandPass,
+                                       title: "Upgrade",
+                                       titleColor: PassColor.interactionNorm,
+                                       backgroundColor: PassColor.interactionNormMinor2,
+                                       action: viewModel.upgrade)
+                default:
+                    EmptyView()
+                }
             } else {
                 EmptyView()
             }

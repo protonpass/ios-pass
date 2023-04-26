@@ -26,8 +26,8 @@ import ProtonCore_Login
 import ProtonCore_Networking
 
 final class AppData {
-    @KeychainStorage(key: .primaryPlan)
-    var primaryPlan: PlanLite?
+    @KeychainStorage(key: .userPlan)
+    var userPlan: UserPlan?
 
     @KeychainStorage(key: .userData)
     var userData: UserData?
@@ -39,9 +39,9 @@ final class AppData {
     private var symmetricKey: String?
 
     init(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
-        self._primaryPlan.setKeychain(keychain)
-        self._primaryPlan.setMainKeyProvider(mainKeyProvider)
-        self._primaryPlan.setLogManager(logManager)
+        self._userPlan.setKeychain(keychain)
+        self._userPlan.setMainKeyProvider(mainKeyProvider)
+        self._userPlan.setLogManager(logManager)
 
         self._userData.setKeychain(keychain)
         self._userData.setMainKeyProvider(mainKeyProvider)

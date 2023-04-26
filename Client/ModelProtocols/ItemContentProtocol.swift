@@ -37,6 +37,16 @@ public enum ItemContentType: Int, CaseIterable {
     }
 }
 
+extension ItemContentType: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case .login: return "login"
+        case .alias: return "alias"
+        case .note: return "note"
+        }
+    }
+}
+
 public enum ItemContentData {
     case alias
     case login(LogInItemData)
