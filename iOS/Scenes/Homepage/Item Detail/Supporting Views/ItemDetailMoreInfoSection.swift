@@ -24,13 +24,13 @@ import SwiftUI
 import UIComponents
 
 struct ItemDetailMoreInfoSection: View {
-    @State private var isExpanded = false
+    @Binding var isExpanded: Bool
     let uiModel: ItemDetailMoreInfoSectionUIModel
-    let onExpand: () -> Void
 
-    init(itemContent: ItemContent, onExpand: @escaping () -> Void) {
+    init(isExpanded: Binding<Bool>,
+         itemContent: ItemContent) {
+        self._isExpanded = isExpanded
         self.uiModel = .init(itemContent: itemContent)
-        self.onExpand = onExpand
     }
 
     var body: some View {
@@ -48,7 +48,9 @@ struct ItemDetailMoreInfoSection: View {
 
                     Spacer()
 
-                    if !isExpanded {
+                    if isExpanded {
+                        icon(from: IconProvider.chevronUp)
+                    } else {
                         icon(from: IconProvider.chevronDown)
                     }
                 }
@@ -86,12 +88,7 @@ struct ItemDetailMoreInfoSection: View {
             }
         }
         .contentShape(Rectangle())
-        .onTapGesture {
-            if !isExpanded {
-                isExpanded = true
-                onExpand()
-            }
-        }
+        .onTapGesture { isExpanded.toggle() }
         .animation(.default, value: isExpanded)
     }
 
