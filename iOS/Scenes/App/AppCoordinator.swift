@@ -174,6 +174,8 @@ final class AppCoordinator {
                 self.alertRefreshTokenExpired()
             case .failedBiometricAuthentication:
                 self.alertFailedBiometricAuthentication()
+            case .sessionInvalidated:
+                self.alertSessionInvalidated()
             default:
                 break
             }
@@ -334,12 +336,20 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
         rootViewController?.present(alert, animated: true)
         // swiftlint:enable line_length
     }
+
+    private func alertSessionInvalidated() {
+        let alert = UIAlertController(title: "Error occured",
+                                      message: "Your session was invalidated",
+                                      preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default))
+        rootViewController?.present(alert, animated: true)
+    }
 }
 
 // MARK: - APIManagerDelegate
 extension AppCoordinator: APIManagerDelegate {
-    func appLoggedOut() {
-        appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
+    func appLoggedOutBecauseSessionWasInvalidated() {
+        appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
     }
 }
 
