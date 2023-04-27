@@ -252,6 +252,21 @@ extension CurrentPlanDetails {
                             (.shield, details.UConnectionsPerUserDescription)
                           ])
 
+        case "599c124096f1f87dae3deb83b654c6198b8ecb9c150d2a4aa513c41288dd7645":
+            strDetails = (name: nil,
+                          usedSpace: false,
+                          optDetails: [
+                            // Temporary local change before new core version version with localized texts
+                            // and new icons is released
+                            (.powerOff, "Unlimited logins and notes"),
+                            (.lock, "Integrated 2FA authenticator"),
+                            (.vault, "Multiple vaults"),
+                            (.alias, "Unlimited Hide My Email aliases"),
+                            (.at, "Custom domains for email aliases"),
+                            (.forward, "Multiple forwarding mailboxes"),
+                            (.eye, "Priority support")
+                          ])
+
         default:
             // default description, used for no plan (aka free) or for plans with unknown ID
             switch clientApp {
