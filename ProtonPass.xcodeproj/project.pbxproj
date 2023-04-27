@@ -421,8 +421,8 @@
 		3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */; };
 		3573D707297642F400F68DF7 /* DeleteVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */; };
 		35758BE02985695700AF2683 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
-		3575EB5329FAB017000FFD53 /* BiometricAuthenticationTimeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5229FAB017000FFD53 /* BiometricAuthenticationTimeout.swift */; };
-		3575EB5529FAB588000FFD53 /* BiometricAuthenticationTimeoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5429FAB588000FFD53 /* BiometricAuthenticationTimeoutTests.swift */; };
+		3575EB5329FAB017000FFD53 /* AppLockTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5229FAB017000FFD53 /* AppLockTime.swift */; };
+		3575EB5529FAB588000FFD53 /* AppLockTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5429FAB588000FFD53 /* AppLockTimeTests.swift */; };
 		357602A829F6ECD3003062A2 /* TelemetryEventEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602A729F6ECD3003062A2 /* TelemetryEventEntity.swift */; };
 		357602AA29F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */; };
 		357602AC29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */; };
@@ -1074,8 +1074,8 @@
 		3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidator.swift; sourceTree = "<group>"; };
 		3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidatorTests.swift; sourceTree = "<group>"; };
 		3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultEndpoint.swift; sourceTree = "<group>"; };
-		3575EB5229FAB017000FFD53 /* BiometricAuthenticationTimeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthenticationTimeout.swift; sourceTree = "<group>"; };
-		3575EB5429FAB588000FFD53 /* BiometricAuthenticationTimeoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthenticationTimeoutTests.swift; sourceTree = "<group>"; };
+		3575EB5229FAB017000FFD53 /* AppLockTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockTime.swift; sourceTree = "<group>"; };
+		3575EB5429FAB588000FFD53 /* AppLockTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockTimeTests.swift; sourceTree = "<group>"; };
 		357602A729F6ECD3003062A2 /* TelemetryEventEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventEntity.swift; sourceTree = "<group>"; };
 		357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTelemetryEventDatasourceTests.swift; sourceTree = "<group>"; };
 		357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteTelemetryEventDatasource.swift; sourceTree = "<group>"; };
@@ -1916,7 +1916,7 @@
 		356B21D82870F95B001220CB /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				3575EB5229FAB017000FFD53 /* BiometricAuthenticationTimeout.swift */,
+				3575EB5229FAB017000FFD53 /* AppLockTime.swift */,
 				35A5EEDF2958B60200A09623 /* Browser.swift */,
 				355744182959F68500EA4AF0 /* ClipboardExpiration.swift */,
 				356C2AAF28730EF00020F577 /* MainKeyProvider.swift */,
@@ -2301,7 +2301,7 @@
 			children = (
 				3553C224296570B80087518A /* Logging */,
 				3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */,
-				3575EB5429FAB588000FFD53 /* BiometricAuthenticationTimeoutTests.swift */,
+				3575EB5429FAB588000FFD53 /* AppLockTimeTests.swift */,
 				354513E828E4D2650020A93A /* CodableBase64Tests.swift */,
 				3552A28729EBFE2800ABDB6E /* FileUtilsTests.swift */,
 				3567E46329B0C93C00511D62 /* PreferencesTests.swift */,
@@ -3961,7 +3961,7 @@
 				35426B6228EF18E600F89BB7 /* DomainParser.swift in Sources */,
 				3553C21B296570090087518A /* LogEntry.swift in Sources */,
 				355744192959F68500EA4AF0 /* ClipboardExpiration.swift in Sources */,
-				3575EB5329FAB017000FFD53 /* BiometricAuthenticationTimeout.swift in Sources */,
+				3575EB5329FAB017000FFD53 /* AppLockTime.swift in Sources */,
 				3586477929F7D109003487B1 /* CurrentDateProvider.swift in Sources */,
 				353547C32880CF470021C716 /* UserData+Codable.swift in Sources */,
 				354036E128F452F200F9E729 /* URLUtils+Sanitizer.swift in Sources */,
@@ -3981,7 +3981,7 @@
 				354513E928E4D2650020A93A /* CodableBase64Tests.swift in Sources */,
 				3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */,
 				35608C3029F0559A00CA3864 /* Data+RandomTests.swift in Sources */,
-				3575EB5529FAB588000FFD53 /* BiometricAuthenticationTimeoutTests.swift in Sources */,
+				3575EB5529FAB588000FFD53 /* AppLockTimeTests.swift in Sources */,
 				3567E46429B0C93C00511D62 /* PreferencesTests.swift in Sources */,
 				355AA32729E9D3FD00C20F5F /* StringExtensionTests.swift in Sources */,
 				3555800728F01A46009C3B88 /* URLUtils+MatcherTests.swift in Sources */,

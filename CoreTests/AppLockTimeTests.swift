@@ -1,5 +1,5 @@
 //
-// BiometricAuthenticationTimeoutTests.swift
+// AppLockTimeTests.swift
 // Proton Pass - Created on 27/04/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,9 +21,9 @@
 @testable import Core
 import XCTest
 
-private typealias SUT = BiometricAuthenticationTimeout
+private typealias SUT = AppLockTime
 
-final class BiometricAuthenticationTimeoutTests: XCTestCase {
+final class AppLockTimeTests: XCTestCase {
     func testGenerateNextThresholdsCorrectly() throws {
         // Given
         let givenDate = Date.now
