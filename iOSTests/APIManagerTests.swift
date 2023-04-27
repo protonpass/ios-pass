@@ -230,9 +230,9 @@ final class APIManagerTests: XCTestCase {
         let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData)
 
         final class TestAPIManagerDelegate: APIManagerDelegate {
-            @FuncStub(TestAPIManagerDelegate.appLoggedOut) var appLoggedOutStub
+            @FuncStub(TestAPIManagerDelegate.appLoggedOutBecauseSessionWasInvalidated) var appLoggedOutStub
 
-            func appLoggedOut() { appLoggedOutStub() }
+            func appLoggedOutBecauseSessionWasInvalidated() { appLoggedOutStub() }
         }
         let delegate = TestAPIManagerDelegate()
         apiService.delegate = delegate
@@ -259,9 +259,9 @@ final class APIManagerTests: XCTestCase {
         let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData)
 
         final class TestAPIManagerDelegate: APIManagerDelegate {
-            @FuncStub(TestAPIManagerDelegate.appLoggedOut) var appLoggedOutStub
+            @FuncStub(TestAPIManagerDelegate.appLoggedOutBecauseSessionWasInvalidated) var appLoggedOutStub
 
-            func appLoggedOut() { appLoggedOutStub() }
+            func appLoggedOutBecauseSessionWasInvalidated() { appLoggedOutStub() }
         }
         let delegate = TestAPIManagerDelegate()
         apiService.delegate = delegate

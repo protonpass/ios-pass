@@ -349,7 +349,11 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
 // MARK: - APIManagerDelegate
 extension AppCoordinator: APIManagerDelegate {
     func appLoggedOutBecauseSessionWasInvalidated() {
-        appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
+        // Run on main thread because the callback that triggers this function
+        // is returned by `AuthHelperDelegate` from background thread
+        DispatchQueue.main.async {
+            self.appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
+        }
     }
 }
 
