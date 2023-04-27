@@ -35,7 +35,7 @@ struct LogsView: View {
                 if viewModel.isLoading {
                     ProgressView()
                 } else if let error = viewModel.error {
-                    RetryableErrorView(errorMessage: error.messageForTheUser,
+                    RetryableErrorView(errorMessage: error.localizedDescription,
                                        onRetry: viewModel.loadLogs)
                 } else if viewModel.entries.isEmpty {
                     VStack {
