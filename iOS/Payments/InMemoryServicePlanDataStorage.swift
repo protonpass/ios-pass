@@ -26,5 +26,5 @@ final class InMemoryServicePlanDataStorage: ServicePlanDataStorage {
     var currentSubscription: Subscription?
     var credits: Credits?
     var paymentMethods: [PaymentMethod]?
-    var paymentsBackendStatusAcceptsIAP: Bool = false
+    var paymentsBackendStatusAcceptsIAP = false
 }

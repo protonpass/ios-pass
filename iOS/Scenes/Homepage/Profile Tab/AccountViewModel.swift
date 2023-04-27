@@ -25,6 +25,7 @@ import ProtonCore_Services
 protocol AccountViewModelDelegate: AnyObject {
     func accountViewModelWantsToGoBack()
     func accountViewModelWantsToManageSubscription()
+    func accountViewModelWantsToUpgradeSubscription()
     func accountViewModelWantsToSignOut()
     func accountViewModelWantsToDeleteAccount()
 }
@@ -38,8 +39,9 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     let theme: Theme
     let username: String
     let passPlanRepository: PassPlanRepositoryProtocol
-
     @Published private(set) var plan: PassPlan?
+    let userPlanProvider: UserPlanProviderProtocol
+    @Published private(set) var userPlan: UserPlan?
 
     weak var delegate: AccountViewModelDelegate?
 
@@ -76,6 +78,10 @@ extension AccountViewModel {
 
     func manageSubscription() {
         delegate?.accountViewModelWantsToManageSubscription()
+    }
+
+    func upgradeSubscription() {
+        delegate?.accountViewModelWantsToUpgradeSubscription()
     }
 
     func signOut() {
