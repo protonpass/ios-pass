@@ -50,11 +50,11 @@ public extension TelemetryEventRepositoryProtocol {
 
     func sendAllEventsIfApplicable() async throws -> Bool {
         guard scheduler.shouldSendEvents() else {
-            logger.trace("Threshold not reached")
+            logger.debug("Threshold not reached")
             return false
         }
 
-        logger.trace("Threshold is reached. Sending events if any.")
+        logger.debug("Threshold is reached. Sending events if any.")
         logger.trace("Refreshing user plan")
         let userPlan = try await userPlanProvider.getUserPlan()
 
