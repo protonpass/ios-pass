@@ -31,11 +31,13 @@ struct SendEventsRequest: Encodable {
 public struct EventInfo: Encodable {
     let measurementGroup: String
     let event: String
+    let values: [String: String] = [:] // Not applicable to mobile apps
     let dimensions: Dimensions
 
     enum CodingKeys: String, CodingKey {
         case measurementGroup = "MeasurementGroup"
         case event = "Event"
+        case values = "Values"
         case dimensions = "Dimensions"
     }
 

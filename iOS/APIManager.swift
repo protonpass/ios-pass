@@ -36,7 +36,7 @@ import ProtonCore_Services
 let kAppStoreUrlString = "itms-apps://itunes.apple.com/app/id6443490629"
 
 protocol APIManagerDelegate: AnyObject {
-    func appLoggedOut()
+    func appLoggedOutBecauseSessionWasInvalidated()
 }
 
 final class APIManager {
@@ -164,7 +164,7 @@ extension APIManager: AuthHelperDelegate {
         if isAuthenticatedSession {
             logger.info("Authenticated session is invalidated. Logging out...")
             appData.userData = nil
-            delegate?.appLoggedOut()
+            delegate?.appLoggedOutBecauseSessionWasInvalidated()
         } else {
             logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
             fetchUnauthSessionIfNeeded()
