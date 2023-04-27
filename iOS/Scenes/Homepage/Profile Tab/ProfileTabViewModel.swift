@@ -27,6 +27,7 @@ import SwiftUI
 protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowSpinner()
     func profileTabViewModelWantsToHideSpinner()
+    func profileTabViewModelWantsToEditAppLockTime()
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowAcknowledgments()
@@ -123,6 +124,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 extension ProfileTabViewModel {
     func upgrade() {
         print(#function)
+    }
+
+    func editAppLockTime() {
+        delegate?.profileTabViewModelWantsToEditAppLockTime()
     }
 
     func showAccountMenu() {

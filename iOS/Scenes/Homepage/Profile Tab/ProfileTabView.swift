@@ -134,9 +134,15 @@ struct ProfileTabView: View {
                         if viewModel.biometricAuthenticator.enabled {
                             PassSectionDivider()
 
-                            OptionRow(height: .medium) {
-                                Text("Enabled")
-                            }
+                            OptionRow(
+                                action: viewModel.editAppLockTime,
+                                title: "App lock time",
+                                height: .tall,
+                                content: {
+                                    Text(viewModel.preferences.appLockTime.description)
+                                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                },
+                                trailing: { ChevronRight() })
                         }
                     }
                     .animation(.default, value: viewModel.biometricAuthenticator.enabled)
