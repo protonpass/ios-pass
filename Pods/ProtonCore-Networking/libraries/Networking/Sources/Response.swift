@@ -74,7 +74,7 @@ extension ResponseError: LocalizedError {
         if let userFacingMessage = userFacingMessage {
             return userFacingMessage
         } else if let underlyingError = underlyingError {
-            return underlyingError.localizedDescription
+            return "\(underlyingError.localizedDescription)\(httpCode.map { " (http code \($0))"} ?? "")"
         } else if isNetworkIssueError {
             return CoreString._net_connection_error
         } else {

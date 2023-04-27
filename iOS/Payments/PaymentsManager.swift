@@ -70,7 +70,6 @@ final class PaymentsManager {
 }
 
 extension PaymentsManager: StoreKitManagerDelegate {
-
     var tokenStorage: PaymentTokenStorage? {
         inMemoryTokenStorage
     }

@@ -37,6 +37,7 @@ struct AccountView: View {
         }
     }
 
+    @ViewBuilder
     private var realBody: some View {
         ScrollView {
             VStack {
@@ -143,6 +144,17 @@ struct AccountView: View {
                 iconColor: PassColor.interactionNormMajor2,
                 backgroundColor: PassColor.interactionNormMinor1,
                 action: viewModel.goBack)
+        }
+        ToolbarItem(placement: .navigationBarTrailing) {
+            if viewModel.userPlan == .free {
+                CapsuleLabelButton(icon: PassIcon.brandPass,
+                                   title: "Upgrade",
+                                   titleColor: ColorProvider.TextInverted,
+                                   backgroundColor: PassColor.interactionNormMajor2,
+                                   action: viewModel.upgradeSubscription)
+            } else {
+                EmptyView()
+            }
         }
     }
 }

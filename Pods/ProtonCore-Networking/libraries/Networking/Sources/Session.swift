@@ -154,6 +154,23 @@ public enum SessionResponseError: Error {
     }
 }
 
+extension SessionResponseError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .configurationError: return "Configuration error"
+        case .responseBodyIsNotAJSONDictionary(let data, _),
+             .responseBodyIsNotADecodableObject(let data, _):
+            let genericMessage: String = "Network error"
+            if let data = data, let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                return object["Error"] as? String ?? genericMessage
+            } else {
+                return genericMessage
+            }
+        case .networkingEngineError(let underlyingError): return underlyingError.localizedDescription
+        }
+    }
+}
+
 @available(*, deprecated, message: "Use the signatures with either a JSON dictionary or codable type in the response")
 public typealias ResponseCompletion = (_ task: URLSessionDataTask?, _ response: Any?, _ error: NSError?) -> Void
 
