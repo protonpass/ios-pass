@@ -61,11 +61,6 @@ struct CreateEditNoteView: View {
                     }
                     .padding()
                 }
-                .onChange(of: viewModel.title) { _ in
-                    withAnimation {
-                        value.scrollTo(contentID, anchor: .bottom)
-                    }
-                }
                 .onChange(of: viewModel.note) { _ in
                     withAnimation {
                         value.scrollTo(contentID, anchor: .bottom)
