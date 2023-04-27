@@ -65,8 +65,9 @@ final class AppCoordinator {
         self.window = window
         self.appStateObserver = .init()
         let logManager = LogManager(module: .hostApp)
+        let logger = Logger(manager: logManager)
         self.logManager = logManager
-        self.logger = .init(manager: logManager)
+        self.logger = logger
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
@@ -76,7 +77,8 @@ final class AppCoordinator {
         self.apiManager = apiManager
         self.paymentsManager = PaymentsManager(apiService: apiManager.apiService,
                                                appData: appData,
-                                               mainKeyProvider: keymaker)
+                                               mainKeyProvider: keymaker,
+                                               logger: logger)
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)

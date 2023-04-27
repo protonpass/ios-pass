@@ -716,6 +716,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         let asSheet = shouldShowAsSheet()
         let viewModel = AccountViewModel(isShownAsSheet: asSheet,
                                          apiService: apiService,
+                                         paymentsManager: paymentsManager,
                                          logManager: logManager,
                                          theme: preferences.theme,
                                          username: userData.user.email ?? "",
@@ -795,58 +796,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 extension HomepageCoordinator: AccountViewModelDelegate {
     func accountViewModelWantsToGoBack() {
         adaptivelyDismissCurrentDetailView()
-    }
-
-    func accountViewModelWantsToManageSubscription() {
-        var paymentsUI = paymentsManager.createPaymentsUI()
-        // keep reference to avoid being deallocated
-        self.paymentsUI = paymentsUI
-        paymentsUI.showCurrentPlan(presentationType: .modal, backendFetch: true) { result in
-            // swiftlint:disable:next todo
-            // TODO: refresh the state if needed or show error in the completion block
-            switch result {
-            case let .open(viewController, opened):
-                break
-            case .close:
-                break
-            case let .purchasedPlan(accountPlan):
-                break
-            case .toppedUpCredits:
-                break
-            case let .planPurchaseProcessingInProgress(accountPlan):
-                break
-            case let .purchaseError(error):
-                break
-            case let .apiMightBeBlocked(message, originalError):
-                break
-            }
-        }
-    }
-
-    func accountViewModelWantsToUpgradeSubscription() {
-        var paymentsUI = paymentsManager.createPaymentsUI()
-        // keep reference to avoid being deallocated
-        self.paymentsUI = paymentsUI
-        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { result in
-            // swiftlint:disable:next todo
-            // TODO: refresh the state if needed or show error in the completion block
-            switch result {
-            case let .open(viewController, opened):
-                break
-            case .close:
-                break
-            case let .purchasedPlan(accountPlan):
-                break
-            case .toppedUpCredits:
-                break
-            case let .planPurchaseProcessingInProgress(accountPlan):
-                break
-            case let .purchaseError(error):
-                break
-            case let .apiMightBeBlocked(message, originalError):
-                break
-            }
-        }
     }
 
     func accountViewModelWantsToSignOut() {
