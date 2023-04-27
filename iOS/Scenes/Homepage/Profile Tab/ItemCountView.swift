@@ -44,7 +44,7 @@ struct ItemCountView: View {
                 .padding(.horizontal)
             }
         case .error(let error):
-            Text(error.messageForTheUser)
+            Text(error.localizedDescription)
                 .foregroundColor(Color(uiColor: PassColor.signalDanger))
         }
     }

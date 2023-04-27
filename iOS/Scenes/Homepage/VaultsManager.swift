@@ -274,7 +274,7 @@ extension VaultManagerState: Equatable {
             return lhsVaults.hashValue == rhsVaults.hashValue &&
             lhsTrashedItems.hashValue == rhsTrashedItems.hashValue
         case let (.error(lhsError), .error(rhsError)):
-            return lhsError.messageForTheUser == rhsError.messageForTheUser
+            return lhsError.localizedDescription == rhsError.localizedDescription
         default:
             return false
         }

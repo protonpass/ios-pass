@@ -42,7 +42,7 @@ struct SearchView: View {
                     content
 
                 case .error(let error):
-                    RetryableErrorView(errorMessage: error.messageForTheUser,
+                    RetryableErrorView(errorMessage: error.localizedDescription,
                                        onRetry: viewModel.refreshResults)
                 }
             }
