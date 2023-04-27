@@ -26,6 +26,7 @@ public enum LogOutReason {
     case expiredRefreshToken
     case failedToGenerateSymmetricKey
     case failedBiometricAuthentication
+    case sessionInvalidated
     case userInitiated
 }
 
