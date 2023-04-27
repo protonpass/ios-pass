@@ -111,7 +111,7 @@ struct SettingsView: View {
 
             OptionRow(height: .tall) {
                 Toggle(isOn: $viewModel.displayFavIcons) {
-                    Text("Show website icons")
+                    Text("Show website thumbnails")
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
                 }
                 .tint(Color(uiColor: PassColor.interactionNorm))

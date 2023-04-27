@@ -662,6 +662,21 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         hideLoadingHud()
     }
 
+    func profileTabViewModelWantsToEditAppLockTime() {
+        let view = EditAppLockTimeView(preferences: preferences)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.compact.value) * AppLockTime.allCases.count + 60
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController)
+    }
+
     func profileTabViewModelWantsToShowAccountMenu() {
         let viewModel = AccountViewModel(apiService: apiService,
                                          logManager: logManager,
