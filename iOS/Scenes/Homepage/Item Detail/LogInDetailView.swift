@@ -26,6 +26,7 @@ import UIComponents
 struct LogInDetailView: View {
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
+    @State private var isMoreInfoSectionExpanded = false
     @Namespace private var bottomID
 
     private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
@@ -46,44 +47,49 @@ struct LogInDetailView: View {
     }
 
     private var realBody: some View {
-        ScrollViewReader { value in
-            ScrollView {
-                VStack(spacing: 0) {
-                    ItemDetailTitleView(itemContent: viewModel.itemContent,
-                                        vault: viewModel.vault,
-                                        favIconRepository: viewModel.favIconRepository)
+        VStack {
+            ScrollViewReader { value in
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ItemDetailTitleView(itemContent: viewModel.itemContent,
+                                            vault: viewModel.vault,
+                                            favIconRepository: viewModel.favIconRepository)
                         .padding(.bottom, 40)
 
-                    usernamePassword2FaSection
+                        usernamePassword2FaSection
 
-                    if !viewModel.urls.isEmpty {
-                        urlsSection
+                        if !viewModel.urls.isEmpty {
+                            urlsSection
+                                .padding(.top, 8)
+                        }
+
+                        if !viewModel.itemContent.note.isEmpty {
+                            NoteDetailSection(itemContent: viewModel.itemContent,
+                                              vault: viewModel.vault,
+                                              theme: viewModel.theme,
+                                              favIconRepository: viewModel.favIconRepository)
                             .padding(.top, 8)
-                    }
+                        }
 
-                    if !viewModel.itemContent.note.isEmpty {
-                        NoteDetailSection(itemContent: viewModel.itemContent,
-                                          vault: viewModel.vault,
-                                          theme: viewModel.theme,
-                                          favIconRepository: viewModel.favIconRepository)
-                            .padding(.top, 8)
+                        ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
+                                                  itemContent: viewModel.itemContent)
+                        .padding(.top, 24)
+                        .id(bottomID)
                     }
-
-                    ItemDetailMoreInfoSection(
-                        itemContent: viewModel.itemContent,
-                        onExpand: { withAnimation { value.scrollTo(bottomID, anchor: .bottom) } })
-                    .padding(.top, 24)
-                    .id(bottomID)
-
-                    if viewModel.isAlias {
-                        viewAliasCard
-                            .padding(.top)
-                    }
+                    .padding()
                 }
-                .padding()
                 .animation(.default, value: isShowingPassword)
+                .onChange(of: isMoreInfoSectionExpanded) { _ in
+                    withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
+                }
+            }
+
+            if viewModel.isAlias {
+                viewAliasCard
+                    .padding(.horizontal)
             }
         }
+        .animation(.default, value: isMoreInfoSectionExpanded)
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
@@ -312,7 +318,6 @@ struct LogInDetailView: View {
                 .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor2Color))
                 .underline(color: Color(uiColor: viewModel.itemContent.type.normMajor2Color))
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
         .background(Color(uiColor: PassColor.backgroundMedium))
         .clipShape(RoundedRectangle(cornerRadius: 16))

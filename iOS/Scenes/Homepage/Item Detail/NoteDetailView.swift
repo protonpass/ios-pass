@@ -26,6 +26,7 @@ import UIComponents
 struct NoteDetailView: View {
     @StateObject private var viewModel: NoteDetailViewModel
     @Namespace private var bottomID
+    @State private var isMoreInfoSectionExpanded = false
 
     init(viewModel: NoteDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -83,13 +84,16 @@ struct NoteDetailView: View {
                             .isEditable(false)
                     }
 
-                    ItemDetailMoreInfoSection(
-                        itemContent: viewModel.itemContent,
-                        onExpand: { withAnimation { value.scrollTo(bottomID, anchor: .bottom) } })
+                    ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
+                                              itemContent: viewModel.itemContent)
                     .padding(.top)
                     .id(bottomID)
                 }
                 .padding()
+            }
+            .animation(.default, value: isMoreInfoSectionExpanded)
+            .onChange(of: isMoreInfoSectionExpanded) { _ in
+                withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
