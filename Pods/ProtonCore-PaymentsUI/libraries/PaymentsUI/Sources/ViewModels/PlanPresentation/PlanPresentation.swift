@@ -29,7 +29,8 @@ enum DetailType {
     case checkmark, storage, envelope, globe, tag, calendarCheckmark, shield
     case powerOff, rocket, servers, play, locks, brandTor, arrowsSwitch, eyeSlash
     case user
-    
+    case lock, vault, alias, at, forward, eye
+
     var icon: UIImage {
         switch self {
         case .checkmark: return IconProvider.checkmark
@@ -48,6 +49,12 @@ enum DetailType {
         case .arrowsSwitch: return IconProvider.arrowsSwitch
         case .eyeSlash: return IconProvider.eyeSlash
         case .user: return IconProvider.user
+        case .lock: return IconProvider.lock
+        case .vault: return IconProvider.vault
+        case .alias: return IconProvider.alias
+        case .at: return IconProvider.at
+        case .forward: return IconProvider.forward
+        case .eye: return IconProvider.eye
         }
     }
 }
