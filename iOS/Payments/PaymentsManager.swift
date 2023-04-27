@@ -25,15 +25,20 @@ import ProtonCore_Services
 
 final class PaymentsManager {
 
+    typealias PaymentsResult = Result<InAppPurchasePlan?, Error>
+
     private let appData: AppData
     private let mainKeyProvider: MainKeyProvider
     private let payments: Payments
+    private var paymentsUI: PaymentsUI?
+    private let logger: Logger
     private let inMemoryTokenStorage: PaymentTokenStorage
 
     // TODO: should we provide the actual BugAlertHandler?
     init(apiService: APIService,
          appData: AppData,
          mainKeyProvider: MainKeyProvider,
+         logger: Logger,
          bugAlertHandler: BugAlertHandler = nil) {
         // TODO: should we use the disk storage instead?
         let inMemoryDataStorage = InMemoryServicePlanDataStorage()
@@ -48,6 +53,7 @@ final class PaymentsManager {
         self.mainKeyProvider = mainKeyProvider
         self.inMemoryTokenStorage = inMemoryTokenStorage
         self.payments = payments
+        self.logger = logger
 
         payments.storeKitManager.delegate = self
 
@@ -65,6 +71,49 @@ final class PaymentsManager {
         payments.storeKitManager.delegate = self
         payments.storeKitManager.updateAvailableProductsList { [weak self] error in
             self?.payments.storeKitManager.subscribeToPaymentQueue()
+        }
+    }
+
+    func manageSubscription(completion: @escaping (Result<InAppPurchasePlan?, Error>) -> Void) {
+        let paymentsUI = createPaymentsUI()
+        // keep reference to avoid being deallocated
+        self.paymentsUI = paymentsUI
+        paymentsUI.showCurrentPlan(presentationType: .modal, backendFetch: true) { [weak self] result in
+            self?.handlePaymentsResponse(result: result, completion: completion)
+        }
+    }
+
+    func upgradeSubscription(completion: @escaping (Result<InAppPurchasePlan?, Error>) -> Void) {
+        let paymentsUI = createPaymentsUI()
+        // keep reference to avoid being deallocated
+        self.paymentsUI = paymentsUI
+        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] result in
+            self?.handlePaymentsResponse(result: result, completion: completion)
+        }
+    }
+
+    private func handlePaymentsResponse(result: PaymentsUIResultReason,
+                                        completion: @escaping (Result<InAppPurchasePlan?, Error>) -> Void) {
+        switch result {
+        case let .purchasedPlan(accountPlan: plan):
+            self.logger.trace("Purchased plan: \(plan.protonName)")
+            completion(.success(plan))
+        case let .open(vc: _, opened: opened):
+            assert(opened == true)
+        case let .planPurchaseProcessingInProgress(accountPlan: plan):
+            self.logger.trace("Purchasing \(plan.protonName)")
+        case .close:
+            self.logger.trace("Payments closed")
+            completion(.success(nil))
+        case let .purchaseError(error: error):
+            self.logger.trace("Purchase failed with error \(error)")
+            completion(.failure(error))
+        case .toppedUpCredits:
+            self.logger.trace("Credits topped up")
+            completion(.success(nil))
+        case let .apiMightBeBlocked(message, originalError: error):
+            self.logger.trace("\(message), error \(error)")
+            completion(.failure(error))
         }
     }
 }
