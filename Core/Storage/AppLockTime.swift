@@ -1,5 +1,5 @@
 //
-// BiometricAuthenticationTimeout.swift
+// AppLockTime.swift
 // Proton Pass - Created on 27/04/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum BiometricAuthenticationTimeout: Int, CustomStringConvertible, CaseIterable {
+public enum AppLockTime: Int, CustomStringConvertible, CaseIterable {
     case immediately = 0
     case oneMinute = 1
     case twoMinutes = 2

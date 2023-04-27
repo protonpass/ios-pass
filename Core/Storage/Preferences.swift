@@ -38,6 +38,9 @@ public final class Preferences: ObservableObject, DeinitPrintable {
     @AppStorage("biometricAuthenticationEnabled", store: kSharedUserDefaults)
     public var biometricAuthenticationEnabled = false
 
+    @AppStorage("appLockTime", store: kSharedUserDefaults)
+    public var appLockTime: AppLockTime = .twoMinutes
+
     @AppStorage("onboarded", store: kSharedUserDefaults)
     public var onboarded = false
 
@@ -70,6 +73,7 @@ public final class Preferences: ObservableObject, DeinitPrintable {
         automaticallyCopyTotpCode = false
         failedAttemptCount = 0
         biometricAuthenticationEnabled = false
+        appLockTime = .twoMinutes
         autoFillBannerDisplayed = false
         theme = .dark
         browser = .safari

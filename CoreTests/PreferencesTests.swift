@@ -86,6 +86,17 @@ final class PreferencesTests: XCTestCase {
         XCTAssertFalse(sut.biometricAuthenticationEnabled)
     }
 
+    func testAppLockTimeIsTwoMinutesByDefault() {
+        XCTAssertEqual(sut.appLockTime, .twoMinutes)
+    }
+
+    func testAppLockTimeIsTwoMinutesAfterResetting() {
+        sut.appLockTime = .fourHours
+        XCTAssertEqual(sut.appLockTime, .fourHours)
+        sut.reset()
+        XCTAssertEqual(sut.appLockTime, .twoMinutes)
+    }
+
     func testNotOnboardedByDefault() {
         XCTAssertFalse(sut.onboarded)
     }
