@@ -39,21 +39,12 @@ final class AppData {
     private var symmetricKey: String?
 
     init(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
-        self._userPlan.setKeychain(keychain)
-        self._userPlan.setMainKeyProvider(mainKeyProvider)
-        self._userPlan.setLogManager(logManager)
-
-        self._userData.setKeychain(keychain)
-        self._userData.setMainKeyProvider(mainKeyProvider)
-        self._userData.setLogManager(logManager)
-
-        self._unauthSessionCredentials.setKeychain(keychain)
-        self._unauthSessionCredentials.setMainKeyProvider(mainKeyProvider)
-        self._unauthSessionCredentials.setLogManager(logManager)
-
-        self._symmetricKey.setKeychain(keychain)
-        self._symmetricKey.setMainKeyProvider(mainKeyProvider)
-        self._symmetricKey.setLogManager(logManager)
+        self._userPlan.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
+        self._userData.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
+        self._unauthSessionCredentials.inject(keychain: keychain,
+                                              mainKeyProvider: mainKeyProvider,
+                                              logManager: logManager)
+        self._symmetricKey.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
     }
 
     func getSymmetricKey() throws -> SymmetricKey {
