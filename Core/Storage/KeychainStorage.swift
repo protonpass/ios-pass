@@ -34,22 +34,11 @@ public final class KeychainStorage<T: Codable> {
         self.defaultValue = defaultValue
     }
 
-    public func hasCypherdata() -> Bool {
-        guard let keychain else {
-            return false
-        }
-        return keychain.data(forKey: key.rawValue) != nil
-    }
-
-    public func setKeychain(_ keychain: KeychainProtocol) {
+    // We can not set those dependencies at the moment of initializing the property wrapper
+    // so we need to inject once the initialization process is done
+    public func inject(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
         self.keychain = keychain
-    }
-
-    public func setMainKeyProvider(_ mainKeyProvider: MainKeyProvider) {
         self.mainKeyProvider = mainKeyProvider
-    }
-
-    public func setLogManager(_ logManager: LogManager) {
         self.logger = .init(manager: logManager)
     }
 
@@ -130,6 +119,7 @@ public final class KeychainStorage<T: Codable> {
     }
 
     public func wipeValue() {
+        assert(keychain != nil)
         keychain?.remove(forKey: key.rawValue)
     }
 }
