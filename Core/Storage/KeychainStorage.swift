@@ -55,12 +55,16 @@ public final class KeychainStorage<T: Codable> {
 
     public var wrappedValue: T? {
         get {
+            assert(logger != nil)
             let keyRawValue = key.rawValue
+
+            assert(keychain != nil)
             guard let keychain else {
                 logger?.warning("Keychain is not set for key \(keyRawValue). Fall back to defaultValue.")
                 return defaultValue
             }
 
+            assert(mainKeyProvider != nil)
             guard let mainKeyProvider else {
                 logger?.warning("MainKeyProvider is not set for key \(keyRawValue). Fall back to defaultValue.")
                 return defaultValue
@@ -89,12 +93,17 @@ public final class KeychainStorage<T: Codable> {
         }
 
         set {
+            assert(logger != nil)
+
             let keyRawValue = key.rawValue
+
+            assert(keychain != nil)
             guard let keychain else {
                 logger?.warning("Keychain is not set for key \(keyRawValue). Early exit.")
                 return
             }
 
+            assert(mainKeyProvider != nil)
             guard let mainKeyProvider else {
                 logger?.warning("MainKeyProvider is not set for key \(keyRawValue). Early exit")
                 return
