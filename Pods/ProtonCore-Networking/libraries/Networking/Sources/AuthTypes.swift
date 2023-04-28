@@ -537,11 +537,20 @@ public enum AuthErrors: Error {
             return error.bestShotAtReasonableErrorCode
         }
     }
+    
+    public var isInvalidAccessToken: Bool {
+        if case .networkingError(let responseError) = self, responseError.httpCode == 401 {
+            return true
+        }
+        return false
+    }
+}
 
-    public var localizedDescription: String {
+extension AuthErrors: LocalizedError {
+    public var errorDescription: String? {
         switch self {
         case .emptyAuthResponse, .emptyAuthInfoResponse, .emptyServerSrpAuth, .emptyClientSrpAuth, .emptyUserInfoResponse, .wrongServerProof:
-            return (self as NSError).localizedDescription
+            return "Authentication error"
         case .addressKeySetupError(let error), .parsingError(let error):
             return error.localizedDescription
         case .networkingError(let error), .apiMightBeBlocked(_, let error):
@@ -549,13 +558,6 @@ public enum AuthErrors: Error {
         case .externalAccountsNotSupported(let message, _, _), .notImplementedYet(let message):
             return message
         }
-    }
-    
-    public var isInvalidAccessToken: Bool {
-        if case .networkingError(let responseError) = self, responseError.httpCode == 401 {
-            return true
-        }
-        return false
     }
 }
 
