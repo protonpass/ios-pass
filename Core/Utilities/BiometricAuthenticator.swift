@@ -88,6 +88,9 @@ public final class BiometricAuthenticator: ObservableObject {
                 let authenticated = try await authenticate(reason: reason)
                 if authenticated {
                     preferences.biometricAuthenticationEnabled.toggle()
+                    if !preferences.biometricAuthenticationEnabled {
+                        preferences.appLockTime = .twoMinutes
+                    }
                 }
             } catch {
                 logger.error(error)

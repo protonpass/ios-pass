@@ -104,37 +104,64 @@ struct ProfileTabView: View {
                 .profileSectionTitle()
                 .padding(.bottom, kItemDetailSectionPadding)
 
-            OptionRow(height: .medium) {
-                switch viewModel.biometricAuthenticator.biometryTypeState {
-                case .idle, .initializing:
+            switch viewModel.biometricAuthenticator.biometryTypeState {
+            case .idle, .initializing:
+                OptionRow(height: .medium) {
                     ProgressView()
-                case .initialized(let biometryType):
-                    if let uiModel = biometryType.uiModel {
-                        Toggle(isOn: $viewModel.biometricAuthenticator.enabled) {
-                            Label(title: {
-                                Text(uiModel.title)
-                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-                            }, icon: {
-                                if let icon = uiModel.icon {
-                                    Image(systemName: icon)
-                                        .foregroundColor(Color(uiColor: PassColor.interactionNorm))
-                                } else {
-                                    EmptyView()
-                                }
-                            })
+                }
+                .roundedEditableSection()
+
+            case .initialized(let biometryType):
+                if let uiModel = biometryType.uiModel {
+                    VStack(spacing: 0) {
+                        OptionRow(height: .medium) {
+                            Toggle(isOn: $viewModel.biometricAuthenticator.enabled) {
+                                Label(title: {
+                                    Text(uiModel.title)
+                                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                }, icon: {
+                                    if let icon = uiModel.icon {
+                                        Image(systemName: icon)
+                                            .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                                    } else {
+                                        EmptyView()
+                                    }
+                                })
+                            }
+                            .tint(Color(uiColor: PassColor.interactionNorm))
                         }
-                        .tint(Color(uiColor: PassColor.interactionNorm))
-                    } else {
+
+                        if viewModel.biometricAuthenticator.enabled {
+                            PassSectionDivider()
+
+                            OptionRow(
+                                action: viewModel.editAppLockTime,
+                                title: "App lock time",
+                                height: .tall,
+                                content: {
+                                    Text(viewModel.preferences.appLockTime.description)
+                                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                },
+                                trailing: { ChevronRight() })
+                        }
+                    }
+                    .animation(.default, value: viewModel.biometricAuthenticator.enabled)
+                    .roundedEditableSection()
+                } else {
+                    OptionRow(height: .medium) {
                         Text("Biometric authentication not supported")
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .foregroundColor(Color(uiColor: PassColor.textWeak))
                     }
-                case .error(let error):
+                    .roundedEditableSection()
+                }
+            case .error(let error):
+                OptionRow(height: .medium) {
                     Text(error.localizedDescription)
                         .foregroundColor(Color(uiColor: PassColor.signalDanger))
                 }
+                .roundedEditableSection()
             }
-            .roundedEditableSection()
 
             if case .initialized(let biometryType) = viewModel.biometricAuthenticator.biometryTypeState,
                biometryType != .none {

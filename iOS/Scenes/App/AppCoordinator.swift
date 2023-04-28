@@ -57,6 +57,7 @@ final class AppCoordinator {
     private var rootViewController: UIViewController? { window.rootViewController }
 
     private var appLockedViewController: UIViewController?
+    private var autolocker: Autolocker?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -138,6 +139,11 @@ final class AppCoordinator {
         NotificationCenter.default
             .publisher(for: UIApplication.didEnterBackgroundNotification)
             .sink { _ in
+                // Create a new autolocker instance everytime the app goes background
+                // to reflect eventual changes in preferences
+                self.autolocker = self.makeAutoLocker(appLockTime: self.preferences.appLockTime)
+                self.autolocker?.startCountdown()
+
                 self.dismissAppLockedViewController()
             }
             .store(in: &cancellables)
@@ -234,6 +240,8 @@ final class AppCoordinator {
         logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
         appData.userData = nil
         appData.userPlan = nil
+        autolocker?.releaseCountdown()
+        autolocker = nil
         if includingUnauthSession {
             apiManager.clearCredentials()
             keymaker.wipeMainKey()
@@ -359,6 +367,20 @@ extension AppCoordinator: APIManagerDelegate {
 
 // MARK: - Biometric authentication
 private extension AppCoordinator {
+    func makeAutoLocker(appLockTime: AppLockTime) -> Autolocker {
+        struct AutolockerSettingsProvider: SettingsProvider {
+            let appLockTime: AppLockTime
+            var lockTime: AutolockTimeout {
+                if let intervalInMinutes = appLockTime.intervalInMinutes {
+                    return .minutes(intervalInMinutes)
+                } else {
+                    return .never
+                }
+            }
+        }
+        return Autolocker(lockTimeProvider: AutolockerSettingsProvider(appLockTime: appLockTime))
+    }
+
     func makeAppLockedViewController() -> UIViewController {
         let view = AppLockedView(
             preferences: preferences,
@@ -382,6 +404,10 @@ private extension AppCoordinator {
 
     func requestBiometricAuthenticationIfNecessary() {
         guard preferences.biometricAuthenticationEnabled else { return }
+
+        if let autolocker, !autolocker.shouldAutolockNow() { return }
+        autolocker?.releaseCountdown()
+
         self.appLockedViewController = self.makeAppLockedViewController()
         guard let appLockedViewController = self.appLockedViewController else { return }
         self.rootViewController?.topMostViewController.present(appLockedViewController,

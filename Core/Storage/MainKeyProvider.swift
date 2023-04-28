@@ -29,6 +29,17 @@ public protocol MainKeyProvider: AnyObject {
 
 extension Keymaker: MainKeyProvider {}
 
+extension Keymaker: AutoLocker {
+    public var autolockerTimeout: LockTime {
+        LockTime(rawValue: PPKeychain().lockTime.rawValue)
+    }
+
+    public func setAutolockerTimeout(_ timeout: LockTime) {
+        PPKeychain().lockTime = .init(rawValue: timeout.rawValue)
+    }
+}
+
+/*
 // MARK: - Unlocking
 extension Keymaker: PinUnlocker {
     public func pinUnlock(pin: String, completion: @escaping UnlockResult) {
@@ -103,16 +114,6 @@ extension Keymaker: BioUnlocker {
     }
 }
 
-extension Keymaker: AutoLocker {
-    public var autolockerTimeout: LockTime {
-        LockTime(rawValue: PPKeychain().lockTime.rawValue)
-    }
-
-    public func setAutolockerTimeout(_ timeout: LockTime) {
-        PPKeychain().lockTime = .init(rawValue: timeout.rawValue)
-    }
-}
-
 extension Keymaker: LockReader {
     public var isBioProtected: Bool {
         isProtectorActive(BioProtection.self)
@@ -122,3 +123,4 @@ extension Keymaker: LockReader {
         isProtectorActive(PinProtection.self)
     }
 }
+*/
