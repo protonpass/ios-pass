@@ -75,14 +75,17 @@ final class AppCoordinator {
         self.keymaker = keymaker
         let apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
         self.apiManager = apiManager
+        let preferences = Preferences()
         self.paymentsManager = PaymentsManager(apiService: apiManager.apiService,
                                                appData: appData,
                                                mainKeyProvider: keymaker,
-                                               logger: logger)
+                                               logger: logger,
+                                               preferences: preferences)
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)
-        self.preferences = .init()
+        self.userPlanProvider = UserPlanProvider(apiService: apiManager.apiService, logManager: logManager)
+        self.preferences = preferences
         self.isUITest = false
         clearUserDataInKeychainIfFirstRun()
         bindAppState()

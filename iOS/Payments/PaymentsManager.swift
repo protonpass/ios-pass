@@ -32,6 +32,7 @@ final class PaymentsManager {
     private let payments: Payments
     private var paymentsUI: PaymentsUI?
     private let logger: Logger
+    private let preferences: Preferences
     private let inMemoryTokenStorage: PaymentTokenStorage
 
     // TODO: should we provide the actual BugAlertHandler?
@@ -39,6 +40,7 @@ final class PaymentsManager {
          appData: AppData,
          mainKeyProvider: MainKeyProvider,
          logger: Logger,
+         preferences: Preferences,
          bugAlertHandler: BugAlertHandler = nil) {
         // TODO: should we use the disk storage instead?
         let inMemoryDataStorage = InMemoryServicePlanDataStorage()
@@ -54,6 +56,7 @@ final class PaymentsManager {
         self.inMemoryTokenStorage = inMemoryTokenStorage
         self.payments = payments
         self.logger = logger
+        self.preferences = preferences
 
         payments.storeKitManager.delegate = self
 
@@ -98,8 +101,10 @@ final class PaymentsManager {
         case let .purchasedPlan(accountPlan: plan):
             self.logger.trace("Purchased plan: \(plan.protonName)")
             completion(.success(plan))
-        case let .open(vc: _, opened: opened):
+        case let .open(viewController, opened):
             assert(opened == true)
+            viewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+            viewController.navigationController?.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         case let .planPurchaseProcessingInProgress(accountPlan: plan):
             self.logger.trace("Purchasing \(plan.protonName)")
         case .close:
