@@ -51,24 +51,22 @@ public enum AppLockTime: Int, CustomStringConvertible, CaseIterable {
         }
     }
 
-    /// Calculate the next moment that users need to authenticate from the given `currentDate`
-    /// - Returns: `nil` if not applicable because `never`
-    public func nextThreshold(currentDate: Date) -> Date? {
+    public var intervalInMinutes: Int? {
         switch self {
         case .immediately:
-            return currentDate
+            return 0
         case .oneMinute:
-            return currentDate.addingTimeInterval(60)
+            return 1
         case .twoMinutes:
-            return currentDate.addingTimeInterval(120)
+            return 2
         case .fiveMinutes:
-            return currentDate.addingTimeInterval(300)
+            return 5
         case .tenMinutes:
-            return currentDate.addingTimeInterval(600)
+            return 10
         case .oneHour:
-            return currentDate.addingTimeInterval(3_600)
+            return 60
         case .fourHours:
-            return currentDate.addingTimeInterval(4 * 3_600)
+            return 240
         case .never:
             return nil
         }
