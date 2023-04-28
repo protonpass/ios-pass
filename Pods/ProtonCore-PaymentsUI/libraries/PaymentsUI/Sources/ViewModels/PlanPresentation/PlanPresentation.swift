@@ -29,7 +29,7 @@ enum DetailType {
     case checkmark, storage, envelope, globe, tag, calendarCheckmark, shield
     case powerOff, rocket, servers, play, locks, brandTor, arrowsSwitch, eyeSlash
     case user
-    case lock, vault, alias, at, forward, eye
+    case infinity, lock, vault, alias, at, forward, eye
 
     var icon: UIImage {
         switch self {
@@ -48,6 +48,7 @@ enum DetailType {
         case .brandTor: return IconProvider.brandTor
         case .arrowsSwitch: return IconProvider.arrowsSwitch
         case .eyeSlash: return IconProvider.eyeSlash
+        case .infinity: return UIImage(systemName: "infinity")!
         case .user: return IconProvider.user
         case .lock: return IconProvider.lock
         case .vault: return IconProvider.vault

@@ -188,14 +188,31 @@ extension CurrentPlanDetails {
                           ])
 
         case "04567dee288f15bb533814cf89f3ab5a4fa3c25d1aed703a409672181f8a900a":
-            strDetails = (name: nil,
-                          usedSpace: true,
-                          optDetails: [
-                            (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
-                            (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
-                            (.calendarCheckmark, details.QZPersonalCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
-                            (.shield, details.UVPNConnectionsDescription)
-                          ])
+            switch clientApp {
+            case .other("pass"):
+                strDetails = (name: nil,
+                              usedSpace: true,
+                              optDetails: [
+                                // Temporary local change before new core version version with localized texts
+                                // and new icons is released
+                                (.infinity, "Unlimited logins and notes"),
+                                (.lock, "Integrated 2FA authenticator"),
+                                (.vault, "Multiple vaults"),
+                                (.alias, "Unlimited Hide My Email aliases"),
+                                (.at, "Custom domains for email aliases"),
+                                (.forward, "Multiple forwarding mailboxes"),
+                                (.eye, "Priority support")
+                              ])
+            default:
+                strDetails = (name: nil,
+                              usedSpace: true,
+                              optDetails: [
+                                (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
+                                (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
+                                (.calendarCheckmark, details.QZPersonalCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
+                                (.shield, details.UVPNConnectionsDescription)
+                              ])
+            }
         case "1fe4f100fd26c9595c13754becb070a4e9e5f9844e4fdb03312ca5a5cedeacde":
             strDetails = (name: nil,
                           usedSpace: true,
@@ -254,11 +271,11 @@ extension CurrentPlanDetails {
 
         case "599c124096f1f87dae3deb83b654c6198b8ecb9c150d2a4aa513c41288dd7645":
             strDetails = (name: nil,
-                          usedSpace: false,
+                          usedSpace: true,
                           optDetails: [
                             // Temporary local change before new core version version with localized texts
                             // and new icons is released
-                            (.powerOff, "Unlimited logins and notes"),
+                            (.infinity, "Unlimited logins and notes"),
                             (.lock, "Integrated 2FA authenticator"),
                             (.vault, "Multiple vaults"),
                             (.alias, "Unlimited Hide My Email aliases"),
@@ -277,6 +294,15 @@ extension CurrentPlanDetails {
                                 (.servers, details.VPNFreeServersDescription(countries: countriesCount)),
                                 (.rocket, details.VPNFreeSpeedDescription),
                                 (.eyeSlash, details.VPNNoLogsPolicy)
+                              ])
+            // TODO: change that to actual .pass when available
+            case .other(named: "pass"):
+                strDetails = (name: "Free",
+                              usedSpace: true,
+                              optDetails: [
+                                (.infinity, "Unlimited logins and notes"),
+                                (.vault, "1 vault"),
+                                (.alias, "10 Hide My Email aliases")
                               ])
             default:
                 strDetails = (name: "Free",
