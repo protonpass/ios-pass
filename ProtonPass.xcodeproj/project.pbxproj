@@ -422,7 +422,6 @@
 		3573D707297642F400F68DF7 /* DeleteVaultEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */; };
 		35758BE02985695700AF2683 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
 		3575EB5329FAB017000FFD53 /* AppLockTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5229FAB017000FFD53 /* AppLockTime.swift */; };
-		3575EB5529FAB588000FFD53 /* AppLockTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5429FAB588000FFD53 /* AppLockTimeTests.swift */; };
 		3575EB5929FABC92000FFD53 /* EditAppLockTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */; };
 		357602A829F6ECD3003062A2 /* TelemetryEventEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602A729F6ECD3003062A2 /* TelemetryEventEntity.swift */; };
 		357602AA29F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */; };
@@ -1076,7 +1075,6 @@
 		3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasPrefixValidatorTests.swift; sourceTree = "<group>"; };
 		3573D706297642F400F68DF7 /* DeleteVaultEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultEndpoint.swift; sourceTree = "<group>"; };
 		3575EB5229FAB017000FFD53 /* AppLockTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockTime.swift; sourceTree = "<group>"; };
-		3575EB5429FAB588000FFD53 /* AppLockTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockTimeTests.swift; sourceTree = "<group>"; };
 		3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAppLockTimeView.swift; sourceTree = "<group>"; };
 		357602A729F6ECD3003062A2 /* TelemetryEventEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventEntity.swift; sourceTree = "<group>"; };
 		357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTelemetryEventDatasourceTests.swift; sourceTree = "<group>"; };
@@ -2304,7 +2302,6 @@
 			children = (
 				3553C224296570B80087518A /* Logging */,
 				3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */,
-				3575EB5429FAB588000FFD53 /* AppLockTimeTests.swift */,
 				354513E828E4D2650020A93A /* CodableBase64Tests.swift */,
 				3552A28729EBFE2800ABDB6E /* FileUtilsTests.swift */,
 				3567E46329B0C93C00511D62 /* PreferencesTests.swift */,
@@ -3985,7 +3982,6 @@
 				354513E928E4D2650020A93A /* CodableBase64Tests.swift in Sources */,
 				3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */,
 				35608C3029F0559A00CA3864 /* Data+RandomTests.swift in Sources */,
-				3575EB5529FAB588000FFD53 /* AppLockTimeTests.swift in Sources */,
 				3567E46429B0C93C00511D62 /* PreferencesTests.swift in Sources */,
 				355AA32729E9D3FD00C20F5F /* StringExtensionTests.swift in Sources */,
 				3555800728F01A46009C3B88 /* URLUtils+MatcherTests.swift in Sources */,
