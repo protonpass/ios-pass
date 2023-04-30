@@ -60,7 +60,7 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
         case .unexpectedError:
             return "Unexpected error"
         case .unexpectedHttpStatusCode(let statusCode):
-            return "Unexpected HTTP status code \(statusCode)"
+            return "Unexpected HTTP status code \(String(describing: statusCode))"
         case .unknownShareType:
             return "Unknown share type"
         case let .unmatchedRotationID(leftID, rightID):
@@ -124,6 +124,7 @@ public extension PPClientError {
         case failedToDecode
         case failedToEncode(String)
         case failedToAESEncrypt
+        case inactiveUserKey(userKeyId: String) // Caused by "forgot password"
         case addressNotFound(addressID: String)
         case corruptedShareContent(shareID: String)
         case missingUserKey(userID: String)
@@ -163,6 +164,8 @@ public extension PPClientError {
                 return "Failed to encode \"\(string)\""
             case .failedToAESEncrypt:
                 return "Failed to AES encrypt"
+            case .inactiveUserKey(let userKeyId):
+                return "Inactive user key \(userKeyId)"
             case .addressNotFound(let addressID):
                 return "Address not found \"\(addressID)\""
             case .corruptedShareContent(let shareID):
