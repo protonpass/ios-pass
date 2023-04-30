@@ -21,18 +21,40 @@
 import Core
 
 public enum SortType: CaseIterable {
-    case mostRecent, alphabetical, newestToOldest, oldestToNewest
+    case mostRecent, alphabeticalAsc, alphabeticalDesc, newestToOldest, oldestToNewest
 
     public var title: String {
         switch self {
         case .mostRecent:
             return "Most recent"
-        case .alphabetical:
-            return "Alphabetical"
+        case .alphabeticalAsc:
+            return "Title (A-Z)"
+        case .alphabeticalDesc:
+            return "Title (Z-A)"
         case .newestToOldest:
             return "Newest to oldest"
         case .oldestToNewest:
             return "Oldest to newest"
+        }
+    }
+
+    public var isAlphabetical: Bool {
+        switch self {
+        case .alphabeticalAsc, .alphabeticalDesc:
+            return true
+        default:
+            return false
+        }
+    }
+
+    public var sortDirection: SortDirection? {
+        switch self {
+        case .alphabeticalAsc:
+            return .ascending
+        case .alphabeticalDesc:
+            return .descending
+        default:
+            return nil
         }
     }
 }
@@ -136,6 +158,15 @@ public enum AlphabetLetter: Int, CaseIterable {
         case .z: return "Z"
         }
     }
+
+    public static func letters(for direction: SortDirection) -> [AlphabetLetter] {
+        switch direction {
+        case .ascending:
+            return allCases
+        case .descending:
+            return allCases.reversed()
+        }
+    }
 }
 // swiftlint:enable identifier_name
 
@@ -155,7 +186,7 @@ public struct AlphabeticalSortResult<T: AlphabeticalSortable> {
 public extension Array where Element: AlphabeticalSortable {
     // swiftlint:disable cyclomatic_complexity
     // swiftlint:disable function_body_length
-    func alphabeticalSortResult() -> AlphabeticalSortResult<Element> {
+    func alphabeticalSortResult(direction: SortDirection) -> AlphabeticalSortResult<Element> {
         let sortedAlphabetically =
         sorted(by: { $0.alphabeticalSortableString < $1.alphabeticalSortableString })
 
@@ -212,7 +243,12 @@ public extension Array where Element: AlphabeticalSortable {
         buckets.append(.init(letter: .sharp, items: sharpElements))
         buckets = buckets.sorted { $0.letter.rawValue < $1.letter.rawValue }
 
-        return .init(buckets: buckets)
+        switch direction {
+        case .ascending:
+            return .init(buckets: buckets)
+        case .descending:
+            return .init(buckets: buckets.reversed())
+        }
     }
     // swiftlint:enable cyclomatic_complexity
     // swiftlint:enable function_body_length
