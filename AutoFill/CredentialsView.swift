@@ -196,10 +196,12 @@ struct CredentialsView: View {
             .animation(.default, value: matchedItems.hashValue)
             .animation(.default, value: notMatchedItems.hashValue)
             .overlay {
-                if viewModel.selectedSortType == .alphabetical {
+                if viewModel.selectedSortType.isAlphabetical {
                     HStack {
                         Spacer()
-                        SectionIndexTitles(proxy: proxy)
+                        SectionIndexTitles(
+                            proxy: proxy,
+                            direction: viewModel.selectedSortType.sortDirection ?? .ascending)
                     }
                 }
             }
@@ -231,10 +233,12 @@ struct CredentialsView: View {
                 .listStyle(.plain)
                 .animation(.default, value: results.count)
                 .overlay {
-                    if viewModel.selectedSortType == .alphabetical {
+                    if viewModel.selectedSortType.isAlphabetical {
                         HStack {
                             Spacer()
-                            SectionIndexTitles(proxy: proxy)
+                            SectionIndexTitles(
+                                proxy: proxy,
+                                direction: viewModel.selectedSortType.sortDirection ?? .ascending)
                         }
                     }
                 }
@@ -278,8 +282,10 @@ struct CredentialsView: View {
         switch viewModel.selectedSortType {
         case .mostRecent:
             sections(for: items.mostRecentSortResult())
-        case .alphabetical:
-            sections(for: items.alphabeticalSortResult())
+        case .alphabeticalAsc:
+            sections(for: items.alphabeticalSortResult(direction: .ascending))
+        case .alphabeticalDesc:
+            sections(for: items.alphabeticalSortResult(direction: .descending))
         case .newestToOldest:
             sections(for: items.monthYearSortResult(direction: .descending))
         case .oldestToNewest:
