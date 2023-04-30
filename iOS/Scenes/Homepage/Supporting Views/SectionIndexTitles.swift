@@ -26,6 +26,7 @@ import UIComponents
 struct SectionIndexTitles: View {
     let proxy: ScrollViewProxy
     @GestureState private var dragLocation: CGPoint = .zero
+    @State private var lastScrolledToTitle: String?
 
     var body: some View {
         VStack {
@@ -52,9 +53,12 @@ struct SectionIndexTitles: View {
             if geometry.frame(in: .global).contains(dragLocation) {
                 // we need to dispatch to the main queue because we cannot access to the
                 // `ScrollViewProxy` instance while the body is rendering
-                DispatchQueue.main.async {
-                    UISelectionFeedbackGenerator().selectionChanged()
-                    proxy.scrollTo(title, anchor: .center)
+                if title != lastScrolledToTitle {
+                    DispatchQueue.main.async {
+                        lastScrolledToTitle = title
+                        UISelectionFeedbackGenerator().selectionChanged()
+                        proxy.scrollTo(title, anchor: .center)
+                    }
                 }
             }
             return Color.clear
