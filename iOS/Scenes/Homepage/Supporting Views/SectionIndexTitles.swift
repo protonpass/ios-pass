@@ -19,18 +19,20 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import SwiftUI
 import UIComponents
 
 // https://www.fivestars.blog/articles/section-title-index-swiftui/
 struct SectionIndexTitles: View {
     let proxy: ScrollViewProxy
+    let direction: SortDirection
     @GestureState private var dragLocation: CGPoint = .zero
     @State private var lastScrolledToTitle: String?
 
     var body: some View {
         VStack {
-            ForEach(AlphabetLetter.allCases, id: \.rawValue) { letter in
+            ForEach(AlphabetLetter.letters(for: direction), id: \.rawValue) { letter in
                 Text(letter.character)
                     .font(.caption)
                     .foregroundColor(Color(uiColor: PassColor.interactionNorm))

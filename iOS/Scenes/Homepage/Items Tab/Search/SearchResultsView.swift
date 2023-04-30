@@ -73,6 +73,15 @@ struct SearchResultsView: View {
                 .onChange(of: selectedType) { _ in
                     proxy.scrollTo(uuid)
                 }
+                .overlay {
+                    if selectedSortType.isAlphabetical {
+                        HStack {
+                            Spacer()
+                            SectionIndexTitles(proxy: proxy,
+                                               direction: selectedSortType.sortDirection ?? .ascending)
+                        }
+                    }
+                }
             }
         }
     }
@@ -82,8 +91,10 @@ struct SearchResultsView: View {
         switch selectedSortType {
         case .mostRecent:
             itemList(items.mostRecentSortResult())
-        case .alphabetical:
-            itemList(items.alphabeticalSortResult())
+        case .alphabeticalAsc:
+            itemList(items.alphabeticalSortResult(direction: .ascending))
+        case .alphabeticalDesc:
+            itemList(items.alphabeticalSortResult(direction: .descending))
         case .newestToOldest:
             itemList(items.monthYearSortResult(direction: .descending))
         case .oldestToNewest:

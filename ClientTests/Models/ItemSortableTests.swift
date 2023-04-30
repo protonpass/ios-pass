@@ -171,7 +171,7 @@ final class ItemSortableTests: XCTestCase {
         let items = strings.map { DummyItem(alphabeticalSortableString: $0) }
 
         // When
-        let sortResult = items.alphabeticalSortResult()
+        let sortResult = items.alphabeticalSortResult(direction: .ascending)
 
         // Then
         XCTAssertEqual(sortResult.buckets.count, 5)

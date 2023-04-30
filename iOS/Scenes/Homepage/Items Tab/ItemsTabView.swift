@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -153,8 +154,10 @@ struct ItemsTabView: View {
         switch viewModel.selectedSortType {
         case .mostRecent:
             itemList(items.mostRecentSortResult())
-        case .alphabetical:
-            itemList(items.alphabeticalSortResult())
+        case .alphabeticalAsc:
+            itemList(items.alphabeticalSortResult(direction: .ascending), direction: .ascending)
+        case .alphabeticalDesc:
+            itemList(items.alphabeticalSortResult(direction: .descending), direction: .descending)
         case .newestToOldest:
             itemList(items.monthYearSortResult(direction: .descending))
         case .oldestToNewest:
@@ -178,7 +181,8 @@ struct ItemsTabView: View {
             onRefresh: viewModel.forceSync)
     }
 
-    private func itemList(_ result: AlphabeticalSortResult<ItemUiModel>) -> some View {
+    private func itemList(_ result: AlphabeticalSortResult<ItemUiModel>,
+                          direction: SortDirection) -> some View {
         ScrollViewReader { proxy in
             ItemListView(
                 safeAreaInsets: safeAreaInsets,
@@ -193,7 +197,7 @@ struct ItemsTabView: View {
             .overlay {
                 HStack {
                     Spacer()
-                    SectionIndexTitles(proxy: proxy)
+                    SectionIndexTitles(proxy: proxy, direction: direction)
                 }
             }
         }
