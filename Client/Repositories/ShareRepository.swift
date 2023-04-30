@@ -50,7 +50,7 @@ public protocol ShareRepositoryProtocol {
 
     func upsertShares(_ shares: [Share]) async throws
 
-    func createVault(_ vault: VaultProtobuf) async throws
+    func createVault(_ vault: VaultProtobuf) async throws -> Share
 
     func edit(oldVault: Vault, newVault: VaultProtobuf) async throws
 
@@ -131,7 +131,7 @@ public extension ShareRepositoryProtocol {
         logger.trace("Upserted \(shares.count) shares for user \(userId)")
     }
 
-    func createVault(_ vault: VaultProtobuf) async throws {
+    func createVault(_ vault: VaultProtobuf) async throws -> Share {
         logger.trace("Creating vault for user \(userId)")
         let request = try CreateVaultRequest(userData: userData, vault: vault)
         let createdVault = try await remoteShareDatasouce.createVault(request: request)
@@ -139,6 +139,7 @@ public extension ShareRepositoryProtocol {
         logger.trace("Saving newly created vault to local for user \(userId)")
         try await localShareDatasource.upsertShares([encryptedShare], userId: userId)
         logger.trace("Created vault for user \(userId)")
+        return createdVault
     }
 
     func edit(oldVault: Vault, newVault: VaultProtobuf) async throws {

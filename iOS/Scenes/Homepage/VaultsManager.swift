@@ -75,15 +75,21 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
 // MARK: - Private APIs
 private extension VaultsManager {
     @MainActor
-    func createDefaultVault() async throws {
+    func createDefaultVault(isPrimary: Bool) async throws {
         let userId = shareRepository.userData.user.ID
         logger.trace("Creating default vault for user \(userId)")
         let vault = VaultProtobuf(name: "Personal",
                                   description: "Personal vault",
                                   color: .color1,
                                   icon: .icon1)
-        try await shareRepository.createVault(vault)
-        logger.trace("Created default vault for user \(userId)")
+        let createdShare = try await shareRepository.createVault(vault)
+        if isPrimary {
+            logger.trace("Created default vault. Setting as primary \(createdShare.shareID)")
+            _ = try await shareRepository.setPrimaryVault(shareId: createdShare.shareID)
+            logger.info("Created default primary vault for user \(userId)")
+        } else {
+            logger.info("Created default vault for user \(userId)")
+        }
     }
 
     @MainActor
@@ -158,13 +164,23 @@ extension VaultsManager {
             }
         }
 
-        // 3. Create default vault if not any
+        // 3. Create default vault if no vaults
         if remoteShares.isEmpty {
-            try await createDefaultVault()
+            try await createDefaultVault(isPrimary: false)
         }
 
         // 4. Load vaults and their contents
-        let vaults = try await shareRepository.getVaults()
+        var vaults = try await shareRepository.getVaults()
+
+        // 5. Check if in "forgot password" scenario. Create a new primary vault if applicable
+        let hasRemoteVaults = remoteShares.contains(where: { $0.shareType == .vault })
+        // We see that there are remote vaults but we can't decrypt any of them
+        // => "forgot password" happened
+        if hasRemoteVaults, vaults.isEmpty {
+            try await createDefaultVault(isPrimary: true)
+            vaults = try await shareRepository.getVaults()
+        }
+
         try await loadContents(for: vaults)
     }
 
