@@ -23,9 +23,10 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct CreateEditItemTitleSection: View {
-    var isFocused: FocusState<Bool>.Binding
+struct CreateEditItemTitleSection<Field: Hashable>: View {
     @Binding var title: String
+    let focusedField: FocusState<Field?>.Binding
+    let field: Field
     let selectedVault: Vault
     let itemContentType: ItemContentType
     let isEditMode: Bool
@@ -83,7 +84,8 @@ struct CreateEditItemTitleSection: View {
                 Text("Title")
                     .sectionTitleText()
                 TextEditorWithPlaceholder(text: $title,
-                                          isFocused: isFocused,
+                                          focusedField: focusedField,
+                                          field: field,
                                           placeholder: "Untitled",
                                           font: .title,
                                           fontWeight: .bold,

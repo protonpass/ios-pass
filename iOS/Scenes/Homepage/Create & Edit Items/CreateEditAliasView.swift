@@ -26,9 +26,7 @@ import UIComponents
 struct CreateEditAliasView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditAliasViewModel
-    @FocusState private var isFocusedOnTitle: Bool
-    @FocusState private var isFocusedOnPrefix: Bool
-    @FocusState private var isFocusedOnNote: Bool
+    @FocusState private var focusedField: Field?
     @Namespace private var noteID
     @State private var isShowingAdvancedOptions = false
     @State private var isShowingDiscardAlert = false
@@ -37,6 +35,10 @@ struct CreateEditAliasView: View {
 
     init(viewModel: CreateEditAliasViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
+    }
+
+    enum Field {
+        case title, prefix, note
     }
 
     var body: some View {
@@ -74,19 +76,21 @@ struct CreateEditAliasView: View {
         ScrollViewReader { value in
             ScrollView {
                 LazyVStack(spacing: 8) {
-                    CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
-                                               title: $viewModel.title,
-                                               selectedVault: viewModel.vault,
-                                               itemContentType: viewModel.itemContentType(),
-                                               isEditMode: viewModel.mode.isEditMode,
-                                               onChangeVault: viewModel.changeVault,
-                                               onSubmit: {
-                        if case .create = viewModel.mode {
-                            isFocusedOnPrefix.toggle()
-                        } else {
-                            isFocusedOnNote.toggle()
-                        }
-                    })
+                    CreateEditItemTitleSection(
+                        title: $viewModel.title,
+                        focusedField: $focusedField,
+                        field: .title,
+                        selectedVault: viewModel.vault,
+                        itemContentType: viewModel.itemContentType(),
+                        isEditMode: viewModel.mode.isEditMode,
+                        onChangeVault: viewModel.changeVault,
+                        onSubmit: {
+                            if case .create = viewModel.mode, isShowingAdvancedOptions {
+                                focusedField = .prefix
+                            } else {
+                                focusedField = .note
+                            }
+                        })
 
                     if case .edit = viewModel.mode {
                         aliasReadonlySection
@@ -95,10 +99,13 @@ struct CreateEditAliasView: View {
                         if isShowingAdvancedOptions, let suffixSelection = viewModel.suffixSelection {
                             PrefixSuffixSection(prefix: $viewModel.prefix,
                                                 prefixManuallyEdited: $viewModel.prefixManuallyEdited,
+                                                focusedField: $focusedField,
+                                                field: .prefix,
                                                 isLoading: viewModel.state.isLoading,
                                                 tintColor: tintColor,
                                                 suffixSelection: suffixSelection,
-                                                prefixError: viewModel.prefixError)
+                                                prefixError: viewModel.prefixError,
+                                                onSubmit: { focusedField = .note })
                         } else {
                             AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
                                 .padding(.vertical)
@@ -111,15 +118,17 @@ struct CreateEditAliasView: View {
                             .onTapGesture(perform: viewModel.showMailboxSelection)
                     }
 
-                    NoteEditSection(note: $viewModel.note, isFocused: $isFocusedOnNote)
-                        .id(noteID)
+                    NoteEditSection(note: $viewModel.note,
+                                    focusedField: $focusedField,
+                                    field: .note)
+                    .id(noteID)
                 }
                 .padding()
                 .animation(.default, value: isShowingAdvancedOptions)
                 .animation(.default, value: viewModel.mailboxSelection != nil)
             }
-            .onChange(of: isFocusedOnNote) { isFocusedOnNote in
-                if isFocusedOnNote {
+            .onChange(of: focusedField) { focusedField in
+                if case .note = focusedField {
                     withAnimation {
                         value.scrollTo(noteID, anchor: .bottom)
                     }
@@ -132,9 +141,7 @@ struct CreateEditAliasView: View {
             }
             .onChange(of: viewModel.isSaving) { isSaving in
                 if isSaving {
-                    isFocusedOnTitle = false
-                    isFocusedOnPrefix = false
-                    isFocusedOnNote = false
+                    focusedField = nil
                 }
             }
         }
@@ -143,10 +150,10 @@ struct CreateEditAliasView: View {
         .onFirstAppear {
             if case .create = viewModel.mode {
                 if #available(iOS 16, *) {
-                    isFocusedOnTitle.toggle()
+                    focusedField = .title
                 } else {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                        isFocusedOnTitle.toggle()
+                        focusedField = .title
                     }
                 }
             }

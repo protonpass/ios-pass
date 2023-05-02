@@ -22,9 +22,10 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct NoteEditSection: View {
+struct NoteEditSection<Field: Hashable>: View {
     @Binding var note: String
-    let isFocused: FocusState<Bool>.Binding
+    let focusedField: FocusState<Field?>.Binding
+    let field: Field
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
@@ -35,7 +36,8 @@ struct NoteEditSection: View {
                     .sectionTitleText()
 
                 TextEditorWithPlaceholder(text: $note,
-                                          isFocused: isFocused,
+                                          focusedField: focusedField,
+                                          field: field,
                                           placeholder: "Add note")
                 .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)
             }

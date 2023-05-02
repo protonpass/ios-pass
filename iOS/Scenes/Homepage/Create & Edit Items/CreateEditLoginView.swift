@@ -27,14 +27,18 @@ import UIComponents
 struct CreateEditLoginView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
-    @FocusState private var isFocusedOnTitle: Bool
-    @FocusState private var isFocusedOnUsername: Bool
-    @FocusState private var isFocusedOnPassword: Bool
-    @FocusState private var isFocusedOnTOTP: Bool
-    @FocusState private var isFocusedOnNote: Bool
+    @FocusState private var focusedField: Field?
     @State private var isShowingDiscardAlert = false
     @State private var isShowingDeleteAliasAlert = false
+    @Namespace private var usernameID
+    @Namespace private var passwordID
+    @Namespace private var totpID
+    @Namespace private var websitesID
     @Namespace private var noteID
+
+    enum Field {
+        case title, username, password, totp, websites, note
+    }
 
     init(viewModel: CreateEditLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -45,28 +49,40 @@ struct CreateEditLoginView: View {
             ScrollViewReader { value in
                 ScrollView {
                     LazyVStack(spacing: kItemDetailSectionPadding / 2) {
-                        CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
-                                                   title: $viewModel.title,
+                        CreateEditItemTitleSection(title: $viewModel.title,
+                                                   focusedField: $focusedField,
+                                                   field: .title,
                                                    selectedVault: viewModel.vault,
                                                    itemContentType: viewModel.itemContentType(),
                                                    isEditMode: viewModel.mode.isEditMode,
                                                    onChangeVault: viewModel.changeVault,
-                                                   onSubmit: { isFocusedOnUsername.toggle() })
+                                                   onSubmit: { focusedField = .username })
                         .padding(.bottom, kItemDetailSectionPadding / 2)
                         usernamePasswordTOTPSection
-                        WebsiteSection(viewModel: viewModel)
-                        NoteEditSection(note: $viewModel.note, isFocused: $isFocusedOnNote)
-                            .id(noteID)
+                        WebsiteSection(viewModel: viewModel,
+                                       focusedField: $focusedField,
+                                       field: .websites,
+                                       onSubmit: { focusedField = .note })
+                        .id(websitesID)
+                        NoteEditSection(note: $viewModel.note,
+                                        focusedField: $focusedField,
+                                        field: .note)
+                        .id(noteID)
                         Spacer()
                     }
                     .padding()
                 }
-                .onChange(of: isFocusedOnNote) { isFocusedOnNote in
-                    if isFocusedOnNote {
-                        withAnimation {
-                            value.scrollTo(noteID, anchor: .bottom)
-                        }
+                .onChange(of: focusedField) { focusedField in
+                    let id: Namespace.ID?
+                    switch focusedField {
+                    case .title: id = usernameID
+                    case .username: id = passwordID
+                    case .totp: id = websitesID
+                    case .note: id = noteID
+                    default: id = nil
                     }
+
+                    if let id { withAnimation { value.scrollTo(id, anchor: .bottom) } }
                 }
                 .onChange(of: viewModel.note) { _ in
                     withAnimation {
@@ -78,20 +94,16 @@ struct CreateEditLoginView: View {
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: viewModel.isSaving) { isSaving in
                 if isSaving {
-                    isFocusedOnTitle = false
-                    isFocusedOnUsername = false
-                    isFocusedOnPassword = false
-                    isFocusedOnTOTP = false
-                    isFocusedOnNote = false
+                    focusedField = nil
                 }
             }
             .onFirstAppear {
                 if case .create = viewModel.mode {
                     if #available(iOS 16, *) {
-                        isFocusedOnTitle.toggle()
+                        focusedField = .title
                     } else {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                            isFocusedOnTitle.toggle()
+                            focusedField = .title
                         }
                     }
                 }
@@ -128,24 +140,28 @@ struct CreateEditLoginView: View {
     private var keyboardToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
             if #available(iOS 16, *) {
-                if isFocusedOnUsername {
+                switch focusedField {
+                case .username:
                     usernameTextFieldToolbar
-                } else if isFocusedOnTOTP {
+                case .totp:
                     totpTextFieldToolbar
-                } else if isFocusedOnPassword {
+                case .password:
                     passwordTextFieldToolbar
+                default:
+                    EmptyView()
                 }
             } else {
                 // Embed in a ZStack otherwise toolbars are rendered
                 // randomly in iOS 15
                 ZStack {
-                    if isFocusedOnUsername {
+                    switch focusedField {
+                    case .username:
                         usernameTextFieldToolbar
-                    } else if isFocusedOnTOTP {
+                    case .totp:
                         totpTextFieldToolbar
-                    } else if isFocusedOnPassword {
+                    case .password:
                         passwordTextFieldToolbar
-                    } else {
+                    default:
                         Button("") {}
                     }
                 }
@@ -170,9 +186,9 @@ struct CreateEditLoginView: View {
                 Button(action: {
                     viewModel.useRealEmailAddress()
                     if viewModel.password.isEmpty {
-                        isFocusedOnPassword = true
+                        focusedField = .password
                     } else {
-                        isFocusedOnUsername = false
+                        focusedField = nil
                     }
                 }, label: {
                     Text("Use \(viewModel.emailAddress)")
@@ -253,10 +269,10 @@ struct CreateEditLoginView: View {
                 TextField("Add username or email", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .focused($isFocusedOnUsername)
+                    .focused($focusedField, equals: .username)
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .submitLabel(.next)
-                    .onSubmit { isFocusedOnPassword.toggle() }
+                    .onSubmit { focusedField = .password }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -270,6 +286,7 @@ struct CreateEditLoginView: View {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .animation(.default, value: viewModel.username.isEmpty)
+        .id(usernameID)
     }
 
     private var createdAliasRow: some View {
@@ -354,27 +371,18 @@ struct CreateEditLoginView: View {
                 Text("Password")
                     .sectionTitleText()
 
-                if !viewModel.password.isEmpty, !viewModel.isShowingPassword {
-                    Text(String(repeating: "•", count: 20))
-                        .sectionContentText()
-                } else {
-                    TextField("Add password", text: $viewModel.password)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .focused($isFocusedOnPassword)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                        .submitLabel(.done)
-                }
+                SensitiveTextField(text: $viewModel.password,
+                                   placeholder: "Add password",
+                                   focusedField: $focusedField,
+                                   field: Field.password,
+                                   onSubmit: { focusedField = .totp })
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .submitLabel(.done)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .animation(.default, value: viewModel.isShowingPassword)
             .contentShape(Rectangle())
-            .onTapGesture {
-                viewModel.isShowingPassword = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                    isFocusedOnPassword = true
-                }
-            }
 
             if !viewModel.password.isEmpty {
                 Button(action: {
@@ -386,6 +394,7 @@ struct CreateEditLoginView: View {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .animation(.default, value: viewModel.password.isEmpty)
+        .id(passwordID)
     }
 
     private var totpRow: some View {
@@ -396,26 +405,18 @@ struct CreateEditLoginView: View {
                 Text("2FA secret (TOTP)")
                     .sectionTitleText()
 
-                if !viewModel.totpUri.isEmpty, !viewModel.isShowingTotpUri {
-                    Text(String(repeating: "•", count: 20))
-                        .sectionContentText()
-                } else {
-                    TextField("Add 2FA secret", text: $viewModel.totpUri)
-                        .keyboardType(.URL)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .focused($isFocusedOnTOTP)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                }
+                SensitiveTextField(text: $viewModel.totpUri,
+                                   placeholder: "Add 2FA secret",
+                                   focusedField: $focusedField,
+                                   field: .totp,
+                                   onSubmit: { focusedField = .websites })
+                    .keyboardType(.URL)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
-            .onTapGesture {
-                viewModel.isShowingTotpUri = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                    isFocusedOnTOTP = true
-                }
-            }
 
             if !viewModel.totpUri.isEmpty {
                 Button(action: {
@@ -478,8 +479,11 @@ private struct WrappedCodeScannerView: View {
 }
 
 // MARK: - WebsiteSection
-private struct WebsiteSection: View {
+private struct WebsiteSection<Field: Hashable>: View {
     @ObservedObject var viewModel: CreateEditLoginViewModel
+    let focusedField: FocusState<Field?>.Binding
+    let field: Field
+    let onSubmit: () -> Void
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
@@ -492,6 +496,7 @@ private struct WebsiteSection: View {
                     ForEach($viewModel.urls) { $url in
                         HStack {
                             TextField("https://", text: $url.value)
+                                .focused(focusedField, equals: field)
                                 .onChange(of: viewModel.urls) { _ in
                                     viewModel.invalidURLs.removeAll()
                                 }
@@ -500,6 +505,7 @@ private struct WebsiteSection: View {
                                 .autocorrectionDisabled()
                                 .foregroundColor(Color(uiColor: isValid(url) ?
                                                        PassColor.textNorm : PassColor.signalDanger))
+                                .onSubmit(onSubmit)
 
                             if !url.value.isEmpty {
                                 Button(action: {
