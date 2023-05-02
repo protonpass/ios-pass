@@ -26,10 +26,15 @@ import UIComponents
 struct CreateAliasLiteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateAliasLiteViewModel
+    @FocusState private var focusedField: Field?
     @State private var isShowingAdvancedOptions = false
 
     init(viewModel: CreateAliasLiteViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
+    }
+
+    enum Field {
+        case prefix
     }
 
     var body: some View {
@@ -46,6 +51,8 @@ struct CreateAliasLiteView: View {
                         if isShowingAdvancedOptions {
                             PrefixSuffixSection(prefix: $viewModel.prefix,
                                                 prefixManuallyEdited: .constant(false),
+                                                focusedField: $focusedField,
+                                                field: .prefix,
                                                 isLoading: false,
                                                 tintColor: ItemContentType.login.normMajor1Color,
                                                 suffixSelection: viewModel.suffixSelection,

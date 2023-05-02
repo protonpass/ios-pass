@@ -20,16 +20,18 @@
 
 import SwiftUI
 
-public struct TextEditorWithPlaceholder: View {
+public struct TextEditorWithPlaceholder<Field: Hashable>: View {
     @Binding var text: String
     let font: UIFont
     let fontWeight: UIFont.Weight
-    var isFocused: FocusState<Bool>.Binding
+    let focusedField: FocusState<Field?>.Binding
+    let field: Field
     let placeholder: String
     let onSubmit: (() -> Void)?
 
     public init(text: Binding<String>,
-                isFocused: FocusState<Bool>.Binding,
+                focusedField: FocusState<Field?>.Binding,
+                field: Field,
                 placeholder: String,
                 font: UIFont = .body,
                 fontWeight: UIFont.Weight = .regular,
@@ -37,7 +39,8 @@ public struct TextEditorWithPlaceholder: View {
         self._text = text
         self.font = font
         self.fontWeight = fontWeight
-        self.isFocused = isFocused
+        self.focusedField = focusedField
+        self.field = field
         self.placeholder = placeholder
         self.onSubmit = onSubmit
     }
@@ -45,7 +48,7 @@ public struct TextEditorWithPlaceholder: View {
     public var body: some View {
         if #available(iOS 16.0, *) {
             TextField(placeholder, text: $text, axis: .vertical)
-                .focused(isFocused)
+                .focused(focusedField, equals: field)
                 .scrollContentBackground(.hidden)
                 .submitLabel(onSubmit != nil ? .next : .return)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -63,7 +66,7 @@ public struct TextEditorWithPlaceholder: View {
                 .fontWeight(fontWeight)
                 .foregroundColor(PassColor.textNorm)
                 .returnKey(onSubmit != nil ? .next : .default)
-                .focused(isFocused)
+                .focused(focusedField, equals: field)
         }
     }
 }

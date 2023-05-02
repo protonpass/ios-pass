@@ -22,35 +22,48 @@ import SwiftUI
 
 /// TextField for sensitive content like password or TOTP URI
 /// When not focused, content is covered by a string of "•"
-public struct SensitiveTextField: View {
+public struct SensitiveTextField<Field: Hashable>: View {
     @Binding var text: String
     let placeholder: String
-    let isFocused: FocusState<Bool>.Binding
+    let focusedField: FocusState<Field?>.Binding
+    let field: Field
+    let onSubmit: (() -> Void)?
 
-    public init(text: Binding<String>, placeholder: String, isFocused: FocusState<Bool>.Binding) {
+    private var isFocused: Bool {
+        focusedField.wrappedValue == field
+    }
+
+    public init(text: Binding<String>,
+                placeholder: String,
+                focusedField: FocusState<Field?>.Binding,
+                field: Field,
+                onSubmit: (() -> Void)? = nil) {
         self._text = text
         self.placeholder = placeholder
-        self.isFocused = isFocused
+        self.focusedField = focusedField
+        self.field = field
+        self.onSubmit = onSubmit
     }
 
     public var body: some View {
         ZStack {
             TextField(placeholder, text: $text)
-                .focused(isFocused)
-                .opacity(isFocused.wrappedValue || text.isEmpty ? 1 : 0)
+                .focused(focusedField, equals: field)
+                .opacity(isFocused || text.isEmpty ? 1 : 0)
+                .onSubmit { onSubmit?() }
 
             if !text.isEmpty {
                 Button(action: {
-                    isFocused.wrappedValue = true
+                    focusedField.wrappedValue = field
                 }, label: {
                     Text(String(repeating: "•", count: text.count))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .contentShape(Rectangle())
                 })
-                .opacity(isFocused.wrappedValue ? 0 : 1)
+                .opacity(isFocused ? 0 : 1)
                 .buttonStyle(.plain)
             }
         }
-        .animation(.default, value: isFocused.wrappedValue)
+        .animation(.default, value: isFocused)
     }
 }
