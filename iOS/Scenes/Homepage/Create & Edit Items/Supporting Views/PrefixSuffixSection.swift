@@ -32,10 +32,11 @@ enum PrefixUtils {
     }
 }
 
-struct PrefixSuffixSection: View {
+struct PrefixSuffixSection<Field: Hashable>: View {
     @Binding var prefix: String
     @Binding var prefixManuallyEdited: Bool
-    @FocusState var isFocusedOnPrefix: Bool
+    let focusedField: FocusState<Field?>.Binding
+    let field: Field
     let isLoading: Bool
     let tintColor: UIColor
     let suffixSelection: SuffixSelection
@@ -63,7 +64,7 @@ struct PrefixSuffixSection: View {
                     }
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
-                    .focused($isFocusedOnPrefix)
+                    .focused(focusedField, equals: field)
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .submitLabel(.done)
                     .onSubmit { onSubmit?() }
