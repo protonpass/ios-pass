@@ -24,6 +24,8 @@ import UIComponents
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
+
+    private var appCoverView: UIView?
     private lazy var appCoordinator = AppCoordinator(window: window ?? .init())
 
     func scene(_ scene: UIScene,
@@ -38,11 +40,35 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appCoordinator.start()
     }
 
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        window?.alpha = 0
+    func sceneWillResignActive(_ scene: UIScene) {
+        let appCoverView = makeAppCoverView()
+        appCoverView.frame = window?.frame ?? .zero
+        window?.addSubview(appCoverView)
+        self.appCoverView = appCoverView
     }
 
-    func sceneWillEnterForeground(_ scene: UIScene) {
-        window?.alpha = 1
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        appCoverView?.removeFromSuperview()
+        appCoverView = nil
+    }
+}
+
+private extension SceneDelegate {
+    struct AppCoverView: View {
+        var body: some View {
+            ZStack {
+                Color(uiColor: PassColor.backgroundNorm)
+                    .ignoresSafeArea()
+                Image(uiImage: PassIcon.passIcon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 160)
+            }
+            .theme(Preferences().theme)
+        }
+    }
+
+    func makeAppCoverView() -> UIView {
+        UIHostingController(rootView: AppCoverView()).view
     }
 }
