@@ -27,13 +27,13 @@ struct AccountView: View {
     @StateObject var viewModel: AccountViewModel
 
     var body: some View {
-        if UIDevice.current.isIpad {
-            realBody
-        } else {
+        if viewModel.isShownAsSheet {
             NavigationView {
                 realBody
             }
             .navigationViewStyle(.stack)
+        } else {
+            realBody
         }
     }
 
@@ -139,11 +139,11 @@ struct AccountView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: UIDevice.current.isIpad ?
-                         IconProvider.chevronLeft : IconProvider.chevronDown,
-                         iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1,
-                         action: viewModel.goBack)
+            CircleButton(
+                icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
+                iconColor: PassColor.interactionNormMajor2,
+                backgroundColor: PassColor.interactionNormMinor1,
+                action: viewModel.goBack)
         }
     }
 }
