@@ -43,9 +43,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
-    @Published var isShowingPassword = false
     @Published var totpUri = ""
-    @Published var isShowingTotpUri = false
     @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
     @Published var invalidURLs = [String]()
     @Published var note = ""

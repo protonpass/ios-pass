@@ -481,6 +481,7 @@
 		35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1E28B027C000CEDDE6 /* UpdateItemRequest.swift */; };
 		35AABE2128B0288B00CEDDE6 /* UpdateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
+		35B494F22A00FCCF00B5D986 /* SensitiveTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B494F12A00FCCF00B5D986 /* SensitiveTextField.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
 		35C2162729EA8B0B001720FF /* macOS-Release-Prod-QA.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35C2162629EA8B0B001720FF /* macOS-Release-Prod-QA.xcconfig */; };
 		35CAD6A229A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */; };
@@ -1129,6 +1130,7 @@
 		35AABE1E28B027C000CEDDE6 /* UpdateItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateItemRequest.swift; sourceTree = "<group>"; };
 		35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateItemEndpoint.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
+		35B494F12A00FCCF00B5D986 /* SensitiveTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensitiveTextField.swift; sourceTree = "<group>"; };
 		35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailTitleView.swift; sourceTree = "<group>"; };
 		35C2161529EA8991001720FF /* iOS-Release-Prod-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release-Prod-QA.xcconfig"; sourceTree = "<group>"; };
 		35C2162429EA8AA5001720FF /* AutoFill-Release-Prod-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "AutoFill-Release-Prod-QA.xcconfig"; sourceTree = "<group>"; };
@@ -2333,6 +2335,7 @@
 				35526B5C28D116350017BB53 /* PassIcon.swift */,
 				3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */,
 				3542E2CC28DA11FE00194F24 /* RetryableErrorView.swift */,
+				35B494F12A00FCCF00B5D986 /* SensitiveTextField.swift */,
 				3562BCF429BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift */,
 				3562D3C129DF670200981D7D /* SquircleThumbnail.swift */,
 				3562BC2C2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift */,
@@ -4016,6 +4019,7 @@
 				355DC72929E15EAF00946867 /* Modifiers.swift in Sources */,
 				3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */,
 				355DC72629E15EAF00946867 /* Coordinator.swift in Sources */,
+				35B494F22A00FCCF00B5D986 /* SensitiveTextField.swift in Sources */,
 				354DCCF9291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift in Sources */,
 				3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */,
 				3560845429DDE305001F7487 /* PassColor.swift in Sources */,
