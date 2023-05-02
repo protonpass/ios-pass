@@ -235,20 +235,34 @@ extension VaultsManager {
         }
     }
 
+    func vaultHasTrashedItems(_ vault: Vault) -> Bool {
+        guard case let .loaded(_, trashedItems) = state else { return false }
+        return trashedItems.contains { $0.shareId == vault.shareId }
+    }
+
     func delete(vault: Vault) async throws {
-        logger.trace("Deleting vault \(vault.shareId)")
-        try await shareRepository.deleteVault(shareId: vault.shareId)
+        let shareId = vault.shareId
+        logger.trace("Deleting vault \(shareId)")
+        try await shareRepository.deleteVault(shareId: shareId)
         switch state {
-        case let .loaded(vaults, _):
-            if let deletedVault = vaults.first(where: { $0.vault.shareId == vault.shareId }) {
+        case let .loaded(vaults, trashedItems):
+            logger.trace("Deleting local active items of vault \(shareId)")
+            if let deletedVault = vaults.first(where: { $0.vault.shareId == shareId }) {
                 let itemIds = deletedVault.items.map { $0.itemId }
-                try await itemRepository.deleteItemsLocally(itemIds: itemIds, shareId: vault.shareId)
+                try await itemRepository.deleteItemsLocally(itemIds: itemIds, shareId: shareId)
             }
+
+            logger.trace("Deleting local trashed items of vault \(shareId)")
+            let trashedItemsToBeRemoved = trashedItems.filter { $0.shareId == shareId }
+            try await itemRepository.deleteItemsLocally(
+                itemIds: trashedItemsToBeRemoved.map { $0.itemId },
+                shareId: shareId)
+
         default:
             break
         }
         // Delete local items of the vault
-        logger.info("Deleted vault \(vault.shareId)")
+        logger.info("Deleted vault \(shareId)")
     }
 
     func restoreAllTrashedItems() async throws {
