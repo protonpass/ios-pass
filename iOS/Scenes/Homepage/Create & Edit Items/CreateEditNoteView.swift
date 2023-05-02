@@ -25,8 +25,7 @@ import UIComponents
 struct CreateEditNoteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditNoteViewModel
-    @FocusState private var isFocusedOnTitle: Bool
-    @FocusState private var isFocusedOnContent: Bool
+    @FocusState private var focusedField: Field?
     @Namespace private var contentID
     @State private var isShowingDiscardAlert = false
 
@@ -34,13 +33,18 @@ struct CreateEditNoteView: View {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
+    enum Field {
+        case title, content
+    }
+
     var body: some View {
         NavigationView {
             ScrollViewReader { value in
                 ScrollView {
                     LazyVStack {
-                        CreateEditItemTitleSection(isFocused: $isFocusedOnTitle,
-                                                   title: .constant(""),
+                        CreateEditItemTitleSection(title: .constant(""),
+                                                   focusedField: $focusedField,
+                                                   field: .title,
                                                    selectedVault: viewModel.vault,
                                                    itemContentType: viewModel.itemContentType(),
                                                    isEditMode: viewModel.mode.isEditMode,
@@ -48,14 +52,16 @@ struct CreateEditNoteView: View {
                         .padding(.bottom, 18)
 
                         TextEditorWithPlaceholder(text: $viewModel.title,
-                                                  isFocused: $isFocusedOnTitle,
+                                                  focusedField: $focusedField,
+                                                  field: .title,
                                                   placeholder: "Untitled",
                                                   font: .title,
                                                   fontWeight: .bold,
-                                                  onSubmit: { isFocusedOnContent = true })
+                                                  onSubmit: { focusedField = .content })
 
                         TextEditorWithPlaceholder(text: $viewModel.note,
-                                                  isFocused: $isFocusedOnContent,
+                                                  focusedField: $focusedField,
+                                                  field: .content,
                                                   placeholder: "Note")
                         .id(contentID)
                     }
@@ -71,8 +77,7 @@ struct CreateEditNoteView: View {
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: viewModel.isSaving) { isSaving in
                 if isSaving {
-                    isFocusedOnTitle = false
-                    isFocusedOnContent = false
+                    focusedField = nil
                 }
             }
             .toolbar {
@@ -99,13 +104,12 @@ struct CreateEditNoteView: View {
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .onFirstAppear {
             if #available(iOS 16, *) {
-                isFocusedOnTitle = true
+                focusedField = .title
             } else {
                 // 0.5 second delay is purely heuristic.
                 // Values lower than 0.5 simply don't work.
-                // Can be removed once iOS 15 is dropped
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    isFocusedOnTitle = true
+                    focusedField = .title
                 }
             }
         }
