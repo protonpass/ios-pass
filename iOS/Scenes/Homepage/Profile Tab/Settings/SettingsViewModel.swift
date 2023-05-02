@@ -42,6 +42,7 @@ protocol SettingsViewModelDelegate: AnyObject {
 final class SettingsViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    let isShownAsSheet: Bool
     private let logger: Logger
     private let preferences: Preferences
     let vaultsManager: VaultsManager
@@ -63,9 +64,11 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
-    init(logManager: LogManager,
+    init(isShownAsSheet: Bool,
+         logManager: LogManager,
          preferences: Preferences,
          vaultsManager: VaultsManager) {
+        self.isShownAsSheet = isShownAsSheet
         self.logger = .init(manager: logManager)
         self.preferences = preferences
 

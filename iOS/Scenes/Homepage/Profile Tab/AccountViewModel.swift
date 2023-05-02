@@ -32,6 +32,7 @@ protocol AccountViewModelDelegate: AnyObject {
 final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    let isShownAsSheet: Bool
     let apiService: APIService
     let logger: Logger
     let theme: Theme
@@ -57,12 +58,14 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         }
     }
 
-    init(apiService: APIService,
+    init(isShownAsSheet: Bool,
+         apiService: APIService,
          logManager: LogManager,
          theme: Theme,
          username: String,
          userPlan: UserPlan?,
          userPlanProvider: UserPlanProviderProtocol) {
+        self.isShownAsSheet = isShownAsSheet
         self.apiService = apiService
         self.logger = .init(manager: logManager)
         self.username = username
