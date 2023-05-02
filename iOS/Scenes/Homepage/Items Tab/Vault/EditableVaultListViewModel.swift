@@ -84,7 +84,8 @@ extension EditableVaultListViewModel {
 
     func delete(vault: Vault) {
         let itemCount = vaultsManager.getItemCount(for: .precise(vault))
-        if itemCount == 0 {
+        let hasTrashedItems = vaultsManager.vaultHasTrashedItems(vault)
+        if itemCount == 0, !hasTrashedItems {
             doDelete(vault: vault)
         } else {
             delegate?.editableVaultListViewModelWantsToConfirmDelete(vault: vault, delegate: self)
