@@ -27,15 +27,15 @@ struct SettingsView: View {
     @StateObject var viewModel: SettingsViewModel
 
     var body: some View {
-        if UIDevice.current.isIpad {
-            realBody
-                .theme(viewModel.selectedTheme)
-        } else {
+        if viewModel.isShownAsSheet {
             NavigationView {
                 realBody
             }
             .navigationViewStyle(.stack)
             .theme(viewModel.selectedTheme)
+        } else {
+            realBody
+                .theme(viewModel.selectedTheme)
         }
     }
 
@@ -69,10 +69,11 @@ struct SettingsView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: UIDevice.current.isIpad ? IconProvider.chevronLeft : IconProvider.chevronDown,
-                         iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1,
-                         action: viewModel.goBack)
+            CircleButton(
+                icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
+                iconColor: PassColor.interactionNormMajor2,
+                backgroundColor: PassColor.interactionNormMinor1,
+                action: viewModel.goBack)
         }
     }
 

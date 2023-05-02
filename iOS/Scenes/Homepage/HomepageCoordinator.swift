@@ -433,21 +433,24 @@ private extension HomepageCoordinator {
         currentCreateEditItemViewModel?.refresh()
     }
 
-    func adaptivelyPresentDetailView<V: View>(view: V) {
-        if UIDevice.current.isIpad {
-            push(view)
+    func shouldShowAsSheet() -> Bool {
+        !UIDevice.current.isIpad || (UIDevice.current.isIpad && isCollapsed())
+    }
+
+    func showView<V: View>(view: V, asSheet: Bool) {
+        if asSheet {
+            present(view)
         } else {
-            present(view, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+            push(view)
         }
     }
 
     func adaptivelyDismissCurrentDetailView() {
         // Dismiss differently because show differently
-        // (push on iPad, sheets on iPhone)
-        if UIDevice.current.isIpad {
-            popTopViewController(animated: true)
-        } else {
+        if rootViewController != topMostViewController {
             dismissTopMostViewController()
+        } else {
+            popTopViewController(animated: true)
         }
     }
 
@@ -629,7 +632,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
-        presentItemDetailView(for: itemContent, asSheet: !UIDevice.current.isIpad)
+        presentItemDetailView(for: itemContent, asSheet: shouldShowAsSheet())
     }
 
     func itemsTabViewModelDidEncounter(error: Error) {
@@ -678,7 +681,9 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowAccountMenu() {
-        let viewModel = AccountViewModel(apiService: apiService,
+        let asSheet = shouldShowAsSheet()
+        let viewModel = AccountViewModel(isShownAsSheet: asSheet,
+                                         apiService: apiService,
                                          logManager: logManager,
                                          theme: preferences.theme,
                                          username: userData.user.email ?? "",
@@ -686,16 +691,18 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
                                          userPlanProvider: userPlanProvider)
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
-        adaptivelyPresentDetailView(view: view)
+        showView(view: view, asSheet: asSheet)
     }
 
     func profileTabViewModelWantsToShowSettingsMenu() {
-        let viewModel = SettingsViewModel(logManager: logManager,
+        let asSheet = shouldShowAsSheet()
+        let viewModel = SettingsViewModel(isShownAsSheet: asSheet,
+                                          logManager: logManager,
                                           preferences: preferences,
                                           vaultsManager: vaultsManager)
         viewModel.delegate = self
         let view = SettingsView(viewModel: viewModel)
-        adaptivelyPresentDetailView(view: view)
+        showView(view: view, asSheet: asSheet)
     }
 
     func profileTabViewModelWantsToShowAcknowledgments() {
