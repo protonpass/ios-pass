@@ -354,27 +354,16 @@ struct CreateEditLoginView: View {
                 Text("Password")
                     .sectionTitleText()
 
-                if !viewModel.password.isEmpty, !viewModel.isShowingPassword {
-                    Text(String(repeating: "•", count: 20))
-                        .sectionContentText()
-                } else {
-                    TextField("Add password", text: $viewModel.password)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .focused($isFocusedOnPassword)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                        .submitLabel(.done)
-                }
+                SensitiveTextField(text: $viewModel.password,
+                                   placeholder: "Add password",
+                                   isFocused: $isFocusedOnPassword)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .submitLabel(.done)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .animation(.default, value: viewModel.isShowingPassword)
             .contentShape(Rectangle())
-            .onTapGesture {
-                viewModel.isShowingPassword = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                    isFocusedOnPassword = true
-                }
-            }
 
             if !viewModel.password.isEmpty {
                 Button(action: {
@@ -396,26 +385,16 @@ struct CreateEditLoginView: View {
                 Text("2FA secret (TOTP)")
                     .sectionTitleText()
 
-                if !viewModel.totpUri.isEmpty, !viewModel.isShowingTotpUri {
-                    Text(String(repeating: "•", count: 20))
-                        .sectionContentText()
-                } else {
-                    TextField("Add 2FA secret", text: $viewModel.totpUri)
-                        .keyboardType(.URL)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .focused($isFocusedOnTOTP)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                }
+                SensitiveTextField(text: $viewModel.totpUri,
+                                   placeholder: "Add 2FA secret",
+                                   isFocused: $isFocusedOnTOTP)
+                    .keyboardType(.URL)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
-            .onTapGesture {
-                viewModel.isShowingTotpUri = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                    isFocusedOnTOTP = true
-                }
-            }
 
             if !viewModel.totpUri.isEmpty {
                 Button(action: {
