@@ -114,6 +114,7 @@ struct CreateEditLoginView: View {
                     isSaveable: viewModel.isSaveable,
                     isSaving: viewModel.isSaving,
                     itemContentType: viewModel.itemContentType(),
+                    shouldUpgrade: false,
                     onGoBack: {
                         if viewModel.didEditSomething {
                             isShowingDiscardAlert.toggle()
@@ -121,6 +122,7 @@ struct CreateEditLoginView: View {
                             dismiss()
                         }
                     },
+                    onUpgrade: { /* Not applicable */ },
                     onSave: {
                         if viewModel.validateURLs() {
                             viewModel.save()

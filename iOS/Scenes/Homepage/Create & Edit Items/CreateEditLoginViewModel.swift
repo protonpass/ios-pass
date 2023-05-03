@@ -33,7 +33,6 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
     func createEditLoginViewModelWantsToOpenSettings()
-    func createEditLoginViewModelCanNotCreateMoreAlias()
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
@@ -205,7 +204,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     let aliasOptions = try await aliasRepository.getAliasOptions(shareId: vault.shareId)
                     delegate?.createEditItemViewModelWantsToHideLoadingHud()
                     if aliasOptions.canCreateAlias == false {
-                        createEditLoginViewModelDelegate?.createEditLoginViewModelCanNotCreateMoreAlias()
+                        print("Handle this")
                     } else {
                         if let firstSuffix = aliasOptions.suffixes.first,
                            let firstMailbox = aliasOptions.mailboxes.first {

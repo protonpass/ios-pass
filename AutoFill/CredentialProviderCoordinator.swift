@@ -700,10 +700,6 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
     // Not applicable
     func createEditLoginViewModelWantsToOpenSettings() {}
-
-    func createEditLoginViewModelCanNotCreateMoreAlias() {
-        bannerManager.displayTopErrorMessage("You can not create more aliases.")
-    }
 }
 
 // MARK: - CreateAliasLiteViewModelDelegate

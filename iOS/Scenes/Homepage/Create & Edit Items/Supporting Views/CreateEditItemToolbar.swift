@@ -28,7 +28,9 @@ struct CreateEditItemToolbar: ToolbarContent {
     let isSaveable: Bool
     let isSaving: Bool
     let itemContentType: ItemContentType
+    let shouldUpgrade: Bool
     let onGoBack: () -> Void
+    let onUpgrade: () -> Void
     let onSave: () -> Void
 
     var body: some ToolbarContent {
@@ -40,16 +42,21 @@ struct CreateEditItemToolbar: ToolbarContent {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            if isSaving {
-                ProgressView()
+            if shouldUpgrade {
+                UpgradeButton(backgroundColor: itemContentType.normMajor1Color,
+                              action: onUpgrade)
             } else {
-                DisablableCapsuleTextButton(title: saveButtonTitle,
-                                            titleColor: PassColor.textInvert,
-                                            disableTitleColor: PassColor.textHint,
-                                            backgroundColor: itemContentType.normMajor1Color,
-                                            disableBackgroundColor: itemContentType.normMinor1Color,
-                                            disabled: !isSaveable,
-                                            action: onSave)
+                if isSaving {
+                    ProgressView()
+                } else {
+                    DisablableCapsuleTextButton(title: saveButtonTitle,
+                                                titleColor: PassColor.textInvert,
+                                                disableTitleColor: PassColor.textHint,
+                                                backgroundColor: itemContentType.normMajor1Color,
+                                                disableBackgroundColor: itemContentType.normMinor1Color,
+                                                disabled: !isSaveable,
+                                                action: onSave)
+                }
             }
         }
     }
