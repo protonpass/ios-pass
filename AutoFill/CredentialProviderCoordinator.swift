@@ -712,6 +712,10 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         present(viewController)
     }
+
+    func createAliasLiteViewModelWantsToUpgrade() {
+        print("Handle this")
+    }
 }
 
 // MARK: - ExtensionSettingsViewModelDelegate

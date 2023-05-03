@@ -79,6 +79,10 @@ public extension CoordinatorProtocol {
     func dismissTopMostViewController(animated: Bool = true, completion: (() -> Void)? = nil) {
         rootViewController.topMostViewController.dismiss(animated: animated, completion: completion)
     }
+
+    func dismissAllViewControllers(animated: Bool = true, completion: (() -> Void)? = nil) {
+        rootViewController.dismiss(animated: animated, completion: completion)
+    }
 }
 
 enum CoordinatorType {

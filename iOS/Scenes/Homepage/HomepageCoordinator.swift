@@ -1030,6 +1030,12 @@ extension HomepageCoordinator: CreateAliasLiteViewModelDelegate {
                                     mode: .createAliasLite,
                                     titleMode: .create)
     }
+
+    func createAliasLiteViewModelWantsToUpgrade() {
+        dismissAllViewControllers(animated: true) { [unowned self] in
+            print(#function)
+        }
+    }
 }
 
 // MARK: - GeneratePasswordViewModelDelegate
