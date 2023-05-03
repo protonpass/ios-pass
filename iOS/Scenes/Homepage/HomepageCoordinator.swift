@@ -364,7 +364,30 @@ private extension HomepageCoordinator {
                                      titleMode: MailboxSection.Mode) {
         let view = MailboxSelectionView(mailboxSelection: selection, mode: mode, titleMode: titleMode)
         let viewController = UIHostingController(rootView: view)
-        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.compact.value) * selection.mailboxes.count + 140
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController)
+    }
+
+    func presentSuffixSelectionView(selection: SuffixSelection) {
+        let view = SuffixSelectionView(suffixSelection: selection)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.compact.value) * selection.suffixes.count + 100
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
         present(viewController)
     }
 
@@ -1024,6 +1047,10 @@ extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
         presentMailboxSelectionView(selection: mailboxSelection,
                                     mode: .createEditAlias,
                                     titleMode: titleMode)
+    }
+
+    func createEditAliasViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
+        presentSuffixSelectionView(selection: suffixSelection)
     }
 
     func createEditAliasViewModelWantsToUpgrade() {

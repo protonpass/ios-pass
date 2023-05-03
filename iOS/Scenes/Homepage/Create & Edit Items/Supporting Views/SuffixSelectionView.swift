@@ -1,6 +1,6 @@
 //
-// MailboxSelectionView.swift
-// Proton Pass - Created on 17/02/2023.
+// SuffixSelectionView.swift
+// Proton Pass - Created on 03/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -23,43 +23,28 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct MailboxSelectionView: View {
+struct SuffixSelectionView: View {
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var mailboxSelection: MailboxSelection
-    let mode: Mode
-    let titleMode: MailboxSection.Mode
-
-    enum Mode {
-        case createEditAlias
-        case createAliasLite
-
-        var tintColor: Color {
-            switch self {
-            case .createEditAlias:
-                return Color(uiColor: ItemContentType.alias.normMajor2Color)
-            case .createAliasLite:
-                return Color(uiColor: ItemContentType.login.normMajor2Color)
-            }
-        }
-    }
+    @ObservedObject var suffixSelection: SuffixSelection
 
     var body: some View {
+        let tintColor = ItemContentType.alias.normMajor2Color
         NavigationView {
             // ZStack instead of VStack because of SwiftUI bug.
             // See more in "CreateAliasLiteView.swift"
             ZStack(alignment: .bottom) {
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
+                        ForEach(suffixSelection.suffixes, id: \.suffix) { suffix in
                             HStack {
-                                Text(mailbox.email)
-                                    .foregroundColor(isSelected(mailbox) ?
-                                                     mode.tintColor : Color(uiColor: PassColor.textNorm))
+                                Text(suffix.suffix)
+                                    .foregroundColor(Color(uiColor: isSelected(suffix) ?
+                                                           tintColor : PassColor.textNorm))
                                 Spacer()
 
-                                if isSelected(mailbox) {
+                                if isSelected(suffix) {
                                     Image(uiImage: IconProvider.checkmark)
-                                        .foregroundColor(mode.tintColor)
+                                        .foregroundColor(Color(uiColor: tintColor))
                                 }
                             }
                             .contentShape(Rectangle())
@@ -67,41 +52,28 @@ struct MailboxSelectionView: View {
                             .padding(.horizontal)
                             .frame(height: OptionRowHeight.compact.value)
                             .onTapGesture {
-                                mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
+                                suffixSelection.selectedSuffix = suffix
+                                dismiss()
                             }
 
                             PassDivider()
                                 .padding(.horizontal)
                         }
-
-                        closeButton
-                            .opacity(0)
-                            .disabled(true)
                     }
                 }
-
-                closeButton
-                    .padding()
             }
             .background(Color(uiColor: PassColor.backgroundWeak))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: titleMode.title)
+                    NavigationTitleWithHandle(title: "Suffix")
                 }
             }
         }
         .navigationViewStyle(.stack)
     }
 
-    private func isSelected(_ mailbox: Mailbox) -> Bool {
-        mailboxSelection.selectedMailboxes.contains(mailbox)
-    }
-
-    private var closeButton: some View {
-        Button(action: dismiss.callAsFunction) {
-            Text("Close")
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
-        }
+    private func isSelected(_ suffix: Suffix) -> Bool {
+        suffix == suffixSelection.selectedSuffix
     }
 }

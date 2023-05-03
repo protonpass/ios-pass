@@ -721,7 +721,15 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
                                         mode: .createAliasLite,
                                         titleMode: .create)
         let viewController = UIHostingController(rootView: view)
-        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.compact.value) * mailboxSelection.mailboxes.count + 140
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
         present(viewController)
     }
 

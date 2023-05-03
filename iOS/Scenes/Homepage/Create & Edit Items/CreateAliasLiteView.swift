@@ -56,7 +56,8 @@ struct CreateAliasLiteView: View {
                                                 isLoading: false,
                                                 tintColor: ItemContentType.login.normMajor1Color,
                                                 suffixSelection: viewModel.suffixSelection,
-                                                prefixError: viewModel.prefixError)
+                                                prefixError: viewModel.prefixError,
+                                                onSelectSuffix: {})
                         }
 
                         MailboxSection(mailboxSelection: viewModel.mailboxSelection, mode: .create)
