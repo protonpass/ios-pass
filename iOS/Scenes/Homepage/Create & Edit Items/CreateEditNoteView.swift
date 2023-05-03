@@ -86,6 +86,7 @@ struct CreateEditNoteView: View {
                     isSaveable: viewModel.isSaveable,
                     isSaving: viewModel.isSaving,
                     itemContentType: viewModel.itemContentType(),
+                    shouldUpgrade: false,
                     onGoBack: {
                         if viewModel.didEditSomething {
                             isShowingDiscardAlert.toggle()
@@ -93,6 +94,7 @@ struct CreateEditNoteView: View {
                             dismiss()
                         }
                     },
+                    onUpgrade: { /* Not applicable */ },
                     onSave: viewModel.save)
             }
         }

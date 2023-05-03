@@ -227,10 +227,6 @@ private extension HomepageCoordinator {
         self.profileTabViewModel = profileTabViewModel
     }
 
-    func informAliasesLimit() {
-        bannerManager.displayTopErrorMessage("You can not create more aliases.")
-    }
-
     func present<V: View>(_ view: V, animated: Bool = true, dismissible: Bool = true) {
         present(UIHostingController(rootView: view),
                 userInterfaceStyle: preferences.theme.userInterfaceStyle,
@@ -1009,10 +1005,6 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToOpenSettings() {
         UIApplication.shared.openAppSettings()
     }
-
-    func createEditLoginViewModelCanNotCreateMoreAlias() {
-        informAliasesLimit()
-    }
 }
 
 // MARK: - CreateEditAliasViewModelDelegate
@@ -1024,8 +1016,10 @@ extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
                                     titleMode: titleMode)
     }
 
-    func createEditAliasViewModelCanNotCreateMoreAliases() {
-        informAliasesLimit()
+    func createEditAliasViewModelWantsToUpgrade() {
+        dismissTopMostViewController(animated: true) { [unowned self] in
+            print(#function)
+        }
     }
 }
 

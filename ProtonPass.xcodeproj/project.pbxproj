@@ -138,6 +138,10 @@
 		354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */; };
 		354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769928C87CD500EB2383 /* EmptyVaultView.swift */; };
 		354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */; };
+		354FBF5D2A02837000A0B27D /* UserPlanManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5C2A02837000A0B27D /* UserPlanManager.swift */; };
+		354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5E2A02939600A0B27D /* AliasLimitView.swift */; };
+		354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
+		354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
 		3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		355222ED293F67A600786F64 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355222EC293F67A600786F64 /* URLExtensions.swift */; };
@@ -839,6 +843,9 @@
 		354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewModel.swift; sourceTree = "<group>"; };
 		354F769928C87CD500EB2383 /* EmptyVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyVaultView.swift; sourceTree = "<group>"; };
 		354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseItemDetailViewModel.swift; sourceTree = "<group>"; };
+		354FBF5C2A02837000A0B27D /* UserPlanManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlanManager.swift; sourceTree = "<group>"; };
+		354FBF5E2A02939600A0B27D /* AliasLimitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasLimitView.swift; sourceTree = "<group>"; };
+		354FBF602A02961D00A0B27D /* UpgradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeButton.swift; sourceTree = "<group>"; };
 		3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsSection.swift; sourceTree = "<group>"; };
 		355222EC293F67A600786F64 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		3552272D29DC9EAC00B9607E /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
@@ -1827,6 +1834,7 @@
 				3562D3BB29DEB08100981D7D /* NavigationTitleWithHandle.swift */,
 				3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */,
 				3552272D29DC9EAC00B9607E /* SearchBar.swift */,
+				354FBF602A02961D00A0B27D /* UpgradeButton.swift */,
 			);
 			path = "Supporting Views";
 			sourceTree = "<group>";
@@ -1977,6 +1985,7 @@
 			isa = PBXGroup;
 			children = (
 				3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */,
+				354FBF5E2A02939600A0B27D /* AliasLimitView.swift */,
 				3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */,
 				3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */,
 				35992154299F910500FEFA32 /* MailboxSection.swift */,
@@ -2046,6 +2055,7 @@
 				3554747F29A8E8460060B555 /* PassKeyManager.swift */,
 				350A97D12885BF7E00A7168B /* Protobufable.swift */,
 				3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */,
+				354FBF5C2A02837000A0B27D /* UserPlanManager.swift */,
 				357602B429F7163C003062A2 /* UserPlanProvider.swift */,
 			);
 			path = Utilities;
@@ -3550,6 +3560,7 @@
 				3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */,
 				35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */,
 				35733B7829CC525900052229 /* APIManager.swift in Sources */,
+				354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */,
 				3560843F29DD7DE9001F7487 /* NoSearchResultsViews.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
 				3565FD58298D423800E2A0EE /* TOTPCircularTimer.swift in Sources */,
@@ -3644,6 +3655,7 @@
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
 				35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */,
 				3531B5432902DA890070D2EE /* AppLockedView.swift in Sources */,
+				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
 				356B831029C343F70084488A /* NoSearchResultsViews.swift in Sources */,
 				3572E51B299399AD00775FAC /* PPError.swift in Sources */,
 				354361572941D419000CAE12 /* OnboardingViewModel.swift in Sources */,
@@ -3663,6 +3675,7 @@
 				3565FD57298D3E9400E2A0EE /* TOTPText.swift in Sources */,
 				354361552941D251000CAE12 /* OnboardingView.swift in Sources */,
 				356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */,
+				354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */,
 				356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */,
 				3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */,
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
@@ -3808,6 +3821,7 @@
 				3554730829CDD3CC0092E0E4 /* UpdateVaultRequest.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
 				3530092A28A5281800611F8A /* Vault.swift in Sources */,
+				354FBF5D2A02837000A0B27D /* UserPlanManager.swift in Sources */,
 				3558180F290A8C0800DD94DB /* GetLastEventIDEndpoint.swift in Sources */,
 				35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */,
 				3542E2CB28D9FE8600194F24 /* ItemRepository.swift in Sources */,
