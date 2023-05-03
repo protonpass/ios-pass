@@ -383,7 +383,11 @@ private extension HomepageCoordinator {
     }
 
     func presentSuffixSelectionView(selection: SuffixSelection) {
-        let view = SuffixSelectionView(suffixSelection: selection)
+        let viewModel = SuffixSelectionViewModel(suffixSelection: selection,
+                                                 userPlanManager: userPlanManager,
+                                                 logManager: logManager)
+        viewModel.delegate = self
+        let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
             let height = Int(OptionRowHeight.compact.value) * selection.suffixes.count + 100
@@ -1075,6 +1079,17 @@ extension HomepageCoordinator: MailboxSelectionViewModelDelegate {
     }
 
     func mailboxSelectionViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - SuffixSelectionViewModelDelegate
+extension HomepageCoordinator: SuffixSelectionViewModelDelegate {
+    func suffixSelectionViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+
+    func suffixSelectionViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }

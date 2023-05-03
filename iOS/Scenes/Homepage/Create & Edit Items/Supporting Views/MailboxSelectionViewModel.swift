@@ -28,11 +28,12 @@ protocol MailboxSelectionViewModelDelegate: AnyObject {
     func mailboxSelectionViewModelDidEncounter(error: Error)
 }
 
-final class MailboxSelectionViewModel: ObservableObject {
+final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
+    deinit { print(deinitMessage) }
+
     @Published private(set) var shouldUpgrade = false
 
     let mailboxSelection: MailboxSelection
-    let userPlanManager: UserPlanManagerProtocol
     let logger: Logger
     let mode: Mode
     let titleMode: MailboxSection.Mode
@@ -60,7 +61,6 @@ final class MailboxSelectionViewModel: ObservableObject {
          mode: MailboxSelectionViewModel.Mode,
          titleMode: MailboxSection.Mode) {
         self.mailboxSelection = mailboxSelection
-        self.userPlanManager = userPlanManager
         self.logger = .init(manager: logManager)
         self.mode = mode
         self.titleMode = titleMode

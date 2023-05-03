@@ -147,6 +147,8 @@
 		354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */; };
 		354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */; };
 		354FBF692A02EF7900A0B27D /* MailboxSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */; };
+		354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */; };
+		354FBF6C2A02F76500A0B27D /* SuffixSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */; };
 		3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		355222ED293F67A600786F64 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355222EC293F67A600786F64 /* URLExtensions.swift */; };
@@ -853,6 +855,7 @@
 		354FBF602A02961D00A0B27D /* UpgradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeButton.swift; sourceTree = "<group>"; };
 		354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionView.swift; sourceTree = "<group>"; };
 		354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSelectionViewModel.swift; sourceTree = "<group>"; };
+		354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionViewModel.swift; sourceTree = "<group>"; };
 		3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsSection.swift; sourceTree = "<group>"; };
 		355222EC293F67A600786F64 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		3552272D29DC9EAC00B9607E /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
@@ -2002,6 +2005,7 @@
 				350AF86D299683940045B7B6 /* NoteEditSection.swift */,
 				35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */,
 				354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */,
+				354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */,
 			);
 			path = "Supporting Views";
 			sourceTree = "<group>";
@@ -3517,6 +3521,7 @@
 				3552273029DCAE2200B9607E /* SortTypeButton.swift in Sources */,
 				3560843B29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
 				3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */,
+				354FBF6C2A02F76500A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
 				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
 				3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */,
@@ -3735,6 +3740,7 @@
 				3586478229F825E0003487B1 /* TelemetryEventsSection.swift in Sources */,
 				356BC35229D6C5B400F03497 /* SettingsViewModel.swift in Sources */,
 				3571B59F29BF7204008D4350 /* SearchView.swift in Sources */,
+				354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
 				3556949D29D45FD5005DD2EB /* MoveVaultListView.swift in Sources */,
