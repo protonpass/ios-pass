@@ -67,8 +67,13 @@ struct CreateAliasLiteView: View {
                                 .padding(.vertical)
                         }
 
+                        if !viewModel.canCreateAlias {
+                            AliasLimitView(backgroundColor: PassColor.loginInteractionNormMinor1)
+                        }
+
                         Spacer()
 
+                        // Gimmick view to take up space
                         buttons
                             .opacity(0)
                             .disabled(true)
@@ -119,14 +124,20 @@ struct CreateAliasLiteView: View {
                               height: 44,
                               action: dismiss.callAsFunction)
 
-            DisablableCapsuleTextButton(title: "Confirm",
-                                        titleColor: PassColor.textInvert,
-                                        disableTitleColor: PassColor.textHint,
-                                        backgroundColor: PassColor.loginInteractionNormMajor1,
-                                        disableBackgroundColor: PassColor.loginInteractionNormMinor1,
-                                        disabled: viewModel.prefixError != nil,
-                                        height: 44,
-                                        action: { viewModel.confirm(); dismiss() })
+            if viewModel.canCreateAlias {
+                DisablableCapsuleTextButton(title: "Confirm",
+                                            titleColor: PassColor.textInvert,
+                                            disableTitleColor: PassColor.textHint,
+                                            backgroundColor: PassColor.loginInteractionNormMajor1,
+                                            disableBackgroundColor: PassColor.loginInteractionNormMinor1,
+                                            disabled: viewModel.prefixError != nil,
+                                            height: 44,
+                                            action: { viewModel.confirm(); dismiss() })
+            } else {
+                UpgradeButton(backgroundColor: PassColor.loginInteractionNormMajor1,
+                              height: 44,
+                              action: viewModel.upgrade)
+            }
         }
     }
 }

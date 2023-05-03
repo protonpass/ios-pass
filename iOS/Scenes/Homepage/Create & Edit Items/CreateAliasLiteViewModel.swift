@@ -37,10 +37,12 @@ struct AliasCreationLiteInfo {
 
 protocol CreateAliasLiteViewModelDelegate: AnyObject {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection)
+    func createAliasLiteViewModelWantsToUpgrade()
 }
 
 final class CreateAliasLiteViewModel: ObservableObject {
     @Published var prefix = ""
+    @Published private(set) var canCreateAlias: Bool
     @Published private(set) var prefixError: AliasPrefixError?
     private var cancellables = Set<AnyCancellable>()
 
@@ -59,6 +61,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
     }
 
     init(options: AliasOptions, creationInfo: AliasCreationLiteInfo) {
+        canCreateAlias = options.canCreateAlias
         suffixSelection = .init(suffixes: options.suffixes)
         mailboxSelection = .init(mailboxes: options.mailboxes)
 
@@ -102,5 +105,9 @@ extension CreateAliasLiteViewModel {
 
     func showMailboxSelection() {
         delegate?.createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
+    }
+
+    func upgrade() {
+        delegate?.createAliasLiteViewModelWantsToUpgrade()
     }
 }

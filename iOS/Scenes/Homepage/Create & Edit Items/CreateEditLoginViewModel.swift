@@ -203,22 +203,18 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     delegate?.createEditItemViewModelWantsToShowLoadingHud()
                     let aliasOptions = try await aliasRepository.getAliasOptions(shareId: vault.shareId)
                     delegate?.createEditItemViewModelWantsToHideLoadingHud()
-                    if aliasOptions.canCreateAlias == false {
-                        print("Handle this")
-                    } else {
-                        if let firstSuffix = aliasOptions.suffixes.first,
-                           let firstMailbox = aliasOptions.mailboxes.first {
-                            var prefix = PrefixUtils.generatePrefix(fromTitle: title)
-                            if prefix.isEmpty {
-                                prefix = String.random(allowedCharacters: [.lowercase, .digit], length: 5)
-                            }
-
-                            self.aliasOptions = aliasOptions
-                            self.aliasCreationLiteInfo = .init(prefix: prefix,
-                                                               suffix: firstSuffix,
-                                                               mailboxes: [firstMailbox])
-                            generateAlias()
+                    if let firstSuffix = aliasOptions.suffixes.first,
+                       let firstMailbox = aliasOptions.mailboxes.first {
+                        var prefix = PrefixUtils.generatePrefix(fromTitle: title)
+                        if prefix.isEmpty {
+                            prefix = String.random(allowedCharacters: [.lowercase, .digit], length: 5)
                         }
+
+                        self.aliasOptions = aliasOptions
+                        self.aliasCreationLiteInfo = .init(prefix: prefix,
+                                                           suffix: firstSuffix,
+                                                           mailboxes: [firstMailbox])
+                        generateAlias()
                     }
                 } catch {
                     delegate?.createEditItemViewModelWantsToHideLoadingHud()

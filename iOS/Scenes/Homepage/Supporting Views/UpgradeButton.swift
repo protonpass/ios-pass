@@ -25,6 +25,7 @@ import UIComponents
 struct UpgradeButton: View {
     let backgroundColor: UIColor
     var height: CGFloat = 40
+    var maxWidth: CGFloat? = .infinity
     let action: () -> Void
 
     var body: some View {
@@ -38,6 +39,7 @@ struct UpgradeButton: View {
                     .frame(maxWidth: 16)
             }
             .frame(height: height)
+            .frame(maxWidth: maxWidth)
             .padding(.horizontal, 16)
             .foregroundColor(Color(uiColor: PassColor.textInvert))
             .background(Color(uiColor: backgroundColor))
