@@ -21,17 +21,19 @@
 import Foundation
 
 public protocol UserPlanManagerProtocol: AnyObject {
-    func shouldUpgrade() async throws -> Bool
+    func canCreateMoreVaults() async throws -> Bool
 }
 
 public extension UserPlanManagerProtocol {
-    func shouldUpgrade() async throws -> Bool {
+    func canCreateMoreVaults() async throws -> Bool {
         #if DEBUG
-        return true
+        return .random()
         #else
-        return false
+        return true
         #endif
     }
 }
 
-public final class UserPlanManager: UserPlanManagerProtocol {}
+public final class UserPlanManager: UserPlanManagerProtocol {
+    public init() {}
+}

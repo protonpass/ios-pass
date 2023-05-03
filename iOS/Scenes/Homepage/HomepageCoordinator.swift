@@ -60,6 +60,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let urlOpener: UrlOpener
     private let userData: UserData
     private let userPlan: UserPlan?
+    private let userPlanManager: UserPlanManagerProtocol
     private let userPlanProvider: UserPlanProviderProtocol
     private let vaultsManager: VaultsManager
 
@@ -146,6 +147,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.urlOpener = .init(preferences: preferences)
         self.userData = userData
         self.userPlan = userPlan
+        self.userPlanManager = UserPlanManager()
         self.userPlanProvider = userPlanProvider
         self.vaultsManager = .init(itemRepository: itemRepository,
                                    manualLogIn: manualLogIn,
@@ -415,6 +417,7 @@ private extension HomepageCoordinator {
     func presentCreateEditVaultView(mode: VaultMode) {
         let viewModel = CreateEditVaultViewModel(mode: mode,
                                                  shareRepository: shareRepository,
+                                                 userPlanManager: userPlanManager,
                                                  logManager: logManager,
                                                  theme: preferences.theme)
         viewModel.delegate = self
@@ -1255,6 +1258,12 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
 
     func createEditVaultViewModelWantsToHideSpinner() {
         hideLoadingHud()
+    }
+
+    func createEditVaultViewModelWantsToUpgrade() {
+        dismissAllViewControllers(animated: true) { [unowned self] in
+            print(#function)
+        }
     }
 
     func createEditVaultViewModelDidCreateVault() {
