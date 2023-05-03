@@ -562,6 +562,10 @@ private extension CredentialProviderCoordinator {
         alert.addAction(cancelAction)
         rootViewController.present(alert, animated: true)
     }
+
+    func startUpgradeFlow() {
+        print(#function)
+    }
 }
 
 // MARK: - CredentialsViewModelDelegate
@@ -711,23 +715,28 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToOpenSettings() {}
 
     func createEditLoginViewModelWantsToUpgrade() {
-        print("Handle this")
+        startUpgradeFlow()
     }
 }
 
 // MARK: - CreateAliasLiteViewModelDelegate
 extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        let view = MailboxSelectionView(mailboxSelection: mailboxSelection,
-                                        mode: .createAliasLite,
-                                        titleMode: .create)
+        guard let userPlanManager else { return }
+        let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
+                                                  userPlanManager: userPlanManager,
+                                                  logManager: logManager,
+                                                  mode: .createAliasLite,
+                                                  titleMode: .create)
+        viewModel.delegate = self
+        let view = MailboxSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.compact.value) * mailboxSelection.mailboxes.count + 140
+            let height = Int(OptionRowHeight.compact.value) * mailboxSelection.mailboxes.count + 150
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 CGFloat(height)
             }
-            viewController.sheetPresentationController?.detents = [customDetent]
+            viewController.sheetPresentationController?.detents = [customDetent, .large()]
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
@@ -742,7 +751,7 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 CGFloat(height)
             }
-            viewController.sheetPresentationController?.detents = [customDetent]
+            viewController.sheetPresentationController?.detents = [customDetent, .large()]
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
@@ -750,7 +759,18 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     }
 
     func createAliasLiteViewModelWantsToUpgrade() {
-        print("Handle this")
+        startUpgradeFlow()
+    }
+}
+
+// MARK: - MailboxSelectionViewModelDelegate
+extension CredentialProviderCoordinator: MailboxSelectionViewModelDelegate {
+    func mailboxSelectionViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+
+    func mailboxSelectionViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 

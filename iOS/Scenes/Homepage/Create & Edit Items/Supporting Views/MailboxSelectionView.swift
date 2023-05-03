@@ -25,23 +25,13 @@ import UIComponents
 
 struct MailboxSelectionView: View {
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var mailboxSelection: MailboxSelection
-    let mode: Mode
-    let titleMode: MailboxSection.Mode
+    @StateObject private var viewModel: MailboxSelectionViewModel
 
-    enum Mode {
-        case createEditAlias
-        case createAliasLite
-
-        var tintColor: Color {
-            switch self {
-            case .createEditAlias:
-                return Color(uiColor: ItemContentType.alias.normMajor2Color)
-            case .createAliasLite:
-                return Color(uiColor: ItemContentType.login.normMajor2Color)
-            }
-        }
+    init(viewModel: MailboxSelectionViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
     }
+
+    private var selection: MailboxSelection { viewModel.mailboxSelection }
 
     var body: some View {
         NavigationView {
@@ -50,16 +40,17 @@ struct MailboxSelectionView: View {
             ZStack(alignment: .bottom) {
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        ForEach(mailboxSelection.mailboxes, id: \.ID) { mailbox in
+                        ForEach(selection.mailboxes, id: \.ID) { mailbox in
                             HStack {
                                 Text(mailbox.email)
-                                    .foregroundColor(isSelected(mailbox) ?
-                                                     mode.tintColor : Color(uiColor: PassColor.textNorm))
+                                    .foregroundColor(
+                                        isSelected(mailbox) ?
+                                        viewModel.mode.tintColor : Color(uiColor: PassColor.textNorm))
                                 Spacer()
 
                                 if isSelected(mailbox) {
                                     Image(uiImage: IconProvider.checkmark)
-                                        .foregroundColor(mode.tintColor)
+                                        .foregroundColor(viewModel.mode.tintColor)
                                 }
                             }
                             .contentShape(Rectangle())
@@ -67,15 +58,23 @@ struct MailboxSelectionView: View {
                             .padding(.horizontal)
                             .frame(height: OptionRowHeight.compact.value)
                             .onTapGesture {
-                                mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
+                                selection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
                             }
 
                             PassDivider()
                                 .padding(.horizontal)
                         }
 
+                        if viewModel.shouldUpgrade {
+                            upgradeButton
+                            PassDivider()
+                                .padding(.horizontal)
+                        }
+
+                        // Gimmick view to take up space
                         closeButton
                             .opacity(0)
+                            .padding()
                             .disabled(true)
                     }
                 }
@@ -87,7 +86,7 @@ struct MailboxSelectionView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: titleMode.title)
+                    NavigationTitleWithHandle(title: viewModel.titleMode.title)
                 }
             }
         }
@@ -95,7 +94,22 @@ struct MailboxSelectionView: View {
     }
 
     private func isSelected(_ mailbox: Mailbox) -> Bool {
-        mailboxSelection.selectedMailboxes.contains(mailbox)
+        selection.selectedMailboxes.contains(mailbox)
+    }
+
+    private var upgradeButton: some View {
+        Button(action: viewModel.upgrade) {
+            HStack {
+                Text("Upgrade for more mailboxes")
+                Image(uiImage: IconProvider.arrowOutSquare)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 20)
+            }
+            .contentShape(Rectangle())
+            .foregroundColor(viewModel.mode.tintColor)
+        }
+        .frame(height: OptionRowHeight.compact.value)
     }
 
     private var closeButton: some View {

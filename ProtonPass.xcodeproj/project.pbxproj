@@ -145,6 +145,8 @@
 		354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5E2A02939600A0B27D /* AliasLimitView.swift */; };
 		354FBF652A02E17400A0B27D /* SuffixSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */; };
 		354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */; };
+		354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */; };
+		354FBF692A02EF7900A0B27D /* MailboxSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */; };
 		3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		355222ED293F67A600786F64 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355222EC293F67A600786F64 /* URLExtensions.swift */; };
@@ -850,6 +852,7 @@
 		354FBF5E2A02939600A0B27D /* AliasLimitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasLimitView.swift; sourceTree = "<group>"; };
 		354FBF602A02961D00A0B27D /* UpgradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeButton.swift; sourceTree = "<group>"; };
 		354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionView.swift; sourceTree = "<group>"; };
+		354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSelectionViewModel.swift; sourceTree = "<group>"; };
 		3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsSection.swift; sourceTree = "<group>"; };
 		355222EC293F67A600786F64 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		3552272D29DC9EAC00B9607E /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
@@ -1994,6 +1997,7 @@
 				3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */,
 				35992154299F910500FEFA32 /* MailboxSection.swift */,
 				35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */,
+				354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */,
 				3567E46529B0E6F900511D62 /* NoCameraPermissionView.swift */,
 				350AF86D299683940045B7B6 /* NoteEditSection.swift */,
 				35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */,
@@ -3536,6 +3540,7 @@
 				3561C9F829E6E3E000D6E518 /* VaultRow.swift in Sources */,
 				355792DA29E7FB85001198DA /* VaultLabel.swift in Sources */,
 				3562D3BD29DEB08100981D7D /* NavigationTitleWithHandle.swift in Sources */,
+				354FBF692A02EF7900A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				355694A529D46923005DD2EB /* VaultListUiModel.swift in Sources */,
 				350AF86F299685690045B7B6 /* NoteEditSection.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
@@ -3654,6 +3659,7 @@
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
+				354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */,
 				357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
