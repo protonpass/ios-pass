@@ -109,7 +109,8 @@ struct CreateEditAliasView: View {
                                                 tintColor: tintColor,
                                                 suffixSelection: suffixSelection,
                                                 prefixError: viewModel.prefixError,
-                                                onSubmit: { focusedField = .note })
+                                                onSubmitPrefix: { focusedField = .note },
+                                                onSelectSuffix: viewModel.showSuffixSelection)
                         } else {
                             AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
                                 .padding(.vertical)

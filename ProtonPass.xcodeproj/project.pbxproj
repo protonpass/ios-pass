@@ -143,6 +143,7 @@
 		354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
 		354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
 		354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5E2A02939600A0B27D /* AliasLimitView.swift */; };
+		354FBF652A02E17400A0B27D /* SuffixSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */; };
 		3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		355222ED293F67A600786F64 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355222EC293F67A600786F64 /* URLExtensions.swift */; };
@@ -847,6 +848,7 @@
 		354FBF5C2A02837000A0B27D /* UserPlanManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlanManager.swift; sourceTree = "<group>"; };
 		354FBF5E2A02939600A0B27D /* AliasLimitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasLimitView.swift; sourceTree = "<group>"; };
 		354FBF602A02961D00A0B27D /* UpgradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeButton.swift; sourceTree = "<group>"; };
+		354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionView.swift; sourceTree = "<group>"; };
 		3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsSection.swift; sourceTree = "<group>"; };
 		355222EC293F67A600786F64 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		3552272D29DC9EAC00B9607E /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
@@ -1994,6 +1996,7 @@
 				3567E46529B0E6F900511D62 /* NoCameraPermissionView.swift */,
 				350AF86D299683940045B7B6 /* NoteEditSection.swift */,
 				35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */,
+				354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */,
 			);
 			path = "Supporting Views";
 			sourceTree = "<group>";
@@ -3728,6 +3731,7 @@
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
 				3556949D29D45FD5005DD2EB /* MoveVaultListView.swift in Sources */,
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
+				354FBF652A02E17400A0B27D /* SuffixSelectionView.swift in Sources */,
 				3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */,
 				356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */,
 				356BC35929D6F36200F03497 /* OptionRow.swift in Sources */,
