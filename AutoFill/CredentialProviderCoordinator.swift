@@ -564,7 +564,9 @@ private extension CredentialProviderCoordinator {
     }
 
     func startUpgradeFlow() {
-        print(#function)
+        rootViewController.dismiss(animated: true) { [unowned self] in
+            print(#function)
+        }
     }
 }
 
