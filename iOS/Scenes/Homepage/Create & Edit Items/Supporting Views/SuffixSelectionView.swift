@@ -1,6 +1,6 @@
 //
-// MailboxSelectionView.swift
-// Proton Pass - Created on 17/02/2023.
+// SuffixSelectionView.swift
+// Proton Pass - Created on 03/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -23,15 +23,16 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct MailboxSelectionView: View {
+struct SuffixSelectionView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel: MailboxSelectionViewModel
+    @StateObject private var viewModel: SuffixSelectionViewModel
 
-    init(viewModel: MailboxSelectionViewModel) {
+    init(viewModel: SuffixSelectionViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
-    private var selection: MailboxSelection { viewModel.mailboxSelection }
+    private var selection: SuffixSelection { viewModel.suffixSelection }
+    private var tintColor: UIColor { ItemContentType.alias.normMajor2Color }
 
     var body: some View {
         NavigationView {
@@ -40,17 +41,16 @@ struct MailboxSelectionView: View {
             ZStack(alignment: .bottom) {
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        ForEach(selection.mailboxes, id: \.ID) { mailbox in
+                        ForEach(selection.suffixes, id: \.suffix) { suffix in
                             HStack {
-                                Text(mailbox.email)
-                                    .foregroundColor(
-                                        isSelected(mailbox) ?
-                                        viewModel.mode.tintColor : Color(uiColor: PassColor.textNorm))
+                                Text(suffix.suffix)
+                                    .foregroundColor(Color(uiColor: isSelected(suffix) ?
+                                                           tintColor : PassColor.textNorm))
                                 Spacer()
 
-                                if isSelected(mailbox) {
+                                if isSelected(suffix) {
                                     Image(uiImage: IconProvider.checkmark)
-                                        .foregroundColor(viewModel.mode.tintColor)
+                                        .foregroundColor(Color(uiColor: tintColor))
                                 }
                             }
                             .contentShape(Rectangle())
@@ -58,7 +58,8 @@ struct MailboxSelectionView: View {
                             .padding(.horizontal)
                             .frame(height: OptionRowHeight.compact.value)
                             .onTapGesture {
-                                selection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
+                                selection.selectedSuffix = suffix
+                                dismiss()
                             }
 
                             PassDivider()
@@ -67,55 +68,37 @@ struct MailboxSelectionView: View {
 
                         if viewModel.shouldUpgrade {
                             upgradeButton
-                            PassDivider()
-                                .padding(.horizontal)
                         }
-
-                        // Gimmick view to take up space
-                        closeButton
-                            .opacity(0)
-                            .padding()
-                            .disabled(true)
                     }
                 }
-
-                closeButton
-                    .padding()
             }
             .background(Color(uiColor: PassColor.backgroundWeak))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: viewModel.titleMode.title)
+                    NavigationTitleWithHandle(title: "Suffix")
                 }
             }
         }
         .navigationViewStyle(.stack)
     }
 
-    private func isSelected(_ mailbox: Mailbox) -> Bool {
-        selection.selectedMailboxes.contains(mailbox)
+    private func isSelected(_ suffix: Suffix) -> Bool {
+        suffix == selection.selectedSuffix
     }
 
     private var upgradeButton: some View {
         Button(action: viewModel.upgrade) {
             HStack {
-                Text("Upgrade for more mailboxes")
+                Text("Upgrade for custom domains")
                 Image(uiImage: IconProvider.arrowOutSquare)
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 20)
             }
             .contentShape(Rectangle())
-            .foregroundColor(viewModel.mode.tintColor)
+            .foregroundColor(Color(uiColor: tintColor))
         }
         .frame(height: OptionRowHeight.compact.value)
-    }
-
-    private var closeButton: some View {
-        Button(action: dismiss.callAsFunction) {
-            Text("Close")
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
-        }
     }
 }

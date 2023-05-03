@@ -50,6 +50,7 @@ public protocol ShareRepositoryProtocol {
 
     func upsertShares(_ shares: [Share]) async throws
 
+    @discardableResult
     func createVault(_ vault: VaultProtobuf) async throws -> Share
 
     func edit(oldVault: Vault, newVault: VaultProtobuf) async throws

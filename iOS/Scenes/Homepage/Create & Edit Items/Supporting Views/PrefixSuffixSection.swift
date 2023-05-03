@@ -41,7 +41,8 @@ struct PrefixSuffixSection<Field: Hashable>: View {
     let tintColor: UIColor
     let suffixSelection: SuffixSelection
     let prefixError: AliasPrefixError?
-    var onSubmit: ((() -> Void))?
+    var onSubmitPrefix: ((() -> Void))?
+    var onSelectSuffix: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: kItemDetailSectionPadding) {
@@ -67,7 +68,7 @@ struct PrefixSuffixSection<Field: Hashable>: View {
                     .focused(focusedField, equals: field)
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .submitLabel(.done)
-                    .onSubmit { onSubmit?() }
+                    .onSubmit { onSubmitPrefix?() }
                     if let prefixError {
                         Text(prefixError.localizedDescription)
                             .font(.callout)
@@ -94,45 +95,31 @@ struct PrefixSuffixSection<Field: Hashable>: View {
 
     @ViewBuilder
     private var suffixRow: some View {
-        Menu(content: {
-            ForEach(suffixSelection.suffixes, id: \.suffix) { suffix in
-                Button(action: {
-                    suffixSelection.selectedSuffix = suffix
-                }, label: {
-                    Label(title: {
-                        Text(suffix.suffix)
-                    }, icon: {
-                        if suffix.suffix == suffixSelection.selectedSuffix?.suffix {
-                            Image(systemName: "checkmark")
-                        }
-                    })
-                })
-            }
-        }, label: {
-            HStack {
-                VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                    Text("Suffix")
-                        .sectionTitleText()
+        HStack {
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Suffix")
+                    .sectionTitleText()
 
-                    if isLoading {
-                        ZStack {
-                            // Dummy text to make ZStack occupy a correct height
-                            Text("Dummy text")
-                                .opacity(0)
-                            AnimatingGradient(tintColor: tintColor)
-                                .clipShape(Capsule())
-                        }
-                    } else {
-                        Text(suffixSelection.selectedSuffixString)
-                            .sectionContentText()
+                if isLoading {
+                    ZStack {
+                        // Dummy text to make ZStack occupy a correct height
+                        Text("Dummy text")
+                            .opacity(0)
+                        AnimatingGradient(tintColor: tintColor)
+                            .clipShape(Capsule())
                     }
+                } else {
+                    Text(suffixSelection.selectedSuffixString)
+                        .sectionContentText()
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                Spacer()
-                ItemDetailSectionIcon(icon: IconProvider.chevronDown)
             }
-            .padding(.horizontal, kItemDetailSectionPadding)
-            .animationsDisabled()
-        })
+            .frame(maxWidth: .infinity, alignment: .leading)
+            Spacer()
+            ItemDetailSectionIcon(icon: IconProvider.chevronDown)
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .animationsDisabled()
+        .contentShape(Rectangle())
+        .onTapGesture(perform: onSelectSuffix)
     }
 }

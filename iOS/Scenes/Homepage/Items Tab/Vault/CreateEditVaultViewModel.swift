@@ -41,12 +41,14 @@ enum VaultMode {
 protocol CreateEditVaultViewModelDelegate: AnyObject {
     func createEditVaultViewModelWantsToShowSpinner()
     func createEditVaultViewModelWantsToHideSpinner()
+    func createEditVaultViewModelWantsToUpgrade()
     func createEditVaultViewModelDidCreateVault()
     func createEditVaultViewModelDidEditVault()
     func createEditVaultViewModelDidEncounter(error: Error)
 }
 
 final class CreateEditVaultViewModel: ObservableObject {
+    @Published private(set) var canCreateMoreVaults = true
     @Published var selectedColor: VaultColor
     @Published var selectedIcon: VaultIcon
     @Published var title: String
@@ -54,7 +56,15 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let mode: VaultMode
     private let logger: Logger
     private let shareRepository: ShareRepositoryProtocol
+    private let userPlanManager: UserPlanManagerProtocol
     let theme: Theme
+
+    var shouldUpgrade: Bool {
+        if case .create = mode {
+            return !canCreateMoreVaults
+        }
+        return false
+    }
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
@@ -69,6 +79,7 @@ final class CreateEditVaultViewModel: ObservableObject {
 
     init(mode: VaultMode,
          shareRepository: ShareRepositoryProtocol,
+         userPlanManager: UserPlanManagerProtocol,
          logManager: LogManager,
          theme: Theme) {
         self.mode = mode
@@ -85,12 +96,25 @@ final class CreateEditVaultViewModel: ObservableObject {
 
         self.logger = .init(manager: logManager)
         self.shareRepository = shareRepository
+        self.userPlanManager = userPlanManager
         self.theme = theme
+        self.verifyLimitation()
     }
 }
 
 // MARK: - Private APIs
 private extension CreateEditVaultViewModel {
+    func verifyLimitation() {
+        Task { @MainActor in
+            do {
+                canCreateMoreVaults = try await userPlanManager.canCreateMoreVaults()
+            } catch {
+                logger.error(error)
+                delegate?.createEditVaultViewModelDidEncounter(error: error)
+            }
+        }
+    }
+
     func generateVaultProtobuf() -> VaultProtobuf {
         .init(name: title,
               description: "",
@@ -140,6 +164,10 @@ extension CreateEditVaultViewModel {
         case .create:
             createVault()
         }
+    }
+
+    func upgrade() {
+        delegate?.createEditVaultViewModelWantsToUpgrade()
     }
 }
 

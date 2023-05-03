@@ -76,6 +76,10 @@ struct CreateEditAliasView: View {
         ScrollViewReader { value in
             ScrollView {
                 LazyVStack(spacing: 8) {
+                    if viewModel.shouldUpgrade {
+                        AliasLimitView(backgroundColor: PassColor.aliasInteractionNormMinor1)
+                    }
+
                     CreateEditItemTitleSection(
                         title: $viewModel.title,
                         focusedField: $focusedField,
@@ -105,7 +109,8 @@ struct CreateEditAliasView: View {
                                                 tintColor: tintColor,
                                                 suffixSelection: suffixSelection,
                                                 prefixError: viewModel.prefixError,
-                                                onSubmit: { focusedField = .note })
+                                                onSubmitPrefix: { focusedField = .note },
+                                                onSelectSuffix: viewModel.showSuffixSelection)
                         } else {
                             AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
                                 .padding(.vertical)
@@ -124,6 +129,7 @@ struct CreateEditAliasView: View {
                     .id(noteID)
                 }
                 .padding()
+                .animation(.default, value: viewModel.shouldUpgrade)
                 .animation(.default, value: isShowingAdvancedOptions)
                 .animation(.default, value: viewModel.mailboxSelection != nil)
             }
@@ -164,6 +170,7 @@ struct CreateEditAliasView: View {
                 isSaveable: viewModel.isSaveable,
                 isSaving: viewModel.isSaving,
                 itemContentType: viewModel.itemContentType(),
+                shouldUpgrade: viewModel.shouldUpgrade,
                 onGoBack: {
                     if viewModel.didEditSomething {
                         isShowingDiscardAlert.toggle()
@@ -171,6 +178,7 @@ struct CreateEditAliasView: View {
                         dismiss()
                     }
                 },
+                onUpgrade: viewModel.upgrade,
                 onSave: viewModel.save)
         }
     }

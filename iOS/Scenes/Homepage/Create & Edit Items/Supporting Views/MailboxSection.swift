@@ -53,6 +53,7 @@ struct MailboxSection: View {
 
             ItemDetailSectionIcon(icon: IconProvider.chevronDown)
         }
+        .animation(.default, value: mailboxSelection.selectedMailboxes)
         .padding(kItemDetailSectionPadding)
         .roundedEditableSection()
         .contentShape(Rectangle())

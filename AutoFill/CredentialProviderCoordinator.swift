@@ -61,6 +61,7 @@ public final class CredentialProviderCoordinator {
     private var aliasRepository: AliasRepositoryProtocol?
     private var remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol?
     private var telemetryEventRepository: TelemetryEventRepositoryProtocol?
+    private var userPlanManager: UserPlanManagerProtocol?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var vaultListUiModels: [VaultListUiModel]?
@@ -264,6 +265,7 @@ public final class CredentialProviderCoordinator {
             scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                           preferences: preferences),
             userId: userData.user.ID)
+        self.userPlanManager = UserPlanManager()
     }
 
     func addNewEvent(type: TelemetryEventType) {
@@ -477,9 +479,11 @@ private extension CredentialProviderCoordinator {
         showView(view)
     }
 
+    // swiftlint:disable:next function_parameter_count
     func showCreateLoginView(shareId: String,
                              itemRepository: ItemRepositoryProtocol,
                              aliasRepository: AliasRepositoryProtocol,
+                             userPlanManager: UserPlanManagerProtocol,
                              vaults: [Vault],
                              url: URL?) {
         do {
@@ -491,6 +495,7 @@ private extension CredentialProviderCoordinator {
                                                                        type: creationType),
                                                          itemRepository: itemRepository,
                                                          aliasRepository: aliasRepository,
+                                                         userPlanManager: userPlanManager,
                                                          vaults: vaults,
                                                          preferences: preferences,
                                                          logManager: logManager,
@@ -557,6 +562,12 @@ private extension CredentialProviderCoordinator {
         alert.addAction(cancelAction)
         rootViewController.present(alert, animated: true)
     }
+
+    func startUpgradeFlow() {
+        rootViewController.dismiss(animated: true) { [unowned self] in
+            print(#function)
+        }
+    }
 }
 
 // MARK: - CredentialsViewModelDelegate
@@ -593,11 +604,15 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?) {
-        guard let itemRepository, let aliasRepository, let shareRepository else { return }
+        guard let itemRepository,
+              let aliasRepository,
+              let shareRepository,
+              let userPlanManager else { return }
         if let vaultListUiModels {
             showCreateLoginView(shareId: shareId,
                                 itemRepository: itemRepository,
                                 aliasRepository: aliasRepository,
+                                userPlanManager: userPlanManager,
                                 vaults: vaultListUiModels.map { $0.vault },
                                 url: url)
         } else {
@@ -701,20 +716,79 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
     // Not applicable
     func createEditLoginViewModelWantsToOpenSettings() {}
 
-    func createEditLoginViewModelCanNotCreateMoreAlias() {
-        bannerManager.displayTopErrorMessage("You can not create more aliases.")
+    func createEditLoginViewModelWantsToUpgrade() {
+        startUpgradeFlow()
     }
 }
 
 // MARK: - CreateAliasLiteViewModelDelegate
 extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        let view = MailboxSelectionView(mailboxSelection: mailboxSelection,
-                                        mode: .createAliasLite,
-                                        titleMode: .create)
+        guard let userPlanManager else { return }
+        let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
+                                                  userPlanManager: userPlanManager,
+                                                  logManager: logManager,
+                                                  mode: .createAliasLite,
+                                                  titleMode: .create)
+        viewModel.delegate = self
+        let view = MailboxSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.compact.value) * mailboxSelection.mailboxes.count + 150
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent, .large()]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
         present(viewController)
+    }
+
+    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
+        guard let userPlanManager else { return }
+        let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection,
+                                                 userPlanManager: userPlanManager,
+                                                 logManager: logManager)
+        viewModel.delegate = self
+        let view = SuffixSelectionView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.compact.value) * suffixSelection.suffixes.count + 100
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent, .large()]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController)
+    }
+
+    func createAliasLiteViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+}
+
+// MARK: - MailboxSelectionViewModelDelegate
+extension CredentialProviderCoordinator: MailboxSelectionViewModelDelegate {
+    func mailboxSelectionViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+
+    func mailboxSelectionViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - SuffixSelectionViewModelDelegate
+extension CredentialProviderCoordinator: SuffixSelectionViewModelDelegate {
+    func suffixSelectionViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+
+    func suffixSelectionViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 

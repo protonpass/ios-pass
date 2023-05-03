@@ -57,7 +57,8 @@ final class MailboxSelection: ObservableObject {
 protocol CreateEditAliasViewModelDelegate: AnyObject {
     func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection,
                                                         titleMode: MailboxSection.Mode)
-    func createEditAliasViewModelCanNotCreateMoreAliases()
+    func createEditAliasViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection)
+    func createEditAliasViewModelWantsToUpgrade()
 }
 
 // MARK: - Initialization
@@ -75,7 +76,14 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var aliasEmail = ""
     @Published private(set) var state: State = .loading
     @Published private(set) var prefixError: AliasPrefixError?
-    @Published private(set) var canCreateAlias = false
+    @Published private(set) var canCreateAlias = true
+
+    var shouldUpgrade: Bool {
+        if case .create = mode {
+            return !canCreateAlias
+        }
+        return false
+    }
 
     private let prefixCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
 
@@ -225,6 +233,7 @@ extension CreateEditAliasViewModel {
                 suffixSelection?.attach(to: self, storeIn: &cancellables)
                 mailboxSelection = .init(mailboxes: aliasOptions.mailboxes)
                 mailboxSelection?.attach(to: self, storeIn: &cancellables)
+                canCreateAlias = aliasOptions.canCreateAlias
 
                 if case .edit(let itemContent) = mode {
                     let alias =
@@ -236,11 +245,7 @@ extension CreateEditAliasViewModel {
                     logger.info("Get alias successfully \(itemContent.debugInformation)")
                 }
 
-                if !aliasOptions.canCreateAlias {
-                    createEditAliasViewModelDelegate?.createEditAliasViewModelCanNotCreateMoreAliases()
-                } else {
-                    state = .loaded
-                }
+                state = .loaded
                 logger.info("Get alias options successfully")
             } catch {
                 logger.error(error)
@@ -254,6 +259,15 @@ extension CreateEditAliasViewModel {
         createEditAliasViewModelDelegate?
             .createEditAliasViewModelWantsToSelectMailboxes(mailboxSelection,
                                                             titleMode: mode.isEditMode ? .edit : .create)
+    }
+
+    func showSuffixSelection() {
+        guard let suffixSelection else { return }
+        createEditAliasViewModelDelegate?.createEditAliasViewModelWantsToSelectSuffix(suffixSelection)
+    }
+
+    func upgrade() {
+        createEditAliasViewModelDelegate?.createEditAliasViewModelWantsToUpgrade()
     }
 }
 

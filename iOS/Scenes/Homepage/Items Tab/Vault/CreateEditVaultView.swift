@@ -30,10 +30,14 @@ struct CreateEditVaultView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 24) {
+                if viewModel.shouldUpgrade {
+                    vaultsLimitMessage
+                }
                 previewAndTitle
                     .fixedSize(horizontal: false, vertical: true)
                 colorsAndIcons
             }
+            .animation(.default, value: viewModel.shouldUpgrade)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(kItemDetailSectionPadding)
             .navigationBarTitleDisplayMode(.inline)
@@ -61,14 +65,28 @@ struct CreateEditVaultView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            DisablableCapsuleTextButton(title: viewModel.saveButtonTitle,
-                                        titleColor: PassColor.textInvert,
-                                        disableTitleColor: PassColor.textHint,
-                                        backgroundColor: PassColor.interactionNormMajor1,
-                                        disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: viewModel.title.isEmpty,
-                                        action: viewModel.save)
+            if viewModel.shouldUpgrade {
+                UpgradeButton(backgroundColor: PassColor.interactionNormMajor1,
+                              action: viewModel.upgrade)
+            } else {
+                DisablableCapsuleTextButton(title: viewModel.saveButtonTitle,
+                                            titleColor: PassColor.textInvert,
+                                            disableTitleColor: PassColor.textHint,
+                                            backgroundColor: PassColor.interactionNormMajor1,
+                                            disableBackgroundColor: PassColor.interactionNormMinor1,
+                                            disabled: viewModel.title.isEmpty,
+                                            action: viewModel.save)
+            }
         }
+    }
+
+    private var vaultsLimitMessage: some View {
+        // swiftlint:disable:next line_length
+        Text("You have reached the limit of vaults you can create. Create unlimited number of vaults when you upgrade your subscription.")
+            .padding()
+            .foregroundColor(Color(uiColor: PassColor.textNorm))
+            .background(Color(uiColor: PassColor.interactionNormMinor1))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private var previewAndTitle: some View {
