@@ -33,13 +33,14 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
     func createEditLoginViewModelWantsToOpenSettings()
-    func createEditLoginViewModelCanNotCreateMoreAlias()
+    func createEditLoginViewModelWantsToUpgrade()
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     @Published private(set) var isAlias = false // `Username` is an alias or a custom one
+    @Published private(set) var canCreateOrEditTOTPs = true
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
@@ -55,6 +56,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     let emailAddress: String
 
     private let aliasRepository: AliasRepositoryProtocol
+    private let userPlanManager: UserPlanManagerProtocol
 
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
@@ -81,12 +83,14 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
+         userPlanManager: UserPlanManagerProtocol,
          vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager,
          emailAddress: String) throws {
         self.emailAddress = emailAddress
         self.aliasRepository = aliasRepository
+        self.userPlanManager = userPlanManager
         try super.init(mode: mode,
                        itemRepository: itemRepository,
                        vaults: vaults,
@@ -142,6 +146,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             if case let .login(title, url, _) = type {
                 self.title = title ?? ""
                 self.urls = [url ?? ""].map { .init(value: $0) }
+
+                Task { @MainActor in
+                    canCreateOrEditTOTPs = try await userPlanManager.canCreateMoreTOTPs()
+                }
             }
         }
     }
@@ -204,22 +212,18 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     delegate?.createEditItemViewModelWantsToShowLoadingHud()
                     let aliasOptions = try await aliasRepository.getAliasOptions(shareId: vault.shareId)
                     delegate?.createEditItemViewModelWantsToHideLoadingHud()
-                    if aliasOptions.canCreateAlias == false {
-                        createEditLoginViewModelDelegate?.createEditLoginViewModelCanNotCreateMoreAlias()
-                    } else {
-                        if let firstSuffix = aliasOptions.suffixes.first,
-                           let firstMailbox = aliasOptions.mailboxes.first {
-                            var prefix = PrefixUtils.generatePrefix(fromTitle: title)
-                            if prefix.isEmpty {
-                                prefix = String.random(allowedCharacters: [.lowercase, .digit], length: 5)
-                            }
-
-                            self.aliasOptions = aliasOptions
-                            self.aliasCreationLiteInfo = .init(prefix: prefix,
-                                                               suffix: firstSuffix,
-                                                               mailboxes: [firstMailbox])
-                            generateAlias()
+                    if let firstSuffix = aliasOptions.suffixes.first,
+                       let firstMailbox = aliasOptions.mailboxes.first {
+                        var prefix = PrefixUtils.generatePrefix(fromTitle: title)
+                        if prefix.isEmpty {
+                            prefix = String.random(allowedCharacters: [.lowercase, .digit], length: 5)
                         }
+
+                        self.aliasOptions = aliasOptions
+                        self.aliasCreationLiteInfo = .init(prefix: prefix,
+                                                           suffix: firstSuffix,
+                                                           mailboxes: [firstMailbox])
+                        generateAlias()
                     }
                 } catch {
                     delegate?.createEditItemViewModelWantsToHideLoadingHud()
@@ -290,6 +294,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             return nil
         }
         return invalidURLs.isEmpty
+    }
+
+    func upgrade() {
+        createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToUpgrade()
     }
 }
 

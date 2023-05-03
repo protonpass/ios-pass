@@ -138,6 +138,17 @@
 		354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */; };
 		354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769928C87CD500EB2383 /* EmptyVaultView.swift */; };
 		354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */; };
+		354FBF5D2A02837000A0B27D /* UserPlanManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5C2A02837000A0B27D /* UserPlanManager.swift */; };
+		354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5E2A02939600A0B27D /* AliasLimitView.swift */; };
+		354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
+		354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
+		354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5E2A02939600A0B27D /* AliasLimitView.swift */; };
+		354FBF652A02E17400A0B27D /* SuffixSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */; };
+		354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */; };
+		354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */; };
+		354FBF692A02EF7900A0B27D /* MailboxSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */; };
+		354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */; };
+		354FBF6C2A02F76500A0B27D /* SuffixSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */; };
 		3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		355222ED293F67A600786F64 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355222EC293F67A600786F64 /* URLExtensions.swift */; };
@@ -839,6 +850,12 @@
 		354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewModel.swift; sourceTree = "<group>"; };
 		354F769928C87CD500EB2383 /* EmptyVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyVaultView.swift; sourceTree = "<group>"; };
 		354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseItemDetailViewModel.swift; sourceTree = "<group>"; };
+		354FBF5C2A02837000A0B27D /* UserPlanManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlanManager.swift; sourceTree = "<group>"; };
+		354FBF5E2A02939600A0B27D /* AliasLimitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasLimitView.swift; sourceTree = "<group>"; };
+		354FBF602A02961D00A0B27D /* UpgradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeButton.swift; sourceTree = "<group>"; };
+		354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionView.swift; sourceTree = "<group>"; };
+		354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSelectionViewModel.swift; sourceTree = "<group>"; };
+		354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionViewModel.swift; sourceTree = "<group>"; };
 		3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsSection.swift; sourceTree = "<group>"; };
 		355222EC293F67A600786F64 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		3552272D29DC9EAC00B9607E /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
@@ -1827,6 +1844,7 @@
 				3562D3BB29DEB08100981D7D /* NavigationTitleWithHandle.swift */,
 				3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */,
 				3552272D29DC9EAC00B9607E /* SearchBar.swift */,
+				354FBF602A02961D00A0B27D /* UpgradeButton.swift */,
 			);
 			path = "Supporting Views";
 			sourceTree = "<group>";
@@ -1977,13 +1995,17 @@
 			isa = PBXGroup;
 			children = (
 				3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */,
+				354FBF5E2A02939600A0B27D /* AliasLimitView.swift */,
 				3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */,
 				3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */,
 				35992154299F910500FEFA32 /* MailboxSection.swift */,
 				35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */,
+				354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */,
 				3567E46529B0E6F900511D62 /* NoCameraPermissionView.swift */,
 				350AF86D299683940045B7B6 /* NoteEditSection.swift */,
 				35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */,
+				354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */,
+				354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */,
 			);
 			path = "Supporting Views";
 			sourceTree = "<group>";
@@ -2046,6 +2068,7 @@
 				3554747F29A8E8460060B555 /* PassKeyManager.swift */,
 				350A97D12885BF7E00A7168B /* Protobufable.swift */,
 				3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */,
+				354FBF5C2A02837000A0B27D /* UserPlanManager.swift */,
 				357602B429F7163C003062A2 /* UserPlanProvider.swift */,
 			);
 			path = Utilities;
@@ -3498,6 +3521,7 @@
 				3552273029DCAE2200B9607E /* SortTypeButton.swift in Sources */,
 				3560843B29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
 				3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */,
+				354FBF6C2A02F76500A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
 				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
 				3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */,
@@ -3521,6 +3545,7 @@
 				3561C9F829E6E3E000D6E518 /* VaultRow.swift in Sources */,
 				355792DA29E7FB85001198DA /* VaultLabel.swift in Sources */,
 				3562D3BD29DEB08100981D7D /* NavigationTitleWithHandle.swift in Sources */,
+				354FBF692A02EF7900A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				355694A529D46923005DD2EB /* VaultListUiModel.swift in Sources */,
 				350AF86F299685690045B7B6 /* NoteEditSection.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
@@ -3530,11 +3555,13 @@
 				3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
+				354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */,
 				35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */,
 				3520F36928E32DCF0053A606 /* ProtonPass.xcdatamodeld in Sources */,
 				355BDED7299E6EE4009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
 				356B69792949DECF00868771 /* BaseItemDetailViewModel.swift in Sources */,
+				354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */,
 				3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
@@ -3550,6 +3577,7 @@
 				3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */,
 				35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */,
 				35733B7829CC525900052229 /* APIManager.swift in Sources */,
+				354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */,
 				3560843F29DD7DE9001F7487 /* NoSearchResultsViews.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
 				3565FD58298D423800E2A0EE /* TOTPCircularTimer.swift in Sources */,
@@ -3636,6 +3664,7 @@
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
+				354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */,
 				357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
@@ -3644,6 +3673,7 @@
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
 				35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */,
 				3531B5432902DA890070D2EE /* AppLockedView.swift in Sources */,
+				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
 				356B831029C343F70084488A /* NoSearchResultsViews.swift in Sources */,
 				3572E51B299399AD00775FAC /* PPError.swift in Sources */,
 				354361572941D419000CAE12 /* OnboardingViewModel.swift in Sources */,
@@ -3663,6 +3693,7 @@
 				3565FD57298D3E9400E2A0EE /* TOTPText.swift in Sources */,
 				354361552941D251000CAE12 /* OnboardingView.swift in Sources */,
 				356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */,
+				354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */,
 				356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */,
 				3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */,
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
@@ -3709,10 +3740,12 @@
 				3586478229F825E0003487B1 /* TelemetryEventsSection.swift in Sources */,
 				356BC35229D6C5B400F03497 /* SettingsViewModel.swift in Sources */,
 				3571B59F29BF7204008D4350 /* SearchView.swift in Sources */,
+				354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
 				3556949D29D45FD5005DD2EB /* MoveVaultListView.swift in Sources */,
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
+				354FBF652A02E17400A0B27D /* SuffixSelectionView.swift in Sources */,
 				3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */,
 				356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */,
 				356BC35929D6F36200F03497 /* OptionRow.swift in Sources */,
@@ -3808,6 +3841,7 @@
 				3554730829CDD3CC0092E0E4 /* UpdateVaultRequest.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
 				3530092A28A5281800611F8A /* Vault.swift in Sources */,
+				354FBF5D2A02837000A0B27D /* UserPlanManager.swift in Sources */,
 				3558180F290A8C0800DD94DB /* GetLastEventIDEndpoint.swift in Sources */,
 				35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */,
 				3542E2CB28D9FE8600194F24 /* ItemRepository.swift in Sources */,

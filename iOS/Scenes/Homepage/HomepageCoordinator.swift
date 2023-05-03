@@ -60,6 +60,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let urlOpener: UrlOpener
     private let userData: UserData
     private let userPlan: UserPlan?
+    private let userPlanManager: UserPlanManagerProtocol
     private let userPlanProvider: UserPlanProviderProtocol
     private let vaultsManager: VaultsManager
 
@@ -146,6 +147,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.urlOpener = .init(preferences: preferences)
         self.userData = userData
         self.userPlan = userPlan
+        self.userPlanManager = UserPlanManager()
         self.userPlanProvider = userPlanProvider
         self.vaultsManager = .init(itemRepository: itemRepository,
                                    manualLogIn: manualLogIn,
@@ -225,10 +227,6 @@ private extension HomepageCoordinator {
               secondaryView: placeholderView)
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         self.profileTabViewModel = profileTabViewModel
-    }
-
-    func informAliasesLimit() {
-        bannerManager.displayTopErrorMessage("You can not create more aliases.")
     }
 
     func present<V: View>(_ view: V, animated: Bool = true, dismissible: Bool = true) {
@@ -335,6 +333,7 @@ private extension HomepageCoordinator {
         let viewModel = try CreateEditLoginViewModel(mode: mode,
                                                      itemRepository: itemRepository,
                                                      aliasRepository: aliasRepository,
+                                                     userPlanManager: userPlanManager,
                                                      vaults: vaultsManager.getAllVaults(),
                                                      preferences: preferences,
                                                      logManager: logManager,
@@ -361,11 +360,44 @@ private extension HomepageCoordinator {
     }
 
     func presentMailboxSelectionView(selection: MailboxSelection,
-                                     mode: MailboxSelectionView.Mode,
+                                     mode: MailboxSelectionViewModel.Mode,
                                      titleMode: MailboxSection.Mode) {
-        let view = MailboxSelectionView(mailboxSelection: selection, mode: mode, titleMode: titleMode)
+        let viewModel = MailboxSelectionViewModel(mailboxSelection: selection,
+                                                  userPlanManager: userPlanManager,
+                                                  logManager: logManager,
+                                                  mode: mode,
+                                                  titleMode: titleMode)
+        viewModel.delegate = self
+        let view = MailboxSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.compact.value) * selection.mailboxes.count + 150
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent, .large()]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController)
+    }
+
+    func presentSuffixSelectionView(selection: SuffixSelection) {
+        let viewModel = SuffixSelectionViewModel(suffixSelection: selection,
+                                                 userPlanManager: userPlanManager,
+                                                 logManager: logManager)
+        viewModel.delegate = self
+        let view = SuffixSelectionView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.compact.value) * selection.suffixes.count + 100
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent, .large()]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
         present(viewController)
     }
 
@@ -419,6 +451,7 @@ private extension HomepageCoordinator {
     func presentCreateEditVaultView(mode: VaultMode) {
         let viewModel = CreateEditVaultViewModel(mode: mode,
                                                  shareRepository: shareRepository,
+                                                 userPlanManager: userPlanManager,
                                                  logManager: logManager,
                                                  theme: preferences.theme)
         viewModel.delegate = self
@@ -490,6 +523,12 @@ private extension HomepageCoordinator {
             } catch {
                 logger.error(error)
             }
+        }
+    }
+
+    func startUpgradeFlow() {
+        dismissAllViewControllers(animated: true) { [unowned self] in
+            print(#function)
         }
     }
 }
@@ -1010,8 +1049,8 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
         UIApplication.shared.openAppSettings()
     }
 
-    func createEditLoginViewModelCanNotCreateMoreAlias() {
-        informAliasesLimit()
+    func createEditLoginViewModelWantsToUpgrade() {
+        startUpgradeFlow()
     }
 }
 
@@ -1024,8 +1063,34 @@ extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
                                     titleMode: titleMode)
     }
 
-    func createEditAliasViewModelCanNotCreateMoreAliases() {
-        informAliasesLimit()
+    func createEditAliasViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
+        presentSuffixSelectionView(selection: suffixSelection)
+    }
+
+    func createEditAliasViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+}
+
+// MARK: - MailboxSelectionViewModelDelegate
+extension HomepageCoordinator: MailboxSelectionViewModelDelegate {
+    func mailboxSelectionViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+
+    func mailboxSelectionViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - SuffixSelectionViewModelDelegate
+extension HomepageCoordinator: SuffixSelectionViewModelDelegate {
+    func suffixSelectionViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+
+    func suffixSelectionViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
@@ -1035,6 +1100,14 @@ extension HomepageCoordinator: CreateAliasLiteViewModelDelegate {
         presentMailboxSelectionView(selection: mailboxSelection,
                                     mode: .createAliasLite,
                                     titleMode: .create)
+    }
+
+    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
+        presentSuffixSelectionView(selection: suffixSelection)
+    }
+
+    func createAliasLiteViewModelWantsToUpgrade() {
+        startUpgradeFlow()
     }
 }
 
@@ -1255,6 +1328,10 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
 
     func createEditVaultViewModelWantsToHideSpinner() {
         hideLoadingHud()
+    }
+
+    func createEditVaultViewModelWantsToUpgrade() {
+        startUpgradeFlow()
     }
 
     func createEditVaultViewModelDidCreateVault() {
