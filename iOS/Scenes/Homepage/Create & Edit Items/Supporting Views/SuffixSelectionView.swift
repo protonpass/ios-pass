@@ -25,17 +25,23 @@ import UIComponents
 
 struct SuffixSelectionView: View {
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var suffixSelection: SuffixSelection
+    @StateObject private var viewModel: SuffixSelectionViewModel
+
+    init(viewModel: SuffixSelectionViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
+
+    private var selection: SuffixSelection { viewModel.suffixSelection }
+    private var tintColor: UIColor { ItemContentType.alias.normMajor2Color }
 
     var body: some View {
-        let tintColor = ItemContentType.alias.normMajor2Color
         NavigationView {
             // ZStack instead of VStack because of SwiftUI bug.
             // See more in "CreateAliasLiteView.swift"
             ZStack(alignment: .bottom) {
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        ForEach(suffixSelection.suffixes, id: \.suffix) { suffix in
+                        ForEach(selection.suffixes, id: \.suffix) { suffix in
                             HStack {
                                 Text(suffix.suffix)
                                     .foregroundColor(Color(uiColor: isSelected(suffix) ?
@@ -52,12 +58,16 @@ struct SuffixSelectionView: View {
                             .padding(.horizontal)
                             .frame(height: OptionRowHeight.compact.value)
                             .onTapGesture {
-                                suffixSelection.selectedSuffix = suffix
+                                selection.selectedSuffix = suffix
                                 dismiss()
                             }
 
                             PassDivider()
                                 .padding(.horizontal)
+                        }
+
+                        if viewModel.shouldUpgrade {
+                            upgradeButton
                         }
                     }
                 }
@@ -74,6 +84,21 @@ struct SuffixSelectionView: View {
     }
 
     private func isSelected(_ suffix: Suffix) -> Bool {
-        suffix == suffixSelection.selectedSuffix
+        suffix == selection.selectedSuffix
+    }
+
+    private var upgradeButton: some View {
+        Button(action: viewModel.upgrade) {
+            HStack {
+                Text("Upgrade for custom domains")
+                Image(uiImage: IconProvider.arrowOutSquare)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 20)
+            }
+            .contentShape(Rectangle())
+            .foregroundColor(Color(uiColor: tintColor))
+        }
+        .frame(height: OptionRowHeight.compact.value)
     }
 }

@@ -744,7 +744,12 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     }
 
     func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
-        let view = SuffixSelectionView(suffixSelection: suffixSelection)
+        guard let userPlanManager else { return }
+        let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection,
+                                                 userPlanManager: userPlanManager,
+                                                 logManager: logManager)
+        viewModel.delegate = self
+        let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
             let height = Int(OptionRowHeight.compact.value) * suffixSelection.suffixes.count + 100
@@ -770,6 +775,17 @@ extension CredentialProviderCoordinator: MailboxSelectionViewModelDelegate {
     }
 
     func mailboxSelectionViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - SuffixSelectionViewModelDelegate
+extension CredentialProviderCoordinator: SuffixSelectionViewModelDelegate {
+    func suffixSelectionViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+
+    func suffixSelectionViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }
