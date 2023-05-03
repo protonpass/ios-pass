@@ -333,6 +333,7 @@ private extension HomepageCoordinator {
         let viewModel = try CreateEditLoginViewModel(mode: mode,
                                                      itemRepository: itemRepository,
                                                      aliasRepository: aliasRepository,
+                                                     userPlanManager: userPlanManager,
                                                      vaults: vaultsManager.getAllVaults(),
                                                      preferences: preferences,
                                                      logManager: logManager,
@@ -1007,6 +1008,12 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
 
     func createEditLoginViewModelWantsToOpenSettings() {
         UIApplication.shared.openAppSettings()
+    }
+
+    func createEditLoginViewModelWantsToUpgrade() {
+        dismissAllViewControllers(animated: true) { [unowned self] in
+            print(#function)
+        }
     }
 }
 

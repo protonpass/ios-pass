@@ -22,10 +22,19 @@ import Foundation
 
 public protocol UserPlanManagerProtocol: AnyObject {
     func canCreateMoreVaults() async throws -> Bool
+    func canCreateMoreTOTPs() async throws -> Bool
 }
 
 public extension UserPlanManagerProtocol {
     func canCreateMoreVaults() async throws -> Bool {
+        #if DEBUG
+        return .random()
+        #else
+        return true
+        #endif
+    }
+
+    func canCreateMoreTOTPs() async throws -> Bool {
         #if DEBUG
         return .random()
         #else
