@@ -37,6 +37,7 @@ struct AliasCreationLiteInfo {
 
 protocol CreateAliasLiteViewModelDelegate: AnyObject {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection)
+    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection)
     func createAliasLiteViewModelWantsToUpgrade()
 }
 
@@ -105,6 +106,10 @@ extension CreateAliasLiteViewModel {
 
     func showMailboxSelection() {
         delegate?.createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
+    }
+
+    func showSuffixSelection() {
+        delegate?.createAliasLiteViewModelWantsToSelectSuffix(suffixSelection)
     }
 
     func upgrade() {

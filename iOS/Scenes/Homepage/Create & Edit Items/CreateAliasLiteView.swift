@@ -57,7 +57,7 @@ struct CreateAliasLiteView: View {
                                                 tintColor: ItemContentType.login.normMajor1Color,
                                                 suffixSelection: viewModel.suffixSelection,
                                                 prefixError: viewModel.prefixError,
-                                                onSelectSuffix: {})
+                                                onSelectSuffix: viewModel.showSuffixSelection)
                         }
 
                         MailboxSection(mailboxSelection: viewModel.mailboxSelection, mode: .create)
@@ -77,6 +77,7 @@ struct CreateAliasLiteView: View {
                         // Gimmick view to take up space
                         buttons
                             .opacity(0)
+                            .padding()
                             .disabled(true)
                     }
                     .animation(.default, value: viewModel.prefixError)

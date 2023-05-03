@@ -1068,6 +1068,10 @@ extension HomepageCoordinator: CreateAliasLiteViewModelDelegate {
                                     titleMode: .create)
     }
 
+    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
+        presentSuffixSelectionView(selection: suffixSelection)
+    }
+
     func createAliasLiteViewModelWantsToUpgrade() {
         dismissAllViewControllers(animated: true) { [unowned self] in
             print(#function)
