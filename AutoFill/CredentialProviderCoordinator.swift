@@ -265,6 +265,7 @@ public final class CredentialProviderCoordinator {
             scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                           preferences: preferences),
             userId: userData.user.ID)
+        self.userPlanManager = UserPlanManager()
     }
 
     func addNewEvent(type: TelemetryEventType) {
@@ -723,6 +724,21 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
             let height = Int(OptionRowHeight.compact.value) * mailboxSelection.mailboxes.count + 140
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        present(viewController)
+    }
+
+    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
+        let view = SuffixSelectionView(suffixSelection: suffixSelection)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = Int(OptionRowHeight.compact.value) * suffixSelection.suffixes.count + 100
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 CGFloat(height)
             }

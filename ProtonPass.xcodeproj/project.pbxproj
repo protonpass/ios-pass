@@ -144,6 +144,7 @@
 		354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
 		354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5E2A02939600A0B27D /* AliasLimitView.swift */; };
 		354FBF652A02E17400A0B27D /* SuffixSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */; };
+		354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */; };
 		3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		355222ED293F67A600786F64 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355222EC293F67A600786F64 /* URLExtensions.swift */; };
@@ -3550,6 +3551,7 @@
 				355BDED7299E6EE4009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
 				356B69792949DECF00868771 /* BaseItemDetailViewModel.swift in Sources */,
+				354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */,
 				3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
