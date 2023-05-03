@@ -23,6 +23,7 @@ import Foundation
 public protocol UserPlanManagerProtocol: AnyObject {
     func canCreateMoreVaults() async throws -> Bool
     func canCreateMoreTOTPs() async throws -> Bool
+    func isFreeUser() async throws -> Bool
 }
 
 public extension UserPlanManagerProtocol {
@@ -39,6 +40,14 @@ public extension UserPlanManagerProtocol {
         return .random()
         #else
         return true
+        #endif
+    }
+
+    func isFreeUser() async throws -> Bool {
+        #if DEBUG
+        return .random()
+        #else
+        return false
         #endif
     }
 }

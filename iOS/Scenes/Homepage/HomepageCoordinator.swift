@@ -360,16 +360,22 @@ private extension HomepageCoordinator {
     }
 
     func presentMailboxSelectionView(selection: MailboxSelection,
-                                     mode: MailboxSelectionView.Mode,
+                                     mode: MailboxSelectionViewModel.Mode,
                                      titleMode: MailboxSection.Mode) {
-        let view = MailboxSelectionView(mailboxSelection: selection, mode: mode, titleMode: titleMode)
+        let viewModel = MailboxSelectionViewModel(mailboxSelection: selection,
+                                                  userPlanManager: userPlanManager,
+                                                  logManager: logManager,
+                                                  mode: mode,
+                                                  titleMode: titleMode)
+        viewModel.delegate = self
+        let view = MailboxSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.compact.value) * selection.mailboxes.count + 140
+            let height = Int(OptionRowHeight.compact.value) * selection.mailboxes.count + 150
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 CGFloat(height)
             }
-            viewController.sheetPresentationController?.detents = [customDetent]
+            viewController.sheetPresentationController?.detents = [customDetent, .large()]
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
@@ -384,7 +390,7 @@ private extension HomepageCoordinator {
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 CGFloat(height)
             }
-            viewController.sheetPresentationController?.detents = [customDetent]
+            viewController.sheetPresentationController?.detents = [customDetent, .large()]
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
@@ -513,6 +519,12 @@ private extension HomepageCoordinator {
             } catch {
                 logger.error(error)
             }
+        }
+    }
+
+    func startUpgradeFlow() {
+        dismissAllViewControllers(animated: true) { [unowned self] in
+            print(#function)
         }
     }
 }
@@ -1034,9 +1046,7 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
     }
 
     func createEditLoginViewModelWantsToUpgrade() {
-        dismissAllViewControllers(animated: true) { [unowned self] in
-            print(#function)
-        }
+        startUpgradeFlow()
     }
 }
 
@@ -1054,9 +1064,18 @@ extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
     }
 
     func createEditAliasViewModelWantsToUpgrade() {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            print(#function)
-        }
+        startUpgradeFlow()
+    }
+}
+
+// MARK: - MailboxSelectionViewModelDelegate
+extension HomepageCoordinator: MailboxSelectionViewModelDelegate {
+    func mailboxSelectionViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+
+    func mailboxSelectionViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
@@ -1073,9 +1092,7 @@ extension HomepageCoordinator: CreateAliasLiteViewModelDelegate {
     }
 
     func createAliasLiteViewModelWantsToUpgrade() {
-        dismissAllViewControllers(animated: true) { [unowned self] in
-            print(#function)
-        }
+        startUpgradeFlow()
     }
 }
 
@@ -1299,9 +1316,7 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
     }
 
     func createEditVaultViewModelWantsToUpgrade() {
-        dismissAllViewControllers(animated: true) { [unowned self] in
-            print(#function)
-        }
+        startUpgradeFlow()
     }
 
     func createEditVaultViewModelDidCreateVault() {
