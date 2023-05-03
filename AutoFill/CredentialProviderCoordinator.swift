@@ -61,6 +61,7 @@ public final class CredentialProviderCoordinator {
     private var aliasRepository: AliasRepositoryProtocol?
     private var remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol?
     private var telemetryEventRepository: TelemetryEventRepositoryProtocol?
+    private var userPlanManager: UserPlanManagerProtocol?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var vaultListUiModels: [VaultListUiModel]?
@@ -477,9 +478,11 @@ private extension CredentialProviderCoordinator {
         showView(view)
     }
 
+    // swiftlint:disable:next function_parameter_count
     func showCreateLoginView(shareId: String,
                              itemRepository: ItemRepositoryProtocol,
                              aliasRepository: AliasRepositoryProtocol,
+                             userPlanManager: UserPlanManagerProtocol,
                              vaults: [Vault],
                              url: URL?) {
         do {
@@ -491,6 +494,7 @@ private extension CredentialProviderCoordinator {
                                                                        type: creationType),
                                                          itemRepository: itemRepository,
                                                          aliasRepository: aliasRepository,
+                                                         userPlanManager: userPlanManager,
                                                          vaults: vaults,
                                                          preferences: preferences,
                                                          logManager: logManager,
@@ -593,11 +597,15 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?) {
-        guard let itemRepository, let aliasRepository, let shareRepository else { return }
+        guard let itemRepository,
+              let aliasRepository,
+              let shareRepository,
+              let userPlanManager else { return }
         if let vaultListUiModels {
             showCreateLoginView(shareId: shareId,
                                 itemRepository: itemRepository,
                                 aliasRepository: aliasRepository,
+                                userPlanManager: userPlanManager,
                                 vaults: vaultListUiModels.map { $0.vault },
                                 url: url)
         } else {
@@ -700,6 +708,10 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
     // Not applicable
     func createEditLoginViewModelWantsToOpenSettings() {}
+
+    func createEditLoginViewModelWantsToUpgrade() {
+        print("Handle this")
+    }
 }
 
 // MARK: - CreateAliasLiteViewModelDelegate

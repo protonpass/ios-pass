@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable type_body_length
 import CodeScanner
 import Core
 import ProtonCore_UIFoundations
@@ -255,7 +256,11 @@ struct CreateEditLoginView: View {
             PassSectionDivider()
             passwordRow
             PassSectionDivider()
-            totpRow
+            if viewModel.canCreateOrEditTOTPs {
+                totpRow
+            } else {
+                totpUpgradeRow
+            }
         }
         .padding(.vertical, kItemDetailSectionPadding)
         .roundedEditableSection()
@@ -438,6 +443,31 @@ struct CreateEditLoginView: View {
                 viewModel.handleScanResult(result)
             }
         }
+    }
+
+    private var totpUpgradeRow: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.lock)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("2FA limit reached")
+                    .font(.footnote)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+
+                HStack {
+                    Text("Upgrade")
+                    Image(uiImage: IconProvider.arrowOutSquare)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 16)
+                }
+                .foregroundColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: viewModel.upgrade)
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
     }
 }
 
