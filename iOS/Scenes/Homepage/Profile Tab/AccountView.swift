@@ -49,14 +49,14 @@ struct AccountView: View {
                                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                         })
 
-                    if let planName = viewModel.planName {
+                    if let plan = viewModel.plan {
                         PassSectionDivider()
 
                         OptionRow(
                             title: "Subscription plan",
                             height: .tall,
                             content: {
-                                Text(planName)
+                                Text(plan.displayName)
                                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                             })
                     }
@@ -114,7 +114,7 @@ struct AccountView: View {
 
                 Spacer()
             }
-            .animation(.default, value: viewModel.planName)
+            .animation(.default, value: viewModel.plan?.displayName)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
         }

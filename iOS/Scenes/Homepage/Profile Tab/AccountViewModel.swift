@@ -37,48 +37,31 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     let logger: Logger
     let theme: Theme
     let username: String
-    let userPlanProvider: UserPlanProviderProtocol
-    @Published private(set) var userPlan: UserPlan?
+    let passPlanRepository: PassPlanRepositoryProtocol
+
+    @Published private(set) var plan: PassPlan?
 
     weak var delegate: AccountViewModelDelegate?
-
-    var planName: String? {
-        switch userPlan {
-        case .none:
-            return nil
-        case .some(let wrapped):
-            switch wrapped {
-            case .free:
-                return "Free"
-            case .paid(let plan):
-                return plan.title
-            case .subUser:
-                return nil
-            }
-        }
-    }
 
     init(isShownAsSheet: Bool,
          apiService: APIService,
          logManager: LogManager,
          theme: Theme,
          username: String,
-         userPlan: UserPlan?,
-         userPlanProvider: UserPlanProviderProtocol) {
+         passPlanRepository: PassPlanRepositoryProtocol) {
         self.isShownAsSheet = isShownAsSheet
         self.apiService = apiService
         self.logger = .init(manager: logManager)
         self.username = username
         self.theme = theme
-        self.userPlan = userPlan
-        self.userPlanProvider = userPlanProvider
-        self.refreshOrganization()
-    }
+        self.passPlanRepository = passPlanRepository
 
-    private func refreshOrganization() {
         Task { @MainActor in
             do {
-                userPlan = try await userPlanProvider.getUserPlan()
+                // First get local plan to optimistically display it
+                // and then try to refresh the plan to have it updated
+                plan = try await passPlanRepository.getPlan()
+                plan = try await passPlanRepository.refreshPlan()
             } catch {
                 logger.error(error)
             }

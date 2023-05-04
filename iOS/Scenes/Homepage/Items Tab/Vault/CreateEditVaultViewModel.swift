@@ -56,15 +56,8 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let mode: VaultMode
     private let logger: Logger
     private let shareRepository: ShareRepositoryProtocol
-    private let userPlanManager: UserPlanManagerProtocol
+    private let upgradeChecker: UpgradeCheckerProtocol
     let theme: Theme
-
-    var shouldUpgrade: Bool {
-        if case .create = mode {
-            return !canCreateMoreVaults
-        }
-        return false
-    }
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
@@ -79,7 +72,7 @@ final class CreateEditVaultViewModel: ObservableObject {
 
     init(mode: VaultMode,
          shareRepository: ShareRepositoryProtocol,
-         userPlanManager: UserPlanManagerProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
          logManager: LogManager,
          theme: Theme) {
         self.mode = mode
@@ -96,7 +89,7 @@ final class CreateEditVaultViewModel: ObservableObject {
 
         self.logger = .init(manager: logManager)
         self.shareRepository = shareRepository
-        self.userPlanManager = userPlanManager
+        self.upgradeChecker = upgradeChecker
         self.theme = theme
         self.verifyLimitation()
     }
@@ -107,7 +100,7 @@ private extension CreateEditVaultViewModel {
     func verifyLimitation() {
         Task { @MainActor in
             do {
-                canCreateMoreVaults = try await userPlanManager.canCreateMoreVaults()
+                canCreateMoreVaults = try await upgradeChecker.canCreateMoreVaults()
             } catch {
                 logger.error(error)
                 delegate?.createEditVaultViewModelDidEncounter(error: error)

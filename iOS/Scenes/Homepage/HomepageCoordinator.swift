@@ -59,9 +59,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let telemetryEventRepository: TelemetryEventRepositoryProtocol
     private let urlOpener: UrlOpener
     private let userData: UserData
-    private let userPlan: UserPlan?
-    private let userPlanManager: UserPlanManagerProtocol
-    private let userPlanProvider: UserPlanProviderProtocol
+    private let passPlanRepository: PassPlanRepositoryProtocol
+    private let upgradeChecker: UpgradeCheckerProtocol
     private let vaultsManager: VaultsManager
 
     // Lazily initialized properties
@@ -86,9 +85,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          manualLogIn: Bool,
          preferences: Preferences,
          symmetricKey: SymmetricKey,
-         userData: UserData,
-         userPlan: UserPlan?,
-         userPlanProvider: UserPlanProviderProtocol) {
+         userData: UserData) {
         let itemRepository = ItemRepository(userData: userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
@@ -109,6 +106,18 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                               container: container,
                                               apiService: apiService,
                                               logManager: logManager)
+
+        let passPlanRepository = PassPlanRepository(
+            localPassPlanDatasource: LocalPassPlanDatasource(container: container),
+            remotePassPlanDatasource: RemotePassPlanDatasource(apiService: apiService),
+            userId: userData.user.ID,
+            logManager: logManager)
+
+        let vaultsManager = VaultsManager(itemRepository: itemRepository,
+                                          manualLogIn: manualLogIn,
+                                          logManager: logManager,
+                                          shareRepository: shareRepository,
+                                          symmetricKey: symmetricKey)
 
         self.aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
         self.apiService = apiService
@@ -139,16 +148,16 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.telemetryEventRepository = TelemetryEventRepository(
             localTelemetryEventDatasource: LocalTelemetryEventDatasource(container: container),
             remoteTelemetryEventDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
-            userPlanProvider: UserPlanProvider(apiService: apiService, logManager: logManager),
+            passPlanRepository: passPlanRepository,
             logManager: logManager,
             scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
-                                          preferences: preferences),
+                                          thresholdProvider: preferences),
             userId: userData.user.ID)
         self.urlOpener = .init(preferences: preferences)
         self.userData = userData
-        self.userPlan = userPlan
-        self.userPlanManager = UserPlanManager()
-        self.userPlanProvider = userPlanProvider
+        self.passPlanRepository = passPlanRepository
+        self.upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
+                                             counter: vaultsManager)
         self.vaultsManager = .init(itemRepository: itemRepository,
                                    manualLogIn: manualLogIn,
                                    logManager: logManager,
@@ -158,6 +167,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.finalizeInitialization()
         self.start()
         self.eventLoop.start()
+        self.refreshPlan()
         self.sendAllEventsIfApplicable()
     }
 }
@@ -191,6 +201,7 @@ private extension HomepageCoordinator {
                 self.sendAllEventsIfApplicable()
                 self.eventLoop.forceSync()
                 self.updateCredentials()
+                self.refreshPlan()
             }
             .store(in: &cancellables)
     }
@@ -211,8 +222,7 @@ private extension HomepageCoordinator {
                                                       itemRepository: itemRepository,
                                                       preferences: preferences,
                                                       logManager: logManager,
-                                                      userPlan: userPlan,
-                                                      userPlanProvider: userPlanProvider,
+                                                      passPlanRepository: passPlanRepository,
                                                       vaultsManager: vaultsManager)
         profileTabViewModel.delegate = self
 
@@ -227,6 +237,16 @@ private extension HomepageCoordinator {
               secondaryView: placeholderView)
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         self.profileTabViewModel = profileTabViewModel
+    }
+
+    func refreshPlan() {
+        Task {
+            do {
+                try await passPlanRepository.refreshPlan()
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 
     func present<V: View>(_ view: V, animated: Bool = true, dismissible: Bool = true) {
@@ -333,7 +353,7 @@ private extension HomepageCoordinator {
         let viewModel = try CreateEditLoginViewModel(mode: mode,
                                                      itemRepository: itemRepository,
                                                      aliasRepository: aliasRepository,
-                                                     userPlanManager: userPlanManager,
+                                                     upgradeChecker: upgradeChecker,
                                                      vaults: vaultsManager.getAllVaults(),
                                                      preferences: preferences,
                                                      logManager: logManager,
@@ -363,7 +383,7 @@ private extension HomepageCoordinator {
                                      mode: MailboxSelectionViewModel.Mode,
                                      titleMode: MailboxSection.Mode) {
         let viewModel = MailboxSelectionViewModel(mailboxSelection: selection,
-                                                  userPlanManager: userPlanManager,
+                                                  upgradeChecker: upgradeChecker,
                                                   logManager: logManager,
                                                   mode: mode,
                                                   titleMode: titleMode)
@@ -384,7 +404,7 @@ private extension HomepageCoordinator {
 
     func presentSuffixSelectionView(selection: SuffixSelection) {
         let viewModel = SuffixSelectionViewModel(suffixSelection: selection,
-                                                 userPlanManager: userPlanManager,
+                                                 upgradeChecker: upgradeChecker,
                                                  logManager: logManager)
         viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
@@ -451,7 +471,7 @@ private extension HomepageCoordinator {
     func presentCreateEditVaultView(mode: VaultMode) {
         let viewModel = CreateEditVaultViewModel(mode: mode,
                                                  shareRepository: shareRepository,
-                                                 userPlanManager: userPlanManager,
+                                                 upgradeChecker: upgradeChecker,
                                                  logManager: logManager,
                                                  theme: preferences.theme)
         viewModel.delegate = self
@@ -726,8 +746,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
                                          logManager: logManager,
                                          theme: preferences.theme,
                                          username: userData.user.email ?? "",
-                                         userPlan: userPlan,
-                                         userPlanProvider: userPlanProvider)
+                                         passPlanRepository: passPlanRepository)
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
