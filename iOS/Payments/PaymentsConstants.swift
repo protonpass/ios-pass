@@ -34,8 +34,9 @@ enum PaymentsConstants {
         "visionary2022",
         "bundlepro2022",
         "enterprise2022",
-        "visionary" // TODO: is this plan needed? Or is it already obsolete?
+        "visionary"
     ]
 
+    // swiftlint:disable:next todo
     static let clientApp: ClientApp = .other(named: "pass") // TODO: to be replaced by .pass once available
 }

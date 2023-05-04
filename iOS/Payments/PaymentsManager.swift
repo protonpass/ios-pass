@@ -24,7 +24,6 @@ import ProtonCore_PaymentsUI
 import ProtonCore_Services
 
 final class PaymentsManager {
-
     typealias PaymentsResult = Result<InAppPurchasePlan?, Error>
 
     private let appData: AppData
@@ -35,21 +34,21 @@ final class PaymentsManager {
     private let preferences: Preferences
     private let inMemoryTokenStorage: PaymentTokenStorage
 
+    // swiftlint:disable:next todo
     // TODO: should we provide the actual BugAlertHandler?
     init(apiService: APIService,
          appData: AppData,
          mainKeyProvider: MainKeyProvider,
          logger: Logger,
          preferences: Preferences,
+         storage: UserDefaults,
          bugAlertHandler: BugAlertHandler = nil) {
-        // TODO: should we use the disk storage instead?
-        let inMemoryDataStorage = InMemoryServicePlanDataStorage()
-        // TODO: should we use the disk storage instead?
+        let persistentDataStorage = UserDefaultsServicePlanDataStorage(storage: storage)
         let inMemoryTokenStorage = InMemoryTokenStorage()
 
         let payments = Payments(inAppPurchaseIdentifiers: PaymentsConstants.inAppPurchaseIdentifiers,
                                 apiService: apiService,
-                                localStorage: inMemoryDataStorage,
+                                localStorage: persistentDataStorage,
                                 reportBugAlertHandler: bugAlertHandler)
         self.appData = appData
         self.mainKeyProvider = mainKeyProvider
@@ -72,7 +71,7 @@ final class PaymentsManager {
     private func initializePaymentsStack() {
         payments.planService.currentSubscriptionChangeDelegate = self
         payments.storeKitManager.delegate = self
-        payments.storeKitManager.updateAvailableProductsList { [weak self] error in
+        payments.storeKitManager.updateAvailableProductsList { [weak self] _ in
             self?.payments.storeKitManager.subscribeToPaymentQueue()
         }
     }
@@ -129,7 +128,6 @@ extension PaymentsManager: StoreKitManagerDelegate {
     }
 
     var isUnlocked: Bool {
-        // TODO: verify the implementation
         guard let mainKey = mainKeyProvider.mainKey, !mainKey.isEmpty else {
             return false
         }

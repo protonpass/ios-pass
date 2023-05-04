@@ -157,7 +157,7 @@ extension PlanDetails {
                             (.forward, "Multiple forwarding mailboxes"),
                             (.eye, "Priority support")
                           ],
-                          isPreferred: true)
+                          isPreferred: false)
 
         default:
             // default description, used for no plan (aka free) or for plans with unknown ID
