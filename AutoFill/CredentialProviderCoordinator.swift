@@ -263,7 +263,7 @@ public final class CredentialProviderCoordinator {
             userPlanProvider: UserPlanProvider(apiService: apiService, logManager: logManager),
             logManager: logManager,
             scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
-                                          preferences: preferences),
+                                          thresholdProvider: preferences),
             userId: userData.user.ID)
         self.userPlanManager = UserPlanManager()
     }

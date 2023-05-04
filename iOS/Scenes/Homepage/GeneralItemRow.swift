@@ -52,8 +52,11 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                 if let description, !description.isEmpty {
                     Text(description)
                         .font(.callout)
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        // "scaledToFill" otherwise the text is always scaled
+                        // even if there's enough space for larger font
+                        .scaledToFill()
                         .minimumScaleFactor(descriptionMinScaleFactor)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
                 }
             }
             .padding(.vertical, 12)

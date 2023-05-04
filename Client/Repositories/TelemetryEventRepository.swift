@@ -134,7 +134,7 @@ public final class TelemetryScheduler: TelemetrySchedulerProtocol {
     public let currentDateProvider: CurrentDateProviderProtocol
     public var threshhold: Date? {
         get {
-            if let telemetryThreshold = preferences.telemetryThreshold {
+            if let telemetryThreshold = thresholdProvider.getThreshold() {
                 return Date(timeIntervalSince1970: telemetryThreshold)
             } else {
                 return nil
@@ -142,16 +142,27 @@ public final class TelemetryScheduler: TelemetrySchedulerProtocol {
         }
 
         set {
-            preferences.telemetryThreshold = newValue?.timeIntervalSince1970
+            thresholdProvider.setThreshold(newValue?.timeIntervalSince1970)
         }
     }
     public let eventCount = 500
     public let minIntervalInHours = 6
     public let maxIntervalInHours = 12
-    public let preferences: Preferences
+    public let thresholdProvider: TelemetryThresholdProviderProtocol
 
-    public init(currentDateProvider: CurrentDateProviderProtocol, preferences: Preferences) {
+    public init(currentDateProvider: CurrentDateProviderProtocol,
+                thresholdProvider: TelemetryThresholdProviderProtocol) {
         self.currentDateProvider = currentDateProvider
-        self.preferences = preferences
+        self.thresholdProvider = thresholdProvider
     }
+}
+
+public protocol TelemetryThresholdProviderProtocol {
+    func getThreshold() -> TimeInterval?
+    func setThreshold(_ threshold: TimeInterval?)
+}
+
+extension Preferences: TelemetryThresholdProviderProtocol {
+    public func getThreshold() -> TimeInterval? { telemetryThreshold }
+    public func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
 }
