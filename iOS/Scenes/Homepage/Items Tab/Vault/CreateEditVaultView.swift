@@ -30,14 +30,14 @@ struct CreateEditVaultView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 24) {
-                if viewModel.shouldUpgrade {
+                if !viewModel.canCreateMoreVaults {
                     vaultsLimitMessage
                 }
                 previewAndTitle
                     .fixedSize(horizontal: false, vertical: true)
                 colorsAndIcons
             }
-            .animation(.default, value: viewModel.shouldUpgrade)
+            .animation(.default, value: viewModel.canCreateMoreVaults)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(kItemDetailSectionPadding)
             .navigationBarTitleDisplayMode(.inline)
@@ -65,10 +65,7 @@ struct CreateEditVaultView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            if viewModel.shouldUpgrade {
-                UpgradeButton(backgroundColor: PassColor.interactionNormMajor1,
-                              action: viewModel.upgrade)
-            } else {
+            if viewModel.canCreateMoreVaults {
                 DisablableCapsuleTextButton(title: viewModel.saveButtonTitle,
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
@@ -76,6 +73,9 @@ struct CreateEditVaultView: View {
                                             disableBackgroundColor: PassColor.interactionNormMinor1,
                                             disabled: viewModel.title.isEmpty,
                                             action: viewModel.save)
+            } else {
+                UpgradeButton(backgroundColor: PassColor.interactionNormMajor1,
+                              action: viewModel.upgrade)
             }
         }
     }

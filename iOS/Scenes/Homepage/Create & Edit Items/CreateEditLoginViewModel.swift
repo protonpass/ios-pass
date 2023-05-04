@@ -56,7 +56,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     let emailAddress: String
 
     private let aliasRepository: AliasRepositoryProtocol
-    private let userPlanManager: UserPlanManagerProtocol
+    private let upgradeChecker: UpgradeCheckerProtocol
 
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
@@ -83,14 +83,14 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
-         userPlanManager: UserPlanManagerProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
          vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager,
          emailAddress: String) throws {
         self.emailAddress = emailAddress
         self.aliasRepository = aliasRepository
-        self.userPlanManager = userPlanManager
+        self.upgradeChecker = upgradeChecker
         try super.init(mode: mode,
                        itemRepository: itemRepository,
                        vaults: vaults,
@@ -146,11 +146,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             if case let .login(title, url, _) = type {
                 self.title = title ?? ""
                 self.urls = [url ?? ""].map { .init(value: $0) }
-
-                Task { @MainActor in
-                    canCreateOrEditTOTPs = try await userPlanManager.canCreateMoreTOTPs()
-                }
             }
+        }
+
+        Task { @MainActor in
+            canCreateOrEditTOTPs = try await upgradeChecker.canCreateMoreTOTPs()
         }
     }
 

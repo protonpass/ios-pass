@@ -46,7 +46,6 @@ final class AppCoordinator {
     private let logger: Logger
     private var container: NSPersistentContainer
     private let credentialManager: CredentialManagerProtocol
-    private let userPlanProvider: UserPlanProviderProtocol
     private var preferences: Preferences
     private var isUITest: Bool
     private let appVersion = "ios-pass@\(Bundle.main.fullAppVersionName())"
@@ -76,12 +75,11 @@ final class AppCoordinator {
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)
-        self.userPlanProvider = UserPlanProvider(apiService: apiManager.apiService, logManager: logManager)
         self.preferences = .init()
         self.isUITest = false
         clearUserDataInKeychainIfFirstRun()
         bindAppState()
-        refreshPrimaryPlan()
+
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             self.isUITest = true
@@ -194,13 +192,6 @@ final class AppCoordinator {
         Task { @MainActor in
             do {
                 let apiService = self.apiManager.apiService
-                if manualLogIn {
-                    showLoadingHud()
-                    // Optionally fetch user plan. We don't want to prevent users from using the app
-                    // because of a null user plan
-                    appData.userPlan = try? await userPlanProvider.getUserPlan()
-                    hideLoadingHud()
-                }
                 let symmetricKey = try self.appData.getSymmetricKey()
                 let homepageCoordinator = HomepageCoordinator(apiService: apiService,
                                                               container: container,
@@ -209,9 +200,7 @@ final class AppCoordinator {
                                                               manualLogIn: manualLogIn,
                                                               preferences: preferences,
                                                               symmetricKey: symmetricKey,
-                                                              userData: userData,
-                                                              userPlan: appData.userPlan,
-                                                              userPlanProvider: userPlanProvider)
+                                                              userData: userData)
                 homepageCoordinator.delegate = self
                 self.homepageCoordinator = homepageCoordinator
                 self.welcomeCoordinator = nil
@@ -241,7 +230,6 @@ final class AppCoordinator {
     private func wipeAllData(includingUnauthSession: Bool) {
         logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
         appData.userData = nil
-        appData.userPlan = nil
         autolocker?.releaseCountdown()
         autolocker = nil
         if includingUnauthSession {
@@ -271,18 +259,6 @@ final class AppCoordinator {
                 // Re-create persistent container
                 container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
                 logger.info("Nuked local data")
-            } catch {
-                logger.error(error)
-            }
-        }
-    }
-
-    private func refreshPrimaryPlan() {
-        Task {
-            do {
-                logger.trace("Refreshing user plan")
-                appData.userPlan = try await userPlanProvider.getUserPlan()
-                logger.trace("Refreshed user plan")
             } catch {
                 logger.error(error)
             }

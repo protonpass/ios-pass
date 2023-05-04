@@ -30,29 +30,51 @@ public final class RepositoryManager: DeinitPrintable {
     public let aliasRepository: AliasRepositoryProtocol
     public let itemRepository: ItemRepositoryProtocol
     public let passKeyManager: PassKeyManagerProtocol
+    public let passPlanRepository: PassPlanRepositoryProtocol
     public let shareEventIDRepository: ShareEventIDRepositoryProtocol
     public let shareRepository: ShareRepositoryProtocol
     public let shareKeyRepository: ShareKeyRepositoryProtocol
+    public let telemetryEventRepository: TelemetryEventRepositoryProtocol
 
     public let localSearchEntryDatasource: LocalSearchEntryDatasourceProtocol
     public let remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol
 
+    public let upgradeChecker: UpgradeCheckerProtocol
+
     // swiftlint:disable:next function_body_length
     public init(apiService: APIService,
                 container: NSPersistentContainer,
+                currentDateProvider: CurrentDateProviderProtocol,
+                limitationCounter: LimitationCounterProtocol,
                 logManager: LogManager,
                 symmetricKey: SymmetricKey,
-                userData: UserData) {
+                userData: UserData,
+                telemetryThresholdProvider: TelemetryThresholdProviderProtocol) {
         let remoteAliasDatasource = RemoteAliasDatasource(apiService: apiService)
         let localItemDatasource = LocalItemDatasource(container: container)
+
         let remoteItemDatasource = RemoteItemRevisionDatasource(apiService: apiService)
         let localShareDatasource = LocalShareDatasource(container: container)
+
         let remoteShareDatasource = RemoteShareDatasource(apiService: apiService)
         let localShareKeyDatasource = LocalShareKeyDatasource(container: container)
+
         let remoteShareKeyDatasource = RemoteShareKeyDatasource(apiService: apiService)
         let remoteItemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
         let localShareEventIDDatasource = LocalShareEventIDDatasource(container: container)
         let remoteShareEventIDDatasource = RemoteShareEventIDDatasource(apiService: apiService)
+
+        let remotePassPlanDatasource = RemotePassPlanDatasource(apiService: apiService)
+        let localPassPlanDatasource = LocalPassPlanDatasource(container: container)
+
+        let remoteTelemetryEventDatasource = RemoteTelemetryEventDatasource(apiService: apiService)
+        let localTelemetryEventDatasource = LocalTelemetryEventDatasource(container: container)
+
+        let passPlanRepository = PassPlanRepository(
+            localPassPlanDatasource: localPassPlanDatasource,
+            remotePassPlanDatasource: remotePassPlanDatasource,
+            userId: userData.user.ID,
+            logManager: logManager)
 
         let shareKeyRepository = ShareKeyRepository(localShareKeyDatasource: localShareKeyDatasource,
                                                     remoteShareKeyDatasource: remoteShareKeyDatasource,
@@ -77,6 +99,11 @@ public final class RepositoryManager: DeinitPrintable {
                                               passKeyManager: passKeyManager,
                                               logManager: logManager)
 
+        let telemetryScheduler = TelemetryScheduler(currentDateProvider: currentDateProvider,
+                                                    thresholdProvider: telemetryThresholdProvider)
+
+        let userId = userData.user.ID
+
         self.aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
         self.itemRepository = ItemRepository(userData: userData,
                                              symmetricKey: symmetricKey,
@@ -86,11 +113,22 @@ public final class RepositoryManager: DeinitPrintable {
                                              passKeyManager: passKeyManager,
                                              logManager: logManager)
         self.passKeyManager = passKeyManager
+        self.passPlanRepository = passPlanRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.shareRepository = shareRepository
         self.shareKeyRepository = shareKeyRepository
+        self.telemetryEventRepository = TelemetryEventRepository(
+            localTelemetryEventDatasource: localTelemetryEventDatasource,
+            remoteTelemetryEventDatasource: remoteTelemetryEventDatasource,
+            passPlanRepository: passPlanRepository,
+            logManager: logManager,
+            scheduler: telemetryScheduler,
+            userId: userId)
 
         self.localSearchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
+
+        self.upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
+                                             counter: limitationCounter)
     }
 }

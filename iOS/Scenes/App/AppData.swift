@@ -26,9 +26,6 @@ import ProtonCore_Login
 import ProtonCore_Networking
 
 final class AppData {
-    @KeychainStorage(key: .userPlan)
-    var userPlan: UserPlan?
-
     @KeychainStorage(key: .userData)
     var userData: UserData?
 
@@ -39,7 +36,6 @@ final class AppData {
     private var symmetricKey: String?
 
     init(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
-        self._userPlan.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
         self._userData.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
         self._unauthSessionCredentials.inject(keychain: keychain,
                                               mainKeyProvider: mainKeyProvider,
