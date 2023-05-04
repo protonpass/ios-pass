@@ -293,7 +293,7 @@ final class AppCoordinator {
         Task {
             do {
                 logger.trace("Checking access to Pass")
-                let endpoint = CheckAccessToPassEndpoint()
+                let endpoint = CheckAccessAndPlanEndpoint()
                 _ = try await apiManager.apiService.exec(endpoint: endpoint)
                 logger.info("Checked access to Pass")
             } catch {
