@@ -80,7 +80,8 @@ final class AppCoordinator {
                                                appData: appData,
                                                mainKeyProvider: keymaker,
                                                logger: logger,
-                                               preferences: preferences)
+                                               preferences: preferences,
+                                               storage: kSharedUserDefaults ?? .standard)
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)

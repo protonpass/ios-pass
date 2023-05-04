@@ -564,7 +564,7 @@
 		6699002E29A77197001033B6 /* KeychainMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002D29A77197001033B6 /* KeychainMock.swift */; };
 		6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */; };
 		66CA927A29F9643900F2FC59 /* PaymentsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CA927929F9643900F2FC59 /* PaymentsManager.swift */; };
-		66CA927D29F9716E00F2FC59 /* InMemoryServicePlanDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CA927C29F9716E00F2FC59 /* InMemoryServicePlanDataStorage.swift */; };
+		66CA927D29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CA927C29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift */; };
 		66CA927F29F9719800F2FC59 /* InMemoryTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CA927E29F9719800F2FC59 /* InMemoryTokenStorage.swift */; };
 		66CA928129F971CF00F2FC59 /* PaymentsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CA928029F971CF00F2FC59 /* PaymentsConstants.swift */; };
 		66E960D529F046C6004D96AF /* PassLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66E960D429F046C6004D96AF /* PassLaunchScreen.storyboard */; };
@@ -1253,7 +1253,7 @@
 		6699002D29A77197001033B6 /* KeychainMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMock.swift; sourceTree = "<group>"; };
 		6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProviderMock.swift; sourceTree = "<group>"; };
 		66CA927929F9643900F2FC59 /* PaymentsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsManager.swift; sourceTree = "<group>"; };
-		66CA927C29F9716E00F2FC59 /* InMemoryServicePlanDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryServicePlanDataStorage.swift; sourceTree = "<group>"; };
+		66CA927C29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsServicePlanDataStorage.swift; sourceTree = "<group>"; };
 		66CA927E29F9719800F2FC59 /* InMemoryTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryTokenStorage.swift; sourceTree = "<group>"; };
 		66CA928029F971CF00F2FC59 /* PaymentsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsConstants.swift; sourceTree = "<group>"; };
 		66E960D429F046C6004D96AF /* PassLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = PassLaunchScreen.storyboard; path = "Pods/ProtonCore-UIFoundations/libraries/UIFoundations/LaunchScreens/PassLaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
@@ -2598,7 +2598,7 @@
 			children = (
 				66CA927929F9643900F2FC59 /* PaymentsManager.swift */,
 				66CA928029F971CF00F2FC59 /* PaymentsConstants.swift */,
-				66CA927C29F9716E00F2FC59 /* InMemoryServicePlanDataStorage.swift */,
+				66CA927C29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift */,
 				66CA927E29F9719800F2FC59 /* InMemoryTokenStorage.swift */,
 			);
 			path = Payments;
@@ -3729,7 +3729,7 @@
 				3569B2A129B788600070830B /* ItemsTabView.swift in Sources */,
 				3565FD55298D3E5700E2A0EE /* TOTPCircularTimer.swift in Sources */,
 				35F8CD0029B617670017DBC6 /* HomepageCoordinator.swift in Sources */,
-				66CA927D29F9716E00F2FC59 /* InMemoryServicePlanDataStorage.swift in Sources */,
+				66CA927D29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift in Sources */,
 				35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */,
 				35F6D0C62A20A93800C8E395 /* InfoBanner.swift in Sources */,
 				355C138929DB71D800264CD0 /* HomepageTabbarView.swift in Sources */,
