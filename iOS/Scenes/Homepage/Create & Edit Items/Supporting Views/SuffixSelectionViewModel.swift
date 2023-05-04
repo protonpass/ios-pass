@@ -39,7 +39,7 @@ final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: SuffixSelectionViewModelDelegate?
 
     init(suffixSelection: SuffixSelection,
-         userPlanManager: UserPlanManagerProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
          logManager: LogManager) {
         self.logger = .init(manager: logManager)
         self.suffixSelection = suffixSelection
@@ -47,7 +47,7 @@ final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
         suffixSelection.attach(to: self, storeIn: &cancellables)
         Task { @MainActor in
             do {
-                shouldUpgrade = try await userPlanManager.isFreeUser()
+                shouldUpgrade = try await upgradeChecker.isFreeUser()
             } catch {
                 logger.error(error)
                 delegate?.suffixSelectionViewModelDidEncounter(error: error)

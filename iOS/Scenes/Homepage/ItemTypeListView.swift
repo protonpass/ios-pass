@@ -132,7 +132,8 @@ struct ItemTypeListView: View {
                                       backgroundColor: type.backgroundColor)
                 },
                 title: type.title,
-                description: type.description)
+                description: type.description,
+                descriptionMinScaleFactor: 0.9)
             .frame(height: 66)
         })
         .buttonStyle(.plain)

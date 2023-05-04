@@ -138,7 +138,6 @@
 		354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */; };
 		354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769928C87CD500EB2383 /* EmptyVaultView.swift */; };
 		354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */; };
-		354FBF5D2A02837000A0B27D /* UserPlanManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5C2A02837000A0B27D /* UserPlanManager.swift */; };
 		354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5E2A02939600A0B27D /* AliasLimitView.swift */; };
 		354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
 		354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
@@ -243,6 +242,13 @@
 		355A198D294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */; };
 		355A198F294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */; };
 		355A27B52953751200F32EA1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme.swift */; };
+		355A5B0A2A03D1F10089E0AC /* PassPlanEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B092A03D1F10089E0AC /* PassPlanEntity.swift */; };
+		355A5B0C2A03D3450089E0AC /* PassPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B0B2A03D3450089E0AC /* PassPlan.swift */; };
+		355A5B0E2A03D6A20089E0AC /* LocalPassPlanDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B0D2A03D6A20089E0AC /* LocalPassPlanDatasource.swift */; };
+		355A5B102A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B0F2A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift */; };
+		355A5B122A041F550089E0AC /* RemotePassPlanDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B112A041F550089E0AC /* RemotePassPlanDatasource.swift */; };
+		355A5B142A041FCC0089E0AC /* PassPlanRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B132A041FCC0089E0AC /* PassPlanRepository.swift */; };
+		355A5B162A0425810089E0AC /* UpgradeChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B152A0425810089E0AC /* UpgradeChecker.swift */; };
 		355AA31829E9525E00C20F5F /* RemoteFavIconDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31729E9525E00C20F5F /* RemoteFavIconDatasource.swift */; };
 		355AA31A29E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */; };
 		355AA31C29E9736A00C20F5F /* Data+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31B29E9736A00C20F5F /* Data+Random.swift */; };
@@ -261,7 +267,7 @@
 		355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */; };
 		355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BFDA129C6FD5200A32AD6 /* ItemContextMenuHandler.swift */; };
 		355C138929DB71D800264CD0 /* HomepageTabbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355C138829DB71D800264CD0 /* HomepageTabbarView.swift */; };
-		355CA56429F19041000B8248 /* CheckAccessToPassEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CA56329F19041000B8248 /* CheckAccessToPassEndpoint.swift */; };
+		355CA56429F19041000B8248 /* CheckAccessAndPlanEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CA56329F19041000B8248 /* CheckAccessAndPlanEndpoint.swift */; };
 		355CA56629F1A7DA000B8248 /* CreateAliasAndAnotherItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CA56529F1A7DA000B8248 /* CreateAliasAndAnotherItemEndpoint.swift */; };
 		355CA56829F1A85B000B8248 /* CreateAliasAndAnotherItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CA56729F1A85B000B8248 /* CreateAliasAndAnotherItemRequest.swift */; };
 		355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */; };
@@ -439,7 +445,6 @@
 		357602AC29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */; };
 		357602AE29F6FDA0003062A2 /* TelemetryEventRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */; };
 		357602B329F71499003062A2 /* GetUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602B229F71499003062A2 /* GetUserEndpoint.swift */; };
-		357602B529F7163C003062A2 /* UserPlanProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602B429F7163C003062A2 /* UserPlanProvider.swift */; };
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
@@ -850,7 +855,6 @@
 		354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewModel.swift; sourceTree = "<group>"; };
 		354F769928C87CD500EB2383 /* EmptyVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyVaultView.swift; sourceTree = "<group>"; };
 		354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseItemDetailViewModel.swift; sourceTree = "<group>"; };
-		354FBF5C2A02837000A0B27D /* UserPlanManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlanManager.swift; sourceTree = "<group>"; };
 		354FBF5E2A02939600A0B27D /* AliasLimitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasLimitView.swift; sourceTree = "<group>"; };
 		354FBF602A02961D00A0B27D /* UpgradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeButton.swift; sourceTree = "<group>"; };
 		354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionView.swift; sourceTree = "<group>"; };
@@ -938,6 +942,13 @@
 		355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeEndpoint.swift; sourceTree = "<group>"; };
 		355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeRequest.swift; sourceTree = "<group>"; };
 		355A27B42953751200F32EA1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		355A5B092A03D1F10089E0AC /* PassPlanEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPlanEntity.swift; sourceTree = "<group>"; };
+		355A5B0B2A03D3450089E0AC /* PassPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPlan.swift; sourceTree = "<group>"; };
+		355A5B0D2A03D6A20089E0AC /* LocalPassPlanDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPassPlanDatasource.swift; sourceTree = "<group>"; };
+		355A5B0F2A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPassPlanDatasourceTests.swift; sourceTree = "<group>"; };
+		355A5B112A041F550089E0AC /* RemotePassPlanDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePassPlanDatasource.swift; sourceTree = "<group>"; };
+		355A5B132A041FCC0089E0AC /* PassPlanRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPlanRepository.swift; sourceTree = "<group>"; };
+		355A5B152A0425810089E0AC /* UpgradeChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeChecker.swift; sourceTree = "<group>"; };
 		355AA31729E9525E00C20F5F /* RemoteFavIconDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFavIconDatasource.swift; sourceTree = "<group>"; };
 		355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFavIconDatasourceTests.swift; sourceTree = "<group>"; };
 		355AA31B29E9736A00C20F5F /* Data+Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Random.swift"; sourceTree = "<group>"; };
@@ -953,7 +964,7 @@
 		355BDED5299E6515009FDBB1 /* CreateAliasLiteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasLiteViewModel.swift; sourceTree = "<group>"; };
 		355BFDA129C6FD5200A32AD6 /* ItemContextMenuHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContextMenuHandler.swift; sourceTree = "<group>"; };
 		355C138829DB71D800264CD0 /* HomepageTabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageTabbarView.swift; sourceTree = "<group>"; };
-		355CA56329F19041000B8248 /* CheckAccessToPassEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckAccessToPassEndpoint.swift; sourceTree = "<group>"; };
+		355CA56329F19041000B8248 /* CheckAccessAndPlanEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckAccessAndPlanEndpoint.swift; sourceTree = "<group>"; };
 		355CA56529F1A7DA000B8248 /* CreateAliasAndAnotherItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasAndAnotherItemEndpoint.swift; sourceTree = "<group>"; };
 		355CA56729F1A85B000B8248 /* CreateAliasAndAnotherItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasAndAnotherItemRequest.swift; sourceTree = "<group>"; };
 		355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailMoreInfoSection.swift; sourceTree = "<group>"; };
@@ -1099,7 +1110,6 @@
 		357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteTelemetryEventDatasource.swift; sourceTree = "<group>"; };
 		357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventRepository.swift; sourceTree = "<group>"; };
 		357602B229F71499003062A2 /* GetUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserEndpoint.swift; sourceTree = "<group>"; };
-		357602B429F7163C003062A2 /* UserPlanProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlanProvider.swift; sourceTree = "<group>"; };
 		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
@@ -1637,10 +1647,11 @@
 				354146D028D1F1E1007E45A6 /* AliasOptions.swift */,
 				355454C729E5EB0C005289E7 /* ItemKey.swift */,
 				3593DCF828A824FE00C235D3 /* ItemRevision.swift */,
-				358AB4982886FA7B00818B44 /* ShareKey.swift */,
+				355A5B0B2A03D3450089E0AC /* PassPlan.swift */,
 				358A508C28AD823000F5285C /* PublicKey.swift */,
 				356B831729C37FC50084488A /* SearchEntry.swift */,
 				355443FC287CA77C0017FCAD /* Share.swift */,
+				358AB4982886FA7B00818B44 /* ShareKey.swift */,
 				353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */,
 				359A4DDD29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift */,
 				359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */,
@@ -1709,7 +1720,7 @@
 		355CA56229F1901E000B8248 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				355CA56329F19041000B8248 /* CheckAccessToPassEndpoint.swift */,
+				355CA56329F19041000B8248 /* CheckAccessAndPlanEndpoint.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -1794,6 +1805,7 @@
 				354146D928D1F585007E45A6 /* AliasRepository.swift */,
 				355AA31D29E97B0900C20F5F /* FavIconRepository.swift */,
 				3542E2CA28D9FE8600194F24 /* ItemRepository.swift */,
+				355A5B132A041FCC0089E0AC /* PassPlanRepository.swift */,
 				358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */,
 				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
 				35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */,
@@ -2028,6 +2040,7 @@
 			isa = PBXGroup;
 			children = (
 				3542E2C628D9EB8000194F24 /* LocalItemDatasourceTests.swift */,
+				355A5B0F2A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift */,
 				358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */,
 				355E33A929C4612800402CAE /* LocalSearchEntryDatasourceTests.swift */,
 				357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */,
@@ -2068,8 +2081,7 @@
 				3554747F29A8E8460060B555 /* PassKeyManager.swift */,
 				350A97D12885BF7E00A7168B /* Protobufable.swift */,
 				3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */,
-				354FBF5C2A02837000A0B27D /* UserPlanManager.swift */,
-				357602B429F7163C003062A2 /* UserPlanProvider.swift */,
+				355A5B152A0425810089E0AC /* UpgradeChecker.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -2105,6 +2117,7 @@
 			isa = PBXGroup;
 			children = (
 				3542E2C428D9E2E700194F24 /* ItemEntity.swift */,
+				355A5B092A03D1F10089E0AC /* PassPlanEntity.swift */,
 				358A509128AD856D00F5285C /* PublicKeyEntity.swift */,
 				356B831329C365320084488A /* SearchEntryEntity.swift */,
 				3593DD0728A837DC00C235D3 /* ShareEntity.swift */,
@@ -2129,6 +2142,7 @@
 			children = (
 				3593DCE628A790F800C235D3 /* LocalDatasource.swift */,
 				3542E2C228D9E16600194F24 /* LocalItemDatasource.swift */,
+				355A5B0D2A03D6A20089E0AC /* LocalPassPlanDatasource.swift */,
 				358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */,
 				356B831529C37E560084488A /* LocalSearchEntryDatasource.swift */,
 				3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */,
@@ -2147,6 +2161,7 @@
 				355AA31729E9525E00C20F5F /* RemoteFavIconDatasource.swift */,
 				3554747D29A8E71F0060B555 /* RemoteItemKeyDatasource.swift */,
 				35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */,
+				355A5B112A041F550089E0AC /* RemotePassPlanDatasource.swift */,
 				358A509928AD8A8000F5285C /* RemotePublicKeyDatasource.swift */,
 				35610B7F28ABCA0C00955ACB /* RemoteShareDatasource.swift */,
 				35581810290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift */,
@@ -3791,6 +3806,7 @@
 				3554730A29CDD5540092E0E4 /* UpdateVaultEndpoint.swift in Sources */,
 				354146D128D1F1E1007E45A6 /* AliasOptions.swift in Sources */,
 				3529433028DB4C7700E1F11B /* SearchableItem.swift in Sources */,
+				355A5B0A2A03D1F10089E0AC /* PassPlanEntity.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
 				359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */,
 				35533BB729D58C8F00EC58DE /* RepositoryManager.swift in Sources */,
@@ -3812,17 +3828,17 @@
 				355792DD29E859A5001198DA /* GetLogoEndpoint.swift in Sources */,
 				3565362629EDD8E4007A43D3 /* SendEventsRequest.swift in Sources */,
 				359A4DDC29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift in Sources */,
-				355CA56429F19041000B8248 /* CheckAccessToPassEndpoint.swift in Sources */,
+				355CA56429F19041000B8248 /* CheckAccessAndPlanEndpoint.swift in Sources */,
 				358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */,
 				3593DCF928A824FE00C235D3 /* ItemRevision.swift in Sources */,
 				355AA31E29E97B0900C20F5F /* FavIconRepository.swift in Sources */,
 				357602A829F6ECD3003062A2 /* TelemetryEventEntity.swift in Sources */,
 				356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */,
 				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
+				355A5B0E2A03D6A20089E0AC /* LocalPassPlanDatasource.swift in Sources */,
 				3560844C29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift in Sources */,
 				359A4DDE29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift in Sources */,
 				35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */,
-				357602B529F7163C003062A2 /* UserPlanProvider.swift in Sources */,
 				357602B329F71499003062A2 /* GetUserEndpoint.swift in Sources */,
 				358A508D28AD823000F5285C /* PublicKey.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
@@ -3831,6 +3847,7 @@
 				3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */,
 				3556949B29D44DEF005DD2EB /* MoveItemRequest.swift in Sources */,
 				354146D428D1F235007E45A6 /* GetAliasOptionsEndpoint.swift in Sources */,
+				355A5B142A041FCC0089E0AC /* PassPlanRepository.swift in Sources */,
 				35526B6628D11E0C0017BB53 /* ModifyItemRequest.swift in Sources */,
 				356B831429C365320084488A /* SearchEntryEntity.swift in Sources */,
 				3554747C29A8E6500060B555 /* GetLatestItemKeyEndpoint.swift in Sources */,
@@ -3840,8 +3857,8 @@
 				355792E429E876B7001198DA /* DataResponse.swift in Sources */,
 				3554730829CDD3CC0092E0E4 /* UpdateVaultRequest.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
+				355A5B122A041F550089E0AC /* RemotePassPlanDatasource.swift in Sources */,
 				3530092A28A5281800611F8A /* Vault.swift in Sources */,
-				354FBF5D2A02837000A0B27D /* UserPlanManager.swift in Sources */,
 				3558180F290A8C0800DD94DB /* GetLastEventIDEndpoint.swift in Sources */,
 				35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */,
 				3542E2CB28D9FE8600194F24 /* ItemRepository.swift in Sources */,
@@ -3864,6 +3881,7 @@
 				35610B7528ABB77800955ACB /* LocalShareKeyDatasource.swift in Sources */,
 				3593DD0B28A837DD00C235D3 /* ShareEntity.swift in Sources */,
 				3552F48C28D3451800547146 /* GetAliasDetailsEndpoint.swift in Sources */,
+				355A5B162A0425810089E0AC /* UpgradeChecker.swift in Sources */,
 				3552F48828D322C100547146 /* CreateCustomAliasEndpoint.swift in Sources */,
 				3552F48628D3215600547146 /* CreateCustomAliasRequest.swift in Sources */,
 				35492E3A293DFB8700BDE231 /* ItemIdentifiable.swift in Sources */,
@@ -3878,6 +3896,7 @@
 				35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */,
 				35581815290AB39C00DD94DB /* GetEventsEndpoint.swift in Sources */,
 				3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */,
+				355A5B0C2A03D3450089E0AC /* PassPlan.swift in Sources */,
 				3561A1802922D1700097078B /* ItemCount.swift in Sources */,
 				3554747E29A8E71F0060B555 /* RemoteItemKeyDatasource.swift in Sources */,
 				3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */,
@@ -3909,6 +3928,7 @@
 			files = (
 				3542E2C928D9EBC000194F24 /* SymmetricallyEncryptedItem+Test.swift in Sources */,
 				355AA31A29E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift in Sources */,
+				355A5B102A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift in Sources */,
 				354EA82D29EF53B500F1FB95 /* TelemetryEventTests.swift in Sources */,
 				353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */,
 				357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */,

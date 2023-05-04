@@ -35,11 +35,26 @@ private final class MockedCurrentDateProvider: CurrentDateProviderProtocol {
     func getCurrentDate() -> Date { currentDate }
 }
 
-private final class MockedFreeUserPlanProvider: UserPlanProviderProtocol {
-    let apiService = PMAPIService.dummyService()
+private final class MockedFreePlanRepository: PassPlanRepositoryProtocol {
+    var localPassPlanDatasource: LocalPassPlanDatasourceProtocol =
+    LocalPassPlanDatasource(container: .Builder.build(name: kProtonPassContainerName, inMemory: true))
+
+    var remotePassPlanDatasource: RemotePassPlanDatasourceProtocol =
+    RemotePassPlanDatasource(apiService: PMAPIService.dummyService())
+
+    var userId: String = ""
     let logger = Logger.dummyLogger()
 
-    func getUserPlan() async throws -> UserPlan { .free }
+    var freePlan = PassPlan(type: "free",
+                            internalName: .random(),
+                            displayName: .random(),
+                            vaultLimit: .random(in: 1...100),
+                            aliasLimit: .random(in: 1...100),
+                            totpLimit: .random(in: 1...100))
+
+    func getPlan() async throws -> PassPlan { freePlan }
+
+    func refreshPlan() async throws -> PassPlan { freePlan }
 }
 
 final class TelemetryEventRepositoryTests: XCTestCase {
@@ -67,10 +82,10 @@ extension TelemetryEventRepositoryTests {
         // Given
         let givenUserId = String.random()
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
-                                                    preferences: preferences)
+                                                    thresholdProvider: preferences)
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
-                                       userPlanProvider: MockedFreeUserPlanProvider(),
+                                       passPlanRepository: MockedFreePlanRepository(),
                                        logManager: .dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)
@@ -94,10 +109,10 @@ extension TelemetryEventRepositoryTests {
         // Given
         let givenUserId = String.random()
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
-                                                    preferences: preferences)
+                                                    thresholdProvider: preferences)
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
-                                       userPlanProvider: MockedFreeUserPlanProvider(),
+                                       passPlanRepository: MockedFreePlanRepository(),
                                        logManager: .dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)
@@ -121,10 +136,10 @@ extension TelemetryEventRepositoryTests {
 
         preferences.telemetryThreshold = givenCurrentDate.addingTimeInterval(1).timeIntervalSince1970
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: mockedCurrentDateProvider,
-                                                    preferences: preferences)
+                                                    thresholdProvider: preferences)
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
-                                       userPlanProvider: MockedFreeUserPlanProvider(),
+                                       passPlanRepository: MockedFreePlanRepository(),
                                        logManager: .dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)
@@ -146,12 +161,12 @@ extension TelemetryEventRepositoryTests {
 
         preferences.telemetryThreshold = givenCurrentDate.addingTimeInterval(-1).timeIntervalSince1970
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: mockedCurrentDateProvider,
-                                                    preferences: preferences)
+                                                    thresholdProvider: preferences)
         // Send only 1 event at a time to test if the while loop inside TelemetryEventRepository
         // works correctly when dealing with a large number of events
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
-                                       userPlanProvider: MockedFreeUserPlanProvider(),
+                                       passPlanRepository: MockedFreePlanRepository(),
                                        logManager: .dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId,

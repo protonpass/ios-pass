@@ -56,7 +56,7 @@ final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
     }
 
     init(mailboxSelection: MailboxSelection,
-         userPlanManager: UserPlanManagerProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
          logManager: LogManager,
          mode: MailboxSelectionViewModel.Mode,
          titleMode: MailboxSection.Mode) {
@@ -68,7 +68,7 @@ final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
         mailboxSelection.attach(to: self, storeIn: &cancellables)
         Task { @MainActor in
             do {
-                shouldUpgrade = try await userPlanManager.isFreeUser()
+                shouldUpgrade = try await upgradeChecker.isFreeUser()
             } catch {
                 logger.error(error)
                 delegate?.mailboxSelectionViewModelDidEncounter(error: error)

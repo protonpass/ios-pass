@@ -295,6 +295,16 @@ extension VaultsManager {
     }
 }
 
+// MARK: - LimitationCounterProtocol
+extension VaultsManager: LimitationCounterProtocol {
+    func getTOTPCount() -> Int {
+        guard case let .loaded(vaults, trashedItems) = state else { return 0 }
+        let activeItemsWithTotpUri = vaults.flatMap { $0.items }.filter { $0.hasTotpUri }.count
+        let trashedItemsWithTotpUri = trashedItems.filter { $0.hasTotpUri }.count
+        return activeItemsWithTotpUri + trashedItemsWithTotpUri
+    }
+}
+
 extension VaultManagerState: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {

@@ -1,6 +1,6 @@
 //
-// CheckAccessToPassEndpoint.swift
-// Proton Pass - Created on 20/04/2023.
+// RemotePassPlanDatasource.swift
+// Proton Pass - Created on 04/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,19 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Networking
+import Foundation
 
-public struct CheckAccessToPassEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
+public protocol RemotePassPlanDatasourceProtocol: RemoteDatasourceProtocol {
+    func getPassPlan() async throws -> PassPlan
+}
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-
-    public init() {
-        self.debugDescription = "Check access to Pass"
-        self.path = "/pass/v1/user/access"
-        self.method = .post
+public extension RemotePassPlanDatasourceProtocol {
+    func getPassPlan() async throws -> PassPlan {
+        let endpoint = CheckAccessAndPlanEndpoint()
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.access.plan
     }
 }
+
+public final class RemotePassPlanDatasource: RemoteDatasource, RemotePassPlanDatasourceProtocol {}

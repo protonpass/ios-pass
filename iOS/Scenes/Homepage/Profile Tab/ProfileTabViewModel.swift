@@ -50,7 +50,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     let logger: Logger
     let preferences: Preferences
     let appVersion: String
-    let userPlanProvider: UserPlanProviderProtocol
+    let passPlanRepository: PassPlanRepositoryProtocol
     let vaultsManager: VaultsManager
 
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
@@ -65,7 +65,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         }
     }
 
-    @Published private(set) var userPlan: UserPlan?
+    @Published private(set) var plan: PassPlan?
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
@@ -75,8 +75,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
          itemRepository: ItemRepositoryProtocol,
          preferences: Preferences,
          logManager: LogManager,
-         userPlan: UserPlan?,
-         userPlanProvider: UserPlanProviderProtocol,
+         passPlanRepository: PassPlanRepositoryProtocol,
          vaultsManager: VaultsManager) {
         self.apiService = apiService
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
@@ -85,8 +84,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         self.logger = .init(manager: logManager)
         self.preferences = preferences
         self.appVersion = "Version \(Bundle.main.fullAppVersionName()) (\(Bundle.main.buildNumber))"
-        self.userPlan = userPlan
-        self.userPlanProvider = userPlanProvider
+        self.passPlanRepository = passPlanRepository
         self.vaultsManager = vaultsManager
 
         self.autoFillEnabled = false
@@ -174,7 +172,10 @@ private extension ProfileTabViewModel {
         biometricAuthenticator.initializeBiometryType()
         biometricAuthenticator.enabled = preferences.biometricAuthenticationEnabled
         Task { @MainActor in
-            userPlan = try await userPlanProvider.getUserPlan()
+            // First get local plan to optimistically display it
+            // and then try to refresh the plan to have it updated
+            plan = try await passPlanRepository.getPlan()
+            plan = try await passPlanRepository.refreshPlan()
         }
     }
 

@@ -128,4 +128,15 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "time", on: sut, hasType: .double)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
+
+    func testPassPlanEntity() {
+        let sut = entity(byName: "PassPlanEntity")
+        verifyAttribute(named: "aliasLimit", on: sut, hasType: .integer64)
+        verifyAttribute(named: "displayName", on: sut, hasType: .string)
+        verifyAttribute(named: "internalName", on: sut, hasType: .string)
+        verifyAttribute(named: "totpLimit", on: sut, hasType: .integer64)
+        verifyAttribute(named: "type", on: sut, hasType: .string)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
+        verifyAttribute(named: "vaultLimit", on: sut, hasType: .integer64)
+    }
 }
