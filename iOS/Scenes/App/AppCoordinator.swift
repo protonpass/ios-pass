@@ -104,11 +104,13 @@ final class AppCoordinator {
                 guard let self else { return }
                 switch appState {
                 case .loggedOut(let reason):
+                    self.logger.info("Logged out \(reason)")
                     let shouldWipeUnauthSession = reason != .noAuthSessionButUnauthSessionAvailable
                     self.wipeAllData(includingUnauthSession: shouldWipeUnauthSession)
                     self.showWelcomeScene(reason: reason)
 
                 case let .loggedIn(userData, manualLogIn):
+                    self.logger.info("Logged in manual \(manualLogIn)")
                     self.appData.userData = userData
                     self.apiManager.sessionIsAvailable(authCredential: userData.credential,
                                                        scopes: userData.scopes)

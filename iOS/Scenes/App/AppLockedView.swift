@@ -28,6 +28,7 @@ private let kMaxAttemptCount = 3
 struct AppLockedView: View {
     @StateObject private var authenticator: BiometricAuthenticator
     @ObservedObject private var preferences: Preferences
+    private let logger: Logger
     private let delayed: Bool
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
@@ -43,6 +44,7 @@ struct AppLockedView: View {
         self._authenticator = .init(wrappedValue: .init(preferences: preferences,
                                                         logManager: logManager))
         self._preferences = .init(wrappedValue: preferences)
+        self.logger = .init(manager: logManager)
         self.delayed = delayed
         self.onSuccess = onSuccess
         self.onFailure = onFailure
@@ -88,6 +90,7 @@ struct AppLockedView: View {
                     if preferences.failedAttemptCount == 0 {
                         await authenticate(delayed: delayed)
                     } else if preferences.failedAttemptCount >= kMaxAttemptCount {
+                        logger.error("Biometric authentication completely failed")
                         onFailure()
                     }
                 }
@@ -128,11 +131,13 @@ struct AppLockedView: View {
     @MainActor
     func authenticate(delayed: Bool) async {
         guard preferences.failedAttemptCount < kMaxAttemptCount else {
+            logger.error("Biometric authentication completely failed")
             onFailure()
             return
         }
         defer {
             if preferences.failedAttemptCount >= kMaxAttemptCount {
+                logger.error("Biometric authentication completely failed")
                 onFailure()
             }
         }
@@ -142,14 +147,18 @@ struct AppLockedView: View {
             if delayed {
                 try await Task.sleep(nanoseconds: 200_000_000)
             }
+            logger.trace("Begin biometric authentication")
             let authenticated = try await authenticator.authenticate(reason: "Please authenticate")
             if authenticated {
                 preferences.failedAttemptCount = 0
                 onSuccess()
+                logger.info("Biometric authentication successful")
             } else {
+                logger.error("Biometric authentication failed. Increased failed attempt count.")
                 preferences.failedAttemptCount += 1
             }
         } catch {
+            logger.error("Biometric authentication failed. Increased failed attempt count. Reason \(error)")
             preferences.failedAttemptCount += 1
         }
     }
