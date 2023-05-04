@@ -36,7 +36,7 @@ final class TelemetrySchedulerTests: XCTestCase {
         super.setUp()
         preferences = .init()
         sut = TelemetryScheduler(currentDateProvider: MockedCurrentDateProvider(),
-                                 preferences: preferences)
+                                 thresholdProvider: preferences)
     }
 
     override func tearDown() {
