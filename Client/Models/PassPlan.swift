@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct PassPlan: Decodable {
+public struct PassPlan: Decodable, Equatable {
     /// ⚠️ Use `planType` instead
     public let type: String
     /// Plan name for telemetry

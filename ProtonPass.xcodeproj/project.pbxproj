@@ -245,6 +245,8 @@
 		355A27B52953751200F32EA1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme.swift */; };
 		355A5B0A2A03D1F10089E0AC /* PassPlanEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B092A03D1F10089E0AC /* PassPlanEntity.swift */; };
 		355A5B0C2A03D3450089E0AC /* PassPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B0B2A03D3450089E0AC /* PassPlan.swift */; };
+		355A5B0E2A03D6A20089E0AC /* LocalPassPlanDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B0D2A03D6A20089E0AC /* LocalPassPlanDatasource.swift */; };
+		355A5B102A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B0F2A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift */; };
 		355AA31829E9525E00C20F5F /* RemoteFavIconDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31729E9525E00C20F5F /* RemoteFavIconDatasource.swift */; };
 		355AA31A29E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */; };
 		355AA31C29E9736A00C20F5F /* Data+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31B29E9736A00C20F5F /* Data+Random.swift */; };
@@ -942,6 +944,8 @@
 		355A27B42953751200F32EA1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		355A5B092A03D1F10089E0AC /* PassPlanEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPlanEntity.swift; sourceTree = "<group>"; };
 		355A5B0B2A03D3450089E0AC /* PassPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPlan.swift; sourceTree = "<group>"; };
+		355A5B0D2A03D6A20089E0AC /* LocalPassPlanDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPassPlanDatasource.swift; sourceTree = "<group>"; };
+		355A5B0F2A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPassPlanDatasourceTests.swift; sourceTree = "<group>"; };
 		355AA31729E9525E00C20F5F /* RemoteFavIconDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFavIconDatasource.swift; sourceTree = "<group>"; };
 		355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFavIconDatasourceTests.swift; sourceTree = "<group>"; };
 		355AA31B29E9736A00C20F5F /* Data+Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Random.swift"; sourceTree = "<group>"; };
@@ -2033,6 +2037,7 @@
 			isa = PBXGroup;
 			children = (
 				3542E2C628D9EB8000194F24 /* LocalItemDatasourceTests.swift */,
+				355A5B0F2A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift */,
 				358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */,
 				355E33A929C4612800402CAE /* LocalSearchEntryDatasourceTests.swift */,
 				357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */,
@@ -2135,6 +2140,7 @@
 			children = (
 				3593DCE628A790F800C235D3 /* LocalDatasource.swift */,
 				3542E2C228D9E16600194F24 /* LocalItemDatasource.swift */,
+				355A5B0D2A03D6A20089E0AC /* LocalPassPlanDatasource.swift */,
 				358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */,
 				356B831529C37E560084488A /* LocalSearchEntryDatasource.swift */,
 				3593DD1C28A8466800C235D3 /* LocalShareDatasource.swift */,
@@ -3826,6 +3832,7 @@
 				357602A829F6ECD3003062A2 /* TelemetryEventEntity.swift in Sources */,
 				356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */,
 				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
+				355A5B0E2A03D6A20089E0AC /* LocalPassPlanDatasource.swift in Sources */,
 				3560844C29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift in Sources */,
 				359A4DDE29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift in Sources */,
 				35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */,
@@ -3917,6 +3924,7 @@
 			files = (
 				3542E2C928D9EBC000194F24 /* SymmetricallyEncryptedItem+Test.swift in Sources */,
 				355AA31A29E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift in Sources */,
+				355A5B102A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift in Sources */,
 				354EA82D29EF53B500F1FB95 /* TelemetryEventTests.swift in Sources */,
 				353C95E1289A9E8500E3CDCA /* Share+Test.swift in Sources */,
 				357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */,

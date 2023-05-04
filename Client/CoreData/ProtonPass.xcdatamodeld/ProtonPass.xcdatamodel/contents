@@ -24,13 +24,13 @@
         </uniquenessConstraints>
     </entity>
     <entity name="PassPlanEntity" representedClassName="PassPlanEntity" syncable="YES">
-        <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="-1" usesScalarValueType="YES"/>
+        <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="displayName" attributeType="String"/>
         <attribute name="internalName" attributeType="String"/>
-        <attribute name="totpLimit" attributeType="Integer 64" defaultValueString="-1" usesScalarValueType="YES"/>
+        <attribute name="totpLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="type" attributeType="String"/>
         <attribute name="userID" attributeType="String"/>
-        <attribute name="vaultLimit" attributeType="Integer 64" defaultValueString="-1" usesScalarValueType="YES"/>
+        <attribute name="vaultLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="userID"/>
