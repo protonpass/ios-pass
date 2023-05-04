@@ -25,13 +25,16 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     let thumbnailView: ThumbnailView
     let title: String
     let description: String?
+    let descriptionMinScaleFactor: CGFloat
 
     init(@ViewBuilder thumbnailView: () -> ThumbnailView,
          title: String,
-         description: String?) {
+         description: String?,
+         descriptionMinScaleFactor: CGFloat = 1.0) {
         self.thumbnailView = thumbnailView()
         self.title = title
         self.description = description
+        self.descriptionMinScaleFactor = descriptionMinScaleFactor
     }
 
     var body: some View {
@@ -50,6 +53,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                     Text(description)
                         .font(.callout)
                         .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        .minimumScaleFactor(descriptionMinScaleFactor)
                 }
             }
             .padding(.vertical, 12)
