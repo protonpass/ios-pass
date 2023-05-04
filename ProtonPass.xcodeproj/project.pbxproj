@@ -249,6 +249,7 @@
 		355A5B102A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B0F2A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift */; };
 		355A5B122A041F550089E0AC /* RemotePassPlanDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B112A041F550089E0AC /* RemotePassPlanDatasource.swift */; };
 		355A5B142A041FCC0089E0AC /* PassPlanRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B132A041FCC0089E0AC /* PassPlanRepository.swift */; };
+		355A5B162A0425810089E0AC /* UpgradeChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B152A0425810089E0AC /* UpgradeChecker.swift */; };
 		355AA31829E9525E00C20F5F /* RemoteFavIconDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31729E9525E00C20F5F /* RemoteFavIconDatasource.swift */; };
 		355AA31A29E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */; };
 		355AA31C29E9736A00C20F5F /* Data+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31B29E9736A00C20F5F /* Data+Random.swift */; };
@@ -950,6 +951,7 @@
 		355A5B0F2A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPassPlanDatasourceTests.swift; sourceTree = "<group>"; };
 		355A5B112A041F550089E0AC /* RemotePassPlanDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePassPlanDatasource.swift; sourceTree = "<group>"; };
 		355A5B132A041FCC0089E0AC /* PassPlanRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPlanRepository.swift; sourceTree = "<group>"; };
+		355A5B152A0425810089E0AC /* UpgradeChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeChecker.swift; sourceTree = "<group>"; };
 		355AA31729E9525E00C20F5F /* RemoteFavIconDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFavIconDatasource.swift; sourceTree = "<group>"; };
 		355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFavIconDatasourceTests.swift; sourceTree = "<group>"; };
 		355AA31B29E9736A00C20F5F /* Data+Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Random.swift"; sourceTree = "<group>"; };
@@ -2083,6 +2085,7 @@
 				3554747F29A8E8460060B555 /* PassKeyManager.swift */,
 				350A97D12885BF7E00A7168B /* Protobufable.swift */,
 				3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */,
+				355A5B152A0425810089E0AC /* UpgradeChecker.swift */,
 				354FBF5C2A02837000A0B27D /* UserPlanManager.swift */,
 				357602B429F7163C003062A2 /* UserPlanProvider.swift */,
 			);
@@ -3886,6 +3889,7 @@
 				35610B7528ABB77800955ACB /* LocalShareKeyDatasource.swift in Sources */,
 				3593DD0B28A837DD00C235D3 /* ShareEntity.swift in Sources */,
 				3552F48C28D3451800547146 /* GetAliasDetailsEndpoint.swift in Sources */,
+				355A5B162A0425810089E0AC /* UpgradeChecker.swift in Sources */,
 				3552F48828D322C100547146 /* CreateCustomAliasEndpoint.swift in Sources */,
 				3552F48628D3215600547146 /* CreateCustomAliasRequest.swift in Sources */,
 				35492E3A293DFB8700BDE231 /* ItemIdentifiable.swift in Sources */,
