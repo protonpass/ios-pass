@@ -35,11 +35,26 @@ private final class MockedCurrentDateProvider: CurrentDateProviderProtocol {
     func getCurrentDate() -> Date { currentDate }
 }
 
-private final class MockedFreeUserPlanProvider: UserPlanProviderProtocol {
-    let apiService = PMAPIService.dummyService()
+private final class MockedFreePlanRepository: PassPlanRepositoryProtocol {
+    var localPassPlanDatasource: LocalPassPlanDatasourceProtocol =
+    LocalPassPlanDatasource(container: .Builder.build(name: kProtonPassContainerName, inMemory: true))
+
+    var remotePassPlanDatasource: RemotePassPlanDatasourceProtocol =
+    RemotePassPlanDatasource(apiService: PMAPIService.dummyService())
+
+    var userId: String = ""
     let logger = Logger.dummyLogger()
 
-    func getUserPlan() async throws -> UserPlan { .free }
+    var freePlan = PassPlan(type: "free",
+                            internalName: .random(),
+                            displayName: .random(),
+                            vaultLimit: .random(in: 1...100),
+                            aliasLimit: .random(in: 1...100),
+                            totpLimit: .random(in: 1...100))
+
+    func getPlan() async throws -> PassPlan { freePlan }
+
+    func refreshPlan() async throws -> PassPlan { freePlan }
 }
 
 final class TelemetryEventRepositoryTests: XCTestCase {
@@ -70,7 +85,7 @@ extension TelemetryEventRepositoryTests {
                                                     thresholdProvider: preferences)
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
-                                       userPlanProvider: MockedFreeUserPlanProvider(),
+                                       passPlanRepository: MockedFreePlanRepository(),
                                        logManager: .dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)
@@ -97,7 +112,7 @@ extension TelemetryEventRepositoryTests {
                                                     thresholdProvider: preferences)
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
-                                       userPlanProvider: MockedFreeUserPlanProvider(),
+                                       passPlanRepository: MockedFreePlanRepository(),
                                        logManager: .dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)
@@ -124,7 +139,7 @@ extension TelemetryEventRepositoryTests {
                                                     thresholdProvider: preferences)
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
-                                       userPlanProvider: MockedFreeUserPlanProvider(),
+                                       passPlanRepository: MockedFreePlanRepository(),
                                        logManager: .dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)
@@ -151,7 +166,7 @@ extension TelemetryEventRepositoryTests {
         // works correctly when dealing with a large number of events
         sut = TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
                                        remoteTelemetryEventDatasource: MockedRemoteDatasource(),
-                                       userPlanProvider: MockedFreeUserPlanProvider(),
+                                       passPlanRepository: MockedFreePlanRepository(),
                                        logManager: .dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId,
