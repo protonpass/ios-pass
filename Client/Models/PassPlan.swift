@@ -1,6 +1,6 @@
 //
-// CheckAccessAndPlanEndpoint.swift
-// Proton Pass - Created on 20/04/2023.
+// PassPlan.swift
+// Proton Pass - Created on 04/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,28 +18,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Networking
+import Foundation
 
-public struct CheckAccessAndPlanResponse: Decodable {
-    public let code: Int
-    public let access: PassAccess
-}
+public struct PassPlan: Decodable {
+    /// ⚠️ Use `planType` instead
+    public let type: String
+    /// Plan name for telemetry
+    public let internalName: String
+    /// Human readable plan name
+    public let displayName: String
+    public let vaultLimit: Int?
+    public let aliasLimit: Int?
+    public let totpLimit: Int?
 
-public struct PassAccess: Decodable {
-    public let plan: PassPlan
-}
-
-public struct CheckAccessAndPlanEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CheckAccessAndPlanResponse
-
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-
-    public init() {
-        self.debugDescription = "Check access to Pass"
-        self.path = "/pass/v1/user/access"
-        self.method = .post
+    /// Enum representation of `type`
+    public enum PlanType {
+        case free, plus
     }
+
+    public var planType: PlanType { type == "plus" ? .plus : .free }
 }

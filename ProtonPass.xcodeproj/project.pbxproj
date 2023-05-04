@@ -243,6 +243,8 @@
 		355A198D294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */; };
 		355A198F294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */; };
 		355A27B52953751200F32EA1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme.swift */; };
+		355A5B0A2A03D1F10089E0AC /* PassPlanEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B092A03D1F10089E0AC /* PassPlanEntity.swift */; };
+		355A5B0C2A03D3450089E0AC /* PassPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A5B0B2A03D3450089E0AC /* PassPlan.swift */; };
 		355AA31829E9525E00C20F5F /* RemoteFavIconDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31729E9525E00C20F5F /* RemoteFavIconDatasource.swift */; };
 		355AA31A29E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */; };
 		355AA31C29E9736A00C20F5F /* Data+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA31B29E9736A00C20F5F /* Data+Random.swift */; };
@@ -938,6 +940,8 @@
 		355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeEndpoint.swift; sourceTree = "<group>"; };
 		355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeRequest.swift; sourceTree = "<group>"; };
 		355A27B42953751200F32EA1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		355A5B092A03D1F10089E0AC /* PassPlanEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPlanEntity.swift; sourceTree = "<group>"; };
+		355A5B0B2A03D3450089E0AC /* PassPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPlan.swift; sourceTree = "<group>"; };
 		355AA31729E9525E00C20F5F /* RemoteFavIconDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFavIconDatasource.swift; sourceTree = "<group>"; };
 		355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFavIconDatasourceTests.swift; sourceTree = "<group>"; };
 		355AA31B29E9736A00C20F5F /* Data+Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Random.swift"; sourceTree = "<group>"; };
@@ -1637,10 +1641,11 @@
 				354146D028D1F1E1007E45A6 /* AliasOptions.swift */,
 				355454C729E5EB0C005289E7 /* ItemKey.swift */,
 				3593DCF828A824FE00C235D3 /* ItemRevision.swift */,
-				358AB4982886FA7B00818B44 /* ShareKey.swift */,
+				355A5B0B2A03D3450089E0AC /* PassPlan.swift */,
 				358A508C28AD823000F5285C /* PublicKey.swift */,
 				356B831729C37FC50084488A /* SearchEntry.swift */,
 				355443FC287CA77C0017FCAD /* Share.swift */,
+				358AB4982886FA7B00818B44 /* ShareKey.swift */,
 				353876D728F6BDCA0040F139 /* SymmetricallyEncryptedItem.swift */,
 				359A4DDD29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift */,
 				359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */,
@@ -2105,6 +2110,7 @@
 			isa = PBXGroup;
 			children = (
 				3542E2C428D9E2E700194F24 /* ItemEntity.swift */,
+				355A5B092A03D1F10089E0AC /* PassPlanEntity.swift */,
 				358A509128AD856D00F5285C /* PublicKeyEntity.swift */,
 				356B831329C365320084488A /* SearchEntryEntity.swift */,
 				3593DD0728A837DC00C235D3 /* ShareEntity.swift */,
@@ -3791,6 +3797,7 @@
 				3554730A29CDD5540092E0E4 /* UpdateVaultEndpoint.swift in Sources */,
 				354146D128D1F1E1007E45A6 /* AliasOptions.swift in Sources */,
 				3529433028DB4C7700E1F11B /* SearchableItem.swift in Sources */,
+				355A5B0A2A03D1F10089E0AC /* PassPlanEntity.swift in Sources */,
 				358BD36C287D52AC00802A91 /* item_v1.pb.swift in Sources */,
 				359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */,
 				35533BB729D58C8F00EC58DE /* RepositoryManager.swift in Sources */,
@@ -3878,6 +3885,7 @@
 				35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */,
 				35581815290AB39C00DD94DB /* GetEventsEndpoint.swift in Sources */,
 				3593DD1D28A8466800C235D3 /* LocalShareDatasource.swift in Sources */,
+				355A5B0C2A03D3450089E0AC /* PassPlan.swift in Sources */,
 				3561A1802922D1700097078B /* ItemCount.swift in Sources */,
 				3554747E29A8E71F0060B555 /* RemoteItemKeyDatasource.swift in Sources */,
 				3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */,
