@@ -61,10 +61,12 @@ public final class CredentialProviderCoordinator {
     private var aliasRepository: AliasRepositoryProtocol?
     private var remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol?
     private var telemetryEventRepository: TelemetryEventRepositoryProtocol?
-    private var userPlanManager: UserPlanManagerProtocol?
+    private var upgradeChecker: UpgradeCheckerProtocol?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var vaultListUiModels: [VaultListUiModel]?
+    private var vaultCount: Int?
+    private var totpCount: Int?
 
     private var topMostViewController: UIViewController {
         rootViewController.topMostViewController
@@ -240,9 +242,12 @@ public final class CredentialProviderCoordinator {
 
         let repositoryManager = RepositoryManager(apiService: apiService,
                                                   container: container,
+                                                  currentDateProvider: CurrentDateProvider(),
+                                                  limitationCounter: self,
                                                   logManager: logManager,
                                                   symmetricKey: symmetricKey,
-                                                  userData: userData)
+                                                  userData: userData,
+                                                  telemetryThresholdProvider: preferences)
         self.symmetricKey = symmetricKey
         self.shareRepository = repositoryManager.shareRepository
         self.shareEventIDRepository = repositoryManager.shareEventIDRepository
@@ -257,15 +262,8 @@ public final class CredentialProviderCoordinator {
         self.shareKeyRepository = repositoryManager.shareKeyRepository
         self.aliasRepository = repositoryManager.aliasRepository
         self.remoteSyncEventsDatasource = repositoryManager.remoteSyncEventsDatasource
-        self.telemetryEventRepository = TelemetryEventRepository(
-            localTelemetryEventDatasource: LocalTelemetryEventDatasource(container: container),
-            remoteTelemetryEventDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
-            userPlanProvider: UserPlanProvider(apiService: apiService, logManager: logManager),
-            logManager: logManager,
-            scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
-                                          thresholdProvider: preferences),
-            userId: userData.user.ID)
-        self.userPlanManager = UserPlanManager()
+        self.telemetryEventRepository = repositoryManager.telemetryEventRepository
+        self.upgradeChecker = repositoryManager.upgradeChecker
     }
 
     func addNewEvent(type: TelemetryEventType) {
@@ -483,7 +481,7 @@ private extension CredentialProviderCoordinator {
     func showCreateLoginView(shareId: String,
                              itemRepository: ItemRepositoryProtocol,
                              aliasRepository: AliasRepositoryProtocol,
-                             userPlanManager: UserPlanManagerProtocol,
+                             upgradeChecker: UpgradeCheckerProtocol,
                              vaults: [Vault],
                              url: URL?) {
         do {
@@ -495,7 +493,7 @@ private extension CredentialProviderCoordinator {
                                                                        type: creationType),
                                                          itemRepository: itemRepository,
                                                          aliasRepository: aliasRepository,
-                                                         userPlanManager: userPlanManager,
+                                                         upgradeChecker: upgradeChecker,
                                                          vaults: vaults,
                                                          preferences: preferences,
                                                          logManager: logManager,
@@ -607,12 +605,13 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
         guard let itemRepository,
               let aliasRepository,
               let shareRepository,
-              let userPlanManager else { return }
+              let upgradeChecker,
+        let symmetricKey else { return }
         if let vaultListUiModels {
             showCreateLoginView(shareId: shareId,
                                 itemRepository: itemRepository,
                                 aliasRepository: aliasRepository,
-                                userPlanManager: userPlanManager,
+                                upgradeChecker: upgradeChecker,
                                 vaults: vaultListUiModels.map { $0.vault },
                                 url: url)
         } else {
@@ -627,6 +626,15 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                         items.filter { $0.item.itemState == .active && $0.shareId == vault.shareId }
                         return .init(vault: vault, itemCount: activeItems.count)
                     }
+
+                    self.vaultCount = vaults.count
+
+                    self.totpCount = try items
+                        .filter { $0.isLogInItem }
+                        .map { try $0.toItemUiModel(symmetricKey) }
+                        .filter { $0.hasTotpUri }
+                        .count
+
                     hideLoadingHud()
                     credentialsViewModelWantsToCreateLoginItem(shareId: shareId, url: url)
                 } catch {
@@ -724,9 +732,9 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 // MARK: - CreateAliasLiteViewModelDelegate
 extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        guard let userPlanManager else { return }
+        guard let upgradeChecker else { return }
         let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
-                                                  userPlanManager: userPlanManager,
+                                                  upgradeChecker: upgradeChecker,
                                                   logManager: logManager,
                                                   mode: .createAliasLite,
                                                   titleMode: .create)
@@ -746,9 +754,9 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     }
 
     func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
-        guard let userPlanManager else { return }
+        guard let upgradeChecker else { return }
         let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection,
-                                                 userPlanManager: userPlanManager,
+                                                 upgradeChecker: upgradeChecker,
                                                  logManager: logManager)
         viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
@@ -808,12 +816,24 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
 
     func extensionSettingsViewModelWantsToLogOut() {
         appData.userData = nil
-        appData.userPlan = nil
         context.completeExtensionConfigurationRequest()
     }
 
     func extensionSettingsViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - LimitationCounterProtocol
+extension CredentialProviderCoordinator: LimitationCounterProtocol {
+    public func getVaultCount() -> Int {
+        guard let vaultCount else { return 0 }
+        return vaultCount
+    }
+
+    public func getTOTPCount() -> Int {
+        guard let totpCount else { return 0 }
+        return totpCount
     }
 }
 

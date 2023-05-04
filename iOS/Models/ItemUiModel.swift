@@ -28,6 +28,7 @@ struct ItemUiModel: ItemTypeIdentifiable, ItemThumbnailable, Hashable {
     let title: String
     let description: String
     let url: String?
+    let hasTotpUri: Bool
     let lastUseTime: Int64
     let modifyTime: Int64
     let state: ItemState
@@ -54,6 +55,7 @@ extension SymmetricallyEncryptedItem {
 
         let note: String
         let url: String?
+        let hasTotpUri: Bool
 
         switch encryptedItemContent.contentData {
         case .login(let data):
@@ -63,14 +65,18 @@ extension SymmetricallyEncryptedItem {
             } else {
                 url = nil
             }
+            let totpUri = try symmetricKey.decrypt(data.totpUri)
+            hasTotpUri = !totpUri.isEmpty
 
         case .alias:
             note = item.aliasEmail ?? ""
             url = nil
+            hasTotpUri = false
 
         default:
             note = try String(symmetricKey.decrypt(encryptedItemContent.note).prefix(50))
             url = nil
+            hasTotpUri = false
         }
 
         return .init(itemId: encryptedItemContent.item.itemID,
@@ -79,6 +85,7 @@ extension SymmetricallyEncryptedItem {
                      title: name,
                      description: note,
                      url: url,
+                     hasTotpUri: hasTotpUri,
                      lastUseTime: item.lastUseTime ?? 0,
                      modifyTime: item.modifyTime,
                      state: encryptedItemContent.item.itemState)

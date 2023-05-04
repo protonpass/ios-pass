@@ -72,8 +72,8 @@ struct ProfileTabView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            if let userPlan = viewModel.userPlan {
-                switch userPlan {
+            if let plan = viewModel.plan {
+                switch plan.planType {
                 case .free:
                     CapsuleLabelButton(icon: PassIcon.brandPass,
                                        title: "Upgrade",

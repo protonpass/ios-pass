@@ -26,7 +26,7 @@ import ProtonCore_Services
 public protocol TelemetryEventRepositoryProtocol {
     var localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol { get }
     var remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol { get }
-    var userPlanProvider: UserPlanProviderProtocol { get }
+    var passPlanRepository: PassPlanRepositoryProtocol { get }
     var eventCount: Int { get }
     var logger: Logger { get }
     var scheduler: TelemetrySchedulerProtocol { get }
@@ -56,7 +56,7 @@ public extension TelemetryEventRepositoryProtocol {
 
         logger.debug("Threshold is reached. Sending events if any.")
         logger.trace("Refreshing user plan")
-        let userPlan = try await userPlanProvider.getUserPlan()
+        let plan = try await passPlanRepository.refreshPlan()
 
         while true {
             let events = try await localTelemetryEventDatasource.getOldestEvents(count: eventCount,
@@ -64,7 +64,7 @@ public extension TelemetryEventRepositoryProtocol {
             if events.isEmpty {
                 break
             }
-            let eventInfos = events.map { EventInfo(event: $0, userPlan: userPlan) }
+            let eventInfos = events.map { EventInfo(event: $0, userTier: plan.internalName) }
             try await remoteTelemetryEventDatasource.send(events: eventInfos)
             try await localTelemetryEventDatasource.remove(events: events, userId: userId)
         }
@@ -78,7 +78,7 @@ public extension TelemetryEventRepositoryProtocol {
 public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     public let localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol
     public let remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol
-    public let userPlanProvider: UserPlanProviderProtocol
+    public let passPlanRepository: PassPlanRepositoryProtocol
     public let eventCount: Int
     public let logger: Logger
     public let scheduler: TelemetrySchedulerProtocol
@@ -86,14 +86,14 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
 
     public init(localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol,
                 remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol,
-                userPlanProvider: UserPlanProviderProtocol,
+                passPlanRepository: PassPlanRepositoryProtocol,
                 logManager: LogManager,
                 scheduler: TelemetrySchedulerProtocol,
                 userId: String,
                 eventCount: Int = 500) {
         self.localTelemetryEventDatasource = localTelemetryEventDatasource
         self.remoteTelemetryEventDatasource = remoteTelemetryEventDatasource
-        self.userPlanProvider = userPlanProvider
+        self.passPlanRepository = passPlanRepository
         self.eventCount = eventCount
         self.logger = .init(manager: logManager)
         self.scheduler = scheduler

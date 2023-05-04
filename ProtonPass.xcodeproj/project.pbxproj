@@ -138,7 +138,6 @@
 		354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */; };
 		354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769928C87CD500EB2383 /* EmptyVaultView.swift */; };
 		354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */; };
-		354FBF5D2A02837000A0B27D /* UserPlanManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5C2A02837000A0B27D /* UserPlanManager.swift */; };
 		354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5E2A02939600A0B27D /* AliasLimitView.swift */; };
 		354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
 		354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
@@ -446,7 +445,6 @@
 		357602AC29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */; };
 		357602AE29F6FDA0003062A2 /* TelemetryEventRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */; };
 		357602B329F71499003062A2 /* GetUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602B229F71499003062A2 /* GetUserEndpoint.swift */; };
-		357602B529F7163C003062A2 /* UserPlanProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602B429F7163C003062A2 /* UserPlanProvider.swift */; };
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
@@ -857,7 +855,6 @@
 		354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewModel.swift; sourceTree = "<group>"; };
 		354F769928C87CD500EB2383 /* EmptyVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyVaultView.swift; sourceTree = "<group>"; };
 		354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseItemDetailViewModel.swift; sourceTree = "<group>"; };
-		354FBF5C2A02837000A0B27D /* UserPlanManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlanManager.swift; sourceTree = "<group>"; };
 		354FBF5E2A02939600A0B27D /* AliasLimitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasLimitView.swift; sourceTree = "<group>"; };
 		354FBF602A02961D00A0B27D /* UpgradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeButton.swift; sourceTree = "<group>"; };
 		354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionView.swift; sourceTree = "<group>"; };
@@ -1113,7 +1110,6 @@
 		357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteTelemetryEventDatasource.swift; sourceTree = "<group>"; };
 		357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventRepository.swift; sourceTree = "<group>"; };
 		357602B229F71499003062A2 /* GetUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserEndpoint.swift; sourceTree = "<group>"; };
-		357602B429F7163C003062A2 /* UserPlanProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlanProvider.swift; sourceTree = "<group>"; };
 		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
@@ -2086,8 +2082,6 @@
 				350A97D12885BF7E00A7168B /* Protobufable.swift */,
 				3542E2B728D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift */,
 				355A5B152A0425810089E0AC /* UpgradeChecker.swift */,
-				354FBF5C2A02837000A0B27D /* UserPlanManager.swift */,
-				357602B429F7163C003062A2 /* UserPlanProvider.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -3845,7 +3839,6 @@
 				3560844C29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift in Sources */,
 				359A4DDE29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift in Sources */,
 				35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */,
-				357602B529F7163C003062A2 /* UserPlanProvider.swift in Sources */,
 				357602B329F71499003062A2 /* GetUserEndpoint.swift in Sources */,
 				358A508D28AD823000F5285C /* PublicKey.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
@@ -3866,7 +3859,6 @@
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
 				355A5B122A041F550089E0AC /* RemotePassPlanDatasource.swift in Sources */,
 				3530092A28A5281800611F8A /* Vault.swift in Sources */,
-				354FBF5D2A02837000A0B27D /* UserPlanManager.swift in Sources */,
 				3558180F290A8C0800DD94DB /* GetLastEventIDEndpoint.swift in Sources */,
 				35610B8028ABCA0C00955ACB /* RemoteShareDatasource.swift in Sources */,
 				3542E2CB28D9FE8600194F24 /* ItemRepository.swift in Sources */,

@@ -41,7 +41,7 @@ public extension PassPlanRepositoryProtocol {
             return passPlan
         }
 
-        logger.debug("No local plan found for user \(userId). Refreshing...")
+        logger.trace("No local plan found for user \(userId). Refreshing...")
         let refreshedPassPlan = try await refreshPlan()
         return refreshedPassPlan
     }
@@ -52,7 +52,7 @@ public extension PassPlanRepositoryProtocol {
         let passPlan = try await remotePassPlanDatasource.getPassPlan()
         logger.trace("Upserting plan for user \(userId)")
         try await localPassPlanDatasource.upsert(passPlan: passPlan, userId: userId)
-        logger.debug("Refreshed plan for user \(userId)")
+        logger.info("Refreshed plan for user \(userId)")
         return passPlan
     }
 }
