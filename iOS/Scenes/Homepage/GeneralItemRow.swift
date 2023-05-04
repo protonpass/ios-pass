@@ -57,6 +57,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                         .scaledToFill()
                         .minimumScaleFactor(descriptionMinScaleFactor)
                         .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
             .padding(.vertical, 12)
