@@ -138,12 +138,14 @@ extension PlanDetails {
                               optDetails: [
                                 (.infinity, "Unlimited logins and notes"),
                                 (.infinity, "Unlimited devices"),
-                                (.lock, "Integrated 2FA authenticator"),
-                                (.vault, "Multiple vaults"),
+                                (.vault, "20 vaults"),
                                 (.alias, "Unlimited email aliases"),
+                                (.lock, "Integrated 2FA authenticator"),
+                                (.forward, "Up to 5 forwarding mailboxes"),
                                 (.storage, details.XGBStorageDescription),
                                 (.envelope, details.YAddressesDescription),
-                                (.shield, details.VPNUDevicesDescription)
+                                (.shield, details.VPNUDevicesDescription),
+                                (.eye, "Priority support")
                               ],
                               isPreferred: true)
             default:

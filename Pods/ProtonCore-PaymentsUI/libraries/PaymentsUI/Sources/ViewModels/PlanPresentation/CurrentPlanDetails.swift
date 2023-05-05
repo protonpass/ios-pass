@@ -60,7 +60,7 @@ extension CurrentPlanDetails {
         }
         
         let space = planDetailsSpace(plan: details, servicePlan: servicePlan)
-        return CurrentPlanDetails(name: name, price: price, cycle: details.cycleDescription, details: planDetails.details, endDate: endDate, usedSpace: space.usedSpace, maxSpace: space.maxSpace, usedSpaceDescription: space.description)
+        return CurrentPlanDetails(name: name, price: price, cycle: details.cycleDescription, details: planDetails.details, endDate: endDate, usedSpace: space.usedSpace, maxSpace: space.maxSpace, usedSpaceDescription: planDetails.usedSpace ? space.description : nil)
     }
     
     struct PlanDetailsSpace {
@@ -191,18 +191,20 @@ extension CurrentPlanDetails {
             switch clientApp {
             case .other("pass"):
                 strDetails = (name: nil,
-                              usedSpace: true,
+                              usedSpace: false,
                               optDetails: [
                                 // Temporary local change before new core version version with localized texts
                                 // and new icons is released
                                 (.infinity, "Unlimited logins and notes"),
                                 (.infinity, "Unlimited devices"),
-                                (.lock, "Integrated 2FA authenticator"),
-                                (.vault, "Multiple vaults"),
+                                (.vault, "20 vaults"),
                                 (.alias, "Unlimited email aliases"),
+                                (.lock, "Integrated 2FA authenticator"),
+                                (.forward, "Up to 5 forwarding mailboxes"),
                                 (.storage, details.XGBStorageDescription),
                                 (.envelope, details.YAddressesDescription),
-                                (.shield, details.VPNUDevicesDescription)
+                                (.shield, details.VPNUDevicesDescription),
+                                (.eye, "Priority support")
                               ])
             default:
                 strDetails = (name: nil,
@@ -272,7 +274,7 @@ extension CurrentPlanDetails {
 
         case "599c124096f1f87dae3deb83b654c6198b8ecb9c150d2a4aa513c41288dd7645":
             strDetails = (name: nil,
-                          usedSpace: true,
+                          usedSpace: false,
                           optDetails: [
                             // Temporary local change before new core version version with localized texts
                             // and new icons is released
@@ -299,7 +301,7 @@ extension CurrentPlanDetails {
             // TODO: change that to actual .pass when available
             case .other(named: "pass"):
                 strDetails = (name: "Free",
-                              usedSpace: true,
+                              usedSpace: false,
                               optDetails: [
                                 (.infinity, "Unlimited logins and notes"),
                                 (.infinity, "Unlimited devices"),
