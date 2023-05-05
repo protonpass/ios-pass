@@ -36,6 +36,9 @@ struct QAFeaturesView: View {
                 CachedFavIconsSection(favIconRepository: viewModel.favIconRepository)
                 TelemetryEventsSection(telemetryEventRepository: viewModel.telemetryEventRepository,
                                        userId: viewModel.userData.user.ID)
+                TrashItemsSection(itemRepository: viewModel.itemRepository,
+                                  shareRepository: viewModel.shareRepository,
+                                  bannerManager: viewModel.bannerManager)
             }
             .navigationTitle("QA Features")
             .toolbar {

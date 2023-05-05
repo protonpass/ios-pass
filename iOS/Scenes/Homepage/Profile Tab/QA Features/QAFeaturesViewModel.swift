@@ -25,6 +25,8 @@ import ProtonCore_Login
 final class QAFeaturesViewModel: ObservableObject {
     let credentialManager: CredentialManagerProtocol
     let favIconRepository: FavIconRepositoryProtocol
+    let itemRepository: ItemRepositoryProtocol
+    let shareRepository: ShareRepositoryProtocol
     let telemetryEventRepository: TelemetryEventRepositoryProtocol
     let preferences: Preferences
     let bannerManager: BannerManager
@@ -33,6 +35,8 @@ final class QAFeaturesViewModel: ObservableObject {
 
     init(credentialManager: CredentialManagerProtocol,
          favIconRepository: FavIconRepositoryProtocol,
+         itemRepository: ItemRepositoryProtocol,
+         shareRepository: ShareRepositoryProtocol,
          telemetryEventRepository: TelemetryEventRepositoryProtocol,
          preferences: Preferences,
          bannerManager: BannerManager,
@@ -40,6 +44,8 @@ final class QAFeaturesViewModel: ObservableObject {
          userData: UserData) {
         self.credentialManager = credentialManager
         self.favIconRepository = favIconRepository
+        self.itemRepository = itemRepository
+        self.shareRepository = shareRepository
         self.telemetryEventRepository = telemetryEventRepository
         self.preferences = preferences
         self.bannerManager = bannerManager
