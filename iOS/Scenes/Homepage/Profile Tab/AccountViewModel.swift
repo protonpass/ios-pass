@@ -39,8 +39,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     let username: String
     let passPlanRepository: PassPlanRepositoryProtocol
     @Published private(set) var plan: PassPlan?
-    let userPlanProvider: UserPlanProviderProtocol
-    @Published private(set) var userPlan: UserPlan?
 
     weak var delegate: AccountViewModelDelegate?
 
@@ -58,8 +56,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         self.username = username
         self.theme = theme
         self.passPlanRepository = passPlanRepository
-        self.userPlan = userPlan
-        self.userPlanProvider = userPlanProvider
         self.refreshUserPlan()
     }
 

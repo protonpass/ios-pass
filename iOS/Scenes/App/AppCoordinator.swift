@@ -85,7 +85,6 @@ final class AppCoordinator {
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)
-        self.userPlanProvider = UserPlanProvider(apiService: apiManager.apiService, logManager: logManager)
         self.preferences = preferences
         self.isUITest = false
         clearUserDataInKeychainIfFirstRun()
@@ -212,8 +211,6 @@ final class AppCoordinator {
                                                               preferences: preferences,
                                                               symmetricKey: symmetricKey,
                                                               userData: userData,
-                                                              userPlan: appData.userPlan,
-                                                              userPlanProvider: userPlanProvider,
                                                               paymentsManager: paymentsManager)
                 homepageCoordinator.delegate = self
                 self.homepageCoordinator = homepageCoordinator
