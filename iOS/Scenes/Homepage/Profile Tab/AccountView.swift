@@ -146,7 +146,7 @@ struct AccountView: View {
                 action: viewModel.goBack)
         }
         ToolbarItem(placement: .navigationBarTrailing) {
-            if viewModel.userPlan == .free {
+            if viewModel.plan?.planType == .free {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
                                    title: "Upgrade",
                                    titleColor: ColorProvider.TextInverted,

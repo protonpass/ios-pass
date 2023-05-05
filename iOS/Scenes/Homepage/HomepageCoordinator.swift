@@ -91,8 +91,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          preferences: Preferences,
          symmetricKey: SymmetricKey,
          userData: UserData,
-         userPlan: UserPlan?,
-         userPlanProvider: UserPlanProviderProtocol,
          paymentsManager: PaymentsManager) {
         let itemRepository = ItemRepository(userData: userData,
                                             symmetricKey: symmetricKey,
