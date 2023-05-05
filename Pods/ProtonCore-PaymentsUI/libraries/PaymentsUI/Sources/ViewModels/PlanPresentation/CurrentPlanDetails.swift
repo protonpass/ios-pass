@@ -196,12 +196,13 @@ extension CurrentPlanDetails {
                                 // Temporary local change before new core version version with localized texts
                                 // and new icons is released
                                 (.infinity, "Unlimited logins and notes"),
+                                (.infinity, "Unlimited devices"),
                                 (.lock, "Integrated 2FA authenticator"),
                                 (.vault, "Multiple vaults"),
-                                (.alias, "Unlimited Hide My Email aliases"),
-                                (.at, "Custom domains for email aliases"),
-                                (.forward, "Multiple forwarding mailboxes"),
-                                (.eye, "Priority support")
+                                (.alias, "Unlimited email aliases"),
+                                (.storage, details.XGBStorageDescription),
+                                (.envelope, details.YAddressesDescription),
+                                (.shield, details.VPNUDevicesDescription)
                               ])
             default:
                 strDetails = (name: nil,
@@ -276,11 +277,11 @@ extension CurrentPlanDetails {
                             // Temporary local change before new core version version with localized texts
                             // and new icons is released
                             (.infinity, "Unlimited logins and notes"),
+                            (.infinity, "Unlimited devices"),
+                            (.vault, "20 vaults"),
+                            (.alias, "Unlimited email aliases"),
                             (.lock, "Integrated 2FA authenticator"),
-                            (.vault, "Multiple vaults"),
-                            (.alias, "Unlimited Hide My Email aliases"),
-                            (.at, "Custom domains for email aliases"),
-                            (.forward, "Multiple forwarding mailboxes"),
+                            (.forward, "Up to 5 forwarding mailboxes"),
                             (.eye, "Priority support")
                           ])
 
@@ -301,8 +302,9 @@ extension CurrentPlanDetails {
                               usedSpace: true,
                               optDetails: [
                                 (.infinity, "Unlimited logins and notes"),
+                                (.infinity, "Unlimited devices"),
                                 (.vault, "1 vault"),
-                                (.alias, "10 Hide My Email aliases")
+                                (.alias, "10 email aliases")
                               ])
             default:
                 strDetails = (name: "Free",
