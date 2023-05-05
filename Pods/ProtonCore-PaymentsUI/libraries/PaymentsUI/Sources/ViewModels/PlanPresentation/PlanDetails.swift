@@ -131,17 +131,34 @@ extension PlanDetails {
                           isPreferred: false)
 
         case "04567dee288f15bb533814cf89f3ab5a4fa3c25d1aed703a409672181f8a900a":
-            strDetails = (name: nil,
-                          description: CoreString._new_plans_plan_details_bundle_description,
-                          optDetails: [
-                            (.storage, details.XGBStorageDescription),
-                            (.envelope, details.YAddressesDescription),
-                            (.globe, details.VCustomEmailDomainDescription),
-                            (.tag, details.unlimitedFoldersLabelsFiltersDescription),
-                            (.calendarCheckmark, details.ZPersonalCalendarsDescription),
-                            (.shield, details.VPNUDevicesDescription)
-                          ],
-                          isPreferred: true)
+            switch clientApp {
+            case .other(named: "pass"):
+                strDetails = (name: nil,
+                              description: CoreString._new_plans_plan_details_bundle_description,
+                              optDetails: [
+                                (.infinity, "Unlimited logins and notes"),
+                                (.infinity, "Unlimited devices"),
+                                (.lock, "Integrated 2FA authenticator"),
+                                (.vault, "Multiple vaults"),
+                                (.alias, "Unlimited email aliases"),
+                                (.storage, details.XGBStorageDescription),
+                                (.envelope, details.YAddressesDescription),
+                                (.shield, details.VPNUDevicesDescription)
+                              ],
+                              isPreferred: true)
+            default:
+                strDetails = (name: nil,
+                              description: CoreString._new_plans_plan_details_bundle_description,
+                              optDetails: [
+                                (.storage, details.XGBStorageDescription),
+                                (.envelope, details.YAddressesDescription),
+                                (.globe, details.VCustomEmailDomainDescription),
+                                (.tag, details.unlimitedFoldersLabelsFiltersDescription),
+                                (.calendarCheckmark, details.ZPersonalCalendarsDescription),
+                                (.shield, details.VPNUDevicesDescription)
+                              ],
+                              isPreferred: true)
+            }
 
         case "599c124096f1f87dae3deb83b654c6198b8ecb9c150d2a4aa513c41288dd7645":
             strDetails = (name: nil,
@@ -150,11 +167,11 @@ extension PlanDetails {
                             // Temporary local change before new core version version with localized texts
                             // and new icons is released
                             (.infinity, "Unlimited logins and notes"),
+                            (.infinity, "Unlimited devices"),
+                            (.vault, "20 vaults"),
+                            (.alias, "Unlimited email aliases"),
                             (.lock, "Integrated 2FA authenticator"),
-                            (.vault, "Multiple vaults"),
-                            (.alias, "Unlimited Hide My Email aliases"),
-                            (.at, "Custom domains for email aliases"),
-                            (.forward, "Multiple forwarding mailboxes"),
+                            (.forward, "Up to 5 forwarding mailboxes"),
                             (.eye, "Priority support")
                           ],
                           isPreferred: false)
@@ -169,6 +186,16 @@ extension PlanDetails {
                                 (.servers, details.VPNFreeServersDescription(countries: countriesCount)),
                                 (.rocket, details.VPNFreeSpeedDescription),
                                 (.eyeSlash, details.VPNNoLogsPolicy)
+                              ],
+                              isPreferred: false)
+            case .other(named: "pass"):
+                strDetails = (name: "Free",
+                              description: CoreString._new_plans_plan_details_free_description,
+                              optDetails: [
+                                (.infinity, "Unlimited logins and notes"),
+                                (.infinity, "Unlimited devices"),
+                                (.vault, "1 vault"),
+                                (.alias, "10 email aliases")
                               ],
                               isPreferred: false)
             default:
