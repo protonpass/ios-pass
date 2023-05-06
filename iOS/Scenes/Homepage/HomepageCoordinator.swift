@@ -803,6 +803,8 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func profileTabViewModelWantsToQaFeatures() {
         let viewModel = QAFeaturesViewModel(credentialManager: credentialManager,
                                             favIconRepository: favIconRepository,
+                                            itemRepository: itemRepository,
+                                            shareRepository: shareRepository,
                                             telemetryEventRepository: telemetryEventRepository,
                                             preferences: preferences,
                                             bannerManager: bannerManager,
