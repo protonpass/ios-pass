@@ -25,6 +25,8 @@ import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
 
+private let kBatchPageSize = 99
+
 public protocol ItemRepositoryDelegate: AnyObject {
     func itemRepositoryHasNewCredentials(_ credentials: [AutoFillCredential])
     func itemRepositoryDeletedCredentials(_ credentials: [AutoFillCredential])
@@ -235,14 +237,15 @@ public extension ItemRepositoryProtocol {
         let itemsByShareId = Dictionary(grouping: items, by: { $0.shareId })
         for shareId in itemsByShareId.keys {
             guard let encryptedItems = itemsByShareId[shareId] else { continue }
-            let items = encryptedItems.map { $0.item }
-            let modifiedItems =
-            try await remoteItemRevisionDatasource.trashItemRevisions(items,
-                                                                      shareId: shareId)
-            logger.trace("Finished trashing remotely \(items.count) items for share \(shareId)")
-            try await localItemDatasoure.upsertItems(encryptedItems,
-                                                     modifiedItems: modifiedItems)
-            logger.trace("Finished trashing locallly \(items.count) items for share \(shareId)")
+            for batch in encryptedItems.chunked(into: kBatchPageSize) {
+                logger.trace("Trashing \(batch.count) items for share \(shareId)")
+                let modifiedItems =
+                try await remoteItemRevisionDatasource.trashItemRevisions(batch.map { $0.item },
+                                                                          shareId: shareId)
+                try await localItemDatasoure.upsertItems(batch,
+                                                         modifiedItems: modifiedItems)
+                logger.trace("Trashed \(batch.count) items for share \(shareId)")
+            }
         }
 
         logger.trace("Extracting deleted credentials from \(items.count) deleted items")
@@ -267,14 +270,15 @@ public extension ItemRepositoryProtocol {
         let itemsByShareId = Dictionary(grouping: items, by: { $0.shareId })
         for shareId in itemsByShareId.keys {
             guard let encryptedItems = itemsByShareId[shareId] else { continue }
-            let items = encryptedItems.map { $0.item }
-            let modifiedItems =
-            try await remoteItemRevisionDatasource.untrashItemRevisions(items,
-                                                                        shareId: shareId)
-            logger.trace("Finished untrashing remotely \(items.count) items for share \(shareId)")
-            try await localItemDatasoure.upsertItems(encryptedItems,
-                                                     modifiedItems: modifiedItems)
-            logger.trace("Finished untrashing locallly \(items.count) items for share \(shareId)")
+            for batch in encryptedItems.chunked(into: kBatchPageSize) {
+                logger.trace("Untrashing \(batch.count) items for share \(shareId)")
+                let modifiedItems =
+                try await remoteItemRevisionDatasource.untrashItemRevisions(batch.map { $0.item },
+                                                                            shareId: shareId)
+                try await localItemDatasoure.upsertItems(batch,
+                                                         modifiedItems: modifiedItems)
+                logger.trace("Untrashed \(batch.count) items for share \(shareId)")
+            }
         }
 
         logger.trace("Extracting new credentials from \(items.count) untrashed items")
@@ -290,13 +294,14 @@ public extension ItemRepositoryProtocol {
         let itemsByShareId = Dictionary(grouping: items, by: { $0.shareId })
         for shareId in itemsByShareId.keys {
             guard let encryptedItems = itemsByShareId[shareId] else { continue }
-            let items = encryptedItems.map { $0.item }
-            try await remoteItemRevisionDatasource.deleteItemRevisions(items,
-                                                                       shareId: shareId,
-                                                                       skipTrash: skipTrash)
-            logger.trace("Finished deleting remotely \(items.count) items for share \(shareId)")
-            try await localItemDatasoure.deleteItems(encryptedItems)
-            logger.trace("Finished deleting locallly \(items.count) items for share \(shareId)")
+            for batch in encryptedItems.chunked(into: kBatchPageSize) {
+                logger.trace("Deleting \(batch.count) items for share \(shareId)")
+                try await remoteItemRevisionDatasource.deleteItemRevisions(batch.map { $0.item },
+                                                                           shareId: shareId,
+                                                                           skipTrash: skipTrash)
+                try await localItemDatasoure.deleteItems(batch)
+                logger.trace("Deleted \(batch.count) items for share \(shareId)")
+            }
         }
     }
 
