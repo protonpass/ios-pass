@@ -30,6 +30,9 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.brandReddit
         _ = PassIcon.brandTwitter
 
+        _ = PassIcon.coverScreenBackground
+        _ = PassIcon.coverScreenLogo
+
         _ = PassIcon.magnifyingGlass
 
         _ = PassIcon.onboardAliases
