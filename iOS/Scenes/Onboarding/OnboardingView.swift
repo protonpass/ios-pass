@@ -49,19 +49,20 @@ struct OnboardingView: View {
 
             VStack(spacing: 0) {
                 VStack(spacing: 16) {
-                    Spacer()
-
                     Text(viewModel.state.title)
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                        .fixedSize(horizontal: false, vertical: true)
 
                     Text(viewModel.state.description)
                         .foregroundColor(Color(uiColor: PassColor.textWeak))
                         .multilineTextAlignment(.center)
-
-                    Spacer()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
 
                 Spacer()
 
@@ -80,6 +81,9 @@ struct OnboardingView: View {
                                 .animationsDisabled()
                         }
                         .animation(.default, value: viewModel.state.secondaryButtonTitle)
+                    } else {
+                        Text("Dummy text that takes place")
+                            .opacity(0)
                     }
 
                     Spacer()
@@ -168,10 +172,15 @@ private struct OnboardingBiometricAuthenticationView: View {
 
 private struct OnboardingAliasesView: View {
     var body: some View {
-        VStack {
-            Spacer()
-            Image(uiImage: PassIcon.onboardAliases)
+        GeometryReader { proxy in
+            VStack {
+                Spacer()
+                Image(uiImage: PassIcon.onboardAliases)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: min(proxy.size.width, proxy.size.height))
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
