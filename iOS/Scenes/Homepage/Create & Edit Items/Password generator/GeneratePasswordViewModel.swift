@@ -30,6 +30,7 @@ protocol GeneratePasswordViewModelDelegate: AnyObject {
 protocol GeneratePasswordViewModelUiDelegate: AnyObject {
     func generatePasswordViewModelWantsToChangePasswordType(currentType: PasswordType)
     func generatePasswordViewModelWantsToChangeMemorableMode(currentMode: MemorablePasswordMode)
+    func generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: WordSeparator)
     func generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: PasswordType,
                                                            memorablePasswordMode: MemorablePasswordMode)
 }
@@ -59,6 +60,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var texts: [Text] = []
     @Published private(set) var type: PasswordType = .random
     @Published private(set) var memorableMode: MemorablePasswordMode = .regular
+    @Published private(set) var wordSeparator: WordSeparator = .hyphens
     @Published var length: Double = 16
     @Published var hasSpecialCharacters = true
 
@@ -105,6 +107,10 @@ extension GeneratePasswordViewModel {
         uiDelegate?.generatePasswordViewModelWantsToChangeMemorableMode(currentMode: memorableMode)
     }
 
+    func changeWordSeparator() {
+        uiDelegate?.generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: wordSeparator)
+    }
+
     func confirm() {
         delegate?.generatePasswordViewModelDidConfirm(password: password)
     }
@@ -127,5 +133,12 @@ extension GeneratePasswordViewModel: PasswordTypesViewModelDelegate {
         self.type = type
         uiDelegate?.generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: type,
                                                                       memorablePasswordMode: memorableMode)
+    }
+}
+
+// MARK: - WordSeparatorsViewModelDelegate
+extension GeneratePasswordViewModel: WordSeparatorsViewModelDelegate {
+    func wordSeparatorsViewModelDidSelect(separator: WordSeparator) {
+        self.wordSeparator = separator
     }
 }

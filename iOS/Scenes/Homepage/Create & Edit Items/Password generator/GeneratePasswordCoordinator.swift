@@ -27,32 +27,18 @@ enum GeneratePasswordViewMode {
     case createLogin
     /// View is shown indepently without any context
     case random
-
-    var confirmTitle: String {
-        switch self {
-        case .createLogin:
-            return "Confirm"
-        case .random:
-            return "Copy and close"
-        }
-    }
 }
 
 enum PasswordType: CaseIterable {
     case random, memorable
-
-    var title: String {
-        switch self {
-        case .random:
-            return "Random Password"
-        case .memorable:
-            return "Memorable Password"
-        }
-    }
 }
 
 enum MemorablePasswordMode {
     case regular, advanced
+}
+
+enum WordSeparator: CaseIterable {
+    case hyphens, spaces, periods, commas, underscores, numbers, numbersAndSymbols
 }
 
 protocol GeneratePasswordCoordinatorDelegate: AnyObject {
@@ -173,8 +159,74 @@ extension GeneratePasswordCoordinator: GeneratePasswordViewModelUiDelegate {
         print(#function)
     }
 
+    func generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: WordSeparator) {
+        assert(generatePasswordViewModel != nil, "generatePasswordViewModel is not set")
+
+        let viewModel = WordSeparatorsViewModel(selectedSeparator: currentSeparator)
+        viewModel.delegate = generatePasswordViewModel
+
+        let view = WordSeparatorsView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+
+        if #available(iOS 16.0, *) {
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(44 * WordSeparator.allCases.count + 110)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium()]
+        }
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+
+        delegate?.generatePasswordCoordinatorWantsToPresent(viewController: viewController)
+    }
+
     func generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: PasswordType,
                                                            memorablePasswordMode: MemorablePasswordMode) {
         updateSheetHeight(passwordType: passwordType, memorablePasswordMode: memorablePasswordMode)
+    }
+}
+
+extension GeneratePasswordViewMode {
+    var confirmTitle: String {
+        switch self {
+        case .createLogin:
+            return "Confirm"
+        case .random:
+            return "Copy and close"
+        }
+    }
+}
+
+extension PasswordType {
+    var title: String {
+        switch self {
+        case .random:
+            return "Random Password"
+        case .memorable:
+            return "Memorable Password"
+        }
+    }
+}
+
+extension WordSeparator {
+    var title: String {
+        switch self {
+        case .hyphens:
+            return "Hyphens"
+        case .spaces:
+            return "Spaces"
+        case .periods:
+            return "Periods"
+        case .commas:
+            return "Commas"
+        case .underscores:
+            return "Underscores"
+        case .numbers:
+            return "Numbers"
+        case .numbersAndSymbols:
+            return "Numbers and Symbols"
+        }
     }
 }

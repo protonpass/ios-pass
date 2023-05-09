@@ -1,5 +1,5 @@
 //
-// PasswordTypesView.swift
+// WordSeparatorsView.swift
 // Proton Pass - Created on 09/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,74 +18,72 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import SwiftUI
 import UIComponents
 
-protocol PasswordTypesViewModelDelegate: AnyObject {
-    func passwordTypesViewModelDidSelect(type: PasswordType)
+protocol WordSeparatorsViewModelDelegate: AnyObject {
+    func wordSeparatorsViewModelDidSelect(separator: WordSeparator)
 }
 
-final class PasswordTypesViewModel: ObservableObject, DeinitPrintable {
-    deinit { print(deinitMessage) }
+final class WordSeparatorsViewModel: ObservableObject {
+    @Published private(set) var selectedSeparator: WordSeparator
 
-    @Published var selectedType: PasswordType
+    weak var delegate: WordSeparatorsViewModelDelegate?
 
-    weak var delegate: PasswordTypesViewModelDelegate?
-
-    init(selectedType: PasswordType) {
-        self.selectedType = selectedType
+    init(selectedSeparator: WordSeparator) {
+        self.selectedSeparator = selectedSeparator
     }
 
-    func select(type: PasswordType) {
-        delegate?.passwordTypesViewModelDidSelect(type: type)
+    func select(separator: WordSeparator) {
+        delegate?.wordSeparatorsViewModelDidSelect(separator: separator)
     }
 }
 
-struct PasswordTypesView: View {
+struct WordSeparatorsView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel: PasswordTypesViewModel
+    @StateObject private var viewModel: WordSeparatorsViewModel
 
-    init(viewModel: PasswordTypesViewModel) {
+    init(viewModel: WordSeparatorsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
-                ForEach(PasswordType.allCases, id: \.self) { type in
-                    row(for: type)
-                    PassDivider()
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(WordSeparator.allCases, id: \.self) { separator in
+                        row(for: separator)
+                        PassDivider()
+                    }
                 }
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
             .navigationBarTitleDisplayMode(.inline)
             .background(Color(uiColor: PassColor.backgroundWeak))
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Password type")
+                    Text("Word separator")
                         .navigationTitleText()
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 
-    private func row(for type: PasswordType) -> some View {
+    private func row(for separator: WordSeparator) -> some View {
         Button(action: {
-            viewModel.select(type: type)
+            viewModel.select(separator: separator)
             dismiss()
         }, label: {
             HStack {
-                Text(type.title)
+                Text(separator.title)
                 Spacer()
-                if viewModel.selectedType == type {
+                if viewModel.selectedSeparator == separator {
                     Label("", systemImage: "checkmark")
                 }
             }
             .padding(.vertical)
-            .foregroundColor(Color(uiColor: viewModel.selectedType == type ?
-                                   PassColor.loginInteractionNormMajor2 : PassColor.textNorm) )
+            .foregroundColor(Color(uiColor: viewModel.selectedSeparator == separator ?
+                                   PassColor.loginInteractionNormMajor2 : PassColor.textNorm))
         })
     }
 }
