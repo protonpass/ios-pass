@@ -29,6 +29,9 @@ public extension PassIcon {
     static var brandTwitter = UIImage(named: "BrandTwitter")!
     static var magnifyingGlass = UIImage(named: "MagnifyingGlass")!
 
+    static var coverScreenBackground = UIImage(named: "CoverScreenBackground")!
+    static var coverScreenLogo = UIImage(named: "CoverScreenLogo")!
+
     static var onboardAliases = UIImage(named: "OnboardAliases")!
     static var onboardAuthentication = UIImage(named: "OnboardAuthentication")!
     static var onboardAuthenticationBackground = UIImage(named: "OnboardAuthenticationBackground")!

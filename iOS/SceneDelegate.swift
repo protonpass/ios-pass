@@ -41,34 +41,50 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
-        let appCoverView = makeAppCoverView()
+        let appCoverView = makeAppCoverView(windowSize: window?.frame.size ?? .zero)
         appCoverView.frame = window?.frame ?? .zero
+        appCoverView.alpha = 0
         window?.addSubview(appCoverView)
+        UIView.animate(withDuration: 0.35) {
+            appCoverView.alpha = 1
+        }
         self.appCoverView = appCoverView
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-        appCoverView?.removeFromSuperview()
-        appCoverView = nil
+        UIView.animate(
+            withDuration: 0.35,
+            animations: {
+                self.appCoverView?.alpha = 0
+            },
+            completion: { [unowned self] _ in
+                self.appCoverView?.removeFromSuperview()
+                self.appCoverView = nil
+            })
     }
 }
 
 private extension SceneDelegate {
     struct AppCoverView: View {
+        let windowSize: CGSize
+
         var body: some View {
             ZStack {
-                Color(uiColor: PassColor.backgroundNorm)
+                Image(uiImage: PassIcon.coverScreenBackground)
+                    .resizable()
+                    .scaledToFill()
                     .ignoresSafeArea()
-                Image(uiImage: PassIcon.passIcon)
+                Image(uiImage: PassIcon.coverScreenLogo)
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: 160)
+                    .frame(width: min(windowSize.width, windowSize.height) * 2 / 3)
+                    .frame(maxWidth: 245)
             }
             .theme(Preferences().theme)
         }
     }
 
-    func makeAppCoverView() -> UIView {
-        UIHostingController(rootView: AppCoverView()).view
+    func makeAppCoverView(windowSize: CGSize) -> UIView {
+        UIHostingController(rootView: AppCoverView(windowSize: windowSize)).view
     }
 }
