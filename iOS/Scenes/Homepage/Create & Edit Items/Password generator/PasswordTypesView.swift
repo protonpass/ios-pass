@@ -52,10 +52,12 @@ struct PasswordTypesView: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
-                ForEach(PasswordType.allCases, id: \.self) { type in
-                    row(for: type)
-                    PassDivider()
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(PasswordType.allCases, id: \.self) { type in
+                        row(for: type)
+                        PassDivider()
+                    }
                 }
             }
             .padding(.horizontal)

@@ -128,7 +128,7 @@ extension GeneratePasswordCoordinator: GeneratePasswordViewModelUiDelegate {
 
         if #available(iOS 16.0, *) {
             let customDetent = UISheetPresentationController.Detent.custom { _ in
-                CGFloat(120)
+                CGFloat(160)
             }
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {
